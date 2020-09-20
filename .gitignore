@@ -4,7 +4,7 @@
 /app/eVe/
 /node_modules/
 /platforms/
-/www/public/js/eVe.js
+/www/public/js/atome.js
 /www/public/js/third_parties/opal/opal.js
 /www/public/js/third_parties/opal/opal_parser.js
 /app/app.rb
