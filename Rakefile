@@ -62,8 +62,8 @@ file 'app/temp/media_list.rb': ['app/temp'] do |t|
   File.open(t.name, 'w') { |file| file.write(medias_list) }
 end
 
-eVe_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb', 'app/app.rb', 'atome/lib/atome/bigbang.rb', 'atome/lib/atome/core/atome.rb', 'atome/lib/atome/core/electron.rb', 'atome/lib/atome/core/neutron.rb', 'atome/lib/atome/core/photon.rb', 'atome/lib/atome/core/proton.rb'] + Dir.glob('app//*')
-file 'www/public/js/eVe.js': eVe_monitoring do |t|
+atome_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb', 'app/app.rb', 'atome/lib/atome/bigbang.rb', 'atome/lib/atome/core/atome.rb', 'atome/lib/atome/core/electron.rb', 'atome/lib/atome/core/neutron.rb', 'atome/lib/atome/core/photon.rb', 'atome/lib/atome/core/proton.rb'] + Dir.glob('app//*')
+file 'www/public/js/atome.js': atome_monitoring do |t|
   #require 'opal'
   builder = Opal::Builder.new
   builder.append_paths('atome/lib')
@@ -77,11 +77,11 @@ end
 
 opal = 'www/public/js/third_parties/opal/opal.js'
 parser = 'www/public/js/third_parties/opal/opal_parser.js'
-eVe = 'www/public/js/eVe.js'
+atome = 'www/public/js/atome.js'
 
 
 desc 'Run server'
-task 'run::server': [opal, parser, eVe] do
+task 'run::server': [opal, parser, atome] do
   Dir.chdir('www') do
     require 'rack'
     #below we put the browser opening in a thread to delay wating for th server to be ready
@@ -96,39 +96,39 @@ task 'run::server': [opal, parser, eVe] do
 end
 
 desc 'Run browser'
-task 'run::browser': [opal, parser, eVe] do
-  sh 'node_modules/.bin/cordova run browser'
+task 'run::browser': [opal, parser, atome] do
+  sh 'cordova run browser'
 end
 
 desc 'Run osx'
-task 'run::osx': [opal, parser, eVe] do
-  sh 'node_modules/.bin/cordova run osx'
+task 'run::osx': [opal, parser, atome] do
+  sh 'cordova run osx'
 end
 
 desc 'Run ios'
-task 'run::ios': [opal, parser, eVe] do
-  sh 'node_modules/.bin/cordova run ios'
+task 'run::ios': [opal, parser, atome] do
+  sh 'cordova run ios'
 end
 
 
 desc 'Run android'
-task 'run::android': [opal, parser, eVe] do
-  sh 'node_modules/.bin/cordova run android'
+task 'run::android': [opal, parser, atome] do
+  sh 'cordova run android'
 end
 
 desc 'Run windows'
-task 'run::windows': [opal, parser, eVe] do
-  sh 'node_modules/.bin/cordova run windows'
+task 'run::windows': [opal, parser, atome] do
+  sh 'cordova run windows'
 end
 
 desc 'Run electron'
-task 'run::electron': [opal, parser, eVe] do
-  sh 'node_modules/.bin/cordova run electron'
+task 'run::electron': [opal, parser, atome] do
+  sh 'cordova run electron'
 end
 
 #production modes
 
-def production opal, parser, eVe
+def production opal, parser, atome
   uglified = Uglifier.new(harmony: true).compile(File.read(opal))
   open(opal, 'w') do |f|
     f.puts uglified
@@ -140,15 +140,15 @@ def production opal, parser, eVe
   end
 
 
-  uglified = Uglifier.new(harmony: true).compile(File.read(eVe))
-  open(eVe, 'w') do |f|
+  uglified = Uglifier.new(harmony: true).compile(File.read(atome))
+  open(atome, 'w') do |f|
     f.puts uglified
   end
 end
 
 desc 'production server'
-task 'production::server': [opal, parser, eVe] do
-  production opal, parser, eVe
+task 'production::server': [opal, parser, atome] do
+  production opal, parser, atome
   Dir.chdir('www') do
     require 'rack'
     system("open", "http://127.0.0.1:9292")
@@ -158,46 +158,46 @@ task 'production::server': [opal, parser, eVe] do
 end
 
 desc 'production browser'
-task 'production::browser': [opal, parser, eVe] do
-  production opal, parser, eVe
-  sh 'node_modules/.bin/cordova run browser'
+task 'production::browser': [opal, parser, atome] do
+  production opal, parser, atome
+  sh 'cordova run browser'
 end
 
 desc 'production osx'
-task 'production::osx': [opal, parser, eVe] do
-  production opal, parser, eVe
-  sh 'node_modules/.bin/cordova run osx'
+task 'production::osx': [opal, parser, atome] do
+  production opal, parser, atome
+  sh 'cordova run osx'
 end
 
 desc 'production ios'
-task 'production::ios': [opal, parser, eVe] do
-  production opal, parser, eVe
-  sh 'node_modules/.bin/cordova run ios'
+task 'production::ios': [opal, parser, atome] do
+  production opal, parser, atome
+  sh 'cordova run ios'
 end
 
 
 desc 'production android'
-task 'production::android': [opal, parser, eVe] do
-  production opal, parser, eVe
-  sh 'node_modules/.bin/cordova run android'
+task 'production::android': [opal, parser, atome] do
+  production opal, parser, atome
+  sh 'cordova run android'
 end
 
 desc 'production windows'
-task 'production::windows': [opal, parser, eVe] do
-  production opal, parser, eVe
-  sh 'node_modules/.bin/cordova run windows'
+task 'production::windows': [opal, parser, atome] do
+  production opal, parser, atome
+  sh 'cordova run windows'
 end
 
 desc 'production electron'
-task 'production::electron': [opal, parser, eVe] do
-  production opal, parser, eVe
-  sh 'node_modules/.bin/cordova run electron'
+task 'production::electron': [opal, parser, atome] do
+  production opal, parser, atome
+  sh 'cordova run electron'
 end
 
 desc 'Cleanup generated files'
 task 'clean' do
   rm_f 'app/temp/media_list.rb'
-  rm_f 'www/public/js/eVe.js'
+  rm_f 'www/public/js/atome.js'
   rm_f 'www/public/js/third_parties/opal/opal.js'
   rm_f 'www/public/js/third_parties/opal/opal_parser.js'
 end
