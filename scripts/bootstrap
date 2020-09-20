@@ -1,0 +1,22 @@
+#!/bin/sh
+
+_which()
+{
+  which $1 > /dev/null
+  if [ 0 -ne $? ]; then
+    echo "$1 not found"
+    exit 1
+  fi
+}
+
+_which ruby
+_which bundle
+
+grep -q '^BUNDLE_PATH:' ~/.bundle/config || (
+  echo
+  echo "Please set a global path for storing Ruby gems, e.g.:" >&2
+  echo "    bundle config path $HOME/.bundle/config" >&2
+  exit 1
+)
+
+bundle install

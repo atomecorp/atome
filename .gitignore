@@ -1,0 +1,14 @@
+*.ds_store
+.idea
+/app/temp/media_list.rb
+/app/eVe/
+/node_modules/
+/platforms/
+/www/public/js/eVe.js
+/www/public/js/third_parties/opal/opal.js
+/www/public/js/third_parties/opal/opal_parser.js
+/app/app.rb
+/package.json
+/package-lock.json
+/Gemfile.lock
+/.rakeTasks

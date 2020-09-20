@@ -1,0 +1,6 @@
+require 'atome/core/neutron'
+require 'atome/core/proton'
+require 'atome/core/photon'
+require 'atome/core/atome'
+require 'atome/core/electron'
+require 'atome/bigbang'

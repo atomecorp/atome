@@ -15,7 +15,7 @@ def clear_help (topic, code)
   #end
 end
 
-def help
+def examples
   #we load te parser dynamically on request
   help_container = box()
   grab(:intuition).insert(help_container)
@@ -1372,4 +1372,4 @@ class Helper
 end
 
 
-help()
+examples()
