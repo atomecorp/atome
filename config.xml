@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.atome.eVe" version="1.0.0" >
+  <name>atome</name>
+  <description>
+    atome eVe
+  </description>
+  <author email="contact@atome.io" href="http://atome.io">
+    atome Team
+  </author>
+  <content src="public/index.html"/>
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <access origin="*" />
+    <preference name="DisallowOverscroll" value="true"/>
+    <preference name="Fullscreen" value="true"/>
+    <preference name="WindowSize" value="1000x800"/>
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <icon src="ressources/icons/1024png" />
+    <platform name="osx">
+      <icon src="ressources/icons/16.png" width="16" height="16" />
+      <icon src="ressources/icons/32.png" width="32" height="32" />
+      <icon src="ressources/icons/64.png" width="64" height="64" />
+      <icon src="ressources/icons/128.png" width="128" height="128" />
+      <icon src="ressources/icons/180.png" width="180" height="180" />
+      <icon src="ressources/icons/196.png" width="196" height="196" />
+      <icon src="ressources/icons/256.png" width="256" height="256" />
+      <icon src="ressources/icons/360.png" width="360" height="360" />
+      <icon src="ressources/icons/512.png" width="512" height="512" />
+      <icon src="ressources/icons/1024.png" width="1024" height="1024" />
+    </platform>
+    <platform name="electron">
+      <icon src="ressources/icons/1204.png" />
+      <icon src="ressources/icons/1204.png" target="app" />
+      <icon src="ressources/icons/1204.png" target="installer" />
+    </platform>
+    <platform name="android">
+      <allow-intent href="market:*" />
+      <icon src="ressources/icons/36.png" density="ldpi" />
+      <icon src="ressources/icons/48.png" density="mdpi" />
+      <icon src="ressources/icons/72.png" density="hdpi" />
+      <icon src="ressources/icons/96.png" density="xhdpi" />
+      <icon src="ressources/icons/144.png" density="xxhdpi" />
+      <icon src="ressources/icons/192.png" density="xxxhdpi" />
+      <splash src="ressources/splashscreens/800_l.png" density="land-hdpi"/>
+      <splash src="ressources/splashscreens/320_l.png" density="land-ldpi"/>
+      <splash src="ressources/splashscreens/480_l.png" density="land-mdpi"/>
+      <splash src="ressources/splashscreens/1280_l.png" density="land-xhdpi"/>
+      <splash src="ressources/splashscreens/480_p.png" density="port-hdpi"/>
+      <splash src="ressources/splashscreens/200_p.png" density="port-ldpi"/>
+      <splash src="ressources/splashscreens/320_p.png" density="port-mdpi"/>
+      <splash src="ressources/splashscreens/720_p.png" density="port-xhdpi"/>
+    </platform>
+    <platform name="ios">
+      <allow-intent href="itms:*" />
+      <allow-intent href="itms-apps:*" />
+      <icon src="ressources/icons/20.png" width="20" height="20" />
+      <icon src="ressources/icons/29.png" width="29" height="29" />
+      <icon src="ressources/icons/40.png" width="40" height="40" />
+      <icon src="ressources/icons/48.png" width="48" height="48" />
+      <icon src="ressources/icons/50.png" width="50" height="50" />
+      <icon src="ressources/icons/55.png" width="55" height="55" />
+      <icon src="ressources/icons/57.png" width="57" height="57" />
+      <icon src="ressources/icons/58.png" width="58" height="58" />
+      <icon src="ressources/icons/60.png" width="60" height="60" />
+      <icon src="ressources/icons/72.png" width="72" height="72" />
+      <icon src="ressources/icons/76.png" width="76" height="76" />
+      <icon src="ressources/icons/80.png" width="80" height="80" />
+      <icon src="ressources/icons/87.png" width="87" height="87" />
+      <icon src="ressources/icons/88.png" width="88" height="88" />
+      <icon src="ressources/icons/100.png" width="100" height="100" />
+      <icon src="ressources/icons/114.png" width="114" height="114" />
+      <icon src="ressources/icons/120.png" width="120" height="120" />
+      <icon src="ressources/icons/144.png" width="144" height="144" />
+      <icon src="ressources/icons/152.png" width="152" height="152" />
+      <icon src="ressources/icons/167.png" width="167" height="167" />
+      <icon src="ressources/icons/172.png" width="172" height="172" />
+      <icon src="ressources/icons/180.png" width="180" height="180" />
+      <icon src="ressources/icons/196.png" width="196" height="196" />
+      <icon src="ressources/icons/360.png" width="360" height="360" />
+      <icon src="ressources/icons/1024.png" width="1024" height="1024" />
+      <splash src="ressources/splashscreens/320_p.png" largeur = "320" height = "480" />
+      <splash src="ressources/splashscreens/640_p.png" largeur = "640" height = "960" />
+      <splash src="ressources/splashscreens/640_1136_p.png" largeur = "640" height = "1136" />
+      <splash src="ressources/splashscreens/750_p.png" largeur = "750" height = "1334" />
+      <splash src="ressources/splashscreens/768_p.png" largeur = "768" hauteur = "1024" />
+      <splash src="ressources/splashscreens/1125_p.png" largeur = "1125" hauteur = "2436" />
+      <splash src="ressources/splashscreens/1242_p.png" largeur = "1242" height = "2208" />
+      <splash src="ressources/splashscreens/1242_2688_p.png" largeur = "1242" height = "2688" />
+      <splash src="ressources/splashscreens/1536_p.png" largeur = "1536" height = "2048" />
+      <splash src="ressources/splashscreens/1024_l.png" largeur = "1024" height = "768" />
+      <splash src="ressources/splashscreens/1125_l.png" largeur = "2436" hauteur = "1125" />
+      <splash src="ressources/splashscreens/1536_l.png" largeur = "2048" hauteur = "1536" />
+      <splash src="ressources/splashscreens/2208_l.png" largeur = "2208" height = "1242" />
+      <splash src="ressources/splashscreens/2048_l.png" largeur = "2048" hauteur = "1536" />
+    </platform>
+    <platform name="windows">
+      <icon src="ressources/icons/1024.png" target="StoreLogo" />
+      <icon src="ressources/icons/512.png" target="Square30x30Logo" />
+      <icon src="ressources/icons/44.png" target="Square44x44Logo" />
+      <icon src="ressources/icons/70.png" target="Square70x70Logo" />
+      <icon src="ressources/icons/71.png" target="Square71x71Logo" />
+      <icon src="ressources/icons/150.png" target="Square150x150Logo" />
+      <icon src="ressources/icons/310.png" target="Square310x310Logo" />
+      <icon src="ressources/icons/310x150.png" target="Wide310x150Logo" />
+    </platform>
+  </widget>
