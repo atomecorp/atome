@@ -1,0 +1,9 @@
+www/* linguist-vendored
+Documentations/* linguist-vendored
+plugins/* linguist-vendored
+*.rb linguist-detectable=true
+*.js linguist-detectable=true
+*.html linguist-detectable=false
+*.xml linguist-detectable=false
+*.rb linguist-language=Ruby
+git
