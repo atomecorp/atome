@@ -71,7 +71,11 @@ file 'www/public/js/atome.js': atome_monitoring do |t|
   builder.build('./opal_compiler/lib/opal_addon.rb')
   builder.build('./renderers/html.rb')
   builder.build('atome')
-  builder.build('./app/app.rb')
+  if File.exist?('./eVe')
+    builder.build('./eVe/app.rb')
+  else
+    builder.build('./app/app.rb')
+  end
   File.write(t.name, builder.to_s)
 end
 
