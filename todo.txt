@@ -1,1 +1,1 @@
-- Write windows install documentations
+- Write windows install documentation
