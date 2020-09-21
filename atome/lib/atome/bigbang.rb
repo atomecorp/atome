@@ -1,7 +1,7 @@
 # here stand  atome's methods to initiate the creation of atome environment and also add asier apis to create basic atome object
 
 def version
-  return "v:0.007b"
+  return "v:0.007ba"
 end
 
 # the class below init the Atome class
