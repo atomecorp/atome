@@ -1,1 +1,2 @@
 - Write windows install documentation
+- render and enliven loose centering

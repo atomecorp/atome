@@ -233,9 +233,9 @@ module Nucleon
       def insert(params = nil, refresh = true, add = false)
         @child = [] if @child.class == NilClass || add == true
         if params || params == false
-          if params.class== String || params.class== Symbol || params.class== Atome
-            atome= find_atome_from_params(params)
-            params=atome
+          if params.class == String || params.class == Symbol || params.class == Atome
+            atome = find_atome_from_params(params)
+            params = atome
             # below we store the child list in "child_list_found" variable to re-affect it after the line below(" parent_found.extract(params)") may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
             child_list_found = [params.atome_id]
             @child |= child_list_found
@@ -257,7 +257,6 @@ module Nucleon
             else
               params.property({property: :parent, value: [atome_id]})
             end
-
             broadcast(atome_id => {insert: params, private: false})
             Render.render_group(self, params, add) if refresh
           elsif params.class == Array
@@ -267,6 +266,7 @@ module Nucleon
           end
           self
         end
+        self
       end
 
       def insert=(params = nil, refresh = true, add = false)
@@ -1385,8 +1385,10 @@ module Nucleon
         # we re order the hash to puts the atome_id type at the begining to optimise rendering
         type = properties.delete(:type)
         parent = properties.delete(:parent)
-        properties = {type: type}.merge({parent: parent}).merge(properties)
-        properties
+        x=properties.delete(:x)
+        y=properties.delete(:y)
+        center=properties.delete(:center)
+        properties = {type: type}.merge({parent: parent}).merge({x: x}).merge({y: y}).merge({center: center}).merge(properties).merge({x: 20})
       end
     end
   end

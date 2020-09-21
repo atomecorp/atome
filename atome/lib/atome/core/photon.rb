@@ -135,6 +135,9 @@ module Nucleon
       end
 
       def center params = nil, refresh = true, add = false
+
+
+
         if params == false || params == :false
           unless grab(:actions).resize_actions[:center][self].nil?
             grab(:actions).resize_actions[:center][self].delete(:x)
@@ -171,7 +174,6 @@ module Nucleon
                 unless grab(:actions).resize_actions[:center][self].nil?
                   grab(:actions).resize_actions[:center][self].delete(:y)
                 end
-
                 @y.delete(:center)
               end
             end
@@ -179,7 +181,6 @@ module Nucleon
               unless grab(:actions).resize_actions[:center][self].nil?
                 grab(:actions).resize_actions[:center][self].delete(:x)
               end
-
               @x.delete(:center)
               unless grab(:actions).resize_actions[:center][self].nil?
                 grab(:actions).resize_actions[:center][self].delete(:y)
@@ -201,12 +202,13 @@ module Nucleon
           elsif params == true || params == :true
             x({center: 0})
             y({center: 0})
-            if grab(:actions).resize_actions[:center] == {}
-              grab(:actions).resize_actions[:center] = {self => {x: 0}}
-              grab(:actions).resize_actions[:center][self][:y] = 0
-            elsif grab(:actions).resize_actions[:center][self].nil?
+            if grab(:actions).resize_actions[:center][self].nil?
               grab(:actions).resize_actions[:center][self] = {x: 0}
               grab(:actions).resize_actions[:center][self] = {y: 0}
+          elsif grab(:actions).resize_actions[:center] == {}
+              grab(:actions).resize_actions[:center][self][:x] = 0
+              grab(:actions).resize_actions[:center][self][:y] = 0
+
             else
               grab(:actions).resize_actions[:center][self][:x] = 0
               grab(:actions).resize_actions[:center][self][:y] = 0
@@ -231,8 +233,12 @@ module Nucleon
               grab(:actions).resize_actions[:center][self][:y] = 0
             end
           end
-        else
-          @center
+          #@center='poil'
+          #else
+          #  alert "message :\n#{id}\n from : photon.rb : 236"
+          #  @center="rrrr"
+
+
         end
         return self
       end
@@ -438,7 +444,7 @@ module Nucleon
         end
       end
 
-      def yym= params = nil, refresh = true, add = false
+      def yy= params = nil, refresh = true, add = false
         yy(params, refresh, add)
       end
 
@@ -605,10 +611,10 @@ module Nucleon
 
       def fit params = nil, refresh = true, add = false
         if params || params == false
-          if params.class== String || params.class== Symbol || params.class== Atome
+          if params.class == String || params.class == Symbol || params.class == Atome
             #atome= find_atome_from_params(params)
-            hashed_params={target: params}
-            params=hashed_params
+            hashed_params = {target: params}
+            params = hashed_params
           end
           if add
             if @fit.class == Array
@@ -618,8 +624,8 @@ module Nucleon
             end
           end
 
-          target=find_atome_from_params(params[:target])
-# line below is a patch to overcome a bug
+          target = find_atome_from_params(params[:target])
+# line below (self.y)is a patch to overcome a bug
           self.y(0)
           if params[:x]
             self.x(params[:x])
@@ -636,12 +642,15 @@ module Nucleon
             self.yy(params[:yy])
           end
           if params[:margin]
-            self.width(:auto)
-            self.height(:auto)
-            self.x(params[:margin])
-            self.y(params[:margin])
-            self.xx(params[:margin])
-            self.yy(params[:margin])
+            #self.width(:auto)
+            #self.height(:auto)
+            target.x(params[:margin])
+            target.y(params[:margin])
+            #target.xx(params[:margin])
+            #target.yy(params[:margin])
+            self.width(target.value(:width) + params[:margin] * 2, refresh)
+            self.height(target.value(:height) + params[:margin] * 2, refresh)
+
           else
             self.width(target.value(:width), refresh)
             self.height(target.value(:height), refresh)

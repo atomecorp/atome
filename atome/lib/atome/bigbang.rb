@@ -218,7 +218,6 @@ class Device
     actions.viewer_actions
     device.language(:english)
     Render.initialize
-
   end
 
 

@@ -526,6 +526,8 @@ module Render
 
   def self.render_group(atome, params, add = false)
     parent = Element.find('#' + atome.atome_id)
+    #me= Element.find('#' + params.atome_id)
+    ##alert "message :\n#{me}\n from : html.rb : 529"
     if params.class == Array
     else
       if params.class == Atome
