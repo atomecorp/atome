@@ -55,6 +55,7 @@ module Nucleon
         params = params.merge(properties)
         # we re order the hash to puts the atome_id type at the begining to optimise rendering
         params = reorder_properties(params)
+        puts "#{id} : #{params}"
         # #we send the collected properties to the atome
         params.each_key do |property|
           send(property, params[property], refresh)

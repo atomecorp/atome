@@ -1380,15 +1380,13 @@ module Nucleon
         atome_id params, refresh, add
       end
 
-
       def reorder_properties(properties)
         # we re order the hash to puts the atome_id type at the begining to optimise rendering
         type = properties.delete(:type)
         parent = properties.delete(:parent)
-        x=properties.delete(:x)
-        y=properties.delete(:y)
-        center=properties.delete(:center)
-        properties = {type: type}.merge({parent: parent}).merge({x: x}).merge({y: y}).merge({center: center}).merge(properties).merge({x: 20})
+        width = properties.delete(:width)
+        height = properties.delete(:height)
+        {type: type}.merge({parent: parent}).merge({width: width}).merge({height: height}).merge(properties)
       end
     end
   end

@@ -136,8 +136,6 @@ module Nucleon
 
       def center params = nil, refresh = true, add = false
 
-
-
         if params == false || params == :false
           unless grab(:actions).resize_actions[:center][self].nil?
             grab(:actions).resize_actions[:center][self].delete(:x)

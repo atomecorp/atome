@@ -13,8 +13,8 @@ module Render
 
 
   def self.render_type(atome, params, parent = :body)
+    alert "message is \n\nid : #{atome.atome_id} , render : #{"just to check order"} \n\nLocation: html.rb, line 16"
     atome_id = atome.atome_id
-    #alert "message :\n#{atome_id}\n from : html.rb : 48 "
     dark_matter = Element.find('#dark_matter')
     if atome_id == :blackhole
       Element.find('body').prepend("<div class='atome' id='#{atome_id}'></div>")
@@ -56,6 +56,8 @@ module Render
   end
 
   def self.render_content(atome, params, add = false)
+    alert "message is \n\nid : #{atome.atome_id} , from content width is : #{atome.width} \n\nLocation: html.rb, line 59"
+
     if atome.type == "text" || atome.type == "web"
       params = params.to_s.gsub("\n", "<br>")
       Element.find('#' + atome.atome_id).html(params)
@@ -70,7 +72,6 @@ module Render
         height = $images_list[params.to_sym][:height]
       end
       Element.find('#' + atome.atome_id).css('background-image', 'url(' + path)
-
       if width.nil?
         width = 300
       end
@@ -155,6 +156,7 @@ module Render
   end
 
   def self.render_x(atome, params, add = false)
+    alert "message is \n\nid : #{atome.atome_id} , from  x width is: #{atome.width} \n\nLocation: html.rb, line 159"
     if !atome.width || atome.width == "auto"
       Element.find('#' + atome.atome_id).css("width", "auto")
     end
@@ -202,6 +204,7 @@ module Render
   end
 
   def self.render_width(atome, params, add = false)
+    alert "message is \n\nid : #{atome.atome_id} , from width width is :#{params} :  #{"to chek if its always setted before position"} \n\nLocation: html.rb, line 207"
     Element.find('#' + atome.atome_id).css('width', params)
   end
 
