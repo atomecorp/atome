@@ -57,7 +57,13 @@ module Nucleon
         params = reorder_properties(params)
         puts "#{id} : #{params}"
         # #we send the collected properties to the atome
+        if atome_id != :blackhole && atome_id != :dark_matter && atome_id != :device && atome_id != :intuition && atome_id != :view
+          puts "message :\n#{params}\n from : atome.rb : 61"
+        end
         params.each_key do |property|
+          if atome_id != :blackhole && atome_id != :dark_matter && atome_id != :device && atome_id != :intuition && atome_id != :view
+            puts "message :\n#{property}\n from : atome.rb : 65"
+          end
           send(property, params[property], refresh)
         end
         # now we add the new atome to the atomes's list

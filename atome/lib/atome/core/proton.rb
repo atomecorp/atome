@@ -28,7 +28,7 @@ module Nucleon
         box = visual.merge(shape).merge(@@box)
         circle = visual.merge(shape).merge({color: :red, content: {points: 4, tension: "100%"}}).merge(@@circle)
         text = visual.merge({type: :text, color: 'rgb(7,7,7)', size: 25}).merge(@@text)
-        image = visual.merge({type: :image, color: :transparent, width: -1, height: -1}).merge(@@image)
+        image = visual.merge({type: :image, color: :transparent}).merge(@@image)
         video = visual.merge({type: :video, color: :transparent}).merge(@@video)
         audio = visual.merge({type: :audio, color: :transparent}).merge(@@audio)
         particle = {type: :particle}.merge(@@particle)
