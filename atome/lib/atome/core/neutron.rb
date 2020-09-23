@@ -86,7 +86,7 @@ module Nucleon
           @preset = params
           presets = Proton.presets[params]
           #we re order the hash to puts the atome_id type at the begining to optimise rendering
-          presets = reorder_properties(presets)
+          #presets = reorder_properties(presets)
           presets.each do |property, value|
             send(property, value)
           end
@@ -1386,7 +1386,8 @@ module Nucleon
         parent = properties.delete(:parent)
         width = properties.delete(:width)
         height = properties.delete(:height)
-        {type: type}.merge({parent: parent}).merge({width: width}).merge({height: height}).merge(properties)
+        content = properties.delete(:content)
+        {type: type}.merge({parent: parent}).merge({content: content}).merge({width: width}).merge({height: height}).merge(properties)
       end
     end
   end

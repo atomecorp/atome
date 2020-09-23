@@ -18,11 +18,21 @@ module Nucleon
         # if it's a single keyword we found the corresponding properties from Proton's preset function
         if params.class == Symbol || params.class == String
           # We get the preset name
-          preset = params
+          #preset = params
+          ###### new try #####
+          properties = {type: params}
+          params = properties
+          ###### new try #####
           # we get the preset for shape and then default value for the preset
-          params = Proton.presets[params]
+          #params = Proton.presets[params]
           # now we inject the preset name into the hash
-          @preset = preset.to_sym
+          #@preset = preset.to_sym
+          properties[:preset]=preset.to_sym
+        elsif params.class == Hash
+          ###### new try #####
+          properties={type: params[:type]}.merge(params)
+          ###### new try #####
+
         end
         # at last we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
         atome_id = if @@atomes.length == 0
@@ -41,9 +51,12 @@ module Nucleon
                      ('a_' + object_id.to_s).to_sym
                    end
         @atome_id = atome_id
-        # We generate  the id below
-        properties = {}
         # We create the hash property to avoid to modify the frozen 'params' Hash
+        #properties = {}
+        ###### new try #####
+        properties=Proton.presets[properties].merge(params)
+        ###### new try #####
+        # We generate  the id below
         if params[:id].nil?
           generated_id = if params[:preset]
                            (params[:preset].to_s + '_' + @@atomes.length.to_s).to_sym
@@ -55,15 +68,14 @@ module Nucleon
         params = params.merge(properties)
         # we re order the hash to puts the atome_id type at the begining to optimise rendering
         params = reorder_properties(params)
-        puts "#{id} : #{params}"
         # #we send the collected properties to the atome
-        if atome_id != :blackhole && atome_id != :dark_matter && atome_id != :device && atome_id != :intuition && atome_id != :view
-          puts "message :\n#{params}\n from : atome.rb : 61"
+        if atome_id != :blackhole && atome_id != :dark_matter && atome_id != :device && atome_id != :intuition && atome_id != :view && params[:type] != :particle
+          puts "message :\n#{id} : #{params}\n from : atome.rb : 60"
         end
         params.each_key do |property|
-          if atome_id != :blackhole && atome_id != :dark_matter && atome_id != :device && atome_id != :intuition && atome_id != :view
-            puts "message :\n#{property}\n from : atome.rb : 65"
-          end
+          #if atome_id != :blackhole && atome_id != :dark_matter && atome_id != :device && atome_id != :intuition && atome_id != :view
+          #  puts "message :\n#{property}\n from : atome.rb : 63"
+          #end
           send(property, params[property], refresh)
         end
         # now we add the new atome to the atomes's list
@@ -73,8 +85,9 @@ module Nucleon
       # S.A.G.E.D methods
       def set params = nil, refresh = true, &proc
         if params.class == Hash
-          if params[:type] && params[:type]==:text
+          if params[:type] && params[:type] == :text
             params = reorder_properties(params)
+            #we invert hash order but why?
             params = params.to_a.reverse.to_h
           end
 

@@ -13,7 +13,7 @@ module Render
 
 
   def self.render_type(atome, params, parent = :body)
-    if atome.atome_id != :blackhole && atome.atome_id != :dark_matter && atome.atome_id != :device && atome.atome_id != :intuition && atome.atome_id != :view
+    if atome.atome_id != :blackhole && atome.atome_id != :dark_matter && atome.atome_id != :device && atome.atome_id != :intuition && atome.atome_id != :view && atome.type != :particle
       puts "message is \n\nid : #{atome.atome_id} , from render_type : #{} \n\nLocation: html.rb, line 16"
     end
 
