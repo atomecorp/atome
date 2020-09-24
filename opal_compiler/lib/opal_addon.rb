@@ -147,13 +147,15 @@ Opal.JS_utils.$add_timeout(timeout);
 `
   end
 
+  def self.stop params
+    `clearInterval(#{params})`
+  end
+
   def self.setInterval(delay, times, &proc)
     `  var timesRun = 0;
-
 var interval = setInterval(function(){
     timesRun += 1;
     if(timesRun === #{times}){
-
         clearInterval(interval);
     }
  #{yield}
@@ -562,11 +564,11 @@ end
 module Opal_utils
 
   def self.load_opal_parser
-    if @opal_parser != true
+    if $opal_parser != true
       `
+      Opal.Object.$circle();
     $.getScript('js/third_parties/opal/opal_parser.js', function (data, textStatus, jqxhr) {
-               // Opal.Object.$box();
-#{@opal_parser = true}
+#{$opal_parser = true}
             });
 `
     end

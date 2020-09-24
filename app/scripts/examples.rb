@@ -26,7 +26,7 @@ def examples
   help_container.bottom(0)
   help_container.right(0)
   help_container.width(200)
-  help_container.color("rgb(33,33,33)")
+  help_container.color('rgb(33,33,33)')
   help_container.overflow(:auto)
   help_container.shadow(true)
   help_container.center(false)
@@ -35,20 +35,30 @@ def examples
   methods = methods.sort
   methods.each_with_index do |helper, index|
     topic = help_container.text(helper.sub('_api', ''))
-    topic.id("menu_item_" + index.to_s)
+    topic.id('menu_item_' + index.to_s)
     topic.size(16)
     topic.left(7)
     topic.color(:gray)
     topic.y = (20 * index) + 7
     topic.touch do
-      @code = ""
+      @code = ''
       if !Opal_utils.opal_parser_ready
         Opal_utils.load_opal_parser
         clear_help(false, false)
-        wait 1 do
-          help = Helper.new()
-          help.send(helper)
+        # wait until $opal_parser is loaded
+        e=every 0.2,0 do
+          if $opal_parser
+            stop(e)
+              help = Helper.new()
+              help.send(helper)
+          end
         end
+
+        #alert "message is \n\n#{$opal_parser} \n\nLocation: examples.rb, line 48"
+        #wait 5 do
+        #  #alert "message is \n\n#{} \n\nLocation: examples.rb, line 50"
+
+        #end
       else
         clear_help(false, false)
         help = Helper.new()
@@ -69,7 +79,7 @@ module Help
   def puts_help topic, demo_code
     @code = demo_code
     eval demo_code
-    code_content = text("")
+    code_content = text('')
     b = box()
     b.shadow(true)
     b.x(300)
@@ -78,7 +88,7 @@ module Help
     b.x(7)
     b.y(7)
     b.smooth(7)
-    b.color("rgb(33,33,33)")
+    b.color('rgb(33,33,33)')
     b.touch do
       unless get(:demo_code)
         run_code = box()
@@ -89,7 +99,7 @@ module Help
         run_code.x(7)
         run_code.y(45)
         run_code.smooth(7)
-        code = if @code == ""
+        code = if @code == ''
                  code_content.content(demo_code)
                else
                  code_content.content(@code)
@@ -445,9 +455,11 @@ b.y(200)
 b.color(:orange)
 circle(x:300)
 te = text('kool!!')
+te.shadow({color: :black, blur: 2})
 te.y(250)
 te.color(:orange)
 t = text("touch me to get all object colored in orange")
+t.color(:red)
 t.y = 150
 t.x = 350
 t.touch do
@@ -525,15 +537,22 @@ i=0
 nb_of_repeat=25
 t=b.text("nb of repeat : "+nb_of_repeat.to_s)
 t.color(:gray)
-every 0.2, nb_of_repeat do
-b.width=b.width+5
-t.content("nb of repeat : "+(nb_of_repeat-i-1).to_s)
-
-i+=1
+m=every 0.2, nb_of_repeat do
+  b.width=b.width+5
+  t.content("nb of repeat : "+(nb_of_repeat-i-1).to_s)
+  if nb_of_repeat-i-1==3
+    stop(m)
+    t.content("stop by condition!!!")
+    t.color(:black)
+    t.size(16)
+    t.width(200)
+  end
+  i+=1
 end
 t.size(12)
 t.x(7)
 t.y(25)
+
 strdelim
     self.puts_help :every_api, demo_code
   end
@@ -625,7 +644,7 @@ my_text.width(300)
 b.insert(my_text)
 b.color(:transparent)
 b.shadow(true)
-b.fit(target: my_text, x: 20,xx: 10,y: 10)
+b.fit(target: my_text, x: 20,xx: 10,y: 10,yy: 10)
 
 my_text.x=0
 my_text.y=0
@@ -635,7 +654,7 @@ z=box()
 z.x(500)
 z.y(20)
 z.color(:orange)
-z.fit(target: b)
+z.fit(target: b, margin: 7)
 z.width=z.width+50
 z.height=z.height+50
 z.insert(b)
@@ -647,7 +666,7 @@ c.width(150)
 a=box()
 a.x(300)
 a.y(100)
-a.fit(c)
+a.fit(target: c, margin: 7)
 a.insert(c)
 c.center(true)
 c.shadow(true)

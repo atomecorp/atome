@@ -146,7 +146,11 @@ def wait(seconds, &proc)
 end
 
 def every(delay = 3, times = 5, &proc)
-  Render.render_every(delay, times, &proc)
+   Render.render_every(delay, times, &proc)
 end
 
+
+def stop params
+  Render.render_stop(params)
+end
 

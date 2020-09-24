@@ -57,12 +57,12 @@ module Render
     if atome.type == "text" || atome.type == "web"
       params = params.to_s.gsub("\n", "<br>")
       Element.find('#' + atome.atome_id).html(params)
-      #unless atome.width
+      unless atome.width
         atome.width = Element.find('#' + atome.atome_id).width
-      #end
-      #unless atome.height
+      end
+      unless atome.height
         atome.height = Element.find('#' + atome.atome_id).height
-      #end
+      end
     elsif atome.type == "image"
       if $images_list[params.to_sym].nil?
         path = '././medias/images/image_missing.svg'
@@ -664,6 +664,10 @@ module Render
   def self.render_wait(time, &proc)
     time = time.to_f
     return JS_utils.setTimeout(time, &proc)
+  end
+
+  def self.render_stop params
+    return JS_utils.stop(params)
   end
 
   def self.render_every(delay = 1, times = 5, &proc)
