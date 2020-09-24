@@ -15,6 +15,7 @@ def clear_help (topic, code)
   #end
 end
 
+
 def examples
   #we load te parser dynamically on request
   help_container = box()
@@ -114,7 +115,6 @@ module Help
     title.color(:lightgray)
   end
 
-
   def gradient
     demo_code = <<strdelim
 grad = circle
@@ -133,6 +133,15 @@ end
 strdelim
     self.puts_help :gradient, demo_code
   end
+  def version
+    demo_code = <<strdelim
+t=text(Atome.version)
+t.center(true)
+t.y(70)
+strdelim
+    self.puts_help :smooth, demo_code
+  end
+
 
   def smooth
     demo_code = <<strdelim
@@ -432,6 +441,7 @@ strdelim
   def get_by_property
     demo_code = <<strdelim
 b = box()
+b.y(200)
 b.color(:orange)
 circle(x:300)
 te = text('kool!!')
@@ -655,7 +665,6 @@ i=0
 img.touch do 
 i+=7
 img.blur(i)
-
 end
 strdelim
     self.puts_help :blur, demo_code

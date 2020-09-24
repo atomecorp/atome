@@ -55,7 +55,7 @@ module Nucleon
             color: color,
             shadow: shadow,
             border: border,
-            blur: blur
+            blur: blur,
         }
         return types
       end

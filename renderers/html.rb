@@ -11,10 +11,9 @@ module Render
     grab(:view).height(Element.find('#view').css('height').sub('px', '').to_i, false)
   end
 
-
   def self.render_type(atome, params, parent = :body)
     if atome.atome_id != :blackhole && atome.atome_id != :dark_matter && atome.atome_id != :device && atome.atome_id != :intuition && atome.atome_id != :view && atome.type != :particle
-      puts "message is \n\nid : #{atome.atome_id} , from render_type : #{} \n\nLocation: html.rb, line 16"
+      puts "message is \n\nid : #{atome.inspect} , from render_type : #{} \n\nLocation: html.rb, line 16"
     end
 
     atome_id = atome.atome_id
@@ -60,7 +59,7 @@ module Render
 
   def self.render_content(atome, params, add = false)
     if atome.atome_id != :blackhole && atome.atome_id != :dark_matter && atome.atome_id != :device && atome.atome_id != :intuition && atome.atome_id != :view
-      puts "message is \n\nid : #{atome.atome_id} , from content width is : #{atome.width} \n\nLocation: html.rb, line 59"
+      puts "message is \n\nid : #{atome.atome_id} , from content width is : #{atome.inspect} \n\nLocation: html.rb, line 62"
     end
 
 
@@ -163,7 +162,7 @@ module Render
 
   def self.render_x(atome, params, add = false)
     if atome.atome_id != :blackhole && atome.atome_id != :dark_matter && atome.atome_id != :device && atome.atome_id != :intuition && atome.atome_id != :view
-      puts "message is \n\nid : #{atome.atome_id} , from  x width is: #{atome.width} \n\nLocation: html.rb, line 159"
+      puts "message is \n\nid : #{atome.atome_id} , from  x width is: #{atome.inspect} \n\nLocation: html.rb, line 165"
     end
 
     if !atome.width || atome.width == "auto"

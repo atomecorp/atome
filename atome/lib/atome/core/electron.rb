@@ -57,7 +57,7 @@ def grab(atome_id)
 end
 
 def delete params, refresh = true
-  alert "message is \n\n#{params} \n\nLocation: electron.rb, line 87"
+  alert "message is \n\n#{params} \n\nLocation: electron.rb, line 60"
 end
 
 

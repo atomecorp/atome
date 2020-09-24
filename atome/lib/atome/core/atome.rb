@@ -12,29 +12,29 @@ module Nucleon
       @@buffer = []
       @@device = ''
 
+      def self.version
+        'v:0.007ba'
+      end
+
       def initialize(params, refresh = true)
         # if not param is passed then we create a particle by default
         params = :particle unless params
         # if it's a single keyword we found the corresponding properties from Proton's preset function
+        #properties = {}
         if params.class == Symbol || params.class == String
           # We get the preset name
-          #preset = params
-          ###### new try #####
-          properties = {type: params}
-          params = properties
-          ###### new try #####
+          @preset = params.to_sym
+          # we extract the type so later we can apply the preset associated to this type
+          type = @preset
           # we get the preset for shape and then default value for the preset
-          #params = Proton.presets[params]
+          params = {type: type}
           # now we inject the preset name into the hash
-          #@preset = preset.to_sym
-          properties[:preset]=preset.to_sym
         elsif params.class == Hash
-          ###### new try #####
-          properties={type: params[:type]}.merge(params)
-          ###### new try #####
-
+          # we extract the type so later we can apply the preset associated to this type
+          type = params[:type]
         end
-        # at last we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
+        preset = Proton.presets[type]
+        # now we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
         atome_id = if @@atomes.length == 0
                      :blackhole
                    elsif @@atomes.length == 1
@@ -51,32 +51,22 @@ module Nucleon
                      ('a_' + object_id.to_s).to_sym
                    end
         @atome_id = atome_id
-        # We create the hash property to avoid to modify the frozen 'params' Hash
-        #properties = {}
-        ###### new try #####
-        properties=Proton.presets[properties].merge(params)
-        ###### new try #####
         # We generate  the id below
+        # We create the hash property to avoid to modify the frozen 'params' Hash
         if params[:id].nil?
           generated_id = if params[:preset]
                            (params[:preset].to_s + '_' + @@atomes.length.to_s).to_sym
                          else
                            (params[:type].to_s + '_' + @@atomes.length.to_s).to_sym
                          end
-          properties[:id] = generated_id
+          preset[:id] = generated_id
         end
-        params = params.merge(properties)
-        # we re order the hash to puts the atome_id type at the begining to optimise rendering
-        params = reorder_properties(params)
+        # we get the preset value from the object type and add the user setted value
+        prop_get = preset.merge(params)
         # #we send the collected properties to the atome
-        if atome_id != :blackhole && atome_id != :dark_matter && atome_id != :device && atome_id != :intuition && atome_id != :view && params[:type] != :particle
-          puts "message :\n#{id} : #{params}\n from : atome.rb : 60"
-        end
-        params.each_key do |property|
-          #if atome_id != :blackhole && atome_id != :dark_matter && atome_id != :device && atome_id != :intuition && atome_id != :view
-          #  puts "message :\n#{property}\n from : atome.rb : 63"
-          #end
-          send(property, params[property], refresh)
+        prop_get = reorder_properties(prop_get)
+        prop_get.each_key do |property|
+          send(property, prop_get[property], refresh)
         end
         # now we add the new atome to the atomes's list
         @@atomes << self
@@ -201,8 +191,8 @@ module Nucleon
           elsif params.class == Boolean || params.to_sym == :true
             # now we delete all child
             self.child&.each do |child|
-                child&.delete(true)
-              end
+              child&.delete(true)
+            end
             # the line below insert into array or update/replace if already exit in array
             # we add the deleted object to the blackhole
             @@black_hole |= [self]
@@ -212,7 +202,7 @@ module Nucleon
             end
             # we delete all the dynamic actions :
             # - first the dynamic actions centering object
-              grab(:actions).resize_actions[:center].delete(self)
+            grab(:actions).resize_actions[:center].delete(self)
             # we remove objet from the atomes list
             @@atomes.delete(self)
           end

@@ -135,7 +135,6 @@ module Nucleon
       end
 
       def center params = nil, refresh = true, add = false
-
         if params == false || params == :false
           unless grab(:actions).resize_actions[:center][self].nil?
             grab(:actions).resize_actions[:center][self].delete(:x)
@@ -145,7 +144,8 @@ module Nucleon
             grab(:actions).resize_actions[:center][self].delete(:y)
           end
           @y.delete(:center)
-        elsif params
+        elsif params && grab(:actions)
+          #alert "message is \n\n#{} \n\nLocation: photon.rb, line 148"
           grab(:actions).resize_actions[:center] = {} unless grab(:actions).resize_actions[:center]
           # todo : make set an offset to x or y position (ex : center({x: 20, y: -10}))
           if params.class == Hash
@@ -203,7 +203,7 @@ module Nucleon
             if grab(:actions).resize_actions[:center][self].nil?
               grab(:actions).resize_actions[:center][self] = {x: 0}
               grab(:actions).resize_actions[:center][self] = {y: 0}
-          elsif grab(:actions).resize_actions[:center] == {}
+            elsif grab(:actions).resize_actions[:center] == {}
               grab(:actions).resize_actions[:center][self][:x] = 0
               grab(:actions).resize_actions[:center][self][:y] = 0
 
@@ -238,7 +238,7 @@ module Nucleon
 
 
         end
-        return self
+        self
       end
 
       def center= params = nil, refresh = true, add = false
