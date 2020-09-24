@@ -30,6 +30,8 @@ def circle(options = nil)
               true
             end
   atome = Atome.new(:circle, refresh)
+  #atome = Atome.new({preset: :circle, type: :shape}, refresh)
+
   #we attach the new object to the view to make it visible
   #grab(:view).insert(atome)
   options&.each_key do |param|
@@ -75,11 +77,12 @@ def image(options = nil)
   #  atome.send(:content, options)
   #elsif options && options.class == Hash
   #  #options = reorder_properties(options)
-  #  #alert options
-  #  #options.each_key do |param|
-  #  #  value = options[param]
-  #  #  atome.send(param, value)
-  #  #end
+  #  atome = Atome.new({type: :image})
+  #  #atome.set(options)
+  #  options.each_key do |param|
+  #    value = options[param]
+  #    atome.send(param, value)
+  #  end
   #end
   #return atome
 
@@ -90,11 +93,11 @@ def image(options = nil)
               true
             end
   if options && (options.class == Symbol || options.class == String)
-    content={content: options}
-    options=content
+    content = {content: options}
+    options = content
   end
   options && options.class == Hash
-  options={type: :image}.merge(options)
+  options = {type: :image}.merge(options)
   Atome.new(options, refresh)
 
 end
@@ -120,29 +123,44 @@ def audio(options = nil)
 end
 
 def video(options = nil)
+  #refresh = if options && (options[:render] == false || options[:render] == :false)
+  #            false
+  #          else
+  #            true
+  #          end
+  #atome = Atome.new(:video, refresh)
+  #atome_a = Atome.new(:audio, refresh)
+  #if options && (options.class == Symbol || options.class == String)
+  #  atome.send(:content, options)
+  #  atome_a.send(:content, options)
+  #elsif options && options.class == Hash
+  #  options.each_key do |param|
+  #    value = options[param]
+  #    atome.send(param, value)
+  #    atome_a.send(param, value)
+  #  end
+  #end
+  #atome.insert(atome_a)
+  #return atome
+
+
+
+  ################################# new ###########z#######################
   refresh = if options && (options[:render] == false || options[:render] == :false)
               false
             else
               true
             end
-  atome = Atome.new(:video, refresh)
-  #we attach the new object to the view to make it visible
-  #grab(:view).insert(atome)
-  atome_a = Atome.new(:audio, refresh)
-  #we attach the new object to the view to make it visible
-  #grab(:view).insert(atome_a)
   if options && (options.class == Symbol || options.class == String)
-    atome.send(:content, options)
-    atome_a.send(:content, options)
-  elsif options && options.class == Hash
-    options.each_key do |param|
-      value = options[param]
-      atome.send(param, value)
-      atome_a.send(param, value)
-    end
+    content = {content: options}
+    options = content
   end
+  options && options.class == Hash
+  options = {type: :video}.merge(options)
+  atome = Atome.new(options, refresh)
+  options = options.merge({type: :audio})
+  atome_a = Atome.new(options, refresh)
   atome.insert(atome_a)
-  return atome
 end
 
 def web(options = nil)
@@ -228,7 +246,7 @@ class Device
     intuition = Atome.new({type: :particle,  id: :intuition, x: 0, xx: 0, y: 0, yy: 0, z: 3, overflow: :hidden, color: :transparent})
     view = Atome.new({type: :particle, id: :view, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent})
 # The lines below creat a special atome that holds all resize_actions stored in the @@resize_actionsvariable
-    actions=Atome.new
+    actions = Atome.new
     actions.viewer_actions
     device.language(:english)
     Render.initialize

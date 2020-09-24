@@ -673,12 +673,12 @@ strdelim
   def align_api
     demo_code = <<strdelim
 t=text("move the box and resize the view \nit's position remain relative to the right border")
-    b = box() 
+b = circle() 
 b.align(:invert)
 b.center(:false)
-    b.right(250)
-    b.bottom(50)
-    b.drag(true)
+b.right(250)
+b.bottom(50)
+b.drag(true)
 strdelim
     self.puts_help :align, demo_code
   end

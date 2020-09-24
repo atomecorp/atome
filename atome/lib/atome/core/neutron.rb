@@ -1388,6 +1388,19 @@ module Nucleon
         height = properties.delete(:height)
         content = properties.delete(:content)
         center = properties.delete(:center)
+        #if properties[:x]
+        #  alert "message #{properties[:id]} \n\n#{properties[:x].class} \n\nLocation: neutron.rb, line 1392"
+        #  x = 80
+        #else
+        #  alert "message is \n\n#{properties[:id]} \n\nLocation: neutron.rb, line 1395"
+        #  x = 0
+        #end
+        #if properties[:y]
+        #  #y = properties.delete(:y)
+        #else
+        #  y = 0
+        #end
+
         #if self.atome_id != :blackhole && self.atome_id != :dark_matter && self.atome_id != :device && self.atome_id != :intuition && self.atome_id != :view  && self.type != :particle
         #  alert "message is \n\n#{{type: type}.merge({parent: parent}).merge({content: content}).merge({width: width}).merge({height: height}).merge(properties)} \n\nLocation: neutron.rb, line 1387"
         #end

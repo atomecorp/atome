@@ -13,27 +13,25 @@ module Nucleon
       @@device = ''
 
       def self.version
-        'v:0.007ba'
+        'v:0.007d'
       end
 
       def initialize(params, refresh = true)
         # if not param is passed then we create a particle by default
         params = :particle unless params
-        # if it's a single keyword we found the corresponding properties from Proton's preset function
-        #properties = {}
         if params.class == Symbol || params.class == String
           # We get the preset name
           @preset = params.to_sym
-          # we extract the type so later we can apply the preset associated to this type
-          type = @preset
           # we get the preset for shape and then default value for the preset
-          params = {type: type}
+          properties_from_preset = Proton.presets[params]
+          params = {}
+          preset = properties_from_preset
           # now we inject the preset name into the hash
         elsif params.class == Hash
-          # we extract the type so later we can apply the preset associated to this type
+          # we extract the type to apply the preset associated for this type
           type = params[:type]
+          preset = Proton.presets[type]
         end
-        preset = Proton.presets[type]
         # now we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
         atome_id = if @@atomes.length == 0
                      :blackhole
@@ -52,7 +50,6 @@ module Nucleon
                    end
         @atome_id = atome_id
         # We generate  the id below
-        # We create the hash property to avoid to modify the frozen 'params' Hash
         if params[:id].nil?
           generated_id = if params[:preset]
                            (params[:preset].to_s + '_' + @@atomes.length.to_s).to_sym
@@ -61,12 +58,12 @@ module Nucleon
                          end
           preset[:id] = generated_id
         end
-        # we get the preset value from the object type and add the user setted value
-        prop_get = preset.merge(params)
-        # #we send the collected properties to the atome
-        prop_get = reorder_properties(prop_get)
-        prop_get.each_key do |property|
-          send(property, prop_get[property], refresh)
+        # we get the preset value from the object type and add the value set by the user
+        preset = reorder_properties(preset)
+        preset = preset.merge(params)
+        # we send the collected properties to the atome
+        preset.each_key do |property|
+          send(property, preset[property], refresh)
         end
         # now we add the new atome to the atomes's list
         @@atomes << self

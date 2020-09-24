@@ -23,7 +23,7 @@ module Nucleon
       @@blur = {}
 
       def self.types
-        visual = {color: :lightgray, x: 0, y: 0, center: {y: 43, x: 16, dynamic: false}, z: 0, overflow: :visible, parent: :view}.merge(@@visual)
+        visual = {color: :lightgray, center: {y: 43, x: 16, dynamic: false}, z: 0, overflow: :visible, parent: :view}.merge(@@visual)
         shape = visual.merge({type: :shape, width: 70, height: 70, content: {points: 4}}).merge(@@shape)
         box = visual.merge(shape).merge(@@box)
         circle = visual.merge(shape).merge({color: :red, content: {points: 4, tension: "100%"}}).merge(@@circle)

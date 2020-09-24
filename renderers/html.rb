@@ -12,10 +12,6 @@ module Render
   end
 
   def self.render_type(atome, params, parent = :body)
-    if atome.atome_id != :blackhole && atome.atome_id != :dark_matter && atome.atome_id != :device && atome.atome_id != :intuition && atome.atome_id != :view && atome.type != :particle
-      puts "message is \n\nid : #{atome.inspect} , from render_type : #{} \n\nLocation: html.rb, line 16"
-    end
-
     atome_id = atome.atome_id
     dark_matter = Element.find('#dark_matter')
     if atome_id == :blackhole
@@ -58,14 +54,15 @@ module Render
   end
 
   def self.render_content(atome, params, add = false)
-    if atome.atome_id != :blackhole && atome.atome_id != :dark_matter && atome.atome_id != :device && atome.atome_id != :intuition && atome.atome_id != :view
-      puts "message is \n\nid : #{atome.atome_id} , from content width is : #{atome.inspect} \n\nLocation: html.rb, line 62"
-    end
-
-
     if atome.type == "text" || atome.type == "web"
       params = params.to_s.gsub("\n", "<br>")
       Element.find('#' + atome.atome_id).html(params)
+      #unless atome.width
+        atome.width = Element.find('#' + atome.atome_id).width
+      #end
+      #unless atome.height
+        atome.height = Element.find('#' + atome.atome_id).height
+      #end
     elsif atome.type == "image"
       if $images_list[params.to_sym].nil?
         path = '././medias/images/image_missing.svg'
@@ -77,15 +74,19 @@ module Render
         height = $images_list[params.to_sym][:height]
       end
       Element.find('#' + atome.atome_id).css('background-image', 'url(' + path)
+      Element.find('#' + atome.atome_id).css('background-size','100% 100%')
       if width.nil?
         width = 300
       end
       if height.nil?
         height = 300
       end
-      atome.width = width
-      atome.height = height
-
+      unless atome.width
+        atome.width = width
+      end
+      unless atome.height
+        atome.height = height
+      end
     elsif atome.type == "video"
       path = if $videos_list[params.to_sym].nil?
                '././medias/videos/video_missing.mp4'
@@ -93,7 +94,14 @@ module Render
                $videos_list[params.to_sym][:path]
              end
       Element.find('#' + atome.atome_id).find('video').html("<source src=" + path + " type='video/mp4'></source>")
-
+      unless atome.width
+        atome.width= Element.find('#' + atome.atome_id).find('video').width
+      end
+      unless atome.height
+        atome.height= Element.find('#' + atome.atome_id).find('video').height
+      end
+      Element.find('#' + atome.atome_id).find('video').css('width','100%')
+      #Element.find('#' + params.atome_id).width
     elsif atome.type == "audio"
       path = if $audios_list[params.to_sym].nil?
                '././medias/audios/audio_missing.wav'
@@ -103,7 +111,7 @@ module Render
       Element.find('#' + atome.atome_id).html("<audio  src=" + path + " type='audio/wav'></audio>")
 
     elsif atome.type == "shape"
-      # below temp patch waiting for parametric shape to allow circkle creation
+      # below temp patch waiting for parametric shape to allow cirle creation
       Element.find('#' + atome.atome_id).css('border-radius', params[:tension])
     else
     end
@@ -161,10 +169,6 @@ module Render
   end
 
   def self.render_x(atome, params, add = false)
-    if atome.atome_id != :blackhole && atome.atome_id != :dark_matter && atome.atome_id != :device && atome.atome_id != :intuition && atome.atome_id != :view
-      puts "message is \n\nid : #{atome.atome_id} , from  x width is: #{atome.inspect} \n\nLocation: html.rb, line 165"
-    end
-
     if !atome.width || atome.width == "auto"
       Element.find('#' + atome.atome_id).css("width", "auto")
     end
@@ -212,9 +216,7 @@ module Render
   end
 
   def self.render_width(atome, params, add = false)
-    if atome.atome_id != :blackhole && atome.atome_id != :dark_matter && atome.atome_id != :device && atome.atome_id != :intuition && atome.atome_id != :view
-      puts "message is \n\nid : #{atome.atome_id} , from width width is :#{params} :  #{"to chek if its always setted before position"} \n\nLocation: html.rb, line 207"
-    end
+
     Element.find('#' + atome.atome_id).css('width', params)
   end
 
