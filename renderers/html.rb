@@ -28,6 +28,7 @@ module Render
       if atome.type == :text
         dark_matter.append("<div class='atome' style='display:inline-block' id='#{atome_id}'></div>")
       elsif atome.type == :shape
+        #alert "message is \n\n#{atome.id} \n\nLocation: html.rb, line 31"
         dark_matter.append(("<div class='atome' id='#{atome_id}'></div>"))
       elsif atome.type == :image
         dark_matter.append("<div class='atome' id='#{atome_id}'></div>")
@@ -39,12 +40,12 @@ module Render
         dark_matter.append(("<div class='atome' id='#{atome_id}'></div>"))
       end
     end
-    atome.properties.each do |property|
+    #atome.properties.each do |property|
       #we collect all previously stored property to avoid inifinite recursive loop and atome_id which may be already set as it should be set in first
-      unless property.keys[0].to_sym == :type || property.keys[0].to_sym == :parent || property.keys[0].to_sym == :advertise || property.keys[0].to_sym == :preset || property.keys[0].to_sym == :atome_id || property.keys[0].to_sym == :child || property.keys[0].to_sym == :center || property.keys[0].to_sym == :render
-        send("render_" + property.keys[0], atome, property.values[0])
-      end
-    end
+      #unless property.keys[0].to_sym == :type || property.keys[0].to_sym == :parent || property.keys[0].to_sym == :advertise || property.keys[0].to_sym == :preset || property.keys[0].to_sym == :atome_id || property.keys[0].to_sym == :child || property.keys[0].to_sym == :center || property.keys[0].to_sym == :render
+      #  send("render_" + property.keys[0], atome, property.values[0])
+      #end
+    #end
   end
 
   def self.render_parent(atome, params, add = false)
@@ -55,14 +56,17 @@ module Render
 
   def self.render_content(atome, params, add = false)
     if atome.type == "text" || atome.type == "web"
+      #if atome.id=="code_content"
+      #  alert "message is \n\n#{atome.id} \n\nLocation: html.rb, line 58"
+      #end
       params = params.to_s.gsub("\n", "<br>")
       Element.find('#' + atome.atome_id).html(params)
-      unless atome.width
-        atome.width = Element.find('#' + atome.atome_id).width
-      end
-      unless atome.height
-        atome.height = Element.find('#' + atome.atome_id).height
-      end
+      #unless atome.width
+      #  atome.width = Element.find('#' + atome.atome_id).width
+      #end
+      #unless atome.height
+      #  atome.height = Element.find('#' + atome.atome_id).height
+      #end
     elsif atome.type == "image"
       if $images_list[params.to_sym].nil?
         path = '././medias/images/image_missing.svg'
@@ -232,7 +236,6 @@ module Render
       if atome.type == :text
         height = Element.find('#' + atome.atome_id).innerHeight
         atome.height(height, false)
-
         if params.class == String && params.end_with?("%")
           params.sub("%", "vw")
         end
@@ -267,6 +270,7 @@ module Render
         Element.find('#' + atome.atome_id).css('background-size', "100%")
       end
     end
+    #alert "message is \n\n#{Element.find('#' + atome.atome_id)} \n\nLocation: html.rb, line 270"
     height = atome_id.height
     atome.height(height, false)
     width = atome_id.width

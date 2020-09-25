@@ -65,11 +65,9 @@ module Nucleon
       end
 
       def type(params = nil, refresh = true, add = false)
-
         if params || params == false
           @type = params
           broadcast(atome_id => {type: params, private: false})
-          #if self.id != :toto
           Render.render_type(self, params, add) if refresh
           self
         else
@@ -84,12 +82,6 @@ module Nucleon
       def preset(params = nil, refresh = true, add = false)
         if params || params == false
           @preset = params
-          presets = Proton.presets[params]
-          #we re order the hash to puts the atome_id type at the begining to optimise rendering
-          #presets = reorder_properties(presets)
-          presets.each do |property, value|
-            send(property, value)
-          end
           self
         else
           @preset
@@ -1388,23 +1380,8 @@ module Nucleon
         height = properties.delete(:height)
         content = properties.delete(:content)
         center = properties.delete(:center)
-        #if properties[:x]
-        #  alert "message #{properties[:id]} \n\n#{properties[:x].class} \n\nLocation: neutron.rb, line 1392"
-        #  x = 80
-        #else
-        #  alert "message is \n\n#{properties[:id]} \n\nLocation: neutron.rb, line 1395"
-        #  x = 0
-        #end
-        #if properties[:y]
-        #  #y = properties.delete(:y)
-        #else
-        #  y = 0
-        #end
-
-        #if self.atome_id != :blackhole && self.atome_id != :dark_matter && self.atome_id != :device && self.atome_id != :intuition && self.atome_id != :view  && self.type != :particle
-        #  alert "message is \n\n#{{type: type}.merge({parent: parent}).merge({content: content}).merge({width: width}).merge({height: height}).merge(properties)} \n\nLocation: neutron.rb, line 1387"
-        #end
-        {type: type}.merge({parent: parent}).merge({width: width}).merge({height: height}).merge(properties).merge({content: content}).merge({center: center})
+        size = properties.delete(:size)
+        {type: type}.merge({parent: parent}).merge({width: width}).merge({height: height}).merge(properties).merge({content: content}).merge({size: size}).merge({center: center})
       end
     end
   end

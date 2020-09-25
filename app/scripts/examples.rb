@@ -46,32 +46,19 @@ def examples
         Opal_utils.load_opal_parser
         clear_help(false, false)
         # wait until $opal_parser is loaded
-        e=every 0.2,0 do
+        e = every 0.2, 0 do
           if $opal_parser
             stop(e)
-              help = Helper.new()
-              help.send(helper)
+            help = Helper.new()
+            help.send(helper)
           end
         end
-
-        #alert "message is \n\n#{$opal_parser} \n\nLocation: examples.rb, line 48"
-        #wait 5 do
-        #  #alert "message is \n\n#{} \n\nLocation: examples.rb, line 50"
-
-        #end
       else
         clear_help(false, false)
         help = Helper.new()
         help.send(helper)
       end
     end
-
-    #topic.touch do
-    #  alert topic.inspect
-    #end
-    #help_container.touch do
-    #  alert Atome.atomes.length
-    #end
   end
 end
 
@@ -80,16 +67,17 @@ module Help
     @code = demo_code
     eval demo_code
     code_content = text('')
-    b = box()
-    b.shadow(true)
-    b.x(300)
-    b.height = 34
-    b.width = 333
-    b.x(7)
-    b.y(7)
-    b.smooth(7)
-    b.color('rgb(33,33,33)')
-    b.touch do
+    code_content.id(:code_content)
+    demo_title = box()
+    demo_title.shadow(true)
+    demo_title.x(300)
+    demo_title.height = 34
+    demo_title.width = 333
+    demo_title.x(7)
+    demo_title.y(7)
+    demo_title.smooth(7)
+    demo_title.color('rgb(33,33,33)')
+    demo_title.touch do
       unless get(:demo_code)
         run_code = box()
         run_code.color(:yellowgreen)
@@ -113,13 +101,13 @@ module Help
         code.y(77)
 
         run_code.touch do
-          clear_help(topic, code)
+          puts "we must erase the scene before"
           eval code.content
         end
       end
     end
     title = text(topic)
-    b.insert(title)
+    demo_title.insert(title)
     title.x(7)
     title.y(0)
     title.color(:lightgray)
@@ -143,6 +131,7 @@ end
 strdelim
     self.puts_help :gradient, demo_code
   end
+
   def version
     demo_code = <<strdelim
 t=text(Atome.version)
@@ -251,13 +240,13 @@ strdelim
     demo_code = <<strdelim
 #assume to find an object based on id atome_id or th object itself
 b=box()
-wait 2 do
+wait 1 do
   b.find_atome_from_params(b.atome_id).color(:green)
 end
-wait 4 do
+wait 2 do
   b.find_atome_from_params(b.id).color(:yellow)
 end
-wait 6 do
+wait 3 do
   b.find_atome_from_params(b).color(:blue)
 end
 strdelim
@@ -1100,7 +1089,7 @@ b.y(180)
   b.color(:red)
   b.touch do
     b.delete(true)
-    wait 2 do
+    wait 0.3 do
       #to enliven and attach it to an object (in this case the view)
       b.enliven(true)
     end
@@ -1342,14 +1331,16 @@ strdelim
 
   def render_api
     demo_code = <<strdelim
-  b = box({color: :red, render: :false})
-b.x(350)
-  wait 2 do
-    b.render(:true)
-  end
-  wait 4 do
-    b.render(:false)
-  end
+ b = box({color: :red, render: :false, center: true})
+ wait 1 do
+  b.render(:true)
+ end
+ wait 2 do
+  b.render(:false)
+ end
+ wait 3 do
+  b.render(:true)
+ end
 strdelim
     self.puts_help :render, demo_code
   end

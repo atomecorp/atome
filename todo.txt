@@ -1,2 +1,14 @@
 - Write windows install documentation
 - render and enliven loose centering
+- using .prpoerty method destroy event such as 'touch'
+- meke enliven works when object has child or parent ex :  b = box({id: :toto})
+                                                           b.color(:red)
+                                                           t=b.text({content: :kooly, id: :titi, color: :white, y: 150})
+                                                           t.y(150)
+                                                           b.touch do
+                                                            b.delete(true)
+                                                           end
+                                                           r=text({content: :reanimator,color: :orange, y: 20})
+                                                           r.touch do
+                                                            get(:titi).enliven(true)
+                                                           end

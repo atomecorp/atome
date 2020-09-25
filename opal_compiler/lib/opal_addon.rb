@@ -566,7 +566,6 @@ module Opal_utils
   def self.load_opal_parser
     if $opal_parser != true
       `
-      Opal.Object.$circle();
     $.getScript('js/third_parties/opal/opal_parser.js', function (data, textStatus, jqxhr) {
 #{$opal_parser = true}
             });

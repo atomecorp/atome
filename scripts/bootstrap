@@ -15,7 +15,7 @@ _which bundle
 grep -q '^BUNDLE_PATH:' ~/.bundle/config || (
   echo
   echo "Please set a global path for storing Ruby gems, e.g.:" >&2
-  echo "    bundle config path $HOME/.bundle/config" >&2
+  echo "    bundle config path $HOME/.vendor" >&2
   exit 1
 )
 

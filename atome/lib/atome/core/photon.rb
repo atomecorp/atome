@@ -11,6 +11,7 @@ module Nucleon
         if params || params == false
           @render = params
           if params == false || params == :false
+            #alert "message is \n\n#{atome_id} \n\nLocation: photon.rb, line 14"
             delete(true)
           else
             enliven(true)
@@ -112,13 +113,13 @@ module Nucleon
         parent_width = parent.value(:width)
         parent_height = parent.value(:height)
         #below we add a default size of 0 id it isn't alredy setted to avoid crashes
-        self_width = if @width
-                       @width
+        self_width = if value(:width)
+                       value(:width)
                      else
                        0
                      end
-        self_height = if @height
-                        @height
+        self_height = if value(:height)
+                        value(:height)
                       else
                         0
                       end
@@ -130,19 +131,14 @@ module Nucleon
           y = (parent_height - self_height) / 2
           Render.render_y(self, y)
         end
-
-
+        #alert "message is \n\n#{self.id} \n\nLocation: photon.rb, line 133"
       end
 
       def center params = nil, refresh = true, add = false
         if params == false || params == :false
-          unless grab(:actions).resize_actions[:center][self].nil?
-            grab(:actions).resize_actions[:center][self].delete(:x)
-          end
+          grab(:actions).resize_actions[:center][self]&.delete(:x)
           @x.delete(:center)
-          unless grab(:actions).resize_actions[:center][self].nil?
-            grab(:actions).resize_actions[:center][self].delete(:y)
-          end
+          grab(:actions).resize_actions[:center][self]&.delete(:y)
           @y.delete(:center)
         elsif params && grab(:actions)
           #alert "message is \n\n#{} \n\nLocation: photon.rb, line 148"
@@ -156,9 +152,7 @@ module Nucleon
                 grab(:actions).resize_actions[:center][self][:x] = @x[:center]
               else
                 # we delete the dynamic re centering facility
-                unless grab(:actions).resize_actions[:center][self].nil?
-                  grab(:actions).resize_actions[:center][self].delete(:x)
-                end
+                grab(:actions).resize_actions[:center][self]&.delete(:x)
                 @x.delete(:center)
               end
             end
@@ -169,20 +163,14 @@ module Nucleon
                 grab(:actions).resize_actions[:center][self][:y] = @y[:center]
               else
                 # we delete the dynamic re centering facility
-                unless grab(:actions).resize_actions[:center][self].nil?
-                  grab(:actions).resize_actions[:center][self].delete(:y)
-                end
+                grab(:actions).resize_actions[:center][self]&.delete(:y)
                 @y.delete(:center)
               end
             end
             if params[:dynamic] == false
-              unless grab(:actions).resize_actions[:center][self].nil?
-                grab(:actions).resize_actions[:center][self].delete(:x)
-              end
+              grab(:actions).resize_actions[:center][self]&.delete(:x)
               @x.delete(:center)
-              unless grab(:actions).resize_actions[:center][self].nil?
-                grab(:actions).resize_actions[:center][self].delete(:y)
-              end
+              grab(:actions).resize_actions[:center][self]&.delete(:y)
               @y.delete(:center)
             elsif params[:dynamic] == true
               x({center: 0})
@@ -231,12 +219,6 @@ module Nucleon
               grab(:actions).resize_actions[:center][self][:y] = 0
             end
           end
-          #@center='poil'
-          #else
-          #  alert "message :\n#{id}\n from : photon.rb : 236"
-          #  @center="rrrr"
-
-
         end
         self
       end
@@ -272,9 +254,7 @@ module Nucleon
           grab(:actions).resize_actions[:center] = {self => {x: @x[:center]}} if @x[:dynamic] && @x[:center]
           if params[:dynamic] == false
             # we delete the dynamic re centering facility
-            unless grab(:actions).resize_actions[:center][self].nil?
-              grab(:actions).resize_actions[:center][self].delete(:x)
-            end
+            grab(:actions).resize_actions[:center][self]&.delete(:x)
             @x.delete(:center)
           end
           # now we assign the value
@@ -316,9 +296,7 @@ module Nucleon
           grab(:actions).resize_actions[:center] = {self => {y: @y[:center]}} if @y[:dynamic] && @y[:center]
           if params[:dynamic] == false
             # we delete the dynamic re centering facility
-            unless grab(:actions).resize_actions[:center][self].nil?
-              grab(:actions).resize_actions[:center][self].delete(:y)
-            end
+            grab(:actions).resize_actions[:center][self]&.delete(:y)
             @y.delete(:center)
           end
           # now we assign the value
@@ -368,9 +346,7 @@ module Nucleon
           grab(:actions).resize_actions[:center] = {self => {x: @x[:center]}} if @x[:dynamic] && @x[:center]
           if params[:dynamic] == false
             # we delete the dynamic re centering facility
-            unless grab(:actions).resize_actions[:center][self].nil?
-              grab(:actions).resize_actions[:center][self].delete(:x)
-            end
+            grab(:actions).resize_actions[:center][self]&.delete(:x)
             @x.delete(:center)
           end
           ## now we assign the value
@@ -428,9 +404,7 @@ module Nucleon
           grab(:actions).resize_actions[:center] = {self => {y: @y[:center]}} if @y[:dynamic] && @y[:center]
           if params[:dynamic] == false
             # we delete the dynamic re centering facility
-            unless grab(:actions).resize_actions[:center][self].nil?
-              grab(:actions).resize_actions[:center][self].delete(:y)
-            end
+            grab(:actions).resize_actions[:center][self]&.delete(:y)
             @y.delete(:center)
           end
           ## now we assign the value
@@ -623,7 +597,7 @@ module Nucleon
           end
 
           target = find_atome_from_params(params[:target])
-# line below (self.y)is a patch to overcome a bug
+# line below (self.y) is a quick patch to patch a bug
           self.y(0)
           if params[:x]
             self.x(params[:x])
@@ -640,12 +614,8 @@ module Nucleon
             self.yy(params[:yy])
           end
           if params[:margin]
-            #self.width(:auto)
-            #self.height(:auto)
             target.x(params[:margin])
             target.y(params[:margin])
-            #target.xx(params[:margin])
-            #target.yy(params[:margin])
             self.width(target.value(:width) + params[:margin] * 2, refresh)
             self.height(target.value(:height) + params[:margin] * 2, refresh)
 

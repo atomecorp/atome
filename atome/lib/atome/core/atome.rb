@@ -13,7 +13,7 @@ module Nucleon
       @@device = ''
 
       def self.version
-        'v:0.007d'
+        'v:0.007e'
       end
 
       def initialize(params, refresh = true)
@@ -29,10 +29,15 @@ module Nucleon
           # now we inject the preset name into the hash
         elsif params.class == Hash
           # we extract the type to apply the preset associated for this type
-          type = params[:type]
-          preset = Proton.presets[type]
+          preset = if params[:preset]
+            params[:preset]
+          else
+            params[:type]
+                   end
+          preset = Proton.presets[preset]
+
         end
-        # now we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
+        #  we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
         atome_id = if @@atomes.length == 0
                      :blackhole
                    elsif @@atomes.length == 1
@@ -51,8 +56,8 @@ module Nucleon
         @atome_id = atome_id
         # We generate  the id below
         if params[:id].nil?
-          generated_id = if params[:preset]
-                           (params[:preset].to_s + '_' + @@atomes.length.to_s).to_sym
+          generated_id = if @preset
+                           (@preset.to_s + '_' + @@atomes.length.to_s).to_sym
                          else
                            (params[:type].to_s + '_' + @@atomes.length.to_s).to_sym
                          end
@@ -88,7 +93,7 @@ module Nucleon
                 send(key, param[key], refresh, false, &proc)
               end
             elsif param.class == Array
-              alert "todo : create recursive treatment of prop's array"
+              puts "todo : create recursive treatment of prop's array"
             end
           end
         else
@@ -133,12 +138,10 @@ module Nucleon
               if key == :group
               elsif key == :parent
               elsif key == :atome_id
-              elsif key == :preset
               elsif key == :render
               else
                 send(key, value)
               end
-
             end
           end
         end
@@ -146,13 +149,13 @@ module Nucleon
         child&.each do |child|
           child.enliven(true)
         end
-
         # we re attach to parent #fixme the preset already attach to view so we can optimise to immedialtly attach to parent instead
         parent.each do |parent|
           parent.insert(self)
         end
 
       end
+
 
       def delete params = nil, refresh = true
         if params || params == false
@@ -195,7 +198,9 @@ module Nucleon
             @@black_hole |= [self]
             # #we remove object from view(:child)
             grab(:view).child().each do |child|
-              grab(:view).ungroup(child) if child.atome_id == self.atome_id
+              if child
+                grab(:view).ungroup(child) if child.atome_id == self.atome_id
+              end
             end
             # we delete all the dynamic actions :
             # - first the dynamic actions centering object
@@ -203,7 +208,6 @@ module Nucleon
             # we remove objet from the atomes list
             @@atomes.delete(self)
           end
-
           Render.render_delete(self, params) if refresh
         else
           @@black_hole
