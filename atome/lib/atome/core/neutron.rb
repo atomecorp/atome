@@ -963,54 +963,67 @@ module Nucleon
 
       # function to allow creation of  object in object
       def image(params = nil, refresh = true, add = false)
-        tag = :image
-        atome = Atome.new(tag)
-        if params.class == String || params.class == Symbol
-          params = {content: params}
-        elsif params.class == Hash
-          child&.each do |child|
-            if child.type == tag
-              params.keys.each do |key|
-                value = params[key]
-                child.send(key, value)
-              end
-            end
-          end
+        if params && (params.class == Symbol || params.class == String)
+          content = {content: params}
+          params = content
         end
-        atome.set(params)
-        width = if self.width.class == String && self.width.end_with?('%')
-                  convert(:width, :px)
-                else
-                  self.width
-                end
-        height = if self.height.class == String && self.width.end_with?('%')
-                   convert(:height, :px)
-                 else
-                   self.height
-                 end
-        if atome.width.class == String && atome.width.end_with?('%')
-          (atome.width.sub("%", "").to_f / 100) * (width).to_f
-        else
-          atome.width.to_f
-        end
-        if atome.height.class == String && atome.height.end_with?('%')
-          (atome.height.sub("%", "").to_f / 100) * (height).to_f
-        else
-          atome.height.to_f
-        end
-        # we have to detach the object from the view  as this is
+        params && params.class == Hash
+        content=params.delete(:content)
+        x=params.delete(:x)
+        y=params.delete(:y)
+        xx=params.delete(:xx)
+        yy=params.delete(:yy)
+        atome= Atome.new({type: :image, preset: :image, content: content})
         insert(atome)
-        if params[:x]
-          atome.x(params[:x])
-        else
-          atome.center(:x)
-        end
-        if params[:y]
-          atome.y(params[:y])
-        else
-          atome.center(:y)
-        end
-        atome
+        atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+        #tag = :image
+        #atome = Atome.new(tag)
+        #if params.class == String || params.class == Symbol
+        #  params = {content: params}
+        #elsif params.class == Hash
+        #  child&.each do |child|
+        #    if child.type == tag
+        #      params.keys.each do |key|
+        #        value = params[key]
+        #        child.send(key, value)
+        #      end
+        #    end
+        #  end
+        #end
+        #atome.set(params)
+        #width = if self.width.class == String && self.width.end_with?('%')
+        #          convert(:width, :px)
+        #        else
+        #          self.width
+        #        end
+        #height = if self.height.class == String && self.width.end_with?('%')
+        #           convert(:height, :px)
+        #         else
+        #           self.height
+        #         end
+        #if atome.width.class == String && atome.width.end_with?('%')
+        #  (atome.width.sub("%", "").to_f / 100) * (width).to_f
+        #else
+        #  atome.width.to_f
+        #end
+        #if atome.height.class == String && atome.height.end_with?('%')
+        #  (atome.height.sub("%", "").to_f / 100) * (height).to_f
+        #else
+        #  atome.height.to_f
+        #end
+        ## we have to detach the object from the view  as this is
+        #insert(atome)
+        #if params[:x]
+        #  atome.x(params[:x])
+        #else
+        #  atome.center(:x)
+        #end
+        #if params[:y]
+        #  atome.y(params[:y])
+        #else
+        #  atome.center(:y)
+        #end
+        #atome
       end
 
       def image=(params = nil, refresh = true, add = false)
@@ -1018,24 +1031,33 @@ module Nucleon
       end
 
       def text(params = nil, refresh = true, add = false)
-        tag = :text
-        atome = Atome.new(tag)
-        if params.class == String || params.class == Symbol
-          params = {content: params}
-        elsif params.class == Hash
-          child&.each do |child|
-            if child.type == tag
-              params.keys.each do |key|
-                value = params[key]
-                child.send(key, value)
-              end
-            end
-          end
+        #tag = :text
+        #atome = Atome.new(tag)
+        #if params.class == String || params.class == Symbol
+        #  params = {content: params}
+        #elsif params.class == Hash
+        #  child&.each do |child|
+        #    if child.type == tag
+        #      params.keys.each do |key|
+        #        value = params[key]
+        #        child.send(key, value)
+        #      end
+        #    end
+        #  end
+        #end
+        if params && (params.class == Symbol || params.class == String)
+          content = {content: params}
+          params = content
         end
-        # Attention the order is critical as the center will recalulated accoring of the text legnth
+        params && params.class == Hash
+        content=params.delete(:content)
+        x=params.delete(:x)
+        y=params.delete(:y)
+        xx=params.delete(:xx)
+        yy=params.delete(:yy)
+        atome= Atome.new({type: :text, preset: :text, content: content})
         insert(atome)
-        atome.set(params)
-        atome.center(true)
+        atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         atome
       end
 
@@ -1044,24 +1066,37 @@ module Nucleon
       end
 
       def box(params = nil, refresh = true, add = false)
-        tag = :box
-        atome = Atome.new(tag)
-        insert(atome)
-        atome.center(true)
-        if params.class == String || params.class == Symbol
-          params = {content: params}
-        elsif params.class == Hash
-          child&.each do |child|
-            if child.type == tag
-              params.keys.each do |key|
-                value = params[key]
-                child.send(key, value)
-              end
-            end
-          end
+        if params && (params.class == Symbol || params.class == String)
+          content = {content: params}
+          params = content
         end
-
+        params && params.class == Hash
+        x=params.delete(:x)
+        y=params.delete(:y)
+        xx=params.delete(:xx)
+        yy=params.delete(:yy)
+        atome= Atome.new({type: :shape, preset: :box})
+        insert(atome)
+        atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         atome
+        #tag = :box
+        #atome = Atome.new(tag)
+        #insert(atome)
+        #atome.center(true)
+        #if params.class == String || params.class == Symbol
+        #  params = {content: params}
+        #elsif params.class == Hash
+        #  child&.each do |child|
+        #    if child.type == tag
+        #      params.keys.each do |key|
+        #        value = params[key]
+        #        child.send(key, value)
+        #      end
+        #    end
+        #  end
+        #end
+        #
+        #atome
       end
 
       def box=(params = nil, refresh = true, add = false)
@@ -1069,24 +1104,37 @@ module Nucleon
       end
 
       def circle(params = nil, refresh = true, add = false)
-        tag = :circle
-        atome = Atome.new(tag)
-        if params.class == String || params.class == Symbol
-          params = {content: params}
-        elsif params.class == Hash
-          child&.each do |child|
-            if child.type == tag
-              params.keys.each do |key|
-                value = params[key]
-                child.send(key, value)
-              end
-            end
-          end
+        if params && (params.class == Symbol || params.class == String)
+          content = {content: params}
+          params = content
         end
+        params && params.class == Hash
+        x=params.delete(:x)
+        y=params.delete(:y)
+        xx=params.delete(:xx)
+        yy=params.delete(:yy)
+        atome= Atome.new({ type: :shape,preset: :circle})
         insert(atome)
-        atome.center(true)
-        atome.set(params) if params
+        atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         atome
+        #tag = :circle
+        #atome = Atome.new(tag)
+        #if params.class == String || params.class == Symbol
+        #  params = {content: params}
+        #elsif params.class == Hash
+        #  child&.each do |child|
+        #    if child.type == tag
+        #      params.keys.each do |key|
+        #        value = params[key]
+        #        child.send(key, value)
+        #      end
+        #    end
+        #  end
+        #end
+        #insert(atome)
+        #atome.center(true)
+        #atome.set(params) if params
+        #atome
       end
 
       def circle=(params = nil, refresh = true, add = false)
@@ -1094,24 +1142,38 @@ module Nucleon
       end
 
       def user(params = nil, refresh = true, add = false)
-        tag = :user
-        atome = Atome.new(tag)
-        if params.class == String || params.class == Symbol
-          params = {content: params}
-        elsif params.class == Hash
-          child&.each do |child|
-            if child.type == tag
-              params.keys.each do |key|
-                value = params[key]
-                child.send(key, value)
-              end
-            end
-          end
+        if params && (params.class == Symbol || params.class == String)
+          content = {content: params}
+          params = content
         end
+        params && params.class == Hash
+        content=params.delete(:content)
+        x=params.delete(:x)
+        y=params.delete(:y)
+        xx=params.delete(:xx)
+        yy=params.delete(:yy)
+        atome= Atome.new({type: :text, preset: :text, content: content})
         insert(atome)
-        atome.center(true)
-        atome.set(params) if params
+        atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         atome
+        #tag = :user
+        #atome = Atome.new(tag)
+        #if params.class == String || params.class == Symbol
+        #  params = {content: params}
+        #elsif params.class == Hash
+        #  child&.each do |child|
+        #    if child.type == tag
+        #      params.keys.each do |key|
+        #        value = params[key]
+        #        child.send(key, value)
+        #      end
+        #    end
+        #  end
+        #end
+        #insert(atome)
+        #atome.center(true)
+        #atome.set(params) if params
+        #atome
       end
 
       def user=(params = nil, refresh = true, add = false)
@@ -1119,63 +1181,84 @@ module Nucleon
       end
 
       def video(params = nil, refresh = true, add = false)
-        tag = :video
-        if params.nil?
-          childs = []
-          child.each do |child|
-            childs << child if child.type == tag
-          end
-          if childs.length == 1
-            childs[0]
-          else
-            childs
-          end
-        else
-          video = Atome.new(tag)
-          audio = Atome.new(:audio)
-          # #we have to detach the object from the view  as this is
-          video.insert(audio)
-          if params.class == String || params.class == Symbol
-            params = {content: params}
-            video.set(params)
-            audio.set(params)
-            width = if self.width.class == String && self.width.end_with?("%")
-                      convert(:width, :px)
-                    else
-                      self.width
-                    end
-            height = if self.height.class == String && self.width.end_with?("%")
-                       convert(:height, :px)
-                     else
-                       self.height
-                     end
-            if video.width.class == String && video.width.end_with?("%")
-              (video.width.sub("%", "").to_f / 100) * (width).to_f
-            else
-              video.width.to_f
-            end
-            if video.height.class == String && video.height.end_with?("%")
-              (video.height.sub("%", "").to_f / 100) * (height).to_f
-            else
-              video.height.to_f
-            end
-            # we have to detach the object from the view  as this is
-            # #we have to detach the object from the view  as this is
-            insert(video)
-            video.center(true)
-            video.set(params) if params
-            video
-          elsif params.class == Hash
-            self.child&.each do |child|
-              if child.type == tag
-                params.keys.each do |key|
-                  value = params[key]
-                  child.send(key, value)
-                end
-              end
-            end
-          end
+        if params && (params.class == Symbol || params.class == String)
+          content = {content: params}
+          params = content
         end
+        params && params.class == Hash
+        content=params.delete(:content)
+        x=params.delete(:x)
+        y=params.delete(:y)
+        xx=params.delete(:xx)
+        yy=params.delete(:yy)
+        atome= Atome.new({type: :video, preset: :video, content: content})
+        insert(atome)
+        atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+
+        ################################
+        atome_a= Atome.new({type: :audio, preset: :audio, content: content})
+        insert(atome_a)
+        atome_a.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+        atome.insert(atome_a)
+        ###############################
+        atome
+        #tag = :video
+        #if params.nil?
+        #  childs = []
+        #  child.each do |child|
+        #    childs << child if child.type == tag
+        #  end
+        #  if childs.length == 1
+        #    childs[0]
+        #  else
+        #    childs
+        #  end
+        #else
+        #  video = Atome.new(tag)
+        #  audio = Atome.new(:audio)
+        #  # #we have to detach the object from the view  as this is
+        #  video.insert(audio)
+        #  if params.class == String || params.class == Symbol
+        #    params = {content: params}
+        #    video.set(params)
+        #    audio.set(params)
+        #    width = if self.width.class == String && self.width.end_with?("%")
+        #              convert(:width, :px)
+        #            else
+        #              self.width
+        #            end
+        #    height = if self.height.class == String && self.width.end_with?("%")
+        #               convert(:height, :px)
+        #             else
+        #               self.height
+        #             end
+        #    if video.width.class == String && video.width.end_with?("%")
+        #      (video.width.sub("%", "").to_f / 100) * (width).to_f
+        #    else
+        #      video.width.to_f
+        #    end
+        #    if video.height.class == String && video.height.end_with?("%")
+        #      (video.height.sub("%", "").to_f / 100) * (height).to_f
+        #    else
+        #      video.height.to_f
+        #    end
+        #    # we have to detach the object from the view  as this is
+        #    # #we have to detach the object from the view  as this is
+        #    insert(video)
+        #    video.center(true)
+        #    video.set(params) if params
+        #    video
+        #  elsif params.class == Hash
+        #    self.child&.each do |child|
+        #      if child.type == tag
+        #        params.keys.each do |key|
+        #          value = params[key]
+        #          child.send(key, value)
+        #        end
+        #      end
+        #    end
+        #  end
+        #end
 
       end
 
@@ -1184,58 +1267,72 @@ module Nucleon
       end
 
       def audio(params = nil, refresh = true, add = false)
-        tag = :audio
-        if params.nil?
-          childs = []
-          child.each do |child|
-            childs << child if child.type == tag
-          end
-          if childs.length == 1
-            childs[0]
-          else
-            childs
-          end
-        else
-          audio = Atome.new(tag)
-          if params.class == String || params.class == Symbol
-            params = {content: params}
-            audio.set(params)
-            width = if self.width.class == String && self.width.end_with?("%")
-                      convert(:width, :px)
-                    else
-                      self.width
-                    end
-            height = if self.height.class == String && self.width.end_with?("%")
-                       convert(:height, :px)
-                     else
-                       self.height
-                     end
-            if audio.width.class == String && audio.width.end_with?("%")
-              (audio.width.sub("%", "").to_f / 100) * (width).to_f
-            else
-              audio.width.to_f
-            end
-            if audio.height.class == String && audio.height.end_with?("%")
-              (audio.height.sub("%", "").to_f / 100) * (height).to_f
-            else
-              audio.height.to_f
-            end
-            # we have to detach the object from the view  as this is
-            insert(audio)
-            audio.center(true)
-            audio.set(params) if params
-            audio
-          elsif params.class == Hash
-            self.child&.each do |child|
-              if child.type == tag
-                params.keys.each do |key|
-                  value = params[key]
-                  child.send(key, value)
-                end
-              end
-            end
-          end
+        if params && (params.class == Symbol || params.class == String)
+          content = {content: params}
+          params = content
         end
+        params && params.class == Hash
+        content=params.delete(:content)
+        x=params.delete(:x)
+        y=params.delete(:y)
+        xx=params.delete(:xx)
+        yy=params.delete(:yy)
+        atome= Atome.new({type: :audio, preset: :audio, content: content})
+        insert(atome)
+        atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+        atome
+        #tag = :audio
+        #if params.nil?
+        #  childs = []
+        #  child.each do |child|
+        #    childs << child if child.type == tag
+        #  end
+        #  if childs.length == 1
+        #    childs[0]
+        #  else
+        #    childs
+        #  end
+        #else
+        #  audio = Atome.new(tag)
+        #  if params.class == String || params.class == Symbol
+        #    params = {content: params}
+        #    audio.set(params)
+        #    width = if self.width.class == String && self.width.end_with?("%")
+        #              convert(:width, :px)
+        #            else
+        #              self.width
+        #            end
+        #    height = if self.height.class == String && self.width.end_with?("%")
+        #               convert(:height, :px)
+        #             else
+        #               self.height
+        #             end
+        #    if audio.width.class == String && audio.width.end_with?("%")
+        #      (audio.width.sub("%", "").to_f / 100) * (width).to_f
+        #    else
+        #      audio.width.to_f
+        #    end
+        #    if audio.height.class == String && audio.height.end_with?("%")
+        #      (audio.height.sub("%", "").to_f / 100) * (height).to_f
+        #    else
+        #      audio.height.to_f
+        #    end
+        #    # we have to detach the object from the view  as this is
+        #    insert(audio)
+        #    audio.center(true)
+        #    audio.set(params) if params
+        #    audio
+        #  elsif params.class == Hash
+        #    self.child&.each do |child|
+        #      if child.type == tag
+        #        params.keys.each do |key|
+        #          value = params[key]
+        #          child.send(key, value)
+        #        end
+        #      end
+        #    end
+        #  end
+        #end
       end
 
       def audio=(params = nil, refresh = true, add = false)
@@ -1243,26 +1340,40 @@ module Nucleon
       end
 
       def web(params = nil, refresh = true, add = false)
-        tag = :web
-        atome = Atome.new(tag)
-        if params.class == String || params.class == Symbol
-          params = {content: params}
-        elsif params.class == Hash
-          child&.each do |child|
-            if child.type == tag
-              params.keys.each do |key|
-                value = params[key]
-                child.send(key, value)
-              end
-            end
-          end
+        if params && (params.class == Symbol || params.class == String)
+          content = {content: params}
+          params = content
         end
-        atome.set(params)
-        # we have to detach the object from the view
+        params && params.class == Hash
+        content=params.delete(:content)
+        x=params.delete(:x)
+        y=params.delete(:y)
+        xx=params.delete(:xx)
+        yy=params.delete(:yy)
+        atome= Atome.new({type: :text, preset: :text, content: content})
         insert(atome)
-        atome.center(true)
-        atome.set(params) if params
-        web
+        atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+        atome
+        #tag = :web
+        #atome = Atome.new(tag)
+        #if params.class == String || params.class == Symbol
+        #  params = {content: params}
+        #elsif params.class == Hash
+        #  child&.each do |child|
+        #    if child.type == tag
+        #      params.keys.each do |key|
+        #        value = params[key]
+        #        child.send(key, value)
+        #      end
+        #    end
+        #  end
+        #end
+        #atome.set(params)
+        ## we have to detach the object from the view
+        #insert(atome)
+        #atome.center(true)
+        #atome.set(params) if params
+        #web
       end
 
       def web=(params = nil, refresh = true, add = false)

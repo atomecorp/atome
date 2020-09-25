@@ -595,7 +595,6 @@ module Nucleon
               @fit = [params]
             end
           end
-
           target = find_atome_from_params(params[:target])
 # line below (self.y) is a quick patch to patch a bug
           self.y(0)
@@ -618,14 +617,11 @@ module Nucleon
             target.y(params[:margin])
             self.width(target.value(:width) + params[:margin] * 2, refresh)
             self.height(target.value(:height) + params[:margin] * 2, refresh)
-
           else
             self.width(target.value(:width), refresh)
             self.height(target.value(:height), refresh)
           end
-
           broadcast(atome_id => {fit: params, private: false})
-
           return self
         else
           @fit
