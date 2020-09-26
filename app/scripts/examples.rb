@@ -959,16 +959,17 @@ strdelim
 
   def add_prop_to_all_childs_api
     demo_code = <<strdelim
-  b = image(:atome)
+b = image(:atome)
 b.drag(true)
-b.x(400)
-  d=b.box()
+b.x(300)
+d=b.box()
 b.text("hello")
 c=b.circle()
-  b.child().each do |atome|
-    atome.color(:orange)
-  end
-d.x(150)
+b.child().each do |atome|
+atome.color(:orange)
+end
+d.x(180)
+d.y(200)
 c.y(130)
 c.x(50)
 strdelim

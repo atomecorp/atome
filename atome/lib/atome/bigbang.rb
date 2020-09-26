@@ -90,6 +90,7 @@ def video(options = nil)
   options = options.merge({type: :audio, preset: :audio})
   atome_a = Atome.new(options, refresh)
   atome.insert(atome_a)
+  atome
 end
 
 def web(options = nil)
@@ -153,6 +154,21 @@ def user(options = nil)
   options = {type: :user, preset: :user}.merge(options)
   Atome.new(options, refresh)
 end
+
+#def effect(options = nil)
+#  refresh = if options && (options[:render] == false || options[:render] == :false)
+#              false
+#            else
+#              true
+#            end
+#  if options && (options.class == Symbol || options.class == String)
+#    content = {content: options}
+#    options = content
+#  end
+#  options && options.class == Hash
+#  options = {type: :effect, preset: :effect}.merge(options)
+#  Atome.new(options, refresh)
+#end
 
 
 class Device
