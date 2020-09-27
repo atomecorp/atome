@@ -1589,6 +1589,39 @@ module Nucleon
         effect(params, refresh, add)
       end
 
+
+      def constraint(params = nil, refresh = true, add = false)
+
+          if params && (params.class == Symbol || params.class == String)
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          #x=params.delete(:x)
+          #y=params.delete(:y)
+          #xx=params.delete(:xx)
+          #yy=params.delete(:yy)
+          atome = Atome.new({type: :tag, preset: :constraint, content: content}, refresh)
+          insert(atome)
+          if params
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
+
+
+
+      end
+
+      def constraint=(params = nil, refresh = true, add = false)
+        constraint(params, refresh, add)
+      end
       # utils
 
       def pick params
