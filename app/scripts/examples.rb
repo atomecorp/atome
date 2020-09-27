@@ -862,11 +862,10 @@ end
 strdelim
     self.puts_help :drop, demo_code
   end
-
   def play_with_event_api
     demo_code = <<strdelim
 video = video(:lion_king)
-video.audio.level(0)
+video.pick(:audio).level(0)
 video.center(:false)
 video.x(150)
 video.play(true) do |evt|
@@ -904,25 +903,25 @@ strdelim
   def chain_play_api
     demo_code = <<strdelim
 vidz = video(:lion_king)
-video2 = video(:lion_king)
-vidz.x(250)
-vidz.y(0)
-video2.x(250)
-video2.y(400)
-vidz.audio.level(0)
-wait 1 do
-video2.audio.level(0)
-  vidz.play(25) do |evt|
-    if evt.time > 34
-      vidz.stop(2)
-      video2.play(true)
-      wait 1 do
-        video2.stop(30)
-        vidz.play
-      end
-    end
-  end
-end
+ video2 = video(:lion_king)
+ vidz.x(250)
+ vidz.y(0)
+ video2.x(250)
+ video2.y(400)
+ vidz.pick(:audio).level(0)
+ wait 1 do
+   video2.pick(:audio).level(0)
+   vidz.play(25) do |evt|
+     if evt.time > 34
+       vidz.stop(2)
+       video2.play(true)
+       wait 1 do
+         video2.stop(30)
+         vidz.play
+       end
+     end
+   end
+ end
 strdelim
     self.puts_help :chain_play, demo_code
   end
@@ -930,7 +929,7 @@ strdelim
   def play_at_api
     demo_code = <<strdelim
  v = video(:lion_king)
-v.audio.level(0)
+ v.pick(:audio).level(0)
 v.center(:false)
 t = text("timecode")
 v.x(200)
@@ -940,7 +939,7 @@ v.play(1) do |evt|
   t.content = evt.time
 end
  wait 1 do
-  v.audio.level(0)
+ v.pick(:audio).level(1)
   v.play(33) do |evt|
     t.content = evt.time
   end
@@ -980,7 +979,7 @@ strdelim
     demo_code = <<strdelim
   v = video(:lion_king)
   v.x(250)
-  v.audio.level(0)
+   v.pick(:audio).level(0)
   v.play(true)
 strdelim
     self.puts_help :volume, demo_code
@@ -1023,48 +1022,48 @@ strdelim
 
   def volume_example_api
     demo_code = <<strdelim
-  b = box()
-  b.size(190)
-  b.x(350)
-  b.drag(:true)
-  b.overflow(:hidden)
-  b.smooth(30)
-  b.shadow(:true)
-  vidz = b.video(:lion_king).x(-155).y(-50)
-  b.video.audio.level(0.1)
-  b.touch do
-    if vidz.play()
-      vidz.pause()
-      b.width(50)
-    else
-      vidz.play(true) do |evt|
-        if evt.time < 20
-          b.width = evt.time * 25
-        end
+b = box()
+b.size(190)
+b.x(350)
+b.drag(:true)
+b.overflow(:hidden)
+b.smooth(30)
+b.shadow(:true)
+vidz = b.video(:lion_king).x(-155).y(-50)
+b.pick(:video).pick(:audio).level(0)
+b.touch do
+  if vidz.play()
+    vidz.pause()
+    b.width(50)
+  else
+    vidz.play(true) do |evt|
+      if evt.time < 20
+        b.width = evt.time * 25
       end
     end
   end
-  style = {width: 25, height: 25}
-  v_plus = box(style)
-  v_plus.x = 313
-  v_plus.y = 100
-  v_text = v_plus.text("+")
-  v_text.x = 5
-  v_text.y = -5
+end
+style = {width: 25, height: 25}
+v_plus = box(style)
+v_plus.x = 313
+v_plus.y = 100
+v_text = v_plus.text("+")
+v_text.x = 5
+v_text.y = -5
 
-  v_minus = box(style)
-  v_minus.x = 313
-  v_minus.y = 200
-  v_text_minus = v_minus.text("-")
-  v_text_minus.x = 5
-  v_text_minus.y = -5
+v_minus = box(style)
+v_minus.x = 313
+v_minus.y = 200
+v_text_minus = v_minus.text("-")
+v_text_minus.x = 5
+v_text_minus.y = -5
 
-  v_plus.touch do
-    b.video.audio.level = b.video.audio.level + 0.1
-  end
-  v_minus.touch do
-    b.video.audio.level = b.video.audio.level - 0.1
-  end
+v_plus.touch do
+  b.pick(:video).pick(:audio).level = b.pick(:video).pick(:audio).level + 0.1
+end
+v_minus.touch do
+  b.pick(:video).pick(:audio).level = b.pick(:video).pick(:audio).level - 0.1
+end
 strdelim
     self.puts_help :volume_example, demo_code
   end
@@ -1372,7 +1371,7 @@ v.insert(b)
 b.center(true)
 v.selector(:tutu)
 
-v.audio.level(0)
+v.pick(:audio).level(0)
 v.play(10) do |evt|
   if evt.time > 15
     b.x = evt.time * 10

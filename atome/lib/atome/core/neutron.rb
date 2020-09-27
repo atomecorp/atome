@@ -968,14 +968,14 @@ module Nucleon
           params = content
         end
         params && params.class == Hash
-        content=params.delete(:content)
-        atome= Atome.new({type: :image, preset: :image, content: content})
+        content = params.delete(:content)
+        atome = Atome.new({type: :image, preset: :image, content: content})
         insert(atome)
         if params
-          x=params.delete(:x) if params[:x]
-          y=params.delete(:y)
-          xx=params.delete(:xx)
-          yy=params.delete(:yy)
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
           atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         else
           atome.set({center: :true})
@@ -1055,14 +1055,14 @@ module Nucleon
           params = content
         end
         params && params.class == Hash
-        content=params.delete(:content)
-        atome= Atome.new({type: :text, preset: :text, content: content})
+        content = params.delete(:content)
+        atome = Atome.new({type: :text, preset: :text, content: content})
         insert(atome)
         if params
-          x=params.delete(:x) if params[:x]
-          y=params.delete(:y)
-          xx=params.delete(:xx)
-          yy=params.delete(:yy)
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
           atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         else
           atome.set({center: :true})
@@ -1081,13 +1081,13 @@ module Nucleon
         end
         params && params.class == Hash
 
-        atome= Atome.new({type: :shape, preset: :box})
+        atome = Atome.new({type: :shape, preset: :box})
         insert(atome)
         if params
-          x=params.delete(:x) if params[:x]
-          y=params.delete(:y)
-          xx=params.delete(:xx)
-          yy=params.delete(:yy)
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
           atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         else
           atome.set({center: :true})
@@ -1129,13 +1129,13 @@ module Nucleon
         #y=params.delete(:y)
         #xx=params.delete(:xx)
         #yy=params.delete(:yy)
-        atome= Atome.new({ type: :shape, preset: :circle})
+        atome = Atome.new({type: :shape, preset: :circle})
         insert(atome)
         if params
-          x=params.delete(:x) if params[:x]
-          y=params.delete(:y)
-          xx=params.delete(:xx)
-          yy=params.delete(:yy)
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
           atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         else
           atome.set({center: :true})
@@ -1171,14 +1171,14 @@ module Nucleon
           params = content
         end
         params && params.class == Hash
-        content=params.delete(:content)
-        atome= Atome.new({type: :text, preset: :text, content: content})
+        content = params.delete(:content)
+        atome = Atome.new({type: :user, preset: :user, content: content})
         insert(atome)
         if params
-          x=params.delete(:x) if params[:x]
-          y=params.delete(:y)
-          xx=params.delete(:xx)
-          yy=params.delete(:yy)
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
           atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         else
           atome.set({center: :true})
@@ -1208,93 +1208,134 @@ module Nucleon
         user(params, refresh, add)
       end
 
-      #def video(params = nil, refresh = true, add = false)
-      #  if params && (params.class == Symbol || params.class == String)
-      #    content = {content: params}
-      #    params = content
-      #  end
-      #  params && params.class == Hash
-      #  content=params.delete(:content)
-      #  #y=params.delete(:y)
-      #  #xx=params.delete(:xx)
-      #  #yy=params.delete(:yy)
-      #  atome= Atome.new({type: :video, preset: :video, content: content})
-      #  insert(atome)
-      #  atome_a= Atome.new({type: :audio, preset: :audio, content: content})
-      #  #atome_a.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
-      #  atome.insert(atome_a)
-      #  if params
-      #    x=params.delete(:x) if params[:x]
-      #    y=params.delete(:y)
-      #    xx=params.delete(:xx)
-      #    yy=params.delete(:yy)
-      #    atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
-      #    atome_a.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
-      #  else
-      #    atome.set({center: :true})
-      #  end
-      #  atome
-      #end
       def video(params = nil, refresh = true, add = false)
-        tag = :video
-        if params.nil?
-          childs = []
-          child.each do |child|
-            childs << child if child.type == tag
+        #tag = :video
+        #if params.nil?
+        #  childs = []
+        #  child.each do |child|
+        #    childs << child if child.type == tag
+        #  end
+        #  if childs.length == 1
+        #    childs[0]
+        #  else
+        #    childs
+        #  end
+        #else
+          if params && (params.class == Symbol || params.class == String)
+            content = {content: params}
+            params = content
           end
-          if childs.length == 1
-            childs[0]
+          params && params.class == Hash
+          content = params.delete(:content)
+          #y=params.delete(:y)
+          #xx=params.delete(:xx)
+          #yy=params.delete(:yy)
+          atome = Atome.new({type: :video, preset: :video, content: content})
+          insert(atome)
+          atome_a = Atome.new({type: :audio, preset: :audio, content: content})
+          #atome_a.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          atome.insert(atome_a)
+          if params
+            x = params.delete(:x) if params[:x]
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+            atome_a.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
           else
-            childs
+            atome.set({center: :true})
           end
-        else
-          video = Atome.new(tag)
-          audio = Atome.new(:audio)
-          # #we have to detach the object from the view  as this is
-          video.insert(audio)
-          if params.class == String || params.class == Symbol
-            params = {content: params}
-            video.set(params)
-            audio.set(params)
-            width = if self.width.class == String && self.width.end_with?("%")
-                      convert(:width, :px)
-                    else
-                      self.width
-                    end
-            height = if self.height.class == String && self.width.end_with?("%")
-                       convert(:height, :px)
-                     else
-                       self.height
-                     end
-            if video.width.class == String && video.width.end_with?("%")
-              (video.width.sub("%", "").to_f / 100) * (width).to_f
-            else
-              video.width.to_f
-            end
-            if video.height.class == String && video.height.end_with?("%")
-              (video.height.sub("%", "").to_f / 100) * (height).to_f
-            else
-              video.height.to_f
-            end
-            # we have to detach the object from the view  as this is
-            # #we have to detach the object from the view  as this is
-            insert(video)
-            video.center(true)
-            video.set(params) if params
-            video
-          elsif params.class == Hash
-            self.child&.each do |child|
-              if child.type == tag
-                params.keys.each do |key|
-                  value = params[key]
-                  child.send(key, value)
-                end
-              end
-            end
-          end
-        end
+          atome
 
+
+        #if params && (params.class == Symbol || params.class == String)
+        #  content = {content: params}
+        #  params = content
+        #end
+        #params && params.class == Hash
+        #content=params.delete(:content)
+        ##y=params.delete(:y)
+        ##xx=params.delete(:xx)
+        ##yy=params.delete(:yy)
+        #atome= Atome.new({type: :video, preset: :video, content: content})
+        #insert(atome)
+        #atome_a= Atome.new({type: :audio, preset: :audio, content: content})
+        ##atome_a.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+        #atome.insert(atome_a)
+        #if params
+        #  x=params.delete(:x) if params[:x]
+        #  y=params.delete(:y)
+        #  xx=params.delete(:xx)
+        #  yy=params.delete(:yy)
+        #  atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+        #  atome_a.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+        #else
+        #  atome.set({center: :true})
+        #end
+        #atome
       end
+
+      #def video(params = nil, refresh = true, add = false)
+      #  tag = :video
+      #  if params.nil?
+      #    childs = []
+      #    child.each do |child|
+      #      childs << child if child.type == tag
+      #    end
+      #    if childs.length == 1
+      #      childs[0]
+      #    else
+      #      childs
+      #    end
+      #  else
+      #    video = Atome.new(tag)
+      #    audio = Atome.new(:audio)
+      #    # #we have to detach the object from the view  as this is
+      #    video.insert(audio)
+      #    if params.class == String || params.class == Symbol
+      #      params = {content: params}
+      #      video.set(params)
+      #      audio.set(params)
+      #      width = if self.width.class == String && self.width.end_with?("%")
+      #                convert(:width, :px)
+      #              else
+      #                self.width
+      #              end
+      #      height = if self.height.class == String && self.width.end_with?("%")
+      #                 convert(:height, :px)
+      #               else
+      #                 self.height
+      #               end
+      #      if video.width.class == String && video.width.end_with?("%")
+      #        (video.width.sub("%", "").to_f / 100) * (width).to_f
+      #      else
+      #        video.width.to_f
+      #      end
+      #      if video.height.class == String && video.height.end_with?("%")
+      #        (video.height.sub("%", "").to_f / 100) * (height).to_f
+      #      else
+      #        video.height.to_f
+      #      end
+      #      # we have to detach the object from the view  as this is
+      #      # #we have to detach the object from the view  as this is
+      #      insert(video)
+      #      video.center(true)
+      #      video.set(params) if params
+      #      video
+      #    elsif params.class == Hash
+      #      self.child&.each do |child|
+      #        if child.type == tag
+      #          params.keys.each do |key|
+      #            value = params[key]
+      #            child.send(key, value)
+      #          end
+      #        end
+      #      end
+      #    end
+      #  end
+      #
+      #end
+
       def video=(params = nil, refresh = true, add = false)
         video(params, refresh, add)
       end
@@ -1356,62 +1397,58 @@ module Nucleon
       #end
 
 
-
       def audio(params = nil, refresh = true, add = false)
-        tag = :audio
-        if params.nil?
-          childs = []
-          child.each do |child|
-            childs << child if child.type == tag
-          end
-          if childs.length == 1
-            childs[0]
-          else
-            childs
-          end
-        else
-          audio = Atome.new(tag)
-          if params.class == String || params.class == Symbol
-            params = {content: params}
-            audio.set(params)
-            width = if self.width.class == String && self.width.end_with?("%")
-                      convert(:width, :px)
-                    else
-                      self.width
-                    end
-            height = if self.height.class == String && self.width.end_with?("%")
-                       convert(:height, :px)
-                     else
-                       self.height
-                     end
-            if audio.width.class == String && audio.width.end_with?("%")
-              (audio.width.sub("%", "").to_f / 100) * (width).to_f
-            else
-              audio.width.to_f
-            end
-            if audio.height.class == String && audio.height.end_with?("%")
-              (audio.height.sub("%", "").to_f / 100) * (height).to_f
-            else
-              audio.height.to_f
-            end
-            # we have to detach the object from the view  as this is
-            insert(audio)
-            audio.center(true)
-            audio.set(params) if params
-            audio
-          elsif params.class == Hash
-            self.child&.each do |child|
-              if child.type == tag
-                params.keys.each do |key|
-                  value = params[key]
-                  child.send(key, value)
-                end
-              end
-            end
-          end
-        end
-      end
+        #if params && (params.class == Symbol || params.class == String)
+        #  content = {content: params}
+        #  params = content
+        #end
+        #params && params.class == Hash
+        #content=params.delcete(:content)
+        #x=params.delete(:x)
+        #y=params.delete(:y)
+        #xx=params.delete(:xx)
+        #yy=params.delete(:yy)
+        #atome= Atome.new({type: :audio, preset: :audio, content: params[:content]})
+        #insert(atome)
+        #atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+        #atome
 
+
+        #if params.nil?#if theres no params its because the method call come from a parent so we serach the audio atome amongst allcurrent atome childs
+        #  childs = []
+        #  child.each do |child|
+        #    childs << child if child.type == :audio
+        #  end
+        #  if childs.length == 1
+        #    childs=  childs[0]
+        #  else
+        #    childs
+        #  end
+        #
+        #else
+
+
+
+          if params && (params.class == Symbol || params.class == String)
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :audio, preset: :audio, content: content})
+          insert(atome)
+          if params
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
+
+      end
 
 
       def audio=(params = nil, refresh = true, add = false)
@@ -1424,18 +1461,18 @@ module Nucleon
           params = content
         end
         params && params.class == Hash
-        content=params.delete(:content)
+        content = params.delete(:content)
         #x=params.delete(:x)
         #y=params.delete(:y)
         #xx=params.delete(:xx)
         #yy=params.delete(:yy)
-        atome= Atome.new({type: :web, preset: :web, content: content})
+        atome = Atome.new({type: :web, preset: :web, content: content})
         insert(atome)
         if params
-          x=params.delete(:x) if params[:x]
-          y=params.delete(:y)
-          xx=params.delete(:xx)
-          yy=params.delete(:yy)
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
           atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         else
           atome.set({center: :true})
@@ -1466,24 +1503,25 @@ module Nucleon
       def web=(params = nil, refresh = true, add = false)
         web(params, refresh, add)
       end
+
       def particle(params = nil, refresh = true, add = false)
         if params && (params.class == Symbol || params.class == String)
           content = {content: params}
           params = content
         end
         params && params.class == Hash
-        content=params.delete(:content)
+        content = params.delete(:content)
         #x=params.delete(:x)
         #y=params.delete(:y)
         #xx=params.delete(:xx)
         #yy=params.delete(:yy)
-        atome= Atome.new({type: :particle, preset: :particle, content: content}, refresh)
+        atome = Atome.new({type: :particle, preset: :particle, content: content}, refresh)
         insert(atome)
         if params
-          x=params.delete(:x) if params[:x]
-          y=params.delete(:y)
-          xx=params.delete(:xx)
-          yy=params.delete(:yy)
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
           atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         end
         atome
@@ -1499,18 +1537,18 @@ module Nucleon
           params = content
         end
         params && params.class == Hash
-        content=params.delete(:content)
+        content = params.delete(:content)
         #x=params.delete(:x)
         #y=params.delete(:y)
         #xx=params.delete(:xx)
         #yy=params.delete(:yy)
-        atome= Atome.new({type: :tool, preset: :tool, content: content}, refresh)
+        atome = Atome.new({type: :tool, preset: :tool, content: content}, refresh)
         insert(atome)
         if params
-          x=params.delete(:x) if params[:x]
-          y=params.delete(:y)
-          xx=params.delete(:xx)
-          yy=params.delete(:yy)
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
           atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         else
           atome.set({center: :true})
@@ -1528,18 +1566,18 @@ module Nucleon
           params = content
         end
         params && params.class == Hash
-        content=params.delete(:content)
+        content = params.delete(:content)
         #x=params.delete(:x)
         #y=params.delete(:y)
         #xx=params.delete(:xx)
         #yy=params.delete(:yy)
-        atome= Atome.new({type: :effect, preset: :effect, content: content}, refresh)
+        atome = Atome.new({type: :effect, preset: :effect, content: content}, refresh)
         insert(atome)
         if params
-          x=params.delete(:x) if params[:x]
-          y=params.delete(:y)
-          xx=params.delete(:xx)
-          yy=params.delete(:yy)
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
           atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
         else
           atome.set({center: :true})
@@ -1550,7 +1588,22 @@ module Nucleon
       def effect=(params = nil, refresh = true, add = false)
         effect(params, refresh, add)
       end
+
       # utils
+
+      def pick params
+        # allow easly get child of  a certain type. ex : v.pick(:audio).level 0.5 get all child of type :audio
+        childs = []
+        child.each do |child|
+          childs << child if child.type == params
+        end
+        if childs.length == 1
+          childs = childs[0]
+        else
+          childs
+        end
+        childs
+      end
 
       def value(params = :size, refresh = true, add = false)
         if params.to_sym == :width
