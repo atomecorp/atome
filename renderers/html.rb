@@ -545,8 +545,6 @@ module Render
 
   def self.render_group(atome, params, add = false)
     parent = Element.find('#' + atome.atome_id)
-    #me= Element.find('#' + params.atome_id)
-    ##alert "message :\n#{me}\n from : html.rb : 529"
     if params.class == Array
     else
       if params.class == Atome
@@ -555,9 +553,14 @@ module Render
         params = Object.get(params).atome_id
       end
       child = Element.find('#' + params)
-      #alert "message :\n#{child}\n from : html.rb : 569"
+      #parent_top=parent.position.top
+      #parent_left=parent.position.left
+      #child_top=child.position.top
+      #child_left=child.position.left
       parent.append(child)
-      offset = child.offset
+      #child.css('left',parent_left-child_left)
+      #child.css('top',parent_top-child_top)
+      offset=parent.offset
       child.offset(offset)
     end
   end
