@@ -28,17 +28,18 @@ module Nucleon
         box = visual.merge(shape).merge(@@box)
         circle = visual.merge(shape).merge({color: :red, content: {points: 4, tension: "100%"}}).merge(@@circle)
         text = visual.merge({type: :text, color: 'rgb(7,7,7)', size: 25, content: lorem}).merge(@@text)
-        image = visual.merge({type: :image, color: :transparent}).merge(@@image)
-        video = visual.merge({type: :video, color: :transparent}).merge(@@video)
-        audio = visual.merge({type: :audio, color: :transparent}).merge(@@audio)
-        particle = {type: :particle}.merge(@@particle)
-        tool = visual.merge({type: :tool, width: 52, height: 50, parent: :intuition}).merge(@@tool)
-        web = visual.merge({type: :web, color: :transparent}).merge(@@web)
-        user = visual.merge({type: :user, color: :transparent, name: :anonymous, pass: :none}).merge(@@user)
+        image = visual.merge({type: :image, color: :transparent, content: :atome}).merge(@@image)
+        video = visual.merge({type: :video, color: :transparent, content: :atome}).merge(@@video)
+        audio = visual.merge({type: :audio, color: :transparent, content: :atome}).merge(@@audio)
+        particle = {type: :particle, content: nil}.merge(@@particle)
+        tool = visual.merge({type: :tool, width: 52, height: 50, parent: :intuition, content: :dummy}).merge(@@tool)
+        web = visual.merge({type: :web, color: :transparent, content: :atome}).merge(@@web)
+        user = visual.merge({type: :user, color: :transparent, name: :anonymous, pass: :none, content: :anonymous}).merge(@@user)
         color = {content: :black}.merge(@@color)
         shadow = {x: 0, y: 0, blur: 7, thickness: 0, color: 'rgba(0,0,0,0.3)', invert: false}.merge(@@shadow)
         border = {default: {thickness: 1, pattern: :dotted, color: :black}}.merge(@@border)
         blur = {default: 5}.merge(@@blur)
+
 
         types = {
             shape: shape,

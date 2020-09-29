@@ -6,36 +6,43 @@ class Atome < Nucleon::Core::Nucleon
 end
 
 def box(options = nil)
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:box][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-    options||={}
   options && options.class == Hash
   options = {type: :shape, preset: :box}.merge(options)
   Atome.new(options, refresh)
 end
 
 def circle(options = nil)
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:circle][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-  options||={}
   options && options.class == Hash
   options = {type: :shape, preset: :circle}.merge(options)
   Atome.new(options, refresh)
 end
 
 def text(options = nil)
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:text][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-  if options && (options.class == Symbol || options.class == String)
+  if options.class == Symbol || options.class == String
     content = {content: options}
     options = content
   end
@@ -45,12 +52,15 @@ def text(options = nil)
 end
 
 def image(options = nil)
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:image][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-  if options && (options.class == Symbol || options.class == String)
+  if options.class == Symbol || options.class == String
     content = {content: options}
     options = content
   end
@@ -60,12 +70,15 @@ def image(options = nil)
 end
 
 def audio(options = nil)
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:audio][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-  if options && (options.class == Symbol || options.class == String)
+  if options.class == Symbol || options.class == String
     content = {content: options}
     options = content
   end
@@ -75,12 +88,15 @@ def audio(options = nil)
 end
 
 def video(options = nil)
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:video][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-  if options && (options.class == Symbol || options.class == String)
+  if options.class == Symbol || options.class == String
     content = {content: options}
     options = content
   end
@@ -94,12 +110,15 @@ def video(options = nil)
 end
 
 def web(options = nil)
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:web][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-  if options && (options.class == Symbol || options.class == String)
+  if options.class == Symbol || options.class == String
     content = {content: options}
     options = content
   end
@@ -110,12 +129,15 @@ end
 
 def tool(options = nil)
 
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:tool][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-  if options && (options.class == Symbol || options.class == String)
+  if options.class == Symbol || options.class == String
     content = {content: options}
     options = content
   end
@@ -125,12 +147,15 @@ def tool(options = nil)
 end
 
 def particle(options = nil)
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:particle][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-  if options && (options.class == Symbol || options.class == String)
+  if options.class == Symbol || options.class == String
     content = {content: options}
     options = content
   end
@@ -141,12 +166,15 @@ def particle(options = nil)
 end
 
 def user(options = nil)
-  refresh = if options && (options[:render] == false || options[:render] == :false)
+  unless options
+    options={content: Atome.presets[:user][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
               false
             else
               true
             end
-  if options && (options.class == Symbol || options.class == String)
+  if options.class == Symbol || options.class == String
     content = {content: options}
     options = content
   end
@@ -155,22 +183,41 @@ def user(options = nil)
   Atome.new(options, refresh)
 end
 
-#def effect(options = nil)
-#  refresh = if options && (options[:render] == false || options[:render] == :false)
-#              false
-#            else
-#              true
-#            end
-#  if options && (options.class == Symbol || options.class == String)
-#    content = {content: options}
-#    options = content
-#  end
-#  options && options.class == Hash
-#  options = {type: :effect, preset: :effect}.merge(options)
-#  Atome.new(options, refresh)
-#end
+def effect(options = nil)
+  unless options
+    options={content: Atome.presets[:text][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
+              false
+            else
+              true
+            end
+  if options.class == Symbol || options.class == String
+    content = {content: options}
+    options = content
+  end
+  options && options.class == Hash
+  options = {type: :effect, preset: :effect}.merge(options)
+  Atome.new(options, refresh)
+end
 
-
+def constraint(options = nil)
+  unless options
+    options={content: Atome.presets[:text][:content]}
+  end
+  refresh = if options[:render] == false || options[:render] == :false
+              false
+            else
+              true
+            end
+  if options.class == Symbol || options.class == String
+    content = {content: options}
+    options = content
+  end
+  options && options.class == Hash
+  options = {type: :constraint, preset: :constraint}.merge(options)
+  Atome.new(options, refresh)
+end
 class Device
   def initialize
     # do not change the order of object creation below as the atome_id of those system object is based on their respective order

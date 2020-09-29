@@ -167,7 +167,6 @@ module Nucleon
         group(params, refresh, add)
       end
 
-
       def parent(params = nil, refresh = true, add = false)
         if params
           atome = find_atome_from_params(params)
@@ -344,7 +343,6 @@ module Nucleon
       def detach=(params = nil, refresh = true, add = false)
         detach(params, refresh, add)
       end
-
 
       def selector(params = nil, refresh = true, add = false)
         if params || params == false
@@ -963,7 +961,8 @@ module Nucleon
 
       # creation of object in object
       def image(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:image][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -988,7 +987,7 @@ module Nucleon
       end
 
       def text(params = nil, refresh = true, add = false)
-        params={content: lorem} unless params
+        params={content: Atome.presets[:text][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
@@ -1014,7 +1013,8 @@ module Nucleon
       end
 
       def box(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:box][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -1039,7 +1039,8 @@ module Nucleon
       end
 
       def circle(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:circle][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -1062,7 +1063,8 @@ module Nucleon
       end
 
       def user(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:user][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -1087,7 +1089,8 @@ module Nucleon
       end
 
       def video(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:video][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -1114,9 +1117,9 @@ module Nucleon
         video(params, refresh, add)
       end
 
-
       def audio(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:audio][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -1137,13 +1140,13 @@ module Nucleon
 
       end
 
-
       def audio=(params = nil, refresh = true, add = false)
         audio(params, refresh, add)
       end
 
       def web(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:web][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -1168,7 +1171,8 @@ module Nucleon
       end
 
       def particle(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:particle][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -1191,7 +1195,8 @@ module Nucleon
       end
 
       def tool(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:tool][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -1216,7 +1221,8 @@ module Nucleon
       end
 
       def effect(params = nil, refresh = true, add = false)
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:effect][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
@@ -1240,10 +1246,9 @@ module Nucleon
         effect(params, refresh, add)
       end
 
-
       def constraint(params = nil, refresh = true, add = false)
-
-        if params && (params.class == Symbol || params.class == String)
+        params={content: Atome.presets[:constraint][:content]} unless params
+        if params.class == Symbol || params.class == String
           content = {content: params}
           params = content
         end
