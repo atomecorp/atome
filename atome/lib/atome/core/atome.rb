@@ -132,11 +132,8 @@ module Nucleon
 
       def enliven(params, refresh = true)
         if render ==false || render ==:false
-          #alert "message is \n\n#{inspect} \n\nLocation: atome.rb, line 128"
         @@black_hole.each do |atome_deleted|
           if atome_deleted.id.to_sym == id.to_sym
-        #    @@black_hole.delete(atome_deleted)
-        #    #@@atomes |= [atome]
           end
         end
         if refresh

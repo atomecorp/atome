@@ -9,6 +9,12 @@ class Element
       Native(`self.offset({left: #{left}, top: #{top}})`)
     end
   end
+  def offsetTop
+    Native(`self[0].offsetTop; `)
+  end
+  def offsetLeft
+    Native(`self[0].offsetLeft; `)
+  end
 end
 
 class Event

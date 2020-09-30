@@ -1,7 +1,9 @@
+- monstruous bug when inserting an object into an other, the child lose it's position, the offset is also fucked, the bug is worse when deleting and enliven an atome!!!
+- monstruous bug 2 when enliven atome child often it's drag ability and sometims disapear
 - Write windows install documentation
 - render and enliven loose centering
 - using .prpoerty method destroy event such as 'touch'
-- meke enliven works when object has child or parent ex :  b = box({id: :toto})
+- make enliven works when object has child or parent ex :  b = box({id: :toto})
                                                            b.color(:red)
                                                            t=b.text({content: :kooly, id: :titi, color: :white, y: 150})
                                                            t.y(150)
@@ -12,3 +14,6 @@
                                                            r.touch do
                                                             get(:titi).enliven(true)
                                                            end
+-  prevent object from beeing insert many times in the same parent
+- allow this syntax a.x=b.x-c.x( not possible because of content) maybe complex property should have two kind of return a simple and a full. ex a.x => 20 a_.x_full => {content: 20 , dynamic: true}
+- add and atome array and atome hash that inherit ruby array and hash to allow easy batch of atomes

@@ -553,26 +553,62 @@ module Render
       elsif params.class == String || params.class == Symbol
         params = Object.get(params).atome_id
       end
-      child = Element.find('#' + params)
-      parent.append(child)
 
-      parent_top=parent.position.top
-      parent_left=parent.position.left
-      unless child.position
-        alert "message :\n#{atome.id}\n from : html.rb : 562"
-      end
-      #child_top=child.position.top
-      #child_left=child.position.left
-      #child.css('left',parent_left-child_left)
-      #child.css('top',parent_top-child_top)
-      #if parent.offset
-      #  offset=parent.offset
-      #  child.offset(offset)
+      #parent.children.each do |child_found|
+      #  alert "message is \n\n#{child_found} \n\nLocation: html.rb, line 558"
       #end
-      #the line below causes problem when enliven an atome : it's position is lost
-      # alert "message :\n#{:offset_problem}\n from : html.rb : 570"
-      #offset=parent.offset
+      #alert "message is \n\n#{parent.children.to_a.class} \n\nLocation: html.rb, line 560
+      #if grab(params)
+      #  child_to_add=grab(params)
+      #  parent.children.each do |child_found|
+      #    if child_found.id==child_to_add.atome_id
+      #      alert "message is \n\n#{child_found.id} \n\nLocation: html.rb, line 564"
+      #    else
+      #      alert "message is \n\n#{parent.id} : #{child_to_add.atome_id} \n\nLocation: html.rb, line 567"
+      #    end
+      #  end
+      #end
+
+      child = Element.find('#' + params)
+
+      #if child.position
+      #  #alert "message is \n\n#{child.offsetTop} \n\nLocation: html.rb, line 560"
+      #  child_top=child.offsetTop
+      #  child_left=child.offsetTop
+      #  parent_top= parent.offsetTop
+      #  parent_left= parent.offsetTop
+      #  offset_y=child_top-parent_top
+      #  offset_x=child_left-parent_left
+      #  #if atome.id == :toto || atome.id==:titi
+      #    alert "message is #{atome.id} \n\n#{child_top}  : #{parent_top}  \n\nLocation: html.rb, line 563"
+      #  #end
+      #  child.css('top',offset_y.to_s+'px')
+      #  child.css('left',offset_x.to_s+'px')
+      #end
+      parent.append(child)
+      #if grab(params)
+      #  child=grab(params)
+      #  child.x=child.x[:content]-atome.x[:content]
+      #  child.y=child.y[:content]-atome.y[:content]
+      #end
+      #  child_top=child.position.top
+      #  child_left=child.position.left
+      #parent_top=parent.position.top
+      #parent_left=parent.position.left
+      #  child.css('left',child_left-parent_left)
+      #  child.css('top',child_top-parent_top)
+      ##  #if parent.offset
+      ##  #  offset=parent.offset
+      ##  #  child.offset(offset)
+      ##  #end
+      ##  #the line below causes problem when enliven an atome : it's position is lost
+      ##  # alert "message :\n#{:offset_problem}\n from : html.rb : 570"
+      #  offset=parent.offset
       #child.offset(offset)
+
+      #c_offset=child.offset
+      #end
+
     end
   end
 
