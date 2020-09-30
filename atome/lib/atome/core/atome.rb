@@ -152,17 +152,19 @@ module Nucleon
               end
             end
           end
+
         end
         # we enliven childs too
         child&.each do |child|
           child.enliven(true)
         end
-         #we re attach to parent #fixme the preset already attach to view so we can optimise to immedialtly attach to parent instead
+        #grab(:view).insert(self)
         parent.each do |parent|
           parent.insert(self)
         end
-        grab(:view).insert(self)
         end
+        #we re attach to parent #fixme the preset already attach to view so we can optimise to immediatly attach to parent instead
+
 
       end
 

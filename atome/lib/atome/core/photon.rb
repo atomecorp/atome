@@ -276,6 +276,7 @@ module Nucleon
           end
           # now we assign the value
           broadcast(atome_id => {x: params, private: false})
+
           Render.render_x(self, params[:content], add) if refresh
           return self
         else

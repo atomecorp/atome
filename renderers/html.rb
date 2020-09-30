@@ -173,6 +173,7 @@ module Render
   end
 
   def self.render_x(atome, params, add = false)
+
     if !atome.width || atome.width == "auto"
       Element.find('#' + atome.atome_id).css("width", "auto")
     end
@@ -553,15 +554,25 @@ module Render
         params = Object.get(params).atome_id
       end
       child = Element.find('#' + params)
-      #parent_top=parent.position.top
-      #parent_left=parent.position.left
+      parent.append(child)
+
+      parent_top=parent.position.top
+      parent_left=parent.position.left
+      unless child.position
+        alert "message :\n#{atome.id}\n from : html.rb : 562"
+      end
       #child_top=child.position.top
       #child_left=child.position.left
-      parent.append(child)
       #child.css('left',parent_left-child_left)
       #child.css('top',parent_top-child_top)
-      offset=parent.offset
-      child.offset(offset)
+      #if parent.offset
+      #  offset=parent.offset
+      #  child.offset(offset)
+      #end
+      #the line below causes problem when enliven an atome : it's position is lost
+      # alert "message :\n#{:offset_problem}\n from : html.rb : 570"
+      #offset=parent.offset
+      #child.offset(offset)
     end
   end
 
