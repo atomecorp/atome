@@ -125,34 +125,42 @@ module Nucleon
       end
 
       def enliven(params, refresh = true)
-        @@black_hole.each do |atome|
-          if atome.atome_id.to_sym == atome_id.to_sym
-            @@atomes |= [atome]
-            @@black_hole.delete(atome)
+        #if render ==false || render ==:false
+        #  alert "message is \n\n#{inspect} \n\nLocation: atome.rb, line 128"
+          @@black_hole.each do |atome_deleted|
+            if atome_deleted.id.to_sym == id.to_sym
+              #alert "message is \n\n#{@@black_hole} : #{id}\n\nLocation: atome.rb, line 131"
+              @@black_hole.delete(atome_deleted)
+              alert "message is \n\n#{@@atomes.include? self} \n\nLocation: atome.rb, line 134"
+              #@@atomes |= [atome]
+              #alert "message is \n\n#{@@black_hole} \n\nLocation: atome.rb, line 136"
+            end
+            #alert "message is \n\n#{@@black_hole} \n\nLocation: atome.rb, line 131"
           end
-        end
-        if refresh
-          properties.each do |property|
-            property.each do |key, value|
-              key = key.to_sym
-              if key == :group
-              elsif key == :parent
-              elsif key == :atome_id
-              elsif key == :render
-              else
-                send(key, value)
+          if refresh
+            properties.each do |property|
+              property.each do |key, value|
+                key = key.to_sym
+                if key == :group
+                elsif key == :parent
+                elsif key == :atome_id
+                elsif key == :render
+                else
+                  send(key, value)
+                end
               end
             end
           end
-        end
-        # we enliven childs too
-        child&.each do |child|
-          child.enliven(true)
-        end
-        # we re attach to parent #fixme the preset already attach to view so we can optimise to immedialtly attach to parent instead
-        parent.each do |parent|
-          parent.insert(self)
-        end
+          # we enliven childs too
+          #child&.each do |child|
+          #  child.enliven(true)
+          #end
+          # we re attach to parent #fixme the preset already attach to view so we can optimise to immedialtly attach to parent instead
+          #parent.each do |parent|
+          #  parent.insert(self)
+          #end
+          grab(:view).insert(self)
+        #end
 
       end
 

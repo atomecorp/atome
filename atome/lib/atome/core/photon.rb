@@ -9,14 +9,18 @@ module Nucleon
 
       def render params = nil, refresh = true, add = false
         if params || params == false
-          @render = params
           if params == false || params == :false
-            #alert "message is \n\n#{atome_id} \n\nLocation: photon.rb, line 14"
+            #alert "message is \n\n#{id} \n\nLocation: photon.rb, line 13"
             delete(true)
           else
+            #alert "message is \n\n#{:enliven} \n\nLocation: photon.rb, line 16"
             enliven(true)
           end
+          @render = params
+        else
+          @render
         end
+        #alert "message is \n\n#{inspect} \n\nLocation: photon.rb, line 21"
       end
 
       def render= params = nil, refresh = true, add = false
