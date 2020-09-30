@@ -8,7 +8,20 @@ module Nucleon
       end
 
       def render params = nil, refresh = true, add = false
-        if params || params == false
+        #a_found=[]
+        #Atome.atomes.each do |atome|
+        #  a_found << atome.id
+        #end
+        #
+        #b_found=[]
+        #Atome.blackhole.each do |atome_deleted|
+        #  b_found << atome_deleted.id
+        #end
+        #
+        #
+        #alert "message is \n\n#{a_found.join(' : :')} \n\n  #{b_found.join(' : :')}  \n\n#{id}\n\nLocation: app.rb, line 2116"
+
+      if params || params == false
           if params == false || params == :false
             #alert "message is \n\n#{id} \n\nLocation: photon.rb, line 13"
             delete(true)

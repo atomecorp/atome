@@ -781,11 +781,11 @@ module Render
 
   def self.render_drag(atome, params, add = false)
     unless add
-      atome.delete(:touch)
+      atome.delete(:drag)
     end
     current_atome = Element.find('#' + atome.atome_id)
 
-    device = Element.find("#device")
+    #device = Element.find("#device")
     if params != true
       proc = params[:proc]
       params = params[:params]
@@ -807,7 +807,9 @@ module Render
         top = current_atome.css("top").sub("px", '').to_i
         options = {containment: [left, top, left, top]}
       else
-        options = {containment: "#" + params[:lock].id}
+        if options
+          {containment: "#" + params[:lock].id}
+        end
       end
     end
     current_atome.draggable(options)
@@ -850,7 +852,6 @@ module Render
           current_atome.css("bottom", yy_position)
         end
       end
-
     end
 
   end
