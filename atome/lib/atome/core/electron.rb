@@ -46,22 +46,8 @@ def to_px(obj = nil, property = :top)
   Render.render_to_px(obj, property)
 end
 
-def grab(atome_id)
-  atomes = Atome.atomes
-  atomes.each do |atome|
-    if atome.atome_id == atome_id
-      return atome
-    end
-  end
-  return nil
-end
-
-def delete params, refresh = true
-  alert "message is \n\n#{params} \n\nLocation: electron.rb, line 60"
-end
-
-
 def get(params)
+  #get atome in view from it's id
   #todo get should allow to get object by its property/value (ex : get(color: :red) => return all atome with the property color set to red)
   atomes = Atome.atomes
   if params.class == Hash
@@ -95,6 +81,36 @@ def get(params)
     return false
   end
 end
+
+
+def grab(atome_id)
+  #grab atome in view from it's atome_id
+  atomes = Atome.atomes
+  atomes.each do |atome|
+    if atome.atome_id == atome_id
+      return atome
+    end
+  end
+  return nil
+end
+
+
+def scour(atome_id)
+  #grab atome in blackhole from it's atome_id
+  atomes = Atome.blackhole
+  atomes.each do |atome|
+    if atome.atome_id == atome_id
+      return atome
+    end
+  end
+  return nil
+end
+
+def delete params, refresh = true
+  alert "message is \n\n#{params} \n\nLocation: electron.rb, line 60"
+end
+
+
 
 def clear params = :console
   atome = grab(:view)

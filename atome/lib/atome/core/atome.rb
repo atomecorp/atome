@@ -131,17 +131,25 @@ module Nucleon
       end
 
       def enliven(params, refresh = true)
-        if render ==false || render ==:false
+        alert "message is \n\n#{self.id} ; #{render} \n\nLocation: atome.rb, line 134"
+
+        if render ==false || render ==:false || render == :true || render == true
         @@black_hole.each do |atome_deleted|
           if atome_deleted.id.to_sym == id.to_sym
+            alert "message is \n\n cleanup black hole and verif Atome.atomes \n\nLocation: atome.rb, line 139"
           end
         end
-        if refresh
+
+          if refresh
+
           properties.each do |property|
+
             property.each do |key, value|
+              #alert "message is \n\n#{key} \n\nLocation: atome.rb, line 142"
               key = key.to_sym
               if key == :group
               elsif key == :parent
+              #elsif key == :child
               elsif key == :atome_id
               elsif key == :render
               else
@@ -149,12 +157,28 @@ module Nucleon
               end
             end
           end
-
         end
         # we enliven childs too
-        child&.each do |child|
-          child.enliven(true)
+        if child
+          @child.each do |child_found|
+              #scour(child_found).enliven(true)
+              alert "message is \n\n#{scour(child_found).inspect} \n\nLocation: atome.rb, line 164"
+            #@@black_hole.each do |deleted|
+            #  alert "message is \n\n#{child_found} : #{deleted.atome_id} \n\nLocation: atome.rb, line 177"
+            #end
+          end
+          #alert "message is \n\n#{child.length} \n\nLocation: atome.rb, line 157"
+          #child.each do |child_found|
+          #  alert "message is \n\n#{child_found.id} \n\nLocation: atome.rb, line 160"
+          #end
+          #properties[:child].each do |child_found|
+          #  #alert "message is \n\n#{child_found} \n\nLocation: atome.rb, line 162"
+          #
+          #end
         end
+        #child&.each do |child|
+        #  #child.enliven(true)
+        #end
         #grab(:view).insert(self)
         parent.each do |parent|
           parent.insert(self)
