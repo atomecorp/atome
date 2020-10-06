@@ -8,7 +8,11 @@ def select selector
       collected_atomes << atome
     end
   end
+end
 
+
+def selected params
+  #Atomes.atomes
 end
 
 def get_proc_content(proc)
@@ -72,7 +76,9 @@ def get(params)
       end
     end
     return collected_atomes
-  else
+  elsif (params.class ==String || params.class ==Symbol)&& params.to_sym== :all
+    #alert "message :\n#{"we slected all children view"}\n from : electron.rb : 80"
+  elsif params.class ==String || params.class ==Symbol
     atomes.each do |atome|
       if atome.id.to_s == params.to_s
         return atome

@@ -35,7 +35,6 @@ module Nucleon
                      params[:type]
                    end
           preset = Proton.presets[preset]
-
         end
         #  we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
         atome_id = if @@atomes.length == 0
@@ -131,57 +130,56 @@ module Nucleon
       end
 
       def enliven(params, refresh = true)
-        #alert "id is:\n\n#{self.id} , \nrender is :\n  #{render} \n\nLocation: atome.rb, line 134"
-        if render == false || render == :false || render == :true || render == true
-          @@black_hole.each do |atome_deleted|
-            if atome_deleted.id.to_sym == id.to_sym
-              #alert "message is \n\n cleanup black hole and verif Atome.atomes \n\nLocation: atome.rb, line 137"
-            end
-          end
-          if refresh
-            properties.each do |property|
-              property.each do |key, value|
-                #alert "message is \n\n#{key} \n\nLocation: atome.rb, line 142"
-                key = key.to_sym
-                if key == :group
-                  @group= value
-                elsif key == :parent
-                  @parent= value
-                elsif key == :child
-                  @child = value
-                elsif key == :atome_id
-                elsif key == :render
-                  @render = value
-                else
-                  send(key, value)
-                end
-              end
-            end
-          end
-          if child # we enliven childs too
-            @child.each do |child_found|
-              #scour(child_found).enliven(true)
-              #alert "message is \n\n#{scour(child_found).inspect} \n\nLocation: atome.rb, line 164"
-              #@@black_hole.each do |deleted|
-              #  alert "message is \n\n#{child_found} : #{deleted.atome_id} \n\nLocation: atome.rb, line 177"
-              #end
-            end
-            #alert "message is \n\n#{child.length} \n\nLocation: atome.rb, line 157"
-            #child.each do |child_found|
-            #  alert "message is \n\n#{child_found.id} \n\nLocation: atome.rb, line 160"
-            #end
-            #properties[:child].each do |child_found|
-            #  #alert "message is \n\n#{child_found} \n\nLocation: atome.rb, line 162"
-            #end
-          end
-          #child&.each do |child|
-          #  #child.enliven(true)
-          #end
-          parent.each do |parent|
-            parent.insert(self)
-          end
-        end
-        #we re attach to parent #fixme the preset already attach to view so we can optimise to immediatly attach to parent instead
+        #if render == false || render == :false || render == :true || render == true
+        #  @@black_hole.each do |atome_deleted|
+        #    if atome_deleted.id.to_sym == id.to_sym
+        #      #alert "message is \n\n cleanup black hole and verif Atome.atomes \n\nLocation: atome.rb, line 137"
+        #    end
+        #  end
+        #  if refresh
+        #    properties.each do |property|
+        #      property.each do |key, value|
+        #        #alert "message is \n\n#{key} \n\nLocation: atome.rb, line 142"
+        #        key = key.to_sym
+        #        if key == :group
+        #          @group= value
+        #        elsif key == :parent
+        #          @parent= value
+        #        elsif key == :child
+        #          @child = value
+        #        elsif key == :atome_id
+        #        elsif key == :render
+        #          @render = value
+        #        else
+        #          send(key, value)
+        #        end
+        #      end
+        #    end
+        #  end
+        #  if child # we enliven childs too
+        #    @child.each do |child_found|
+        #      #scour(child_found).enliven(true)
+        #      #alert "message is \n\n#{scour(child_found).inspect} \n\nLocation: atome.rb, line 164"
+        #      #@@black_hole.each do |deleted|
+        #      #  alert "message is \n\n#{child_found} : #{deleted.atome_id} \n\nLocation: atome.rb, line 177"
+        #      #end
+        #    end
+        #    #alert "message is \n\n#{child.length} \n\nLocation: atome.rb, line 157"
+        #    #child.each do |child_found|
+        #    #  alert "message is \n\n#{child_found.id} \n\nLocation: atome.rb, line 160"
+        #    #end
+        #    #properties[:child].each do |child_found|
+        #    #  #alert "message is \n\n#{child_found} \n\nLocation: atome.rb, line 162"
+        #    #end
+        #  end
+        #  #child&.each do |child|
+        #  #  #child.enliven(true)
+        #  #end
+        #  parent.each do |parent|
+        #    parent.insert(self)
+        #  end
+        #end
+        ##we re attach to parent #fixme the preset already attach to view so we can optimise to immediatly attach to parent instead
       end
 
 
