@@ -22,12 +22,21 @@ module Nucleon
         #alert "message is \n\n#{a_found.join(' : :')} \n\n  #{b_found.join(' : :')}  \n\n#{id}\n\nLocation: app.rb, line 2116"
 
       if params || params == false
+        alert "message is \n\n#{id} \n\nLocation: photon.rb, line 25"
+
+        
           if params == false || params == :false
             #alert "message is \n\n#{id} \n\nLocation: photon.rb, line 13"
             delete(true)
           else
             #alert "message is \n\n#{:enliven} \n\nLocation: photon.rb, line 16"
-            enliven(true)
+            a_found=[]
+            Atome.atomes.each do |atome|
+              a_found << atome.id
+            end
+            if !a_found.include? atome_id
+              enliven(true)
+            end
           end
           @render = params
         else

@@ -173,7 +173,9 @@ module Render
   end
 
   def self.render_x(atome, params, add = false)
-
+    #if x[:content]
+    #  value = x[:content]
+    #end
     if !atome.width || atome.width == "auto"
       Element.find('#' + atome.atome_id).css("width", "auto")
     end
@@ -181,6 +183,9 @@ module Render
   end
 
   def self.render_y(atome, params, add = false)
+    #if y[:content]
+    #  value = y[:content]
+    #end
     if !atome.height || atome.height == "auto"
       Element.find('#' + atome.atome_id).css("height", "auto")
     end
@@ -193,6 +198,9 @@ module Render
 
 
   def self.render_xx(atome, params, add = false)
+    #if xx[:content]
+    #  value = xx[:content]
+    #end
     if !atome.width || atome.width == "auto"
       Element.find('#' + atome.atome_id).css("width", "auto")
     else
@@ -202,6 +210,9 @@ module Render
   end
 
   def self.render_yy(atome, params, add = false)
+    #if yy[:content]
+    #  value = yy[:content]
+    #end
     if !atome.height || atome.height == "auto"
       Element.find('#' + atome.atome_id).css("height", "auto")
     else
