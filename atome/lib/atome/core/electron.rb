@@ -102,13 +102,29 @@ end
 
 
 def scour(atome_id)
-  #grab atome in blackhole from it's atome_id
-  atomes = Atome.blackhole
-  atomes.each do |atome|
-    if atome.atome_id == atome_id
-      return atome
+  #search atome anyhere from it's atome_id
+  atomes = Atome.atomes+Atome.blackhole
+  if atome_id.to_sym ==:all
+    atomes_found=[]
+    atomes.each do |atome|
+      atomes_found<< atome.id
+    end
+    atomes_found.delete(:blackhole)
+    atomes_found.delete(:dark_matter)
+    atomes_found.delete(:device)
+    atomes_found.delete(:intuition)
+    atomes_found.delete(:view)
+    atomes_found.delete(:actions)
+    alert "message :\n#{atomes_found}\n from : electron.rb : 112"
+    return atomes_found
+  else
+    atomes.each do |atome|
+      if atome.atome_id == atome_id
+        return atome
+      end
     end
   end
+
   return nil
 end
 

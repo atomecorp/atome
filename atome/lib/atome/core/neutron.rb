@@ -174,7 +174,8 @@ module Nucleon
           end
           atome.insert(self)
         else
-          # we check if the properties store is a string (atome-id), if its an array or an atome when return the raw value
+          #alert "message :\n#{self.id}\n from : neutron.rb : 177"
+          # we check if the properties store is a string (atome_id), if its an array or an atome when return the raw value
           if @parent.class == String || @parent.class == Symbol
             grab(@parent)
           elsif @parent.class == Array
@@ -187,6 +188,7 @@ module Nucleon
           else
             @parent
           end
+
         end
       end
 
