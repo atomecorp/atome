@@ -739,6 +739,7 @@ module Render
   # events
 
   def self.render_touch(atome, params, add = false)
+    alert "message :\n#{atome.id}\n from : html.rb : 742"
     unless add
       atome.delete(:touch)
     end
@@ -831,7 +832,6 @@ module Render
       atome.delete(:drag)
     end
     current_atome = Element.find('#' + atome.atome_id)
-
     #device = Element.find("#device")
     if params != true
       proc = params[:proc]
@@ -863,13 +863,10 @@ module Render
     xx_position = ""
     yy_position = ""
     current_atome.on(:drag) do |evt|
-      #bottom_pos = device.height - current_atome.offset().top - current_atome.height
-      #atome.yy(bottom_pos, false)
       ##for future use to stop event propagation
       #evt.stop_propagation
       proc.call(evt) if proc.is_a?(Proc)
       # we update current_atome position
-
       if atome.x
         x_position = current_atome.css('left').sub('px','').to_i
         atome.x({content: x_position}, false)
@@ -900,7 +897,6 @@ module Render
         end
       end
     end
-
   end
 
   def self.render_enter(atome, params, add = false)
