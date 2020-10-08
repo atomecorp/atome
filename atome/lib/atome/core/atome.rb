@@ -140,8 +140,8 @@ module Nucleon
             #  #alert "message is \n\n #{atome_deleted.id.to_sym}\n\n#{id.to_sym}, line 137"
             #end
           end
-          alert "message is c\n\n \n\n#{atome_id.to_sym}, line 143"
-        alert "message is \n\n#{blackhole_content} \n\nLocation: atome.rb, line 144"
+          alert "atome to enlive\n\n \n\n#{atome_id.to_sym} \n\n, Location: atome.rb, line 144"
+        alert "blackhole content\n\n#{blackhole_content} \n\n,Location: atome.rb, line 144"
         ##  if refresh
         ##    properties.each do |property|
         ##      property.each do |key, value|
