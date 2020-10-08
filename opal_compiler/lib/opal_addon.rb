@@ -10,10 +10,10 @@ class Element
     end
   end
   def offsetTop
-    Native(`self[0].offsetTop; `)
+    Native(`self[0].offsetTop`)
   end
   def offsetLeft
-    Native(`self[0].offsetLeft; `)
+    Native(`self[0].offsetLeft`)
   end
 end
 
