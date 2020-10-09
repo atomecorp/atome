@@ -1082,20 +1082,21 @@ strdelim
 
   def enliven_api
     demo_code = <<strdelim
-t=text({content: "click to delete and I will undelete it!!", color: :lightgray , x: 350, y: 130})
+t=text({content: "Click to box to delete it,\nThen click me to undelete it!!", color: :lightgray , x: 350, y: 130})
 b = box()
 c=circle({x: 70 , y: 70, drag: true})
 b.insert(c)
 b.x(500)
-b.y(180)
-  b.color(:orange)
-  b.touch do
-    b.delete(true)
-    wait 0.3 do
-      #to enliven and attach it to an object (in this case the view)
-      b.enliven(true)
-    end
-  end
+b.y(200)
+b.color(:orange)
+
+b.touch do
+  b.delete(true)
+end
+
+t.touch do
+  b.enliven(true)
+end
 strdelim
     self.puts_help :enliven, demo_code
   end
