@@ -370,9 +370,6 @@ module Nucleon
 
       # events
       def touch(params = nil, refresh = true, add = false, &proc)
-        if id.to_sym == :c
-          alert "#{id}:#{params}\n#{add}\n#{params}\n from : neutron.rb : 374"
-        end
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc
           case params
@@ -673,6 +670,7 @@ module Nucleon
           when Hash
             options = params
           when Array
+            error "recursive analysis of array here"
           else
             options = {:option => params}
           end
@@ -707,7 +705,6 @@ module Nucleon
                      else
                        params
                      end
-
             params = {params: option, proc: proc}
             Render.render_drag(self, params, add)
           end

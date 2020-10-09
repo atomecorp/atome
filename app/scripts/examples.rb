@@ -1084,9 +1084,11 @@ strdelim
     demo_code = <<strdelim
 t=text({content: "click to delete and I will undelete it!!", color: :lightgray , x: 350, y: 130})
 b = box()
+c=circle({x: 70 , y: 70, drag: true})
+b.insert(c)
 b.x(500)
 b.y(180)
-  b.color(:red)
+  b.color(:orange)
   b.touch do
     b.delete(true)
     wait 0.3 do
@@ -1094,9 +1096,6 @@ b.y(180)
       b.enliven(true)
     end
   end
-t.touch do 
-alert b.inspect
-end
 strdelim
     self.puts_help :enliven, demo_code
   end

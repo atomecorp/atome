@@ -739,7 +739,7 @@ module Render
   # events
 
   def self.render_touch(atome, params, add = false)
-    alert "message :\n#{atome.id}\n from : html.rb : 742"
+    #alert "message :\n#{atome.id}\n from : html.rb : 742"
     unless add
       atome.delete(:touch)
     end
