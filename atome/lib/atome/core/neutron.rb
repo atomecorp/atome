@@ -369,7 +369,7 @@ module Nucleon
       end
 
       # events
-      def touch(params = nil, refresh = true, add = false, &proc)
+      def touch(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc
           case params
@@ -378,22 +378,22 @@ module Nucleon
           when Hash
             options = params
           when Array
-            error "recursive analysis of array here"
+            error "recursive analysis of array needed here"
           else
             options = {:option => params}
           end
-          bloc = {:content => proc}.merge(options)
-          if add
+          options = {:content => proc}.merge(options)
+          if params && (params[:add] || params[:add] == false || params[:add] == :false)
             if touch.class == Array
-              @touch << bloc
+              @touch << options
             else
               prop_array = []
               prop_array << @touch
-              prop_array << bloc
+              prop_array << options
               @touch = prop_array
             end
           else
-            @touch = bloc
+            @touch = options
           end
           broadcast(atome_id => {touch: params, private: false})
           if refresh
@@ -402,11 +402,14 @@ module Nucleon
                        :touch
                      when Hash
                        params[:option]
+                       #options
                      else
                        params
                      end
+            alert "message :\n#{params}\n from : neutron.rb : 409"
+
             params = {params: option, proc: proc}
-            Render.render_touch(self, params, add)
+            Render.render_touch(self, params)
           end
           self
         else

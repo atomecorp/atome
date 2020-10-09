@@ -738,9 +738,11 @@ module Render
 
   # events
 
-  def self.render_touch(atome, params, add = false)
-    #alert "message :\n#{atome.id}\n from : html.rb : 742"
-    unless add
+  def self.render_touch(atome, params)
+    alert "message :\n#{params}\n from : html.rb : 742"
+    #if !params || !params[:add] || (params[:add]==false ||params[:add]==:false)
+    unless params[:add]!= true || params[:add]!= :true
+      alert "message :\n#{:added}\n from : html.rb : 744"
       atome.delete(:touch)
     end
     if params != true
