@@ -788,63 +788,11 @@ module Render
     return atome
   end
 
-  def self.render_update_atome (atome, property, value)
-    atome.send(property, value, false)
-  end
-
-  def self.render_key(atome, params, add = false)
-    unless add
-      atome.delete(:touch)
-    end
-    if params != true
-      proc = params[:proc]
-      params = params[:params]
-    end
-    if params == :down
-      Element.find('#' + atome.atome_id).on("keydown") do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
-    elsif params == :up
-      Element.find('#' + atome.atome_id).on("keyup") do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
-    else
-      view = JS_utils.document
-      view.on(:keypress) do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
-    end
-    return atome
-
-  end
-
-  def self.render_over(atome, params, add = false)
-    if params != true
-      proc = params[:proc]
-      params = params[:params]
-    end
-    if params == :enter || params == :in
-      Element.find('#' + atome.atome_id).mouseenter do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
-    elsif params == :exit || params == :leave || params == :out
-      Element.find('#' + atome.atome_id).mouseleave do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
-    else
-      Element.find('#' + atome.atome_id).mouseover do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
-    end
-    return atome
-  end
-
   def self.render_drag(atome, params, add = false)
     unless add
       atome.delete(:drag)
     end
     current_atome = Element.find('#' + atome.atome_id)
-    #device = Element.find("#device")
     if params != true
       proc = params[:proc]
       params = params[:params]
@@ -911,6 +859,29 @@ module Render
     end
   end
 
+
+
+  def self.render_over(atome, params, add = false)
+    if params != true
+      proc = params[:proc]
+      params = params[:params]
+    end
+    if params == :enter || params == :in
+      Element.find('#' + atome.atome_id).mouseenter do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    elsif params == :exit || params == :leave || params == :out
+      Element.find('#' + atome.atome_id).mouseleave do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    else
+      Element.find('#' + atome.atome_id).mouseover do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    end
+    return atome
+  end
+
   def self.render_enter(atome, params, add = false)
     atome_id = '#' + atome.atome_id
 
@@ -947,6 +918,35 @@ module Render
       :true
     end
     JS_utils.drop(atome_id, proc)
+  end
+
+  def self.render_key(atome, params, add = false)
+    unless add
+      atome.delete(:touch)
+    end
+    if params != true
+      proc = params[:proc]
+      params = params[:params]
+    end
+    if params == :down
+      Element.find('#' + atome.atome_id).on("keydown") do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    elsif params == :up
+      Element.find('#' + atome.atome_id).on("keyup") do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    else
+      view = JS_utils.document
+      view.on(:keypress) do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    end
+    return atome
+  end
+
+  def self.render_update_atome (atome, property, value)
+    atome.send(property, value, false)
   end
 
   def self.render_scale(atome, params, add = false)
