@@ -739,25 +739,26 @@ module Render
   # events
 
   def self.render_touch(atome, params)
-    alert "message :\n#{params}\n from : html.rb : 742"
+    #alert "message :\n#{params}\n from : html.rb : 742"
     #if !params || !params[:add] || (params[:add]==false ||params[:add]==:false)
-    unless params[:add]!= true || params[:add]!= :true
-      alert "message :\n#{:added}\n from : html.rb : 744"
+
+    if params != true
+      proc = params[:content]
+      option = params[:option]
+      add= params[:add]
+    end
+    unless add== true || add == :true
       atome.delete(:touch)
     end
-    if params != true
-      proc = params[:proc]
-      params = params[:params]
-    end
-    if params == :down
+    if option == :down
       Element.find('#' + atome.atome_id).on("touchstart mousedown") do |evt|
         proc.call(evt) if proc.is_a?(Proc)
       end
-    elsif params == :up
-      Element.find('#' + atome.atome_id).on("touchenter") do |evt|
+    elsif option == :up
+      Element.find('#' + atome.atome_id).on("touchend mouseup") do |evt|
         proc.call(evt) if proc.is_a?(Proc)
       end
-    elsif params == :long
+    elsif option == :long
       Element.find('#' + atome.atome_id).on("touchstart mousedown") do |evt|
         @trig = true
         wait 1.2 do

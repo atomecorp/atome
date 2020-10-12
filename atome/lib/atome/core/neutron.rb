@@ -374,8 +374,14 @@ module Nucleon
         if proc
           case params
           when nil
-            options = {option: :touch}
+            options = {option: :touch, add: false}
           when Hash
+            unless params[:option]
+              params[:option] = :touch
+            end
+            unless params[:add]
+              params[:add] = false
+            end
             options = params
           when Array
             error "recursive analysis of array needed here"
@@ -395,21 +401,9 @@ module Nucleon
           else
             @touch = options
           end
-          broadcast(atome_id => {touch: params, private: false})
+          broadcast(atome_id => {touch: options, private: false})
           if refresh
-            option = case params
-                     when nil
-                       :touch
-                     when Hash
-                       params[:option]
-                       #options
-                     else
-                       params
-                     end
-            alert "message :\n#{params}\n from : neutron.rb : 409"
-
-            params = {params: option, proc: proc}
-            Render.render_touch(self, params)
+            Render.render_touch(self, options)
           end
           self
         else
