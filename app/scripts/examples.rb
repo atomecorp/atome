@@ -141,6 +141,24 @@ strdelim
     self.puts_help :smooth, demo_code
   end
 
+  def add_touch
+    demo_code = <<strdelim
+b=box()
+b.drag(true)
+b.touch(option: :down) do
+b.color(:orange)
+end
+c=circle()
+c.y=50
+c.drag(true)
+c.touch(option: :down, add: true) do
+c.color(:violet)
+end
+
+strdelim
+    self.puts_help :smooth, demo_code
+  end
+
 
   def smooth
     demo_code = <<strdelim

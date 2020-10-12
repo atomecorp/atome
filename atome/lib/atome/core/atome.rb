@@ -13,7 +13,7 @@ module Nucleon
       @@device = ''
 
       def self.version
-        'v:0.007e'
+        'v:0.007f'
       end
 
       def initialize(params, refresh = true)
