@@ -37,7 +37,7 @@ module Nucleon
         user = visual.merge({type: :user, color: :transparent, name: :anonymous, pass: :none, content: :anonymous}).merge(@@user)
         color = {content: :black}.merge(@@color)
         shadow = {x: 0, y: 0, blur: 7, thickness: 0, color: 'rgba(0,0,0,0.3)', invert: false}.merge(@@shadow)
-        border = {default: {thickness: 1, pattern: :dotted, color: :black}}.merge(@@border)
+        border = {thickness: 1, pattern: :solid, color: :red}.merge(@@border)
         blur = {default: 5}.merge(@@blur)
 
 

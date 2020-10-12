@@ -41,10 +41,10 @@ module Render
       end
     end
     #atome.properties.each do |property|
-      #we collect all previously stored property to avoid inifinite recursive loop and atome_id which may be already set as it should be set in first
-      #unless property.keys[0].to_sym == :type || property.keys[0].to_sym == :parent || property.keys[0].to_sym == :advertise || property.keys[0].to_sym == :preset || property.keys[0].to_sym == :atome_id || property.keys[0].to_sym == :child || property.keys[0].to_sym == :center || property.keys[0].to_sym == :render
-      #  send("render_" + property.keys[0], atome, property.values[0])
-      #end
+    #we collect all previously stored property to avoid inifinite recursive loop and atome_id which may be already set as it should be set in first
+    #unless property.keys[0].to_sym == :type || property.keys[0].to_sym == :parent || property.keys[0].to_sym == :advertise || property.keys[0].to_sym == :preset || property.keys[0].to_sym == :atome_id || property.keys[0].to_sym == :child || property.keys[0].to_sym == :center || property.keys[0].to_sym == :render
+    #  send("render_" + property.keys[0], atome, property.values[0])
+    #end
     #end
   end
 
@@ -78,7 +78,7 @@ module Render
         height = $images_list[params.to_sym][:height]
       end
       Element.find('#' + atome.atome_id).css('background-image', 'url(' + path)
-      Element.find('#' + atome.atome_id).css('background-size','100% 100%')
+      Element.find('#' + atome.atome_id).css('background-size', '100% 100%')
       if width.nil?
         width = 300
       end
@@ -99,12 +99,12 @@ module Render
              end
       Element.find('#' + atome.atome_id).find('video').html("<source src=" + path + " type='video/mp4'></source>")
       unless atome.width
-        atome.width= Element.find('#' + atome.atome_id).find('video').width
+        atome.width = Element.find('#' + atome.atome_id).find('video').width
       end
       unless atome.height
-        atome.height= Element.find('#' + atome.atome_id).find('video').height
+        atome.height = Element.find('#' + atome.atome_id).find('video').height
       end
-      Element.find('#' + atome.atome_id).find('video').css('width','100%')
+      Element.find('#' + atome.atome_id).find('video').css('width', '100%')
       #Element.find('#' + params.atome_id).width
     elsif atome.type == "audio"
       path = if $audios_list[params.to_sym].nil?
@@ -405,6 +405,10 @@ module Render
              else
                " "
              end
+    if params && params.class == Hash && params[:add]
+      add = params[:add]
+    end
+
     if add
       if atome.type == :text || atome.type == :image
         prev_prop = Element.find('#' + atome.atome_id).css('text-shadow')
@@ -426,20 +430,29 @@ module Render
     formated_params = case params
                       when Array
                       when Hash
-                        properties = Nucleon::Core::Proton.presets[:shadow]
+                        properties = Nucleon::Core::Proton.presets[:border]
                         params.each do |key, value|
                           properties[key] = value
                         end
                         properties
-                      when String, Symbol
-                        params
                       when Boolean
-                        Nucleon::Core::Proton.presets[:shadow]
+                        Nucleon::Core::Proton.presets[:border]
+                      when String, Symbol
+                        if params.to_sym == :true
+                          Nucleon::Core::Proton.presets[:border]
+                        else
+                          {thickness: params}
+                        end
                       end
     pattern = formated_params[:pattern]
     thickness = formated_params[:thickness]
     color = formated_params[:color]
-    Element.find('#' + atome.atome_id).css('border', thickness.to_s + 'px ' + pattern + ' ' + color)
+    if formated_params[:add]
+      #todo = find a way to create multiple border in css, if not use shadow to create seconf border
+      Element.find('#' + atome.atome_id).css('border', thickness.to_s + 'px ' + pattern + ' ' + color)
+    else
+      Element.find('#' + atome.atome_id).css('border', thickness.to_s + 'px ' + pattern + ' ' + color)
+    end
   end
 
   def self.render_smooth(atome, params, add = false)
@@ -739,15 +752,12 @@ module Render
   # events
 
   def self.render_touch(atome, params)
-    #alert "message :\n#{params}\n from : html.rb : 742"
-    #if !params || !params[:add] || (params[:add]==false ||params[:add]==:false)
-
-    if params != true
+    if params && params.class == Hash
       proc = params[:content]
       option = params[:option]
-      add= params[:add]
+      add = params[:add]
     end
-    unless add== true || add == :true
+    unless add == true || add == :true
       atome.delete(:touch)
     end
     if option == :down
@@ -770,7 +780,6 @@ module Render
       Element.find('#' + atome.atome_id).on("touchend mouseup") do |evt|
         @trig = false
       end
-
     else
       Element.find('#' + atome.atome_id).on(:click) do |evt|
         proc.call(evt) if proc.is_a?(Proc)
@@ -871,11 +880,11 @@ module Render
       proc.call(evt) if proc.is_a?(Proc)
       # we update current_atome position
       if atome.x
-        x_position = current_atome.css('left').sub('px','').to_i
+        x_position = current_atome.css('left').sub('px', '').to_i
         atome.x({content: x_position}, false)
       end
       if atome.y
-        y_position = current_atome.css('top').sub('px','').to_i
+        y_position = current_atome.css('top').sub('px', '').to_i
         atome.y({content: y_position}, false)
       end
       if atome.xx

@@ -159,12 +159,20 @@ strdelim
     self.puts_help :smooth, demo_code
   end
 
+  def border
+    demo_code = <<strdelim
+b=box()
+b.x(250)
+b.border({thickness: 3, pattern: :dashed})
+strdelim
+    self.puts_help :smooth, demo_code
+  end
 
   def smooth
     demo_code = <<strdelim
 b=box()
 b.x(250)
-b.smooth(7)
+b.smooth([25 ,7])
 strdelim
     self.puts_help :smooth, demo_code
   end
@@ -173,6 +181,7 @@ strdelim
     demo_code = <<strdelim
 b = box
 b.shadow({x: 5, y: 5, blur: 7, color: :black, invert: :true})
+b.shadow({add: :true, x: 20, y: 20, color: "rgba(0,0,0,1)", blur: 16})
 b.x(450)
 b.y(150)
 c = box({color: :orange})

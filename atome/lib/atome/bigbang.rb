@@ -229,6 +229,7 @@ class Device
     view = Atome.new({type: :particle, id: :view, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent})
 # The lines below creat a special atome that holds all resize_actions stored in the @@resize_actionsvariable
     actions = Atome.new
+    actions.id(:actions)
     actions.viewer_actions
     device.language(:english)
     Render.initialize

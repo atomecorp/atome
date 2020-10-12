@@ -7,7 +7,7 @@ module Nucleon
         @align = {}
       end
 
-      def render params = nil, refresh = true, add = false
+      def render params = nil, refresh = true
       if params || params == false
           if params == false || params == :false
             delete(true)
@@ -26,13 +26,13 @@ module Nucleon
         end
       end
 
-      def render= params = nil, refresh = true, add = false
-        render(params, refresh, add)
+      def render= params = nil, refresh = true
+        render(params, refresh)
       end
 
-      def color params = nil, refresh = true, add = false
+      def color params = nil, refresh = true
         if params || params == false
-          if add
+          if params.class== Hash && params[:add]
             if self.color.class == String || self.color.class == Symbol || self.color.class == Hash
               prop_array = []
               prop_array << @color
@@ -47,7 +47,7 @@ module Nucleon
           broadcast(atome_id => {color: params, private: false})
           if refresh
             # we add two condtion to render the object first if we want to refreshit , sencond if type exist (to avoid qending properties to the veiw when the obejct is not present in the view)
-            Render.render_color(self, params, add) if refresh
+            Render.render_color(self, params) if refresh
           end
           return self
         else
@@ -55,16 +55,16 @@ module Nucleon
         end
       end
 
-      def color= params = nil, refresh = true, add = false
-        color(params, refresh, add)
+      def color= params = nil, refresh = true
+        color(params, refresh)
       end
 
-      def opacity params = nil, refresh = true, add = false
+      def opacity params = nil, refresh = true
         if params || params == false
           @opacity = params
           broadcast(atome_id => {opacity: params, private: false})
           if refresh
-            Render.render_opacity(self, params, add) if refresh
+            Render.render_opacity(self, params) if refresh
           end
           return self
         else
@@ -72,8 +72,8 @@ module Nucleon
         end
       end
 
-      def opacity= params = nil, refresh = true, add = false
-        opacity(params, refresh, add)
+      def opacity= params = nil, refresh = true
+        opacity(params, refresh)
       end
 
       #spatial utilities
@@ -141,7 +141,7 @@ module Nucleon
         #alert "message is \n\n#{self.id} \n\nLocation: photon.rb, line 133"
       end
 
-      def center params = nil, refresh = true, add = false
+      def center params = nil, refresh = true
         if params == false || params == :false
           grab(:actions).resize_actions[:center][self]&.delete(:x)
           @x.delete(:center)
@@ -230,12 +230,12 @@ module Nucleon
         self
       end
 
-      def center= params = nil, refresh = true, add = false
-        center(params, refresh, add)
+      def center= params = nil, refresh = true
+        center(params, refresh)
       end
 
 
-      def x params = nil, refresh = true, add = false
+      def x params = nil, refresh = true
         if params || params == false
           #the line below create the hash for the x property
           @x = {} if @x.nil?
@@ -267,18 +267,18 @@ module Nucleon
           # now we assign the value
           broadcast(atome_id => {x: params, private: false})
 
-          Render.render_x(self, params[:content], add) if refresh
+          Render.render_x(self, params[:content]) if refresh
           return self
         else
           @x
         end
       end
 
-      def x= params = nil, refresh = true, add = false
-        x(params, refresh, add)
+      def x= params = nil, refresh = true
+        x(params, refresh)
       end
 
-      def y params = nil, refresh = true, add = false
+      def y params = nil, refresh = true
         if params || params == false
           #the line below create the hash for the y property
           @y = {} if @y.nil?
@@ -309,27 +309,27 @@ module Nucleon
           end
           # now we assign the value
           broadcast(atome_id => {y: params, private: false})
-          Render.render_y(self, params[:content], add) if refresh
+          Render.render_y(self, params[:content]) if refresh
           return self
         else
           @y
         end
       end
 
-      def y= params = nil, refresh = true, add = false
-        y(params, refresh, add)
+      def y= params = nil, refresh = true
+        y(params, refresh)
       end
 
 
-      def left params = nil, refresh = true, add = false
-        x(params, refresh, add)
+      def left params = nil, refresh = true
+        x(params, refresh)
       end
 
-      def left= params = nil, refresh = true, add = false
-        x(params, refresh, add)
+      def left= params = nil, refresh = true
+        x(params, refresh)
       end
 
-      def xx params = nil, refresh = true, add = false
+      def xx params = nil, refresh = true
         if params || params == false
           @xx = {} if @xx.nil?
           if params.class == Integer || params.class == Number
@@ -359,35 +359,35 @@ module Nucleon
           end
           ## now we assign the value
           broadcast(atome_id => {xx: params, private: false})
-          Render.render_xx(self, params[:content], add) if refresh
+          Render.render_xx(self, params[:content]) if refresh
           return self
         else
           @xx
         end
       end
 
-      def xx= params = nil, refresh = true, add = false
-        xx(params, refresh, add)
+      def xx= params = nil, refresh = true
+        xx(params, refresh, )
       end
 
-      def right params = nil, refresh = true, add = false
-        xx(params, refresh, add)
+      def right params = nil, refresh = true
+        xx(params, refresh, )
       end
 
-      def right= params = nil, refresh = true, add = false
-        xx(params, refresh, add)
+      def right= params = nil, refresh = true
+        xx(params, refresh)
       end
 
-      def top params = nil, refresh = true, add = false
-        y(params, refresh, add)
+      def top params = nil, refresh = true
+        y(params, refresh)
       end
 
-      def top= params = nil, refresh = true, add = false
-        y(params, refresh, add)
+      def top= params = nil, refresh = true
+        y(params, refresh)
       end
 
 
-      def yy params = nil, refresh = true, add = false
+      def yy params = nil, refresh = true
         if params || params == false
           @yy = {} if @yy.nil?
           if params.class == Integer || params.class == Number
@@ -417,33 +417,33 @@ module Nucleon
           end
           ## now we assign the value
           broadcast(atome_id => {yy: params, private: false})
-          Render.render_yy(self, params[:content], add) if refresh
+          Render.render_yy(self, params[:content] ) if refresh
           return self
         else
           @yy
         end
       end
 
-      def yy= params = nil, refresh = true, add = false
-        yy(params, refresh, add)
+      def yy= params = nil, refresh = true
+        yy(params, refresh)
       end
 
-      def bottom params = nil, refresh = true, add = false
-        yy(params, refresh, add)
+      def bottom params = nil, refresh = true
+        yy(params, refresh)
 
       end
 
-      def bottom= params = nil, refresh = true, add = false
-        yy(params, refresh, add)
+      def bottom= params = nil, refresh = true
+        yy(params, refresh)
       end
 
 
-      def z params = nil, refresh = true, add = false
+      def z params = nil, refresh = true
         if params || params == false
           @z = params
           broadcast(atome_id => {z: params, private: false})
           if refresh
-            Render.render_z(self, params, add) if refresh
+            Render.render_z(self, params) if refresh
           end
           return self
         else
@@ -451,17 +451,17 @@ module Nucleon
         end
       end
 
-      def z= params = nil, refresh = true, add = false
-        z(params, refresh, add)
+      def z= params = nil, refresh = true
+        z(params, refresh)
       end
 
       #geometry
-      def width params = nil, refresh = true, add = false
+      def width params = nil, refresh = true
         if params || params == false
           @width = params
           broadcast(atome_id => {width: params, private: false})
           if refresh
-            Render.render_width(self, params, add) if refresh
+            Render.render_width(self, params) if refresh
           end
           return self
         else
@@ -469,16 +469,16 @@ module Nucleon
         end
       end
 
-      def width= params = nil, refresh = true, add = false
-        width(params, refresh, add)
+      def width= params = nil, refresh = true
+        width(params, refresh)
       end
 
-      def height params = nil, refresh = true, add = false
+      def height params = nil, refresh = true
         if params || params == false
           @height = params
           broadcast(atome_id => {height: params, private: false})
           if refresh
-            Render.render_height(self, params, add) if refresh
+            Render.render_height(self, params) if refresh
           end
           return self
         else
@@ -486,16 +486,16 @@ module Nucleon
         end
       end
 
-      def height= params = nil, refresh = true, add = false
-        height(params, refresh, add)
+      def height= params = nil, refresh = true
+        height(params, refresh)
       end
 
-      def size params = nil, refresh = true, add = false
+      def size params = nil, refresh = true
         if params || params == false
           @size = params
           broadcast(atome_id => {size: params, private: false})
           if refresh
-            Render.render_size(self, params, add) if refresh
+            Render.render_size(self, params) if refresh
           end
           return self
         else
@@ -503,16 +503,16 @@ module Nucleon
         end
       end
 
-      def size= params = nil, refresh = true, add = false
-        size(params, refresh, add)
+      def size= params = nil, refresh = true
+        size(params, refresh)
       end
 
-      def position params = nil, refresh = true, add = false
+      def position params = nil, refresh = true
         if params || params == false
           @position = params
           broadcast(atome_id => {position: params, private: false})
           if refresh
-            Render.render_position(self, params, add) if refresh
+            Render.render_position(self, params) if refresh
           end
           return self
         else
@@ -520,7 +520,7 @@ module Nucleon
         end
       end
 
-      def align params = nil, refresh = true, add = false
+      def align params = nil, refresh = true
         if params || params == false
           if params == "invert" || params == :invert
             @align = {x: :xx, y: :yy}
@@ -537,24 +537,23 @@ module Nucleon
           elsif params.class == Hash
             @align = params
           end
-
           return self
         else
           @align
         end
       end
 
-      def align= params = nil, refresh = true, add = false
-        align(params, refresh, add)
+      def align= params = nil, refresh = true
+        align(params, refresh)
       end
 
 
-      def overflow params = nil, refresh = true, add = false
+      def overflow params = nil, refresh = true
         if params || params == false
           @overflow = params
           broadcast(atome_id => {overflow: params, private: false})
           if refresh
-            Render.render_overflow(self, params, add) if refresh
+            Render.render_overflow(self, params) if refresh
           end
           return self
         else
@@ -562,13 +561,13 @@ module Nucleon
         end
       end
 
-      def overflow= params = nil, refresh = true, add = false
-        overflow(params, refresh, add)
+      def overflow= params = nil, refresh = true
+        overflow(params, refresh)
       end
 
-      def fill params = nil, refresh = true, add = false
+      def fill params = nil, refresh = true
         if params || params == false
-          if add
+          if params.class == Hash && params[:add]
             if @fill.class == Array
               @fill << params
             else
@@ -577,7 +576,7 @@ module Nucleon
           end
           broadcast(atome_id => {fill: params, private: false})
           if refresh
-            Render.render_fill(self, params, add) if refresh
+            Render.render_fill(self, params) if refresh
           end
           return self
         else
@@ -585,18 +584,18 @@ module Nucleon
         end
       end
 
-      def fill= params = nil, refresh = true, add = false
-        fill(params, refresh, add)
+      def fill= params = nil, refresh = true
+        fill(params, refresh)
       end
 
-      def fit params = nil, refresh = true, add = false
+      def fit params = nil, refresh = true
         if params || params == false
           if params.class == String || params.class == Symbol || params.class == Atome
             #atome= find_atome_from_params(params)
             hashed_params = {target: params}
             params = hashed_params
           end
-          if add
+            if params.class == Hash && params[:add]
             if @fit.class == Array
               @fit << params
             else
@@ -636,11 +635,11 @@ module Nucleon
         end
       end
 
-      def fit= params = nil, refresh = true, add = false
-        fit(params, refresh, add)
+      def fit= params = nil, refresh = true
+        fit(params, refresh)
       end
 
-      def rotate params = nil, refresh = true, add = false
+      def rotate params = nil, refresh = true
         if params || params == false
           @rotate = params
           broadcast(atome_id => {rotate: params, private: false})
@@ -653,13 +652,13 @@ module Nucleon
         end
       end
 
-      def rotate= params = nil, refresh = true, add = false
-        rotate(params, refresh, add)
+      def rotate= params = nil, refresh = true
+        rotate(params, refresh)
       end
 
-      def shadow params = nil, refresh = true, add = false
+      def shadow params = nil, refresh = true
         if params || params == false
-          if add
+            if params.class == Hash && params[:add]
             if @shadow.class == Array
               @shadow << params
             else
@@ -670,7 +669,7 @@ module Nucleon
           end
           broadcast(atome_id => {shadow: params, private: false})
           if refresh
-            Render.render_shadow(self, params, add) if refresh
+            Render.render_shadow(self, params) if refresh
           end
           return self
         else
@@ -678,16 +677,16 @@ module Nucleon
         end
       end
 
-      def shadow= params = nil, refresh = true, add = false
-        shadow(params, refresh, add)
+      def shadow= params = nil, refresh = true
+        shadow(params, refresh)
       end
 
-      def border params = nil, refresh = true, add = false
+      def border params = nil, refresh = true
         if params || params == false
           @border = params
           broadcast(atome_id => {border: params, private: false})
           if refresh
-            Render.render_border(self, params, add) if refresh
+            Render.render_border(self, params) if refresh
           end
           return self
         else
@@ -695,16 +694,16 @@ module Nucleon
         end
       end
 
-      def border= params = nil, refresh = true, add = false
-        border(params, refresh, add)
+      def border= params = nil
+        border(params, refresh)
       end
 
-      def smooth params = nil, refresh = true, add = false
+      def smooth params = nil, refresh = true
         if params || params == false
           @smooth = params
           broadcast(atome_id => {smooth: params, private: false})
           if refresh
-            Render.render_smooth(self, params, add) if refresh
+            Render.render_smooth(self, params) if refresh
           end
           return self
         else
@@ -712,16 +711,16 @@ module Nucleon
         end
       end
 
-      def smooth= params = nil, refresh = true, add = false
-        smooth(params, refresh, add)
+      def smooth= params = nil, refresh = true
+        smooth(params, refresh)
       end
 
-      def blur params = nil, refresh = true, add = false
+      def blur params = nil, refresh = true
         if params || params == false
           @border = params
           broadcast(atome_id => {blur: params, private: false})
           if refresh
-            Render.render_blur(self, params, add) if refresh
+            Render.render_blur(self, params) if refresh
           end
           return self
         else
@@ -729,16 +728,16 @@ module Nucleon
         end
       end
 
-      def blur= params = nil, refresh = true, add = false
-        blur(params, refresh, add)
+      def blur= params = nil, refresh = true
+        blur(params, refresh)
       end
 
-      def level params = nil, refresh = true, add = false
+      def level params = nil, refresh = true
         if params || params == false
           @level = params
           broadcast(atome_id => {level: params, private: false})
           if refresh
-            Render.render_level(self, params, add) if refresh
+            Render.render_level(self, params) if refresh
           end
           return self
         else
@@ -746,8 +745,8 @@ module Nucleon
         end
       end
 
-      def level= params = nil, refresh = true, add = false
-        level(params, refresh, add)
+      def level= params = nil, refresh = true
+        level(params, refresh)
       end
 
       private

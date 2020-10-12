@@ -3,7 +3,6 @@ module Nucleon
   module Core
     #this is a module for Atome gem dedicated to non audiovisual apis
     module Neutron
-
       @@monitor = []
       attr_accessor :id
       attr_accessor :atome_id
@@ -16,7 +15,7 @@ module Nucleon
         properties
       end
 
-      def properties(params = nil, refresh = true, add = false)
+      def properties(params = nil, refresh = true)
         if params || params == false
           error("info is read only!! for now")
         else
@@ -28,30 +27,30 @@ module Nucleon
         end
       end
 
-      def info(params = nil, refresh = true, add = false)
+      def info(params = nil, refresh = true)
         properties
       end
 
-      def id(params = nil, refresh = true, add = false)
+      def id(params = nil, refresh = true)
         if params || params == false
           @id = params.to_sym
           broadcast(atome_id => {id: params, private: false})
-          Render.render_id(self, params, add) if refresh
+          Render.render_id(self, params) if refresh
           self
         else
           @id
         end
       end
 
-      def id=(params = nil, refresh = true, add = false)
-        id(params, refresh, add)
+      def id=(params = nil, refresh = true)
+        id(params, refresh)
       end
 
       def convert(property, unit = :px)
         Render.render_convert self, property, unit
       end
 
-      def name(params = nil, refresh = true, add = false)
+      def name(params = nil, refresh = true)
         if params || params == false
           @name = params.to_sym
           self
@@ -60,26 +59,26 @@ module Nucleon
         end
       end
 
-      def name=(params = nil, refresh = true, add = false)
-        name(params, refresh, add)
+      def name=(params = nil, refresh = true)
+        name(params, refresh)
       end
 
-      def type(params = nil, refresh = true, add = false)
+      def type(params = nil, refresh = true)
         if params || params == false
           @type = params
           broadcast(atome_id => {type: params, private: false})
-          Render.render_type(self, params, add) if refresh
+          Render.render_type(self, params) if refresh
           self
         else
           @type
         end
       end
 
-      def type=(params = nil, refresh = true, add = false)
-        type(params, refresh, add)
+      def type=(params = nil, refresh = true)
+        type(params, refresh)
       end
 
-      def preset(params = nil, refresh = true, add = false)
+      def preset(params = nil)
         if params || params == false
           @preset = params
           self
@@ -88,71 +87,71 @@ module Nucleon
         end
       end
 
-      def preset=(params = nil, refresh = true, add = false)
-        preset(params, refresh, add)
+      def preset=(params = nil, refresh = true)
+        preset(params)
       end
 
-      def content(params = nil, refresh = true, add = false)
+      def content(params = nil, refresh = true)
         if params || params == false
           @content = params
           broadcast(atome_id => {content: params, private: false})
-          Render.render_content(self, params, add) if refresh
+          Render.render_content(self, params) if refresh
           self
         else
           @content
         end
       end
 
-      def content=(params = nil, refresh = true, add = false)
-        content(params, refresh, add)
+      def content=(params = nil, refresh = true)
+        content(params, refresh)
       end
 
-      def edit(params = nil, refresh = true, add = false)
+      def edit(params = nil, refresh = true)
         if params || params == false
           @edit = params
           broadcast(atome_id => {edit: params, private: false})
-          Render.render_edit(self, params, add) if refresh
+          Render.render_edit(self, params) if refresh
           self
         else
           @edit
         end
       end
 
-      def edit=(params = nil, refresh = true, add = false)
-        edit(params, refresh, add)
+      def edit=(params = nil, refresh = true)
+        edit(params, refresh)
       end
 
-      def select(params = nil, refresh = true, add = false)
+      def select(params = nil, refresh = true)
         if params || params == false
           @select = params
           broadcast(atome_id => {select: params, private: false})
-          Render.render_select(self, params, add) if refresh
+          Render.render_select(self, params) if refresh
           self
         else
           @select
         end
       end
 
-      def select=(params = nil, refresh = true, add = false)
-        select(params, refresh, add)
+      def select=(params = nil, refresh = true)
+        select(params, refresh)
       end
 
-      def active(params = nil, refresh = true, add = false)
+      def active(params = nil, refresh = true)
         if params || params == false
           @active = params
           broadcast(atome_id => {active: params, private: false})
-          Render.render_active(self, params, add) if refresh
+          Render.render_active(self, params) if refresh
           self
         else
           @active
         end
       end
 
-      def active=(params = nil, refresh = true, add = false)
-        active(params, refresh, add)
+      def active=(params = nil, refresh = true)
+        active(params, refresh)
       end
 
-      def group(params = nil, refresh = true, add = false)
+      def group(params = nil, refresh = true)
         atome = Atome.new({type: :shape, parent: :view})
         if params.class == Array
           params << self
@@ -163,18 +162,17 @@ module Nucleon
         atome
       end
 
-      def group=(params = nil, refresh = true, add = false)
-        group(params, refresh, add)
+      def group=(params = nil, refresh = true)
+        group(params, refresh)
       end
 
-      def parent(params = nil, refresh = true, add = false)
+      def parent(params = nil, refresh = true)
         if params
           atome = find_atome_from_params(params)
           Atome.atomes.each do |atome|
           end
           atome.insert(self)
         else
-          #alert "message :\n#{self.id}\n from : neutron.rb : 177"
           # we check if the properties store is a string (atome_id), if its an array or an atome when return the raw value
           if @parent.class == String || @parent.class == Symbol
             grab(@parent)
@@ -192,11 +190,11 @@ module Nucleon
         end
       end
 
-      def parent=(params = nil, refresh = true, add = false)
-        parent(params, refresh, add)
+      def parent=(params = nil, refresh = true)
+        parent(params, refresh)
       end
 
-      def child(params = nil, refresh = true, add = false)
+      def child(params = nil, refresh = true)
         if params
           atome = find_atome_from_params(params)
           insert(atome)
@@ -219,12 +217,12 @@ module Nucleon
         end
       end
 
-      def child=(params = nil, refresh = true, add = false)
-        child(params, refresh, add)
+      def child=(params = nil, refresh = true)
+        child(params, refresh)
       end
 
-      def insert(params = nil, refresh = true, add = false)
-        @child = [] if @child.class == NilClass || add == true
+      def insert(params = nil, refresh = true)
+        @child = [] if @child.class == NilClass || (params.class == Hash && params[:add] == true)
         if params || params == false
           if params.class == String || params.class == Symbol || params.class == Atome
             atome = find_atome_from_params(params)
@@ -238,7 +236,7 @@ module Nucleon
               # its it already exist its replace not store twice
               previous_parent |= [atome_id]
               # we check if the child should be extract from it's ancient parent or not( if we add it)
-              unless add
+              unless params.class== Hash && params[:add]
                 params.parent.each do |parent_found|
                   parent_found.extract(params)
                 end
@@ -251,7 +249,7 @@ module Nucleon
               params.property({property: :parent, value: [atome_id]})
             end
             broadcast(atome_id => {insert: params, private: false})
-            Render.render_group(self, params, add) if refresh
+            Render.render_group(self, params) if refresh
           elsif params.class == Array
             params.each do |atome|
               insert(atome)
@@ -262,20 +260,20 @@ module Nucleon
         self
       end
 
-      def insert=(params = nil, refresh = true, add = false)
-        insert(params, refresh, add)
+      def insert=(params = nil, refresh = true)
+        insert(params, refresh)
       end
 
-      def attach(params = nil, refresh = true, add = false)
+      def attach(params = nil, refresh = true)
         params = find_atome_from_params(params)
         params.insert(self)
       end
 
-      def attach=(params = nil, refresh = true, add = false)
-        attach(params, refresh, add)
+      def attach=(params = nil, refresh = true)
+        attach(params, refresh)
       end
 
-      def ungroup(params = nil, refresh = true, add = false)
+      def ungroup(params = nil, refresh = true)
         if child
           if params.class == String || params.class == Symbol || params.class == Atome
             params = find_atome_from_params(params)
@@ -296,11 +294,11 @@ module Nucleon
 
       end
 
-      def ungroup=(params = nil, refresh = true, add = false)
-        ungroup(params, refresh, add)
+      def ungroup=(params = nil, refresh = true)
+        ungroup(params, refresh)
       end
 
-      def extract(params = nil, refresh = true, add = false)
+      def extract(params = nil, refresh = true)
         new_child_list = []
         # we parse the child to find the requested
         if child
@@ -325,7 +323,7 @@ module Nucleon
               #we hook the detached atome to the new parent
               children.parent << parent.atome_id
               broadcast(atome_id => {extract: params, private: false})
-              Render.render_group(parent, children, add) if refresh
+              Render.render_group(parent, children) if refresh
             end
           end
           @child = new_child_list
@@ -333,22 +331,22 @@ module Nucleon
 
       end
 
-      def extract=(params = nil, refresh = true, add = false)
-        extract(params, refresh, add)
+      def extract=(params = nil, refresh = true)
+        extract(params, refresh)
       end
 
-      def detach(params = nil, refresh = true, add = false)
+      def detach(params = nil, refresh = true)
         params = find_atome_from_params(params)
-        params.extract(self, refresh, add)
+        params.extract(self, refresh)
       end
 
-      def detach=(params = nil, refresh = true, add = false)
-        detach(params, refresh, add)
+      def detach=(params = nil, refresh = true)
+        detach(params, refresh)
       end
 
-      def selector(params = nil, refresh = true, add = false)
+      def selector(params = nil, refresh = true)
         if params || params == false
-          if add
+          if params.class == Hash && params[:add]
             if @selector.class == Array
               @selector << params if !@selector.include? params
             else
@@ -357,15 +355,15 @@ module Nucleon
           else
             @selector = [params]
           end
-          Render.render_selector(self, params, add) if refresh
+          Render.render_selector(self, params) if refresh
           self
         else
           @selector
         end
       end
 
-      def selector=(params = nil, refresh = true, add = false)
-        selector(params, refresh, add)
+      def selector=(params = nil, refresh = true)
+        selector(params, refresh)
       end
 
       # events
@@ -411,11 +409,11 @@ module Nucleon
         end
       end
 
-      def touch=(params = nil, refresh = true, add = false, &proc)
-        touch(params, refresh, add, &proc)
+      def touch=(params = nil, refresh = true, &proc)
+        touch(params, refresh, &proc)
       end
 
-      def key(params = nil, refresh = true, add = false, &proc)
+      def key(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc
           case params
@@ -429,7 +427,7 @@ module Nucleon
             options = {:option => params}
           end
           bloc = {:content => proc}.merge(options)
-          if add
+          if params.class == Hash && params[:add]
             if key.class == Array
               @key << bloc
             else
@@ -452,7 +450,7 @@ module Nucleon
                        params
                      end
             params = {params: option, proc: proc}
-            Render.render_key(self, params, add)
+            Render.render_key(self, params)
           end
           self
         else
@@ -460,32 +458,32 @@ module Nucleon
         end
       end
 
-      def key=(params = nil, refresh = true, add = false, &proc)
+      def key=(params = nil, refresh = true,  &proc)
         key(params, refresh, add, &proc)
       end
 
-      def over(params = nil, refresh = true, add = false, &proc)
+      def over(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         broadcast(atome_id => {over: params, private: false})
         if proc
           if refresh
             params = {params: params, proc: proc}
-            Render.render_over(self, params, add)
+            Render.render_over(self, params)
           end
         elsif params || params == false
           @over = params
-          Render.render_over(self, params, add) if refresh
+          Render.render_over(self, params) if refresh
           self
         else
           @over
         end
       end
 
-      def over=(params = nil, refresh = true, add = false, &proc)
+      def over=(params = nil, refresh = true,  &proc)
         over(params, refresh, add, &proc)
       end
 
-      def enter(params = nil, refresh = true, add = false, &proc)
+      def enter(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -499,7 +497,7 @@ module Nucleon
             options = {:option => params}
           end
           bloc = {:content => proc}.merge(options)
-          if add
+          if params.class == Hash && params[:add]
             if drag.class == Array
               @enter << bloc
             else
@@ -530,7 +528,7 @@ module Nucleon
                        params
                      end
             params = {params: option, proc: proc}
-            Render.render_enter(self, params, add)
+            Render.render_enter(self, params)
           end
           self
         else
@@ -538,11 +536,11 @@ module Nucleon
         end
       end
 
-      def enter=(params = nil, refresh = true, add = false, &proc)
+      def enter=(params = nil, refresh = true,  &proc)
         enter(params, refresh, add, &proc)
       end
 
-      def exit(params = nil, refresh = true, add = false, &proc)
+      def exit(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -556,7 +554,7 @@ module Nucleon
             options = {:option => params}
           end
           bloc = {:content => proc}.merge(options)
-          if add
+          if params.class == Hash && params[:add]
             if drag.class == Array
               @exit << bloc
             else
@@ -588,7 +586,7 @@ module Nucleon
                      end
 
             params = {params: option, proc: proc}
-            Render.render_exit(self, params, add)
+            Render.render_exit(self, params)
           end
           self
         else
@@ -596,11 +594,11 @@ module Nucleon
         end
       end
 
-      def exit=(params = nil, refresh = true, add = false, &proc)
+      def exit=(params = nil, refresh = true,  &proc)
         exit(params, refresh, add, &proc)
       end
 
-      def drop(params = nil, refresh = true, add = false, &proc)
+      def drop(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -614,7 +612,7 @@ module Nucleon
             options = {:option => params}
           end
           bloc = {:content => proc}.merge(options)
-          if add
+          if params.class == Hash && params[:add]
             if drag.class == Array
               @drop << bloc
             else
@@ -646,7 +644,7 @@ module Nucleon
                      end
 
             params = {params: option, proc: proc}
-            Render.render_drop(self, params, add)
+            Render.render_drop(self, params)
           end
           self
         else
@@ -654,11 +652,11 @@ module Nucleon
         end
       end
 
-      def drop=(params = nil, refresh = true, add = false, &proc)
+      def drop=(params = nil, refresh = true,  &proc)
         collide(params, refresh, add, &proc)
       end
 
-      def drag(params = nil, refresh = true, add = false, &proc)
+      def drag(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -672,7 +670,7 @@ module Nucleon
             options = {:option => params}
           end
           bloc = {:content => proc}.merge(options)
-          if add
+          if params.class == Hash && params[:add]
             if drag.class == Array
               @drag << bloc
             else
@@ -703,7 +701,7 @@ module Nucleon
                        params
                      end
             params = {params: option, proc: proc}
-            Render.render_drag(self, params, add)
+            Render.render_drag(self, params)
           end
           self
         else
@@ -711,11 +709,11 @@ module Nucleon
         end
       end
 
-      def drag=(params = nil, refresh = true, add = false, &proc)
+      def drag=(params = nil, refresh = true,  &proc)
         drag(params, refresh, add, &proc)
       end
 
-      def resize(params = nil, refresh = true, add = false, &proc)
+      def resize(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -729,7 +727,7 @@ module Nucleon
             options = {:option => params}
           end
           bloc = {:content => proc}.merge(options)
-          if add
+          if params.class == Hash && params[:add]
             if drag.class == Array
               @resize << bloc
             else
@@ -744,7 +742,7 @@ module Nucleon
           broadcast(atome_id => {resize: params, private: false})
           if refresh
             params = {params: params, proc: proc}
-            Render.render_resize(self, params, add)
+            Render.render_resize(self, params)
           end
           self
         else
@@ -752,47 +750,47 @@ module Nucleon
         end
       end
 
-      def resize=(params = nil, refresh = true, add = false, &proc)
+      def resize=(params = nil, refresh = true,  &proc)
         resize(params, refresh, add, &proc)
       end
 
-      def scale(params = nil, refresh = true, add = false, &proc)
+      def scale(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         broadcast(atome_id => {scale: params, private: false})
         if proc
-          Render.render_scale(self, proc, add) if refresh
+          Render.render_scale(self, proc) if refresh
         elsif params || params == false
           @scale = params
-          Render.render_scale(self, params, add) if refresh
+          Render.render_scale(self, params) if refresh
           self
         else
           @scale
         end
       end
 
-      def scale=(params = nil, refresh = true, add = false, &proc)
+      def scale=(params = nil, refresh = true,  &proc)
         scale(params, refresh, add, &proc)
       end
 
-      def scroll(params = nil, refresh = true, add = false, &proc)
+      def scroll(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         broadcast(atome_id => {scroll: params, private: false})
         if proc
-          Render.render_scroll(self, proc, add) if refresh
+          Render.render_scroll(self, proc) if refresh
         elsif params || params == false
           @scroll = params
-          Render.render_scroll(self, params, add) if refresh
+          Render.render_scroll(self, params) if refresh
           self
         else
           @scroll
         end
       end
 
-      def scroll=(params = nil, refresh = true, add = false, &proc)
+      def scroll=(params = nil, refresh = true,  &proc)
         scroll(params, refresh, add, &proc)
       end
 
-      def clear(params = :console, refresh = true, add = false, &proc)
+      def clear(params = :console, refresh = true, &proc)
         if params.class == Hash
           if params[:exclude] && params[:exclude].class == Array
           elsif params[:exclude]
@@ -828,7 +826,7 @@ module Nucleon
 
       # animation
 
-      def play(params = nil, refresh = true, add = false, &proc)
+      def play(params = nil, refresh = true,  &proc)
         #todo : allow to pass video "start play position" without triggering the video with a touch event
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if !params.nil?
@@ -844,7 +842,7 @@ module Nucleon
               options = {:option => params}
             end
             bloc = {:content => proc}.merge(options)
-            if add
+            if params.class == Hash && params[:add]
               if touch.class == Array
                 @play << bloc
               else
@@ -867,25 +865,25 @@ module Nucleon
                          params
                        end
               params = {params: option, proc: proc}
-              Render.render_play(self, params, add)
+              Render.render_play(self, params)
             end
             self
           else
             @play = params
             options = {}
             options[:params] = params
-            Render.render_play(self, options, add)
+            Render.render_play(self, options)
           end
         else
           @play
         end
       end
 
-      def play=(params = nil, refresh = true, add = false, &proc)
+      def play=(params = nil, refresh = true,  &proc)
         play(params, refresh, add, &proc)
       end
 
-      def pause(params = nil, refresh = true, add = false, &proc)
+      def pause(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc
           case params
@@ -899,7 +897,7 @@ module Nucleon
             options = {:option => params}
           end
           bloc = {:content => proc}.merge(options)
-          if add
+          if params.class == Hash && params[:add]
             if touch.class == Array
               @pause << bloc
               @play = false
@@ -925,31 +923,31 @@ module Nucleon
                        params
                      end
             params = {params: option, proc: proc}
-            Render.render_pause(self, params, add)
+            Render.render_pause(self, params)
           end
           return self
         else
-          Render.render_pause(self, params, add)
+          Render.render_pause(self, params)
           @play = false
         end
         @pause
       end
 
-      def pause=(params = nil, refresh = true, add = false, &proc)
-        pause(params, refresh, add, &proc)
+      def pause=(params = nil, refresh = true,  &proc)
+        pause(params, refresh,&proc)
       end
 
-      def stop(params = "0", refresh = true, add = false, &proc)
+      def stop(params = "0", refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
-        pause(params, refresh, add, &proc)
+        pause(params, refresh, &proc)
       end
 
-      def stop=(params = nil, refresh = true, add = false, &proc)
-        stop(params, refresh, add, &proc)
+      def stop=(params = nil, refresh = true,  &proc)
+        stop(params, refresh,  &proc)
       end
 
       # int8
-      def language(params = nil, refresh = true, add = false)
+      def language(params = nil, refresh = true)
         if params || params == false
           @lanquage = params
           self
@@ -959,7 +957,7 @@ module Nucleon
       end
 
       # creation of object in object
-      def image(params = nil, refresh = true, add = false)
+      def image(params = nil, refresh = true)
         params = {content: Atome.presets[:image][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -981,11 +979,11 @@ module Nucleon
         atome
       end
 
-      def image=(params = nil, refresh = true, add = false)
-        image(params, refresh, add)
+      def image=(params = nil, refresh = true)
+        image(params, refresh)
       end
 
-      def text(params = nil, refresh = true, add = false)
+      def text(params = nil, refresh = true)
         params = {content: Atome.presets[:text][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1007,11 +1005,11 @@ module Nucleon
         atome
       end
 
-      def text=(params = nil, refresh = true, add = false)
-        text(params, refresh, add)
+      def text=(params = nil, refresh = true)
+        text(params, refresh)
       end
 
-      def box(params = nil, refresh = true, add = false)
+      def box(params = nil, refresh = true)
         params = {content: Atome.presets[:box][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1033,11 +1031,11 @@ module Nucleon
         atome
       end
 
-      def box=(params = nil, refresh = true, add = false)
-        box(params, refresh, add)
+      def box=(params = nil, refresh = true)
+        box(params, refresh)
       end
 
-      def circle(params = nil, refresh = true, add = false)
+      def circle(params = nil, refresh = true)
         params = {content: Atome.presets[:circle][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1057,11 +1055,11 @@ module Nucleon
         atome
       end
 
-      def circle=(params = nil, refresh = true, add = false)
-        circle(params, refresh, add)
+      def circle=(params = nil, refresh = true)
+        circle(params, refresh)
       end
 
-      def user(params = nil, refresh = true, add = false)
+      def user(params = nil, refresh = true)
         params = {content: Atome.presets[:user][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1083,11 +1081,11 @@ module Nucleon
         atome
       end
 
-      def user=(params = nil, refresh = true, add = false)
-        user(params, refresh, add)
+      def user=(params = nil, refresh = true)
+        user(params, refresh)
       end
 
-      def video(params = nil, refresh = true, add = false)
+      def video(params = nil, refresh = true)
         params = {content: Atome.presets[:video][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1112,11 +1110,11 @@ module Nucleon
         atome
       end
 
-      def video=(params = nil, refresh = true, add = false)
-        video(params, refresh, add)
+      def video=(params = nil, refresh = true)
+        video(params, refresh)
       end
 
-      def audio(params = nil, refresh = true, add = false)
+      def audio(params = nil, refresh = true)
         params = {content: Atome.presets[:audio][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1139,11 +1137,11 @@ module Nucleon
 
       end
 
-      def audio=(params = nil, refresh = true, add = false)
-        audio(params, refresh, add)
+      def audio=(params = nil, refresh = true)
+        audio(params, refresh)
       end
 
-      def web(params = nil, refresh = true, add = false)
+      def web(params = nil, refresh = true)
         params = {content: Atome.presets[:web][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1165,11 +1163,11 @@ module Nucleon
         atome
       end
 
-      def web=(params = nil, refresh = true, add = false)
-        web(params, refresh, add)
+      def web=(params = nil, refresh = true)
+        web(params, refresh)
       end
 
-      def particle(params = nil, refresh = true, add = false)
+      def particle(params = nil, refresh = true)
         params = {content: Atome.presets[:particle][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1189,11 +1187,11 @@ module Nucleon
         atome
       end
 
-      def particle=(params = nil, refresh = true, add = false)
-        particle(params, refresh, add)
+      def particle=(params = nil, refresh = true)
+        particle(params, refresh)
       end
 
-      def tool(params = nil, refresh = true, add = false)
+      def tool(params = nil, refresh = true)
         params = {content: Atome.presets[:tool][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1215,11 +1213,11 @@ module Nucleon
         atome
       end
 
-      def tool=(params = nil, refresh = true, add = false)
-        tool(params, refresh, add)
+      def tool=(params = nil, refresh = true)
+        tool(params, refresh)
       end
 
-      def effect(params = nil, refresh = true, add = false)
+      def effect(params = nil, refresh = true)
         params = {content: Atome.presets[:effect][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1241,11 +1239,11 @@ module Nucleon
         atome
       end
 
-      def effect=(params = nil, refresh = true, add = false)
-        effect(params, refresh, add)
+      def effect=(params = nil, refresh = true)
+        effect(params, refresh)
       end
 
-      def constraint(params = nil, refresh = true, add = false)
+      def constraint(params = nil, refresh = true)
         params = {content: Atome.presets[:constraint][:content]} unless params
         if params.class == Symbol || params.class == String
           content = {content: params}
@@ -1269,8 +1267,8 @@ module Nucleon
 
       end
 
-      def constraint=(params = nil, refresh = true, add = false)
-        constraint(params, refresh, add)
+      def constraint=(params = nil, refresh = true)
+        constraint(params, refresh)
       end
 
       # utils
@@ -1289,7 +1287,7 @@ module Nucleon
         childs
       end
 
-      def value(params = :size, refresh = true, add = false)
+      def value(params = :size, refresh = true)
         if params.to_sym == :width
           Render.render_get_width(self)
         elsif params.to_sym == :height
@@ -1303,8 +1301,8 @@ module Nucleon
         end
       end
 
-      def value=(params = nil, refresh = true, add = false)
-        value(params, refresh, add)
+      def value=(params = nil, refresh = true)
+        value(params, refresh)
       end
 
       def broadcast(params)
@@ -1376,7 +1374,7 @@ module Nucleon
 
       private
 
-      def atome_id(params = nil, refresh = true, add = false)
+      def atome_id(params = nil, refresh = true)
         if params || params == false
           # todo : protect the atome_id so it can't be change by user
           error "atome_id is unalterable "
@@ -1386,8 +1384,8 @@ module Nucleon
         end
       end
 
-      def atome_id=(params = nil, refresh = true, add = false)
-        atome_id params, refresh, add
+      def atome_id=(params = nil, refresh = true)
+        atome_id params, refresh
       end
 
       def reorder_properties(properties)
