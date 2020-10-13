@@ -8,7 +8,7 @@ module Nucleon
       end
 
       def render params = nil, refresh = true
-      if params || params == false
+        if params || params == false
           if params == false || params == :false
             delete(true)
           else
@@ -17,13 +17,13 @@ module Nucleon
               a_found << atome.id
             end
             if !a_found.include? atome_id
-            enliven(true)
+              enliven(true)
             end
           end
-          @render = params
-        else
-          @render
-        end
+            @render = params
+          else
+            @render
+          end
       end
 
       def render= params = nil, refresh = true
@@ -234,7 +234,6 @@ module Nucleon
         center(params, refresh)
       end
 
-
       def x params = nil, refresh = true
         if params || params == false
           #the line below create the hash for the x property
@@ -320,7 +319,6 @@ module Nucleon
         y(params, refresh)
       end
 
-
       def left params = nil, refresh = true
         x(params, refresh)
       end
@@ -386,7 +384,6 @@ module Nucleon
         y(params, refresh)
       end
 
-
       def yy params = nil, refresh = true
         if params || params == false
           @yy = {} if @yy.nil?
@@ -436,7 +433,6 @@ module Nucleon
       def bottom= params = nil, refresh = true
         yy(params, refresh)
       end
-
 
       def z params = nil, refresh = true
         if params || params == false
@@ -547,7 +543,6 @@ module Nucleon
         align(params, refresh)
       end
 
-
       def overflow params = nil, refresh = true
         if params || params == false
           @overflow = params
@@ -596,11 +591,11 @@ module Nucleon
             params = hashed_params
           end
             if params.class == Hash && params[:add]
-            if @fit.class == Array
-              @fit << params
-            else
-              @fit = [params]
-            end
+              if @fit.class == Array
+                @fit << params
+              else
+                @fit = [params]
+              end
           end
           target = find_atome_from_params(params[:target])
 # line below (self.y) is a quick patch to patch a bug
@@ -658,18 +653,19 @@ module Nucleon
 
       def shadow params = nil, refresh = true
         if params || params == false
-            if params.class == Hash && params[:add]
+          if params.class == Hash && params[:add]
             if @shadow.class == Array
               @shadow << params
             else
               @shadow = [params]
             end
-          else
-            @shadow = [params]
-          end
+        else
+          @shadow = [params]
+        end
           broadcast(atome_id => {shadow: params, private: false})
           if refresh
-            Render.render_shadow(self, params) if refresh
+            formated_params= parse_params(params, :shadow)
+            Render.render_shadow(self, formated_params) if refresh
           end
           return self
         else

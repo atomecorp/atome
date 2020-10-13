@@ -191,7 +191,6 @@ module Render
     Element.find('#' + atome.atome_id).css('z-index', params)
   end
 
-
   def self.render_xx(atome, params, add = false)
     if !atome.width || atome.width == "auto"
       Element.find('#' + atome.atome_id).css("width", "auto")
@@ -379,27 +378,26 @@ module Render
   end
 
   def self.render_shadow(atome, params, add = false)
-    formated_params = case params
-                      when Array
-                        #"array"
-                      when Hash
-                        properties = Nucleon::Core::Proton.presets[:shadow]
-                        params.each do |key, value|
-                          properties[key] = value
-                        end
-                        properties
-                      when Boolean, :true
-                        Nucleon::Core::Proton.presets[:shadow]
-                      when String, Symbol
-                        params
-
-                      end
-    x = formated_params[:x]
-    y = formated_params[:y]
-    blur = formated_params[:blur]
-    thickness = formated_params[:thickness]
-    color = formated_params[:color]
-    invert = formated_params[:invert]
+    #formated_params = case params
+    #                  when Array
+    #                    #"array"
+    #                  when Hash
+    #                    properties = Nucleon::Core::Proton.presets[:shadow]
+    #                    params.each do |key, value|
+    #                      properties[key] = value
+    #                    end
+    #                    properties
+    #                  when Boolean, :true
+    #                    Nucleon::Core::Proton.presets[:shadow]
+    #                  when String, Symbol
+    #                    params
+    #                  end
+    x = params[:x]
+    y = params[:y]
+    blur = params[:blur]
+    thickness = params[:thickness]
+    color = params[:color]
+    invert = params[:invert]
     invert = if invert
                :inset
              else
@@ -425,6 +423,54 @@ module Render
       end
     end
   end
+
+  #def self.render_shadow(atome, params, add = false)
+  #  formated_params = case params
+  #                    when Array
+  #                      #"array"
+  #                    when Hash
+  #                      properties = Nucleon::Core::Proton.presets[:shadow]
+  #                      params.each do |key, value|
+  #                        properties[key] = value
+  #                      end
+  #                      properties
+  #                    when Boolean, :true
+  #                      Nucleon::Core::Proton.presets[:shadow]
+  #                    when String, Symbol
+  #                      params
+  #
+  #                    end
+  #  x = formated_params[:x]
+  #  y = formated_params[:y]
+  #  blur = formated_params[:blur]
+  #  thickness = formated_params[:thickness]
+  #  color = formated_params[:color]
+  #  invert = formated_params[:invert]
+  #  invert = if invert
+  #             :inset
+  #           else
+  #             " "
+  #           end
+  #  if params && params.class == Hash && params[:add]
+  #    add = params[:add]
+  #  end
+  #
+  #  if add
+  #    if atome.type == :text || atome.type == :image
+  #      prev_prop = Element.find('#' + atome.atome_id).css('text-shadow')
+  #      Element.find('#' + atome.atome_id).css('filter', prev_prop + " " + 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
+  #    else
+  #      prev_prop = Element.find('#' + atome.atome_id).css('box-shadow')
+  #      Element.find('#' + atome.atome_id).css('box-shadow', prev_prop + " ," + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
+  #    end
+  #  else
+  #    if atome.type == :text || atome.type == :image
+  #      Element.find('#' + atome.atome_id).css('filter', 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
+  #    else
+  #      Element.find('#' + atome.atome_id).css('box-shadow', x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
+  #    end
+  #  end
+  #end
 
   def self.render_border(atome, params, add = false)
     formated_params = case params
@@ -858,8 +904,6 @@ module Render
       end
     end
   end
-
-
 
   def self.render_over(atome, params, add = false)
     if params != true

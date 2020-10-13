@@ -556,7 +556,7 @@ t.color(:gray)
 m=every 0.2, nb_of_repeat do
   b.width=b.width+5
   t.content("nb of repeat : "+(nb_of_repeat-i-1).to_s)
-  if nb_of_repeat-i-1==3
+  if nb_of_repeat-i-1==6
     stop(m)
     t.content("stop by condition!!!")
     t.color(:black)
@@ -1358,16 +1358,19 @@ strdelim
 
   def render_api
     demo_code = <<strdelim
- b = box({color: :red, render: :false, center: true})
- wait 1 do
-  b.render(:true)
+b = box({color: :red, render: :false, center: true})
+wait 1 do
+ b.render(:true)
+end
+wait 2 do
+ b.render(:false)
+end
+wait 3 do
+ b.render(:true)
+ b.touch do
+  alert "message :\n\#{b.inspect}\n from : app.rb : 21"
  end
- wait 2 do
-  b.render(:false)
- end
- wait 3 do
-  b.render(:true)
- end
+end
 strdelim
     self.puts_help :render, demo_code
   end

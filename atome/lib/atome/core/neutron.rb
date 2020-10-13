@@ -387,7 +387,8 @@ module Nucleon
             options = {:option => params}
           end
           options = {:content => proc}.merge(options)
-          if params && (params[:add] || params[:add] == false || params[:add] == :false)
+          #if params && (params[:add] || params[:add] == false || params[:add] == :false)
+            if params.class == Hash && params[:add]
             if touch.class == Array
               @touch << options
             else
@@ -413,12 +414,12 @@ module Nucleon
         touch(params, refresh, &proc)
       end
 
-      def key(params = nil, refresh = true,  &proc)
+      def drag(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
-        if proc
+        if proc || !params.nil?
           case params
           when nil
-            options = {option: :key}
+            options = {option: :drag}
           when Hash
             options = params
           when Array
@@ -428,38 +429,46 @@ module Nucleon
           end
           bloc = {:content => proc}.merge(options)
           if params.class == Hash && params[:add]
-            if key.class == Array
-              @key << bloc
+            if drag.class == Array
+              @drag << bloc
             else
               prop_array = []
-              prop_array << @key
+              prop_array << @drag
               prop_array << bloc
-              @key = prop_array
+              @drag = prop_array
             end
           else
-            @key = bloc
+            @drag = bloc
           end
-          broadcast(atome_id => {key: params, private: false})
+          broadcast(atome_id => {drag: params, private: false})
           if refresh
             option = case params
                      when nil
-                       :key
+                       :drag
                      when Hash
-                       params[:option]
+                       params
+                     when true
+                       params
+                     when :true
+                       params
+                     when Symbol
+                       {lock: params}
+                     when String
+                       {lock: params}
                      else
                        params
                      end
             params = {params: option, proc: proc}
-            Render.render_key(self, params)
+            Render.render_drag(self, params)
           end
           self
         else
-          @key
+          @drag
         end
       end
 
-      def key=(params = nil, refresh = true,  &proc)
-        key(params, refresh, add, &proc)
+      def drag=(params = nil, refresh = true,  &proc)
+        drag(params, refresh, &proc)
       end
 
       def over(params = nil, refresh = true,  &proc)
@@ -480,7 +489,7 @@ module Nucleon
       end
 
       def over=(params = nil, refresh = true,  &proc)
-        over(params, refresh, add, &proc)
+        over(params, refresh,  &proc)
       end
 
       def enter(params = nil, refresh = true,  &proc)
@@ -537,7 +546,7 @@ module Nucleon
       end
 
       def enter=(params = nil, refresh = true,  &proc)
-        enter(params, refresh, add, &proc)
+        enter(params, refresh,  &proc)
       end
 
       def exit(params = nil, refresh = true,  &proc)
@@ -595,7 +604,7 @@ module Nucleon
       end
 
       def exit=(params = nil, refresh = true,  &proc)
-        exit(params, refresh, add, &proc)
+        exit(params, refresh, &proc)
       end
 
       def drop(params = nil, refresh = true,  &proc)
@@ -656,12 +665,12 @@ module Nucleon
         collide(params, refresh, add, &proc)
       end
 
-      def drag(params = nil, refresh = true,  &proc)
+      def key(params = nil, refresh = true,  &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
-        if proc || !params.nil?
+        if proc
           case params
           when nil
-            options = {option: :drag}
+            options = {option: :key}
           when Hash
             options = params
           when Array
@@ -671,46 +680,38 @@ module Nucleon
           end
           bloc = {:content => proc}.merge(options)
           if params.class == Hash && params[:add]
-            if drag.class == Array
-              @drag << bloc
+            if key.class == Array
+              @key << bloc
             else
               prop_array = []
-              prop_array << @drag
+              prop_array << @key
               prop_array << bloc
-              @drag = prop_array
+              @key = prop_array
             end
           else
-            @drag = bloc
+            @key = bloc
           end
-          broadcast(atome_id => {drag: params, private: false})
+          broadcast(atome_id => {key: params, private: false})
           if refresh
             option = case params
                      when nil
-                       :drag
+                       :key
                      when Hash
-                       params
-                     when true
-                       params
-                     when :true
-                       params
-                     when Symbol
-                       {lock: params}
-                     when String
-                       {lock: params}
+                       params[:option]
                      else
                        params
                      end
             params = {params: option, proc: proc}
-            Render.render_drag(self, params)
+            Render.render_key(self, params)
           end
           self
         else
-          @drag
+          @key
         end
       end
 
-      def drag=(params = nil, refresh = true,  &proc)
-        drag(params, refresh, add, &proc)
+      def key=(params = nil, refresh = true,  &proc)
+        key(params, refresh,  &proc)
       end
 
       def resize(params = nil, refresh = true,  &proc)
@@ -751,7 +752,7 @@ module Nucleon
       end
 
       def resize=(params = nil, refresh = true,  &proc)
-        resize(params, refresh, add, &proc)
+        resize(params, refresh,  &proc)
       end
 
       def scale(params = nil, refresh = true,  &proc)
@@ -769,7 +770,7 @@ module Nucleon
       end
 
       def scale=(params = nil, refresh = true,  &proc)
-        scale(params, refresh, add, &proc)
+        scale(params, refresh,  &proc)
       end
 
       def scroll(params = nil, refresh = true,  &proc)
@@ -787,7 +788,7 @@ module Nucleon
       end
 
       def scroll=(params = nil, refresh = true,  &proc)
-        scroll(params, refresh, add, &proc)
+        scroll(params, refresh,  &proc)
       end
 
       def clear(params = :console, refresh = true, &proc)
@@ -880,7 +881,7 @@ module Nucleon
       end
 
       def play=(params = nil, refresh = true,  &proc)
-        play(params, refresh, add, &proc)
+        play(params, refresh,  &proc)
       end
 
       def pause(params = nil, refresh = true,  &proc)
@@ -1362,7 +1363,6 @@ module Nucleon
           instance_variable_set("@" + params[:property], params[:value])
         end
       end
-
 
       def property=(params)
         property params

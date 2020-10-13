@@ -10,7 +10,6 @@ def select selector
   end
 end
 
-
 def selected params
   #Atomes.atomes
 end
@@ -41,7 +40,6 @@ def get_proc_content(proc)
   end
   return proc_content.join("\n")
 end
-
 
 def to_px(obj = nil, property = :top)
   if obj.class != Atome
@@ -76,9 +74,9 @@ def get(params)
       end
     end
     return collected_atomes
-  elsif (params.class ==String || params.class ==Symbol)&& params.to_sym== :all
+  elsif (params.class == String || params.class == Symbol) && params.to_sym == :all
     #alert "message :\n#{"we slected all children view"}\n from : electron.rb : 80"
-  elsif params.class ==String || params.class ==Symbol
+  elsif params.class == String || params.class == Symbol
     atomes.each do |atome|
       if atome.id.to_s == params.to_s
         return atome
@@ -87,7 +85,6 @@ def get(params)
     return false
   end
 end
-
 
 def grab(atome_id)
   #grab atome in view from it's atome_id
@@ -100,14 +97,13 @@ def grab(atome_id)
   return nil
 end
 
-
 def scour(atome_id)
   #search atome anyhere from it's atome_id
-  atomes = Atome.atomes+Atome.blackhole
-  if atome_id.to_sym ==:all
-    atomes_found=[]
+  atomes = Atome.atomes + Atome.blackhole
+  if atome_id.to_sym == :all
+    atomes_found = []
     atomes.each do |atome|
-      atomes_found<< atome.id
+      atomes_found << atome.id
     end
     atomes_found.delete(:blackhole)
     atomes_found.delete(:dark_matter)
@@ -128,10 +124,15 @@ def scour(atome_id)
   return nil
 end
 
-def delete params, refresh = true
-  alert "message is \n\n#{params} \n\nLocation: electron.rb, line 60"
+def find(params, method=nil)
+  formated_params=parse_params params, method
+  alert "message :\n#{formated_params}\n from : electron.rb : 129"
 end
 
+
+#def delete params, refresh = true
+#  alert "message is \n\n#{params} \n\nLocation: electron.rb, line 60"
+#end
 
 
 def clear params = :console
@@ -173,6 +174,23 @@ def find_atome_from_params params
   end
 
   return supposed_atome
+end
+
+def parse_params params, method
+  case params
+  when Array
+    #"array"
+  when Hash
+    properties = Atome.presets[method]
+    params.each do |key, value|
+      properties[key] = value
+    end
+    properties
+  when Boolean, :true
+    Atome.presets[method]
+  when String, Symbol
+    params
+  end
 end
 
 ################## time operation  ##############
