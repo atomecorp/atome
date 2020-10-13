@@ -111,7 +111,7 @@ def scour(atome_id)
     atomes_found.delete(:intuition)
     atomes_found.delete(:view)
     atomes_found.delete(:actions)
-    alert "message :\n#{atomes_found}\n from : electron.rb : 112"
+    alert "message :\n#{atomes_found}\n from : electron.rb : 114"
     return atomes_found
   else
     atomes.each do |atome|
@@ -124,9 +124,84 @@ def scour(atome_id)
   return nil
 end
 
-def find(params, method=nil)
-  formated_params=parse_params params, method
-  alert "message :\n#{formated_params}\n from : electron.rb : 129"
+def find(params, method = nil)
+  if params.class == String || params.class == Symbol || params.class == Boolean
+    params = {property: :id, scope: :view, value: params}
+  end
+  unless params[:scope]
+    params[:scope] = :view
+  end
+  unless params[:property]
+    params[:property] = :id
+  end
+  unless params[:format]
+    params[:format] = :atome
+  end
+  atomes = case params[:scope]
+           when :all || 'all'
+             Atome.atomes + Atome.blackhole
+           when :blackhole
+             Atome.blackhole
+           when :view
+             Atome.atomes
+           else
+             #when :dark_matter
+             #  atomes=Atome.atomes + Atome.blackhole
+           end
+  if params[:value] == :all || params[:value] == 'all'
+    atomes_found = []
+    case params[:format]
+    when :id || 'id'
+      atomes.each do |atome|
+        atomes_found << atome.id
+      end
+      atomes_found.delete(:blackhole)
+      atomes_found.delete(:dark_matter)
+      atomes_found.delete(:device)
+      atomes_found.delete(:intuition)
+      atomes_found.delete(:view)
+      atomes_found.delete(:actions)
+    when :atome_id || 'atome_id'
+      atomes.each do |atome|
+        atomes_found << atome.atome_id
+      end
+      atomes_found.delete(:blackhole)
+      atomes_found.delete(:dark_matter)
+      atomes_found.delete(:device)
+      atomes_found.delete(:intuition)
+      atomes_found.delete(:view)
+      atomes_found.delete(:actions)
+    when :atome || 'atome'
+      atomes.each do |atome|
+        atomes_found << atome
+      end
+      atomes_found.delete(grab(:blackhole))
+      atomes_found.delete(grab(:dark_matter))
+      atomes_found.delete(grab(:device))
+      atomes_found.delete(grab(:intuition))
+      atomes_found.delete(grab(:view))
+      atomes_found.delete(grab(:actions))
+    end
+
+  else
+    case params[:property]
+    when :id || 'id'
+      atomes_found = ""
+      atomes.each do |atome|
+        if atome.id == params[:value]
+          atomes_found = atome
+        end
+      end
+    when :atome_id || 'atome_id'
+      atomes_found = ""
+      atomes.each do |atome|
+        if atome.atome_id == params[:value]
+          atomes_found = atome
+        end
+      end
+    end
+  end
+  atomes_found
 end
 
 

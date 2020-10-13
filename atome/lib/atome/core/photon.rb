@@ -91,7 +91,7 @@ module Nucleon
               @resize_actions
             end
           else
-            grab(:actions).resize_actionss
+            grab(:actions).resize_actions
           end
         end
       end
@@ -132,13 +132,14 @@ module Nucleon
                       end
         if axis == :x
           x = (parent_width - self_width) / 2
+          @x[:content]=x
           Render.render_x(self, x)
         end
         if axis == :y
           y = (parent_height - self_height) / 2
+          @y[:content]=y
           Render.render_y(self, y)
         end
-        #alert "message is \n\n#{self.id} \n\nLocation: photon.rb, line 133"
       end
 
       def center params = nil, refresh = true
@@ -148,7 +149,7 @@ module Nucleon
           grab(:actions).resize_actions[:center][self]&.delete(:y)
           @y.delete(:center)
         elsif params && grab(:actions)
-          #alert "message is \n\n#{} \n\nLocation: photon.rb, line 148"
+
           grab(:actions).resize_actions[:center] = {} unless grab(:actions).resize_actions[:center]
           # todo : make set an offset to x or y position (ex : center({x: 20, y: -10}))
           if params.class == Hash
@@ -236,6 +237,7 @@ module Nucleon
 
       def x params = nil, refresh = true
         if params || params == false
+          broadcast(atome_id => {x: params, private: false})
           #the line below create the hash for the x property
           @x = {} if @x.nil?
           if params.class == Integer || params.class == Number
@@ -264,8 +266,6 @@ module Nucleon
             @x.delete(:center)
           end
           # now we assign the value
-          broadcast(atome_id => {x: params, private: false})
-
           Render.render_x(self, params[:content]) if refresh
           return self
         else

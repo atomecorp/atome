@@ -13,7 +13,7 @@ module Nucleon
       @@device = ''
 
       def self.version
-        'v:0.007f'
+        'v:0.007g'
       end
 
       def initialize(params, refresh = true)
@@ -147,7 +147,14 @@ module Nucleon
                   elsif key == :render
                     @render = value
                   else
-                    send(key, value)
+                    if value.class == Array
+                      value.each do |val|
+                        send(key, val)
+                      end
+                    else
+                      send(key, value)
+                    end
+
                   end
                 end
               end

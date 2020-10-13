@@ -161,8 +161,8 @@ def particle(options = nil)
   end
   options && options.class == Hash
   options = {type: :particle, preset: :particle}.merge(options)
-  Atome.new(options, refresh)
-
+    # todo : set parent :  view from preset instead of below
+  Atome.new(options.merge({parent: :view}), refresh)
 end
 
 def user(options = nil)

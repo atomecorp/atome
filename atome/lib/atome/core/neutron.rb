@@ -236,7 +236,7 @@ module Nucleon
               # its it already exist its replace not store twice
               previous_parent |= [atome_id]
               # we check if the child should be extract from it's ancient parent or not( if we add it)
-              unless params.class== Hash && params[:add]
+              unless params.class == Hash && params[:add]
                 params.parent.each do |parent_found|
                   parent_found.extract(params)
                 end
@@ -388,7 +388,7 @@ module Nucleon
           end
           options = {:content => proc}.merge(options)
           #if params && (params[:add] || params[:add] == false || params[:add] == :false)
-            if params.class == Hash && params[:add]
+          if params.class == Hash && params[:add]
             if touch.class == Array
               @touch << options
             else
@@ -414,7 +414,7 @@ module Nucleon
         touch(params, refresh, &proc)
       end
 
-      def drag(params = nil, refresh = true,  &proc)
+      def drag(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -467,11 +467,11 @@ module Nucleon
         end
       end
 
-      def drag=(params = nil, refresh = true,  &proc)
+      def drag=(params = nil, refresh = true, &proc)
         drag(params, refresh, &proc)
       end
 
-      def over(params = nil, refresh = true,  &proc)
+      def over(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         broadcast(atome_id => {over: params, private: false})
         if proc
@@ -488,11 +488,11 @@ module Nucleon
         end
       end
 
-      def over=(params = nil, refresh = true,  &proc)
-        over(params, refresh,  &proc)
+      def over=(params = nil, refresh = true, &proc)
+        over(params, refresh, &proc)
       end
 
-      def enter(params = nil, refresh = true,  &proc)
+      def enter(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -545,11 +545,11 @@ module Nucleon
         end
       end
 
-      def enter=(params = nil, refresh = true,  &proc)
-        enter(params, refresh,  &proc)
+      def enter=(params = nil, refresh = true, &proc)
+        enter(params, refresh, &proc)
       end
 
-      def exit(params = nil, refresh = true,  &proc)
+      def exit(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -603,11 +603,11 @@ module Nucleon
         end
       end
 
-      def exit=(params = nil, refresh = true,  &proc)
+      def exit=(params = nil, refresh = true, &proc)
         exit(params, refresh, &proc)
       end
 
-      def drop(params = nil, refresh = true,  &proc)
+      def drop(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -661,11 +661,11 @@ module Nucleon
         end
       end
 
-      def drop=(params = nil, refresh = true,  &proc)
+      def drop=(params = nil, refresh = true, &proc)
         collide(params, refresh, add, &proc)
       end
 
-      def key(params = nil, refresh = true,  &proc)
+      def key(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc
           case params
@@ -710,11 +710,11 @@ module Nucleon
         end
       end
 
-      def key=(params = nil, refresh = true,  &proc)
-        key(params, refresh,  &proc)
+      def key=(params = nil, refresh = true, &proc)
+        key(params, refresh, &proc)
       end
 
-      def resize(params = nil, refresh = true,  &proc)
+      def resize(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc || !params.nil?
           case params
@@ -751,11 +751,11 @@ module Nucleon
         end
       end
 
-      def resize=(params = nil, refresh = true,  &proc)
-        resize(params, refresh,  &proc)
+      def resize=(params = nil, refresh = true, &proc)
+        resize(params, refresh, &proc)
       end
 
-      def scale(params = nil, refresh = true,  &proc)
+      def scale(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         broadcast(atome_id => {scale: params, private: false})
         if proc
@@ -769,11 +769,11 @@ module Nucleon
         end
       end
 
-      def scale=(params = nil, refresh = true,  &proc)
-        scale(params, refresh,  &proc)
+      def scale=(params = nil, refresh = true, &proc)
+        scale(params, refresh, &proc)
       end
 
-      def scroll(params = nil, refresh = true,  &proc)
+      def scroll(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         broadcast(atome_id => {scroll: params, private: false})
         if proc
@@ -787,8 +787,8 @@ module Nucleon
         end
       end
 
-      def scroll=(params = nil, refresh = true,  &proc)
-        scroll(params, refresh,  &proc)
+      def scroll=(params = nil, refresh = true, &proc)
+        scroll(params, refresh, &proc)
       end
 
       def clear(params = :console, refresh = true, &proc)
@@ -827,7 +827,7 @@ module Nucleon
 
       # animation
 
-      def play(params = nil, refresh = true,  &proc)
+      def play(params = nil, refresh = true, &proc)
         #todo : allow to pass video "start play position" without triggering the video with a touch event
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if !params.nil?
@@ -880,11 +880,11 @@ module Nucleon
         end
       end
 
-      def play=(params = nil, refresh = true,  &proc)
-        play(params, refresh,  &proc)
+      def play=(params = nil, refresh = true, &proc)
+        play(params, refresh, &proc)
       end
 
-      def pause(params = nil, refresh = true,  &proc)
+      def pause(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         if proc
           case params
@@ -934,17 +934,17 @@ module Nucleon
         @pause
       end
 
-      def pause=(params = nil, refresh = true,  &proc)
-        pause(params, refresh,&proc)
+      def pause=(params = nil, refresh = true, &proc)
+        pause(params, refresh, &proc)
       end
 
-      def stop(params = "0", refresh = true,  &proc)
+      def stop(params = "0", refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
         pause(params, refresh, &proc)
       end
 
-      def stop=(params = nil, refresh = true,  &proc)
-        stop(params, refresh,  &proc)
+      def stop=(params = nil, refresh = true, &proc)
+        stop(params, refresh, &proc)
       end
 
       # int8
@@ -1286,6 +1286,12 @@ module Nucleon
           childs
         end
         childs
+      end
+
+      def each params, &proc
+        child.each do |atome|
+          proc.call(atome)
+        end
       end
 
       def value(params = :size, refresh = true)

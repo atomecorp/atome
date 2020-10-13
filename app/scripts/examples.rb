@@ -159,6 +159,8 @@ strdelim
     self.puts_help :smooth, demo_code
   end
 
+
+
   def border
     demo_code = <<strdelim
 b=box()
@@ -167,6 +169,7 @@ b.border({thickness: 3, pattern: :dashed})
 strdelim
     self.puts_help :smooth, demo_code
   end
+
 
   def smooth
     demo_code = <<strdelim
@@ -179,15 +182,17 @@ strdelim
 
   def shadow
     demo_code = <<strdelim
-b = box
+b = box({id: :box_test})
 b.shadow({x: 5, y: 5, blur: 7, color: :black, invert: :true})
 b.shadow({add: :true, x: 20, y: 20, color: "rgba(0,0,0,1)", blur: 16})
-b.x(450)
-b.y(150)
-c = box({color: :orange})
-c.shadow({x: 0, y: 0, color: "rgba(0,0,0,0.5)", blur: 16})
-c.x(450)
-c.y(300)
+c=circle({x: -30 , y: -30, drag: true, id: :circle_test})
+c.shadow({x: -5, y: -5, blur: 7, color: :black, invert: :true})
+c.shadow({add: :true,x: 0, y: 0, color: "rgba(0,0,0,1)", blur: 16})
+b.drag(true)
+b.insert(c)
+b.x(500)
+b.y(200)
+b.color(:orange)
 strdelim
     self.puts_help :shadow, demo_code
   end
@@ -758,6 +763,23 @@ strdelim
     self.puts_help :stretch, demo_code
   end
 
+  def each
+    demo_code = <<strdelim
+b = Atome.new(:box)
+c=circle({x: 34 , y: -34, drag: true, id: :circle_test, color: :red})
+b.insert(c)
+d=image({content: :moto, id: :moto})
+b.insert(d)
+b.x(500)
+b.y(200)
+b.color(:orange)
+b.each do |atome|
+  atome.blur(7)
+end
+strdelim
+    self.puts_help :smooth, demo_code
+  end
+
   def batch_api
     demo_code = <<strdelim
 text_color=:lightgray
@@ -774,6 +796,47 @@ t4=text("Text 4")
 t4.x=660
 t4.y=20
 batch([t1,t2,t3,t4], {color: text_color, size: 16, y: 150})
+strdelim
+    self.puts_help :batch_api, demo_code
+  end
+
+  def find_api
+    demo_code = <<strdelim
+t=text({content: :results, y: 20})
+b= particle()
+x=image(:logo)
+z=text(:dummy)
+x.delete(true)
+z.delete(true)
+c=circle({x: 34 , y: -34, drag: true, id: :circle_test, color: :red})
+b.insert(c)
+d=image({content: :moto, id: :moto})
+b.insert(d)
+b.x(500)
+b.y(200)
+b.color(:orange)
+
+wait 2 do
+ found=find(value: :all, scope: :blackhole, format: :id)
+ t.content(found)
+end
+
+wait 4 do
+ found=find(value: :all, scope: :blackhole, format: :atome_id)
+ t.content(found)
+end
+
+wait 6 do
+ found=find(value: :moto, scope: :view)
+ found.x(30)
+end
+
+wait 8 do
+  batch=find(:all)
+  batch.each do |atome|
+   atome.color(:green)
+  end
+end
 strdelim
     self.puts_help :batch_api, demo_code
   end
