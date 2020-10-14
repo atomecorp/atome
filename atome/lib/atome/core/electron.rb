@@ -126,7 +126,11 @@ end
 
 def find(params, method = nil)
   if params.class == String || params.class == Symbol || params.class == Boolean
-    params = {property: :id, scope: :view, value: params}
+    params = if params ==true || params==:true
+      { scope: :view, value: :all}
+    else
+      {property: :id, scope: :view, value: params}
+             end
   end
   unless params[:scope]
     params[:scope] = :view
@@ -136,6 +140,9 @@ def find(params, method = nil)
   end
   unless params[:format]
     params[:format] = :atome
+  end
+  unless params[:value]
+    params[:value] = :all
   end
   atomes = case params[:scope]
            when :all || 'all'
@@ -211,7 +218,7 @@ end
 
 
 def clear params = :console
-  atome = grab(:view)
+  atome = grab(:device)
   # now we call the clear methods in neutron
   atome.clear(params)
 end

@@ -344,6 +344,8 @@ module Nucleon
         detach(params, refresh)
       end
 
+
+
       def selector(params = nil, refresh = true)
         if params || params == false
           if params.class == Hash && params[:add]
@@ -356,7 +358,7 @@ module Nucleon
             @selector = [params]
           end
           Render.render_selector(self, params) if refresh
-          self
+        #  self
         else
           @selector
         end
@@ -792,6 +794,7 @@ module Nucleon
       end
 
       def clear(params = :console, refresh = true, &proc)
+        #alert "message :\n#{get(:view).child}\n from : neutron.rb : 797"
         if params.class == Hash
           if params[:exclude] && params[:exclude].class == Array
           elsif params[:exclude]
@@ -808,18 +811,26 @@ module Nucleon
                 end
               end
             end
-
-            params = :reset_view
-            Render.render_clear(self, params)
+            #params = :reset_view
+            #Render.render_clear(self, params)
           end
         elsif params.to_sym == :all || params.to_sym == :view
-          get(:view).child.each do |child|
-            atome_found = find_atome_from_params(child)
-            atome_found.delete(true)
+          #alert "message :\n#{get(:view).child}\n from : neutron.rb : 817"
+          #alert "message :\n#{find({format: :id})}\n from : neutron.rb : 818"
+          get(:view).child.each do |child_found|
+            unless child_found
+              alert "message :\n#{atome_id}\n from : neutron.rb : 822"
+            end
+            if child_found && child_found.id==:view
+              alert "message :\n#{"big couille dans le potage"}\n from : neutron.rb : 822"
+            end
+            if child_found
+              child_found.delete(true)
+            end
           end
         else
-          child.each do |atome|
-            atome.delete(true)
+          child.each do |atome_found|
+            atome_found.delete(true)
           end
         end
         self

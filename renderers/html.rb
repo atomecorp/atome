@@ -671,29 +671,29 @@ module Render
     end
   end
 
-  def self.render_clear(atome, params, add = false)
-    if params.class == Symbol || params.class == String
-      case params
-      when :reset_view
-        JS_utils.clear_intervals
-        JS_utils.clear_timeouts
-      when :all
-        JS_utils.clear_intervals
-        JS_utils.clear_timeouts
-      when :console
-      when :ide
-      when :view
-        JS_utils.clear_intervals
-        JS_utils.clear_timeouts
-      else
-        # when have an atome so the method comes from neutron not electron! we clear a prop of a specific atome
-        case params
-        when :group
-          Element.find('#' + atome.atome_id).empty()
-        end
-      end
-    end
-  end
+  #def self.render_clear(atome, params, add = false)
+  #  if params.class == Symbol || params.class == String
+  #    case params
+  #    when :reset_view
+  #      JS_utils.clear_intervals
+  #      JS_utils.clear_timeouts
+  #    when :all
+  #      JS_utils.clear_intervals
+  #      JS_utils.clear_timeouts
+  #    when :console
+  #    when :ide
+  #    when :view
+  #      JS_utils.clear_intervals
+  #      JS_utils.clear_timeouts
+  #    else
+  #      # when have an atome so the method comes from neutron not electron! we clear a prop of a specific atome
+  #      case params
+  #      when :group
+  #        Element.find('#' + atome.atome_id).empty()
+  #      end
+  #    end
+  #  end
+  #end
 
   def self.render_selector(atome, params, add = false)
     Element.find('#' + atome.atome_id).add_class params

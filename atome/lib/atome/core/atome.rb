@@ -181,60 +181,68 @@ module Nucleon
 
 
       def delete params = nil, refresh = true
-        if params || params == false
-          if params.class == Atome # here we delete the whole atome
-            # the strategy is to delete all atomes then add them to the @atomes array except the deleted one
-            atomes = []
-            @@atomes.each do |atome|
-              if atome.id.to_sym == params.id.to_sym
-                # the line below insert into array or update/replace if already exit in array
-                @@black_hole |= [atome]
-                @@atomes.delete(atome)
-                # now we delete all child
-                atome.child.each do |child|
-                  child&.delete(true)
-                end
-              else
-                atomes << atome
-              end
-            end
-            @@atomes = atomes
-          elsif params.class == Hash
-            property = params.keys[0]
-            new_prop_array = []
-            case property
-            when :selector
-              selector.each do |value|
-                new_prop_array << value if value != value_to_remove
-              end
-              @selector = new_prop_array
-            end
-          elsif params == false
-            get(:view).enliven(atome_id)
-          elsif params.class == Boolean || params.to_sym == :true
-            # now we delete all child
-            self.child&.each do |child|
-              child&.delete(true)
-            end
-            # the line below insert into array or update/replace if already exit in array
-            # we add the deleted object to the blackhole
-            @@black_hole |= [self]
-            # #we remove object from view(:child)
-            grab(:view).child().each do |child|
-              if child
-                grab(:view).ungroup(child) if child.atome_id == self.atome_id
-              end
-            end
-            # we delete all the dynamic actions :
-            # - first the dynamic actions centering object
-            grab(:actions).resize_actions[:center].delete(self)
-            # we remove objet from the atomes list
-            @@atomes.delete(self)
-          end
-          Render.render_delete(self, params) if refresh
+        if id==:view
+          alert "message :\n#{':couille dans le potage !!!'}\n from : atome.rb : 185"
         else
-          @@black_hole
+          #alert "message :\nparams:#{params},\n#{atome_id} : #{id}\nfrom : atome.rb : 187"
+          if params || params == false
+            if params.class == Atome # here we delete the whole atome
+              # the strategy is to delete all atomes then add them to the @atomes array except the deleted one
+              atomes = []
+              @@atomes.each do |atome_found|
+                if atome_found.id.to_sym == params.id.to_sym
+                  # the line below insert into array or update/replace if already exit in array
+                  @@black_hole |= [atome_found]
+                  #@@atomes.delete(atome)
+                  # now we delete all child
+                  atome_found.child.each do |child_found|
+                    child_found&.delete(true)
+                  end
+                else
+                  atomes << atome
+                end
+              end
+              alert "message :\n#{@@atomes}\n from : atome.rb : 205"
+              @@atomes = atomes
+            elsif params.class == Hash
+              property = params.keys[0]
+              new_prop_array = []
+              case property
+              when :selector
+                selector.each do |value|
+                  new_prop_array << value if value != value_to_remove
+                end
+                @selector = new_prop_array
+              end
+            elsif params == false
+              get(:view).enliven(atome_id)
+            elsif params.class == Boolean || params.to_sym == :true
+              # now we delete all child
+              self.child&.each do |child_found|
+                child_found&.delete(true)
+              end
+
+              ## #we remove object from view(:child)
+              #grab(:view).child().each do |child_found|
+              #  if child_found
+              #    grab(:view).ungroup(child_found) if child_found.atome_id == self.atome_id
+              #  end
+              #end
+              # we delete all the dynamic actions :
+              # - first the dynamic actions centering object
+              grab(:actions).resize_actions[:center].delete(self)
+              # the line below insert into array or update/replace if already exit in array
+              # we add the deleted object to the blackhole
+              @@black_hole |= [self]
+              # we remove objet from the atomes list
+              @@atomes.delete(self)
+            end
+            Render.render_delete(self, params) if refresh
+          else
+            @@black_hole
+          end
         end
+
       end
 
       # generated atomes manipulators

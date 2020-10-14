@@ -1421,19 +1421,21 @@ strdelim
 
   def render_api
     demo_code = <<strdelim
-b = box({color: :red, render: :false, center: true})
-wait 1 do
- b.render(:true)
+
+b = box({color: :red, render: :false, center: true, id: :b})
+t=text({content: :render, x: 400, y:0, id: :t})
+h=text(content: :hide, x: 500, y:0, id: :h)
+c=text(content: :check, x: 600, y:0, id: :c)
+t.touch do
+  b.render(:true)
 end
-wait 2 do
- b.render(:false)
+h.touch do
+  b.render(:false)
 end
-wait 3 do
- b.render(:true)
- b.touch do
-  alert "message :\n\#{b.inspect}\n from : app.rb : 21"
- end
+c.touch do
 end
+  b.touch do
+  end
 strdelim
     self.puts_help :render, demo_code
   end
