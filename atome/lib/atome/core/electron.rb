@@ -149,8 +149,10 @@ def find(params, method = nil)
              Atome.atomes + Atome.blackhole
            when :blackhole
              Atome.blackhole
-           when :view
+           when :active
              Atome.atomes
+           when :view
+             grab(:view).child
            else
              #when :dark_matter
              #  atomes=Atome.atomes + Atome.blackhole
@@ -159,8 +161,8 @@ def find(params, method = nil)
     atomes_found = []
     case params[:format]
     when :id || 'id'
-      atomes.each do |atome|
-        atomes_found << atome.id
+      atomes.each do |atome_found|
+        atomes_found << atome_found.id
       end
       atomes_found.delete(:blackhole)
       atomes_found.delete(:dark_matter)
@@ -179,8 +181,8 @@ def find(params, method = nil)
       atomes_found.delete(:view)
       atomes_found.delete(:actions)
     when :atome || 'atome'
-      atomes.each do |atome|
-        atomes_found << atome
+      atomes.each do |atome_found|
+        atomes_found << atome_found
       end
       atomes_found.delete(grab(:blackhole))
       atomes_found.delete(grab(:dark_matter))

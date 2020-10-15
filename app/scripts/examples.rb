@@ -3,7 +3,25 @@ require './app/scripts/background.rb'
 def clear_help (topic, code)
   #grab(:view).clear({target: :view, exclude: :help_container})
 
-  Atome.clear(:view)
+  #Atome.clear(:view)
+
+
+  ######## test #############
+  atomes_found= grab(:view).child
+
+  child_list=[]
+  get(:view).child.each do |child_found|
+    child_list << child_found.id
+  end
+  alert "message is \n\n#{find({scope: :view,format: :id})} \n#{child_list}\nLocation: examples.rb, line 15"
+
+  #alert "message is \n\n#{child_list} \n\nLocation: examples.rb, line 15"
+  get(:view).child.each do |child_found|
+    if child_found && child_found.id==:view
+      #alert "message is \n\n#{"big couille dans le potage"} \n\nLocation: examples.rb, line 8"
+    end
+    child_found.delete(true)
+  end
   #if topic
   #  #Atome.clear(:view)
   #  #help

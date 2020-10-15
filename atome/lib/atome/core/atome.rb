@@ -182,7 +182,7 @@ module Nucleon
 
       def delete params = nil, refresh = true
         if id==:view
-          alert "message :\n#{':couille dans le potage !!!'}\n from : atome.rb : 185"
+          #alert "message :\n#{':couille dans le potage !!!'}\n from : atome.rb : 185"
         else
           #alert "message :\nparams:#{params},\n#{atome_id} : #{id}\nfrom : atome.rb : 187"
           if params || params == false
