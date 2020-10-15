@@ -248,7 +248,7 @@ module Nucleon
                 # as we don't wont  to add it but move tthe atome, we have to remove it from it's previous parent
                 previous_parent = [atome_id]
               end
-              alert "message is \n\n#{child_list_found} \n\nLocation: neutron.rb, line 251"
+              #alert "message is \n\n#{child_list_found} \n\nLocation: neutron.rb, line 251"
               @child |= child_list_found
               params.property({property: :parent, value: previous_parent})
             else

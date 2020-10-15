@@ -9,18 +9,20 @@ def clear_help (topic, code)
   ######## test #############
   atomes_found= grab(:view).child
 
-  child_list=[]
-  get(:view).child.each do |child_found|
-    child_list << child_found.id
-  end
-  alert "message is \n\n#{find({scope: :view,format: :id})} \n#{child_list}\nLocation: examples.rb, line 15"
+  #child_list=[]
+  #get(:view).child.each do |child_found|
+  #  child_list << child_found.id
+  #end
+  #alert "message is \n\n#{find({scope: :view,format: :id})} \n#{child_list}\nLocation: examples.rb, line 15"
 
   #alert "message is \n\n#{child_list} \n\nLocation: examples.rb, line 15"
   get(:view).child.each do |child_found|
-    if child_found && child_found.id==:view
+    if child_found && child_found.id==:view || child_found.nil?
       #alert "message is \n\n#{"big couille dans le potage"} \n\nLocation: examples.rb, line 8"
+    else
+      child_found.delete(true)
     end
-    child_found.delete(true)
+
   end
   #if topic
   #  #Atome.clear(:view)

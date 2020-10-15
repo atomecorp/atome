@@ -97,39 +97,24 @@ def grab(atome_id)
   return nil
 end
 
-def scour(atome_id)
-  #search atome anyhere from it's atome_id
-  atomes = Atome.atomes + Atome.blackhole
-  if atome_id.to_sym == :all
-    atomes_found = []
-    atomes.each do |atome|
-      atomes_found << atome.id
-    end
-    atomes_found.delete(:blackhole)
-    atomes_found.delete(:dark_matter)
-    atomes_found.delete(:device)
-    atomes_found.delete(:intuition)
-    atomes_found.delete(:view)
-    atomes_found.delete(:actions)
-    alert "message :\n#{atomes_found}\n from : electron.rb : 114"
-    return atomes_found
-  else
-    atomes.each do |atome|
-      if atome.atome_id == atome_id
-        return atome
-      end
-    end
-  end
+def scour(params)
+  #search everywhere
+ find({value: params, scope: :all})
+end
 
-  return nil
+
+def dig(params)
+  #serach in the trash
+  find({value: params, scope: :blackhole})
 end
 
 def find(params, method = nil)
+  #first we parse the params
   if params.class == String || params.class == Symbol || params.class == Boolean
-    params = if params ==true || params==:true
-      { scope: :view, value: :all}
-    else
-      {property: :id, scope: :view, value: params}
+    params = if params == true || params == :true
+               {scope: :view, value: :all}
+             else
+               {property: :id, scope: :view, value: params}
              end
   end
   unless params[:scope]
@@ -157,6 +142,7 @@ def find(params, method = nil)
              #when :dark_matter
              #  atomes=Atome.atomes + Atome.blackhole
            end
+  # now we treat
   if params[:value] == :all || params[:value] == 'all'
     atomes_found = []
     case params[:format]
@@ -191,7 +177,6 @@ def find(params, method = nil)
       atomes_found.delete(grab(:view))
       atomes_found.delete(grab(:actions))
     end
-
   else
     case params[:property]
     when :id || 'id'
@@ -201,10 +186,18 @@ def find(params, method = nil)
           atomes_found = atome
         end
       end
+
     when :atome_id || 'atome_id'
       atomes_found = ""
       atomes.each do |atome|
-        if atome.atome_id == params[:value]
+        if atome.atome_id ==  params[:value]
+          atomes_found = atome
+        end
+      end
+    when :atome || 'atome'
+      atomes_found = ""
+      atomes.each do |atome|
+        if atome == params[:value]
           atomes_found = atome
         end
       end
@@ -256,7 +249,7 @@ def find_atome_from_params params
     #if the first condition return nil now we check if an id exist
     supposed_atome = get(params) unless supposed_atome
   end
-
+# we return the atome itself
   return supposed_atome
 end
 

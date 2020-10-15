@@ -163,14 +163,16 @@ module Nucleon
               @parent.each do |parent_found|
                 if parent_found != nil
                   @@atomes << self
-                  scour(parent_found).insert(self)
+                  find({value: parent_found, property: :atome_id, scope: :view}).insert(self)
                 end
               end
             end
 
             if @child && @child.length > 0
               @child.each do |child_found|
-                scour(child_found).enliven(true)
+                alert "message :\n#{grab(child_found).id}\n from : atome.rb : 173"
+                #find({value: child_found, property: :atome_id, scope: :all}).enliven(true)
+                #dig(child_found).enliven(true)
               end
             end
           end
