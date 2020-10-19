@@ -104,7 +104,7 @@ end
 
 
 def dig(params)
-  #serach in the trash
+  #search in the trash
   find({value: params, scope: :blackhole})
 end
 

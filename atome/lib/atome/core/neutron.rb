@@ -199,18 +199,28 @@ module Nucleon
           atome = find_atome_from_params(params)
           insert(atome)
         else
+          #if @child
+          #  #alert "message is \n\n#{"kool : "+@child.to_s } \n\nLocation: neutron.rb, line 202"
+          #end
           # we check if the properties store is a string (atome-id), if its an array or an atome when return the raw value
           if @child.class == String || @child.class == Symbol
-            grab(@child)
+            #grab(@child)
           elsif @child.class == Array
             # now we return an array of atome instead
             atome_child = []
             unless @child.nil?
               @child.each do |child|
-                atome_child << grab(child)
+                if find({value: child, property: :atome_id, scope: :all}).class==Atome
+                  puts "message is \n\n#{scour(child)}  \n\n#{@child} \n\nLocation: neutron.rb, line 214"
+                  atome_child << grab(child)
+                  #puts "message is \n\n#{atome_child} \n\nLocation: neutron.rb, line 215"
+                  #atome_child <<  find({value: child, property: :atome_id, scope: :all})
+                end
+                #end
               end
               atome_child
             end
+            #@child
           else
             @child
           end
@@ -1406,6 +1416,8 @@ module Nucleon
           @atome_id
         end
       end
+
+      #private :atome_id
 
       def atome_id=(params = nil, refresh = true)
         atome_id params, refresh

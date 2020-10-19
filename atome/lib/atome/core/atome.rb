@@ -170,7 +170,7 @@ module Nucleon
 
             if @child && @child.length > 0
               @child.each do |child_found|
-                alert "message :\n#{grab(child_found).id}\n from : atome.rb : 173"
+                alert "message :\n#{grab(child_found).class}\n from : atome.rb : 173"
                 #find({value: child_found, property: :atome_id, scope: :all}).enliven(true)
                 #dig(child_found).enliven(true)
               end
@@ -217,6 +217,7 @@ module Nucleon
                 @selector = new_prop_array
               end
             elsif params == false
+              alert "message is \n\n#{"sure?"} \n\nLocation: atome.rb, line 220"
               get(:view).enliven(atome_id)
             elsif params.class == Boolean || params.to_sym == :true
               # now we delete all child
