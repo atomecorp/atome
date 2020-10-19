@@ -1,5 +1,4 @@
 # here the main methods to create basic atome object
-#work
 module Nucleon
   module Core
     class Nucleon
