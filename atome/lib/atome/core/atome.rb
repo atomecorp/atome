@@ -120,10 +120,12 @@ module Nucleon
 
       def get params = nil
         if params
-          if params.class == String || params.class == Symbol
-            Object.get(params)
-          end # we check if user try to get the object by id
+          alert "message :\n#{params}\n from : atome.rb : 123"
+          #if params.class == String || params.class == Symbol
+          #  Object.get(params)
+          #end # we check if user try to get the object by id
         else
+          alert "message :\n#{:get}\n from : atome.rb : 128"
           self
         end
       end
