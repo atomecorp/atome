@@ -1,5 +1,5 @@
 # here the main methods to create basic atome object
-
+#work
 module Nucleon
   module Core
     class Nucleon
@@ -154,7 +154,6 @@ module Nucleon
                     else
                       send(key, value)
                     end
-
                   end
                 end
               end
@@ -170,17 +169,15 @@ module Nucleon
 
             if @child && @child.length > 0
               @child.each do |child_found|
-                alert "message :\n#{grab(child_found).class}\n from : atome.rb : 173"
+                alert "message :\n#{dig(child_found)}\n from : atome.rb : 173"
                 #find({value: child_found, property: :atome_id, scope: :all}).enliven(true)
-                #dig(child_found).enliven(true)
+                dig(child_found).enliven(true)
               end
             end
           end
         end
-
         #we re attach to parent #fixme the preset already attach to view so we can optimise to immediatly attach to parent instead
       end
-
 
       def delete params = nil, refresh = true
         if id==:view
