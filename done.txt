@@ -1,2 +1,2 @@
 - added 'r_get' method to Render class to replace 'Element.find'
-- corrected offest when insert an objet into another
+- corrected offset when insert an objet into another

@@ -14,39 +14,7 @@ def selected params
   #Atomes.atomes
 end
 
-def get_proc_content(proc)
-  #proc_parser allow to parse a proc
-  lines = `String(#{proc})`
-  value_found = ""
-  proc_content = []
-  lines = lines.split("\n")
-  lines.shift
-  lines.each_with_index do |line|
-    line = line.gsub(".$", ".").gsub(";", "")
-    unless line.include?('$writer[$rb_minus($writer["length"], 1)]')
-      if line.include?("$writer = [")
-        value_found = line.sub('$writer = [', "").sub(/]/i, '')
-      elsif line.include?("$send(")
-        content = line.sub("$send(", "").sub("Opal.to_a($writer))", "")
-        content = content.split(",")
-        variable = content[0].gsub(" ", "")
-        property = content[1].gsub("'", "").gsub(" ", "")
-        line = variable + "." + property + value_found
-        proc_content << line
-      else
-        proc_content << line
-      end
-    end
-  end
-  return proc_content.join("\n")
-end
 
-def to_px(obj = nil, property = :top)
-  if obj.class != Atome
-    obj = get(obj)
-  end
-  Render.render_to_px(obj, property)
-end
 
 def get(params)
   #get atome in view from it's id
@@ -101,7 +69,6 @@ def scour(params)
   #search everywhere
  find({value: params, scope: :all})
 end
-
 
 def dig(params)
   #search in the trash
@@ -232,43 +199,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 Strdelilm
 end
 
-################## utilities  ##############
-def batch atomes, properties
-  atomes.each do |atome|
-    properties.each do |property, value|
-      atome.send(property, value)
-    end
-  end
-end
 
-def find_atome_from_params params
-  if params.class == Atome
-    supposed_atome = params
-  else
-    supposed_atome = grab(params) if params.class == String || params.class == Symbol
-    #if the first condition return nil now we check if an id exist
-    supposed_atome = get(params) unless supposed_atome
-  end
-# we return the atome itself
-  return supposed_atome
-end
-
-def parse_params params, method
-  case params
-  when Array
-    #"array"
-  when Hash
-    properties = Atome.presets[method]
-    params.each do |key, value|
-      properties[key] = value
-    end
-    properties
-  when Boolean, :true
-    Atome.presets[method]
-  when String, Symbol
-    params
-  end
-end
 
 ################## time operation  ##############
 

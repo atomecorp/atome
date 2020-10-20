@@ -19,3 +19,4 @@
 - add and atome array and atome hash that inherit ruby array and hash to allow easy batch of atomes
 - add creation of atome's array to allow batch treatment
 - solve render bug (see render example)
+- utilities in Neutron needs to a bit of integration to work with example
