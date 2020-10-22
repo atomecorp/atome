@@ -231,64 +231,64 @@ module Nucleon
         child(params, refresh)
       end
 
-      #def insert(params = nil, refresh = true)
-      #  @child = [] if @child.class == NilClass || (params.class == Hash && params[:add] == true)
-      #  if params || params == false
-      #    if params.class == String || params.class == Symbol || params.class == Atome
-      #      atome = find_atome_from_params(params)
-      #      params = atome
-      #      # below we store the child list in "child_list_found" variable to re-affect it after the line below(" parent_found.extract(params)") may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
-      #      child_list_found = [params.atome_id]
-      #      @child |= child_list_found
-      #      if params.parent
-      #        previous_parent = params.parent
-      #        # the syntax below allow to add the value only if its present before.
-      #        # if it already exist its replace not store twice
-      #        previous_parent |= [atome_id]
-      #        # we check if the child should be extract from it's ancient parent or not( if we add it)
-      #        unless params.class == Hash && params[:add]
-      #          params.parent.each do |parent_found|
-      #            parent_found.extract(params)
-      #          end
-      #          # as we don't wont  to add it but move tthe atome, we have to remove it from it's previous parent
-      #          previous_parent = [atome_id]
-      #        end
-      #        @child |= child_list_found
-      #        params.property({property: :parent, value: previous_parent})
-      #      else
-      #        params.property({property: :parent, value: [atome_id]})
-      #      end
-      #      broadcast(atome_id => {insert: params, private: false})
-      #      Render.render_group(self, params) if refresh
-      #      #alert "message :\n(#{params},\n #{params.atome_id},\n #{params.id}\n#{params.x()}) from : neutron.rb : 262"
-      #      #params.x(0)
-      #      #params.y(0)
-      #      if params.y
-      #        if y > params.y
-      #          params.y = params.y[:content] + y[:content]
-      #        else
-      #          params.y = params.y[:content] - y[:content]
-      #        end
-      #      end
-      #      if params.x
-      #        if x > params.x
-      #          params.x = x[:content] + params.x[:content]
-      #        else
-      #          params.x = params.x[:content] - x[:content]
-      #        end
-      #      end
-      #    elsif params.class == Array
-      #      params.each do |atome|
-      #        insert(atome)
-      #      end
-      #    end
-      #    self
-      #  end
-      #  self
-      #end
-      #
-      #
-      #
+      def insert(params = nil, refresh = true)
+        @child = [] if @child.class == NilClass || (params.class == Hash && params[:add] == true)
+        if params || params == false
+          if params.class == String || params.class == Symbol || params.class == Atome
+            atome = find_atome_from_params(params)
+            params = atome
+            # below we store the child list in "child_list_found" variable to re-affect it after the line below(" parent_found.extract(params)") may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
+            child_list_found = [params.atome_id]
+            @child |= child_list_found
+            if params.parent
+              previous_parent = params.parent
+              # the syntax below allow to add the value only if its present before.
+              # if it already exist its replace not store twice
+              previous_parent |= [atome_id]
+              # we check if the child should be extract from it's ancient parent or not( if we add it)
+              unless params.class == Hash && params[:add]
+                params.parent.each do |parent_found|
+                  parent_found.extract(params)
+                end
+                # as we don't wont  to add it but move tthe atome, we have to remove it from it's previous parent
+                previous_parent = [atome_id]
+              end
+              @child |= child_list_found
+              params.property({property: :parent, value: previous_parent})
+            else
+              params.property({property: :parent, value: [atome_id]})
+            end
+            broadcast(atome_id => {insert: params, private: false})
+            Render.render_group(self, params) if refresh
+            #alert "message :\n(#{params},\n #{params.atome_id},\n #{params.id}\n#{params.x()}) from : neutron.rb : 262"
+            #params.x(0)
+            #params.y(0)
+            if params.y
+              if y > params.y
+                params.y = params.y[:content] + y[:content]
+              else
+                params.y = params.y[:content] - y[:content]
+              end
+            end
+            if params.x
+              if x > params.x
+                params.x = x[:content] + params.x[:content]
+              else
+                params.x = params.x[:content] - x[:content]
+              end
+            end
+          elsif params.class == Array
+            params.each do |atome|
+              insert(atome)
+            end
+          end
+          self
+        end
+        self
+      end
+
+
+
       def check_prop_status params, property
         #(we want to define property on the fly thast hy wheck very time instead of defining all properties at atome initialisation)
         if property.class == NilClass || (params.class == Hash && params[:add] == true)
@@ -309,62 +309,67 @@ module Nucleon
         end
       end
 
-      def insert(params = nil, refresh = true)
-        #just to check if child is already defined
-        @child = check_prop_status(params, @child)
-        if params || params == false
-          puts "message :\n#{params}\n from : neutron.rb : 313"
-
-          params=reformat_params params, :insert
-          #if params.class == String || params.class == Symbol || params.class == Atome
-          #  atome = find_atome_from_params(params)
-          #  params = atome
-          #  # below we store the child list in "child_list_found" variable to re-affect it after the line below(" parent_found.extract(params)") may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
-          #  child_list_found = [params.atome_id]
-          #  @child |= child_list_found
-          #  if params.parent
-          #    previous_parent = params.parent
-          #    # the syntax below allow to add the value only if its present before.
-          #    # if it already exist its replace not store twice
-          #    previous_parent |= [atome_id]
-          #    # we check if the child should be extract from it's ancient parent or not( if we add it)
-          #    unless params.class == Hash && params[:add]
-          #      params.parent.each do |parent_found|
-          #        parent_found.extract(params)
-          #      end
-          #      # as we don't wont  to add it but move tthe atome, we have to remove it from it's previous parent
-          #      previous_parent = [atome_id]
-          #    end
-          #    @child |= child_list_found
-          #    params.property({property: :parent, value: previous_parent})
-          #  else
-          #    params.property({property: :parent, value: [atome_id]})
-          #  end
-          #  broadcast(atome_id => {insert: params, private: false})
-          #  Render.render_group(self, params) if refresh
-          #  if params.y
-          #    if y > params.y
-          #      params.y = params.y[:content] + y[:content]
-          #    else
-          #      params.y = params.y[:content] - y[:content]
-          #    end
-          #  end
-          #  if params.x
-          #    if x > params.x
-          #      params.x = x[:content] + params.x[:content]
-          #    else
-          #      params.x = params.x[:content] - x[:content]
-          #    end
-          #  end
-          #elsif params.class == Array
-          #  params.each do |atome|
-          #    insert(atome)
-          #  end
-          #end
-          self
-        end
-        self
+      def << params
+        self.content(content+params)
+        #alert "message :\n#{content}\n from : neutron.rb : 313"
       end
+
+      #def insert(params = nil, refresh = true)
+      #  #just to check if child is already defined
+      #  @child = check_prop_status(params, @child)
+      #  if params || params == false
+      #    puts "message :\n#{params}\n from : neutron.rb : 313"
+      #
+      #    params=reformat_params params, :insert
+      #    #if params.class == String || params.class == Symbol || params.class == Atome
+      #    #  atome = find_atome_from_params(params)
+      #    #  params = atome
+      #    #  # below we store the child list in "child_list_found" variable to re-affect it after the line below(" parent_found.extract(params)") may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
+      #    #  child_list_found = [params.atome_id]
+      #    #  @child |= child_list_found
+      #    #  if params.parent
+      #    #    previous_parent = params.parent
+      #    #    # the syntax below allow to add the value only if its present before.
+      #    #    # if it already exist its replace not store twice
+      #    #    previous_parent |= [atome_id]
+      #    #    # we check if the child should be extract from it's ancient parent or not( if we add it)
+      #    #    unless params.class == Hash && params[:add]
+      #    #      params.parent.each do |parent_found|
+      #    #        parent_found.extract(params)
+      #    #      end
+      #    #      # as we don't wont  to add it but move tthe atome, we have to remove it from it's previous parent
+      #    #      previous_parent = [atome_id]
+      #    #    end
+      #    #    @child |= child_list_found
+      #    #    params.property({property: :parent, value: previous_parent})
+      #    #  else
+      #    #    params.property({property: :parent, value: [atome_id]})
+      #    #  end
+      #    #  broadcast(atome_id => {insert: params, private: false})
+      #    #  Render.render_group(self, params) if refresh
+      #    #  if params.y
+      #    #    if y > params.y
+      #    #      params.y = params.y[:content] + y[:content]
+      #    #    else
+      #    #      params.y = params.y[:content] - y[:content]
+      #    #    end
+      #    #  end
+      #    #  if params.x
+      #    #    if x > params.x
+      #    #      params.x = x[:content] + params.x[:content]
+      #    #    else
+      #    #      params.x = params.x[:content] - x[:content]
+      #    #    end
+      #    #  end
+      #    #elsif params.class == Array
+      #    #  params.each do |atome|
+      #    #    insert(atome)
+      #    #  end
+      #    #end
+      #    self
+      #  end
+      #  self
+      #end
 
 
       def insert=(params = nil, refresh = true)
