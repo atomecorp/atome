@@ -1,8 +1,10 @@
-# here stand  atome's methods to initiate the creation of atome environment and also add asier apis to create basic atome object
+# frozen_string_literal: true
+
+# here stand  atome's methods to initiate the creation of atome environment
+# add easier apis to create basic atome object
 
 # the class below init the Atome class
 class Atome < Nucleon::Core::Nucleon
-
 end
 
 def box(options = nil)
@@ -234,8 +236,6 @@ class Device
     device.language(:english)
     Render.initialize
   end
-
-
 end
 
 # class Help

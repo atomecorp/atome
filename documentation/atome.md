@@ -195,7 +195,7 @@ the presets method create a new hash that hold the basics properties of the new 
 
 - optionally you can define a new function that behave like a shortcut to create a preconfigured object. In this case a "web" function
 will create the shortcut. 
-ex add the following function in the bigbang.rb file:
+ex add the following function in the big_bang.rb file:
 	(To be consistent the function should have the name of the newly created type)
 	
 	

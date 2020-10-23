@@ -14,10 +14,53 @@ end
 
 # for testing only
 class Eve
+  # dummy methods here
   def initialize
     Universe.add(self)
   end
 
+  def broadcast(params)
+    # to allow system to be notified of property modification
+    params
+  end
+
+  def atome_id
+    :zid_654
+  end
+
+  # specific property methods
+  def proc_parsing(proc)
+    # if the object property contain a Proc it'll be processed here
+    proc
+  end
+
+  def render_parsing(params)
+    # if the object property needs to be refresh then I'm your method
+    Render.render_my_prop(self, params) if params[:refresh].nil? || params[:refresh] == true
+  end
+
+  def property_parsing(properties)
+    # let's go with the DSP ...
+    properties
+  end
+
+  def my_prop_treatment(params)
+    # here happen the specific treatment for the current property
+    if params.class == Hash
+      proc_parsing params[:proc] if params && params[:proc]
+      property_parsing params
+      # if prop needs to be refresh we send it to the Render engine
+      render_parsing params
+    elsif params.class == Array
+      # if params is an array is found we send each item of the array to 'my_prop_treatment' as a Hash
+      params.each do |param|
+        my_prop_treatment param
+      end
+    end
+    broadcast(atome_id => { my_prop: params })
+  end
+
+  # global property methods
   def magic_return(method)
     # the aim of this method is filter the return of the property,
     # so if it found a single content, it only return the value ex : a.color => :red instead of {content: :red}
@@ -25,34 +68,6 @@ class Eve
       method[:content]
     else
       method
-    end
-  end
-
-  def proc_parsing(proc)
-    # if the object property contain a Proc it'll be processed here
-    puts proc
-  end
-
-  def refresh_parsing(property)
-    # if the object property needs to be refresh then I'm your method
-    puts property
-  end
-
-  def property_parsing(properties)
-    # let's go with the DSP ...
-    puts properties
-  end
-
-  def my_prop_treatment(params)
-    # here happen the specific treatment for the current property
-    if params.class == Hash
-      proc_parsing params[:proc] if params && params[:proc]
-      refresh_parsing :my_prop if params && params[:refresh]
-      property_parsing params
-    else
-      params.each do |param|
-        my_prop_treatment param
-      end
     end
   end
 
@@ -109,11 +124,12 @@ class Eve
         instance_variable[key] = value
       end
     end
-    # now we apply the specific  treatment according to the property found
-    my_prop_treatment params
+    # now we apply the specific treatment according to the property found if the hash is not empty
+    my_prop_treatment params if params != {}
   end
 
   def my_prop(params = nil)
+    # This is the entry point for property getter and setter:
     # this is the main entry method for the current property treatment
     # first we create a hash for the property if t doesnt exist
     # we don't create a object init time, to only create property when needed
@@ -128,9 +144,9 @@ end
 t = text({ content: '', y: 0 })
 a = Eve.new
 a.my_prop(:datas)
-# a.my_prop({ content: :datas, kool: :ok })
-# a.my_prop({ content: :didi, kool: :pas_ok })
-# t << "message :\n#{a.my_prop} : #{a.my_prop.class}\n from : app.rb : 80\n\n"
-# a.my_prop([{ content: :datos, x: 0 }, :toto])
-# a.my_prop({ content: :titi, kool: :ok2, add: true })
+a.my_prop({ content: :doto, kool: :ok })
+a.my_prop({ content: :didi, kool: :pas_ok, refresh: false })
+t << "message :\n#{a.my_prop} : #{a.my_prop.class}\n from : app.rb : 80\n\n"
+a.my_prop([{ content: :datos, x: 0 }, :toto])
+a.my_prop({ content: :titi, kool: :ok2, add: true })
 t << "message :\n#{a.my_prop} : #{a.my_prop.class}\n from : app.rb : 83"

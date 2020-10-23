@@ -1123,6 +1123,10 @@ module Render
       JS_utils.load_codemirror(ide_atome_id, content)
     end
   end
+  # dummy methods for test only can be remove
+  def self.render_my_prop(i, params)
+    # code here
+  end
 
 end
 

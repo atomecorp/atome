@@ -32,7 +32,7 @@ class App < Roda
   require "../atome/lib/atome/core/photon.rb"
   require "../atome/lib/atome/core/atome.rb"
   require "../atome/lib/atome/core/electron.rb"
-  #require "../atome/lib/atome/bigbang.rb"
+  #require "../atome/lib/atome/big_bang.rb"
   plugin :static, ['/css', '/js', '/medias']
   plugin 'faye/websocket', adapter: :thin, ping: 45
   route do |r|
