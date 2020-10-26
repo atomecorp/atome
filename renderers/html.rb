@@ -16,6 +16,7 @@ module Render
   def self.render_type(atome, params, parent = :body)
     atome_id = atome.atome_id
     dark_matter = Element.find('#dark_matter')
+    #alert "message :\n#{params}\n from : html.rb : 19"
     if atome_id == :blackhole
       r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
     elsif atome_id == :dark_matter
@@ -27,16 +28,16 @@ module Render
     elsif atome_id == :view
       r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
     else
-      if atome.type == :text
+      if params[:content] == :text
         dark_matter.append("<div class='atome' style='display:inline-block' id='#{atome_id}'></div>")
-      elsif atome.type == :shape
+      elsif params[:content] == :shape
         #alert "message is \n\n#{atome.id} \n\nLocation: html.rb, line 31"
         dark_matter.append(("<div class='atome' id='#{atome_id}'></div>"))
-      elsif atome.type == :image
+      elsif params[:content] == :image
         dark_matter.append("<div class='atome' id='#{atome_id}'></div>")
-      elsif atome.type == :video
+      elsif params[:content] == :video
         dark_matter.append("<div  id=" + atome_id + " class='atome' ><video  width='512' muted ></video></div>");
-      elsif atome.type == :audio
+      elsif params[:content] == :audio
         dark_matter.append("<div  id=" + atome_id + " class='atome' ></div>");
       else
         dark_matter.append(("<div class='atome' id='#{atome_id}'></div>"))
@@ -57,7 +58,7 @@ module Render
   end
 
   def self.render_content(atome, params, add = false)
-    if atome.type == "text" || atome.type == "web"
+    if atome.type[:content] == :text || atome.type[:content] == :web
       #if atome.id=="code_content"
       #  alert "message is \n\n#{atome.id} \n\nLocation: html.rb, line 58"
       #end
@@ -71,7 +72,7 @@ module Render
       #unless atome.height
       #  atome.height = r_get( atome.atome_id).height
       #end
-    elsif atome.type == "image"
+    elsif atome.type[:content]  == "image"
       if $images_list[params.to_sym].nil?
         path = '././medias/images/image_missing.svg'
         width = 390
@@ -95,7 +96,7 @@ module Render
       unless atome.height
         atome.height = height
       end
-    elsif atome.type == "video"
+    elsif atome.type[:content]  == "video"
       path = if $videos_list[params.to_sym].nil?
                '././medias/videos/video_missing.mp4'
              else
@@ -110,7 +111,7 @@ module Render
       end
       r_get( atome.atome_id).find('video').css('width', '100%')
       #r_get( params.atome_id).width
-    elsif atome.type == "audio"
+    elsif atome.type[:content]  == "audio"
       path = if $audios_list[params.to_sym].nil?
                '././medias/audios/audio_missing.wav'
              else
@@ -118,7 +119,7 @@ module Render
              end
       r_get( atome.atome_id).html("<audio  src=" + path + " type='audio/wav'></audio>")
 
-    elsif atome.type == "shape"
+    elsif atome.type[:content]  == "shape"
       # below temp patch waiting for parametric shape to allow cirle creation
       r_get( atome.atome_id).css('border-radius', params[:tension])
     else
@@ -133,7 +134,7 @@ module Render
 
   def self.render_color(atome, params, add = false)
     color = "background-image"
-    if atome.type == :text
+    if atome.type[:content]  == :text
       r_get( atome.atome_id).css('-webkit-background-clip', 'text')
       r_get( atome.atome_id).css('-webkit-text-fill-color', 'transparent')
     end
@@ -237,7 +238,7 @@ module Render
     if params.class == Hash
       axis = params.keys[0]
       value = params.values[0]
-      if atome.type == :text
+      if atome.type[:content]  == :text
         height = r_get( atome.atome_id).innerHeight
         atome.height(height, false)
         if params.class == String && params.end_with?("%")
@@ -258,7 +259,7 @@ module Render
         r_get( atome.atome_id).css('background-size', "100%")
       end
     else
-      if atome.type == :text
+      if atome.type[:content]  == :text
         height = r_get( atome.atome_id).innerHeight
         atome.height(height, false)
         if params.class == String && params.end_with?("%")
@@ -412,7 +413,7 @@ module Render
     end
 
     if add
-      if atome.type == :text || atome.type == :image
+      if atome.type[:content]  == :text || atome.type[:content]  == :image
         prev_prop = r_get( atome.atome_id).css('text-shadow')
         r_get( atome.atome_id).css('filter', prev_prop + " " + 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
       else
@@ -420,7 +421,7 @@ module Render
         r_get( atome.atome_id).css('box-shadow', prev_prop + " ," + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
       end
     else
-      if atome.type == :text || atome.type == :image
+      if atome.type[:content]  == :text || atome.type[:content]  == :image
         r_get( atome.atome_id).css('filter', 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
       else
         r_get( atome.atome_id).css('box-shadow', x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
@@ -580,7 +581,7 @@ module Render
 
   def self.render_select(atome, params, add = false)
     if params
-      if atome.type == :text
+      if atome.type[:content]  == :text
         r_get( atome.atome_id).attr('contenteditable', 'true')
         r_get( atome.atome_id).css('-webkit-user-select', 'text')
         r_get( atome.atome_id).css('-khtml-user-select', 'text')
@@ -591,7 +592,7 @@ module Render
 
       r_get( atome.atome_id).add_class 'selected'
     else
-      if atome.type == :text
+      if atome.type[:content]  == :text
         r_get( atome.atome_id).attr('contenteditable', 'false')
         r_get( atome.atome_id).css('-webkit-user-select', 'none')
         r_get( atome.atome_id).css('-khtml-user-select', 'none')
@@ -1037,7 +1038,7 @@ module Render
     #below to play also all video child (mostly audio tracks)
     if atome.child
       if atome.child.each do |child|
-        if child.type == :audio || atome.child[0].type == :video
+        if child.type[:content]  == :audio || atome.child[0].type[:content]  == :video
           render_play(child, params, add = false)
         end
       end
@@ -1050,13 +1051,13 @@ module Render
       params = true
       proc = false
     end
-    if atome.type == :video && params == false
+    if atome.type[:content]  == :video && params == false
       video_pause atome, 0
-    elsif atome.type == :audio && params == false
+    elsif atome.type[:content]  == :audio && params == false
       audio_pause atome, 0
-    elsif atome.type == :video
+    elsif atome.type[:content]  == :video
       JS_utils.video_play atome, params, proc
-    elsif atome.type == :audio
+    elsif atome.type[:content]  == :audio
       JS_utils.audio_play atome, params, proc
     end
   end
@@ -1071,9 +1072,9 @@ module Render
       end
       end
     end
-    if atome.type == :video
+    if atome.type[:content]  == :video
       JS_utils.video_pause atome, params
-    elsif atome.type == :audio
+    elsif atome.type[:content]  == :audio
       JS_utils.audio_pause atome, params
     end
   end

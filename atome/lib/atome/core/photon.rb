@@ -653,17 +653,17 @@ module Nucleon
 
       ####### start new methods #######
       # specific property methods
-      def proc_parsing(proc)
+      def rotate_proc(proc)
         # if the object property contain a Proc it'll be processed here
         proc
       end
 
-      def render_parsing(params)
+      def rotate_rendering(params)
         # if the object property needs to be refresh then I'm your method
         Render.render_rotate(self, params) if params[:refresh].nil? || params[:refresh] == true
       end
 
-      def property_parsing(properties)
+      def rotate_processing(properties)
         # let's go with the DSP ...
         properties
       end
@@ -671,10 +671,10 @@ module Nucleon
       def rotate_treatment(params)
         # here happen the specific treatment for the current property
         if params.class == Hash
-          proc_parsing params[:proc] if params && params[:proc]
-          property_parsing params
+          rotate_proc params[:proc] if params && params[:proc]
+          rotate_processing params
           # if prop needs to be refresh we send it to the Render engine
-          render_parsing params
+          rotate_rendering params
         elsif params.class == Array
           # if params is an array is found we send each item of the array to 'rotate_treatment' as a Hash
           params.each do |param|
@@ -699,6 +699,11 @@ module Nucleon
           magic_return @rotate
         end
       end
+
+      def rotate=(params = nil)
+        my_prop(params)
+      end
+
       ######## end new methods #######
 
 

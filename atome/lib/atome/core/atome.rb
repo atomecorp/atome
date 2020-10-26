@@ -125,7 +125,7 @@ module Nucleon
           #  Object.get(params)
           #end # we check if user try to get the object by id
         else
-          alert "message :\n#{:get}\n from : atome.rb : 128"
+          #alert "message :\n#{:get}\n from : atome.rb : 128"
           self
         end
       end

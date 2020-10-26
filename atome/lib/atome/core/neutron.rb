@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # here the methods to add conceptual properties to atome objects
 module Nucleon
   module Core
@@ -24,7 +26,7 @@ module Nucleon
             param[:add] = true
             send(method_name, param)
           else
-            send(method_name, { content: param, add: true })
+            send(method_name, {content: param, add: true})
           end
         end
         {}
@@ -54,7 +56,7 @@ module Nucleon
         elsif params.class == Array
           array_parsing params, method_name
         else
-          { content: params }
+          {content: params}
         end
       end
 
@@ -132,20 +134,58 @@ module Nucleon
         name(params, refresh)
       end
 
-      def type(params = nil, refresh = true)
-        if params || params == false
-          @type = params
-          broadcast(atome_id => {type: params, private: false})
-          Render.render_type(self, params) if refresh
+      # specific property methods
+      def type_proc(proc)
+        # if the object property contain a Proc it'll be processed here
+        proc
+      end
+
+      def type_rendering(params)
+        # if the object property needs to be refresh then I'm your method
+        Render.render_type(self, params) if params[:refresh].nil? || params[:refresh] == true
+      end
+
+      def type_processing(properties)
+        # let's go with the DSP ...
+        properties
+      end
+
+      def type_treatment(params)
+        # here happen the specific treatment for the current property
+        if params.class == Hash
+          type_proc params[:proc] if params && params[:proc]
+          type_processing params
+          # if prop needs to be refresh we send it to the Render engine
+          type_rendering params
+        elsif params.class == Array
+          # if params is an array is found we send each item of the array to 'type_treatment' as a Hash
+          params.each do |param|
+            type_treatment param
+          end
+        end
+        broadcast(atome_id => {type: params})
+      end
+
+      def type(params = nil)
+        # This is the entry point for property getter and setter:
+        # this is the main entry method for the current property treatment
+        # first we create a hash for the property if t doesnt exist
+        # we don't create a object init time, to only create property when needed
+        @type ||= {}
+        # we send the params to the 'reformat_params' if there's a params
+        method_analysis params, @type, :type if params
+        # finally we return the current property using magic_return
+        if params
           self
         else
-          @type
+          magic_return @type
         end
       end
 
-      def type=(params = nil, refresh = true)
-        type(params, refresh)
+      def type=(params = nil)
+        type(params)
       end
+
 
       def preset(params = nil)
         if params || params == false
@@ -242,7 +282,8 @@ module Nucleon
           end
           atome.insert(self)
         else
-          # we check if the properties store is a string (atome_id), if its an array or an atome when return the raw value
+          # we check if the properties store is a string (atome_id),
+          #if its an array or an atome when return the raw value
           if @parent.class == String || @parent.class == Symbol
             grab(@parent)
           elsif @parent.class == Array
@@ -271,7 +312,8 @@ module Nucleon
           #if @child
           #  #alert "message is \n\n#{"kool : "+@child.to_s } \n\nLocation: neutron.rb, line 202"
           #end
-          # we check if the properties store is a string (atome-id), if its an array or an atome when return the raw value
+          # we check if the properties store is a string (atome-id),
+          #if its an array or an atome when return the raw value
           if @child.class == String || @child.class == Symbol
             #grab(@child)
           elsif @child.class == Array
@@ -306,7 +348,9 @@ module Nucleon
           if params.class == String || params.class == Symbol || params.class == Atome
             atome = find_atome_from_params(params)
             params = atome
-            # below we store the child list in "child_list_found" variable to re-affect it after the line below(" parent_found.extract(params)") may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
+            # below we store the child list in "child_list_found"
+            #variable to re-affect it after the line below(" parent_found.extract(params)")
+            #may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
             child_list_found = [params.atome_id]
             @child |= child_list_found
             if params.parent
@@ -329,7 +373,8 @@ module Nucleon
             end
             broadcast(atome_id => {insert: params, private: false})
             Render.render_group(self, params) if refresh
-            #alert "message :\n(#{params},\n #{params.atome_id},\n #{params.id}\n#{params.x()}) from : neutron.rb : 262"
+            #alert "message :\n(#{params},\n #{params.atome_id},\n #{params.id}\n#{params.x()})
+            #from : neutron.rb : 262"
             #params.x(0)
             #params.y(0)
             if params.y
@@ -357,9 +402,9 @@ module Nucleon
       end
 
 
-
       def check_prop_status params, property
-        #(we want to define property on the fly thast hy wheck very time instead of defining all properties at atome initialisation)
+        #(we want to define property on the fly thast hy wheck very time instead of defining all properties
+        #at atome initialisation)
         if property.class == NilClass || (params.class == Hash && params[:add] == true)
           property = []
         else
@@ -379,7 +424,7 @@ module Nucleon
       #end
 
       def << params
-        self.content(content+params)
+        self.content(content + params)
         #alert "message :\n#{content}\n from : neutron.rb : 313"
       end
 
@@ -393,7 +438,9 @@ module Nucleon
       #    #if params.class == String || params.class == Symbol || params.class == Atome
       #    #  atome = find_atome_from_params(params)
       #    #  params = atome
-      #    #  # below we store the child list in "child_list_found" variable to re-affect it after the line below(" parent_found.extract(params)") may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
+      #    #  # below we store the child list in "child_list_found"
+      #variable to re-affect it after the line below(" parent_found.extract(params)")
+      #may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
       #    #  child_list_found = [params.atome_id]
       #    #  @child |= child_list_found
       #    #  if params.parent
@@ -406,7 +453,8 @@ module Nucleon
       #    #      params.parent.each do |parent_found|
       #    #        parent_found.extract(params)
       #    #      end
-      #    #      # as we don't wont  to add it but move tthe atome, we have to remove it from it's previous parent
+      #    #      # as we don't wont  to add it but move tthe atome, we have to remove it from it's
+      #previous parent
       #    #      previous_parent = [atome_id]
       #    #    end
       #    #    @child |= child_list_found
@@ -497,10 +545,9 @@ module Nucleon
               # we attach the detached atome to the grand parent(parent of the current atome )
               # todo : maybe there's a better strategy than attaching to the last parent
               parent = find_atome_from_params(self.parent.last)
-              # if we detach an atome from the view(as intuition is the parent of the view, and intuition is a reserved zone for tools) we made an exeption to attach the object to the dark matter
-              if parent.atome_id == :intuition
-                parent = grab(:dark_matter)
-              end
+              # if we detach an atome from the view(as intuition is the parent of the view, and intuition
+              #is a reserved zone for tools) we made an exeption to attach the object to the dark matter
+              parent = grab(:dark_matter) if parent.atome_id == :intuition
               #we hook the detached atome to the new parent
               children.parent << parent.atome_id
               broadcast(atome_id => {extract: params, private: false})
@@ -550,18 +597,15 @@ module Nucleon
 
       # events
       def touch(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         if proc
           case params
           when nil
             options = {option: :touch, add: false}
           when Hash
-            unless params[:option]
-              params[:option] = :touch
-            end
-            unless params[:add]
-              params[:add] = false
-            end
+            params[:option] = :touch unless params[:option]
+            params[:add] = false unless params[:add]
             options = params
           when Array
             error "recursive analysis of array needed here"
@@ -583,9 +627,7 @@ module Nucleon
             @touch = options
           end
           broadcast(atome_id => {touch: options, private: false})
-          if refresh
-            Render.render_touch(self, options)
-          end
+          Render.render_touch(self, options) if refresh
           self
         else
           @touch
@@ -597,7 +639,8 @@ module Nucleon
       end
 
       def drag(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         if proc || !params.nil?
           case params
           when nil
@@ -654,7 +697,8 @@ module Nucleon
       end
 
       def over(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         broadcast(atome_id => {over: params, private: false})
         if proc
           if refresh
@@ -675,7 +719,8 @@ module Nucleon
       end
 
       def enter(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         if proc || !params.nil?
           case params
           when nil
@@ -732,7 +777,8 @@ module Nucleon
       end
 
       def exit(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         if proc || !params.nil?
           case params
           when nil
@@ -790,7 +836,8 @@ module Nucleon
       end
 
       def drop(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         if proc || !params.nil?
           case params
           when nil
@@ -848,7 +895,8 @@ module Nucleon
       end
 
       def key(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         if proc
           case params
           when nil
@@ -897,7 +945,8 @@ module Nucleon
       end
 
       def resize(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         if proc || !params.nil?
           case params
           when nil
@@ -938,7 +987,8 @@ module Nucleon
       end
 
       def scale(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         broadcast(atome_id => {scale: params, private: false})
         if proc
           Render.render_scale(self, proc) if refresh
@@ -956,7 +1006,8 @@ module Nucleon
       end
 
       def scroll(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         broadcast(atome_id => {scroll: params, private: false})
         if proc
           Render.render_scroll(self, proc) if refresh
@@ -987,9 +1038,7 @@ module Nucleon
             exclusion_list.each do |atome_to_keep|
               atome_to_keep = find_atome_from_params(atome_to_keep)
               grab(:view).child.each do |child_found|
-                if child_found != atome_to_keep
-                  child_found.delete(true)
-                end
+                child_found.delete(true) if child_found != atome_to_keep
               end
             end
             #params = :reset_view
@@ -1002,9 +1051,7 @@ module Nucleon
             #if child_found && child_found.id==:view
             #  #alert "message :\n#{"big couille dans le potage"}\n from : neutron.rb : 822"
             #else
-            if child_found
-              child_found.delete(true)
-            end
+            child_found.delete(true) if child_found
             #end
 
           end
@@ -1020,7 +1067,8 @@ module Nucleon
 
       def play(params = nil, refresh = true, &proc)
         #todo : allow to pass video "start play position" without triggering the video with a touch event
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         if !params.nil?
           if proc
             case params
@@ -1076,7 +1124,8 @@ module Nucleon
       end
 
       def pause(params = nil, refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         if proc
           case params
           when nil
@@ -1130,7 +1179,8 @@ module Nucleon
       end
 
       def stop(params = "0", refresh = true, &proc)
-        proc = params[:content] if params && params.class == Hash && params[:content] && params[:content].class == Proc
+        proc = params[:content] if params && params.class == Hash && params[:content] &&
+            params[:content].class == Proc
         pause(params, refresh, &proc)
       end
 
@@ -1466,10 +1516,10 @@ module Nucleon
       # utils
 
       def pick params
-        # allow easily get child of  a certain type. ex : v.pick(:audio).level 0.5 get all child of type :audio
+         #allow easily get child of  a certain type. ex : v.pick(:audio).level 0.5 get all child of type :audio
         childs = []
         child.each do |child|
-          childs << child if child.type == params
+          childs << child if child.type[:content] == params
         end
         if childs.length == 1
           childs = childs[0]
@@ -1477,6 +1527,7 @@ module Nucleon
           childs
         end
         childs
+
       end
 
       def each params, &proc
@@ -1503,32 +1554,6 @@ module Nucleon
         value(params, refresh)
       end
 
-      def broadcast(params)
-        @@monitor.each do |action|
-          atome = action[:atome]
-          property = action[:property]
-          proc = action[:proc]
-          if atome == :all # monitor any modification on any object is monitored
-            params.each do |messages|
-              if property == :all
-                proc.call(messages)
-              else # monitor a specific property on any object is monitored
-                if messages[1][property]
-                  atome_id_found = messages[0]
-                  value_found = messages[1][property]
-                  proc.call([atome_id_found, value_found])
-                end
-              end
-            end
-          elsif params[atome] && params[atome][property] # monitor  a specific property on a specific object is monitored
-            evt = params[atome][property]
-            proc.call(evt)
-          elsif params[atome] && property == :all # monitor any property on a specific object is monitored
-            evt = params[atome]
-            proc.call(evt)
-          end
-        end
-      end
 
       def virtual_touch(params, &proc)
         #todo : pass ruby code not javascript!!
@@ -1538,7 +1563,8 @@ module Nucleon
       # here the user send the atome and the properties he want to monitor
       def monitor(params, &proc)
         # we add the proc to the hash send to the @@monitor
-        if params == :clear || params == "clear" || params == :clear || params == "clear" || params == :delete || params == "delete" || params[:reset]
+        if params == :clear || params == "clear" || params == :clear || params == "clear" || params == :delete ||
+            params == "delete" || params[:reset]
           @@monitor = []
         end
         if params[:atome].nil?
@@ -1553,12 +1579,11 @@ module Nucleon
 
       end
 
-      # allow to set property to an object without using Atome's methods, used to assign the property avoiding to use the internal logic of the api
+      # allow to set property to an object without using Atome's methods, used to assign the property avoiding
+      #to use the internal logic of the api
       # usage : b = box() ; b.assign({property: :color, value: :red})
       def property(params)
-        unless params[:property].to_sym == :atome_id
-          instance_variable_set("@" + params[:property], params[:value])
-        end
+        instance_variable_set("@" + params[:property], params[:value]) unless params[:property].to_sym == :atome_id
       end
 
       def property=(params)
@@ -1569,22 +1594,95 @@ module Nucleon
       #private
 
 
-      def atome_id(params = nil, refresh = true)
-        if params || params == false
-          # todo : protect the atome_id so it can't be change by user
-          error "atome_id is unalterable "
-          #@atome_id = params
-        else
-          @atome_id
+
+      def broadcast_all(params, action)
+        params.each do |messages|
+          if action[:property] == :all
+            action[:proc].call(messages)
+            # monitor a specific property on any object is monitored
+          elsif messages[1][action[:property]]
+              action[:proc].call([messages[0], messages[1][action[:property]]])
+          end
         end
       end
 
-      #private :atome_id
-
-      def atome_id=(params = nil, refresh = true)
-        atome_id params, refresh
+      def broadcast_object_property(params, action)
+        evt = params[action[:atome]][action[:property]]
+        action[:proc].call(evt)
       end
 
+      def broadcast_property(params, action)
+        evt = params[action[:atome]]
+        action[:proc].call(evt)
+      end
+
+      def broadcast(params)
+        @@monitor.each do |action|
+          # monitor any modification on any object is monitored
+          if action[:atome] == :all
+            broadcast_all(params, action)
+            # monitor a specific property on a specific object is monitored
+          elsif params[action[:atome]] && params[action[:atome]][action[:property]]
+            broadcast_object_property(params, action)
+            # monitor any property on a specific object is monitored
+          elsif params[action[:atome]] && action[:property] == :all
+            broadcast_property(params, action)
+          end
+        end
+      end
+
+      def atome_id_proc(proc)
+        # if the object property contain a Proc it'll be processed here
+        proc
+      end
+
+      def atome_id_rendering(params)
+        # if the object property needs to be refresh then I'm your method
+        Render.render_atome_id(self, params) if params[:refresh].nil? || params[:refresh] == true
+      end
+
+      def atome_id_processing(properties)
+        # let's go with the DSP ...
+        properties
+      end
+
+      def atome_id_treatment(params)
+        # here happen the specific treatment for the current property
+        if params.class == Hash
+          atome_id_proc params[:proc] if params && params[:proc]
+          atome_id_processing params
+          # if prop needs to be refresh we send it to the Render engine
+          atome_id_rendering params
+        elsif params.class == Array
+          # if params is an array is found we send each item of the array to 'atome_id_treatment' as a Hash
+          params.each do |param|
+            atome_id_treatment param
+          end
+        end
+        broadcast(atome_id => {atome_id: params})
+      end
+
+      def atome_id(params = nil)
+        # This is the entry point for property getter and setter:
+        # this is the main entry method for the current property treatment
+        # first we create a hash for the property if t doesnt exist
+        # we don't create a object init time, to only create property when needed
+        @atome_id ||= {}
+        # we send the params to the 'reformat_params' if there's a params
+        method_analysis params, @atome_id, :atome_id if params
+        # finally we return the current property using magic_return
+        if params
+          self
+        else
+          magic_return @atome_id
+        end
+      end
+
+      def atome_id=(params = nil)
+        atome_id(params)
+      end
+
+      ################## utilities  ##############
       def reorder_properties(properties)
         # we re order the hash to puts the atome_id type at the begining to optimise rendering
         type = properties.delete(:type)
@@ -1594,11 +1692,9 @@ module Nucleon
         content = properties.delete(:content)
         center = properties.delete(:center)
         size = properties.delete(:size)
-        {type: type}.merge({parent: parent}).merge({width: width}).merge({height: height}).merge(properties).merge({content: content}).merge({size: size}).merge({center: center})
+        {type: type}.merge({parent: parent}).merge({width: width}).merge({height: height})
+            .merge(properties).merge({content: content}).merge({size: size}).merge({center: center})
       end
-
-
-      ################## utilities  ##############
 
       def batch atomes, properties
         atomes.each do |atome|
@@ -1616,7 +1712,7 @@ module Nucleon
           #if the first condition return nil now we check if an id exist
           supposed_atome = get(params) unless supposed_atome
         end
-# we return the atome itself
+        # we return the atome itself
         return supposed_atome
       end
 
@@ -1665,12 +1761,9 @@ module Nucleon
       end
 
       def to_px(obj = nil, property = :top)
-        if obj.class != Atome
-          obj = get(obj)
-        end
+        obj = get(obj) if obj.class != Atome
         Render.render_to_px(obj, property)
       end
-
     end
   end
 end
