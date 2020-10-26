@@ -28,38 +28,6 @@ class Eve
     :zid_654
   end
 
-  # specific property methods
-  def proc_parsing(proc)
-    # if the object property contain a Proc it'll be processed here
-    proc
-  end
-
-  def render_parsing(params)
-    # if the object property needs to be refresh then I'm your method
-    Render.render_my_prop(self, params) if params[:refresh].nil? || params[:refresh] == true
-  end
-
-  def property_parsing(properties)
-    # let's go with the DSP ...
-    properties
-  end
-
-  def my_prop_treatment(params)
-    # here happen the specific treatment for the current property
-    if params.class == Hash
-      proc_parsing params[:proc] if params && params[:proc]
-      property_parsing params
-      # if prop needs to be refresh we send it to the Render engine
-      render_parsing params
-    elsif params.class == Array
-      # if params is an array is found we send each item of the array to 'my_prop_treatment' as a Hash
-      params.each do |param|
-        my_prop_treatment param
-      end
-    end
-    broadcast(atome_id => { my_prop: params })
-  end
-
   # global property methods
   def magic_return(method)
     # the aim of this method is filter the return of the property,
@@ -125,7 +93,39 @@ class Eve
       end
     end
     # now we apply the specific treatment according to the property found if the hash is not empty
-    my_prop_treatment params if params != {}
+    send(method_name + '_treatment', params) if params != {}
+  end
+
+  # specific property methods
+  def proc_parsing(proc)
+    # if the object property contain a Proc it'll be processed here
+    proc
+  end
+
+  def render_parsing(params)
+    # if the object property needs to be refresh then I'm your method
+    Render.render_my_prop(self, params) if params[:refresh].nil? || params[:refresh] == true
+  end
+
+  def property_parsing(properties)
+    # let's go with the DSP ...
+    properties
+  end
+
+  def my_prop_treatment(params)
+    # here happen the specific treatment for the current property
+    if params.class == Hash
+      proc_parsing params[:proc] if params && params[:proc]
+      property_parsing params
+      # if prop needs to be refresh we send it to the Render engine
+      render_parsing params
+    elsif params.class == Array
+      # if params is an array is found we send each item of the array to 'my_prop_treatment' as a Hash
+      params.each do |param|
+        my_prop_treatment param
+      end
+    end
+    broadcast(atome_id => { my_prop: params })
   end
 
   def my_prop(params = nil)

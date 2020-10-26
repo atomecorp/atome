@@ -4,8 +4,77 @@ module Nucleon
     #this is a module for Atome gem dedicated to non audiovisual apis
     module Neutron
       @@monitor = []
-      #attr_accessor :id
-      #attr_accessor :atome_id
+
+      # global methods
+      # global property methods
+      def magic_return(method)
+        # the aim of this method is filter the return of the property,
+        # so if it found a single content, it only return the value ex : a.color => :red instead of {content: :red}
+        if method.length == 1 && method.class == hash
+          method[:content]
+        else
+          method
+        end
+      end
+
+      def array_parsing(params, method_name)
+        # this method change the params send by user so each data found in the params is added to the property array
+        params.each do |param|
+          if param.class == Hash
+            param[:add] = true
+            send(method_name, param)
+          else
+            send(method_name, { content: param, add: true })
+          end
+        end
+        {}
+      end
+
+      def add_parsing(params, method_name)
+        # this method is used the property hash contain {add: true} key value pair
+        # when so the hash property is turn into an array so it can accept many times the same property.
+        # use for gradient or multiple shadows, etc...  ex : color: [{content : red, x: 0},{content : pink, x: 200}]
+        params.delete(:add)
+        previous_params = instance_variable_get("@#{method_name}")
+        if previous_params.empty?
+          instance_variable_set("@#{method_name}", [params])
+        else
+          instance_variable_set("@#{method_name}", [previous_params, params])
+        end
+      end
+
+      def reformat_params(params, method_name)
+        # this method allow user to input simple datas and reformat the incoming datas so it always store a Hash
+        # if its a string then the datas is put into the property content
+        #   ex with color property : {color: {content: :red}}
+        # if it's an array then property itself change from Hash type to array
+        #   ex with color property{color: [{content: :red}{content: :yellow, x: 200}]}
+        if params.class == Hash
+          params
+        elsif params.class == Array
+          array_parsing params, method_name
+        else
+          { content: params }
+        end
+      end
+
+      def method_analysis(params, instance_variable, method_name)
+        # this method first send the params to the 'reformat_params' method to ensure it return a hash or an array
+        params = reformat_params params, method_name
+        # then etheir it parse the params if {add: true} is found, so it add the params to the property hash,
+        # etheir it add any {key: :value} found to the instance variable property
+        if params[:add] && params[:add] == true
+          add_parsing params, method_name
+        else
+          params.each do |key, value|
+            instance_variable[key] = value
+          end
+        end
+        # now we apply the specific treatment according to the property found if the hash is not empty
+        send(method_name + '_treatment', params) if params != {}
+      end
+
+      # specific methods methods
 
       def inspect
         properties = []
@@ -299,15 +368,15 @@ module Nucleon
         return property
       end
 
-      def reformat_params params , call_from_method
-        if params.class == String || params.class == Symbol || params.class == Atome
-
-        elsif params.class == Array
-          params.each do |atome|
-            self.send(call_from_method,atome)
-          end
-        end
-      end
+      #def reformat_params params , call_from_method
+      #  if params.class == String || params.class == Symbol || params.class == Atome
+      #
+      #  elsif params.class == Array
+      #    params.each do |atome|
+      #      self.send(call_from_method,atome)
+      #    end
+      #  end
+      #end
 
       def << params
         self.content(content+params)

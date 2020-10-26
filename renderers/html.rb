@@ -313,7 +313,7 @@ module Render
   end
 
   def self.render_rotate(atome, params, add = false)
-    r_get( atome.atome_id).css('transform', 'rotate(' + params.to_s + 'deg)')
+    r_get( atome.atome_id).css('transform', 'rotate(' + params[:content].to_s + 'deg)')
   end
 
   def self.render_align(atome, params, add = false)

@@ -20,7 +20,7 @@ module Nucleon
               enliven(true)
             end
           end
-            @render = params
+          @render = params
           else
             @render
           end
@@ -590,13 +590,13 @@ module Nucleon
             hashed_params = {target: params}
             params = hashed_params
           end
-            if params.class == Hash && params[:add]
-              if @fit.class == Array
-                @fit << params
-              else
-                @fit = [params]
-              end
-          end
+          if params.class == Hash && params[:add]
+            if @fit.class == Array
+              @fit << params
+            else
+              @fit = [params]
+            end
+        end
           target = find_atome_from_params(params[:target])
 # line below (self.y) is a quick patch to patch a bug
           self.y(0)
@@ -634,22 +634,73 @@ module Nucleon
         fit(params, refresh)
       end
 
-      def rotate params = nil, refresh = true
-        if params || params == false
-          @rotate = params
-          broadcast(atome_id => {rotate: params, private: false})
-          if refresh
-            Render.render_rotate(self, params, add) if refresh
-          end
-          return self
-        else
-          @rotate
-        end
+      #def rotate params = nil, refresh = true
+      #  if params || params == false
+      #    @rotate = params
+      #    broadcast(atome_id => {rotate: params, private: false})
+      #    if refresh
+      #      Render.render_rotate(self, params) if refresh
+      #    end
+      #    return self
+      #  else
+      #    @rotate
+      #  end
+      #end
+      #
+      #def rotate= params = nil, refresh = true
+      #  rotate(params, refresh)
+      #end
+
+      ####### start new methods #######
+      # specific property methods
+      def proc_parsing(proc)
+        # if the object property contain a Proc it'll be processed here
+        proc
       end
 
-      def rotate= params = nil, refresh = true
-        rotate(params, refresh)
+      def render_parsing(params)
+        # if the object property needs to be refresh then I'm your method
+        Render.render_rotate(self, params) if params[:refresh].nil? || params[:refresh] == true
       end
+
+      def property_parsing(properties)
+        # let's go with the DSP ...
+        properties
+      end
+
+      def rotate_treatment(params)
+        # here happen the specific treatment for the current property
+        if params.class == Hash
+          proc_parsing params[:proc] if params && params[:proc]
+          property_parsing params
+          # if prop needs to be refresh we send it to the Render engine
+          render_parsing params
+        elsif params.class == Array
+          # if params is an array is found we send each item of the array to 'rotate_treatment' as a Hash
+          params.each do |param|
+            rotate_treatment param
+          end
+        end
+        broadcast(atome_id => { rotate: params })
+      end
+
+      def rotate(params = nil)
+        # This is the entry point for property getter and setter:
+        # this is the main entry method for the current property treatment
+        # first we create a hash for the property if t doesnt exist
+        # we don't create a object init time, to only create property when needed
+        @rotate ||= {}
+        # we send the params to the 'reformat_params' if there's a params
+        method_analysis params, @rotate, :rotate if params
+        # finally we return the current property using magic_return
+        if params
+          self
+        else
+          magic_return @rotate
+        end
+      end
+      ######## end new methods #######
+
 
       def shadow params = nil, refresh = true
         if params || params == false
