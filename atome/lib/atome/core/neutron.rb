@@ -1067,56 +1067,61 @@ module Nucleon
 
       def play(params = nil, refresh = true, &proc)
         #todo : allow to pass video "start play position" without triggering the video with a touch event
-        proc = params[:content] if params && params.class == Hash && params[:content] &&
-            params[:content].class == Proc
-        if !params.nil?
-          if proc
-            case params
-            when nil
-              options = {option: :play}
-            when Hash
-              options = params
-            when Array
-              error "recursive analysis of array here"
-            else
-              options = {:option => params}
-            end
-            bloc = {:content => proc}.merge(options)
-            if params.class == Hash && params[:add]
-              if touch.class == Array
-                @play << bloc
+        if params != false
+          proc = params[:content] if params && params.class == Hash && params[:content] &&
+              params[:content].class == Proc
+          if !params.nil?
+            if proc
+              case params
+              when nil
+                options = {option: :play}
+              when Hash
+                options = params
+              when Array
+                error "recursive analysis of array here"
               else
-                prop_array = []
-                prop_array << @play
-                prop_array << bloc
-                @play = prop_array
+                options = {:option => params}
               end
+              bloc = {:content => proc}.merge(options)
+              if params.class == Hash && params[:add]
+                if touch.class == Array
+                  @play << bloc
+                else
+                  prop_array = []
+                  prop_array << @play
+                  prop_array << bloc
+                  @play = prop_array
+                end
+              else
+                @play = bloc
+              end
+              broadcast(atome_id => {play: params, private: false})
+              if refresh
+                option = case params
+                         when nil
+                           :touch
+                         when Hash
+                           params[:option]
+                         else
+                           params
+                         end
+                params = {params: option, proc: proc}
+                Render.render_play(self, params)
+              end
+              self
             else
-              @play = bloc
+              @play = params
+              options = {}
+              options[:params] = params
+              Render.render_play(self, options)
             end
-            broadcast(atome_id => {play: params, private: false})
-            if refresh
-              option = case params
-                       when nil
-                         :touch
-                       when Hash
-                         params[:option]
-                       else
-                         params
-                       end
-              params = {params: option, proc: proc}
-              Render.render_play(self, params)
-            end
-            self
           else
-            @play = params
-            options = {}
-            options[:params] = params
-            Render.render_play(self, options)
+            @play
           end
         else
-          @play
+          false
         end
+        #self
       end
 
       def play=(params = nil, refresh = true, &proc)
@@ -1124,6 +1129,7 @@ module Nucleon
       end
 
       def pause(params = nil, refresh = true, &proc)
+        self.play(false)
         proc = params[:content] if params && params.class == Hash && params[:content] &&
             params[:content].class == Proc
         if proc
@@ -1165,6 +1171,7 @@ module Nucleon
                      end
             params = {params: option, proc: proc}
             Render.render_pause(self, params)
+            alert :child
           end
           return self
         else
@@ -1172,6 +1179,7 @@ module Nucleon
           @play = false
         end
         @pause
+
       end
 
       def pause=(params = nil, refresh = true, &proc)
@@ -1703,6 +1711,7 @@ module Nucleon
           end
         end
       end
+
 
       def find_atome_from_params params
         if params.class == Atome

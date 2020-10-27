@@ -278,6 +278,11 @@ module Nucleon
         Atome.instance_methods - Object.methods
       end
 
+
+      def self.batch atomes, properties
+        get(:view).batch atomes, properties
+      end
+
       # Allow lazy mode to add method on the fly to automatically create the corresponding instance variable
       # ex b=box; b.my_meth(:the_value); puts b.my_meth => :the_value (@my_meth has been created)
       #      def method_missing method, params = nil, &block

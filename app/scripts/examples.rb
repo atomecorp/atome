@@ -7,7 +7,7 @@ def clear_help (topic, code)
 
 
   ######## test #############
-  atomes_found= grab(:view).child
+  atomes_found = grab(:view).child
 
   #child_list=[]
   #get(:view).child.each do |child_found|
@@ -17,7 +17,7 @@ def clear_help (topic, code)
 
   #alert "message is \n\n#{child_list} \n\nLocation: examples.rb, line 15"
   get(:view).child.each do |child_found|
-    if child_found && child_found.id==:view || child_found.nil?
+    if child_found && child_found.id == :view || child_found.nil?
       #alert "message is \n\n#{"big couille dans le potage"} \n\nLocation: examples.rb, line 8"
     else
       child_found.delete(true)
@@ -171,14 +171,13 @@ end
 c=circle()
 c.y=50
 c.drag(true)
-c.touch(option: :down, add: true) do
+c.touch(option: :up, add: true) do
 c.color(:violet)
 end
 
 strdelim
     self.puts_help :smooth, demo_code
   end
-
 
 
   def border
@@ -801,22 +800,22 @@ strdelim
   end
 
   def batch_api
-    demo_code = <<strdelim
-text_color=:lightgray
-t1=text("Text 1")
-t1.x=20
-t1.y=20
-t2=text("Text 2")
-t2.x=220
-t2.y=20
-t3=text("Text 3")
-t3.x=440
-t3.y=20
-t4=text("Text 4")
-t4.x=660
-t4.y=20
-batch([t1,t2,t3,t4], {color: text_color, size: 16, y: 150})
-strdelim
+    demo_code = <<~Strdelim
+      text_color=:orange
+      t1=text("Text 1")
+      t1.x=20
+      t1.y=20
+      t2=text("Text 2")
+      t2.x=220
+      t2.y=20
+      t3=text("Text 3")
+      t3.x=440
+      t3.y=20
+      t4=text("Text 4")
+      t4.x=660
+      t4.y=20
+      Atome.batch([t1,t2,t3,t4], {content: :batched,color: text_color, size: 16, y: 150})
+Strdelim
     self.puts_help :batch_api, demo_code
   end
 
@@ -972,6 +971,7 @@ end
 strdelim
     self.puts_help :drop, demo_code
   end
+
   def play_with_event_api
     demo_code = <<strdelim
 video = video(:lion_king)
