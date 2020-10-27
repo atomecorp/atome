@@ -32,7 +32,7 @@ var eVe = {
 
 eVe.initialize();
 
-var device = "";
+// var device = "";
 // Libraries
 // var promises = 0;
 var html = {

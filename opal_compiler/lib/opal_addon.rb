@@ -115,6 +115,8 @@ module JS_utils
   def self.document
     `$(document)`
   end
+
+
   #time operation
   def self.add_interval(interval)
     @project_intervals << interval
@@ -245,10 +247,14 @@ var media=$("#"+#{video_id} +' video:first-child')[0];
 if (#{params}==true || #{params}=='true'){
   #{params} = 0;
 }
-media.currentTime=#{params}
 media.addEventListener("timeupdate", function(){
 Opal.Event.$playing(#{proc},media.currentTime)
         });
+media.addEventListener('loadedmetadata', function() {
+  media.currentTime = #{params};
+}, false);
+media.currentTime = #{params};
+
 media.play();
 `
   end
@@ -260,10 +266,13 @@ media.play();
 if (#{params}==true || #{params}=='true'){
   #{params} = 0;
 }
-media.currentTime=#{params}
 media.addEventListener("timeupdate", function(){
 Opal.Event.$playing(#{proc},media.currentTime)
         });
+media.addEventListener('loadedmetadata', function() {
+  media.currentTime = #{params};
+}, false);
+media.currentTime = #{params};
 media.play()
 `
   end

@@ -1013,25 +1013,26 @@ strdelim
   def chain_play_api
     demo_code = <<strdelim
 vidz = video(:lion_king)
- video2 = video(:lion_king)
- vidz.x(250)
- vidz.y(0)
- video2.x(250)
- video2.y(400)
- vidz.pick(:audio).level(0)
- wait 1 do
-   video2.pick(:audio).level(0)
-   vidz.play(25) do |evt|
-     if evt.time > 34
-       vidz.stop(2)
-       video2.play(true)
-       wait 1 do
-         video2.stop(30)
-         vidz.play
-       end
-     end
-   end
- end
+video2 = video(:lion_king)
+vidz.x(250)
+vidz.y(0)
+video2.x(250)
+video2.y(400)
+t = text({content: :time_code, y: 3, x: 257, color: :orange})
+vidz.touch do
+  vidz.play(52) do |evt|
+    t.content('timecode : ' + evt.time.to_s)
+    if evt.time > 61
+      video2.play(61) do |evt|
+        if evt.time > 70
+          vidz.play(52)
+          video2.stop(70)
+        end
+      end
+      vidz.stop(70)
+    end
+  end
+end
 strdelim
     self.puts_help :chain_play, demo_code
   end
