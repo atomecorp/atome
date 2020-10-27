@@ -111,7 +111,6 @@ module Render
         atome.height = r_get(atome.atome_id).find('video').height
       end
       r_get(atome.atome_id).find('video').css('width', '100%')
-      #r_get( params.atome_id).width
     elsif atome.type[:content] == "audio"
       path = if $audios_list[params.to_sym].nil?
                '././medias/audios/audio_missing.wav'

@@ -250,14 +250,16 @@ if (#{params}==true || #{params}=='true'){
 media.addEventListener("timeupdate", function(){
 Opal.Event.$playing(#{proc},media.currentTime)
         });
-media.addEventListener('loadedmetadata', function() {
-  media.currentTime = #{params};
-}, false);
+//media.currentTime is run twice, because if not depending on the context it may not be interpreted
 media.currentTime = #{params};
-
+media.addEventListener('loadedmetadata', function() {
+media.currentTime = #{params};
+}, false);
 media.play();
 `
   end
+
+
 
   def self.audio_play audio, params, proc
     audio_id = audio.atome_id
@@ -269,11 +271,13 @@ if (#{params}==true || #{params}=='true'){
 media.addEventListener("timeupdate", function(){
 Opal.Event.$playing(#{proc},media.currentTime)
         });
+//media.currentTime is run twice, because if not depending on the context it may not be interpreted
+media.currentTime = #{params};
 media.addEventListener('loadedmetadata', function() {
   media.currentTime = #{params};
 }, false);
-media.currentTime = #{params};
 media.play()
+
 `
   end
 
