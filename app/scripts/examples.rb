@@ -865,16 +865,16 @@ strdelim
 c = circle()
 c.xx(250)
 c.yy(300)
-#c.align(:invert)
 c.width("33%")
 t=text('resize the window')
 t.y=20
 t.color(:gray)
 c.resize do |evt|
-  t.content("width set : 33%, in pixel :\n"+to_px(c, :width).to_s+" px")
+  t.content("width set : 33%, in pixel :\n"+Atome.to_px(c, :width).to_s+" px")
 end
 t.size(16)
 t.x(450)
+
 strdelim
     self.puts_help :convert, demo_code
   end
@@ -1406,7 +1406,7 @@ strdelim
 d = box()
 d.set({width: 100, height: 100})
 d.y(50)
-t = d.text('remove all childrens')
+t = d.text(content: 'remove all childrens', color: :gray)
 t.x=2
 t.y=2
 d.touch do

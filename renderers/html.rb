@@ -808,7 +808,7 @@ module Render
       option = params[:option]
       add = params[:add]
     end
-    unless add == true || add == :true
+    unless add == true
       atome.delete(:touch)
     end
     if option == :down

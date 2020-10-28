@@ -120,12 +120,10 @@ module Nucleon
 
       def get params = nil
         if params
-          alert "message :\n#{params}\n from : atome.rb : 123"
-          #if params.class == String || params.class == Symbol
-          #  Object.get(params)
-          #end # we check if user try to get the object by id
+          if params.class == String || params.class == Symbol
+            Object.get(params)
+          end # we check if user try to get the object by id
         else
-          #alert "message :\n#{:get}\n from : atome.rb : 128"
           self
         end
       end
@@ -276,6 +274,11 @@ module Nucleon
       def self.apis
         # todo avoid conflict with electron methods that remove some function
         Atome.instance_methods - Object.methods
+      end
+
+      def self.to_px(obj = nil, property = :top)
+      obj = get(obj) if obj.class != Atome
+      Render.render_to_px(obj, property)
       end
 
 

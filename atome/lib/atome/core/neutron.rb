@@ -597,6 +597,7 @@ module Nucleon
 
       # events
       def touch(params = nil, refresh = true, &proc)
+        #alert "message :\n#{params}\n from : neutron.rb : 600"
         proc = params[:content] if params && params.class == Hash && params[:content] &&
             params[:content].class == Proc
         if proc
@@ -613,7 +614,6 @@ module Nucleon
             options = {:option => params}
           end
           options = {:content => proc}.merge(options)
-          #if params && (params[:add] || params[:add] == false || params[:add] == :false)
           if params.class == Hash && params[:add]
             if touch.class == Array
               @touch << options
@@ -637,6 +637,58 @@ module Nucleon
       def touch=(params = nil, refresh = true, &proc)
         touch(params, refresh, &proc)
       end
+
+      ## specific property methods
+      #def touch_proc(proc)
+      #  # if the object property contain a Proc it'll be processed here
+      #  proc
+      #end
+      #
+      #def touch_rendering(params)
+      #  # if the object property needs to be refresh then I'm your method
+      #  Render.render_touch(self, params) if params[:refresh].nil? || params[:refresh] == true
+      #end
+      #
+      #def touch_processing(properties)
+      #  # let's go with the DSP ...
+      #  properties
+      #end
+      #
+      #def touch_treatment(params)
+      #  # here happen the specific treatment for the current property
+      #  if params.class == Hash
+      #    touch_proc params[:proc] if params && params[:proc]
+      #    touch_processing params
+      #    # if prop needs to be refresh we send it to the Render engine
+      #    touch_rendering params
+      #  elsif params.class == Array
+      #    # if params is an array is found we send each item of the array to 'touch_treatment' as a Hash
+      #    params.each do |param|
+      #      touch_treatment param
+      #    end
+      #  end
+      #  broadcast(atome_id => { touch: params })
+      #end
+      #
+      #def touch(params = nil)
+      #  # This is the entry point for property getter and setter:
+      #  # this is the main entry method for the current property treatment
+      #  # first we create a hash for the property if t doesnt exist
+      #  # we don't create a object init time, to only create property when needed
+      #  @touch ||= {}
+      #  # we send the params to the 'reformat_params' if there's a params
+      #  method_analysis params, @touch, :touch if params
+      #  # finally we return the current property using magic_return
+      #  if params
+      #    self
+      #  else
+      #    magic_return @touch
+      #  end
+      #end
+      #
+      #def touch=(params = nil)
+      #  touch(params)
+      #end
 
       def drag(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] &&
@@ -1024,9 +1076,43 @@ module Nucleon
         scroll(params, refresh, &proc)
       end
 
+      #def clear(params = :console, refresh = true, &proc)
+      #  if params.class == Hash
+      #    if params[:exclude] && params[:exclude].class == Array
+      #    elsif params[:exclude]
+      #      exclusion_list = if params[:exclude].class == Array
+      #                         params[:exclude]
+      #                       else
+      #                         [params[:exclude]]
+      #                       end
+      #      exclusion_list.each do |atome_to_keep|
+      #        atome_to_keep = find_atome_from_params(atome_to_keep)
+      #        grab(:view).child.each do |child_found|
+      #          child_found.delete(true) if child_found != atome_to_keep
+      #        end
+      #      end
+      #      #params = :reset_view
+      #      #Render.render_clear(self, params)
+      #    end
+      #  elsif params.to_sym == :all || params.to_sym == :view
+      #    alert "message :\n#{get(:view).child}\n from : neutron.rb : 817"
+      #    #alert "message :\n#{find({format: :id})}\n from : neutron.rb : 818"
+      #    get(:view).child.each do |child_found|
+      #      if child_found && child_found.id==:view
+      #      #  #alert "message :\n#{"big couille dans le potage"}\n from : neutron.rb : 822"
+      #      else
+      #      child_found.delete(true) if child_found
+      #      end
+      #
+      #    end
+      #  else
+      #    child.each do |atome_found|
+      #      atome_found.delete(true)
+      #    end
+      #  end
+      #  self
+      #end
       def clear(params = :console, refresh = true, &proc)
-
-
         if params.class == Hash
           if params[:exclude] && params[:exclude].class == Array
           elsif params[:exclude]
@@ -1041,28 +1127,18 @@ module Nucleon
                 child_found.delete(true) if child_found != atome_to_keep
               end
             end
-            #params = :reset_view
-            #Render.render_clear(self, params)
           end
         elsif params.to_sym == :all || params.to_sym == :view
-          #alert "message :\n#{get(:view).child}\n from : neutron.rb : 817"
-          #alert "message :\n#{find({format: :id})}\n from : neutron.rb : 818"
           get(:view).child.each do |child_found|
-            #if child_found && child_found.id==:view
-            #  #alert "message :\n#{"big couille dans le potage"}\n from : neutron.rb : 822"
-            #else
-            child_found.delete(true) if child_found
-            #end
-
+            child_found&.delete(true)
           end
         else
           child.each do |atome_found|
-            atome_found.delete(true)
+            atome_found&.delete(true)
           end
         end
         self
       end
-
       # animation
 
       def play(params = nil, refresh = true, &proc)
@@ -1609,7 +1685,7 @@ module Nucleon
             action[:proc].call(messages)
             # monitor a specific property on any object is monitored
           elsif messages[1][action[:property]]
-              action[:proc].call([messages[0], messages[1][action[:property]]])
+            action[:proc].call([messages[0], messages[1][action[:property]]])
           end
         end
       end
@@ -1769,10 +1845,7 @@ module Nucleon
         return proc_content.join("\n")
       end
 
-      def to_px(obj = nil, property = :top)
-        obj = get(obj) if obj.class != Atome
-        Render.render_to_px(obj, property)
-      end
+
     end
   end
 end
