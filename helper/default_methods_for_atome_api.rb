@@ -13,10 +13,16 @@ class Universe
 end
 
 # for testing only
-class Eve
+class Garden
+  # dummy helper methods here
   # dummy methods here
   def initialize
     Universe.add(self)
+    atome_methods = %i[new_method my_prop my_method]
+    atome_methods.each do |method_name|
+      create_method(method_name)
+      create_equal_method(method_name)
+    end
   end
 
   def broadcast(params)
@@ -27,7 +33,30 @@ class Eve
   def atome_id
     :zid_654
   end
+end
 
+# for testing only
+class EveProperties < Garden
+  # specific property methods
+  def my_prop_proc(proc)
+    # if the object property contain a Proc it'll be processed here
+    proc
+  end
+
+  def my_prop_rendering(params)
+    # if the object property needs to be refresh then I'm your method
+    puts params
+    # Render.render_my_prop(self, params) if params[:refresh].nil? || params[:refresh] == true
+  end
+
+  def my_prop_processing(properties)
+    # let's go with the DSP ...
+    properties
+  end
+end
+
+# for testing only
+class Eve < EveProperties
   # global property methods
   def magic_return(method)
     # the aim of this method is filter the return of the property,
@@ -86,6 +115,26 @@ class Eve
     end
   end
 
+  def send_hash(params, method_name)
+    send(method_name.to_s + '_proc', params[:proc]) if params && params[:proc]
+    send(method_name.to_s + '_processing', params)
+    # if prop needs to be refresh we send it to the Render engine
+    send(method_name.to_s + '_rendering', params)
+  end
+
+  def property_parsing(params, method_name)
+    # here happen the specific treatment for the current property
+    if params.class == Hash
+      send_hash(params, method_name)
+    elsif params.class == Array
+      # if params is an array is found we send each item of the array to 'my_prop_treatment' as a Hash
+      params.each do |param|
+        send(method_name.to_s + '_parsing', param)
+      end
+    end
+    broadcast(atome_id => { my_prop: params })
+  end
+
   def method_analysis(params, instance_variable, method_name, proc)
     # this method first send the params to the 'reformat_params' method to ensure it return a hash or an array
     params = reformat_params params, method_name, proc
@@ -100,59 +149,31 @@ class Eve
     end
     end
     # now we apply the specific treatment according to the property found if the hash is not empty
-    send(method_name.to_s + '_treatment', params) if params != {}
+    property_parsing(params, method_name) if params != {}
   end
 
-  # specific property methods
-  def my_prop_proc(proc)
-    # if the object property contain a Proc it'll be processed here
-    proc
-  end
-
-  def my_prop_rendering(params)
-    # if the object property needs to be refresh then I'm your method
-    Render.render_my_prop(self, params) if params[:refresh].nil? || params[:refresh] == true
-  end
-
-  def my_prop_processing(properties)
-    # let's go with the DSP ...
-    properties
-  end
-
-  def my_prop_treatment(params)
-    # here happen the specific treatment for the current property
-    if params.class == Hash
-      my_prop_proc params[:proc] if params && params[:proc]
-      my_prop_processing params
-      # if prop needs to be refresh we send it to the Render engine
-      my_prop_rendering params
-    elsif params.class == Array
-      # if params is an array is found we send each item of the array to 'my_prop_treatment' as a Hash
-      params.each do |param|
-        my_prop_treatment param
+  def create_method(method_name)
+    Object.define_method method_name do |params = nil, &proc|
+      # This is the entry point for property getter and setter:
+      # this is the main entry method for the current property treatment
+      # first we create a hash for the property if t doesnt exist
+      # we don't create a object init time, to only create property when needed
+      @my_prop ||= {}
+      # we send the params to the 'reformat_params' if there's a params
+      method_analysis params, @my_prop, :my_prop, proc if params || proc
+      # finally we return the current property using magic_return
+      if params
+        self
+      else
+        magic_return @my_prop
       end
     end
-    broadcast(atome_id => { my_prop: params })
   end
 
-  def my_prop(params = nil, &proc)
-    # This is the entry point for property getter and setter:
-    # this is the main entry method for the current property treatment
-    # first we create a hash for the property if t doesnt exist
-    # we don't create a object init time, to only create property when needed
-    @my_prop ||= {}
-    # we send the params to the 'reformat_params' if there's a params
-    method_analysis params, @my_prop, :my_prop, proc if params || proc
-    # finally we return the current property using magic_return
-    if params
-      self
-    else
-      magic_return @my_prop
+  def create_equal_method(method_name)
+    Object.define_method method_name.to_s + '=' do |params = nil, &proc|
+      send(method_name, params, proc)
     end
-  end
-
-  def my_prop=(params = nil)
-    my_prop(params)
   end
 end
 
@@ -166,7 +187,7 @@ puts "message : #{a.my_prop} : #{a.my_prop.class} from : app.rb : 80\n\n"
 a.my_prop([{ content: :datos, x: 0 }, :toto])
 a.my_prop({ content: :titi, kool: :ok2, add: true })
 a.my_prop(:mimi)
-a.my_prop({ add: true }) do
+a.my_prop({ add: false }) do
   puts 'it works'
 end
 puts "message : #{a.my_prop} : #{a.my_prop.class} from : app.rb : 83"
