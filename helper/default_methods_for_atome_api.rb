@@ -3,19 +3,18 @@
 # for testing only
 class Universe
   def self.add(value)
-    @eves ||= []
-    @eves.push(value)
+    @Sparkles ||= []
+    @Sparkles.push(value)
   end
 
   class << self
-    attr_reader :eves
+    attr_reader :Sparkles
   end
 end
 
 # for testing only
-class Garden
+class Singularity
   # dummy helper methods here
-  # dummy methods here
   def initialize
     Universe.add(self)
     atome_methods = %i[new_method my_prop my_method]
@@ -25,6 +24,7 @@ class Garden
     end
   end
 
+  # dummy methods here
   def broadcast(params)
     # to allow system to be notified of property modification
     params
@@ -36,7 +36,7 @@ class Garden
 end
 
 # for testing only
-class EveProperties < Garden
+class AtomeProperties < Singularity
   # specific property methods
   def my_prop_proc(proc)
     # if the object property contain a Proc it'll be processed here
@@ -56,7 +56,7 @@ class EveProperties < Garden
 end
 
 # for testing only
-class Eve < EveProperties
+class Sparkle < AtomeProperties
   # global property methods
   def magic_return(method)
     # the aim of this method is filter the return of the property,
@@ -179,15 +179,19 @@ end
 
 # verification
 
-a = Eve.new
-a.my_prop(:my_data)
-a.my_prop({ content: :doto, kool: :ok })
-a.my_prop({ content: :didi, kool: :pas_ok, refresh: false })
-puts "message : #{a.my_prop} : #{a.my_prop.class} from : app.rb : 80\n\n"
-a.my_prop([{ content: :datos, x: 0 }, :toto])
-a.my_prop({ content: :titi, kool: :ok2, add: true })
-a.my_prop(:mimi)
-a.my_prop({ add: false }) do
+a = Sparkle.new
+# a.my_prop(:my_data)
+# a.my_prop({ content: :doto, kool: :ok })
+# a.my_prop({ content: :didi, kool: :pas_ok, refresh: false })
+# puts "message : #{a.my_prop} : #{a.my_prop.class} from : app.rb : 80\n\n"
+# a.my_prop([{ content: :datos, x: 0 }, :toto])
+# a.my_prop({ content: :titi, kool: :ok2, add: true })
+# a.my_prop(:mimi)
+a.my_prop([{ content: :ditos, x: 0, add: false }, :toti]) do
   puts 'it works'
 end
 puts "message : #{a.my_prop} : #{a.my_prop.class} from : app.rb : 83"
+
+# line 81 :     send(method_name, { proc: proc, add: true }) if proc
+# proc should be integrated first ()before sending it to the property hash) for now it is not integrated n the current
+# see above
