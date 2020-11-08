@@ -148,6 +148,9 @@ end
 wait 5 do
   grad.color([{content: :orange}, :green, :blue, {angle: 150, diffusion: :linear}])
 end
+grad.touch do 
+puts grad.inspect
+end
 strdelim
     self.puts_help :gradient, demo_code
   end

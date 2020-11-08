@@ -10,11 +10,9 @@ def select selector
   end
 end
 
-def selected params
-  #Atomes.atomes
-end
-
-
+#def selected params
+#  #Atomes.atomes
+#end
 
 def get(params)
   #get atome in view from it's id
@@ -173,11 +171,9 @@ def find(params, method = nil)
   atomes_found
 end
 
-
 #def delete params, refresh = true
 #  alert "message is \n\n#{params} \n\nLocation: electron.rb, line 60"
 #end
-
 
 def clear params = :console
   atome = grab(:device)
@@ -199,8 +195,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 Strdelilm
 end
 
-
-
 ################## time operation  ##############
 
 def wait(seconds, &proc)
@@ -212,7 +206,6 @@ end
 def every(delay = 3, times = 5, &proc)
   Render.render_every(delay, times, &proc)
 end
-
 
 def stop params
   Render.render_stop(params)

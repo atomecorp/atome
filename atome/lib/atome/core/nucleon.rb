@@ -1,7 +1,32 @@
 # here the main methods to create basic atome object
+
+class Helper
+  def self.version
+    'v:0.007g'
+  end
+
+  def self.apis
+    # todo avoid conflict with electron methods that remove some function
+    Atome.instance_methods - Object.methods
+  end
+
+
+  def self.to_px(obj = nil, property = :top)
+    obj = get(obj) if obj.class != Atome
+    Render.render_to_px(obj, property)
+  end
+
+  def self.batch atomes, properties
+    get(:view).batch atomes, properties
+  end
+
+
+
+end
+
 module Nucleon
   module Core
-    class Nucleon
+    class Nucleon < Helper
       include Neutron
       include Proton
       include Photon
@@ -11,9 +36,6 @@ module Nucleon
       @@buffer = []
       @@device = ''
 
-      def self.version
-        'v:0.007g'
-      end
 
       def initialize(params, refresh = true)
         # if not param is passed then we create a particle by default
@@ -267,24 +289,28 @@ module Nucleon
       end
 
       # Helpers  methods
-      def error msg
-        puts msg
-      end
+      #def error msg
+      #  puts msg
+      #end
 
-      def self.apis
-        # todo avoid conflict with electron methods that remove some function
-        Atome.instance_methods - Object.methods
-      end
-
-      def self.to_px(obj = nil, property = :top)
-      obj = get(obj) if obj.class != Atome
-      Render.render_to_px(obj, property)
-      end
-
-
-      def self.batch atomes, properties
-        get(:view).batch atomes, properties
-      end
+      #def self.version
+      #  'v:0.007g'
+      #end
+      #
+      #def self.apis
+      #  # todo avoid conflict with electron methods that remove some function
+      #  Atome.instance_methods - Object.methods
+      #end
+      #
+      #
+      #def self.to_px(obj = nil, property = :top)
+      #obj = get(obj) if obj.class != Atome
+      #Render.render_to_px(obj, property)
+      #end
+      #
+      #def self.batch atomes, properties
+      #  get(:view).batch atomes, properties
+      #end
 
       # Allow lazy mode to add method on the fly to automatically create the corresponding instance variable
       # ex b=box; b.my_meth(:the_value); puts b.my_meth => :the_value (@my_meth has been created)

@@ -402,16 +402,16 @@ module Nucleon
       end
 
 
-      def check_prop_status params, property
-        #(we want to define property on the fly thast hy wheck very time instead of defining all properties
-        #at atome initialisation)
-        if property.class == NilClass || (params.class == Hash && params[:add] == true)
-          property = []
-        else
-          property
-        end
-        return property
-      end
+      #def check_prop_status params, property
+      #  #(we want to define property on the fly thast hy wheck very time instead of defining all properties
+      #  #at atome initialisation)
+      #  if property.class == NilClass || (params.class == Hash && params[:add] == true)
+      #    property = []
+      #  else
+      #    property
+      #  end
+      #  return property
+      #end
 
       #def reformat_params params , call_from_method
       #  if params.class == String || params.class == Symbol || params.class == Atome
@@ -1411,6 +1411,32 @@ module Nucleon
         user(params, refresh)
       end
 
+      def code(params = nil, refresh = true)
+        params = {content: Atome.presets[:code][:content]} unless params
+        if params.class == Symbol || params.class == String
+          content = {content: params}
+          params = content
+        end
+        params && params.class == Hash
+        content = params.delete(:content)
+        atome = Atome.new({type: :code, preset: :code, content: content})
+        insert(atome)
+        if params
+          x = params.delete(:x)
+          y = params.delete(:y)
+          xx = params.delete(:xx)
+          yy = params.delete(:yy)
+          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+        else
+          atome.set({center: :true})
+        end
+        atome
+      end
+
+      def code=(params = nil, refresh = true)
+        code(params, refresh)
+      end
+
       def video(params = nil, refresh = true)
         params = {content: Atome.presets[:video][:content]} unless params
         if params.class == Symbol || params.class == String
@@ -1676,8 +1702,6 @@ module Nucleon
 
 
       #private
-
-
 
       def broadcast_all(params, action)
         params.each do |messages|
