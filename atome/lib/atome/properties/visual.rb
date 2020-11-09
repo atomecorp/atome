@@ -21,9 +21,9 @@ module Nucleon
             end
           end
           @render = params
-          else
-            @render
-          end
+        else
+          @render
+        end
       end
 
       def render= params = nil, refresh = true
@@ -596,7 +596,7 @@ module Nucleon
             else
               @fit = [params]
             end
-        end
+          end
           target = find_atome_from_params(params[:target])
 # line below (self.y) is a quick patch to patch a bug
           self.y(0)
@@ -715,9 +715,9 @@ module Nucleon
             else
               @shadow = [params]
             end
-        else
-          @shadow = [params]
-        end
+          else
+            @shadow = [params]
+          end
           broadcast(atome_id => {shadow: params, private: false})
           if refresh
             formated_params= parse_params(params, :shadow)

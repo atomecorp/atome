@@ -1,34 +1,8 @@
-# here the main methods to create basic atome object
-
-class Helper
-  def self.version
-    'v:0.007g'
-  end
-
-  def self.apis
-    # todo avoid conflict with electron methods that remove some function
-    Atome.instance_methods - Object.methods
-  end
-
-
-  def self.to_px(obj = nil, property = :top)
-    obj = get(obj) if obj.class != Atome
-    Render.render_to_px(obj, property)
-  end
-
-  def self.batch atomes, properties
-    get(:view).batch atomes, properties
-  end
-
-
-
-end
-
 module Nucleon
   module Core
     class Nucleon < Helper
       include Neutron
-      include Proton
+      include Pi
       include Photon
 
       @@atomes = []
@@ -44,7 +18,7 @@ module Nucleon
           # We get the preset name
           @preset = params.to_sym
           # we get the preset for shape and then default value for the preset
-          properties_from_preset = Proton.presets[params]
+          properties_from_preset = Pi.presets[params]
           params = {}
           preset = properties_from_preset
           # now we inject the preset name into the hash
@@ -55,7 +29,7 @@ module Nucleon
                    else
                      params[:type]
                    end
-          preset = Proton.presets[preset]
+          preset = Pi.presets[preset]
         end
         #  we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
         atome_id = if @@atomes.length == 0
@@ -281,11 +255,11 @@ module Nucleon
 
       # modules methods to be exposed
       def self.presets params = nil
-        Proton.presets params
+        Pi.presets params
       end
 
       def self.types params = nil
-        Proton.types
+        Pi.types
       end
 
       # Helpers  methods

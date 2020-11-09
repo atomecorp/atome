@@ -1,11 +1,13 @@
-require "atome/core/neutron"
-require "atome/core/proton"
-require "atome/core/photon"
-require "atome/core/nucleon"
-require "atome/core/electron"
+#require "atome/core/neutron"
+#require "atome/core/Pi"
+#require "atome/core/photon"
+#require "atome/core/nucleon"
+#require "atome/core/electron"
 
-
+require "atome/environment/require"
 class Atome < Nucleon::Core::Nucleon
+#class Atome
+  include Nucleon
   # S.A.G.E.D methods
   #def set params = nil, refresh = true, &proc
   #  if params.class == Hash
@@ -174,4 +176,8 @@ class Atome < Nucleon::Core::Nucleon
 
 end
 
-require "atome/big_bang"
+#require "atome/big_bang"
+
+require "atome/utilities/creation"
+
+#require "atome/big_bang"

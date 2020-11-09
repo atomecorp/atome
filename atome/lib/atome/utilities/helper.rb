@@ -65,7 +65,7 @@ end
 
 def scour(params)
   #search everywhere
- find({value: params, scope: :all})
+  find({value: params, scope: :all})
 end
 
 def dig(params)

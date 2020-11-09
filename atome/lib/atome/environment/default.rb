@@ -2,9 +2,9 @@
 module Nucleon
   module Core
 
-    module Proton
+    module Pi
 
-      #We use call variable here so user can change default value using Proton.presets method
+      #We use call variable here so user can change default value using Pi.presets method
       @@visual = {}
       @@shape = @@visual.merge({})
       @@box = @@visual.merge(@@shape)

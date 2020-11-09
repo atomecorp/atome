@@ -329,7 +329,7 @@ def particle(options = nil)
   end
   options && options.class == Hash
   options = {type: :particle, preset: :particle}.merge(options)
-    # todo : set parent :  view from preset instead of below
+  # todo : set parent :  view from preset instead of below
   Atome.new(options.merge({parent: :view}), refresh)
 end
 
@@ -414,7 +414,7 @@ class Device
     device = Atome.new({type: :particle, id: :device, width: "100%", height: "100%", x: 0, xx: 0, y: 0, yy: 0, z: 1, overflow: :hidden, color: :transparent})
     intuition = Atome.new({type: :particle,  id: :intuition, x: 0, xx: 0, y: 0, yy: 0, z: 3, overflow: :hidden, color: :transparent})
     view = Atome.new({type: :particle, id: :view, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent})
-# The lines below creat a special atome that holds all resize_actions stored in the @@resize_actionsvariable
+    # The lines below creat a special atome that holds all resize_actions stored in the @@resize_actions variable
     actions = Atome.new
     actions.id(:actions)
     actions.viewer_actions
@@ -432,4 +432,4 @@ end
 #   @usage={}
 # end
 # alert Help.color
- Device.new
+Device.new

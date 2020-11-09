@@ -1626,7 +1626,7 @@ module Nucleon
       # utils
 
       def pick params
-         #allow easily get child of  a certain type. ex : v.pick(:audio).level 0.5 get all child of type :audio
+        #allow easily get child of  a certain type. ex : v.pick(:audio).level 0.5 get all child of type :audio
         childs = []
         child.each do |child|
           childs << child if child.type[:content] == params

@@ -62,7 +62,7 @@ file 'app/temp/media_list.rb': ['app/temp'] do |t|
   File.open(t.name, 'w') { |file| file.write(medias_list) }
 end
 
-atome_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb', 'app/app.rb', 'atome/lib/atome/big_bang.rb', 'atome/lib/atome/core/nucleon.rb', 'atome/lib/atome/core/electron.rb', 'atome/lib/atome/core/neutron.rb', 'atome/lib/atome/core/photon.rb', 'atome/lib/atome/core/proton.rb'] + Dir.glob('app//*')
+atome_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb', 'app/app.rb', 'atome/lib/atome/environment/require.rb', 'atome/lib/atome/builder/object.rb'] + Dir.glob('app//*')
 file 'www/public/js/atome.js': atome_monitoring do |t|
   #require 'opal'
   builder = Opal::Builder.new
