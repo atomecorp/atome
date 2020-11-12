@@ -51,31 +51,37 @@ module Properties
     # if it's an array then property itself change from Hash type to array
     #   ex with color property{color: [{content: :red}{content: :yellow, x: 200}]}
 
-    unless params
-      params={}
-    end
-    if params.instance_of?(Hash)
-      params[:proc] = proc if proc
-      #params
-    elsif params.instance_of?(Array)
-      params.each do |param|
-        if param.instance_of?(Hash)
-          param[:add] = true
-          send(method_name, param)
-        else
-          send(method_name, {content: param, add: true})
-        end
-        #return false
-      end
-      send(method_name, {proc: proc, add: true}) if proc
-      {}
-    elsif proc
-      params[:proc]=proc
-      #{content: params, proc: proc}
+    if params.instance_of?(Array)
+
     else
-      {content: params}
+      params
+
     end
-    params
+
+    #params |= {}
+    #
+    #if params.instance_of?(Hash)
+    #  params[:proc] = proc if proc
+    #  #params
+    #elsif params.instance_of?(Array)
+    #  params.each do |param|
+    #    if param.instance_of?(Hash)
+    #      param[:add] = true
+    #      send(method_name, param)
+    #    else
+    #      send(method_name, {content: param, add: true})
+    #    end
+    #    #return false
+    #  end
+    #  send(method_name, {proc: proc, add: true}) if proc
+    #  {}
+    #elsif proc
+    #  params[:proc]=proc
+    #  #{content: params, proc: proc}
+    #else
+    #  {content: params}
+    #end
+    #params
     #unless params
     #  params={}
     #end
