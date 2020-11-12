@@ -21,10 +21,10 @@ class Sparkle
         ## first we create a hash for the property if t doesnt exist
         ## we don't create a object init time, to only create property when needed
         instance_method_name = if instance_variable_defined?("@" + method_name.to_s)
-          instance_variable_get("@" + method_name.to_s)
-        else
-          instance_variable_set("@" + method_name.to_s, {})
-        end
+                                 instance_variable_get("@" + method_name.to_s)
+                               else
+                                 instance_variable_set("@" + method_name.to_s, {})
+                               end
         # we send the params to the 'reformat_params' if there's a params
         method_analysis params, instance_method_name, method_name, proc if params || proc
         # finally we return the current property using magic_getter
@@ -45,14 +45,18 @@ module Properties
   # the method below must be executed once only
 
   def reformat_params(params, method_name, proc)
-    # this method allow user to input simple datas and reformat the incoming datas so it always store a Hash
+    # this method allow user to input simple data and reformat the incoming data so it always store a Hash
     # if its a string then the data is put into the property content
     #   ex with color property : {color: {content: :red}}
     # if it's an array then property itself change from Hash type to array
     #   ex with color property{color: [{content: :red}{content: :yellow, x: 200}]}
+
+    unless params
+      params={}
+    end
     if params.instance_of?(Hash)
       params[:proc] = proc if proc
-      params
+      #params
     elsif params.instance_of?(Array)
       params.each do |param|
         if param.instance_of?(Hash)
@@ -61,14 +65,37 @@ module Properties
         else
           send(method_name, {content: param, add: true})
         end
+        #return false
       end
       send(method_name, {proc: proc, add: true}) if proc
       {}
     elsif proc
-      {content: params, proc: proc}
+      params[:proc]=proc
+      #{content: params, proc: proc}
     else
       {content: params}
     end
+    params
+    #unless params
+    #  params={}
+    #end
+    #if params.instance_of?(Array)
+    #elsif params.instance_of?(String) || params.instance_of?(Symbol)
+    #  params={content: params}
+    #end
+    #if proc
+    #  puts "message is #{params.class} Location: default_methods_for_atome_api.rb, line 79"
+    #  params[:proc]=proc
+    #end
+
+    #if params && proc
+    #elsif params
+    #elsif proc
+    #
+    #else
+    #  nil
+    #
+    #end
   end
 
   def send_hash(params, method_name)
@@ -88,6 +115,7 @@ module Properties
       end
     end
   end
+
   #def method_analysis(params, instance_variable, method_name, proc)
   #  # this method first send the params to the 'reformat_params' method to ensure it return a hash or an array
   #  params = reformat_params params, method_name, proc
@@ -196,10 +224,14 @@ module Properties
     #puts "###### if  #{add} parse content ######"
 
     # this method first send the params to the 'reformat_params' method to ensure it return a hash or an array
+    #puts "#########"
+    #puts "pre  : #{params} : #{params.class}, proc : #{proc}"
     puts "#########"
-    puts "pre  : #{params} : #{params.class}"
+
+    #puts "pre  #{params.class},"
+
     params = reformat_params params, method_name, proc
-    puts "post : #{params} : proc : #{proc}"
+    puts "post : #{params} "
     ## then either it parse the params if {add: true} is found, so it add the params to the property hash,
     ## either it add any {key: :value} found to the instance variable property
     #if add
@@ -253,6 +285,7 @@ end
 module Singularity
 
   include Properties
+
   def toto_dsp(params)
     "toto dsp :  #{params}"
   end
@@ -265,6 +298,7 @@ end
 #  the class below create all new user's atomes
 class Atome
   include Singularity
+
   def initialize
     Universe.add(self)
     atome_id("a_" + object_id.to_s)
@@ -319,26 +353,26 @@ end
 # ------- verification 2 -------
 Sparkle.new
 a = Atome.new
-a.toto(:my_data)
-a.toto(:tutu)
-a.toto(:ok_for_now)
-a.toto({content: :doto, kool: :ok})
-a.toto({content: :didi, kool: :pas_ok, refresh: false})
-a.toto([{content: :datos, x: 0}, :tomoldu])
-a.toto(:dudu)
-a.toto({content: :titi, kool: :ok2, add: true})
-a.toto(:mimi)
+#a.toto(:my_data)
+#a.toto(:tutu)
+#a.toto(:ok_for_now)
+#a.toto({content: :doto, kool: :ok})
+#a.toto({content: :didi, kool: :pas_ok, refresh: false})
+#a.toto([{content: :datos, x: 0}, :tomoldu])
+#a.toto(:dudu)
+#a.toto({content: :titi, kool: :ok2, add: true})
+#a.toto(:mimi)
 a.toto([{content: :ditos, x: 0, add: false}, :toti]) do
   puts "it works"
 end
-a.toto({add: true, content: :conteni})
-a.toto({add: false}) do
-  puts "it's cool"
-end
-
-a.toto() do
-  puts "it's cool"
-end
+#a.toto({add: true, content: :conteni})
+#a.toto({add: false}) do
+#  puts "it's cool"
+#end
+#
+#a.toto() do
+#  puts "it's cool"
+#end
 
 ## ------- verification 3 -------
 #Sparkle.new
