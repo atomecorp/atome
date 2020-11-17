@@ -21,10 +21,10 @@ class Sparkle
         ## first we create a hash for the property if t doesnt exist
         ## we don't create a object init time, to only create property when needed
         instance_method_name = if instance_variable_defined?("@" + method_name.to_s)
-                                 instance_variable_get("@" + method_name.to_s)
-                               else
-                                 instance_variable_set("@" + method_name.to_s, {})
-                               end
+          instance_variable_get("@" + method_name.to_s)
+        else
+          instance_variable_set("@" + method_name.to_s, {})
+        end
         # we send the params to the 'reformat_params' if there's a params
         method_analysis params, instance_method_name, method_name, proc if params || proc
         # finally we return the current property using magic_getter
@@ -44,7 +44,6 @@ end
 # the class below contains all common properties's methods
 module Properties
   # the methods below must be executed once only
-
   def send_hash(params, method_name)
     # if prop needs to be refresh we send it to the Render engine
     broadcast(atome_id => {method_name => params})
@@ -63,29 +62,46 @@ module Properties
     end
   end
 
-  def recursive_treatment(params, instance_variable, method_name, proc)
-    params.each do |param|
-      params[:add] = true if params.instance_of?(Hash)
-      method_analysis param, instance_variable, method_name, proc
+  def array_parsing(params, instance_variable, method_name, proc)
+    params.each_with_index do |param, index|
+      if param.instance_of?(Hash) && param[:add] != false
+        param[:add] = true
+      elsif !param.instance_of?(Hash)
+        param = {content: param, add: true}
+      end
+      if index == params.length - 1
+        # when we reach the last element of the array we add the proc
+        method_analysis param, instance_variable, method_name, proc
+      else
+        method_analysis param, instance_variable, method_name, nil
+      end
     end
   end
 
-  def property_save(params, instance_variable, method_name)
-    #puts params[:add]
-     instance_variable = params
-     puts "message :#{instance_variable} from : default_methods_for_atome_api.rb : 76"
+  def property_save(params, method_name)
+    previous_content = instance_variable_get("@" + method_name.to_s)
+    if params[:add] && previous_content.instance_of?(Hash) && previous_content != {}
+      params.delete(:add)
+      params = [previous_content, params]
+    elsif params[:add] && previous_content.instance_of?(Array)
+      params.delete(:add)
+      params = previous_content << params
+    elsif previous_content.instance_of?(Hash)
+      params.delete(:add)
+    end
+    instance_variable_set("@" + method_name.to_s, params)
   end
 
   def method_analysis(params, instance_variable, method_name, proc)
     if params.instance_of?(Array)
-      recursive_treatment params, instance_variable, method_name, proc
+      array_parsing params, instance_variable, method_name, proc
     else
       if params && !params.instance_of?(Hash)
         params = {content: params}
       end
       params ||= {}
       params[:proc] = proc if proc
-      property_save(params, instance_variable, method_name)
+      property_save(params, method_name)
     end
   end
 
@@ -97,12 +113,10 @@ module Properties
       method
     end
   end
-
 end
 
 #  the class below contains all the specifics  code for properties
 module Singularity
-
   include Properties
 
   def color_dsp(params)
@@ -131,73 +145,76 @@ class Atome
 end
 
 ## ------- verification 1 -------
-#Sparkle.new
-#a = Atome.new
-#a.toto(:my_data)
-#a.toto(:tutu)
-#puts "line 263 :\"#{a.toto}\" "
-#a.toto(:ok_for_now)
-#a.toto({content: :doto, kool: :ok})
-#a.toto({content: :didi, kool: :pas_ok, refresh: false})
-#puts "line 266 : #{a.toto}"
-#a.toto([{content: :datos, x: 0}, :toto])
-##a.toto(:dudu)
-#a.toto({content: :titi, kool: :ok2, add: true})
-#puts "line 270 : #{a.toto}"
-#a.toto(:mimi)
-##a.atome_id(:my_id)
-##puts "line 273 : #{a.atome_id}"
-#a.toto([{content: :ditos, x: 0, add: false}, :toti]) do
+# Sparkle.new
+# a = Atome.new
+# a.toto(:my_data)
+# a.toto(:tutu)
+# puts "line 263 :\"#{a.toto}\" "
+# a.toto(:ok_for_now)
+# a.toto({content: :doto, kool: :ok})
+# a.toto({content: :didi, kool: :pas_ok, refresh: false})
+# puts "line 266 : #{a.toto}"
+# a.toto([{content: :datos, x: 0}, :toto])
+# #a.toto(:dudu)
+# a.toto({content: :titi, kool: :ok2, add: true})
+# puts "line 270 : #{a.toto}"
+# a.toto(:mimi)
+# #a.atome_id(:my_id)
+# #puts "line 273 : #{a.atome_id}"
+# a.toto([{content: :ditos, x: 0, add: false}, :toti]) do
 #  puts "it works"
-#end
-#puts "line 277 : #{a.toto}"
-#a.toto({add: true, content: :conteni})
-#puts "line 280 : #{a.toto}"
-#a.toto({add: false}) do
+# end
+# puts "line 277 : #{a.toto}"
+# a.toto({add: true, content: :conteni})
+# puts "line 280 : #{a.toto}"
+# a.toto({add: false}) do
 #  puts "it's cool"
-#end
-#puts "line 284 : #{a.toto}"
+# end
+# puts "line 284 : #{a.toto}"
 #
-#a.toto() do
+# a.toto() do
 #  puts "it's cool"
-#end
-#puts "line 286 : #{a.toto}"
+# end
+# puts "line 286 : #{a.toto}"
 ## line 92 :     send(method_name, {proc: proc, add: true}) if proc
 ## proc should be integrated first ()before sending it to the property hash) for now it is not integrated in the current, if not it may fuck the entire project
 ## see above
-##b = Atome.new
-##b.toto(:my_give)
-##puts "universe is #{Universe.atomes}"
+# #b = Atome.new
+# #b.toto(:my_give)
+# #puts "universe is #{Universe.atomes}"
 
 # ------- verification 2 -------
 Sparkle.new
 a = Atome.new
-#a.color(:my_data)
-#a.color(:tutu)
-#a.color(:ok_for_now)
-#a.color({content: :doto, kool: :ok})
-#a.color({content: :didi, kool: :pas_ok, refresh: false})
-a.color([{content: :datos, x: 0}, :tomoldu])
-puts a.color
-#a.color(:dudu)
-#a.color({content: :titi, kool: :ok2, add: true})
-#a.color(:mimi)
-#a.color([{content: :ditos, x: 0, add: false}, :toti]) do
+# a.color(:my_data)
+# a.color(:tutu)
+# a.color(:ok_for_now)
+# a.color({content: :doto, kool: :ok})
+# a.color({content: :didi, kool: :pas_ok, refresh: false})
+# a.color([{content: :datos, x: 0}, :tomoldu, {content: :tibidi}, {content: [color: {content: :red, x: [color: :blue, y: 90]}]}])
+# a.color([{content: :datos, x: 0}, :tomoldu, {content: :tibidi}, {content: [color: {content: :red, x: [color: :blue, y: 90]}], add: false}])
+# a.color([{content: :datos, x: 0}, {content: :tomoldu, add: false}, :tibidi, {content: [color: {content: :red, x: [color: :blue, y: 90]}]}]) do
+#  puts "kool"
+# end
+# a.color(:dudu)
+# a.color({content: :titi, kool: :ok2, add: true})
+# a.color(:mimi)
+# a.color([:toti,{content: :ditos, x: 0, add: false}]) do
 #  puts "it works"
-#end
-#a.color()
-#a.color({add: true, content: :conteni})
-#a.color({add: false}) do
+# end
+# a.color()
+# a.color({add: true, content: :conteni})
+# a.color({add: false}) do
 #  puts "it's cool"
-#end
+# end
 #
-#a.color() do
+# a.color() do
 #  puts "it's cool"
-#end
-
+# end
+puts a.color.to_s
 ## ------- verification 3 -------
-#Sparkle.new
-#a = Atome.new
-###a.toto([:my_data, :toto, :tutu])
-##a.toto([{content: :datos, x: 0}, :toto])
-###a.toto(:tutu)
+# Sparkle.new
+# a = Atome.new
+# ##a.toto([:my_data, :toto, :tutu])
+# #a.toto([{content: :datos, x: 0}, :toto])
+# ##a.toto(:tutu)
