@@ -89,6 +89,7 @@ module Properties
     elsif previous_content.instance_of?(Hash)
       params.delete(:add)
     end
+    send_hash(params, method_name)
     instance_variable_set("@" + method_name.to_s, params)
   end
 
@@ -115,7 +116,7 @@ module Properties
   end
 end
 
-#  the class below contains all the specifics  code for properties
+#  the class below contains all the specifics code for properties
 module Singularity
   include Properties
 
