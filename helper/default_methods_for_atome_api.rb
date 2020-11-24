@@ -10,11 +10,22 @@ module Universe
   end
 end
 
-# the class below initialize the default values and generate functions such  properties's methods
+# for test purpose only
+class Render
+  def self.render_atome_id(*params)
+    puts "rendering the atome_id on screen with #{params}"
+  end
+
+  def self.render_color(*params)
+    puts "rendering the color on screen with #{params}"
+  end
+end
+
+# the class below initialize the default values and generate properties's methods
 class Sparkle
   def initialize
     # the line below create atomes's methods using meta-programming
-    atome_methods = %i[atome_id color]
+    atome_methods = %i[atome_id color type]
     atome_methods.each do |method_name|
       Atome.define_method method_name do |params = nil, &proc|
         # this is the main entry method for the current property treatment
@@ -48,6 +59,7 @@ module Properties
     # if prop needs to be refresh we send it to the Render engine
     broadcast(atome_id => {method_name => params})
     send(method_name.to_s + "_processing", params)
+    Render.send("render_" + method_name.to_s, self, params) if params[:render].nil? || params[:render] == true
   end
 
   def property_parsing(params, method_name)
@@ -125,7 +137,7 @@ module Processing
   end
 
   def atome_id_processing(params)
-    "atome_id DSP#{params}"
+    puts "atome_id DSP#{params}"
   end
 end
 
@@ -187,7 +199,7 @@ end
 # ------- verification 2 -------
 Sparkle.new
 a = Atome.new
-a.color(:my_data)
+a.color({content: :my_data, render: false})
 # a.color(:tutu)
 # a.color(:ok_for_now)
 # a.color({content: :doto, kool: :ok})
