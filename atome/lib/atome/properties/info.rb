@@ -7,74 +7,74 @@ module Nucleon
     module Neutron
       @@monitor = []
 
-      # global methods
-      # global property methods
-      def magic_return(method)
-        # the aim of this method is filter the return of the property,
-        # so if it found a single content, it only return the value ex : a.color => :red instead of {content: :red}
-        if method.length == 1 && method.class == hash
-          method[:content]
-        else
-          method
-        end
-      end
-
-      def array_parsing(params, method_name)
-        # this method change the params send by user so each data found in the params is added to the property array
-        params.each do |param|
-          if param.class == Hash
-            param[:add] = true
-            send(method_name, param)
-          else
-            send(method_name, {content: param, add: true})
-          end
-        end
-        {}
-      end
-
-      def add_parsing(params, method_name)
-        # this method is used the property hash contain {add: true} key value pair
-        # when so the hash property is turn into an array so it can accept many times the same property.
-        # use for gradient or multiple shadows, etc...  ex : color: [{content : red, x: 0},{content : pink, x: 200}]
-        params.delete(:add)
-        previous_params = instance_variable_get("@#{method_name}")
-        if previous_params.empty?
-          instance_variable_set("@#{method_name}", [params])
-        else
-          instance_variable_set("@#{method_name}", [previous_params, params])
-        end
-      end
-
-      def reformat_params(params, method_name)
-        # this method allow user to input simple datas and reformat the incoming datas so it always store a Hash
-        # if its a string then the datas is put into the property content
-        #   ex with color property : {color: {content: :red}}
-        # if it's an array then property itself change from Hash type to array
-        #   ex with color property{color: [{content: :red}{content: :yellow, x: 200}]}
-        if params.class == Hash
-          params
-        elsif params.class == Array
-          array_parsing params, method_name
-        else
-          {content: params}
-        end
-      end
-
-      def method_analysis(params, instance_variable, method_name)
-        # this method first send the params to the 'reformat_params' method to ensure it return a hash or an array
-        params = reformat_params params, method_name
-        # then etheir it parse the params if {add: true} is found, so it add the params to the property hash,
-        # etheir it add any {key: :value} found to the instance variable property
-        if params[:add] && params[:add] == true
-          add_parsing params, method_name
-        else
-          params.each do |key, value|
-            instance_variable[key] = value
-          end
-        end
-        # now we apply the specific treatment according to the property found if the hash is not empty
-        send(method_name + '_treatment', params) if params != {}
-      end
+      ## global methods
+      ## global property methods
+      #def magic_return(method)
+      #  # the aim of this method is filter the return of the property,
+      #  # so if it found a single content, it only return the value ex : a.color => :red instead of {content: :red}
+      #  if method.length == 1 && method.class == hash
+      #    method[:content]
+      #  else
+      #    method
+      #  end
+      #end
+      #
+      #def array_parsing(params, method_name)
+      #  # this method change the params send by user so each data found in the params is added to the property array
+      #  params.each do |param|
+      #    if param.class == Hash
+      #      param[:add] = true
+      #      send(method_name, param)
+      #    else
+      #      send(method_name, {content: param, add: true})
+      #    end
+      #  end
+      #  {}
+      #end
+      #
+      #def add_parsing(params, method_name)
+      #  # this method is used the property hash contain {add: true} key value pair
+      #  # when so the hash property is turn into an array so it can accept many times the same property.
+      #  # use for gradient or multiple shadows, etc...  ex : color: [{content : red, x: 0},{content : pink, x: 200}]
+      #  params.delete(:add)
+      #  previous_params = instance_variable_get("@#{method_name}")
+      #  if previous_params.empty?
+      #    instance_variable_set("@#{method_name}", [params])
+      #  else
+      #    instance_variable_set("@#{method_name}", [previous_params, params])
+      #  end
+      #end
+      #
+      #def reformat_params(params, method_name)
+      #  # this method allow user to input simple datas and reformat the incoming datas so it always store a Hash
+      #  # if its a string then the datas is put into the property content
+      #  #   ex with color property : {color: {content: :red}}
+      #  # if it's an array then property itself change from Hash type to array
+      #  #   ex with color property{color: [{content: :red}{content: :yellow, x: 200}]}
+      #  if params.class == Hash
+      #    params
+      #  elsif params.class == Array
+      #    array_parsing params, method_name
+      #  else
+      #    {content: params}
+      #  end
+      #end
+      #
+      #def method_analysis(params, instance_variable, method_name)
+      #  # this method first send the params to the 'reformat_params' method to ensure it return a hash or an array
+      #  params = reformat_params params, method_name
+      #  # then etheir it parse the params if {add: true} is found, so it add the params to the property hash,
+      #  # etheir it add any {key: :value} found to the instance variable property
+      #  if params[:add] && params[:add] == true
+      #    add_parsing params, method_name
+      #  else
+      #    params.each do |key, value|
+      #      instance_variable[key] = value
+      #    end
+      #  end
+      #  # now we apply the specific treatment according to the property found if the hash is not empty
+      #  send(method_name + '_treatment', params) if params != {}
+      #end
 
       # specific methods methods
 
@@ -133,58 +133,71 @@ module Nucleon
       def name=(params = nil, refresh = true)
         name(params, refresh)
       end
-
-      # specific property methods
-      def type_proc(proc)
-        # if the object property contain a Proc it'll be processed here
-        proc
-      end
-
-      def type_rendering(params)
-        # if the object property needs to be refresh then I'm your method
-        Render.render_type(self, params) if params[:refresh].nil? || params[:refresh] == true
-      end
-
-      def type_processing(properties)
-        # let's go with the DSP ...
-        properties
-      end
-
-      def type_treatment(params)
-        # here happen the specific treatment for the current property
-        if params.class == Hash
-          type_proc params[:proc] if params && params[:proc]
-          type_processing params
-          # if prop needs to be refresh we send it to the Render engine
-          type_rendering params
-        elsif params.class == Array
-          # if params is an array is found we send each item of the array to 'type_treatment' as a Hash
-          params.each do |param|
-            type_treatment param
-          end
-        end
-        broadcast(atome_id => {type: params})
-      end
-
-      def type(params = nil)
-        # This is the entry point for property getter and setter:
-        # this is the main entry method for the current property treatment
-        # first we create a hash for the property if t doesnt exist
-        # we don't create a object init time, to only create property when needed
-        @type ||= {}
-        # we send the params to the 'reformat_params' if there's a params
-        method_analysis params, @type, :type if params
-        # finally we return the current property using magic_return
-        if params
+      def type(params = nil, refresh = true)
+        if params || params == false
+          @type = {content: params}
+          broadcast(atome_id => {type: params, private: false})
+          Render.render_type(self, params) if refresh
           self
         else
-          magic_return @type
+          @type
         end
       end
 
-      def type=(params = nil)
-        type(params)
+      def type=(params = nil, refresh = true)
+        type(params, refresh)
       end
+      # specific property methods
+      #def type_proc(proc)
+      #  # if the object property contain a Proc it'll be processed here
+      #  proc
+      #end
+      #
+      #def type_rendering(params)
+      #  # if the object property needs to be refresh then I'm your method
+      #  Render.render_type(self, params) if params[:refresh].nil? || params[:refresh] == true
+      #end
+      #
+      #def type_processing(properties)
+      #  # let's go with the DSP ...
+      #  properties
+      #end
+      #
+      #def type_treatment(params)
+      #  # here happen the specific treatment for the current property
+      #  if params.class == Hash
+      #    type_proc params[:proc] if params && params[:proc]
+      #    type_processing params
+      #    # if prop needs to be refresh we send it to the Render engine
+      #    type_rendering params
+      #  elsif params.class == Array
+      #    # if params is an array is found we send each item of the array to 'type_treatment' as a Hash
+      #    params.each do |param|
+      #      type_treatment param
+      #    end
+      #  end
+      #  broadcast(atome_id => {type: params})
+      #end
+      #
+      #def type(params = nil)
+      #  # This is the entry point for property getter and setter:
+      #  # this is the main entry method for the current property treatment
+      #  # first we create a hash for the property if t doesnt exist
+      #  # we don't create a object init time, to only create property when needed
+      #  @type ||= {}
+      #  # we send the params to the 'reformat_params' if there's a params
+      #  method_analysis params, @type, :type if params
+      #  # finally we return the current property using magic_return
+      #  if params
+      #    self
+      #  else
+      #    magic_return @type
+      #  end
+      #end
+      #
+      #def type=(params = nil)
+      #  type(params)
+      #end
 
 
       def preset(params = nil)
@@ -1739,57 +1752,69 @@ module Nucleon
         end
       end
 
-      def atome_id_proc(proc)
-        # if the object property contain a Proc it'll be processed here
-        proc
-      end
-
-      def atome_id_rendering(params)
-        # if the object property needs to be refresh then I'm your method
-        Render.render_atome_id(self, params) if params[:refresh].nil? || params[:refresh] == true
-      end
-
-      def atome_id_processing(properties)
-        # let's go with the DSP ...
-        properties
-      end
-
-      def atome_id_treatment(params)
-        # here happen the specific treatment for the current property
-        if params.class == Hash
-          atome_id_proc params[:proc] if params && params[:proc]
-          atome_id_processing params
-          # if prop needs to be refresh we send it to the Render engine
-          atome_id_rendering params
-        elsif params.class == Array
-          # if params is an array is found we send each item of the array to 'atome_id_treatment' as a Hash
-          params.each do |param|
-            atome_id_treatment param
-          end
-        end
-        broadcast(atome_id => {atome_id: params})
-      end
-
-      def atome_id(params = nil)
-        # This is the entry point for property getter and setter:
-        # this is the main entry method for the current property treatment
-        # first we create a hash for the property if t doesnt exist
-        # we don't create a object init time, to only create property when needed
-        @atome_id ||= {}
-        # we send the params to the 'reformat_params' if there's a params
-        method_analysis params, @atome_id, :atome_id if params
-        # finally we return the current property using magic_return
-        if params
-          self
+      #def atome_id_proc(proc)
+      #  # if the object property contain a Proc it'll be processed here
+      #  proc
+      #end
+      #
+      #def atome_id_rendering(params)
+      #  # if the object property needs to be refresh then I'm your method
+      #  Render.render_atome_id(self, params) if params[:refresh].nil? || params[:refresh] == true
+      #end
+      #
+      #def atome_id_processing(properties)
+      #  # let's go with the DSP ...
+      #  properties
+      #end
+      #
+      #def atome_id_treatment(params)
+      #  # here happen the specific treatment for the current property
+      #  if params.class == Hash
+      #    atome_id_proc params[:proc] if params && params[:proc]
+      #    atome_id_processing params
+      #    # if prop needs to be refresh we send it to the Render engine
+      #    atome_id_rendering params
+      #  elsif params.class == Array
+      #    # if params is an array is found we send each item of the array to 'atome_id_treatment' as a Hash
+      #    params.each do |param|
+      #      atome_id_treatment param
+      #    end
+      #  end
+      #  broadcast(atome_id => {atome_id: params})
+      #end
+      #
+      #def atome_id(params = nil)
+      #  # This is the entry point for property getter and setter:
+      #  # this is the main entry method for the current property treatment
+      #  # first we create a hash for the property if t doesnt exist
+      #  # we don't create a object init time, to only create property when needed
+      #  @atome_id ||= {}
+      #  # we send the params to the 'reformat_params' if there's a params
+      #  method_analysis params, @atome_id, :atome_id if params
+      #  # finally we return the current property using magic_return
+      #  if params
+      #    self
+      #  else
+      #    magic_return @atome_id
+      #  end
+      #end
+      #
+      #def atome_id=(params = nil)
+      #  atome_id(params)
+      #end
+      def atome_id(params = nil, refresh = true)
+        if params || params == false
+          # todo : protect the atome_id so it can't be change by user
+          error "atome_id is unalterable "
+          #@atome_id = params
         else
-          magic_return @atome_id
+          @atome_id
         end
       end
 
-      def atome_id=(params = nil)
-        atome_id(params)
+      def atome_id=(params = nil, refresh = true)
+        atome_id params, refresh
       end
-
       ################## utilities  ##############
       def reorder_properties(properties)
         # we re order the hash to puts the atome_id type at the begining to optimise rendering
