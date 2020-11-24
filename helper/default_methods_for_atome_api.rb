@@ -47,7 +47,7 @@ module Properties
   def send_hash(params, method_name)
     # if prop needs to be refresh we send it to the Render engine
     broadcast(atome_id => {method_name => params})
-    send(method_name.to_s + "_dsp", params)
+    send(method_name.to_s + "_processing", params)
   end
 
   def property_parsing(params, method_name)
@@ -117,21 +117,21 @@ module Properties
 end
 
 #  the class below contains all the specifics code for properties
-module Singularity
+module Processing
   include Properties
 
-  def color_dsp(params)
+  def color_processing(params)
     "toto dsp :  #{params}"
   end
 
-  def atome_id_dsp(params)
+  def atome_id_processing(params)
     "atome_id DSP#{params}"
   end
 end
 
 #  the class below create all new user's atomes
 class Atome
-  include Singularity
+  include Processing
 
   def initialize
     Universe.add(self)
@@ -187,7 +187,7 @@ end
 # ------- verification 2 -------
 Sparkle.new
 a = Atome.new
-# a.color(:my_data)
+a.color(:my_data)
 # a.color(:tutu)
 # a.color(:ok_for_now)
 # a.color({content: :doto, kool: :ok})
