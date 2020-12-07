@@ -48,7 +48,7 @@ to keep this idea working we have to follow the following rules during atome dev
 - All Apis must  run of all targeted platform (their should be no diiference form one platform to another.
 - any property or new api must always work on any type of atome, to keep the consistency of the  "atome uniq object" 
 
-III - main Open source Software included
+III - Open source Software used
 -
 - Cordova : a cross platform framework to create applications with web view rendering (https://cordova.apache.org)
 

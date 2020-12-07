@@ -5,11 +5,34 @@
 Cross platform development
 -
 
+prerequisite:
+
+    ruby
+        on FreeBSD : 
+        on Linux :
+        on MacOS :  
+                    \curl -sSL https://get.rvm.io | bash -s stable --ruby
+        on windows :
+
+    npm
+        on FreeBSD : 
+        on Linux :
+        on MacOS : 
+                    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+                    brew install NPM
+        on windows :
+
+    cordova
+         npm install -g cordova 
+
+
 To install application and run: 
 	
     ./scripts/bootstrap  
     npm install  
     cordova platform add browser
+    bundle update
+    bundle install
     bundle exec rake run::browser  
 
  
