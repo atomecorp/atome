@@ -481,16 +481,16 @@ module Render
     formated_params = case params
                       when Array
                       when Hash
-                        properties = Nucleon::Core::Proton.presets[:border]
+                        properties = Nucleon::Core::Pi.presets[:border]
                         params.each do |key, value|
                           properties[key] = value
                         end
                         properties
                       when Boolean
-                        Nucleon::Core::Proton.presets[:border]
+                        Nucleon::Core::Pi.presets[:border]
                       when String, Symbol
                         if params.to_sym == :true
-                          Nucleon::Core::Proton.presets[:border]
+                          Nucleon::Core::Pi.presets[:border]
                         else
                           {thickness: params}
                         end
