@@ -21,6 +21,7 @@ prerequisite:
                     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
                     brew install NPM
         on windows :
+			Install Visual studio 2017 with feature "universal windows app development tools"
 
     cordova
          npm install -g cordova 
