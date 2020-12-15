@@ -237,11 +237,54 @@ var html = {
 
 
 
-// window.ondragover = function (e) {
-//     e.preventDefault();
-// };
-// window.ondrop = function (e) {
-//     e.preventDefault(e);
-//     alert ('kooll');
-//     upload(e);
-// };
+document.addEventListener("deviceready", onDeviceReady, false);  
+function onDeviceReady() {
+}
+
+function createFile() {
+   window.requestFileSystem(window.PERSISTENT, 5*1024*1024, successCallback, errorCallback)
+
+   function successCallback(fs) {
+	  window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
+		dir.getFile("/log.txt", {create:true}, function(file) {
+			file.createWriter(function(fileWriter) {
+				fileWriter.onwriteend = function() {
+					readFile(file);
+				};
+		
+				fileWriter.seek(fileWriter.length);
+				var log = "Pouet!";
+				var blob = new Blob([log], {type:'text/plain'});
+				fileWriter.write(blob);
+
+			}, errorCallback);
+		});
+	});
+    }
+		
+	function readFile(fileEntry) {
+		fileEntry.file(function (file) {
+			var reader = new FileReader();
+			reader.onloadend = function() {
+				(new Windows.UI.Popups.MessageDialog(fileEntry.fullPath, this.result)).showAsync().done();
+			};
+
+			reader.readAsText(file);
+		}, errorCallback);
+	}
+
+    function errorCallback(error) {
+       alert("ERROR: " + error.code)
+    }
+	
+}
+
+ window.ondragover = function (e) {
+    e.preventDefault();
+ };
+ window.ondrop = function (e) {
+    e.preventDefault(e);
+    alert ('kooll');
+    //upload(e);
+	createFile()
+};
