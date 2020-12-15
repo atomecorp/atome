@@ -98,7 +98,7 @@
       <splash src="ressources/splashscreens/2048_l.png" largeur = "2048" hauteur = "1536" />
     </platform>
     <platform name="windows">
-      <icon src="ressources/icons/1024.png" target="StoreLogo" />
+      <icon src="ressources/icons/50.png" target="StoreLogo" />
       <icon src="ressources/icons/512.png" target="Square30x30Logo" />
       <icon src="ressources/icons/44.png" target="Square44x44Logo" />
       <icon src="ressources/icons/70.png" target="Square70x70Logo" />
