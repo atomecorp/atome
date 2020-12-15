@@ -27,8 +27,7 @@ prerequisite:
 
 
 To install application and run: 
-	
-    ./scripts/bootstrap  
+	 
     npm install  
     cordova platform add browser
     bundle update
