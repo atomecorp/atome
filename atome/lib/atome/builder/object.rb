@@ -93,7 +93,7 @@ module Nucleon
                 send(key, param[key], refresh, false, &proc)
               end
             elsif param.class == Array
-              puts "todo : create recursive treatment of prop's array"
+              #puts "todo : create recursive treatment of prop's array"
             end
           end
         else

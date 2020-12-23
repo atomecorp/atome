@@ -335,7 +335,7 @@ module Nucleon
             unless @child.nil?
               @child.each do |child|
                 if find({value: child, property: :atome_id, scope: :all}).class == Atome
-                  puts "message is \n\n#{scour(child)}  \n\n#{@child} \n\nLocation: neutron.rb, line 214"
+                  #puts "message is \n\n#{scour(child)}  \n\n#{@child} \n\nLocation: neutron.rb, line 214"
                   atome_child << grab(child)
                   #puts "message is \n\n#{atome_child} \n\nLocation: neutron.rb, line 215"
                   #atome_child <<  find({value: child, property: :atome_id, scope: :all})
