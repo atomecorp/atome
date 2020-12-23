@@ -241,54 +241,23 @@ document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
 }
 
-function createFile(file) {
+function createFile(inputFile) {
     window.requestFileSystem(window.PERSISTENT, 5 * 1024 * 1024, successCallback, errorCallback);
 
-    // function successCallback(fs) {
-    //   window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
-    // 	dir.getFile("/image.png", {create:true}, function(file) {
-    // 		file.createWriter(function(fileWriter) {
-    // 			/*fileWriter.onwriteend = function() {
-    // 				readFile(file);
-    // 			};*/
-    //
-    // 			//fileWriter.seek(fileWriter.length);
-    // 			//var log = "Pouet!";
-    // 			var blob = new Blob([log], {type:'text/plain'});
-    // 			fileWriter.write(blob);
-    //
-    // 		}, errorCallback);
-    // 	});
-    // });
     function successCallback(fs) {
-        var reader = new FileReader();
-        reader.onloadend = function () {
-            var content = reader.result;
-            window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
-                dir.getFile("/image.png", {create: true}, function (file) {
-                    file.createWriter(function (fileWriter) {
-                        var blob = new Blob([content], {type: 'image/png'});
-                        fileWriter.write(blob);
 
-                    }, errorCallback);
-                });
+        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
+            dir.getFile("/image.png", {create: true}, function (file) {
+                file.createWriter(function (fileWriter) {
+                    // var blob = new Blob([content], {type: 'image/png'});
+                    // fileWriter.write(blob);
+                    fileWriter.write(inputFile);
+                }, errorCallback);
             });
-        };
-
-        reader.readAsBinaryString(file);
+        });
     }
 }
 
-// function readFile(fileEntry) {
-//     fileEntry.file(function (file) {
-//         var reader = new FileReader();
-//         reader.onloadend = function () {
-//             messageBox(this.result);
-//         };
-//
-//         reader.readAsText(file);
-//     }, errorCallback);
-// }
 
 function errorCallback(error) {
     alert("ERROR: " + error.code);
@@ -300,7 +269,6 @@ window.ondragover = function (e) {
 window.ondrop = function (e) {
     e.preventDefault(e);
     alert('kooll');
-    //upload(e);
     createFile(e.dataTransfer.files[0]);
 };
 
