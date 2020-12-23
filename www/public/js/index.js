@@ -137,35 +137,42 @@ var html = {
 //     }, 7000	);
 // }
 
-// function import_visual_medias(e, file) {
-//     // $( "#output" ).remove();
-//     // $("body").append('<img id="output" />');
-//     // $("#output").css("z-index",50000);
-//     // $("#output").css("position","absolute");
-//
-//     var input = e.target;
-//     var reader = new FileReader();
-//     reader.onload = function () {
-//         var dataURL = reader.result;
-//         // alert(dataURL)
-//         $('#view').append('<img id="output"  alt="Girl in a jacket" width="500" height="600">');
-//         var output = document.getElementById('output');
-//         output.src = dataURL;
-//         // img_width=document.getElementById('output').width
-//         // if (img_width !=0){
-//         //     console.log("sucess"+img_width );
-//         // }
-//         // else {
-//         //     retry_to_get_the_img_informations(img_width);
-//         // }
-//     };
-//
-//     // Opal.Object.$store(file.name, file);
-//
-//
-//
-//     reader.readAsDataURL(file);
-// }
+function import_visual_medias(e, file) {
+    // $( "#output" ).remove();
+    // $("body").append('<img id="output" />');
+    // $("#output").css("z-index",50000);
+    // $("#output").css("position","absolute");
+
+    var input = e.target;
+    var reader = new FileReader();
+    reader.onload = function () {
+        var dataURL = reader.result;
+        // alert(dataURL)
+        $('#view').append('<img id="output"  alt="Girl in a jacket" width="500" height="600">');
+        var output = document.getElementById('output');
+        output.src = dataURL;
+        // img_width=document.getElementById('output').width
+        // if (img_width !=0){
+        //     console.log("sucess"+img_width );
+        // }
+        // else {
+        //     retry_to_get_the_img_informations(img_width);
+        // }
+    };
+
+    // Opal.Object.$store(file.name, file);
+
+
+
+    reader.readAsDataURL(file);
+
+}
+
+function displayImg(url) {
+    $('#view').append('<img id="output"  alt="Girl in a jacket" width="500" height="600">');
+    var output = document.getElementById('output');
+    output.src = url;
+}
 //
 // function import_audio(e, file) {
 //     var input = e.target;
@@ -189,51 +196,50 @@ var html = {
 //     }
 // }
 //
-// function upload(e) {
-//
-//     var files = e.dataTransfer.files
-//     // alert(files.length);
-//     for (var i = 0; i < files.length; i++) {
-//         file_type = files[i].type;
-//         file_name = files[i].name;
-//         file_datas = files[i].name;
-//         console.log(file_datas);
-//
-//
-// ////////////////////////////////////////////////////////////////////////////////////////
-//         switch (file_type) {
-//             case 'video/quicktime':
-//                 import_visual_medias(e, files[i]);
-//                 break;
-//             case 'video/x-m4v':
-//                 import_visual_medias(e, files[i]);
-//                 break;
-//             case 'text/plain':
-//                 import_text(e, files[i]);
-//                 break;
-//             case 'video/mp4':
-//                 import_visual_medias(e, files[i]);
-//                 break;
-//             case 'audio/x-m4a':
-//                 import_audio(e, files[i]);
-//                 break;
-//             case 'image/png':
-//                 import_visual_medias(e, files[i]);
-//                 break;
-//             case 'image/jpeg':
-//                 import_visual_medias(e, files[i]);
-//                 break;
-//             case 'text/xml':
-//                 import_text(e, files[i]);
-//                 break;
-//             case 'image/svg+xml':
-//                 import_visual_medias(e, files[i]);
-//                 break;
-//             default:
-//                 console.log('Unknown file format');
-//         }
-//     }
-// }
+function upload(e) {
+
+    var files = e.dataTransfer.files
+    for (var i = 0; i < files.length; i++) {
+        file_type = files[i].type;
+        file_name = files[i].name;
+        file_datas = files[i].name;
+        console.log(file_datas);
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+        switch (file_type) {
+            case 'video/quicktime':
+                import_visual_medias(e, files[i]);
+                break;
+            case 'video/x-m4v':
+                import_visual_medias(e, files[i]);
+                break;
+            case 'text/plain':
+                import_text(e, files[i]);
+                break;
+            case 'video/mp4':
+                import_visual_medias(e, files[i]);
+                break;
+            case 'audio/x-m4a':
+                import_audio(e, files[i]);
+                break;
+            case 'image/png':
+                import_visual_medias(e, files[i]);
+                break;
+            case 'image/jpeg':
+                import_visual_medias(e, files[i]);
+                break;
+            case 'text/xml':
+                import_text(e, files[i]);
+                break;
+            case 'image/svg+xml':
+                import_visual_medias(e, files[i]);
+                break;
+            default:
+                console.log('Unknown file format');
+        }
+    }
+}
 
 
 document.addEventListener("deviceready", onDeviceReady, false);
@@ -249,12 +255,15 @@ function createFile(inputFile) {
         window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
             dir.getFile("/image.png", {create: true}, function (file) {
                 file.createWriter(function (fileWriter) {
-                    // var blob = new Blob([content], {type: 'image/png'});
-                    // fileWriter.write(blob);
+                    fileWriter.onwriteend = function() {
+                        displayImg("cdvfile://localhost/persistent/image.png");
+                    };
+
                     fileWriter.write(inputFile);
                 }, errorCallback);
             });
         });
+
     }
 }
 
@@ -268,8 +277,8 @@ window.ondragover = function (e) {
 };
 window.ondrop = function (e) {
     e.preventDefault(e);
-    alert('kooll');
     createFile(e.dataTransfer.files[0]);
+    // upload(e);
 };
 
 function messageBox(message) {
