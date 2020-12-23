@@ -275,7 +275,6 @@ function createFile(file) {
             });
         };
 
-
         reader.readAsBinaryString(file);
     }
 }
