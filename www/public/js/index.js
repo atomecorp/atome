@@ -76,11 +76,11 @@ var html = {
         if (loop === "") {
             loop = 0;
         }
-        var objectType = Opal.Object.$grab(atome_id).$type();
+        const objectType = Opal.Object.$grab(atome_id).$type();
 
         // var start_option = Object.keys(value.start);
         if (typeof (start) == "object") {
-            var start_opt = Object.keys(value.start);
+            const start_opt = Object.keys(value.start);
 
             start_opt.forEach((item) => {
                 key = item;
@@ -95,7 +95,7 @@ var html = {
         }
         // var end_option = Object.keys(value.end);
         if (typeof (end) == "object") {
-            var end_option = Object.keys(value.end);
+            const end_option = Object.keys(value.end);
             end_option.forEach((item) => {
                 key = item;
                 val = value.end[item];
@@ -112,8 +112,8 @@ var html = {
         a_property[property] = property;
         a_finished[property] = finished;
 //////////////////////// popmotion
-        var {easing, tween, styler} = window.popmotion;
-        var divStyler = styler(document.querySelector('#' + atome_id));
+        const {easing, tween, styler} = window.popmotion;
+        const divStyler = styler(document.querySelector('#' + atome_id));
         tween({
             from: a_start,
             to: a_end,
@@ -124,7 +124,7 @@ var html = {
 
             // complete(alert("good")
         })
-            .start(divStyler.set)
+            .start(divStyler.set);
     },
 
 };
@@ -236,55 +236,82 @@ var html = {
 // }
 
 
+document.addEventListener("deviceready", onDeviceReady, false);
 
-document.addEventListener("deviceready", onDeviceReady, false);  
 function onDeviceReady() {
 }
 
-function createFile() {
-   window.requestFileSystem(window.PERSISTENT, 5*1024*1024, successCallback, errorCallback)
+function createFile(file) {
+    window.requestFileSystem(window.PERSISTENT, 5 * 1024 * 1024, successCallback, errorCallback);
 
-   function successCallback(fs) {
-	  window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
-		dir.getFile("/log.txt", {create:true}, function(file) {
-			file.createWriter(function(fileWriter) {
-				fileWriter.onwriteend = function() {
-					readFile(file);
-				};
-		
-				fileWriter.seek(fileWriter.length);
-				var log = "Pouet!";
-				var blob = new Blob([log], {type:'text/plain'});
-				fileWriter.write(blob);
+    // function successCallback(fs) {
+    //   window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
+    // 	dir.getFile("/image.png", {create:true}, function(file) {
+    // 		file.createWriter(function(fileWriter) {
+    // 			/*fileWriter.onwriteend = function() {
+    // 				readFile(file);
+    // 			};*/
+    //
+    // 			//fileWriter.seek(fileWriter.length);
+    // 			//var log = "Pouet!";
+    // 			var blob = new Blob([log], {type:'text/plain'});
+    // 			fileWriter.write(blob);
+    //
+    // 		}, errorCallback);
+    // 	});
+    // });
+    function successCallback(fs) {
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            var content = reader.result;
+            window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
+                dir.getFile("/image.png", {create: true}, function (file) {
+                    file.createWriter(function (fileWriter) {
+                        var blob = new Blob([content], {type: 'image/png'});
+                        fileWriter.write(blob);
 
-			}, errorCallback);
-		});
-	});
+                    }, errorCallback);
+                });
+            });
+        };
+
+
+        reader.readAsBinaryString(file);
     }
-		
-	function readFile(fileEntry) {
-		fileEntry.file(function (file) {
-			var reader = new FileReader();
-			reader.onloadend = function() {
-				(new Windows.UI.Popups.MessageDialog(fileEntry.fullPath, this.result)).showAsync().done();
-			};
-
-			reader.readAsText(file);
-		}, errorCallback);
-	}
-
-    function errorCallback(error) {
-       alert("ERROR: " + error.code)
-    }
-	
 }
 
- window.ondragover = function (e) {
+// function readFile(fileEntry) {
+//     fileEntry.file(function (file) {
+//         var reader = new FileReader();
+//         reader.onloadend = function () {
+//             messageBox(this.result);
+//         };
+//
+//         reader.readAsText(file);
+//     }, errorCallback);
+// }
+
+function errorCallback(error) {
+    alert("ERROR: " + error.code);
+}
+
+window.ondragover = function (e) {
     e.preventDefault();
- };
- window.ondrop = function (e) {
-    e.preventDefault(e);
-    alert ('kooll');
-    //upload(e);
-	createFile()
 };
+window.ondrop = function (e) {
+    e.preventDefault(e);
+    alert('kooll');
+    //upload(e);
+    createFile(e.dataTransfer.files[0]);
+};
+
+function messageBox(message) {
+    var platform = window.navigator.platform,
+        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+
+    if (windowsPlatforms.indexOf(platform) !== -1) {
+        (new Windows.UI.Popups.MessageDialog("Message", message)).showAsync().done();
+    } else {
+        alert(message);
+    }
+}

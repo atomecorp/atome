@@ -26,5 +26,6 @@
         "requestFileSystem": true,
         "FILESYSTEM_PREFIX": true,
         "FILESYSTEM_PROTOCOL": true
-    }
+    },
+  "esversion": 6
 }

@@ -7,10 +7,10 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-file": {
+    "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.atome.eVe"
     },
-    "cordova-plugin-whitelist": {
+    "cordova-plugin-file": {
       "PACKAGE_NAME": "com.atome.eVe"
     }
   },
