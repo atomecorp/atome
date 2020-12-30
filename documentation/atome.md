@@ -45,11 +45,11 @@ The atome framework is mainly based on a Cordova project, but add the following 
 
 - a web server
 
-- a native mode with 3D rendering (the 3D engine is currently based on Urho3D).
+- a native mode with 3D rendering (the 3D engine is currently based on Urho3D, this choice may change in the future).
  
 - a low latency audio system
 
- -a bootable option for embedded applications
+- a bootable option for embedded applications
 
 The folders dedicated to the atome framework are : 
 

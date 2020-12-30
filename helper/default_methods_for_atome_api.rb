@@ -29,8 +29,8 @@ class Sparkle
     atome_methods.each do |method_name|
       Atome.define_method method_name do |params = nil, &proc|
         # this is the main entry method for the current property treatment
-        ## first we create a hash for the property if t doesnt exist
-        ## we don't create a object init time, to only create property when needed
+        # first we create a hash for the property if t doesnt exist
+        # we don't create a object init time, to only create property when needed
         instance_method_name = if instance_variable_defined?("@" + method_name.to_s)
           instance_variable_get("@" + method_name.to_s)
         else
@@ -44,7 +44,7 @@ class Sparkle
           magic_getter instance_method_name
         end
       end
-      # the class below create the same method as above, but add equal at the end of the name to allow assignment
+      # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
       # ex : for : "def color"  = > "def color= "
       Atome.define_method method_name.to_s + "=" do |params = nil, &proc|
         send(method_name, params, proc)
@@ -128,7 +128,7 @@ module Properties
   end
 end
 
-#  the class below contains all the specifics code for properties
+#  the module below contains all the specifics code for properties
 module Processing
   include Properties
 
@@ -137,7 +137,7 @@ module Processing
   end
 
   def atome_id_processing(params)
-    puts "atome_id DSP#{params}"
+    puts "atome_id DSP is #{params}"
   end
 end
 
@@ -200,6 +200,7 @@ end
 Sparkle.new
 a = Atome.new
 a.color({content: :my_data, render: false})
+
 # a.color(:tutu)
 # a.color(:ok_for_now)
 # a.color({content: :doto, kool: :ok})
@@ -224,6 +225,7 @@ a.color({content: :my_data, render: false})
 # a.color() do
 #  puts "it's cool"
 # end
+puts "--------"
 puts a.color.to_s
 ## ------- verification 3 -------
 # Sparkle.new
@@ -231,3 +233,4 @@ puts a.color.to_s
 # ##a.toto([:my_data, :toto, :tutu])
 # #a.toto([{content: :datos, x: 0}, :toto])
 # ##a.toto(:tutu)
+puts Universe.atomes.class
