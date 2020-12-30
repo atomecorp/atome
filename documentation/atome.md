@@ -22,6 +22,7 @@ prerequisite:
                     brew install NPM
         on windows :
 			Install Visual studio 2017 with feature "universal windows app development tools"
+			cordova build windows --arch="x64"
 
     cordova
          npm install -g cordova 
@@ -31,6 +32,8 @@ To install application and run:
 	 
     npm install  
     cordova platform add browser
+    cordova plugin add cordova-sqlite-storage
+    cordova plugin add cordova-plugin-file
     bundle update
     bundle install
     bundle exec rake run::browser  

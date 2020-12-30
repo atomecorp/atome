@@ -122,7 +122,7 @@ end
 
 desc 'Run windows'
 task 'run::windows': [opal, parser, atome] do
-  sh 'cordova run windows'
+  sh 'cordova run windows --arch="x64"'
 end
 
 desc 'Run electron'

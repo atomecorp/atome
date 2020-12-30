@@ -320,3 +320,18 @@ function messageBox(message) {
         alert(message);
     }
 }
+
+var ws = new WebSocket('ws://192.168.103.147:9292');
+
+ws.onopen = function () {
+    ws.send('Hello Server!');
+}
+
+ws.onclose = function(event) {
+    messageBox("Websocket closed.");
+};
+
+ws.onmessage = function(event) {
+    var data = event.data;
+    messageBox("Message received from server: " + data);
+};
