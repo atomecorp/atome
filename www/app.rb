@@ -22,6 +22,7 @@ class App < Roda
 
   index_content = File.read("public/index.html")
   # below test line to supress
+  #index_content += "<script>setTimeout(function(){ Opal.Object.$text('good!! Roda & puma are initialized'); }, 500);setTimeout(function(){ Opal.Object.$circle() ; }, 3000)</script>"
   index_content += "<script>setTimeout(function(){ Opal.Object.$text('good!! Roda & puma are initialized'); }, 500);setTimeout(function(){ Opal.Object.$circle() ; }, 3000)</script>"
 
   index_content = index_content.gsub('<script type="text/javascript" src="../cordova.js"></script>', "")
@@ -42,10 +43,14 @@ class App < Roda
         # db_mode = datas[0]
         # filename = datas[1]
         # content = datas[2]
-        ws.send(event.data)
+        puts event.data
+        #ws.send(event.data)
+      end
+      ws.on :open do |event|
+        ws = nil
       end
       ws.on :close do |event|
-        p [:close, event.code, event.reason]
+        #puts [:close, event.code, event.reason]
         ws = nil
       end
       # Return async Rack response
@@ -60,8 +65,8 @@ class App < Roda
     r.on "index" do
       r.is do
         r.get do
-          # sleep 7
-          # box()
+           #sleep 7
+           #box()
           index_content
         end
       end

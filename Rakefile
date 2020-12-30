@@ -91,9 +91,9 @@ task 'run::server': [opal, parser, atome] do
     #below we put the browser opening in a thread to delay wating for th server to be ready
     Thread.new do
       sleep 2
-      system("open", "http://127.0.0.1:9292")
+      system("open", "http://localhost:9292")
     end
-    sh 'rackup'
+    sh 'rackup --server puma --port 9292 --env production'
     #Rack::Server.start(config: 'config.ru', server: 'puma')
 
   end
