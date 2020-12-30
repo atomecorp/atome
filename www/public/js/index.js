@@ -7,7 +7,7 @@ var eVe = {
     //
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
-    onDeviceReady: function () {
+    onDeviceReady: function () {  
         this.receivedEvent('deviceready');
         // $("#click").click(function () {
         //     $.getScript("js/third_parties/opal/opal_parser.js", function (data, textStatus, jqxhr) {
@@ -244,7 +244,36 @@ function upload(e) {
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
+function createTableUser(tx) {
+	tx.executeSql('CREATE TABLE IF NOT EXISTS user (login text primary key, password text)', function(result) {
+	  console.log('Table created or existing');
+	});
+}
+
+function createUser(tx, login, password) {
+	tx.executeSql("INSERT INTO user (login, password) VALUES (?,?)", ['Jeez', 'JeezPass'], function(tx, result) {
+		console.log("insertId: " + result.insertId);
+		console.log("rowsAffected: " + result.rowsAffected);
+	});
+}
+
+function getUser(tx, login) {
+	tx.executeSql("select * from user;", [], function(tx, result) {
+		console.log("result.rows.length: " + result.rows.length);
+		alert('User: '+result.rows.item(0).login+':'+result.rows.item(0).password);
+	});
+}
+
 function onDeviceReady() {
+		console.log('Device ready');
+		
+		var db = window.sqlitePlugin.openDatabase({name: 'universe.db', location:'default'});
+
+		db.transaction(function(tx) {
+			createTableUser(tx)
+			createUser(tx, 'Jeez', 'passJeez');
+			getUser(tx, 'Jeez');
+		});
 }
 
 function createFile(inputFile) {

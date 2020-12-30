@@ -12,6 +12,9 @@
     },
     "cordova-plugin-file": {
       "PACKAGE_NAME": "com.atome.eVe"
+    },
+    "cordova-sqlite-storage": {
+      "PACKAGE_NAME": "com.atome.eVe"
     }
   },
   "dependent_plugins": {}
