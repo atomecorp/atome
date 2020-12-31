@@ -1,36 +1,36 @@
-var eVe = {
-    // Application Constructor
-    initialize: function () {
-        //document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-    },
-    // deviceready Event Handler
-    //
-    // Bind any cordova events here. Common events are:
-    // 'pause', 'resume', etc.
-    onDeviceReady: function () {  
-        this.receivedEvent('deviceready');
-        // $("#click").click(function () {
-        //     $.getScript("js/third_parties/opal/opal_parser.js", function (data, textStatus, jqxhr) {
-        //         Opal.Object.$box();
-        //     });
-        // })
-
-    },
-
-    // Update DOM on a Received Event
-    receivedEvent: function (id) {
-        // var parentElement = document.getElementById(id);
-        // var listeningElement = parentElement.querySelector('.listening');
-        // var receivedElement = parentElement.querySelector('.received');
-        //
-        // listeningElement.setAttribute('style', 'display:none;');
-        // receivedElement.setAttribute('style', 'display:block;');
-        //
-        // console.log('Received Event: ' + id);
-    }
-};
-
-eVe.initialize();
+// var eVe = {
+//     // Application Constructor
+//     initialize: function () {
+//         //document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+//     },
+//     // deviceready Event Handler
+//     //
+//     // Bind any cordova events here. Common events are:
+//     // 'pause', 'resume', etc.
+//     onDeviceReady: function () {
+//         this.receivedEvent('deviceready');
+//         // $("#click").click(function () {
+//         //     $.getScript("js/third_parties/opal/opal_parser.js", function (data, textStatus, jqxhr) {
+//         //         Opal.Object.$box();
+//         //     });
+//         // })
+//
+//     },
+//
+//     // Update DOM on a Received Event
+//     receivedEvent: function (id) {
+//         // var parentElement = document.getElementById(id);
+//         // var listeningElement = parentElement.querySelector('.listening');
+//         // var receivedElement = parentElement.querySelector('.received');
+//         //
+//         // listeningElement.setAttribute('style', 'display:none;');
+//         // receivedElement.setAttribute('style', 'display:block;');
+//         //
+//         // console.log('Received Event: ' + id);
+//     }
+// };
+//
+// eVe.initialize();
 
 // var device = "";
 // Libraries
@@ -321,17 +321,35 @@ function messageBox(message) {
     }
 }
 
-var ws = new WebSocket('ws://192.168.103.147:9292');
+// var ws = new WebSocket('ws://localhost:9292');
+//
+// ws.onopen = function () {
+//     // ws.send('Hello Server! server');
+// }
+//
+// ws.onclose = function(event) {
+//     messageBox("Websocket closed.");
+// };
+//
+// ws.onmessage = function(event) {
+//     var data = event.data;
+//     messageBox("Message received from server: " + data);
+// };
+
+var ws = new WebSocket('ws://192.168.103.147:9292');ws.onopen = function () {ws.send('Hello Server!');}
 
 ws.onopen = function () {
-    ws.send('Hello Server!');
+    ws.send('circle()');
 }
-
-ws.onclose = function(event) {
-    messageBox("Websocket closed.");
-};
-
+//
+// ws.onclose = function(event) {
+//     // messageBox("Websocket server closed.");
+// };
+//
 ws.onmessage = function(event) {
     var data = event.data;
-    messageBox("Message received from server: " + data);
+    Opal.eval(data);
+    alert("Message received from server server :  " + data);
 };
+
+// var ws = new WebSocket('ws://192.168.103.147:9292');ws.onopen = function () {ws.send('Hello Server!');}

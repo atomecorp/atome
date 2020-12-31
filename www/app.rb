@@ -9,6 +9,7 @@
 require "sequel"
 require "faye/websocket"
 class App < Roda
+  #plugin :mail_processor
   eden = Sequel.connect("sqlite://eden_doors.sqlite3")
   unless File.exist?("eden_doors.sqlite3")
     eden.create_table :objects do
@@ -22,9 +23,13 @@ class App < Roda
 
   index_content = File.read("public/index.html")
   # below test line to supress
-  #index_content += "<script>setTimeout(function(){ Opal.Object.$text('good!! Roda & puma are initialized'); }, 500);setTimeout(function(){ Opal.Object.$circle() ; }, 3000)</script>"
-  index_content += "<script>setTimeout(function(){ Opal.Object.$text('good!! Roda & puma are initialized'); }, 500);setTimeout(function(){ Opal.Object.$circle() ; }, 3000)</script>"
-
+  #index_content += "<script>setTimeout(function(){ Opal.Object.$text('good!! Roda & puma are initialized'); }, 500);setTimeout(function(){ Opal.Object.$circle() ;Opal.eval('box(x: 200)'); }, 3000)</script>"
+#  index_content += "<script>setTimeout(function(){
+#var ws = new WebSocket('ws://192.168.103.147:9292');
+#   ws.onopen = function () {
+#    ws.send('Hello Server! view');
+#}
+#}, 3000)</script>"
   index_content = index_content.gsub('<script type="text/javascript" src="../cordova.js"></script>', "")
   # below an attempt to load atome in pure ruby not opal
   # require "../atome/lib/atome/core/neutron.rb"
@@ -43,15 +48,18 @@ class App < Roda
         # db_mode = datas[0]
         # filename = datas[1]
         # content = datas[2]
-        puts event.data
-        #ws.send(event.data)
+        #puts event.data
+        #ws.send("<sript>alert('kool!!')</script>")
+          #[200, {"Content-Type" => "text/plain"}, [event.data]]
+        ws.send(event.data)
+        #'alert("ok")'
       end
       ws.on :open do |event|
-        ws = nil
+        #ws = nil
       end
       ws.on :close do |event|
         #puts [:close, event.code, event.reason]
-        ws = nil
+        #ws = nil
       end
       # Return async Rack response
       ws.rack_response

@@ -3,7 +3,7 @@
 #require "atome/core/photon"
 #require "atome/core/nucleon"
 #require "atome/core/electron"
-
+#require "opal-parser"
 require "atome/environment/require"
 class Atome < Nucleon::Core::Nucleon
 #class Atome

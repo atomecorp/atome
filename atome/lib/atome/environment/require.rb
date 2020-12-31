@@ -1,3 +1,4 @@
+require "opal-parser"
 require "atome/environment/default"
 require "atome/properties/info"
 require "atome/properties/visual"
