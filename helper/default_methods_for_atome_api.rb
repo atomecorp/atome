@@ -32,9 +32,9 @@ class Sparkle
         # first we create a hash for the property if t doesnt exist
         # we don't create a object init time, to only create property when needed
         instance_method_name = if instance_variable_defined?("@" + method_name.to_s)
-          instance_variable_get("@" + method_name.to_s)
+          instance_variable_get("@#{method_name}")
         else
-          instance_variable_set("@" + method_name.to_s, {})
+          instance_variable_set("@#{method_name}", {})
         end
         # we send the params to the 'reformat_params' if there's a params
         method_analysis params, instance_method_name, method_name, proc if params || proc
@@ -58,8 +58,8 @@ module Properties
   def send_hash(params, method_name)
     # if prop needs to be refresh we send it to the Render engine
     broadcast(atome_id => {method_name => params})
-    send(method_name.to_s + "_processing", params)
-    Render.send("render_" + method_name.to_s, self, params) if params[:render].nil? || params[:render] == true
+    send("#{method_name}_processing", params)
+    Render.send("render_#{method_name}", self, params) if params[:render].nil? || params[:render] == true
   end
 
   def property_parsing(params, method_name)
@@ -91,7 +91,7 @@ module Properties
   end
 
   def property_save(params, method_name)
-    previous_content = instance_variable_get("@" + method_name.to_s)
+    previous_content = instance_variable_get("@#{method_name}")
     if params[:add] && previous_content.instance_of?(Hash) && previous_content != {}
       params.delete(:add)
       params = [previous_content, params]
@@ -102,7 +102,7 @@ module Properties
       params.delete(:add)
     end
     send_hash(params, method_name)
-    instance_variable_set("@" + method_name.to_s, params)
+    instance_variable_set("@#{method_name}", params)
   end
 
   def method_analysis(params, instance_variable, method_name, proc)
@@ -147,13 +147,13 @@ class Atome
 
   def initialize
     Universe.add(self)
-    atome_id("a_" + object_id.to_s)
+    atome_id("a_#{object_id}")
   end
 
   # for testing only, just to simulate broadcast
   def broadcast(params)
     # to allow system to be notified of property modification
-    "I broadcast :" + params.to_s
+    "I broadcast :#{params}"
   end
 end
 
