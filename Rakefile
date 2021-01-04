@@ -2,6 +2,10 @@ require 'opal'
 require 'opal-jquery'
 require 'opal-browser'
 require 'uglifier'
+require 'fileutils'
+
+#todo : only copy if there's a change!
+FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
 rm_f 'app/temp/media_list.rb'
 
 directory 'www/public/js/third_parties/opal'
