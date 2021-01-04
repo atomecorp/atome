@@ -21,3 +21,8 @@ class Helper
 
 
 end
+
+#fixme : put whole code in Atome context to be able to remove the method below
+def to_px (obj = nil, property = :top)
+  Atome.to_px(obj, property)
+end

@@ -7,11 +7,11 @@
 /node_modules/
 /platforms/
 /plugins/
-/www/public/medias/eaudios
-/www/public/medias/eimages
-/www/public/medias/ejavascripts
-/www/public/medias/erubies
-/www/public/medias/evideos
+/www/public/medias/e_audios
+/www/public/medias/e_images
+/www/public/medias/e_javascripts
+/www/public/medias/e_rubies
+/www/public/medias/e_videos
 /www/public/js/atome.js
 /www/public/js/third_parties/opal/opal.js
 /www/public/js/third_parties/opal/opal_parser.js

@@ -28,7 +28,9 @@ directory 'app/temp'
 
 file 'app/temp/media_list.rb': ['app/temp'] do |t|
   require 'image_size'
-  images = Dir.glob('./www/public/medias/images/**/*').select { |e| File.file? e }
+  a_images = Dir.glob('./www/public/medias/images/**/*').select { |e| File.file? e }
+  e_images = Dir.glob('./www/public/medias/e_images/**/*').select { |e| File.file? e }
+  images=a_images.concat(e_images)
   images_list = {}
   videos = Dir.glob('./www/public/medias/videos/**/*').select { |e| File.file? e }
   videos_list = {}
@@ -88,7 +90,8 @@ desc 'Run server'
 task 'run::server': [opal, parser, atome] do
   Dir.chdir('www') do
     require 'rack'
-    #below we put the browser opening in a thread to delay wating for th server to be ready
+    #below we put the browser opening in a thread to delay waiting for th server to be ready
+    # fixme wait for page to respond instead of 2 sec sleep
     Thread.new do
       sleep 2
       system("open", "http://localhost:9292")
