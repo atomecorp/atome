@@ -5,15 +5,15 @@ require 'uglifier'
 require 'fileutils'
 
 #todo : only copy if there's a change!
-FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
-rm_f 'app/temp/media_list.rb'
+if File.directory?("eVe/medias/.")
+  FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
+  rm_f 'app/temp/media_list.rb'
+end
+
 
 directory 'www/public/js/third_parties/opal'
 
 file 'www/public/js/third_parties/opal/opal.js': ['www/public/js/third_parties/opal'] do |t|
-  #require 'opal'
-  #require 'opal-jquery'
-  #require 'opal-browser'
   builder = Opal::Builder.new
   builder.build('opal')
   builder.build('opal-jquery')
@@ -36,9 +36,13 @@ file 'app/temp/media_list.rb': ['app/temp'] do |t|
   e_images = Dir.glob('./www/public/medias/e_images/**/*').select { |e| File.file? e }
   images=a_images.concat(e_images)
   images_list = {}
-  videos = Dir.glob('./www/public/medias/videos/**/*').select { |e| File.file? e }
+  a_videos = Dir.glob('./www/public/medias/videos/**/*').select { |e| File.file? e }
+  e_videos = Dir.glob('./www/public/medias/e_videos/**/*').select { |e| File.file? e }
+  videos=a_videos.concat(e_videos)
   videos_list = {}
-  audios = Dir.glob('./www/public/medias/audios/**/*').select { |e| File.file? e }
+  a_audios = Dir.glob('./www/public/medias/audios/**/*').select { |e| File.file? e }
+  e_audios = Dir.glob('./www/public/medias/e_audios/**/*').select { |e| File.file? e }
+  audios=a_audios.concat(e_audios)
   audios = audios.concat(videos)
   audios_list = {}
 
