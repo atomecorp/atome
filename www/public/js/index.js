@@ -1,40 +1,3 @@
-// var eVe = {
-//     // Application Constructor
-//     initialize: function () {
-//         //document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-//     },
-//     // deviceready Event Handler
-//     //
-//     // Bind any cordova events here. Common events are:
-//     // 'pause', 'resume', etc.
-//     onDeviceReady: function () {
-//         this.receivedEvent('deviceready');
-//         // $("#click").click(function () {
-//         //     $.getScript("js/third_parties/opal/opal_parser.js", function (data, textStatus, jqxhr) {
-//         //         Opal.Object.$box();
-//         //     });
-//         // })
-//
-//     },
-//
-//     // Update DOM on a Received Event
-//     receivedEvent: function (id) {
-//         // var parentElement = document.getElementById(id);
-//         // var listeningElement = parentElement.querySelector('.listening');
-//         // var receivedElement = parentElement.querySelector('.received');
-//         //
-//         // listeningElement.setAttribute('style', 'display:none;');
-//         // receivedElement.setAttribute('style', 'display:block;');
-//         //
-//         // console.log('Received Event: ' + id);
-//     }
-// };
-//
-// eVe.initialize();
-
-// var device = "";
-// Libraries
-// var promises = 0;
 var html = {
     animate: function (value, atome_id) {
         var start = value.start;
@@ -120,9 +83,7 @@ var html = {
             duration: duration,
             ease: easing[curve],
             flip: loop,
-            yoyo: yoyo,
-
-            // complete(alert("good")
+            yoyo: yoyo
         })
             .start(divStyler.set);
     },
@@ -130,20 +91,7 @@ var html = {
 };
 // upload methods here
 
-
-// function retry_to_get_the_img_informations(img_width){
-//     setTimeout(function(){
-//         console.log(("missed but "+img_width));
-//     }, 7000	);
-// }
-
 function import_visual_medias(e, file) {
-    // $( "#output" ).remove();
-    // $("body").append('<img id="output" />');
-    // $("#output").css("z-index",50000);
-    // $("#output").css("position","absolute");
-
-    var input = e.target;
     var reader = new FileReader();
     reader.onload = function () {
         var dataURL = reader.result;
@@ -151,62 +99,19 @@ function import_visual_medias(e, file) {
         $('#view').append('<img id="output"  alt="Girl in a jacket" width="500" height="600">');
         var output = document.getElementById('output');
         output.src = dataURL;
-        // img_width=document.getElementById('output').width
-        // if (img_width !=0){
-        //     console.log("sucess"+img_width );
-        // }
-        // else {
-        //     retry_to_get_the_img_informations(img_width);
-        // }
     };
 
-    // Opal.Object.$store(file.name, file);
-
-
-
     reader.readAsDataURL(file);
-
 }
 
-function displayImg(url) {
-    $('#view').append('<img id="output"  alt="Girl in a jacket" width="500" height="600">');
-    var output = document.getElementById('output');
-    output.src = url;
-}
-//
-// function import_audio(e, file) {
-//     var input = e.target;
-//     var reader = new FileReader();
-//     reader.onload = function () {
-//         var dataURL = reader.result
-//         // var output = document.getElementById('output');
-//         //output.src = dataURL;
-//     };
-//     reader.readAsDataURL(file);
-// }
-//
-// function import_text(e, file) {
-//     var textType = /text.*/;
-//     if (file.type.match(textType)) {
-//         var reader = new FileReader();
-//         reader.onload = function (e) {
-//             fileDisplayArea.innerText = reader.result;
-//         };
-//         reader.readAsText(file);
-//     }
-// }
-//
 function upload(e) {
+    const files = e.dataTransfer.files;
 
-    var files = e.dataTransfer.files
-    for (var i = 0; i < files.length; i++) {
-        file_type = files[i].type;
-        file_name = files[i].name;
-        file_datas = files[i].name;
+    for (let i = 0; i < files.length; i++) {
+        let file_type = files[i].type;
+        let file_datas = files[i].name;
         console.log(file_datas);
 
-
-////////////////////////////////////////////////////////////////////////////////////////
         switch (file_type) {
             case 'video/quicktime':
                 import_visual_medias(e, files[i]);
@@ -241,115 +146,92 @@ function upload(e) {
     }
 }
 
-
-document.addEventListener("deviceready", onDeviceReady, false);
-
-function createTableUser(tx) {
-	tx.executeSql('CREATE TABLE IF NOT EXISTS user (login text primary key, password text)', function(result) {
-	  console.log('Table created or existing');
-	});
+function displayImg(url) {
+    $('#view').append('<img id="output"  alt="Girl in a jacket" width="500" height="600">');
+    var output = document.getElementById('output');
+    output.src = url;
 }
 
-function createUser(tx, login, password) {
-	tx.executeSql("INSERT INTO user (login, password) VALUES (?,?)", ['Jeez', 'JeezPass'], function(tx, result) {
-		console.log("insertId: " + result.insertId);
-		console.log("rowsAffected: " + result.rowsAffected);
-	});
-}
+let webSocketHelper;
+let databaseHelper;
+let fileHelper;
 
-function getUser(tx, login) {
-	tx.executeSql("select * from user;", [], function(tx, result) {
-		console.log("result.rows.length: " + result.rows.length);
-		alert('User: '+result.rows.item(0).login+':'+result.rows.item(0).password);
-	});
-}
+let webSocketEventListener = {
+    onConnected: function(event) {
+        console.log('Websocket connected');
+        this.sendGreetingsToServer();
+    },
 
-function onDeviceReady() {
-		console.log('Device ready');
-		
-		var db = window.sqlitePlugin.openDatabase({name: 'universe.db', location:'default'});
+    onMessage: function(messageEvent) {
+        Opal.eval(messageEvent.data);
+    },
 
-		db.transaction(function(tx) {
-			createTableUser(tx)
-			createUser(tx, 'Jeez', 'passJeez');
-			getUser(tx, 'Jeez');
-		});
-}
+    onError: function(event) {
+        alert('Web socket error: ' + event.data);
+    },
 
-function createFile(inputFile) {
-    window.requestFileSystem(window.PERSISTENT, 5 * 1024 * 1024, successCallback, errorCallback);
+    onReconnect: function(event) {
+        alert('Connection to server lost; reconnecting');
+    },
 
-    function successCallback(fs) {
+    onClosed: function(event) {
+        alert('Connection to server close successfully');
+    },
 
-        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
-            dir.getFile("/image.png", {create: true}, function (file) {
-                file.createWriter(function (fileWriter) {
-                    fileWriter.onwriteend = function() {
-                        displayImg("cdvfile://localhost/persistent/image.png");
-                    };
-
-                    fileWriter.write(inputFile);
-                }, errorCallback);
-            });
-        });
-
+    sendGreetingsToServer: function() {
+        {
+            webSocketHelper.sendMessage('box()');
+        }
     }
-}
+};
 
+let databaseEventListener = {
+    onConnected: function(event) {
+        console.log('Database connected');
+        databaseHelper.getAllUsers();
+    }
+};
 
-function errorCallback(error) {
-    alert("ERROR: " + error.code);
-}
+let fileSystemPermissionEventListener = {
+    onPermissionAccepted: function(fs) {
+        console.log('File system permissions accepted');
+    },
+    onPermissionDenied: function() {
+        console.log('File system permissions denied');
+        alert('File system permissions denied');
+    }
+};
+
+document.addEventListener("deviceready", function() {
+    //TODO: Get server adress from DNS.
+    const serverAddress = '192.168.103.147:9292';
+    webSocketHelper = new WebSocketHelper(serverAddress, webSocketEventListener);
+    webSocketHelper.connect();
+}, false);
+
+document.addEventListener("deviceready", function() {
+    databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
+    databaseHelper.connect();
+}, false);
+
+document.addEventListener("deviceReady", function() {
+    fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
+    fileHelper.connect();
+}, false);
 
 window.ondragover = function (e) {
     e.preventDefault();
 };
+
 window.ondrop = function (e) {
-    e.preventDefault(e);
-    createFile(e.dataTransfer.files[0]);
-    // upload(e);
+    e.preventDefault();
+
+    fileHelper.createFile(e.dataTransfer.files[0], {
+        success: function() {
+            displayImg("cdvfile://localhost/persistent/image.png");
+        },
+        error: function(fileError) {
+            alert('Cannot create file. Reason: ' + fileError);
+        }
+    });
 };
-
-function messageBox(message) {
-    var platform = window.navigator.platform,
-        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
-
-    if (windowsPlatforms.indexOf(platform) !== -1) {
-        (new Windows.UI.Popups.MessageDialog("Message", message)).showAsync().done();
-    } else {
-        alert(message);
-    }
-}
-
-// var ws = new WebSocket('ws://localhost:9292');
-//
-// ws.onopen = function () {
-//     // ws.send('Hello Server! server');
-// }
-//
-// ws.onclose = function(event) {
-//     messageBox("Websocket closed.");
-// };
-//
-// ws.onmessage = function(event) {
-//     var data = event.data;
-//     messageBox("Message received from server: " + data);
-// };
-
-var ws = new WebSocket('ws://192.168.103.147:9292');ws.onopen = function () {ws.send('Hello Server!');}
-
-ws.onopen = function () {
-    ws.send('circle()');
-}
-//
-// ws.onclose = function(event) {
-//     // messageBox("Websocket server closed.");
-// };
-//
-ws.onmessage = function(event) {
-    var data = event.data;
-    Opal.eval(data);
-    alert("Message received from server server :  " + data);
-};
-
-// var ws = new WebSocket('ws://192.168.103.147:9292');ws.onopen = function () {ws.send('Hello Server!');}
