@@ -32,6 +32,8 @@ To install application and run:
 	 
     npm install  
     cordova platform add browser
+    cordova platform add osx
+    cordova platform add windowsnpm fgunf
     cordova plugin add cordova-sqlite-storage
     cordova plugin add cordova-plugin-file
     bundle update
