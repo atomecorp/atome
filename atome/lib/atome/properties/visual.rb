@@ -48,34 +48,34 @@ module Nucleon
         render(params, refresh)
       end
 
-      #def color params = nil, refresh = true
-      #  if params || params == false
-      #    if params.class== Hash && params[:add]
-      #      if self.color.class == String || self.color.class == Symbol || self.color.class == Hash
-      #        prop_array = []
-      #        prop_array << @color
-      #        prop_array << params
-      #        @color = prop_array
-      #      else
-      #        @color << params
-      #      end
-      #    else
-      #      @color = params
-      #    end
-      #    broadcast(atome_id => {color: params, private: false})
-      #    if refresh
-      #      # we add two condtion to render the object first if we want to refreshit , sencond if type exist (to avoid qending properties to the veiw when the obejct is not present in the view)
-      #      Render.render_color(self, params) if refresh
-      #    end
-      #    return self
-      #  else
-      #    @color
-      #  end
-      #end
-      #
-      #def color= params = nil, refresh = true
-      #  color(params, refresh)
-      #end
+      def color params = nil, refresh = true
+        if params || params == false
+          if params.class== Hash && params[:add]
+            if self.color.class == String || self.color.class == Symbol || self.color.class == Hash
+              prop_array = []
+              prop_array << @color
+              prop_array << params
+              @color = prop_array
+            else
+              @color << params
+            end
+          else
+            @color = params
+          end
+          broadcast(atome_id => {color: params, private: false})
+          if refresh
+            # we add two condtion to render the object first if we want to refreshit , sencond if type exist (to avoid qending properties to the veiw when the obejct is not present in the view)
+            Render.render_color(self, params) if refresh
+          end
+          return self
+        else
+          @color
+        end
+      end
+
+      def color= params = nil, refresh = true
+        color(params, refresh)
+      end
 
       def opacity params = nil, refresh = true
         if params || params == false

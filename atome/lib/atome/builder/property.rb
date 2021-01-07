@@ -3,11 +3,11 @@
 
 module Atome_methods_list
   def self.atome_methods
-    %i[ color border]
+    %i[border]
   end
   #the line below specify if the properties need specific processing
   def self.need_processing
-    %i[  border]
+    %i[border]
   end
 end
 # the class below initialize the default values and generate properties's methods

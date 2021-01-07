@@ -72,7 +72,7 @@ file 'app/temp/media_list.rb': ['app/temp'] do |t|
   File.open(t.name, 'w') { |file| file.write(medias_list) }
 end
 
-atome_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb', 'app/app.rb', 'atome/lib/atome/builder/object.rb'] + Dir.glob('app//*')
+atome_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb'] + Dir.glob('app/*')+ Dir.glob('atome/lib/atome/*')
 file 'www/public/js/atome.js': atome_monitoring do |t|
   builder = Opal::Builder.new
   builder.append_paths('atome/lib')
