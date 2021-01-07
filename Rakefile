@@ -92,7 +92,6 @@ opal = 'www/public/js/third_parties/opal/opal.js'
 parser = 'www/public/js/third_parties/opal/opal_parser.js'
 atome = 'www/public/js/atome.js'
 
-
 desc 'Run server'
 task 'run::server': [opal, parser, atome] do
   Dir.chdir('www') do
