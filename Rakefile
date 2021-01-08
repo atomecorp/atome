@@ -7,9 +7,8 @@ require 'fileutils'
 #todo : only copy if there's a change!
 if File.directory?("eVe/medias/.")
   FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
-  rm_f 'app/temp/media_list.rb'
 end
-
+rm_f 'app/temp/media_list.rb'
 
 directory 'www/public/js/third_parties/opal'
 
@@ -68,7 +67,6 @@ file 'app/temp/media_list.rb': ['app/temp'] do |t|
   end
 
   medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-
   File.open(t.name, 'w') { |file| file.write(medias_list) }
 end
 
