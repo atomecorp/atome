@@ -1,20 +1,18 @@
 source 'https://rubygems.org'
 
 gem 'image_size'
-gem 'opal'
-gem 'opal-browser'
-gem 'opal-jquery'
+gem 'opal', ">= 1.0.5"
+gem 'opal-browser', ">= 0.2.0"
+gem 'opal-jquery', ">= 0.4.4"
 gem 'rake'
 gem 'uglifier'
 
 gem 'parser'
 #https://github.com/whitequark/parser
-#group 'standalone' do
-  gem 'faye-websocket'
-  gem 'puma'
-  gem 'rack'
-  gem 'rack-unreloader', '1.7.0'
-  gem 'roda', '2.26.0'
-  gem 'sequel'
-  gem 'sqlite3'
-#end
+gem 'faye-websocket', "~> 0.11.0"
+gem 'puma', "~> 5.0.2"
+gem 'rack'
+gem 'rack-unreloader'
+gem 'roda', "~> 2.26.0"
+gem 'sequel'
+gem 'sqlite3'
