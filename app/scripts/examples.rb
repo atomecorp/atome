@@ -175,7 +175,7 @@ c=circle()
 c.y=50
 c.drag(true)
 c.touch(option: :up, add: true) do
-c.color(:violet)
+c.color(:orange)
 end
 
 strdelim
@@ -259,10 +259,9 @@ strdelim
     self.puts_help :eval, demo_code
   end
 
-  def read_code_api
+  def read_code_from_file_api
     demo_code = <<strdelim
 #read("test", "run","text")
-
 read("./medias/rubies/test", :run,:ruby)
 strdelim
     self.puts_help :eval, demo_code
@@ -787,11 +786,14 @@ strdelim
 
   def each
     demo_code = <<strdelim
+d=image({content: :moto, id: :moto})
 b = Atome.new(:box)
 c=circle({x: 34 , y: -34, drag: true, id: :circle_test, color: :red})
 b.insert(c)
-d=image({content: :moto, id: :moto})
 b.insert(d)
+c.x(-150)
+c.y(-150)
+d.x(150)
 b.x(500)
 b.y(200)
 b.color(:orange)
@@ -915,6 +917,12 @@ d.smooth(200)
 d.insert(b)
 d.insert(c)
 b.x=b.y=100
+b.touch do 
+d.overflow(:visible)
+end
+c.touch do 
+d.overflow(:hidden)
+end
 strdelim
     self.puts_help :overflow_api, demo_code
   end

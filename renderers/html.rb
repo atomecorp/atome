@@ -29,16 +29,16 @@ module Render
     elsif atome_id == :view
       r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
     else
-      if params[:content] == :text
+      if params== :text
         dark_matter.append("<div class='atome' style='display:inline-block' id='#{atome_id}'></div>")
-      elsif params[:content] == :shape
+      elsif params == :shape
         #alert "message is \n\n#{atome.id} \n\nLocation: html.rb, line 31"
         dark_matter.append(("<div class='atome' id='#{atome_id}'></div>"))
-      elsif params[:content] == :image
+      elsif params == :image
         dark_matter.append("<div class='atome' id='#{atome_id}'></div>")
-      elsif params[:content] == :video
+      elsif params == :video
         dark_matter.append("<div  id=" + atome_id + " class='atome' ><video  width='512' muted ></video></div>");
-      elsif params[:content] == :audio
+      elsif params == :audio
         dark_matter.append("<div  id=" + atome_id + " class='atome' ></div>");
       else
         dark_matter.append(("<div class='atome' id='#{atome_id}'></div>"))

@@ -1,6 +1,6 @@
 class Helper
   def self.version
-    'v:0.008'
+    'v:0.009'
   end
 
   def self.apis
