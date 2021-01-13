@@ -8,7 +8,7 @@ module Visual_processor
   end
 
   def border_processing(params)
-    # alert "border processed#{params}"
+    # puts "border processed#{params}"
   end
 
 
