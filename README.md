@@ -5,8 +5,11 @@
 Cross platform development
 -
 
+II - Installation
+- 
+To install read the atome.md file in documentations directory
  
-I - The framework
+II - The framework
 - 
 
 - atome is a cross platform development environment.all apis work across all platform, to ensure the exact same rendering on Android, Freebsd, linux, MacOs, Web, Windows.
@@ -30,7 +33,7 @@ I - The framework
 - To install and use : read [documentation](documentation/atome.md)
 
 
-II Guideline and philosophy
+III Guideline and philosophy
 -
 
 The idea behind the atome concept is to have a kind of "universal portable intelligent document", this means : 
@@ -48,21 +51,21 @@ to keep this idea working we have to follow the following rules during atome dev
 - All Apis must  run of all targeted platform (their should be no diiference form one platform to another.
 - any property or new api must always work on any type of atome, to keep the consistency of the  "atome uniq object" 
 
-III - Open source Software used
+V - Open source technology needed
 -
-- Cordova : a cross platform framework to create applications with web view rendering (https://cordova.apache.org)
-
-- Urho3D : is a cross platform 3D rendering and game engine used create native applications(or web rendering) using Webassembly (https://urho3d.github.io)
-
-- FreeBSD : is a Unix environment with jails, allow to create and boot embedded applications on any compatible machine (standard PC, Raspberry, Beaglebone, etc..) (https://www.freebsd.org/fr/)
-
 - Ruby : is the language used to script all atomes apis (https://www.ruby-lang.org)
+
+- Cordova : a cross platform framework to create applications with web view rendering (https://cordova.apache.org)
 
 - Opal : is a ruby gem used to compile the ruby language to JS (https://opalrb.com)
 
 - Roda : is a ruby web framework that hold the server version of atome (https://roda.jeremyevans.net)
 
 - Puma : is a ruby web server to start the server version of atome (https://puma.io)
+
+
+V - Open source libraries included
+-
 
 - Jquery : is a js framework to simplify JS development (https://jquery.com)
 
@@ -74,6 +77,16 @@ III - Open source Software used
 
 - ThreeJS :is a html canvas rendering 3D engine (https://threejs.org)
 
+
+
+
+VI - Optional open source Software related to atome's framework
+-
 - QAudio : a cross-platform C++ library for Audio Digital Signal Processing (https://cycfi.github.io/q/)
+
+- Urho3D : is a cross platform 3D rendering and game engine used create native applications(or web rendering) using Webassembly (https://urho3d.github.io)
+
+- FreeBSD : is a Unix environment with jails, allow to create and boot embedded applications on any compatible machine (standard PC, Raspberry, Beaglebone, etc..) (https://www.freebsd.org/fr/)
+
 
  

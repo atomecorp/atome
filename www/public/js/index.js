@@ -220,7 +220,7 @@ document.addEventListener("deviceready", function() {
 
 document.addEventListener("deviceReady", function() {
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
-    fileHelper.connect();
+    fileHelper.connect(564654);
 }, false);
 
 window.ondragover = function (e) {
