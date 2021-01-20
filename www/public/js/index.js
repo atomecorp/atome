@@ -1,19 +1,19 @@
 var html = {
     animate: function (value, atome_id) {
-        var start = value.start;
-        var end = value.end;
-        var duration = value.duration;
-        var curve = value.curve;
-        var property = value.property;
-        var finished = value.finished;
-        var loop = value.loop;
-        var yoyo = value.yoyo;
-        var a_start = {};
-        var a_end = {};
-        var a_duration = {};
-        var a_curve = {};
-        var a_property = {};
-        var a_finished = {};
+        let start = value.start;
+        let end = value.end;
+        let duration = value.duration;
+        let curve = value.curve;
+        let property = value.property;
+        let finished = value.finished;
+        let loop = value.loop;
+        let yoyo = value.yoyo;
+        let a_start = {};
+        let a_end = {};
+        let a_duration = {};
+        let a_curve = {};
+        let a_property = {};
+        let a_finished = {};
 
         if (start === "") {
             start = 0;
@@ -46,8 +46,8 @@ var html = {
             const start_opt = Object.keys(value.start);
 
             start_opt.forEach((item) => {
-                key = item;
-                val = value.start[item];
+                let key = item;
+                const val = value.start[item];
                 if (key === "background" && objectType === "text") {
                     key = "color";
                 }
@@ -60,8 +60,8 @@ var html = {
         if (typeof (end) == "object") {
             const end_option = Object.keys(value.end);
             end_option.forEach((item) => {
-                key = item;
-                val = value.end[item];
+                let key = item;
+                const val = value.end[item];
                 if (key === "background" && objectType === "text") {
                     key = "color";
                 }
@@ -94,10 +94,10 @@ var html = {
 function import_visual_medias(e, file) {
     var reader = new FileReader();
     reader.onload = function () {
-        var dataURL = reader.result;
+        const dataURL = reader.result;
         // alert(dataURL)
         $('#view').append('<img id="output"  alt="Girl in a jacket" width="500" height="600">');
-        var output = document.getElementById('output');
+        const output = document.getElementById('output');
         output.src = dataURL;
     };
 
@@ -148,7 +148,7 @@ function upload(e) {
 
 function displayImg(url) {
     $('#view').append('<img id="output"  alt="Girl in a jacket" width="500" height="600">');
-    var output = document.getElementById('output');
+    const output = document.getElementById('output');
     output.src = url;
 }
 
@@ -157,13 +157,17 @@ let databaseHelper;
 let fileHelper;
 
 let webSocketEventListener = {
-    onConnected: function(event) {
-        console.log('Websocket connected');
+    onConnected: function(username) {
+        console.log('Websocket connected with user ' + username);
         this.sendGreetingsToServer();
     },
 
-    onMessage: function(messageEvent) {
-        Opal.eval(messageEvent.data);
+    onConnectFailed: function(username) {
+        console.log('Connection failed for user ' + username);
+    },
+
+    onMessage: function(data) {
+        Opal.eval(data);
     },
 
     onError: function(event) {
@@ -180,7 +184,7 @@ let webSocketEventListener = {
 
     sendGreetingsToServer: function() {
         {
-            webSocketHelper.sendMessage('box()');
+            webSocketHelper.sendMessage('{ "action": "box()"}');
         }
     }
 };
@@ -205,7 +209,7 @@ let fileSystemPermissionEventListener = {
 document.addEventListener("deviceready", function() {
     //TODO: Get server adress from DNS.
     const serverAddress = '192.168.103.147:9292';
-    webSocketHelper = new WebSocketHelper(serverAddress, webSocketEventListener);
+    webSocketHelper = new WebSocketHelper(serverAddress, webSocketEventListener, "Régis", "00000000");
     webSocketHelper.connect();
 }, false);
 
