@@ -10,7 +10,6 @@
   <content src="public/index.html"/>
   <plugin name="cordova-plugin-whitelist" spec="1"/>
   <access origin="*"/>
-  <access origin="cdvfile://*"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="Fullscreen" value="true"/>
   <preference name="WindowSize" value="1000x800"/>

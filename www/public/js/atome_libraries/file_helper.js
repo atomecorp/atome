@@ -4,23 +4,32 @@ class FileHelper {
     }
 
     connect() {
+        const self = this;
         window.requestFileSystem(window.PERSISTENT,
             this.nbBytesRequested,
-            this.fileSystemPermissionEventListener.onPermissionAccepted,
+            function (fs) {
+                self.fs = fs;
+                self.fileSystemPermissionEventListener.onPermissionAccepted();
+            },
             this.fileSystemPermissionEventListener.onPermissionDenied);
     }
 
-    createFile(inputFile, fileEventListener) {
-        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
-            dir.getFile("/image.png", {create: true}, function (file) {
-                file.createWriter(function (fileWriter) {
-                    fileWriter.onwriteend = function () {
-                        fileEventListener.success(fs);
-                    };
+    createFile(fileName, inputFile, fileEventListener) {
+        this.fs.root.getFile("/" + fileName, {create: true}, function (fileEntry) {
+            fileEntry.createWriter(function (fileWriter) {
+                fileWriter.onwriteend = function () {
+                    fileEventListener.success(this.fs);
+                };
 
-                    fileWriter.write(inputFile);
-                }, fileEventListener.error);
-            });
+                fileWriter.write(inputFile);
+            }, fileEventListener.error);
+        });
+    }
+
+    getUrl(fileName, callback) {
+        this.fs.root.getFile("/" + fileName, {create: false, exclusive: false}, function (fileEntry) {
+            const url = fileEntry.toURL();
+            callback(url);
         });
     }
 }

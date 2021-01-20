@@ -207,7 +207,7 @@ let fileSystemPermissionEventListener = {
 };
 
 document.addEventListener("deviceready", function() {
-    //TODO: Get server adress from DNS.
+    //TODO: Get server address from DNS.
     const serverAddress = '192.168.103.147:9292';
     webSocketHelper = new WebSocketHelper(serverAddress, webSocketEventListener, "Régis", "00000000");
     webSocketHelper.connect();
@@ -230,9 +230,11 @@ window.ondragover = function (e) {
 window.ondrop = function (e) {
     e.preventDefault();
 
-    fileHelper.createFile(e.dataTransfer.files[0], {
+    fileHelper.createFile("image.png", e.dataTransfer.files[0], {
         success: function() {
-            displayImg("cdvfile://localhost/persistent/image.png");
+            fileHelper.getUrl("image.png", function (imageUrl) {
+                displayImg(imageUrl);
+            });
         },
         error: function(fileError) {
             alert('Cannot create file. Reason: ' + fileError);
