@@ -11,11 +11,9 @@ module Visual_processor
     # puts "border processed#{params}"
   end
 
-
   def atome_id_processing(params)
     puts "atome_id DSP is #{params}"
   end
-
 
 end
 module Nucleon
