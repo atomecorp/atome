@@ -7,9 +7,8 @@ require 'fileutils'
 #todo : only copy if there's a change!
 if File.directory?("eVe/medias/.")
   FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
-  rm_f 'app/temp/media_list.rb'
 end
-
+rm_f 'app/temp/media_list.rb'
 
 directory 'www/public/js/third_parties/opal'
 
@@ -68,13 +67,11 @@ file 'app/temp/media_list.rb': ['app/temp'] do |t|
   end
 
   medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-
   File.open(t.name, 'w') { |file| file.write(medias_list) }
 end
 
-atome_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb', 'app/app.rb', 'atome/lib/atome/environment/require.rb', 'atome/lib/atome/builder/object.rb'] + Dir.glob('app//*')
+atome_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb'] + Dir.glob('app/*')+ Dir.glob('atome/lib/atome/*')
 file 'www/public/js/atome.js': atome_monitoring do |t|
-  #require 'opal'
   builder = Opal::Builder.new
   builder.append_paths('atome/lib')
   builder.build('./app/temp/media_list.rb')
@@ -92,7 +89,6 @@ end
 opal = 'www/public/js/third_parties/opal/opal.js'
 parser = 'www/public/js/third_parties/opal/opal_parser.js'
 atome = 'www/public/js/atome.js'
-
 
 desc 'Run server'
 task 'run::server': [opal, parser, atome] do

@@ -1,6 +1,6 @@
 class Helper
   def self.version
-    'v:0.008'
+    'v:0.009'
   end
 
   def self.apis
@@ -26,3 +26,13 @@ end
 def to_px (obj = nil, property = :top)
   Atome.to_px(obj, property)
 end
+
+# class Help
+#   def self.color
+#     ["a=box()\na.color(:red)"]
+#   end
+#   @example={}
+#   @help={}
+#   @usage={}
+# end
+# alert Help.color

@@ -17,4 +17,5 @@ gem 'parser'
   gem 'roda', '2.26.0'
   gem 'sequel'
   gem 'sqlite3'
+  gem 'beagleboard'
 #end

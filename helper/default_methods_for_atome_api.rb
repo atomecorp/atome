@@ -21,21 +21,34 @@ class Render
   end
 end
 
+#this module contain the methods to be created and those who needs extra processing
+module Atome_methods_list
+  def self.atome_methods
+    %i[ color border atome_id]
+  end
+  #the line below specify if the properties need specific processing
+  def self.need_processing
+    %i[  border]
+  end
+end
 # the class below initialize the default values and generate properties's methods
 class Sparkle
+  include Atome_methods_list
   def initialize
     # the line below create atomes's methods using meta-programming
-    atome_methods = %i[atome_id color type]
+    atome_methods = Atome_methods_list.atome_methods
+    #the line below specify if the properties need specific processing
+    #need_processing=%i[ color border]
     atome_methods.each do |method_name|
-      Atome.define_method method_name do |params = nil, &proc|
+      Nucleon.define_method method_name do |params = nil, &proc|
         # this is the main entry method for the current property treatment
         # first we create a hash for the property if t doesnt exist
         # we don't create a object init time, to only create property when needed
         instance_method_name = if instance_variable_defined?("@" + method_name.to_s)
-          instance_variable_get("@#{method_name}")
-        else
-          instance_variable_set("@#{method_name}", {})
-        end
+                                 instance_variable_get("@#{method_name}")
+                               else
+                                 instance_variable_set("@#{method_name}", {})
+                               end
         # we send the params to the 'reformat_params' if there's a params
         method_analysis params, instance_method_name, method_name, proc if params || proc
         # finally we return the current property using magic_getter
@@ -46,7 +59,7 @@ class Sparkle
       end
       # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
       # ex : for : "def color"  = > "def color= "
-      Atome.define_method method_name.to_s + "=" do |params = nil, &proc|
+      Nucleon.define_method method_name.to_s + "=" do |params = nil, &proc|
         send(method_name, params, proc)
       end
     end
@@ -54,11 +67,14 @@ class Sparkle
 end
 # the class below contains all common properties's methods
 module Properties
+
   # the methods below must be executed once only
   def send_hash(params, method_name)
     # if prop needs to be refresh we send it to the Render engine
     broadcast(atome_id => {method_name => params})
-    send("#{method_name}_processing", params)
+    if Atome_methods_list.need_processing.include?(method_name)
+      send("#{method_name}_processing", params)
+    end
     Render.send("render_#{method_name}", self, params) if params[:render].nil? || params[:render] == true
   end
 
@@ -142,7 +158,7 @@ module Processing
 end
 
 #  the class below create all new user's atomes
-class Atome
+class Nucleon
   include Processing
 
   def initialize
@@ -159,7 +175,7 @@ end
 
 ## ------- verification 1 -------
 # Sparkle.new
-# a = Atome.new
+# a = Nucleon.new
 # a.toto(:my_data)
 # a.toto(:tutu)
 # puts "line 263 :\"#{a.toto}\" "
@@ -192,17 +208,17 @@ end
 ## line 92 :     send(method_name, {proc: proc, add: true}) if proc
 ## proc should be integrated first ()before sending it to the property hash) for now it is not integrated in the current, if not it may fuck the entire project
 ## see above
-# #b = Atome.new
+# #b = Nucleon.new
 # #b.toto(:my_give)
 # #puts "universe is #{Universe.atomes}"
 
 # ------- verification 2 -------
 Sparkle.new
-a = Atome.new
+a = Nucleon.new
 a.color({content: :my_data, render: false})
 
-# a.color(:tutu)
-# a.color(:ok_for_now)
+ a.color(:tutu)
+ a.color(:ok_for_now)
 # a.color({content: :doto, kool: :ok})
 # a.color({content: :didi, kool: :pas_ok, refresh: false})
 # a.color([{content: :datos, x: 0}, :tomoldu, {content: :tibidi}, {content: [color: {content: :red, x: [color: :blue, y: 90]}]}])
@@ -229,7 +245,7 @@ puts "--------"
 puts a.color.to_s
 ## ------- verification 3 -------
 # Sparkle.new
-# a = Atome.new
+# a = Nucleon.new
 # ##a.toto([:my_data, :toto, :tutu])
 # #a.toto([{content: :datos, x: 0}, :toto])
 # ##a.toto(:tutu)

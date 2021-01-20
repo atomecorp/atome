@@ -171,15 +171,15 @@ let webSocketEventListener = {
     },
 
     onError: function(event) {
-        alert('Web socket error: ' + event.data);
+        console.log('Web socket error: ' + event.data);
     },
 
     onReconnect: function(event) {
-        alert('Connection to server lost; reconnecting');
+        console.log('Connection to server lost; reconnecting');
     },
 
     onClosed: function(event) {
-        alert('Connection to server close successfully');
+        console.log('Connection to server close successfully');
     },
 
     sendGreetingsToServer: function() {

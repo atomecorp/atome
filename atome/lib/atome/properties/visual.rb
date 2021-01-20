@@ -1,5 +1,23 @@
 ## here the methods to add spatials and visuals properties to atome objects
+#  the module below contains all the specifics code for properties
+module Visual_processor
+  include Properties
 
+  def color_processing(params)
+    alert "color processed#{params}"
+  end
+
+  def border_processing(params)
+    # puts "border processed#{params}"
+  end
+
+
+  def atome_id_processing(params)
+    puts "atome_id DSP is #{params}"
+  end
+
+
+end
 module Nucleon
   module Core
     module Photon

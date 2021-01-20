@@ -3,41 +3,42 @@
 <head>
     <meta name='viewport' content='initial-scale=1, width=device-width, viewport-fit=cover'>
     <meta charset='UTF-8'/>
-<!--    <meta http-equiv="Content-Security-Policy"-->
-<!--          content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; script-src 'self' https://www.youtube.com  'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *;child-src https://www.youtube.com; img-src 'self' data: content:;">-->
-<!--    <meta http-equiv="Content-Security-Policy" content="img-src * 'self' 'unsafe-inline' data:;default-src * gap://ready file: cdvfile: data:;style-src * 'self' 'unsafe-inline'; font-src * 'self' data:; script-src * 'self' file: cdvfile: 'unsafe-inline' 'unsafe-eval'">-->
-    <meta http-equiv="Content-Security-Policy" content="default-src *; img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">
+    <!--    <meta http-equiv="Content-Security-Policy"-->
+    <!--          content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; script-src 'self' https://www.youtube.com  'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *;child-src https://www.youtube.com; img-src 'self' data: content:;">-->
+    <!--    <meta http-equiv="Content-Security-Policy" content="img-src * 'self' 'unsafe-inline' data:;default-src * gap://ready file: cdvfile: data:;style-src * 'self' 'unsafe-inline'; font-src * 'self' data:; script-src * 'self' file: cdvfile: 'unsafe-inline' 'unsafe-eval'">-->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src *; img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" defer>
-    <link rel="stylesheet" type="text/css" href="css/index.css" defer>
+    <link type="text/css" rel="stylesheet"  href="css/jquery-ui.css" defer>
+    <link type="text/css" rel="stylesheet" type="text/css"  href="css/index.css" defer>
 
     <title>atome</title>
     <!--    Jquery  -->
     <script type="text/javascript" src="js/third_parties/jquery/jquery.min.js" defer></script>
     <script type="text/javascript" src="js/third_parties/jquery/jquery-ui.min.js" defer></script>
     <script type="text/javascript" src="js/third_parties/jquery/jquery.pep.js" defer></script>
-
     <script type="text/javascript" src="js/third_parties/jquery/jquery.ui.touch-punch.min.js" defer></script>
 
     <!--    Graphs lib  -->
-    <!--    <script src='third_parties/js/rendering_engines/createjs.min.js' type='text/javascript' defer ></script>-->
-    <!--    <script src='third_parties/js/rendering_engines/zim.min.js' type='text/javascript' defer ></script>-->
-    <!--    <script src='third_parties/js/rendering_engines/three.min.js' type='text/javascript' defer ></script>-->
-    <!--    <script src='third_parties/js/rendering_engines/three.interaction.js' type='text/javascript' defer ></script>-->
-    <!--    <script src='third_parties/js/rendering_engines/fabric.min.js' type='text/javascript' defer ></script>-->
-    <!--    <script src='third_parties/js/rendering_engines/konva.min.js' type='text/javascript' defer ></script>-->
-    <script src="js/third_parties/rendering_engines/popmotion.global.min.js" defer ></script>
+    <script  type="text/javascript" src='js/third_parties/rendering_engines/createjs.min.js' defer></script>
+    <script  type="text/javascript" src='js/third_parties/rendering_engines/zim.min.js'  defer></script>
+    <script  type="text/javascript" src='js/third_parties/rendering_engines/three.min.js' defer></script>
+    <script  type="text/javascript" src='js/third_parties/rendering_engines/three.interaction.js' defer></script>
+    <script  type="text/javascript" src='js/third_parties/rendering_engines/fabric.min.js'  defer></script>
+    <script  type="text/javascript" src='js/third_parties/rendering_engines/konva.min.js' defer></script>
+    <script  type="text/javascript" src="js/third_parties/rendering_engines/popmotion.global.min.js"  defer></script>
 </head>
 <body id='device'>
 
 <script type="text/javascript" src="../cordova.js"></script>
-<script type="text/javascript" src="js/file_helper.js" defer></script>
-<script type="text/javascript" src="js/database_helper.js" defer></script>
-<script type="text/javascript" src="js/web_socket_helper.js" defer></script>
-<script type="text/javascript" src="js/index.js" defer></script>
 <script type="text/javascript" src="js/third_parties/opal/opal.js" defer></script>
+<script type="text/javascript" src="js/atome_libraries/file_helper.js" defer></script>
+<script type="text/javascript" src="js/atome_libraries/database_helper.js" defer></script>
+<script type="text/javascript" src="js/atome_libraries/web_socket_helper.js" defer></script>
+<script type="text/javascript" src="js/index.js" defer></script>
 <script type="text/javascript" src="js/atome.js" defer></script>
+
 </body>
 </html>

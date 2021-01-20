@@ -52,6 +52,10 @@ class App < Roda
         #ws.send("<sript>alert('kool!!')</script>")
           #[200, {"Content-Type" => "text/plain"}, [event.data]]
         ws.send(event.data)
+        #sleep 5
+        #ws.send("box({color: :blue})")
+        #sleep 3
+        #ws.send("text({color: :orange, content: :hello, x: 100, y: 150, size: 70})")
         #'alert("ok")'
       end
       ws.on :open do |event|

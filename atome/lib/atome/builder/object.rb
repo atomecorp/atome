@@ -4,6 +4,7 @@ module Nucleon
       include Neutron
       include Pi
       include Photon
+      include Visual_processor
 
       @@atomes = []
       @@black_hole = [] # deleted atomes
