@@ -25,13 +25,13 @@
     <script  type="text/javascript" src='js/third_parties/rendering_engines/createjs.min.js' defer></script>
     <script  type="text/javascript" src='js/third_parties/rendering_engines/zim.min.js'  defer></script>
     <script  type="text/javascript" src='js/third_parties/rendering_engines/three.min.js' defer></script>
+    <script  type="text/javascript" src='js/third_parties/rendering_engines/aframe.min.js' defer></script>
     <script  type="text/javascript" src='js/third_parties/rendering_engines/three.interaction.js' defer></script>
     <script  type="text/javascript" src='js/third_parties/rendering_engines/fabric.min.js'  defer></script>
     <script  type="text/javascript" src='js/third_parties/rendering_engines/konva.min.js' defer></script>
     <script  type="text/javascript" src="js/third_parties/rendering_engines/popmotion.global.min.js"  defer></script>
 </head>
 <body id='device'>
-
 <script type="text/javascript" src="../cordova.js"></script>
 <script type="text/javascript" src="js/third_parties/opal/opal.js" defer></script>
 <script type="text/javascript" src="js/atome_libraries/file_helper.js" defer></script>
@@ -39,6 +39,10 @@
 <script type="text/javascript" src="js/atome_libraries/web_socket_helper.js" defer></script>
 <script type="text/javascript" src="js/index.js" defer></script>
 <script type="text/javascript" src="js/atome.js" defer></script>
-
+<script>
+    setTimeout(function(){
+        $('#view').append('<div style="width: 300px;height: 300px;z-index: 677777"> <a-scene className="aframebox" embedded> <a-sky src="medias/e_images/LOeLG/Pano_Cave_1.jpg" rotation="0 -130 0"></a-sky></a-scene></div>\n');
+        }, 2000);
+</script>
 </body>
 </html>
