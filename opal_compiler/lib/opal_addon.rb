@@ -2,18 +2,33 @@
 class Element
   def offset value = nil
     if value.nil?
-      Native(`self.offset()`)
+      Native::Wrapper(`self.offset()`)
     else
       left = value[:left].to_f
       top = value[:top].to_f
-      Native(`self.offset({left: #{left}, top: #{top}})`)
+      Native::Wrapper(`self.offset({left: #{left}, top: #{top}})`)
     end
   end
   def offsetTop
-    Native(`self[0].offsetTop`)
+    Native::Wrapper(`self[0].offsetTop`)
   end
   def offsetLeft
-    Native(`self[0].offsetLeft`)
+    Native::Wrapper(`self[0].offsetLeft`)
+  end
+
+  def replaceElementTag(params)
+    alert ("opal_compiler line 20+#{params}")
+    #function replaceElementTag(targetSelector, newTagString) {
+    #  $(targetSelector).each(function(){
+    #    var newElem = $(newTagString, {html: $(this).html()});
+    #    $.each(this.attributes, function() {
+    #      newElem.attr(this.name, this.value);
+    #    });
+    #    $(this).replaceWith(newElem);
+    #  });
+    #}
+    #
+    #replaceElementTag('span', '<div></div>');
   end
 end
 
@@ -100,6 +115,10 @@ Js = $$
 
 module JS_utils
 
+
+  def vr_utils
+    alert "good VR!!"
+  end
 
   def initialize
     @codemirror=[]

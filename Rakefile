@@ -5,10 +5,50 @@ require 'uglifier'
 require 'fileutils'
 
 #todo : only copy if there's a change!
-if File.directory?("eVe/medias/.")
-  FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
-end
-rm_f 'app/temp/media_list.rb'
+#if File.directory?("eVe/medias/.")
+#  FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
+#end
+#rm_f 'app/temp/media_list.rb'
+#file 'app/temp/media_list.rb': ['app/temp'] do |t|
+#  require 'image_size'
+#  a_images = Dir.glob('./www/public/medias/images/**/*').select { |e| File.file? e }
+#  e_images = Dir.glob('./www/public/medias/e_images/**/*').select { |e| File.file? e }
+#  images = a_images.concat(e_images)
+#  images_list = {}
+#  a_videos = Dir.glob('./www/public/medias/videos/**/*').select { |e| File.file? e }
+#  e_videos = Dir.glob('./www/public/medias/e_videos/**/*').select { |e| File.file? e }
+#  videos = a_videos.concat(e_videos)
+#  videos_list = {}
+#  a_audios = Dir.glob('./www/public/medias/audios/**/*').select { |e| File.file? e }
+#  e_audios = Dir.glob('./www/public/medias/e_audios/**/*').select { |e| File.file? e }
+#  audios = a_audios.concat(e_audios)
+#  audios = audios.concat(videos)
+#  audios_list = {}
+#
+#  images.each do |image|
+#    path = image.sub('www/public/', './')
+#    filename = File.basename(image, File.extname(image))
+#    image_info = ImageSize.path(image)
+#    width = image_info.width
+#    height = image_info.height
+#    images_list[filename.to_sym] = {width: width, height: height, path: path}
+#  end
+#
+#  videos.each do |video|
+#    path = video.sub('www/public/', './')
+#    filename = File.basename(video, File.extname(video))
+#    videos_list[filename.to_sym] = {path: path}
+#  end
+#
+#  audios.each do |audio|
+#    path = audio.sub('www/public/', './')
+#    filename = File.basename(audio, File.extname(audio))
+#    audios_list[filename.to_sym] = {path: path}
+#  end
+#
+#  medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
+#  File.open(t.name, 'w') { |file| file.write(medias_list) }
+#end
 
 directory 'www/public/js/third_parties/opal'
 
@@ -29,48 +69,8 @@ end
 
 directory 'app/temp'
 
-file 'app/temp/media_list.rb': ['app/temp'] do |t|
-  require 'image_size'
-  a_images = Dir.glob('./www/public/medias/images/**/*').select { |e| File.file? e }
-  e_images = Dir.glob('./www/public/medias/e_images/**/*').select { |e| File.file? e }
-  images=a_images.concat(e_images)
-  images_list = {}
-  a_videos = Dir.glob('./www/public/medias/videos/**/*').select { |e| File.file? e }
-  e_videos = Dir.glob('./www/public/medias/e_videos/**/*').select { |e| File.file? e }
-  videos=a_videos.concat(e_videos)
-  videos_list = {}
-  a_audios = Dir.glob('./www/public/medias/audios/**/*').select { |e| File.file? e }
-  e_audios = Dir.glob('./www/public/medias/e_audios/**/*').select { |e| File.file? e }
-  audios=a_audios.concat(e_audios)
-  audios = audios.concat(videos)
-  audios_list = {}
-
-  images.each do |image|
-    path = image.sub('www/public/', './')
-    filename = File.basename(image, File.extname(image))
-    image_info = ImageSize.path(image)
-    width = image_info.width
-    height = image_info.height
-    images_list[filename.to_sym] = {width: width, height: height, path: path}
-  end
-
-  videos.each do |video|
-    path = video.sub('www/public/', './')
-    filename = File.basename(video, File.extname(video))
-    videos_list[filename.to_sym] = {path: path}
-  end
-
-  audios.each do |audio|
-    path = audio.sub('www/public/', './')
-    filename = File.basename(audio, File.extname(audio))
-    audios_list[filename.to_sym] = {path: path}
-  end
-
-  medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-  File.open(t.name, 'w') { |file| file.write(medias_list) }
-end
-
-atome_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb'] + Dir.glob('app/*')+ Dir.glob('atome/lib/atome/*')
+#todo : momnitor separatly opal atome and atome app and eVe app to optimise compilation time
+atome_monitoring = ['app/temp/media_list.rb', 'opal_compiler/lib/opal_addon.rb', 'renderers/html.rb']  + Dir.glob('atome/lib/atome/*')+ Dir.glob('app/*')+ Dir.glob('eVe/app.rb')+ Dir.glob('eVe/projects/*')
 file 'www/public/js/atome.js': atome_monitoring do |t|
   builder = Opal::Builder.new
   builder.append_paths('atome/lib')
@@ -95,7 +95,7 @@ task 'run::server': [opal, parser, atome] do
   Dir.chdir('www') do
     require 'rack'
     #below we put the browser opening in a thread to delay waiting for th server to be ready
-    # fixme wait for page to respond instead of 2 sec sleep
+    # todo:  wait for page to respond instead of 2 sec sleep
     Thread.new do
       sleep 2
       system("open", "http://localhost:9292")

@@ -130,6 +130,13 @@ module Render
     r_get(atome.atome_id).attr(:a_id, params)
   end
 
+  # display
+  def self.render_display(atome, params, add = false)
+    #r_get(atome.atome_id).replaceWith('<tr>' + r_get(atome.atome_id).html() +'</tr>')
+    alert(:display)
+    r_get(atome.atome_id).replaceElementTag(params)
+  end
+
   # properties
 
   def self.render_color(atome, params, add = false)

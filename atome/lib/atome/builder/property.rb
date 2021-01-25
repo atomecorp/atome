@@ -3,7 +3,7 @@
 
 module Atome_methods_list
   def self.atome_methods
-    %i[border]
+    %i[border display]
   end
   #the line below specify if the properties need specific processing
   def self.need_processing

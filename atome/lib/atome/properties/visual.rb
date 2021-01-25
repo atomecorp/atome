@@ -32,7 +32,7 @@ module Nucleon
             Atome.atomes.each do |atome|
               a_found << atome.id
             end
-            if !a_found.include? atome_id
+            unless a_found.include? atome_id
               enliven(true)
             end
           end
@@ -46,6 +46,9 @@ module Nucleon
         render(params, refresh)
       end
 
+      #def display params = nil, refresh = true
+      #  alert params
+      #end
       def color params = nil, refresh = true
         if params || params == false
           if params.class== Hash && params[:add]
