@@ -2,18 +2,18 @@
 class Element
   def offset value = nil
     if value.nil?
-      Native::Wrapper(`self.offset()`)
+      Native(`self.offset()`)
     else
       left = value[:left].to_f
       top = value[:top].to_f
-      Native::Wrapper(`self.offset({left: #{left}, top: #{top}})`)
+      Native(`self.offset({left: #{left}, top: #{top}})`)
     end
   end
   def offsetTop
-    Native::Wrapper(`self[0].offsetTop`)
+    Native(`self[0].offsetTop`)
   end
   def offsetLeft
-    Native::Wrapper(`self[0].offsetLeft`)
+    Native(`self[0].offsetLeft`)
   end
 
   def replaceElementTag(params)

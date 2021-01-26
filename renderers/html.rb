@@ -147,6 +147,8 @@ module Render
           js_get(atome).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false> <a-sky src='"+path+"' rotation='0 -130 0'></a-sky></a-scene>")
         end
       end
+    when :swap
+      #replaceElementTag(:img)
     end
   end
 
