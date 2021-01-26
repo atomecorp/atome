@@ -4,6 +4,10 @@ module Render
     Element.find('#' + atome_id)
   end
 
+  def self.js_get atome
+    Element.find('#' + atome.atome_id)
+  end
+
   def self.initialize
     Element.find(JS_utils.device).resize do |evt|
       grab(:view).width(Element.find('#view').css('width').sub('px', '').to_i, false)
@@ -133,8 +137,16 @@ module Render
   # display
   def self.render_display(atome, params, add = false)
     #r_get(atome.atome_id).replaceWith('<tr>' + r_get(atome.atome_id).html() +'</tr>')
-    alert(:display)
-    r_get(atome.atome_id).replaceElementTag(params)
+    # alert(params[:content].to_s+" : "+atome[:content].type.to_s)
+    #
+    # r_get(atome.atome_id).replaceElementTag(params)
+    #
+    case params[:content]
+    when :vr
+      if atome.type[:content]==:image
+        js_get(atome).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false> <a-sky src='medias/e_images/LOeLG/Pano_Cave_1.jpg' rotation='0 -130 0'></a-sky></a-scene>")
+      end
+    end
   end
 
   # properties
