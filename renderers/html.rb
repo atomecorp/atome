@@ -21,7 +21,6 @@ module Render
   def self.render_type(atome, params, parent = :body)
     atome_id = atome.atome_id
     dark_matter = Element.find('#dark_matter')
-    #alert "message :\n#{params}\n from : html.rb : 19"
     if atome_id == :blackhole
       r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
     elsif atome_id == :dark_matter
@@ -36,10 +35,9 @@ module Render
       if params== :text
         dark_matter.append("<div class='atome' style='display:inline-block' id='#{atome_id}'></div>")
       elsif params == :shape
-        #alert "message is \n\n#{atome.id} \n\nLocation: html.rb, line 31"
         dark_matter.append(("<div class='atome' id='#{atome_id}'></div>"))
       elsif params == :image
-        dark_matter.append("<div class='atome' id='#{atome_id}'></div>")
+          dark_matter.append("<div class='atome' id='#{atome_id}'></div>")
       elsif params == :video
         dark_matter.append("<div  id=" + atome_id + " class='atome' ><video  width='512' muted ></video></div>");
       elsif params == :audio
@@ -144,7 +142,10 @@ module Render
     case params[:content]
     when :vr
       if atome.type[:content]==:image
-        js_get(atome).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false> <a-sky src='medias/e_images/LOeLG/Pano_Cave_1.jpg' rotation='0 -130 0'></a-sky></a-scene>")
+        wait 0.0001 do
+          path = $images_list[atome.content.to_sym][:path]
+          js_get(atome).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false> <a-sky src='"+path+"' rotation='0 -130 0'></a-sky></a-scene>")
+        end
       end
     end
   end
