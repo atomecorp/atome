@@ -665,7 +665,7 @@ module Nucleon
       #    @rotate
       #  end
       #end
-      #
+
       #def rotate= params = nil, refresh = true
       #  rotate(params, refresh)
       #end
