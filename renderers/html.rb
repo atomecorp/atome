@@ -144,7 +144,7 @@ module Render
       if atome.type[:content]==:image
         wait 0.0001 do
           path = $images_list[atome.content.to_sym][:path]
-          js_get(atome).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false> <a-sky src='"+path+"' rotation='0 -130 0'></a-sky></a-scene>")
+          js_get(atome).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false device-orientation-permission-ui='enabled: false'> <a-sky src='"+path+"' rotation='0 -130 0'></a-sky></a-scene>")
         end
       end
     when :swap
@@ -881,7 +881,10 @@ module Render
       when :y
         options = {axis: "x"}
       when :test
-        options = {containment: "parent", axis: "x"}
+        # atome_y=js_get(atome).css('top').sub("px","")
+        # atome_x=js_get(atome).css('left').sub("px","")
+        atome_y=atome.y[:content]
+        options = {containment: [ -900, atome_y, 0, atome_y ]}
       when :all
         left = current_atome.css("left").sub("px", '').to_i
         top = current_atome.css("top").sub("px", '').to_i

@@ -4,51 +4,51 @@ require 'opal-browser'
 require 'uglifier'
 require 'fileutils'
 
-#todo : only copy if there's a change!
-#if File.directory?("eVe/medias/.")
-#  FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
-#end
-#rm_f 'app/temp/media_list.rb'
-#file 'app/temp/media_list.rb': ['app/temp'] do |t|
-#  require 'image_size'
-#  a_images = Dir.glob('./www/public/medias/images/**/*').select { |e| File.file? e }
-#  e_images = Dir.glob('./www/public/medias/e_images/**/*').select { |e| File.file? e }
-#  images = a_images.concat(e_images)
-#  images_list = {}
-#  a_videos = Dir.glob('./www/public/medias/videos/**/*').select { |e| File.file? e }
-#  e_videos = Dir.glob('./www/public/medias/e_videos/**/*').select { |e| File.file? e }
-#  videos = a_videos.concat(e_videos)
-#  videos_list = {}
-#  a_audios = Dir.glob('./www/public/medias/audios/**/*').select { |e| File.file? e }
-#  e_audios = Dir.glob('./www/public/medias/e_audios/**/*').select { |e| File.file? e }
-#  audios = a_audios.concat(e_audios)
-#  audios = audios.concat(videos)
-#  audios_list = {}
-#
-#  images.each do |image|
-#    path = image.sub('www/public/', './')
-#    filename = File.basename(image, File.extname(image))
-#    image_info = ImageSize.path(image)
-#    width = image_info.width
-#    height = image_info.height
-#    images_list[filename.to_sym] = {width: width, height: height, path: path}
-#  end
-#
-#  videos.each do |video|
-#    path = video.sub('www/public/', './')
-#    filename = File.basename(video, File.extname(video))
-#    videos_list[filename.to_sym] = {path: path}
-#  end
-#
-#  audios.each do |audio|
-#    path = audio.sub('www/public/', './')
-#    filename = File.basename(audio, File.extname(audio))
-#    audios_list[filename.to_sym] = {path: path}
-#  end
-#
-#  medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-#  File.open(t.name, 'w') { |file| file.write(medias_list) }
-#end
+#todo : only copy if there's a change! use monitoring if possible
+if File.directory?("eVe/medias/.")
+ FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
+end
+rm_f 'app/temp/media_list.rb'
+file 'app/temp/media_list.rb': ['app/temp'] do |t|
+ require 'image_size'
+ a_images = Dir.glob('./www/public/medias/images/**/*').select { |e| File.file? e }
+ e_images = Dir.glob('./www/public/medias/e_images/**/*').select { |e| File.file? e }
+ images = a_images.concat(e_images)
+ images_list = {}
+ a_videos = Dir.glob('./www/public/medias/videos/**/*').select { |e| File.file? e }
+ e_videos = Dir.glob('./www/public/medias/e_videos/**/*').select { |e| File.file? e }
+ videos = a_videos.concat(e_videos)
+ videos_list = {}
+ a_audios = Dir.glob('./www/public/medias/audios/**/*').select { |e| File.file? e }
+ e_audios = Dir.glob('./www/public/medias/e_audios/**/*').select { |e| File.file? e }
+ audios = a_audios.concat(e_audios)
+ audios = audios.concat(videos)
+ audios_list = {}
+
+ images.each do |image|
+   path = image.sub('www/public/', './')
+   filename = File.basename(image, File.extname(image))
+   image_info = ImageSize.path(image)
+   width = image_info.width
+   height = image_info.height
+   images_list[filename.to_sym] = {width: width, height: height, path: path}
+ end
+
+ videos.each do |video|
+   path = video.sub('www/public/', './')
+   filename = File.basename(video, File.extname(video))
+   videos_list[filename.to_sym] = {path: path}
+ end
+
+ audios.each do |audio|
+   path = audio.sub('www/public/', './')
+   filename = File.basename(audio, File.extname(audio))
+   audios_list[filename.to_sym] = {path: path}
+ end
+
+ medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
+ File.open(t.name, 'w') { |file| file.write(medias_list) }
+end
 
 directory 'www/public/js/third_parties/opal'
 
