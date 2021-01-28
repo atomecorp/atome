@@ -51,7 +51,7 @@ def update_medias_list
     File.open(t.name, 'w') { |file| file.write(medias_list) }
   end
 end
-# update_medias_list
+
 
 def update_opal_libraries
   file 'www/public/js/third_parties/opal/opal.js': ['www/public/js/third_parties/opal'] do |t|
@@ -69,7 +69,9 @@ def update_opal_libraries
     File.write(t.to_s, parser.to_s)
   end
 end
-# update_opal_libraries
+
+update_medias_list
+update_opal_libraries
 
 directory 'www/public/js/third_parties/opal'
 directory 'app/temp'

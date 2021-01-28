@@ -13,6 +13,7 @@ prerequisite:
         on MacOS :  
                     \curl -sSL https://get.rvm.io | bash -s stable --ruby
         on windows :
+                    https://rubyinstaller.org/downloads/
 
     npm
         on FreeBSD : 
@@ -21,6 +22,10 @@ prerequisite:
                     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
                     brew install NPM
         on windows :
+install git :
+https://git-scm.com/download/win
+install Npm:
+            https://nodejs.org/en/
 			Install Visual studio 2017 with feature "universal windows app development tools"
 			cordova build windows --arch="x64"
 
@@ -33,7 +38,7 @@ To install application and run:
     npm install  
     cordova platform add browser
     cordova platform add osx
-    cordova platform add windowsnpm fgunf
+    cordova platform add windows
     cordova plugin add cordova-sqlite-storage
     cordova plugin add cordova-plugin-file
     bundle update
