@@ -4,53 +4,54 @@ require 'opal-browser'
 require 'uglifier'
 require 'fileutils'
 
-##todo : only copy if there's a change! use monitoring if possible
-#if File.directory?("eVe/medias/.")
-#  FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
-#end
-#rm_f 'app/temp/media_list.rb'
-#file 'app/temp/media_list.rb': ['app/temp'] do |t|
-#  require 'image_size'
-#  a_images = Dir.glob('./www/public/medias/images/**/*').select { |e| File.file? e }
-#  e_images = Dir.glob('./www/public/medias/e_images/**/*').select { |e| File.file? e }
-#  images = a_images.concat(e_images)
-#  images_list = {}
-#  a_videos = Dir.glob('./www/public/medias/videos/**/*').select { |e| File.file? e }
-#  e_videos = Dir.glob('./www/public/medias/e_videos/**/*').select { |e| File.file? e }
-#  videos = a_videos.concat(e_videos)
-#  videos_list = {}
-#  a_audios = Dir.glob('./www/public/medias/audios/**/*').select { |e| File.file? e }
-#  e_audios = Dir.glob('./www/public/medias/e_audios/**/*').select { |e| File.file? e }
-#  audios = a_audios.concat(e_audios)
-#  audios = audios.concat(videos)
-#  audios_list = {}
-#
-#  images.each do |image|
-#    path = image.sub('www/public/', './')
-#    filename = File.basename(image, File.extname(image))
-#    image_info = ImageSize.path(image)
-#    width = image_info.width
-#    height = image_info.height
-#    images_list[filename.to_sym] = {width: width, height: height, path: path}
-#  end
-#
-#  videos.each do |video|
-#    path = video.sub('www/public/', './')
-#    filename = File.basename(video, File.extname(video))
-#    videos_list[filename.to_sym] = {path: path}
-#  end
-#
-#  audios.each do |audio|
-#    path = audio.sub('www/public/', './')
-#    filename = File.basename(audio, File.extname(audio))
-#    audios_list[filename.to_sym] = {path: path}
-#  end
-#
-#  medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-#  File.open(t.name, 'w') { |file| file.write(medias_list) }
-#end
+def update_medias_list
+  #todo : only copy if there's a change! use monitoring if possible
+  if File.directory?("eVe/medias/.")
+    FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
+  end
+  rm_f 'app/temp/media_list.rb'
+  file 'app/temp/media_list.rb': ['app/temp'] do |t|
+    require 'image_size'
+    a_images = Dir.glob('./www/public/medias/images/**/*').select { |e| File.file? e }
+    e_images = Dir.glob('./www/public/medias/e_images/**/*').select { |e| File.file? e }
+    images = a_images.concat(e_images)
+    images_list = {}
+    a_videos = Dir.glob('./www/public/medias/videos/**/*').select { |e| File.file? e }
+    e_videos = Dir.glob('./www/public/medias/e_videos/**/*').select { |e| File.file? e }
+    videos = a_videos.concat(e_videos)
+    videos_list = {}
+    a_audios = Dir.glob('./www/public/medias/audios/**/*').select { |e| File.file? e }
+    e_audios = Dir.glob('./www/public/medias/e_audios/**/*').select { |e| File.file? e }
+    audios = a_audios.concat(e_audios)
+    audios = audios.concat(videos)
+    audios_list = {}
 
-##directory 'www/public/js/third_parties/opal'
+    images.each do |image|
+      path = image.sub('www/public/', './')
+      filename = File.basename(image, File.extname(image))
+      image_info = ImageSize.path(image)
+      width = image_info.width
+      height = image_info.height
+      images_list[filename.to_sym] = {width: width, height: height, path: path}
+    end
+
+    videos.each do |video|
+      path = video.sub('www/public/', './')
+      filename = File.basename(video, File.extname(video))
+      videos_list[filename.to_sym] = {path: path}
+    end
+
+    audios.each do |audio|
+      path = audio.sub('www/public/', './')
+      filename = File.basename(audio, File.extname(audio))
+      audios_list[filename.to_sym] = {path: path}
+    end
+
+    medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
+    File.open(t.name, 'w') { |file| file.write(medias_list) }
+  end
+end
+# update_medias_list
 
 def update_opal_libraries
   file 'www/public/js/third_parties/opal/opal.js': ['www/public/js/third_parties/opal'] do |t|
@@ -68,10 +69,10 @@ def update_opal_libraries
     File.write(t.to_s, parser.to_s)
   end
 end
+# update_opal_libraries
 
-#update_opal_libraries
-#directory 'app/temp'
-
+directory 'www/public/js/third_parties/opal'
+directory 'app/temp'
 
 atome_monitoring = ['opal_compiler/lib/opal_addon.rb', 'renderers/html.rb'] + Dir.glob('atome/lib/atome/*')
 file 'www/public/js/atome.js': atome_monitoring do |t|
@@ -83,13 +84,11 @@ file 'www/public/js/atome.js': atome_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-
-
-app_monitoring =  []+Dir.glob('app/*') + Dir.glob('eVe/app.rb') + Dir.glob('eVe/projects/*')
+app_monitoring =  Dir.glob('app/**/*') + Dir.glob('eVe/app.rb') + Dir.glob('eVe/projects/**/*')+ Dir.glob('eVe/eVe/lib/**/*')
 file 'www/public/js/atome_app.js': app_monitoring do |t|
-  puts "kooljj"*60
   builder = Opal::Builder.new
   if File.exist?('./eVe')
+    # builder.append_paths('eVe/eVe/lib/')
     builder.build('./eVe/app.rb')
   else
     builder.build('./app/app.rb')
@@ -97,15 +96,12 @@ file 'www/public/js/atome_app.js': app_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-
 media_monitoring = ['app/temp/media_list.rb']
 file 'www/public/js/atome_medias.js': media_monitoring do |t|
   builder = Opal::Builder.new
   builder.build('./app/temp/media_list.rb')
   File.write(t.name, builder.to_s)
 end
-
-
 
 opal = 'www/public/js/third_parties/opal/opal.js'
 parser = 'www/public/js/third_parties/opal/opal_parser.js'
@@ -130,10 +126,6 @@ task 'run::server': required_js_lib do
   end
 end
 
-#desc 'Run browser'
-#task 'run::browser': [opal, parser] do
-#  sh 'cordova run browser'
-#end
 
 desc 'Run browser'
 task 'run::browser': required_js_lib do

@@ -1,5 +1,5 @@
 *.ds_store
-.idea
+#.idea
 /eVe/
 /app/temp/media_list.rb
 /app/clients/
@@ -13,6 +13,8 @@
 /www/public/medias/e_rubies
 /www/public/medias/e_videos
 /www/public/js/atome.js
+/www/public/js/atome_app.js
+/www/public/js/atome_medias.js
 /www/public/js/third_parties/opal/opal.js
 /www/public/js/third_parties/opal/opal_parser.js
 /package.json
