@@ -147,8 +147,9 @@ function upload(e) {
 }
 
 function displayImg(url) {
-    $('#view').append('<img id="output"  alt="Girl in a jacket" width="500" height="600">');
-    const output = document.getElementById('output');
+    const randomId = Math.random().toString(16).substr(2, 32);
+    $('#view').append('<img id="'+randomId+'"  alt="Girl in a jacket" width="500" height="600">');
+    const output = document.getElementById(randomId);
     output.src = url;
 }
 
