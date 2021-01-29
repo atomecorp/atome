@@ -1,3 +1,4 @@
+require 'c_lexer'
 require 'opal'
 require 'opal-jquery'
 require 'opal-browser'
@@ -51,8 +52,6 @@ def update_medias_list
     File.open(t.name, 'w') { |file| file.write(medias_list) }
   end
 end
-
-
 def update_opal_libraries
   file 'www/public/js/third_parties/opal/opal.js': ['www/public/js/third_parties/opal'] do |t|
     builder = Opal::Builder.new

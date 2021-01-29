@@ -5,34 +5,79 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="RVM: ruby-2.6.3" jdkType="RUBY_SDK" />
+    <orderEntry type="jdk" jdkName="RVM: ruby-2.7.2" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="ast (v2.4.1, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="bundler (v2.2.4, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="eventmachine (v1.2.7, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="execjs (v2.7.0, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="faye-websocket (v0.11.0, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="image_size (v2.1.0, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="nio4r (v2.5.4, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="opal (v1.0.5, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="opal-browser (v0.2.0, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="opal-jquery (v0.4.4, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="paggio (v0.2.6, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="parser (v2.7.2.0, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="puma (v5.0.4, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rack (v2.2.3, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rack-unreloader (v1.7.0, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="rake (v13.0.3, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="roda (v2.26.0, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="sequel (v5.40.0, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="sqlite3 (v1.4.2, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="uglifier (v4.2.0, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="websocket-driver (v0.7.3, RVM: ruby-2.6.3) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="websocket-extensions (v0.1.5, RVM: ruby-2.6.3) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ast (v2.4.2, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bundler (v2.2.7, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="c_lexer (v2.6.4.1.1, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="eventmachine (v1.2.7, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="execjs (v2.7.0, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faye-websocket (v0.11.0, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="image_size (v2.1.0, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="nio4r (v2.5.4, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="opal (v1.0.5, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="opal-browser (v0.2.0, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="opal-jquery (v0.4.4, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="paggio (v0.2.6, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="parser (v2.7.2.0, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="puma (v5.0.4, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rack (v2.2.3, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rack-unreloader (v1.7.0, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rake (v13.0.3, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="roda (v2.26.0, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="sequel (v5.40.0, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="sqlite3 (v1.4.2, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="uglifier (v4.2.0, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="websocket-driver (v0.7.3, RVM: ruby-2.7.2) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="websocket-extensions (v0.1.5, RVM: ruby-2.7.2) [gem]" level="application" />
   </component>
   <component name="RakeTasksCache">
     <option name="myRootTask">
-      <RakeTaskImpl id="rake" />
+      <RakeTaskImpl id="rake">
+        <subtasks>
+          <RakeTaskImpl description="Cleanup generated files" fullCommand="clean" id="clean" />
+          <RakeTaskImpl id="production">
+            <subtasks>
+              <RakeTaskImpl id="">
+                <subtasks>
+                  <RakeTaskImpl description="production android" fullCommand="production::android" id="android" />
+                  <RakeTaskImpl description="production browser" fullCommand="production::browser" id="browser" />
+                  <RakeTaskImpl description="production electron" fullCommand="production::electron" id="electron" />
+                  <RakeTaskImpl description="production ios" fullCommand="production::ios" id="ios" />
+                  <RakeTaskImpl description="production osx" fullCommand="production::osx" id="osx" />
+                  <RakeTaskImpl description="production server" fullCommand="production::server" id="server" />
+                  <RakeTaskImpl description="production windows" fullCommand="production::windows" id="windows" />
+                </subtasks>
+              </RakeTaskImpl>
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl id="run">
+            <subtasks>
+              <RakeTaskImpl id="">
+                <subtasks>
+                  <RakeTaskImpl description="Run android" fullCommand="run::android" id="android" />
+                  <RakeTaskImpl description="Run browser" fullCommand="run::browser" id="browser" />
+                  <RakeTaskImpl description="Run electron" fullCommand="run::electron" id="electron" />
+                  <RakeTaskImpl description="Run ios" fullCommand="run::ios" id="ios" />
+                  <RakeTaskImpl description="Run osx" fullCommand="run::osx" id="osx" />
+                  <RakeTaskImpl description="Run server" fullCommand="run::server" id="server" />
+                  <RakeTaskImpl description="Run windows" fullCommand="run::windows" id="windows" />
+                </subtasks>
+              </RakeTaskImpl>
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl description="" fullCommand="app" id="app" />
+          <RakeTaskImpl description="" fullCommand="app/temp" id="app/temp" />
+          <RakeTaskImpl description="" fullCommand="www" id="www" />
+          <RakeTaskImpl description="" fullCommand="www/public" id="www/public" />
+          <RakeTaskImpl description="" fullCommand="www/public/js" id="www/public/js" />
+          <RakeTaskImpl description="" fullCommand="www/public/js/atome.js" id="www/public/js/atome.js" />
+          <RakeTaskImpl description="" fullCommand="www/public/js/atome_app.js" id="www/public/js/atome_app.js" />
+          <RakeTaskImpl description="" fullCommand="www/public/js/atome_medias.js" id="www/public/js/atome_medias.js" />
+          <RakeTaskImpl description="" fullCommand="www/public/js/third_parties" id="www/public/js/third_parties" />
+          <RakeTaskImpl description="" fullCommand="www/public/js/third_parties/opal" id="www/public/js/third_parties/opal" />
+        </subtasks>
+      </RakeTaskImpl>
     </option>
   </component>
 </module>
