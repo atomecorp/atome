@@ -157,6 +157,7 @@ function displayImg(url) {
 let webSocketHelper;
 let databaseHelper;
 let fileHelper;
+let drawingHelper;
 
 let webSocketEventListener = {
     onConnected: function(username) {
@@ -208,10 +209,17 @@ let fileSystemPermissionEventListener = {
     }
 };
 
+let drawingEventListener = {
+    onConnected: function(event) {
+        console.log('Drawing connected')
+        drawingHelper.setMode(drawingHelper.modeType.Draw);
+    }
+};
+
 document.addEventListener("deviceready", function() {
     //TODO: Get server address from DNS.
     const serverAddress = '192.168.103.147:9292';
-    webSocketHelper = new WebSocketHelper(serverAddress, webSocketEventListener, "Régis", "00000000");
+    webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
     webSocketHelper.connect();
 }, false);
 
@@ -223,6 +231,11 @@ document.addEventListener("deviceready", function() {
 document.addEventListener("deviceReady", function() {
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
     fileHelper.connect(564654);
+}, false);
+
+document.addEventListener("deviceready", function() {
+    drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+    drawingHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
