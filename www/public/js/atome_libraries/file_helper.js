@@ -1,5 +1,6 @@
 class FileHelper {
     constructor(nbBytesRequested, fileSystemPermissionEventListener) {
+        this.nbBytesRequested = nbBytesRequested;
         this.fileSystemPermissionEventListener = fileSystemPermissionEventListener;
     }
 
