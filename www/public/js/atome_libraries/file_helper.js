@@ -5,10 +5,8 @@ class FileHelper {
 
     connect() {
         const self = this;
-        var type = window.PERSISTENT;
-        var size = 5 * 1024 * 1024;
-        window.requestFileSystem(type,
-            size,
+        window.requestFileSystem(window.PERSISTENT,
+            this.nbBytesRequested,
             function (fs) {
                 self.fs = fs;
                 self.fileSystemPermissionEventListener.onPermissionAccepted();
