@@ -28,7 +28,7 @@ class FileHelper {
     }
 
     getUrl(fileName, callback) {
-        this.fs.root.getFile("/" + fileName, {create: false, exclusive: false}, function (fileEntry) {
+        this.fs.root.getFile(fileName, {create: false, exclusive: false}, function (fileEntry) {
             const url = fileEntry.toURL();
             callback(url);
         });
