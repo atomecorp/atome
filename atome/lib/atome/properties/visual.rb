@@ -138,7 +138,7 @@ module Nucleon
         end
         parent_width = parent.value(:width)
         parent_height = parent.value(:height)
-        #below we add a default size of 0 id it isn't alredy setted to avoid crashes
+        #below we add a default size of 0 id it isn't already setted to avoid crashes
         self_width = if value(:width)
                        value(:width)
                      else

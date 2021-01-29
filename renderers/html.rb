@@ -32,12 +32,12 @@ module Render
     elsif atome_id == :view
       r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
     else
-      if params== :text
+      if params == :text
         dark_matter.append("<div class='atome' style='display:inline-block' id='#{atome_id}'></div>")
       elsif params == :shape
         dark_matter.append(("<div class='atome' id='#{atome_id}'></div>"))
       elsif params == :image
-          dark_matter.append("<div class='atome' id='#{atome_id}'></div>")
+        dark_matter.append("<div class='atome' id='#{atome_id}'></div>")
       elsif params == :video
         dark_matter.append("<div  id=" + atome_id + " class='atome' ><video  width='512' muted ></video></div>");
       elsif params == :audio
@@ -141,10 +141,10 @@ module Render
     #
     case params[:content]
     when :vr
-      if atome.type[:content]==:image
+      if atome.type[:content] == :image
         wait 0.0001 do
           path = $images_list[atome.content.to_sym][:path]
-          js_get(atome).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false device-orientation-permission-ui='enabled: false'> <a-sky src='"+path+"' rotation='0 -130 0'></a-sky></a-scene>")
+          js_get(atome).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false device-orientation-permission-ui='enabled: false'> <a-sky src='" + path + "' rotation='0 -130 0'></a-sky></a-scene>")
         end
       end
     when :swap
@@ -153,6 +153,29 @@ module Render
   end
 
   # properties
+  def self.parse_color_datas(params)
+    if params[:red]
+      red = params[:red] * 255
+    else
+      red = 0
+    end
+    if params[:green]
+      green = params[:green] * 255
+    else
+      green = 0
+    end
+    if params[:blue]
+      blue = params[:blue] * 255
+    else
+      blue = 0
+    end
+    if params[:alpha]
+      alpha = params[:alpha]
+    else
+      alpha = 0
+    end
+    return "rgba(#{red},#{green},#{blue},#{alpha})"
+  end
 
   def self.render_color(atome, params, add = false)
     color = "background-image"
@@ -161,7 +184,8 @@ module Render
       r_get(atome.atome_id).css('-webkit-text-fill-color', 'transparent')
     end
     if params.class == Hash
-      value = ' linear-gradient(0deg,' + params[:content] + ', ' + params[:content] + ')'
+      params = parse_color_datas(params)
+      value = ' linear-gradient(0deg,' + params + ', ' + params + ')'
     elsif params.class == Array
       value = []
       angle = '180'
@@ -170,15 +194,28 @@ module Render
         if param.class == Hash
           if param[:angle]
             angle = param[:angle].to_s
-          end
-          if param[:diffusion]
+
+            elsif param[:diffusion]
             diffusion = param[:diffusion]
-          end
-          if param[:content]
-            value << param[:content]
-          end
-          if param[:color]
-            value << param[:color]
+
+          elsif param[:content]
+            #value << param[:content]
+            if param[:content].class == Hash
+              color_found = parse_color_datas(param[:content])
+            else
+              color_found= param[:content]
+            end
+            value << color_found
+
+          elsif param[:color]
+            if param[:color].class == Hash
+              color_found = parse_color_datas(param[:color])
+            else
+              color_found= param[:color]
+            end
+            value << color_found
+          else
+            value << parse_color_datas(param)
           end
         else
           value << param
@@ -883,8 +920,8 @@ module Render
       when :test
         # atome_y=js_get(atome).css('top').sub("px","")
         # atome_x=js_get(atome).css('left').sub("px","")
-        atome_y=atome.y[:content]
-        options = {containment: [ -900, atome_y, 0, atome_y ]}
+        atome_y = atome.y[:content]
+        options = {containment: [-900, atome_y, 0, atome_y]}
       when :all
         left = current_atome.css("left").sub("px", '').to_i
         top = current_atome.css("top").sub("px", '').to_i
@@ -1063,9 +1100,9 @@ module Render
     #below to play also all video child (mostly audio tracks)
     if atome.child
       atome.child.each do |child_found|
-          if child_found.type[:content] == :audio || atome.child[0].type[:content] == :video
-            render_play(child_found, params, add = false)
-          end
+        if child_found.type[:content] == :audio || atome.child[0].type[:content] == :video
+          render_play(child_found, params, add = false)
+        end
       end
       #if atome.child.each do |child|
       #  if child.type[:content] == :audio || atome.child[0].type[:content] == :video
@@ -1097,10 +1134,10 @@ module Render
     if atome.child
       atome.child.each do |child_found|
         #alert "message is \n\n#{child_found.type} \n\nLocation: html.rb, line 1075"
-          if child_found.type[:content] == :audio || atome.child[0].type[:content] == :video
-            #alert "message is \n\n#{:audio_pause} \n\nLocation: html.rb, line 1070"
-            render_pause(child_found, params, add = false)
-          end
+        if child_found.type[:content] == :audio || atome.child[0].type[:content] == :video
+          #alert "message is \n\n#{:audio_pause} \n\nLocation: html.rb, line 1070"
+          render_pause(child_found, params, add = false)
+        end
       end
       #alert "message is \n\n#{:child} \n\nLocation: html.rb, line 1068"
       #if atome.child.each do |child|

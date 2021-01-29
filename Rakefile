@@ -70,8 +70,8 @@ def update_opal_libraries
   end
 end
 
-update_medias_list
-update_opal_libraries
+#update_medias_list
+#update_opal_libraries
 
 directory 'www/public/js/third_parties/opal'
 directory 'app/temp'
