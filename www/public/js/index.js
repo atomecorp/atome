@@ -154,10 +154,10 @@ function displayImg(url) {
     output.src = url;
 }
 
-let webSocketHelper;
-let databaseHelper;
-let fileHelper;
-let drawingHelper;
+// let webSocketHelper;
+// let databaseHelper;
+// let fileHelper;
+// let drawingHelper;
 
 let webSocketEventListener = {
     onConnected: function(username) {
@@ -244,15 +244,16 @@ window.ondragover = function (e) {
 
 window.ondrop = function (e) {
     e.preventDefault();
-
-    fileHelper.createFile("image.png", e.dataTransfer.files[0], {
-        success: function() {
-            fileHelper.getUrl("image.png", function (imageUrl) {
-                displayImg(imageUrl);
-            });
-        },
-        error: function(fileError) {
-            alert('Cannot create file. Reason: ' + fileError);
-        }
-    });
+    if (typeof e.dataTransfer === 'object' && e.dataTransfer !== null) {
+        fileHelper.createFile("image.png", e.dataTransfer.files[0], {
+            success: function() {
+                fileHelper.getUrl("image.png", function (imageUrl) {
+                    displayImg(imageUrl);
+                });
+            },
+            error: function(fileError) {
+                alert('Cannot create file. Reason: ' + fileError);
+            }
+        });
+    }
 };

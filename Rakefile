@@ -127,12 +127,10 @@ task 'run::server': required_js_lib do
   end
 end
 
-
 desc 'Run browser'
 task 'run::browser': required_js_lib do
   sh 'cordova run browser'
 end
-
 
 desc 'Run osx'
 task 'run::osx': required_js_lib do
