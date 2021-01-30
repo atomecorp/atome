@@ -154,10 +154,10 @@ function displayImg(url) {
     output.src = url;
 }
 
-// let webSocketHelper;
-// let databaseHelper;
-// let fileHelper;
-// let drawingHelper;
+let webSocketHelper;
+let databaseHelper;
+let fileHelper;
+let drawingHelper;
 
 let webSocketEventListener = {
     onConnected: function(username) {
@@ -220,7 +220,8 @@ document.addEventListener("deviceready", function() {
     //TODO: Get server address from DNS.
     const serverAddress = '192.168.103.147:9292';
     webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
-    webSocketHelper.connect();
+    alert ("index.js line 223 kool");
+    // webSocketHelper.connect();
 }, false);
 
 document.addEventListener("deviceready", function() {

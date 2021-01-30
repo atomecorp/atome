@@ -1,7 +1,7 @@
 require 'c_lexer'
 require 'opal'
 require 'opal-jquery'
-require 'opal-browser'
+# require 'opal-browser'
 require 'uglifier'
 require 'fileutils'
 
@@ -57,7 +57,7 @@ def update_opal_libraries
     builder = Opal::Builder.new
     builder.build('opal')
     builder.build('opal-jquery')
-    builder.build('opal-browser')
+    # builder.build('opal-browser')
     File.write(t.name, builder.to_s)
   end
 
@@ -70,12 +70,12 @@ def update_opal_libraries
 end
 
 #update_medias_list
-#update_opal_libraries
+update_opal_libraries
 
 directory 'www/public/js/third_parties/opal'
 directory 'app/temp'
 
-atome_monitoring = ['opal_compiler/lib/opal_addon.rb', 'renderers/html.rb'] + Dir.glob('atome/lib/atome/*')
+atome_monitoring = ['opal_compiler/lib/opal_addon.rb', 'renderers/html.rb'] + Dir.glob('atome/lib/**/*')
 file 'www/public/js/atome.js': atome_monitoring do |t|
   builder = Opal::Builder.new
   builder.append_paths('atome/lib')

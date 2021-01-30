@@ -2,15 +2,3 @@ to compile eventmachine on macoS > 13 =>
 gem install eventmachine -- --with-openssl-dir=/usr/local/opt/openssl@1.1
 
 
-   if (typeof e.dataTransfer === 'object' && e.dataTransfer !== null) {
-        fileHelper.createFile("image.png", e.dataTransfer.files[0], {
-        success: function() {
-            // fileHelper.getUrl("image.png", function (imageUrl) {
-            //     displayImg(imageUrl);
-            // });
-        },
-        error: function(fileError) {
-            alert('Cannot create file. Reason: ' + fileError);
-        }
-    });
-    }
