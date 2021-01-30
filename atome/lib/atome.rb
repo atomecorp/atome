@@ -1,4 +1,4 @@
-require "opal-parser"
+# require "opal-parser"
 require "atome/builder/property"
 require "atome/environment/default"
 require "atome/properties/info"
