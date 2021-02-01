@@ -89,6 +89,7 @@ var html = {
     },
 
 };
+
 // upload methods here
 
 function import_visual_medias(e, file) {
@@ -97,7 +98,7 @@ function import_visual_medias(e, file) {
         const dataURL = reader.result;
         // alert(dataURL)
         const randomId = Math.random().toString(16).substr(2, 32);
-        $('#view').append('<img id="'+randomId+'"  alt="Girl in a jacket" width="500" height="600">');
+        $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
         const output = document.getElementById(randomId);
         output.src = dataURL;
     };
@@ -149,7 +150,7 @@ function upload(e) {
 
 function displayImg(url) {
     const randomId = Math.random().toString(16).substr(2, 32);
-    $('#view').append('<img id="'+randomId+'"  alt="Girl in a jacket" width="500" height="600">');
+    $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
     const output = document.getElementById(randomId);
     output.src = url;
 }
@@ -160,32 +161,32 @@ let fileHelper;
 let drawingHelper;
 
 let webSocketEventListener = {
-    onConnected: function(username) {
+    onConnected: function (username) {
         console.log('Websocket connected with user ' + username);
         this.sendGreetingsToServer();
     },
 
-    onConnectFailed: function(username) {
+    onConnectFailed: function (username) {
         console.log('Connection failed for user ' + username);
     },
 
-    onMessage: function(data) {
+    onMessage: function (data) {
         Opal.eval(data);
     },
 
-    onError: function(event) {
+    onError: function (event) {
         console.log('Web socket error: ' + event.data);
     },
 
-    onReconnect: function(event) {
+    onReconnect: function (event) {
         console.log('Connection to server lost; reconnecting');
     },
 
-    onClosed: function(event) {
+    onClosed: function (event) {
         console.log('Connection to server close successfully');
     },
 
-    sendGreetingsToServer: function() {
+    sendGreetingsToServer: function () {
         {
             webSocketHelper.sendMessage('{ "action": "box()"}');
         }
@@ -193,50 +194,48 @@ let webSocketEventListener = {
 };
 
 let databaseEventListener = {
-    onConnected: function(event) {
+    onConnected: function (event) {
         console.log('Database connected');
         databaseHelper.getAllUsers();
     }
 };
 
 let fileSystemPermissionEventListener = {
-    onPermissionAccepted: function(fs) {
+    onPermissionAccepted: function (fs) {
         console.log('File system permissions accepted');
     },
-    onPermissionDenied: function() {
+    onPermissionDenied: function () {
         console.log('File system permissions denied');
         alert('File system permissions denied');
     }
 };
 
 let drawingEventListener = {
-    onConnected: function(event) {
+    onConnected: function (event) {
         console.log('Drawing connected')
         drawingHelper.setMode(drawingHelper.modeType.Draw);
     }
 };
 
-document.addEventListener("deviceready", function() {
+document.addEventListener("deviceready", function () {
+
+    //webSocketHelper
     //TODO: Get server address from DNS.
     const serverAddress = '192.168.103.147:9292';
     webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
-    alert ("index.js line 223 kool");
     // webSocketHelper.connect();
-}, false);
 
-document.addEventListener("deviceready", function() {
+    //databaseHelper
     databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
     databaseHelper.connect();
-}, false);
 
-document.addEventListener("deviceReady", function() {
+    //fileHelper
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
     fileHelper.connect(564654);
-}, false);
 
-document.addEventListener("deviceready", function() {
+    //drawingHelper
     drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-    drawingHelper.connect();
+    // drawingHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
@@ -247,12 +246,12 @@ window.ondrop = function (e) {
     e.preventDefault();
     if (typeof e.dataTransfer === 'object' && e.dataTransfer !== null) {
         fileHelper.createFile("image.png", e.dataTransfer.files[0], {
-            success: function() {
+            success: function () {
                 fileHelper.getUrl("image.png", function (imageUrl) {
                     displayImg(imageUrl);
                 });
             },
-            error: function(fileError) {
+            error: function (fileError) {
                 alert('Cannot create file. Reason: ' + fileError);
             }
         });

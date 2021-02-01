@@ -67,7 +67,6 @@ def update_medias_list
     end
 
     medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-    puts "medias_list"
     puts medias_list
     File.open(t.name, 'w') { |file| file.write(medias_list) }
   end
@@ -76,10 +75,9 @@ end
 dir_to_inspect = Dir.glob('www/public/medias/**/*')
 dir_to_inspect_2 = Dir.glob('eVe/medias/**/*')
 nb_of_medias_files = (dir_to_inspect.length + dir_to_inspect_2.length).to_s
-
 nb_of_medias_files_stored = File.read("cache/nb_of_medias_files")
 # we only update the media lib if there"s a change in number of medias file
-unless nb_of_medias_files == nb_of_medias_files_stored || File.file?('cache/nb_of_medias_files')
+if nb_of_medias_files != nb_of_medias_files_stored || !File.file?('cache/nb_of_medias_files')
   update_medias_list
   File.write('cache/nb_of_medias_files', nb_of_medias_files)
 end
