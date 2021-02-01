@@ -2,3 +2,7 @@ to compile eventmachine on macoS > 13 =>
 gem install eventmachine -- --with-openssl-dir=/usr/local/opt/openssl@1.1
 
 
+ to known gem version  :
+ gem which opal
+ or
+ budle info opal
