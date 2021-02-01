@@ -174,7 +174,7 @@ end
 
 #production modes
 
-def production opal, parser, atome
+def production(opal, parser, atome)
   uglified = Uglifier.new(harmony: true).compile(File.read(opal))
   open(opal, 'w') do |f|
     f.puts uglified
