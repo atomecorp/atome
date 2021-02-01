@@ -5,6 +5,24 @@ require 'opal-jquery'
 require 'uglifier'
 require 'fileutils'
 
+def update_opal_libraries
+  file 'www/public/js/third_parties/opal/opal.js': ['www/public/js/third_parties/opal'] do |t|
+    builder = Opal::Builder.new
+    builder.build('opal')
+    builder.build('opal-jquery')
+    # builder.build('opal-browser')
+    File.write(t.name, builder.to_s)
+  end
+  file 'www/public/js/third_parties/opal/opal_parser.js': ['www/public/js/third_parties/opal'] do |t|
+    require 'opal'
+    parser = Opal::Builder.new
+    parser.build('./opal_compiler/lib/parser.rb')
+    File.write(t.to_s, parser.to_s)
+  end
+end
+
+update_opal_libraries
+
 def update_medias_list
   #todo : only copy if there's a change! use monitoring if possible
   if File.directory?("eVe/medias/.")
@@ -33,44 +51,50 @@ def update_medias_list
       image_info = ImageSize.path(image)
       width = image_info.width
       height = image_info.height
-      images_list[filename.to_sym] = {width: width, height: height, path: path}
+      images_list[filename.to_sym] = { width: width, height: height, path: path }
     end
 
     videos.each do |video|
       path = video.sub('www/public/', './')
       filename = File.basename(video, File.extname(video))
-      videos_list[filename.to_sym] = {path: path}
+      videos_list[filename.to_sym] = { path: path }
     end
 
     audios.each do |audio|
       path = audio.sub('www/public/', './')
       filename = File.basename(audio, File.extname(audio))
-      audios_list[filename.to_sym] = {path: path}
+      audios_list[filename.to_sym] = { path: path }
     end
 
     medias_list = '$images_list=' + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
+    puts "medias_list"
+    puts medias_list
     File.open(t.name, 'w') { |file| file.write(medias_list) }
   end
 end
-def update_opal_libraries
-  file 'www/public/js/third_parties/opal/opal.js': ['www/public/js/third_parties/opal'] do |t|
-    builder = Opal::Builder.new
-    builder.build('opal')
-    builder.build('opal-jquery')
-    # builder.build('opal-browser')
-    File.write(t.name, builder.to_s)
-  end
 
-  file 'www/public/js/third_parties/opal/opal_parser.js': ['www/public/js/third_parties/opal'] do |t|
-    require 'opal'
-    parser = Opal::Builder.new
-    parser.build('./opal_compiler/lib/parser.rb')
-    File.write(t.to_s, parser.to_s)
-  end
+dir_to_inspect = Dir.glob('www/public/medias/**/*')
+dir_to_inspect_2 = Dir.glob('eVe/medias/**/*')
+nb_of_medias_files = (dir_to_inspect.length + dir_to_inspect_2.length).to_s
+
+nb_of_medias_files_stored = File.read("cache/nb_of_medias_files")
+# we only update the media lib if there"s a change in number of medias file
+unless nb_of_medias_files == nb_of_medias_files_stored || File.file?('cache/nb_of_medias_files')
+  update_medias_list
+  File.write('cache/nb_of_medias_files', nb_of_medias_files)
 end
 
-update_medias_list
-update_opal_libraries
+if File.file?('app/temp/media_list.rb')
+  media_monitoring = ['app/temp/media_list.rb']
+else
+  update_medias_list
+  media_monitoring = ['app/temp/media_list.rb']
+end
+file 'www/public/js/atome_medias.js': media_monitoring do |t|
+  builder = Opal::Builder.new
+  builder.build('./app/temp/media_list.rb')
+  File.write(t.name, builder.to_s)
+end
 
 directory 'www/public/js/third_parties/opal'
 directory 'app/temp'
@@ -85,7 +109,7 @@ file 'www/public/js/atome.js': atome_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-app_monitoring =  Dir.glob('app/**/*') + Dir.glob('eVe/app.rb') + Dir.glob('eVe/projects/**/*')+ Dir.glob('eVe/eVe/lib/**/*')
+app_monitoring = Dir.glob('app/**/*') + Dir.glob('eVe/app.rb') + Dir.glob('eVe/projects/**/*') + Dir.glob('eVe/eVe/lib/**/*')
 file 'www/public/js/atome_app.js': app_monitoring do |t|
   builder = Opal::Builder.new
   if File.exist?('./eVe')
@@ -97,20 +121,13 @@ file 'www/public/js/atome_app.js': app_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-media_monitoring = ['app/temp/media_list.rb']
-file 'www/public/js/atome_medias.js': media_monitoring do |t|
-  builder = Opal::Builder.new
-  builder.build('./app/temp/media_list.rb')
-  File.write(t.name, builder.to_s)
-end
-
 opal = 'www/public/js/third_parties/opal/opal.js'
 parser = 'www/public/js/third_parties/opal/opal_parser.js'
 atome = 'www/public/js/atome.js'
 atome_app = 'www/public/js/atome_app.js'
 atome_medias = 'www/public/js/atome_medias.js'
 
-required_js_lib=[opal, parser, atome, atome_app, atome_medias]
+required_js_lib = [opal, parser, atome, atome_app, atome_medias]
 
 desc 'Run server'
 task 'run::server': required_js_lib do
@@ -142,7 +159,6 @@ task 'run::ios': required_js_lib do
   sh 'cordova run ios'
 end
 
-
 desc 'Run android'
 task 'run::android': required_js_lib do
   sh 'cordova run android'
@@ -170,7 +186,6 @@ def production opal, parser, atome
   open(parser, 'w') do |f|
     f.puts uglified
   end
-
 
   uglified = Uglifier.new(harmony: true).compile(File.read(atome))
   open(atome, 'w') do |f|
@@ -206,7 +221,6 @@ task 'production::ios': required_js_lib do
   production opal, parser, atome
   sh 'cordova run ios'
 end
-
 
 desc 'production android'
 task 'production::android': required_js_lib do
