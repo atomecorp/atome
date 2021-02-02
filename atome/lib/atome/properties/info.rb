@@ -1297,25 +1297,30 @@ module Nucleon
 
       # creation of object in object
       def image(params = nil, refresh = true)
-        params = {content: Atome.presets[:image][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :image, preset: :image, content: content})
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:image][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :image, preset: :image, content: content})
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
+
       end
 
       def image=(params = nil, refresh = true)
@@ -1323,25 +1328,31 @@ module Nucleon
       end
 
       def text(params = nil, refresh = true)
-        params = {content: Atome.presets[:text][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :text, preset: :text, content: content})
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:text][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :text, preset: :text, content: content})
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
+
         end
-        atome
+
       end
 
       def text=(params = nil, refresh = true)
@@ -1349,25 +1360,30 @@ module Nucleon
       end
 
       def box(params = nil, refresh = true)
-        params = {content: Atome.presets[:box][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-
-        atome = Atome.new({type: :shape, preset: :box})
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:box][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+
+          atome = Atome.new({type: :shape, preset: :box})
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
+
       end
 
       def box=(params = nil, refresh = true)
@@ -1375,23 +1391,28 @@ module Nucleon
       end
 
       def circle(params = nil, refresh = true)
-        params = {content: Atome.presets[:circle][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        atome = Atome.new({type: :shape, preset: :circle})
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:circle][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          atome = Atome.new({type: :shape, preset: :circle})
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
+
       end
 
       def circle=(params = nil, refresh = true)
@@ -1399,25 +1420,30 @@ module Nucleon
       end
 
       def user(params = nil, refresh = true)
-        params = {content: Atome.presets[:user][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :user, preset: :user, content: content})
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:user][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :user, preset: :user, content: content})
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
+
       end
 
       def user=(params = nil, refresh = true)
@@ -1425,25 +1451,30 @@ module Nucleon
       end
 
       def code(params = nil, refresh = true)
-        params = {content: Atome.presets[:code][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :code, preset: :code, content: content})
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:code][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :code, preset: :code, content: content})
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
+
       end
 
       def code=(params = nil, refresh = true)
@@ -1451,28 +1482,33 @@ module Nucleon
       end
 
       def video(params = nil, refresh = true)
-        params = {content: Atome.presets[:video][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :video, preset: :video, content: content})
-        insert(atome)
-        atome_a = Atome.new({type: :audio, preset: :audio, content: content})
-        atome.insert(atome_a)
         if params
-          x = params.delete(:x) if params[:x]
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
-          atome_a.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:video][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :video, preset: :video, content: content})
+          insert(atome)
+          atome_a = Atome.new({type: :audio, preset: :audio, content: content})
+          atome.insert(atome_a)
+          if params && params != true
+            x = params.delete(:x) if params[:x]
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+            atome_a.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
+
       end
 
       def video=(params = nil, refresh = true)
@@ -1480,26 +1516,29 @@ module Nucleon
       end
 
       def audio(params = nil, refresh = true)
-        params = {content: Atome.presets[:audio][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :audio, preset: :audio, content: content})
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:audio][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :audio, preset: :audio, content: content})
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
-
       end
 
       def audio=(params = nil, refresh = true)
@@ -1507,25 +1546,30 @@ module Nucleon
       end
 
       def web(params = nil, refresh = true)
-        params = {content: Atome.presets[:web][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :web, preset: :web, content: content})
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:web][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :web, preset: :web, content: content})
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
+
       end
 
       def web=(params = nil, refresh = true)
@@ -1533,23 +1577,28 @@ module Nucleon
       end
 
       def particle(params = nil, refresh = true)
-        params = {content: Atome.presets[:particle][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :particle, preset: :particle, content: content}, refresh)
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:particle][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :particle, preset: :particle, content: content}, refresh)
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          end
+          atome
+        else
+          return self.child[0]
         end
-        atome
+
       end
 
       def particle=(params = nil, refresh = true)
@@ -1557,25 +1606,30 @@ module Nucleon
       end
 
       def tool(params = nil, refresh = true)
-        params = {content: Atome.presets[:tool][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :tool, preset: :tool, content: content}, refresh)
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:tool][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :tool, preset: :tool, content: content}, refresh)
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
+
       end
 
       def tool=(params = nil, refresh = true)
@@ -1583,25 +1637,30 @@ module Nucleon
       end
 
       def effect(params = nil, refresh = true)
-        params = {content: Atome.presets[:effect][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :effect, preset: :effect, content: content}, refresh)
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:effect][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :effect, preset: :effect, content: content}, refresh)
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
+
       end
 
       def effect=(params = nil, refresh = true)
@@ -1609,27 +1668,29 @@ module Nucleon
       end
 
       def constraint(params = nil, refresh = true)
-        params = {content: Atome.presets[:constraint][:content]} unless params
-        if params.class == Symbol || params.class == String
-          content = {content: params}
-          params = content
-        end
-        params && params.class == Hash
-        content = params.delete(:content)
-        atome = Atome.new({type: :tag, preset: :constraint, content: content}, refresh)
-        insert(atome)
         if params
-          x = params.delete(:x)
-          y = params.delete(:y)
-          xx = params.delete(:xx)
-          yy = params.delete(:yy)
-          atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          params = {content: Atome.presets[:constraint][:content]} unless params
+          if params.class == Symbol || params.class == String
+            content = {content: params}
+            params = content
+          end
+          params && params.class == Hash
+          content = params.delete(:content)
+          atome = Atome.new({type: :tag, preset: :constraint, content: content}, refresh)
+          insert(atome)
+          if params && params != true
+            x = params.delete(:x)
+            y = params.delete(:y)
+            xx = params.delete(:xx)
+            yy = params.delete(:yy)
+            atome.set(params.merge({center: :true, x: x, y: y, xx: xx, yy: yy}))
+          else
+            atome.set({center: :true})
+          end
+          atome
         else
-          atome.set({center: :true})
+          return self.child[0]
         end
-        atome
-
-
       end
 
       def constraint=(params = nil, refresh = true)

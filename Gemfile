@@ -10,6 +10,7 @@ gem 'uglifier'
 gem 'parser'
 #https://github.com/whitequark/parser
 gem 'faye-websocket', "~> 0.11.0"
+#if fays websocket fail to install event machine use : gem install eventmachine -- --with-openssl-dir=/usr/local/opt/openssl@1.1
 gem 'puma', "~> 5.0.2"
 gem 'rack'
 gem 'rack-unreloader'

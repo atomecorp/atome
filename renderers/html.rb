@@ -172,7 +172,7 @@ module Render
     if params[:alpha]
       alpha = params[:alpha]
     else
-      alpha = 0
+      alpha = 1
     end
     return "rgba(#{red},#{green},#{blue},#{alpha})"
   end
