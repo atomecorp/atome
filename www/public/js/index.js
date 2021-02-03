@@ -212,7 +212,7 @@ let fileSystemPermissionEventListener = {
 
 let drawingEventListener = {
     onConnected: function (event) {
-        console.log('Drawing connected')
+        console.log('Drawing connected');
         drawingHelper.setMode(drawingHelper.modeType.Draw);
     }
 };
@@ -235,7 +235,7 @@ document.addEventListener("deviceready", function () {
 
     //drawingHelper
     drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-    // drawingHelper.connect();
+    drawingHelper.connect();
 }, false);
 
 window.ondragover = function (e) {

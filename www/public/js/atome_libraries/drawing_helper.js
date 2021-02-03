@@ -15,9 +15,23 @@ class DrawingHelper {
     }
 
     connect() {
-        this.frame = new Frame("fit", this.width, this.height, light, dark);
+        this.frame = new Frame("fit",
+            this.width,
+            this.height,
+            light,
+            dark,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            "atomeZimCanvas");
         const self = this;
         this.frame.on("ready", () => {
+            $('#view').append($('#atomeZimCanvas'));
             const stage = this.frame.stage;
 
             function beginDraw(x, y) {

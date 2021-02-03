@@ -10,7 +10,7 @@ class DatabaseHelper {
         const self = this;
         this.db.transaction(function(tx) {
             self.createTableUser(tx);
-            self.createUser(tx, 'Jeez', 'passJeez');
+            self.createUser(tx, 'Jeez', 'JeezPass');
         });
 
         this.databaseEventListener.onConnected();
@@ -23,7 +23,7 @@ class DatabaseHelper {
     }
 
     createUser(login, password) {
-        this.db.executeSql("INSERT INTO user (login, password) VALUES (?,?)", ['Jeez', 'JeezPass'], function(tx, result) {
+        this.db.executeSql("INSERT INTO user (login, password) VALUES (?,?)", [login, password], function(tx, result) {
             console.log('inserted user ' + login + ' with id: ' + result.insertId);
         });
     }
