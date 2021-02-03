@@ -1,5 +1,5 @@
 *.ds_store
-#.idea
+.idea
 /eVe/
 /app/temp/media_list.rb
 /app/clients/
