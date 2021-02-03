@@ -9,7 +9,6 @@ def create(options = nil)
 end
 
 
-
 def box(options = nil)
   options ||= {content: Atome.presets[:box][:content]}
   refresh = if options[:render] == false || options[:render] == :false

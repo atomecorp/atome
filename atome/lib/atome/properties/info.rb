@@ -133,6 +133,7 @@ module Nucleon
       def name=(params = nil, refresh = true)
         name(params, refresh)
       end
+
       def type(params = nil, refresh = true)
         if params || params == false
           @type = {content: params}
@@ -147,6 +148,7 @@ module Nucleon
       def type=(params = nil, refresh = true)
         type(params, refresh)
       end
+
       # specific property methods
       #def type_proc(proc)
       #  # if the object property contain a Proc it'll be processed here
@@ -1152,6 +1154,7 @@ module Nucleon
         end
         self
       end
+
       # animation
 
       def play(params = nil, refresh = true, &proc)
@@ -1876,6 +1879,7 @@ module Nucleon
       def atome_id=(params = nil, refresh = true)
         atome_id params, refresh
       end
+
       ################## utilities  ##############
       def reorder_properties(properties)
         # we re order the hash to puts the atome_id type at the begining to optimise rendering
