@@ -1,3 +1,15 @@
+def create(options = nil)
+  self.insert(options)
+  #if options.x([:center])
+  #  alert 'j'
+  #end
+  options.x=options.x[:content]+self.x[:content]
+  options.y=options.y[:content]+self.y[:content]
+  options
+end
+
+
+
 def box(options = nil)
   options ||= {content: Atome.presets[:box][:content]}
   refresh = if options[:render] == false || options[:render] == :false

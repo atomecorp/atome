@@ -1083,7 +1083,7 @@ strdelim
 b = image(:atome)
 b.drag(true)
 b.x(300)
-d=b.box()
+d=b.create(box({id: :my_box,  center: true}))
 b.text("hello")
 c=b.circle()
 b.child().each do |atome|
