@@ -15,7 +15,7 @@ class DrawingHelper {
     }
 
     connect() {
-        this.frame = new Frame("fit",
+        this.frame = new Frame("view",
             this.width,
             this.height,
             light,
@@ -31,21 +31,24 @@ class DrawingHelper {
             "atomeZimCanvas");
         const self = this;
         this.frame.on("ready", () => {
-            $('#view').append($('#atomeZimCanvas'));
             const stage = this.frame.stage;
 
+            const circle = new zim.Circle(50, green).loc(200, 200);
+            stage.update();
+
             function beginDraw(x, y) {
-                new Circle(100, pink)
-                    .loc(x, y);
+                circle
+                    .top()
+                    .animate({x, y}, 0.5);
                 stage.update();
             }
 
-            stage.on("stagemousedown", function() {
+            stage.on("stagemousedown", function(e) {
                 switch (self.mode) {
                     case self.modeType.Use:
                         break;
                     case self.modeType.Draw:
-                        beginDraw(stage.mouseX, stage.mouseY);
+                        beginDraw(self.frame.mouseX, self.frame.mouseY);
                         break;
                 }
             });

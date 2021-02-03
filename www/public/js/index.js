@@ -93,7 +93,7 @@ var html = {
 // upload methods here
 
 function import_visual_medias(e, file) {
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = function () {
         const dataURL = reader.result;
         // alert(dataURL)
