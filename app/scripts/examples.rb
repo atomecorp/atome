@@ -1100,6 +1100,21 @@ strdelim
     self.puts_help :tactile, demo_code
   end
 
+  def create_new_property
+    demo_code = <<strdelim
+#create property
+b=box({color: :red})
+b.create({property: :my_prop })
+b.my_prop="super kool"
+t=text("touch the box to read the newly created 'my_prop' propery")
+b.touch do
+  t.content=b.my_prop()
+end
+
+strdelim
+    self.puts_help :create_new_property, demo_code
+  end
+
   def record
     demo_code = <<strdelim
 # capture demo

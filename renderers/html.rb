@@ -60,10 +60,6 @@ module Render
     end
   end
 
-  def self.render_tactile(atome, params, add = false)
-
-  end
-
   def self.render_content(atome, params, add = false)
     if atome.type[:content] == :text || atome.type[:content] == :web
       #if atome.id=="code_content"
@@ -199,7 +195,7 @@ module Render
           if param[:angle]
             angle = param[:angle].to_s
 
-            elsif param[:diffusion]
+          elsif param[:diffusion]
             diffusion = param[:diffusion]
 
           elsif param[:content]
@@ -207,7 +203,7 @@ module Render
             if param[:content].class == Hash
               color_found = parse_color_datas(param[:content])
             else
-              color_found= param[:content]
+              color_found = param[:content]
             end
             value << color_found
 
@@ -215,7 +211,7 @@ module Render
             if param[:color].class == Hash
               color_found = parse_color_datas(param[:color])
             else
-              color_found= param[:color]
+              color_found = param[:color]
             end
             value << color_found
           else
@@ -555,7 +551,7 @@ module Render
                         if params.to_sym == :true
                           Nucleon::Core::Pi.presets[:border]
                         else
-                          {thickness: params}
+                          { thickness: params }
                         end
                       end
     pattern = formated_params[:pattern]
@@ -619,7 +615,7 @@ module Render
     # if JS_utils.mobile
     #   js_get(atome).trigger("touchstart", [params[:x],params[:y],params[:x]]);
     # else
-      js_get(atome).trigger("click", [params[:x],params[:y],params[:x]]);
+    js_get(atome).trigger("click", [params[:x], params[:y], params[:x]]);
     # end
   end
 
@@ -671,9 +667,7 @@ module Render
     end
   end
 
-  def self.render_active(atome, params, add = false)
-
-  end
+  def self.render_active(atome, params, add = false) end
 
   def self.render_group(atome, params, add = false)
     parent = r_get(atome.atome_id)
@@ -791,9 +785,9 @@ module Render
           atome.touch.each_with_index do |event, index|
             proc = event[:content]
             if index == 0
-              atome.set(touch: {option: event[:option]}, &proc)
+              atome.set(touch: { option: event[:option] }, &proc)
             else
-              atome.add(touch: {option: event[:option]}, &proc)
+              atome.add(touch: { option: event[:option] }, &proc)
             end
           end
         elsif params[:touch].to_sym == :up
@@ -818,9 +812,9 @@ module Render
             next if (event[:name] && event[:name].to_sym == params[:touch].to_sym)
             proc = event[:content]
             if index == 0
-              atome.set(touch: {option: event[:option]}, &proc)
+              atome.set(touch: { option: event[:option] }, &proc)
             else
-              atome.add(touch: {option: event[:option]}, &proc)
+              atome.add(touch: { option: event[:option] }, &proc)
             end
           end
         end
@@ -906,27 +900,16 @@ module Render
     return atome
   end
 
-  def self.render_capture(atome, params, add = false)
-=begin
-    js_get(atome).on(:touchmove) do
-      alert(:good)
+  def self.render_record(atome, params, add = false)
+    if params[:content] == true
+      js_get(atome).on(:mousemove) do |evt|
+        proc = params[:proc]
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    else
+      js_get(atome).unbind(:mousemove)
     end
-=end
-    # alert "#{atome} : we start the capture, look in the console"
-    starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-    wait 5 do
-      Element.find('#view').unbind(:mousemove)
-=begin
-      js_get(atome).trigger("click", ['30px', '30px']);
-=end
 
-
-    end
-    Element.find('#view').on(:mousemove) do |event|
-      ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      elapsed = ending - starting
-      puts("#{event.page_x}, #{event.page_y} : #{elapsed}"  )
-    end
   end
 
   def self.render_drag(atome, params, add = false)
@@ -943,23 +926,23 @@ module Render
     if params && params.class == Hash
       case params[:lock]
       when :parent
-        options = {containment: "parent"}
+        options = { containment: "parent" }
       when :x
-        options = {axis: "y"}
+        options = { axis: "y" }
       when :y
-        options = {axis: "x"}
+        options = { axis: "x" }
       when :test
         # atome_y=js_get(atome).css('top').sub("px","")
         # atome_x=js_get(atome).css('left').sub("px","")
         atome_y = atome.y[:content]
-        options = {containment: [-900, atome_y, 0, atome_y]}
+        options = { containment: [-900, atome_y, 0, atome_y] }
       when :all
         left = current_atome.css("left").sub("px", '').to_i
         top = current_atome.css("top").sub("px", '').to_i
-        options = {containment: [left, top, left, top]}
+        options = { containment: [left, top, left, top] }
       else
         if options
-          {containment: "#" + params[:lock].id}
+          { containment: "#" + params[:lock].id }
         end
       end
     end
@@ -973,20 +956,20 @@ module Render
       # we update current_atome position
       if atome.x
         x_position = current_atome.css('left').sub('px', '').to_i
-        atome.x({content: x_position}, false)
+        atome.x({ content: x_position }, false)
       end
       if atome.y
         y_position = current_atome.css('top').sub('px', '').to_i
-        atome.y({content: y_position}, false)
+        atome.y({ content: y_position }, false)
       end
       if atome.xx
         xx_position = r_get(atome.parent.last.atome_id).width - (current_atome.offset().left + current_atome.width())
-        atome.xx({content: xx_position}, false)
+        atome.xx({ content: xx_position }, false)
       end
 
       if atome.yy
         yy_position = r_get(atome.parent.last.atome_id).height - (current_atome.offset().top + current_atome.height())
-        atome.yy({content: yy_position}, false)
+        atome.yy({ content: yy_position }, false)
       end
     end
     current_atome.on(:dragstop) do |evt|
@@ -1026,7 +1009,6 @@ module Render
 
   def self.render_enter(atome, params, add = false)
     atome_id = '#' + atome.atome_id
-
 
     Element.find("#device")
     if params != true
@@ -1092,7 +1074,7 @@ module Render
   end
 
   def self.render_scale(atome, params, add = false)
-    r_get(atome.atome_id).resizable({handles: 'all'})
+    r_get(atome.atome_id).resizable({ handles: 'all' })
     r_get(atome.atome_id).on('resize') do |evt|
       atome.width(r_get(atome.atome_id).css("width").to_i, false)
       atome.height(r_get(atome.atome_id).css("height").to_i, false)
