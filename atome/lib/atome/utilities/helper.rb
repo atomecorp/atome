@@ -1,6 +1,31 @@
 # here stand some atome's function to allow atome's objects manipulation
 #
 
+def create_property(method_name)
+  Nucleon.define_method method_name do |params = nil, &proc|
+    # this is the main entry method for the current property treatment
+    # first we create a hash for the property if t doesnt exist
+    # we don't create a object init time, to only create property when needed
+    instance_method_name = if instance_variable_defined?("@" + method_name.to_s)
+                             instance_variable_get("@#{method_name}")
+                           else
+                             instance_variable_set("@#{method_name}", {})
+                           end
+    # we send the params to the 'reformat_params' if there's a params
+    method_analysis params, instance_method_name, method_name, proc if params || proc
+    # finally we return the current property using magic_getter
+    unless params
+      # no params send we call the getter
+      magic_getter instance_method_name
+    end
+  end
+  # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
+  # ex : for : "def color"  = > "def color= "
+  Nucleon.define_method method_name.to_s + "=" do |params = nil, &proc|
+    send(method_name, params, proc)
+  end
+end
+
 def select selector
   grab(:view).child.each do |atome|
     collected_atomes = []

@@ -8,6 +8,7 @@ module Universe
   class << self
     attr_reader :atomes
   end
+
 end
 
 # for test purpose only
@@ -171,6 +172,8 @@ class Nucleon
     # to allow system to be notified of property modification
     "I broadcast :#{params}"
   end
+
+
 end
 
 ## ------- verification 1 -------

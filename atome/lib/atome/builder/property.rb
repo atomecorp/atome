@@ -3,11 +3,15 @@
 
 module Atome_methods_list
   def self.atome_methods
-    %i[border display capture tactile]
+    %i[border display record tactile]
   end
   #the line below specify if the properties need specific processing
   def self.need_processing
     %i[border]
+  end
+
+  def self.need_rendering
+    %i[border display record]
   end
 end
 # the class below initialize the default values and generate properties's methods
@@ -19,28 +23,7 @@ class Sparkle
     #the line below specify if the properties need specific processing
     #need_processing=%i[ color border]
     atome_methods.each do |method_name|
-      Nucleon.define_method method_name do |params = nil, &proc|
-        # this is the main entry method for the current property treatment
-        # first we create a hash for the property if t doesnt exist
-        # we don't create a object init time, to only create property when needed
-        instance_method_name = if instance_variable_defined?("@" + method_name.to_s)
-                                 instance_variable_get("@#{method_name}")
-                               else
-                                 instance_variable_set("@#{method_name}", {})
-                               end
-        # we send the params to the 'reformat_params' if there's a params
-        method_analysis params, instance_method_name, method_name, proc if params || proc
-        # finally we return the current property using magic_getter
-        unless params
-          # no params send we call the getter
-          magic_getter instance_method_name
-        end
-      end
-      # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
-      # ex : for : "def color"  = > "def color= "
-      Nucleon.define_method method_name.to_s + "=" do |params = nil, &proc|
-        send(method_name, params, proc)
-      end
+      create_property(method_name)
     end
   end
 end
@@ -54,7 +37,9 @@ module Properties
     if Atome_methods_list.need_processing.include?(method_name)
       send("#{method_name}_processing", params)
     end
-    Render.send("render_#{method_name}", self, params) if params[:render].nil? || params[:render] == true
+    if Atome_methods_list.need_rendering.include?(method_name)
+      Render.send("render_#{method_name}", self, params) if params[:render].nil? || params[:render] == true
+    end
   end
 
   def property_parsing(params, method_name)

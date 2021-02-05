@@ -1070,6 +1070,8 @@ strdelim
     self.puts_help :play_at_api, demo_code
   end
 
+
+
   def virtual_events
     demo_code = <<strdelim
 b=box()
@@ -1096,6 +1098,30 @@ end
 t=text(tactile)
 strdelim
     self.puts_help :tactile, demo_code
+  end
+
+  def record
+    demo_code = <<strdelim
+# capture demo
+recorder=box({width: 30, height: 30, color: :red, x:30, y: 30})
+stop=box({width: 30, height: 30, color: :black, x:90, y: 30})
+starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+text=text("mouse pointer position and timer")
+recorder.touch do
+  get(:view).record(true) do |evt|
+    ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    elapsed = ending - starting
+    pointer="\#{evt.page_x}, \#{evt.page_y} : \#{elapsed}"
+    text.content= pointer
+  end
+end
+
+stop.touch do
+  get(:view).record(:stop)
+end
+
+strdelim
+    self.puts_help :record, demo_code
   end
 
   def add_prop_to_all_childs_api

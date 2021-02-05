@@ -1,10 +1,19 @@
 def create(options = nil)
-  self.insert(options)
-  #if options.x([:center])
-  #  alert 'j'
-  #end
-  options.x=options.x[:content]+self.x[:content]
-  options.y=options.y[:content]+self.y[:content]
+
+  if options.class== Atome
+    self.insert(options)
+    options.x=options.x[:content]+self.x[:content]
+    options.y=options.y[:content]+self.y[:content]
+  elsif options.class== Hash
+    #here we can create properties for Atome on the fly unless it already exist
+    #usefull to add some kind of personal properties or tag objects
+    if  Atome.methods.include?(options[:property])
+      alert "property #{options[:property]} already exist!!"
+      else
+      method_name=options[:property]
+      create_property(method_name)
+    end
+  end
   options
 end
 
