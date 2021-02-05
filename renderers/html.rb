@@ -60,6 +60,10 @@ module Render
     end
   end
 
+  def self.render_tactile(atome, params, add = false)
+
+  end
+
   def self.render_content(atome, params, add = false)
     if atome.type[:content] == :text || atome.type[:content] == :web
       #if atome.id=="code_content"
@@ -612,7 +616,11 @@ module Render
   end
 
   def self.render_virtual_touch(atome, params, add = false)
-    JS_utils.virtual_touch params[:target], params[:content]
+    # if JS_utils.mobile
+    #   js_get(atome).trigger("touchstart", [params[:x],params[:y],params[:x]]);
+    # else
+      js_get(atome).trigger("click", [params[:x],params[:y],params[:x]]);
+    # end
   end
 
   def self.render_edit(atome, params, add = false)
@@ -896,6 +904,29 @@ module Render
       end
     end
     return atome
+  end
+
+  def self.render_capture(atome, params, add = false)
+=begin
+    js_get(atome).on(:touchmove) do
+      alert(:good)
+    end
+=end
+    # alert "#{atome} : we start the capture, look in the console"
+    starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    wait 5 do
+      Element.find('#view').unbind(:mousemove)
+=begin
+      js_get(atome).trigger("click", ['30px', '30px']);
+=end
+
+
+    end
+    Element.find('#view').on(:mousemove) do |event|
+      ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      elapsed = ending - starting
+      puts("#{event.page_x}, #{event.page_y} : #{elapsed}"  )
+    end
   end
 
   def self.render_drag(atome, params, add = false)

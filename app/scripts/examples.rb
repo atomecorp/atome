@@ -1072,10 +1072,30 @@ strdelim
 
   def virtual_events
     demo_code = <<strdelim
-  e=box()
-  e.virtual_touch({target: e.atome_id, content: "Opal.Atome.$text('we just simulate a click on box ')"})
+b=box()
+c=text("touch the box: it'll send avitual click on the circle")
+c.x=c.y=33
+c.touch do
+  c.color(:blue)
+   c.content("touched")
+end
+b.touch do
+  c.virtual_touch({x: 30, y:30})
+end
 strdelim
     self.puts_help :virtual_events, demo_code
+  end
+
+  def tactile
+    demo_code = <<strdelim
+if get(:view).tactile() == true
+tactile="it's a touch screen"
+else
+tactile="you screen is not tactile"
+end
+t=text(tactile)
+strdelim
+    self.puts_help :tactile, demo_code
   end
 
   def add_prop_to_all_childs_api

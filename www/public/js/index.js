@@ -90,6 +90,9 @@ var html = {
 
 };
 
+
+
+
 // upload methods here
 
 function import_visual_medias(e, file) {
@@ -257,3 +260,16 @@ window.ondrop = function (e) {
         });
     }
 };
+
+/*
+setTimeout(function () {
+    //$("atomeZimCanvas").trigger("click", [800, 800]);
+    var x = 918, y = 549;
+    var element = $("atomeZimCanvas");
+    element.click()
+
+    alert("Hello from index.js");
+}, 3000);
+*/
+
+
