@@ -2,3 +2,4 @@
 - corrected offset when insert an objet into another
 - added << method to add content
 - add basis in helper folder for all atom's methods
+- Write windows install documentation

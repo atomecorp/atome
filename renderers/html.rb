@@ -620,14 +620,14 @@ module Render
   end
 
   def self.render_edit(atome, params, add = false)
-    if params == :true || params == true
+    if params == :true || params == true || params == :start
       r_get(atome.atome_id).attr('contenteditable', 'true')
       r_get(atome.atome_id).css('-webkit-user-select', 'text')
       r_get(atome.atome_id).css('-khtml-user-select', 'text')
       r_get(atome.atome_id).css('-moz-user-select', 'text')
       r_get(atome.atome_id).css('-o-user-select', 'text')
       r_get(atome.atome_id).css('user-select: text', 'text')
-    elsif params == :false || params == false
+    elsif params == :false || params == false ||  params == :stop
       r_get(atome.atome_id).attr('contenteditable', 'false')
       r_get(atome.atome_id).css('-webkit-user-select', 'none')
       r_get(atome.atome_id).css('-khtml-user-select', 'none')
@@ -1045,6 +1045,8 @@ module Render
   end
 
   def self.render_key(atome, params, add = false)
+    # the line below is important for the object to get focus if not keypress wont be trigged
+    atome.edit(true)
     unless add
       atome.delete(:touch)
     end
@@ -1053,16 +1055,21 @@ module Render
       params = params[:params]
     end
     if params == :down
-      r_get(atome.atome_id).on("keydown") do |evt|
+      js_get(atome).on("keydown") do |evt|
         proc.call(evt) if proc.is_a?(Proc)
       end
     elsif params == :up
-      r_get(atome.atome_id).on("keyup") do |evt|
+      js_get(atome).on("keyup") do |evt|
         proc.call(evt) if proc.is_a?(Proc)
       end
+    elsif params == :stop
+      js_get(atome).unbind("keypress")
+      atome.edit(:false)
     else
-      view = JS_utils.document
-      view.on(:keypress) do |evt|
+      # view = JS_utils.document
+      js_get(atome).on(:keypress) do |evt|
+        # alert  Element.find(`document.activeElement`).id
+        evt.prevent_default
         proc.call(evt) if proc.is_a?(Proc)
       end
     end

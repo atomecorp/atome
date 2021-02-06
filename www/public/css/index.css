@@ -45,6 +45,7 @@ html, body {
 
 .atome {
     pointer-events: auto;
+    caret-color: transparent;
     outline: none;
     -webkit-user-select: none;
     -khtml-user-select: none;

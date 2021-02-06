@@ -964,6 +964,7 @@ module Nucleon
       def key(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] &&
             params[:content].class == Proc
+
         if proc
           case params
           when nil
@@ -1002,6 +1003,9 @@ module Nucleon
             Render.render_key(self, params)
           end
           self
+        elsif (params.class== String || params.class== Symbol ) && refresh
+          params= { params: params }
+          Render.render_key(self, params)
         else
           @key
         end
