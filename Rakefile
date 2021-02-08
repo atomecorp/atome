@@ -1,4 +1,4 @@
-require 'c_lexer'
+# require 'c_lexer'
 require 'opal'
 require 'opal-jquery'
 # require 'opal-browser'

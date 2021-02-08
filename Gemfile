@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-#coment when genrating arm version
+#coment when generating arm version
 #gem 'c_lexer'
 gem 'image_size'
 gem 'opal', ">= 1.0.5"
