@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-gem 'c_lexer'
+#gem 'c_lexer'
 gem 'image_size'
 gem 'opal', ">= 1.0.5"
 # gem 'opal-browser', ">= 0.2.0"
