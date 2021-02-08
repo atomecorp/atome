@@ -9,28 +9,28 @@ prerequisite:
 
     ruby
         on FreeBSD : 
-	pkg install ruby
-	pkg install ruby27-gems
+		pkg install ruby
+		pkg install ruby27-gems
         on Linux :
         on MacOS :  
-                    \curl -sSL https://get.rvm.io | bash -s stable --ruby
+		\curl -sSL https://get.rvm.io | bash -s stable --ruby
         on windows :
-                    https://rubyinstaller.org/downloads/
+		https://rubyinstaller.org/downloads/
 
     npm
         on FreeBSD : 
-	pkg install npm
+		pkg install npm
         on Linux :
-        on MacOS : 
-                    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	on OSX :
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
                     brew install NPM
         on windows :
-install git :
-https://git-scm.com/download/win
-install Npm:
-            https://nodejs.org/en/
-			Install Visual studio 2017 with feature "universal windows app development tools"
-			cordova build windows --arch="x64"
+		install git :
+			https://git-scm.com/download/win
+		install Npm:
+            		https://nodejs.org/en/
+		Install Visual studio 2017 with feature "universal windows app development tools"
+		cordova build windows --arch="x64"
 
     cordova
          npm install -g cordova 
