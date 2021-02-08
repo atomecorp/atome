@@ -291,7 +291,7 @@ strdelim
 
   def find_atome_from_params_api
     demo_code = <<strdelim
-#assume to find an object based on id atome_id or th object itself
+#suppose to find an object based on id atome_id or the object itself
 b=box()
 wait 1 do
   b.find_atome_from_params(b.atome_id).color(:green)

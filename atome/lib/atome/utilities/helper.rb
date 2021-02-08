@@ -98,8 +98,31 @@ def dig(params)
   find({value: params, scope: :blackhole})
 end
 
+#def filter_atomes(params)
+#  #remove system object from atomes_found (params)
+#  params.delete(:blackhole)
+#  params.delete(:dark_matter)
+#  params.delete(:device)
+#  params.delete(:intuition)
+#  params.delete(:view)
+#  params.delete(:actions)
+#
+#end
+
+def find_atome_from_params params
+  # this function all to return the atome either send and is an atome_id or the atome itself
+  if params.class == Atome
+    supposed_atome = params
+  else
+    supposed_atome = grab(params) if params.class == String || params.class == Symbol
+    #if the first condition return nil now we check if an id exist
+    supposed_atome = get(params) unless supposed_atome
+  end
+  # we return the atome itself
+  return supposed_atome
+end
+
 def find(params, method = nil)
-  #first we parse the params
   if params.class == String || params.class == Symbol || params.class == Boolean
     params = if params == true || params == :true
                {scope: :view, value: :all}
@@ -135,42 +158,31 @@ def find(params, method = nil)
   # now we treat
   if params[:value] == :all || params[:value] == 'all'
     atomes_found = []
+    # allow to retrieve the object based on it's ID it atome_id or obejct itself
     case params[:format]
     when :id || 'id'
       atomes.each do |atome_found|
         atomes_found << atome_found.id
       end
-      atomes_found.delete(:blackhole)
-      atomes_found.delete(:dark_matter)
-      atomes_found.delete(:device)
-      atomes_found.delete(:intuition)
-      atomes_found.delete(:view)
-      atomes_found.delete(:actions)
+      #filter_atomes(atomes_found)
+      atomes_found
     when :atome_id || 'atome_id'
       atomes.each do |atome|
         atomes_found << atome.atome_id
       end
-      atomes_found.delete(:blackhole)
-      atomes_found.delete(:dark_matter)
-      atomes_found.delete(:device)
-      atomes_found.delete(:intuition)
-      atomes_found.delete(:view)
-      atomes_found.delete(:actions)
+      #filter_atomes(atomes_found)
+      atomes_found
     when :atome || 'atome'
       atomes.each do |atome_found|
         atomes_found << atome_found
       end
-      atomes_found.delete(grab(:blackhole))
-      atomes_found.delete(grab(:dark_matter))
-      atomes_found.delete(grab(:device))
-      atomes_found.delete(grab(:intuition))
-      atomes_found.delete(grab(:view))
-      atomes_found.delete(grab(:actions))
+      #filter_atomes(atomes_found)
+      atomes_found
     end
   else
     case params[:property]
     when :id || 'id'
-      atomes_found = ""
+      atomes_found = ''
       atomes.each do |atome|
         if atome.id == params[:value]
           atomes_found = atome
@@ -178,20 +190,31 @@ def find(params, method = nil)
       end
 
     when :atome_id || 'atome_id'
-      atomes_found = ""
+      atomes_found = ''
       atomes.each do |atome|
         if atome.atome_id ==  params[:value]
           atomes_found = atome
         end
       end
     when :atome || 'atome'
-      atomes_found = ""
+      atomes_found = ''
       atomes.each do |atome|
         if atome == params[:value]
           atomes_found = atome
         end
       end
+    else
+      # here we get any atomes that match the current prop
+      atomes_found = []
+      atomes.each do |atome|
+        alert(atome.id)
+        params[:value]
+        if atome.send(params[:property]) == params[:value]
+          atomes_found << atome
+        end
+      end
     end
+
   end
   atomes_found
 end
