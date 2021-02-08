@@ -7,7 +7,7 @@ Cross platform development
 
 prerequisite:
 
-    ruby
+    ruby :
         on FreeBSD : 
 		pkg install ruby
 		pkg install ruby27-gems
@@ -17,28 +17,38 @@ prerequisite:
         on windows :
 		https://rubyinstaller.org/downloads/
 
-    npm
+    npm :
         on FreeBSD : 
 		pkg install npm
         on Linux :
 	on OSX :
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
                     brew install NPM
-        on windows :
-		install git :
-			https://git-scm.com/download/win
+	on Windows	  
 		install Npm:
             		https://nodejs.org/en/
+	
+    GIT :	
+     	on FreeBSD : 
+		pkg install git
+        on Linux :
+        on MacOS :  
+		brew install git
+        on windows :
+		install git :
+	
+	Other :
+	
+        on windows :	
 		Install Visual studio 2017 with feature "universal windows app development tools"
 		cordova build windows --arch="x64"
 
-    cordova
-         npm install -g cordova 
+   
 
 
 To install application and run: 
 	 
-    npm install  
+    npm install -g cordova (or depending on platform:  npm install cordova)
     cordova platform add browser
     cordova platform add osx
     cordova platform add windows
@@ -48,7 +58,7 @@ To install application and run:
     bundle install
     bundle exec rake run::browser  
 
- 
+
 
 I - Architecture of the folders
 -
