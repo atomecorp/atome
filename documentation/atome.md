@@ -9,8 +9,9 @@ prerequisite:
 
     ruby :
         on FreeBSD : 
-		pkg install ruby
-		pkg install ruby27-gems
+		sudo pkg install ruby
+		sudo pkg install ruby27-gems
+		sudo gem install bundler
         on Linux :
         on MacOS :  
 		\curl -sSL https://get.rvm.io | bash -s stable --ruby
@@ -19,7 +20,7 @@ prerequisite:
 
     npm :
         on FreeBSD : 
-		pkg install npm
+		sudo pkg install npm
         on Linux :
 	on OSX :
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -35,7 +36,7 @@ prerequisite:
         on MacOS :  
 		brew install git
         on windows :
-		install git :
+		sudo install git :
 	
 	Other :
 	
