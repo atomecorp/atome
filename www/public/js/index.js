@@ -234,8 +234,8 @@ document.addEventListener("deviceready", function () {
     fileHelper.connect(564654);
 
     //drawingHelper
-    // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-    // drawingHelper.connect();
+    drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+    drawingHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
@@ -258,15 +258,7 @@ window.ondrop = function (e) {
     }
 };
 
-/*
-setTimeout(function () {
-    //$("atomeZimCanvas").trigger("click", [800, 800]);
-    var x = 918, y = 549;
-    var element = $("atomeZimCanvas");
-    element.click()
 
-    alert("Hello from index.js");
-}, 3000);
-*/
+
 
 
