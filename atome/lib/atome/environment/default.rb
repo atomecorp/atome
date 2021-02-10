@@ -32,6 +32,7 @@ module Nucleon
         video = visual.merge({type: :video, color: :transparent, content: :atome}).merge(@@video)
         audio = visual.merge({type: :audio, color: :transparent, content: :atome}).merge(@@audio)
         particle = {type: :particle, content: nil}.merge(@@particle)
+        collector = {type: :collector, content: nil}.merge(@@particle)
         tool = visual.merge({type: :tool, width: 52, height: 50, parent: :intuition, content: :dummy}).merge(@@tool)
         web = visual.merge({type: :web, color: :transparent, content: :atome}).merge(@@web)
         user = visual.merge({type: :user, color: :transparent, name: :anonymous, pass: :none, content: :anonymous}).merge(@@user)
@@ -50,6 +51,7 @@ module Nucleon
             video: video,
             audio: audio,
             particle: particle,
+            collector: collector,
             tool: tool,
             web: web,
             user: user,
@@ -57,6 +59,7 @@ module Nucleon
             shadow: shadow,
             border: border,
             blur: blur,
+
         }
         return types
       end

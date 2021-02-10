@@ -3,7 +3,7 @@
 
 module Atome_methods_list
   def self.atome_methods
-    %i[border display record tactile selector color]
+    %i[border display record tactile selector color ]
   end
   #the line below specify if the properties need specific processing
   def self.need_processing
@@ -30,14 +30,24 @@ end
 module Properties
   # the methods below must be executed once only
   def send_hash(params, method_name)
-    # if prop needs to be refresh we send it to the Render engine
-    broadcast(atome_id => {method_name => params})
-    if Atome_methods_list.need_processing.include?(method_name)
-      send("#{method_name}_processing", params)
+    if self.type[:content]==:collector
+       self.content.each do |atome_to_be_proceessed|
+         atome_to_be_proceessed.send(method_name,params)
+       end
+    else
+      # if prop needs to be refresh we send it to the Render engine
+      broadcast(atome_id => {method_name => params})
+      if Atome_methods_list.need_processing.include?(method_name)
+        send("#{method_name}_processing", params)
+      end
+      if Atome_methods_list.need_rendering.include?(method_name)
+        Render.send("render_#{method_name}", self, params) if params.class==Array || params[:render].nil? || params[:render] == true
+      end
     end
-    if Atome_methods_list.need_rendering.include?(method_name)
-      Render.send("render_#{method_name}", self, params) if params.class==Array || params[:render].nil? || params[:render] == true
+    if self.type[:content]==:collector
+      self.delete(true)
     end
+    self
   end
 
   def property_parsing(params, method_name)

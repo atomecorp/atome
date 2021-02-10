@@ -9,20 +9,31 @@ def create(options = nil)
     #usefull to add some kind of personal properties or tag objects
     if  Atome.methods.include?(options[:property])
       alert "property #{options[:property]} already exist!!"
-      else
-      method_name=options[:property]
+    else
+        method_name=options[:property]
       create_property(method_name)
     end
   end
   options
 end
 
+def collector(options = nil)
+  options ||= {content: Atome.presets[:batch][:content]}
+  refresh = if options[:render] == false || options[:render] == :false
+              false
+            else
+              true
+            end
+  options&.instance_of?(Hash)
+  options = {type: :collector, preset: :collector}.merge(options)
+  Atome.new(options, refresh)
+end
 
 def box(options = nil)
   options ||= {content: Atome.presets[:box][:content]}
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   options&.instance_of?(Hash)
@@ -35,8 +46,8 @@ def circle(options = nil)
     options = {content: Atome.presets[:circle][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   options && options.class == Hash
@@ -49,8 +60,8 @@ def text(options = nil)
     options = {content: Atome.presets[:text][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -67,8 +78,8 @@ def image(options = nil)
     options = {content: Atome.presets[:image][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -85,8 +96,8 @@ def audio(options = nil)
     options = {content: Atome.presets[:audio][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -103,8 +114,8 @@ def video(options = nil)
     options = {content: Atome.presets[:video][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -125,8 +136,8 @@ def web(options = nil)
     options = {content: Atome.presets[:web][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -144,8 +155,8 @@ def tool(options = nil)
     options = {content: Atome.presets[:tool][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -162,8 +173,8 @@ def particle(options = nil)
     options = {content: Atome.presets[:particle][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -181,8 +192,8 @@ def user(options = nil)
     options = {content: Atome.presets[:user][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -199,8 +210,8 @@ def code(options = nil)
     options = {content: Atome.presets[:code][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -217,8 +228,8 @@ def effect(options = nil)
     options = {content: Atome.presets[:text][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String
@@ -235,8 +246,8 @@ def constraint(options = nil)
     options = {content: Atome.presets[:text][:content]}
   end
   refresh = if options[:render] == false || options[:render] == :false
-    false
-  else
+              false
+            else
     true
             end
   if options.class == Symbol || options.class == String

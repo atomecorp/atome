@@ -1307,7 +1307,7 @@ module Nucleon
         end
       end
 
-      # creation of object in object
+      # methods to allow creation of object in object
       def image(params = nil, refresh = true)
         if params
           params = {content: Atome.presets[:image][:content]} unless params
@@ -1903,15 +1903,21 @@ module Nucleon
             .merge(properties).merge({content: content}).merge({size: size}).merge({center: center})
       end
 
-      def batch atomes, properties
-        atomes.each do |atome|
-          properties.each do |property, value|
-            atome.send(property, value)
-          end
+      # def batch atomes, properties
+      #   atomes.each do |atome|
+      #     properties.each do |property, value|
+      #       atome.send(property, value)
+      #     end
+      #   end
+      # end
+
+      def batch(*params)
+        collector=[]
+        params.each do |atome|
+          collector <<  atome
         end
+        collector({content: collector})
       end
-
-
 
       def parse_params params, method
         case params

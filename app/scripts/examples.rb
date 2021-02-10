@@ -823,20 +823,13 @@ strdelim
 
   def batch_api
     demo_code = <<~Strdelim
-      text_color=:orange
-      t1=text("Text 1")
-      t1.x=20
-      t1.y=20
-      t2=text("Text 2")
-      t2.x=220
-      t2.y=20
-      t3=text("Text 3")
-      t3.x=440
-      t3.y=20
-      t4=text("Text 4")
-      t4.x=660
-      t4.y=20
-      Atome.batch([t1,t2,t3,t4], {content: :batched,color: text_color, size: 16, y: 150})
+a = circle({ x: 100, y: 200 })
+b = text({ content: :hello, x: 50, y: 300 })
+t=text({ content: "touch me to batch process the object below" , x: 70, y: 120})
+t.touch do
+  get(:view).batch(a, b).set({color: :cyan, size: 16, y: 150})
+end
+
 Strdelim
     self.puts_help :batch_api, demo_code
   end

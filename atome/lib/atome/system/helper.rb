@@ -14,9 +14,9 @@ class Helper
     Render.render_to_px(obj, property)
   end
 
-  def self.batch atomes, properties
-    get(:view).batch atomes, properties
-  end
+  # def self.batch atomes, properties
+  #   get(:view).batch atomes, properties
+  # end
 
 
 

@@ -26,6 +26,13 @@ def create_property(method_name)
   end
 end
 
+def batch(*params)
+  collector=[]
+  params.each do |atome|
+    collector <<  atome
+  end
+  collector({content: collector})
+end
 
 
 # def select selector
