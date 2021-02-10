@@ -107,16 +107,72 @@ def dig(params)
   find({value: params, scope: :blackhole})
 end
 
-#def filter_atomes(params)
-#  #remove system object from atomes_found (params)
-#  params.delete(:blackhole)
-#  params.delete(:dark_matter)
-#  params.delete(:device)
-#  params.delete(:intuition)
-#  params.delete(:view)
-#  params.delete(:actions)
-#
-#end
+def filter_system_object
+  atomes = Atome.atomes + Atome.blackhole
+  filtered_atomes = []
+  atomes.each do |atome|
+    if atome.id != :dark_matter && atome.id != :blackhole && atome.id != :device && atome.id != :intuition && atome.id != :view && atome.id != :actions
+      filtered_atomes << atome
+    end
+  end
+  return filtered_atomes
+end
+
+def found_child_recursively params
+  params.each do |child_found|
+    if child_found.class == Atome
+      @childs_found << child_found
+      if child_found.child && child_found.child.length > 0
+        found_child_recursively child_found.child
+      end
+    end
+  end
+end
+
+def filter_atome
+  @childs_found = []
+  found_child_recursively(self.child())
+  @childs_found
+end
+
+def finder params
+  if params[:scope] == :all
+    filtered_atomes = filter_system_object
+  elsif params[:recursive]
+    filtered_atomes = self.filter_atome
+  else
+    filtered_atomes = []
+    self.child.each do |atome|
+      if atome.class == Atome
+        filtered_atomes << atome
+      end
+    end
+  end
+  if params[:itself]
+    filtered_atomes << self
+  end
+  atomes_found = []
+
+  if params[:property] == :all
+    atomes_found = filtered_atomes
+  else
+    filtered_atomes.each do |atome|
+      if params[:value]
+        if atome && atome.send(params[:property]) == params[:value]
+          atomes_found << atome
+        end
+      else
+        if atome && atome.send(params[:property])
+          atomes_found << atome
+        end
+      end
+
+    end
+  end
+
+  atomes_found
+end
+
 
 def find_atome_from_params params
   # this function all to return the atome either send and is an atome_id or the atome itself
