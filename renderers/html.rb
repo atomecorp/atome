@@ -183,55 +183,63 @@ module Render
       r_get(atome.atome_id).css('-webkit-background-clip', 'text')
       r_get(atome.atome_id).css('-webkit-text-fill-color', 'transparent')
     end
-    if params.class == Hash
-      params = parse_color_datas(params)
-      value = ' linear-gradient(0deg,' + params + ', ' + params + ')'
-    elsif params.class == Array
+    if params.class == Array
       value = []
       angle = '180'
       diffusion = "linear"
       params.each do |param|
-        if param.class == Hash
-          if param[:angle]
-            angle = param[:angle].to_s
+        # params=params[:content]
+          if param.class == Hash
+            if param[:angle]
+              angle = param[:angle].to_s
 
-          elsif param[:diffusion]
-            diffusion = param[:diffusion]
+            elsif param[:diffusion]
+              diffusion = param[:diffusion]
 
-          elsif param[:content]
-            #value << param[:content]
-            if param[:content].class == Hash
-              color_found = parse_color_datas(param[:content])
-            else
-              color_found = param[:content]
-            end
-            value << color_found
+            elsif param[:content]
 
-          elsif param[:color]
-            if param[:color].class == Hash
-              color_found = parse_color_datas(param[:color])
-            else
-              color_found = param[:color]
-            end
-            value << color_found
-          else
-            value << parse_color_datas(param)
-          end
-        else
-          value << param
-        end
-      end
-      value = if diffusion == 'linear'
-                ' linear-gradient(' + angle + 'deg, ' + value.join(',') + ')'
+              #value << param[:content]
+              if param[:content].class == Hash
+                # alert("hhh")
+                color_found = parse_color_datas(param[:content])
               else
-                ' radial-gradient(' + value.join(',') + ')'
+                color_found = param[:content]
               end
-    else
-      value = ' linear-gradient(0deg,' + params + ', ' + params + ')'
-    end
-    r_get(atome.atome_id).css(color, value)
-  end
+              value << color_found
 
+            elsif param[:color]
+              if param[:color].class == Hash
+                color_found = parse_color_datas(param[:color])
+              else
+                color_found = param[:color]
+              end
+              value << color_found
+            else
+              value << parse_color_datas(param)
+            end
+          else
+            value << param
+          end
+        end
+
+      if diffusion == 'linear'
+
+        value=' linear-gradient(' + angle + 'deg, ' + value.join(',') + ')'
+             else
+               value =    ' radial-gradient(' + value.join(',') + ')'
+      end
+      r_get(atome.atome_id).css(color, value)
+    else
+      params=params[:content]
+      if params.class == Hash
+        params = parse_color_datas(params)
+        value = ' linear-gradient(0deg,' + params + ', ' + params + ')'
+      else
+        value = ' linear-gradient(0deg,' + params + ', ' + params + ')'
+      end
+      r_get(atome.atome_id).css(color, value)
+  end
+    end
   def self.render_opacity(atome, params, add = false)
     r_get(atome.atome_id).css(:opacity, params)
   end

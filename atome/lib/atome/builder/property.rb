@@ -3,7 +3,7 @@
 
 module Atome_methods_list
   def self.atome_methods
-    %i[border display record tactile]
+    %i[border display record tactile selector color]
   end
   #the line below specify if the properties need specific processing
   def self.need_processing
@@ -11,7 +11,7 @@ module Atome_methods_list
   end
 
   def self.need_rendering
-    %i[border display record]
+    %i[border display record color]
   end
 end
 # the class below initialize the default values and generate properties's methods
@@ -20,8 +20,7 @@ class Sparkle
   def initialize
     # the line below create atomes's methods using meta-programming
     atome_methods = Atome_methods_list.atome_methods
-    #the line below specify if the properties need specific processing
-    #need_processing=%i[ color border]
+
     atome_methods.each do |method_name|
       create_property(method_name)
     end
@@ -29,7 +28,6 @@ class Sparkle
 end
 # the class below contains all common properties's methods
 module Properties
-
   # the methods below must be executed once only
   def send_hash(params, method_name)
     # if prop needs to be refresh we send it to the Render engine
@@ -38,7 +36,7 @@ module Properties
       send("#{method_name}_processing", params)
     end
     if Atome_methods_list.need_rendering.include?(method_name)
-      Render.send("render_#{method_name}", self, params) if params[:render].nil? || params[:render] == true
+      Render.send("render_#{method_name}", self, params) if params.class==Array || params[:render].nil? || params[:render] == true
     end
   end
 
@@ -56,7 +54,7 @@ module Properties
 
   def array_parsing(params, instance_variable, method_name, proc)
     params.each_with_index do |param, index|
-      if param.instance_of?(Hash) && param[:add] != false
+      if param.instance_of?(Hash) && param[:add] != false && index != 0
         param[:add] = true
       elsif !param.instance_of?(Hash)
         param = {content: param, add: true}

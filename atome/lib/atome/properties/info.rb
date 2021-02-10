@@ -578,28 +578,42 @@ module Nucleon
         detach(params, refresh)
       end
 
-
-      def selector(params = nil, refresh = true)
-        if params || params == false
-          if params.class == Hash && params[:add]
-            if @selector.class == Array
-              @selector << params if !@selector.include? params
-            else
-              @selector = [params]
-            end
-          else
-            @selector = [params]
+      def selection params
+        if params
+          self.find(property: :select, value: true, recursive: true).each do |atome|
+            atome.set(params)
           end
-          Render.render_selector(self, params) if refresh
-          #  self
         else
-          @selector
+          select_atomes=[]
+          self.find(property: :select, value: true, recursive: true).each do |atome|
+            select_atomes << atome
+          end
+          select_atomes
         end
+
       end
 
-      def selector=(params = nil, refresh = true)
-        selector(params, refresh)
-      end
+      # def selector(params = nil, refresh = true)
+      #   if params || params == false
+      #     if params.class == Hash && params[:add]
+      #       if @selector.class == Array
+      #         @selector << params if !@selector.include? params
+      #       else
+      #         @selector = [params]
+      #       end
+      #     else
+      #       @selector = [params]
+      #     end
+      #     Render.render_selector(self, params) if refresh
+      #     #  self
+      #   else
+      #     @selector
+      #   end
+      # end
+      #
+      # def selector=(params = nil, refresh = true)
+      #   selector(params, refresh)
+      # end
 
       # events
       def touch(params = nil, refresh = true, &proc)

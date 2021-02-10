@@ -50,7 +50,7 @@ prerequisite:
 To install application and run: 
 	 
     npm install -g cordova (or depending on platform:  npm install cordova)
-    cordova platform add browser
+    sudo cordova platform add browser
     cordova platform add osx
     cordova platform add windows
     cordova plugin add cordova-sqlite-storage
@@ -59,6 +59,9 @@ To install application and run:
     bundle install
     bundle exec rake run::browser  
 
+trouble shooting :
+if : Cannot find module 'shelljs' error
+try sudo cordova platform remove browser
 
 
 I - Architecture of the folders

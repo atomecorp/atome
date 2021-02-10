@@ -104,15 +104,19 @@ module Nucleon
       end
 
       def add params, refresh = true, &proc
-        if params.class == Hash
+        # if params.class == Hash
           params.each do |property, value|
-            # send :  first is the function call, second is the value, third is to refresh the view fourth to add/stack the prop or replace, and last is the proc if present
-            send(property, value, refresh, true, &proc)
+            unless value.class==Hash
+              value={content: value}
+            end
+            # alert("#{property} #{value.merge(add: true)}")
+        #     # send :  first is the function call, second is the value, third is to refresh the view fourth to add/stack the prop or replace, and last is the proc if present
+            send(property, value.merge(add: true), refresh, &proc)
           end
-        elsif params.class == String || Symbol
-          property = params
-          send(property, nil, refresh, true, &proc)
-        end
+        # elsif params.class == String || Symbol
+        #   property = params
+        #   send(property, nil, refresh, true, &proc)
+        # end
       end
 
       def get params = nil

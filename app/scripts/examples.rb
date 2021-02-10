@@ -140,13 +140,13 @@ grad.x(350)
 grad.y(350)
 grad.size = 223
 wait 1 do
-  grad.color([{content: :red}, :yellow, {color: :orange}, {angle: 150}, {diffusion: :radial}])
+  grad.color([{content: :red}, :yellow, {color: {red:0 , green: 1, blue: 0}}, {angle: 150}, {diffusion: :radial}])
 end
 wait 3 do
   grad.color([{content: :cyan}, :green, :blue])
 end
 wait 5 do
-  grad.color([{content: :orange}, :green, :blue, {angle: 150, diffusion: :linear}])
+  grad.color([{content: :orange}, {color: {red:0 , green: 1, blue: 0}}, :blue, {angle: 150, diffusion: :linear}])
 end
 grad.touch do 
 puts grad.inspect
@@ -232,15 +232,15 @@ strdelim
   def keypress
     demo_code = <<strdelim
 b=box()
-info=text("keypress nb")
-info.y(50)
-info.color(:gray)
-t=b.text("press a key!")
-t.x(3)
-t.y(4)
-t.edit(:true)
-b.key do |evt|
-  info.content(evt.key_code) 
+t=text({content: "type some texte over the box, \n touch the circle to stop the input capture \n ", x:20, y: 20})
+b.key(true) do |key|
+ t.content(t.content+" : "+key.key_code.to_s)
+end
+c=circle
+c.x=0
+c.touch do
+  b.key(:stop)
+  b.edit(false)
 end
 strdelim
     self.puts_help :edit, demo_code
@@ -269,21 +269,38 @@ strdelim
 
   def select_api
     demo_code = <<strdelim
-b = box(x: 300)
-b.touch do
-  if b.select
-    b.select(false)
-  else
-    b.select(true)
+set=text({content: "treat the selection", x: 30, y: 200})
+reset=text({content: "reset the selection", x: 30, y: 230})
+verif=text({content: "get the list of selected object", x: 30, y: 260})
+
+box(x: 300, y: 300)
+text({content: :hello, y: 300, x: 400})
+circle({ y: 300, x: 500})
+
+get(:view).find(:all).each do |atome|
+  atome.touch do
+    if atome.select
+      atome.select(false)
+    else
+      atome.select(true)
+    end
   end
+
 end
-t = text(:hello)
-t.touch do
-  if t.select
-    t.select(false)
-  else
-    t.select(true)
-  end
+set.touch do
+  get(:view).selection({color: :violet})
+end
+
+reset.touch do
+  get(:view).selection({color: :white, select: false})
+end
+
+verif.touch do
+  selected_atomes=[]
+ get(:view).selection().each do |atome_found|
+   selected_atomes << atome_found.id
+ end
+  verif.content="get the list of selected object  : \#{selected_atomes}"
 end
 strdelim
     self.puts_help :select, demo_code
@@ -1287,19 +1304,21 @@ strdelim
   def selector_api
     demo_code = <<strdelim
 b = box()
+box({x: 33, y: 70})
 b.y(400)
-b.selector(:validated)
-t = text("my text")
-t.selector(:validated)
-c = circle()
+t = text({content:  "touch me to colorize object that have a selector name 'star' with a value superior to 5",selector: { star: 7 } })
+c = circle(selector: { star: 5 })
 c.color(:green)
 c.x(400)
 c.y(200)
+c2 = circle({color: :yellow})
+c2.selector(:dummy)
 t.y(350)
-select(:validated).each do |item|
-  if item.selector && item.selector.include?(:validated)
-    item.color(:orangered)
-    item.x(400)
+t.touch do
+  get(:view).find(:all).each do|atome|
+    if atome.selector[:star] && atome.selector[:star] > 4
+      atome.color(:orangered)
+    end
   end
 end
 strdelim

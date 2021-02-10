@@ -26,14 +26,16 @@ def create_property(method_name)
   end
 end
 
-def select selector
-  grab(:view).child.each do |atome|
-    collected_atomes = []
-    if atome.selector && atome.selector.include?(:validated)
-      collected_atomes << atome
-    end
-  end
-end
+
+
+# def select selector
+#   grab(:view).child.each do |atome|
+#     collected_atomes = []
+#     if atome.selector && atome.selector.include?(:validated)
+#       collected_atomes << atome
+#     end
+#   end
+# end
 
 #def selected params
 #  #Atomes.atomes
@@ -207,7 +209,7 @@ def find(params, method = nil)
       # here we get any atomes that match the current prop
       atomes_found = []
       atomes.each do |atome|
-        alert(atome.id)
+        # alert("helper.rb line 210 #{atome.id}")
         params[:value]
         if atome.send(params[:property]) == params[:value]
           atomes_found << atome
