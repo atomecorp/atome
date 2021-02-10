@@ -393,8 +393,8 @@ media.volume= (#{params})
       @codemirror=[]
     end
 
-  if @codemirror ==[]
-    `$('<link/>', {
+    if @codemirror ==[]
+      `$('<link/>', {
                                                     rel: 'stylesheet',
                                                     type: 'text/css',
                                                     href: 'css/codemirror.css'
@@ -459,7 +459,7 @@ Opal.JS_utils.$set_ide_content(#{ide_atome_id}, #{content})
     });
 });
 `
-    end
+      end
   end
 
   def self.codemirror_ready
@@ -594,21 +594,21 @@ Opal.JS_utils.$set_ide_content(#{ide_atome_id}, #{content})
 #`
 #  end
 
-  
-def self.set_handles_size params=nil
-  `$('.ui-resizable-w').width(30)`
-  `$('.ui-resizable-e').width(30)`
-  `$('.ui-resizable-n').height(30)`
-  `$('.ui-resizable-s').height(30)`
-  `$('.ui-resizable-ne').width(30)`
-  `$('.ui-resizable-se').width(30)`
-  `$('.ui-resizable-sw').width(30)`
-  `$('.ui-resizable-nw').width(30)`
-  `$('.ui-resizable-ne').height(30)`
-  `$('.ui-resizable-se').height(30)`
-  `$('.ui-resizable-sw').height(30)`
-  `$('.ui-resizable-nw').height(30)`
-end
+
+  def self.set_handles_size params=nil
+    `$('.ui-resizable-w').width(30)`
+    `$('.ui-resizable-e').width(30)`
+    `$('.ui-resizable-n').height(30)`
+    `$('.ui-resizable-s').height(30)`
+    `$('.ui-resizable-ne').width(30)`
+    `$('.ui-resizable-se').width(30)`
+    `$('.ui-resizable-sw').width(30)`
+    `$('.ui-resizable-nw').width(30)`
+    `$('.ui-resizable-ne').height(30)`
+    `$('.ui-resizable-se').height(30)`
+    `$('.ui-resizable-sw').height(30)`
+    `$('.ui-resizable-nw').height(30)`
+  end
 
 
 end
@@ -630,7 +630,10 @@ module Opal_utils
   end
 
 end
-
+def message params
+  message="{ \"action\": \"#{params}\"}"
+  `webSocketHelper.sendMessage(#{message});`
+end
 
 ################ media manipulation ############
 

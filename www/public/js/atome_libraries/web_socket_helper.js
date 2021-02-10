@@ -4,10 +4,9 @@ class WebSocketHelper {
         this.serverAddress = 'ws:' + serverAddress;
         this.login = login;
         this.password = password;
-
         this._reconnect = true;
-
         this.socketEventListener = socketEventListener;
+
     }
 
     connect() {

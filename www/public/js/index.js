@@ -188,7 +188,7 @@ let webSocketEventListener = {
 
     sendGreetingsToServer: function () {
         {
-            webSocketHelper.sendMessage('{ "action": "box()"}');
+            webSocketHelper.sendMessage('{ "action": "text(:hello)"}');
         }
     }
 };
@@ -218,12 +218,14 @@ let drawingEventListener = {
 };
 
 document.addEventListener("deviceready", function () {
+    $.getScript('js/third_parties/opal/opal_parser.js', function (data, textStatus, jqxhr) {
+        //webSocketHelper
+        //TODO: Get server address from DNS.
+        const serverAddress = '192.168.103.147:9292';
+        webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
+        webSocketHelper.connect();
+    });
 
-    //webSocketHelper
-    //TODO: Get server address from DNS.
-    const serverAddress = '192.168.103.147:9292';
-    webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
-    // webSocketHelper.connect();
 
     //databaseHelper
     databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
@@ -257,8 +259,5 @@ window.ondrop = function (e) {
         });
     }
 };
-
-
-
 
 

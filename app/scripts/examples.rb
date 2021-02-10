@@ -827,7 +827,7 @@ a = circle({ x: 100, y: 200 })
 b = text({ content: :hello, x: 50, y: 300 })
 t=text({ content: "touch me to batch process the object below" , x: 70, y: 120})
 t.touch do
-  get(:view).batch(a, b).set({color: :cyan, size: 16, y: 150})
+  get(:view).batch(a, b).set({color: :cyan})
 end
 
 Strdelim

@@ -69,7 +69,10 @@ class App < Roda
         #data=JSON.parse(client_data)
         if client_data.is_json?
           data = JSON.parse(client_data)
+          puts "-------"
           puts data
+          puts "-------"
+
           if data["connection"]
             ws.send('{"connection":{"username":"Régis","accepted":"true"}}')
           else
