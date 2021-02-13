@@ -207,11 +207,12 @@ strdelim
 b = box({id: :box_test})
 b.shadow({x: 5, y: 5, blur: 7, color: :black, invert: :true})
 b.shadow({add: :true, x: 20, y: 20, color: "rgba(0,0,0,1)", blur: 16})
-c=circle({x: -30 , y: -30, drag: true, id: :circle_test})
+c=circle({ drag: true, id: :circle_test})
 c.shadow({x: -5, y: -5, blur: 7, color: :black, invert: :true})
 c.shadow({add: :true,x: 0, y: 0, color: "rgba(0,0,0,1)", blur: 16})
 b.drag(true)
 b.insert(c)
+c.x=c.y=90
 b.x(500)
 b.y(200)
 b.color(:orange)

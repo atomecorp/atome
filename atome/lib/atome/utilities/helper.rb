@@ -4,7 +4,7 @@
 def create_property(method_name)
   Nucleon.define_method method_name do |params = nil, &proc|
     # this is the main entry method for the current property treatment
-    # first we create a hash for the property if t doesnt exist
+    # first we create a hash for the property if t doesn't exist
     # we don't create a object init time, to only create property when needed
     instance_method_name = if instance_variable_defined?("@" + method_name.to_s)
                              instance_variable_get("@#{method_name}")
@@ -97,15 +97,15 @@ def grab(atome_id)
   return nil
 end
 
-def scour(params)
-  #search everywhere
-  find({value: params, scope: :all})
-end
-
-def dig(params)
-  #search in the trash
-  find({value: params, scope: :blackhole})
-end
+# def scour(params)
+#   #search everywhere
+#   fiind({value: params, scope: :all})
+# end
+#
+# def dig(params)
+#   #search in the trash
+#   fiind({value: params, scope: :blackhole})
+# end
 
 def filter_system_object
   atomes = Atome.atomes + Atome.blackhole
@@ -135,7 +135,31 @@ def filter_atome
   @childs_found
 end
 
-def finder params
+
+
+
+def find_atome_from_params params
+  # this function all to return the atome either send and is an atome_id or the atome itself
+  if params.class == Atome
+    supposed_atome = params
+  else
+    supposed_atome = grab(params) if params.class == String || params.class == Symbol
+    #if the first condition return nil now we check if an id exist
+    supposed_atome = get(params) unless supposed_atome
+  end
+  # we return the atome itself
+  return supposed_atome
+end
+
+def find params
+  if params == :all
+    formated_params={}
+    formated_params[:scope]=:all
+    params=formated_params
+  end
+  unless params[:property]
+    params[:property]=:all
+  end
   if params[:scope] == :all
     filtered_atomes = filter_system_object
   elsif params[:recursive]
@@ -173,116 +197,102 @@ def finder params
   atomes_found
 end
 
-
-def find_atome_from_params params
-  # this function all to return the atome either send and is an atome_id or the atome itself
-  if params.class == Atome
-    supposed_atome = params
-  else
-    supposed_atome = grab(params) if params.class == String || params.class == Symbol
-    #if the first condition return nil now we check if an id exist
-    supposed_atome = get(params) unless supposed_atome
-  end
-  # we return the atome itself
-  return supposed_atome
-end
-
-def find(params, method = nil)
-  if params.class == String || params.class == Symbol || params.class == Boolean
-    params = if params == true || params == :true
-               {scope: :view, value: :all}
-             else
-               {property: :id, scope: :view, value: params}
-             end
-  end
-  unless params[:scope]
-    params[:scope] = :view
-  end
-  unless params[:property]
-    params[:property] = :id
-  end
-  unless params[:format]
-    params[:format] = :atome
-  end
-  unless params[:value]
-    params[:value] = :all
-  end
-  atomes = case params[:scope]
-           when :all || 'all'
-             Atome.atomes + Atome.blackhole
-           when :blackhole
-             Atome.blackhole
-           when :active
-             Atome.atomes
-           when :view
-             grab(:view).child
-           else
-             #when :dark_matter
-             #  atomes=Atome.atomes + Atome.blackhole
-           end
-  # now we treat
-  if params[:value] == :all || params[:value] == 'all'
-    atomes_found = []
-    # allow to retrieve the object based on it's ID it atome_id or obejct itself
-    case params[:format]
-    when :id || 'id'
-      atomes.each do |atome_found|
-        atomes_found << atome_found.id
-      end
-      #filter_atomes(atomes_found)
-      atomes_found
-    when :atome_id || 'atome_id'
-      atomes.each do |atome|
-        atomes_found << atome.atome_id
-      end
-      #filter_atomes(atomes_found)
-      atomes_found
-    when :atome || 'atome'
-      atomes.each do |atome_found|
-        atomes_found << atome_found
-      end
-      #filter_atomes(atomes_found)
-      atomes_found
-    end
-  else
-    case params[:property]
-    when :id || 'id'
-      atomes_found = ''
-      atomes.each do |atome|
-        if atome.id == params[:value]
-          atomes_found = atome
-        end
-      end
-
-    when :atome_id || 'atome_id'
-      atomes_found = ''
-      atomes.each do |atome|
-        if atome.atome_id ==  params[:value]
-          atomes_found = atome
-        end
-      end
-    when :atome || 'atome'
-      atomes_found = ''
-      atomes.each do |atome|
-        if atome == params[:value]
-          atomes_found = atome
-        end
-      end
-    else
-      # here we get any atomes that match the current prop
-      atomes_found = []
-      atomes.each do |atome|
-        # alert("helper.rb line 210 #{atome.id}")
-        params[:value]
-        if atome.send(params[:property]) == params[:value]
-          atomes_found << atome
-        end
-      end
-    end
-
-  end
-  atomes_found
-end
+# def fiind(params, method = nil)
+#   if params.class == String || params.class == Symbol || params.class == Boolean
+#     params = if params == true || params == :true
+#                {scope: :view, value: :all}
+#              else
+#                {property: :id, scope: :view, value: params}
+#              end
+#   end
+#   unless params[:scope]
+#     params[:scope] = :view
+#   end
+#   unless params[:property]
+#     params[:property] = :id
+#   end
+#   unless params[:format]
+#     params[:format] = :atome
+#   end
+#   unless params[:value]
+#     params[:value] = :all
+#   end
+#   atomes = case params[:scope]
+#            when :all || 'all'
+#              Atome.atomes + Atome.blackhole
+#            when :blackhole
+#              Atome.blackhole
+#            when :active
+#              Atome.atomes
+#            when :view
+#              grab(:view).child
+#            else
+#              #when :dark_matter
+#              #  atomes=Atome.atomes + Atome.blackhole
+#            end
+#   # now we treat
+#   if params[:value] == :all || params[:value] == 'all'
+#     atomes_found = []
+#     # allow to retrieve the object based on it's ID it atome_id or obejct itself
+#     case params[:format]
+#     when :id || 'id'
+#       atomes.each do |atome_found|
+#         atomes_found << atome_found.id
+#       end
+#       #filter_atomes(atomes_found)
+#       atomes_found
+#     when :atome_id || 'atome_id'
+#       atomes.each do |atome|
+#         atomes_found << atome.atome_id
+#       end
+#       #filter_atomes(atomes_found)
+#       atomes_found
+#     when :atome || 'atome'
+#       atomes.each do |atome_found|
+#         atomes_found << atome_found
+#       end
+#       #filter_atomes(atomes_found)
+#       atomes_found
+#     end
+#   else
+#     case params[:property]
+#     when :id || 'id'
+#       atomes_found = ''
+#       atomes.each do |atome|
+#         if atome.id == params[:value]
+#           atomes_found = atome
+#         end
+#       end
+#
+#     when :atome_id || 'atome_id'
+#       atomes_found = ''
+#       atomes.each do |atome|
+#         if atome.atome_id ==  params[:value]
+#           atomes_found = atome
+#         end
+#       end
+#     when :atome || 'atome'
+#       atomes_found = ''
+#       atomes.each do |atome|
+#         if atome == params[:value]
+#           atomes_found = atome
+#         end
+#       end
+#     else
+#       # here we get any atomes that match the current prop
+#       atomes_found = []
+#       atomes.each do |atome|
+#         # alert("helper.rb line 210 #{atome.id}")
+#         params[:value]
+#         if atome.send(params[:property]) == params[:value]
+#           atomes_found << atome
+#         end
+#       end
+#     end
+#
+#   end
+#   atomes_found
+# end
 
 #def delete params, refresh = true
 #  alert "message is \n\n#{params} \n\nLocation: electron.rb, line 60"

@@ -37,6 +37,8 @@ module Nucleon
         web = visual.merge({type: :web, color: :transparent, content: :atome}).merge(@@web)
         user = visual.merge({type: :user, color: :transparent, name: :anonymous, pass: :none, content: :anonymous}).merge(@@user)
         color = {content: :black}.merge(@@color)
+        history={}
+        autorisation={creator: :atome, read: :all, write: :all}#only set only creator can change it unless specfic authoration set by creator()
         shadow = {x: 0, y: 0, blur: 7, thickness: 0, color: 'rgba(0,0,0,0.3)', invert: false}.merge(@@shadow)
         border = {thickness: 1, pattern: :solid, color: :red}.merge(@@border)
         blur = {default: 5}.merge(@@blur)
@@ -56,6 +58,8 @@ module Nucleon
             web: web,
             user: user,
             color: color,
+            history: history,
+            autorisation: autorisation,
             shadow: shadow,
             border: border,
             blur: blur,

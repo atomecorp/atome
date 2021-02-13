@@ -632,7 +632,7 @@ module Opal_utils
 end
 def message params
   message="{ \"action\": \"#{params}\"}"
-  `webSocketHelper.sendMessage(#{message});`
+  `webSocketHelper.sendMessage(#{message})`
 end
 
 ################ media manipulation ############

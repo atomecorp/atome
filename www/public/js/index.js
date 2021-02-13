@@ -218,13 +218,13 @@ let drawingEventListener = {
 };
 
 document.addEventListener("deviceready", function () {
-    $.getScript('js/third_parties/opal/opal_parser.js', function (data, textStatus, jqxhr) {
-        //webSocketHelper
-        //TODO: Get server address from DNS.
-        const serverAddress = '192.168.103.147:9292';
-        webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
-        webSocketHelper.connect();
-    });
+    // $.getScript('js/third_parties/opal/opal_parser.js', function (data, textStatus, jqxhr) {
+    //     //webSocketHelper
+    //     //TODO: Get server address from DNS.
+    //     const serverAddress = '192.168.1.13:9292';
+    //     webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
+    //     webSocketHelper.connect();
+    // });
 
 
     //databaseHelper
@@ -236,8 +236,8 @@ document.addEventListener("deviceready", function () {
     fileHelper.connect(564654);
 
     //drawingHelper
-    drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-    drawingHelper.connect();
+    // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+    // drawingHelper.connect();
 }, false);
 
 window.ondragover = function (e) {

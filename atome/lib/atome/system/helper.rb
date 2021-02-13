@@ -1,13 +1,12 @@
 class Helper
   def self.version
-    'v:0.009'
+    'v:0.010'
   end
 
   def self.apis
     # todo avoid conflict with electron methods that remove some function
     Atome.instance_methods - Object.methods
   end
-
 
   def self.to_px(obj = nil, property = :top)
     obj = get(obj) if obj.class != Atome
@@ -17,8 +16,7 @@ class Helper
   # def self.batch atomes, properties
   #   get(:view).batch atomes, properties
   # end
-
-
+  
 
 end
 

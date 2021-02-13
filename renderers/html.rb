@@ -178,6 +178,7 @@ module Render
   end
 
   def self.render_color(atome, params, add = false)
+    # alert " html.rb line 101 #{params.class}"
     color = "background-image"
     if atome.type[:content] == :text
       r_get(atome.atome_id).css('-webkit-background-clip', 'text')
@@ -192,13 +193,9 @@ module Render
           if param.class == Hash
             if param[:angle]
               angle = param[:angle].to_s
-
             elsif param[:diffusion]
               diffusion = param[:diffusion]
-
             elsif param[:content]
-
-              #value << param[:content]
               if param[:content].class == Hash
                 # alert("hhh")
                 color_found = parse_color_datas(param[:content])
@@ -206,7 +203,6 @@ module Render
                 color_found = param[:content]
               end
               value << color_found
-
             elsif param[:color]
               if param[:color].class == Hash
                 color_found = parse_color_datas(param[:color])
@@ -241,7 +237,7 @@ module Render
   end
     end
   def self.render_opacity(atome, params, add = false)
-    r_get(atome.atome_id).css(:opacity, params)
+    r_get(atome.atome_id).css(:opacity, params[:content])
   end
 
   def self.render_x(atome, params, add = false)
@@ -448,52 +444,81 @@ module Render
     end
     r_get(atome.atome_id).css('background-size', size)
   end
-
+  # def self.render_shadow_recursive(atome, params, add = false)
+    # x = params[:x]
+    # y = params[:y]
+    # blur = params[:blur]
+    # thickness = params[:thickness]
+    # color = params[:color]
+    # invert = params[:invert]
+    # invert = if invert
+    #            :inset
+    #          else
+    #            " "
+    #          end
+    # if atome.type[:content] == :text || atome.type[:content] == :image
+    #   r_get(atome.atome_id).css('filter', 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
+    # else
+    #   r_get(atome.atome_id).css('box-shadow', x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
+    # end
+  # end
   def self.render_shadow(atome, params, add = false)
-    #formated_params = case params
-    #                  when Array
-    #                    #"array"
-    #                  when Hash
-    #                    properties = Nucleon::Core::Proton.presets[:shadow]
-    #                    params.each do |key, value|
-    #                      properties[key] = value
-    #                    end
-    #                    properties
-    #                  when Boolean, :true
-    #                    Nucleon::Core::Proton.presets[:shadow]
-    #                  when String, Symbol
-    #                    params
-    #                  end
-    x = params[:x]
-    y = params[:y]
-    blur = params[:blur]
-    thickness = params[:thickness]
-    color = params[:color]
-    invert = params[:invert]
-    invert = if invert
-               :inset
-             else
-               " "
-             end
-    if params && params.class == Hash && params[:add]
-      add = params[:add]
-    end
+    # alert " html.rb line 449 params : #{params} #{params.class}"
+    # if params && params.class == Hash && params[:add]
+    #   add = params[:add]
+    # end
 
-    if add
-      if atome.type[:content] == :text || atome.type[:content] == :image
-        prev_prop = r_get(atome.atome_id).css('text-shadow')
-        r_get(atome.atome_id).css('filter', prev_prop + " " + 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
-      else
-        prev_prop = r_get(atome.atome_id).css('box-shadow')
-        r_get(atome.atome_id).css('box-shadow', prev_prop + " ," + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
-      end
-    else
+    # if add
+    #   if atome.type[:content] == :text || atome.type[:content] == :image
+    #     prev_prop = r_get(atome.atome_id).css('text-shadow')
+    #     r_get(atome.atome_id).css('filter', prev_prop + " " + 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
+    #   else
+    #     prev_prop = r_get(atome.atome_id).css('box-shadow')
+    #     r_get(atome.atome_id).css('box-shadow', prev_prop + " ," + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
+    #   end
+    # else
+    if params.class == Hash
+      x = params[:x]
+      y = params[:y]
+      blur = params[:blur]
+      thickness = params[:thickness]
+      color = params[:color]
+      invert = params[:invert]
+      invert = if invert
+                 :inset
+               else
+                 " "
+               end
       if atome.type[:content] == :text || atome.type[:content] == :image
         r_get(atome.atome_id).css('filter', 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
       else
         r_get(atome.atome_id).css('box-shadow', x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
       end
+    else
+      params.each do |param|
+        ################################
+        x = param[:x]
+        y = param[:y]
+        blur = param[:blur]
+        thickness = param[:thickness]
+        color = param[:color]
+        invert = param[:invert]
+        invert = if invert
+                   :inset
+                 else
+                   " "
+                 end
+          if atome.type[:content] == :text || atome.type[:content] == :image
+            prev_prop = r_get(atome.atome_id).css('text-shadow')
+            r_get(atome.atome_id).css('filter', prev_prop + " " + 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
+          else
+            prev_prop = r_get(atome.atome_id).css('box-shadow')
+            r_get(atome.atome_id).css('box-shadow', prev_prop + " ," + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
+          end
+      end
     end
+
+    # end
   end
 
   #def self.render_shadow(atome, params, add = false)
@@ -774,6 +799,7 @@ module Render
   end
 
   def self.render_delete(atome, params, add = false)
+    params=params[:content]
     atome_body = r_get(atome.atome_id)
     if params.class == Atome
       Element.find('#blackhole').append(atome_body)
@@ -840,6 +866,11 @@ module Render
         Element.find(atome_to_delete).remove('')
       end
     end
+  end
+
+
+  def render_enliven(atome, params)
+
   end
 
   def self.render_http(url)

@@ -3,15 +3,21 @@
 
 module Atome_methods_list
   def self.atome_methods
-    %i[border display record tactile selector color ]
+    %i[border display record tactile selector color delete enliven opacity shadow]
   end
   #the line below specify if the properties need specific processing
+  def self.need_pre_processing
+    %i[add opacity shadow]
+  end
   def self.need_processing
-    %i[border]
+    %i[delete]
+  end
+  def self.need_post_processing
+    %i[delete]
   end
 
   def self.need_rendering
-    %i[border display record color]
+    %i[border display record color delete shadow opacity]
   end
 end
 # the class below initialize the default values and generate properties's methods
@@ -38,10 +44,13 @@ module Properties
       # if prop needs to be refresh we send it to the Render engine
       broadcast(atome_id => {method_name => params})
       if Atome_methods_list.need_processing.include?(method_name)
-        send("#{method_name}_processing", params)
+        params= send("#{method_name}_processor", params)
       end
       if Atome_methods_list.need_rendering.include?(method_name)
         Render.send("render_#{method_name}", self, params) if params.class==Array || params[:render].nil? || params[:render] == true
+      end
+      if Atome_methods_list.need_post_processing.include?(method_name)
+        send("#{method_name}_post_processor", params)
       end
     end
     if self.type[:content]==:collector
@@ -94,6 +103,9 @@ module Properties
   end
 
   def method_analysis(params, instance_variable, method_name, proc)
+    if Atome_methods_list.need_pre_processing.include?(method_name)
+      params = send("#{method_name}_pre_processor", params)
+    end
     if params.instance_of?(Array)
       array_parsing params, instance_variable, method_name, proc
     else

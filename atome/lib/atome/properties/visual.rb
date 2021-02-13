@@ -1,18 +1,61 @@
 ## here the methods to add spatials and visuals properties to atome objects
 #  the module below contains all the specifics code for properties
-module Visual_processor
+module Atome_processor
   include Properties
+  def opacity_pre_processor(params)
+    params[:content]=0.1
+  end
 
-  def color_processing(params)
+  def add_pre_processor(params)
+    # params.each do |property, value|
+    #   unless value.class==Hash
+    #     value={content: value}
+    #   end
+      # send(property, value.merge(add: true), refresh, &proc)
+    # end
+    # amlert
+    # params=params.merge(add: true)
+    params[params.keys[0]]
+    alert "add pre processsor ready : #{params.keys[0]}"
+    params
+  end
+
+  def color_processor(params)
     # alert "color processed#{params}"
+        return params
   end
 
-  def border_processing(params)
+  def shadow_pre_processor(params)
+    parse_params(params, :shadow)
+  end
+
+  def border_processor(params)
     # puts "border processed#{params}"
+    #  params={"thickness"=>9, "pattern"=>"dashed"}
+    return params
+  end
+  def delete_processor(params)
+    # alert(:good_deletion_from_visual_rb)
+    # params=params[:content]
+    # alert(params)
+    # alert params
+    # get(:blackhole).add(content: params)
+    # alert get(:blackhole).content
+    return params
   end
 
-  def atome_id_processing(params)
+  def delete_post_processor(params)
+    # alert(:good_deletion_from_visual_rb)
+    # params=params[:content]
+    # alert(params)
+    # alert self.id
+    # get(:blackhole).insert(self)
+    return params
+  end
+  def atome_id_processor(params)
     puts "atome_id DSP is #{params}"
+    return params
+
   end
 
 end

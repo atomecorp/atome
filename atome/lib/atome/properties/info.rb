@@ -332,8 +332,10 @@ module Nucleon
             atome_child = []
             unless @child.nil?
               @child.each do |child|
-                if find({value: child, property: :atome_id, scope: :all}).class == Atome
-                  atome_child << grab(child)
+                find({value: child, property: :atome_id, scope: :all}).each do |atome|
+                  if atome.class == Atome
+                    atome_child << grab(child)
+                  end
                 end
               end
               atome_child
@@ -1919,16 +1921,27 @@ module Nucleon
         collector({content: collector})
       end
 
+      def recursive_parse_params params, method
+        # alert "info.rb line 1925 :  #{params}"
+        properties = Atome.presets[method]
+        params.each do |key, value|
+          properties[key] = value
+        end
+        properties
+      end
+
+
       def parse_params params, method
         case params
         when Array
-          #"array"
-        when Hash
-          properties = Atome.presets[method]
-          params.each do |key, value|
-            properties[key] = value
+          params_array=[]
+          params.each do
+            params_array <<  recursive_parse_params(params, method)
           end
-          properties
+          params_array
+
+        when Hash
+          recursive_parse_params(params, method)
         when Boolean, :true
           Atome.presets[method]
         when String, Symbol
