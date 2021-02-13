@@ -3,7 +3,7 @@
 
 module Atome_methods_list
   def self.atome_methods
-    %i[border display record tactile selector color delete enliven opacity shadow]
+    %i[border display record color delete opacity shadow enliven tactile selector]
   end
   #the line below specify if the properties need specific processing
   def self.need_pre_processing
@@ -13,11 +13,11 @@ module Atome_methods_list
     %i[delete]
   end
   def self.need_post_processing
-    %i[delete]
+    %i[]
   end
 
   def self.need_rendering
-    %i[border display record color delete shadow opacity]
+    %i[border display record color delete opacity shadow]
   end
 end
 # the class below initialize the default values and generate properties's methods
@@ -46,6 +46,7 @@ module Properties
       if Atome_methods_list.need_processing.include?(method_name)
         params= send("#{method_name}_processor", params)
       end
+
       if Atome_methods_list.need_rendering.include?(method_name)
         Render.send("render_#{method_name}", self, params) if params.class==Array || params[:render].nil? || params[:render] == true
       end

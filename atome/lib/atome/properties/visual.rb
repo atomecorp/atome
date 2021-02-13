@@ -6,19 +6,6 @@ module Atome_processor
     params[:content]=0.1
   end
 
-  def add_pre_processor(params)
-    # params.each do |property, value|
-    #   unless value.class==Hash
-    #     value={content: value}
-    #   end
-      # send(property, value.merge(add: true), refresh, &proc)
-    # end
-    # amlert
-    # params=params.merge(add: true)
-    params[params.keys[0]]
-    alert "add pre processsor ready : #{params.keys[0]}"
-    params
-  end
 
   def color_processor(params)
     # alert "color processed#{params}"
@@ -38,20 +25,20 @@ module Atome_processor
     # alert(:good_deletion_from_visual_rb)
     # params=params[:content]
     # alert(params)
-    # alert params
-    # get(:blackhole).add(content: params)
+    # alert self.id
+    # get(:blackhole).add(content: self.id)
     # alert get(:blackhole).content
     return params
   end
 
-  def delete_post_processor(params)
-    # alert(:good_deletion_from_visual_rb)
-    # params=params[:content]
-    # alert(params)
-    # alert self.id
-    # get(:blackhole).insert(self)
-    return params
-  end
+  # def delete_post_processor(params)
+  #   # alert(:good_deletion_from_visual_rb)
+  #   # params=params[:content]
+  #   # alert(params)
+  #   # alert self.id
+  #   # get(:blackhole).insert(self)
+  #   return params
+  # end
   def atome_id_processor(params)
     puts "atome_id DSP is #{params}"
     return params
