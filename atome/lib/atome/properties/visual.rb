@@ -24,7 +24,6 @@ module Atome_processor
   def delete_processor(params)
     # alert(:good_deletion_from_visual_rb)
     # params=params[:content]
-    # alert(params)
     # alert self.id
     # get(:blackhole).add(content: self.id)
     # alert get(:blackhole).content
