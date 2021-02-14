@@ -25,3 +25,6 @@
 - proper object creation
 - clean and astandardize all properties
 - caret handling
+- protect atome_id once writen unmodifaible
+_ protect autorisation
+- init sequence with db

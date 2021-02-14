@@ -14,7 +14,12 @@ module Nucleon
 
       def initialize(params, refresh = true)
         # if not param is passed then we create a particle by default
-        params = :particle unless params
+        # params = :particle unless params
+
+        unless params[:type]
+          params[:type]=:particle
+        end
+
         if params.class == Symbol || params.class == String
           # We get the preset name
           @preset = params.to_sym
@@ -33,22 +38,32 @@ module Nucleon
           preset = Pi.presets[preset]
         end
         #  we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
-        atome_id = if @@atomes.length == 0
-                     :blackhole
-                   elsif @@atomes.length == 1
-                     :dark_matter
-                   elsif @@atomes.length == 2
-                     :device
-                   elsif @@atomes.length == 3
-                     :intuition
-                   elsif @@atomes.length == 4
-                     :view
-                   elsif @@atomes.length == 5
-                     :actions
-                   else
-                     ('a_' + object_id.to_s).to_sym
-                   end
-        @atome_id = atome_id
+        # atome_id = if @@atomes.length == 0
+        #              :dark_matter
+        #            elsif @@atomes.length == 1
+        #              :device
+        #            elsif @@atomes.length == 2
+        #              :intuition
+        #            elsif @@atomes.length == 3
+        #              :view
+        #            elsif @@atomes.length == 4
+        #              :actions
+        #            end
+
+        # We generate  the atome_id below
+        # if params[:atome_id].nil?
+        #   atome_id = ('a_' + object_id.to_s).to_sym
+        # else
+        #   atome_id= params[:atome_id]
+        # end
+        # @atome_id = atome_id
+
+
+        if params[:atome_id].nil?
+          atome_id = ('a_' + object_id.to_s).to_sym
+          preset[:atome_id] = atome_id
+        end
+
         # We generate  the id below
         if params[:id].nil?
           generated_id = if @preset
@@ -61,6 +76,7 @@ module Nucleon
         # we get the preset value from the object type and add the value set by the user
         preset = reorder_properties(preset)
         preset = preset.merge(params)
+        # alert "object.rb line 79 : #{preset}"
         # we send the collected properties to the atome
         preset.each_key do |property|
           send(property, preset[property], refresh)
@@ -259,9 +275,9 @@ module Nucleon
         atomes
       end
 
-      def self.blackhole
-        @@black_hole
-      end
+      # def self.blackhole
+      #   @@black_hole
+      # end
 
       # modules methods to be exposed
       def self.presets params = nil

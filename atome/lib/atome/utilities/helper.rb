@@ -16,7 +16,7 @@ def create_property(method_name)
     # finally we return the current property using magic_getter
     unless params
       # no params send we call the getter
-      magic_getter instance_method_name
+      magic_getter instance_method_name, method_name
     end
   end
   # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
@@ -108,10 +108,10 @@ end
 # end
 
 def filter_system_object
-  atomes = Atome.atomes + Atome.blackhole
+  atomes = Atome.atomes
   filtered_atomes = []
   atomes.each do |atome|
-    if atome.id != :dark_matter && atome.id != :blackhole && atome.id != :device && atome.id != :intuition && atome.id != :view && atome.id != :actions
+    if atome.id != :dark_matter  && atome.id != :device && atome.id != :intuition && atome.id != :view && atome.id != :actions
       filtered_atomes << atome
     end
   end

@@ -102,20 +102,20 @@ module Nucleon
         properties
       end
 
-      def id(params = nil, refresh = true)
-        if params || params == false
-          @id = params.to_sym
-          broadcast(atome_id => {id: params, private: false})
-          Render.render_id(self, params) if refresh
-          self
-        else
-          @id
-        end
-      end
-
-      def id=(params = nil, refresh = true)
-        id(params, refresh)
-      end
+      # def id(params = nil, refresh = true)
+      #   if params || params == false
+      #     @id = params.to_sym
+      #     broadcast(atome_id => {id: params, private: false})
+      #     Render.render_id(self, params) if refresh
+      #     self
+      #   else
+      #     @id
+      #   end
+      # end
+      #
+      # def id=(params = nil, refresh = true)
+      #   id(params, refresh)
+      # end
 
       def convert(property, unit = :px)
         Render.render_convert self, property, unit
@@ -138,7 +138,7 @@ module Nucleon
         if params || params == false
           @type = {content: params}
           broadcast(atome_id => {type: params, private: false})
-          Render.render_type(self, params) if refresh
+          Render.render_type(self, @type) if refresh
           self
         else
           @type
@@ -1877,23 +1877,24 @@ module Nucleon
       #def atome_id=(params = nil)
       #  atome_id(params)
       #end
-      def atome_id(params = nil, refresh = true)
-        if params || params == false
-          # todo : protect the atome_id so it can't be change by user
-          error "atome_id is unalterable "
-          #@atome_id = params
-        else
-          @atome_id
-        end
-      end
+      # def atome_id(params = nil, refresh = true)
+      #   if params || params == false
+      #     # todo : protect the atome_id so it can't be change by user
+      #     error "atome_id is unalterable "
+      #     #@atome_id = params
+      #   else
+      #     @atome_id
+      #   end
+      # end
 
-      def atome_id=(params = nil, refresh = true)
-        atome_id params, refresh
-      end
+      # def atome_id=(params = nil, refresh = true)
+      #   atome_id params, refresh
+      # end
 
       ################## utilities  ##############
       def reorder_properties(properties)
-        # we re order the hash to puts the atome_id type at the begining to optimise rendering
+        # we re-order the hash to puts the atome_id type at the begining to optimise rendering
+        atome_id = properties.delete(:atome_id)
         type = properties.delete(:type)
         parent = properties.delete(:parent)
         width = properties.delete(:width)
@@ -1901,8 +1902,13 @@ module Nucleon
         content = properties.delete(:content)
         center = properties.delete(:center)
         size = properties.delete(:size)
-        {type: type}.merge({parent: parent}).merge({width: width}).merge({height: height})
-            .merge(properties).merge({content: content}).merge({size: size}).merge({center: center})
+        # {type: type}.merge({parent: parent}).merge({width: width}).merge({height: height})
+        #     .merge(properties).merge({content: content}).merge({size: size}).merge({center: center}).merge({atome_id: atome_id})
+        #
+        {atome_id: atome_id}.merge({type: type}).merge({parent: parent}).merge({width: width}).merge({height: height})
+                    .merge(properties).merge({content: content}).merge({size: size}).merge({center: center})
+
+
       end
 
       # def batch atomes, properties

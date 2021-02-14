@@ -3,11 +3,11 @@
 
 module Atome_methods_list
   def self.atome_methods
-    %i[border display record color delete opacity shadow enliven tactile selector]
+    %i[border display record color delete opacity shadow enliven tactile selector atome_id id type]
   end
   #the line below specify if the properties need specific processing
   def self.need_pre_processing
-    %i[add opacity shadow]
+    %i[add opacity shadow atome_id]
   end
   def self.need_processing
     %i[delete]
@@ -15,9 +15,8 @@ module Atome_methods_list
   def self.need_post_processing
     %i[]
   end
-
   def self.need_rendering
-    %i[border display record color delete opacity shadow]
+    %i[border display record color delete opacity shadow id type]
   end
 end
 # the class below initialize the default values and generate properties's methods
@@ -26,7 +25,6 @@ class Sparkle
   def initialize
     # the line below create atomes's methods using meta-programming
     atome_methods = Atome_methods_list.atome_methods
-
     atome_methods.each do |method_name|
       create_property(method_name)
     end
@@ -119,13 +117,18 @@ module Properties
     end
   end
 
-  def magic_getter(method)
+  def magic_getter(method,instance_method_name)
     # the aim of this method is only return the value of the content if the property hash only have a content set
     if method.length == 1 && method.instance_of?(Hash) && method[:content]
-      method[:content]
+      if instance_method_name ==:atome_id
+        method[:content]
+      else
+        method
+      end
     else
       method
     end
+    # alert "property.rb line 127 method :#{self.properties}"
   end
 end
 

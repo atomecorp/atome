@@ -2,6 +2,25 @@
 #  the module below contains all the specifics code for properties
 module Atome_processor
   include Properties
+
+
+  def atome_id_pre_processor(params)
+    # if params[:atome_id].nil?
+    #   atome_id = ('a_' + object_id.to_s).to_sym
+    # else
+    #   atome_id= params[:atome_id]
+    # end
+    # # @atome_id = atome_id
+    # atome_id
+    # alert "atome_id : #{self.atome_id} params : #{params}"
+    if self.atome_id.length > 0
+      alert "already define strictly forbiden, params : #{params} :  atome_id : #{self.atome_id.length}"
+      params = self.atome_id
+    end
+    params
+   end
+
+
   def opacity_pre_processor(params)
     params[:content]=0.1
   end

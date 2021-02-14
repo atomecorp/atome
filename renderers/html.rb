@@ -19,6 +19,7 @@ module Render
   end
 
   def self.render_type(atome, params, parent = :body)
+    # alert "html.rb line 22 : #{atome.atome_id}"
     atome_id = atome.atome_id
     dark_matter = Element.find('#dark_matter')
     if atome_id == :blackhole
@@ -46,12 +47,6 @@ module Render
         dark_matter.append(("<div class='atome' id='#{atome_id}'></div>"))
       end
     end
-    #atome.properties.each do |property|
-    #we collect all previously stored property to avoid inifinite recursive loop and atome_id which may be already set as it should be set in first
-    #unless property.keys[0].to_sym == :type || property.keys[0].to_sym == :parent || property.keys[0].to_sym == :advertise || property.keys[0].to_sym == :preset || property.keys[0].to_sym == :atome_id || property.keys[0].to_sym == :child || property.keys[0].to_sym == :center || property.keys[0].to_sym == :render
-    #  send("render_" + property.keys[0], atome, property.values[0])
-    #end
-    #end
   end
 
   def self.render_parent(atome, params, add = false)
@@ -62,19 +57,8 @@ module Render
 
   def self.render_content(atome, params, add = false)
     if atome.type[:content] == :text || atome.type[:content] == :web
-      #if atome.id=="code_content"
-      #  alert "message is \n\n#{atome.id} \n\nLocation: html.rb, line 58"
-      #end
       params = params.to_s.gsub("\n", "<br>")
-      #r_get( atome.atome_id).html(params)
       r_get(atome.atome_id).html(params)
-
-      #unless atome.width
-      #  atome.width = r_get( atome.atome_id).width
-      #end
-      #unless atome.height
-      #  atome.height = r_get( atome.atome_id).height
-      #end
     elsif atome.type[:content] == "image"
       if $images_list[params.to_sym].nil?
         path = '././medias/images/image_missing.svg'
