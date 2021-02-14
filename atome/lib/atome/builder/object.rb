@@ -66,12 +66,13 @@ module Nucleon
 
         # We generate  the id below
         if params[:id].nil?
-          generated_id = if @preset
+          id = if @preset
                            (@preset.to_s + '_' + @@atomes.length.to_s).to_sym
-                         else
+               else
+                 # alert " Object.rb line  72 : #{params[:type]}"
                            (params[:type].to_s + '_' + @@atomes.length.to_s).to_sym
                          end
-          preset[:id] = generated_id
+          preset[:id] = id
         end
         # we get the preset value from the object type and add the value set by the user
         preset = reorder_properties(preset)
@@ -137,6 +138,7 @@ module Nucleon
       end
 
       def get params = nil
+        alert "object.rb line 141 #{params}"
         if params
           if params.class == String || params.class == Symbol
             Object.get(params)

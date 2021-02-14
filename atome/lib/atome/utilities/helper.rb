@@ -49,6 +49,7 @@ end
 #end
 
 def get(params)
+  # alert "helper.rb line 52, params : #{params}"
   #get atome in view from it's id
   #todo get should allow to get object by its property/value (ex : get(color: :red) => return all atome with the property color set to red)
   atomes = Atome.atomes
@@ -78,10 +79,12 @@ def get(params)
     #alert "message :\n#{"we slected all children view"}\n from : electron.rb : 80"
   elsif params.class == String || params.class == Symbol
     atomes.each do |atome|
-      if atome.id.to_s == params.to_s
+      # alert("atome.id #{atome.id} params #{params}")
+      if atome.id[:content].to_s == params.to_s
         return atome
       end
     end
+
     return false
   end
 end

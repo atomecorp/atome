@@ -128,7 +128,7 @@ module Properties
     else
       method
     end
-    # alert "property.rb line 127 method :#{self.properties}"
+    # method
   end
 end
 
