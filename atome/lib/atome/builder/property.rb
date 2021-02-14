@@ -9,6 +9,9 @@ module Atome_methods_list
   def self.need_pre_processing
     %i[add opacity shadow atome_id]
   end
+  def self.no_broadcast
+    %i[atome_id]
+  end
   def self.need_processing
     %i[delete]
   end
@@ -40,7 +43,11 @@ module Properties
        end
     else
       # if prop needs to be refresh we send it to the Render engine
-      broadcast(atome_id => {method_name => params})
+      unless  Atome_methods_list.no_broadcast.include?(method_name)
+
+        broadcast(atome_id[:content]=> {method_name => params})
+      end
+
       if Atome_methods_list.need_processing.include?(method_name)
         params= send("#{method_name}_processor", params)
       end
@@ -119,16 +126,16 @@ module Properties
 
   def magic_getter(method,instance_method_name)
     # the aim of this method is only return the value of the content if the property hash only have a content set
-    if method.length == 1 && method.instance_of?(Hash) && method[:content]
-      if instance_method_name ==:atome_id
-        method[:content]
-      else
-        method
-      end
-    else
-      method
-    end
-    # method
+    # if method.length == 1 && method.instance_of?(Hash) && method[:content]
+    #   if instance_method_name ==:atome_id
+    #     method[:content]
+    #   else
+    #     method
+    #   end
+    # else
+    #   method
+    # end
+    method
   end
 end
 

@@ -1,11 +1,11 @@
 # render methods
 module Render
   def self.r_get atome_id
-    Element.find('#' + atome_id)
+    Element.find('#' + atome_id[:content])
   end
 
   def self.js_get atome
-    Element.find('#' + atome.atome_id)
+    Element.find('#' + atome.atome_id[:content])
   end
 
   def self.initialize
@@ -19,19 +19,16 @@ module Render
   end
 
   def self.render_type(atome, params, parent = :body)
-    # alert "html.rb line 22 : #{atome.atome_id}"
-    atome_id = atome.atome_id
+    atome_id = atome.atome_id[:content]
     dark_matter = Element.find('#dark_matter')
-    if atome_id == :blackhole
-      r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
-    elsif atome_id == :dark_matter
-      r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
+    if atome_id == :dark_matter
+      r_get({ content: 'user_device'}).prepend("<div class='atome' id='#{atome_id}'></div>")
     elsif atome_id == :device
-      r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
+      r_get({ content: 'user_device'}).prepend("<div class='atome' id='#{atome_id}'></div>")
     elsif atome_id == :intuition
-      r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
+      r_get({ content: 'user_device'}).prepend("<div class='atome' id='#{atome_id}'></div>")
     elsif atome_id == :view
-      r_get('device').prepend("<div class='atome' id='#{atome_id}'></div>")
+      r_get({ content: 'user_device'}).prepend("<div class='atome' id='#{atome_id}'></div>")
     else
       if params == :text
         dark_matter.append("<div class='atome' style='display:inline-block' id='#{atome_id}'></div>")
@@ -691,66 +688,12 @@ module Render
     if params.class == Array
     else
       if params.class == Atome
-        params = params.atome_id
+        params = params.atome_id[:content]
       elsif params.class == String || params.class == Symbol
-        params = Object.get(params).atome_id
+        params = Object.get(params).atome_id[:content]
       end
-
-      #parent.children.each do |child_found|
-      #  alert "message is \n\n#{child_found} \n\nLocation: html.rb, line 558"
-      #end
-      #alert "message is \n\n#{parent.children.to_a.class} \n\nLocation: html.rb, line 560
-      #if grab(params)
-      #  child_to_add=grab(params)
-      #  parent.children.each do |child_found|
-      #    if child_found.id==child_to_add.atome_id
-      #      alert "message is \n\n#{child_found.id} \n\nLocation: html.rb, line 564"
-      #    else
-      #      alert "message is \n\n#{parent.id} : #{child_to_add.atome_id} \n\nLocation: html.rb, line 567"
-      #    end
-      #  end
-      #end
-
-      child = r_get(params)
-
-      #if child.position
-      #  #alert "message is \n\n#{child.offsetTop} \n\nLocation: html.rb, line 560"
-      #  child_top=child.offsetTop
-      #  child_left=child.offsetTop
-      #  parent_top= parent.offsetTop
-      #  parent_left= parent.offsetTop
-      #  offset_y=child_top-parent_top
-      #  offset_x=child_left-parent_left
-      #  #if atome.id == :toto || atome.id==:titi
-      #    alert "message is #{atome.id} \n\n#{child_top}  : #{parent_top}  \n\nLocation: html.rb, line 563"
-      #  #end
-      #  child.css('top',offset_y.to_s+'px')
-      #  child.css('left',offset_x.to_s+'px')
-      #end
+      child = r_get({ content: params })
       parent.append(child)
-      #if grab(params)
-      #  child=grab(params)
-      #  child.x=child.x[:content]-atome.x[:content]
-      #  child.y=child.y[:content]-atome.y[:content]
-      #end
-      #  child_top=child.position.top
-      #  child_left=child.position.left
-      #parent_top=parent.position.top
-      #parent_left=parent.position.left
-      #  child.css('left',child_left-parent_left)
-      #  child.css('top',child_top-parent_top)
-      ##  #if parent.offset
-      ##  #  offset=parent.offset
-      ##  #  child.offset(offset)
-      ##  #end
-      ##  #the line below causes problem when enliven an atome : it's position is lost
-      ##  # alert "message :\n#{:offset_problem}\n from : html.rb : 570"
-      #  offset=parent.offset
-      #child.offset(offset)
-
-      #c_offset=child.offset
-      #end
-
     end
   end
 
@@ -784,12 +727,15 @@ module Render
 
   def self.render_delete(atome, params, add = false)
     params=params[:content]
-    atome_body = r_get(atome.atome_id)
+    # atome_body = r_get(atome.atome_id)
     if params.class == Atome
-      Element.find('#blackhole').append(atome_body)
+      # Element.find('#blackhole').append(atome_body)
     elsif params.class == Hash
       property = params.keys[0]
       case property
+      # when true
+        # atome_to_delete = '#' + atome.atome_id
+        # Element.find(atome_to_delete).remove('')
       when :selector
         r_get(atome.atome_id).remove_class(params[:selector])
       when :touch
@@ -846,7 +792,7 @@ module Render
         r_get(atome.atome_id).unbind("touchend")
       end
       if params == :true || params == true
-        atome_to_delete = '#' + atome.atome_id
+        atome_to_delete = '#' + atome.atome_id[:content]
         Element.find(atome_to_delete).remove('')
       end
     end
@@ -1031,21 +977,19 @@ module Render
   end
 
   def self.render_enter(atome, params, add = false)
-    atome_id = '#' + atome.atome_id
-
-    Element.find("#device")
+    atome_id = '#' + atome.atome_id[:content]
     if params != true
       proc = params[:proc]
       params[:params]
     else
       :true
     end
-    JS_utils.enter(atome_id, proc)
+    JS_utils.enter(atome_id[:content], proc)
   end
 
   def self.render_exit(atome, params, add = false)
     current_atome = r_get(atome.atome_id)
-    atome_id = '#' + atome.atome_id
+    atome_id = '#' + atome.atome_id[:content]
     if params != true
       proc = params[:proc]
       params[:params]
@@ -1057,14 +1001,14 @@ module Render
 
   def self.render_drop(atome, params, add = false)
     current_atome = r_get(atome.atome_id)
-    atome_id = '#' + atome.atome_id
+    atome_id = '#' + atome.atome_id[:content]
     if params != true
       proc = params[:proc]
       params[:params]
     else
       :true
     end
-    JS_utils.drop(atome_id, proc)
+    JS_utils.drop(atome_id[:content], proc)
   end
 
   def self.render_key(atome, params, add = false)
@@ -1121,8 +1065,8 @@ module Render
 
   def self.render_scroll(atome, params, add = false)
     atome_id = r_get(atome.atome_id)
-    Element.find(atome_id).on(:scroll) do |evt|
-      offset_y = Element.find(atome_id).prop('scrollHeight').to_i - Element.find(atome_id).css('height').sub("px", "").to_i
+    Element.find(atome_id[:content]).on(:scroll) do |evt|
+      offset_y = Element.find(atome_id[:content]).prop('scrollHeight').to_i - Element.find(atome_id[:content]).css('height').sub("px", "").to_i
       params.call(offset_y) if params.is_a?(Proc)
     end
   end

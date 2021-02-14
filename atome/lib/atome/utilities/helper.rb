@@ -93,7 +93,7 @@ def grab(atome_id)
   #grab atome in view from it's atome_id
   atomes = Atome.atomes
   atomes.each do |atome|
-    if atome.atome_id == atome_id
+    if atome.atome_id[:content] == atome_id
       return atome
     end
   end
@@ -179,13 +179,12 @@ def find params
     filtered_atomes << self
   end
   atomes_found = []
-
   if params[:property] == :all
     atomes_found = filtered_atomes
   else
     filtered_atomes.each do |atome|
       if params[:value]
-        if atome && atome.send(params[:property]) == params[:value]
+        if atome && atome.send(params[:property])[:content] == params[:value]
           atomes_found << atome
         end
       else
@@ -193,10 +192,8 @@ def find params
           atomes_found << atome
         end
       end
-
     end
   end
-
   atomes_found
 end
 

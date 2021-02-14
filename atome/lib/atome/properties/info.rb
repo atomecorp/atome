@@ -105,7 +105,7 @@ module Nucleon
       # def id(params = nil, refresh = true)
       #   if params || params == false
       #     @id = params.to_sym
-      #     broadcast(atome_id => {id: params, private: false})
+      #     broadcast(atome_id[:content] => {id: params, private: false})
       #     Render.render_id(self, params) if refresh
       #     self
       #   else
@@ -137,7 +137,7 @@ module Nucleon
       def type(params = nil, refresh = true)
         if params || params == false
           @type = {content: params}
-          broadcast(atome_id => {type: params, private: false})
+          broadcast(atome_id[:content] => {type: params, private: false})
           Render.render_type(self, @type) if refresh
           self
         else
@@ -178,7 +178,7 @@ module Nucleon
       #      type_treatment param
       #    end
       #  end
-      #  broadcast(atome_id => {type: params})
+      #  broadcast(atome_id[:content] => {type: params})
       #end
       #
       #def type(params = nil)
@@ -218,7 +218,7 @@ module Nucleon
       def content(params = nil, refresh = true)
         if params || params == false
           @content = params
-          broadcast(atome_id => {content: params, private: false})
+          broadcast(atome_id[:content] => {content: params, private: false})
           Render.render_content(self, params) if refresh
           self
         else
@@ -233,7 +233,7 @@ module Nucleon
       def edit(params = nil, refresh = true)
         if params || params == false
           @edit = params
-          broadcast(atome_id => {edit: params, private: false})
+          broadcast(atome_id[:content] => {edit: params, private: false})
           Render.render_edit(self, params) if refresh
           self
         else
@@ -248,7 +248,7 @@ module Nucleon
       def select(params = nil, refresh = true)
         if params || params == false
           @select = params
-          broadcast(atome_id => {select: params, private: false})
+          broadcast(atome_id[:content] => {select: params, private: false})
           Render.render_select(self, params) if refresh
           self
         else
@@ -263,7 +263,7 @@ module Nucleon
       def active(params = nil, refresh = true)
         if params || params == false
           @active = params
-          broadcast(atome_id => {active: params, private: false})
+          broadcast(atome_id[:content] => {active: params, private: false})
           Render.render_active(self, params) if refresh
           self
         else
@@ -293,8 +293,10 @@ module Nucleon
       def parent(params = nil, refresh = true)
         if params
           atome = find_atome_from_params(params)
-          Atome.atomes.each do |atome|
-          end
+          # alert atome
+          # alert self
+          # Atome.atomes.each do |atome|
+          # end
           atome.insert(self)
         else
           # we check if the properties store is a string (atome_id),
@@ -359,27 +361,27 @@ module Nucleon
             # below we store the child list in "child_list_found"
             #variable to re-affect it after the line below(" parent_found.extract(params)")
             #may remove them fixme : find a more oprimised solution maybe rewrite the whole child parent delete clear system
-            child_list_found = [params.atome_id]
+            child_list_found = [params.atome_id[:content]]
             @child |= child_list_found
             if params.parent
               previous_parent = params.parent
               # the syntax below allow to add the value only if its present before.
               # if it already exist its replace not store twice
-              previous_parent |= [atome_id]
+              previous_parent |= [atome_id[:content]]
               # we check if the child should be extract from it's ancient parent or not( if we add it)
               unless params.class == Hash && params[:add]
                 params.parent.each do |parent_found|
                   parent_found.extract(params)
                 end
                 # as we don't wont  to add it but move tthe atome, we have to remove it from it's previous parent
-                previous_parent = [atome_id]
+                previous_parent = [atome_id[:content]]
               end
               @child |= child_list_found
               params.property({property: :parent, value: previous_parent})
             else
-              params.property({property: :parent, value: [atome_id]})
+              params.property({property: :parent, value: [atome_id[:content]]})
             end
-            broadcast(atome_id => {insert: params, private: false})
+            broadcast(atome_id[:content] => {insert: params, private: false})
             Render.render_group(self, params) if refresh
             #alert "message :\n(#{params},\n #{params.atome_id},\n #{params.id}\n#{params.x()})
             #from : neutron.rb : 262"
@@ -470,7 +472,7 @@ module Nucleon
       #    #  else
       #    #    params.property({property: :parent, value: [atome_id]})
       #    #  end
-      #    #  broadcast(atome_id => {insert: params, private: false})
+      #    #  broadcast(atome_id[:content] => {insert: params, private: false})
       #    #  Render.render_group(self, params) if refresh
       #    #  if params.y
       #    #    if y > params.y
@@ -543,22 +545,22 @@ module Nucleon
             children = find_atome_from_params(children)
             params = find_atome_from_params(params)
             # we rebuild the array conataining the new list of child excluding the removed one
-            if params.atome_id != children.atome_id
-              new_child_list << children.atome_id
+            if params.atome_id[:content] != children.atome_id[:content]
+              new_child_list << children.atome_id[:content]
             else
               # now we have to  remove the extract atome from parent child list
               # now we have to  remove parental link to the current atome
-              children.parent.delete(atome_id)
+              children.parent.delete(atome_id[:content])
               # now we group the detached item from the parent
               # we attach the detached atome to the grand parent(parent of the current atome )
               # todo : maybe there's a better strategy than attaching to the last parent
               parent = find_atome_from_params(self.parent.last)
               # if we detach an atome from the view(as intuition is the parent of the view, and intuition
               #is a reserved zone for tools) we made an exeption to attach the object to the dark matter
-              parent = grab(:dark_matter) if parent.atome_id == :intuition
+              parent = grab(:dark_matter) if parent.atome_id[:content] == :intuition
               #we hook the detached atome to the new parent
-              children.parent << parent.atome_id
-              broadcast(atome_id => {extract: params, private: false})
+              children.parent << parent.atome_id[:content]
+              broadcast(atome_id[:content] => {extract: params, private: false})
               Render.render_group(parent, children) if refresh
             end
           end
@@ -648,7 +650,7 @@ module Nucleon
           else
             @touch = options
           end
-          broadcast(atome_id => {touch: options, private: false})
+          broadcast(atome_id[:content] => {touch: options, private: false})
           Render.render_touch(self, options) if refresh
           self
         else
@@ -689,7 +691,7 @@ module Nucleon
       #      touch_treatment param
       #    end
       #  end
-      #  broadcast(atome_id => { touch: params })
+      #  broadcast(atome_id[:content] => { touch: params })
       #end
       #
       #def touch(params = nil)
@@ -739,7 +741,7 @@ module Nucleon
           else
             @drag = bloc
           end
-          broadcast(atome_id => {drag: params, private: false})
+          broadcast(atome_id[:content] => {drag: params, private: false})
           if refresh
             option = case params
                      when nil
@@ -773,7 +775,7 @@ module Nucleon
       def over(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] &&
             params[:content].class == Proc
-        broadcast(atome_id => {over: params, private: false})
+        broadcast(atome_id[:content] => {over: params, private: false})
         if proc
           if refresh
             params = {params: params, proc: proc}
@@ -819,7 +821,7 @@ module Nucleon
           else
             @enter = bloc
           end
-          broadcast(atome_id => {enter: params, private: false})
+          broadcast(atome_id[:content] => {enter: params, private: false})
           if refresh
             option = case params
                      when nil
@@ -877,7 +879,7 @@ module Nucleon
           else
             @exit = bloc
           end
-          broadcast(atome_id => {exit: params, private: false})
+          broadcast(atome_id[:content] => {exit: params, private: false})
           if refresh
             option = case params
                      when nil
@@ -936,7 +938,7 @@ module Nucleon
           else
             @drop = bloc
           end
-          broadcast(atome_id => {drop: params, private: false})
+          broadcast(atome_id[:content] => {drop: params, private: false})
           if refresh
             option = case params
                      when nil
@@ -996,7 +998,7 @@ module Nucleon
           else
             @key = bloc
           end
-          broadcast(atome_id => {key: params, private: false})
+          broadcast(atome_id[:content] => {key: params, private: false})
           if refresh
             option = case params
                      when nil
@@ -1049,7 +1051,7 @@ module Nucleon
           else
             @drag = bloc
           end
-          broadcast(atome_id => {resize: params, private: false})
+          broadcast(atome_id[:content] => {resize: params, private: false})
           if refresh
             params = {params: params, proc: proc}
             Render.render_resize(self, params)
@@ -1067,7 +1069,7 @@ module Nucleon
       def scale(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] &&
             params[:content].class == Proc
-        broadcast(atome_id => {scale: params, private: false})
+        broadcast(atome_id[:content] => {scale: params, private: false})
         if proc
           Render.render_scale(self, proc) if refresh
         elsif params || params == false
@@ -1086,7 +1088,7 @@ module Nucleon
       def scroll(params = nil, refresh = true, &proc)
         proc = params[:content] if params && params.class == Hash && params[:content] &&
             params[:content].class == Proc
-        broadcast(atome_id => {scroll: params, private: false})
+        broadcast(atome_id[:content] => {scroll: params, private: false})
         if proc
           Render.render_scroll(self, proc) if refresh
         elsif params || params == false
@@ -1138,7 +1140,7 @@ module Nucleon
       #  end
       #  self
       #end
-      def clear(params = :console, refresh = true, &proc)
+      def clear(params = :view, refresh = true, &proc)
         if params.class == Hash
           if params[:exclude] && params[:exclude].class == Array
           elsif params[:exclude]
@@ -1198,7 +1200,7 @@ module Nucleon
               else
                 @play = bloc
               end
-              broadcast(atome_id => {play: params, private: false})
+              broadcast(atome_id[:content] => {play: params, private: false})
               if refresh
                 option = case params
                          when nil
@@ -1262,7 +1264,7 @@ module Nucleon
             @pause = bloc
             @play = false
           end
-          broadcast(atome_id => {pause: params, private: false})
+          broadcast(atome_id[:content] => {pause: params, private: false})
           if refresh
             option = case params
                      when nil
@@ -1766,9 +1768,9 @@ module Nucleon
           @@monitor = []
         end
         if params[:atome].nil?
-          params[:atome] = self.atome_id
+          params[:atome] = self.atome_id[:content]
         elsif params[:atome].class == Atome
-          params[:atome] = params[:atome].atome_id
+          params[:atome] = params[:atome].atome_id[:content]
         end
         if proc
           params[:proc] = proc
@@ -1855,7 +1857,7 @@ module Nucleon
       #      atome_id_treatment param
       #    end
       #  end
-      #  broadcast(atome_id => {atome_id: params})
+      #  broadcast(atome_id[:content] => {atome_id: params})
       #end
       #
       #def atome_id(params = nil)

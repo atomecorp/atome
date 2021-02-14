@@ -73,7 +73,7 @@ module Nucleon
             Atome.atomes.each do |atome|
               a_found << atome.id
             end
-            unless a_found.include? atome_id
+            unless a_found.include? atome_id[:content]
               enliven(true)
             end
           end
@@ -104,7 +104,7 @@ module Nucleon
       #     else
       #       @color = params
       #     end
-      #     broadcast(atome_id => {color: params, private: false})
+      #     broadcast(atome_id[:content] => {color: params, private: false})
       #     if refresh
       #       # we add two condtion to render the object first if we want to refreshit , sencond if type exist (to avoid qending properties to the veiw when the obejct is not present in the view)
       #       Render.render_color(self, params) if refresh
@@ -122,7 +122,7 @@ module Nucleon
       def opacity params = nil, refresh = true
         if params || params == false
           @opacity = params
-          broadcast(atome_id => {opacity: params, private: false})
+          broadcast(atome_id[:content] => {opacity: params, private: false})
           if refresh
             Render.render_opacity(self, params) if refresh
           end
@@ -144,7 +144,7 @@ module Nucleon
             grab(:actions).resize_actions[key] = value
           end
         else
-          if atome_id == :actions
+          if atome_id[:content] == :actions
             if @resize_actions.class == NilClass
               @resize_actions = {}
             else
@@ -297,7 +297,7 @@ module Nucleon
 
       def x params = nil, refresh = true
         if params || params == false
-          broadcast(atome_id => {x: params, private: false})
+          broadcast(atome_id[:content] => {x: params, private: false})
           #the line below create the hash for the x property
           @x = {} if @x.nil?
           if params.class == Integer || params.class == Number
@@ -367,7 +367,7 @@ module Nucleon
             @y.delete(:center)
           end
           # now we assign the value
-          broadcast(atome_id => {y: params, private: false})
+          broadcast(atome_id[:content] => {y: params, private: false})
           Render.render_y(self, params[:content]) if refresh
           return self
         else
@@ -416,7 +416,7 @@ module Nucleon
             @x.delete(:center)
           end
           ## now we assign the value
-          broadcast(atome_id => {xx: params, private: false})
+          broadcast(atome_id[:content] => {xx: params, private: false})
           Render.render_xx(self, params[:content]) if refresh
           return self
         else
@@ -473,7 +473,7 @@ module Nucleon
             @y.delete(:center)
           end
           ## now we assign the value
-          broadcast(atome_id => {yy: params, private: false})
+          broadcast(atome_id[:content] => {yy: params, private: false})
           Render.render_yy(self, params[:content] ) if refresh
           return self
         else
@@ -497,7 +497,7 @@ module Nucleon
       def z params = nil, refresh = true
         if params || params == false
           @z = params
-          broadcast(atome_id => {z: params, private: false})
+          broadcast(atome_id[:content] => {z: params, private: false})
           if refresh
             Render.render_z(self, params) if refresh
           end
@@ -515,7 +515,7 @@ module Nucleon
       def width params = nil, refresh = true
         if params || params == false
           @width = params
-          broadcast(atome_id => {width: params, private: false})
+          broadcast(atome_id[:content] => {width: params, private: false})
           if refresh
             Render.render_width(self, params) if refresh
           end
@@ -532,7 +532,7 @@ module Nucleon
       def height params = nil, refresh = true
         if params || params == false
           @height = params
-          broadcast(atome_id => {height: params, private: false})
+          broadcast(atome_id[:content] => {height: params, private: false})
           if refresh
             Render.render_height(self, params) if refresh
           end
@@ -549,7 +549,7 @@ module Nucleon
       def size params = nil, refresh = true
         if params || params == false
           @size = params
-          broadcast(atome_id => {size: params, private: false})
+          broadcast(atome_id[:content] => {size: params, private: false})
           if refresh
             Render.render_size(self, params) if refresh
           end
@@ -566,7 +566,7 @@ module Nucleon
       def position params = nil, refresh = true
         if params || params == false
           @position = params
-          broadcast(atome_id => {position: params, private: false})
+          broadcast(atome_id[:content] => {position: params, private: false})
           if refresh
             Render.render_position(self, params) if refresh
           end
@@ -606,7 +606,7 @@ module Nucleon
       def overflow params = nil, refresh = true
         if params || params == false
           @overflow = params
-          broadcast(atome_id => {overflow: params, private: false})
+          broadcast(atome_id[:content] => {overflow: params, private: false})
           if refresh
             Render.render_overflow(self, params) if refresh
           end
@@ -629,7 +629,7 @@ module Nucleon
               @fill = [params]
             end
           end
-          broadcast(atome_id => {fill: params, private: false})
+          broadcast(atome_id[:content] => {fill: params, private: false})
           if refresh
             Render.render_fill(self, params) if refresh
           end
@@ -683,7 +683,7 @@ module Nucleon
             self.width(target.value(:width), refresh)
             self.height(target.value(:height), refresh)
           end
-          broadcast(atome_id => {fit: params, private: false})
+          broadcast(atome_id[:content] => {fit: params, private: false})
           return self
         else
           @fit
@@ -697,7 +697,7 @@ module Nucleon
       #def rotate params = nil, refresh = true
       #  if params || params == false
       #    @rotate = params
-      #    broadcast(atome_id => {rotate: params, private: false})
+      #    broadcast(atome_id[:content] => {rotate: params, private: false})
       #    if refresh
       #      Render.render_rotate(self, params) if refresh
       #    end
@@ -741,7 +741,7 @@ module Nucleon
             rotate_treatment param
           end
         end
-        broadcast(atome_id => { rotate: params })
+        broadcast(atome_id[:content] => { rotate: params })
       end
 
       def rotate(params = nil)
@@ -778,7 +778,7 @@ module Nucleon
           else
             @shadow = [params]
           end
-          broadcast(atome_id => {shadow: params, private: false})
+          broadcast(atome_id[:content] => {shadow: params, private: false})
           if refresh
             formated_params= parse_params(params, :shadow)
             Render.render_shadow(self, formated_params) if refresh
@@ -796,7 +796,7 @@ module Nucleon
       def border params = nil, refresh = true
         if params || params == false
           @border = params
-          broadcast(atome_id => {border: params, private: false})
+          broadcast(atome_id[:content] => {border: params, private: false})
           if refresh
             Render.render_border(self, params) if refresh
           end
@@ -813,7 +813,7 @@ module Nucleon
       def smooth params = nil, refresh = true
         if params || params == false
           @smooth = params
-          broadcast(atome_id => {smooth: params, private: false})
+          broadcast(atome_id[:content] => {smooth: params, private: false})
           if refresh
             Render.render_smooth(self, params) if refresh
           end
@@ -830,7 +830,7 @@ module Nucleon
       def blur params = nil, refresh = true
         if params || params == false
           @border = params
-          broadcast(atome_id => {blur: params, private: false})
+          broadcast(atome_id[:content] => {blur: params, private: false})
           if refresh
             Render.render_blur(self, params) if refresh
           end
@@ -847,7 +847,7 @@ module Nucleon
       def level params = nil, refresh = true
         if params || params == false
           @level = params
-          broadcast(atome_id => {level: params, private: false})
+          broadcast(atome_id[:content] => {level: params, private: false})
           if refresh
             Render.render_level(self, params) if refresh
           end

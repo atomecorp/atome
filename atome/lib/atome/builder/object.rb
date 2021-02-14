@@ -7,9 +7,9 @@ module Nucleon
       include Atome_processor
 
       @@atomes = []
-      @@black_hole = [] # deleted atomes
+      # @@black_hole = [] # deleted atomes
       @@buffer = []
-      @@device = ''
+      # @@device = ''
 
 
       def initialize(params, refresh = true)
@@ -138,7 +138,7 @@ module Nucleon
       end
 
       def get params = nil
-        alert "object.rb line 141 #{params}"
+        # alert "object.rb line 141 #{params}"
         if params
           if params.class == String || params.class == Symbol
             Object.get(params)
