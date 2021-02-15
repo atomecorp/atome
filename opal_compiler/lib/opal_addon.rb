@@ -639,13 +639,7 @@ end
 
 def animate(params)
   obj = params[:target]
-  obj = if obj.nil?
-          self.atome_id[:content]
-        elsif obj.class == Atome
-          obj.atome_id[:content]
-        else
-          Object.get(obj).atome_id[:content]
-        end
+  obj= (find_atome_from_params obj).atome_id[:content]
   params.delete(:target)
   if params[:start][:blur]
     value_found = params[:start][:blur]
