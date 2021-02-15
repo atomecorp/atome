@@ -11,15 +11,12 @@ module Nucleon
       @@buffer = []
       # @@device = ''
 
-
       def initialize(params, refresh = true)
         # if not param is passed then we create a particle by default
         # params = :particle unless params
-
         unless params[:type]
           params[:type]=:particle
         end
-
         if params.class == Symbol || params.class == String
           # We get the preset name
           @preset = params.to_sym
@@ -37,26 +34,6 @@ module Nucleon
                    end
           preset = Pi.presets[preset]
         end
-        #  we generate the atome_id, the first 5 elements are systems they have specials atome_id and id
-        # atome_id = if @@atomes.length == 0
-        #              :dark_matter
-        #            elsif @@atomes.length == 1
-        #              :device
-        #            elsif @@atomes.length == 2
-        #              :intuition
-        #            elsif @@atomes.length == 3
-        #              :view
-        #            elsif @@atomes.length == 4
-        #              :actions
-        #            end
-
-        # We generate  the atome_id below
-        # if params[:atome_id].nil?
-        #   atome_id = ('a_' + object_id.to_s).to_sym
-        # else
-        #   atome_id= params[:atome_id]
-        # end
-        # @atome_id = atome_id
 
 
         if params[:atome_id].nil?
@@ -69,7 +46,6 @@ module Nucleon
           id = if @preset
                            (@preset.to_s + '_' + @@atomes.length.to_s).to_sym
                else
-                 # alert " Object.rb line  72 : #{params[:type]}"
                            (params[:type].to_s + '_' + @@atomes.length.to_s).to_sym
                          end
           preset[:id] = id
@@ -77,10 +53,21 @@ module Nucleon
         # we get the preset value from the object type and add the value set by the user
         preset = reorder_properties(preset)
         preset = preset.merge(params)
-        # alert "object.rb line 79 : #{preset}"
         # we send the collected properties to the atome
+        if params[:type]==:collector
+          puts "------------------"
+        end
         preset.each_key do |property|
-          send(property, preset[property], refresh)
+          if params[:type]==:collector
+            # puts "params #{params[:type]} : property : #{property}, preset[property] : #{preset[property]}"
+            puts "property #{property} : value : #{preset[property]}}"
+            send(property, preset[property], refresh)
+          else
+            send(property, preset[property], refresh)
+          end
+        end
+        if params[:type]==:collector
+          puts "------------------"
         end
         # now we add the new atome to the atomes's list
         if preset[:render] == false || preset[:render] == :false
@@ -89,7 +76,6 @@ module Nucleon
           #alert "message :\n#{preset[:render]}\n from : atome.rb : 74"
           @@atomes << self
         end
-
       end
 
       # S.A.G.E.D methods

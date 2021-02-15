@@ -19,14 +19,15 @@ end
 
 def collector(options = nil)
   options ||= {content: Atome.presets[:batch][:content]}
-  refresh = if options[:render] == false || options[:render] == :false
-              false
-            else
-              true
-            end
+  # refresh = if options[:render] == false || options[:render] == :false
+  #             false
+  #           else
+  #             true
+  #           end
   options&.instance_of?(Hash)
   options = {type: :collector, preset: :collector}.merge(options)
-  Atome.new(options, refresh)
+  # alert options
+  Atome.new(options)
 end
 
 def box(options = nil)

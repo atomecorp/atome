@@ -104,9 +104,9 @@ module Nucleon
 
       # def id(params = nil, refresh = true)
       #   if params || params == false
-      #     @id = params.to_sym
+      #     @id = { content: params.to_sym }
       #     broadcast(atome_id[:content] => {id: params, private: false})
-      #     Render.render_id(self, params) if refresh
+      #     Render.render_id(self, { content: params.to_sym }) if refresh
       #     self
       #   else
       #     @id
@@ -1904,22 +1904,17 @@ module Nucleon
         content = properties.delete(:content)
         center = properties.delete(:center)
         size = properties.delete(:size)
-        # {type: type}.merge({parent: parent}).merge({width: width}).merge({height: height})
-        #     .merge(properties).merge({content: content}).merge({size: size}).merge({center: center}).merge({atome_id: atome_id})
-        #
+
+
+#image works but batch don't
         {atome_id: atome_id}.merge({type: type}).merge({parent: parent}).merge({width: width}).merge({height: height})
-                    .merge(properties).merge({content: content}).merge({size: size}).merge({center: center})
+                            .merge(properties).merge({content: content}).merge({size: size}).merge({center: center})
+#batch works but image don't
+        # {atome_id: atome_id}.merge({type: type}).merge({parent: parent}).merge({width: width}).merge({height: height})
+        #   .merge({size: size}).merge({center: center}).merge({content: content}).merge(properties)
 
 
       end
-
-      # def batch atomes, properties
-      #   atomes.each do |atome|
-      #     properties.each do |property, value|
-      #       atome.send(property, value)
-      #     end
-      #   end
-      # end
 
       def batch(*params)
         collector=[]

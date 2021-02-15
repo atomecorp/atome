@@ -830,7 +830,6 @@ t=text({ content: "touch me to batch process the object below" , x: 70, y: 120})
 t.touch do
   get(:view).batch(a, b).set({color: :cyan})
 end
-
 Strdelim
     self.puts_help :batch_api, demo_code
   end

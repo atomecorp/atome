@@ -146,6 +146,9 @@ def find_atome_from_params params
   if params.class == Atome
     supposed_atome = params
   else
+    if   params.class == Hash
+      params=params[:content]
+    end
     supposed_atome = grab(params) if params.class == String || params.class == Symbol
     #if the first condition return nil now we check if an id exist
     supposed_atome = get(params) unless supposed_atome

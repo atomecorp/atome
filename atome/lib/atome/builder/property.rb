@@ -7,7 +7,7 @@ module Atome_methods_list
   end
   #the line below specify if the properties need specific processing
   def self.need_pre_processing
-    %i[add opacity shadow atome_id]
+    %i[add shadow atome_id]
   end
   def self.no_broadcast
     %i[atome_id]
@@ -22,7 +22,7 @@ module Atome_methods_list
     %i[border display record color delete opacity shadow id type]
   end
 end
-# the class below initialize the default values and generate properties's methods
+# the class below initialize the default values and generate property's methods
 class Sparkle
   include Atome_methods_list
   def initialize
@@ -37,14 +37,14 @@ end
 module Properties
   # the methods below must be executed once only
   def send_hash(params, method_name)
+    # alert self.type[:content]
     if self.type[:content]==:collector
-       self.content.each do |atome_to_be_proceessed|
-         atome_to_be_proceessed.send(method_name,params)
+       self.content.each do |atome_to_be_processed|
+         atome_to_be_processed.send(method_name,params)
        end
     else
       # if prop needs to be refresh we send it to the Render engine
       unless  Atome_methods_list.no_broadcast.include?(method_name)
-
         broadcast(atome_id[:content]=> {method_name => params})
       end
 
@@ -60,7 +60,9 @@ module Properties
       end
     end
     if self.type[:content]==:collector
-      self.delete(true)
+      alert "property.rb line 63 shoule delete the collector"
+      # self.content=""
+      # self.delete(true)
     end
     self
   end

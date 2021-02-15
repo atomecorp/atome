@@ -13,12 +13,6 @@ module Atome_processor
     params
    end
 
-
-  def opacity_pre_processor(params)
-    params[:content]=0.1
-  end
-
-
   def color_processor(params)
     # alert "color processed#{params}"
         return params
@@ -39,6 +33,9 @@ module Atome_processor
     # alert self.id
     # get(:blackhole).add(content: self.id)
     # alert get(:blackhole).content
+    #########################
+    # puts "visual.rb line 36, atomes: #{get(:atomes)}"
+    #########################
     return params
   end
 
@@ -119,22 +116,22 @@ module Nucleon
       #   color(params, refresh)
       # end
 
-      def opacity params = nil, refresh = true
-        if params || params == false
-          @opacity = params
-          broadcast(atome_id[:content] => {opacity: params, private: false})
-          if refresh
-            Render.render_opacity(self, params) if refresh
-          end
-          return self
-        else
-          @opacity
-        end
-      end
-
-      def opacity= params = nil, refresh = true
-        opacity(params, refresh)
-      end
+      # def opacity params = nil, refresh = true
+      #   if params || params == false
+      #     @opacity = params
+      #     broadcast(atome_id[:content] => {opacity: params, private: false})
+      #     if refresh
+      #       Render.render_opacity(self, params) if refresh
+      #     end
+      #     return self
+      #   else
+      #     @opacity
+      #   end
+      # end
+      #
+      # def opacity= params = nil, refresh = true
+      #   opacity(params, refresh)
+      # end
 
       #spatial utilities
 
