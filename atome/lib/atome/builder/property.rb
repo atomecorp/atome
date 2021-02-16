@@ -2,18 +2,20 @@
 #this module contain the methods to be created and those who needs extra processing
 class Matiere
   def initialize property
-    @property=property
+    @property = property
   end
+
   def collapse
     puts @property
     @property
   end
+
   def matiere
     self
   end
 
   def length
-     @property.length
+    @property.length
   end
 
   def []
@@ -27,20 +29,25 @@ class Matiere
   # end
 
 end
+
 module Atome_methods_list
   def self.atome_methods
     %i[border display record color delete opacity tabalou shadow enliven tactile selector atome_id id type content]
   end
+
   #the line below specify if the properties need specific processing
   def self.need_pre_processing
     %i[add shadow atome_id]
   end
+
   def self.no_broadcast
     %i[atome_id tabalou]
   end
+
   def self.need_processing
     %i[delete]
   end
+
   def self.need_post_processing
     %i[]
   end
@@ -52,6 +59,7 @@ end
 # the class below initialize the default values and generate property's methods
 class Sparkle
   include Atome_methods_list
+
   def initialize
     # the line below create atomes's methods using meta-programming
     atome_methods = Atome_methods_list.atome_methods
@@ -60,8 +68,8 @@ class Sparkle
     end
   end
 
-
 end
+
 # the class below contains all common propertiy's methods
 module Properties
   # the methods below must be executed once only
@@ -101,7 +109,7 @@ module Properties
       if param.instance_of?(Hash) && param[:add] != false && index != 0
         param[:add] = true
       elsif !param.instance_of?(Hash)
-        param = {value: param, add: true}
+        param = { value: param, add: true }
       end
       if index == params.length - 1
         # when we reach the last element of the array we add the proc
@@ -127,30 +135,43 @@ module Properties
     # instance_variable_set("@#{method_name}", params)
   end
 
-  def method_analysis(params, method_name, proc)
-    # we reformat the params to be hash with :avalue as key
-    unless params.instance_of?(Hash)
-      params= {value: params }
-    end
-    # we don't create a object init time, to only create property when needed
-    if Atome_methods_list.need_pre_processing.include?(method_name)
-      params = send("#{method_name}_pre_processor", params)
-    end
-    # now we feed the instance_variable with the new value
-    if params[:add]== true
-       params.delete(:add)
-      prev_value=instance_variable_get("@#{method_name}")
+  def set_instance_variable params, method_name, proc
+    if params[:add] == true
+      params.delete(:add)
+      prev_value = instance_variable_get("@#{method_name}")
       instance_variable_set("@#{method_name}", [prev_value, params])
     else
       instance_variable_set("@#{method_name}", params)
     end
-    titi=instance_variable_get("@#{method_name}")
+  end
+
+  def method_analysis(params, method_name, proc)
+    # we reformat the params to be hash with :avalue as key
+    # we don't create a object init time, to only create property when needed
+    if Atome_methods_list.need_pre_processing.include?(method_name)
+      params = send("#{method_name}_pre_processor", params)
+    end
+    if params.instance_of?(String) || params.instance_of?(Symbol)
+      params = { value: params }
+      # now we feed the instance_variable with the new value
+      set_instance_variable params, method_name, proc
+    elsif params.instance_of?(Array)
+      params.each do |param|
+        alert " #{method_name} : #{param}"
+      #   method_analysis(param, method_name, proc)
+      end
+    else
+      # now we feed the instance_variable with the new value
+      set_instance_variable params, method_name, proc
+    end
+
+    # titi = instance_variable_get("@#{method_name}")
     # alert "property.rb line 150 : #{method_name}: #{titi}"
     if params.instance_of?(Array)
       array_parsing params, method_name, proc
     else
       if params && !params.instance_of?(Hash)
-        params = {value: params}
+        params = { value: params }
       end
       params ||= {}
       params[:proc] = proc if proc
@@ -158,7 +179,7 @@ module Properties
     end
   end
 
-  def magic_getter(method,instance_method_name)
+  def magic_getter(method, instance_method_name)
     # the aim of this method is only return the value of the content if the property hash only have a content set
     # if method.length == 1 && method.instance_of?(Hash) && method[:content]
     #   if instance_method_name ==:atome_id

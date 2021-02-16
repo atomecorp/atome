@@ -24,10 +24,12 @@ class Device
     # puts Atome.method_defined?(:tabalou)
 
     a=Atome.new({color: :red})
-    a.color({value: :orange})
-     a.color({value: :blue, add: true})
+    # a.color({value: :orange})
+    # a.color("green")
+    #  a.color({value: :blue, add: true})
+    a.color([:purple, :blue])
     # a.color({value: :pink})
-    alert a.color
+    alert "initialize.rb line 32,  a.color : #{a.color} recursive problem at property.rb line 158 "
     # alert "initialize.rb line 28 properties : #{a.properties}"
     #  Atome.new({atome_id: :dark_matter, id: :dark_matter, width: 0, height: 0, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :hidden, color: :transparent})
     # device = Atome.new({language: :english, type: :particle, atome_id: :device, id: :device, width: "100%", height: "100%", x: 0, xx: 0, y: 0, yy: 0, z: 1, overflow: :hidden, color: :transparent})
