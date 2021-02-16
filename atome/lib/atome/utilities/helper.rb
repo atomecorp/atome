@@ -1,21 +1,15 @@
 # here stand some atome's function to allow atome's objects manipulation
-#
 
 def create_property(method_name)
+  # alert " create #{method_name}"
   Nucleon.define_method method_name do |params = nil, &proc|
-    # this is the main entry method for the current property treatment
-    # first we create a hash for the property if t doesn't exist
-    # we don't create a object init time, to only create property when needed
-    instance_method_name = if instance_variable_defined?("@" + method_name.to_s)
-                             instance_variable_get("@#{method_name}")
-                           else
-                             instance_variable_set("@#{method_name}", {})
-                           end
-    # we send the params to the 'reformat_params' if there's a params
-    method_analysis params, instance_method_name, method_name, proc if params || proc
-    # finally we return the current property using magic_getter
-    unless params
-      # no params send we call the getter
+    if params
+      # this is the main entry method for the current property treatment
+      # first we create a hash for the property if it doesn't already exist
+      method_analysis params, method_name, proc if params || proc
+    else
+      # no params send we call the getter using magic_getter
+      instance_method_name=instance_variable_get("@#{method_name}")
       magic_getter instance_method_name, method_name
     end
   end
@@ -74,7 +68,7 @@ def get(params)
         return collected_atomes
       end
     end
-    return collected_atomes
+     collected_atomes
   elsif (params.class == String || params.class == Symbol) && params.to_sym == :all
     #alert "message :\n#{"we slected all children view"}\n from : electron.rb : 80"
   elsif params.class == String || params.class == Symbol
@@ -93,11 +87,11 @@ def grab(atome_id)
   #grab atome in view from it's atome_id
   atomes = Atome.atomes
   atomes.each do |atome|
-    if atome.atome_id[:content] == atome_id
+    if atome.atome_id[:value] == atome_id
       return atome
     end
   end
-  return nil
+   nil
 end
 
 # def scour(params)
@@ -118,10 +112,10 @@ def filter_system_object
       filtered_atomes << atome
     end
   end
-  return filtered_atomes
+   filtered_atomes
 end
 
-def found_child_recursively params
+def found_child_recursively(params)
   params.each do |child_found|
     if child_found.class == Atome
       @childs_found << child_found
@@ -134,14 +128,11 @@ end
 
 def filter_atome
   @childs_found = []
-  found_child_recursively(self.child())
+  found_child_recursively(self.child)
   @childs_found
 end
 
-
-
-
-def find_atome_from_params params
+def find_atome_from_params(params)
   # this function all to return the atome either send and is an atome_id or the atome itself
   if params.class == Atome
     supposed_atome = params
@@ -154,7 +145,7 @@ def find_atome_from_params params
     supposed_atome = get(params) unless supposed_atome
   end
   # we return the atome itself
-  return supposed_atome
+  supposed_atome
 end
 
 def find params
@@ -301,22 +292,22 @@ end
 #  alert "message is \n\n#{params} \n\nLocation: electron.rb, line 60"
 #end
 
-def clear params = :console
+def clear(params = :console)
   atome = grab(:device)
   # now we call the clear methods in neutron
   atome.clear(params)
 end
 
-def http url
+def http(url)
   Render.render_http(url)
 end
 
-def read filename, action = :run, code = :ruby #  read local file
+def read(filename, action = :run, code = :ruby) #  read local file
   Render.render_reader filename, action, code
 end
 
 def lorem
-  lorem = <<Strdelilm
+  <<Strdelilm
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
 Strdelilm
 end

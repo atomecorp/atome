@@ -1,9 +1,10 @@
 # here the methods to create default values, properties and presets to atome objects
 module Nucleon
+  def initialize(*params)
+    super
+  end
   module Core
-
     module Pi
-
       #We use call variable here so user can change default value using Pi.presets method
       @@visual = {}
       @@shape = @@visual.merge({})
@@ -31,8 +32,8 @@ module Nucleon
         image = visual.merge({type: :image, color: :transparent, content: :atome}).merge(@@image)
         video = visual.merge({type: :video, color: :transparent, content: :atome}).merge(@@video)
         audio = visual.merge({type: :audio, color: :transparent, content: :atome}).merge(@@audio)
-        particle = {type: :particle, content: nil}.merge(@@particle)
-        collector = {type: :collector, content: nil}.merge(@@particle)
+        particle = {type: :particle}.merge(@@particle)
+        collector = {type: :collector}.merge(@@particle)
         tool = visual.merge({type: :tool, width: 52, height: 50, parent: :intuition, content: :dummy}).merge(@@tool)
         web = visual.merge({type: :web, color: :transparent, content: :atome}).merge(@@web)
         user = visual.merge({type: :user, color: :transparent, name: :anonymous, pass: :none, content: :anonymous}).merge(@@user)

@@ -1,5 +1,4 @@
 def create(options = nil)
-
   if options.class== Atome
     self.insert(options)
     options.x=options.x[:content]+self.x[:content]
