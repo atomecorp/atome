@@ -1,6 +1,7 @@
 # here the methods to create default values, properties and presets to atome objects
 
 module Pi
+  alert "default.rb line 4remove instance variable here"
   #We use call variable here so user can change default value using Pi.presets method
   @@visual = {}
   @@shape = @@visual.merge({})

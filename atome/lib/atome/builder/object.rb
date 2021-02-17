@@ -5,17 +5,15 @@ class Nucleon < Helper
   include Atome_processor
 
   def initialize(params = nil, refresh = true)
-    # if no params we create property hash with default type
+    # if no params is sent we create a default property hash with type set to particle
     params ||= {type: :particle}
-    # if no preset is send bu the user we get it from the type of atome found
+    # if no type is found in the params we use particle by default
+    params[:type] = :particle unless params[:type]
+    # if no preset is send by user we get it from the type of atome found
     preset = params[:preset] || params[:type]
     # we find preset associated for the found type
     preset = Pi.presets[preset]
     # We generate the atome_id below if not sended by user
-    alert "problem here"
-    params[:type] = :particle unless params[:type]
-
-
     if params[:atome_id].nil?
       atome_id = "a_#{object_id}".to_sym
       preset[:atome_id] = atome_id
@@ -31,19 +29,19 @@ class Nucleon < Helper
     end
     # we get the preset value from the object type and add the value set by the user
     properties = preset.merge(params)
+
     # we reorder the properties to be treated in the correct order
-    # if no type is passed then we create a particle by default
-    alert "problem here"
-    properties[:type] = :particle unless properties[:type]
     properties = reorder_properties(properties)
     # now we send the collected properties to the atome
     properties.each_key do |property|
       if params[:type] == :collector
         # puts "params #{params[:type]} : property : #{property}, preset[property] : #{preset[property]}"
-        puts "property #{property} : value : #{preset[property]}}"
+        #puts "property #{property} : value : #{preset[property]}}"
         # send(property, properties[property], refresh)
       else
-        send(property, properties[property], refresh)
+        #alert "#{property} => #{properties[property]}"
+        method_analysis property, properties[property], nil
+        #send(property, properties[property], refresh)
       end
     end
 

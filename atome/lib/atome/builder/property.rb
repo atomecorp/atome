@@ -33,7 +33,7 @@
 module Atome_methods_list
 
   def self.atome_methods
-    spatial = %i[width height size x xx y yy z ]
+    spatial = %i[width height size x xx y yy z]
     events = %i[touch drag over]
     helper = %i[tactile display]
     visual = %i[color opacity border overflow]
@@ -87,7 +87,7 @@ class Sparkle
       if params
         # this is the main entry method for the current property treatment
         # first we create a hash for the property if it doesn't already exist
-        method_analysis params, method_name, proc if params || proc
+        method_analysis method_name, params
       else
         # no params send we call the getter using magic_getter
         instance_method_name = instance_variable_get("@#{method_name}")
@@ -175,7 +175,7 @@ module Properties
     params
   end
 
-  def store_instance_variable params, method_name, proc
+  def store_instance_variable method_name, params
     if params[:add] == true
       params.delete(:add)
       prev_value = instance_variable_get("@#{method_name}")
@@ -185,7 +185,7 @@ module Properties
     end
   end
 
-  def method_analysis(params, method_name, proc)
+  def method_analysis(method_name, params, proc)
     # we reformat the params to be hash with :avalue as key
     # we don't create a object init time, to only create property when needed
     #now we look if the datas passed needs some processing before beeing stored
@@ -198,16 +198,16 @@ module Properties
         # We reformat the params in case user doesn't format the params using a Hash
         param = format_params_send(param)
         if index == 0
-          store_instance_variable param, method_name, proc
+          store_instance_variable method_name, param
         else
-          store_instance_variable param.merge(add: true), method_name, proc
+          store_instance_variable method_name, param.merge(add: true)
         end
       end
     else
       # We reformat the params in case user doesn't format the params using a Hash
       params = format_params_send(params)
       # now we feed the instance_variable with the new value
-      store_instance_variable params, method_name, proc
+      store_instance_variable method_name, params
     end
 
     if params && !params.instance_of?(Hash)
