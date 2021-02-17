@@ -23,8 +23,11 @@ prerequisite:
 		sudo pkg install npm
         on Linux :
 	on OSX :
+	 - using Brew :
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
                     brew install NPM
+    - using MacPort :
+                    sudo port install npm6
 	on Windows	  
 		install Npm:
             		https://nodejs.org/en/
@@ -34,7 +37,10 @@ prerequisite:
 		pkg install git
         on Linux :
         on MacOS :  
+    - using Brew :
 		brew install git
+	 - using MacPort :
+	    sudo port install git
         on windows :
 		sudo install git :
 	
@@ -50,11 +56,11 @@ prerequisite:
 To install application and run: 
 	 
     npm install -g cordova (or depending on platform:  npm install cordova)
+    sudo cordova plugin add cordova-sqlite-storage
+    sudo cordova plugin add cordova-plugin-file
     sudo cordova platform add browser
-    cordova platform add osx
-    cordova platform add windows
-    cordova plugin add cordova-sqlite-storage
-    cordova plugin add cordova-plugin-file
+    sudo cordova platform add osx
+    sudo cordova platform add windows
     bundle update
     bundle install
     bundle exec rake run::browser  
