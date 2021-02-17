@@ -104,21 +104,21 @@ module Properties
     self
   end
 
-  def array_parsing(params, method_name, proc)
-    params.each_with_index do |param, index|
-      if param.instance_of?(Hash) && param[:add] != false && index != 0
-        param[:add] = true
-      elsif !param.instance_of?(Hash)
-        param = { value: param, add: true }
-      end
-      if index == params.length - 1
-        # when we reach the last element of the array we add the proc
-        method_analysis param, method_name, proc
-      else
-        method_analysis param, method_name, nil
-      end
-    end
-  end
+  # def array_parsing(params, method_name, proc)
+  #   params.each_with_index do |param, index|
+  #     if param.instance_of?(Hash) && param[:add] != false && index != 0
+  #       param[:add] = true
+  #     elsif !param.instance_of?(Hash)
+  #       param = { value: param, add: true }
+  #     end
+  #     if index == params.length - 1
+  #       # when we reach the last element of the array we add the proc
+  #       method_analysis param, method_name, proc
+  #     else
+  #       method_analysis param, method_name, nil
+  #     end
+  #   end
+  # end
 
   def property_save(params, method_name)
     previous_content = instance_variable_get("@#{method_name}")
@@ -135,7 +135,16 @@ module Properties
     # instance_variable_set("@#{method_name}", params)
   end
 
-  def set_instance_variable params, method_name, proc
+
+  def format_params_send params
+    unless params.instance_of?(Hash)
+      params = { value: params }
+    end
+    params
+  end
+
+  def store_instance_variable params, method_name, proc
+    alert "#{method_name} #{params}"
     if params[:add] == true
       params.delete(:add)
       prev_value = instance_variable_get("@#{method_name}")
@@ -148,35 +157,40 @@ module Properties
   def method_analysis(params, method_name, proc)
     # we reformat the params to be hash with :avalue as key
     # we don't create a object init time, to only create property when needed
+    #now we look if the datas passed needs some processing before beeing stored
     if Atome_methods_list.need_pre_processing.include?(method_name)
       params = send("#{method_name}_pre_processor", params)
     end
-    if params.instance_of?(String) || params.instance_of?(Symbol)
-      params = { value: params }
-      # now we feed the instance_variable with the new value
-      set_instance_variable params, method_name, proc
-    elsif params.instance_of?(Array)
-      params.each do |param|
-        alert " #{method_name} : #{param}"
-      #   method_analysis(param, method_name, proc)
+
+    if params.instance_of?(Array)
+      params.each_with_index do |param, index|
+        # We reformat the params in case user doesn't format the params using a Hash
+        param=format_params_send(param)
+        if index == 0
+          store_instance_variable param, method_name, proc
+        else
+          store_instance_variable param.merge(add: true), method_name, proc
+        end
       end
     else
+      # We reformat the params in case user doesn't format the params using a Hash
+      params=format_params_send(params)
       # now we feed the instance_variable with the new value
-      set_instance_variable params, method_name, proc
+      store_instance_variable params, method_name, proc
     end
 
     # titi = instance_variable_get("@#{method_name}")
     # alert "property.rb line 150 : #{method_name}: #{titi}"
-    if params.instance_of?(Array)
-      array_parsing params, method_name, proc
-    else
+    # if params.instance_of?(Array)
+    #   array_parsing params, method_name, proc
+    # else
       if params && !params.instance_of?(Hash)
         params = { value: params }
       end
       params ||= {}
       params[:proc] = proc if proc
       property_save(params, method_name)
-    end
+    # end
   end
 
   def magic_getter(method, instance_method_name)
