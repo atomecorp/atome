@@ -18,8 +18,8 @@ class DrawingHelper {
         this.frame = new Frame("view",
             this.width,
             this.height,
-            'transparent',
-            'dark',
+            light,
+            dark,
             undefined,
             undefined,
             undefined,
@@ -33,38 +33,97 @@ class DrawingHelper {
         this.frame.on("ready", () => {
             const stage = this.frame.stage;
 
-            // const circle = new zim.Circle(50, green).loc(200, 200);
-            // stage.update();
+            var backing = new Rectangle(this.frame.width, this.frame.height, white).center();
 
-            var points = [];
-            const squiggle = new Squiggle({
-                color: blue,
-                thickness: 4
-            });
-            var init = false;
+            const precision = 25;
+            const curving = 0.15;
+            const color = blue;
+            const thickness = 4;
+
+            let points = [];
+            let squiggle;
+            let squiggleInitialised = false;
 
             function beginDraw(x, y) {
-                // circle
-                //     .top()
-                //     .animate({x, y}, 0.5);
+                points.push([x,y]);
 
-                points.push([x, y, 0, 0, -30, 0, 30, 0, "mirror"]);
-                squiggle.points = points;
-                if(!init) {
-                    squiggle.addTo();
-                    // var tm = new TransformManager([squiggle]);
-                    init = true;
-                }
+                squiggle = new Squiggle({
+                    color: color,
+                    thickness: thickness,
+                    controlType: "none",
+                    interactive: false
+                });
 
                 stage.update();
             }
 
-            stage.on("stagemousedown", function(e) {
+            function mouseDrag(x, y) {
+                const lastX = points[points.length - 1][0];
+                const lastY = points[points.length - 1][1];
+
+                if (dist(lastX, lastY, x, y) > precision) {
+                    points.push([x, y]);
+                    squiggle.points = points;
+
+                    if(!squiggleInitialised) {
+                        squiggle.addTo();
+                        squiggleInitialised = true;
+                    }
+                    stage.update();
+                }
+            }
+
+            function mouseUp(x, y) {
+                points.push([x, y]);
+
+                zim.loop(squiggle.pointObjects, function(obj, i, t){
+                    if (i===0) return;
+                    if (i===t-1) return;
+                    const previousPoint = squiggle.pointControls[i - 1];
+                    const nextPoint = squiggle.pointControls[i + 1];
+
+                    obj[2].x= -(nextPoint.x - previousPoint.x) * curving;
+                    obj[2].y= -(nextPoint.y - previousPoint.y) * curving;
+
+                    obj[3].x= (nextPoint.x - previousPoint.x) * curving;
+                    obj[3].y= (nextPoint.y - previousPoint.y) * curving;
+
+                    obj[4] = "free";
+                });
+                squiggle.update();
+
+                points = [];
+                squiggleInitialised = false;
+
+                stage.update();
+            }
+
+            backing.on("mousedown", function() {
                 switch (self.mode) {
                     case self.modeType.Use:
                         break;
                     case self.modeType.Draw:
                         beginDraw(self.frame.mouseX, self.frame.mouseY);
+                        break;
+                }
+            });
+
+            backing.on("pressmove", function() {
+                switch (self.mode) {
+                    case self.modeType.Use:
+                        break;
+                    case self.modeType.Draw:
+                        mouseDrag(self.frame.mouseX, self.frame.mouseY);
+                        break;
+                }
+            });
+
+            backing.on("pressup", function () {
+                switch (self.mode) {
+                    case self.modeType.Use:
+                        break;
+                    case self.modeType.Draw:
+                        mouseUp(self.frame.mouseX, self.frame.mouseY);
                         break;
                 }
             });
