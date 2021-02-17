@@ -12,6 +12,7 @@ module Nucleon
       # @@device = ''
 
       def initialize(params = nil, refresh = true)
+
         # if no params we create property hash with default type
         unless params
           params = { type: :particle }
