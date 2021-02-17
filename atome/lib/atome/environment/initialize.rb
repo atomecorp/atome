@@ -6,7 +6,6 @@ end
 Sparkle.new
 
 class Atome < Nucleon
-
 end
 
 class Device
@@ -24,10 +23,10 @@ class Device
     Atome.new({atome_id: :collector, id: :collector})
     Atome.new({atome_id: :buffer, id: :buffer})
     # The lines below create a special atome that holds all resize_actions stored in the @@resize_actions variable
-    actions = Atome.new({atome_id: :actions, id: :actions})
-    # actions.viewer_actions
+    #actions = Atome.new({atome_id: :actions, id: :actions})
+    #actions.viewer_actions
     # now we init the renderer
-    # Render.initialize
+    #Render.initialize
   end
 end
 

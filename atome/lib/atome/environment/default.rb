@@ -24,7 +24,7 @@ module Pi
     shape = visual.merge({type: :shape, width: 70, height: 70, content: {points: 2}}).merge(@@shape)
     box = visual.merge(shape).merge(content: {points: 4}).merge(@@box)
     circle = visual.merge(shape).merge({color: :red, content: {points: 4, tension: "100%"}}).merge(@@circle)
-    text = visual.merge({type: :text, color: 'rgb(124,124,124)', size: 25, content: lorem}).merge(@@text)
+    text = visual.merge({type: :text, color: [red: 124, green: 124, blue: 124] , size: 25, content: lorem}).merge(@@text)
     image = visual.merge({type: :image, color: :transparent, content: :atome}).merge(@@image)
     video = visual.merge({type: :video, color: :transparent, content: :atome}).merge(@@video)
     audio = visual.merge({type: :audio, color: :transparent, content: :atome}).merge(@@audio)
@@ -34,8 +34,8 @@ module Pi
     web = visual.merge({type: :web, color: :transparent, content: :atome}).merge(@@web)
     user = visual.merge({type: :user, color: :transparent, name: :anonymous, pass: :none, content: :anonymous}).merge(@@user)
     color = {content: :black}.merge(@@color)
-    history={}
-    autorisation={creator: :atome, read: :all, write: :all}#only set only creator can change it unless specfic authoration set by creator()
+    history = {}
+    autorisation = {creator: :atome, read: :all, write: :all} #only set only creator can change it unless specfic authoration set by creator()
     shadow = {x: 0, y: 0, blur: 7, thickness: 0, color: 'rgba(0,0,0,0.3)', invert: false}.merge(@@shadow)
     border = {thickness: 1, pattern: :solid, color: :red}.merge(@@border)
     blur = {default: 5}.merge(@@blur)
@@ -59,8 +59,7 @@ module Pi
         autorisation: autorisation,
         shadow: shadow,
         border: border,
-        blur: blur,
-
+        blur: blur
     }
     return types
   end

@@ -341,7 +341,7 @@ strdelim
     self.puts_help :drag, demo_code
   end
 
-  def id
+  def id_example
     demo_code = <<strdelim
 b=box()
 b.y(120)
@@ -351,7 +351,7 @@ t=text("the box's id is "+b.id)
 t.color(:orange)
 t.x 250
 strdelim
-    self.puts_help :id, demo_code
+    self.puts_help :id_example, demo_code
   end
 
   def monitor_all_prop_on_single_atome

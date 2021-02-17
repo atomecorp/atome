@@ -57,7 +57,7 @@ module Atome_methods_list
   end
 
   def self.need_processing
-    %i[delete]
+    %i[delete color]
   end
 
   def self.need_post_processing

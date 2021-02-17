@@ -12,6 +12,7 @@ module Atome_processor
    end
 
   def color_processor(params)
+    alert "color processed : #{params}"
         return params
   end
 

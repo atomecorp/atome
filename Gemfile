@@ -2,7 +2,6 @@
 
 # requirement for atome
 source "https://rubygems.org"
-gem "rubocop"
 # comment when generating arm version
 gem "c_lexer"
 gem "image_size"
