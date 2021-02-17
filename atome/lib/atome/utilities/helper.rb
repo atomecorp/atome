@@ -1,24 +1,6 @@
 # here stand some atome's function to allow atome's objects manipulation
 
-def create_property(method_name)
-  # alert " create #{method_name}"
-  Nucleon.define_method method_name do |params = nil, &proc|
-    if params
-      # this is the main entry method for the current property treatment
-      # first we create a hash for the property if it doesn't already exist
-      method_analysis params, method_name, proc if params || proc
-    else
-      # no params send we call the getter using magic_getter
-      instance_method_name=instance_variable_get("@#{method_name}")
-      magic_getter instance_method_name, method_name
-    end
-  end
-  # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
-  # ex : for : "def color"  = > "def color= "
-  Nucleon.define_method method_name.to_s + "=" do |params = nil, &proc|
-    send(method_name, params, proc)
-  end
-end
+
 
 def batch(*params)
   collector=[]

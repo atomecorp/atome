@@ -1,5 +1,5 @@
 class Quark
-  # this object willbe used to retrun an atome object instead of string / Int / Array / hash when getting an  atome's property
+  # this object willbe used to return an atome object instead of string / Int / Array / hash when getting an  atome's property
   def objectize params=nil
     if params
       @objectize=params
@@ -25,11 +25,11 @@ class Device
     # puts Atome.method_defined?(:tabalou)
 
     a=Atome.new({color: :red})
-    # a.color({value: :orange})
-    a.color("green")
+    # # a.color({value: :orange})
+    # a.color("green")
      a.color({value: :blue, add: true})
     a.color([:purple, :yellow])
-    # a.color({value: :pink})
+    a.color({value: :pink})
     alert "initialize.rb line 32,  a.color : #{a.color}"
     # alert "initialize.rb line 28 properties : #{a.properties}"
     #  Atome.new({atome_id: :dark_matter, id: :dark_matter, width: 0, height: 0, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :hidden, color: :transparent})

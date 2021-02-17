@@ -1,34 +1,34 @@
 # the class below initialize the default values and generate properties's methods
 #this module contain the methods to be created and those who needs extra processing
-class Matiere
-  def initialize property
-    @property = property
-  end
-
-  def collapse
-    puts @property
-    @property
-  end
-
-  def matiere
-    self
-  end
-
-  def length
-    @property.length
-  end
-
-  def []
-    # alert @property
-    # @property
-    "true"
-  end
-
-  # def class
-  #   @property.class
-  # end
-
-end
+# class Matiere
+#   def initialize(property)
+#     @property = property
+#   end
+#
+#   def collapse
+#     puts @property
+#     @property
+#   end
+#
+#   def matiere
+#     self
+#   end
+#
+#   def length
+#     @property.length
+#   end
+#
+#   def []
+#     # alert @property
+#     # @property
+#     "true"
+#   end
+#
+#   # def class
+#   #   @property.class
+#   # end
+#
+# end
 
 module Atome_methods_list
   def self.atome_methods
@@ -64,10 +64,29 @@ class Sparkle
     # the line below create atomes's methods using meta-programming
     atome_methods = Atome_methods_list.atome_methods
     atome_methods.each do |method_name|
-      create_property(method_name)
+      Sparkle.methods_genesis(method_name)
     end
   end
 
+  def self.methods_genesis(method_name)
+    # alert " create #{method_name}"
+    Nucleon.define_method method_name do |params = nil, &proc|
+      if params
+        # this is the main entry method for the current property treatment
+        # first we create a hash for the property if it doesn't already exist
+        method_analysis params, method_name, proc if params || proc
+      else
+        # no params send we call the getter using magic_getter
+        instance_method_name=instance_variable_get("@#{method_name}")
+        magic_getter instance_method_name, method_name
+      end
+    end
+    # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
+    # ex : for : "def color"  = > "def color= "
+    Nucleon.define_method method_name.to_s + "=" do |params = nil, &proc|
+      send(method_name, params, proc)
+    end
+  end
 end
 
 # the class below contains all common propertiy's methods
@@ -136,7 +155,7 @@ module Properties
   end
 
 
-  def format_params_send params
+  def format_params_send(params)
     unless params.instance_of?(Hash)
       params = { value: params }
     end
@@ -144,7 +163,6 @@ module Properties
   end
 
   def store_instance_variable params, method_name, proc
-    alert "#{method_name} #{params}"
     if params[:add] == true
       params.delete(:add)
       prev_value = instance_variable_get("@#{method_name}")
@@ -179,11 +197,6 @@ module Properties
       store_instance_variable params, method_name, proc
     end
 
-    # titi = instance_variable_get("@#{method_name}")
-    # alert "property.rb line 150 : #{method_name}: #{titi}"
-    # if params.instance_of?(Array)
-    #   array_parsing params, method_name, proc
-    # else
       if params && !params.instance_of?(Hash)
         params = { value: params }
       end

@@ -730,7 +730,7 @@ module Nucleon
         # we don't create a object init time, to only create property when needed
         @rotate ||= {}
         # we send the params to the 'reformat_params' if there's a params
-        method_analysis params, @rotate, :rotate if params
+        # method_analysis params, @rotate, :rotate if params
         # finally we return the current property using magic_return
         if params
           self

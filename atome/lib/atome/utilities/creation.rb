@@ -1,4 +1,5 @@
 def create(options = nil)
+  # This method allow to create on the fly new methods for Atome's objects
   if options.class== Atome
     self.insert(options)
     options.x=options.x[:content]+self.x[:content]
@@ -7,10 +8,10 @@ def create(options = nil)
     #here we can create properties for Atome on the fly unless it already exist
     #usefull to add some kind of personal properties or tag objects
     if  Atome.methods.include?(options[:property])
-      alert "property #{options[:property]} already exist!!"
+      alert "forbiden to overwrite property #{options[:property]} already exist!!"
     else
         method_name=options[:property]
-      create_property(method_name)
+        Sparkle.methods_genesis(method_name)
     end
   end
   options
