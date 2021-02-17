@@ -72,7 +72,7 @@ end
 
 class Sparkle
   include Atome_methods_list
-
+  #
   def initialize
     # the line below create atomes's methods using meta-programming
     atome_methods = Atome_methods_list.atome_methods

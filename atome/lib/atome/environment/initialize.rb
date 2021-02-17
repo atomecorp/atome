@@ -5,8 +5,8 @@ end
 
 Sparkle.new
 
-class Atome < Nucleon::Core::Nucleon
-  include Nucleon
+class Atome < Nucleon
+
 end
 
 class Device
