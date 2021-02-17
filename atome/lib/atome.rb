@@ -1,4 +1,4 @@
-require "extensions/hash.rb"
+require "extensions/hash"
 require "atome/builder/property"
 require "atome/environment/default"
 require "atome/properties/info"

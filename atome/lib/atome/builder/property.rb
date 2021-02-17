@@ -31,8 +31,20 @@
 # end
 
 module Atome_methods_list
+
   def self.atome_methods
-    %i[border display record color delete opacity tabalou shadow enliven tactile selector atome_id id type content]
+    spatial = %i[width height size x xx y yy z ]
+    events = %i[touch drag over]
+    helper = %i[tactile display]
+    visual = %i[color opacity border overflow]
+    geometry = %i[width height rotation]
+    effect = %i[blur shadow]
+    identity = %i[atome_id id type]
+    media = %i[image sound video content]
+    hierarchy = %i[parent child insert]
+    communication = %i[share send]
+    utility = %i[delete record enliven selector]
+    spatial | events | helper | visual | geometry | effect | identity | media | hierarchy | communication | utility
   end
 
   #the line below specify if the properties need specific processing
@@ -57,6 +69,7 @@ module Atome_methods_list
   end
 end
 # the class below initialize the default values and generate property's methods
+
 class Sparkle
   include Atome_methods_list
 
@@ -77,7 +90,7 @@ class Sparkle
         method_analysis params, method_name, proc if params || proc
       else
         # no params send we call the getter using magic_getter
-        instance_method_name=instance_variable_get("@#{method_name}")
+        instance_method_name = instance_variable_get("@#{method_name}")
         magic_getter instance_method_name, method_name
       end
     end
@@ -157,7 +170,7 @@ module Properties
 
   def format_params_send(params)
     unless params.instance_of?(Hash)
-      params = { value: params }
+      params = {value: params}
     end
     params
   end
@@ -183,7 +196,7 @@ module Properties
     if params.instance_of?(Array)
       params.each_with_index do |param, index|
         # We reformat the params in case user doesn't format the params using a Hash
-        param=format_params_send(param)
+        param = format_params_send(param)
         if index == 0
           store_instance_variable param, method_name, proc
         else
@@ -192,17 +205,17 @@ module Properties
       end
     else
       # We reformat the params in case user doesn't format the params using a Hash
-      params=format_params_send(params)
+      params = format_params_send(params)
       # now we feed the instance_variable with the new value
       store_instance_variable params, method_name, proc
     end
 
-      if params && !params.instance_of?(Hash)
-        params = { value: params }
-      end
-      params ||= {}
-      params[:proc] = proc if proc
-      property_save(params, method_name)
+    if params && !params.instance_of?(Hash)
+      params = {value: params}
+    end
+    params ||= {}
+    params[:proc] = proc if proc
+    property_save(params, method_name)
     # end
   end
 

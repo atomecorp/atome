@@ -35,7 +35,6 @@ def clear_help (topic, code)
   #end
 end
 
-
 def examples
   #we load te parser dynamically on request
   help_container = box()

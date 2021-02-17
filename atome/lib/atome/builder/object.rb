@@ -1,4 +1,5 @@
 module Nucleon
+
   module Core
     class Nucleon < Helper
       include Neutron
@@ -6,55 +7,42 @@ module Nucleon
       include Photon
       include Atome_processor
 
-      # @@atomes = []
-      # @@black_hole = [] # deleted atomes
-      # @@buffer = []
-      # @@device = ''
-
       def initialize(params = nil, refresh = true)
-
+        super
         # if no params we create property hash with default type
-        unless params
-          params = { type: :particle }
-        end
+        params ||= {type: :particle}
         # if not params is passed then we create a particle by default
-        unless params[:type]
-          params[:type] = :particle
-        end
+        params[:type] = :particle unless params[:type]
 
         # if no preset is send bu the user we get it from the type of atome found
-        preset = if params[:preset]
-                   params[:preset]
-                 else
-                   params[:type]
-                 end
+        preset =  params[:preset] || params[:type]
         # we find preset associated for the found type
         preset = Pi.presets[preset]
         # We generate the atome_id below if not sended by user
         if params[:atome_id].nil?
-          atome_id = ('a_' + object_id.to_s).to_sym
+          atome_id = "a_#{object_id}".to_sym
           preset[:atome_id] = atome_id
         end
         # We generate the id below if not sended by user
         if params[:id].nil?
           id = if @preset
-                 (@preset.to_s + '_' + object_id.to_s).to_sym
+                 "#{@preset} #{object_id}".to_sym
                else
-                 (params[:type].to_s + '_' + object_id.to_s).to_sym
+                 "#{params[:type]} #{object_id}".to_sym
                end
           preset[:id] = id
         end
 
         # we get the preset value from the object type and add the value set by the user
         properties = preset.merge(params)
-        # we reoder the properties to be treated in the correct order
+        # we reorder the properties to be treated in the correct order
         properties = reorder_properties(properties)
         # now we send the collected properties to the atome
         properties.each_key do |property|
           if params[:type] == :collector
             # puts "params #{params[:type]} : property : #{property}, preset[property] : #{preset[property]}"
-            # puts "property #{property} : value : #{preset[property]}}"
-            send(property, properties[property], refresh)
+            puts "property #{property} : value : #{preset[property]}}"
+            # send(property, properties[property], refresh)
           else
             send(property, properties[property], refresh)
           end
@@ -90,7 +78,7 @@ module Nucleon
       #           send(key, param[key], refresh, false, &proc)
       #         end
       #       elsif param.class == Array
-      #         #puts "todo : create recursive treatment of prop's array"
+      #         #todo : create recursive treatment of prop's array
       #       end
       #     end
       #   else
@@ -169,7 +157,8 @@ module Nucleon
       # #       end
       # #     end
       # #   end
-      # #   #we re attach to parent #fixme the preset already attach to view so we can optimise to immediatly attach to parent instead
+      # #   #we re attach to parent
+      #     #fixme the preset already attach to view so we can optimise to instantly attach to parent instead
       # # end
       #
       # # def delete params = nil, refresh = true
@@ -257,7 +246,6 @@ module Nucleon
       # def self.types params = nil
       #   Pi.types
       # end
-
     end
   end
 end

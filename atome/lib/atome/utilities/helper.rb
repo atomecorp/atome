@@ -1,7 +1,6 @@
 # here stand some atome's function to allow atome's objects manipulation
 
 
-
 def batch(*params)
   collector=[]
   params.each do |atome|
@@ -9,7 +8,6 @@ def batch(*params)
   end
   collector({content: collector})
 end
-
 
 # def select selector
 #   grab(:view).child.each do |atome|
@@ -293,6 +291,12 @@ def lorem
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
 Strdelilm
 end
+
+#fixme : put whole code in Atome context to be able to remove the method below
+def to_px (obj = nil, property = :top)
+  Atome.to_px(obj, property)
+end
+
 
 ################## time operation  ##############
 
