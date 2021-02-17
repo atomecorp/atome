@@ -1,4 +1,5 @@
 class Quark
+  # this object willbe used to retrun an atome object instead of string / Int / Array / hash when getting an  atome's property
   def objectize params=nil
     if params
       @objectize=params
