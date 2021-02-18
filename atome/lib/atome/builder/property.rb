@@ -18,13 +18,13 @@ module Atome_methods_list
     spatial | events | helper | visual | audio | geometry | effect | identity | media | hierarchy | communication | utility
   end
 
-  #the line below specify if the properties need specific processing
+  # the line below specify if the properties need specific processing
   def self.need_pre_processing
-    %i[add shadow atome_id]
+    %i[add shadow]
   end
 
   def self.no_broadcast
-    %i[atome_id tabalou]
+    %i[atome_id]
   end
 
   def self.need_processing
@@ -36,14 +36,13 @@ module Atome_methods_list
   end
 
   def self.no_rendering
-    %i[shadow enliven tactile selector atome_id tabalou]
+    %i[shadow enliven tactile selector atome_id]
   end
 end
 # the class below initialize the default values and generate property's methods
 
 class Sparkle
   include Atome_methods_list
-  #
   def initialize
     # the line below create atomes's methods using meta-programming
     atome_methods = Atome_methods_list.atome_methods
@@ -53,16 +52,15 @@ class Sparkle
   end
 
   def self.methods_genesis(method_name)
-    # alert " create #{method_name}"
     Nucleon.define_method method_name do |params = nil, &proc|
       if params
         # this is the main entry method for the current property treatment
         # first we create a hash for the property if it doesn't already exist
         method_analysis method_name, params
       else
-        # no params send we call the getter using magic_getter
-        instance_method_name = instance_variable_get("@#{method_name}")
-        magic_getter instance_method_name, method_name
+        # no params send, we call the getter using magic_getter
+        instance_variable_get("@#{method_name}")
+        #magic_getter instance_method_name, method_name
       end
     end
     # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
@@ -190,25 +188,25 @@ module Properties
     # end
   end
 
-  def magic_getter(method, instance_method_name)
-    # the aim of this method is only return the value of the content if the property hash only have a content set
-    # if method.length == 1 && method.instance_of?(Hash) && method[:content]
-    #   if instance_method_name ==:atome_id
-    #     method[:content]
-    #   else
-    #     method
-    #   end
-    # else
-    #   method
-    # end
-    # a=Matiere.new
-    # Nucleon.toto(method)
-    # alert self
-    # method=Matiere.new(method)
-    # # # method a.content.class
-    # method.matiere
-    puts "#{instance_method_name}: #{method}"
-    method
-  end
+  #def magic_getter(method, instance_method_name)
+  #  # the aim of this method is only return the value of the content if the property hash only have a content set
+  #  # if method.length == 1 && method.instance_of?(Hash) && method[:content]
+  #  #   if instance_method_name ==:atome_id
+  #  #     method[:content]
+  #  #   else
+  #  #     method
+  #  #   end
+  #  # else
+  #  #   method
+  #  # end
+  #  # a=Matiere.new
+  #  # Nucleon.toto(method)
+  #  # alert self
+  #  # method=Matiere.new(method)
+  #  # # # method a.content.class
+  #  # method.matiere
+  #  puts "#{instance_method_name}: #{method}"
+  #  method
+  #end
 end
 

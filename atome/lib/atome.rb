@@ -1,5 +1,7 @@
 # ruby main Object extensions
 require "extensions/hash"
+# fake methods to make Rubocop shut it's mouth
+require "atome/fake_methods"
 # atome's property builders
 require "atome/builder/property"
 require "atome/environment/default"
