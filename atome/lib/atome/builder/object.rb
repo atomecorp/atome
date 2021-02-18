@@ -38,7 +38,7 @@ class Nucleon < Helper
     params = reorder_properties(params)
     # now we send the collected properties to the atome
     params.each_key do |property|
-      if params[:type] == :collector
+      if params[:type] == :buffer
         puts "treatment to come"
       else
         method_analysis property, params[property], nil
@@ -46,6 +46,10 @@ class Nucleon < Helper
     end
     # now we add the new atome to the atomes's list
     Atome.class_variable_get("@@atomes") << self
+    # and now we render if needed
+    unless params[:render] == false
+      Render.render_render(params)
+    end
   end
 
   def self.atomise

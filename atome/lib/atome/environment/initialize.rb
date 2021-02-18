@@ -25,7 +25,7 @@ class Device
     # the object below is used to store the right managment for current device
     Atome.new({atome_id: :right, id: :right})
     # this object hold temporary items (usefull for batch treatment) named collector could be rename ephemeral
-    Atome.new({atome_id: :buffer, id: :buffer})
+    Atome.new({atome_id: :buffer, id: :buffer, render: false})
     # The lines below create a special atome that holds all internal actions such as resize_actions
     # accessible thru @@resize_actions variable
     actions = Atome.new({atome_id: :actions, id: :actions})
@@ -55,7 +55,6 @@ class Device
     shadow = {x: 0, y: 0, blur: 7, thickness: 0, color: [alpha: 0.3], invert: false}
     border = {thickness: 1, pattern: :solid, color: :red}
     blur = {default: 5}
-
     {value: {shape: shape, box: box, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur}}
   end
 end

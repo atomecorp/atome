@@ -1,4 +1,3 @@
-
 module Photon
   def initialize
     @align = {}
@@ -98,37 +97,37 @@ module Photon
   end
 
   def viewer_actions
-
-    #grab(:view).resize do
-    ##  grab(:actions).resize_actions[:center]&.each do |atome, action|
-    ##    atome.centering(:x, atome.x[:center], atome.x[:reference], atome.x[:dynamic]) if atome.x[:center]
-    ##    atome.centering(:y, atome.y[:center], atome.y[:reference], atome.y[:dynamic]) if atome.y[:center]
-    ##  end
-    #end
+    grab(:view).resize do
+      grab(:actions).resize_actions[:center]&.each do |atome, action|
+        atome.centering(:x, atome.x[:center], atome.x[:reference], atome.x[:dynamic]) if atome.x[:center]
+        atome.centering(:y, atome.y[:center], atome.y[:reference], atome.y[:dynamic]) if atome.y[:center]
+      end
+    end
   end
 
   #spatial
 
   def centering(axis, params, reference, dynamic)
-    if reference.nil?
-      parent = if self.parent
-                 self.parent[0] #is a quick and dirt patch to get the first parent as the referernt for centering
-               else
-                 grab(:view)
-               end
+    parent = if reference.nil?
+      if self.parent
+        self.parent[0] 
+        # is a quick and dirt patch to get the first parent as the referernt for centering
+      else
+        grab(:view)
+      end
     else
-      parent = grab(reference)
+      grab(reference)
     end
     parent_width = parent.value(:width)
     parent_height = parent.value(:height)
-    #below we add a default size of 0 id it isn't already setted to avoid crashes
+    # below we add a default size of 0 id it isn't already setted to avoid crashes
     self_width = if value(:width)
-                   value(:width)
+      value(:width)
                  else
                    0
                  end
     self_height = if value(:height)
-                    value(:height)
+      value(:height)
                   else
                     0
                   end
