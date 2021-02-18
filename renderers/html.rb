@@ -8,6 +8,7 @@ module Render
     Element.find("#" + atome.atome_id[:value])
   end
 
+
   def self.render_render(params)
     type = params.delete(:type)
     atome_id = params.delete(:atome_id)
@@ -35,15 +36,21 @@ module Render
         r_get({value: :dark_matter}).append(("<div class='atome' id='#{atome_id}'></div>"))
       end
     end
+    atome = grab(atome_id)
     params.each do |key, value|
-      atome = grab(atome_id)
-      #alert "#{key}, #{value}"
+      #if key == :color
+      #  alert params
+      #end
       Render.send("render_#{key}", atome, value)
     end
   end
 
   def self.render_language(atome, params, add = false)
     #alert "language is #{params}"
+  end
+
+  def self.render_preset(atome, params, add = false)
+    #alert "atome is #{atome.atome_id[:value]}, preset is #{grab(:preset).content[:value][params]}"
   end
 
   def self.render_atome_id *params
@@ -107,10 +114,10 @@ module Render
   end
 
   def self.render_content(atome, params, add = false)
-    if atome.type[:content] == :text || atome.type[:content] == :web
+    if atome.type[:value] == :text || atome.type[:value] == :web
       params = params.to_s.gsub("\n", "<br>")
       r_get(atome.atome_id).html(params)
-    elsif atome.type[:content] == "image"
+    elsif atome.type[:value] == "image"
       if $images_list[params.to_sym].nil?
         path = "././medias/images/image_missing.svg"
         width = 390
@@ -134,7 +141,7 @@ module Render
       unless atome.height
         atome.height = height
       end
-    elsif atome.type[:content] == "video"
+    elsif atome.type[:value] == "video"
       path = if $videos_list[params.to_sym].nil?
                "././medias/videos/video_missing.mp4"
              else
@@ -148,7 +155,7 @@ module Render
         atome.height = r_get(atome.atome_id).find("video").height
       end
       r_get(atome.atome_id).find("video").css("width", "100%")
-    elsif atome.type[:content] == "audio"
+    elsif atome.type[:value] == "audio"
       path = if $audios_list[params.to_sym].nil?
                "././medias/audios/audio_missing.wav"
              else
@@ -156,7 +163,7 @@ module Render
              end
       r_get(atome.atome_id).html("<audio  src=" + path + " type='audio/wav'></audio>")
 
-    elsif atome.type[:content] == "shape"
+    elsif atome.type[:value] == "shape"
       # below temp patch waiting for parametric shape to allow cirle creation
       r_get(atome.atome_id).css("border-radius", params[:tension])
     else
@@ -176,7 +183,7 @@ module Render
     #
     case params[:content]
     when :vr
-      if atome.type[:content] == :image
+      if atome.type[:value] == :image
         wait 0.0001 do
           path = $images_list[atome.content.to_sym][:path]
           js_get(atome).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false device-orientation-permission-ui='enabled: false'> <a-sky src='" + path + "' rotation='0 -130 0'></a-sky></a-scene>")
@@ -213,63 +220,64 @@ module Render
   end
 
   def self.render_color(atome, params, add = false)
-    ## alert " html.rb line 101 #{params.class}"
-    #color = "background-image"
-    #if atome.type[:content] == :text
-    #  r_get(atome.atome_id).css("-webkit-background-clip", "text")
-    #  r_get(atome.atome_id).css("-webkit-text-fill-color", "transparent")
-    #end
-    #if params.class == Array
-    #  value = []
-    #  angle = "180"
-    #  diffusion = "linear"
-    #  params.each do |param|
-    #    # params=params[:content]
-    #    if param.class == Hash
-    #      if param[:angle]
-    #        angle = param[:angle].to_s
-    #      elsif param[:diffusion]
-    #        diffusion = param[:diffusion]
-    #      elsif param[:content]
-    #        if param[:content].class == Hash
-    #          # alert("hhh")
-    #          color_found = parse_color_datas(param[:content])
-    #        else
-    #          color_found = param[:content]
-    #        end
-    #        value << color_found
-    #      elsif param[:color]
-    #        if param[:color].class == Hash
-    #          color_found = parse_color_datas(param[:color])
-    #        else
-    #          color_found = param[:color]
-    #        end
-    #        value << color_found
-    #      else
-    #        value << parse_color_datas(param)
-    #      end
-    #    else
-    #      value << param
-    #    end
-    #  end
-    #
-    #  if diffusion == "linear"
-    #
-    #    value = " linear-gradient(" + angle + "deg, " + value.join(",") + ")"
-    #  else
-    #    value = " radial-gradient(" + value.join(",") + ")"
-    #  end
-    #  r_get(atome.atome_id).css(color, value)
-    #else
-    #  params = params[:content]
-    #  if params.class == Hash
-    #    params = parse_color_datas(params)
-    #    value = " linear-gradient(0deg," + params + ", " + params + ")"
-    #  else
-    #    value = " linear-gradient(0deg," + params + ", " + params + ")"
-    #  end
-    #  r_get(atome.atome_id).css(color, value)
-    #end
+     #alert " html.rb line 101 #{params}"
+    color = "background-image"
+    if atome.type[:value] == :text
+      r_get(atome.atome_id).css("-webkit-background-clip", "text")
+      r_get(atome.atome_id).css("-webkit-text-fill-color", "transparent")
+    end
+    if params.class == Array
+      value = []
+      angle = "180"
+      diffusion = "linear"
+      params.each do |param|
+        # params=params[:content]
+        if param.class == Hash
+          if param[:angle]
+            angle = param[:angle].to_s
+          elsif param[:diffusion]
+            diffusion = param[:diffusion]
+          elsif param[:content]
+            if param[:content].class == Hash
+              # alert("hhh")
+              color_found = parse_color_datas(param[:content])
+            else
+              color_found = param[:content]
+            end
+            value << color_found
+          elsif param[:color]
+            if param[:color].class == Hash
+              color_found = parse_color_datas(param[:color])
+            else
+              color_found = param[:color]
+            end
+            value << color_found
+          else
+            value << parse_color_datas(param)
+          end
+        else
+          value << param
+        end
+      end
+
+      if diffusion == "linear"
+
+        value = " linear-gradient(" + angle + "deg, " + value.join(",") + ")"
+      else
+        value = " radial-gradient(" + value.join(",") + ")"
+      end
+      r_get(atome.atome_id).css(color, value)
+    else
+      #params = params[:value]
+      #alert atome.atome_id
+      if params.class == Hash
+        params = parse_color_datas(params)
+        value = " linear-gradient(0deg," + params + ", " + params + ")"
+      else
+        value = " linear-gradient(0deg," + params + ", " + params + ")"
+      end
+      r_get(atome.atome_id).css(color, value)
+    end
   end
 
   def self.render_opacity(atome, params, add = false)
@@ -337,7 +345,7 @@ module Render
     if params.class == Hash
       axis = params.keys[0]
       value = params.values[0]
-      if atome.type[:content] == :text
+      if atome.type[:value] == :text
         height = r_get(atome.atome_id).innerHeight
         atome.height(height, false)
         if params.class == String && params.end_with?("%")
@@ -358,7 +366,7 @@ module Render
         r_get(atome.atome_id).css("background-size", "100%")
       end
     else
-      if atome.type[:content] == :text
+      if atome.type[:value] == :text
         height = r_get(atome.atome_id).innerHeight
         atome.height(height, false)
         if params.class == String && params.end_with?("%")
@@ -493,7 +501,7 @@ module Render
   #          else
   #            " "
   #          end
-  # if atome.type[:content] == :text || atome.type[:content] == :image
+  # if atome.type[:value] == :text || atome.type[:value] == :image
   #   r_get(atome.atome_id).css('filter', 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
   # else
   #   r_get(atome.atome_id).css('box-shadow', x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + thickness.to_s + 'px ' + color + ' ' + invert)
@@ -506,7 +514,7 @@ module Render
     # end
 
     # if add
-    #   if atome.type[:content] == :text || atome.type[:content] == :image
+    #   if atome.type[:value] == :text || atome.type[:value] == :image
     #     prev_prop = r_get(atome.atome_id).css('text-shadow')
     #     r_get(atome.atome_id).css('filter', prev_prop + " " + 'drop-shadow(' + x.to_s + 'px ' + y.to_s + 'px ' + blur.to_s + 'px ' + color + ')')
     #   else
@@ -526,7 +534,7 @@ module Render
                else
                  " "
                end
-      if atome.type[:content] == :text || atome.type[:content] == :image
+      if atome.type[:value] == :text || atome.type[:value] == :image
         r_get(atome.atome_id).css("filter", "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")")
       else
         r_get(atome.atome_id).css("box-shadow", x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert)
@@ -545,7 +553,7 @@ module Render
                  else
                    " "
                  end
-        if atome.type[:content] == :text || atome.type[:content] == :image
+        if atome.type[:value] == :text || atome.type[:value] == :image
           prev_prop = r_get(atome.atome_id).css("text-shadow")
           r_get(atome.atome_id).css("filter", prev_prop + " " + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")")
         else
@@ -714,7 +722,7 @@ module Render
 
   def self.render_select(atome, params, add = false)
     if params
-      if atome.type[:content] == :text
+      if atome.type[:value] == :text
         r_get(atome.atome_id).attr("contenteditable", "true")
         r_get(atome.atome_id).css("-webkit-user-select", "text")
         r_get(atome.atome_id).css("-khtml-user-select", "text")
@@ -725,7 +733,7 @@ module Render
 
       r_get(atome.atome_id).add_class "selected"
     else
-      if atome.type[:content] == :text
+      if atome.type[:value] == :text
         r_get(atome.atome_id).attr("contenteditable", "false")
         r_get(atome.atome_id).css("-webkit-user-select", "none")
         r_get(atome.atome_id).css("-khtml-user-select", "none")
@@ -927,7 +935,7 @@ module Render
   end
 
   def self.render_record(atome, params, add = false)
-    if params[:content] == true
+    if params[:value] == true
       js_get(atome).on(:mousemove) do |evt|
         proc = params[:proc]
         proc.call(evt) if proc.is_a?(Proc)
@@ -1144,12 +1152,12 @@ module Render
     #below to play also all video child (mostly audio tracks)
     if atome.child
       atome.child.each do |child_found|
-        if child_found.type[:content] == :audio || atome.child[0].type[:content] == :video
+        if child_found.type[:value] == :audio || atome.child[0].type[:value] == :video
           render_play(child_found, params, add = false)
         end
       end
       #if atome.child.each do |child|
-      #  if child.type[:content] == :audio || atome.child[0].type[:content] == :video
+      #  if child.type[:value] == :audio || atome.child[0].type[:value] == :video
       #    render_play(child, params, add = false)
       #  end
       #end
@@ -1162,13 +1170,13 @@ module Render
       params = true
       proc = false
     end
-    if atome.type[:content] == :video && params == false
+    if atome.type[:value] == :video && params == false
       video_pause atome, 0
-    elsif atome.type[:content] == :audio && params == false
+    elsif atome.type[:value] == :audio && params == false
       audio_pause atome, 0
-    elsif atome.type[:content] == :video
+    elsif atome.type[:value] == :video
       JS_utils.video_play atome, params, proc
-    elsif atome.type[:content] == :audio
+    elsif atome.type[:value] == :audio
       JS_utils.audio_play atome, params, proc
     end
   end
@@ -1178,7 +1186,7 @@ module Render
     if atome.child
       atome.child.each do |child_found|
         #alert "message is \n\n#{child_found.type} \n\nLocation: html.rb, line 1075"
-        if child_found.type[:content] == :audio || atome.child[0].type[:content] == :video
+        if child_found.type[:value] == :audio || atome.child[0].type[:value] == :video
           #alert "message is \n\n#{:audio_pause} \n\nLocation: html.rb, line 1070"
           render_pause(child_found, params, add = false)
         end
@@ -1192,9 +1200,9 @@ module Render
       #end
       #end
     end
-    if atome.type[:content] == :video
+    if atome.type[:value] == :video
       JS_utils.video_pause atome, params
-    elsif atome.type[:content] == :audio
+    elsif atome.type[:value] == :audio
       JS_utils.audio_pause atome, params
     end
   end

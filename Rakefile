@@ -1,7 +1,7 @@
-# require "c_lexer"
+require "c_lexer"
 require "opal"
 require "opal-jquery"
-# require "uglifier"
+require "uglifier"
 require "fileutils"
 
 def update_opal_libraries
@@ -19,7 +19,7 @@ def update_opal_libraries
   end
 end
 
-#update_opal_libraries
+ update_opal_libraries
 
 def update_medias_list
   # todo : only copy if there's a change! use monitoring if possible
@@ -65,7 +65,6 @@ def update_medias_list
     end
 
     medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-    puts medias_list
     File.open(t.name, "w") { |file| file.write(medias_list) }
   end
 end
@@ -167,71 +166,71 @@ task 'run::electron': required_js_lib do
   sh "cordova run electron"
 end
 
-# #production modes
-#
-# def production(opal, parser, atome)
-#  uglified = Uglifier.new(harmony: true).compile(File.read(opal))
-#  open(opal, "w") do |f|
-#    f.puts uglified
-#  end
-#
-#  uglified = Uglifier.new(harmony: true).compile(File.read(parser))
-#  open(parser, "w") do |f|
-#    f.puts uglified
-#  end
-#
-#  uglified = Uglifier.new(harmony: true).compile(File.read(atome))
-#  open(atome, "w") do |f|
-#    f.puts uglified
-#  end
-# end
-#
-# desc "production server"
-# task 'production::server': required_js_lib do
-#  production opal, parser, atome
-#  Dir.chdir("www") do
-#    require "rack"
-#    system("open", "http://127.0.0.1:9292")
-#    sh "rackup"
-#    #Rack::Server.start(config: 'config.ru', server: 'puma')
-#  end
-# end
-#
-# desc "production browser"
-# task 'production::browser': required_js_lib do
-#  production opal, parser, atome
-#  sh "cordova run browser"
-# end
-#
-# desc "production osx"
-# task 'production::osx': required_js_lib do
-#  production opal, parser, atome
-#  sh "cordova run osx"
-# end
-#
-# desc "production ios"
-# task 'production::ios': required_js_lib do
-#  production opal, parser, atome
-#  sh "cordova run ios"
-# end
-#
-# desc "production android"
-# task 'production::android': required_js_lib do
-#  production opal, parser, atome
-#  sh "cordova run android"
-# end
-#
-# desc "production windows"
-# task 'production::windows': required_js_lib do
-#  production opal, parser, atome
-#  sh "cordova run windows"
-# end
-#
-# desc "production electron"
-# task 'production::electron': required_js_lib do
-#  production opal, parser, atome
-#  sh "cordova run electron"
-# end
+# production modes
+
+def production(opal, parser, atome)
+  uglified = Uglifier.new(harmony: true).compile(File.read(opal))
+  open(opal, "w") do |f|
+    f.puts uglified
+  end
+
+  uglified = Uglifier.new(harmony: true).compile(File.read(parser))
+  open(parser, "w") do |f|
+    f.puts uglified
+  end
+
+  uglified = Uglifier.new(harmony: true).compile(File.read(atome))
+  open(atome, "w") do |f|
+    f.puts uglified
+  end
+end
+
+desc "production server"
+task 'production::server': required_js_lib do
+  production opal, parser, atome
+  Dir.chdir("www") do
+    require "rack"
+    system("open", "http://127.0.0.1:9292")
+    sh "rackup"
+    # Rack::Server.start(config: 'config.ru', server: 'puma')
+  end
+end
+
+desc "production browser"
+task 'production::browser': required_js_lib do
+  production opal, parser, atome
+  sh "cordova run browser"
+end
+
+desc "production osx"
+task 'production::osx': required_js_lib do
+  production opal, parser, atome
+  sh "cordova run osx"
+end
+
+desc "production ios"
+task 'production::ios': required_js_lib do
+  production opal, parser, atome
+  sh "cordova run ios"
+end
+
+desc "production android"
+task 'production::android': required_js_lib do
+  production opal, parser, atome
+  sh "cordova run android"
+end
+
+desc "production windows"
+task 'production::windows': required_js_lib do
+  production opal, parser, atome
+  sh "cordova run windows"
+end
+
+desc "production electron"
+task 'production::electron': required_js_lib do
+  production opal, parser, atome
+  sh "cordova run electron"
+end
 
 desc "Cleanup generated files"
 task "clean" do

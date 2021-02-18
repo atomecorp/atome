@@ -53,7 +53,7 @@ prerequisite:
    
 
 
-To install application and run: 
+To install application: 
 	 
     npm install -g cordova (or depending on platform:  npm install cordova)
     sudo cordova plugin add cordova-sqlite-storage
@@ -61,9 +61,29 @@ To install application and run:
     sudo cordova platform add browser
     sudo cordova platform add osx
     sudo cordova platform add windows
+    sudo cordova platform add android
+    sudo cordova platform add electron
     bundle update
     bundle install
+    
+To run application in development:
+
     bundle exec rake run::browser  
+    bundle exec rake run::server
+    bundle exec rake run::osx
+    bundle exec rake run::windows
+    bundle exec rake run::android
+    bundle exec rake run::electron
+
+    
+to run in produciton mode :
+
+    bundle exec rake production::browser  
+    bundle exec rake production::server
+    bundle exec rake production::osx
+    bundle exec rake production::windows
+    bundle exec rake production::android
+    bundle exec rake production::electron
 
 trouble shooting :
 if : Cannot find module 'shelljs' error
