@@ -1,8 +1,20 @@
 class Nucleon < Helper
   include Neutron
   include Photon
-  include Atome_processor
-  @toto = :cool
+  include Properties
+  include VisualProcessor
+  include SpatialProcessor
+  include EventProcessor
+  include HelperProcessor
+  include AudioProcessor
+  include GeometryProcessor
+  include EffectProcessor
+  include IdentityProcessor
+  include MediaProcessor
+  include HierarchyProcessor
+  include CommunicationProcessor
+  include UtilityProcessor
+
   def initialize(params = nil, refresh = true)
     # if no params is sent we create a default property hash with type set to particle
     params ||= {type: :particle}
@@ -44,9 +56,6 @@ class Nucleon < Helper
     Atome.class_variable_get("@@atomes") # you can access without offense
   end
 
-  # def self.impulse(presets)
-  #   {atome_id: :impulse, type: :particle, id: :impulse, content: presets, atomes: []}
-  # end
   # S.A.G methods
   # def set(params = nil, refresh = true, &proc)
   #   if params.class == Hash

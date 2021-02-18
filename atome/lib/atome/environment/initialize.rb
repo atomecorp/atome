@@ -10,19 +10,24 @@ end
 
 class Device
   def initialize
-    # do not change the order of object creation below as the atome_id of those system object is based on their respective order
-    # todo : allow the system to assign atome_id using internal password system
+    # the object below is used to store the basic presets for common type of atomes
     Atome.new({atome_id: :preset, id: :preset, content: presets})
+    # the object below is used to hide some atomes rom the device view while still rendered
     Atome.new({atome_id: :dark_matter, id: :dark_matter, width: 0, height: 0, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :hidden, color: :transparent})
+    # the object below is used to store the preferences and settings for current device
     Atome.new({atome_id: :device, id: :device, language: :english, type: :particle, width: "100%", height: "100%", x: 0, xx: 0, y: 0, yy: 0, z: 1, overflow: :hidden, color: :transparent})
+    # the object below hold all the ttol that modify atomes
     Atome.new({atome_id: :intuition, id: :intuition, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 3, overflow: :hidden, color: :transparent})
+    # the object below is the main view for the current user on the current device
     Atome.new({atome_id: :view, id: :view, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent, tactile: JS_utils.mobile})
+    # the object below is used to message other atomes (could be a user, a device, or any atomes locally or on the network)
     Atome.new({atome_id: :messenger, id: :messenger, type: :particle})
+    # the object below is used to store the right managment for current device
     Atome.new({atome_id: :right, id: :right})
-    # rename collector to ephemeral
-    Atome.new({atome_id: :collector, id: :collector})
+    # this object hold temporary items (usefull for batch treatment) named collector could be rename ephemeral
     Atome.new({atome_id: :buffer, id: :buffer})
-    # The lines below create a special atome that holds all resize_actions stored in the @@resize_actions variable
+    # The lines below create a special atome that holds all internal actions such as resize_actions
+    # accessible thru @@resize_actions variable
     actions = Atome.new({atome_id: :actions, id: :actions})
     actions.viewer_actions
     # now we init the renderer
@@ -30,6 +35,7 @@ class Device
   end
 
   def presets
+    # here are the default preset for common objects
     visual = {color: :lightgray, center: {y: 43, x: 16, dynamic: false}, z: 0, overflow: :visible, parent: :view}
     shape = visual.merge({type: :shape, width: 70, height: 70, content: {points: 2}})
     box = visual.merge(shape).merge(content: {points: 4})
@@ -50,10 +56,10 @@ class Device
     border = {thickness: 1, pattern: :solid, color: :red}
     blur = {default: 5}
 
-    @preset = {shape: shape, box: box, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur}
+    {value: {shape: shape, box: box, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur}}
   end
 end
-# we create the recipient to stores all created atomes instances (cant be read using Atome.atomes)
+# we create the recipient that will store all created atomes instances (cant be read using Atome.atomes)
 Atome.atomise
-# now create the basic universe for the device and it's forthcoming atomes
+# now we create the basic universe for the device and it's forthcoming atomes
 Device.new

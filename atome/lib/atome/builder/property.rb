@@ -1,34 +1,4 @@
 # the class below initialize the default values and generate properties's methods
-#this module contain the methods to be created and those who needs extra processing
-# class Matiere
-#   def initialize(property)
-#     @property = property
-#   end
-#
-#   def collapse
-#     puts @property
-#     @property
-#   end
-#
-#   def matiere
-#     self
-#   end
-#
-#   def length
-#     @property.length
-#   end
-#
-#   def []
-#     # alert @property
-#     # @property
-#     "true"
-#   end
-#
-#   # def class
-#   #   @property.class
-#   # end
-#
-# end
 
 module Atome_methods_list
 
@@ -37,14 +7,15 @@ module Atome_methods_list
     events = %i[touch drag over]
     helper = %i[tactile display]
     visual = %i[color opacity border overflow]
+    audio = %i[color opacity border overflow]
     geometry = %i[width height rotation]
     effect = %i[blur shadow]
     identity = %i[atome_id id type]
-    media = %i[image sound video content]
+    media = %i[content image sound video]
     hierarchy = %i[parent child insert]
     communication = %i[share send]
     utility = %i[delete record enliven selector]
-    spatial | events | helper | visual | geometry | effect | identity | media | hierarchy | communication | utility
+    spatial | events | helper | visual | audio | geometry | effect | identity | media | hierarchy | communication | utility
   end
 
   #the line below specify if the properties need specific processing
