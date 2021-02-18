@@ -1,22 +1,25 @@
 class Nucleon < Helper
   include Neutron
-  include Pi
   include Photon
   include Atome_processor
+
+  def self.all
+    ObjectSpace.each_object(self).to_a
+  end
+
+  def self.count
+    all.count
+  end
 
   def initialize(params = nil, refresh = true)
     # if no params is sent we create a default property hash with type set to particle
     params ||= {type: :particle}
     # if no type is found in the params we use particle by default
     params[:type] = :particle unless params[:type]
-    # if no preset is send by user we get it from the type of atome found
-    preset = params[:preset] || params[:type]
-    # we find preset associated for the found type
-    preset = Pi.presets[preset]
     # We generate the atome_id below if not sended by user
     if params[:atome_id].nil?
       atome_id = "a_#{object_id}".to_sym
-      preset[:atome_id] = atome_id
+      params[:atome_id] = atome_id
     end
     # We generate the id below if not sended by user
     if params[:id].nil?
@@ -25,23 +28,16 @@ class Nucleon < Helper
       else
         "#{params[:type]} #{object_id}".to_sym
       end
-      preset[:id] = id
+      params[:id] = id
     end
-    # we get the preset value from the object type and add the value set by the user
-    properties = preset.merge(params)
-
     # we reorder the properties to be treated in the correct order
-    properties = reorder_properties(properties)
+    params = reorder_properties(params)
     # now we send the collected properties to the atome
-    properties.each_key do |property|
+    params.each_key do |property|
       if params[:type] == :collector
-        # puts "params #{params[:type]} : property : #{property}, preset[property] : #{preset[property]}"
-        #puts "property #{property} : value : #{preset[property]}}"
-        # send(property, properties[property], refresh)
+        puts "treatment to come"
       else
-        #alert "#{property} => #{properties[property]}"
-        method_analysis property, properties[property], nil
-        #send(property, properties[property], refresh)
+        method_analysis property, params[property], nil
       end
     end
 
