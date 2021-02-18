@@ -32,27 +32,21 @@ class Nucleon < Helper
         method_analysis property, params[property], nil
       end
     end
-
-    ## now we add the new atome to the atomes's list
-    # if preset[:render] == false || preset[:render] == :false
-    #   #alert id
-    # else
-    #   #alert "message :\n#{preset[:render]}\n from : atome.rb : 74"
-    #   # @@atomes << self
-    # end
+    # now we add the new atome to the atomes's list
+    Atome.class_variable_get("@@atomes") << self
   end
 
-  def atomise(name)
-    class_variable_get("@@#{name}") # you can access without offense
+  def self.atomise
+    Atome.class_variable_set("@@atomes", []) # you can access without offense
   end
 
-  def self.add_atome(name)
-    class_variable_set("@@#{name}") # you can access without offense
+  def self.atomes
+    Atome.class_variable_get("@@atomes") # you can access without offense
   end
 
-  def self.impulse(presets)
-    {atome_id: :impulse, type: :particle, id: :impulse, content: presets, atomes: []}
-  end
+  # def self.impulse(presets)
+  #   {atome_id: :impulse, type: :particle, id: :impulse, content: presets, atomes: []}
+  # end
   # S.A.G methods
   # def set(params = nil, refresh = true, &proc)
   #   if params.class == Hash
@@ -223,13 +217,13 @@ class Nucleon < Helper
   #
   # # generated atomes manipulators
 
-  def self.atomes
-    # @@atomes
-  end
-
-  def self.atomes=
-    atomes
-  end
+  # def self.atomes
+  #  # @@atomes
+  # end
+  #
+  # def self.atomes=
+  #  atomes
+  # end
 
   #
   # # modules methods to be exposed

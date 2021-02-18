@@ -9,7 +9,7 @@ class Atome < Nucleon
 end
 
 class Device
-  def genesis
+  def initialize
     # do not change the order of object creation below as the atome_id of those system object is based on their respective order
     # todo : allow the system to assign atome_id using internal password system
     Atome.new({atome_id: :preset, id: :preset, content: presets})
@@ -50,13 +50,10 @@ class Device
     border = {thickness: 1, pattern: :solid, color: :red}
     blur = {default: 5}
 
-    @preset={shape: shape, box: box, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur}
+    @preset = {shape: shape, box: box, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur}
   end
 end
-
-get_presets=Device.new
-presets=Atome.impulse(get_presets.presets)
-@impulse=Nucleon.impulse(presets)
-#impulse.genesis
-# Device.new.genesis
-# Device.new
+# we create the recipient to stores all created atomes instances (cant be read using Atome.atomes)
+Atome.atomise
+# now create the basic universe for the device and it's forthcoming atomes
+Device.new
