@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
-#comment when generating arm version
+# comment when generating arm version
 # gem "c_lexer"
 gem "image_size"
 gem "opal", ">= 1.0.5"

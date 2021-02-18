@@ -3109,14 +3109,14 @@ module Neutron
   #  self
   #end
   def clear(params = :view, refresh = true, &proc)
-    if params.class == Hash
-      if params[:exclude] && params[:exclude].class == Array
+    if params.instance_of?(Hash)
+      if params[:exclude] && params[:exclude].instance_of?(Array)
       elsif params[:exclude]
-        exclusion_list = if params[:exclude].class == Array
-                           params[:exclude]
-                         else
-                           [params[:exclude]]
-                         end
+        exclusion_list = if params[:exclude].instance_of?(Array)
+          params[:exclude]
+        else
+          [params[:exclude]]
+        end
         exclusion_list.each do |atome_to_keep|
           atome_to_keep = find_atome_from_params(atome_to_keep)
           grab(:view).child.each do |child_found|

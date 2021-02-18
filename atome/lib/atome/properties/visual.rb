@@ -949,12 +949,12 @@ module Photon
   end
 
   def viewer_actions
-    grab(:view).resize do
-      grab(:actions).resize_actions[:center]&.each do |atome, action|
-        atome.centering(:x, atome.x[:center], atome.x[:reference], atome.x[:dynamic]) if atome.x[:center]
-        atome.centering(:y, atome.y[:center], atome.y[:reference], atome.y[:dynamic]) if atome.y[:center]
-      end
-    end
+    #grab(:view).resize do
+    #  grab(:actions).resize_actions[:center]&.each do |atome, action|
+    #    atome.centering(:x, atome.x[:center], atome.x[:reference], atome.x[:dynamic]) if atome.x[:center]
+    #    atome.centering(:y, atome.y[:center], atome.y[:reference], atome.y[:dynamic]) if atome.y[:center]
+    #  end
+    #end
   end
 
   #spatial

@@ -9,13 +9,13 @@ module Render
   end
 
   def self.initialize
-    Element.find(JS_utils.device).resize do |evt|
-      grab(:view).width(Element.find('#view').css('width').sub('px', '').to_i, false)
-      grab(:view).height(Element.find('#view').css('height').sub('px', '').to_i, false)
-    end
-    # the line below alllow to capture the size of the view at init time
-    grab(:view).width(Element.find('#view').css('width').sub('px', '').to_i, false)
-    grab(:view).height(Element.find('#view').css('height').sub('px', '').to_i, false)
+    # Element.find(JS_utils.device).resize do |evt|
+    #  grab(:view).width(Element.find('#view').css('width').sub('px', '').to_i, false)
+    #  grab(:view).height(Element.find('#view').css('height').sub('px', '').to_i, false)
+    # end
+    # #the line below alllow to capture the size of the view at init time
+    # grab(:view).width(Element.find('#view').css('width').sub('px', '').to_i, false)
+    # grab(:view).height(Element.find('#view').css('height').sub('px', '').to_i, false)
   end
 
   def self.render_type(atome, params, parent = :body)

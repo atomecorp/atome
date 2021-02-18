@@ -1,7 +1,6 @@
 # require "c_lexer"
 require "opal"
 require "opal-jquery"
-# require 'opal-browser'
 # require "uglifier"
 require "fileutils"
 
@@ -10,7 +9,6 @@ def update_opal_libraries
     builder = Opal::Builder.new
     builder.build("opal")
     builder.build("opal-jquery")
-    # builder.build('opal-browser')
     File.write(t.name, builder.to_s)
   end
   file 'www/public/js/third_parties/opal/opal_parser.js': ["www/public/js/third_parties/opal"] do |t|
@@ -21,7 +19,7 @@ def update_opal_libraries
   end
 end
 
-update_opal_libraries
+#update_opal_libraries
 
 def update_medias_list
   # todo : only copy if there's a change! use monitoring if possible
