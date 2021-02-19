@@ -1,4 +1,4 @@
-module IdentityHtmlRenderer
+class IdentityHtmlRenderer < HierarchyHtmlRenderer
   def self.render_atome_id(atome_id, params)
     "#{atome_id} #{params}"
   end
@@ -7,7 +7,7 @@ module IdentityHtmlRenderer
     "#{atome_id} #{params}"
   end
 
-  def self.type(atome_id, params)
+  def self.render_type(atome_id, params)
     "#{atome_id} #{params}"
   end
 end

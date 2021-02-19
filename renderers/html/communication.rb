@@ -1,2 +1,2 @@
-module CommunicationHtmlRenderer
+class CommunicationHtmlRenderer < AudioHtmlRenderer
 end

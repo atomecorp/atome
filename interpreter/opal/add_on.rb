@@ -43,6 +43,6 @@ module JSUtils
   end
 
   def self.verification(*params)
-    `atome.jsVerification(#{params});`
+    `atome.jsVerification(#{params})`
   end
 end

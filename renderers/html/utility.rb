@@ -1,4 +1,4 @@
-module UtilityHtmlRenderer
+class UtilityHtmlRenderer < SpatialHtmlRenderer
   def self.render_language(atome_id, params)
     "#{atome_id} #{params}"
   end

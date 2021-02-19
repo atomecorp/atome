@@ -1,2 +1,2 @@
-module AudioHtmlRenderer
+class AudioHtmlRenderer
 end

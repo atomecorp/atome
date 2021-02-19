@@ -1,2 +1,2 @@
-module EventHtmlRenderer
+class EventHtmlRenderer < EffectHtmlRenderer
 end

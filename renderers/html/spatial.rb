@@ -1,4 +1,4 @@
-module SpatialHtmlRenderer
+class SpatialHtmlRenderer < MediaHtmlRenderer
   def self.render_x(atome_id, params)
     "#{atome_id} #{params}"
   end

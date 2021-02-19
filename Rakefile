@@ -91,7 +91,7 @@ end
 directory "www/public/js/third_parties/opal"
 directory "app/temp"
 
-atome_monitoring = %w[interpreter/opal/add_on.rb renderers/html.rb] + Dir.glob("atome/lib/**/*")
+atome_monitoring = Dir.glob("interpreter/**/*")+Dir.glob("renderers//**/*")+ Dir.glob("atome/lib/**/*")
 file 'www/public/js/dynamic_libraries/atome.js': atome_monitoring do |t|
   builder = Opal::Builder.new
   builder.append_paths("atome/lib")

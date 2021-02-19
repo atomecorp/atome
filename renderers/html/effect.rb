@@ -1,2 +1,2 @@
-module EffectHtmlRenderer
+class EffectHtmlRenderer < CommunicationHtmlRenderer
 end

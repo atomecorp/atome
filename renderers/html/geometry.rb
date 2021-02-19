@@ -1,4 +1,4 @@
-module GeometryHtmlRenderer
+class GeometryHtmlRenderer< EventHtmlRenderer
   def self.render_width(atome_id, params)
     "#{atome_id} #{params}"
   end
