@@ -1,9 +1,9 @@
-module IdentityProcessor
-  def atome_id_pre_processor(params)
+class IdentityProcessor < HierarchyProcessor
+  def self.atome_id_pre_processor(params)
     params
   end
 
-  def atome_id_processor(params)
+  def self.atome_id_processor(params)
     params
   end
 end

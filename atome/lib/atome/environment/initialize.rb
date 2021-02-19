@@ -22,9 +22,9 @@ class Device
     Atome.new({atome_id: :view, id: :view, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent, tactile: tactile})
     # the object below is used to message other atomes (could be a user, a device, or any atomes locally or on the network)
     Atome.new({atome_id: :messenger, id: :messenger, type: :particle})
-    # the object below is used to store the right managment for current device
+    # the object below is used to store the right management for current device
     Atome.new({atome_id: :right, id: :right})
-    # this object hold temporary items (usefull for batch treatment) named collector could be rename ephemeral
+    # this object hold temporary items (useful for batch treatment) named collector could be rename ephemeral
     Atome.new({atome_id: :buffer, id: :buffer, render: false})
     # The lines below create a special atome that holds all internal actions such as resize_actions
     # accessible thru @@resize_actions variable
@@ -51,7 +51,7 @@ class Device
     user = visual.merge({type: :user, color: :transparent, name: :anonymous, pass: :none, content: :anonymous})
     color = {content: :black}
     history = {}
-    authorisation = {creator: :atome, read: :all, write: :all} # only set only creator can change it unless specfic authoration set by creator()
+    authorisation = {creator: :atome, read: :all, write: :all} # only set only creator can change it unless specific authorisation set by creator()
     shadow = {x: 0, y: 0, blur: 7, thickness: 0, color: [alpha: 0.3], invert: false}
     border = {thickness: 1, pattern: :solid, color: :red}
     blur = {default: 5}

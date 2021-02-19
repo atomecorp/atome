@@ -203,7 +203,6 @@
 (function(Opal) {
   var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  Opal.add_stubs(['$alert']);
   return (function($base, $super, $parent_nesting) {
     var self = $klass($base, $super, 'IdentityHtmlRenderer');
 
@@ -223,7 +222,7 @@
     return (Opal.defs(self, '$render_type', $IdentityHtmlRenderer_render_type$3 = function $$render_type(atome_id, params) {
       var self = this;
 
-      return self.$alert("" + (atome_id) + " " + (params))
+      return "" + (atome_id) + " " + (params)
     }, $IdentityHtmlRenderer_render_type$3.$$arity = 2), nil) && 'render_type';
   })($nesting[0], $$($nesting, 'HierarchyHtmlRenderer'), $nesting)
 })(Opal);
@@ -483,7 +482,7 @@ Opal.modules["atome/builder/property"] = function(Opal) {
   }
   var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module, $klass = Opal.klass, $send = Opal.send, $truthy = Opal.truthy, $hash2 = Opal.hash2, $hash = Opal.hash;
 
-  Opal.add_stubs(['$|', '$include', '$atome_methods', '$each', '$methods_genesis', '$define_method', '$[]=', '$-', '$method_analysis', '$instance_variable_get', '$+', '$to_s', '$send', '$puts', '$[]', '$instance_of?', '$!=', '$delete', '$<<', '$send_hash', '$==', '$instance_variable_set', '$include?', '$need_pre_processing', '$each_with_index', '$format_params_send', '$store_instance_variable', '$merge', '$!', '$property_save']);
+  Opal.add_stubs(['$|', '$include', '$atome_methods', '$each', '$methods_genesis', '$define_method', '$[]=', '$-', '$params_analysis', '$instance_variable_get', '$+', '$to_s', '$send', '$puts', '$[]', '$instance_of?', '$!=', '$delete', '$<<', '$send_hash', '$==', '$instance_variable_set', '$check_hash_format', '$include?', '$need_pre_processing', '$each_with_index', '$store_instance_variable', '$merge', '$!', '$property_save']);
   
   (function($base, $parent_nesting) {
     var self = $module($base, 'AtomeMethodsList');
@@ -512,7 +511,7 @@ Opal.modules["atome/builder/property"] = function(Opal) {
     Opal.defs(self, '$need_pre_processing', $AtomeMethodsList_need_pre_processing$2 = function $$need_pre_processing() {
       var self = this;
 
-      return ["add", "shadow", "render"]
+      return ["add", "shadow", "render", "color"]
     }, $AtomeMethodsList_need_pre_processing$2.$$arity = 0);
     Opal.defs(self, '$need_processing', $AtomeMethodsList_need_processing$3 = function $$need_processing() {
       var self = this;
@@ -578,7 +577,7 @@ Opal.modules["atome/builder/property"] = function(Opal) {
             $writer = ["proc", $hash2(["value"], {"value": proc})];
             $send(params, '[]=', Opal.to_a($writer));
             $writer[$rb_minus($writer["length"], 1)];};
-          return self.$method_analysis(method_name, params);
+          return self.$params_analysis(method_name, params);
         } else {
           return self.$instance_variable_get("" + "@" + (method_name))
         };}, $$10.$$s = self, $$10.$$arity = -1, $$10));
@@ -597,7 +596,7 @@ Opal.modules["atome/builder/property"] = function(Opal) {
   return (function($base, $parent_nesting) {
     var self = $module($base, 'Properties');
 
-    var $nesting = [self].concat($parent_nesting), $Properties_send_hash$12, $Properties_property_save$13, $Properties_format_params_send$14, $Properties_store_instance_variable$15, $Properties_method_analysis$16;
+    var $nesting = [self].concat($parent_nesting), $Properties_send_hash$12, $Properties_property_save$13, $Properties_check_hash_format$14, $Properties_store_instance_variable$15, $Properties_params_analysis$16;
 
     
     
@@ -627,7 +626,7 @@ Opal.modules["atome/builder/property"] = function(Opal) {
       return self.$send_hash(params, method_name);
     }, $Properties_property_save$13.$$arity = 2);
     
-    Opal.def(self, '$format_params_send', $Properties_format_params_send$14 = function $$format_params_send(params) {
+    Opal.def(self, '$check_hash_format', $Properties_check_hash_format$14 = function $$check_hash_format(params) {
       var self = this;
 
       
@@ -636,7 +635,7 @@ Opal.modules["atome/builder/property"] = function(Opal) {
         params = $hash2(["value"], {"value": params})
       };
       return params;
-    }, $Properties_format_params_send$14.$$arity = 1);
+    }, $Properties_check_hash_format$14.$$arity = 1);
     
     Opal.def(self, '$store_instance_variable', $Properties_store_instance_variable$15 = function $$store_instance_variable(method_name, params) {
       var self = this, prev_value = nil;
@@ -651,12 +650,13 @@ Opal.modules["atome/builder/property"] = function(Opal) {
       }
     }, $Properties_store_instance_variable$15.$$arity = 2);
     
-    Opal.def(self, '$method_analysis', $Properties_method_analysis$16 = function $$method_analysis(method_name, params, proc) {
+    Opal.def(self, '$params_analysis', $Properties_params_analysis$16 = function $$params_analysis(method_name, params, proc) {
       var $$17, $a, self = this, $writer = nil;
 
       
+      params = self.$check_hash_format(params);
       if ($truthy($$($nesting, 'AtomeMethodsList').$need_pre_processing()['$include?'](method_name))) {
-        params = self.$send("" + (method_name) + "_pre_processor", params)};
+        params = $$($nesting, 'Renderer').$send("" + (method_name) + "_pre_processor", params)};
       if ($truthy(params['$instance_of?']($$($nesting, 'Array')))) {
         $send(params, 'each_with_index', [], ($$17 = function(param, index){var self = $$17.$$s || this;
 
@@ -669,16 +669,13 @@ Opal.modules["atome/builder/property"] = function(Opal) {
           if (index == null) {
             index = nil;
           };
-          param = self.$format_params_send(param);
           if (index['$=='](0)) {
             return self.$store_instance_variable(method_name, param)
           } else {
             return self.$store_instance_variable(method_name, param.$merge($hash2(["add"], {"add": true})))
           };}, $$17.$$s = self, $$17.$$arity = 2, $$17))
       } else {
-        
-        params = self.$format_params_send(params);
-        self.$store_instance_variable(method_name, params);
+        self.$store_instance_variable(method_name, params)
       };
       if ($truthy(($truthy($a = params) ? params['$instance_of?']($$($nesting, 'Hash'))['$!']() : $a))) {
         params = $hash2(["value"], {"value": params})};
@@ -690,205 +687,198 @@ Opal.modules["atome/builder/property"] = function(Opal) {
         $writer[$rb_minus($writer["length"], 1)];};
       self.$property_save(params, method_name);
       return $hash(method_name, params);
-    }, $Properties_method_analysis$16.$$arity = 3);
+    }, $Properties_params_analysis$16.$$arity = 3);
   })($nesting[0], $nesting);
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/audio"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'AudioProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'AudioProcessor');
 
     var $nesting = [self].concat($parent_nesting);
 
-    nil
-  })($nesting[0], $nesting)
+    return nil
+  })($nesting[0], null, $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/communication"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'CommunicationProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'CommunicationProcessor');
 
     var $nesting = [self].concat($parent_nesting);
 
-    nil
-  })($nesting[0], $nesting)
+    return nil
+  })($nesting[0], $$($nesting, 'AudioProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/effect"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'EffectProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'EffectProcessor');
 
     var $nesting = [self].concat($parent_nesting), $EffectProcessor_shadow_pre_processor$1;
 
-    
-    Opal.def(self, '$shadow_pre_processor', $EffectProcessor_shadow_pre_processor$1 = function $$shadow_pre_processor(params) {
+    return (Opal.defs(self, '$shadow_pre_processor', $EffectProcessor_shadow_pre_processor$1 = function $$shadow_pre_processor(params) {
       var self = this;
 
       return params
-    }, $EffectProcessor_shadow_pre_processor$1.$$arity = 1)
-  })($nesting[0], $nesting)
+    }, $EffectProcessor_shadow_pre_processor$1.$$arity = 1), nil) && 'shadow_pre_processor'
+  })($nesting[0], $$($nesting, 'CommunicationProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/event"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'EventProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'EventProcessor');
 
     var $nesting = [self].concat($parent_nesting);
 
-    nil
-  })($nesting[0], $nesting)
+    return nil
+  })($nesting[0], $$($nesting, 'EffectProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/geometry"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'GeometryProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'GeometryProcessor');
 
     var $nesting = [self].concat($parent_nesting);
 
-    nil
-  })($nesting[0], $nesting)
+    return nil
+  })($nesting[0], $$($nesting, 'EventProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/helper"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'HelperProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'HelperProcessor');
 
     var $nesting = [self].concat($parent_nesting);
 
-    nil
-  })($nesting[0], $nesting)
+    return nil
+  })($nesting[0], $$($nesting, 'GeometryProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/hierarchy"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'HierarchyProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'HierarchyProcessor');
 
     var $nesting = [self].concat($parent_nesting);
 
-    nil
-  })($nesting[0], $nesting)
+    return nil
+  })($nesting[0], $$($nesting, 'HelperProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/identity"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'IdentityProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'IdentityProcessor');
 
     var $nesting = [self].concat($parent_nesting), $IdentityProcessor_atome_id_pre_processor$1, $IdentityProcessor_atome_id_processor$2;
 
     
-    
-    Opal.def(self, '$atome_id_pre_processor', $IdentityProcessor_atome_id_pre_processor$1 = function $$atome_id_pre_processor(params) {
+    Opal.defs(self, '$atome_id_pre_processor', $IdentityProcessor_atome_id_pre_processor$1 = function $$atome_id_pre_processor(params) {
       var self = this;
 
       return params
     }, $IdentityProcessor_atome_id_pre_processor$1.$$arity = 1);
-    
-    Opal.def(self, '$atome_id_processor', $IdentityProcessor_atome_id_processor$2 = function $$atome_id_processor(params) {
+    return (Opal.defs(self, '$atome_id_processor', $IdentityProcessor_atome_id_processor$2 = function $$atome_id_processor(params) {
       var self = this;
 
       return params
-    }, $IdentityProcessor_atome_id_processor$2.$$arity = 1);
-  })($nesting[0], $nesting)
+    }, $IdentityProcessor_atome_id_processor$2.$$arity = 1), nil) && 'atome_id_processor';
+  })($nesting[0], $$($nesting, 'HierarchyProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/media"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'MediaProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'MediaProcessor');
 
     var $nesting = [self].concat($parent_nesting);
 
-    nil
-  })($nesting[0], $nesting)
+    return nil
+  })($nesting[0], $$($nesting, 'IdentityProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/spatial"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'SpatialProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'SpatialProcessor');
 
     var $nesting = [self].concat($parent_nesting);
 
-    nil
-  })($nesting[0], $nesting)
+    return nil
+  })($nesting[0], $$($nesting, 'MediaProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/utility"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'UtilityProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'UtilityProcessor');
 
     var $nesting = [self].concat($parent_nesting), $UtilityProcessor_delete_processor$1, $UtilityProcessor_render_pre_processor$2;
 
     
-    
-    Opal.def(self, '$delete_processor', $UtilityProcessor_delete_processor$1 = function $$delete_processor(params) {
+    Opal.defs(self, '$delete_processor', $UtilityProcessor_delete_processor$1 = function $$delete_processor(params) {
       var self = this;
 
       return params
     }, $UtilityProcessor_delete_processor$1.$$arity = 1);
-    
-    Opal.def(self, '$render_pre_processor', $UtilityProcessor_render_pre_processor$2 = function $$render_pre_processor(params) {
+    return (Opal.defs(self, '$render_pre_processor', $UtilityProcessor_render_pre_processor$2 = function $$render_pre_processor(params) {
       var self = this;
 
       return params
-    }, $UtilityProcessor_render_pre_processor$2.$$arity = 1);
-  })($nesting[0], $nesting)
+    }, $UtilityProcessor_render_pre_processor$2.$$arity = 1), nil) && 'render_pre_processor';
+  })($nesting[0], $$($nesting, 'SpatialProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/properties/visual"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'VisualProcessor');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'VisualProcessor');
 
-    var $nesting = [self].concat($parent_nesting), $VisualProcessor_color_processor$1, $VisualProcessor_border_processor$2;
+    var $nesting = [self].concat($parent_nesting), $VisualProcessor_color_pre_processor$1, $VisualProcessor_border_processor$2;
 
     
-    
-    Opal.def(self, '$color_processor', $VisualProcessor_color_processor$1 = function $$color_processor(params) {
+    Opal.defs(self, '$color_pre_processor', $VisualProcessor_color_pre_processor$1 = function $$color_pre_processor(params) {
       var self = this;
 
       return params
-    }, $VisualProcessor_color_processor$1.$$arity = 1);
-    
-    Opal.def(self, '$border_processor', $VisualProcessor_border_processor$2 = function $$border_processor(params) {
+    }, $VisualProcessor_color_pre_processor$1.$$arity = 1);
+    return (Opal.defs(self, '$border_processor', $VisualProcessor_border_processor$2 = function $$border_processor(params) {
       var self = this;
 
       return params
-    }, $VisualProcessor_border_processor$2.$$arity = 1);
-  })($nesting[0], $nesting)
+    }, $VisualProcessor_border_processor$2.$$arity = 1), nil) && 'border_processor';
+  })($nesting[0], $$($nesting, 'UtilityProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
@@ -974,16 +964,15 @@ Opal.modules["atome/system/utilities"] = function(Opal) {
 
 /* Generated by Opal 1.0.5 */
 Opal.modules["atome/system/renderer"] = function(Opal) {
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $module = Opal.module, $send = Opal.send;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass, $send = Opal.send;
 
   Opal.add_stubs(['$each', '$send', '$[]']);
-  return (function($base, $parent_nesting) {
-    var self = $module($base, 'Renderer');
+  return (function($base, $super, $parent_nesting) {
+    var self = $klass($base, $super, 'Renderer');
 
     var $nesting = [self].concat($parent_nesting), $Renderer_render_properties$1;
 
-    
-    Opal.def(self, '$render_properties', $Renderer_render_properties$1 = function $$render_properties(params) {
+    return (Opal.def(self, '$render_properties', $Renderer_render_properties$1 = function $$render_properties(params) {
       var $$2, self = this;
 
       
@@ -1011,8 +1000,8 @@ Opal.modules["atome/system/renderer"] = function(Opal) {
           };
           return $$($nesting, 'RenderHtml').$send("" + "render_" + (property), atome_id, value['$[]']("value"));}, $$3.$$s = self, $$3.$$arity = 2, $$3));}, $$2.$$s = self, $$2.$$arity = 2, $$2));
       return params;
-    }, $Renderer_render_properties$1.$$arity = 1)
-  })($nesting[0], $nesting)
+    }, $Renderer_render_properties$1.$$arity = 1), nil) && 'render_properties'
+  })($nesting[0], $$($nesting, 'VisualProcessor'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */
@@ -1022,40 +1011,23 @@ Opal.modules["atome/builder/object"] = function(Opal) {
   }
   var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass, $truthy = Opal.truthy, $hash2 = Opal.hash2, $send = Opal.send, $hash = Opal.hash;
 
-  Opal.add_stubs(['$include', '$[]', '$[]=', '$-', '$nil?', '$to_sym', '$object_id', '$reorder_properties', '$each_key', '$==', '$puts', '$method_analysis', '$keys', '$values', '$<<', '$class_variable_get', '$render_properties', '$class_variable_set']);
+  Opal.add_stubs(['$include', '$[]', '$[]=', '$-', '$check_identtity', '$nil?', '$to_sym', '$object_id', '$format_params', '$reorder_properties', '$each_key', '$==', '$puts', '$params_analysis', '$keys', '$values', '$store_atome', '$<<', '$class_variable_get', '$render_properties', '$class_variable_set']);
   return (function($base, $super, $parent_nesting) {
     var self = $klass($base, $super, 'Nucleon');
 
-    var $nesting = [self].concat($parent_nesting), $Nucleon_initialize$1, $Nucleon_atomise$3, $Nucleon_atomes$4;
+    var $nesting = [self].concat($parent_nesting), $Nucleon_initialize$1, $Nucleon_check_identtity$2, $Nucleon_format_params$3, $Nucleon_store_atome$5, $Nucleon_atomise$6, $Nucleon_atomes$7;
 
     
     self.$include($$($nesting, 'Utilities'));
     self.$include($$($nesting, 'Properties'));
-    self.$include($$($nesting, 'VisualProcessor'));
-    self.$include($$($nesting, 'SpatialProcessor'));
-    self.$include($$($nesting, 'EventProcessor'));
-    self.$include($$($nesting, 'HelperProcessor'));
-    self.$include($$($nesting, 'AudioProcessor'));
-    self.$include($$($nesting, 'GeometryProcessor'));
-    self.$include($$($nesting, 'EffectProcessor'));
-    self.$include($$($nesting, 'IdentityProcessor'));
-    self.$include($$($nesting, 'MediaProcessor'));
-    self.$include($$($nesting, 'HierarchyProcessor'));
-    self.$include($$($nesting, 'CommunicationProcessor'));
-    self.$include($$($nesting, 'UtilityProcessor'));
-    self.$include($$($nesting, 'Renderer'));
     
-    Opal.def(self, '$initialize', $Nucleon_initialize$1 = function $$initialize(params, refresh) {
-      var $a, $$2, self = this, $writer = nil, atome_id = nil, id = nil, formatted_params = nil;
+    Opal.def(self, '$initialize', $Nucleon_initialize$1 = function $$initialize(params) {
+      var $a, self = this, $writer = nil;
 
       
       
       if (params == null) {
         params = nil;
-      };
-      
-      if (refresh == null) {
-        refresh = true;
       };
       params = ($truthy($a = params) ? $a : $hash2(["type"], {"type": "particle"}));
       if ($truthy(params['$[]']("type"))) {
@@ -1065,6 +1037,13 @@ Opal.modules["atome/builder/object"] = function(Opal) {
         $send(params, '[]=', Opal.to_a($writer));
         $writer[$rb_minus($writer["length"], 1)];
       };
+      return self.$check_identtity(params);
+    }, $Nucleon_initialize$1.$$arity = -1);
+    
+    Opal.def(self, '$check_identtity', $Nucleon_check_identtity$2 = function $$check_identtity(params) {
+      var self = this, atome_id = nil, $writer = nil, id = nil;
+
+      
       if ($truthy(params['$[]']("atome_id")['$nil?']())) {
         
         atome_id = (("" + "a_") + (self.$object_id())).$to_sym();
@@ -1083,9 +1062,15 @@ Opal.modules["atome/builder/object"] = function(Opal) {
         $writer = ["id", id];
         $send(params, '[]=', Opal.to_a($writer));
         $writer[$rb_minus($writer["length"], 1)];;};
-      params = self.$reorder_properties(params);
+      return self.$format_params(self.$reorder_properties(params));
+    }, $Nucleon_check_identtity$2.$$arity = 1);
+    
+    Opal.def(self, '$format_params', $Nucleon_format_params$3 = function $$format_params(params) {
+      var $$4, self = this, formatted_params = nil;
+
+      
       formatted_params = $hash2([], {});
-      $send(params, 'each_key', [], ($$2 = function(property){var self = $$2.$$s || this, analysed_params = nil;
+      $send(params, 'each_key', [], ($$4 = function(property){var self = $$4.$$s || this, analysed_params = nil, $writer = nil;
 
       
         
@@ -1096,30 +1081,37 @@ Opal.modules["atome/builder/object"] = function(Opal) {
           return self.$puts("treatment to come")
         } else {
           
-          analysed_params = self.$method_analysis(property, params['$[]'](property), nil);
+          analysed_params = self.$params_analysis(property, params['$[]'](property), nil);
           
           $writer = [analysed_params.$keys()['$[]'](0), analysed_params.$values()['$[]'](0)];
           $send(formatted_params, '[]=', Opal.to_a($writer));
           return $writer[$rb_minus($writer["length"], 1)];;
-        };}, $$2.$$s = self, $$2.$$arity = 1, $$2));
+        };}, $$4.$$s = self, $$4.$$arity = 1, $$4));
+      return self.$store_atome(formatted_params);
+    }, $Nucleon_format_params$3.$$arity = 1);
+    
+    Opal.def(self, '$store_atome', $Nucleon_store_atome$5 = function $$store_atome(formatted_params) {
+      var self = this;
+
+      
       $$($nesting, 'Atome').$class_variable_get("@@atomes")['$<<'](self);
-      if (params['$[]']("render")['$=='](false)) {
+      if (formatted_params['$[]']("render")['$=='](false)) {
         return nil
       } else {
         return self.$render_properties($hash(formatted_params['$[]']("atome_id")['$[]']("value"), formatted_params))
       };
-    }, $Nucleon_initialize$1.$$arity = -1);
-    Opal.defs(self, '$atomise', $Nucleon_atomise$3 = function $$atomise() {
+    }, $Nucleon_store_atome$5.$$arity = 1);
+    Opal.defs(self, '$atomise', $Nucleon_atomise$6 = function $$atomise() {
       var self = this;
 
       return $$($nesting, 'Atome').$class_variable_set("@@atomes", [])
-    }, $Nucleon_atomise$3.$$arity = 0);
-    return (Opal.defs(self, '$atomes', $Nucleon_atomes$4 = function $$atomes() {
+    }, $Nucleon_atomise$6.$$arity = 0);
+    return (Opal.defs(self, '$atomes', $Nucleon_atomes$7 = function $$atomes() {
       var self = this;
 
       return $$($nesting, 'Atome').$class_variable_get("@@atomes")
-    }, $Nucleon_atomes$4.$$arity = 0), nil) && 'atomes';
-  })($nesting[0], null, $nesting)
+    }, $Nucleon_atomes$7.$$arity = 0), nil) && 'atomes';
+  })($nesting[0], $$($nesting, 'Renderer'), $nesting)
 };
 
 /* Generated by Opal 1.0.5 */

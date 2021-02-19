@@ -1,2 +1,2 @@
-module AudioProcessor
+class AudioProcessor
 end

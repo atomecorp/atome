@@ -1,3 +1,2 @@
-module HelperProcessor
-
+class HelperProcessor < GeometryProcessor
 end

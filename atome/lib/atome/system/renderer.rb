@@ -1,4 +1,4 @@
-module Renderer
+class Renderer < VisualProcessor
   def render_properties(params)
     params.each do |atome_id, properties|
       properties.each do |property, value|

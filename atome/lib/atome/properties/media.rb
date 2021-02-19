@@ -1,2 +1,2 @@
-module MediaProcessor
+class MediaProcessor < IdentityProcessor
 end

@@ -1,2 +1,2 @@
-module SpatialProcessor
+class SpatialProcessor < MediaProcessor
 end

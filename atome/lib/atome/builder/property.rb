@@ -19,7 +19,7 @@ module AtomeMethodsList
 
   # the line below specify if the properties need specific processing
   def self.need_pre_processing
-    %i[add shadow render]
+    %i[add shadow render color]
   end
 
   def self.need_processing
@@ -58,7 +58,7 @@ class Sparkle
         if proc
           params[:proc] = {value: proc}
         end
-        method_analysis method_name, params
+        params_analysis method_name, params
       else
         # no params send, we call the getter using magic_getter
         instance_variable_get("@#{method_name}")
@@ -72,9 +72,9 @@ class Sparkle
   end
 end
 
-# the class below contains all common propertiy's methods
+# the class below contains all common property's methods
 module Properties
-  # the methods below must be executed once only
+  # the methods below must be only executed once
   def send_hash(params, method_name)
     puts "#{params} #{method_name}"
     self
@@ -95,7 +95,7 @@ module Properties
     # instance_variable_set("@#{method_name}", params)
   end
 
-  def format_params_send(params)
+  def check_hash_format(params)
     unless params.instance_of?(Hash)
       params = {value: params}
     end
@@ -112,18 +112,16 @@ module Properties
     end
   end
 
-  def method_analysis(method_name, params, proc)
-    # we reformat the params to be hash with :value as key
-    # we don't create a object init time, to only create property when needed
-    # now we look if the data passed needs some processing before beeing stored
+  def params_analysis(method_name, params, proc)
+    # We reformat the params in case user doesn't format the params using a Hash
+    params = check_hash_format(params)
+    # now we look if the data passed needs some processing before being stored
     if AtomeMethodsList.need_pre_processing.include?(method_name)
-      params = send("#{method_name}_pre_processor", params)
+      params = Renderer.send("#{method_name}_pre_processor", params)
     end
 
     if params.instance_of?(Array)
       params.each_with_index do |param, index|
-        # We reformat the params in case user doesn't format the params using a Hash
-        param = format_params_send(param)
         if index == 0
           store_instance_variable method_name, param
         else
@@ -131,8 +129,7 @@ module Properties
         end
       end
     else
-      # We reformat the params in case user doesn't format the params using a Hash
-      params = format_params_send(params)
+
       # now we feed the instance_variable with the new value
       store_instance_variable method_name, params
     end
