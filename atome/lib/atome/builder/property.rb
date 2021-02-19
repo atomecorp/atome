@@ -1,14 +1,13 @@
 # the class below initialize the default values and generate properties's methods
 
-module Atome_methods_list
-
+module AtomeMethodsList
   def self.atome_methods
     spatial = %i[width height size x xx y yy z]
     events = %i[touch drag over]
     helper = %i[tactile display]
     visual = %i[color opacity border overflow]
     audio = %i[color opacity border overflow]
-    geometry = %i[width height rotation]
+    geometry = %i[width height resize rotation]
     effect = %i[blur shadow]
     identity = %i[atome_id id type]
     media = %i[content image sound video]
@@ -42,10 +41,10 @@ end
 # the class below initialize the default values and generate property's methods
 
 class Sparkle
-  include Atome_methods_list
+  include AtomeMethodsList
   def initialize
     # the line below create atomes's methods using meta-programming
-    atome_methods = Atome_methods_list.atome_methods
+    atome_methods = AtomeMethodsList.atome_methods
     atome_methods.each do |method_name|
       Sparkle.methods_genesis(method_name)
     end
@@ -56,11 +55,13 @@ class Sparkle
       if params
         # this is the main entry method for the current property treatment
         # first we create a hash for the property if it doesn't already exist
+        if proc
+          params[:proc] = {value: proc}
+        end
         method_analysis method_name, params
       else
         # no params send, we call the getter using magic_getter
         instance_variable_get("@#{method_name}")
-        #magic_getter instance_method_name, method_name
       end
     end
     # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
@@ -75,51 +76,9 @@ end
 module Properties
   # the methods below must be executed once only
   def send_hash(params, method_name)
-    # if self.type[:content]==:collector
-    #    self.content.each do |atome_to_be_processed|
-    #      atome_to_be_processed.send(method_name,params)
-    #    end
-    # else
-    #   # if prop needs to be refresh we send it to the Render engine
-    #   unless  Atome_methods_list.no_broadcast.include?(method_name)
-    #     broadcast(atome_id[:value]=> {method_name => params})
-    #   end
-    #
-    #   if Atome_methods_list.need_processing.include?(method_name)
-    #     params= send("#{method_name}_processor", params)
-    #   end
-    #
-    #   unless Atome_methods_list.no_rendering.include?(method_name)
-    #     Render.send("render_#{method_name}", self, params) if params.class==Array || params[:render].nil? || params[:render] == true
-    #   end
-    #
-    #   if Atome_methods_list.need_post_processing.include?(method_name)
-    #     send("#{method_name}_post_processor", params)
-    #   end
-    # end
-    # if self.type[:content]==:collector
-    #   alert "property.rb line 63 should delete the collector"
-    #   # self.content=""
-    #   # self.delete(true)
-    # end
+    puts "#{params} #{method_name}"
     self
   end
-
-  # def array_parsing(params, method_name, proc)
-  #   params.each_with_index do |param, index|
-  #     if param.instance_of?(Hash) && param[:add] != false && index != 0
-  #       param[:add] = true
-  #     elsif !param.instance_of?(Hash)
-  #       param = { value: param, add: true }
-  #     end
-  #     if index == params.length - 1
-  #       # when we reach the last element of the array we add the proc
-  #       method_analysis param, method_name, proc
-  #     else
-  #       method_analysis param, method_name, nil
-  #     end
-  #   end
-  # end
 
   def property_save(params, method_name)
     previous_content = instance_variable_get("@#{method_name}")
@@ -136,7 +95,6 @@ module Properties
     # instance_variable_set("@#{method_name}", params)
   end
 
-
   def format_params_send(params)
     unless params.instance_of?(Hash)
       params = {value: params}
@@ -144,7 +102,7 @@ module Properties
     params
   end
 
-  def store_instance_variable method_name, params
+  def store_instance_variable(method_name, params)
     if params[:add] == true
       params.delete(:add)
       prev_value = instance_variable_get("@#{method_name}")
@@ -157,8 +115,8 @@ module Properties
   def method_analysis(method_name, params, proc)
     # we reformat the params to be hash with :avalue as key
     # we don't create a object init time, to only create property when needed
-    #now we look if the datas passed needs some processing before beeing stored
-    if Atome_methods_list.need_pre_processing.include?(method_name)
+    # now we look if the datas passed needs some processing before beeing stored
+    if AtomeMethodsList.need_pre_processing.include?(method_name)
       params = send("#{method_name}_pre_processor", params)
     end
 
@@ -185,28 +143,5 @@ module Properties
     params ||= {}
     params[:proc] = proc if proc
     property_save(params, method_name)
-    # end
   end
-
-  #def magic_getter(method, instance_method_name)
-  #  # the aim of this method is only return the value of the content if the property hash only have a content set
-  #  # if method.length == 1 && method.instance_of?(Hash) && method[:content]
-  #  #   if instance_method_name ==:atome_id
-  #  #     method[:content]
-  #  #   else
-  #  #     method
-  #  #   end
-  #  # else
-  #  #   method
-  #  # end
-  #  # a=Matiere.new
-  #  # Nucleon.toto(method)
-  #  # alert self
-  #  # method=Matiere.new(method)
-  #  # # # method a.content.class
-  #  # method.matiere
-  #  puts "#{instance_method_name}: #{method}"
-  #  method
-  #end
 end
-

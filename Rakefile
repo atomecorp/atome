@@ -14,12 +14,12 @@ def update_opal_libraries
   file 'www/public/js/third_parties/opal/opal_parser.js': ["www/public/js/third_parties/opal"] do |t|
     require "opal"
     parser = Opal::Builder.new
-    parser.build("./opal_compiler/lib/parser.rb")
+    parser.build("./opal_add_on/parser.rb")
     File.write(t.to_s, parser.to_s)
   end
 end
 
- update_opal_libraries
+update_opal_libraries
 
 def update_medias_list
   # todo : only copy if there's a change! use monitoring if possible
@@ -91,11 +91,11 @@ end
 directory "www/public/js/third_parties/opal"
 directory "app/temp"
 
-atome_monitoring = %w[opal_compiler/lib/opal_addon.rb renderers/html.rb] + Dir.glob("atome/lib/**/*")
+atome_monitoring = %w[opal_add_on/addon.rb renderers/html.rb] + Dir.glob("atome/lib/**/*")
 file 'www/public/js/atome.js': atome_monitoring do |t|
   builder = Opal::Builder.new
   builder.append_paths("atome/lib")
-  builder.build("./opal_compiler/lib/opal_addon.rb")
+  builder.build("./opal_add_on/addon.rb")
   builder.build("./renderers/html.rb")
   builder.build("atome")
   File.write(t.name, builder.to_s)
@@ -170,17 +170,17 @@ end
 
 def production(opal, parser, atome)
   uglified = Uglifier.new(harmony: true).compile(File.read(opal))
-  open(opal, "w") do |f|
+  File.open(opal, "w") do |f|
     f.puts uglified
   end
 
   uglified = Uglifier.new(harmony: true).compile(File.read(parser))
-  open(parser, "w") do |f|
+  File.open(parser, "w") do |f|
     f.puts uglified
   end
 
   uglified = Uglifier.new(harmony: true).compile(File.read(atome))
-  open(atome, "w") do |f|
+  File.open(atome, "w") do |f|
     f.puts uglified
   end
 end

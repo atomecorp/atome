@@ -5,9 +5,6 @@ require "atome/fake_methods"
 # atome's property builders
 require "atome/builder/property"
 require "atome/environment/default"
-# temporary legacy classes to be deleted
-require "atome/properties/legacy_info"
-require "atome/properties/legacy"
 # property processors
 require "atome/properties/audio"
 require "atome/properties/communication"
@@ -21,6 +18,9 @@ require "atome/properties/media"
 require "atome/properties/spatial"
 require "atome/properties/utility"
 require "atome/properties/visual"
+# utilities
+require "atome/system/utilities"
+#require "atome/properties/legacy"
 # Atome helper (help system for atomes)
 require "atome/system/helper"
 # main atome builder

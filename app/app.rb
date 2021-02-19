@@ -1,1 +1,1 @@
-require './app/scripts/examples.rb'
+require "./app/scripts/examples"

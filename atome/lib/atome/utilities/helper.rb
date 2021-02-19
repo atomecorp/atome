@@ -1,11 +1,11 @@
 # here stand some atome's function to allow atome's objects manipulation
 
 def batch(*params)
-  collector = []
+  buffer = []
   params.each do |atome|
-    collector << atome
+    buffer << atome
   end
-  collector({content: collector})
+  drag(:buffer).content(buffer)
 end
 
 def get(id)
