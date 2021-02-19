@@ -81,7 +81,7 @@ end
 media_monitoring = unless File.file?("app/temp/media_list.rb")
   update_medias_list
 end
-
+FileUtils.mkdir_p 'www/public/js/dynamic_libraries/'
 file 'www/public/js/dynamic_libraries/atome_medias.js': media_monitoring do |t|
   builder = Opal::Builder.new
   builder.build("./app/temp/media_list.rb")
