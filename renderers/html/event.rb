@@ -1,0 +1,2 @@
+module EventHtmlRenderer
+end

@@ -1,0 +1,2 @@
+module CommunicationHtmlRenderer
+end

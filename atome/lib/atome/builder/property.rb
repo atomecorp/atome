@@ -13,17 +13,13 @@ module AtomeMethodsList
     media = %i[content image sound video]
     hierarchy = %i[parent child insert]
     communication = %i[share send]
-    utility = %i[delete record enliven selector]
+    utility = %i[delete record enliven selector render preset]
     spatial | events | helper | visual | audio | geometry | effect | identity | media | hierarchy | communication | utility
   end
 
   # the line below specify if the properties need specific processing
   def self.need_pre_processing
-    %i[add shadow]
-  end
-
-  def self.no_broadcast
-    %i[atome_id]
+    %i[add shadow render]
   end
 
   def self.need_processing
@@ -36,6 +32,10 @@ module AtomeMethodsList
 
   def self.no_rendering
     %i[shadow enliven tactile selector atome_id]
+  end
+
+  def self.no_broadcast
+    %i[atome_id]
   end
 end
 # the class below initialize the default values and generate property's methods
@@ -113,9 +113,9 @@ module Properties
   end
 
   def method_analysis(method_name, params, proc)
-    # we reformat the params to be hash with :avalue as key
+    # we reformat the params to be hash with :value as key
     # we don't create a object init time, to only create property when needed
-    # now we look if the datas passed needs some processing before beeing stored
+    # now we look if the data passed needs some processing before beeing stored
     if AtomeMethodsList.need_pre_processing.include?(method_name)
       params = send("#{method_name}_pre_processor", params)
     end
@@ -143,5 +143,7 @@ module Properties
     params ||= {}
     params[:proc] = proc if proc
     property_save(params, method_name)
+    # we return the param so object.rb can get the correctly formatted data
+    {method_name => params}
   end
 end

@@ -19,7 +19,7 @@ class Device
     # the object below hold all the ttol that modify atomes
     Atome.new({atome_id: :intuition, id: :intuition, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 3, overflow: :hidden, color: :transparent})
     # the object below is the main view for the current user on the current device
-    Atome.new({atome_id: :view, id: :view, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent, tactile: JS_utils.mobile})
+    Atome.new({atome_id: :view, id: :view, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent, tactile: tactile})
     # the object below is used to message other atomes (could be a user, a device, or any atomes locally or on the network)
     Atome.new({atome_id: :messenger, id: :messenger, type: :particle})
     # the object below is used to store the right managment for current device
@@ -30,8 +30,8 @@ class Device
     # accessible thru @@resize_actions variable
     actions = Atome.new({atome_id: :actions, id: :actions})
     actions.viewer_actions
-    # now we init the renderer
-    Render.initialize
+    # # now we init the renderer
+    # Render.initialize
   end
 
   def presets

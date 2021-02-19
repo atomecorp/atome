@@ -4,7 +4,6 @@ require "extensions/hash"
 require "atome/fake_methods"
 # atome's property builders
 require "atome/builder/property"
-require "atome/environment/default"
 # property processors
 require "atome/properties/audio"
 require "atome/properties/communication"
@@ -20,13 +19,11 @@ require "atome/properties/utility"
 require "atome/properties/visual"
 # utilities
 require "atome/system/utilities"
-#require "atome/properties/legacy"
-# Atome helper (help system for atomes)
-require "atome/system/helper"
+require "atome/system/renderer"
 # main atome builder
 require "atome/builder/object"
-# Atome helper (methods availlable at main Object level)
-require "atome/utilities/helper"
+# Atome helper (methods available at main Object level)
+require "atome/utilities/global"
 # elementary atomes for basic environment
 require "atome/environment/initialize"
 # helper methods to facilitate atome's creation

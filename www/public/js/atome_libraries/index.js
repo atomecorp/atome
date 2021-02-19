@@ -261,3 +261,11 @@ window.ondrop = function (e) {
 };
 
 
+
+
+const atome = {
+    jsVerification: function(params) {
+        alert(params);
+    }
+};
+

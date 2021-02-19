@@ -14,7 +14,7 @@ def update_opal_libraries
   file 'www/public/js/third_parties/opal/opal_parser.js': ["www/public/js/third_parties/opal"] do |t|
     require "opal"
     parser = Opal::Builder.new
-    parser.build("./opal_add_on/parser.rb")
+    parser.build("./interpreter/opal/parser.rb")
     File.write(t.to_s, parser.to_s)
   end
 end
@@ -82,7 +82,7 @@ media_monitoring = unless File.file?("app/temp/media_list.rb")
   update_medias_list
 end
 
-file 'www/public/js/atome_medias.js': media_monitoring do |t|
+file 'www/public/js/dynamic_libraries/atome_medias.js': media_monitoring do |t|
   builder = Opal::Builder.new
   builder.build("./app/temp/media_list.rb")
   File.write(t.name, builder.to_s)
@@ -91,21 +91,32 @@ end
 directory "www/public/js/third_parties/opal"
 directory "app/temp"
 
-atome_monitoring = %w[opal_add_on/addon.rb renderers/html.rb] + Dir.glob("atome/lib/**/*")
-file 'www/public/js/atome.js': atome_monitoring do |t|
+atome_monitoring = %w[interpreter/opal/add_on.rb renderers/html.rb] + Dir.glob("atome/lib/**/*")
+file 'www/public/js/dynamic_libraries/atome.js': atome_monitoring do |t|
   builder = Opal::Builder.new
   builder.append_paths("atome/lib")
-  builder.build("./opal_add_on/addon.rb")
+  builder.build("./interpreter/opal/add_on.rb")
+  builder.build("./renderers/html/audio.rb")
+  builder.build("./renderers/html/communication.rb")
+  builder.build("./renderers/html/effect.rb")
+  builder.build("./renderers/html/event.rb")
+  builder.build("./renderers/html/geometry.rb")
+  builder.build("./renderers/html/helper.rb")
+  builder.build("./renderers/html/hierarchy.rb")
+  builder.build("./renderers/html/identity.rb")
+  builder.build("./renderers/html/media.rb")
+  builder.build("./renderers/html/spatial.rb")
+  builder.build("./renderers/html/utility.rb")
+  builder.build("./renderers/html/visual.rb")
   builder.build("./renderers/html.rb")
   builder.build("atome")
   File.write(t.name, builder.to_s)
 end
 
 app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app.rb") + Dir.glob("eVe/projects/**/*") + Dir.glob("eVe/eVe/lib/**/*")
-file 'www/public/js/atome_app.js': app_monitoring do |t|
+file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
   builder = Opal::Builder.new
   if File.exist?("./eVe")
-    # builder.append_paths('eVe/eVe/lib/')
     builder.build("./eVe/app.rb")
   else
     builder.build("./app/app.rb")
@@ -115,9 +126,9 @@ end
 
 opal = "www/public/js/third_parties/opal/opal.js"
 parser = "www/public/js/third_parties/opal/opal_parser.js"
-atome = "www/public/js/atome.js"
-atome_app = "www/public/js/atome_app.js"
-atome_medias = "www/public/js/atome_medias.js"
+atome = "www/public/js/dynamic_libraries/atome.js"
+atome_app = "www/public/js/dynamic_libraries/atome_app.js"
+atome_medias = "www/public/js/dynamic_libraries/atome_medias.js"
 
 required_js_lib = [opal, parser, atome, atome_app, atome_medias]
 
@@ -235,7 +246,9 @@ end
 desc "Cleanup generated files"
 task "clean" do
   rm_f "app/temp/media_list.rb"
-  rm_f "www/public/js/atome.js"
+  rm_f "www/public/js/dynamic_libraries/atome.js"
+  rm_f "www/public/js/dynamic_libraries/atome_app.js"
+  rm_f "www/public/js/dynamic_libraries/atome_medias.js"
   rm_f "www/public/js/third_parties/opal/opal.js"
   rm_f "www/public/js/third_parties/opal/opal_parser.js"
 end

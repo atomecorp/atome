@@ -1,0 +1,2 @@
+module EffectHtmlRenderer
+end
