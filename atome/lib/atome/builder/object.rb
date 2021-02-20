@@ -1,7 +1,12 @@
 class Nucleon < Renderer
   include Utilities
   include Properties
+
   def initialize(params = nil)
+    check_missing_datas(params)
+  end
+
+  def check_missing_datas(params)
     # if no params is sent we create a default property hash with type set to particle
     params ||= {type: :particle}
     # if no type is found in the params we use particle by default
@@ -25,29 +30,26 @@ class Nucleon < Renderer
       end
       params[:id] = id
     end
-    # we reorder the properties to be treated in the correct order
-    format_params reorder_properties(params)
+    check_format(params)
   end
 
-  def format_params(params)
+  def check_format(params)
+    # we reorder the properties to be treated in the correct order
+    params = reorder_properties(params)
     # #we create an array to store the correctly formatted params
+    alert params
     formatted_params = {}
     # now we parse and send the collected properties to the atome
     params.each_key do |property|
-      if params[:type][:value] == :buffer
-        puts "treatment to come"
-      else
-        analysed_params = (params_analysis property, params[property], nil)
-        formatted_params[analysed_params.keys[0]] = analysed_params.values[0]
-      end
+      analysed_params = (params_analysis property, params[property], nil)
+      formatted_params[analysed_params.keys[0]] = analysed_params.values[0]
     end
-    # now we add the new atome to the atomes's list
-    Atome.class_variable_get("@@atomes") << self
-    # and now we render if needed
-    unless params[:render] == false
-      # we reformat the data so the atome_id is the key
-      render_properties({formatted_params[:atome_id][:value] => formatted_params})
-    end
+    ## now we add the new atome to the atomes's list
+    #Atome.class_variable_get("@@atomes") << self
+    #unless params[:render] == false
+    #  # we reformat the data so the atome_id is the key
+    #  render_properties({formatted_params[:atome_id][:value] => formatted_params})
+    #end
   end
 
   def self.atomise

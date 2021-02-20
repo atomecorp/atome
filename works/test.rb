@@ -1,15 +1,15 @@
-
-dir_to_inspect= Dir.glob('../www/public/medias/**/*')
-dir_to_inspect_2= Dir.glob('../eVe/medias/**/*')
-
-nb_of_medias_files = (dir_to_inspect.length+dir_to_inspect_2.length).to_s
-
-nb_of_medias_files_stored=File.read("../cache/nb_of_medias_files")
-
-unless nb_of_medias_files == nb_of_medias_files_stored
-  File.write("../cache/nb_of_medias_files", nb_of_medias_files)
-end
-
+#
+#dir_to_inspect= Dir.glob('../www/public/medias/**/*')
+#dir_to_inspect_2= Dir.glob('../eVe/medias/**/*')
+#
+#nb_of_medias_files = (dir_to_inspect.length+dir_to_inspect_2.length).to_s
+#
+#nb_of_medias_files_stored=File.read("../cache/nb_of_medias_files")
+#
+#unless nb_of_medias_files == nb_of_medias_files_stored
+#  File.write("../cache/nb_of_medias_files", nb_of_medias_files)
+#end
+#
 
 
 # hash={"type"=>"particle", "content"=>nil, "atome_id"=>"a_74", "id"=>"particle_74"}
@@ -37,3 +37,11 @@ end
 # hash={:count=>21, "Is"=>19, "Gandalf"=>1, "Gray"=>0, "Insane"=>1, "The"=>5}
 # hash=hash.sort_by_array(a)
 # puts hash
+require 'filewatcher'
+Filewatcher.new(['/Users/jean-ericgodard/Desktop/atome/eVe/', '/Users/jean-ericgodard/Desktop/atome/atome/']).watch do |changes|
+  puts :poil
+  #changes.each do |filename, event|
+  #  puts "#{filename} #{event}"
+  #end
+end
+

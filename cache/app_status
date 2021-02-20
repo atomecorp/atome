@@ -1,0 +1,16 @@
+module A
+  module B
+    module C
+      module D
+        class ClassName
+        end
+      end
+    end
+  end
+end
+
+class ClassName
+  include SomeModule
+  # class content
+end
+

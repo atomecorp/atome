@@ -862,6 +862,7 @@ Opal.modules["atome/properties/utility"] = function(Opal) {
 Opal.modules["atome/properties/visual"] = function(Opal) {
   var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass;
 
+  Opal.add_stubs(['$alert']);
   return (function($base, $super, $parent_nesting) {
     var self = $klass($base, $super, 'VisualProcessor');
 
@@ -871,7 +872,9 @@ Opal.modules["atome/properties/visual"] = function(Opal) {
     Opal.defs(self, '$color_pre_processor', $VisualProcessor_color_pre_processor$1 = function $$color_pre_processor(params) {
       var self = this;
 
-      return params
+      
+      self.$alert(params);
+      return params;
     }, $VisualProcessor_color_pre_processor$1.$$arity = 1);
     return (Opal.defs(self, '$border_processor', $VisualProcessor_border_processor$2 = function $$border_processor(params) {
       var self = this;
@@ -1009,26 +1012,33 @@ Opal.modules["atome/builder/object"] = function(Opal) {
   function $rb_minus(lhs, rhs) {
     return (typeof(lhs) === 'number' && typeof(rhs) === 'number') ? lhs - rhs : lhs['$-'](rhs);
   }
-  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass, $truthy = Opal.truthy, $hash2 = Opal.hash2, $send = Opal.send, $hash = Opal.hash;
+  var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $klass = Opal.klass, $truthy = Opal.truthy, $hash2 = Opal.hash2, $send = Opal.send;
 
-  Opal.add_stubs(['$include', '$[]', '$[]=', '$-', '$check_identtity', '$nil?', '$to_sym', '$object_id', '$format_params', '$reorder_properties', '$each_key', '$==', '$puts', '$params_analysis', '$keys', '$values', '$<<', '$class_variable_get', '$render_properties', '$class_variable_set']);
+  Opal.add_stubs(['$include', '$check_missing_datas', '$[]', '$[]=', '$-', '$check_identtity', '$nil?', '$to_sym', '$object_id', '$check_format', '$reorder_properties', '$alert', '$each_key', '$params_analysis', '$keys', '$values', '$class_variable_set', '$class_variable_get']);
   return (function($base, $super, $parent_nesting) {
     var self = $klass($base, $super, 'Nucleon');
 
-    var $nesting = [self].concat($parent_nesting), $Nucleon_initialize$1, $Nucleon_check_identtity$2, $Nucleon_format_params$3, $Nucleon_atomise$5, $Nucleon_atomes$6;
+    var $nesting = [self].concat($parent_nesting), $Nucleon_initialize$1, $Nucleon_check_missing_datas$2, $Nucleon_check_identtity$3, $Nucleon_check_format$4, $Nucleon_atomise$6, $Nucleon_atomes$7;
 
     
     self.$include($$($nesting, 'Utilities'));
     self.$include($$($nesting, 'Properties'));
     
     Opal.def(self, '$initialize', $Nucleon_initialize$1 = function $$initialize(params) {
-      var $a, self = this, $writer = nil;
+      var self = this;
 
       
       
       if (params == null) {
         params = nil;
       };
+      return self.$check_missing_datas(params);
+    }, $Nucleon_initialize$1.$$arity = -1);
+    
+    Opal.def(self, '$check_missing_datas', $Nucleon_check_missing_datas$2 = function $$check_missing_datas(params) {
+      var $a, self = this, $writer = nil;
+
+      
       params = ($truthy($a = params) ? $a : $hash2(["type"], {"type": "particle"}));
       if ($truthy(params['$[]']("type"))) {
       } else {
@@ -1038,9 +1048,9 @@ Opal.modules["atome/builder/object"] = function(Opal) {
         $writer[$rb_minus($writer["length"], 1)];
       };
       return self.$check_identtity(params);
-    }, $Nucleon_initialize$1.$$arity = -1);
+    }, $Nucleon_check_missing_datas$2.$$arity = 1);
     
-    Opal.def(self, '$check_identtity', $Nucleon_check_identtity$2 = function $$check_identtity(params) {
+    Opal.def(self, '$check_identtity', $Nucleon_check_identtity$3 = function $$check_identtity(params) {
       var self = this, atome_id = nil, $writer = nil, id = nil;
 
       
@@ -1062,48 +1072,39 @@ Opal.modules["atome/builder/object"] = function(Opal) {
         $writer = ["id", id];
         $send(params, '[]=', Opal.to_a($writer));
         $writer[$rb_minus($writer["length"], 1)];;};
-      return self.$format_params(self.$reorder_properties(params));
-    }, $Nucleon_check_identtity$2.$$arity = 1);
+      return self.$check_format(params);
+    }, $Nucleon_check_identtity$3.$$arity = 1);
     
-    Opal.def(self, '$format_params', $Nucleon_format_params$3 = function $$format_params(params) {
-      var $$4, self = this, formatted_params = nil;
+    Opal.def(self, '$check_format', $Nucleon_check_format$4 = function $$check_format(params) {
+      var $$5, self = this, formatted_params = nil;
 
       
+      params = self.$reorder_properties(params);
+      self.$alert(params);
       formatted_params = $hash2([], {});
-      $send(params, 'each_key', [], ($$4 = function(property){var self = $$4.$$s || this, analysed_params = nil, $writer = nil;
+      return $send(params, 'each_key', [], ($$5 = function(property){var self = $$5.$$s || this, analysed_params = nil, $writer = nil;
 
       
         
         if (property == null) {
           property = nil;
         };
-        if (params['$[]']("type")['$[]']("value")['$==']("buffer")) {
-          return self.$puts("treatment to come")
-        } else {
-          
-          analysed_params = self.$params_analysis(property, params['$[]'](property), nil);
-          
-          $writer = [analysed_params.$keys()['$[]'](0), analysed_params.$values()['$[]'](0)];
-          $send(formatted_params, '[]=', Opal.to_a($writer));
-          return $writer[$rb_minus($writer["length"], 1)];;
-        };}, $$4.$$s = self, $$4.$$arity = 1, $$4));
-      $$($nesting, 'Atome').$class_variable_get("@@atomes")['$<<'](self);
-      if (params['$[]']("render")['$=='](false)) {
-        return nil
-      } else {
-        return self.$render_properties($hash(formatted_params['$[]']("atome_id")['$[]']("value"), formatted_params))
-      };
-    }, $Nucleon_format_params$3.$$arity = 1);
-    Opal.defs(self, '$atomise', $Nucleon_atomise$5 = function $$atomise() {
+        analysed_params = self.$params_analysis(property, params['$[]'](property), nil);
+        
+        $writer = [analysed_params.$keys()['$[]'](0), analysed_params.$values()['$[]'](0)];
+        $send(formatted_params, '[]=', Opal.to_a($writer));
+        return $writer[$rb_minus($writer["length"], 1)];;}, $$5.$$s = self, $$5.$$arity = 1, $$5));
+    }, $Nucleon_check_format$4.$$arity = 1);
+    Opal.defs(self, '$atomise', $Nucleon_atomise$6 = function $$atomise() {
       var self = this;
 
       return $$($nesting, 'Atome').$class_variable_set("@@atomes", [])
-    }, $Nucleon_atomise$5.$$arity = 0);
-    return (Opal.defs(self, '$atomes', $Nucleon_atomes$6 = function $$atomes() {
+    }, $Nucleon_atomise$6.$$arity = 0);
+    return (Opal.defs(self, '$atomes', $Nucleon_atomes$7 = function $$atomes() {
       var self = this;
 
       return $$($nesting, 'Atome').$class_variable_get("@@atomes")
-    }, $Nucleon_atomes$6.$$arity = 0), nil) && 'atomes';
+    }, $Nucleon_atomes$7.$$arity = 0), nil) && 'atomes';
   })($nesting[0], $$($nesting, 'Renderer'), $nesting)
 };
 
@@ -1180,13 +1181,6 @@ Opal.modules["atome/environment/initialize"] = function(Opal) {
 
   Opal.add_stubs(['$new', '$presets', '$tactile', '$viewer_actions', '$merge', '$lorem', '$atomise']);
   
-  (function($base, $super, $parent_nesting) {
-    var self = $klass($base, $super, 'Quark');
-
-    var $nesting = [self].concat($parent_nesting);
-
-    return nil
-  })($nesting[0], null, $nesting);
   $$($nesting, 'Sparkle').$new();
   (function($base, $super, $parent_nesting) {
     var self = $klass($base, $super, 'Atome');

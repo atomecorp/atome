@@ -3,6 +3,7 @@ require "opal"
 require "opal-jquery"
 require "uglifier"
 require "fileutils"
+require "filewatcher"
 
 def update_opal_libraries
   file 'www/public/js/third_parties/opal/opal.js': ["www/public/js/third_parties/opal"] do |t|
@@ -131,6 +132,10 @@ atome_app = "www/public/js/dynamic_libraries/atome_app.js"
 atome_medias = "www/public/js/dynamic_libraries/atome_medias.js"
 
 required_js_lib = [opal, parser, atome, atome_app, atome_medias]
+
+desc "Run atomic_reaction"
+task 'run::atomic_reaction': required_js_lib do
+end
 
 desc "Run server"
 task 'run::server': required_js_lib do

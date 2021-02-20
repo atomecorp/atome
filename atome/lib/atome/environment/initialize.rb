@@ -1,8 +1,3 @@
-class Quark
-  # this object will be used to return an atome object instead of string
-  # / Int / Array / hash when getting an  atome's property
-end
-
 Sparkle.new
 
 class Atome < Nucleon
@@ -27,11 +22,8 @@ class Device
     # this object hold temporary items (useful for batch treatment) named collector could be rename ephemeral
     Atome.new({atome_id: :buffer, id: :buffer, render: false})
     # The lines below create a special atome that holds all internal actions such as resize_actions
-    # accessible thru @@resize_actions variable
     actions = Atome.new({atome_id: :actions, id: :actions})
     actions.viewer_actions
-    # # now we init the renderer
-    # Render.initialize
   end
 
   def presets
