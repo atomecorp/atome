@@ -24,7 +24,9 @@ require "atome/system/renderer"
 require "atome/builder/object"
 # Atome helper (methods available at main Object level)
 require "atome/utilities/global"
+# class to create a new device
+require "atome/environment/device"
 # elementary atomes for basic environment
 require "atome/environment/initialize"
-# helper methods to facilitate atome's creation
-require "atome/utilities/creation"
+# methods to simplify object creation
+require "atome/system/creation"

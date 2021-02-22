@@ -1,148 +1,40 @@
-# the class below initialize the default values and generate properties's methods
-
-module AtomeMethodsList
+# the class below initialize common property's methods and meta-create all the wanted properties API
+module Properties
   def self.atome_methods
-    spatial = %i[width height size x xx y yy z]
-    events = %i[touch drag over]
-    helper = %i[tactile display]
-    visual = %i[color opacity border overflow]
-    audio = %i[color opacity border overflow]
-    geometry = %i[width height resize rotation]
-    effect = %i[blur shadow]
-    identity = %i[atome_id id type]
-    media = %i[content image sound video]
-    hierarchy = %i[parent child insert]
-    communication = %i[share send]
-    utility = %i[delete record enliven selector render preset]
-    spatial | events | helper | visual | audio | geometry | effect | identity | media | hierarchy | communication | utility
+    spatial = {width: [], height: [], size: [], x: [], xx: [], y: [], yy: [], z: []}
+    events = {touch: [], drag: [], over: []}
+    helper = {tactile: [], display: []}
+    visual = {color: [:pre], opacity: [], border: [], overflow: [:pre, :post]}
+    geometry = {width: [], height: [], resize: [], rotation: []}
+    effect = {blur: [], shadow: [:post]}
+    identity = {atome_id: [], id: [], type: []}
+    media = {content: [], image: [], sound: [], video: []}
+    hierarchy = {parent: [], child: [], insert: []}
+    communication = {share: []}
+    utility = {add: [], delete: [], record: [], enliven: [], selector: [], render: [], preset: []}
+    spatial.merge(events).merge(helper).merge(visual).merge(geometry).merge(effect).merge(identity).merge(media).merge(hierarchy).merge(communication).merge(utility)
   end
 
-  # the line below specify if the properties need specific processing
-  def self.need_pre_processing
-    %i[add shadow render color]
-  end
-
-  def self.need_processing
-    %i[delete color]
-  end
-
-  def self.need_post_processing
-    %i[]
-  end
-
-  def self.no_rendering
-    %i[shadow enliven tactile selector atome_id]
-  end
-
-  def self.no_broadcast
-    %i[atome_id]
-  end
-end
-# the class below initialize the default values and generate property's methods
-
-class Sparkle
-  include AtomeMethodsList
-  def initialize
-    # the line below define all atome's properties from atome_method's list
-    atome_methods = AtomeMethodsList.atome_methods
-    atome_methods.each do |method_name|
-      Sparkle.methods_genesis(method_name)
-    end
-  end
-
-  def self.methods_genesis(method_name)
-    # This is a meta programming generic method
-    # it define the common behaviors of all properties
-    Nucleon.define_method method_name do |params = nil, &proc|
-      if params
-        # this is the main entry method for the current property treatment
-        # first we create a hash for the property if it doesn't already exist
-        if proc
-          params[:proc] = {value: proc}
+  def self.methods_genesis(method_name, options)
+    # this meta-methods define behaviors for atome basic properties
+    Atome.define_method method_name do |value|
+      if value
+        # send to pre or post processor if specified
+        options.each do |option|
+          Renderer.send("#{method_name}_#{option}_processor", value)
         end
-        params_analysis method_name, params
+        # we send to the renderer now
+        RenderHtml.send(method_name, atome_id, value)
+        # at last we store the new property and it's value
+        instance_variable_set("@#{method_name}", value)
       else
         # no params send, we call the getter using magic_getter
         instance_variable_get("@#{method_name}")
       end
     end
     # the meta-program below create the same method as above, but add equal at the end of the name to allow assignment
-    # ex : for : "def color"  = > "def color= "
-    Nucleon.define_method method_name.to_s + "=" do |params = nil, &proc|
-      send(method_name, params, proc)
+    Atome.define_method method_name.to_s + "=" do |value|
+      send(method_name, value)
     end
-  end
-end
-
-# the class below contains all common property's methods
-module Properties
-  # the methods below must be only executed once
-  #def send_hash(params, method_name)
-  #  puts "#{params} #{method_name}"
-  #  self
-  #end
-
-  #def property_save(params, method_name)
-  #  previous_content = instance_variable_get("@#{method_name}")
-  #  if params[:add] && previous_content.instance_of?(Hash) && previous_content != {}
-  #    params.delete(:add)
-  #    params = [previous_content, params]
-  #  elsif params[:add] && previous_content.instance_of?(Array)
-  #    params.delete(:add)
-  #    params = previous_content << params
-  #  elsif previous_content.instance_of?(Hash)
-  #    params.delete(:add)
-  #  end
-  #  send_hash(params, method_name)
-  #  # instance_variable_set("@#{method_name}", params)
-  #end
-
-  def check_hash_format(params)
-    unless params.instance_of?(Hash)
-      params = {value: params}
-    end
-    params
-  end
-
-  def store_property(method_name, params)
-    if params[:add] == true
-      params.delete(:add)
-      prev_value = instance_variable_get("@#{method_name}")
-      instance_variable_set("@#{method_name}", [prev_value, params])
-    else
-      instance_variable_set("@#{method_name}", params)
-    end
-  end
-
-  def params_analysis(method_name, params, proc)
-    # We reformat the params in case user doesn't format the params using a Hash
-    params = check_hash_format(params)
-    # now we look if the data passed needs some processing before being stored
-    if AtomeMethodsList.need_pre_processing.include?(method_name)
-      params = Renderer.send("#{method_name}_pre_processor", params)
-    end
-
-    if params.instance_of?(Array)
-      params.each_with_index do |param, index|
-        if index == 0
-          store_property method_name, param
-        else
-          store_property method_name, param.merge(add: true)
-        end
-      end
-    else
-
-      # now we feed the instance_variable with the new value
-      store_property method_name, params
-    end
-
-    if params && !params.instance_of?(Hash)
-      params = {value: params}
-    end
-    params ||= {}
-    params[:proc] = proc if proc
-    #property_save(params, method_name)
-    # we return the param so object.rb can get the correctly formatted data
-    {method_name => params}
   end
 end

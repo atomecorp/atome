@@ -1,4 +1,9 @@
 # here stand some atome's function to allow atome's objects manipulation
+
+def identity
+  "a_"+object_id.to_s+Time.now.to_s
+end
+
 def get(id)
   Atome.atomes.each do |atome|
     if atome.id[:value] == id
