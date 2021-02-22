@@ -43,7 +43,7 @@ end
 class Sparkle
   include AtomeMethodsList
   def initialize
-    # the line below create atomes's methods using meta-programming
+    # the line below define all atome's properties from atome_method's list
     atome_methods = AtomeMethodsList.atome_methods
     atome_methods.each do |method_name|
       Sparkle.methods_genesis(method_name)
@@ -51,6 +51,8 @@ class Sparkle
   end
 
   def self.methods_genesis(method_name)
+    # This is a meta programming generic method
+    # it define the common behaviors of all properties
     Nucleon.define_method method_name do |params = nil, &proc|
       if params
         # this is the main entry method for the current property treatment
@@ -75,25 +77,25 @@ end
 # the class below contains all common property's methods
 module Properties
   # the methods below must be only executed once
-  def send_hash(params, method_name)
-    puts "#{params} #{method_name}"
-    self
-  end
+  #def send_hash(params, method_name)
+  #  puts "#{params} #{method_name}"
+  #  self
+  #end
 
-  def property_save(params, method_name)
-    previous_content = instance_variable_get("@#{method_name}")
-    if params[:add] && previous_content.instance_of?(Hash) && previous_content != {}
-      params.delete(:add)
-      params = [previous_content, params]
-    elsif params[:add] && previous_content.instance_of?(Array)
-      params.delete(:add)
-      params = previous_content << params
-    elsif previous_content.instance_of?(Hash)
-      params.delete(:add)
-    end
-    send_hash(params, method_name)
-    # instance_variable_set("@#{method_name}", params)
-  end
+  #def property_save(params, method_name)
+  #  previous_content = instance_variable_get("@#{method_name}")
+  #  if params[:add] && previous_content.instance_of?(Hash) && previous_content != {}
+  #    params.delete(:add)
+  #    params = [previous_content, params]
+  #  elsif params[:add] && previous_content.instance_of?(Array)
+  #    params.delete(:add)
+  #    params = previous_content << params
+  #  elsif previous_content.instance_of?(Hash)
+  #    params.delete(:add)
+  #  end
+  #  send_hash(params, method_name)
+  #  # instance_variable_set("@#{method_name}", params)
+  #end
 
   def check_hash_format(params)
     unless params.instance_of?(Hash)
@@ -102,7 +104,7 @@ module Properties
     params
   end
 
-  def store_instance_variable(method_name, params)
+  def store_property(method_name, params)
     if params[:add] == true
       params.delete(:add)
       prev_value = instance_variable_get("@#{method_name}")
@@ -123,15 +125,15 @@ module Properties
     if params.instance_of?(Array)
       params.each_with_index do |param, index|
         if index == 0
-          store_instance_variable method_name, param
+          store_property method_name, param
         else
-          store_instance_variable method_name, param.merge(add: true)
+          store_property method_name, param.merge(add: true)
         end
       end
     else
 
       # now we feed the instance_variable with the new value
-      store_instance_variable method_name, params
+      store_property method_name, params
     end
 
     if params && !params.instance_of?(Hash)
@@ -139,7 +141,7 @@ module Properties
     end
     params ||= {}
     params[:proc] = proc if proc
-    property_save(params, method_name)
+    #property_save(params, method_name)
     # we return the param so object.rb can get the correctly formatted data
     {method_name => params}
   end

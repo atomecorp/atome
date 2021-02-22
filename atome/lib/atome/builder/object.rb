@@ -35,21 +35,21 @@ class Nucleon < Renderer
 
   def check_format(params)
     # we reorder the properties to be treated in the correct order
-    params = reorder_properties(params)
+    #params = reorder_properties(params)
     # #we create an array to store the correctly formatted params
-    alert params
+    #alert params
     formatted_params = {}
     # now we parse and send the collected properties to the atome
     params.each_key do |property|
-      analysed_params = (params_analysis property, params[property], nil)
-      formatted_params[analysed_params.keys[0]] = analysed_params.values[0]
+      analyzed_params = (params_analysis property, params[property], nil)
+      formatted_params[analyzed_params.keys[0]] = analyzed_params.values[0]
     end
     ## now we add the new atome to the atomes's list
-    #Atome.class_variable_get("@@atomes") << self
-    #unless params[:render] == false
-    #  # we reformat the data so the atome_id is the key
-    #  render_properties({formatted_params[:atome_id][:value] => formatted_params})
-    #end
+    Atome.class_variable_get("@@atomes") << self
+    unless params[:render] == false
+      # we reformat the data so the atome_id is the key
+      render_properties({formatted_params[:atome_id][:value] => formatted_params})
+    end
   end
 
   def self.atomise

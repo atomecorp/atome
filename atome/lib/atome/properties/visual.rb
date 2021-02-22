@@ -2,7 +2,7 @@
 #  the module below contains all the specifics code for properties
 class VisualProcessor < UtilityProcessor
   def self.color_pre_processor(params)
-    alert (params)
+    #alert (params)
     params
   end
 
