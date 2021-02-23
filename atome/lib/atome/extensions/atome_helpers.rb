@@ -23,6 +23,7 @@ def grab(atome_id)
 end
 
 def tactile
+  # chek if user's device is a tactile device
   false
 end
 
