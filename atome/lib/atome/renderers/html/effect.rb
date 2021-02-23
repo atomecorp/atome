@@ -1,0 +1,2 @@
+module HtmlEffect
+end

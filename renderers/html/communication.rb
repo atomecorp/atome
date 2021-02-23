@@ -1,2 +1,0 @@
-class CommunicationHtmlRenderer < AudioHtmlRenderer
-end

@@ -1,2 +1,0 @@
-class EventHtmlRenderer < EffectHtmlRenderer
-end

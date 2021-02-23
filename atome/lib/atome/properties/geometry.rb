@@ -1,2 +1,2 @@
-class GeometryProcessor < EventProcessor
+module GeometriesProperties
 end

@@ -3,46 +3,46 @@ module JSUtils
     @codemirror = []
   end
 
-  def self.device
+  def device
     `window`
   end
 
-  def self.document
+  def document
     `$(document)`
   end
 
   # time operation
-  def self.add_interval(interval)
+  def add_interval(interval)
     @project_intervals << interval
   end
 
-  def self.clear_interval(params)
+  def clear_interval(params)
     `clearInterval(#{params[1]})`
   end
 
-  def self.clear_intervals
+  def clear_intervals
     @project_intervals.each do |interval|
       ` clearInterval(#{interval})`
     end
     @project_intervals = []
   end
 
-  def self.add_timeout(timeout)
+  def add_timeout(timeout)
     @project_timeouts << timeout
   end
 
-  def self.clear_timeout(params)
+  def clear_timeout(params)
     `clearTimeout(#{params[1]})`
   end
 
-  def self.clear_timeouts
+  def clear_timeouts
     @project_timeouts.each do |timeout|
       `clearTimeout(#{timeout})`
     end
     @project_timeouts = []
   end
 
-  def self.verification(*params)
+  def verification(*params)
     `atome.jsVerification(#{params})`
   end
 end

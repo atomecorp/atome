@@ -1,5 +1,2 @@
-class EffectProcessor < CommunicationProcessor
-  def self.shadow_pre_processor(params)
-    params
-  end
+module EffectsProperties
 end

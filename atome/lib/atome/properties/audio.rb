@@ -1,2 +1,2 @@
-class AudioProcessor
+module AudiosProperties
 end

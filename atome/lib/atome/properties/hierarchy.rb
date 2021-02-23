@@ -1,2 +1,2 @@
-class HierarchyProcessor < HelperProcessor
+module HierarchiesProperties
 end

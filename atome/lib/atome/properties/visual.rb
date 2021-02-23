@@ -1,25 +1,47 @@
-# here the methods to add spatial and visuals properties to atome objects
-#  the module below contains all the specifics code for properties
-class VisualProcessor < UtilityProcessor
-  def self.color_pre_processor(params)
-    alert ("params is : #{params}")
-    params
+module VisualsProperties
+  def color=(value = nil)
+    value = color_processor(value)
+    color_html(value)
+    @color = value
   end
 
-  def self.shadow_post_processor(params)
-    alert ("ok for the params")
-    params
+  def color
+    @color
   end
 
-  def self.overflow_pre_processor(params)
-    alert ("ok for the preoverflow")
-    params
+  def border=(value = nil)
+    border_html(value)
+    @border = value
   end
 
-  def self.overflow_post_processor(params)
-    alert ("ok for the postoverflow")
-    params
+  def border
+    @border
   end
 
+  def overflow=(value = nil)
+    overflow_html(value)
+    @overflow = value
+  end
 
+  def overflow
+    @overflow
+  end
+
+  def opacity=(value = nil)
+    opacity_html(value)
+    @opacity = value
+  end
+
+  def opacity
+    @opacity
+  end
+
+  def shadow=(value = nil)
+    shadow_html(value)
+    @shadow = value
+  end
+
+  def shadow
+    @shadow
+  end
 end

@@ -2,8 +2,9 @@
 (function(Opal) {
   var self = Opal.top, $nesting = [], nil = Opal.nil, $$$ = Opal.const_get_qualified, $$ = Opal.const_get_relative, $breaker = Opal.breaker, $slice = Opal.slice, $hash2 = Opal.hash2, a = nil;
 
-  Opal.add_stubs(['$new', '$alert', '$color']);
+  Opal.add_stubs(['$new', '$identity', '$alert', '$atome_id', '$color']);
   
-  a = $$($nesting, 'Atome').$new($hash2(["color", "opacity", "border"], {"color": "green", "opacity": 0, "border": true}));
+  a = $$($nesting, 'Atome').$new($hash2(["atome_id", "color", "opacity", "border", "shadow"], {"atome_id": self.$identity(), "color": "green", "opacity": 0, "border": true, "shadow": true}));
+  self.$alert(a.$atome_id());
   return self.$alert(a.$color());
 })(Opal);

@@ -1,2 +1,2 @@
-class EventProcessor < EffectProcessor
+module EventsProperties
 end

@@ -37,11 +37,11 @@
 # hash={:count=>21, "Is"=>19, "Gandalf"=>1, "Gray"=>0, "Insane"=>1, "The"=>5}
 # hash=hash.sort_by_array(a)
 # puts hash
-require 'filewatcher'
-Filewatcher.new(['/Users/jean-ericgodard/Desktop/atome/eVe/', '/Users/jean-ericgodard/Desktop/atome/atome/']).watch do |changes|
-  puts :poil
-  #changes.each do |filename, event|
-  #  puts "#{filename} #{event}"
-  #end
-end
+#require 'filewatcher'
+#Filewatcher.new(['/Users/jean-ericgodard/Desktop/atome/eVe/', '/Users/jean-ericgodard/Desktop/atome/atome/']).watch do |changes|
+#  puts :poil
+#  #changes.each do |filename, event|
+#  #  puts "#{filename} #{event}"
+#  #end
+#end
 

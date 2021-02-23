@@ -1,8 +1,12 @@
-module Utilities
+module AtomeUtilities
   def reorder_properties(properties)
     # we re-order the hash to puts the atome_id type at the begining to optimise rendering
     order_wanted = [:atome_id, :type, :parent, :width, :height, :x, :y, :z, :center, :size, :content]
     properties.sort_by_array(order_wanted)
+  end
+
+  def centering(values)
+    puts values
   end
 
   def resize_actions(params = nil)

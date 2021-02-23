@@ -1,2 +1,2 @@
-class CommunicationProcessor < AudioProcessor
+module CommunicationsProperties
 end

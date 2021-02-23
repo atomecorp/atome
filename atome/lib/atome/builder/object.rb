@@ -1,15 +1,35 @@
 # this class is used to define newly created atomes
-class Atome < Renderer
-  include Utilities
-  include Properties
+class Atome
+  include AudiosProperties
+  include CommunicationsProperties
+  include EffectsProperties
+  include EventsProperties
+  include GeometriesProperties
+  include HelpersProperties
+  include HierarchiesProperties
+  include IdentitiesProperties
+  include MediasProperties
+  include SpatialsProperties
+  include UtilitiesProperties
+  include VisualsProperties
+  include AudiosProcessors
+  include CommunicationsProcessors
+  include EffectsProcessors
+  include EventsProcessors
+  include GeometriesProcessors
+  include HelpersProcessors
+  include HierarchiesProcessors
+  include IdentitiesProcessors
+  include MediasProcessors
+  include SpatialsProcessors
+  include UtilitiesProcessors
+  include VisualsProcessors
+  include RenderHtml
+  include AtomeUtilities
 
   # the method below initialize the creation of atome properties
   def self.sparkle
     # the line below define all atome's properties from atome_method's list
-    atome_methods = Properties.atome_methods
-    atome_methods.each do |method_name, options|
-      Properties.methods_genesis(method_name, options)
-    end
     Atome.atomise
   end
 
@@ -22,7 +42,7 @@ class Atome < Renderer
   end
 
   def set(property, value)
-    send(property, value)
+    send(property.to_s + "=", value)
   end
 
   def register_atome

@@ -1,9 +1,9 @@
-class UtilityProcessor < SpatialProcessor
-  def self.delete_processor(params)
-    params
+module UtilitiesProperties
+  def delete_processor(value)
+    value
   end
 
-  def self.render_pre_processor(params)
-    params
+  def self.render(value)
+    value
   end
 end

@@ -1,2 +1,2 @@
-class HelperProcessor < GeometryProcessor
+module HelpersProperties
 end

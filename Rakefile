@@ -7,15 +7,20 @@ require "filewatcher"
 
 def update_opal_libraries
   file 'www/public/js/third_parties/opal/opal.js': ["www/public/js/third_parties/opal"] do |t|
-    builder = Opal::Builder.new
-    builder.build("opal")
-    builder.build("opal-jquery")
-    File.write(t.name, builder.to_s)
+    opal = Opal::Builder.new
+    opal.build("opal")
+    File.write(t.name, opal.to_s)
   end
-  file 'www/public/js/third_parties/opal/opal_parser.js': ["www/public/js/third_parties/opal"] do |t|
-    require "opal"
+
+  file 'www/public/js/third_parties/opal/opal_jquery.js': ["www/public/js/third_parties/opal"] do |t|
     parser = Opal::Builder.new
-    parser.build("./interpreter/opal/parser.rb")
+    parser.build("opal-jquery")
+    File.write(t.to_s, parser.to_s)
+  end
+
+  file 'www/public/js/third_parties/opal/opal_parser.js': ["www/public/js/third_parties/opal"] do |t|
+    parser = Opal::Builder.new
+    parser.build("parser")
     File.write(t.to_s, parser.to_s)
   end
 end
@@ -82,7 +87,7 @@ end
 media_monitoring = unless File.file?("app/temp/media_list.rb")
   update_medias_list
 end
-FileUtils.mkdir_p 'www/public/js/dynamic_libraries/'
+FileUtils.mkdir_p "www/public/js/dynamic_libraries/"
 file 'www/public/js/dynamic_libraries/atome_medias.js': media_monitoring do |t|
   builder = Opal::Builder.new
   builder.build("./app/temp/media_list.rb")
@@ -92,24 +97,10 @@ end
 directory "www/public/js/third_parties/opal"
 directory "app/temp"
 
-atome_monitoring = Dir.glob("interpreter/**/*")+Dir.glob("renderers//**/*")+ Dir.glob("atome/lib/**/*")
+atome_monitoring = Dir.glob("atome/lib/**/*")
 file 'www/public/js/dynamic_libraries/atome.js': atome_monitoring do |t|
   builder = Opal::Builder.new
   builder.append_paths("atome/lib")
-  builder.build("./interpreter/opal/add_on.rb")
-  builder.build("./renderers/html/audio.rb")
-  builder.build("./renderers/html/communication.rb")
-  builder.build("./renderers/html/effect.rb")
-  builder.build("./renderers/html/event.rb")
-  builder.build("./renderers/html/geometry.rb")
-  builder.build("./renderers/html/helper.rb")
-  builder.build("./renderers/html/hierarchy.rb")
-  builder.build("./renderers/html/identity.rb")
-  builder.build("./renderers/html/media.rb")
-  builder.build("./renderers/html/spatial.rb")
-  builder.build("./renderers/html/utility.rb")
-  builder.build("./renderers/html/visual.rb")
-  builder.build("./renderers/html.rb")
   builder.build("atome")
   File.write(t.name, builder.to_s)
 end
@@ -126,12 +117,13 @@ file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
 end
 
 opal = "www/public/js/third_parties/opal/opal.js"
+opal_jquery = "www/public/js/third_parties/opal/opal_jquery.js"
 parser = "www/public/js/third_parties/opal/opal_parser.js"
 atome = "www/public/js/dynamic_libraries/atome.js"
 atome_app = "www/public/js/dynamic_libraries/atome_app.js"
 atome_medias = "www/public/js/dynamic_libraries/atome_medias.js"
 
-required_js_lib = [opal, parser, atome, atome_app, atome_medias]
+required_js_lib = [opal, opal_jquery, parser, atome, atome_app, atome_medias]
 
 desc "Run atomic_reaction"
 task 'run::atomic_reaction': required_js_lib do
@@ -184,9 +176,14 @@ end
 
 # production modes
 
-def production(opal, parser, atome)
+def production(opal, opal_jquery, parser, atome)
   uglified = Uglifier.new(harmony: true).compile(File.read(opal))
   File.open(opal, "w") do |f|
+    f.puts uglified
+  end
+
+  uglified = Uglifier.new(harmony: true).compile(File.read(opal_jquery))
+  File.open(opal_jquery, "w") do |f|
     f.puts uglified
   end
 
@@ -203,7 +200,7 @@ end
 
 desc "production server"
 task 'production::server': required_js_lib do
-  production opal, parser, atome
+  production opal, opal_jquery, parser, atome
   Dir.chdir("www") do
     require "rack"
     system("open", "http://127.0.0.1:9292")
@@ -214,37 +211,37 @@ end
 
 desc "production browser"
 task 'production::browser': required_js_lib do
-  production opal, parser, atome
+  production opal, opal_jquery, parser, atome
   sh "cordova run browser"
 end
 
 desc "production osx"
 task 'production::osx': required_js_lib do
-  production opal, parser, atome
+  production opal, opal_jquery, parser, atome
   sh "cordova run osx"
 end
 
 desc "production ios"
 task 'production::ios': required_js_lib do
-  production opal, parser, atome
+  production opal, opal_jquery, parser, atome
   sh "cordova run ios"
 end
 
 desc "production android"
 task 'production::android': required_js_lib do
-  production opal, parser, atome
+  production opal, opal_jquery, parser, atome
   sh "cordova run android"
 end
 
 desc "production windows"
 task 'production::windows': required_js_lib do
-  production opal, parser, atome
+  production opal, opal_jquery, parser, atome
   sh "cordova run windows"
 end
 
 desc "production electron"
 task 'production::electron': required_js_lib do
-  production opal, parser, atome
+  production opal, opal_jquery, parser, atome
   sh "cordova run electron"
 end
 

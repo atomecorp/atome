@@ -1,9 +1,17 @@
-class IdentityProcessor < HierarchyProcessor
-  def self.atome_id_pre_processor(params)
-    params
+module IdentitiesProperties
+  def atome_id=(value)
+    @atome_id = value
   end
 
-  def self.atome_id_processor(params)
-    params
+  def atome_id
+    @atome_id
+  end
+
+  def id=(value)
+    @id = value
+  end
+
+  def id
+    @id
   end
 end
