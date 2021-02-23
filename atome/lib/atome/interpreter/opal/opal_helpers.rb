@@ -1,6 +1,6 @@
 module JSUtils
   def jq_get(atome_id)
-    Element.find("#" + atome_id[:value])
+    Element.find("#" + atome_id)
   end
 
   def initialize

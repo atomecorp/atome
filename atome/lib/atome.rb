@@ -1,7 +1,11 @@
 # ruby main Object extensions
-require "extensions/hash"
+require "atome/extensions/hash"
+# default_value
+require "atome/environment/default_values"
 # opal specific
 require "atome/interpreter/opal/opal_helpers"
+#render helper
+require "atome/renderers/renderer_helper"
 # html renderer
 require "atome/renderers/html/audio"
 require "atome/renderers/html/communication"
@@ -43,14 +47,14 @@ require "atome/processor/spatial"
 require "atome/processor/utility"
 require "atome/processor/visual"
 # utilities
-require "atome/system/utilities"
+require "atome/helpers/utilities"
 # main atome builder
 require "atome/builder/object"
 # Atome helper (methods available at main Object level)
-require "atome/utilities/global"
+require "atome/extensions/atome_helpers"
 # class to create a new device
 require "atome/environment/device"
 # elementary atomes for basic environment
 require "atome/environment/initialize"
 # methods to simplify object creation
-require "atome/system/creation"
+require "atome/helpers/creation"

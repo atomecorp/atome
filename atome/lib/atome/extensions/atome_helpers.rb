@@ -1,7 +1,7 @@
 # here stand some atome's function to allow atome's objects manipulation
 
 def identity
-  "a_" + object_id.to_s + Time.now.to_s
+  "a_" + object_id.to_s + "_" + Atome.atomes.length.to_s + "_" + Time.now.strftime("%Y%m%d%H%M%S")
 end
 
 def get(id)

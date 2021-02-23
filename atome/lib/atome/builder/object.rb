@@ -1,5 +1,6 @@
 # this class is used to define newly created atomes
 class Atome
+  include DefaultValues
   include AudiosProperties
   include CommunicationsProperties
   include EffectsProperties
@@ -24,6 +25,7 @@ class Atome
   include SpatialsProcessors
   include UtilitiesProcessors
   include VisualsProcessors
+  include RenderHelper
   include RenderHtml
   include AtomeUtilities
 
@@ -34,11 +36,17 @@ class Atome
   end
 
   # atome creation
-  def initialize(properties = {type: :particle})
+  def initialize(properties = {type: :particle, atome_id: identity})
+    create(properties)
+    register_atome
+  end
+
+  def create(properties)
+    atome_id = properties.delete(:atome_id)
+    send("atome_id=", atome_id)
     properties.each do |property, value|
       set(property, value)
     end
-    register_atome
   end
 
   def set(property, value)

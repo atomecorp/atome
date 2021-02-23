@@ -1,6 +1,5 @@
 module VisualsProperties
   def color=(value = nil)
-    value = color_processor(value)
     color_html(value)
     @color = value
   end
