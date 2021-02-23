@@ -1,4 +1,8 @@
 module JSUtils
+  def jq_get(atome_id)
+    Element.find("#" + atome_id[:value])
+  end
+
   def initialize
     @codemirror = []
   end

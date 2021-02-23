@@ -1,7 +1,7 @@
 # ruby main Object extensions
 require "extensions/hash"
 # opal specific
-require "atome/interpreter/opal/add_on"
+require "atome/interpreter/opal/opal_helpers"
 # html renderer
 require "atome/renderers/html/audio"
 require "atome/renderers/html/communication"

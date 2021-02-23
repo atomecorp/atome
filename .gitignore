@@ -21,3 +21,4 @@
 /Gemfile.lock
 /.rakeTasks
 /www/public/js/atome_libraries/
+/www/public/js/dynamic_libraries/
