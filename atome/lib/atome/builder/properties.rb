@@ -14,7 +14,7 @@ class Quark
   def self.atome_methods
     audio = %i[color opacity border overflow]
     communication = %i[share]
-    effect = %i[blur shadow]
+    effect = %i[blur shadow smooth]
     events = %i[touch drag over]
     geometry = %i[width height rotation]
     helper = %i[tactile display]

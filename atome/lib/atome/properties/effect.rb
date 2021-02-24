@@ -7,4 +7,13 @@ module EffectsProperties
   def blur
     @blur
   end
+
+  def smooth=(value)
+    @smooth = atomise(value)
+    smooth_html(@smooth)
+  end
+
+  def smooth
+    @smooth
+  end
 end
