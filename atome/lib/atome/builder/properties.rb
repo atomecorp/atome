@@ -22,10 +22,9 @@ class Quark
     identity = %i[atome_id id type language]
     spatial = %i[width height size x xx y yy z]
     media = %i[content image sound video]
-    utility = %i[delete record enliven selector render preset tactile]
+    utility = %i[delete edit record enliven selector render preset tactile]
     visual = %i[color opacity border overflow]
     spatial | helper | visual | audio | geometry | effect | media | hierarchy | utility | communication | identity | events
-    spatial | helper | visual | audio | geometry | effect | media | hierarchy | utility | communication | identity | [:drag]
   end
 
   # generate methods
@@ -33,7 +32,7 @@ class Quark
     Quark.atome_methods.each do |method_name|
       Atome.define_method method_name do |value, &proc|
         if proc && value.instance_of?(Hash)
-          value[:content] = proc
+          value[:value] = proc
         elsif proc && (value.instance_of?(String) || value.instance_of?(Symbol))
           property = {}
           property[:value] = proc

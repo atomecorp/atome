@@ -2,6 +2,10 @@
 def draggable(params)
   params
 end
+
+def keyup(params)
+  params
+end
 # def atome_id(*params)
 #  params
 # end

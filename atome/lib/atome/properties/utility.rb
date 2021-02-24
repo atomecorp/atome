@@ -24,4 +24,12 @@ module UtilitiesProperties
   def tactile
     @tactile.read
   end
+
+  def edit=(value)
+    @edit = atomise(value)
+  end
+
+  def edit
+    @edit.read
+  end
 end

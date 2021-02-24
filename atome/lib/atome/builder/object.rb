@@ -34,13 +34,13 @@ class Atome
     # the line create a space to hold new created atomes
     Quark.space
     # genesis uses meta programing to generate atome methods
-    #Quark.genesis
+    Quark.genesis
   end
 
   # atome creation
   def initialize(properties = {})
     # the hash below add the missing properties without creating a condition
-    sanitizer = {type: :particle, atome_id: identity, x: 0, y: 0}.merge(properties)
+    sanitizer = {atome_id: identity, type: :shape, x: 0, y: 0, color: :red}.merge(properties)
     create(sanitizer)
     register_atome
   end
