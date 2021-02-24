@@ -34,7 +34,7 @@ class Atome
     # the line create a space to hold new created atomes
     Quark.space
     # genesis uses meta programing to generate atome methods
-    Quark.genesis
+    #Quark.genesis
   end
 
   # atome creation

@@ -49,7 +49,6 @@ class Quark
           instance_variable_get("@#{method_name}").read
         end
       end
-
       Atome.define_method method_name.to_s + "=" do |value|
         send(method_name, value)
       end
