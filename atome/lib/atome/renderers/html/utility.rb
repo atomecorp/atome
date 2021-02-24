@@ -4,7 +4,10 @@ module HtmlUtility
   end
 
   def render_html(value)
-    value.read
+    value = value.read
+    unless value
+      jq_get(atome_id).remove
+    end
   end
 
   def language_html(value)

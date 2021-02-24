@@ -16,7 +16,7 @@ class Quark
     communication = %i[share]
     effect = %i[blur shadow]
     events = %i[touch drag over]
-    geometry = %i[width height resize rotation]
+    geometry = %i[width height rotation]
     helper = %i[tactile display]
     hierarchy = %i[parent child insert]
     identity = %i[atome_id id type language]
@@ -42,7 +42,7 @@ class Quark
         elsif proc
           value = {value: proc}
         end
-        if value
+        if value || value == false
           property_instance = instance_variable_set("@#{method_name}", atomise(value))
           send(method_name + "_html", property_instance)
         else

@@ -236,8 +236,8 @@ document.addEventListener("deviceready", function () {
     fileHelper.connect(564654);
 
     //drawingHelper
-    // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-    // drawingHelper.connect();
+    drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+    drawingHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
