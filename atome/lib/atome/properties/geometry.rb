@@ -1,19 +1,19 @@
 module GeometriesProperties
-  def width=(value = nil)
-    width_html(value)
-    @width = value
+  def width=(value)
+    @width = Quark.new(value)
+    width_html(@width)
   end
 
   def width
-    @width
+    @width.read
   end
 
-  def height=(value = nil)
-    height_html(value)
-    @height = value
+  def height=(value)
+    @height = Quark.new(value)
+    height_html(@height)
   end
 
   def height
-    @height
+    @height.read
   end
 end

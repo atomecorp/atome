@@ -1,5 +1,6 @@
 module HtmlVisual
   def color_html(value)
+    value = value.read
     color = "background-image"
     value = color_helper(value)
     if type == :text
@@ -11,10 +12,12 @@ module HtmlVisual
   end
 
   def opacity_html(value)
+    value = value.read
     jq_get(atome_id).css(:opacity, value)
   end
 
   def border_html(value)
+    value = value.read
     pattern = value[:pattern]
     thickness = value[:thickness]
     color = color_helper(value[:color])
@@ -22,6 +25,7 @@ module HtmlVisual
   end
 
   def overflow_html(value)
+    value = value.read
     if params.instance_of?(Hash)
       x = value[:x]
       y = value[:y]
@@ -38,6 +42,7 @@ module HtmlVisual
   end
 
   def shadow_html(value)
+    value = value.read
     x = value[:x]
     y = value[:y]
     blur = value[:blur]

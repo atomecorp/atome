@@ -1,10 +1,10 @@
 module MediasProperties
-  def content=(value = nil)
-    content_html(value)
-    @content = value
+  def content=(value)
+    @content = Quark.new(value)
+    content_html(@content)
   end
 
   def content
-    @content
+    @content.read
   end
 end

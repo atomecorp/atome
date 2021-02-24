@@ -1,5 +1,5 @@
 module HtmlHelper
   def tactile_html(value)
-    value
+    value.read
   end
 end

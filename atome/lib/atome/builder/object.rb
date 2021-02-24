@@ -32,7 +32,9 @@ class Atome
   # the method below initialize the creation of atome properties
   def self.sparkle
     # the line below define all atome's properties from atome_method's list
-    Atome.atomise
+    Quark.atomise
+    # genesis uses meta programing to generate atome methods
+    Quark.genesis
   end
 
   # atome creation
@@ -56,12 +58,6 @@ class Atome
   def register_atome
     # now we add the new atome to the atomes's list
     Atome.class_variable_get("@@atomes") << self
-  end
-
-  # recipient for created atome
-  def self.atomise
-    # this method create a class variable to store all created atomes
-    Atome.class_variable_set("@@atomes", []) # you can access without offense
   end
 
   def self.atomes

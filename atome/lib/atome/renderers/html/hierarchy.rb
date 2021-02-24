@@ -1,5 +1,5 @@
 module HtmlHierarchy
   def parent_html(value)
-    value
+    value.read
   end
 end

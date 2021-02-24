@@ -1,46 +1,46 @@
 module SpatialsProperties
-  def x=(value = nil)
-    x_html(value)
-    @x = value
+  def x=(value)
+    @x = Quark.new(value)
+    x_html(@x)
   end
 
   def x
-    @x
+    @x.read
   end
 
-  def xx=(value = nil)
-    xx_html(value)
-    @xx = value
+  def xx=(value)
+    @xx = Quark.new(value)
+    xx_html(@xx)
   end
 
   def xx
-    @xx
+    @xx.read
   end
 
-  def y=(value = nil)
-    y_html(value)
-    @y = value
+  def y=(value)
+    @y = Quark.new(value)
+    y_html(@y)
   end
 
   def y
-    @y
+    @y.read
   end
 
-  def yy=(value = nil)
-    yy_html(value)
-    @yy = value
+  def yy=(value)
+    @yy = Quark.new(value)
+    yy_html(@yy)
   end
 
   def yy
-    @yy
+    @yy.read
   end
 
-  def z=(value = nil)
-    z_html(value)
-    @z = value
+  def z=(value)
+    @z = Quark.new(value)
+    z_html(@z)
   end
 
   def z
-    @z
+    @z.read
   end
 end

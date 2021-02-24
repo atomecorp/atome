@@ -49,6 +49,7 @@ require "atome/processor/visual"
 # utilities
 require "atome/helpers/utilities"
 # main atome builder
+require "atome/builder/properties"
 require "atome/builder/object"
 # Atome helper (methods available at main Object level)
 require "atome/extensions/atome_helpers"
@@ -57,4 +58,4 @@ require "atome/environment/device"
 # elementary atomes for basic environment
 require "atome/environment/initialize"
 # methods to simplify object creation
-require "atome/helpers/creation"
+require "atome/extensions/creation"

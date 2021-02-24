@@ -1,46 +1,46 @@
 module VisualsProperties
-  def color=(value = nil)
-    color_html(value)
-    @color = value
+  def color=(value)
+    @color = Quark.new(value)
+    color_html(@color)
   end
 
   def color
-    @color
+    @color.read
   end
 
-  def border=(value = nil)
-    border_html(value)
-    @border = value
+  def border=(value)
+    @border = Quark.new(value)
+    border_html(@border)
   end
 
   def border
     @border
   end
 
-  def overflow=(value = nil)
-    overflow_html(value)
-    @overflow = value
+  def overflow=(value)
+    @overflow = Quark.new(value)
+    overflow_html(@overflow)
   end
 
   def overflow
-    @overflow
+    @overflow.read
   end
 
-  def opacity=(value = nil)
-    opacity_html(value)
-    @opacity = value
+  def opacity=(value)
+    @opacity = Quark.new(value)
+    opacity_html(@opacity)
   end
 
   def opacity
-    @opacity
+    @opacity.read
   end
 
-  def shadow=(value = nil)
-    shadow_html(value)
-    @shadow = value
+  def shadow=(value)
+    @shadow = Quark.new(value)
+    shadow_html(@shadow)
   end
 
   def shadow
-    @shadow
+    @shadow.read
   end
 end
