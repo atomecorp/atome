@@ -1,6 +1,6 @@
 module GeometriesProperties
   def width=(value)
-    @width = Quark.new(value)
+    @width = atomise(value)
     width_html(@width)
   end
 
@@ -9,7 +9,7 @@ module GeometriesProperties
   end
 
   def height=(value)
-    @height = Quark.new(value)
+    @height = atomise(value)
     height_html(@height)
   end
 

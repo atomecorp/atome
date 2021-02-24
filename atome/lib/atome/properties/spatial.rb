@@ -1,6 +1,6 @@
 module SpatialsProperties
   def x=(value)
-    @x = Quark.new(value)
+    @x = atomise(value)
     x_html(@x)
   end
 
@@ -9,7 +9,7 @@ module SpatialsProperties
   end
 
   def xx=(value)
-    @xx = Quark.new(value)
+    @xx = atomise(value)
     xx_html(@xx)
   end
 
@@ -18,7 +18,7 @@ module SpatialsProperties
   end
 
   def y=(value)
-    @y = Quark.new(value)
+    @y = atomise(value)
     y_html(@y)
   end
 
@@ -27,7 +27,7 @@ module SpatialsProperties
   end
 
   def yy=(value)
-    @yy = Quark.new(value)
+    @yy = atomise(value)
     yy_html(@yy)
   end
 
@@ -36,7 +36,7 @@ module SpatialsProperties
   end
 
   def z=(value)
-    @z = Quark.new(value)
+    @z = atomise(value)
     z_html(@z)
   end
 

@@ -1,6 +1,6 @@
 module EffectsProperties
   def blur=(value)
-    @blur = Quark.new(value)
+    @blur = atomise(value)
     blur_html(@blur)
   end
 

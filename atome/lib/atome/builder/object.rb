@@ -31,10 +31,10 @@ class Atome
 
   # the method below initialize the creation of atome properties
   def self.sparkle
-    # the line below define all atome's properties from atome_method's list
-    Quark.atomise
+    # the line create a space to hold new created atomes
+    Quark.space
     # genesis uses meta programing to generate atome methods
-    #Quark.genesis
+    Quark.genesis
   end
 
   # atome creation

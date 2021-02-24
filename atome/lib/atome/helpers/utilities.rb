@@ -1,4 +1,9 @@
 module AtomeUtilities
+  def atomise(properties)
+    # this method create a quark object from atome properties for further processing
+    Quark.new(properties)
+  end
+
   def reorder_properties(properties)
     # we re-order the hash to puts the atome_id type at the begining to optimise rendering
     order_wanted = [:atome_id, :type, :parent, :width, :height, :x, :y, :z, :center, :size, :content]

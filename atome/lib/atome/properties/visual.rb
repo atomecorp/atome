@@ -1,6 +1,6 @@
 module VisualsProperties
   def color=(value)
-    @color = Quark.new(value)
+    @color = atomise(value)
     color_html(@color)
   end
 
@@ -9,7 +9,7 @@ module VisualsProperties
   end
 
   def border=(value)
-    @border = Quark.new(value)
+    @border = atomise(value)
     border_html(@border)
   end
 
@@ -18,7 +18,7 @@ module VisualsProperties
   end
 
   def overflow=(value)
-    @overflow = Quark.new(value)
+    @overflow = atomise(value)
     overflow_html(@overflow)
   end
 
@@ -27,7 +27,7 @@ module VisualsProperties
   end
 
   def opacity=(value)
-    @opacity = Quark.new(value)
+    @opacity = atomise(value)
     opacity_html(@opacity)
   end
 
@@ -36,7 +36,7 @@ module VisualsProperties
   end
 
   def shadow=(value)
-    @shadow = Quark.new(value)
+    @shadow = atomise(value)
     shadow_html(@shadow)
   end
 

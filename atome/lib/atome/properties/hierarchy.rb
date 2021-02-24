@@ -1,6 +1,6 @@
 module HierarchiesProperties
   def parent=(value)
-    @parent = Quark.new(value)
+    @parent = atomise(value)
   end
 
   def parent

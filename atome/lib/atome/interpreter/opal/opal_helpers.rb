@@ -39,11 +39,15 @@ module JSUtils
     `clearTimeout(#{params[1]})`
   end
 
-  def clear_timeouts
+  def clear_timeouts0
     @project_timeouts.each do |timeout|
       `clearTimeout(#{timeout})`
     end
     @project_timeouts = []
+  end
+
+  def self.is_mobile
+    `atome.jsIsMobile()`
   end
 
   def verification(*params)

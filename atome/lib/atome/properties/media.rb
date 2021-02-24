@@ -1,6 +1,6 @@
 module MediasProperties
   def content=(value)
-    @content = Quark.new(value)
+    @content = atomise(value)
     content_html(@content)
   end
 

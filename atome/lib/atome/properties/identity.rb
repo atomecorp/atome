@@ -9,7 +9,7 @@ module IdentitiesProperties
   end
 
   def id=(value)
-    @id = Quark.new(value)
+    @id = atomise(value)
   end
 
   def id
@@ -17,7 +17,7 @@ module IdentitiesProperties
   end
 
   def type=(value)
-    @type = Quark.new(value)
+    @type = atomise(value)
   end
 
   def type
@@ -25,7 +25,7 @@ module IdentitiesProperties
   end
 
   def language=(value)
-    @language = Quark.new(value)
+    @language = atomise(value)
   end
 
   def language

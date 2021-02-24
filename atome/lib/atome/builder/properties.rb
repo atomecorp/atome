@@ -43,7 +43,7 @@ class Quark
           value = {value: proc}
         end
         if value
-          property_instance = instance_variable_set("@#{method_name}", Quark.new(value))
+          property_instance = instance_variable_set("@#{method_name}", atomise(value))
           send(method_name + "_html", property_instance)
         else
           instance_variable_get("@#{method_name}").read
@@ -57,7 +57,7 @@ class Quark
   end
 
   # recipient for created atome
-  def self.atomise
+  def self.space
     # this method create a class variable to store all created atomes
     Atome.class_variable_set("@@atomes", []) # you can access without offense
   end

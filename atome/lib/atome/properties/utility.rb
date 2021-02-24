@@ -1,6 +1,6 @@
 module UtilitiesProperties
   def delete=(value)
-    @delete = Quark.new(value)
+    @delete = atomise(value)
     delete_html(@delete)
   end
 
@@ -9,7 +9,7 @@ module UtilitiesProperties
   end
 
   def render=(value)
-    @render = Quark.new(value)
+    @render = atomise(value)
     render_html(@render)
   end
 
@@ -18,7 +18,7 @@ module UtilitiesProperties
   end
 
   def tactile=(value)
-    @tactile = Quark.new(value)
+    @tactile = atomise(value)
   end
 
   def tactile
