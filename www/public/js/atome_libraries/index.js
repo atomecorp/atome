@@ -159,6 +159,7 @@ let webSocketHelper;
 let databaseHelper;
 let fileHelper;
 let drawingHelper;
+let mediaHelper;
 
 let webSocketEventListener = {
     onConnected: function (username) {
@@ -194,7 +195,7 @@ let webSocketEventListener = {
 };
 
 let databaseEventListener = {
-    onConnected: function (event) {
+    onConnected: function () {
         console.log('Database connected');
         databaseHelper.getAllUsers();
     }
@@ -211,9 +212,18 @@ let fileSystemPermissionEventListener = {
 };
 
 let drawingEventListener = {
-    onConnected: function (event) {
+    onConnected: function () {
         console.log('Drawing connected');
         drawingHelper.setMode(drawingHelper.modeType.Draw);
+    }
+};
+
+let mediaEventListener = {
+    onConnected: function () {
+        console.log('Media connected');
+    },
+    onError: function (error) {
+        console.log(error);
     }
 };
 
@@ -236,8 +246,15 @@ document.addEventListener("deviceready", function () {
     fileHelper.connect(564654);
 
     //drawingHelper
-    drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-    drawingHelper.connect();
+    // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+    // drawingHelper.connect();
+
+    //mediaHelper
+    const previewElement = document.querySelector('#preview');
+    const playbackElement = document.querySelector('#playback');
+
+    mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
+    mediaHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
