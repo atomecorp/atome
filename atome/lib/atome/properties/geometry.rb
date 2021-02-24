@@ -16,4 +16,14 @@ module GeometriesProperties
   def height
     @height.read
   end
+
+  def size=(value)
+    @size = atomise(value)
+    size_html(@size)
+  end
+
+  def size
+    @size.read
+  end
+
 end

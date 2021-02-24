@@ -8,4 +8,9 @@ module HtmlGeometry
     value = value.read
     jq_get(atome_id).css("height", value)
   end
+
+  def size_html(value)
+    value = value.read
+    puts "todo : add resize algo"
+  end
 end

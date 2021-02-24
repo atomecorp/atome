@@ -42,7 +42,6 @@ html, body {
 }
 
 
-
 .atome {
     pointer-events: auto;
     caret-color: transparent;
@@ -126,8 +125,10 @@ html, body {
     z-index: 6;
 }
 
-#zim_canvas {
+#atomeZimCanvas {
     z-index: 1;
+    width: 100%;
+    height: 100%
 }
 
 

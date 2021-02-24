@@ -18,8 +18,8 @@ class DrawingHelper {
         this.frame = new Frame("view",
             this.width,
             this.height,
+            "rgba(125,125,125,1)",
             light,
-            dark,
             undefined,
             undefined,
             undefined,
@@ -33,11 +33,11 @@ class DrawingHelper {
         this.frame.on("ready", () => {
             const stage = this.frame.stage;
 
-            var backing = new Rectangle(this.frame.width, this.frame.height, white).center();
+            var backing = new Rectangle(this.frame.width, this.frame.height, "rgba(125,125,125,1)").center();
 
             const precision = 25;
             const curving = 0.15;
-            const color = blue;
+            const color = red;
             const thickness = 4;
 
             let points = [];
