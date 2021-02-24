@@ -9,6 +9,9 @@ module AtomeUtilities
     puts values
   end
 
+  def resize
+  end
+
   def resize_actions(params = nil)
     if params
       params.each do |key, value|

@@ -23,6 +23,12 @@ module HtmlEvent
     end
     jq_object.draggable(lock)
     jq_object.on(:drag) do |evt|
+      # we update the position of the atome
+      x_position = jq_object.css('left').sub('px', '').to_i
+      y_position = jq_object.css('top').sub('px', '').to_i
+      @x.write(x_position)
+      @y.write(y_position)
+      # we send the position to the proc
       proc.call(evt) if proc.is_a?(Proc)
     end
   end

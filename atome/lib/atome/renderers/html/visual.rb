@@ -26,7 +26,7 @@ module HtmlVisual
 
   def overflow_html(value)
     value = value.read
-    if params.instance_of?(Hash)
+    if value.instance_of?(Hash)
       x = value[:x]
       y = value[:y]
       if x
@@ -37,7 +37,7 @@ module HtmlVisual
         jq_get(atome_id).css("overflow-y", y)
       end
     else
-      jq_get(atome_id).css("overflow", params)
+      jq_get(atome_id).css("overflow", value)
     end
   end
 

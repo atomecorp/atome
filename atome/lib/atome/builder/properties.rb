@@ -4,25 +4,26 @@ class Quark
   end
 
   def read
-    # if @property.instance_of?(Hash)
-    #  @property = @property[:value]
-    # end
     @property
   end
 
+  def write(value)
+    @property = value
+  end
+
   def self.atome_methods
-    spatial = %i[width height size x xx y yy z]
-    events = %i[touch drag over]
-    helper = %i[tactile display]
-    visual = %i[color opacity border overflow]
     audio = %i[color opacity border overflow]
-    geometry = %i[width height resize rotation]
-    effect = %i[blur shadow]
-    identity = %i[atome_id id type]
-    media = %i[content image sound video]
-    hierarchy = %i[parent child insert]
     communication = %i[share]
-    utility = %i[delete record enliven selector render preset]
+    effect = %i[blur shadow]
+    events = %i[touch drag over]
+    geometry = %i[width height resize rotation]
+    helper = %i[tactile display]
+    hierarchy = %i[parent child insert]
+    identity = %i[atome_id id type language]
+    spatial = %i[width height size x xx y yy z]
+    media = %i[content image sound video]
+    utility = %i[delete record enliven selector render preset tactile]
+    visual = %i[color opacity border overflow]
     spatial | helper | visual | audio | geometry | effect | media | hierarchy | utility | communication | identity | events
     spatial | helper | visual | audio | geometry | effect | media | hierarchy | utility | communication | identity | [:drag]
   end

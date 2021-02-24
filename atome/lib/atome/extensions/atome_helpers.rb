@@ -15,7 +15,7 @@ end
 
 def grab(atome_id)
   Atome.atomes.each do |atome|
-    if atome.atome_id[:value] == atome_id
+    if atome.atome_id == atome_id
       return atome
     end
   end

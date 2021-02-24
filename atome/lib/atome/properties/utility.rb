@@ -16,4 +16,12 @@ module UtilitiesProperties
   def render
     @render.read
   end
+
+  def tactile=(value)
+    @tactile = Quark.new(value)
+  end
+
+  def tactile
+    @tactile.read
+  end
 end

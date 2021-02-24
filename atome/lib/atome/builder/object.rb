@@ -34,12 +34,14 @@ class Atome
     # the line below define all atome's properties from atome_method's list
     Quark.atomise
     # genesis uses meta programing to generate atome methods
-    Quark.genesis
+    #Quark.genesis
   end
 
   # atome creation
-  def initialize(properties = {type: :particle, atome_id: identity})
-    create(properties)
+  def initialize(properties = {})
+    # the hash below add the missing properties without creating a condition
+    sanitizer = {type: :particle, atome_id: identity, x: 0, y: 0}.merge(properties)
+    create(sanitizer)
     register_atome
   end
 

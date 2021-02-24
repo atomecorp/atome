@@ -23,4 +23,12 @@ module IdentitiesProperties
   def type
     @type.read
   end
+
+  def language=(value)
+    @language = Quark.new(value)
+  end
+
+  def language
+    @language.read
+  end
 end

@@ -2,12 +2,12 @@ class Device
   include DefaultValues
   def initialize
     # the object below is used to store the basic presets for common type of atomes
-    Atome.new({atome_id: :preset, id: :preset, value: default_values})
+    Atome.new({atome_id: :preset, id: :preset, content: default_values})
     # the object below is used to hide some atomes rom the device view while still rendered
     Atome.new({atome_id: :dark_matter, id: :dark_matter, width: 0, height: 0, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :hidden, color: :transparent})
     # the object below is used to store the preferences and settings for current device
     Atome.new({atome_id: :device, id: :device, language: :english, type: :particle, width: "100%", height: "100%", x: 0, xx: 0, y: 0, yy: 0, z: 1, overflow: :hidden, color: :transparent})
-    # the object below hold all the ttol that modify atomes
+    ## the object below hold all the ttol that modify atomes
     Atome.new({atome_id: :intuition, id: :intuition, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 3, overflow: :hidden, color: :transparent})
     # the object below is the main view for the current user on the current device
     Atome.new({atome_id: :view, id: :view, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent, tactile: tactile})
@@ -17,7 +17,7 @@ class Device
     Atome.new({atome_id: :right, id: :right})
     # this object hold temporary items (useful for batch treatment) named collector could be rename ephemeral
     Atome.new({atome_id: :buffer, id: :buffer, render: false})
-    # The lines below create a special atome that holds all internal actions such as resize_actions
+    ## The lines below create a special atome that holds all internal actions such as resize_actions
     actions = Atome.new({atome_id: :actions, id: :actions})
     actions.viewer_actions
   end
