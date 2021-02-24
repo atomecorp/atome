@@ -23,4 +23,8 @@ module HtmlSpatial
     value=value.read
     jq_get(atome_id).css("z-index", value)
   end
+
+  def center_html(value)
+    value = value.read
+  end
 end

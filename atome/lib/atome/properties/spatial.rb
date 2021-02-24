@@ -43,4 +43,13 @@ module SpatialsProperties
   def z
     @z.read
   end
+
+  def center=(value)
+    @center = atomise(value)
+    center_html(@center)
+  end
+
+  def center
+    @center.read
+  end
 end

@@ -20,7 +20,7 @@ class Quark
     helper = %i[tactile display]
     hierarchy = %i[parent child insert]
     identity = %i[atome_id id type language]
-    spatial = %i[width height size x xx y yy z]
+    spatial = %i[width height size x xx y yy z center]
     media = %i[content image sound video]
     utility = %i[delete edit record enliven selector render preset tactile]
     visual = %i[color opacity border overflow]
