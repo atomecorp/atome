@@ -1,10 +1,11 @@
 # ruby main Object extensions
-require "atome/extensions/hash"
+require "atome/extensions/object/hash"
 # default_value
 require "atome/environment/default_values"
 # opal specific
-require "atome/interpreter/opal/opal_helpers"
-#render helper
+require "atome/extensions/opal/opal_helpers"
+require "atome/extensions/opal/opal_jquery"
+# render helper
 require "atome/renderers/renderer_helper"
 # html renderer
 require "atome/renderers/html/audio"
@@ -34,18 +35,18 @@ require "atome/properties/spatial"
 require "atome/properties/utility"
 require "atome/properties/visual"
 # property processors
-require "atome/processor/audio"
-require "atome/processor/communication"
-require "atome/processor/effect"
-require "atome/processor/event"
-require "atome/processor/geometry"
-require "atome/processor/helper"
-require "atome/processor/hierarchy"
-require "atome/processor/identity"
-require "atome/processor/media"
-require "atome/processor/spatial"
-require "atome/processor/utility"
-require "atome/processor/visual"
+require "atome/processors/audio"
+require "atome/processors/communication"
+require "atome/processors/effect"
+require "atome/processors/event"
+require "atome/processors/geometry"
+require "atome/processors/helper"
+require "atome/processors/hierarchy"
+require "atome/processors/identity"
+require "atome/processors/media"
+require "atome/processors/spatial"
+require "atome/processors/utility"
+require "atome/processors/visual"
 # utilities
 require "atome/helpers/utilities"
 # main atome builder

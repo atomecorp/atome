@@ -6,9 +6,9 @@ module DefaultValues
     box = visual.merge(shape).merge(content: {points: 4})
     circle = visual.merge(shape).merge({color: :red, content: {points: 4, tension: "100%"}})
     text = visual.merge({type: :text, color: [red: 124, green: 124, blue: 124], size: 25, content: lorem})
-    image = visual.merge({type: :image, color: :transparent})
-    video = visual.merge({type: :video, color: :transparent})
-    audio = visual.merge({type: :audio, color: :transparent})
+    image = visual.merge({type: :image, color: :transparent, content: :atome})
+    video = visual.merge({type: :video, color: :transparent, content: :lion_king})
+    audio = visual.merge({type: :audio, color: :transparent, content: :riff})
     particle = {type: :particle}
     collector = {type: :collector}
     tool = visual.merge({type: :tool, width: 52, height: 50, parent: :intuition, content: :dummy})

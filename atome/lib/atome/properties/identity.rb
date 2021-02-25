@@ -1,7 +1,6 @@
 module IdentitiesProperties
   def atome_id=(value)
     atome_id_processor(value)
-    atome_id_html(@atome_id)
   end
 
   def atome_id

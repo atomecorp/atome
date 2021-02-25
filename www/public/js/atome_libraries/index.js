@@ -250,11 +250,21 @@ document.addEventListener("deviceready", function () {
     // drawingHelper.connect();
 
     //mediaHelper
-    const previewElement = document.querySelector('#preview');
-    const playbackElement = document.querySelector('#playback');
+    // var preview = $('<video />', {
+    //     id: 'preview',
+    //     controls: true
+    // });
+    // preview.appendTo($('#view'));
+    // var playback = $('<video />', {
+    //     id: 'playback',
+    //     controls: true
+    // });
+    // playback.appendTo($('#view'));
+    // const previewElement = document.querySelector('#preview');
+    // const playbackElement = document.querySelector('#playback');
 
-    mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
-    mediaHelper.connect();
+    // mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
+    // mediaHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
@@ -290,7 +300,12 @@ const atome = {
             mobile = "desktop";
         }
         return mobile;
-    },    jsVerification: function (params) {
+    },
+
+    jsCreateVideo: function (parent) {
+        var video = $('<video />', {});
+        video.appendTo($('#' + parent));
+    }, jsVerification: function (params) {
         alert(params);
     }
 };
