@@ -11,7 +11,7 @@ module AtomeInternalUtilities
   end
 
   def centering(values)
-    puts values
+    "todo add centering#{values}"
   end
 
   def resize

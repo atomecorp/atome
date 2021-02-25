@@ -20,7 +20,6 @@ module IdentitiesProcessors
       atomise(identity)
     end
     # atome_id can't be changed we only set the atome_id if it hasn't been set before
-    puts @atome_id
     unless atome_id_found
       atome_id_html(@atome_id)
     end
