@@ -5,6 +5,6 @@ module HierarchiesProperties
   end
 
   def parent
-    @parent.read
+    @parent&.read
   end
 end

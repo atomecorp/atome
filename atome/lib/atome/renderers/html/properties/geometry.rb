@@ -1,4 +1,4 @@
-module HtmlGeometry
+module GeometryHtml
   def width_html(value)
     value = value.read
     jq_get(atome_id).css("width", value)

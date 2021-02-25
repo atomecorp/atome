@@ -5,7 +5,7 @@ module VisualsProperties
   end
 
   def color
-    @color.read
+    @color&.read
   end
 
   def border=(value)
@@ -14,7 +14,7 @@ module VisualsProperties
   end
 
   def border
-    @border
+    @border&.read
   end
 
   def overflow=(value)
@@ -23,7 +23,7 @@ module VisualsProperties
   end
 
   def overflow
-    @overflow.read
+    @overflow&.read
   end
 
   def opacity=(value)
@@ -32,7 +32,7 @@ module VisualsProperties
   end
 
   def opacity
-    @opacity.read
+    @opacity&.read
   end
 
   def shadow=(value)
@@ -41,6 +41,6 @@ module VisualsProperties
   end
 
   def shadow
-    @shadow.read
+    @shadow&.read
   end
 end

@@ -5,7 +5,7 @@ module EffectsProperties
   end
 
   def blur
-    @blur
+    @blur&.read
   end
 
   def smooth=(value)
@@ -14,6 +14,6 @@ module EffectsProperties
   end
 
   def smooth
-    @smooth
+    @smooth&.read
   end
 end

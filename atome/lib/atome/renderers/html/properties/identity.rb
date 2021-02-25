@@ -1,4 +1,4 @@
-module HtmlIdentity
+module IdentityHtml
   def atome_id_html(value)
     value = value.read
     # this method create the basic html object

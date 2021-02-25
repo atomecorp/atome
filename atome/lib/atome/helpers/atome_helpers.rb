@@ -23,7 +23,7 @@ def grab(atome_id)
 end
 
 def tactile
-  # chek if user's device is a tactile device
+  # check if user's device is a tactile device
   false
 end
 
@@ -33,6 +33,27 @@ def lorem
   STRDELIM
 end
 
+def wait(seconds)
+  wait_html(seconds) do
+    yield
+  end
+end
+
+def every(delay = 3, repeat = 5, &proc)
+  every_html(delay, repeat, &proc)
+end
+
+def clear(value)
+  case value.keys[0]
+  when :wait
+    clear_interval_html(value[:wait])
+  when :repeat
+    clear_repeat_html(value[:repeat])
+  else
+    value
+  end
+end
+
 def version
-  "v:0.010"
+  "v:0.015"
 end

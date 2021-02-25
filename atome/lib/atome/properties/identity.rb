@@ -4,7 +4,23 @@ module IdentitiesProperties
   end
 
   def atome_id
-    @atome_id.read
+    @atome_id&.read
+  end
+
+  def private=(value)
+    private_processor(value)
+  end
+
+  def private
+    private_getter_processor(value)
+  end
+
+  def can=(value)
+    can_processor(value)
+  end
+
+  def can
+    can_getter_processor(value)
   end
 
   def id=(value)
@@ -12,7 +28,7 @@ module IdentitiesProperties
   end
 
   def id
-    @id.read
+    @id&.read
   end
 
   def type=(value)
@@ -20,7 +36,7 @@ module IdentitiesProperties
   end
 
   def type
-    @type.read
+    @type&.read
   end
 
   def language=(value)
@@ -28,6 +44,7 @@ module IdentitiesProperties
   end
 
   def language
-    @language.read
+    @language&.read
   end
+
 end

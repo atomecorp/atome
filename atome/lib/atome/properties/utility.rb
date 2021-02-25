@@ -1,20 +1,11 @@
 module UtilitiesProperties
-  def delete=(value)
-    @delete = atomise(value)
-    delete_html(@delete)
-  end
-
-  def delete
-    @delete.read
-  end
-
   def render=(value)
     @render = atomise(value)
     render_html(@render)
   end
 
   def render
-    @render.read
+    @render&.read
   end
 
   def tactile=(value)
@@ -22,7 +13,7 @@ module UtilitiesProperties
   end
 
   def tactile
-    @tactile.read
+    @tactile&.read
   end
 
   def edit=(value)
@@ -30,6 +21,6 @@ module UtilitiesProperties
   end
 
   def edit
-    @edit.read
+    @edit&.read
   end
 end

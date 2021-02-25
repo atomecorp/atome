@@ -19,12 +19,20 @@ class Quark
     geometry = %i[width height rotation]
     helper = %i[tactile display]
     hierarchy = %i[parent child insert]
-    identity = %i[atome_id id type language]
+    identity = %i[atome_id id type language private can]
     spatial = %i[width height size x xx y yy z center]
     media = %i[content image sound video]
-    utility = %i[delete edit record enliven selector render preset tactile]
+    utility = %i[edit record enliven selector render preset tactile]
     visual = %i[color opacity border overflow]
     spatial | helper | visual | audio | geometry | effect | media | hierarchy | utility | communication | identity | events
+  end
+
+  def self.setter_need_pre_processing
+    %i[atome_id private can]
+  end
+
+  def self.getter_need_pre_processing
+    %i[private can]
   end
 
   # generate methods
@@ -42,10 +50,20 @@ class Quark
           value = {value: proc}
         end
         if value || value == false
-          property_instance = instance_variable_set("@#{method_name}", atomise(value))
-          send(method_name + "_html", property_instance)
+          if Quark.setter_need_pre_processing.include?(method_name)
+            # Attention!! :if this property needs processing, the instance variable is not created !
+            send(method_name + "_processor", value)
+          else
+            property_instance = instance_variable_set("@#{method_name}", atomise(value))
+            send(method_name + "_html", property_instance)
+          end
         else
-          instance_variable_get("@#{method_name}").read
+          # below this is the method getter it return the instance variable if it is define(&.rea)
+          if Quark.getter_need_pre_processing.include?(method_name)
+            send(method_name + "_getter_processor", value)
+          else
+            instance_variable_get("@#{method_name}")&.read
+          end
         end
       end
       Atome.define_method method_name.to_s + "=" do |value|

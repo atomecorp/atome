@@ -10,7 +10,7 @@ class Device
     # the object below hold all the tool that modify atomes
     Atome.new({atome_id: :intuition, id: :intuition, parent: :device, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 3, overflow: :hidden, color: :transparent})
     # the object below is the main view for the current user on the current device
-    Atome.new({atome_id: :view, id: :view, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent, tactile: JSUtils.is_mobile})
+    Atome.new({atome_id: :view, id: :view, type: :particle, x: 0, xx: 0, y: 0, yy: 0, z: 0, overflow: :auto, parent: :intuition, color: :transparent, tactile: ATOME.is_mobile})
     # the object below is used to message other atomes (could be a user, a device, or any atomes locally or on the network)
     Atome.new({atome_id: :messenger, id: :messenger, render: false})
     # the object below is used to store the right management for current device

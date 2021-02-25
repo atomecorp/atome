@@ -5,7 +5,7 @@ module GeometriesProperties
   end
 
   def width
-    @width.read
+    @width&.read
   end
 
   def height=(value)
@@ -14,7 +14,7 @@ module GeometriesProperties
   end
 
   def height
-    @height.read
+    @height&.read
   end
 
   def size=(value)
@@ -23,7 +23,6 @@ module GeometriesProperties
   end
 
   def size
-    @size.read
+    @size&.read
   end
-
 end

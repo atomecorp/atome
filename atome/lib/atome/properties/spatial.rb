@@ -5,7 +5,7 @@ module SpatialsProperties
   end
 
   def x
-    @x.read
+    @x&.read
   end
 
   def xx=(value)
@@ -14,7 +14,7 @@ module SpatialsProperties
   end
 
   def xx
-    @xx.read
+    @xx&.read
   end
 
   def y=(value)
@@ -23,7 +23,7 @@ module SpatialsProperties
   end
 
   def y
-    @y.read
+    @y&.read
   end
 
   def yy=(value)
@@ -32,7 +32,7 @@ module SpatialsProperties
   end
 
   def yy
-    @yy.read
+    @yy&.read
   end
 
   def z=(value)
@@ -41,7 +41,7 @@ module SpatialsProperties
   end
 
   def z
-    @z.read
+    @z&.read
   end
 
   def center=(value)
@@ -50,6 +50,6 @@ module SpatialsProperties
   end
 
   def center
-    @center.read
+    @center&.read
   end
 end

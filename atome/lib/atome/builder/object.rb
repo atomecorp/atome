@@ -25,16 +25,15 @@ class Atome
   include SpatialsProcessors
   include UtilitiesProcessors
   include VisualsProcessors
-  include RenderHelper
   include RenderHtml
-  include AtomeUtilities
+  include AtomeInternalUtilities
 
   # the method below initialize the creation of atome properties
   def self.sparkle
     # the line create a space to hold new created atomes
     Quark.space
     # genesis uses meta programing to generate atome methods
-    #Quark.genesis
+    Quark.genesis
   end
 
   # atome creation

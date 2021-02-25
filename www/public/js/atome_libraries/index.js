@@ -301,12 +301,10 @@ const atome = {
         }
         return mobile;
     },
-
     jsCreateVideo: function (parent) {
         var video = $('<video />', {});
         video.appendTo($('#' + parent));
-    }, jsVerification: function (params) {
-        alert(params);
     }
 };
+
 

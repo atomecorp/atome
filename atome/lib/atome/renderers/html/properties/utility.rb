@@ -1,8 +1,4 @@
-module HtmlUtility
-  def delete_html(value)
-    value.read
-  end
-
+module UtilityHtml
   def render_html(value)
     value = value.read
     unless value

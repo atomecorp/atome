@@ -5,6 +5,6 @@ module MediasProperties
   end
 
   def content
-    @content.read
+  @content&.read
   end
 end
