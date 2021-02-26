@@ -1,4 +1,4 @@
-module AtomeInternalUtilities
+module InternalHelpers
   def atomise(properties)
     # this method create a quark object from atome properties for further processing
     Quark.new(properties)

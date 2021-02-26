@@ -26,7 +26,8 @@ class Atome
   include UtilitiesProcessors
   include VisualsProcessors
   include RenderHtml
-  include AtomeInternalUtilities
+  include InternalHelpers
+  include AtomeHelpers
 
   # the method below initialize the creation of atome properties
   def self.sparkle
@@ -58,7 +59,7 @@ class Atome
 
   def register_atome
     # now we add the new atome to the atomes's list
-    Atome.class_variable_get("@@atomes") << self
+    Atome.class_variable_get("@@atomes")[atome_id] = self
   end
 
   def self.atomes

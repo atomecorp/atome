@@ -46,5 +46,4 @@ module IdentitiesProperties
   def language
     @language&.read
   end
-
 end

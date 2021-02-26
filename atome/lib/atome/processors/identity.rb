@@ -7,10 +7,8 @@ module IdentitiesProcessors
       atome_id_found = true
     end
     # we look into atomes array to find if an atome already have this atome_id
-    Atome.atomes.each do |atome|
-      if atome.atome_id == value
-        uniqueness = false
-      end
+    if Atome.atomes.key?(value)
+      uniqueness = false
     end
     # if an atome already have this atome_id we wont set it with the current value but use a automatic identity
     @atome_id = if uniqueness
@@ -26,18 +24,18 @@ module IdentitiesProcessors
   end
 
   def private_processor(value)
-    alert "set #{value}"
+    puts "set #{value}"
   end
 
   def can_processor(value)
-    alert "set #{value}"
+    puts "set #{value}"
   end
 
   def private_getter_processor(value)
-    alert "get #{value}"
+    puts "get #{value}"
   end
 
   def can_getter_processor(value)
-    alert "get #{value}"
+    puts "get #{value}"
   end
 end

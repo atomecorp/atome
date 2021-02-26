@@ -1,5 +1,6 @@
 # render methods
 module RenderHtml
+  include HtmlHelpers
   include AudioProcessorHtml
   include CommunicationProcessorHtml
   include EffectProcessorHtml

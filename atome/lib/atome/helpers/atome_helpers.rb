@@ -1,59 +1,14 @@
-# here stand some atome's function to allow atome's objects manipulation
-
-def identity
-  "a_" + object_id.to_s + "_" + Atome.atomes.length.to_s + "_" + Time.now.strftime("%Y%m%d%H%M%S")
-end
-
-def get(id)
-  Atome.atomes.each do |atome|
-    if atome.id[:value] == id
-      return atome
+module AtomeHelpers
+  def delete
+    if Atome.atomes.key?(atome_id)
+      # we remove the atome fom the Atome.atomes's hash
+      delete_atome = Atome.atomes.delete(atome_id)
+      # adding the deleted atome to the black_hole for later retrieve
+      grab(:black_hole).content[atome_id] = delete_atome
+      # now we remove the atome from view if it is rendered
+      unless delete_atome.render == false
+        delete_html
+      end
     end
   end
-  nil
-end
-
-def grab(atome_id)
-  Atome.atomes.each do |atome|
-    if atome.atome_id == atome_id
-      return atome
-    end
-  end
-  nil
-end
-
-def tactile
-  # check if user's device is a tactile device
-  false
-end
-
-def lorem
-  <<~STRDELIM
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-  STRDELIM
-end
-
-def wait(seconds)
-  wait_html(seconds) do
-    yield
-  end
-end
-
-def every(delay = 3, repeat = 5, &proc)
-  every_html(delay, repeat, &proc)
-end
-
-def clear(value)
-  case value.keys[0]
-  when :wait
-    clear_interval_html(value[:wait])
-  when :repeat
-    clear_repeat_html(value[:repeat])
-  else
-    value
-  end
-end
-
-def version
-  "v:0.015"
 end

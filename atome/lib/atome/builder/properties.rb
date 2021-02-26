@@ -57,13 +57,11 @@ class Quark
             property_instance = instance_variable_set("@#{method_name}", atomise(value))
             send(method_name + "_html", property_instance)
           end
-        else
           # below this is the method getter it return the instance variable if it is define(&.rea)
-          if Quark.getter_need_pre_processing.include?(method_name)
-            send(method_name + "_getter_processor", value)
-          else
-            instance_variable_get("@#{method_name}")&.read
-          end
+        elsif Quark.getter_need_pre_processing.include?(method_name)
+          send(method_name + "_getter_processor", value)
+        else
+          instance_variable_get("@#{method_name}")&.read
         end
       end
       Atome.define_method method_name.to_s + "=" do |value|
@@ -75,6 +73,6 @@ class Quark
   # recipient for created atome
   def self.space
     # this method create a class variable to store all created atomes
-    Atome.class_variable_set("@@atomes", []) # you can access without offense
+    Atome.class_variable_set("@@atomes", {}) # you can access without offense
   end
 end
