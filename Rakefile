@@ -5,6 +5,10 @@ require "uglifier"
 require "fileutils"
 require "filewatcher"
 
+unless File.directory?("app/temp")
+  FileUtils.mkdir_p("app/temp")
+end
+
 def update_opal_libraries
   file 'www/public/js/third_parties/opal/opal.js': ["www/public/js/third_parties/opal"] do |t|
     opal = Opal::Builder.new
@@ -71,22 +75,29 @@ def update_medias_list
     end
 
     medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-    File.open(t.name, "w") { |file| file.write(medias_list) }
+    medias_list =medias_list+"\n"+"module Universe\ndef self.images\n#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{$audios_list}\nend\nend"
+        File.open(t.name, "w") { |file| file.write(medias_list) }
   end
 end
 
 dir_to_inspect = Dir.glob("www/public/medias/**/*")
 dir_to_inspect_2 = Dir.glob("eVe/medias/**/*")
 nb_of_medias_files = (dir_to_inspect.length + dir_to_inspect_2.length).to_s
-nb_of_medias_files_stored = File.read("cache/nb_of_medias_files")
+
+
+unless File.exist?("app/temp/nb_of_medias_files")
+  File.write("app/temp/nb_of_medias_files", "")
+end
+
+nb_of_medias_files_stored = File.read("app/temp/nb_of_medias_files")
 # we only update the media lib if there"s a change in number of medias file
-if nb_of_medias_files != nb_of_medias_files_stored || !File.file?("cache/nb_of_medias_files")
+if nb_of_medias_files != nb_of_medias_files_stored || !File.file?("app/temp/nb_of_medias_files")
   update_medias_list
-  File.write("cache/nb_of_medias_files", nb_of_medias_files)
+  File.write("app/temp/nb_of_medias_files", nb_of_medias_files)
 end
 media_monitoring = unless File.file?("app/temp/media_list.rb")
-  update_medias_list
-end
+                     update_medias_list
+                   end
 FileUtils.mkdir_p "www/public/js/dynamic_libraries/"
 file 'www/public/js/dynamic_libraries/atome_medias.js': media_monitoring do |t|
   builder = Opal::Builder.new

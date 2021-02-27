@@ -21,18 +21,18 @@ class Quark
     hierarchy = %i[parent child insert]
     identity = %i[atome_id id type language private can]
     spatial = %i[width height size x xx y yy z center]
-    media = %i[content image sound video]
+    media = %i[content image sound video box circle text image video audio]
     utility = %i[edit record enliven selector render preset tactile]
     visual = %i[color opacity border overflow]
     spatial | helper | visual | audio | geometry | effect | media | hierarchy | utility | communication | identity | events
   end
 
   def self.setter_need_pre_processing
-    %i[atome_id private can]
+    %i[atome_id private can box circle text image video audio]
   end
 
   def self.getter_need_pre_processing
-    %i[private can]
+    %i[private can box circle text image video audio]
   end
 
   # generate methods

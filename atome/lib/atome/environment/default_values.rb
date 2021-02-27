@@ -1,7 +1,7 @@
 module DefaultValues
   def default_values
     # here are the default preset for common objects
-    visual = {color: :lightgray, center: {y: 43, x: 16, dynamic: false}, z: 0, overflow: :visible, parent: :view}
+    visual = {color: :lightgray, x: 0, y: 0, z: 0, overflow: :visible, parent: :view}
     shape = visual.merge({type: :shape, width: 70, height: 70, content: {points: 2}})
     box = visual.merge(shape).merge(content: {points: 4})
     circle = visual.merge(shape).merge({color: :red, content: {points: 4, tension: "100%"}})
