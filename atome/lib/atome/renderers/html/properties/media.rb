@@ -6,6 +6,8 @@ module MediaHtml
       jq_get(atome_id).html(value)
     elsif type == :video
       video_creator__helper(value)
+    elsif type == :image
+      image_creator__helper(value)
     end
   end
 end

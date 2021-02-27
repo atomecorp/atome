@@ -1,5 +1,26 @@
 # here stand some atome's function to allow atome's objects manipulation
 
+def eden_search(query)
+  case query[:type]
+  when :image
+    Universe.images[query[:name]]
+  when :video
+    Universe.videos[query[:name]]
+  when :audio
+    Universe.audios[query[:name]]
+  else
+    query
+  end
+end
+
+def find(query)
+  if query[:scope] == :eden
+    eden_search(query)
+  else
+    "a look at eDen"
+  end
+end
+
 def identity
   "a_" + object_id.to_s + "_" + Atome.atomes.length.to_s + "_" + Time.now.strftime("%Y%m%d%H%M%S")
 end
@@ -55,6 +76,18 @@ end
 def version
   "v:0.015"
 end
+
+# def alert(msg)
+#  ATOME.wait 0.2 do
+#    alert = text(content: msg)
+#    alert.color = :red
+#    alert.x = 200
+#    alert.y = 200
+#    alert.touch({option: :up}) do
+#      alert.delete
+#    end
+#  end
+# end
 
 def notification(message, duration)
   notification = text({content: message, color: :orange, x: 69, y: 69})

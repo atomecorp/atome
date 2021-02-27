@@ -72,4 +72,4 @@ require "atome/environment/device"
 # elementary atomes for basic environment
 require "atome/environment/initialize"
 # methods to simplify object creation
-require "atome/extensions/creation"
+require "atome/extensions/atome_object_creator"

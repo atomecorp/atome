@@ -53,6 +53,10 @@ class Atome
     end
   end
 
+  def get(property)
+    send(property)
+  end
+
   def set(property, value)
     send(property.to_s + "=", value)
   end

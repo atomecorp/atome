@@ -1,7 +1,7 @@
 *.ds_store
 .idea
 /eVe/
-/app/temp/media_list.rb
+/app/temp
 /app/clients/
 /app/tests/
 /node_modules/
