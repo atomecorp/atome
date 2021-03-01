@@ -8,10 +8,10 @@ def self.atome_methods
   hierarchy = %i[parent child insert]
   identity = %i[atome_id id type language private can]
   spatial = %i[width height size x xx y yy z center]
-  media = %i[content image  video box circle text image audio]
+  media = %i[content video box circle text image audio]
   utility = %i[edit record enliven selector render preset]
-  visual = %i[color opacity border overflow]
-  {audios: audio, spatials: spatial, helpers: helper, visuals: visual, geometries: geometry, effects: effect, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event}
+  material = %i[color opacity border overflow]
+  {audios: audio, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event}
 
 end
 
@@ -24,7 +24,7 @@ def self.getter_need_processing
 end
 
 def self.no_rendering
-  %i[child]
+  %i[box circle text image video audio]
 end
 
 FileUtils.mkdir_p "atome/lib/atome/generated_properties"
@@ -42,33 +42,53 @@ atome_methods.each do |property_type, property|
     unless no_rendering.include?(method_name)
       rendering = "#{method_name}_html(@#{method_name})"
     end
+
     method_content = <<STRDELIM
- def #{method_name}(value=nil, &proc)
-   if proc && value.instance_of?(Hash)
-           value[:value] = proc
-         elsif proc && (value.instance_of?(String) || value.instance_of?(Symbol))
-           property = {}
-           property[:value] = proc
-           property[:options] = value
-           value = property
-         elsif proc
-           value = {value: proc}
-         end
-         if value || value == false
-           #{processor}
-           #{set_instance_variable}
-           #{rendering}
-         else
-           # below this is the method getter it return the instance variable if it is define(&.rea)
-           #{getter_processor}
-           @#{method_name}&.read
-         end
- end
+  def #{method_name}(value = nil, &proc)
+    if value.nil? && !proc
+      #{getter_processor}
+      @#{method_name}&.read
+    else
+      value = properties_common(value, &proc)
+       #{processor}
+      #{set_instance_variable}
+      #{rendering}
+    end
+  end 
 
  def #{method_name}=(value, &proc)
   #{method_name}(value, &proc)
  end
 STRDELIM
+
+#    method_content = <<STRDELIM
+# def #{method_name}(value=nil, &proc)
+#   if proc && value.instance_of?(Hash)
+#           value[:value] = proc
+#         elsif proc && (value.instance_of?(String) || value.instance_of?(Symbol))
+#           property = {}
+#           property[:value] = proc
+#           property[:options] = value
+#           value = property
+#         elsif proc
+#           value = {value: proc}
+#         end
+#         if value || value == false
+#           #{processor}
+#           #{set_instance_variable}
+#           #{rendering}
+#         else
+#           # below this is the method getter it return the instance variable if it is define(&.rea)
+#           #{getter_processor}
+#           @#{method_name}&.read
+#         end
+# end
+#
+# def #{method_name}=(value, &proc)
+#  #{method_name}(value, &proc)
+# end
+#STRDELIM
+
     category << method_content.each_line.reject { |x| x.strip == "" }.join
 
   end

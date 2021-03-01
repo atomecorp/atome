@@ -11,7 +11,6 @@ class Quark
     @property = value
   end
 
-
   def self.atome_methods
     audio = %i[color opacity border overflow]
     communication = %i[share]

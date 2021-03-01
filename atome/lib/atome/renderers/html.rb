@@ -12,7 +12,7 @@ module RenderHtml
   include MediaProcessorHtml
   include SpatialProcessorHtml
   include UtilityProcessorHtml
-  include VisualProcessorHtml
+  include MaterialProcessorHtml
   include AudioHtml
   include CommunicationHtml
   include EffectHtml
@@ -24,6 +24,6 @@ module RenderHtml
   include MediaHtml
   include SpatialHtml
   include UtilityHtml
-  include VisualHtml
+  include MaterialHtml
   include JSUtils
 end

@@ -41,4 +41,16 @@ module InternalHelpers
       end
     end
   end
+
+  def properties_common(value = nil, &proc)
+    if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
+      property = {}
+      property[:value] = proc
+      property[:options] = value
+      value = property
+    elsif proc
+      value = {value: proc}
+    end
+   value
+  end
 end

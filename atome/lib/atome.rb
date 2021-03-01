@@ -1,10 +1,10 @@
 class Quark
   def self.property_generation
-    :dynamic
+    :static
   end
 end
 # ruby main Object extensions
-require "atome/extensions/object/hash"
+require "atome/extensions/ruby/hash"
 # default_value
 require "atome/environment/default_values"
 # opal specific
@@ -22,7 +22,7 @@ require "atome/renderers/html/processors/identity"
 require "atome/renderers/html/processors/media"
 require "atome/renderers/html/processors/spatial"
 require "atome/renderers/html/processors/utility"
-require "atome/renderers/html/processors/visual"
+require "atome/renderers/html/processors/material"
 # html renderer
 require "atome/renderers/html/properties/audio"
 require "atome/renderers/html/properties/communication"
@@ -35,7 +35,7 @@ require "atome/renderers/html/properties/identity"
 require "atome/renderers/html/properties/media"
 require "atome/renderers/html/properties/spatial"
 require "atome/renderers/html/properties/utility"
-require "atome/renderers/html/properties/visual"
+require "atome/renderers/html/properties/material"
 require "atome/renderers/html/helpers/html_helpers"
 require "atome/renderers/html"
 # property
@@ -52,7 +52,7 @@ if Quark.property_generation== :static
   require "atome/generated_properties/medias"
   require "atome/generated_properties/spatials"
   require "atome/generated_properties/utilities"
-  require "atome/generated_properties/visuals"
+  require "atome/generated_properties/materials"
 end
 # property processors
 require "atome/processors/audio"
@@ -66,14 +66,14 @@ require "atome/processors/identity"
 require "atome/processors/media"
 require "atome/processors/spatial"
 require "atome/processors/utility"
-require "atome/processors/visual"
+require "atome/processors/material"
 # helpers
 require "atome/helpers/atome_helpers"
 require "atome/helpers/internal_helpers"
 # main atome builder
 require "atome/builder/properties"
 #Quark.genesis
-require "atome/builder/object"
+require "atome/builder/atome_generator"
 # Atome helper (methods available at main Object level)
 require "atome/extensions/atome_extensions"
 # class to create a new device

@@ -1,9 +1,20 @@
 module MediasProcessors
-  # todo :it'll certainly be better if meta programmed
-  def box_processor(value)
-    atome = Object.box(value)
+  def media_processor(type, value)
+    if value == true
+      value = {}
+    elsif value.instance_of?(String)
+      value = {content: value}
+    end
+    preset = grab(:preset).get(:content)
+    preset = preset[type]
+    preset = preset.merge(value)
+    atome = Atome.new(preset)
     atome.parent = atome_id
     atome
+  end
+
+  def box_processor(value)
+    media_processor(:box, value)
   end
 
   def box_getter_processor(value)
@@ -12,9 +23,7 @@ module MediasProcessors
   end
 
   def circle_processor(value)
-    atome = Object.circle(value)
-    atome.parent = atome_id
-    atome
+    media_processor(:circle, value)
   end
 
   def circle_getter_processor(value)
@@ -23,9 +32,7 @@ module MediasProcessors
   end
 
   def text_processor(value)
-    atome = Object.text(value)
-    atome.parent = atome_id
-    atome
+    media_processor(:text, value)
   end
 
   def text_getter_processor(value)
@@ -34,9 +41,7 @@ module MediasProcessors
   end
 
   def image_processor(value)
-    atome = Object.image(value)
-    atome.parent = atome_id
-    atome
+    media_processor(:image, value)
   end
 
   def image_getter_processor(value)
@@ -45,9 +50,7 @@ module MediasProcessors
   end
 
   def video_processor(value)
-    atome = Object.video(value)
-    atome.parent = atome_id
-    atome
+    media_processor(:video, value)
   end
 
   def video_getter_processor(value)
@@ -56,9 +59,7 @@ module MediasProcessors
   end
 
   def audio_processor(value)
-    atome = Object.audio(value)
-    atome.parent = atome_id
-    atome
+    media_processor(:audio, value)
   end
 
   def audio_getter_processor(value)

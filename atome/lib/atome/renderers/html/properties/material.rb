@@ -1,4 +1,4 @@
-module VisualHtml
+module MaterialHtml
   def color_html(value)
     value = value.read
     color = "background-image"

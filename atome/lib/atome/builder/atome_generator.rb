@@ -13,7 +13,7 @@ class Atome
     include MediasProperties
     include SpatialsProperties
     include UtilitiesProperties
-    include VisualsProperties
+    include MaterialsProperties
   else
     Quark.genesis
   end
@@ -29,7 +29,7 @@ class Atome
   include MediasProcessors
   include SpatialsProcessors
   include UtilitiesProcessors
-  include VisualsProcessors
+  include MaterialsProcessors
   include RenderHtml
   include InternalHelpers
   include AtomeHelpers
@@ -39,7 +39,9 @@ class Atome
     # the line create a space to hold new created atomes
     Quark.space
     # genesis uses meta programing to generate atome's methods
-    Quark.genesis
+    if Quark.property_generation== :dynamic
+      Quark.genesis
+    end
   end
 
   # atome creation
