@@ -1,18 +1,23 @@
 # this class is used to define newly created atomes
 class Atome
   include DefaultValues
-  include AudiosProperties
-  include CommunicationsProperties
-  include EffectsProperties
-  include EventsProperties
-  include GeometriesProperties
-  include HelpersProperties
-  include HierarchiesProperties
-  include IdentitiesProperties
-  include MediasProperties
-  include SpatialsProperties
-  include UtilitiesProperties
-  include VisualsProperties
+  if Quark.property_generation == :static
+    include AudiosProperties
+    include CommunicationsProperties
+    include EffectsProperties
+    include EventsProperties
+    include GeometriesProperties
+    include HelpersProperties
+    include HierarchiesProperties
+    include IdentitiesProperties
+    include MediasProperties
+    include SpatialsProperties
+    include UtilitiesProperties
+    include VisualsProperties
+  else
+    Quark.genesis
+  end
+
   include AudiosProcessors
   include CommunicationsProcessors
   include EffectsProcessors
@@ -33,7 +38,7 @@ class Atome
   def self.sparkle
     # the line create a space to hold new created atomes
     Quark.space
-    # genesis uses meta programing to generate atome methods
+    # genesis uses meta programing to generate atome's methods
     Quark.genesis
   end
 

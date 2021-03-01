@@ -1,3 +1,8 @@
+class Quark
+  def self.property_generation
+    :dynamic
+  end
+end
 # ruby main Object extensions
 require "atome/extensions/object/hash"
 # default_value
@@ -34,18 +39,21 @@ require "atome/renderers/html/properties/visual"
 require "atome/renderers/html/helpers/html_helpers"
 require "atome/renderers/html"
 # property
-require "atome/properties/audio"
-require "atome/properties/communication"
-require "atome/properties/effect"
-require "atome/properties/event"
-require "atome/properties/geometry"
-require "atome/properties/helper"
-require "atome/properties/hierarchy"
-require "atome/properties/identity"
-require "atome/properties/media"
-require "atome/properties/spatial"
-require "atome/properties/utility"
-require "atome/properties/visual"
+if Quark.property_generation== :static
+  # genesis uses meta programing to generate atome's methods
+  require "atome/generated_properties/audios"
+  require "atome/generated_properties/communications"
+  require "atome/generated_properties/effects"
+  require "atome/generated_properties/events"
+  require "atome/generated_properties/geometries"
+  require "atome/generated_properties/helpers"
+  require "atome/generated_properties/hierarchies"
+  require "atome/generated_properties/identities"
+  require "atome/generated_properties/medias"
+  require "atome/generated_properties/spatials"
+  require "atome/generated_properties/utilities"
+  require "atome/generated_properties/visuals"
+end
 # property processors
 require "atome/processors/audio"
 require "atome/processors/communication"
@@ -64,6 +72,7 @@ require "atome/helpers/atome_helpers"
 require "atome/helpers/internal_helpers"
 # main atome builder
 require "atome/builder/properties"
+#Quark.genesis
 require "atome/builder/object"
 # Atome helper (methods available at main Object level)
 require "atome/extensions/atome_extensions"

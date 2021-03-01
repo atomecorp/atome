@@ -228,7 +228,7 @@ let mediaEventListener = {
 };
 
 document.addEventListener("deviceready", function () {
-    // $.getScript('js/third_parties/opal/opal_parser.js', function (data, textStatus, jqxhr) {
+    // $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
     //     //webSocketHelper
     //     //TODO: Get server address from DNS.
     //     const serverAddress = '192.168.1.13:9292';

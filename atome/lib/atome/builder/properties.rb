@@ -6,10 +6,11 @@ class Quark
   def read
     @property
   end
-
+  #
   def write(value)
     @property = value
   end
+
 
   def self.atome_methods
     audio = %i[color opacity border overflow]
@@ -35,6 +36,10 @@ class Quark
     %i[private can box circle text image video audio]
   end
 
+  def self.no_rendering
+    %i[child]
+  end
+
   # generate methods
   def self.genesis
     Quark.atome_methods.each do |method_name|
@@ -53,8 +58,13 @@ class Quark
           if Quark.setter_need_pre_processing.include?(method_name)
             # Attention!! :if this property needs processing, the instance variable is not created !
             send(method_name + "_processor", value)
+          elsif Quark.no_rendering.include?(method_name)
+            # only set the instance variable but no rendering
+            instance_variable_set("@#{method_name}", atomise(value))
           else
+            # we set yhe instance variable
             property_instance = instance_variable_set("@#{method_name}", atomise(value))
+            # and send it to the renderer
             send(method_name + "_html", property_instance)
           end
           # below this is the method getter it return the instance variable if it is define(&.rea)

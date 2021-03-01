@@ -20,7 +20,7 @@ module JSUtils
     unless ATOME.content[:time_out]
       ATOME.content[:time_out] = []
     end
-    timeout = `setTimeout(function(){ #{yield} }, #{time * 1000});`
+    timeout = `setTimeout(function(){ #{yield} }, #{time * 1000})`
     ATOME.add_timeout(timeout)
     # clear_timeout(timeout)
     # clear_timeouts
@@ -49,7 +49,7 @@ module JSUtils
     unless ATOME.content[:intervals]
       ATOME.content[:intervals] = {}
     end
-    interval = `setInterval(function(){ #{yield}, #{interval_countdown(interval)} }, #{delay * 1000});`
+    interval = `setInterval(function(){ #{yield}, #{interval_countdown(interval)} }, #{delay * 1000})`
     ATOME.add_interval(interval, repeat)
   end
 
