@@ -1,2 +1,2 @@
-module MaterialsProcessors
+module Processors
 end

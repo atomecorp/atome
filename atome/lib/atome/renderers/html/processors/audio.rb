@@ -1,2 +1,2 @@
-module AudioProcessorHtml
+module ProcessorHtml
 end

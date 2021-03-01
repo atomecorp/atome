@@ -1,2 +1,2 @@
-module HelpersProcessors
+module Processors
 end

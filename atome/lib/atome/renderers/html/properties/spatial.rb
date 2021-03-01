@@ -1,4 +1,4 @@
-module SpatialHtml
+module PropertylHtml
   def x_html(value)
     value=value.read
     jq_get(atome_id).css("left", value)

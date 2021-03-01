@@ -1,4 +1,4 @@
-module IdentitiesProcessors
+module Processors
   def atome_id_processor(value)
     # just to ensure atome_id uniqueness and prevent any identity change id set before
     uniqueness = true

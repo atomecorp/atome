@@ -1,4 +1,4 @@
-module MediaHtml
+module PropertylHtml
   def content_html(value)
     value = value.read
     value = value.to_s.gsub("\n", "<br>")

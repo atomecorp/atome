@@ -1,2 +1,2 @@
-module EventsProcessors
+module Processors
 end

@@ -1,4 +1,4 @@
-module EventHtml
+module PropertylHtml
   def touch_html(value)
     value = value.read
     proc = value[:value]

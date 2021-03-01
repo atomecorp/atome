@@ -1,4 +1,4 @@
-module SpatialsProperties
+module Properties
   def width(value = nil, &proc)
     if value.nil? && !proc
       @width&.read

@@ -1,4 +1,4 @@
-module MediasProcessors
+module Processors
   def media_processor(type, value)
     if value == true
       value = {}

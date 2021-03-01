@@ -1,4 +1,4 @@
-module HelpersProperties
+module Properties
   def tactile(value = nil, &proc)
     if value.nil? && !proc
       @tactile&.read

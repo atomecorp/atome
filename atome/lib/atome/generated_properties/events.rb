@@ -1,4 +1,4 @@
-module EventsProperties
+module Properties
   def touch(value = nil, &proc)
     if value.nil? && !proc
       @touch&.read

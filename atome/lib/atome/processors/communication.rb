@@ -1,2 +1,2 @@
-module CommunicationsProcessors
+module Processors
 end

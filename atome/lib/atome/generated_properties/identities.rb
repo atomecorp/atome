@@ -1,4 +1,4 @@
-module IdentitiesProperties
+module Properties
   def atome_id(value = nil, &proc)
     if value.nil? && !proc
       @atome_id&.read

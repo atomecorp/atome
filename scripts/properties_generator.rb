@@ -60,40 +60,11 @@ atome_methods.each do |property_type, property|
   #{method_name}(value, &proc)
  end
 STRDELIM
-
-#    method_content = <<STRDELIM
-# def #{method_name}(value=nil, &proc)
-#   if proc && value.instance_of?(Hash)
-#           value[:value] = proc
-#         elsif proc && (value.instance_of?(String) || value.instance_of?(Symbol))
-#           property = {}
-#           property[:value] = proc
-#           property[:options] = value
-#           value = property
-#         elsif proc
-#           value = {value: proc}
-#         end
-#         if value || value == false
-#           #{processor}
-#           #{set_instance_variable}
-#           #{rendering}
-#         else
-#           # below this is the method getter it return the instance variable if it is define(&.rea)
-#           #{getter_processor}
-#           @#{method_name}&.read
-#         end
-# end
-#
-# def #{method_name}=(value, &proc)
-#  #{method_name}(value, &proc)
-# end
-#STRDELIM
-
     category << method_content.each_line.reject { |x| x.strip == "" }.join
 
   end
   category = <<STRDELIM
-module #{property_type.capitalize}Properties
+module Properties
 #{category.join("\n")}
 end
 STRDELIM

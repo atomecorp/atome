@@ -1,4 +1,4 @@
-module HierarchyHtml
+module PropertylHtml
   def parent_html(value)
     value = value.read
     # parent.append(child)

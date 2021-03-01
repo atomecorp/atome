@@ -1,4 +1,4 @@
-module CommunicationsProperties
+module Properties
   def share(value = nil, &proc)
     if value.nil? && !proc
       @share&.read

@@ -1,4 +1,4 @@
-module MediaProcessorHtml
+module ProcessorHtml
   def video_creator__helper(value)
     video_found = find({type: :video, scope: :eden, name: value})
     path = if video_found.nil?

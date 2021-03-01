@@ -1,4 +1,4 @@
-module HelperHtml
+module PropertylHtml
   def tactile_html(value)
     value.read
   end

@@ -1,2 +1,2 @@
-module UtilityProcessorHtml
+module ProcessorHtml
 end

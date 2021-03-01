@@ -1,2 +1,2 @@
-module HierarchiesProcessors
+module Processors
 end

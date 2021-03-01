@@ -1,2 +1,2 @@
-module AudiosProcessors
+module Processors
 end

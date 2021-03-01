@@ -1,4 +1,4 @@
-module MediasProperties
+module Properties
   def content(value = nil, &proc)
     if value.nil? && !proc
       @content&.read

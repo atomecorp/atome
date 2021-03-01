@@ -1,2 +1,2 @@
-module GeometriesProcessors
+module Processors
 end

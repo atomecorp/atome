@@ -1,4 +1,4 @@
-module UtilitiesProperties
+module Properties
   def edit(value = nil, &proc)
     if value.nil? && !proc
       @edit&.read

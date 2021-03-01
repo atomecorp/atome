@@ -1,2 +1,2 @@
-module GeometryProcessorHtml
+module ProcessorHtml
 end

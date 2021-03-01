@@ -1,4 +1,4 @@
-module MaterialHtml
+module PropertylHtml
   def color_html(value)
     value = value.read
     color = "background-image"

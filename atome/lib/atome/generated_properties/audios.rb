@@ -1,4 +1,4 @@
-module AudiosProperties
+module Properties
   def contour(value = nil, &proc)
     if value.nil? && !proc
       @contour&.read

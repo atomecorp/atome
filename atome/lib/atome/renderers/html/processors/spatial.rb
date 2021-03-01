@@ -1,2 +1,2 @@
-module SpatialProcessorHtml
+module ProcessorHtml
 end

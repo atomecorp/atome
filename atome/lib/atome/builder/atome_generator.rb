@@ -2,34 +2,11 @@
 class Atome
   include DefaultValues
   if Quark.property_generation == :static
-    include AudiosProperties
-    include CommunicationsProperties
-    include EffectsProperties
-    include EventsProperties
-    include GeometriesProperties
-    include HelpersProperties
-    include HierarchiesProperties
-    include IdentitiesProperties
-    include MediasProperties
-    include SpatialsProperties
-    include UtilitiesProperties
-    include MaterialsProperties
+    include Properties
   else
     Quark.genesis
   end
-
-  include AudiosProcessors
-  include CommunicationsProcessors
-  include EffectsProcessors
-  include EventsProcessors
-  include GeometriesProcessors
-  include HelpersProcessors
-  include HierarchiesProcessors
-  include IdentitiesProcessors
-  include MediasProcessors
-  include SpatialsProcessors
-  include UtilitiesProcessors
-  include MaterialsProcessors
+  include Processors
   include RenderHtml
   include InternalHelpers
   include AtomeHelpers

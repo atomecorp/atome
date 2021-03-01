@@ -1,4 +1,4 @@
-module MaterialsProperties
+module Properties
   def color(value = nil, &proc)
     if value.nil? && !proc
       @color&.read

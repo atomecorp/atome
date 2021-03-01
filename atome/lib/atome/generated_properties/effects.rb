@@ -1,4 +1,4 @@
-module EffectsProperties
+module Properties
   def blur(value = nil, &proc)
     if value.nil? && !proc
       @blur&.read

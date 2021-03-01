@@ -1,2 +1,2 @@
-module UtilitiesProcessors
+module Processors
 end

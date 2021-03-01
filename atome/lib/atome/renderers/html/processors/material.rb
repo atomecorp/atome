@@ -1,4 +1,4 @@
-module MaterialProcessorHtml
+module ProcessorHtml
   def color_helper(value)
     case value
     when Hash
