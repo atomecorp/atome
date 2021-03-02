@@ -1,11 +1,11 @@
 # this class is used to define newly created atomes
 class Atome
   include DefaultValues
-  if Quark.property_generation == :static
+  #if Quark.property_generation == :static
     include Properties
-  else
-    Quark.genesis
-  end
+  #else
+  #  Quark.genesis
+  #end
   include Processors
   include RenderHtml
   include InternalHelpers
@@ -16,9 +16,9 @@ class Atome
     # the line create a space to hold new created atomes
     Quark.space
     # genesis uses meta programing to generate atome's methods
-    if Quark.property_generation== :dynamic
-      Quark.genesis
-    end
+    #if Quark.property_generation== :dynamic
+    #  Quark.genesis
+    #end
   end
 
   # atome creation

@@ -1,8 +1,8 @@
-class Quark
-  def self.property_generation
-    :static
-  end
-end
+#class Quark
+#  def self.property_generation
+#    :static
+#  end
+#end
 # ruby main Object extensions
 require "atome/extensions/ruby/hash"
 # default_value
@@ -37,7 +37,7 @@ require "atome/renderers/html/properties/material"
 require "atome/renderers/html/helpers/html_helpers"
 require "atome/renderers/html"
 # property
-if Quark.property_generation== :static
+#if Quark.property_generation== :static
   # genesis uses meta programing to generate atome's methods
   require "atome/generated_properties/communications"
   require "atome/generated_properties/effects"
@@ -50,7 +50,7 @@ if Quark.property_generation== :static
   require "atome/generated_properties/spatials"
   require "atome/generated_properties/utilities"
   require "atome/generated_properties/materials"
-end
+#end
 # property processors
 require "atome/processors/communication"
 require "atome/processors/effect"
