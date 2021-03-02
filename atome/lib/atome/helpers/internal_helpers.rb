@@ -53,4 +53,8 @@ module InternalHelpers
     end
    value
   end
+
+  def update_instance_variable(instance_nanme, value)
+    instance_variable_set("@#{instance_nanme}", atomise(value))
+  end
 end

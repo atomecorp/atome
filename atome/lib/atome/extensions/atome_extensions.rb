@@ -41,6 +41,12 @@ def grab(atome_id)
   nil
 end
 
+def batch *objects
+  objects.each do |atome_id|
+    grab(atome_id)
+  end
+end
+
 def tactile
   # check if user's device is a tactile device
   false
@@ -76,18 +82,6 @@ end
 def version
   "v:0.015"
 end
-
-# def alert(msg)
-#  ATOME.wait 0.2 do
-#    alert = text(content: msg)
-#    alert.color = :red
-#    alert.x = 200
-#    alert.y = 200
-#    alert.touch({option: :up}) do
-#      alert.delete
-#    end
-#  end
-# end
 
 def notification(message, duration)
   notification = text({content: message, color: :orange, x: 69, y: 69})

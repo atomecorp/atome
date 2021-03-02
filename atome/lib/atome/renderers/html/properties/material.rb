@@ -1,13 +1,18 @@
 module PropertylHtml
   def color_html(value)
-    value = value.read
+    values = value.read
     color = "background-image"
-    value = color_helper(value)
-    if type == :text
-      jq_get(atome_id).css("-webkit-text-fill-color", value)
-    else
-      value = "linear-gradient(0deg," + value + ", " + value + ")"
-      jq_get(atome_id).css(color, value)
+    unless values.instance_of?(Array)
+      values=[values]
+    end
+    values.each do |value|
+      value = color_helper(value)
+      if type == :text
+        jq_get(atome_id).css("-webkit-text-fill-color", value)
+      else
+        value = "linear-gradient(0deg," + value + ", " + value + ")"
+        jq_get(atome_id).css(color, value)
+      end
     end
   end
 

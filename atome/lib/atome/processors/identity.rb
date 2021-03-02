@@ -1,5 +1,5 @@
 module Processors
-  def atome_id_processor(value)
+  def atome_id_pre_processor(value)
     # just to ensure atome_id uniqueness and prevent any identity change id set before
     uniqueness = true
     atome_id_found = false

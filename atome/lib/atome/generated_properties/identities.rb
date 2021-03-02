@@ -4,7 +4,7 @@ module Properties
       @atome_id&.read
     else
       value = properties_common(value, &proc)
-       atome_id_processor(value)
+      atome_id_pre_processor(value)
       atome_id_html(@atome_id)
     end
   end 
@@ -54,10 +54,9 @@ module Properties
   def private(value = nil, &proc)
     if value.nil? && !proc
       private_getter_processor(value)
-      @private&.read
     else
       value = properties_common(value, &proc)
-       private_processor(value)
+      private_pre_processor(value)
       private_html(@private)
     end
   end 
@@ -68,10 +67,9 @@ module Properties
   def can(value = nil, &proc)
     if value.nil? && !proc
       can_getter_processor(value)
-      @can&.read
     else
       value = properties_common(value, &proc)
-       can_processor(value)
+      can_pre_processor(value)
       can_html(@can)
     end
   end 

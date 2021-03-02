@@ -1,5 +1,6 @@
 module Processors
-  def media_processor(type, value)
+
+  def media_pre_processor(type, value)
     if value == true
       value = {}
     elsif value.instance_of?(String)
@@ -7,63 +8,56 @@ module Processors
     end
     preset = grab(:preset).get(:content)
     preset = preset[type]
-    preset = preset.merge(value)
-    atome = Atome.new(preset)
-    atome.parent = atome_id
-    atome
+    # we overload the parent to the current and finnaly add the value set by user
+    preset = preset.merge({parent: atome_id}).merge(value)
+    Atome.new(preset)
   end
 
-  def box_processor(value)
-    media_processor(:box, value)
+  def box_pre_processor(value)
+    media_pre_processor(:box, value)
   end
 
   def box_getter_processor(value)
-    alert "processor media line 7 : #{value}get the box if needed to be created"
-    #  box()
+      @box&.read
   end
 
-  def circle_processor(value)
-    media_processor(:circle, value)
+  def circle_pre_processor(value)
+    media_pre_processor(:circle, value)
   end
 
   def circle_getter_processor(value)
-    alert "processor media line 17 : #{value}get the box if needed to be created"
-    #  circle()
+    @circle&.read
   end
 
-  def text_processor(value)
-    media_processor(:text, value)
+  def text_pre_processor(value)
+    media_pre_processor(:text, value)
   end
 
   def text_getter_processor(value)
-    alert "processor media line 17 : #{value}get the box if needed to be created"
-    #  text()
+    @text&.read
   end
 
-  def image_processor(value)
-    media_processor(:image, value)
+  def image_pre_processor(value)
+    media_pre_processor(:image, value)
   end
 
   def image_getter_processor(value)
-    alert "processor media line 17 : #{value}get the box if needed to be created"
-    #  image()
+    @image&.read
   end
 
-  def video_processor(value)
-    media_processor(:video, value)
+  def video_pre_processor(value)
+    media_pre_processor(:video, value)
   end
 
   def video_getter_processor(value)
-    alert "processor media line 17 : #{value}get the box if needed to be created"
-    #  video()
+    @video&.read
   end
 
-  def audio_processor(value)
-    media_processor(:audio, value)
+  def audio_pre_processor(value)
+    media_pre_processor(:audio, value)
   end
 
   def audio_getter_processor(value)
-    alert "processor media line 17 : #{value}get the box if needed to be created"
-    #  audio()
+    @audio&.read
   end
 end

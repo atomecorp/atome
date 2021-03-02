@@ -12,15 +12,15 @@ module PropertylHtml
     proc = value[:value]
     jq_object = jq_get(atome_id)
     lock = case value[:lock]
-    when :parent
-      {containment: "parent"}
-    when :x
-      {axis: "y"}
-    when :y
-      {axis: "x"}
-    else
-      {containment: "parent"}
-    end
+           when :parent
+             {containment: "parent"}
+           when :x
+             {axis: "y"}
+           when :y
+             {axis: "x"}
+           else
+             {containment: "parent"}
+           end
     jq_object.draggable(lock)
     jq_object.on(:drag) do |evt|
       ## we update the position of the atome

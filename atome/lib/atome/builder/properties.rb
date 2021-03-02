@@ -1,4 +1,5 @@
 class Quark
+  include Batch
   def initialize(property)
     @property = property
   end
@@ -11,21 +12,32 @@ class Quark
     @property = value
   end
 
-  def self.atome_methods
-    audio = %i[color opacity border overflow]
-    communication = %i[share]
-    effect = %i[blur shadow smooth]
-    events = %i[touch drag over]
-    geometry = %i[width height rotation]
-    helper = %i[tactile display]
-    hierarchy = %i[parent child insert]
-    identity = %i[atome_id id type language private can]
-    spatial = %i[width height size x xx y yy z center]
-    media = %i[content image sound video box circle text image video audio]
-    utility = %i[edit record enliven selector render preset tactile]
-    visual = %i[color opacity border overflow]
-    spatial | helper | visual | audio | geometry | effect | media | hierarchy | utility | communication | identity | events
-  end
+
+  #def self.atome_methods
+  #  audio = %i[color opacity border overflow]
+  #  communication = %i[share]
+  #  effect = %i[blur shadow smooth]
+  #  events = %i[touch drag over]
+  #  geometry = %i[width height rotation]
+  #  helper = %i[tactile display]
+  #  hierarchy = %i[parent child insert]
+  #  identity = %i[atome_id id type language private can]
+  #  spatial = %i[width height size x xx y yy z center]
+  #  media = %i[content image sound video box circle text image video audio]
+  #  utility = %i[edit record enliven selector render preset tactile]
+  #  visual = %i[color opacity border overflow]
+  #  spatial | helper | visual | audio | geometry | effect | media | hierarchy | utility | communication | identity | events
+  #end
+  #
+  #atome_methods.each do |method_name|
+  #  Quark.define_method method_name do |value, &proc|
+  #    read.each do |atome|
+  #      grab(atome).send(method_name, value, &proc)
+  #    end
+  #  end
+  #end
+
+
 
   #def self.setter_need_pre_processing
   #  %i[atome_id private can box circle text image video audio]

@@ -13,7 +13,8 @@ def generate_methods
   require "./scripts/properties_generator.rb"
 end
 
-#generate_methods
+generate_methods
+
 def update_opal_libraries
   file 'www/public/js/dynamic_libraries/opal/opal.js': ["www/public/js/dynamic_libraries/opal"] do |t|
     opal = Opal::Builder.new

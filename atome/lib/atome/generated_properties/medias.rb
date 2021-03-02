@@ -15,10 +15,9 @@ module Properties
   def video(value = nil, &proc)
     if value.nil? && !proc
       video_getter_processor(value)
-      @video&.read
     else
       value = properties_common(value, &proc)
-       video_processor(value)
+      video_pre_processor(value)
     end
   end 
  def video=(value, &proc)
@@ -28,10 +27,9 @@ module Properties
   def box(value = nil, &proc)
     if value.nil? && !proc
       box_getter_processor(value)
-      @box&.read
     else
       value = properties_common(value, &proc)
-       box_processor(value)
+      box_pre_processor(value)
     end
   end 
  def box=(value, &proc)
@@ -41,10 +39,9 @@ module Properties
   def circle(value = nil, &proc)
     if value.nil? && !proc
       circle_getter_processor(value)
-      @circle&.read
     else
       value = properties_common(value, &proc)
-       circle_processor(value)
+      circle_pre_processor(value)
     end
   end 
  def circle=(value, &proc)
@@ -54,10 +51,9 @@ module Properties
   def text(value = nil, &proc)
     if value.nil? && !proc
       text_getter_processor(value)
-      @text&.read
     else
       value = properties_common(value, &proc)
-       text_processor(value)
+      text_pre_processor(value)
     end
   end 
  def text=(value, &proc)
@@ -67,10 +63,9 @@ module Properties
   def image(value = nil, &proc)
     if value.nil? && !proc
       image_getter_processor(value)
-      @image&.read
     else
       value = properties_common(value, &proc)
-       image_processor(value)
+      image_pre_processor(value)
     end
   end 
  def image=(value, &proc)
@@ -80,10 +75,9 @@ module Properties
   def audio(value = nil, &proc)
     if value.nil? && !proc
       audio_getter_processor(value)
-      @audio&.read
     else
       value = properties_common(value, &proc)
-       audio_processor(value)
+      audio_pre_processor(value)
     end
   end 
  def audio=(value, &proc)

@@ -1,18 +1,10 @@
 module Properties
-
-  def force_instance_variable instance, value
-    instance=value
-  end
   def parent(value = nil, &proc)
     if value.nil? && !proc
-      @parent&.read
+      parent_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      @parent = atomise(value)
-      #alert grab(value.to_sym).class
-      #grab(value).force_instance_variable(@child, self.atome_id)
-      #@child =atomise(self.atome_id)
-      parent_html(@parent)
+      parent_pre_processor(value)
     end
   end 
  def parent=(value, &proc)
@@ -21,12 +13,10 @@ module Properties
 
   def child(value = nil, &proc)
     if value.nil? && !proc
-      @child&.read
+      child_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      @parent = atomise(self.atome_id)
-      @child = atomise(value)
-      child_html(@child)
+      child_pre_processor(value)
     end
   end 
  def child=(value, &proc)

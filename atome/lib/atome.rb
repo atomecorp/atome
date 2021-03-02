@@ -11,7 +11,6 @@ require "atome/environment/default_values"
 require "atome/extensions/opal/opal_helpers"
 require "atome/extensions/opal/opal_jquery"
 # render helper
-require "atome/renderers/html/processors/audio"
 require "atome/renderers/html/processors/communication"
 require "atome/renderers/html/processors/effect"
 require "atome/renderers/html/processors/event"
@@ -24,7 +23,6 @@ require "atome/renderers/html/processors/spatial"
 require "atome/renderers/html/processors/utility"
 require "atome/renderers/html/processors/material"
 # html renderer
-require "atome/renderers/html/properties/audio"
 require "atome/renderers/html/properties/communication"
 require "atome/renderers/html/properties/effect"
 require "atome/renderers/html/properties/event"
@@ -41,7 +39,6 @@ require "atome/renderers/html"
 # property
 if Quark.property_generation== :static
   # genesis uses meta programing to generate atome's methods
-  require "atome/generated_properties/audios"
   require "atome/generated_properties/communications"
   require "atome/generated_properties/effects"
   require "atome/generated_properties/events"
@@ -55,7 +52,6 @@ if Quark.property_generation== :static
   require "atome/generated_properties/materials"
 end
 # property processors
-require "atome/processors/audio"
 require "atome/processors/communication"
 require "atome/processors/effect"
 require "atome/processors/event"
@@ -71,6 +67,7 @@ require "atome/processors/material"
 require "atome/helpers/atome_helpers"
 require "atome/helpers/internal_helpers"
 # main atome builder
+require "atome/generated_properties/batch"
 require "atome/builder/properties"
 #Quark.genesis
 require "atome/builder/atome_generator"
