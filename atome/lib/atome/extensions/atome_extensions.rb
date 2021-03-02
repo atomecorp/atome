@@ -41,12 +41,12 @@ def grab(atome_id)
   nil
 end
 
-def batch objects
+def batch(objects)
   batched_atomes = []
   objects.each do |atome_id|
     batched_atomes << atome_id.atome_id
   end
-  ATOME.atomise(batched_atomes)
+  ATOME.atomise(:batch, batched_atomes)
 end
 
 def tactile

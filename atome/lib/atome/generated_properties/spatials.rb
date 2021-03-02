@@ -1,49 +1,10 @@
 module Properties
-  def width(value = nil, &proc)
-    if value.nil? && !proc
-      @width&.read
-    else
-      value = properties_common(value, &proc)
-      @width = atomise(value)
-      width_html(@width)
-    end
-  end 
- def width=(value, &proc)
-  width(value, &proc)
- end
-
-  def height(value = nil, &proc)
-    if value.nil? && !proc
-      @height&.read
-    else
-      value = properties_common(value, &proc)
-      @height = atomise(value)
-      height_html(@height)
-    end
-  end 
- def height=(value, &proc)
-  height(value, &proc)
- end
-
-  def size(value = nil, &proc)
-    if value.nil? && !proc
-      @size&.read
-    else
-      value = properties_common(value, &proc)
-      @size = atomise(value)
-      size_html(@size)
-    end
-  end 
- def size=(value, &proc)
-  size(value, &proc)
- end
-
   def x(value = nil, &proc)
     if value.nil? && !proc
       @x&.read
     else
       value = properties_common(value, &proc)
-      @x = atomise(value)
+      @x = atomise(:x,value)
       x_html(@x)
     end
   end 
@@ -56,7 +17,7 @@ module Properties
       @xx&.read
     else
       value = properties_common(value, &proc)
-      @xx = atomise(value)
+      @xx = atomise(:xx,value)
       xx_html(@xx)
     end
   end 
@@ -69,7 +30,7 @@ module Properties
       @y&.read
     else
       value = properties_common(value, &proc)
-      @y = atomise(value)
+      @y = atomise(:y,value)
       y_html(@y)
     end
   end 
@@ -82,7 +43,7 @@ module Properties
       @yy&.read
     else
       value = properties_common(value, &proc)
-      @yy = atomise(value)
+      @yy = atomise(:yy,value)
       yy_html(@yy)
     end
   end 
@@ -95,7 +56,7 @@ module Properties
       @z&.read
     else
       value = properties_common(value, &proc)
-      @z = atomise(value)
+      @z = atomise(:z,value)
       z_html(@z)
     end
   end 
@@ -108,7 +69,7 @@ module Properties
       @center&.read
     else
       value = properties_common(value, &proc)
-      @center = atomise(value)
+      @center = atomise(:center,value)
       center_html(@center)
     end
   end 

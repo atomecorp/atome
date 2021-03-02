@@ -4,7 +4,7 @@ module Properties
       @tactile&.read
     else
       value = properties_common(value, &proc)
-      @tactile = atomise(value)
+      @tactile = atomise(:tactile,value)
       tactile_html(@tactile)
     end
   end 
@@ -17,7 +17,7 @@ module Properties
       @display&.read
     else
       value = properties_common(value, &proc)
-      @display = atomise(value)
+      @display = atomise(:display,value)
       display_html(@display)
     end
   end 

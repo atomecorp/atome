@@ -12,10 +12,10 @@ module Processors
     end
     # if an atome already have this atome_id we wont set it with the current value but use a automatic identity
     @atome_id = if uniqueness
-      atomise(value)
+      atomise(:atome_id, value)
     else
       # an atome already have this atome_id, the new atome will be renamed
-      atomise(identity)
+      atomise(:atome, identity)
     end
     # atome_id can't be changed we only set the atome_id if it hasn't been set before
     unless atome_id_found

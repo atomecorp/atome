@@ -4,3 +4,4 @@ Atome.sparkle
 ATOME = Atome.new({atome_id: :atome, render: false, content: {}})
 # now we create the basic universe for the device and it's forthcoming atomes
 Device.new
+MESSENGER=(grab(:messenger))

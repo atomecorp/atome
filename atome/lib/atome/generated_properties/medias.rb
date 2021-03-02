@@ -4,7 +4,7 @@ module Properties
       @content&.read
     else
       value = properties_common(value, &proc)
-      @content = atomise(value)
+      @content = atomise(:content,value)
       content_html(@content)
     end
   end 

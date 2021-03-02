@@ -17,7 +17,7 @@ module Properties
       @id&.read
     else
       value = properties_common(value, &proc)
-      @id = atomise(value)
+      @id = atomise(:id,value)
       id_html(@id)
     end
   end 
@@ -30,7 +30,7 @@ module Properties
       @type&.read
     else
       value = properties_common(value, &proc)
-      @type = atomise(value)
+      @type = atomise(:type,value)
       type_html(@type)
     end
   end 
@@ -43,7 +43,7 @@ module Properties
       @language&.read
     else
       value = properties_common(value, &proc)
-      @language = atomise(value)
+      @language = atomise(:language,value)
       language_html(@language)
     end
   end 

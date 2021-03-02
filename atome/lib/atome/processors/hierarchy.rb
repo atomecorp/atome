@@ -14,7 +14,7 @@ module Processors
           val[:value].call(parent) if val[:value].is_a?(Proc)
         end
       else
-        @parent = atomise(value)
+        @parent = atomise(:parent, value)
         grab(val).update_instance_variable(:child, self.atome_id)
         parent_html(@parent)
       end
@@ -39,7 +39,7 @@ module Processors
           val[:value].call(child) if val[:value].is_a?(Proc)
         end
       else
-        @child = atomise(value)
+        @child = atomise(:child, value)
         grab(val).update_instance_variable(:parent, self.atome_id)
         child_html(@child)
       end

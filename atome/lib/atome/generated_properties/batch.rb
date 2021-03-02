@@ -1,22 +1,4 @@
 module Batch
-      def width(value, &proc)
-        read.each do |atome|
-          grab(atome).send(:width, value, &proc)
-        end
-      end
-
-      def height(value, &proc)
-        read.each do |atome|
-          grab(atome).send(:height, value, &proc)
-        end
-      end
-
-      def size(value, &proc)
-        read.each do |atome|
-          grab(atome).send(:size, value, &proc)
-        end
-      end
-
       def x(value, &proc)
         read.each do |atome|
           grab(atome).send(:x, value, &proc)
@@ -98,6 +80,12 @@ module Batch
       def height(value, &proc)
         read.each do |atome|
           grab(atome).send(:height, value, &proc)
+        end
+      end
+
+      def size(value, &proc)
+        read.each do |atome|
+          grab(atome).send(:size, value, &proc)
         end
       end
 

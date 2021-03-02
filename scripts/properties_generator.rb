@@ -2,11 +2,11 @@ def atome_methods
   communication = %i[share]
   effect = %i[blur shadow smooth]
   event = %i[touch drag over]
-  geometry = %i[width height rotation]
+  geometry = %i[width height size rotation]
   helper = %i[tactile display]
   hierarchy = %i[parent child insert]
   identity = %i[atome_id id type language private can]
-  spatial = %i[width height size x xx y yy z center]
+  spatial = %i[x xx y yy z center]
   media = %i[content video box circle text image audio]
   utility = %i[edit record enliven selector render preset]
   material = %i[color opacity border overflow]
@@ -33,15 +33,16 @@ def no_rendering
   %i[box circle text image video audio parent child]
 end
 
+batch_methods = []
+
 atome_methods.each do |property_type, property|
   category = []
-  batch_methods = []
   property.each do |method_name|
     # atome properties generator
     if need_pre_processing.include?(method_name)
       pre_processor = "#{method_name}_pre_processor(value)"
     else
-      set_instance_variable = "@#{method_name} = atomise(value)"
+      set_instance_variable = "@#{method_name} = atomise(:#{method_name},value)"
     end
     if need_processing.include?(method_name)
       processor = "#{method_name}_processor(value)"
@@ -73,15 +74,6 @@ atome_methods.each do |property_type, property|
  end
 STRDELIM
     category << method_content.each_line.reject { |x| x.strip == "" }.join
-    # batch methods generator
-    batch_method = <<STRDELIM
-      def #{method_name}(value, &proc)
-        read.each do |atome|
-          grab(atome).send(:#{method_name}, value, &proc)
-        end
-      end
-STRDELIM
-    batch_methods << batch_method
   end
 
   category = <<STRDELIM
@@ -90,9 +82,7 @@ module Properties
 end
 STRDELIM
   File.write("atome/lib/atome/generated_properties/#{property_type}.rb", category)
-end
-batch_methods = []
-atome_methods.each do |property_type, property|
+# now we create the method for batch object
   property.each do |method_name|
     batch_method = <<STRDELIM
       def #{method_name}(value, &proc)
@@ -105,6 +95,7 @@ STRDELIM
   end
 
 end
+
 
 batch = <<STRDELIM
 module Batch

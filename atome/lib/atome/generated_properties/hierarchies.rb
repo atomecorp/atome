@@ -28,7 +28,7 @@ module Properties
       @insert&.read
     else
       value = properties_common(value, &proc)
-      @insert = atomise(value)
+      @insert = atomise(:insert,value)
       insert_html(@insert)
     end
   end 

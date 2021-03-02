@@ -4,7 +4,7 @@ module Properties
       @share&.read
     else
       value = properties_common(value, &proc)
-      @share = atomise(value)
+      @share = atomise(:share,value)
       share_html(@share)
     end
   end 
