@@ -30,7 +30,7 @@ def update_opal_libraries
 
   file 'www/public/js/dynamic_libraries/opal/opal_parser.js': ["www/public/js/dynamic_libraries/opal"] do |t|
     parser = Opal::Builder.new
-    parser.build("parser")
+    parser.build('./atome/lib/atome/extensions/opal/opal_parser.rb')
     File.write(t.to_s, parser.to_s)
   end
 end
