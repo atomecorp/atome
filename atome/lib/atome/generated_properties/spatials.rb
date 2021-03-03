@@ -1,6 +1,7 @@
 module Properties
   def x(value = nil, &proc)
-    if value.nil? && !proc
+    if value.nil?
+      proc.call(@x&.read) if proc.is_a?(Proc)
       @x&.read
     else
       value = properties_common(value, &proc)
@@ -26,11 +27,12 @@ module Properties
  end
 
   def y(value = nil, &proc)
-    if value.nil? && !proc
+    if value.nil?
       @y&.read
     else
       value = properties_common(value, &proc)
       @y = atomise(:y,value)
+      proc.call(@y&.read) if proc.is_a?(Proc)
       y_html(@y)
     end
   end 

@@ -29,7 +29,9 @@ module PropertylHtml
       x_position = jq_object.css("left").sub("px", "").to_i
       y_position = jq_object.css("top").sub("px", "").to_i
       @x = atomise(:x, x_position)
-      @y = atomise(:x, y_position)
+      @y = atomise(:y, y_position)
+      #self.x(x_position)
+      #self.y(y_position)
       # we send the position to the proc
       proc.call(evt) if proc.is_a?(Proc)
     end

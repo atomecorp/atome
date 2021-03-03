@@ -9,7 +9,7 @@
         my_atome.find({color: :red) => get all child of my_atome with a red color
         my_atome.find({type: :shape) => get all child of my_atome of type 'shape'
      how to name (root) user home's atome ? home?
-- autorisation/ right management
+- autorisation/right management
     usage:
         right on an atome, ex jeezscan change autorisation (security) , everybody can read , modification possible using password, sylvs can change the color, jeezs can delete , jeezs can share
             a.autorisation(value: {security: :jeezs}, read: all, modification: {all: {pasword: :kjhdsfgdfg54dfg}, color: {user: :sylvs}} ,delete: {user: :jeezs}, share: {user: :jeezs}}}
@@ -19,7 +19,7 @@
             security_atome=Atome.new(autorisation: { read: true, write: {user: [:jeezs, sylvz], password: :jkhgj35435},security: :jeezs})
             a.color({value: :red, autorisation: security_atome})
 - midi native + web
-- share collaboration
+- share/collaboration
 - init sequence
 - basic U.I.
 - Debug
