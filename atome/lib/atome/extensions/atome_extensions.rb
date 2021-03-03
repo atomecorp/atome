@@ -66,8 +66,8 @@ def wait(seconds)
   end
 end
 
-def every(delay = 3, repeat = 5, &proc)
-  every_html(delay, repeat, &proc)
+def repeat(delay = 3, repeat = 5, &proc)
+  repeat_html(delay, repeat, &proc)
 end
 
 def clear(value)

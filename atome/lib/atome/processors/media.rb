@@ -17,15 +17,15 @@ module Processors
     media_pre_processor(:box, value)
   end
 
-  def box_getter_processor(value)
-      @box&.read
+  def box_getter_processor
+    @box&.read
   end
 
   def circle_pre_processor(value)
     media_pre_processor(:circle, value)
   end
 
-  def circle_getter_processor(value)
+  def circle_getter_processor
     @circle&.read
   end
 
@@ -33,7 +33,7 @@ module Processors
     media_pre_processor(:text, value)
   end
 
-  def text_getter_processor(value)
+  def text_getter_processor
     @text&.read
   end
 
@@ -41,7 +41,7 @@ module Processors
     media_pre_processor(:image, value)
   end
 
-  def image_getter_processor(value)
+  def image_getter_processor
     @image&.read
   end
 
@@ -49,7 +49,7 @@ module Processors
     media_pre_processor(:video, value)
   end
 
-  def video_getter_processor(value)
+  def video_getter_processor
     @video&.read
   end
 
@@ -57,7 +57,7 @@ module Processors
     media_pre_processor(:audio, value)
   end
 
-  def audio_getter_processor(value)
+  def audio_getter_processor
     @audio&.read
   end
 end

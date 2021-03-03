@@ -304,6 +304,70 @@ const atome = {
     jsCreateVideo: function (parent) {
         var video = $('<video />', {});
         video.appendTo($('#' + parent));
+    },
+    jsLoadCodeEditor: function (atome_id, content) {
+        $('<link/>', {
+            rel: 'stylesheet',
+            type: 'text/css',
+            href: 'css/codemirror.css'
+        }).appendTo('head');
+        $.getScript('js/third_parties/ide/codemirror.min.js', function (data, textStatus, jqxhr) {
+            $.getScript('js/third_parties/ide/active-line.min.js', function (data, textStatus, jqxhr) {
+                $.getScript('js/third_parties/ide/closebrackets.min.js', function (data, textStatus, jqxhr) {
+                    $.getScript('js/third_parties/ide/closetag.min.js', function (data, textStatus, jqxhr) {
+                        $.getScript('js/third_parties/ide/dialog.min.js', function (data, textStatus, jqxhr) {
+                            $.getScript('js/third_parties/ide/formatting.min.js', function (data, textStatus, jqxhr) {
+                                $.getScript('js/third_parties/ide/javascript.min.js', function (data, textStatus, jqxhr) {
+                                    $.getScript('js/third_parties/ide/jump-to-line.min.js', function (data, textStatus, jqxhr) {
+                                        $.getScript('js/third_parties/ide/matchbrackets.min.js', function (data, textStatus, jqxhr) {
+                                            $.getScript('js/third_parties/ide/ruby.min.js', function (data, textStatus, jqxhr) {
+                                                $.getScript('js/third_parties/ide/search.min.js', function (data, textStatus, jqxhr) {
+                                                    $.getScript('js/third_parties/ide/searchcursor.min.js', function (data, textStatus, jqxhr) {
+                                                        ide_container_id = "#" + atome_id;
+                                                        ide_id = 'ide_' + atome_id;
+                                                        $(ide_container_id).append("<textarea id=" + ide_id + " name='code'></textarea>");
+                                                        var code_editor = CodeMirror.fromTextArea(document.getElementById(ide_id), {
+                                                            lineNumbers: true,
+                                                            codeFolding: true,
+                                                            styleActiveLine: true,
+                                                            indentWithTabs: true,
+                                                            matchTags: true,
+                                                            matchBrackets: true,
+                                                            electricChars: true,
+                                                            mode: "ruby",
+                                                            lineWrapping: true,
+                                                            indentAuto: true,
+                                                            autoCloseBrackets: true,
+                                                            tabMode: "shift",
+                                                            autoRefresh: true
+                                                        });
+                                                        new_editor = document.querySelector(".CodeMirror");
+// we check all codemirror if they have an id to avoid to reassign an id to already created codemirror
+                                                        if (($(new_editor).attr('id')) == undefined) {
+                                                            new_editor_id = "cm_" + atome_id
+                                                            $(new_editor).attr('id', new_editor_id);
+                                                        }
+                                                        code_editor.setSize("100%", "100%");
+                                                        code_editor.setOption("theme", "3024-night");
+                                                        function getSelectedRange() {
+                                                            return {
+                                                                from: editor.getCursor(true),
+                                                                to: editor.getCursor(false)
+                                                            };
+                                                        }
+                                                        Opal.JSUtils.$set_ide_content(atome_id, content);
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
     }
 };
 

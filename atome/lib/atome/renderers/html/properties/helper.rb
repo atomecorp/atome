@@ -8,7 +8,7 @@ module PropertylHtml
     set_timeout(seconds, &proc)
   end
 
-  def every_html(delay = 1, repeat = 5, &proc)
+  def repeat_html(delay = 1, repeat = 5, &proc)
     if delay.instance_of?(Hash)
       repeat = delay[:times]
       delay = delay[:every]
