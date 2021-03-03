@@ -38,33 +38,33 @@ module InternalHelpers
     "todo add centering#{values}"
   end
 
-  def resize
-  end
+  #def resize
+  #end
+  #
+  #def resize_actions(params = nil)
+  #  if params
+  #    params.each do |key, value|
+  #      grab(:actions).resize_actions[key] = value
+  #    end
+  #  elsif atome_id[:value] == :actions
+  #    if @resize_actions.instance_of?(NilClass)
+  #      @resize_actions = {}
+  #    else
+  #      @resize_actions
+  #    end
+  #  else
+  #    grab(:actions).resize_actions
+  #  end
+  #end
 
-  def resize_actions(params = nil)
-    if params
-      params.each do |key, value|
-        grab(:actions).resize_actions[key] = value
-      end
-    elsif atome_id[:value] == :actions
-      if @resize_actions.instance_of?(NilClass)
-        @resize_actions = {}
-      else
-        @resize_actions
-      end
-    else
-      grab(:actions).resize_actions
-    end
-  end
-
-  def viewer_actions
-    grab(:view).resize do
-      grab(:actions).resize_actions[:center]&.each do |atome|
-        atome.centering(:x, atome.x[:center], atome.x[:reference], atome.x[:dynamic]) if atome.x[:center]
-        atome.centering(:y, atome.y[:center], atome.y[:reference], atome.y[:dynamic]) if atome.y[:center]
-      end
-    end
-  end
+  #def viewer_actions
+  #  grab(:view).resize do
+  #    grab(:actions).resize_actions[:center]&.each do |atome|
+  #      atome.centering(:x, atome.x[:center], atome.x[:reference], atome.x[:dynamic]) if atome.x[:center]
+  #      atome.centering(:y, atome.y[:center], atome.y[:reference], atome.y[:dynamic]) if atome.y[:center]
+  #    end
+  #  end
+  #end
 
   def properties_common(value = nil, &proc)
     if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
