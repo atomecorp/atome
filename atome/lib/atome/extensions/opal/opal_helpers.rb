@@ -78,7 +78,7 @@ module JSUtils
 
   # code editor below
   def load_opal_parser
-    `$.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {});`
+    `$.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {})`
   end
 
   def opal_parser_ready
