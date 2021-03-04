@@ -1,7 +1,7 @@
 module PropertylHtml
   def touch_html(value)
     value = value.read
-    proc = value[:value]
+    proc = value[:proc]
     jq_get(atome_id).on(:click) do |evt|
       proc.call(evt) if proc.is_a?(Proc)
     end
@@ -11,7 +11,7 @@ module PropertylHtml
     value = value.read
     #alert value
 
-    proc = value[:value]
+    proc = value[:proc]
     jq_object = jq_get(atome_id)
     lock = case value[:lock]
            when :parent
@@ -25,13 +25,11 @@ module PropertylHtml
            end
     jq_object.draggable(lock)
     jq_object.on(:drag) do |evt|
-      ## we update the position of the atome
+      # we update the position of the atome
       x_position = jq_object.css("left").sub("px", "").to_i
       y_position = jq_object.css("top").sub("px", "").to_i
       @x = atomise(:x, x_position)
       @y = atomise(:y, y_position)
-      #self.x(x_position)
-      #self.y(y_position)
       # we send the position to the proc
       proc.call(evt) if proc.is_a?(Proc)
     end

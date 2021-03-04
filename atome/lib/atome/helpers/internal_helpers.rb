@@ -23,7 +23,7 @@ module InternalHelpers
   end
 
 
-  def monitor(options, &proc)
+  def monitor( &proc)
     proc.call(MESSENGER.content) if proc.is_a?(Proc)
   end
 
@@ -41,8 +41,10 @@ module InternalHelpers
       value = property
     elsif proc && value.instance_of?(Hash)
       value = value.merge(value: proc)
+    elsif proc && (value.instance_of?(Integer) || value.instance_of?(String) || value.instance_of?(Symbol))
+      value = {value: value, proc: proc}
     elsif proc
-      value = {value: proc}
+      value = {proc: proc}
     end
     value
   end

@@ -28,8 +28,11 @@ module Properties
   def size(value = nil, &proc)
     if value.nil? && !proc
       @size&.read
+
     else
+      #alert "#{atome_id} #{value}"
       value = properties_common(value, &proc)
+      #alert "geometrie.rb line 35 #{atome_id} #{value}"
       @size = atomise(:size,value)
       size_html(@size)
     end
