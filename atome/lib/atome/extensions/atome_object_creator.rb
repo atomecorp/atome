@@ -37,5 +37,6 @@ def code(value = {atome_id: identity, content: ""})
   close.touch do
     grab(ide_atome_id).delete
   end
+  code_editor
 end
 
