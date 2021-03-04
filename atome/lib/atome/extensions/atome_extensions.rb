@@ -81,6 +81,20 @@ def clear(value)
   end
 end
 
+def compile(code)
+  if JSUtils.opal_parser_ready
+    Opal.eval(code)
+  else
+    ATOME.wait 0.01 do
+      compile(code)
+    end
+  end
+end
+
+def read(filename, &proc) #  read local file
+  JSUtils.reader(filename, &proc)
+end
+
 def version
   "v:0.015"
 end

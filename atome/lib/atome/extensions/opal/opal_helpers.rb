@@ -77,11 +77,11 @@ module JSUtils
   end
 
   # code editor below
-  def load_opal_parser
-    `$.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {})`
+  def self.load_opal_parser
+    `$.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {#{@opal_parser=true}})`
   end
 
-  def opal_parser_ready
+  def self.opal_parser_ready
     @opal_parser
   end
 
@@ -97,6 +97,10 @@ module JSUtils
 
   def load_codemirror(atome_id, content)
     `atome.jsLoadCodeEditor(#{atome_id},#{content})`
+  end
+
+  def self.reader (filename, &proc)
+    `atome.jsReader(#{filename},#{proc})`
   end
 
 end

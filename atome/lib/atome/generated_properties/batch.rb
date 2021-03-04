@@ -155,6 +155,18 @@ module Batch
         end
       end
 
+      def info(value, &proc)
+        read.each do |atome|
+          grab(atome).send(:info, value, &proc)
+        end
+      end
+
+      def example(value, &proc)
+        read.each do |atome|
+          grab(atome).send(:example, value, &proc)
+        end
+      end
+
       def parent(value, &proc)
         read.each do |atome|
           grab(atome).send(:parent, value, &proc)

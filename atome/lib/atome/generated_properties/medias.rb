@@ -84,4 +84,28 @@ module Properties
   audio(value, &proc)
  end
 
+  def info(value = nil, &proc)
+    if value.nil? && !proc
+      @info&.read
+    else
+      value = properties_common(value, &proc)
+      @info = atomise(:info,value)
+    end
+  end 
+ def info=(value, &proc)
+  info(value, &proc)
+ end
+
+  def example(value = nil, &proc)
+    if value.nil? && !proc
+      @example&.read
+    else
+      value = properties_common(value, &proc)
+      @example = atomise(:example,value)
+    end
+  end 
+ def example=(value, &proc)
+  example(value, &proc)
+ end
+
 end

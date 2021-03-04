@@ -11,4 +11,20 @@ module AtomeHelpers
       end
     end
   end
+
+  def properties(params = nil)
+    if params || params == false
+      error("info is read only!! for now")
+    else
+      properties = []
+      instance_variables.map do |attribute|
+        properties << {attribute.sub("@".to_sym, "") => instance_variable_get(attribute).read}
+      end
+      properties
+    end
+  end
+
+  def inspect
+    properties
+  end
 end

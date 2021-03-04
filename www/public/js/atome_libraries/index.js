@@ -305,6 +305,15 @@ const atome = {
         var video = $('<video />', {});
         video.appendTo($('#' + parent));
     },
+    jsReader: function (filename, proc) {
+        $.ajax({
+            url: filename,
+            dataType: 'text',
+            success: function (data) {
+                return proc.$call(data)
+            }
+        });
+    },
     jsLoadCodeEditor: function (atome_id, content) {
         $('<link/>', {
             rel: 'stylesheet',
@@ -349,12 +358,14 @@ const atome = {
                                                         }
                                                         code_editor.setSize("100%", "100%");
                                                         code_editor.setOption("theme", "3024-night");
+
                                                         function getSelectedRange() {
                                                             return {
                                                                 from: editor.getCursor(true),
                                                                 to: editor.getCursor(false)
                                                             };
                                                         }
+
                                                         Opal.JSUtils.$set_ide_content(atome_id, content);
                                                     });
                                                 });

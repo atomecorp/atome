@@ -7,7 +7,7 @@ def atome_methods
   hierarchy = %i[parent child insert]
   identity = %i[atome_id id type language private can]
   spatial = %i[x xx y yy z center]
-  media = %i[content video box circle text image audio]
+  media = %i[content video box circle text image audio info example]
   utility = %i[edit record enliven selector render preset]
   material = %i[color opacity border overflow]
   {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event}
@@ -30,7 +30,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[box circle text image video audio parent child]
+  %i[box circle text image video audio parent child info example]
 end
 
 batch_methods = []
