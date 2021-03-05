@@ -73,7 +73,7 @@ end
 def clear(value)
   case value.keys[0]
   when :wait
-    clear_interval_html(value[:wait])
+    clear_wait_html(value[:wait])
   when :repeat
     clear_repeat_html(value[:repeat])
   else

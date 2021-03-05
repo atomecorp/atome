@@ -16,11 +16,9 @@ module AtomeHelpers
     if params || params == false
       error("info is read only!! for now")
     else
-      properties = []
+      properties = {}
       instance_variables.map do |attribute|
-        #alert attribute
-        #alert instance_variable_get(attribute).read
-        properties << {attribute.sub("@".to_sym, "") => instance_variable_get(attribute).read}
+        properties[attribute.sub("@".to_sym, "") ] = instance_variable_get(attribute).read
       end
       properties
     end
@@ -28,5 +26,9 @@ module AtomeHelpers
 
   def inspect
     properties
+  end
+
+  def play(options, &proc)
+   play_html(options, &proc)
   end
 end

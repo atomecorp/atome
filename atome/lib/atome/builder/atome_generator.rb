@@ -24,17 +24,17 @@ class Atome
   def create(properties)
     atome_id = properties.delete(:atome_id)
     send("atome_id=", atome_id)
-    properties.each do |property, value|
-      set(property, value)
-    end
+    set properties
   end
 
   def get(property)
     send(property)
   end
 
-  def set(property, value)
-    send(property.to_s + "=", value)
+  def set properties
+    properties.each do |property, value|
+      send(property.to_s + "=", value)
+    end
   end
 
   def register_atome

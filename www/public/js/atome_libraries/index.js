@@ -301,6 +301,37 @@ const atome = {
         }
         return mobile;
     },
+    jsVideoPlay: function (atome_id, options, proc) {
+        var media=$("#"+atome_id +' video:first-child')[0];
+        if (options==true || options=='true'){
+            options = 0;
+        }
+        media.addEventListener("timeupdate", function(){
+//Opal.Events.$playing(proc,media.currentTime)
+        });
+//media.currentTime is run twice, because if not depending on the context it may not be interpreted
+        media.currentTime = options;
+        media.addEventListener('loadedmetadata', function() {
+            media.currentTime = options;
+        }, false);
+        media.play();
+    },
+    jsAudioPlay: function (atome_id,options, proc) {
+        var media=$("#"+atome_id +' audio:first-child')[0];
+        if (options==true || options=='true'){
+            options = 0;
+        }
+        media.addEventListener("timeupdate", function(){
+            Opal.Event.$playing(proc,media.currentTime)
+        });
+//media.currentTime is run twice, because if not depending on the context it may not be interpreted
+        media.currentTime = options;
+        media.addEventListener('loadedmetadata', function() {
+            media.currentTime = options;
+        }, false);
+        media.play();
+    },
+
     jsCreateVideo: function (parent) {
         var video = $('<video />', {});
         video.appendTo($('#' + parent));

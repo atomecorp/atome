@@ -16,7 +16,7 @@ module PropertylHtml
     set_interval(delay, repeat, &proc)
   end
 
-  def clear_interval_html(value)
+  def clear_wait_html(value)
     clear_timeout(value)
   end
 

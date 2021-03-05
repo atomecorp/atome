@@ -1,3 +1,16 @@
+- repeat and wait may be atome object too!!
+- text child =font  (size colort touch events) try with an image as child of text
+        ex :
+        img = image({content: :moto, x: 66, y: 66})
+        infos = text({content: "object dimensions", width: 300})
+        img.size(60) do |evt|
+          infos.content = "width: #{img.width}\nheight: #{img.height}"
+        end
+        img.parent(infos.atome_id)
+        infos.drag do
+
+        end
+        alert infos.child.class
 - monitor(atome: :view, property: size)
 - broadcast changes
 - database  and find api:

@@ -43,8 +43,9 @@ module JSUtils
       ATOME.content[:intervals] = {}
     end
     interval=""
-    interval = `setInterval(function(){ #{yield}, #{interval_countdown(interval)} }, #{delay * 1000})`
+    interval = `setInterval(function(){ #{yield(interval_countdown(interval))}}, #{delay * 1000})`
     ATOME.add_interval(interval, repeat)
+    interval
   end
 
   def interval_countdown(interval)
@@ -103,5 +104,13 @@ module JSUtils
     `atome.jsReader(#{filename},#{proc})`
   end
 
+  def video_play(options, &proc)
+
+    `atome.jsVideoPlay(#{atome_id},#{options},#{proc})`
+  end
+
+  def audio_play(options, &proc)
+    `atome.jsAudioPlay(#{atome_id},#{options},#{proc})`
+  end
 end
 

@@ -22,7 +22,7 @@ def need_pre_processing
 end
 
 def need_processing
-  %i[]
+  %i[size]
 end
 
 def getter_need_processing

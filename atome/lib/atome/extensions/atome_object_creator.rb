@@ -6,7 +6,7 @@ def circle(value = {})
   grab(:view).circle(value)
 end
 
-def text(value = {})
+def text(value = {content: lorem})
   grab(:view).text(value)
 end
 
@@ -39,4 +39,3 @@ def code(value = {atome_id: identity, content: ""})
   end
   code_editor
 end
-

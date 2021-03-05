@@ -1,5 +1,6 @@
 module InternalHelpers
   def atomise(property, value)
+    puts property
     # this method create a quark object from atome properties for further processing
     #if @broadcast
     #  broadcaster(property, value)
@@ -11,13 +12,13 @@ module InternalHelpers
     Quark.new(value)
   end
 
-  def broadcaster (property, value)
+  def broadcaster
     #MESSENGER.content[:broadcast] = {atome_id => {property => value}}
     #MESSENGER.monitor({atome_id => {property => value}})
     #puts MESSENGER.content[:broadcast]
   end
 
-  def broadcast(value)
+  def broadcast
     # this method just add the @broadcast to indicate if it must broadcast when a property change
     #  @broadcast = atomise(:broadcast, value)
   end
