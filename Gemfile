@@ -2,6 +2,7 @@
 
 source "https://rubygems.org"
 # comment when generating arm version
+gem "rubocop"
 gem "c_lexer"
 gem "filewatcher"
 gem "image_size"

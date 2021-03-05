@@ -1,3 +1,5 @@
 AllCops:
   Exclude:
     - 'app/scripts/examples.rb'
+    - AllCops:
+        TargetRubyVersion: 3.0.1

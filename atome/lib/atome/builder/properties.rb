@@ -13,5 +13,7 @@ class Quark
     Atome.class_variable_set("@@atomes", {}) # you can access without offense
   end
 
-
+  def to_s
+    read.to_s
+  end
 end
