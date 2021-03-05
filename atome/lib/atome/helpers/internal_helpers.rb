@@ -46,8 +46,14 @@ module InternalHelpers
   end
 
   def update_instance_variable(instance_name, value)
-    instance_variable_set("@#{instance_name}", instance_name, atomise(instance_name, value))
+    unless value.instance_of?(Array)
+      value=[value]
+    end
+    prev_instance_variable_content=instance_variable_get("@#{instance_name}")
+    if prev_instance_variable_content
+      #alert "#{prev_instance_variable_content.read} : #{prev_instance_variable_content.read.class}"
+      value=prev_instance_variable_content.read.concat(value)
+    end
+    instance_variable_set("@#{instance_name}", atomise(instance_name, value))
   end
-
-
 end

@@ -12,4 +12,6 @@ class Quark
     # this method create a class variable to store all created atomes
     Atome.class_variable_set("@@atomes", {}) # you can access without offense
   end
+
+
 end

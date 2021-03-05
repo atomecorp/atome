@@ -3,7 +3,7 @@ module PropertylHtml
     value = value.read
     if type == :text
       value = value.to_s.gsub("\n", "<br>")
-      jq_get(atome_id).html(value)
+      jq_get(atome_id).text(value)
     elsif type == :shape
       if value[:tension]
         self.smooth(value[:tension])

@@ -18,6 +18,7 @@ module AtomeHelpers
     else
       properties = {}
       instance_variables.map do |attribute|
+        #alert attribute
         properties[attribute.sub("@".to_sym, "") ] = instance_variable_get(attribute).read
       end
       properties

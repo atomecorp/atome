@@ -49,6 +49,9 @@ module Processors
   end
 
   def child_getter_processor
+    #if self.type ==:text
+    #  alert content.split("").length
+    #end
     @child
   end
 end

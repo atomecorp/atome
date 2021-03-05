@@ -32,9 +32,11 @@ class Atome
   end
 
   def set properties
+    #alert properties
     properties.each do |property, value|
       send(property.to_s + "=", value)
     end
+    #alert self.properties
   end
 
   def register_atome
@@ -46,4 +48,5 @@ class Atome
     # this method return all created atomes
     Atome.class_variable_get("@@atomes") # you can access without offense
   end
+
 end

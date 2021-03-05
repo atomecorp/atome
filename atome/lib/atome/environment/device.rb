@@ -18,8 +18,5 @@ class Device
     Atome.new({atome_id: :right, id: :right, render: false})
     # this object hold temporary items (useful for batch treatment) named collector could be rename ephemeral
     Atome.new({atome_id: :buffer, id: :buffer, render: false})
-     #The lines below create a special atome that holds all internal actions such as resize_actions
-    #actions = Atome.new({atome_id: :actions, id: :actions, render: false})
-    #actions.viewer_actions
   end
 end
