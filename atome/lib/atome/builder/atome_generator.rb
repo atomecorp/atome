@@ -31,12 +31,10 @@ class Atome
     send(property)
   end
 
-  def set properties
-    #alert properties
+  def set(properties)
     properties.each do |property, value|
       send(property.to_s + "=", value)
     end
-    #alert self.properties
   end
 
   def register_atome

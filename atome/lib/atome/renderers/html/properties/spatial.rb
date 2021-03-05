@@ -26,5 +26,6 @@ module PropertylHtml
 
   def center_html(value)
     value = value.read
+    puts value
   end
 end

@@ -9,8 +9,6 @@ module PropertylHtml
 
   def drag_html(value)
     value = value.read
-    #alert value
-
     proc = value[:proc]
     jq_object = jq_get(atome_id)
     lock = case value[:lock]

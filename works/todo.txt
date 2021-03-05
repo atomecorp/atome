@@ -1,4 +1,5 @@
 - repeat and wait may be atome object too!!
+- add child or set child and remove child
 - text child =font  (size colort touch events) try with an image as child of text
         ex :
         img = image({content: :moto, x: 66, y: 66})

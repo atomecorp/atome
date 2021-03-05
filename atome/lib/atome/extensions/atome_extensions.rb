@@ -36,9 +36,8 @@ end
 
 def grab(atome_id)
   if Atome.atomes.key?(atome_id)
-    return Atome.atomes[atome_id]
+    Atome.atomes[atome_id]
   end
-  nil
 end
 
 def batch(objects)

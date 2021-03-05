@@ -5,13 +5,13 @@ module PropertylHtml
     unless values.instance_of?(Array)
       values=[values]
     end
-    values.each do |value|
-      value = color_helper(value)
+    values.each do |val|
+      val = color_helper(val)
       if type == :text
-        jq_get(atome_id).css("-webkit-text-fill-color", value)
+        jq_get(atome_id).css("-webkit-text-fill-color", val)
       else
-        value = "linear-gradient(0deg," + value + ", " + value + ")"
-        jq_get(atome_id).css(color, value)
+        val = "linear-gradient(0deg," + val + ", " + val + ")"
+        jq_get(atome_id).css(color, val)
       end
     end
   end

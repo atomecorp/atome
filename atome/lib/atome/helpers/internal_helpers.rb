@@ -23,13 +23,11 @@ module InternalHelpers
     #  @broadcast = atomise(:broadcast, value)
   end
 
-
-  def monitor( &proc)
+  def monitor(&proc)
     proc.call(MESSENGER.content) if proc.is_a?(Proc)
   end
 
-
-  def properties_common(value = nil, &proc)
+  def properties_common(value , &proc)
     if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
       property = {}
       property[:proc] = proc
@@ -45,44 +43,20 @@ module InternalHelpers
     value
   end
 
-  def update_instance_variable(instance_name, value)
+  def add_to_instance_variable(instance_name, value)
     unless value.instance_of?(Array)
-      value=[value]
+      value = [value]
     end
-    prev_instance_variable_content=instance_variable_get("@#{instance_name}")
+    prev_instance_variable_content = instance_variable_get("@#{instance_name}")
     if prev_instance_variable_content
       if prev_instance_variable_content.read.instance_of?(Array)
-        value=prev_instance_variable_content.read.concat(value)
+        value = prev_instance_variable_content.read.concat(value)
       else
-        prev_instance_variable_content=[prev_instance_variable_content.read]
-        value=prev_instance_variable_content.concat(value)
+        prev_instance_variable_content = [prev_instance_variable_content.read]
+        value = prev_instance_variable_content.concat(value)
       end
     end
     instance_variable_set("@#{instance_name}", atomise(instance_name, value))
   end
 
-  #def update_instance_variable(instance_name, value)
-  #  unless value.instance_of?(Array)
-  #    value=[value]
-  #  end
-  #  alert instance_variable_get("@#{instance_name}").read
-  #  #prev_instance_variable_content=instance_variable_get("@#{instance_name}").read
-  #  #alert prev_instance_variable_content
-  #  #if prev_instance_variable_content
-  #  #  if prev_instance_variable_content.read.instance_of?(Array)
-  #  #    value=prev_instance_variable_content.read.concat(value)
-  #  #  else
-  #  #    alert prev_instance_variable_content.read
-  #  #    prev_instance_variable_content=[prev_instance_variable_content.read]
-  #  #    value=prev_instance_variable_content.concat(value)
-  #  #  end
-  #  #end
-  #  #if prev_instance_variable_content.defined?
-  #  #  alert prev_instance_variable_content.class
-  #  #  #instance_variable_set("@#{instance_name}", atomise(instance_name, value))
-  #  #else
-  #  #  instance_variable_set("@#{instance_name}", atomise(instance_name, value))
-  #  #
-  #  #end
-  #end
 end

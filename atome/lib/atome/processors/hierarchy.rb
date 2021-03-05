@@ -16,7 +16,7 @@ module Processors
         end
       else
         @parent = atomise(:parent, value)
-        grab(val).update_instance_variable(:child, self.atome_id)
+        grab(val).add_to_instance_variable(:child, self.atome_id)
         parent_html(@parent)
       end
     end
@@ -42,16 +42,13 @@ module Processors
         end
       else
         @child = atomise(:child, value)
-        grab(val).update_instance_variable(:parent, self.atome_id)
+        grab(val).add_to_instance_variable(:parent, self.atome_id)
         child_html(@child)
       end
     end
   end
 
   def child_getter_processor
-    #if self.type ==:text
-    #  alert content.split("").length
-    #end
     @child
   end
 end
