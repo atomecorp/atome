@@ -1,6 +1,7 @@
 module Processors
 
   def parent_pre_processor(value)
+    # first we force the value to be an array as hierarchies methods holds many parents or children
     if value.instance_of?(Array)
       values = value
     else
@@ -15,7 +16,13 @@ module Processors
           val[:proc].call(parent) if val[:proc].is_a?(Proc)
         end
       else
-        @parent = atomise(:parent, value)
+        #if there's is already some parents we had them to the array else we atomise the property
+        if @parent.nil?
+          @parent = atomise(:parent, value)
+        else
+          @parent << value
+        end
+        # we inform the children they have new parents
         grab(val).add_to_instance_variable(:child, self.atome_id)
         parent_html(@parent)
       end
@@ -27,6 +34,7 @@ module Processors
   end
 
   def child_pre_processor(value)
+    # first we force the value to be an array as hierarchies methods holds many parents or children
     if value.instance_of?(Array)
       values = value
     else
@@ -41,7 +49,13 @@ module Processors
           val[:proc].call(child) if val[:proc].is_a?(Proc)
         end
       else
-        @child = atomise(:child, value)
+        #if there's is already some children we had them to the array else we atomise the property
+        if @child.nil?
+          @child = atomise(:child, value)
+        else
+          @child << value
+        end
+        # we inform the parents they have new children
         grab(val).add_to_instance_variable(:parent, self.atome_id)
         child_html(@child)
       end

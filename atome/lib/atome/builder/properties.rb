@@ -16,4 +16,24 @@ class Quark
   def to_s
     read.to_s
   end
+
+  def <<(property)
+     @property.concat(property)
+  end
+
+  def [](option)
+    required_atome=[]
+    read.each_with_index do |atome, index|
+      if option.instance_of?(Integer)
+        if  index ==option
+          required_atome=[atome]
+        end
+      elsif option.instance_of?(String) || option.instance_of?(Symbol)
+        if atome==option
+          required_atome=[atome]
+        end
+      end
+    end
+    Quark.new(required_atome)
+  end
 end

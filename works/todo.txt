@@ -1,5 +1,27 @@
-- repeat and wait may be atome object too!!
-- add child or set child and remove child
+- broadcast changes
+- add methods
+    - staked event strategy
+        optionally possible to add an id to the stacked property
+        to get a stacked property ex: (please note methods are pluralized
+                                    a.colors[1]
+                                    or if an id is set
+                                    a.colors[:id]
+                                    or
+                                    a.color.id(:id)
+         to write or delete a stacked property ex :
+                                    a.colors[1](:red)
+                                    a.colors(:id)(:red)
+- atomes namespaces
+    examples :
+        a=find({id: :my_atome}}
+        restore(a) # note : it restore all atome's children too
+        or
+        restore({atome: :a.atome_id, children: child.id}) # only the child with the id 'child.id' is restore
+        restore ({atome: :a.atome_id, children: false}) # only  the atome is restored
+        duplicate(a)
+        delete(a)
+- delete methods
+- time operations
 - text child =font  (size colort touch events) try with an image as child of text
         ex :
         img = image({content: :moto, x: 66, y: 66})
@@ -13,7 +35,13 @@
         end
         alert infos.child.class
 - monitor(atome: :view, property: size)
-- broadcast changes
+- tools
+ when a tool is applied on a object the properties change are time stamped and stored in the history object
+-database and write strategy :
+ - when an object is created it is immediately stored in the database
+ - a second object is created to store the history of the first
+ - a third object is created to hold the right management
+ - the id of the history and authorisation objets is add ed to the master object
 - database  and find api:
         examples:
         find({target: [atome_1, {user: [:jeezs, :sylvs]}, machine_1, :machine2})
@@ -23,7 +51,7 @@
         my_atome.find({color: :red) => get all child of my_atome with a red color
         my_atome.find({type: :shape) => get all child of my_atome of type 'shape'
      how to name (root) user home's atome ? home?
-- autorisation/right management
+- authorisation/right management
     usage:
         right on an atome, ex jeezscan change autorisation (security) , everybody can read , modification possible using password, sylvs can change the color, jeezs can delete , jeezs can share
             a.autorisation(value: {security: :jeezs}, read: all, modification: {all: {pasword: :kjhdsfgdfg54dfg}, color: {user: :sylvs}} ,delete: {user: :jeezs}, share: {user: :jeezs}}}
@@ -38,6 +66,7 @@
 - basic U.I.
 - Debug
 - Documentation
+- repeat and wait may be atome object too!!
 
 
 #old todos :
