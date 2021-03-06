@@ -9,6 +9,10 @@ module PropertylHtml
 
   def drag_html(value)
     value = value.read
+    if value == true
+      value = {}
+      value[:lock] = ""
+    end
     proc = value[:proc]
     jq_object = jq_get(atome_id)
     lock = case value[:lock]
@@ -19,7 +23,7 @@ module PropertylHtml
            when :y
              {axis: "x"}
            else
-             value
+             {}
            end
     jq_object.draggable(lock)
     jq_object.on(:drag) do |evt|

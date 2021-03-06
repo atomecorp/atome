@@ -1,5 +1,6 @@
 class Quark
   include Batch
+
   def initialize(property)
     @property = property
   end
@@ -7,6 +8,7 @@ class Quark
   def read
     @property
   end
+
   # recipient for created atome
   def self.space
     # this method create a class variable to store all created atomes
@@ -18,19 +20,19 @@ class Quark
   end
 
   def <<(property)
-     @property.concat(property)
+    @property.concat(property)
   end
 
   def [](option)
-    required_atome=[]
+    required_atome = []
     read.each_with_index do |atome, index|
       if option.instance_of?(Integer)
-        if  index ==option
-          required_atome=[atome]
+        if index == option
+          required_atome = [atome]
         end
       elsif option.instance_of?(String) || option.instance_of?(Symbol)
-        if atome==option
-          required_atome=[atome]
+        if atome == option
+          required_atome = [atome]
         end
       end
     end

@@ -5,7 +5,7 @@ c.drag do
 end
 img=image({content: :red_planet, atome_id: :red_planet})
 c.box({atome_id: :e, x: 160})
-c.text({content: 'some text', atome_id: :t, x: 300, width: 100, height: 200, x: 69})
+c.text({content: 'some text', atome_id: :t, width: 100, height: 200, x: 69})
 b2=box({x:200})
 c.child.color(:green)
 

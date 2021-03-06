@@ -46,5 +46,7 @@ class Atome
     # this method return all created atomes
     Atome.class_variable_get("@@atomes") # you can access without offense
   end
-
+  #def to_s
+  #  @x.read
+  #end
 end

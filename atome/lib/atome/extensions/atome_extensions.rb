@@ -82,6 +82,7 @@ end
 
 def compile(code)
   if JSUtils.opal_parser_ready
+    # if needed we can add a parser for the data here
     Opal.eval(code)
   else
     ATOME.wait 0.01 do
