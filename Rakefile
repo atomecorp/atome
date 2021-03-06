@@ -13,7 +13,7 @@ def generate_methods
   require "./scripts/properties_generator.rb"
 end
 
-generate_methods
+# generate_methods
 
 def update_opal_libraries
   file 'www/public/js/dynamic_libraries/opal/opal.js': ["www/public/js/dynamic_libraries/opal"] do |t|
@@ -35,7 +35,7 @@ def update_opal_libraries
   end
 end
 
-#update_opal_libraries
+# update_opal_libraries
 
 def update_medias_list
   # todo : only copy if there's a change! use monitoring if possible
