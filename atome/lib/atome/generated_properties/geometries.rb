@@ -4,8 +4,9 @@ module Properties
       @width&.read
     else
       value = properties_common(value, &proc)
-      @width = atomise(:width,value)
-      width_html(@width)
+    @width = atomise(:width,value)
+    width_html(@width)
+    self
     end
   end 
  def width=(value, &proc)
@@ -17,8 +18,9 @@ module Properties
       @height&.read
     else
       value = properties_common(value, &proc)
-      @height = atomise(:height,value)
-      height_html(@height)
+    @height = atomise(:height,value)
+    height_html(@height)
+    self
     end
   end 
  def height=(value, &proc)
@@ -30,9 +32,10 @@ module Properties
       @size&.read
     else
       value = properties_common(value, &proc)
-      @size = atomise(:size,value)
-      size_processor(value)
-      size_html(@size)
+    @size = atomise(:size,value)
+    size_processor(value)
+    size_html(@size)
+    self
     end
   end 
  def size=(value, &proc)
@@ -44,8 +47,9 @@ module Properties
       @rotation&.read
     else
       value = properties_common(value, &proc)
-      @rotation = atomise(:rotation,value)
-      rotation_html(@rotation)
+    @rotation = atomise(:rotation,value)
+    rotation_html(@rotation)
+    self
     end
   end 
  def rotation=(value, &proc)

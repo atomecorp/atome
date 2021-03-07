@@ -5,7 +5,8 @@ module Properties
     else
       value = properties_common(value, &proc)
       atome_id_pre_processor(value)
-      atome_id_html(@atome_id)
+    atome_id_html(@atome_id)
+    self
     end
   end 
  def atome_id=(value, &proc)
@@ -17,8 +18,9 @@ module Properties
       @id&.read
     else
       value = properties_common(value, &proc)
-      @id = atomise(:id,value)
-      id_html(@id)
+    @id = atomise(:id,value)
+    id_html(@id)
+    self
     end
   end 
  def id=(value, &proc)
@@ -30,8 +32,9 @@ module Properties
       @type&.read
     else
       value = properties_common(value, &proc)
-      @type = atomise(:type,value)
-      type_html(@type)
+    @type = atomise(:type,value)
+    type_html(@type)
+    self
     end
   end 
  def type=(value, &proc)
@@ -43,8 +46,9 @@ module Properties
       @language&.read
     else
       value = properties_common(value, &proc)
-      @language = atomise(:language,value)
-      language_html(@language)
+    @language = atomise(:language,value)
+    language_html(@language)
+    self
     end
   end 
  def language=(value, &proc)
@@ -57,7 +61,8 @@ module Properties
     else
       value = properties_common(value, &proc)
       private_pre_processor(value)
-      private_html(@private)
+    private_html(@private)
+    self
     end
   end 
  def private=(value, &proc)
@@ -70,7 +75,8 @@ module Properties
     else
       value = properties_common(value, &proc)
       can_pre_processor(value)
-      can_html(@can)
+    can_html(@can)
+    self
     end
   end 
  def can=(value, &proc)

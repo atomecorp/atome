@@ -4,8 +4,9 @@ module Properties
       @blur&.read
     else
       value = properties_common(value, &proc)
-      @blur = atomise(:blur,value)
-      blur_html(@blur)
+    @blur = atomise(:blur,value)
+    blur_html(@blur)
+    self
     end
   end 
  def blur=(value, &proc)
@@ -17,8 +18,9 @@ module Properties
       @shadow&.read
     else
       value = properties_common(value, &proc)
-      @shadow = atomise(:shadow,value)
-      shadow_html(@shadow)
+    @shadow = atomise(:shadow,value)
+    shadow_html(@shadow)
+    self
     end
   end 
  def shadow=(value, &proc)
@@ -30,8 +32,9 @@ module Properties
       @smooth&.read
     else
       value = properties_common(value, &proc)
-      @smooth = atomise(:smooth,value)
-      smooth_html(@smooth)
+    @smooth = atomise(:smooth,value)
+    smooth_html(@smooth)
+    self
     end
   end 
  def smooth=(value, &proc)

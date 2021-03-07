@@ -4,8 +4,9 @@ module Properties
       @edit&.read
     else
       value = properties_common(value, &proc)
-      @edit = atomise(:edit,value)
-      edit_html(@edit)
+    @edit = atomise(:edit,value)
+    edit_html(@edit)
+    self
     end
   end 
  def edit=(value, &proc)
@@ -17,8 +18,9 @@ module Properties
       @record&.read
     else
       value = properties_common(value, &proc)
-      @record = atomise(:record,value)
-      record_html(@record)
+    @record = atomise(:record,value)
+    record_html(@record)
+    self
     end
   end 
  def record=(value, &proc)
@@ -30,8 +32,9 @@ module Properties
       @enliven&.read
     else
       value = properties_common(value, &proc)
-      @enliven = atomise(:enliven,value)
-      enliven_html(@enliven)
+    @enliven = atomise(:enliven,value)
+    enliven_html(@enliven)
+    self
     end
   end 
  def enliven=(value, &proc)
@@ -43,8 +46,9 @@ module Properties
       @selector&.read
     else
       value = properties_common(value, &proc)
-      @selector = atomise(:selector,value)
-      selector_html(@selector)
+    @selector = atomise(:selector,value)
+    selector_html(@selector)
+    self
     end
   end 
  def selector=(value, &proc)
@@ -56,8 +60,9 @@ module Properties
       @render&.read
     else
       value = properties_common(value, &proc)
-      @render = atomise(:render,value)
-      render_html(@render)
+    @render = atomise(:render,value)
+    render_html(@render)
+    self
     end
   end 
  def render=(value, &proc)
@@ -69,8 +74,9 @@ module Properties
       @preset&.read
     else
       value = properties_common(value, &proc)
-      @preset = atomise(:preset,value)
-      preset_html(@preset)
+    @preset = atomise(:preset,value)
+    preset_html(@preset)
+    self
     end
   end 
  def preset=(value, &proc)

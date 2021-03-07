@@ -1,29 +1,26 @@
 module Properties
   def x(value = nil, &proc)
     if value.nil? && !proc
-      #@x&.read
-      self
+      @x&.read
     else
-      if value.instance_of?(Atome)
-        value = value.instance_variable_get("@x").read
-      end
       value = properties_common(value, &proc)
-      @x = atomise(:x, value)
-      x_html(@x)
+    @x = atomise(:x,value)
+    x_html(@x)
+    self
     end
-  end
-
-  def x=(value, &proc)
-    x(value, &proc)
-  end
+  end 
+ def x=(value, &proc)
+  x(value, &proc)
+ end
 
   def xx(value = nil, &proc)
     if value.nil? && !proc
       @xx&.read
     else
       value = properties_common(value, &proc)
-      @xx = atomise(:xx,value)
-      xx_html(@xx)
+    @xx = atomise(:xx,value)
+    xx_html(@xx)
+    self
     end
   end 
  def xx=(value, &proc)
@@ -35,8 +32,9 @@ module Properties
       @y&.read
     else
       value = properties_common(value, &proc)
-      @y = atomise(:y,value)
-      y_html(@y)
+    @y = atomise(:y,value)
+    y_html(@y)
+    self
     end
   end 
  def y=(value, &proc)
@@ -48,8 +46,9 @@ module Properties
       @yy&.read
     else
       value = properties_common(value, &proc)
-      @yy = atomise(:yy,value)
-      yy_html(@yy)
+    @yy = atomise(:yy,value)
+    yy_html(@yy)
+    self
     end
   end 
  def yy=(value, &proc)
@@ -61,8 +60,9 @@ module Properties
       @z&.read
     else
       value = properties_common(value, &proc)
-      @z = atomise(:z,value)
-      z_html(@z)
+    @z = atomise(:z,value)
+    z_html(@z)
+    self
     end
   end 
  def z=(value, &proc)
@@ -74,8 +74,9 @@ module Properties
       @center&.read
     else
       value = properties_common(value, &proc)
-      @center = atomise(:center,value)
-      center_html(@center)
+    @center = atomise(:center,value)
+    center_html(@center)
+    self
     end
   end 
  def center=(value, &proc)

@@ -4,8 +4,9 @@ module Properties
       @share&.read
     else
       value = properties_common(value, &proc)
-      @share = atomise(:share,value)
-      share_html(@share)
+    @share = atomise(:share,value)
+    share_html(@share)
+    self
     end
   end 
  def share=(value, &proc)

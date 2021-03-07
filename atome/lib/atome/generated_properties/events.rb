@@ -4,8 +4,9 @@ module Properties
       @touch&.read
     else
       value = properties_common(value, &proc)
-      @touch = atomise(:touch,value)
-      touch_html(@touch)
+    @touch = atomise(:touch,value)
+    touch_html(@touch)
+    self
     end
   end 
  def touch=(value, &proc)
@@ -17,8 +18,9 @@ module Properties
       @drag&.read
     else
       value = properties_common(value, &proc)
-      @drag = atomise(:drag,value)
-      drag_html(@drag)
+    @drag = atomise(:drag,value)
+    drag_html(@drag)
+    self
     end
   end 
  def drag=(value, &proc)
@@ -30,8 +32,9 @@ module Properties
       @over&.read
     else
       value = properties_common(value, &proc)
-      @over = atomise(:over,value)
-      over_html(@over)
+    @over = atomise(:over,value)
+    over_html(@over)
+    self
     end
   end 
  def over=(value, &proc)

@@ -4,8 +4,9 @@ module Properties
       @color&.read
     else
       value = properties_common(value, &proc)
-      @color = atomise(:color,value)
-      color_html(@color)
+    @color = atomise(:color,value)
+    color_html(@color)
+    self
     end
   end 
  def color=(value, &proc)
@@ -17,8 +18,9 @@ module Properties
       @opacity&.read
     else
       value = properties_common(value, &proc)
-      @opacity = atomise(:opacity,value)
-      opacity_html(@opacity)
+    @opacity = atomise(:opacity,value)
+    opacity_html(@opacity)
+    self
     end
   end 
  def opacity=(value, &proc)
@@ -30,8 +32,9 @@ module Properties
       @border&.read
     else
       value = properties_common(value, &proc)
-      @border = atomise(:border,value)
-      border_html(@border)
+    @border = atomise(:border,value)
+    border_html(@border)
+    self
     end
   end 
  def border=(value, &proc)
@@ -43,8 +46,9 @@ module Properties
       @overflow&.read
     else
       value = properties_common(value, &proc)
-      @overflow = atomise(:overflow,value)
-      overflow_html(@overflow)
+    @overflow = atomise(:overflow,value)
+    overflow_html(@overflow)
+    self
     end
   end 
  def overflow=(value, &proc)

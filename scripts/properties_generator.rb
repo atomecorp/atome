@@ -33,6 +33,11 @@ def no_rendering
   %i[box circle text image video audio parent child info example]
 end
 
+def return_created_property
+  # twe return the result of the method instead of object holding the property
+  %i[box circle text image video audio]
+end
+
 batch_methods = []
 
 atome_methods.each do |property_type, property|
@@ -52,8 +57,13 @@ atome_methods.each do |property_type, property|
     else
       getter_processor = "@#{method_name}&.read"
     end
+
     unless no_rendering.include?(method_name)
       rendering = "#{method_name}_html(@#{method_name})"
+    end
+
+    unless return_created_property.include?(method_name)
+      method_return = "self"
     end
 
     method_content = <<STRDELIM
@@ -63,9 +73,10 @@ atome_methods.each do |property_type, property|
     else
       value = properties_common(value, &proc)
       #{pre_processor}
-      #{set_instance_variable}
-      #{processor}
-      #{rendering}
+    #{set_instance_variable}
+    #{processor}
+    #{rendering}
+    #{method_return}
     end
   end 
 
@@ -73,7 +84,7 @@ atome_methods.each do |property_type, property|
   #{method_name}(value, &proc)
  end
 STRDELIM
-    category << method_content.each_line.reject { |x| x.strip == "" }.join
+    category << method_content.each_line.reject {|x| x.strip == ""}.join
   end
 
   category = <<STRDELIM
