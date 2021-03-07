@@ -3,11 +3,11 @@ module JSUtils
     Element.find("#" + atome_id)
   end
 
-  def device
+  def self.device
     `window`
   end
 
-  def document
+  def self.document
     `$(document)`
   end
 

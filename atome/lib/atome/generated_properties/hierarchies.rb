@@ -5,7 +5,7 @@ module Properties
     else
       value = properties_common(value, &proc)
       parent_pre_processor(value)
-    self
+      self
     end
   end 
  def parent=(value, &proc)
@@ -18,7 +18,7 @@ module Properties
     else
       value = properties_common(value, &proc)
       child_pre_processor(value)
-    self
+      self
     end
   end 
  def child=(value, &proc)
@@ -30,9 +30,9 @@ module Properties
       @insert&.read
     else
       value = properties_common(value, &proc)
-    @insert = atomise(:insert,value)
-    insert_html(@insert)
-    self
+      @insert = atomise(:insert,value)
+      insert_html(@insert)
+      self
     end
   end 
  def insert=(value, &proc)

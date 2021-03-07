@@ -221,6 +221,12 @@ module Batch
         end
       end
 
+      def monitor(value, &proc)
+        read.each do |atome|
+          grab(atome).send(:monitor, value, &proc)
+        end
+      end
+
       def share(value, &proc)
         read.each do |atome|
           grab(atome).send(:share, value, &proc)

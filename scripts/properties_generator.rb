@@ -8,7 +8,7 @@ def atome_methods
   identity = %i[atome_id id type language private can]
   spatial = %i[x xx y yy z center]
   media = %i[content video box circle text image audio info example]
-  utility = %i[edit record enliven selector render preset]
+  utility = %i[edit record enliven selector render preset monitor]
   material = %i[color opacity border overflow]
   {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event}
 end
@@ -30,7 +30,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[box circle text image video audio parent child info example]
+  %i[box circle text image video audio parent child info example monitor]
 end
 
 def return_created_property
@@ -39,10 +39,11 @@ def return_created_property
 end
 
 batch_methods = []
-
+atome_methods_list = []
 atome_methods.each do |property_type, property|
   category = []
   property.each do |method_name|
+    atome_methods_list << method_name
     # atome properties generator
     if need_pre_processing.include?(method_name)
       pre_processor = "#{method_name}_pre_processor(value)"
@@ -73,10 +74,10 @@ atome_methods.each do |property_type, property|
     else
       value = properties_common(value, &proc)
       #{pre_processor}
-    #{set_instance_variable}
-    #{processor}
-    #{rendering}
-    #{method_return}
+      #{set_instance_variable}
+      #{processor}
+      #{rendering}
+      #{method_return}
     end
   end 
 
@@ -84,7 +85,7 @@ atome_methods.each do |property_type, property|
   #{method_name}(value, &proc)
  end
 STRDELIM
-    category << method_content.each_line.reject {|x| x.strip == ""}.join
+    category << method_content.each_line.reject { |x| x.strip == "" }.join
   end
 
   category = <<STRDELIM
@@ -114,3 +115,15 @@ module Batch
 end
 STRDELIM
 File.write("atome/lib/atome/generated_properties/batch.rb", batch)
+
+methods_list = <<STRDELIM
+module AtomeHelpers
+  def methods
+    #{atome_methods_list.sort}
+  end
+end
+STRDELIM
+File.write("atome/lib/atome/generated_properties/atome_methods.rb", methods_list)
+
+
+

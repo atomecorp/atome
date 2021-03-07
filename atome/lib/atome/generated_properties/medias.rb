@@ -4,9 +4,9 @@ module Properties
       @content&.read
     else
       value = properties_common(value, &proc)
-    @content = atomise(:content,value)
-    content_html(@content)
-    self
+      @content = atomise(:content,value)
+      content_html(@content)
+      self
     end
   end 
  def content=(value, &proc)
@@ -90,8 +90,8 @@ module Properties
       @info&.read
     else
       value = properties_common(value, &proc)
-    @info = atomise(:info,value)
-    self
+      @info = atomise(:info,value)
+      self
     end
   end 
  def info=(value, &proc)
@@ -103,8 +103,8 @@ module Properties
       @example&.read
     else
       value = properties_common(value, &proc)
-    @example = atomise(:example,value)
-    self
+      @example = atomise(:example,value)
+      self
     end
   end 
  def example=(value, &proc)

@@ -1,8 +1,9 @@
 module InternalHelpers
   def atomise(property, value)
     # this method create a quark object from atome properties for further processing
-    if @broadcast
-      broadcaster(property, value)
+    unless @monitor.nil? || @monitor.read == false
+        alert "property #{property} is now  #{value} for #{self.atome_id}"
+      #broadcaster(property, value)
       #MESSENGER.content[:broadcast]={atome_id => {property => value}}
       #monitor({atome_id => {property => value}},"puts 'ok'")
       #message={atome_id => {property => value}}
@@ -22,9 +23,15 @@ module InternalHelpers
     #  @broadcast = atomise(:broadcast, value)
   end
 
-  def monitor(&proc)
-    proc.call(MESSENGER.content) if proc.is_a?(Proc)
-  end
+  #def monitoring(value)
+  #
+  #  #value = properties_common("ok#{value}ko", &proc)
+  #
+  #  @monitoring= atomise(:monitoring,value)
+  #  #value
+  #  self
+  #  #proc.call(MESSENGER.content) if proc.is_a?(Proc)
+  #end
 
   def properties_common(value , &proc)
     if proc && (value.instance_of?(String) || value.instance_of?(Symbol))

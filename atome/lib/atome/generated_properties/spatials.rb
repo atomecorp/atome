@@ -4,9 +4,9 @@ module Properties
       @x&.read
     else
       value = properties_common(value, &proc)
-    @x = atomise(:x,value)
-    x_html(@x)
-    self
+      @x = atomise(:x,value)
+      x_html(@x)
+      self
     end
   end 
  def x=(value, &proc)
@@ -18,9 +18,9 @@ module Properties
       @xx&.read
     else
       value = properties_common(value, &proc)
-    @xx = atomise(:xx,value)
-    xx_html(@xx)
-    self
+      @xx = atomise(:xx,value)
+      xx_html(@xx)
+      self
     end
   end 
  def xx=(value, &proc)
@@ -32,9 +32,9 @@ module Properties
       @y&.read
     else
       value = properties_common(value, &proc)
-    @y = atomise(:y,value)
-    y_html(@y)
-    self
+      @y = atomise(:y,value)
+      y_html(@y)
+      self
     end
   end 
  def y=(value, &proc)
@@ -46,9 +46,9 @@ module Properties
       @yy&.read
     else
       value = properties_common(value, &proc)
-    @yy = atomise(:yy,value)
-    yy_html(@yy)
-    self
+      @yy = atomise(:yy,value)
+      yy_html(@yy)
+      self
     end
   end 
  def yy=(value, &proc)
@@ -60,9 +60,9 @@ module Properties
       @z&.read
     else
       value = properties_common(value, &proc)
-    @z = atomise(:z,value)
-    z_html(@z)
-    self
+      @z = atomise(:z,value)
+      z_html(@z)
+      self
     end
   end 
  def z=(value, &proc)
@@ -74,9 +74,9 @@ module Properties
       @center&.read
     else
       value = properties_common(value, &proc)
-    @center = atomise(:center,value)
-    center_html(@center)
-    self
+      @center = atomise(:center,value)
+      center_html(@center)
+      self
     end
   end 
  def center=(value, &proc)

@@ -4,9 +4,9 @@ module Properties
       @edit&.read
     else
       value = properties_common(value, &proc)
-    @edit = atomise(:edit,value)
-    edit_html(@edit)
-    self
+      @edit = atomise(:edit,value)
+      edit_html(@edit)
+      self
     end
   end 
  def edit=(value, &proc)
@@ -18,9 +18,9 @@ module Properties
       @record&.read
     else
       value = properties_common(value, &proc)
-    @record = atomise(:record,value)
-    record_html(@record)
-    self
+      @record = atomise(:record,value)
+      record_html(@record)
+      self
     end
   end 
  def record=(value, &proc)
@@ -32,9 +32,9 @@ module Properties
       @enliven&.read
     else
       value = properties_common(value, &proc)
-    @enliven = atomise(:enliven,value)
-    enliven_html(@enliven)
-    self
+      @enliven = atomise(:enliven,value)
+      enliven_html(@enliven)
+      self
     end
   end 
  def enliven=(value, &proc)
@@ -46,9 +46,9 @@ module Properties
       @selector&.read
     else
       value = properties_common(value, &proc)
-    @selector = atomise(:selector,value)
-    selector_html(@selector)
-    self
+      @selector = atomise(:selector,value)
+      selector_html(@selector)
+      self
     end
   end 
  def selector=(value, &proc)
@@ -60,9 +60,9 @@ module Properties
       @render&.read
     else
       value = properties_common(value, &proc)
-    @render = atomise(:render,value)
-    render_html(@render)
-    self
+      @render = atomise(:render,value)
+      render_html(@render)
+      self
     end
   end 
  def render=(value, &proc)
@@ -74,13 +74,26 @@ module Properties
       @preset&.read
     else
       value = properties_common(value, &proc)
-    @preset = atomise(:preset,value)
-    preset_html(@preset)
-    self
+      @preset = atomise(:preset,value)
+      preset_html(@preset)
+      self
     end
   end 
  def preset=(value, &proc)
   preset(value, &proc)
+ end
+
+  def monitor(value = nil, &proc)
+    if value.nil? && !proc
+      @monitor&.read
+    else
+      value = properties_common(value, &proc)
+      @monitor = atomise(:monitor,value)
+      self
+    end
+  end 
+ def monitor=(value, &proc)
+  monitor(value, &proc)
  end
 
 end

@@ -1,8 +1,3 @@
-#class Quark
-#  def self.property_generation
-#    :static
-#  end
-#end
 # ruby main Object extensions
 require "atome/extensions/ruby/hash"
 # default_value
@@ -36,21 +31,18 @@ require "atome/renderers/html/properties/utility"
 require "atome/renderers/html/properties/material"
 require "atome/renderers/html/helpers/html_helpers"
 require "atome/renderers/html"
-# property
-#if Quark.property_generation== :static
-  # genesis uses meta programing to generate atome's methods
-  require "atome/generated_properties/communications"
-  require "atome/generated_properties/effects"
-  require "atome/generated_properties/events"
-  require "atome/generated_properties/geometries"
-  require "atome/generated_properties/helpers"
-  require "atome/generated_properties/hierarchies"
-  require "atome/generated_properties/identities"
-  require "atome/generated_properties/medias"
-  require "atome/generated_properties/spatials"
-  require "atome/generated_properties/utilities"
-  require "atome/generated_properties/materials"
-#end
+# generated property
+require "atome/generated_properties/communications"
+require "atome/generated_properties/effects"
+require "atome/generated_properties/events"
+require "atome/generated_properties/geometries"
+require "atome/generated_properties/helpers"
+require "atome/generated_properties/hierarchies"
+require "atome/generated_properties/identities"
+require "atome/generated_properties/medias"
+require "atome/generated_properties/spatials"
+require "atome/generated_properties/utilities"
+require "atome/generated_properties/materials"
 # property processors
 require "atome/processors/communication"
 require "atome/processors/effect"
@@ -66,6 +58,7 @@ require "atome/processors/material"
 # helpers
 require "atome/helpers/atome_helpers"
 require "atome/helpers/internal_helpers"
+require "atome/generated_properties/atome_methods"
 # main atome builder
 require "atome/generated_properties/batch"
 require "atome/builder/properties"
