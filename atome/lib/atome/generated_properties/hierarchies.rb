@@ -4,7 +4,7 @@ module Properties
       parent_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      parent_pre_processor(value)
+      parent_pre_processor(value, &proc)
       self
     end
   end 
@@ -17,7 +17,7 @@ module Properties
       child_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      child_pre_processor(value)
+      child_pre_processor(value, &proc)
       self
     end
   end 

@@ -89,6 +89,7 @@ module Properties
     else
       value = properties_common(value, &proc)
       @monitor = atomise(:monitor,value)
+      monitor_processor(value)
       self
     end
   end 

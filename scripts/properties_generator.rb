@@ -22,7 +22,7 @@ def need_pre_processing
 end
 
 def need_processing
-  %i[size]
+  %i[size monitor]
 end
 
 def getter_need_processing
@@ -46,7 +46,7 @@ atome_methods.each do |property_type, property|
     atome_methods_list << method_name
     # atome properties generator
     if need_pre_processing.include?(method_name)
-      pre_processor = "#{method_name}_pre_processor(value)"
+      pre_processor = "#{method_name}_pre_processor(value, &proc)"
     else
       set_instance_variable = "@#{method_name} = atomise(:#{method_name},value)"
     end

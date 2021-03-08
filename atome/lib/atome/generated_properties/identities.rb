@@ -4,7 +4,7 @@ module Properties
       @atome_id&.read
     else
       value = properties_common(value, &proc)
-      atome_id_pre_processor(value)
+      atome_id_pre_processor(value, &proc)
       atome_id_html(@atome_id)
       self
     end
@@ -60,7 +60,7 @@ module Properties
       private_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      private_pre_processor(value)
+      private_pre_processor(value, &proc)
       private_html(@private)
       self
     end
@@ -74,7 +74,7 @@ module Properties
       can_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      can_pre_processor(value)
+      can_pre_processor(value, &proc)
       can_html(@can)
       self
     end

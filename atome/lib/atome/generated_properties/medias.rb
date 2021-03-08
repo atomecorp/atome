@@ -18,7 +18,7 @@ module Properties
       video_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      video_pre_processor(value)
+      video_pre_processor(value, &proc)
     end
   end 
  def video=(value, &proc)
@@ -30,7 +30,7 @@ module Properties
       box_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      box_pre_processor(value)
+      box_pre_processor(value, &proc)
     end
   end 
  def box=(value, &proc)
@@ -42,7 +42,7 @@ module Properties
       circle_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      circle_pre_processor(value)
+      circle_pre_processor(value, &proc)
     end
   end 
  def circle=(value, &proc)
@@ -54,7 +54,7 @@ module Properties
       text_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      text_pre_processor(value)
+      text_pre_processor(value, &proc)
     end
   end 
  def text=(value, &proc)
@@ -66,7 +66,7 @@ module Properties
       image_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      image_pre_processor(value)
+      image_pre_processor(value, &proc)
     end
   end 
  def image=(value, &proc)
@@ -78,7 +78,7 @@ module Properties
       audio_getter_processor(value)
     else
       value = properties_common(value, &proc)
-      audio_pre_processor(value)
+      audio_pre_processor(value, &proc)
     end
   end 
  def audio=(value, &proc)
