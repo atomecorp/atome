@@ -1,8 +1,5 @@
 - size has bug :
     c=circle({width: 33, height: 33, y: 66})
--height has bug
-
-
 - broadcast changes
 - monitor(atome: :view, property: size)
 - add methods
