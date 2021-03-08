@@ -15,4 +15,14 @@ module HtmlHelpers
       proc.call({width: width, height: height}) if proc.is_a?(Proc)
     end
   end
+
+  def scroll_html(&proc)
+    #alert atome_id
+    jq_get(atome_id).scroll do
+
+    #  #scroll_x = jq_get(:view).css("width").sub("px", "").to_i
+    #  #scroll_Y = jq_get(:view).css("height").sub("px", "").to_i
+      proc.call if proc.is_a?(Proc)
+    end
+  end
 end

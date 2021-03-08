@@ -69,6 +69,16 @@ module Batch
         ATOME.atomise(:batch, collected_atomes)
       end
 
+      def position(value, &proc)
+        collected_atomes=[]
+        read.each do |atome|
+          grab(atome).send(:position, value, &proc)
+          collected_atomes << atome
+        end
+        # we return and atomise collected atomes in case of chain treatment
+        ATOME.atomise(:batch, collected_atomes)
+      end
+
       def tactile(value, &proc)
         collected_atomes=[]
         read.each do |atome|

@@ -33,4 +33,8 @@ module PropertylHtml
     value = value.read
     puts value
   end
+
+  def position_html(value)
+    jq_get(atome_id).css("position", value)
+  end
 end

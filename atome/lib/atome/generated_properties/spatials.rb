@@ -97,4 +97,18 @@ module Properties
   rotate(value, &proc)
  end
 
+  def position(value = nil, &proc)
+    if value.nil? && !proc
+      @position&.read
+    else
+      value = properties_common(value, &proc)
+      @position = atomise(:position,value)
+      position_html(@position)
+      self
+    end
+  end 
+ def position=(value, &proc)
+  position(value, &proc)
+ end
+
 end
