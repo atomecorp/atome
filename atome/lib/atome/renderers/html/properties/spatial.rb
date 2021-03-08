@@ -24,6 +24,11 @@ module PropertylHtml
     jq_get(atome_id).css("z-index", value)
   end
 
+  def rotate_html(value)
+    value = value.read
+    jq_get(atome_id).css("transform", "rotate(" + value.to_s + "deg)")
+  end
+
   def center_html(value)
     value = value.read
     puts value

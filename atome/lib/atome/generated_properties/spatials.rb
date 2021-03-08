@@ -83,4 +83,18 @@ module Properties
   center(value, &proc)
  end
 
+  def rotate(value = nil, &proc)
+    if value.nil? && !proc
+      @rotate&.read
+    else
+      value = properties_common(value, &proc)
+      @rotate = atomise(:rotate,value)
+      rotate_html(@rotate)
+      self
+    end
+  end 
+ def rotate=(value, &proc)
+  rotate(value, &proc)
+ end
+
 end

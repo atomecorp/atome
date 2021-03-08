@@ -42,18 +42,4 @@ module Properties
   size(value, &proc)
  end
 
-  def rotation(value = nil, &proc)
-    if value.nil? && !proc
-      @rotation&.read
-    else
-      value = properties_common(value, &proc)
-      @rotation = atomise(:rotation,value)
-      rotation_html(@rotation)
-      self
-    end
-  end 
- def rotation=(value, &proc)
-  rotation(value, &proc)
- end
-
 end

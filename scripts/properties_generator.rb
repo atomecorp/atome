@@ -2,11 +2,11 @@ def atome_methods
   communication = %i[share]
   effect = %i[blur shadow smooth]
   event = %i[touch drag over]
-  geometry = %i[width height size rotation]
+  geometry = %i[width height size]
   helper = %i[tactile display]
   hierarchy = %i[parent child insert]
   identity = %i[atome_id id type language private can]
-  spatial = %i[x xx y yy z center]
+  spatial = %i[x xx y yy z center rotate]
   media = %i[content video box circle text image audio info example]
   utility = %i[edit record enliven selector render preset monitor]
   material = %i[color opacity border overflow]
@@ -98,9 +98,13 @@ STRDELIM
   property.each do |method_name|
     batch_method = <<STRDELIM
       def #{method_name}(value, &proc)
+        collected_atomes=[]
         read.each do |atome|
           grab(atome).send(:#{method_name}, value, &proc)
+          collected_atomes << atome
         end
+        # we return and atomise collected atomes in case of chain treatment
+        ATOME.atomise(:batch, collected_atomes)
       end
 STRDELIM
     batch_methods << batch_method

@@ -21,10 +21,5 @@ module PropertylHtml
       end
     end
   end
-
-  def rotation_html(value)
-    value = value.read
-    jq_get(atome_id).css("transform", "rotate(" + value.to_s + "deg)")
-  end
 end
 

@@ -12,27 +12,6 @@ module InternalHelpers
     Quark.new(value)
   end
 
-  def broadcaster(property, value)
-    MESSENGER.content[:broadcast] = {atome_id => {property => value}}
-    #MESSENGER.monitor({atome_id => {property => value}})
-    #puts MESSENGER.content[:broadcast]
-  end
-
-  def broadcast
-    # this method just add the @broadcast to indicate if it must broadcast when a property change
-    #  @broadcast = atomise(:broadcast, value)
-  end
-
-  #def monitoring(value)
-  #
-  #  #value = properties_common("ok#{value}ko", &proc)
-  #
-  #  @monitoring= atomise(:monitoring,value)
-  #  #value
-  #  self
-  #  #proc.call(MESSENGER.content) if proc.is_a?(Proc)
-  #end
-
   def properties_common(value, &proc)
     if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
       property = {}
@@ -65,4 +44,24 @@ module InternalHelpers
     instance_variable_set("@#{instance_name}", atomise(instance_name, value))
   end
 
+  def broadcaster(property, value)
+    MESSENGER.content[:broadcast] = {atome_id => {property => value}}
+    #MESSENGER.monitor({atome_id => {property => value}})
+    #puts MESSENGER.content[:broadcast]
+  end
+
+  def broadcast
+    # this method just add the @broadcast to indicate if it must broadcast when a property change
+    #  @broadcast = atomise(:broadcast, value)
+  end
+
+  #def monitoring(value)
+  #
+  #  #value = properties_common("ok#{value}ko", &proc)
+  #
+  #  @monitoring= atomise(:monitoring,value)
+  #  #value
+  #  self
+  #  #proc.call(MESSENGER.content) if proc.is_a?(Proc)
+  #end
 end
