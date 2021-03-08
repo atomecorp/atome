@@ -108,7 +108,6 @@ function import_visual_medias(e, file) {
 
 function upload(e) {
     const files = e.dataTransfer.files;
-
     for (let i = 0; i < files.length; i++) {
         let file_type = files[i].type;
         let file_datas = files[i].name;
@@ -287,7 +286,6 @@ window.ondrop = function (e) {
     }
 };
 
-
 const atome = {
     jsIsMobile: function () {
         const a = navigator.userAgent || navigator.vendor || window.opera;
@@ -300,6 +298,14 @@ const atome = {
             mobile = "desktop";
         }
         return mobile;
+    },
+    jsAudio: function (atome_id,options, proc) {
+        const aaudio = new AudioHelper();
+        aaudio.verif();
+    },
+    jsMidi: function (atome_id,options, proc) {
+        const mmidi = new MidiHelper();
+        mmidi.verif();
     },
     jsVideoPlay: function (atome_id, options, proc) {
         var media=$("#"+atome_id +' video:first-child')[0];

@@ -105,12 +105,19 @@ module JSUtils
   end
 
   def video_play(options, &proc)
-
     `atome.jsVideoPlay(#{atome_id},#{options},#{proc})`
   end
 
   def audio_play(options, &proc)
     `atome.jsAudioPlay(#{atome_id},#{options},#{proc})`
+  end
+
+  def audio_verif(options, &proc)
+    `atome.jsAudio(#{atome_id},#{options},#{proc})`
+  end
+
+  def midi_verif(options, &proc)
+    `atome.jsMidi(#{atome_id},#{options},#{proc})`
   end
 end
 

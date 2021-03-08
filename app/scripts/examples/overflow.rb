@@ -15,5 +15,7 @@ b.touch do
   when 2
     t.overflow(:visible)
     i=0
+  else
+    i
   end
 end

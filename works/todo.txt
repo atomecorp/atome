@@ -1,7 +1,6 @@
-- size has bug :
-    c=circle({width: 33, height: 33, y: 66})
-- broadcast changes
-- monitor(atome: :view, property: size)
+
+#- broadcast changes
+#- monitor(atome: :view, property: size)
 - add methods
     - staked event strategy
         optionally possible to add an id to the stacked property

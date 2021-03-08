@@ -11,3 +11,7 @@ end
 def resizable(value = nil)
   value
 end
+
+class Number
+
+end

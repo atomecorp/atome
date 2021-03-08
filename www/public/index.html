@@ -3,13 +3,19 @@
 <head>
     <meta name='viewport' content='initial-scale=1, width=device-width, viewport-fit=cover'>
     <meta charset='UTF-8'/>
-    <meta http-equiv="Content-Security-Policy"
-          content="default-src *; img-src * 'self' data: https: filesystem:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' * ;  media-src * blob:">
+    <!--    <meta http-equiv="Content-Security-Policy"-->
+    <!--          content="default-src *; img-src * 'self' data: https: filesystem:; script-src 'self' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' * ;  media-src * blob:">-->
+    <meta http-equiv="Content-Security-Policy" content=
+            "default-src 'self' ws: data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline';
+child-src 'self' blob: * ;
+style-src 'self' 'unsafe-inline' http://fonts.googleapis.com/;
+font-src *;
+media-src 'self' blob: data: ">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-    <link type="text/css" rel="stylesheet"  href="css/jquery-ui.css">
-    <link type="text/css" rel="stylesheet"  href="css/index.css">
+    <link type="text/css" rel="stylesheet" href="css/jquery-ui.css">
+    <link type="text/css" rel="stylesheet" href="css/index.css">
 
     <title>atome</title>
     <!--    Jquery  -->
@@ -18,14 +24,16 @@
     <script type="text/javascript" src="js/third_parties/jquery/jquery.pep.js" defer></script>
     <script type="text/javascript" src="js/third_parties/jquery/jquery.ui.touch-punch.min.js" defer></script>
     <!--    Graphs lib  -->
-    <script  type="text/javascript" src='js/third_parties/rendering_engines/createjs.min.js' defer></script>
-    <script  type="text/javascript" src='js/third_parties/rendering_engines/zim.min.js'  defer></script>
-    <script  type="text/javascript" src='js/third_parties/rendering_engines/three.min.js' defer></script>
-    <script  type="text/javascript" src='js/third_parties/rendering_engines/aframe.min.js' defer></script>
-    <script  type="text/javascript" src='js/third_parties/rendering_engines/three.interaction.js' defer></script>
-    <script  type="text/javascript" src='js/third_parties/rendering_engines/fabric.min.js'  defer></script>
-    <script  type="text/javascript" src='js/third_parties/rendering_engines/konva.min.js' defer></script>
-    <script  type="text/javascript" src="js/third_parties/rendering_engines/popmotion.global.min.js"  defer></script>
+    <script type="text/javascript" src='js/third_parties/rendering_engines/createjs.min.js' defer></script>
+    <script type="text/javascript" src='js/third_parties/rendering_engines/zim.min.js' defer></script>
+    <script type="text/javascript" src='js/third_parties/rendering_engines/three.min.js' defer></script>
+    <script type="text/javascript" src='js/third_parties/rendering_engines/aframe.min.js' defer></script>
+    <script type="text/javascript" src='js/third_parties/rendering_engines/three.interaction.js' defer></script>
+    <script type="text/javascript" src='js/third_parties/rendering_engines/fabric.min.js' defer></script>
+    <script type="text/javascript" src='js/third_parties/rendering_engines/konva.min.js' defer></script>
+    <script type="text/javascript" src="js/third_parties/rendering_engines/popmotion.global.min.js" defer></script>
+    <script type="text/javascript" src="js/third_parties/audio_engines/webmidi.min.js" defer></script>
+    <script type="text/javascript" src="js/third_parties/audio_engines/tone.min.js" defer></script>
 </head>
 <body id='user_device'>
 <script type="text/javascript" src="../cordova.js"></script>
@@ -36,6 +44,8 @@
 <script type="text/javascript" src="js/atome_libraries/web_socket_helper.js" defer></script>
 <script type="text/javascript" src="js/atome_libraries/drawing_helper.js" defer></script>
 <script type="text/javascript" src="js/atome_libraries/media_helper.js" defer></script>
+<script type="text/javascript" src="js/atome_libraries/audio_helper.js" defer></script>
+<script type="text/javascript" src="js/atome_libraries/midi_helper.js" defer></script>
 <script type="text/javascript" src="js/atome_libraries/index.js" defer></script>
 <script type="text/javascript" src="js/dynamic_libraries/atome_medias.js" defer></script>
 <script type="text/javascript" src="js/dynamic_libraries/atome.js" defer></script>
