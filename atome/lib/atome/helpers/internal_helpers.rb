@@ -2,8 +2,8 @@ module InternalHelpers
   def atomise(property, value)
     # this method create a quark object from atome properties for further processing
     unless @monitor.nil? || @monitor == false
-      alert "property #{property} is now  #{value} for #{self.atome_id}"
-      #broadcaster(property, value)
+
+      broadcast(property, value)
       #MESSENGER.content[:broadcast]={atome_id => {property => value}}
       #monitor({atome_id => {property => value}},"puts 'ok'")
       #message={atome_id => {property => value}}
@@ -44,16 +44,17 @@ module InternalHelpers
     instance_variable_set("@#{instance_name}", atomise(instance_name, value))
   end
 
-  def broadcaster(property, value)
-    MESSENGER.content[:broadcast] = {atome_id => {property => value}}
+  def broadcast(property, value)
+    alert  "property is #{property} is now  #{value} for #{self.atome_id}"
+    #MESSENGER.content[:broadcast] = {atome_id => {property => value}}
     #MESSENGER.monitor({atome_id => {property => value}})
     #puts MESSENGER.content[:broadcast]
   end
 
-  def broadcast
-    # this method just add the @broadcast to indicate if it must broadcast when a property change
-    #  @broadcast = atomise(:broadcast, value)
-  end
+  #def broadcast
+  #  # this method just add the @broadcast to indicate if it must broadcast when a property change
+  #  #  @broadcast = atomise(:broadcast, value)
+  #end
 
   #def monitoring(value)
   #
