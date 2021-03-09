@@ -2,6 +2,5 @@
 
 b=box
 b.drag(true) do |evt|
-  b.rotation(evt.page_x)
+  b.rotate(evt.page_x)
 end
-

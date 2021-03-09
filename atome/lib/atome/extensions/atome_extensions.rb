@@ -70,14 +70,26 @@ def repeat(delay = 3, repeat = 5, &proc)
 end
 
 def clear(value)
-  case value.keys[0]
-  when :wait
-    clear_wait_html(value[:wait])
-  when :repeat
-    clear_repeat_html(value[:repeat])
+  if value.instance_of?(Hash)
+    case value.keys[0]
+    when :wait
+      clear_wait_html(value[:wait])
+    when :repeat
+      clear_repeat_html(value[:repeat])
+    when :view
+      # future use for specific view child treatment
+    else
+      value
+    end
   else
-    value
+    case value
+    when :view
+      #grab(:view).child.delete(true)
+      alert grab(:view).child.delete(true)
+    else
+      end
   end
+
 end
 
 def compile(code)

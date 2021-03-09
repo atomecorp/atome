@@ -11,7 +11,7 @@ c.child.color(:green)
 
 c.child([img.atome_id, b2.atome_id])
 c.child do |child_found|
-  child_found.set({width: 100, height: 33, rotation: 36, y: 66})
+  child_found.set({width: 100, height: 33, rotate: 36, y: 66})
 end
 
 c.child[:red_planet].y(200)

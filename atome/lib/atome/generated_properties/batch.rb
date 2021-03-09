@@ -1,4 +1,14 @@
 module Batch
+      def delete(value, &proc)
+            collected_atomes=[]
+        read.each do |atome|
+          grab(atome).send(:delete, value, &proc)
+          collected_atomes << atome
+        end
+        # we return and atomise collected atomes in case of chain treatment
+        ATOME.atomise(:batch, collected_atomes)
+      end
+
       def x(value, &proc)
         collected_atomes=[]
         read.each do |atome|
@@ -393,6 +403,26 @@ module Batch
         collected_atomes=[]
         read.each do |atome|
           grab(atome).send(:share, value, &proc)
+          collected_atomes << atome
+        end
+        # we return and atomise collected atomes in case of chain treatment
+        ATOME.atomise(:batch, collected_atomes)
+      end
+
+      def transmit(value, &proc)
+        collected_atomes=[]
+        read.each do |atome|
+          grab(atome).send(:transmit, value, &proc)
+          collected_atomes << atome
+        end
+        # we return and atomise collected atomes in case of chain treatment
+        ATOME.atomise(:batch, collected_atomes)
+      end
+
+      def receive(value, &proc)
+        collected_atomes=[]
+        read.each do |atome|
+          grab(atome).send(:receive, value, &proc)
           collected_atomes << atome
         end
         # we return and atomise collected atomes in case of chain treatment

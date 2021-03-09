@@ -1,5 +1,5 @@
 def atome_methods
-  communication = %i[share]
+  communication = %i[share transmit receive]
   effect = %i[blur shadow smooth]
   event = %i[touch drag over]
   geometry = %i[width height size]
@@ -18,11 +18,10 @@ FileUtils.mkdir_p "atome/lib/atome/generated_properties"
 
 def need_pre_processing
   %i[atome_id private can box circle text image video audio parent child]
-
 end
 
 def need_processing
-  %i[size monitor]
+  %i[size monitor transmit]
 end
 
 def getter_need_processing
@@ -30,7 +29,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[box circle text image video audio parent child info example monitor]
+  %i[box circle text image video audio parent child info example monitor transmit receive]
 end
 
 def return_created_property
@@ -38,7 +37,20 @@ def return_created_property
   %i[box circle text image video audio]
 end
 
-batch_methods = []
+
+batch_delete =<<STRDELIM
+      def delete(value, &proc)
+            collected_atomes=[]
+        read.each do |atome|
+          grab(atome).send(:delete, value, &proc)
+          collected_atomes << atome
+        end
+        # we return and atomise collected atomes in case of chain treatment
+        ATOME.atomise(:batch, collected_atomes)
+      end
+STRDELIM
+
+batch_methods = [batch_delete]
 atome_methods_list = []
 atome_methods.each do |property_type, property|
   category = []
@@ -128,6 +140,3 @@ module AtomeHelpers
 end
 STRDELIM
 File.write("atome/lib/atome/generated_properties/atome_methods.rb", methods_list)
-
-
-

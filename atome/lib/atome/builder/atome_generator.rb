@@ -16,7 +16,7 @@ class Atome
   # atome creation
   def initialize(properties = {})
     # the hash below add the missing properties without creating a condition
-    sanitizer = {atome_id: identity, type: :particle, x: 0, y: 0}.merge(properties)
+    sanitizer = {atome_id: identity, type: :particle}.merge(properties)
     create(sanitizer)
     register_atome
   end
@@ -33,7 +33,8 @@ class Atome
 
   def set(properties)
     properties.each do |property, value|
-      send(property.to_s + "=", value)
+      #alert "#{property}"
+      send(property.to_s , value)
     end
   end
 
