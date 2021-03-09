@@ -285,7 +285,7 @@ window.ondrop = function (e) {
         });
     }
 };
-
+const audioDSP = new AudioHelper();
 const atome = {
     jsIsMobile: function () {
         const a = navigator.userAgent || navigator.vendor || window.opera;
@@ -300,23 +300,19 @@ const atome = {
         return mobile;
     },
     jsAudio: function (atome_id,options, proc) {
-        const aaudio = new AudioHelper();
-        aaudio.verif();
-    },
-    jsMidi: function (atome_id,params, proc) {
-        // return  midi = new MidiHelper(options);
-        // return midi.play(options);
-        // return midi(params);
+        audioDSP.basicSynth();
     },
     jsMidi_play: function (note, channel, options) {
-        // return  midi = new MidiHelper(options);
-        // return midi.play(options);
         return midi_play(note, channel, options);
     },
     jsMidi_stop: function (note, channel, options) {
-        // return  midi = new MidiHelper(options);
-        // return midi.play(options);
         return midi_stop(note, channel, options);
+    },
+    jsMidi_inputs: function () {
+        return midi_inputs();
+    },
+    jsMidi_outputs: function () {
+        return midi_outputs();
     },
     jsVideoPlay: function (atome_id, options, proc) {
         var media=$("#"+atome_id +' video:first-child')[0];

@@ -3,7 +3,12 @@ module Processors
   def transmit(values)
     case values.keys[0]
     when :midi
-      case values[:midi].keys[0]
+      if values[:midi].instance_of?(Hash)
+        msg = values[:midi].keys[0]
+      else
+        msg = values[:midi]
+      end
+      case msg
       when :play
         note = values[:midi][:play].delete(:note)
         channel = values[:midi][:play].delete(:channel)
@@ -15,8 +20,9 @@ module Processors
         options = values[:midi][:stop]
         midi_stop(note, channel, options)
       when :inputs
-        #alert :kool
+        midi_inputs
       when :outputs
+        midi_outputs
       else
         values
       end

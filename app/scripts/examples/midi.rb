@@ -1,7 +1,18 @@
 # midi
 
-cc = circle({width: 33, height: 33, y: 66, x: 69, color: :yellow, atome_id: :the_cc})
-cc2 = circle({width: 33, height: 33, y: 66, x: 33, color: :yellow, atome_id: :the_cc})
+c = circle({width: 33, height: 33, y: 33, x: 33, color: :black, atome_id: :the_c2})
+c2 = circle({width: 33, height: 33, y: 33, x: 69, color: :red, atome_id: :the_c})
+t=text({content: "", x: 33, y: 96, width: 300})
+c.touch do
+  interfaces=   c.transmit({midi: :inputs})
+  t.content(interfaces.join("\n"))
+end
+c2.touch do
+  interfaces=  c.transmit({midi: :outputs})
+  t.content(interfaces.join("\n"))
+end
+cc = circle({width: 33, height: 33, y: 69, x: 69, color: :yellow, atome_id: :the_cc})
+cc2 = circle({width: 33, height: 33, y: 69, x: 33, color: :yellow, atome_id: :the_cc2})
 cc.touch({option: :down}) do
   cc.transmit({midi: {play: {note: "C3", channel: 15, velocity: 10}}})
 end

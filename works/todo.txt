@@ -17,6 +17,13 @@
 #    ex :
 #    a.color=b.color
 #    a.color(:red).x(30)
+# midi send and receive
+# tonejs integration
+- long touch needs debug it can trigger the event many times
+- fit methods
+- text size
+- clear object (remove child)
+- text selection (adding color or touch event)
 - atomes namespaces
     examples :
         a=find({id: :my_atome}}

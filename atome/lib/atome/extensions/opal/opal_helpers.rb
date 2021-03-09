@@ -125,5 +125,11 @@ module JSUtils
   def midi_stop(note, channel, options)
     `atome.jsMidi_stop(#{note} ,#{channel},#{options})`
   end
+  def midi_inputs
+    `atome.jsMidi_inputs()`
+  end
+  def midi_outputs
+    `atome.jsMidi_outputs()`
+  end
 end
 
