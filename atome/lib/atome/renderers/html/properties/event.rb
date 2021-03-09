@@ -2,8 +2,32 @@ module PropertylHtml
   def touch_html(value)
     value = value.read
     proc = value[:proc]
-    jq_get(atome_id).on(:click) do |evt|
-      proc.call(evt) if proc.is_a?(Proc)
+    option = value[:option]
+    case option
+    when :down
+      jq_get(atome_id).on("touchstart mousedown") do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    when :up
+      jq_get(atome_id).on("touchend mouseup") do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    when :long
+      jq_get(atome_id).on("touchstart mousedown") do |evt|
+        @trig = true
+        wait 1.2 do
+          if @trig
+            proc.call(evt) if proc.is_a?(Proc)
+          end
+        end
+      end
+      jq_get(atome_id).on("touchend mouseup") do |evt|
+        @trig = false
+      end
+    else
+      jq_get(atome_id).on(:click) do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
     end
   end
 

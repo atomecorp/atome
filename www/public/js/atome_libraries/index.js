@@ -303,9 +303,20 @@ const atome = {
         const aaudio = new AudioHelper();
         aaudio.verif();
     },
-    jsMidi: function (atome_id,options, proc) {
-        const mmidi = new MidiHelper();
-        mmidi.verif();
+    jsMidi: function (atome_id,params, proc) {
+        // return  midi = new MidiHelper(options);
+        // return midi.play(options);
+        // return midi(params);
+    },
+    jsMidi_play: function (note, channel, options) {
+        // return  midi = new MidiHelper(options);
+        // return midi.play(options);
+        return midi_play(note, channel, options);
+    },
+    jsMidi_stop: function (note, channel, options) {
+        // return  midi = new MidiHelper(options);
+        // return midi.play(options);
+        return midi_stop(note, channel, options);
     },
     jsVideoPlay: function (atome_id, options, proc) {
         var media=$("#"+atome_id +' video:first-child')[0];
