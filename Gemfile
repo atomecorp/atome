@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 source "https://rubygems.org"
 # comment when generating arm version
 gem "rubocop"

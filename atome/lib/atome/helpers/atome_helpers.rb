@@ -1,5 +1,6 @@
 module AtomeHelpers
   def delete
+    alert 'msg from atome_helpers line la'
     if Atome.atomes.key?(atome_id)
       # we remove the atome fom the Atome.atomes's hash
       delete_atome = Atome.atomes.delete(atome_id)
@@ -19,7 +20,10 @@ module AtomeHelpers
       properties = {}
       instance_variables.map do |attribute|
         unless attribute== "@monitor"
-          properties[attribute.sub("@".to_sym, "") ] = instance_variable_get(attribute).read
+          # puts attribute
+          properties[attribute.sub("@".to_sym, "") ] = "instance_variable_get(attribute).read"
+          # properties[attribute.sub("@".to_sym, "") ] = "instance_variable_get(attribute).read"
+          # puts "-------"
         end
       end
       properties
