@@ -1,6 +1,6 @@
 module AtomeHelpers
   def delete
-    alert 'msg from atome_helpers line la'
+    alert "from #{self.parent} remove @child => #{atome_id}, also delete any child for it then delete it at last"
     if Atome.atomes.key?(atome_id)
       # we remove the atome fom the Atome.atomes's hash
       delete_atome = Atome.atomes.delete(atome_id)
@@ -19,11 +19,10 @@ module AtomeHelpers
     else
       properties = {}
       instance_variables.map do |attribute|
-        unless attribute== "@monitor"
-          # puts attribute
-          properties[attribute.sub("@".to_sym, "") ] = "instance_variable_get(attribute).read"
-          # properties[attribute.sub("@".to_sym, "") ] = "instance_variable_get(attribute).read"
-          # puts "-------"
+        if instance_variable_get(attribute).nil?
+          properties[attribute.sub("@".to_sym, "")] = nil
+        else
+          properties[attribute.sub("@".to_sym, "")] = instance_variable_get(attribute).read
         end
       end
       properties
@@ -35,6 +34,6 @@ module AtomeHelpers
   end
 
   def play(options, &proc)
-   play_html(options, &proc)
+    play_html(options, &proc)
   end
 end

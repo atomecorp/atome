@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-# comment when generating arm version
+# comment "c_lexer" if generating arm version of atome
 gem "rubocop"
 gem "c_lexer"
 gem "filewatcher"
