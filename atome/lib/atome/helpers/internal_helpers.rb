@@ -21,7 +21,8 @@ module InternalHelpers
     elsif proc
       value = {proc: proc}
     end
-    value
+      puts " set : #{value} :  #{property}"
+      value
   end
 
   def add_to_instance_variable(instance_name, value)

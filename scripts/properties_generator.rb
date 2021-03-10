@@ -29,7 +29,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[box circle text image video audio parent child info example monitor transmit receive]
+  %i[box circle text image video audio parent child info example selector monitor transmit receive]
 end
 
 def return_created_property

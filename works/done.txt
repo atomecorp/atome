@@ -3,3 +3,11 @@
 - added << method to add content
 - add basis in helper folder for all atom's methods
 - Write windows install documentation
+- broadcast changes
+- monitor(atome: :view, property: size)
+- better chaining methods if possible implement the following facilities
+    ex :
+    a.color=b.color
+    a.color(:red).x(30)
+ midi send and receive
+ tonejs integration
