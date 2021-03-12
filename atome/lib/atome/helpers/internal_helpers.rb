@@ -21,7 +21,6 @@ module InternalHelpers
     elsif proc
       value = {proc: proc}
     end
-      puts " internal helper line 24set : #{value} :  #{property}"
       value
   end
 

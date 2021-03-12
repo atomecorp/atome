@@ -15,3 +15,7 @@ end
 class Number
 
 end
+
+def scroll(value = nil)
+
+end

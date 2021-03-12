@@ -1,6 +1,6 @@
 #module Processors
 module Processors
-  def transmit(values)
+  def transmit_processor(values)
     case values.keys[0]
     when :midi
       if values[:midi].instance_of?(Hash)

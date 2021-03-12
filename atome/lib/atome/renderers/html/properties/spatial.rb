@@ -30,8 +30,7 @@ module PropertylHtml
   end
 
   def center_html(value)
-    value = value.read
-    puts value
+    value.read
   end
 
   def position_html(value)

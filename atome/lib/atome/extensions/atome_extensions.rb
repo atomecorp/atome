@@ -87,7 +87,8 @@ def clear(value)
       #grab(:view).child.delete(true)
       alert grab(:view).child.delete(true)
     else
-      end
+      value
+    end
   end
 
 end

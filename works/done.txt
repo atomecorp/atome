@@ -10,4 +10,5 @@
     a.color=b.color
     a.color(:red).x(30)
  midi send and receive
- tonejs integration
+- tonejs integration
+- bug delete child then add child then delete again

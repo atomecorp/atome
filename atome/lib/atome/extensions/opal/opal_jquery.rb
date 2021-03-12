@@ -11,7 +11,6 @@ module Events
   #  @x = params[0]
   #  @y = params[1]
   #  # we update current_atome position
-  #  #puts ("from opal_addon : we update current_atome position")
   #  return self
   #end
 

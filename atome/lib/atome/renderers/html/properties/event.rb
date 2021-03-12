@@ -21,7 +21,7 @@ module PropertylHtml
           end
         end
       end
-      jq_get(atome_id).on("touchend mouseup") do |evt|
+      jq_get(atome_id).on("touchend mouseup") do
         @trig = false
       end
     else

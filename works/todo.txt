@@ -1,4 +1,4 @@
-- bug delete child then add child then delete again
+
 - add methods
     - staked event strategy
         optionally possible to add an id to the stacked property
