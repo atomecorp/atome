@@ -39,15 +39,20 @@ end
 
 
 batch_delete =<<STRDELIM
-      def delete(value, &proc)
-            collected_atomes=[]
-        read.each do |atome|
-          grab(atome).send(:delete, value, &proc)
-          collected_atomes << atome
-        end
-        # we return and atomise collected atomes in case of chain treatment
-        ATOME.atomise(:batch, collected_atomes)
-      end
+  def delete(value, &proc)
+		collected_atomes=[]
+		if read.instance_of?(Array)
+		  read.each do |atome|
+			grab(atome).send(:delete, value, &proc)
+			collected_atomes << atome
+		  end
+		else
+		  grab(read).send(:delete, value, &proc)
+		  collected_atomes << read
+		end
+	# we return and atomise collected atomes in case of chain treatment
+	ATOME.atomise(:batch, collected_atomes)
+  end
 STRDELIM
 
 batch_methods = [batch_delete]
@@ -111,9 +116,14 @@ STRDELIM
     batch_method = <<STRDELIM
       def #{method_name}(value, &proc)
         collected_atomes=[]
-        read.each do |atome|
-          grab(atome).send(:#{method_name}, value, &proc)
-          collected_atomes << atome
+        if read.instance_of?(Array)
+          read.each do |atome|
+            grab(atome).send(:#{method_name}, value, &proc)
+            collected_atomes << atome
+          end
+        else
+          grab(read).send(:#{method_name}, value, &proc)
+          collected_atomes << read
         end
         # we return and atomise collected atomes in case of chain treatment
         ATOME.atomise(:batch, collected_atomes)

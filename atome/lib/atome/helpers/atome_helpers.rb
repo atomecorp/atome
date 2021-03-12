@@ -1,9 +1,21 @@
 module AtomeHelpers
-  def delete
-    alert "from #{self.parent} remove @child => #{atome_id}, also delete any child for it then delete it at last"
+  def delete(params = nil)
     if Atome.atomes.key?(atome_id)
       # we remove the atome fom the Atome.atomes's hash
       delete_atome = Atome.atomes.delete(atome_id)
+      unless child.nil?
+        #the the current atome habve child we delete them too
+        # We will remove any reference of this atome from its parents
+        parent_child = grab(parent.read).child.read
+        updated_child_list = []
+        parent_child.each do |child_found|
+          if child_found != atome_id
+            updated_child_list << child_found
+          end
+        end
+        child.delete(true)
+        grab(parent.read).instance_variable_set("@child", atomise(:child, updated_child_list))
+      end
       # adding the deleted atome to the black_hole for later retrieve
       grab(:black_hole).content[atome_id] = delete_atome
       # now we remove the atome from view if it is rendered
