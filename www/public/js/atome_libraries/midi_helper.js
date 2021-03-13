@@ -60,7 +60,7 @@ WebMidi.enable(function (err) {
             // console.log(interfaceName["name"]+"<br>");
             interfaces_in.push(interfaceName["name"]);
         }
-        output = WebMidi.outputs[0];
+        output = WebMidi.outputs[13];
 
         // output.playNote("C3")
 

@@ -12,3 +12,4 @@
  midi send and receive
 - tonejs integration
 - bug delete child then add child then delete again
+- midi native + web

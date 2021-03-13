@@ -1,5 +1,5 @@
 def atome_methods
-  communication = %i[share transmit receive]
+  communication = %i[share]
   effect = %i[blur shadow smooth]
   event = %i[touch drag over]
   geometry = %i[width height size]
@@ -21,7 +21,7 @@ def need_pre_processing
 end
 
 def need_processing
-  %i[size monitor transmit]
+  %i[size monitor]
 end
 
 def getter_need_processing
@@ -29,7 +29,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[box circle text image video audio parent child info example selector monitor transmit receive]
+  %i[box circle text image video audio parent child info example selector monitor]
 end
 
 def return_created_property

@@ -84,8 +84,7 @@ def clear(value)
   else
     case value
     when :view
-      #grab(:view).child.delete(true)
-      alert grab(:view).child.delete(true)
+      grab(:view).child.delete(true)
     else
       value
     end

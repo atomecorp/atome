@@ -1,4 +1,6 @@
-
+- save to db
+- init sequence
+- basic U.I.
 - add methods
     - staked event strategy
         optionally possible to add an id to the stacked property
@@ -67,15 +69,10 @@
             or using an external security object :
             security_atome=Atome.new(autorisation: { read: true, write: {user: [:jeezs, sylvz], password: :jkhgj35435},security: :jeezs})
             a.color({value: :red, autorisation: security_atome})
-- midi native + web
 - share/collaboration
-- init sequence
-- basic U.I.
 - Debug
 - Documentation
 - repeat and wait may be atome object too!!
-
-
 #old todos :
 - monstruous bug when inserting an object into an other, the child lose it's position, the offset is also fucked, the bug is worse when deleting and enliven an atome!!!
 - monstruous bug 2 when enliven atome child often it's drag ability and sometimes disapear
