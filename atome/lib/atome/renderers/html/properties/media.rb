@@ -1,9 +1,13 @@
-module MediaHtml
+module PropertylHtml
   def content_html(value)
     value = value.read
-    value = value.to_s.gsub("\n", "<br>")
     if type == :text
+      value = value.to_s.gsub("\n", "<br>")
       jq_get(atome_id).html(value)
+    elsif type == :shape
+      if value[:tension]
+        self.smooth(value[:tension])
+      end
     elsif type == :video
       video_creator__helper(value)
     elsif type == :image

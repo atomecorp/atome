@@ -1,2 +1,2 @@
-module SpatialsProcessors
+module Processors
 end

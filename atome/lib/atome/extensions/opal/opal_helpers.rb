@@ -3,15 +3,11 @@ module JSUtils
     Element.find("#" + atome_id)
   end
 
-  def initialize
-    @codemirror = []
-  end
-
-  def device
+  def self.device
     `window`
   end
 
-  def document
+  def self.document
     `$(document)`
   end
 
@@ -20,10 +16,8 @@ module JSUtils
     unless ATOME.content[:time_out]
       ATOME.content[:time_out] = []
     end
-    timeout = `setTimeout(function(){ #{yield} }, #{time * 1000});`
+    timeout = `setTimeout(function(){ #{yield} }, #{time * 1000})`
     ATOME.add_timeout(timeout)
-    # clear_timeout(timeout)
-    # clear_timeouts
     timeout
   end
 
@@ -44,13 +38,14 @@ module JSUtils
   end
 
   # repeat
-
   def set_interval(delay, repeat)
     unless ATOME.content[:intervals]
       ATOME.content[:intervals] = {}
     end
-    interval = `setInterval(function(){ #{yield}, #{interval_countdown(interval)} }, #{delay * 1000});`
+    interval=""
+    interval = `setInterval(function(){ #{yield(interval_countdown(interval))}}, #{delay * 1000})`
     ATOME.add_interval(interval, repeat)
+    interval
   end
 
   def interval_countdown(interval)
@@ -82,7 +77,59 @@ module JSUtils
     `atome.jsIsMobile()`
   end
 
-  def verification(*params)
-    `atome.jsVerification(#{params})`
+  # code editor below
+  def self.load_opal_parser
+    `$.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {#{@opal_parser=true}})`
+  end
+
+  def self.opal_parser_ready
+    @opal_parser
+  end
+
+  def self.set_ide_content(ide_id, content)
+    editor_id = "cm_" + ide_id
+    `document.getElementById(#{editor_id}).CodeMirror.getDoc().setValue(#{content})`
+  end
+
+  def get_ide_content(ide_id)
+    editor_id = "cm_" + ide_id
+     `document.getElementById(#{editor_id}).CodeMirror.getDoc().getValue("\n")`
+  end
+
+  def load_codemirror(atome_id, content)
+    `atome.jsLoadCodeEditor(#{atome_id},#{content})`
+  end
+
+  def self.reader (filename, &proc)
+    `atome.jsReader(#{filename},#{proc})`
+  end
+
+  def video_play(options, &proc)
+    `atome.jsVideoPlay(#{atome_id},#{options},#{proc})`
+  end
+
+  def audio_play(options, &proc)
+    `atome.jsAudioPlay(#{atome_id},#{options},#{proc})`
+  end
+
+  def audio_dsp(options, &proc)
+    `atome.jsAudio(#{atome_id},#{options},#{proc})`
+  end
+
+  def midi_communication(options, &proc)
+    `atome.jsMidi(#{atome_id},#{options},#{proc})`
+  end
+  def midi_play(note, channel, options)
+    `atome.jsMidi_play(#{note} ,#{channel}, #{options})`
+  end
+  def midi_stop(note, channel, options)
+    `atome.jsMidi_stop(#{note} ,#{channel},#{options})`
+  end
+  def midi_inputs
+    `atome.jsMidi_inputs()`
+  end
+  def midi_outputs
+    `atome.jsMidi_outputs()`
   end
 end
+

@@ -1,4 +1,4 @@
-module UtilityHtml
+module PropertylHtml
   def render_html(value)
     value = value.read
     unless value

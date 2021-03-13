@@ -1,2 +1,2 @@
-module HierarchyProcessorHtml
+module ProcessorHtml
 end

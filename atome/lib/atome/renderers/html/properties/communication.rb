@@ -1,2 +1,2 @@
-module CommunicationHtml
+module PropertylHtml
 end

@@ -1,44 +1,47 @@
 module InternalHelpers
-  def atomise(properties)
+  def atomise(property, value)
     # this method create a quark object from atome properties for further processing
-    Quark.new(properties)
+    unless @monitor.nil? || @monitor == false
+      # if the atome is monitored it broadcast the changes
+      broadcast(property, value)
+    end
+    Quark.new(value)
   end
 
-  def reorder_properties(properties)
-    # we re-order the hash to puts the atome_id type at the begining to optimise rendering
-    order_wanted = [:atome_id, :type, :parent, :width, :height, :x, :y, :z, :center, :size, :content]
-    properties.sort_by_array(order_wanted)
+  def properties_common(value, &proc)
+    if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
+      property = {}
+      property[:proc] = proc
+      property[:options] = value
+      value = property
+    elsif proc && value.instance_of?(Hash)
+      value = value.merge(proc: proc)
+    elsif proc && (value.instance_of?(Integer) || value.instance_of?(String) || value.instance_of?(Symbol))
+      value = {value: value, proc: proc}
+    elsif proc
+      value = {proc: proc}
+    end
+      value
   end
 
-  def centering(values)
-    "todo add centering#{values}"
-  end
-
-  def resize
-  end
-
-  def resize_actions(params = nil)
-    if params
-      params.each do |key, value|
-        grab(:actions).resize_actions[key] = value
-      end
-    elsif atome_id[:value] == :actions
-      if @resize_actions.instance_of?(NilClass)
-        @resize_actions = {}
+  def add_to_instance_variable(instance_name, value)
+    unless value.instance_of?(Array)
+      value = [value]
+    end
+    prev_instance_variable_content = instance_variable_get("@#{instance_name}")
+    if prev_instance_variable_content
+      if prev_instance_variable_content.read.instance_of?(Array)
+        value = prev_instance_variable_content.read.concat(value)
       else
-        @resize_actions
+        prev_instance_variable_content = [prev_instance_variable_content.read]
+        value = prev_instance_variable_content.concat(value)
       end
-    else
-      grab(:actions).resize_actions
     end
+    instance_variable_set("@#{instance_name}", atomise(instance_name, value))
   end
 
-  def viewer_actions
-    grab(:view).resize do
-      grab(:actions).resize_actions[:center]&.each do |atome|
-        atome.centering(:x, atome.x[:center], atome.x[:reference], atome.x[:dynamic]) if atome.x[:center]
-        atome.centering(:y, atome.y[:center], atome.y[:reference], atome.y[:dynamic]) if atome.y[:center]
-      end
-    end
+  def broadcast(property, value)
+    proc= @monitor.read[:proc]
+    monitor_processor({property: property,value: value,proc: proc})
   end
 end

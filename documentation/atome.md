@@ -55,7 +55,7 @@ prerequisite:
 
 To install application: 
 	 
-    npm install -g cordova (or depending on platform:  npm install cordova)
+    npm install -g cordova
     sudo cordova plugin add cordova-sqlite-storage
     sudo cordova plugin add cordova-plugin-file
     sudo cordova platform add browser
@@ -98,77 +98,50 @@ The atome framework is mainly based on a Cordova project, but add the following 
 
 - a web server
 
-- a native mode with 3D rendering (the 3D engine is currently based on Urho3D, this choice may change in the future).
+- a native mode with 3D rendering (the 3D engine may currently be based on Urho3D, this choice may change in the future).
  
 - a low latency audio system
 
-- a bootable option for embedded applications
+- a bootable option for embedded applications AMD64 and ARM
 
 The folders dedicated to the atome framework are : 
 
 - The app folder : contain all end user scripts
 
 - The atome folder : it contain the atome ruby's gem, this is basically the heart of the framework
-    - atome : this is the object it self
-        - atome class is found in the atome.rb files
-        - this class contain 5 main methods named SAGED for Set - Add - Get - Enliven - Delete 
-   
-    - proton : contain all the default property's value when creating new object
-   
-    - photon : contain all properties that define the physical aspect of the object to be renderer on a device, (visuals, sound , haptic...) ex: color, width
-   
-    - neutron :  contain all properties that are conceptual and do not need to be rendered in the view.
-     ex : selector, touch , child
-  
-    - electron : contain a collection of utilities (functions) to work easier with atomes's objects
-   
-    - big bang : initiate the atome environment 
 
 - The documentations folder : it contains infos and documentations of the framework ( how to install it , enhance it or use it )
 
-- The opal_compiler : contains two files:
-   
-    - opal_add_on.rb is a set of functions to enhance opal renderer, the parser
-    
-    - parser.rb is used to allow 'on the fly' atome scripting in the web view when using the opal compiler
-    
-- The renderers folder :contains any rendering engine such as :
+- The renderers folder :contains rendering engine such as :
     
     - html for pure js rendering
     
     - Headless for text only rendering of atome's objects
     
-    - Vocals to render atomes as an audio description
+    - Vocals to render atomes as audio description
     
-    - Urho3D for native rendering 
-    
-    - FabricJS for 2D rendering in canvas's web view
-    
-    - ZIMJS for an alternative 2D rendering in canvas's web view
-    
-    - Konva for an alternative 2D rendering in canvas's web view
-    
-    - ThreeJS for 3D rendering in canvas's web view
+    - Urho3D for native rendering
 
-- The scripts folder contains all the files to automatise the install of atome framework
+- The scripts folder contains two files 
+    one to automatise the install of atome framework
+    the other generate ruby's methods that manipulate atome properties (to avoid too much meta programming)
 
 - The rakefile file use to automatise the launch of atome framework
 
-- The index.js in www/public/js contains js functions and utility for the web rendering of atome engine
+- The index.js in www/public/js/atome_libraries contains js functions and utility for the web rendering of atome engine
 
 - The index.html in www/public/ to initiate the web version of atome
+
+- The app.rb found in the www folder is used for the server version of atome
 
 
 II - Rendering engine
 -
 
  - NativeJS (web)
- - ZimJS (web)
- - Konva (web)
- - FabricJS (web)
  - ThreeJS (web)
  - Urho3D (native or web with web assemebly)
- - futur use case ( Unity, Unreal, Juce, ....)
+ - future use case ( Unity, Unreal, Juce, ....)
  
  
 II - running method
@@ -176,7 +149,7 @@ II - running method
 
 - web (opal)
 - server (roda)
-- stand alone (Freebsd )
+- stand alone (Freebsd ARM AMD64)
 - native (urho 3D)
 
 
@@ -198,8 +171,7 @@ any atome can contain an other atome or a group of atomes as a property ex:
     puts c.child #=> c (b is now a child of c
     b.group([i,t])
     puts b.child #=> [i,t] (i and t ares now a child of b
-    
-please note that child method is always singular, even when if it return many children! 
+     
  
 The atome properties are always define using a key-value pair (Hash type). those values can be a String, an Integer, a hash(key-value) or an array. 
 The atome can receive a second optional parameters to refresh the view or not. 

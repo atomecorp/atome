@@ -4,32 +4,37 @@ require "opal-jquery"
 require "uglifier"
 require "fileutils"
 require "filewatcher"
-
 unless File.directory?("app/temp")
   FileUtils.mkdir_p("app/temp")
 end
 
+def generate_methods
+  require "./scripts/properties_generator.rb"
+end
+
+generate_methods
+
 def update_opal_libraries
-  file 'www/public/js/third_parties/opal/opal.js': ["www/public/js/third_parties/opal"] do |t|
+  file 'www/public/js/dynamic_libraries/opal/opal.js': ["www/public/js/dynamic_libraries/opal"] do |t|
     opal = Opal::Builder.new
     opal.build("opal")
     File.write(t.name, opal.to_s)
   end
 
-  file 'www/public/js/third_parties/opal/opal_jquery.js': ["www/public/js/third_parties/opal"] do |t|
+  file 'www/public/js/dynamic_libraries/opal/opal_jquery.js': ["www/public/js/dynamic_libraries/opal"] do |t|
     parser = Opal::Builder.new
     parser.build("opal-jquery")
     File.write(t.to_s, parser.to_s)
   end
 
-  file 'www/public/js/third_parties/opal/opal_parser.js': ["www/public/js/third_parties/opal"] do |t|
+  file 'www/public/js/dynamic_libraries/opal/opal_parser.js': ["www/public/js/dynamic_libraries/opal"] do |t|
     parser = Opal::Builder.new
-    parser.build("parser")
+    parser.build('./atome/lib/atome/extensions/opal/opal_parser.rb')
     File.write(t.to_s, parser.to_s)
   end
 end
 
-update_opal_libraries
+ update_opal_libraries
 
 def update_medias_list
   # todo : only copy if there's a change! use monitoring if possible
@@ -75,14 +80,14 @@ def update_medias_list
     end
 
     medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-    medias_list =medias_list+"\n"+"module Universe\ndef self.images\n#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{$audios_list}\nend\nend"
-        File.open(t.name, "w") { |file| file.write(medias_list) }
+    medias_list = medias_list + "\n" + "module Universe\ndef self.images\n#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{$audios_list}\nend\nend"
+    File.open(t.name, "w") { |file| file.write(medias_list) }
   end
 end
 
-dir_to_inspect = Dir.glob("www/public/medias/**/*")
-dir_to_inspect_2 = Dir.glob("eVe/medias/**/*")
-nb_of_medias_files = (dir_to_inspect.length + dir_to_inspect_2.length).to_s
+medias_dir_to_inspect = Dir.glob("www/public/medias/**/*")
+eve_medias_dir_to_inspect = Dir.glob("eVe/medias/**/*")
+nb_of_medias_files = (medias_dir_to_inspect.length + eve_medias_dir_to_inspect.length).to_s
 
 
 unless File.exist?("app/temp/nb_of_medias_files")
@@ -105,7 +110,7 @@ file 'www/public/js/dynamic_libraries/atome_medias.js': media_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-directory "www/public/js/third_parties/opal"
+directory "www/public/js/dynamic_libraries/opal"
 directory "app/temp"
 
 atome_monitoring = Dir.glob("atome/lib/**/*")
@@ -127,9 +132,9 @@ file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-opal = "www/public/js/third_parties/opal/opal.js"
-opal_jquery = "www/public/js/third_parties/opal/opal_jquery.js"
-parser = "www/public/js/third_parties/opal/opal_parser.js"
+opal = "www/public/js/dynamic_libraries/opal/opal.js"
+opal_jquery = "www/public/js/dynamic_libraries/opal/opal_jquery.js"
+parser = "www/public/js/dynamic_libraries/opal/opal_parser.js"
 atome = "www/public/js/dynamic_libraries/atome.js"
 atome_app = "www/public/js/dynamic_libraries/atome_app.js"
 atome_medias = "www/public/js/dynamic_libraries/atome_medias.js"
@@ -150,8 +155,10 @@ task 'run::server': required_js_lib do
       sleep 2
       system("open", "http://localhost:9292")
     end
+    sh "puma -b tcp://127.0.0.1:9292"
+    #sh "puma -b 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'"
     sh "rackup --server puma --port 9292 --env production"
-    # Rack::Server.start(config: 'config.ru', server: 'puma')
+     #Rack::Server.start(config: 'config.ru', server: 'puma')
   end
 end
 
@@ -262,6 +269,6 @@ task "clean" do
   rm_f "www/public/js/dynamic_libraries/atome.js"
   rm_f "www/public/js/dynamic_libraries/atome_app.js"
   rm_f "www/public/js/dynamic_libraries/atome_medias.js"
-  rm_f "www/public/js/third_parties/opal/opal.js"
-  rm_f "www/public/js/third_parties/opal/opal_parser.js"
+  rm_f "www/public/js/dynamic_libraries/opal/opal.js"
+  rm_f "www/public/js/dynamic_libraries/opal/opal_parser.js"
 end

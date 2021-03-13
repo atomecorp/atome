@@ -5,7 +5,6 @@ class MediaHelper {
         this.framerate = framerate;
         this.previewElement = previewElement;
         this.playbackElement = playbackElement;
-
         this.recordingEventListener = recordingEventListener;
     }
 
@@ -77,9 +76,9 @@ class MediaHelper {
 
     pauseOrResume() {
         if(this.isPaused) {
-            resume();
+            this.resume();
         } else {
-            pause();
+            this.pause();
         }
     }
 }

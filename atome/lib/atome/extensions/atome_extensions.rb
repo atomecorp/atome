@@ -36,9 +36,16 @@ end
 
 def grab(atome_id)
   if Atome.atomes.key?(atome_id)
-    return Atome.atomes[atome_id]
+    Atome.atomes[atome_id]
   end
-  nil
+end
+
+def batch(objects)
+  batched_atomes = []
+  objects.each do |atome_id|
+    batched_atomes << atome_id.atome_id
+  end
+  ATOME.atomise(:batch, batched_atomes)
 end
 
 def tactile
@@ -58,36 +65,51 @@ def wait(seconds)
   end
 end
 
-def every(delay = 3, repeat = 5, &proc)
-  every_html(delay, repeat, &proc)
+def repeat(delay = 3, repeat = 5, &proc)
+  repeat_html(delay, repeat, &proc)
 end
 
 def clear(value)
-  case value.keys[0]
-  when :wait
-    clear_interval_html(value[:wait])
-  when :repeat
-    clear_repeat_html(value[:repeat])
+  if value.instance_of?(Hash)
+    case value.keys[0]
+    when :wait
+      clear_wait_html(value[:wait])
+    when :repeat
+      clear_repeat_html(value[:repeat])
+    when :view
+      # future use for specific view child treatment
+    else
+      value
+    end
   else
-    value
+    case value
+    when :view
+      grab(:view).child.delete(true)
+    else
+      value
+    end
   end
+
+end
+
+def compile(code)
+  if JSUtils.opal_parser_ready
+    # if needed we can add a parser for the data here
+    Opal.eval(code)
+  else
+    ATOME.wait 0.01 do
+      compile(code)
+    end
+  end
+end
+
+def read(filename, &proc) #  read local file
+  JSUtils.reader(filename, &proc)
 end
 
 def version
   "v:0.015"
 end
-
-# def alert(msg)
-#  ATOME.wait 0.2 do
-#    alert = text(content: msg)
-#    alert.color = :red
-#    alert.x = 200
-#    alert.y = 200
-#    alert.touch({option: :up}) do
-#      alert.delete
-#    end
-#  end
-# end
 
 def notification(message, duration)
   notification = text({content: message, color: :orange, x: 69, y: 69})

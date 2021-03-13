@@ -108,7 +108,6 @@ function import_visual_medias(e, file) {
 
 function upload(e) {
     const files = e.dataTransfer.files;
-
     for (let i = 0; i < files.length; i++) {
         let file_type = files[i].type;
         let file_datas = files[i].name;
@@ -228,7 +227,7 @@ let mediaEventListener = {
 };
 
 document.addEventListener("deviceready", function () {
-    // $.getScript('js/third_parties/opal/opal_parser.js', function (data, textStatus, jqxhr) {
+    // $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
     //     //webSocketHelper
     //     //TODO: Get server address from DNS.
     //     const serverAddress = '192.168.1.13:9292';
@@ -286,8 +285,7 @@ window.ondrop = function (e) {
         });
     }
 };
-
-
+const audioDSP = new AudioHelper();
 const atome = {
     jsIsMobile: function () {
         const a = navigator.userAgent || navigator.vendor || window.opera;
@@ -301,9 +299,130 @@ const atome = {
         }
         return mobile;
     },
+    jsAudio: function (atome_id,options, proc) {
+        audioDSP.basicSynth();
+    },
+    jsMidi_play: function (note, channel, options) {
+        return midi_play(note, channel, options);
+    },
+    jsMidi_stop: function (note, channel, options) {
+        return midi_stop(note, channel, options);
+    },
+    jsMidi_inputs: function () {
+        return midi_inputs();
+    },
+    jsMidi_outputs: function () {
+        return midi_outputs();
+    },
+    jsVideoPlay: function (atome_id, options, proc) {
+        var media=$("#"+atome_id +' video:first-child')[0];
+        if (options==true || options=='true'){
+            options = 0;
+        }
+        media.addEventListener("timeupdate", function(){
+//Opal.Events.$playing(proc,media.currentTime)
+        });
+//media.currentTime is run twice, because if not depending on the context it may not be interpreted
+        media.currentTime = options;
+        media.addEventListener('loadedmetadata', function() {
+            media.currentTime = options;
+        }, false);
+        media.play();
+    },
+    jsAudioPlay: function (atome_id,options, proc) {
+        var media=$("#"+atome_id +' audio:first-child')[0];
+        if (options==true || options=='true'){
+            options = 0;
+        }
+        media.addEventListener("timeupdate", function(){
+            Opal.Event.$playing(proc,media.currentTime)
+        });
+//media.currentTime is run twice, because if not depending on the context it may not be interpreted
+        media.currentTime = options;
+        media.addEventListener('loadedmetadata', function() {
+            media.currentTime = options;
+        }, false);
+        media.play();
+    },
+
     jsCreateVideo: function (parent) {
         var video = $('<video />', {});
         video.appendTo($('#' + parent));
+    },
+    jsReader: function (filename, proc) {
+        $.ajax({
+            url: filename,
+            dataType: 'text',
+            success: function (data) {
+                return proc.$call(data)
+            }
+        });
+    },
+    jsLoadCodeEditor: function (atome_id, content) {
+        $('<link/>', {
+            rel: 'stylesheet',
+            type: 'text/css',
+            href: 'css/codemirror.css'
+        }).appendTo('head');
+        $.getScript('js/third_parties/ide/codemirror.min.js', function (data, textStatus, jqxhr) {
+            $.getScript('js/third_parties/ide/active-line.min.js', function (data, textStatus, jqxhr) {
+                $.getScript('js/third_parties/ide/closebrackets.min.js', function (data, textStatus, jqxhr) {
+                    $.getScript('js/third_parties/ide/closetag.min.js', function (data, textStatus, jqxhr) {
+                        $.getScript('js/third_parties/ide/dialog.min.js', function (data, textStatus, jqxhr) {
+                            $.getScript('js/third_parties/ide/formatting.min.js', function (data, textStatus, jqxhr) {
+                                $.getScript('js/third_parties/ide/javascript.min.js', function (data, textStatus, jqxhr) {
+                                    $.getScript('js/third_parties/ide/jump-to-line.min.js', function (data, textStatus, jqxhr) {
+                                        $.getScript('js/third_parties/ide/matchbrackets.min.js', function (data, textStatus, jqxhr) {
+                                            $.getScript('js/third_parties/ide/ruby.min.js', function (data, textStatus, jqxhr) {
+                                                $.getScript('js/third_parties/ide/search.min.js', function (data, textStatus, jqxhr) {
+                                                    $.getScript('js/third_parties/ide/searchcursor.min.js', function (data, textStatus, jqxhr) {
+                                                        ide_container_id = "#" + atome_id;
+                                                        ide_id = 'ide_' + atome_id;
+                                                        $(ide_container_id).append("<textarea id=" + ide_id + " name='code'></textarea>");
+                                                        var code_editor = CodeMirror.fromTextArea(document.getElementById(ide_id), {
+                                                            lineNumbers: true,
+                                                            codeFolding: true,
+                                                            styleActiveLine: true,
+                                                            indentWithTabs: true,
+                                                            matchTags: true,
+                                                            matchBrackets: true,
+                                                            electricChars: true,
+                                                            mode: "ruby",
+                                                            lineWrapping: true,
+                                                            indentAuto: true,
+                                                            autoCloseBrackets: true,
+                                                            tabMode: "shift",
+                                                            autoRefresh: true
+                                                        });
+                                                        new_editor = document.querySelector(".CodeMirror");
+// we check all codemirror if they have an id to avoid to reassign an id to already created codemirror
+                                                        if (($(new_editor).attr('id')) == undefined) {
+                                                            new_editor_id = "cm_" + atome_id
+                                                            $(new_editor).attr('id', new_editor_id);
+                                                        }
+                                                        code_editor.setSize("100%", "100%");
+                                                        code_editor.setOption("theme", "3024-night");
+
+                                                        function getSelectedRange() {
+                                                            return {
+                                                                from: editor.getCursor(true),
+                                                                to: editor.getCursor(false)
+                                                            };
+                                                        }
+
+                                                        Opal.JSUtils.$set_ide_content(atome_id, content);
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
     }
 };
 

@@ -1,2 +1,2 @@
-module EffectsProcessors
+module Processors
 end

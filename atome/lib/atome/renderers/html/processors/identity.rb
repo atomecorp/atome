@@ -1,2 +1,2 @@
-module IdentityProcessorHtml
+module ProcessorHtml
 end

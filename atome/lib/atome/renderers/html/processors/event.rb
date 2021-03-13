@@ -1,2 +1,2 @@
-module EventProcessorHtml
+module ProcessorHtml
 end

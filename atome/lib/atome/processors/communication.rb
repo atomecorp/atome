@@ -1,2 +1,3 @@
-module CommunicationsProcessors
+#module Processors
+module Processors
 end

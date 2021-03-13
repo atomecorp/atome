@@ -1,2 +1,2 @@
-module CommunicationProcessorHtml
+module ProcessorHtml
 end
