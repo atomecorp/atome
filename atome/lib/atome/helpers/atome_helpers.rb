@@ -77,6 +77,8 @@ module AtomeHelpers
       end
     when :beaglebone
       # bbb communication layer
+    when :shell
+      alert values[:shell]
     else
       value
     end

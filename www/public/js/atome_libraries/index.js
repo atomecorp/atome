@@ -154,44 +154,12 @@ function displayImg(url) {
     output.src = url;
 }
 
-let webSocketHelper;
+
 let databaseHelper;
 let fileHelper;
 let drawingHelper;
 let mediaHelper;
 
-let webSocketEventListener = {
-    onConnected: function (username) {
-        console.log('Websocket connected with user ' + username);
-        this.sendGreetingsToServer();
-    },
-
-    onConnectFailed: function (username) {
-        console.log('Connection failed for user ' + username);
-    },
-
-    onMessage: function (data) {
-        Opal.eval(data);
-    },
-
-    onError: function (event) {
-        console.log('Web socket error: ' + event.data);
-    },
-
-    onReconnect: function (event) {
-        console.log('Connection to server lost; reconnecting');
-    },
-
-    onClosed: function (event) {
-        console.log('Connection to server close successfully');
-    },
-
-    sendGreetingsToServer: function () {
-        {
-            webSocketHelper.sendMessage('{ "action": "text(:hello)"}');
-        }
-    }
-};
 
 let databaseEventListener = {
     onConnected: function () {
@@ -226,6 +194,94 @@ let mediaEventListener = {
     }
 };
 
+let mySocket;
+let webSocketEventListener = {
+    onConnected: function (username) {
+        console.log('Websocket connected with user ' + username);
+        this.sendGreetingsToServer();
+    },
+
+    onConnectFailed: function (username) {
+        console.log('Connection failed for user ' + username);
+    },
+
+    onMessage: function (data) {
+        Opal.eval(data);
+    },
+
+    onError: function (event) {
+        console.log('Web socket error: ' + event.data);
+    },
+
+    onReconnect: function (event) {
+        console.log('Connection to server lost; reconnecting');
+    },
+
+    onClosed: function (event) {
+        console.log('Connection to server close successfully');
+    },
+
+    sendGreetingsToServer: function () {
+        {
+            mySocket.sendMessage('{ "action": "text(:helloiii)"}');
+        }
+    }
+};
+$.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {});
+
+// const serverAddress = '127.0.0.1:9292';
+var activeFlow = new WebSocket('ws://' + window.location.host + window.location.pathname);
+// var activeFlow = new WebSocket('ws://' + serverAddress);
+activeFlow.onopen    = function()  {
+};
+activeFlow.onclose   = function()  {
+    // bidirectionalFlowContent('websocket closed');
+}
+activeFlow.onmessage = function(m) {
+    Opal.eval(m.data);
+};
+
+function send_message(message){
+    var msg = {
+        type: "code",
+        text: message,
+        id:   "clientID",
+        password: "ç§fd!èx§dfg",
+        date: Date.now()
+    };
+
+    // Send the msg object as a JSON-formatted string.
+    activeFlow.send(JSON.stringify(msg));
+
+
+}
+$( document ).ready(function() {
+
+    // activeFlow.onopen    = function()  {
+    // };
+    // activeFlow.onclose   = function()  {
+    //     // bidirectionalFlowContent('websocket closed');
+    // }
+    // activeFlow.onmessage = function(m) {
+    //     alert(m.data);
+    // };
+
+
+    /////////////////////////////
+    // $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
+    //     //webSocketHelper
+    //     //TODO: Get server address from DNS.
+    //     const serverAddress = '127.0.0.1:9292';
+    //     mySocket = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
+    //     mySocket.connect();
+    //     // webSocketHelper.sendMessage('{ "action": "text(:helloiii)"}');
+    // });
+
+//     databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
+// databaseHelper.connect();
+});
+
+
 document.addEventListener("deviceready", function () {
     // $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
     //     //webSocketHelper
@@ -235,14 +291,13 @@ document.addEventListener("deviceready", function () {
     //     webSocketHelper.connect();
     // });
 
-
     //databaseHelper
-    databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
-    databaseHelper.connect();
-
-    //fileHelper
-    fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
-    fileHelper.connect(564654);
+    // databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
+    // databaseHelper.connect();
+    //
+    // //fileHelper
+    // fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
+    // fileHelper.connect(564654);
 
     //drawingHelper
     // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);

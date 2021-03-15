@@ -65,3 +65,20 @@ class WebSocketHelper {
         this.webSocket.close();
     }
 }
+
+
+// const serverAddress = '127.0.0.1:9292';
+// // var activeFlow = new WebSocket('ws://' + window.location.host + window.location.pathname);
+// var activeFlow = new WebSocket('ws://' + serverAddress);
+//
+// function verifme(){
+//     var msg = {
+//         type: "message",
+//         text: "my message is send!",
+//         id:   "clientID",
+//         date: Date.now()
+//     };
+//
+//     // Send the msg object as a JSON-formatted string.
+//     activeFlow.send(JSON.stringify(msg));
+// }

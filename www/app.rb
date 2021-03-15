@@ -71,16 +71,18 @@ class App < Roda
           data = JSON.parse(client_data)
           puts "-------"
           puts data
+          #puts data.type
           puts "-------"
 
           if data["connection"]
             ws.send('{"connection":{"username":"Régis","accepted":"true"}}')
+          elsif data["type"] =="code"
+            ws.send(data["text"])
           else
-            ws.send(client_data)
+            data
           end
-
         else
-          client_data
+          #client_data
         end
         #if valid_json?(client_data)
         #  data = JSON.parse(client_data)
