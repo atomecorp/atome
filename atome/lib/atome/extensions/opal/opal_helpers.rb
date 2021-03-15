@@ -131,5 +131,16 @@ module JSUtils
   def midi_outputs
     `atome.jsMidi_outputs()`
   end
+
+  def remote_server(msg)
+    default={type: :code, message: :box}
+    msg=default.merge(msg)
+    `message_server(#{msg[:type]}, #{msg[:message]});`
+  end
+
+  def shell(command)
+    remote({type: :command,message: command})
+  end
+
 end
 

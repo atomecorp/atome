@@ -227,35 +227,51 @@ let webSocketEventListener = {
         }
     }
 };
-$.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {});
 
-// const serverAddress = '127.0.0.1:9292';
-var activeFlow = new WebSocket('ws://' + window.location.host + window.location.pathname);
-// var activeFlow = new WebSocket('ws://' + serverAddress);
-activeFlow.onopen    = function()  {
-};
-activeFlow.onclose   = function()  {
-    // bidirectionalFlowContent('websocket closed');
-}
-activeFlow.onmessage = function(m) {
-    Opal.eval(m.data);
-};
+//
+// $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {});
+//
+// // const serverAddress = '127.0.0.1:9292';
+// var activeFlow = new WebSocket('ws://' + window.location.host + window.location.pathname);
+// // var activeFlow = new WebSocket('ws://' + serverAddress);
+// activeFlow.onopen    = function()  {
+// };
+// activeFlow.onclose   = function()  {
+//     // bidirectionalFlowContent('websocket closed');
+// }
+// activeFlow.onmessage = function(m) {
+//     Opal.eval(m.data);
+// };
+//
+// function send_message(type,message){
+//     var msg = {
+//         type: type,
+//         text: message,
+//         // id:   "clientID",
+//         // password: "ç§fd!èx§dfg",
+//         // date: Date.now()
+//     };
+//
+//     // Send the msg object as a JSON-formatted string.
+//     activeFlow.send(JSON.stringify(msg));
+//
+//
+// }
 
-function send_message(message){
-    var msg = {
-        type: "code",
-        text: message,
-        id:   "clientID",
-        password: "ç§fd!èx§dfg",
-        date: Date.now()
-    };
-
-    // Send the msg object as a JSON-formatted string.
-    activeFlow.send(JSON.stringify(msg));
-
-
+// const atome_server = new Messenger() ;
+function message_server(type,message){
+    // alert(message);
+   send_message(type,message);
 }
 $( document ).ready(function() {
+
+
+
+
+    // const montest = new Messenger() ;
+    // montest.verif("super");
+
+
 
     // activeFlow.onopen    = function()  {
     // };
