@@ -72,23 +72,54 @@
 //     }
 // }
 
+// try {
+//     nonExistentFunction();
+// } catch (error) {
+//     console.error(error);
+//     // expected output: ReferenceError: nonExistentFunction is not defined
+//     // Note - error messages will vary depending on browser
+// }
 
+
+//////////////////////////////////////////////////////////
+
+// function openWebsocket(url){
+//
+//     try {
+//
+//         socket = new WebSocket(url);
+//         socket.onopen = function(){
+//             alert('Socket is now open.');
+//         };
+//         socket.onerror = function (error) {
+//             alert('There was an un-identified Web Socket error');
+//         };
+//         socket.onmessage = function (message) {
+//             alert("Message: %o", message.data);
+//         };
+//         alert('good');
+//     } catch (e) {
+//         alert('Sorry, the web socket at "%s" is un-available', url);
+//     }
+// }
+//
+// openWebsocket("ws://localhost:8008");
+
+//////////////////////// tests //////////////////////////////////
+
+var ws_adress='ws://' + window.location.host + window.location.pathname;
+
+var ws_adress= 'ws://localhost:9292/index';
 $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {});
-
-// const serverAddress = '127.0.0.1:9292';
-var activeFlow = new WebSocket('ws://' + window.location.host + window.location.pathname);
-// var activeFlow = new WebSocket('ws://' + serverAddress);
-activeFlow.onopen    = function()  {
-};
-activeFlow.onclose   = function()  {
-    // bidirectionalFlowContent('websocket closed');
-},
+let activeFlow = new WebSocket(ws_adress);
+activeFlow.onopen    = function() {};
+activeFlow.onclose   = function() {};
 activeFlow.onmessage = function(m) {
     Opal.eval(m.data);
 };
 
 function send_message(type,message){
-    var msg = {
+    let msg = {
         type: type,
         text: message,
         // id:   "clientID",

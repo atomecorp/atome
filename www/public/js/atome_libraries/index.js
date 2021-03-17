@@ -148,25 +148,20 @@ function upload(e) {
 }
 
 function displayImg(url) {
-    const randomId = Math.random().toString(16).substr(2, 32);
-    $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
-    const output = document.getElementById(randomId);
-    output.src = url;
+    // const randomId = Math.random().toString(16).substr(2, 32);
+    // $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
+    $('#view').append("<img src='"+url+"'/>");
+    // const output = document.getElementById(randomId);
+    // output.src = url;
+    alert(url);
 }
 
 
-let databaseHelper;
 let fileHelper;
 let drawingHelper;
 let mediaHelper;
 
 
-let databaseEventListener = {
-    onConnected: function () {
-        console.log('Database connected');
-        databaseHelper.getAllUsers();
-    }
-};
 
 let fileSystemPermissionEventListener = {
     onPermissionAccepted: function (fs) {
@@ -194,39 +189,39 @@ let mediaEventListener = {
     }
 };
 
-let mySocket;
-let webSocketEventListener = {
-    onConnected: function (username) {
-        console.log('Websocket connected with user ' + username);
-        this.sendGreetingsToServer();
-    },
-
-    onConnectFailed: function (username) {
-        console.log('Connection failed for user ' + username);
-    },
-
-    onMessage: function (data) {
-        Opal.eval(data);
-    },
-
-    onError: function (event) {
-        console.log('Web socket error: ' + event.data);
-    },
-
-    onReconnect: function (event) {
-        console.log('Connection to server lost; reconnecting');
-    },
-
-    onClosed: function (event) {
-        console.log('Connection to server close successfully');
-    },
-
-    sendGreetingsToServer: function () {
-        {
-            mySocket.sendMessage('{ "action": "text(:helloiii)"}');
-        }
-    }
-};
+// let mySocket;
+// let webSocketEventListener = {
+//     onConnected: function (username) {
+//         console.log('Websocket connected with user ' + username);
+//         this.sendGreetingsToServer();
+//     },
+//
+//     onConnectFailed: function (username) {
+//         console.log('Connection failed for user ' + username);
+//     },
+//
+//     onMessage: function (data) {
+//         Opal.eval(data);
+//     },
+//
+//     onError: function (event) {
+//         console.log('Web socket error: ' + event.data);
+//     },
+//
+//     onReconnect: function (event) {
+//         console.log('Connection to server lost; reconnecting');
+//     },
+//
+//     onClosed: function (event) {
+//         console.log('Connection to server close successfully');
+//     },
+//
+//     sendGreetingsToServer: function () {
+//         {
+//             mySocket.sendMessage('{ "action": "text(:helloiii)"}');
+//         }
+//     }
+// };
 
 //
 // $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {});
@@ -263,8 +258,33 @@ function message_server(type,message){
     // alert(message);
    send_message(type,message);
 }
-$( document ).ready(function() {
 
+
+
+
+// databaseHelper
+
+
+$( document ).ready(function() {
+    // fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
+    // fileHelper.connect(564654);
+    ////////////////////////////////// tests
+
+    // write_file("kkkkkkkkk", "lorem ipsum");
+
+
+    // let databaseHelper;
+    //
+    // let databaseEventListener = {
+    //     onConnected: function () {
+    //         console.log('Database connected');
+    //         databaseHelper.getAllUsers();
+    //     }
+    // };
+    // databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
+    // databaseHelper.connect();
+
+    // var myDB = window.sqlitePlugin.openDatabase({name: "mySQLite.db", location: 'default'});
 
 
 
@@ -298,7 +318,11 @@ $( document ).ready(function() {
 });
 
 
+
+
 document.addEventListener("deviceready", function () {
+    // write_file("kkkkkkkkk", "lorem ipsum");
+
     // $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
     //     //webSocketHelper
     //     //TODO: Get server address from DNS.
@@ -312,8 +336,9 @@ document.addEventListener("deviceready", function () {
     // databaseHelper.connect();
     //
     // //fileHelper
-    // fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
-    // fileHelper.connect(564654);
+    fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
+    fileHelper.connect(564654);
+    // alert('cool');
 
     //drawingHelper
     // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
@@ -406,7 +431,7 @@ const atome = {
             options = 0;
         }
         media.addEventListener("timeupdate", function(){
-            Opal.Event.$playing(proc,media.currentTime)
+            Opal.Event.$playing(proc,media.currentTime);
         });
 //media.currentTime is run twice, because if not depending on the context it may not be interpreted
         media.currentTime = options;
@@ -425,7 +450,7 @@ const atome = {
             url: filename,
             dataType: 'text',
             success: function (data) {
-                return proc.$call(data)
+                return proc.$call(data);
             }
         });
     },
@@ -468,7 +493,7 @@ const atome = {
                                                         new_editor = document.querySelector(".CodeMirror");
 // we check all codemirror if they have an id to avoid to reassign an id to already created codemirror
                                                         if (($(new_editor).attr('id')) == undefined) {
-                                                            new_editor_id = "cm_" + atome_id
+                                                            new_editor_id = "cm_" + atome_id;
                                                             $(new_editor).attr('id', new_editor_id);
                                                         }
                                                         code_editor.setSize("100%", "100%");
@@ -496,5 +521,28 @@ const atome = {
         });
     }
 };
+
+
+//////////////////// Dexie /////////////////////
+
+
+function populateDB(dbName,tableName,tables, content) {
+    var db = new Dexie(dbName);
+    tableContent={}
+    tableContent[tableName]=tables
+    db.version(1).stores(tableContent);
+    table=eval("db."+tableName)
+    table.put(content)
+}
+
+function read(dbName,tableName) {
+    var db = new Dexie(dbName);
+
+}
+
+function deleteDB(dbName,tableName) {
+    var db = new Dexie(dbName);
+    db.delete();
+}
 
 
