@@ -1,6 +1,18 @@
+ -key press
+- ide_text_size
+- key_Shortcut
+- ide
+- size
+- Shadow
+- center
+- drag
+- anim
+- fit
+
 - save to db
 - init sequence
 - basic U.I.
+- notfication system : text => wait x seconds => delete
 - add methods
     - staked event strategy
         optionally possible to add an id to the stacked property
@@ -73,6 +85,9 @@
 - Debug
 - Documentation
 - repeat and wait may be atome object too!!
+
+
+
 #old todos :
 - monstruous bug when inserting an object into an other, the child lose it's position, the offset is also fucked, the bug is worse when deleting and enliven an atome!!!
 - monstruous bug 2 when enliven atome child often it's drag ability and sometimes disapear
