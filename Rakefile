@@ -151,14 +151,20 @@ task 'run::server': required_js_lib do
     require "rack"
     # below we put the browser opening in a thread to delay waiting for th server to be ready
     # todo:  wait for page to respond instead of 2 sec sleep
+    # Thread.new do
+    #   sleep 2
+    #   system("open", "http://localhost:9292")
+    # end
+    # sh "puma -b tcp://127.0.0.1:9292"
+    ##sh "puma -b 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'"
+    ##sh "rackup --server puma --port 9292 --env production"
+    ##Rack::Server.start(config: 'config.ru', server: 'puma')
+    #https version:
     Thread.new do
       sleep 2
-      system("open", "http://localhost:9292")
+      system("open", "https://localhost:9292")
     end
-    sh "puma -b tcp://127.0.0.1:9292"
-    #sh "puma -b 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'"
-    #sh "rackup --server puma --port 9292 --env production"
-     #Rack::Server.start(config: 'config.ru', server: 'puma')
+    sh 'puma -b "ssl://127.0.0.1:9292?key=localhost.key&cert=localhost.crt"'
   end
 end
 

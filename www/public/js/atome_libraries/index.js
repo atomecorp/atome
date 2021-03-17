@@ -592,8 +592,6 @@ function deleteDB(dbName, tableName) {
 
 // dynamic loading of js script
 // we test ig the server respond, if so we load the websocket library
-
-
 var p = new Ping();
 p.ping("https://github.com", function(err, data) {
     if (err) {
@@ -603,12 +601,4 @@ p.ping("https://github.com", function(err, data) {
         $.getScript("/js/atome_libraries/web_socket_helper.js", function () {});
     }
 });
-// var ws_adress = 'ws://localhost:9292/index';
-// var p = new Ping();
-// var server = p.ping(ws_adress, function (err, data) {
-//     if (err) {
-//     } else {
-//         $.getScript("js/atome_libraries/web_socket_helper.js", function () {});
-//     }
-// });
 
