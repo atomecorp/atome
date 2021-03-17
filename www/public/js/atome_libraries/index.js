@@ -518,14 +518,53 @@ const atome = {
 
 //////////////////// Dexie /////////////////////
 
+let db;
 
-function populateDB(dbName, tableName, tables, content) {
-    var db = new Dexie(dbName);
-    tableContent = {}
-    tableContent[tableName] = tables
+function dbCreateDatabase(dbName) {
+    db = new Dexie(dbName);
+
+    dbCreateTable(dbName, "user", "id, creation_date");
+    dbCreateTable(dbName, "document", "id, content, user_id");
+}
+
+function dbCreateTable(dbName, tableName, fieldsNames) {
+    const tableContent = {};
+    tableContent[tableName] = fieldsNames;
     db.version(1).stores(tableContent);
-    table = eval("db." + tableName)
-    table.put(content)
+}
+
+function dbAddUser(content) {
+    db.user.put(content);
+}
+
+function dbAddDocument(content) {
+    db.document.put(content);
+}
+
+function dbGetDocumentsByUser(user_id) {
+    return db.document
+        .where('user_id')
+        .equals(user_id);
+}
+
+function dbGetDocumentById(id) {
+    return db.document
+        .where('id')
+        .equals(id);
+}
+
+function dbUpdateDocumentById(id, content) {
+    db.document
+        .where('id')
+        .equals(id)
+        .modify({content: content});
+}
+
+function dbDeleteDocumentById(id) {
+    db.document
+        .where('id')
+        .equals(id)
+        .delete();
 }
 
 function read(dbName, tableName) {
