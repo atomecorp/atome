@@ -7,7 +7,7 @@
     <!--          content="default-src *; img-src * 'self' data: https: filesystem:; script-src 'self' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' * ;  media-src * blob:">-->
     <meta http-equiv="Content-Security-Policy" content=
             "default-src 'self' ws: data: gap:  https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline';
-child-src 'self' blob: * ;
+child-src 'self' blob: * ;  img-src *;
 style-src 'self' 'unsafe-inline' http://fonts.googleapis.com/;
 font-src *;
 media-src 'self' blob: data: ">
@@ -34,8 +34,10 @@ media-src 'self' blob: data: ">
     <script type="text/javascript" src='js/third_parties/rendering_engines/matter.min.js' defer></script>
     <script type="text/javascript" src="js/third_parties/rendering_engines/popmotion.global.min.js" defer></script>
     <script type="text/javascript" src="js/third_parties/audio_engines/webmidi.min.js" defer></script>
-    <script type="text/javascript" src="js/third_parties/databases/dexie.min.js" defer></script>
     <!--    Database  -->
+    <script type="text/javascript" src="js/third_parties/databases/dexie.min.js" defer></script>
+    <!--    utils  -->
+    <script type="text/javascript" src="js/third_parties/utils/ping.min.js" defer></script>
 </head>
 <body id='user_device'>
 </body>
@@ -44,7 +46,7 @@ media-src 'self' blob: data: ">
 <script type="text/javascript" src="js/dynamic_libraries/opal/opal_jquery.js" defer></script>
 <script type="text/javascript" src="js/atome_libraries/file_helper.js" defer></script>
 <script type="text/javascript" src="js/atome_libraries/database_helper.js" defer></script>
-<script type="text/javascript" src="js/atome_libraries/web_socket_helper.js" defer></script>
+<!--<script type="text/javascript" src="js/atome_libraries/web_socket_helper.js" defer></script>-->
 <script type="text/javascript" src="js/atome_libraries/drawing_helper.js" defer></script>
 <script type="text/javascript" src="js/atome_libraries/media_helper.js" defer></script>
 <script type="text/javascript" src="js/atome_libraries/audio_helper.js" defer></script>

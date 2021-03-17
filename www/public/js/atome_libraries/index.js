@@ -150,7 +150,7 @@ function upload(e) {
 function displayImg(url) {
     // const randomId = Math.random().toString(16).substr(2, 32);
     // $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
-    $('#view').append("<img src='"+url+"'/>");
+    $('#view').append("<img src='" + url + "'/>");
     // const output = document.getElementById(randomId);
     // output.src = url;
     alert(url);
@@ -160,7 +160,6 @@ function displayImg(url) {
 let fileHelper;
 let drawingHelper;
 let mediaHelper;
-
 
 
 let fileSystemPermissionEventListener = {
@@ -254,18 +253,16 @@ let mediaEventListener = {
 // }
 
 // const atome_server = new Messenger() ;
-function message_server(type,message){
+function message_server(type, message) {
     // alert(message);
-   send_message(type,message);
+    send_message(type, message);
 }
-
-
 
 
 // databaseHelper
 
 
-$( document ).ready(function() {
+$(document).ready(function () {
     // fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
     // fileHelper.connect(564654);
     ////////////////////////////////// tests
@@ -287,10 +284,8 @@ $( document ).ready(function() {
     // var myDB = window.sqlitePlugin.openDatabase({name: "mySQLite.db", location: 'default'});
 
 
-
     // const montest = new Messenger() ;
     // montest.verif("super");
-
 
 
     // activeFlow.onopen    = function()  {
@@ -316,8 +311,6 @@ $( document ).ready(function() {
 //     databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
 // databaseHelper.connect();
 });
-
-
 
 
 document.addEventListener("deviceready", function () {
@@ -395,7 +388,7 @@ const atome = {
         }
         return mobile;
     },
-    jsAudio: function (atome_id,options, proc) {
+    jsAudio: function (atome_id, options, proc) {
         audioDSP.basicSynth();
     },
     jsMidi_play: function (note, channel, options) {
@@ -411,31 +404,31 @@ const atome = {
         return midi_outputs();
     },
     jsVideoPlay: function (atome_id, options, proc) {
-        var media=$("#"+atome_id +' video:first-child')[0];
-        if (options==true || options=='true'){
+        var media = $("#" + atome_id + ' video:first-child')[0];
+        if (options == true || options == 'true') {
             options = 0;
         }
-        media.addEventListener("timeupdate", function(){
+        media.addEventListener("timeupdate", function () {
 //Opal.Events.$playing(proc,media.currentTime)
         });
 //media.currentTime is run twice, because if not depending on the context it may not be interpreted
         media.currentTime = options;
-        media.addEventListener('loadedmetadata', function() {
+        media.addEventListener('loadedmetadata', function () {
             media.currentTime = options;
         }, false);
         media.play();
     },
-    jsAudioPlay: function (atome_id,options, proc) {
-        var media=$("#"+atome_id +' audio:first-child')[0];
-        if (options==true || options=='true'){
+    jsAudioPlay: function (atome_id, options, proc) {
+        var media = $("#" + atome_id + ' audio:first-child')[0];
+        if (options == true || options == 'true') {
             options = 0;
         }
-        media.addEventListener("timeupdate", function(){
-            Opal.Event.$playing(proc,media.currentTime);
+        media.addEventListener("timeupdate", function () {
+            Opal.Event.$playing(proc, media.currentTime);
         });
 //media.currentTime is run twice, because if not depending on the context it may not be interpreted
         media.currentTime = options;
-        media.addEventListener('loadedmetadata', function() {
+        media.addEventListener('loadedmetadata', function () {
             media.currentTime = options;
         }, false);
         media.play();
@@ -526,23 +519,96 @@ const atome = {
 //////////////////// Dexie /////////////////////
 
 
-function populateDB(dbName,tableName,tables, content) {
+function populateDB(dbName, tableName, tables, content) {
     var db = new Dexie(dbName);
-    tableContent={}
-    tableContent[tableName]=tables
+    tableContent = {}
+    tableContent[tableName] = tables
     db.version(1).stores(tableContent);
-    table=eval("db."+tableName)
+    table = eval("db." + tableName)
     table.put(content)
 }
 
-function read(dbName,tableName) {
+function read(dbName, tableName) {
     var db = new Dexie(dbName);
 
 }
 
-function deleteDB(dbName,tableName) {
+function deleteDB(dbName, tableName) {
     var db = new Dexie(dbName);
     db.delete();
 }
 
+
+//////////////////
+// test
+// ping
+// (function (root, factory) { if (typeof define === 'function' && define.amd) { define([], factory); } else if (typeof module === 'object' && module.exports) { module.exports = factory(); } else { root.ping = factory(); }
+// }(this, function () {
+//
+//     /**
+//      * Creates and loads an image element by url.
+//      * @param  {String} url
+//      * @return {Promise} promise that resolves to an image element or
+//      *                   fails to an Error.
+//      */
+//     function request_image(url) {
+//         return new Promise(function(resolve, reject) {
+//             var img = new Image();
+//             img.onload = function() { resolve(img); };
+//             img.onerror = function() { reject(url); };
+//             img.src = url + '?random-no-cache=' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
+//         });
+//     }
+//
+//     /**
+//      * Pings a url.
+//      * @param  {String} url
+//      * @param  {Number} multiplier - optional, factor to adjust the ping by.  0.3 works well for HTTP servers.
+//      * @return {Promise} promise that resolves to a ping (ms, float).
+//      */
+//     function ping(url, multiplier) {
+//         return new Promise(function(resolve, reject) {
+//             var start = (new Date()).getTime();
+//             var response = function() {
+//                 var delta = ((new Date()).getTime() - start);
+//                 delta *= (multiplier || 1);
+//                 resolve(delta);
+//             };
+//             request_image(url).then(response).catch(response);
+//
+//             // Set a timeout for max-pings, 5s.
+//             setTimeout(function() { reject(Error('Timeout')); }, 5000);
+//         });
+//     }
+//
+//     return ping;
+// }));
+// ping('https://google.com/').then(function(delta) {
+//     console.log('Ping time was ' + String(delta) + ' ms');
+// }).catch(function(err) {
+//     console.error('Could not ping remote URL', err);
+// });
+
+
+// dynamic loading of js script
+// we test ig the server respond, if so we load the websocket library
+
+
+var p = new Ping();
+p.ping("https://github.com", function(err, data) {
+    if (err) {
+        // server not ready
+    }
+    else{
+        $.getScript("/js/atome_libraries/web_socket_helper.js", function () {});
+    }
+});
+// var ws_adress = 'ws://localhost:9292/index';
+// var p = new Ping();
+// var server = p.ping(ws_adress, function (err, data) {
+//     if (err) {
+//     } else {
+//         $.getScript("js/atome_libraries/web_socket_helper.js", function () {});
+//     }
+// });
 
