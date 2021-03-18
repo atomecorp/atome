@@ -10,10 +10,10 @@
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.atome.eVe"
     },
-    "cordova-plugin-file": {
+    "cordova-sqlite-storage": {
       "PACKAGE_NAME": "com.atome.eVe"
     },
-    "cordova-sqlite-storage": {
+    "cordova-plugin-file": {
       "PACKAGE_NAME": "com.atome.eVe"
     }
   },

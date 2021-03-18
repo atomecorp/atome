@@ -148,19 +148,15 @@ function upload(e) {
 }
 
 function displayImg(url) {
-// const randomId = Math.random().toString(16).substr(2, 32);
-// $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
-    $('#view').append("<img src='" + url + "'/>");
-// const output = document.getElementById(randomId);
-// output.src = url;
-    alert(url);
+    const randomId = Math.random().toString(16).substr(2, 32);
+    $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
+    const output = document.getElementById(randomId);
+    output.src = url;
 }
-
 
 let fileHelper;
 let drawingHelper;
 let mediaHelper;
-
 
 let fileSystemPermissionEventListener = {
     onPermissionAccepted: function (fs) {
@@ -188,171 +184,48 @@ let mediaEventListener = {
     }
 };
 
-// let mySocket;
-// let webSocketEventListener = {
-//     onConnected: function (username) {
-//         console.log('Websocket connected with user ' + username);
-//         this.sendGreetingsToServer();
-//     },
-//
-//     onConnectFailed: function (username) {
-//         console.log('Connection failed for user ' + username);
-//     },
-//
-//     onMessage: function (data) {
-//         Opal.eval(data);
-//     },
-//
-//     onError: function (event) {
-//         console.log('Web socket error: ' + event.data);
-//     },
-//
-//     onReconnect: function (event) {
-//         console.log('Connection to server lost; reconnecting');
-//     },
-//
-//     onClosed: function (event) {
-//         console.log('Connection to server close successfully');
-//     },
-//
-//     sendGreetingsToServer: function () {
-//         {
-//             mySocket.sendMessage('{ "action": "text(:helloiii)"}');
-//         }
-//     }
-// };
-
-//
-// $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {});
-//
-// // const serverAddress = '127.0.0.1:9292';
-// var activeFlow = new WebSocket('ws://' + window.location.host + window.location.pathname);
-// // var activeFlow = new WebSocket('ws://' + serverAddress);
-// activeFlow.onopen    = function()  {
-// };
-// activeFlow.onclose   = function()  {
-//     // bidirectionalFlowContent('websocket closed');
-// }
-// activeFlow.onmessage = function(m) {
-//     Opal.eval(m.data);
-// };
-//
-// function send_message(type,message){
-//     var msg = {
-//         type: type,
-//         text: message,
-//         // id:   "clientID",
-//         // password: "ç§fd!èx§dfg",
-//         // date: Date.now()
-//     };
-//
-//     // Send the msg object as a JSON-formatted string.
-//     activeFlow.send(JSON.stringify(msg));
-//
-//
-// }
-
-// const atome_server = new Messenger() ;
 function message_server(type, message) {
-// alert(message);
     send_message(type, message);
 }
 
-
-// databaseHelper
-
-
-$(document).ready(function () {
-// fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
-// fileHelper.connect(564654);
-////////////////////////////////// tests
-
-// write_file("kkkkkkkkk", "lorem ipsum");
-
-
-// let databaseHelper;
-//
-// let databaseEventListener = {
-//     onConnected: function () {
-//         console.log('Database connected');
-//         databaseHelper.getAllUsers();
-//     }
-// };
-// databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
-// databaseHelper.connect();
-
-// var myDB = window.sqlitePlugin.openDatabase({name: "mySQLite.db", location: 'default'});
-
-
-// const montest = new Messenger() ;
-// montest.verif("super");
-
-
-// activeFlow.onopen    = function()  {
-// };
-// activeFlow.onclose   = function()  {
-//     // bidirectionalFlowContent('websocket closed');
-// }
-// activeFlow.onmessage = function(m) {
-//     alert(m.data);
-// };
-
-
-/////////////////////////////
-// $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
-//     //webSocketHelper
-//     //TODO: Get server address from DNS.
-//     const serverAddress = '127.0.0.1:9292';
-//     mySocket = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
-//     mySocket.connect();
-//     // webSocketHelper.sendMessage('{ "action": "text(:helloiii)"}');
-// });
-
-//     databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
-// databaseHelper.connect();
-});
-
+let databaseEventListener = {
+    onConnected: function (event) {
+        console.log('Database connected');
+        databaseHelper.getAllUsers();
+    }
+};
 
 document.addEventListener("deviceready", function () {
-// write_file("kkkkkkkkk", "lorem ipsum");
-
-// $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
-//     //webSocketHelper
-//     //TODO: Get server address from DNS.
-//     const serverAddress = '192.168.1.13:9292';
-//     webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
-//     webSocketHelper.connect();
-// });
 
 //databaseHelper
-// databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
-// databaseHelper.connect();
-//
-// //fileHelper
+    databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
+    databaseHelper.connect();
+
+
+//fileHelper
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
     fileHelper.connect(564654);
-// alert('cool');
 
 //drawingHelper
-// drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-// drawingHelper.connect();
+drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+drawingHelper.connect();
 
 //mediaHelper
-// var preview = $('<video />', {
-//     id: 'preview',
-//     controls: true
-// });
-// preview.appendTo($('#view'));
-// var playback = $('<video />', {
-//     id: 'playback',
-//     controls: true
-// });
-// playback.appendTo($('#view'));
-// const previewElement = document.querySelector('#preview');
-// const playbackElement = document.querySelector('#playback');
+var preview = $('<video />', {
+    id: 'preview',
+    controls: true
+});
+preview.appendTo($('#view'));
+var playback = $('<video />', {
+    id: 'playback',
+    controls: true
+});
+playback.appendTo($('#view'));
+const previewElement = document.querySelector('#preview');
+const playbackElement = document.querySelector('#playback');
 
-// mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
-// mediaHelper.connect();
+mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
+mediaHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
@@ -374,6 +247,7 @@ window.ondrop = function (e) {
         });
     }
 };
+
 const audioDSP = new AudioHelper();
 const atome = {
     jsIsMobile: function () {
@@ -515,7 +389,6 @@ const atome = {
     }
 };
 
-
 //////////////////// Dexie /////////////////////
 
 let db;
@@ -555,7 +428,6 @@ function dbGetDocumentsByUser(user_id) {
         });
 }
 
-
 function dbGetDocumentById(id) {
     return db.document
         .where('id')
@@ -591,57 +463,6 @@ function deleteDB(dbName, tableName) {
 }
 
 
-//////////////////
-// test
-// ping
-// (function (root, factory) { if (typeof define === 'function' && define.amd) { define([], factory); } else if (typeof module === 'object' && module.exports) { module.exports = factory(); } else { root.ping = factory(); }
-// }(this, function () {
-//
-//     /**
-//      * Creates and loads an image element by url.
-//      * @param  {String} url
-//      * @return {Promise} promise that resolves to an image element or
-//      *                   fails to an Error.
-//      */
-//     function request_image(url) {
-//         return new Promise(function(resolve, reject) {
-//             var img = new Image();
-//             img.onload = function() { resolve(img); };
-//             img.onerror = function() { reject(url); };
-//             img.src = url + '?random-no-cache=' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
-//         });
-//     }
-//
-//     /**
-//      * Pings a url.
-//      * @param  {String} url
-//      * @param  {Number} multiplier - optional, factor to adjust the ping by.  0.3 works well for HTTP servers.
-//      * @return {Promise} promise that resolves to a ping (ms, float).
-//      */
-//     function ping(url, multiplier) {
-//         return new Promise(function(resolve, reject) {
-//             var start = (new Date()).getTime();
-//             var response = function() {
-//                 var delta = ((new Date()).getTime() - start);
-//                 delta *= (multiplier || 1);
-//                 resolve(delta);
-//             };
-//             request_image(url).then(response).catch(response);
-//
-//             // Set a timeout for max-pings, 5s.
-//             setTimeout(function() { reject(Error('Timeout')); }, 5000);
-//         });
-//     }
-//
-//     return ping;
-// }));
-// ping('https://google.com/').then(function(delta) {
-//     console.log('Ping time was ' + String(delta) + ' ms');
-// }).catch(function(err) {
-//     console.error('Could not ping remote URL', err);
-// });
-
-
 // dynamic loading of js script
 // we test ig the server respond, if so we load the websocket library
 var p = new Ping();
@@ -653,4 +474,3 @@ p.ping("https://github.com", function (err, data) {
         });
     }
 });
-

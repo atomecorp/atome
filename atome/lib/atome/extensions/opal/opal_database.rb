@@ -18,11 +18,6 @@ module JSUtils
     `dbAdd(#{database},#{type}, #{content.to_n});`
   end
 
-
-  #def self.get_documents(user_id)
-  #  `getUserDocuments(#{user_id})`
-  #end
-
   def self.get_documents_by_user(user_id)
     `dbGetDocumentsByUser(#{user_id})`
   end
