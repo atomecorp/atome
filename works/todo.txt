@@ -8,7 +8,7 @@
 - drag
 - anim
 - fit
-
+- stack events and remove (by name or order)
 - save to db
 - init sequence
 - basic U.I.

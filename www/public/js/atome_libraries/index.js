@@ -207,26 +207,25 @@ document.addEventListener("deviceready", function () {
     fileHelper.connect(564654);
 
 //drawingHelper
-drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-drawingHelper.connect();
+// drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+// drawingHelper.connect();
 
 //mediaHelper
-var preview = $('<video />', {
-    id: 'preview',
-    controls: true
-});
-preview.appendTo($('#view'));
-var playback = $('<video />', {
-    id: 'playback',
-    controls: true
-});
-
-playback.appendTo($('#view'));
-const previewElement = document.querySelector('#preview');
-const playbackElement = document.querySelector('#playback');
-
-mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
-mediaHelper.connect();
+// var preview = $('<video />', {
+//     id: 'preview',
+//     controls: true
+// });
+// preview.appendTo($('#view'));
+// var playback = $('<video />', {
+//     id: 'playback',
+//     controls: true
+// });
+// playback.appendTo($('#view'));
+// const previewElement = document.querySelector('#preview');
+// const playbackElement = document.querySelector('#playback');
+//
+// mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
+// mediaHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
