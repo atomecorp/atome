@@ -148,11 +148,11 @@ function upload(e) {
 }
 
 function displayImg(url) {
-    // const randomId = Math.random().toString(16).substr(2, 32);
-    // $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
+// const randomId = Math.random().toString(16).substr(2, 32);
+// $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
     $('#view').append("<img src='" + url + "'/>");
-    // const output = document.getElementById(randomId);
-    // output.src = url;
+// const output = document.getElementById(randomId);
+// output.src = url;
     alert(url);
 }
 
@@ -254,7 +254,7 @@ let mediaEventListener = {
 
 // const atome_server = new Messenger() ;
 function message_server(type, message) {
-    // alert(message);
+// alert(message);
     send_message(type, message);
 }
 
@@ -263,50 +263,50 @@ function message_server(type, message) {
 
 
 $(document).ready(function () {
-    // fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
-    // fileHelper.connect(564654);
-    ////////////////////////////////// tests
+// fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
+// fileHelper.connect(564654);
+////////////////////////////////// tests
 
-    // write_file("kkkkkkkkk", "lorem ipsum");
-
-
-    // let databaseHelper;
-    //
-    // let databaseEventListener = {
-    //     onConnected: function () {
-    //         console.log('Database connected');
-    //         databaseHelper.getAllUsers();
-    //     }
-    // };
-    // databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
-    // databaseHelper.connect();
-
-    // var myDB = window.sqlitePlugin.openDatabase({name: "mySQLite.db", location: 'default'});
+// write_file("kkkkkkkkk", "lorem ipsum");
 
 
-    // const montest = new Messenger() ;
-    // montest.verif("super");
+// let databaseHelper;
+//
+// let databaseEventListener = {
+//     onConnected: function () {
+//         console.log('Database connected');
+//         databaseHelper.getAllUsers();
+//     }
+// };
+// databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
+// databaseHelper.connect();
+
+// var myDB = window.sqlitePlugin.openDatabase({name: "mySQLite.db", location: 'default'});
 
 
-    // activeFlow.onopen    = function()  {
-    // };
-    // activeFlow.onclose   = function()  {
-    //     // bidirectionalFlowContent('websocket closed');
-    // }
-    // activeFlow.onmessage = function(m) {
-    //     alert(m.data);
-    // };
+// const montest = new Messenger() ;
+// montest.verif("super");
 
 
-    /////////////////////////////
-    // $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
-    //     //webSocketHelper
-    //     //TODO: Get server address from DNS.
-    //     const serverAddress = '127.0.0.1:9292';
-    //     mySocket = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
-    //     mySocket.connect();
-    //     // webSocketHelper.sendMessage('{ "action": "text(:helloiii)"}');
-    // });
+// activeFlow.onopen    = function()  {
+// };
+// activeFlow.onclose   = function()  {
+//     // bidirectionalFlowContent('websocket closed');
+// }
+// activeFlow.onmessage = function(m) {
+//     alert(m.data);
+// };
+
+
+/////////////////////////////
+// $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
+//     //webSocketHelper
+//     //TODO: Get server address from DNS.
+//     const serverAddress = '127.0.0.1:9292';
+//     mySocket = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
+//     mySocket.connect();
+//     // webSocketHelper.sendMessage('{ "action": "text(:helloiii)"}');
+// });
 
 //     databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
 // databaseHelper.connect();
@@ -314,45 +314,45 @@ $(document).ready(function () {
 
 
 document.addEventListener("deviceready", function () {
-    // write_file("kkkkkkkkk", "lorem ipsum");
+// write_file("kkkkkkkkk", "lorem ipsum");
 
-    // $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
-    //     //webSocketHelper
-    //     //TODO: Get server address from DNS.
-    //     const serverAddress = '192.168.1.13:9292';
-    //     webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
-    //     webSocketHelper.connect();
-    // });
+// $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
+//     //webSocketHelper
+//     //TODO: Get server address from DNS.
+//     const serverAddress = '192.168.1.13:9292';
+//     webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
+//     webSocketHelper.connect();
+// });
 
-    //databaseHelper
-    // databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
-    // databaseHelper.connect();
-    //
-    // //fileHelper
+//databaseHelper
+// databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
+// databaseHelper.connect();
+//
+// //fileHelper
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
     fileHelper.connect(564654);
-    // alert('cool');
+// alert('cool');
 
-    //drawingHelper
-    // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-    // drawingHelper.connect();
+//drawingHelper
+// drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+// drawingHelper.connect();
 
-    //mediaHelper
-    // var preview = $('<video />', {
-    //     id: 'preview',
-    //     controls: true
-    // });
-    // preview.appendTo($('#view'));
-    // var playback = $('<video />', {
-    //     id: 'playback',
-    //     controls: true
-    // });
-    // playback.appendTo($('#view'));
-    // const previewElement = document.querySelector('#preview');
-    // const playbackElement = document.querySelector('#playback');
+//mediaHelper
+// var preview = $('<video />', {
+//     id: 'preview',
+//     controls: true
+// });
+// preview.appendTo($('#view'));
+// var playback = $('<video />', {
+//     id: 'playback',
+//     controls: true
+// });
+// playback.appendTo($('#view'));
+// const previewElement = document.querySelector('#preview');
+// const playbackElement = document.querySelector('#playback');
 
-    // mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
-    // mediaHelper.connect();
+// mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
+// mediaHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
@@ -522,35 +522,48 @@ let db;
 
 function dbCreateDatabase(dbName) {
     db = new Dexie(dbName);
-
-    dbCreateTable(dbName, "user", "id, creation_date");
-    dbCreateTable(dbName, "document", "id, content, user_id");
+    return db;
 }
 
-function dbCreateTable(dbName, tableName, fieldsNames) {
+function dbCreateTable(database, tableName, fieldsNames) {
     const tableContent = {};
     tableContent[tableName] = fieldsNames;
-    db.version(1).stores(tableContent);
+    database.version(1).stores(tableContent);
 }
 
-function dbAddUser(content) {
-    db.user.put(content);
+function dbAdd(database, table, content) {
+    base = database;
+    table_to_fill = eval("base." + table);
+    table_to_fill.put(content);
 }
 
-function dbAddDocument(content) {
-    db.document.put(content);
+function dbAddUser(database, content) {
+    database.user.put(content);
+}
+
+function dbAddDocument(database, content) {
+    database.document.put(content);
 }
 
 function dbGetDocumentsByUser(user_id) {
     return db.document
         .where('user_id')
-        .equals(user_id);
+        .equals(user_id).toArray().then(function (document) {
+            for (const [key, value] of Object.entries(document)) {
+                Opal.Object.$result(Object.entries(value));
+            }
+        });
 }
+
 
 function dbGetDocumentById(id) {
     return db.document
         .where('id')
-        .equals(id);
+        .equals(id).toArray().then(function (document) {
+            for (const [key, value] of Object.entries(document)) {
+                Opal.Object.$result(Object.entries(value));
+            }
+        });
 }
 
 function dbUpdateDocumentById(id, content) {
@@ -632,12 +645,12 @@ function deleteDB(dbName, tableName) {
 // dynamic loading of js script
 // we test ig the server respond, if so we load the websocket library
 var p = new Ping();
-p.ping("https://github.com", function(err, data) {
+p.ping("https://github.com", function (err, data) {
     if (err) {
         // server not ready
-    }
-    else{
-        $.getScript("js/atome_libraries/web_socket_helper.js", function () {});
+    } else {
+        $.getScript("js/atome_libraries/web_socket_helper.js", function () {
+        });
     }
 });
 

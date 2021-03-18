@@ -83,12 +83,13 @@ module AtomeHelpers
       value
     end
   end
+
   def remote(msg)
     remote_server(msg)
   end
 
   def shell(command)
-    remote({type: :command,message: command})
+    remote({type: :command, message: command})
   end
 
 end

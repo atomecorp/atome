@@ -3,7 +3,13 @@ require "atome/extensions/ruby/hash"
 # default_value
 require "atome/environment/default_values"
 # opal specific
+require "atome/extensions/opal/opal_audio"
+require "atome/extensions/opal/opal_code_editor"
+require "atome/extensions/opal/opal_database"
 require "atome/extensions/opal/opal_helpers"
+require "atome/extensions/opal/opal_io"
+require "atome/extensions/opal/opal_timer"
+require "atome/extensions/opal/opal_video"
 require "atome/extensions/opal/opal_jquery"
 # render helper
 require "atome/renderers/html/processors/communication"
