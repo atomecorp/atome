@@ -220,6 +220,7 @@ var playback = $('<video />', {
     id: 'playback',
     controls: true
 });
+
 playback.appendTo($('#view'));
 const previewElement = document.querySelector('#preview');
 const playbackElement = document.querySelector('#playback');
