@@ -4,7 +4,7 @@ module AtomeHelpers
       # we remove the atome fom the Atome.atomes's hash
       delete_atome = Atome.atomes.delete(atome_id)
       unless child.nil?
-        #the the current atome habve child we delete them too
+        #the the current atome have child we delete them too
         # We will remove any reference of this atome from its parents
         parent_child = grab(parent.read).child.read
         updated_child_list = []
@@ -21,6 +21,12 @@ module AtomeHelpers
       # now we remove the atome from view if it is rendered
       unless delete_atome.render == false
         delete_html
+        the_parent = grab(parent.read)
+        if the_parent
+          children = the_parent.child.read
+          children.delete(self.atome_id)
+          the_parent.instance_variable_set("@child", atomise(:child, children))
+        end
       end
     end
   end

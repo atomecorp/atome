@@ -1,17 +1,24 @@
- -key press
+- key press
+- text_size
+- code editor : restore position and size, stop drag, text size
 - ide_text_size
 - key_Shortcut
+- bidorectional mode
 - ide
 - size
 - Shadow
 - center
 - drag
-- anim
+- animation
 - fit
 - stack events and remove (by name or order)
 - save to db
 - init sequence
 - basic U.I.
+- internationalisation
+- headless mode
+- vocal mode
+- scratch mode
 - notfication system : text => wait x seconds => delete
 - add methods
     - staked event strategy

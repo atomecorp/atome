@@ -1,6 +1,6 @@
 # here stand some atome's function to allow atome's objects manipulation
 
-# the result method is used to get the return queries of teh database
+# the result method is used to get the return queries of the database
 def result(params)
   result = {}
   params.each do |key_pair|
@@ -93,7 +93,9 @@ def clear(value)
   else
     case value
     when :view
-      grab(:view).child.delete(true)
+      if grab(:view).child
+        grab(:view).child.delete(true)
+      end
     else
       value
     end
