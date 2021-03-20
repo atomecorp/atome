@@ -1,41 +1,5 @@
 module Processors
 
-#  def parent_pre_processor(value)
-#    # first we force the value to be an array as hierarchies methods holds many parents or children
-#    if value.instance_of?(Array)
-#      values = value
-#    else
-#      values = [value]
-#    end
-#    # we set the parent into the parent_instance variable
-#    values.each do |val|
-#      # we check if we have a proc to allow the batch of them in the proc call
-#      if val[:proc]
-#        @parent.read.each do |parent|
-#          parent = grab(parent)
-#          val[:proc].call(parent) if val[:proc].is_a?(Proc)
-#        end
-#      else
-##if there's is already some parents we had them to the array else we atomise the property
-#        if @parent.nil?
-#          @parent = atomise(:parent, value)
-#        elsif @parent.read.instance_of?(Array)
-#          @parent << atomise(value)
-#        else
-#          @parent = atomise([value])
-#        end
-#        # we inform the children they have new parents
-#        grab(val).add_to_instance_variable(:child, self.atome_id)
-#        if atome_id == :toto
-#          puts ":: #{@parent.read} #{@parent} #{@parent.class} ::"
-#        else
-#          puts "#{@parent.read} #{@parent} #{@parent.class}"
-#          parent_html(@parent)
-#        end
-#
-#      end
-#    end
-#  end
 
   def parent_pre_processor(value)
     # first we force the value to be an array as hierarchies methods holds many parents or children
@@ -55,9 +19,13 @@ module Processors
       else
         #if there's is already some parents we had them to the array else we atomise the property
         if @parent.nil?
+          unless value.instance_of?(Array)
+            value = [value]
+          end
           @parent = atomise(:parent, value)
         else
-          @parent= @parent.read
+          @parent = @parent.read
+          alert @parent.class
           @parent << value
           @parent = atomise(:parent, @parent)
         end
@@ -67,6 +35,7 @@ module Processors
       end
     end
   end
+
 
   def parent_getter_processor
     @parent

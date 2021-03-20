@@ -3,7 +3,7 @@
 - code editor : restore position and size, stop drag, text size
 - ide_text_size
 - key_Shortcut
-- bidorectional mode
+- bidirectional mode
 - ide
 - size
 - Shadow
@@ -19,7 +19,7 @@
 - headless mode
 - vocal mode
 - scratch mode
-- notfication system : text => wait x seconds => delete
+- notification system : text => wait x seconds => delete
 - add methods
     - staked event strategy
         optionally possible to add an id to the stacked property
@@ -32,8 +32,6 @@
          to write or delete a stacked property ex :
                                     a.colors[1](:red)
                                     a.colors(:id)(:red)
-
-- long touch needs debug it can trigger the event many times
 - fit methods
 - text size
 - clear object (remove child)
