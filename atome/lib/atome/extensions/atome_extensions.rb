@@ -6,6 +6,7 @@ def result(params)
   params.each do |key_pair|
     result[key_pair[0]] = key_pair[1]
   end
+  text("msg from atome_extension line 9 : #{result}")
 end
 
 def eden_search(query)
