@@ -23,9 +23,14 @@ module AtomeHelpers
         delete_html
         the_parent = grab(parent.read)
         if the_parent
-          children = the_parent.child.read
-          children.delete(self.atome_id)
-          the_parent.instance_variable_set("@child", atomise(:child, children))
+          children_found = the_parent.child.read
+          new_child_list = []
+          children_found.each do |child|
+            unless child == self.atome_id
+              new_child_list << child
+            end
+          end
+          the_parent.instance_variable_set("@child", atomise(:child, new_child_list))
         end
       end
     end
@@ -34,10 +39,10 @@ module AtomeHelpers
   def duplicate(value)
     value = {x: 0, y: 0, offset: {x: 6, y: 6}}.merge(value)
     (0..value[:y]).each do |y_val|
-        (1..value[:x]).each do |x_val|
-          atome_property = self.inspect.merge({atome_id: self.atome_id.to_s + x_val.to_s, x: self.x + self.width * x_val + value[:offset][:x] * x_val, y: self.width * y_val + value[:offset][:y] * y_val})
-          Atome.new(atome_property)
-        end
+      (1..value[:x]).each do |x_val|
+        atome_property = self.inspect.merge({atome_id: self.atome_id.to_s + x_val.to_s, x: self.x + self.width * x_val + value[:offset][:x] * x_val, y: self.width * y_val + value[:offset][:y] * y_val})
+        Atome.new(atome_property)
+      end
     end
   end
 
@@ -94,7 +99,7 @@ module AtomeHelpers
     when :beaglebone
       # bbb communication layer
     when :shell
-      alert values[:shell]
+      text("shell value from atome_helpers.rb line 97 : #{values[:shell]}")
     else
       value
     end

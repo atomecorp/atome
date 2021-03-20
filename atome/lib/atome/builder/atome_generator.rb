@@ -32,7 +32,6 @@ class Atome
   end
 
   def set(properties)
-    #alert properties
     properties.each do |property, value|
       send(property.to_s, value)
     end

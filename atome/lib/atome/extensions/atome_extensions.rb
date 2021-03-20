@@ -6,7 +6,6 @@ def result(params)
   params.each do |key_pair|
     result[key_pair[0]] = key_pair[1]
   end
-  alert result[:content]
 end
 
 def eden_search(query)
@@ -94,7 +93,7 @@ def clear(value)
     case value
     when :view
       if grab(:view).child
-        grab(:view).child.delete(true)
+        grab(:view).child.delete
       end
     else
       value
