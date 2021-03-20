@@ -55,7 +55,7 @@ module Processors
       else
         #if there's is already some parents we had them to the array else we atomise the property
         if @parent.nil?
-          @parent = atomise(:parent, [value])
+          @parent = atomise(:parent, value)
         else
           @parent= @parent.read
           @parent << value
