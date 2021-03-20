@@ -5,8 +5,11 @@ module AtomeHelpers
       delete_atome = Atome.atomes.delete(atome_id)
       unless child.nil?
         #the the current atome have child we delete them too
-        # We will remove any reference of this atome from its parents
-        parent_child = grab(parent.read).child.read
+        # We remove any reference of this atome from its parents
+        parent_child=[]
+         parent.read.each do |parent_found|
+           parent_child << grab(parent_found).child.read
+         end
         updated_child_list = []
         parent_child.each do |child_found|
           if child_found != atome_id

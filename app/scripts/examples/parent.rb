@@ -5,10 +5,10 @@ c = circle({atome_id: :c, x: 20})
 c.drag do
 end
 e = box({atome_id: :e, x: 160})
-t = text({content: 'some texts', atome_id: :t, x: 300, width: 39, height: 39})
+t = text({content: 'some texts', atome_id: :t, x: 33, width: 39, height: 39})
 t.parent([e.atome_id, c.atome_id])
-#t.parent do |father|
-#  father.set({width: 100, height: 33, rotate: 36, y: 66})
-#end
-#t.parent.color(:orange)
+t.parent do |father|
+ father.set({ rotate: 36, y: 66})
+end
+t.parent.color(:orange)
 #both parent are treated

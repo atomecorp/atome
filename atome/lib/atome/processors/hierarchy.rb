@@ -25,12 +25,13 @@ module Processors
           @parent = atomise(:parent, value)
         else
           @parent = @parent.read
-          alert @parent.class
-          @parent << value
+          # @parent.concat(value)
+          @parent=value
           @parent = atomise(:parent, @parent)
         end
         # we inform the children they have new parents
         grab(val).add_to_instance_variable(:child, self.atome_id)
+        # alert @parent
         parent_html(@parent)
       end
     end

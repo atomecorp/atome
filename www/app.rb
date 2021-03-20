@@ -6,6 +6,9 @@
 # bundle update
 # bundle install
 # to run: rackup --server puma --port 4567  or without puma : rackup -p 4567
+if  RUBY_PLATFORM == "x64-mingw32"
+  require "em/pure_ruby"
+end
 require "sequel"
 require "faye/websocket"
 require "json"
