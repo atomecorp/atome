@@ -1,63 +1,87 @@
 module AtomeHelpers
-  def delete
-    if Atome.atomes.key?(atome_id)
-      # we remove the atome fom the Atome.atomes's hash
-      # delete_atome = Atome.atomes.delete(atome_id)
-            delete_atome = grab(atome_id)
-      new_atomes_list={}
-      verif=[]
-      Atome.atomes.each do |id_of_atome, content|
-        unless id_of_atome == atome_id
-          new_atomes_list[id_of_atome] =content
-          verif << id_of_atome
-        end
-      end
-      Atome.atomes=new_atomes_list
-      # alert "#{verif}"
-      ###############################
-      second_test=[]
-      Atome.atomes.each do |id_of_atome, content|
-        unless id_of_atome == atome_id
-          second_test << id_of_atome
-        end
-      end
-      # alert second_test
-      ##############################
-      unless child.nil?
-        #the the current atome have child we delete them too
-        # We remove any reference of this atome from its parents
-        parent_child = []
-        parent.read.each do |parent_found|
-          parent_child << grab(parent_found).child.read
-        end
-        updated_child_list = []
-        parent_child.each do |child_found|
-          if child_found != atome_id
-            updated_child_list << child_found
-          end
-        end
-        # child.delete(true)
-        # grab(parent.read).instance_variable_set("@child", atomise(:child, updated_child_list))
-      end
+  #def delete
+  #  if Atome.atomes.key?(atome_id)
+  #    # we remove the atome fom the Atome.atomes's hash
+  #    # delete_atome = Atome.atomes.delete(atome_id)
+  #          delete_atome = grab(atome_id)
+  #    new_atomes_list={}
+  #    verif=[]
+  #    Atome.atomes.each do |id_of_atome, content|
+  #      unless id_of_atome == atome_id
+  #        new_atomes_list[id_of_atome] =content
+  #        verif << id_of_atome
+  #      end
+  #    end
+  #    Atome.atomes=new_atomes_list
+  #    # alert "#{verif}"
+  #    ###############################
+  #    second_test=[]
+  #    Atome.atomes.each do |id_of_atome, content|
+  #      unless id_of_atome == atome_id
+  #        second_test << id_of_atome
+  #      end
+  #    end
+  #    # alert second_test
+  #    ##############################
+  #    unless child.nil?
+  #      #the the current atome have child we delete them too
+  #      # We remove any reference of this atome from its parents
+  #      parent_child = []
+  #      parent.read.each do |parent_found|
+  #        parent_child << grab(parent_found).child.read
+  #      end
+  #      updated_child_list = []
+  #      parent_child.each do |child_found|
+  #        if child_found != atome_id
+  #          updated_child_list << child_found
+  #        end
+  #      end
+  #      # child.delete(true)
+  #      # grab(parent.read).instance_variable_set("@child", atomise(:child, updated_child_list))
+  #    end
+  #
+  #    # adding the deleted atome to the black_hole for later retrieve
+  #    grab(:black_hole).content[atome_id] = delete_atome
+  #    # now we remove the atome from view if it is rendered
+  #    unless delete_atome.render == false
+  #      # delete_html
+  #      the_parent = grab(parent.read)
+  #      if the_parent
+  #        children_found = the_parent.child.read
+  #        new_child_list = []
+  #        children_found.each do |child|
+  #          unless child == self.atome_id
+  #            new_child_list << child
+  #          end
+  #        end
+  #        the_parent.instance_variable_set("@child", atomise(:child, new_child_list))
+  #      end
+  #    end
+  #  end
+  #end
 
-      # adding the deleted atome to the black_hole for later retrieve
-      grab(:black_hole).content[atome_id] = delete_atome
-      # now we remove the atome from view if it is rendered
-      unless delete_atome.render == false
-        # delete_html
-        the_parent = grab(parent.read)
-        if the_parent
-          children_found = the_parent.child.read
-          new_child_list = []
-          children_found.each do |child|
-            unless child == self.atome_id
-              new_child_list << child
-            end
-          end
-          the_parent.instance_variable_set("@child", atomise(:child, new_child_list))
-        end
-      end
-    end
+  def remove_item_atomes
+    alert Atome.atomes # remove current item from list
+  end
+
+  def detach_child
+    alert self.parent # for each remove current child
+  end
+
+  def delete_child
+    alert self.child # delete
+  end
+
+  def add_to_black_hole
+    alert grab(:black_hole).content # add current deleted item
+  end
+
+  def delete
+    remove_item_atomes
+    detach_child
+    delete_child
+    add_to_black_hole
+    delete_html
   end
 
   def duplicate(value)

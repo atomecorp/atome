@@ -1,4 +1,4 @@
 # list_methods
 
-t=text(:methods_list)
+t=text({content: :methods_list, size: 12, xx: 96, x: 33})
 t.content=ATOME.methods
