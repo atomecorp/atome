@@ -312,7 +312,7 @@ const atome = {
         var video = $('<video />', {});
         video.appendTo($('#' + parent));
     },
-    jsReader: function (filename, proc) {
+    jsFileReader: function (filename, proc) {
         $.ajax({
             url: filename,
             dataType: 'text',
@@ -474,4 +474,3 @@ p.ping("https://github.com", function (err, data) {
         });
     }
 });
-

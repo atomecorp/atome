@@ -8,6 +8,13 @@ unless File.directory?("app/temp")
   FileUtils.mkdir_p("app/temp")
 end
 
+
+def generate_demos_list
+  require "./scripts/demo_generator.rb"
+end
+
+generate_demos_list
+
 def generate_methods
   require "./scripts/properties_generator.rb"
 end

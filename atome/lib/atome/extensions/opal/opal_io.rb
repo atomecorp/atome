@@ -1,6 +1,6 @@
 module JSUtils
   def self.reader (filename, &proc)
-    `atome.jsReader(#{filename},#{proc})`
+    `atome.jsFileReader(#{filename},#{proc})`
   end
 
   def remote_server(msg)

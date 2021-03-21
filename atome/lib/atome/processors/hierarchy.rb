@@ -30,7 +30,6 @@ module Processors
         end
         # we inform the children they have new parents
         grab(val).add_to_instance_variable(:child, self.atome_id)
-        # alert @parent
         parent_html(@parent)
       end
     end
