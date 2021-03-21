@@ -23,7 +23,6 @@ class Event
 
 end
 
-
 module Events
   #def self.update_values params
   #  @x = params[0]

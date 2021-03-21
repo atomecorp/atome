@@ -25,7 +25,7 @@ module JSUtils
     @content.read[:time_out] = []
   end
 
-# repeat
+  # repeat
   def set_interval(delay, repeat)
     unless ATOME.content[:intervals]
       ATOME.content[:intervals] = {}
