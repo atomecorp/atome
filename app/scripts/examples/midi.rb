@@ -2,7 +2,7 @@
 
 c = circle({width: 33, height: 33, y: 33, x: 33, color: :black, atome_id: :the_c2})
 c2 = circle({width: 33, height: 33, y: 33, x: 69, color: :red, atome_id: :the_c})
-t=text({content: "", x: 33, y: 96, width: 300})
+t=text({content: "", x: 33, y: 96, width: 39})
 c.touch do
   interfaces=   c.transmit({midi: :inputs})
   t.content(interfaces.join("\n"))
