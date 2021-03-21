@@ -4,6 +4,8 @@ module PropertylHtml
     proc = value[:proc]
     option = value[:option]
     case option
+    when :stop
+      jq_get(atome_id).unbind("drag touchstart mousedown")
     when :down
       jq_get(atome_id).on("touchstart mousedown") do |evt|
         proc.call(evt) if proc.is_a?(Proc)
@@ -41,11 +43,11 @@ module PropertylHtml
     jq_object = jq_get(atome_id)
     lock = case value[:lock]
            when :parent
-             {containment: "parent"}
+             { containment: "parent" }
            when :x
-             {axis: "y"}
+             { axis: "y" }
            when :y
-             {axis: "x"}
+             { axis: "x" }
            else
              {}
            end
@@ -60,4 +62,33 @@ module PropertylHtml
       proc.call(evt) if proc.is_a?(Proc)
     end
   end
+
+  def key_html(value)
+    value = value.read
+    proc = value[:proc]
+    option = value[:option]
+    ## the line below is important for the object to get focus if not keypress wont be triggered
+    atome = grab(atome_id)
+    atome.edit(true)
+    if option == :down
+      jq_get(atome_id).on("keydown") do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+        #evt.prevent_default
+      end
+    elsif option == :up
+      jq_get(atome_id).on("keyup") do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    elsif option == :stop
+      jq_get(atome_id).unbind("keypress")
+      atome.edit(:false)
+    else
+      jq_get(atome_id).on(:keypress) do |evt|
+        #evt.prevent_default
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    end
+
+  end
+
 end

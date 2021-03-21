@@ -535,6 +535,7 @@ div.CodeMirror-dragcursors {
 span.CodeMirror-selectedtext {
     background: none;
 }
+
 /* dilalog.css copy here*/
 .CodeMirror-dialog {
     position: absolute;
@@ -693,7 +694,7 @@ span.CodeMirror-selectedtext {
     /* Set height, width, borders, and global font properties here */
     position: absolute;
     font-family: monospace;
-    font-size:14px;
+    font-size: 12px;
     height: 25%;
     color: black;
     direction: ltr;

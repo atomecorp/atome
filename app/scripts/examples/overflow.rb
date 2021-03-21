@@ -1,19 +1,20 @@
 # overflow
 
-t = text({content: lorem, x: 66, width: 300, height: 100})
-t.color(:red)
-b = text({x: 369, y: 50, content: "touch me to change text overflow", width: 333})
+
+b = text({x: 369, y: 50, content: "touch me to change text overflow", width: 39})
+container=circle({width:300, height: 300})
+container.text({content: lorem, x: 66, width: 300, height: 39})
 i=0
 b.touch do
   case i
   when 0
-    t.overflow(:hidden)
+    container.overflow(:hidden)
     i+=1
   when 1
-    t.overflow(:scroll)
+    container.overflow(:scroll)
     i+=1
   when 2
-    t.overflow(:visible)
+    container.overflow(:visible)
     i=0
   else
     i

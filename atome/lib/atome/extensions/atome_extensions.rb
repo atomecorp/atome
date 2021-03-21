@@ -1,5 +1,14 @@
 # here stand some atome's function to allow atome's objects manipulation
 
+# the result method is used to get the return queries of the database
+def result(params)
+  result = {}
+  params.each do |key_pair|
+    result[key_pair[0]] = key_pair[1]
+  end
+  text("msg from atome_extension line 9 : #{result}")
+end
+
 def eden_search(query)
   case query[:type]
   when :image
@@ -84,7 +93,9 @@ def clear(value)
   else
     case value
     when :view
-      grab(:view).child.delete(true)
+      if grab(:view).child
+        grab(:view).child.delete
+      end
     else
       value
     end
@@ -96,14 +107,19 @@ def compile(code)
   if JSUtils.opal_parser_ready
     # if needed we can add a parser for the data here
     Opal.eval(code)
+  elsif !@loading_compiler
+    JSUtils.load_opal_parser
+    @loading_compiler = true
+    compile(code)
   else
-    ATOME.wait 0.01 do
+    ATOME.send(:wait, 0.01) do
       compile(code)
     end
   end
 end
 
-def read(filename, &proc) #  read local file
+def read(filename, &proc)
+  #  read local file
   JSUtils.reader(filename, &proc)
 end
 
@@ -112,8 +128,29 @@ def version
 end
 
 def notification(message, duration)
-  notification = text({content: message, color: :orange, x: 69, y: 69})
-  ATOME.wait duration do
+  notification = text({ content: message, color: :orange, x: 69, y: 69 })
+  ATOME.send(:wait, duration) do
     notification.delete
+  end
+end
+
+def create(params)
+  case params.keys[0]
+  when :database
+    JSUtils.create_database(params[:database])
+  when :table
+    JSUtils.create_table(params[:table][:database], params[:table][:name], params[:table][:content])
+  when :user
+    database = params[:user].delete(:database)
+    JSUtils.create_user(database, params[:user])
+  when :document
+    database = params[:document].delete(:database)
+    JSUtils.create_document(database, params[:document])
+  when :add
+    database = params[:add].delete(:database)
+    type = params[:add].delete(:type)
+    JSUtils.populate(database, type, params[:add])
+  else
+    params
   end
 end

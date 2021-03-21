@@ -1,6 +1,25 @@
+- key press
+- text_size
+- code editor : restore position and size, stop drag, text size
+- ide_text_size
+- key_Shortcut
+- bidirectional mode
+- ide
+- size
+- Shadow
+- center
+- drag
+- animation
+- fit
+- stack events and remove (by name or order)
 - save to db
 - init sequence
 - basic U.I.
+- internationalisation
+- headless mode
+- vocal mode
+- scratch mode
+- notification system : text => wait x seconds => delete
 - add methods
     - staked event strategy
         optionally possible to add an id to the stacked property
@@ -13,8 +32,6 @@
          to write or delete a stacked property ex :
                                     a.colors[1](:red)
                                     a.colors(:id)(:red)
-
-- long touch needs debug it can trigger the event many times
 - fit methods
 - text size
 - clear object (remove child)
@@ -73,6 +90,9 @@
 - Debug
 - Documentation
 - repeat and wait may be atome object too!!
+
+
+
 #old todos :
 - monstruous bug when inserting an object into an other, the child lose it's position, the offset is also fucked, the bug is worse when deleting and enliven an atome!!!
 - monstruous bug 2 when enliven atome child often it's drag ability and sometimes disapear

@@ -154,51 +154,9 @@ function displayImg(url) {
     output.src = url;
 }
 
-let webSocketHelper;
-let databaseHelper;
 let fileHelper;
 let drawingHelper;
 let mediaHelper;
-
-let webSocketEventListener = {
-    onConnected: function (username) {
-        console.log('Websocket connected with user ' + username);
-        this.sendGreetingsToServer();
-    },
-
-    onConnectFailed: function (username) {
-        console.log('Connection failed for user ' + username);
-    },
-
-    onMessage: function (data) {
-        Opal.eval(data);
-    },
-
-    onError: function (event) {
-        console.log('Web socket error: ' + event.data);
-    },
-
-    onReconnect: function (event) {
-        console.log('Connection to server lost; reconnecting');
-    },
-
-    onClosed: function (event) {
-        console.log('Connection to server close successfully');
-    },
-
-    sendGreetingsToServer: function () {
-        {
-            webSocketHelper.sendMessage('{ "action": "text(:hello)"}');
-        }
-    }
-};
-
-let databaseEventListener = {
-    onConnected: function () {
-        console.log('Database connected');
-        databaseHelper.getAllUsers();
-    }
-};
 
 let fileSystemPermissionEventListener = {
     onPermissionAccepted: function (fs) {
@@ -226,44 +184,48 @@ let mediaEventListener = {
     }
 };
 
+function message_server(type, message) {
+    send_message(type, message);
+}
+
+let databaseEventListener = {
+    onConnected: function (event) {
+        console.log('Database connected');
+        databaseHelper.getAllUsers();
+    }
+};
+
 document.addEventListener("deviceready", function () {
-    // $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {
-    //     //webSocketHelper
-    //     //TODO: Get server address from DNS.
-    //     const serverAddress = '192.168.1.13:9292';
-    //     webSocketHelper = new WebSocketHelper(serverAddress, "Régis", "00000000", webSocketEventListener);
-    //     webSocketHelper.connect();
-    // });
 
-
-    //databaseHelper
+//databaseHelper
     databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
     databaseHelper.connect();
 
-    //fileHelper
+
+//fileHelper
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
     fileHelper.connect(564654);
 
-    //drawingHelper
-    // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-    // drawingHelper.connect();
+//drawingHelper
+// drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+// drawingHelper.connect();
 
-    //mediaHelper
-    // var preview = $('<video />', {
-    //     id: 'preview',
-    //     controls: true
-    // });
-    // preview.appendTo($('#view'));
-    // var playback = $('<video />', {
-    //     id: 'playback',
-    //     controls: true
-    // });
-    // playback.appendTo($('#view'));
-    // const previewElement = document.querySelector('#preview');
-    // const playbackElement = document.querySelector('#playback');
-
-    // mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
-    // mediaHelper.connect();
+//mediaHelper
+// var preview = $('<video />', {
+//     id: 'preview',
+//     controls: true
+// });
+// preview.appendTo($('#view'));
+// var playback = $('<video />', {
+//     id: 'playback',
+//     controls: true
+// });
+// playback.appendTo($('#view'));
+// const previewElement = document.querySelector('#preview');
+// const playbackElement = document.querySelector('#playback');
+//
+// mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
+// mediaHelper.connect();
 }, false);
 
 window.ondragover = function (e) {
@@ -285,6 +247,7 @@ window.ondrop = function (e) {
         });
     }
 };
+
 const audioDSP = new AudioHelper();
 const atome = {
     jsIsMobile: function () {
@@ -299,7 +262,7 @@ const atome = {
         }
         return mobile;
     },
-    jsAudio: function (atome_id,options, proc) {
+    jsAudio: function (atome_id, options, proc) {
         audioDSP.basicSynth();
     },
     jsMidi_play: function (note, channel, options) {
@@ -315,31 +278,31 @@ const atome = {
         return midi_outputs();
     },
     jsVideoPlay: function (atome_id, options, proc) {
-        var media=$("#"+atome_id +' video:first-child')[0];
-        if (options==true || options=='true'){
+        var media = $("#" + atome_id + ' video:first-child')[0];
+        if (options == true || options == 'true') {
             options = 0;
         }
-        media.addEventListener("timeupdate", function(){
+        media.addEventListener("timeupdate", function () {
 //Opal.Events.$playing(proc,media.currentTime)
         });
 //media.currentTime is run twice, because if not depending on the context it may not be interpreted
         media.currentTime = options;
-        media.addEventListener('loadedmetadata', function() {
+        media.addEventListener('loadedmetadata', function () {
             media.currentTime = options;
         }, false);
         media.play();
     },
-    jsAudioPlay: function (atome_id,options, proc) {
-        var media=$("#"+atome_id +' audio:first-child')[0];
-        if (options==true || options=='true'){
+    jsAudioPlay: function (atome_id, options, proc) {
+        var media = $("#" + atome_id + ' audio:first-child')[0];
+        if (options == true || options == 'true') {
             options = 0;
         }
-        media.addEventListener("timeupdate", function(){
-            Opal.Event.$playing(proc,media.currentTime)
+        media.addEventListener("timeupdate", function () {
+            Opal.Event.$playing(proc, media.currentTime);
         });
 //media.currentTime is run twice, because if not depending on the context it may not be interpreted
         media.currentTime = options;
-        media.addEventListener('loadedmetadata', function() {
+        media.addEventListener('loadedmetadata', function () {
             media.currentTime = options;
         }, false);
         media.play();
@@ -354,7 +317,7 @@ const atome = {
             url: filename,
             dataType: 'text',
             success: function (data) {
-                return proc.$call(data)
+                return proc.$call(data);
             }
         });
     },
@@ -397,7 +360,7 @@ const atome = {
                                                         new_editor = document.querySelector(".CodeMirror");
 // we check all codemirror if they have an id to avoid to reassign an id to already created codemirror
                                                         if (($(new_editor).attr('id')) == undefined) {
-                                                            new_editor_id = "cm_" + atome_id
+                                                            new_editor_id = "cm_" + atome_id;
                                                             $(new_editor).attr('id', new_editor_id);
                                                         }
                                                         code_editor.setSize("100%", "100%");
@@ -426,4 +389,89 @@ const atome = {
     }
 };
 
+//////////////////// Dexie /////////////////////
+
+let db;
+
+function dbCreateDatabase(dbName) {
+    db = new Dexie(dbName);
+    return db;
+}
+
+function dbCreateTable(database, tableName, fieldsNames) {
+    const tableContent = {};
+    tableContent[tableName] = fieldsNames;
+    database.version(1).stores(tableContent);
+}
+
+function dbAdd(database, table, content) {
+    base = database;
+    table_to_fill = eval("base." + table);
+    table_to_fill.put(content);
+}
+
+function dbAddUser(database, content) {
+    database.user.put(content);
+}
+
+function dbAddDocument(database, content) {
+    database.document.put(content);
+}
+
+function dbGetDocumentsByUser(user_id) {
+    return db.document
+        .where('user_id')
+        .equals(user_id).toArray().then(function (document) {
+            for (const [key, value] of Object.entries(document)) {
+                Opal.Object.$result(Object.entries(value));
+            }
+        });
+}
+
+function dbGetDocumentById(id) {
+    return db.document
+        .where('id')
+        .equals(id).toArray().then(function (document) {
+            for (const [key, value] of Object.entries(document)) {
+                Opal.Object.$result(Object.entries(value));
+            }
+        });
+}
+
+function dbUpdateDocumentById(id, content) {
+    db.document
+        .where('id')
+        .equals(id)
+        .modify({content: content});
+}
+
+function dbDeleteDocumentById(id) {
+    db.document
+        .where('id')
+        .equals(id)
+        .delete();
+}
+
+function read(dbName, tableName) {
+    var db = new Dexie(dbName);
+
+}
+
+function deleteDB(dbName, tableName) {
+    var db = new Dexie(dbName);
+    db.delete();
+}
+
+
+// dynamic loading of js script
+// we test ig the server respond, if so we load the websocket library
+var p = new Ping();
+p.ping("https://github.com", function (err, data) {
+    if (err) {
+        // server not ready
+    } else {
+        $.getScript("js/atome_libraries/web_socket_helper.js", function () {
+        });
+    }
+});
 

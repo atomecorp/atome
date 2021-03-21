@@ -1,4 +1,4 @@
 # edit
 
-t=text({content: "edit me", width: 300})
+t=text({content: "edit me", width: 33})
 t.edit(true)

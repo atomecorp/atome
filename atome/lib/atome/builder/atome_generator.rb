@@ -16,14 +16,14 @@ class Atome
   # atome creation
   def initialize(properties = {})
     # the hash below add the missing properties without creating a condition
-    sanitizer = {atome_id: identity, type: :particle}.merge(properties)
+    sanitizer = { atome_id: identity, type: :particle }.merge(properties)
     create(sanitizer)
-    register_atome
   end
 
   def create(properties)
     atome_id = properties.delete(:atome_id)
-    send("atome_id=", atome_id)
+    self.atome_id(atome_id)
+    register_atome
     set properties
   end
 
@@ -33,7 +33,7 @@ class Atome
 
   def set(properties)
     properties.each do |property, value|
-      send(property.to_s , value)
+      send(property.to_s, value)
     end
   end
 
@@ -44,6 +44,14 @@ class Atome
 
   def self.atomes
     # this method return all created atomes
-    Atome.class_variable_get("@@atomes") # you can access without offense
+    Atome.class_variable_get("@@atomes") # allow access without offense
+  end
+
+  def [](query = nil)
+    if query
+      self.properties[query]
+    else
+      self.properties
+    end
   end
 end

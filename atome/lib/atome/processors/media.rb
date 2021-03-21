@@ -4,12 +4,12 @@ module Processors
     if value == true
       value = {}
     elsif value.instance_of?(String)
-      value = {content: value}
+      value = { content: value }
     end
     preset = grab(:preset).get(:content)
     preset = preset[type]
     # we overload the parent to the current and finally add the value set by user
-    preset = preset.merge({parent: atome_id}).merge(value)
+    preset = preset.merge({ parent: atome_id }).merge(value)
     Atome.new(preset)
   end
 

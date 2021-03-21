@@ -2,12 +2,11 @@ module Processors
   def size_processor(value)
     if value.instance_of?(Hash) && value[:value].nil?
     else
-      size = 0
       if value.instance_of?(Number) || value.instance_of?(Integer)
-        value = {value: value}
+        value = { value: value }
       end
-      if width && height
-        size = value[:value]
+      size = value[:value]
+      if width && height && width != :auto && height != :auto
         if width > height
           ratio = size / width
           self.width = size

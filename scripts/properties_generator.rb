@@ -1,7 +1,7 @@
 def atome_methods
   communication = %i[share]
   effect = %i[blur shadow smooth]
-  event = %i[touch drag over]
+  event = %i[touch drag over key]
   geometry = %i[width height size]
   helper = %i[tactile display]
   hierarchy = %i[parent child insert]
@@ -36,7 +36,6 @@ def return_created_property
   # twe return the result of the method instead of object holding the property
   %i[box circle text image video audio]
 end
-
 
 batch_delete =<<STRDELIM
   def delete(value, &proc)

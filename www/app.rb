@@ -6,6 +6,9 @@
 # bundle update
 # bundle install
 # to run: rackup --server puma --port 4567  or without puma : rackup -p 4567
+if  RUBY_PLATFORM == "x64-mingw32"
+  require "em/pure_ruby"
+end
 require "sequel"
 require "faye/websocket"
 require "json"
@@ -56,60 +59,36 @@ class App < Roda
     if Faye::WebSocket.websocket?(env)
       ws = Faye::WebSocket.new(env)
       ws.on :message do |event|
-        # datas = event.data.split(",")
-        # db_mode = datas[0]
-        # filename = datas[1]
-        # content = datas[2]
-        #puts event.data
-        #[200, {"Content-Type" => "text/plain"}, [event.data]]
-
         client_data = event.data
-        #puts "client_data : #{client_data.class} , message : #{client_data} "
-        #ws.send(event.data)
-        #data=JSON.parse(client_data)
         if client_data.is_json?
           data = JSON.parse(client_data)
-          puts "-------"
           puts data
-          puts "-------"
+          case data["type"]
+          when "connection"
 
-          if data["connection"]
-            ws.send('{"connection":{"username":"Régis","accepted":"true"}}')
-          else
-            ws.send(client_data)
+          when "code"
+            ws.send(data["text"])
+          when "command"
+            terminal_content=%x{#{data["text"]}}
+            massage_back="text('#{terminal_content}')"
+            ws.send(massage_back)
           end
-
-        else
-          client_data
+          #if data["connection"]
+          #  ws.send('{"connection":{"username":"Régis","accepted":"true"}}')
+          #elsif data["type"] == "code"
+          #  ws.send(data["text"])
+          #else
+          #  data
+          #end
         end
-        #if valid_json?(client_data)
-        #  data = JSON.parse(client_data)
-        #  ws.send('{"connection":{"username":"Régis","accepted":"true"}}')
-        #  puts data.class
-        #end
-
-        #puts "---data---"
-        #puts data.class
-        #puts "---username---"
-        #puts data[:connection][:username]
-        #sleep 5
-        #ws.send("box({color: :blue})")
-        #sleep 3
-        #ws.send("text({color: :orange, content: :hello, x: 100, y: 150, size: 70})")
-        #'alert("ok")'
       end
-      ws.on :open do |event|
-        #ws = nil
-      end
-      ws.on :close do |event|
-        #puts [:close, event.code, event.reason]
-        #ws = nil
-      end
-      # Return async Rack response
+      #ws.on :open do |event|
+      #  #ws = nil
+      #end
+      #ws.on :close do |event|
+      #  #ws = nil
+      #end
       ws.rack_response
-    else
-      # Normal HTTP request
-      [200, {"Content-Type" => "text/plain"}, ["Hello"]]
     end
     r.root do
       r.redirect "/index"
