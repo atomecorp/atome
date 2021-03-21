@@ -2,6 +2,7 @@ module JSUtils
   def self.create_database(params)
     `dbCreateDatabase(#{params})`
   end
+
   def self.create_table(database, table_name, content)
     `dbCreateTable(#{database},#{table_name},#{content})`
   end
@@ -14,7 +15,7 @@ module JSUtils
     `dbAddDocument(#{database}, #{content.to_n})`
   end
 
-  def self.populate(database, type,content)
+  def self.populate(database, type, content)
     `dbAdd(#{database},#{type}, #{content.to_n})`
   end
 
@@ -26,7 +27,7 @@ module JSUtils
     `dbGetDocumentById(#{id})`
   end
 
-  def self.update_documents(id,content)
+  def self.update_documents(id, content)
     `dbUpdateDocumentById(#{id}, #{content})`
   end
 

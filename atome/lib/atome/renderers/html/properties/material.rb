@@ -3,7 +3,7 @@ module PropertylHtml
     values = value.read
     color = "background-image"
     unless values.instance_of?(Array)
-      values=[values]
+      values = [values]
     end
     values.each do |val|
       val = color_helper(val)
@@ -54,10 +54,10 @@ module PropertylHtml
     thickness = value[:thickness]
     color = color_helper(value[:color])
     invert = if value[:invert]
-      :inset
-    else
-      " "
-    end
+               :inset
+             else
+               " "
+             end
     if type == :text || type == :image
       jq_get(atome_id).css("filter", "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")")
     else

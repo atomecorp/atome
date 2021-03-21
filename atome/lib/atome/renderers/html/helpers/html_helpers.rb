@@ -12,14 +12,14 @@ module HtmlHelpers
     Element.find(JSUtils.device).resize do
       width = jq_get(:view).css("width").sub("px", "").to_i
       height = jq_get(:view).css("height").sub("px", "").to_i
-      proc.call({width: width, height: height}) if proc.is_a?(Proc)
+      proc.call({ width: width, height: height }) if proc.is_a?(Proc)
     end
   end
 
   def scroll_html(&proc)
     jq_get(atome_id).scroll do
-    #  #scroll_x = jq_get(:view).css("width").sub("px", "").to_i
-    #  #scroll_Y = jq_get(:view).css("height").sub("px", "").to_i
+      #  #scroll_x = jq_get(:view).css("width").sub("px", "").to_i
+      #  #scroll_Y = jq_get(:view).css("height").sub("px", "").to_i
       proc.call if proc.is_a?(Proc)
     end
   end

@@ -43,11 +43,11 @@ module PropertylHtml
     jq_object = jq_get(atome_id)
     lock = case value[:lock]
            when :parent
-             {containment: "parent"}
+             { containment: "parent" }
            when :x
-             {axis: "y"}
+             { axis: "y" }
            when :y
-             {axis: "x"}
+             { axis: "x" }
            else
              {}
            end
@@ -62,7 +62,6 @@ module PropertylHtml
       proc.call(evt) if proc.is_a?(Proc)
     end
   end
-
 
   def key_html(value)
     value = value.read

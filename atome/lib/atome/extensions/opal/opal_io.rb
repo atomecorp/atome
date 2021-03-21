@@ -4,12 +4,12 @@ module JSUtils
   end
 
   def remote_server(msg)
-    default = {type: :code, message: :box}
+    default = { type: :code, message: :box }
     msg = default.merge(msg)
     `message_server(#{msg[:type]}, #{msg[:message]})`
   end
 
   def shell(command)
-    remote({type: :command, message: command})
+    remote({ type: :command, message: command })
   end
 end

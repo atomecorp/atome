@@ -6,10 +6,10 @@ module AtomeHelpers
       unless child.nil?
         #the the current atome have child we delete them too
         # We remove any reference of this atome from its parents
-        parent_child=[]
-         parent.read.each do |parent_found|
-           parent_child << grab(parent_found).child.read
-         end
+        parent_child = []
+        parent.read.each do |parent_found|
+          parent_child << grab(parent_found).child.read
+        end
         updated_child_list = []
         parent_child.each do |child_found|
           if child_found != atome_id
@@ -40,10 +40,10 @@ module AtomeHelpers
   end
 
   def duplicate(value)
-    value = {x: 0, y: 0, offset: {x: 6, y: 6}}.merge(value)
+    value = { x: 0, y: 0, offset: { x: 6, y: 6 } }.merge(value)
     (0..value[:y]).each do |y_val|
       (1..value[:x]).each do |x_val|
-        atome_property = self.inspect.merge({atome_id: self.atome_id.to_s + x_val.to_s, x: self.x + self.width * x_val + value[:offset][:x] * x_val, y: self.width * y_val + value[:offset][:y] * y_val})
+        atome_property = self.inspect.merge({ atome_id: self.atome_id.to_s + x_val.to_s, x: self.x + self.width * x_val + value[:offset][:x] * x_val, y: self.width * y_val + value[:offset][:y] * y_val })
         Atome.new(atome_property)
       end
     end
@@ -113,7 +113,7 @@ module AtomeHelpers
   end
 
   def shell(command)
-    remote({type: :command, message: command})
+    remote({ type: :command, message: command })
   end
 
 end

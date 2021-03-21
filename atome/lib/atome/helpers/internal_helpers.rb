@@ -17,11 +17,11 @@ module InternalHelpers
     elsif proc && value.instance_of?(Hash)
       value = value.merge(proc: proc)
     elsif proc && (value.instance_of?(Integer) || value.instance_of?(String) || value.instance_of?(Symbol))
-      value = {value: value, proc: proc}
+      value = { value: value, proc: proc }
     elsif proc
-      value = {proc: proc}
+      value = { proc: proc }
     end
-      value
+    value
   end
 
   def add_to_instance_variable(instance_name, value)
@@ -41,7 +41,7 @@ module InternalHelpers
   end
 
   def broadcast(property, value)
-    proc= @monitor.read[:proc]
-    monitor_processor({property: property,value: value,proc: proc})
+    proc = @monitor.read[:proc]
+    monitor_processor({ property: property, value: value, proc: proc })
   end
 end

@@ -17,5 +17,5 @@ class Number
 end
 
 def scroll(value = nil)
-
+  value
 end

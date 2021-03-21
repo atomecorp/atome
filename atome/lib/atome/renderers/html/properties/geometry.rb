@@ -23,9 +23,9 @@ module PropertylHtml
 
   def size_html(value)
     value = value.read
-    default = {option: {handles: 'all'}}
+    default = { option: { handles: 'all' } }
     unless value.instance_of?(Hash)
-      value = {option: value}
+      value = { option: value }
     end
     value = default.merge(value)
     option = value[:option]

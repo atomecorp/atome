@@ -1,6 +1,5 @@
 module Processors
 
-
   def parent_pre_processor(value)
     # first we force the value to be an array as hierarchies methods holds many parents or children
     if value.instance_of?(Array)
@@ -26,7 +25,7 @@ module Processors
         else
           @parent = @parent.read
           # @parent.concat(value)
-          @parent=value
+          @parent = value
           @parent = atomise(:parent, @parent)
         end
         # we inform the children they have new parents
@@ -36,7 +35,6 @@ module Processors
       end
     end
   end
-
 
   def parent_getter_processor
     @parent

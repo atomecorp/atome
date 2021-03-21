@@ -112,13 +112,14 @@ def compile(code)
     @loading_compiler = true
     compile(code)
   else
-    ATOME.wait 0.01 do
+    ATOME.send(:wait, 0.01) do
       compile(code)
     end
   end
 end
 
-def read(filename, &proc) #  read local file
+def read(filename, &proc)
+  #  read local file
   JSUtils.reader(filename, &proc)
 end
 
@@ -127,8 +128,8 @@ def version
 end
 
 def notification(message, duration)
-  notification = text({content: message, color: :orange, x: 69, y: 69})
-  ATOME.wait duration do
+  notification = text({ content: message, color: :orange, x: 69, y: 69 })
+  ATOME.send(:wait, duration) do
     notification.delete
   end
 end
