@@ -2,7 +2,27 @@ module AtomeHelpers
   def delete
     if Atome.atomes.key?(atome_id)
       # we remove the atome fom the Atome.atomes's hash
-      delete_atome = Atome.atomes.delete(atome_id)
+      # delete_atome = Atome.atomes.delete(atome_id)
+            delete_atome = grab(atome_id)
+      new_atomes_list={}
+      verif=[]
+      Atome.atomes.each do |id_of_atome, content|
+        unless id_of_atome == atome_id
+          new_atomes_list[id_of_atome] =content
+          verif << id_of_atome
+        end
+      end
+      Atome.atomes=new_atomes_list
+      # alert "#{verif}"
+      ###############################
+      second_test=[]
+      Atome.atomes.each do |id_of_atome, content|
+        unless id_of_atome == atome_id
+          second_test << id_of_atome
+        end
+      end
+      # alert second_test
+      ##############################
       unless child.nil?
         #the the current atome have child we delete them too
         # We remove any reference of this atome from its parents
@@ -16,14 +36,15 @@ module AtomeHelpers
             updated_child_list << child_found
           end
         end
-        child.delete(true)
-        grab(parent.read).instance_variable_set("@child", atomise(:child, updated_child_list))
+        # child.delete(true)
+        # grab(parent.read).instance_variable_set("@child", atomise(:child, updated_child_list))
       end
+
       # adding the deleted atome to the black_hole for later retrieve
       grab(:black_hole).content[atome_id] = delete_atome
       # now we remove the atome from view if it is rendered
       unless delete_atome.render == false
-        delete_html
+        # delete_html
         the_parent = grab(parent.read)
         if the_parent
           children_found = the_parent.child.read

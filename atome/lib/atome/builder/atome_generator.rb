@@ -47,6 +47,12 @@ class Atome
     Atome.class_variable_get("@@atomes") # allow access without offense
   end
 
+  def self.atomes=(atome_list)
+    # refresh atome list
+    Atome.class_variable_set("@@atomes", atome_list)
+
+  end
+
   def [](query = nil)
     if query
       self.properties[query]
