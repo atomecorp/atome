@@ -104,18 +104,29 @@ def clear(value)
 end
 
 def compile(code)
-  if JSUtils.opal_parser_ready
-    # if needed we can add a parser for the data here
+  #if JSUtils.opal_parser_ready
+  #else
+  #
+  #end
+  #JSUtils.load_opal_parser
+  #until JSUtils.opal_parser_ready
+  #    ATOME.send(:wait, 0.01) do
+  #      JSUtils.load_opal_parser
+      #end
+      #puts "kool"
+  #end
+  #if JSUtils.opal_parser_ready
+  #  # if needed we can add a parser for the data here
     Opal.eval(code)
-  elsif !@loading_compiler
-    JSUtils.load_opal_parser
-    @loading_compiler = true
-    compile(code)
-  else
-    ATOME.send(:wait, 0.01) do
-      compile(code)
-    end
-  end
+  #elsif !@loading_compiler
+  #  JSUtils.load_opal_parser
+  #  @loading_compiler = true
+  #  compile(code)
+  #else
+  #  ATOME.send(:wait, 0.01) do
+  #    compile(code)
+  #  end
+  #end
 end
 
 def read(filename, &proc)
