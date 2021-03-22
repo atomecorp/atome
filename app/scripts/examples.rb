@@ -76,6 +76,14 @@ def demo_reel(demo_list)
 end
 
 JSUtils.load_opal_parser
+
+ATOME.wait 1 do
+  read("./medias/rubies/examples/!demos.rb") do |data|
+    demos = compile(data)
+    demo_reel(demos)
+  end
+end
+
 demo_reel = text({content: :demos, xx: 200})
 demo_reel.touch do
   read("./medias/rubies/examples/!demos.rb") do |data|

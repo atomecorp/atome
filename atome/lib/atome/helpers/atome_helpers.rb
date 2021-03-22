@@ -60,35 +60,51 @@ module AtomeHelpers
   #  end
   #end
 
-  def remove_item_atomes
-    alert Atome.atomes # remove current item from list
+  def remove_item_from_hash(object)
+    new_list = {}
+    object.each do |id_of_atome, content|
+      unless id_of_atome == atome_id
+        new_list[id_of_atome] = content
+      end
+    end
+    new_list
   end
 
-  def detach_child
-    alert self.parent # for each remove current child
+  def delete_from_parent
+    self.parent do |parent_found|
+      new_child_list = []
+      parent_found.child do |child_found|
+        unless child_found.atome_id == atome_id
+          new_child_list << child_found.atome_id
+        end
+      end
+      parent_found.instance_variable_set("@child", ATOME.atomise(:child, new_child_list))
+    end
   end
 
   def delete_child
-    alert self.child # delete
+    unless self.child.nil?
+      self.child.delete
+    end
+    #
   end
 
-  def add_to_black_hole
-    alert grab(:black_hole).content # add current deleted item
-  end
 
   def delete
-    remove_item_atomes
-    detach_child
     delete_child
-    add_to_black_hole
+    delete_from_parent
+    Atome.atomes = remove_item_from_hash(Atome.atomes)
+    grab(:black_hole).content[atome_id] = self
     delete_html
   end
 
   def duplicate(value)
-    value = { x: 0, y: 0, offset: { x: 6, y: 6 } }.merge(value)
+    value = {x: 0, y: 0, offset: {x: 6, y: 6}}.merge(value)
     (0..value[:y]).each do |y_val|
       (1..value[:x]).each do |x_val|
-        atome_property = self.inspect.merge({ atome_id: self.atome_id.to_s + x_val.to_s, x: self.x + self.width * x_val + value[:offset][:x] * x_val, y: self.width * y_val + value[:offset][:y] * y_val })
+        atome_property = self.inspect.merge({atome_id: self.atome_id.to_s + x_val.to_s,
+                                             x: self.x + self.width * x_val + value[:offset][:x] * x_val,
+                                             y: self.width * y_val + value[:offset][:y] * y_val})
         Atome.new(atome_property)
       end
     end
@@ -158,7 +174,7 @@ module AtomeHelpers
   end
 
   def shell(command)
-    remote({ type: :command, message: command })
+    remote({type: :command, message: command})
   end
 
 end
