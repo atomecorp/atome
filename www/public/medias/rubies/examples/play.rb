@@ -1,5 +1,6 @@
 # play videos
 
-v=video({atome_id: :the_video})
-v.atome_id= :the_video_killer
-v.play(true)
+v=video({atome_id: :the_video, atome_id: :the_video_killer})
+v.touch do
+  v.play(true)
+end

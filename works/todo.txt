@@ -1,3 +1,6 @@
+- make all method Quark ready!
+- debug demo
+- detatch group
 - when eval should output error in console
 - parser when usng eval
 - key press
