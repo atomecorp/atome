@@ -23,6 +23,14 @@ class Quark
     @property.concat(property)
   end
 
+  def add values
+    @property.concat(values)
+  end
+
+  def length
+    @property.length
+  end
+
   def [](option)
     required_atome = []
     read.each_with_index do |atome, index|

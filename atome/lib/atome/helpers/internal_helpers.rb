@@ -24,6 +24,11 @@ module InternalHelpers
     value
   end
 
+
+  def set_instance_variable(instance_name, value)
+    instance_variable_set("@#{instance_name}", atomise(instance_name, value))
+  end
+
   def add_to_instance_variable(instance_name, value)
     unless value.instance_of?(Array)
       value = [value]

@@ -6,7 +6,7 @@ end
 img=image({content: :red_planet, atome_id: :red_planet})
 c.box({atome_id: :e, x: 160})
 c.text({content: 'some text', atome_id: :t, width: 100, height: 200, x: 69})
-b2=box({x:200})
+b2=box({x:200, atome_id: :the_box})
 c.child.color(:green)
 
 c.child([img.atome_id, b2.atome_id])

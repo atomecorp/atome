@@ -1,5 +1,5 @@
 # ruby main Object extensions
-require "atome/extensions/ruby/hash"
+require "atome/extensions/ruby/object"
 # default_value
 require "atome/environment/default_values"
 # opal specific

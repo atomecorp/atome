@@ -10,5 +10,5 @@ t.parent([e.atome_id, c.atome_id])
 t.parent do |father|
  father.set({ rotate: 36, y: 66})
 end
-#t.parent.color(:orange)
+t.parent.blur(2)
 #both parent are treated

@@ -86,13 +86,12 @@ module AtomeHelpers
     unless self.child.nil?
       self.child.delete
     end
-    #
   end
 
 
   def delete
-    delete_child
     delete_from_parent
+    delete_child
     Atome.atomes = remove_item_from_hash(Atome.atomes)
     grab(:black_hole).content[atome_id] = self
     delete_html
