@@ -1,4 +1,4 @@
-
+# demo list  generator
 demo_scripts=Dir["www/public/medias/rubies/examples**/*.rb"]
 scripts_list=[]
 demo_scripts.each do |demo_name|
@@ -10,7 +10,6 @@ demo_scripts.each do |demo_name|
     scripts_list << "#{script_name}: '#{script_path}'"
   end
 end
-
 file=<<STRDELIM
 {#{scripts_list.join(",\n")}}
 STRDELIM
