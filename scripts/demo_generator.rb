@@ -3,7 +3,7 @@ demo_scripts=Dir["www/public/medias/rubies/examples**/*.rb"]
 scripts_list=[]
 demo_scripts.each do |demo_name|
   script_name= File.basename(demo_name, '.rb')
-  demo_name="/public/medias/rubies/examples/"+File.basename(demo_name)
+  demo_name="./medias/rubies/examples/"+File.basename(demo_name)
   script_path=demo_name
 
   unless script_name== "!demos"
