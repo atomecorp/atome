@@ -162,7 +162,7 @@ task 'run::server': required_js_lib do
     #   sleep 2
     #   system("open", "http://localhost:9292")
     # end
-     # sh "puma -b tcp://127.0.0.1:9292"
+      sh "puma -b tcp://127.0.0.1:9292"
     ##sh "puma -b 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'"
     #sh "rackup --server puma --port 9292 --env production"
     #Rack::Server.start(config: 'config.ru', server: 'puma')
@@ -171,7 +171,7 @@ task 'run::server': required_js_lib do
     #  sleep 2
     #  system("open", "https://localhost:9292")
     #end
-    sh 'puma -b "ssl://127.0.0.1:9292?key=localhost.key&cert=localhost.crt"'
+    #sh 'puma -b "ssl://127.0.0.1:9292?key=localhost.key&cert=localhost.crt"'
   end
 end
 
