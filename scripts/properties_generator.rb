@@ -17,7 +17,7 @@ end
 FileUtils.mkdir_p "atome/lib/atome/generated_properties"
 
 def need_pre_processing
-  %i[atome_id type private can box circle text image video audio parent child]
+  %i[atome_id  private can box circle text image video audio parent child]
 end
 
 def need_processing

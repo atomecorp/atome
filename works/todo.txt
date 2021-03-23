@@ -2,7 +2,7 @@
 - debug demo
 - detatch group
 - when eval should output error in console
-- parser when usng eval
+- parser when using eval
 - key press
 - text_size
 - code editor : restore position and size, stop drag, text size

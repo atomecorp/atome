@@ -2,7 +2,7 @@ module PropertylHtml
   def atome_id_html(value)
     value = value.read
     # this method create the basic html object
-    jq_get("user_device").append("<div class='atome' id='#{value}'></div>")
+    #jq_get("user_device").append("<div class='atome' id='#{value}'></div>")
     value
   end
 
@@ -13,7 +13,9 @@ module PropertylHtml
   def type_html(value)
     value=value.read
     #unless @type == :particle
-      puts("msg from propertyhtml line 16 : #{value}")
+    jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
+
+    #alert("msg from propertyhtml line 16 :#{atome_id} #{value}")
     #end
   end
 end
