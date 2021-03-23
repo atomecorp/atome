@@ -13,5 +13,18 @@ module PropertylHtml
     elsif type == :image
       image_creator__helper(value)
     end
+    #case type
+    #when :value.to_s.gsub("\n", "<br>")
+    #when :shape
+    #  if value[:tension]
+    #    self.smooth(value[:tension])
+    #  end
+    #when :video
+    #  video_creator__helper(value)
+    #when :image
+    #  image_creator__helper(value)
+    #else
+    #  value
+    #end
   end
 end

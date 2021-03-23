@@ -2,7 +2,7 @@ module PropertylHtml
   def render_html(value)
     value = value.read
     unless value
-      jq_get(atome_id).remove
+      #jq_get(atome_id).remove
     end
   end
 

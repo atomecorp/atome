@@ -19,6 +19,10 @@ module Processors
     @atome_id = atomise(:atome_id, value)
   end
 
+  def type_pre_processor(value)
+      @type = atomise(:type,value)
+  end
+
   def private_processor(value)
     "set #{value}"
   end
