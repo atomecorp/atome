@@ -1,8 +1,5 @@
 module Processors
 
-
-
-
   def parent_pre_processor(parent_list)
     # we have to ensure the parent list is an array if not we put it in a array
     if parent_list.instance_of?(Hash) && parent_list[:proc]

@@ -16,8 +16,16 @@ class Atome
   # atome creation
   def initialize(properties = {})
     # the hash below add the missing properties without creating a condition
-    sanitizer = { atome_id: identity, type: :particle }.merge(properties)
-    create(sanitizer)
+    sanitizer = { atome_id: identity,render: true, type: :particle }.merge(properties)
+    atome_id=sanitizer.delete(:atome_id)
+    type=sanitizer.delete(:type)
+    #content=sanitizer.delete(:type)
+    render=sanitizer.delete(:render)
+     sanitizer.each do |atome_property, value|
+       instance_variable_set("@#{atome_property}", atomise(atome_property, value))
+     end
+    essential={atome_id: atome_id}.merge({type: type}).merge({render: render})
+    create(essential)
   end
 
   def create(properties)
@@ -50,7 +58,6 @@ class Atome
   def self.atomes=(atome_list)
     # refresh atome list
     Atome.class_variable_set("@@atomes", atome_list)
-
   end
 
   def [](query = nil)
