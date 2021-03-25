@@ -1,42 +1,41 @@
 module JSUtils
-  def self.create_database(params)
-    `dbCreateDatabase(#{params})`
+  def self.create_database(databaseName)
+    `return new DatabaseHelper(#{databaseName})`
   end
 
   def self.create_table(database, table_name, content)
-    `dbCreateTable(#{database},#{table_name},#{content})`
+    `#{database}.createTable(#{table_name},#{content})`
   end
 
   def self.create_user(database, content)
-    `dbAddUser(#{database}, #{content.to_n})`
+    `#{database}.addUser(#{content.to_n})`
   end
 
   def self.create_document(database, content)
-    `dbAddDocument(#{database}, #{content.to_n})`
+    `#{database}.addDocument(#{content.to_n})`
   end
 
-  def self.populate(database, type, content)
-    `dbAdd(#{database},#{type}, #{content.to_n})`
+  def self.populate(database, table, fields)
+    `#{database}.addRow(#{table}, #{fields.to_n})`
   end
 
-  def self.get_documents_by_user(user_id)
-    `dbGetDocumentsByUser(#{user_id})`
+  def self.get_documents_by_user(database, user_id)
+    `#{database}.getDocumentsByUser(#{user_id})`
   end
 
-  def self.get_documents_by_id(id)
-    `dbGetDocumentById(#{id})`
+  def self.get_documents_by_id(database, id)
+    `#{database}.getDocumentById(#{id})`
   end
 
-  def self.update_documents(id, content)
-    `dbUpdateDocumentById(#{id}, #{content})`
+  def self.update_documents(database, id, content)
+    `#{database}.updateDocumentById(#{id}, #{content})`
   end
 
-  def self.delete_doc_by_id(id)
-    `dbDeleteDocumentById(#{id})`
+  def self.delete_doc_by_id(database, id)
+    `#{database}.deleteDocumentById(#{id})`
   end
 
-  def self.delete_db(dbname)
-    `deleteDB(#{dbname})`
+  def self.delete_db(database)
+    `#{database}.deleteDb()`
   end
-
 end

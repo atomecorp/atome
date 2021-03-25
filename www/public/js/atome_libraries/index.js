@@ -90,73 +90,18 @@ const html = {
 
 };
 
-// upload methods here
-
-function import_visual_medias(e, file) {
-    const reader = new FileReader();
-    reader.onload = function () {
-        const dataURL = reader.result;
-        // alert(dataURL)
-        const randomId = Math.random().toString(16).substr(2, 32);
-        $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
-        const output = document.getElementById(randomId);
-        output.src = dataURL;
-    };
-
-    reader.readAsDataURL(file);
-}
-
-function upload(e) {
-    const files = e.dataTransfer.files;
-    for (let i = 0; i < files.length; i++) {
-        let file_type = files[i].type;
-        let file_datas = files[i].name;
-        console.log(file_datas);
-
-        switch (file_type) {
-            case 'video/quicktime':
-                import_visual_medias(e, files[i]);
-                break;
-            case 'video/x-m4v':
-                import_visual_medias(e, files[i]);
-                break;
-            case 'text/plain':
-                import_text(e, files[i]);
-                break;
-            case 'video/mp4':
-                import_visual_medias(e, files[i]);
-                break;
-            case 'audio/x-m4a':
-                import_audio(e, files[i]);
-                break;
-            case 'image/png':
-                import_visual_medias(e, files[i]);
-                break;
-            case 'image/jpeg':
-                import_visual_medias(e, files[i]);
-                break;
-            case 'text/xml':
-                import_text(e, files[i]);
-                break;
-            case 'image/svg+xml':
-                import_visual_medias(e, files[i]);
-                break;
-            default:
-                console.log('Unknown file format');
-        }
-    }
-}
-
-function displayImg(url) {
-    const randomId = Math.random().toString(16).substr(2, 32);
-    $('#view').append('<img id="' + randomId + '"  alt="Girl in a jacket" width="500" height="600">');
-    const output = document.getElementById(randomId);
-    output.src = url;
-}
-
+let databaseHelper;
 let fileHelper;
 let drawingHelper;
+let midiHelper;
 let mediaHelper;
+let audioHelper;
+
+let databaseEventListener = {
+    onConnected: function (event) {
+        console.log('Database initialized successfully');
+    }
+};
 
 let fileSystemPermissionEventListener = {
     onPermissionAccepted: function (fs) {
@@ -170,62 +115,66 @@ let fileSystemPermissionEventListener = {
 
 let drawingEventListener = {
     onConnected: function () {
-        console.log('Drawing connected');
+        console.log('Drawing initialized successfully');
         drawingHelper.setMode(drawingHelper.modeType.Draw);
+    }
+};
+
+let midiEventListener = {
+    onConnected: function (event) {
+        console.log('Midi initialized successfully!');
+    },
+
+    onError: function (event) {
+        console.log('Cannot initialize midi!');
     }
 };
 
 let mediaEventListener = {
     onConnected: function () {
-        console.log('Media connected');
+        console.log('Media initialized successfully');
     },
     onError: function (error) {
         console.log(error);
     }
 };
 
-function message_server(type, message) {
-    send_message(type, message);
-}
-
-let databaseEventListener = {
+let audioEventListener = {
     onConnected: function (event) {
-        console.log('Database connected');
-        databaseHelper.getAllUsers();
+        console.log('Audio initialized successfully!');
+    },
+
+    onError: function (event) {
+        console.log('Cannot initialize audio!');
     }
 };
 
 document.addEventListener("deviceready", function () {
-//databaseHelper
-    databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
-    databaseHelper.connect();
+    //databaseHelper
+    // databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
+    // databaseHelper.connect();
 
-
-//fileHelper
+    //fileHelper
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
-    fileHelper.connect(564654);
+    fileHelper.connect();
+}, false);
 
 //drawingHelper
 drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
 drawingHelper.connect();
 
-//mediaHelper
-var preview = $('<video />', {
-    id: 'preview',
-    controls: true
-});
-preview.appendTo($('#view'));
-var playback = $('<video />', {
-    id: 'playback',
-    controls: true
-});
-playback.appendTo($('#view'));
-const previewElement = document.querySelector('#preview');
-const playbackElement = document.querySelector('#playback');
+//midiHelper
+midiHelper = new MidiHelper(midiEventListener);
+midiHelper.connect();
 
-mediaHelper = new MediaHelper(640, 480, 60, previewElement, playbackElement, mediaEventListener);
-mediaHelper.connect();
-}, false);
+//mediaHelper
+mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);
+// const previewVideo = mediaHelper.addVideoPlayer('view', 'preview', true);
+// const playbackVideo = mediaHelper.addVideoPlayer('view', 'playback', true);
+// mediaHelper.connect(previewVideo, playbackVideo);
+
+//audioHelper
+audioHelper = new AudioHelper(audioEventListener);
 
 window.ondragover = function (e) {
     e.preventDefault();
@@ -237,7 +186,7 @@ window.ondrop = function (e) {
         fileHelper.createFile("image.png", e.dataTransfer.files[0], {
             success: function () {
                 fileHelper.getUrl("image.png", function (imageUrl) {
-                    displayImg(imageUrl);
+                    mediaHelper.addImage('view', imageUrl);
                 });
             },
             error: function (fileError) {
@@ -247,7 +196,6 @@ window.ondrop = function (e) {
     }
 };
 
-const audioDSP = new AudioHelper();
 const atome = {
     jsIsMobile: function () {
         const a = navigator.userAgent || navigator.vendor || window.opera;
@@ -261,56 +209,7 @@ const atome = {
         }
         return mobile;
     },
-    jsAudio: function (atome_id, options, proc) {
-        audioDSP.basicSynth();
-    },
-    jsMidi_play: function (note, channel, options) {
-        return midi_play(note, channel, options);
-    },
-    jsMidi_stop: function (note, channel, options) {
-        return midi_stop(note, channel, options);
-    },
-    jsMidi_inputs: function () {
-        return midi_inputs();
-    },
-    jsMidi_outputs: function () {
-        return midi_outputs();
-    },
-    jsVideoPlay: function (atome_id, options, proc) {
-        var media = $("#" + atome_id + ' video:first-child')[0];
-        if (options == true || options == 'true') {
-            options = 0;
-        }
-        media.addEventListener("timeupdate", function () {
-//Opal.Events.$playing(proc,media.currentTime)
-        });
-//media.currentTime is run twice, because if not depending on the context it may not be interpreted
-        media.currentTime = options;
-        media.addEventListener('loadedmetadata', function () {
-            media.currentTime = options;
-        }, false);
-        media.play();
-    },
-    jsAudioPlay: function (atome_id, options, proc) {
-        var media = $("#" + atome_id + ' audio:first-child')[0];
-        if (options == true || options == 'true') {
-            options = 0;
-        }
-        media.addEventListener("timeupdate", function () {
-            Opal.Event.$playing(proc, media.currentTime);
-        });
-//media.currentTime is run twice, because if not depending on the context it may not be interpreted
-        media.currentTime = options;
-        media.addEventListener('loadedmetadata', function () {
-            media.currentTime = options;
-        }, false);
-        media.play();
-    },
 
-    jsCreateVideo: function (parent) {
-        var video = $('<video />', {});
-        video.appendTo($('#' + parent));
-    },
     jsReader: function (filename, proc) {
         $.ajax({
             url: filename,
@@ -388,79 +287,6 @@ const atome = {
     }
 };
 
-//////////////////// Dexie /////////////////////
-
-let db;
-
-function dbCreateDatabase(dbName) {
-    db = new Dexie(dbName);
-    return db;
-}
-
-function dbCreateTable(database, tableName, fieldsNames) {
-    const tableContent = {};
-    tableContent[tableName] = fieldsNames;
-    database.version(1).stores(tableContent);
-}
-
-function dbAdd(database, table, content) {
-    base = database;
-    table_to_fill = eval("base." + table);
-    table_to_fill.put(content);
-}
-
-function dbAddUser(database, content) {
-    database.user.put(content);
-}
-
-function dbAddDocument(database, content) {
-    database.document.put(content);
-}
-
-function dbGetDocumentsByUser(user_id) {
-    return db.document
-        .where('user_id')
-        .equals(user_id).toArray().then(function (document) {
-            for (const [key, value] of Object.entries(document)) {
-                Opal.Object.$result(Object.entries(value));
-            }
-        });
-}
-
-function dbGetDocumentById(id) {
-    return db.document
-        .where('id')
-        .equals(id).toArray().then(function (document) {
-            for (const [key, value] of Object.entries(document)) {
-                Opal.Object.$result(Object.entries(value));
-            }
-        });
-}
-
-function dbUpdateDocumentById(id, content) {
-    db.document
-        .where('id')
-        .equals(id)
-        .modify({content: content});
-}
-
-function dbDeleteDocumentById(id) {
-    db.document
-        .where('id')
-        .equals(id)
-        .delete();
-}
-
-function read(dbName, tableName) {
-    var db = new Dexie(dbName);
-
-}
-
-function deleteDB(dbName, tableName) {
-    var db = new Dexie(dbName);
-    db.delete();
-}
-
 
 // dynamic loading of js script
 // we test ig the server respond, if so we load the websocket library
@@ -474,3 +300,6 @@ p.ping("https://github.com", function (err, data) {
     }
 });
 
+function message_server(type, message) {
+    send_message(type, message);
+}
