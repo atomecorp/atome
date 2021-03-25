@@ -2,8 +2,11 @@ module PropertylHtml
   def content_html(value)
     value = value.read
     if render
-      value = value.to_s.gsub("\n", "<br>")
-      jq_get(atome_id).html(value)
+      # value = value.to_s.gsub("\n", "<br>")
+      # alert
+    
+      # alert atome_id.class
+      # jq_get(atome_id).html(value)
       if type == :text
         value = value.to_s.gsub("\n", "<br>")
         jq_get(atome_id).html(value)
