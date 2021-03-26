@@ -17,7 +17,7 @@ end
 FileUtils.mkdir_p "atome/lib/atome/generated_properties"
 
 def need_pre_processing
-  %i[atome_id private can box circle text image video audio parent child]
+  %i[atome_id  private can box circle text image video audio parent child]
 end
 
 def need_processing
@@ -29,7 +29,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[box circle text image video audio parent child info example selector monitor]
+  %i[box circle text image video audio parent child info example selector monitor type]
 end
 
 def return_created_property

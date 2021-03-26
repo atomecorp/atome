@@ -7,13 +7,13 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.atome.eVe"
+    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.atome.eVe"
     },
     "cordova-sqlite-storage": {
-      "PACKAGE_NAME": "com.atome.eVe"
-    },
-    "cordova-plugin-file": {
       "PACKAGE_NAME": "com.atome.eVe"
     }
   },

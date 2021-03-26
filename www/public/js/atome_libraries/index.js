@@ -151,8 +151,8 @@ let audioEventListener = {
 
 document.addEventListener("deviceready", function () {
     //databaseHelper
-    // databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
-    // databaseHelper.connect();
+    sqliteHelper = new SqliteHelper('atome.db', databaseEventListener);
+    sqliteHelper.connect();
 
     //fileHelper
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
@@ -160,15 +160,15 @@ document.addEventListener("deviceready", function () {
 }, false);
 
 //drawingHelper
-drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-drawingHelper.connect();
+// drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
+// drawingHelper.connect();
 
 //midiHelper
 midiHelper = new MidiHelper(midiEventListener);
 midiHelper.connect();
 
 //mediaHelper
-mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);
+// mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);
 // const previewVideo = mediaHelper.addVideoPlayer('view', 'preview', true);
 // const playbackVideo = mediaHelper.addVideoPlayer('view', 'playback', true);
 // mediaHelper.connect(previewVideo, playbackVideo);
