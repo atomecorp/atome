@@ -1,6 +1,6 @@
 class Element
   def create(parent)
-    `atome.jsCreateVideo(#{parent})`
+    `mediaHelper.addVideoPlayer(parent, false)`
   end
 end
 
