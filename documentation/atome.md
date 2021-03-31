@@ -44,11 +44,7 @@ prerequisite:
         on windows :
 		sudo install git :
 	
-	Other :
-	
-        on windows :	
-		Install Visual studio 2017 with feature "universal windows app development tools"
-		cordova build windows --arch="x64"
+
 
    
 
@@ -66,6 +62,11 @@ To install application:
     bundle update
     bundle install
     
+Warning on windows :	
+
+    Install Visual studio 2017 with feature "universal windows app development tools"
+    cordova build windows --arch="x64"
+
 To run application in development:
 
     bundle exec rake run::browser  
@@ -76,7 +77,7 @@ To run application in development:
     bundle exec rake run::electron
 
     
-to run in produciton mode :
+to run in production mode :
 
     bundle exec rake production::browser  
     bundle exec rake production::server
