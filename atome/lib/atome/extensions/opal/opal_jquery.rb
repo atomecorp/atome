@@ -1,12 +1,12 @@
 class Element
   def create(parent)
-    `mediaHelper.addVideoPlayer(parent, false)`
+    `mediaHelper.addVideoPlayer(#{parent}, false)`
   end
 end
 
 class Event
   def key
-    `String.fromCharCode(#@native.keyCode)`
+    `String.fromCharCode(#{@native}.keyCode)`
   end
 
   def key_char
@@ -14,23 +14,16 @@ class Event
   end
 
   def touch_x(touch_nb = 0)
-    `#@native.originalEvent.touches[#{touch_nb}].pageX`
+    `#{@native}.originalEvent.touches[#{touch_nb}].pageX`
   end
 
   def touch_y(touch_nb = 0)
-    `#@native.originalEvent.touches[#{touch_nb}].pageY`
+    `#{@native}.originalEvent.touches[#{touch_nb}].pageY`
   end
 
 end
 
 module Events
-  #def self.update_values params
-  #  @x = params[0]
-  #  @y = params[1]
-  #  # we update current_atome position
-  #  return self
-  #end
-
   def playing(proc, evt)
     @time = evt
     #evt = Events.update_values(evt)

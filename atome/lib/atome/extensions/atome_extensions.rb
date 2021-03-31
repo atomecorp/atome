@@ -112,8 +112,8 @@ def compile(code)
   #until JSUtils.opal_parser_ready
   #    ATOME.send(:wait, 0.01) do
   #      JSUtils.load_opal_parser
-      #end
-      #puts "kool"
+  #end
+  #puts "kool"
   #end
   #if JSUtils.opal_parser_ready
   #  # if needed we can add a parser for the data here

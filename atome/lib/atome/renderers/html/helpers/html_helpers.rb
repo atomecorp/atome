@@ -18,8 +18,6 @@ module HtmlHelpers
 
   def scroll_html(&proc)
     jq_get(atome_id).scroll do
-      #  #scroll_x = jq_get(:view).css("width").sub("px", "").to_i
-      #  #scroll_Y = jq_get(:view).css("height").sub("px", "").to_i
       proc.call if proc.is_a?(Proc)
     end
   end

@@ -10,7 +10,7 @@ def demo_navigator(demo_list, index)
   text({content: demo_list.keys[index], color: :white, position: :fixed})
   next_example = demo_list.keys[index + 1]
   previous_example = demo_list.keys[index - 1]
-  back = text({content: :demos, xx: 20, z:300, z:300})
+  back = text({ content: :demos, xx: 20, z:300})
   back.touch do
     demo_reel(demo_list)
   end

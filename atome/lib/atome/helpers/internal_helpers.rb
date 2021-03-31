@@ -9,21 +9,21 @@ module InternalHelpers
   end
 
   def properties_common(value, &proc)
+    formatted_value=value
     if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
       property = {}
       property[:proc] = proc
       property[:options] = value
-      value = property
+      formatted_value = property
     elsif proc && value.instance_of?(Hash)
-      value = value.merge(proc: proc)
+      formatted_value = value.merge(proc: proc)
     elsif proc && (value.instance_of?(Integer) || value.instance_of?(String) || value.instance_of?(Symbol))
-      value = { value: value, proc: proc }
+      formatted_value = { value: value, proc: proc }
     elsif proc
-      value = { proc: proc }
+      formatted_value = { proc: proc }
     end
-    value
+    formatted_value
   end
-
 
   def set_instance_variable(instance_name, value)
     instance_variable_set("@#{instance_name}", atomise(instance_name, value))
