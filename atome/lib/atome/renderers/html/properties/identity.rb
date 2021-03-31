@@ -1,10 +1,10 @@
 module PropertylHtml
   def atome_id_html(value)
-    value.read
+    value
   end
 
   def id_html(value)
-    value.read
+    value
   end
 end
 

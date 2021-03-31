@@ -1,6 +1,6 @@
 module PropertylHtml
   def touch_html(value)
-    value = value.read
+    # value = value.read
     proc = value[:proc]
     option = value[:option]
     case option
@@ -34,7 +34,7 @@ module PropertylHtml
   end
 
   def drag_html(value)
-    value = value.read
+    # value = value.read
     if value == true
       value = {}
       value[:lock] = ""
@@ -64,7 +64,7 @@ module PropertylHtml
   end
 
   def key_html(value)
-    value = value.read
+    # value = value.read
     proc = value[:proc]
     option = value[:option]
     ## the line below is important for the object to get focus if not keypress wont be triggered

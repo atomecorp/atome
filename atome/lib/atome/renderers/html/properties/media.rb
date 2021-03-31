@@ -1,6 +1,5 @@
 module PropertylHtml
   def content_html(value)
-    value = value.read
     if render
       if type == :text
         value = value.to_s.gsub("\n", "<br>")

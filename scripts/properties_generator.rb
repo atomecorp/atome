@@ -76,7 +76,7 @@ atome_methods.each do |property_type, property|
     end
 
     unless no_rendering.include?(method_name)
-      rendering = "#{method_name}_html(@#{method_name})"
+      rendering = "#{method_name}_html(value)"
     end
 
     unless return_created_property.include?(method_name)

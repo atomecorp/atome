@@ -1,6 +1,5 @@
 module PropertylHtml
   def render_html(value)
-    value = value.read
     if value
       jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
       properties_found = self.properties
@@ -15,15 +14,14 @@ module PropertylHtml
   end
 
   def language_html(value)
-    value.read
+    value
   end
 
   def preset_html(value)
-    value.read
+    value
   end
 
   def edit_html(value)
-    value = value.read
     if value == true
       jq_get(atome_id).attr("contenteditable", "true")
       jq_get(atome_id).css("-webkit-user-select", "text")

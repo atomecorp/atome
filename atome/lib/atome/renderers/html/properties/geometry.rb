@@ -1,6 +1,5 @@
 module PropertylHtml
   def width_html(value)
-    value = value.read
     type = grab(atome_id).type
     if type == :text
       jq_get(atome_id).css("font-size", value)
@@ -11,7 +10,6 @@ module PropertylHtml
   end
 
   def height_html(value)
-    value = value.read
     type = grab(atome_id).type
     if type == :text
       jq_get(atome_id).css("font-size", value)
@@ -22,7 +20,6 @@ module PropertylHtml
   end
 
   def size_html(value)
-    value = value.read
     default = { option: { handles: 'all' } }
     unless value.instance_of?(Hash)
       value = { option: value }
