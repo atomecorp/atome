@@ -108,12 +108,14 @@ module AtomeHelpers
     end
   end
 
-  def remote(msg)
-    remote_server(msg)
+  @@web_socket = WebSocket.new("5.196.69.103:9292")
+
+  def message(data)
+    @@web_socket.send(data)
   end
 
   def shell(command)
-    remote({ type: :command, message: command })
+    @@web_socket.send({ type: :command, message: command })
   end
 
 end

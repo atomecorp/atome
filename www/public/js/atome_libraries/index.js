@@ -288,8 +288,8 @@ p.ping("https://github.com", function (err, data) {
     if (err) {
         // server not ready
     } else {
-        $.getScript("js/atome_libraries/web_socket_helper.js", function () {
-        });
+        // $.getScript("js/atome_libraries/web_socket_helper.js", function () {
+        // });
     }
 });
 

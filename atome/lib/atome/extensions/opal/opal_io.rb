@@ -1,15 +1,19 @@
-module JSUtils
-  def self.reader (filename, &proc)
+class Http
+  def get (filename, &proc)
     `atome.jsReader(#{filename},#{proc})`
   end
+end
 
-  def remote_server(msg)
-    default = { type: :code, message: :box }
-    msg = default.merge(msg)
-    `message_server(#{msg[:type]}, #{msg[:message]})`
+class WebSocket
+  def initialize(address)
+    super()
+    @web_socket = `new WebSocketHelper(#{address})`
   end
 
-  def shell(command)
-    remote({ type: :command, message: command })
+  def send(data)
+    # FIXME: Change default to user authentication.
+    default = { type: :code, message: :box }
+    data = default.merge(data)
+    `#{@web_socket}.sendMessage(#{data[:type]}, #{data[:message]})`
   end
 end

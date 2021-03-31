@@ -132,9 +132,10 @@ def compile(code)
   #end
 end
 
+@http = Http.new
 def read(filename, &proc)
-  #  read local file
-  JSUtils.reader(filename, &proc)
+  #  read remote file
+  @http.get(filename, &proc)
 end
 
 def version
