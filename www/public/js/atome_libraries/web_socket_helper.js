@@ -152,7 +152,6 @@
 //     }));
 //////////////////////// tests //////////////////////////////////
 // var ws_adress='ws://' + window.location.host + window.location.pathname;
-
 var ws_adress = 'ws://5.196.69.103:9292/index';
 
  $.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {});

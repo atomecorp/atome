@@ -1,4 +1,5 @@
 module JSUtils
+
   def self.create_database(database_name)
     `return new DatabaseHelper(#{database_name})`
   end
