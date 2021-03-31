@@ -150,26 +150,15 @@ let audioEventListener = {
 };
 
 document.addEventListener("deviceready", function () {
-    //databaseHelper
-
-    // databaseHelper = new DatabaseHelper('atome.db', databaseEventListener);
-    // databaseHelper.connect();
-    //databaseHelper
-    // sqliteHelper = new SqliteHelper('atome.db', databaseEventListener);
-    // sqliteHelper.connect();
-
     //fileHelper
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
-    fileHelper.connect();
 }, false);
 
 //drawingHelper
 // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-// drawingHelper.connect();
 
 //midiHelper
 midiHelper = new MidiHelper(midiEventListener);
-midiHelper.connect();
 
 //mediaHelperrld builds softwa
 mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);

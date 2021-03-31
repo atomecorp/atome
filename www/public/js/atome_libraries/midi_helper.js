@@ -4,9 +4,7 @@ class MidiHelper {
 
         this.interfaces_out = [];
         this.interfaces_in = [];
-    }
 
-    connect() {
         const self = this;
 
         WebMidi.enable(function (err) {

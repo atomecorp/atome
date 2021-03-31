@@ -2,9 +2,7 @@ class FileHelper {
     constructor(nbBytesRequested, fileSystemPermissionEventListener) {
         this.nbBytesRequested = nbBytesRequested;
         this.fileSystemPermissionEventListener = fileSystemPermissionEventListener;
-    }
 
-    connect() {
         const self = this;
         window.requestFileSystem(window.PERSISTENT,
             this.nbBytesRequested,
