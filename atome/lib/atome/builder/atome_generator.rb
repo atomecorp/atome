@@ -19,7 +19,6 @@ class Atome
     sanitizer = { atome_id: identity,render: true, type: :particle }.merge(properties)
     atome_id=sanitizer.delete(:atome_id)
     type=sanitizer.delete(:type)
-    #content=sanitizer.delete(:type)
     render=sanitizer.delete(:render)
      sanitizer.each do |atome_property, value|
        instance_variable_set("@#{atome_property}", atomise(atome_property, value))

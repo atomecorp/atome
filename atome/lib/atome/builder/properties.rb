@@ -23,7 +23,7 @@ class Quark
     @property.concat(property)
   end
 
-  def add values
+  def add(values)
     # the test below is necessary when xcreate a new atome with parent
     # in this ca se the parent is injected in the atome properties as a Symbol
     # but Child and parent must be placed in an array

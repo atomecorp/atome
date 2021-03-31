@@ -4,7 +4,7 @@ module Processors
     # we have to ensure the parent list is an array if not we put it in a array
     if parent_list.instance_of?(Hash) && parent_list[:proc]
       parent_list.each do
-        puts "processor hierarchy.rb optimise we use this loop twice"
+        puts "processor hierarchy.rb to refactorise  this loop is used twice"
         @parent.read.each do |parent|
           parent = grab(parent)
           parent_list[:proc].call(parent) if parent_list[:proc].is_a?(Proc)

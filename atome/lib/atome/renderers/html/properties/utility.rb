@@ -15,11 +15,11 @@ module PropertylHtml
       properties_found=self.properties
       properties_found.delete(:render)
 
-      properties_found.each do |property, value|
+      properties_found.each do |property, value_found|
         #if  atome_id==:intuition
         #  alert "#{property},#{value}"
         #end
-        self.send(property,value)
+        self.send(property,value_found)
       end
 
       #  jq_get(atome_id).html(value)

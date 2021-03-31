@@ -1,6 +1,6 @@
 module ProcessorHtml
   def video_creator__helper(value)
-    video_found = find({ type: :video, scope: :eden, name: value })
+    video_found = find({type: :video, scope: :eden, name: value})
     path = if video_found.nil?
              "././medias/videos/video_missing.mp4"
            else
@@ -18,13 +18,13 @@ module ProcessorHtml
   end
 
   def image_creator__helper(value)
-    image_found = find({ type: :image, scope: :eden, name: value })
+    image_found = find({type: :image, scope: :eden, name: value})
     if image_found.nil?
       path = "././medias/images/image_missing.svg"
     else
       path = image_found[:path]
       unless !width.nil?
-        self.width  = image_found[:width]
+        self.width = image_found[:width]
       end
       unless !height.nil?
         self.height = image_found[:height]
@@ -34,7 +34,7 @@ module ProcessorHtml
     #height ||= 300
     #self.width = found_width
     #self.height = found_height
-    jq_get(atome_id).css("background-image", "url(#{path})"  )
+    jq_get(atome_id).css("background-image", "url(#{path})")
     jq_get(atome_id).css("background-size", "100% 100%")
   end
 end
