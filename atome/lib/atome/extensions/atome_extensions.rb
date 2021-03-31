@@ -147,24 +147,3 @@ def notification(message, duration)
     notification.delete
   end
 end
-
-def create(params)
-  case params.keys[0]
-  when :database
-    JSUtils.create_database(params[:database])
-  when :table
-    JSUtils.create_table(params[:table][:database], params[:table][:name], params[:table][:content])
-  when :user
-    database = params[:user].delete(:database)
-    JSUtils.create_user(database, params[:user])
-  when :document
-    database = params[:document].delete(:database)
-    JSUtils.create_document(database, params[:document])
-  when :add
-    database = params[:add].delete(:database)
-    type = params[:add].delete(:type)
-    JSUtils.populate(database, type, params[:add])
-  else
-    params
-  end
-end

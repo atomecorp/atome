@@ -34,9 +34,7 @@ def demo_navigator(demo_list, index)
     end
   end
   text({content: demo_list[index], color: :white})
-
 end
-
 
 def demo_reel(demo_list)
   clear(:view)
