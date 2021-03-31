@@ -75,23 +75,3 @@ module Processors
   end
 end
 
-
-#values.each do |val|
-#  # we check if we have a proc to allow the batch of them in the proc call
-#  if val[:proc]
-#    @child.read.each do |child|
-#      child = grab(child)
-#      val[:proc].call(child) if val[:proc].is_a?(Proc)
-#    end
-#  else
-#    #if there's is already some children we had them to the array else we atomise the property
-#    if @child.nil?
-#      @child = atomise(:child, value)
-#    else
-#      @child << value
-#    end
-#    # we inform the parents they have new children
-#    grab(val).add_to_instance_variable(:parent, self.atome_id)
-#    child_html(@child)
-#  end
-#end
