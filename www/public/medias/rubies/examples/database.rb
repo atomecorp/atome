@@ -17,11 +17,11 @@ c.touch do
 
   create({add: {database: db,type: :user,
                 id: "a_87770", date: "2019-02-06", login: :benoit, password: :l554kjhkjsfdg }})
-  JSUtils.get_documents_by_user("a_87764")
-  JSUtils.update_documents("0", "big_car")
-  JSUtils.get_documents_by_id("0")
-  JSUtils.delete_doc_by_id("0")
-  JSUtils.get_documents_by_id("0")
+  JSUtils.get_documents_by_user(db, "a_87764")
+  JSUtils.update_documents(db, "0", "big_car")
+  JSUtils.get_documents_by_id(db, "0")
+  JSUtils.delete_doc_by_id(db, "0")
+  JSUtils.get_documents_by_id(db, "0")
 
 end
 c2.touch do
