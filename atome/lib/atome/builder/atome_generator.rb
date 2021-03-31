@@ -20,11 +20,11 @@ class Atome
     atome_id=sanitizer.delete(:atome_id)
     type=sanitizer.delete(:type)
     render=sanitizer.delete(:render)
-     sanitizer.each do |atome_property, value|
-       instance_variable_set("@#{atome_property}", atomise(atome_property, value))
-     end
     essential={atome_id: atome_id}.merge({type: type}).merge({render: render})
+    #  we create the essential properties of the atome
     create(essential)
+    # now the basic atome is created we can set all others properties
+    set sanitizer
   end
 
   def create(properties)

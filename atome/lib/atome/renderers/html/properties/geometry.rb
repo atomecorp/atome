@@ -30,7 +30,7 @@ module PropertylHtml
     value = default.merge(value)
     option = value[:option]
     jq_get(atome_id).resizable(option)
-    jq_get(atome_id).resize do |evt|
+    jq_get(atome_id).resize do
       if type == :text
         @width = atomise(:width, jq_get(atome_id).css("width").to_i)
         @height = atomise(:height, jq_get(atome_id).css("height").to_i)
@@ -42,7 +42,7 @@ module PropertylHtml
       end
       if value.instance_of?(Hash)
         proc = value[:proc]
-        proc.call(evt) if proc.is_a?(Proc)
+        proc.call if proc.is_a?(Proc)
       end
     end
   end
