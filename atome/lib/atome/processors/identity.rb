@@ -19,7 +19,15 @@ module Processors
   end
 
   def type_pre_processor(value)
-      @type = atomise(:type,value)
+    previous_type=type
+    @type = atomise(:type, value)
+    if previous_type && (previous_type != value)
+      if content
+        content_html(content)
+      else
+        content_html
+      end
+    end
   end
 
   def private_processor(value)
