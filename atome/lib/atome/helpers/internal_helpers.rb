@@ -8,6 +8,10 @@ module InternalHelpers
     Quark.new(value)
   end
 
+  def update_property(atome, property, value)
+    atome.instance_variable_set("@"+property, ATOME.atomise(property.to_sym, value))
+  end
+
   def properties_common(value, &proc)
     formatted_value=value
     if proc && (value.instance_of?(String) || value.instance_of?(Symbol))

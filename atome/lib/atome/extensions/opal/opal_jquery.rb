@@ -2,6 +2,18 @@ class Element
   def create(parent)
     `mediaHelper.addVideoPlayer(#{parent}, false)`
   end
+
+  def position(params)
+    atome_id= "##{params[:atome_id]}"
+        `$(#{atome_id}).position({
+                                        my: "right bottom+33",
+                                        at: "right bottom",
+                                     of: "#view"
+                                   });
+
+    `
+
+  end
 end
 
 class Event

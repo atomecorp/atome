@@ -1,8 +1,14 @@
 Bugs : find a solution for parent altering the view
+- youtube integration
+- keycode to keychar
+- play events callbacks
+- Video audio recording
+- font chooser
+- Alignment(text and objects)
 - Send raw value to html methods and remove the .read in all html methods
 - make all method Quark ready!
 - debug demo
-- detatch group
+- detach group
 - when eval should output error in console
 - parser when using eval
 - key press
@@ -11,7 +17,6 @@ Bugs : find a solution for parent altering the view
 - ide_text_size
 - key_Shortcut
 - bidirectional mode
-- ide
 - size
 - Shadow
 - center
@@ -19,7 +24,6 @@ Bugs : find a solution for parent altering the view
 - animation
 - fit
 - stack events and remove (by name or order)
-- save to db
 - init sequence
 - basic U.I.
 - internationalisation
