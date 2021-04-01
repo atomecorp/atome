@@ -107,15 +107,13 @@ module AtomeHelpers
       value
     end
   end
-
-  @@web_socket = WebSocket.new("5.196.69.103:9292")
-
+  AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("5.196.69.103:9292"))
   def message(data)
-    @@web_socket.send(data)
+    AtomeHelpers.class_variable_get("@@web_socket").send(data)
   end
 
   def shell(command)
-    @@web_socket.send({ type: :command, message: command })
+    AtomeHelpers.class_variable_get("@@web_socket")..send({ type: :command, message: command })
   end
 
 end
