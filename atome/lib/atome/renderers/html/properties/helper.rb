@@ -1,6 +1,6 @@
 module PropertylHtml
   def tactile_html(value)
-    value.read
+    value
   end
 
   def wait_html(seconds, &proc)

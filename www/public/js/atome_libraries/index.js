@@ -150,25 +150,18 @@ let audioEventListener = {
 };
 
 document.addEventListener("deviceready", function () {
-    //databaseHelper
-    sqliteHelper = new SqliteHelper('atome.db', databaseEventListener);
-    sqliteHelper.connect();
-
     //fileHelper
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
-    fileHelper.connect();
 }, false);
 
 //drawingHelper
 // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
-// drawingHelper.connect();
 
 //midiHelper
 midiHelper = new MidiHelper(midiEventListener);
-midiHelper.connect();
 
-//mediaHelper
-// mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);
+//mediaHelperrld builds softwa
+mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);
 // const previewVideo = mediaHelper.addVideoPlayer('view', 'preview', true);
 // const playbackVideo = mediaHelper.addVideoPlayer('view', 'playback', true);
 // mediaHelper.connect(previewVideo, playbackVideo);
@@ -295,8 +288,8 @@ p.ping("https://github.com", function (err, data) {
     if (err) {
         // server not ready
     } else {
-        $.getScript("js/atome_libraries/web_socket_helper.js", function () {
-        });
+        // $.getScript("js/atome_libraries/web_socket_helper.js", function () {
+        // });
     }
 });
 

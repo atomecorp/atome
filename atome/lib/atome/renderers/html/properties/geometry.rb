@@ -1,6 +1,5 @@
 module PropertylHtml
   def width_html(value)
-    value = value.read
     type = grab(atome_id).type
     if type == :text
       jq_get(atome_id).css("font-size", value)
@@ -11,7 +10,6 @@ module PropertylHtml
   end
 
   def height_html(value)
-    value = value.read
     type = grab(atome_id).type
     if type == :text
       jq_get(atome_id).css("font-size", value)
@@ -22,7 +20,6 @@ module PropertylHtml
   end
 
   def size_html(value)
-    value = value.read
     default = { option: { handles: 'all' } }
     unless value.instance_of?(Hash)
       value = { option: value }
@@ -30,7 +27,7 @@ module PropertylHtml
     value = default.merge(value)
     option = value[:option]
     jq_get(atome_id).resizable(option)
-    jq_get(atome_id).resize do |evt|
+    jq_get(atome_id).resize do
       if type == :text
         @width = atomise(:width, jq_get(atome_id).css("width").to_i)
         @height = atomise(:height, jq_get(atome_id).css("height").to_i)
@@ -42,7 +39,7 @@ module PropertylHtml
       end
       if value.instance_of?(Hash)
         proc = value[:proc]
-        proc.call(evt) if proc.is_a?(Proc)
+        proc.call if proc.is_a?(Proc)
       end
     end
   end

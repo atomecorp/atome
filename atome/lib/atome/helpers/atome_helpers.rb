@@ -1,49 +1,49 @@
 module AtomeHelpers
-  def delete
-    if Atome.atomes.key?(atome_id)
-      # we remove the atome fom the Atome.atomes's hash
-      delete_atome = Atome.atomes.delete(atome_id)
-      unless child.nil?
-        #the the current atome have child we delete them too
-        # We remove any reference of this atome from its parents
-        parent_child = []
-        parent.read.each do |parent_found|
-          parent_child << grab(parent_found).child.read
-        end
-        updated_child_list = []
-        parent_child.each do |child_found|
-          if child_found != atome_id
-            updated_child_list << child_found
-          end
-        end
-        child.delete(true)
-        grab(parent.read).instance_variable_set("@child", atomise(:child, updated_child_list))
-      end
-      # adding the deleted atome to the black_hole for later retrieve
-      grab(:black_hole).content[atome_id] = delete_atome
-      # now we remove the atome from view if it is rendered
-      unless delete_atome.render == false
-        delete_html
-        the_parent = grab(parent.read)
-        if the_parent
-          children_found = the_parent.child.read
-          new_child_list = []
-          children_found.each do |child|
-            unless child == self.atome_id
-              new_child_list << child
-            end
-          end
-          the_parent.instance_variable_set("@child", atomise(:child, new_child_list))
-        end
+  def remove_item_from_hash(object)
+    new_list = {}
+    object.each do |id_of_atome, content|
+      unless id_of_atome == atome_id
+        new_list[id_of_atome] = content
       end
     end
+    new_list
+  end
+
+  def delete_from_parent
+    self.parent do |parent_found|
+      new_child_list = []
+      parent_found.child do |child_found|
+        unless child_found.atome_id == atome_id
+          new_child_list << child_found.atome_id
+        end
+      end
+      parent_found.instance_variable_set("@child", ATOME.atomise(:child, new_child_list))
+    end
+  end
+
+  def delete_child
+    unless self.child.nil?
+      self.child.delete
+    end
+  end
+
+  def delete
+    delete_from_parent
+    delete_child
+    Atome.atomes = remove_item_from_hash(Atome.atomes)
+    grab(:black_hole).content[atome_id] = self
+    delete_html
   end
 
   def duplicate(value)
     value = { x: 0, y: 0, offset: { x: 6, y: 6 } }.merge(value)
     (0..value[:y]).each do |y_val|
       (1..value[:x]).each do |x_val|
-        atome_property = self.inspect.merge({ atome_id: self.atome_id.to_s + x_val.to_s, x: self.x + self.width * x_val + value[:offset][:x] * x_val, y: self.width * y_val + value[:offset][:y] * y_val })
+
+        atome_property = self.inspect.merge({ atome_id: self.atome_id.to_s + x_val.to_s,
+                                              x: self.x + self.width * x_val + value[:offset][:x] * x_val,
+                                              y: self.width * y_val + value[:offset][:y] * y_val })
+        atome_property[:monitor] = :poil
         Atome.new(atome_property)
       end
     end
@@ -107,13 +107,13 @@ module AtomeHelpers
       value
     end
   end
-
-  def remote(msg)
-    remote_server(msg)
+  AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("5.196.69.103:9292"))
+  def message(data)
+    AtomeHelpers.class_variable_get("@@web_socket").send(data)
   end
 
   def shell(command)
-    remote({ type: :command, message: command })
+    AtomeHelpers.class_variable_get("@@web_socket")..send({ type: :command, message: command })
   end
 
 end

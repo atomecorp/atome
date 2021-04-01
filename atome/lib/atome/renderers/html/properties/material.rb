@@ -1,6 +1,6 @@
 module PropertylHtml
   def color_html(value)
-    values = value.read
+    values = value
     color = "background-image"
     unless values.instance_of?(Array)
       values = [values]
@@ -17,12 +17,10 @@ module PropertylHtml
   end
 
   def opacity_html(value)
-    value = value.read
     jq_get(atome_id).css(:opacity, value)
   end
 
   def border_html(value)
-    value = value.read
     pattern = value[:pattern]
     thickness = value[:thickness]
     color = color_helper(value[:color])
@@ -30,7 +28,6 @@ module PropertylHtml
   end
 
   def overflow_html(value)
-    value = value.read
     if value.instance_of?(Hash)
       x = value[:x]
       y = value[:y]
@@ -47,7 +44,6 @@ module PropertylHtml
   end
 
   def shadow_html(value)
-    value = value.read
     x = value[:x]
     y = value[:y]
     blur = value[:blur]

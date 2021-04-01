@@ -23,14 +23,14 @@ module ProcessorHtml
       path = "././medias/images/image_missing.svg"
     else
       path = image_found[:path]
-      found_width = image_found[:width]
-      found_height = image_found[:height]
+      if width.nil?
+        self.width = image_found[:width]
+      end
+      if height.nil?
+        self.height = image_found[:height]
+      end
     end
-    found_width ||= 300
-    found_height ||= 300
-    self.width = found_width
-    self.height = found_height
-    jq_get(atome_id).css("background-image", "url(" + path)
+    jq_get(atome_id).css("background-image", "url(#{path})")
     jq_get(atome_id).css("background-size", "100% 100%")
   end
 end

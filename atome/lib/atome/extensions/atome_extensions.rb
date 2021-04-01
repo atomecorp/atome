@@ -104,23 +104,13 @@ def clear(value)
 end
 
 def compile(code)
-  if JSUtils.opal_parser_ready
-    # if needed we can add a parser for the data here
-    Opal.eval(code)
-  elsif !@loading_compiler
-    JSUtils.load_opal_parser
-    @loading_compiler = true
-    compile(code)
-  else
-    ATOME.send(:wait, 0.01) do
-      compile(code)
-    end
-  end
+  eval(code)
 end
 
+@http = Http.new
 def read(filename, &proc)
-  #  read local file
-  JSUtils.reader(filename, &proc)
+  #  read remote file
+  @http.get(filename, &proc)
 end
 
 def version
@@ -131,26 +121,5 @@ def notification(message, duration)
   notification = text({ content: message, color: :orange, x: 69, y: 69 })
   ATOME.send(:wait, duration) do
     notification.delete
-  end
-end
-
-def create(params)
-  case params.keys[0]
-  when :database
-    JSUtils.create_database(params[:database])
-  when :table
-    JSUtils.create_table(params[:table][:database], params[:table][:name], params[:table][:content])
-  when :user
-    database = params[:user].delete(:database)
-    JSUtils.create_user(database, params[:user])
-  when :document
-    database = params[:document].delete(:database)
-    JSUtils.create_document(database, params[:document])
-  when :add
-    database = params[:add].delete(:database)
-    type = params[:add].delete(:type)
-    JSUtils.populate(database, type, params[:add])
-  else
-    params
   end
 end

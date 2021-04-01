@@ -12,9 +12,7 @@ class DrawingHelper {
         };
 
         this.mode = this.modeType.Use;
-    }
 
-    connect() {
         this.frame = new Frame("view",
             this.width,
             this.height,

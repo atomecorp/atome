@@ -17,7 +17,7 @@ end
 FileUtils.mkdir_p "atome/lib/atome/generated_properties"
 
 def need_pre_processing
-  %i[atome_id  private can box circle text image video audio parent child]
+  %i[atome_id private can box circle text image video audio parent child type]
 end
 
 def need_processing
@@ -76,7 +76,7 @@ atome_methods.each do |property_type, property|
     end
 
     unless no_rendering.include?(method_name)
-      rendering = "#{method_name}_html(@#{method_name})"
+      rendering = "#{method_name}_html(value)"
     end
 
     unless return_created_property.include?(method_name)
