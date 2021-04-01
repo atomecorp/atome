@@ -51,7 +51,7 @@ prerequisite:
 
 To install application: 
 	 
-    npm install -g cordova
+    sudo npm install -g cordova
     sudo cordova plugin add cordova-sqlite-storage
     sudo cordova plugin add cordova-plugin-file
     sudo cordova platform add browser

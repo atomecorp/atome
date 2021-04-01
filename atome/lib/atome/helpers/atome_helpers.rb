@@ -113,7 +113,7 @@ module AtomeHelpers
   end
 
   def shell(command)
-    AtomeHelpers.class_variable_get("@@web_socket")..send({ type: :command, message: command })
+    AtomeHelpers.class_variable_get("@@web_socket").send({ type: :command, message: command })
   end
 
 end
