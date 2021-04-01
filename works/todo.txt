@@ -1,4 +1,4 @@
-Bugs : database, key and play demos doesnt work correctly
+Bugs : find a solution for parent altering the view
 - Send raw value to html methods and remove the .read in all html methods
 - make all method Quark ready!
 - debug demo

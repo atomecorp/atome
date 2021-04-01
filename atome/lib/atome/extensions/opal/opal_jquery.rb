@@ -24,7 +24,7 @@ class Event
 end
 
 module Events
-  def playing(proc, evt)
+  def self.playing(proc, evt)
     @time = evt
     #evt = Events.update_values(evt)
     proc.call(evt) if proc.is_a?(Proc)
