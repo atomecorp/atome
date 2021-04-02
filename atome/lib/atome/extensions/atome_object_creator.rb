@@ -1,3 +1,12 @@
+
+def camera(value = {})
+  grab(:view).camera(value)
+end
+
+def microphone(value = {})
+  grab(:view).microphone(value)
+end
+
 def box(value = {})
   grab(:view).box(value)
 end

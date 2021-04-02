@@ -10,7 +10,9 @@ module DefaultValues
     video = visual.merge({ type: :video, color: :transparent, content: :lion_king })
     audio = visual.merge({ type: :audio, color: :transparent, content: :riff })
     particle = { type: :particle }
-    collector = { type: :collector}
+    collector = { type: :collector }
+    camera = visual.merge({ type: :camera, color: :transparent })
+    microphone = visual.merge({ type: :microphone, color: :transparent })
     tool = visual.merge({ type: :tool, width: 52, height: 50, parent: :intuition, content: :dummy })
     web = visual.merge({ type: :web, color: :transparent })
     user = visual.merge({ type: :user, color: :transparent, name: :anonymous, pass: :none, content: :anonymous })
@@ -20,6 +22,6 @@ module DefaultValues
     shadow = { x: 0, y: 0, blur: 7, thickness: 0, color: [alpha: 0.3], invert: false }
     border = { thickness: 1, pattern: :solid, color: :red }
     blur = { default: 5 }
-    { shape: shape, box: box, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur }
+    { camera: camera, microphone: microphone, shape: shape, box: box, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur }
   end
 end
