@@ -1,6 +1,11 @@
 module PropertyHtml
   def x_html(value)
     jq_get(atome_id).css("left", value.to_s + "px")
+    if alignment
+      self.alignment[:horizontal]=:x
+    else
+      self.alignment({horizontal: :x})
+    end
   end
 
   def xx_html(value)
@@ -9,7 +14,11 @@ module PropertyHtml
     else
       jq_get(atome_id).css("left","auto")
       jq_get(atome_id).css("right", value.to_s + "px")
-
+      if alignment
+        self.alignment[:horizontal]=:xx
+        else
+        self.alignment({horizontal: :xx})
+      end
 
       # xx_value = { atome_id: atome_id,
       #             my: "right top+#{y}",
@@ -24,6 +33,11 @@ module PropertyHtml
 
   def y_html(value)
     jq_get(atome_id).css("top", value.to_s + "px")
+    if alignment
+      self.alignment[:vertical]=:y
+    else
+      self.alignment({vertical: :y})
+    end
   end
 
   def yy_html(value)
@@ -34,6 +48,12 @@ module PropertyHtml
       # update_property(self, :x, x_position)
       jq_get(atome_id).css("top","auto")
       jq_get(atome_id).css("bottom", value.to_s + "px")
+
+      if alignment
+        self.alignment[:vertical]=:yy
+      else
+        self.alignment({vertical: :yy})
+      end
       # yy_value = { atome_id: atome_id,
       #             my: "left+#{x} bottom",
       #             at: "left bottom+#{-value}",

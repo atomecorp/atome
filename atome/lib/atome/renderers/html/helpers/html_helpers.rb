@@ -37,10 +37,24 @@ module HtmlHelpers
   end
 
   def change_position_origin
-    jq_get(atome_id).css("left","auto")
-    jq_get(atome_id).css("right",  "#{xx}px")
-    jq_get(atome_id).css("top","auto")
-    jq_get(atome_id).css("bottom",  "#{yy}px")
+
+    jq_get(atome_id).css("left", "#{x}px")
+    jq_get(atome_id).css("right", "auto")
+    jq_get(atome_id).css("top", "#{y}px")
+    jq_get(atome_id).css("bottom", "auto")
+    if alignment && alignment[:horizontal] == :xx
+      jq_get(atome_id).css("left", "auto")
+      jq_get(atome_id).css("right", "#{xx}px")
+      jq_get(atome_id).css("top", "auto")
+      jq_get(atome_id).css("bottom", "#{yy}px")
+    end
+    if alignment && alignment[:vertical] == :yy
+      jq_get(atome_id).css("left", "auto")
+      jq_get(atome_id).css("right", "#{xx}px")
+      jq_get(atome_id).css("top", "auto")
+      jq_get(atome_id).css("bottom", "#{yy}px")
+    end
+
   end
 
 end
