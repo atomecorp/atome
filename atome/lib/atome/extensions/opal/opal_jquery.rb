@@ -4,15 +4,8 @@ class Element
   end
 
   def position(params)
-    atome_id= "##{params[:atome_id]}"
-        `$(#{atome_id}).position({
-                                        my: "right bottom+33",
-                                        at: "right bottom",
-                                     of: "#view"
-                                   });
-
-    `
-
+    atome_id="##{params.delete(:atome_id)}"
+        `$(#{atome_id}).position(#{params.to_n})`
   end
 end
 

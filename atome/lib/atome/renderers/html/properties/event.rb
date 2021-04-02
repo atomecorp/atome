@@ -56,8 +56,13 @@ module PropertylHtml
       # we update the position of the atome
       x_position = jq_object.css("left").sub("px", "").to_i
       y_position = jq_object.css("top").sub("px", "").to_i
-      @x = atomise(:x, x_position)
-      @y = atomise(:y, y_position)
+      xx_position = jq_object.css("right").sub("px", "").to_i
+      yy_position = jq_object.css("bottom").sub("px", "").to_i
+
+      update_property(self, :x, x_position)
+      update_property(self, :y, y_position)
+      update_property(self, :xx, xx_position)
+      update_property(self, :yy, yy_position)
       # we send the position to the proc
       proc.call(evt) if proc.is_a?(Proc)
     end

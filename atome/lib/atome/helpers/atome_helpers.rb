@@ -17,7 +17,8 @@ module AtomeHelpers
           new_child_list << child_found.atome_id
         end
       end
-      parent_found.instance_variable_set("@child", ATOME.atomise(:child, new_child_list))
+      update_property(parent_found, :child, new_child_list)
+
     end
   end
 
