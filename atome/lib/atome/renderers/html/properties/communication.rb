@@ -1,2 +1,2 @@
-module PropertylHtml
+module PropertyHtml
 end

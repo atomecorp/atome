@@ -1,4 +1,4 @@
-module PropertylHtml
+module PropertyHtml
   def content_html(value="")
     if render
       if type == :text

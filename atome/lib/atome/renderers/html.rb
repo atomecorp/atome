@@ -2,6 +2,6 @@
 module RenderHtml
   include HtmlHelpers
   include ProcessorHtml
-  include PropertylHtml
+  include PropertyHtml
   include JSUtils
 end

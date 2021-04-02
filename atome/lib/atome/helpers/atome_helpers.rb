@@ -117,4 +117,8 @@ module AtomeHelpers
     AtomeHelpers.class_variable_get("@@web_socket").send({ type: :command, message: command })
   end
 
+  def fixed(value)
+    fixed_html(value)
+  end
+
 end

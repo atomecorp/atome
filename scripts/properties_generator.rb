@@ -6,7 +6,7 @@ def atome_methods
   helper = %i[tactile display]
   hierarchy = %i[parent child insert]
   identity = %i[atome_id id type language private can]
-  spatial = %i[x xx y yy z center rotate position]
+  spatial = %i[x xx y yy z center rotate position alignment]
   media = %i[content video box circle text image audio info example]
   utility = %i[edit record enliven selector render preset monitor]
   material = %i[color opacity border overflow]
@@ -29,7 +29,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[box circle text image video audio parent child info example selector monitor type]
+  %i[box circle text image video audio parent child info example selector monitor type alignment]
 end
 
 def return_created_property

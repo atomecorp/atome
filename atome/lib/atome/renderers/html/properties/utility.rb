@@ -1,4 +1,4 @@
-module PropertylHtml
+module PropertyHtml
   def render_html(value)
     if value
       jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")

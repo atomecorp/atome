@@ -1,4 +1,4 @@
-module PropertylHtml
+module PropertyHtml
   def color_html(value)
     values = value
     color = "background-image"

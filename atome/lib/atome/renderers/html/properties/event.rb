@@ -1,4 +1,4 @@
-module PropertylHtml
+module PropertyHtml
   def touch_html(value)
     # value = value.read
     proc = value[:proc]
@@ -53,18 +53,19 @@ module PropertylHtml
            end
     jq_object.draggable(lock)
     jq_object.on(:drag) do |evt|
-      # we update the position of the atome
-      x_position = jq_object.css("left").sub("px", "").to_i
-      y_position = jq_object.css("top").sub("px", "").to_i
-      xx_position = jq_object.css("right").sub("px", "").to_i
-      yy_position = jq_object.css("bottom").sub("px", "").to_i
-
-      update_property(self, :x, x_position)
-      update_property(self, :y, y_position)
-      update_property(self, :xx, xx_position)
-      update_property(self, :yy, yy_position)
       # we send the position to the proc
       proc.call(evt) if proc.is_a?(Proc)
+      # we update the position of the atome
+      update_position
+    end
+    jq_object.on(:dragstart) do |evt|
+       jq_get(atome_id).css("left","#{x}px")
+       jq_get(atome_id).css("right",  "auto")
+       jq_get(atome_id).css("top", "#{y}px")
+       jq_get(atome_id).css("bottom",  "auto")
+    end
+    jq_object.on(:dragstop) do
+      change_position_origin
     end
   end
 
