@@ -8,15 +8,13 @@ def atome_methods
   identity = %i[atome_id id type language private can]
   spatial = %i[x xx y yy z center rotate position alignment]
   media = %i[content video box circle text image audio info example]
-  inputs= %i[camera microphone midi]
+  inputs = %i[camera microphone midi]
   utility = %i[edit record enliven selector render preset monitor]
   material = %i[color opacity border overflow]
-  {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event}
+  { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event }
 end
 
-
 FileUtils.mkdir_p "atome/lib/atome/generated_methods"
-
 
 def is_type
   %i[camera microphone midi text image video audio]
@@ -27,7 +25,7 @@ def is_preset
 end
 
 def need_pre_processing
-  %i[atome_id private can box circle text image video audio parent child type]
+  %i[atome_id private can box circle text image video audio camera microphone midi text image video audio box circle parent child type]
 end
 
 def need_processing
@@ -35,11 +33,11 @@ def need_processing
 end
 
 def getter_need_processing
-  %i[private can box circle text image video audio parent child]
+  %i[private can box circle text image video audio camera microphone midi text image video audio box circle parent child]
 end
 
 def no_rendering
-  %i[box circle text image video audio parent child info example selector monitor type alignment]
+  %i[box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment]
 end
 
 def return_created_property
@@ -47,7 +45,7 @@ def return_created_property
   %i[box circle text image video audio]
 end
 
-batch_delete =<<STRDELIM
+batch_delete = <<STRDELIM
   def delete(value, &proc)
 		collected_atomes=[]
 		if read.instance_of?(Array)
@@ -120,7 +118,7 @@ module Properties
 end
 STRDELIM
   File.write("atome/lib/atome/generated_methods/#{property_type}.rb", category)
-# now we create the method for batch object
+  # now we create the method for batch object
   property.each do |method_name|
     batch_method = <<STRDELIM
       def #{method_name}(value, &proc)
@@ -143,7 +141,6 @@ STRDELIM
 
 end
 
-
 batch = <<STRDELIM
 module Batch
 #{batch_methods.join("\n")}
@@ -160,10 +157,10 @@ end
 STRDELIM
 File.write("atome/lib/atome/generated_methods/atome_methods.rb", methods_list)
 
-objects_list=is_type.concat(is_preset)
-methods_to_create=[]
+objects_list = is_type.concat(is_preset)
+methods_to_create = []
 objects_list.each do |object_list|
-  methods_created=<<STRDEILM
+  methods_created = <<STRDEILM
 def #{object_list}(value = {})
   grab(:view).#{object_list}(value)
 end
