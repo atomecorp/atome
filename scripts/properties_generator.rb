@@ -8,9 +8,10 @@ def atome_methods
   identity = %i[atome_id id type language private can]
   spatial = %i[x xx y yy z center rotate position alignment]
   media = %i[content video box circle text image audio info example]
+  inputs= %i[camera microphone]
   utility = %i[edit record enliven selector render preset monitor]
   material = %i[color opacity border overflow]
-  {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event}
+  {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event}
 end
 
 
