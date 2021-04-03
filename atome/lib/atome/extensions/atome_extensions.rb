@@ -108,6 +108,7 @@ def compile(code)
 end
 
 @http = Http.new
+
 def read(filename, &proc)
   #  read remote file
   @http.get(filename, &proc)

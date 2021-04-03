@@ -28,7 +28,7 @@ class Quark
     # in this ca se the parent is injected in the atome properties as a Symbol
     # but Child and parent must be placed in an array
     unless @property.instance_of?(Array)
-      @property=[@property]
+      @property = [@property]
     end
     @property.concat(values)
   end

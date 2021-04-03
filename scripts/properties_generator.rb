@@ -8,14 +8,23 @@ def atome_methods
   identity = %i[atome_id id type language private can]
   spatial = %i[x xx y yy z center rotate position alignment]
   media = %i[content video box circle text image audio info example]
-  inputs= %i[camera microphone]
+  inputs= %i[camera microphone midi]
   utility = %i[edit record enliven selector render preset monitor]
   material = %i[color opacity border overflow]
   {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event}
 end
 
 
-FileUtils.mkdir_p "atome/lib/atome/generated_properties"
+FileUtils.mkdir_p "atome/lib/atome/generated_methods"
+
+
+def is_type
+  %i[camera microphone midi text image video audio]
+end
+
+def is_preset
+  %i[box circle]
+end
 
 def need_pre_processing
   %i[atome_id private can box circle text image video audio parent child type]
@@ -110,7 +119,7 @@ module Properties
 #{category.join("\n")}
 end
 STRDELIM
-  File.write("atome/lib/atome/generated_properties/#{property_type}.rb", category)
+  File.write("atome/lib/atome/generated_methods/#{property_type}.rb", category)
 # now we create the method for batch object
   property.each do |method_name|
     batch_method = <<STRDELIM
@@ -140,7 +149,7 @@ module Batch
 #{batch_methods.join("\n")}
 end
 STRDELIM
-File.write("atome/lib/atome/generated_properties/batch.rb", batch)
+File.write("atome/lib/atome/generated_methods/batch.rb", batch)
 
 methods_list = <<STRDELIM
 module AtomeHelpers
@@ -149,4 +158,20 @@ module AtomeHelpers
   end
 end
 STRDELIM
-File.write("atome/lib/atome/generated_properties/atome_methods.rb", methods_list)
+File.write("atome/lib/atome/generated_methods/atome_methods.rb", methods_list)
+
+objects_list=is_type.concat(is_preset)
+methods_to_create=[]
+objects_list.each do |object_list|
+  methods_created=<<STRDEILM
+def #{object_list}(value = {})
+  grab(:view).#{object_list}(value)
+end
+STRDEILM
+  methods_to_create << methods_created
+end
+
+objects_list_creator = <<STRDELIM
+    #{methods_to_create.join("\n")}
+STRDELIM
+File.write("atome/lib/atome/generated_methods/atome_object_creator.rb", objects_list_creator)

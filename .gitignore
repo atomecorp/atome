@@ -4,7 +4,7 @@
 /app/temp/*
 /app/clients/*
 /app/tests/*
-/atome/lib/atome/generated_properties/*
+/atome/lib/atome/generated_methods/*
 /node_modules/*
 /platforms/*
 /plugins/*

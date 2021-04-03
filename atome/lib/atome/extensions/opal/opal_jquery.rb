@@ -4,8 +4,8 @@ class Element
   end
 
   def position(params)
-    atome_id="##{params.delete(:atome_id)}"
-        `$(#{atome_id}).position(#{params.to_n})`
+    atome_id = "##{params.delete(:atome_id)}"
+    `$(#{atome_id}).position(#{params.to_n})`
   end
 end
 
