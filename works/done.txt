@@ -1,3 +1,6 @@
+- Alignment(text and objects)
+- debug demo
+- Send raw value to html methods and remove the .read in all html methods
 - added 'r_get' method to Render class to replace 'Element.find'
 - corrected offset when insert an objet into another
 - added << method to add content

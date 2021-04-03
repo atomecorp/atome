@@ -1,20 +1,18 @@
 Bugs : find a solution for parent altering the view
-- youtube integration
-- keycode to keychar
-- play events callbacks
 - Video audio recording
+- play events callbacks
+- youtube integration
+- ide_text_size
+- keycode to keychar
 - font chooser
-- Alignment(text and objects)
-- Send raw value to html methods and remove the .read in all html methods
 - make all method Quark ready!
-- debug demo
+- cleanup demo
 - detach group
 - when eval should output error in console
 - parser when using eval
 - key press
 - text_size
 - code editor : restore position and size, stop drag, text size
-- ide_text_size
 - key_Shortcut
 - bidirectional mode
 - size
