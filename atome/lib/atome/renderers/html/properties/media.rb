@@ -14,7 +14,10 @@ module PropertyHtml
           self.smooth(value[:tension])
         end
       elsif type == :video
-        video_creator__helper(value)
+        video_creator_helper(value)
+      elsif type == :camera
+        alert "camera found"
+        # video_creator_helper(value)
       elsif type == :image
         jq_get(atome_id).css("background-color", "transparent")
         image_creator__helper(value)

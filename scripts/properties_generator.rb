@@ -37,7 +37,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment]
+  %i[box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment camera microphone midi]
 end
 
 def return_created_property
