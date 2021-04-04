@@ -330,4 +330,16 @@ you can send also the properties to the atome using parenthesis ou the equal sig
 VII - logic and datas flows
 -
 
+VIII framework we will use
+-
+freebsd : https://github.com/freebsd
+urho3D : https://github.com/urho3d/Urho3D
+rbfx : https://github.com/rokups/rbfx
+q-audio : https://cycfi.github.io/q/
+nectarjs : https://github.com/NectarJS/nectarjs
+glimmer : https://github.com/AndyObtiva/glimmer
+artichoke : https://github.com/artichoke/artichoke
+ruby packer : https://github.com/pmq20/ruby-packer
+travelling ruby : https://github.com/phusion/traveling-ruby
+
  
