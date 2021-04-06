@@ -8,20 +8,24 @@ def atome_methods
   identity = %i[atome_id id type language private can]
   spatial = %i[x xx y yy z center rotate position alignment]
   media = %i[content video box circle text image audio info example]
-  inputs = %i[camera microphone midi]
+  inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven selector render preset monitor]
   material = %i[color opacity border overflow]
   { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event }
 end
 
-FileUtils.mkdir_p "atome/lib/atome/generated_methods"
-
-def is_type
-  %i[camera microphone midi text image video audio]
+def types
+  %i[user machine shape image video audio input text midi]
 end
 
+FileUtils.mkdir_p "atome/lib/atome/generated_methods"
+
+
 def is_preset
-  %i[box circle]
+  # in this case presets are used to create atome suing their types with specific settings
+  # so it add the methods in the atome_object_creator methods
+  # the generated property will then  return the result of the method instead of object itself
+  %i[box circle text image video audio camera microphone midi]
 end
 
 def need_pre_processing
@@ -40,10 +44,10 @@ def no_rendering
   %i[box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment camera microphone midi]
 end
 
-def return_created_property
-  # twe return the result of the method instead of object holding the property
-  %i[box circle text image video audio]
-end
+# def return_created_property
+#   # twe return the result of the method instead of object holding the property
+#   %i[box circle text image video audio camera microphone midi]
+# end
 
 batch_delete = <<STRDELIM
   def delete(value, &proc)
@@ -87,7 +91,7 @@ atome_methods.each do |property_type, property|
       rendering = "#{method_name}_html(value)"
     end
 
-    unless return_created_property.include?(method_name)
+    unless is_preset.include?(method_name)
       method_return = "self"
     end
 
@@ -153,13 +157,16 @@ module AtomeHelpers
   def methods
     #{atome_methods_list.sort}
   end
+
+  def types
+    #{types.sort}
+  end
 end
 STRDELIM
 File.write("atome/lib/atome/generated_methods/atome_methods.rb", methods_list)
 
-objects_list = is_type.concat(is_preset)
 methods_to_create = []
-objects_list.each do |object_list|
+is_preset.each do |object_list|
   methods_created = <<STRDEILM
 def #{object_list}(value = {})
   grab(:view).#{object_list}(value)
