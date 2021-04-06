@@ -4,7 +4,7 @@ module PropertyHtml
       jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
       properties_found = self.properties
       properties_found.delete(:render)
-
+      puts  "utility.rb line 7 : render compute all properties twice it should not be be so, properties should store the @prop not use set"
       properties_found.each do |property, value_found|
         self.send(property, value_found)
       end

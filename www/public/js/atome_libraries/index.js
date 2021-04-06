@@ -161,7 +161,7 @@ document.addEventListener("deviceready", function () {
 midiHelper = new MidiHelper(midiEventListener);
 
 //mediaHelperrld builds softwa
-mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);
+// mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);
 // const previewVideo = mediaHelper.addVideoPlayer('view', 'preview', true);
 // const playbackVideo = mediaHelper.addVideoPlayer('view', 'playback', true);
 // mediaHelper.connect(previewVideo, playbackVideo);

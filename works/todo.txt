@@ -5,7 +5,6 @@ Bugs : find a solution for parent altering the view
 - ide_text_size
 - keycode to keychar
 - font chooser
-- make all method Quark ready!
 - cleanup demo
 - detach group
 - when eval should output error in console

@@ -13,7 +13,7 @@ module DefaultValues
     collector = { type: :collector }
     camera = visual.merge({ type: :camera, color: :transparent })
     microphone = visual.merge({ type: :microphone, color: :transparent })
-    midi = visual.merge(shape).merge(content: { points: 4 })
+    midi = visual.merge(shape).merge(type: :midi, content: { points: 4 })
     tool = visual.merge({ type: :tool, width: 52, height: 50, parent: :intuition, content: :dummy })
     web = visual.merge({ type: :web, color: :transparent })
     user = visual.merge({ type: :user, color: :transparent, name: :anonymous, pass: :none, content: :anonymous })

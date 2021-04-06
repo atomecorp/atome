@@ -2,6 +2,8 @@ module PropertyHtml
   def color_html(value)
     values = value
     color = "background-image"
+    puts "material.rb line 5 #{atome_id} : #{value}"
+    puts "----------------------"
     unless values.instance_of?(Array)
       values = [values]
     end
