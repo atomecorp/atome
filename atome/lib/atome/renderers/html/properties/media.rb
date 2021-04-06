@@ -16,11 +16,10 @@ module PropertyHtml
       elsif type == :video
         video_creator_helper(value)
       elsif type == :camera
-        alert "camera found"
-        # video_creator_helper(value)
+        camera_creator_helper(value)
       elsif type == :image
         jq_get(atome_id).css("background-color", "transparent")
-        image_creator__helper(value)
+        image_creator_helper(value)
       end
     end
   end

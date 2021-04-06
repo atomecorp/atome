@@ -1,4 +1,5 @@
 Bugs : find a solution for parent altering the view
+- write data flow of video player and check if all other type works the same!
 - Video audio recording
 - play events callbacks
 - youtube integration

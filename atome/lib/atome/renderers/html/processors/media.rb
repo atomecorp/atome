@@ -17,7 +17,7 @@ module ProcessorHtml
     jq_get(atome_id).find("video").css("width", "100%")
   end
 
-  def image_creator__helper(value)
+  def image_creator_helper(value)
     image_found = find({ type: :image, scope: :eden, name: value })
     if image_found.nil?
       path = "././medias/images/image_missing.svg"
@@ -33,4 +33,18 @@ module ProcessorHtml
     jq_get(atome_id).css("background-image", "url(#{path})")
     jq_get(atome_id).css("background-size", "100% 100%")
   end
+
+  def camera_creator_helper(value)
+    jq_get(atome_id).create(atome_id)
+    jq_get(atome_id).find("video").css("width", @width)
+    jq_get(atome_id).find("video").css("height", @height)
+    `
+       const inputVideo = document.querySelector('#'+#{atome_id}+' > video');
+    var width=parseInt($("#"+#{atome_id}).css('width'));
+    var height=parseInt($("#"+#{atome_id}).css('height'));
+        mediaHelper = new MediaHelper(width, height, 60, inputVideo, mediaEventListener);
+        mediaHelper.connect();
+    `
+  end
+
 end
