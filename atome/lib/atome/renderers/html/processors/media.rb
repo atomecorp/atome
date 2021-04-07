@@ -35,15 +35,25 @@ module ProcessorHtml
   end
 
   def camera_creator_helper(value)
-    jq_get(atome_id).create(atome_id)
+    # jq_get(atome_id).create(atome_id)
     jq_get(atome_id).find("video").css("width", @width)
     jq_get(atome_id).find("video").css("height", @height)
     `
-       const inputVideo = document.querySelector('#'+#{atome_id}+' > video');
-    var width=parseInt($("#"+#{atome_id}).css('width'));
-    var height=parseInt($("#"+#{atome_id}).css('height'));
-        mediaHelper = new MediaHelper(width, height, 60, inputVideo, mediaEventListener);
-        mediaHelper.connect();
+    let mediaEventListener = {
+        onReady: function (mediaHelper) {
+          // Start preview on created video player.
+          mediaHelper.startPreview(inputVideo);
+        },
+        onError: function (error) {
+            console.log(error);
+        }
+    };
+
+    const width = parseInt($("#"+#{atome_id}).css('width'));
+    const height = parseInt($("#"+#{atome_id}).css('height'));
+    mediaHelper = new MediaHelper(width, height, 60, mediaEventListener);
+    // Create video player
+    const inputVideo = mediaHelper.addVideoPlayer(#{atome_id}, false);
     `
   end
 
