@@ -1,4 +1,5 @@
 Bugs : find a solution for parent altering the view
+- urgent automatic generation of id and place id just after the atome_id at atome creation
 - write data flow of video player and check if all other type works the same!
 - Video audio recording
 - play events callbacks
@@ -11,6 +12,7 @@ Bugs : find a solution for parent altering the view
 - when eval should output error in console
 - parser when using eval
 - key press
+- make eVe a gem
 - text_size
 - code editor : restore position and size, stop drag, text size
 - key_Shortcut

@@ -1,5 +1,6 @@
 module ProcessorHtml
   def color_helper(value)
+    #received_value=value
     case value
     when Hash
       red = if value[:red]
@@ -22,12 +23,17 @@ module ProcessorHtml
               else
                 1
               end
-      value = "rgba(#{red},#{green},#{blue},#{alpha})"
+      if value[:content]
+        value=value[:content]
+      else
+        value = "rgba(#{red},#{green},#{blue},#{alpha})"
+      end
     when Array
       # todo : create gradient
     else
       value
     end
+
     value
   end
 end
