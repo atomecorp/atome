@@ -17,7 +17,8 @@ module AtomeHelpers
           new_child_list << child_found.atome_id
         end
       end
-      parent_found.instance_variable_set("@child", ATOME.atomise(:child, new_child_list))
+      update_property(parent_found, :child, new_child_list)
+
     end
   end
 
@@ -113,7 +114,11 @@ module AtomeHelpers
   end
 
   def shell(command)
-    AtomeHelpers.class_variable_get("@@web_socket")..send({ type: :command, message: command })
+    AtomeHelpers.class_variable_get("@@web_socket").send({ type: :command, message: command })
+  end
+
+  def fixed(value)
+    fixed_html(value)
   end
 
 end

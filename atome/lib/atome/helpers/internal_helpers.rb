@@ -8,6 +8,10 @@ module InternalHelpers
     Quark.new(value)
   end
 
+  def update_property(atome, property, value)
+    atome.instance_variable_set("@"+property, ATOME.atomise(property.to_sym, value))
+  end
+
   def properties_common(value, &proc)
     formatted_value=value
     if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
@@ -25,10 +29,6 @@ module InternalHelpers
     formatted_value
   end
 
-  def set_instance_variable(instance_name, value)
-    instance_variable_set("@#{instance_name}", atomise(instance_name, value))
-  end
-
   def add_to_instance_variable(instance_name, value)
     unless value.instance_of?(Array)
       value = [value]
@@ -42,7 +42,7 @@ module InternalHelpers
         value = prev_instance_variable_content.concat(value)
       end
     end
-    instance_variable_set("@#{instance_name}", atomise(instance_name, value))
+    update_property(self, instance_name, value)
   end
 
   def broadcast(property, value)

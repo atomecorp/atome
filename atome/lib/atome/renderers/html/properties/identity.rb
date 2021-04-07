@@ -1,8 +1,4 @@
-module PropertylHtml
-  def atome_id_html(value)
-    value
-  end
-
+module PropertyHtml
   def id_html(value)
     value
   end

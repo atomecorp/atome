@@ -1,17 +1,22 @@
 Bugs : find a solution for parent altering the view
-- Send raw value to html methods and remove the .read in all html methods
-- make all method Quark ready!
-- debug demo
-- detatch group
+- urgent automatic generation of id and place id just after the atome_id at atome creation
+- write data flow of video player and check if all other type works the same!
+- Video audio recording
+- play events callbacks
+- youtube integration
+- ide_text_size
+- keycode to keychar
+- font chooser
+- cleanup demo
+- detach group
 - when eval should output error in console
 - parser when using eval
 - key press
+- make eVe a gem
 - text_size
 - code editor : restore position and size, stop drag, text size
-- ide_text_size
 - key_Shortcut
 - bidirectional mode
-- ide
 - size
 - Shadow
 - center
@@ -19,7 +24,6 @@ Bugs : find a solution for parent altering the view
 - animation
 - fit
 - stack events and remove (by name or order)
-- save to db
 - init sequence
 - basic U.I.
 - internationalisation

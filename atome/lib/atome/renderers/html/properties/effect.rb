@@ -1,4 +1,4 @@
-module PropertylHtml
+module PropertyHtml
   def blur_html(value)
     jq_get(atome_id).css("filter", "blur(" + value.to_s + "px)")
   end

@@ -43,15 +43,10 @@ prerequisite:
 	    sudo port install git
         on windows :
 		sudo install git :
-	
-
-
-   
-
 
 To install application: 
 	 
-    npm install -g cordova
+    sudo npm install -g cordova
     sudo cordova plugin add cordova-sqlite-storage
     sudo cordova plugin add cordova-plugin-file
     sudo cordova platform add browser
@@ -90,38 +85,47 @@ trouble shooting :
 if : Cannot find module 'shelljs' error
 try sudo cordova platform remove browser
 
-
-I - Architecture of the folders
+What's in the box
 -
-The atome framework is mainly based on a Cordova project, but add the following additional features :
+The atome framework is based on the Cordova framework, but add the following additional features :
 
 - a ruby interpreter
 
 - a web server
 
-- a native mode with 3D rendering (the 3D engine may currently be based on Urho3D, this choice may change in the future).
- 
-- a low latency audio system
+- a native 3D engine rendering (the 3D engine is currently based on Urho3D, more frameworks may be supported in the future).
+
+- a low latency audio system based on QAudio framework
 
 - a bootable option for embedded applications AMD64 and ARM
+
+
+What's more than other framework
+-
+
+What can it be used for
+-
+
+
+I - Architecture of the folders
+-
 
 The folders dedicated to the atome framework are : 
 
 - The app folder : contain all end user scripts
 
 - The atome folder : it contain the atome ruby's gem, this is basically the heart of the framework
+    The renderers folders contains rendering engine such as :
+    
+        - html for pure js rendering
+    
+        - Headless for text only rendering of atome's objects
+    
+        - Vocals to render atomes as audio description
+    
+        - Urho3D for native rendering
 
 - The documentations folder : it contains infos and documentations of the framework ( how to install it , enhance it or use it )
-
-- The renderers folder :contains rendering engine such as :
-    
-    - html for pure js rendering
-    
-    - Headless for text only rendering of atome's objects
-    
-    - Vocals to render atomes as audio description
-    
-    - Urho3D for native rendering
 
 - The scripts folder contains two files 
     one to automatise the install of atome framework
@@ -154,16 +158,13 @@ II - running method
 - native (urho 3D)
 
 
-
-IV - what is an atome object
+IV - how to use the framework
  -
  an atome is a collection of properties 
- 
- 
+
 - Anything that define an atome is a property.
 any atome can contain an other atome or a group of atomes as a property ex:
- 
- 
+  
     b=box()
     i=image(:logo)
     c=circle()
@@ -216,7 +217,6 @@ in this case the atome is till rendered in the view but the newly added paramete
     
 here some possible definition of an atome
 
-
     a=box({color: red}) # an red box is created
     a.set(smooth: 3) # the box has rounded corner the view is refreshed
     a.set({width: 250},true )# the box is now 250px wide the view is forced to refresh
@@ -224,7 +224,7 @@ here some possible definition of an atome
     a.set([[color: :red, top: 20],[color: :blue, bottom: 0]], false) #the first parameters is an array that contain an array of color to allow a gradient , finally the view is not refreshed the atome remains 'red'.
     a.color([{color: :yellow, top: 0}, {color: :orange, bottom: 0}]) # another way to set the atome property using the property name instead of using the 'set' methods, this time the view is refreshed
     
-V - Enhancing the atome framework  
+V - how to enhance the framework
    -    
   
 how to create new type:
@@ -329,5 +329,17 @@ you can send also the properties to the atome using parenthesis ou the equal sig
     
 VII - logic and datas flows
 -
+
+VIII framework we will use
+-
+freebsd : https://github.com/freebsd
+urho3D : https://github.com/urho3d/Urho3D
+rbfx : https://github.com/rokups/rbfx
+q-audio : https://cycfi.github.io/q/
+nectarjs : https://github.com/NectarJS/nectarjs
+glimmer : https://github.com/AndyObtiva/glimmer
+artichoke : https://github.com/artichoke/artichoke
+ruby packer : https://github.com/pmq20/ruby-packer
+travelling ruby : https://github.com/phusion/traveling-ruby
 
  

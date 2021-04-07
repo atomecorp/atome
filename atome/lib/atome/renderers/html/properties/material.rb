@@ -1,18 +1,35 @@
-module PropertylHtml
-  def color_html(value)
-    values = value
-    color = "background-image"
-    unless values.instance_of?(Array)
-      values = [values]
+module PropertyHtml
+  def color_html(values)
+    angle = 180
+    diffusion = :linear
+    if type == :text
+      # we use a stencil to allow gradient in text
+      jq_get(atome_id).css("-webkit-background-clip", "text")
+      jq_get(atome_id).css("-webkit-text-fill-color", "transparent")
     end
-    values.each do |val|
-      val = color_helper(val)
-      if type == :text
-        jq_get(atome_id).css("-webkit-text-fill-color", val)
-      else
-        val = "linear-gradient(0deg," + val + ", " + val + ")"
-        jq_get(atome_id).css(color, val)
+
+    if !values.instance_of?(Array) || values.length == 1
+      color = color_helper(values)
+      val = "linear-gradient(0deg,#{color},#{color})"
+      jq_get(atome_id).css("background-image", val)
+    else
+      gradient = []
+      values.each do |color_found|
+        if color_found[:angle]
+          angle = color_found[:angle]
+        end
+        if color_found[:diffusion]
+          diffusion = color_found[:diffusion]
+        end
+        gradient << color_helper(color_found)
       end
+      case diffusion
+      when :linear
+        val = "#{diffusion}-gradient(#{angle}deg,#{gradient.join(",")})"
+      else
+        val = "#{diffusion}-gradient(#{gradient.join(",")})"
+      end
+      jq_get(atome_id).css("background-image", val)
     end
   end
 

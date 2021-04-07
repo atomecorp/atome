@@ -1,4 +1,4 @@
-module PropertylHtml
+module PropertyHtml
   def tactile_html(value)
     value
   end

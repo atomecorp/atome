@@ -6,18 +6,30 @@ def atome_methods
   helper = %i[tactile display]
   hierarchy = %i[parent child insert]
   identity = %i[atome_id id type language private can]
-  spatial = %i[x xx y yy z center rotate position]
+  spatial = %i[x xx y yy z center rotate position alignment]
   media = %i[content video box circle text image audio info example]
+  inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven selector render preset monitor]
   material = %i[color opacity border overflow]
-  {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event}
+  { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event }
 end
 
+def types
+  %i[user machine shape image video audio input text midi]
+end
 
-FileUtils.mkdir_p "atome/lib/atome/generated_properties"
+FileUtils.mkdir_p "atome/lib/atome/generated_methods"
+
+
+def is_preset
+  # in this case presets are used to create atome suing their types with specific settings
+  # so it add the methods in the atome_object_creator methods
+  # the generated property will then  return the result of the method instead of object itself
+  %i[box circle text image video audio camera microphone midi]
+end
 
 def need_pre_processing
-  %i[atome_id private can box circle text image video audio parent child type]
+  %i[atome_id private can box circle text image video audio camera microphone midi text image video audio box circle parent child type]
 end
 
 def need_processing
@@ -25,19 +37,19 @@ def need_processing
 end
 
 def getter_need_processing
-  %i[private can box circle text image video audio parent child]
+  %i[private can box circle text image video audio camera microphone midi text image video audio box circle parent child]
 end
 
 def no_rendering
-  %i[box circle text image video audio parent child info example selector monitor type]
+  %i[atome_id box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment camera microphone midi]
 end
 
-def return_created_property
-  # twe return the result of the method instead of object holding the property
-  %i[box circle text image video audio]
-end
+# def return_created_property
+#   # twe return the result of the method instead of object holding the property
+#   %i[box circle text image video audio camera microphone midi]
+# end
 
-batch_delete =<<STRDELIM
+batch_delete = <<STRDELIM
   def delete(value, &proc)
 		collected_atomes=[]
 		if read.instance_of?(Array)
@@ -79,7 +91,7 @@ atome_methods.each do |property_type, property|
       rendering = "#{method_name}_html(value)"
     end
 
-    unless return_created_property.include?(method_name)
+    unless is_preset.include?(method_name)
       method_return = "self"
     end
 
@@ -109,8 +121,8 @@ module Properties
 #{category.join("\n")}
 end
 STRDELIM
-  File.write("atome/lib/atome/generated_properties/#{property_type}.rb", category)
-# now we create the method for batch object
+  File.write("atome/lib/atome/generated_methods/#{property_type}.rb", category)
+  # now we create the method for batch object
   property.each do |method_name|
     batch_method = <<STRDELIM
       def #{method_name}(value, &proc)
@@ -133,19 +145,37 @@ STRDELIM
 
 end
 
-
 batch = <<STRDELIM
 module Batch
 #{batch_methods.join("\n")}
 end
 STRDELIM
-File.write("atome/lib/atome/generated_properties/batch.rb", batch)
+File.write("atome/lib/atome/generated_methods/batch.rb", batch)
 
 methods_list = <<STRDELIM
 module AtomeHelpers
   def methods
     #{atome_methods_list.sort}
   end
+
+  def types
+    #{types.sort}
+  end
 end
 STRDELIM
-File.write("atome/lib/atome/generated_properties/atome_methods.rb", methods_list)
+File.write("atome/lib/atome/generated_methods/atome_methods.rb", methods_list)
+
+methods_to_create = []
+is_preset.each do |object_list|
+  methods_created = <<STRDEILM
+def #{object_list}(value = {})
+  grab(:view).#{object_list}(value)
+end
+STRDEILM
+  methods_to_create << methods_created
+end
+
+objects_list_creator = <<STRDELIM
+    #{methods_to_create.join("\n")}
+STRDELIM
+File.write("atome/lib/atome/generated_methods/atome_object_creator.rb", objects_list_creator)

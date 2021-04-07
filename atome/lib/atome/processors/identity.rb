@@ -15,11 +15,10 @@ module Processors
       # atome_id can't be changed we only set the atome_id if it hasn't been set before
       @atome_id = atomise(:atome_id, value)
     end
-
   end
 
   def type_pre_processor(value)
-    previous_type=type
+    previous_type = type
     @type = atomise(:type, value)
     if previous_type && (previous_type != value)
       if content

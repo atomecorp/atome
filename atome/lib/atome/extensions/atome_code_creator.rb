@@ -1,27 +1,3 @@
-def box(value = {})
-  grab(:view).box(value)
-end
-
-def circle(value = {})
-  grab(:view).circle(value)
-end
-
-def text(value = { content: lorem })
-  grab(:view).text(value)
-end
-
-def image(value = {})
-  grab(:view).image(value)
-end
-
-def video(value = {})
-  grab(:view).video(value)
-end
-
-def audio(value = {})
-  grab(:view).audio(value)
-end
-
 def code(value = { atome_id: identity, content: "" })
   JSUtils.load_opal_parser
   container_id = value[:atome_id]

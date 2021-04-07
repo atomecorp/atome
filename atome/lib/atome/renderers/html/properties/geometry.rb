@@ -1,4 +1,4 @@
-module PropertylHtml
+module PropertyHtml
   def width_html(value)
     type = grab(atome_id).type
     if type == :text
