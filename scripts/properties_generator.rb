@@ -37,7 +37,7 @@ def need_processing
 end
 
 def getter_need_processing
-  %i[private can box circle text image video audio camera microphone midi text image video audio box circle parent child]
+  %i[private can parent child].concat(is_preset)
 end
 
 def no_rendering
@@ -94,7 +94,6 @@ atome_methods.each do |property_type, property|
     unless is_preset.include?(method_name)
       method_return = "self"
     end
-
     method_content = <<STRDELIM
   def #{method_name}(value = nil, &proc)
     if value.nil? && !proc

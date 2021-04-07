@@ -1,10 +1,10 @@
 Bugs : find a solution for parent altering the view
-- urgent automatic generation of id and place id just after the atome_id at atome creation
-- write data flow of video player and check if all other type works the same!
+- animation
 - Video audio recording
 - play events callbacks
 - youtube integration
 - ide_text_size
+- write data flow of video player and check if all other type works the same!
 - keycode to keychar
 - font chooser
 - cleanup demo
@@ -21,7 +21,6 @@ Bugs : find a solution for parent altering the view
 - Shadow
 - center
 - drag
-- animation
 - fit
 - stack events and remove (by name or order)
 - init sequence

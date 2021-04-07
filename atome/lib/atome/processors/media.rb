@@ -35,6 +35,14 @@ module Processors
 
   def text_getter_processor
     @text&.read
+    child_collected=[]
+    child do |child_found|
+      if  child_found.type == :text
+        child_collected << child_found
+      end
+    end
+    @text= atomise(:text, child_collected)
+
   end
 
   def image_pre_processor(value)
