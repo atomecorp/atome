@@ -29,11 +29,16 @@ class MediaHelper {
                 self.mediaRecorder = new MediaRecorder(self.localStream);
 
                 self.mediaRecorder.onerror = function (err) {
-                    self.recordingEventListener.onError(err);
+                    self.recordingEventListener.onError(self, err);
                 };
 
                 self.mediaRecorder.ondataavailable = function (e) {
                     self.chunks.push(e.data);
+                };
+
+                self.mediaRecorder.onstop = function (e) {
+                    const recording = new Blob(self.chunks);
+                    self.recordingEventListener.onStop(self, recording);
                 };
 
                 self.recordingEventListener.onReady(self);
@@ -71,6 +76,11 @@ class MediaHelper {
         this.mediaRecorder.stop();
     }
 
+    playRecording(targetElement, recording) {
+        targetElement.src = URL.createObjectURL(recording);
+        targetElement.play();
+    }
+
     pauseRecording() {
         this.mediaRecorder.pause();
         this.isPaused = true;
@@ -105,13 +115,13 @@ class MediaHelper {
         media.play();
     }
 
-    playVideo(atome_id, options, proc) {
+    playVideo(atome_id, options, timerListener) {
         const media = $("#" + atome_id + ' video:first-child')[0];
         if (options === true || options === 'true') {
             options = 0;
         }
         media.addEventListener("timeupdate", function () {
-            Opal.Events.$playing(proc, media.currentTime);
+            Opal.Events.$playing(timerListener, media.currentTime);
         });
         //media.currentTime is run twice, because if not depending on the context it may not be interpreted
         media.currentTime = options;

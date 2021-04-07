@@ -44,8 +44,12 @@ module ProcessorHtml
           // Start preview on created video player.
           mediaHelper.startPreview(inputVideo);
         },
-        onError: function (error) {
-            console.log(error);
+        onError: function (mediaHelper, error) {
+          console.log(error);
+        },
+        onStop: function (mediaHelper, recording) {
+          const playbackVideo = mediaHelper.addVideoPlayer('view', false);
+          mediaHelper.playRecording(playbackVideo, recording);
         }
     };
 
