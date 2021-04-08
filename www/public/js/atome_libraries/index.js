@@ -94,12 +94,10 @@ let databaseHelper;
 let fileHelper;
 let drawingHelper;
 let midiHelper;
-// let mediaHelper;
+// let recorderHelper;
+let importHHelper;
 let videoHelper;
 let audioHelper;
-
-//audioVideoHelper
-videoHelper = new VideoHelper();
 
 let databaseEventListener = {
     onConnected: function (event) {
@@ -164,11 +162,19 @@ document.addEventListener("deviceready", function () {
 //midiHelper
 midiHelper = new MidiHelper(midiEventListener);
 
-//mediaHelper
-// mediaHelper = new MediaHelper(640, 480, 60);
+//recorderHelper
+// recorderHelper = new RecorderHelper(640, 480, 60);
 // const previewVideo = mediaHelper.addVideoPlayer('view', 'preview', true);
 // const playbackVideo = mediaHelper.addVideoPlayer('view', 'playback', true);
 // mediaHelper.connect(previewVideo, playbackVideo);
+
+
+//importHelper
+importHelper = new ImportHelper();
+
+//videoHelper
+videoHelper = new VideoHelper();
+
 
 //audioHelper
 audioHelper = new AudioHelper(audioEventListener);
@@ -183,7 +189,7 @@ window.ondrop = function (e) {
         fileHelper.createFile("image.png", e.dataTransfer.files[0], {
             success: function () {
                 fileHelper.getUrl("image.png", function (imageUrl) {
-                    mediaHelper.addImage('view', imageUrl);
+                    importHelper.addImage('view', imageUrl);
                 });
             },
             error: function (fileError) {

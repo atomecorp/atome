@@ -6,7 +6,7 @@ module ProcessorHtml
            else
              video_found[:path]
            end
-    jq_get(atome_id).create(atome_id)
+    jq_get(atome_id).create_video(atome_id)
     jq_get(atome_id).find("video").html("<source src=" + path + " type='video/mp4'></source>")
     unless width
       self.width = jq_get(atome_id).find("video").width
@@ -35,29 +35,27 @@ module ProcessorHtml
   end
 
   def camera_creator_helper(value)
-    # jq_get(atome_id).create(atome_id)
-    jq_get(atome_id).find("video").css("width", @width)
-    jq_get(atome_id).find("video").css("height", @height)
     `
     let mediaEventListener = {
-        onReady: function (mediaHelper) {
+        onReady: function (recorderHelper) {
           // Start preview on created video player.
-          mediaHelper.startPreview(inputVideo);
+          recorderHelper.startPreview(inputVideo);
         },
-        onError: function (mediaHelper, error) {
+        onError: function (recorderHelper, error) {
           console.log(error);
         },
-        onStop: function (mediaHelper, recording) {
-          const playbackVideo = mediaHelper.addVideoPlayer('view', false);
-          mediaHelper.playRecording(playbackVideo, recording);
+        onStop: function (recorderHelper, recording) {
+          const playbackVideo = videoHelper.addVideoPlayer('view', false);
+          recorderHelper.playRecording(playbackVideo, recording);
         }
     };
 
     const width = parseInt($("#"+#{atome_id}).css('width'));
     const height = parseInt($("#"+#{atome_id}).css('height'));
-    recorderHelper = new RecorderHelper(width, height, 60, mediaEventListener);
+videoHelper=new VideoHelper
+recorderHelper = new RecorderHelper(width, height, 60, mediaEventListener);
     // Create video player
-    const inputVideo = recorderHelper.addVideoPlayer(#{atome_id}, false);
+    const inputVideo = videoHelper.addVideoPlayer(#{atome_id}, false);
     `
   end
 
