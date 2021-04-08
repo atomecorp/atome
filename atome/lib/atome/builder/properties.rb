@@ -52,4 +52,8 @@ class Quark
     end
     Quark.new(required_atome)
   end
+
+  def last
+    @property.last
+  end
 end

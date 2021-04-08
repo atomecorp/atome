@@ -74,28 +74,38 @@ module PropertyHtml
   end
 
   def center_html(value)
-    case value
+    if value.instance_of?(Hash)
+      params={reference: :parent, axis: :all}
+      value.merge(params)
+      if value[:reference]==:parent
+        value[:reference]=parent.last
+      end
+      reference=value[:reference]
+      alert reference
+      axis=value[:axis]
+    end
+    case axis
     when :y
       center_value = { atome_id: atome_id,
                        my: "left+#{x}",
                        at: "left middle",
-                       of: "#view"
+                       of: "##{reference}"
       }
     when :x
       center_value = { atome_id: atome_id,
                        my: "top+#{y}",
                        at: "middle top",
-                       of: "#view"
+                       of: "##{reference}"
       }
     when :all
       center_value = { atome_id: atome_id,
                        at: "center",
-                       of: "#view"
+                       of: "##{reference}"
       }
     else
       center_value = { atome_id: atome_id,
                  at: "center",
-                 of: "#view"
+                 of: "##{reference}"
       }
     end
     position_html(center_value)

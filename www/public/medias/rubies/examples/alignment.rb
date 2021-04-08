@@ -19,3 +19,10 @@ end
 
 # b.alignment({horizontal: :x, vertical: :yy})
 # alert b.alignment
+
+b2=box({atome_id: :toto, drag: true, color: :purple})
+c=circle({x:333, atome_id: :the_circle})
+t=b2.text('O')
+t2=c.text("i")
+t.center({reference: :parent,axis: :x })
+t2.center({reference: :the_circle,axis: :all })
