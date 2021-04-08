@@ -1,6 +1,6 @@
 module Processors
   def camera_pre_processor(value)
-    media_pre_processor(:camera, value)
+    media_pre_processor(:camera, :camera, value)
   end
 
   def camera_getter_processor
@@ -8,7 +8,7 @@ module Processors
   end
 
   def microphone_pre_processor(value)
-    media_pre_processor(:microphone, value)
+    media_pre_processor(:microphone, :microphone, value)
   end
 
   def microphone_getter_processor
@@ -16,7 +16,7 @@ module Processors
   end
 
   def midi_pre_processor(value)
-    media_pre_processor(:midi, value)
+    media_pre_processor(:midi, :midi, value)
   end
 
   def midi_getter_processor

@@ -1,6 +1,6 @@
 module ProcessorHtml
   def video_creator_helper(value)
-    video_found = find({ type: :video, scope: :eden, name: value })
+    video_found = find({type: :video, scope: :eden, name: value})
     path = if video_found.nil?
              "././medias/videos/video_missing.mp4"
            else
@@ -18,7 +18,7 @@ module ProcessorHtml
   end
 
   def image_creator_helper(value)
-    image_found = find({ type: :image, scope: :eden, name: value })
+    image_found = find({type: :image, scope: :eden, name: value})
     if image_found.nil?
       path = "././medias/images/image_missing.svg"
     else
@@ -55,9 +55,9 @@ module ProcessorHtml
 
     const width = parseInt($("#"+#{atome_id}).css('width'));
     const height = parseInt($("#"+#{atome_id}).css('height'));
-    mediaHelper = new MediaHelper(width, height, 60, mediaEventListener);
+    recorderHelper = new RecorderHelper(width, height, 60, mediaEventListener);
     // Create video player
-    const inputVideo = mediaHelper.addVideoPlayer(#{atome_id}, false);
+    const inputVideo = recorderHelper.addVideoPlayer(#{atome_id}, false);
     `
   end
 

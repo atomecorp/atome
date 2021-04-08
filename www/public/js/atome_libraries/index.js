@@ -95,7 +95,11 @@ let fileHelper;
 let drawingHelper;
 let midiHelper;
 // let mediaHelper;
+let videoHelper;
 let audioHelper;
+
+//audioVideoHelper
+videoHelper = new VideoHelper();
 
 let databaseEventListener = {
     onConnected: function (event) {
@@ -161,7 +165,7 @@ document.addEventListener("deviceready", function () {
 midiHelper = new MidiHelper(midiEventListener);
 
 //mediaHelper
-// mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);
+// mediaHelper = new MediaHelper(640, 480, 60);
 // const previewVideo = mediaHelper.addVideoPlayer('view', 'preview', true);
 // const playbackVideo = mediaHelper.addVideoPlayer('view', 'playback', true);
 // mediaHelper.connect(previewVideo, playbackVideo);

@@ -3,6 +3,10 @@ class Element
     atome_id = "##{params.delete(:atome_id)}"
     `$(#{atome_id}).position(#{params.to_n})`
   end
+
+  def create(parent)
+    `videoHelper.addVideoPlayer(#{parent}, false)`
+  end
 end
 
 class Event

@@ -119,7 +119,7 @@ def version
 end
 
 def notification(message, duration)
-  notification = text({ content: message, color: :orange, x: 69, y: 69 })
+  notification = text({content: message, color: :orange, x: 69, y: 69})
   ATOME.send(:wait, duration) do
     notification.delete
   end

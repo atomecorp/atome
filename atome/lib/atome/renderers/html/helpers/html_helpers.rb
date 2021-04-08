@@ -5,14 +5,13 @@ module HtmlHelpers
 
   def play_html(options, &proc)
     video_play(options, proc)
-    # audio_play(options, proc)
   end
 
   def resize_html(&proc)
     Element.find(JSUtils.device).resize do
       width = jq_get(:view).css("width").sub("px", "").to_i
       height = jq_get(:view).css("height").sub("px", "").to_i
-      proc.call({ width: width, height: height }) if proc.is_a?(Proc)
+      proc.call({width: width, height: height}) if proc.is_a?(Proc)
     end
   end
 
@@ -29,11 +28,10 @@ module HtmlHelpers
     y_position = jq_object.css("top").sub("px", "").to_i
     xx_position = jq_object.css("right").sub("px", "").to_i
     yy_position = jq_object.css("bottom").sub("px", "").to_i
-
-    update_property(self, :x, x_position)
-    update_property(self, :y, y_position)
-    update_property(self, :xx, xx_position)
-    update_property(self, :yy, yy_position)
+    @x = atomise(:x, x_position)
+    @y = atomise(:y, y_position)
+    @xx = atomise(:x, xx_position)
+    @yy = atomise(:y, yy_position)
   end
 
   def change_position_origin

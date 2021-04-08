@@ -43,11 +43,11 @@ module PropertyHtml
     jq_object = jq_get(atome_id)
     lock = case value[:lock]
            when :parent
-             { containment: "parent" }
+             {containment: "parent"}
            when :x
-             { axis: "y" }
+             {axis: "y"}
            when :y
-             { axis: "x" }
+             {axis: "x"}
            else
              {}
            end
@@ -59,10 +59,10 @@ module PropertyHtml
       update_position
     end
     jq_object.on(:dragstart) do |evt|
-       jq_get(atome_id).css("left","#{x}px")
-       jq_get(atome_id).css("right",  "auto")
-       jq_get(atome_id).css("top", "#{y}px")
-       jq_get(atome_id).css("bottom",  "auto")
+      jq_get(atome_id).css("left", "#{x}px")
+      jq_get(atome_id).css("right", "auto")
+      jq_get(atome_id).css("top", "#{y}px")
+      jq_get(atome_id).css("bottom", "auto")
     end
     jq_object.on(:dragstop) do
       change_position_origin

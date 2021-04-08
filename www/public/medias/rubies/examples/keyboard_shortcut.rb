@@ -40,3 +40,4 @@ grab(:device).key({option: :down}) do |evt|
   else
   end
 end
+text("alt-a : open ide\nalt-z : close ide\nalt-r : compile code\n")

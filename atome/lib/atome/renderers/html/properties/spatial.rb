@@ -19,15 +19,6 @@ module PropertyHtml
       else
         self.alignment({horizontal: :xx})
       end
-
-      # xx_value = { atome_id: atome_id,
-      #             my: "right top+#{y}",
-      #             at: "right+#{-value} top",
-      #             of: "#view"
-      # }
-      # jq_get(atome_id).css("left","auto")
-      # position_html(xx_value)
-      # change_position_origin
     end
   end
 
@@ -44,7 +35,6 @@ module PropertyHtml
     if height == :auto
       jq_get(atome_id).css("bottom", value.to_s + "px")
     else
-
       # update_property(self, :x, x_position)
       jq_get(atome_id).css("top", "auto")
       jq_get(atome_id).css("bottom", value.to_s + "px")
@@ -54,13 +44,6 @@ module PropertyHtml
       else
         self.alignment({vertical: :yy})
       end
-      # yy_value = { atome_id: atome_id,
-      #             my: "left+#{x} bottom",
-      #             at: "left bottom+#{-value}",
-      #             of: "#view"
-      # }
-      # position_html(yy_value)
-      # change_position_origin
     end
 
   end
@@ -76,7 +59,7 @@ module PropertyHtml
   def center_html(value)
     if value.instance_of?(Hash)
       params = {reference: :parent, axis: :all, offset: false}
-      value=params.merge(value)
+      value = params.merge(value)
       reference = value[:reference]
       axis = value[:axis]
       offset = value[:offset]
