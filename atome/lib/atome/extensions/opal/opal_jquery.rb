@@ -4,9 +4,10 @@ class Element
     `$(#{atome_id}).position(#{params.to_n})`
   end
 
-  def create(parent)
+  def create_video(parent)
     `videoHelper.addVideoPlayer(#{parent}, false)`
   end
+
 end
 
 class Event
