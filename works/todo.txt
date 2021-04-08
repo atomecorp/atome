@@ -9,6 +9,7 @@ Bugs : find a solution for parent altering the view
 - font chooser
 - cleanup demo
 - detach group
+- dynamic positioning and centering
 - when eval should output error in console
 - parser when using eval
 - key press

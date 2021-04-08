@@ -20,9 +20,15 @@ end
 # b.alignment({horizontal: :x, vertical: :yy})
 # alert b.alignment
 
-b2=box({atome_id: :toto, drag: true, color: :purple})
-c=circle({x:333, atome_id: :the_circle})
-t=b2.text('O')
-t2=c.text("i")
-t.center({reference: :parent,axis: :x })
-t2.center({reference: :the_circle,axis: :all })
+b2 = box({atome_id: :toto, drag: true, color: :purple})
+c = circle({y: 96,x: 33,  atome_id: :the_circle, color: :magenta, drag: true})
+c.center(:y)
+b2.fixed(true)
+b2.center(:all)
+t = b2.text('O')
+t2 = c.text("i")
+t.center({reference: :parent, axis: :x})
+t2.center({reference: :the_circle, axis: :all})
+img=image({content: :boat, size: 69, x: 96, y: 33})
+# offset means that the current x and y position is added to the centering
+img.center({axis: :x, offset: true})
