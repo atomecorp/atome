@@ -37,13 +37,13 @@ module AtomeHelpers
   end
 
   def duplicate(value)
-    value = { x: 0, y: 0, offset: { x: 6, y: 6 } }.merge(value)
+    value = {x: 0, y: 0, offset: {x: 6, y: 6}}.merge(value)
     (0..value[:y]).each do |y_val|
       (1..value[:x]).each do |x_val|
 
-        atome_property = self.inspect.merge({ atome_id: self.atome_id.to_s + x_val.to_s,
-                                              x: self.x + self.width * x_val + value[:offset][:x] * x_val,
-                                              y: self.width * y_val + value[:offset][:y] * y_val })
+        atome_property = self.inspect.merge({atome_id: self.atome_id.to_s + x_val.to_s,
+                                             x: self.x + self.width * x_val + value[:offset][:x] * x_val,
+                                             y: self.width * y_val + value[:offset][:y] * y_val})
         atome_property[:monitor] = :poil
         Atome.new(atome_property)
       end
@@ -108,13 +108,15 @@ module AtomeHelpers
       value
     end
   end
+
   AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("5.196.69.103:9292"))
+
   def message(data)
     AtomeHelpers.class_variable_get("@@web_socket").send(data)
   end
 
   def shell(command)
-    AtomeHelpers.class_variable_get("@@web_socket").send({ type: :command, message: command })
+    AtomeHelpers.class_variable_get("@@web_socket").send({type: :command, message: command})
   end
 
   def fixed(value)

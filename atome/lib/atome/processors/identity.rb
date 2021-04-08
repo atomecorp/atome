@@ -22,7 +22,7 @@ module Processors
     @type = atomise(:type, value)
     if previous_type && (previous_type != value)
       if content
-        content_html(content)
+        content_html(content, true)
       else
         content_html
       end

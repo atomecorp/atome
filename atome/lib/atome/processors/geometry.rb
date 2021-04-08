@@ -3,7 +3,7 @@ module Processors
     if value.instance_of?(Hash) && value[:value].nil?
     else
       if value.instance_of?(Number) || value.instance_of?(Integer)
-        value = { value: value }
+        value = {value: value}
       end
       size = value[:value]
       if width && height && width != :auto && height != :auto

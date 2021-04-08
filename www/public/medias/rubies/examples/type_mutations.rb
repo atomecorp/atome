@@ -11,10 +11,16 @@ ATOME.wait 1 do
     b.content(:moto)
     ATOME.wait 1 do
       b.type(:text)
-      # b.content(:boat)
       ATOME.wait 1 do
-        b.type(:shape)
-        # b.content(:boat)
+        b.color(:black)
+        ATOME.wait 1 do
+          b.smooth(100)
+          b.type(:shape)
+          ATOME.wait 1 do
+            b.smooth(0)
+            b.type(:text)
+          end
+        end
       end
     end
   end

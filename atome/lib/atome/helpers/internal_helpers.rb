@@ -9,7 +9,7 @@ module InternalHelpers
   end
 
   def update_property(atome, property, value)
-    atome.instance_variable_set("@"+property, ATOME.atomise(property.to_sym, value))
+    atome.instance_variable_set("@" + property, ATOME.atomise(property.to_sym, value))
   end
 
   def properties_common(value, &proc)

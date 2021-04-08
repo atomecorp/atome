@@ -4,7 +4,7 @@ class Hash
   end
 end
 
-# we add the method delete to the NillClass
+# we add the method delete to the NilClass
 # because when deleting child
 class NilClass
   def delete

@@ -94,8 +94,12 @@ let databaseHelper;
 let fileHelper;
 let drawingHelper;
 let midiHelper;
-let mediaHelper;
+// let mediaHelper;
+let videoHelper;
 let audioHelper;
+
+//audioVideoHelper
+videoHelper = new VideoHelper();
 
 let databaseEventListener = {
     onConnected: function (event) {
@@ -130,14 +134,14 @@ let midiEventListener = {
     }
 };
 
-let mediaEventListener = {
-    onConnected: function () {
-        console.log('Media initialized successfully');
-    },
-    onError: function (error) {
-        console.log(error);
-    }
-};
+// let mediaEventListener = {
+//     onConnected: function () {
+//         console.log('Media initialized successfully');
+//     },
+//     onError: function (error) {
+//         console.log(error);
+//     }
+// };
 
 let audioEventListener = {
     onConnected: function (event) {
@@ -161,7 +165,7 @@ document.addEventListener("deviceready", function () {
 midiHelper = new MidiHelper(midiEventListener);
 
 //mediaHelper
-mediaHelper = new MediaHelper(640, 480, 60, mediaEventListener);
+// mediaHelper = new MediaHelper(640, 480, 60);
 // const previewVideo = mediaHelper.addVideoPlayer('view', 'preview', true);
 // const playbackVideo = mediaHelper.addVideoPlayer('view', 'playback', true);
 // mediaHelper.connect(previewVideo, playbackVideo);

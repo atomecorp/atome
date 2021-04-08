@@ -1,6 +1,6 @@
 module ProcessorHtml
   def video_creator_helper(value)
-    video_found = find({ type: :video, scope: :eden, name: value })
+    video_found = find({type: :video, scope: :eden, name: value})
     path = if video_found.nil?
              "././medias/videos/video_missing.mp4"
            else
@@ -18,7 +18,7 @@ module ProcessorHtml
   end
 
   def image_creator_helper(value)
-    image_found = find({ type: :image, scope: :eden, name: value })
+    image_found = find({type: :image, scope: :eden, name: value})
     if image_found.nil?
       path = "././medias/images/image_missing.svg"
     else
@@ -35,15 +35,29 @@ module ProcessorHtml
   end
 
   def camera_creator_helper(value)
-    jq_get(atome_id).create(atome_id)
+    # jq_get(atome_id).create(atome_id)
     jq_get(atome_id).find("video").css("width", @width)
     jq_get(atome_id).find("video").css("height", @height)
     `
-       const inputVideo = document.querySelector('#'+#{atome_id}+' > video');
-    var width=parseInt($("#"+#{atome_id}).css('width'));
-    var height=parseInt($("#"+#{atome_id}).css('height'));
-        mediaHelper = new MediaHelper(width, height, 60, inputVideo, mediaEventListener);
-        mediaHelper.connect();
+    let mediaEventListener = {
+        onReady: function (mediaHelper) {
+          // Start preview on created video player.
+          mediaHelper.startPreview(inputVideo);
+        },
+        onError: function (mediaHelper, error) {
+          console.log(error);
+        },
+        onStop: function (mediaHelper, recording) {
+          const playbackVideo = mediaHelper.addVideoPlayer('view', false);
+          mediaHelper.playRecording(playbackVideo, recording);
+        }
+    };
+
+    const width = parseInt($("#"+#{atome_id}).css('width'));
+    const height = parseInt($("#"+#{atome_id}).css('height'));
+    recorderHelper = new RecorderHelper(width, height, 60, mediaEventListener);
+    // Create video player
+    const inputVideo = recorderHelper.addVideoPlayer(#{atome_id}, false);
     `
   end
 

@@ -1,11 +1,11 @@
 class Element
-  def create(parent)
-    `mediaHelper.addVideoPlayer(#{parent}, false)`
-  end
-
   def position(params)
     atome_id = "##{params.delete(:atome_id)}"
     `$(#{atome_id}).position(#{params.to_n})`
+  end
+
+  def create(parent)
+    `videoHelper.addVideoPlayer(#{parent}, false)`
   end
 end
 
