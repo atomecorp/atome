@@ -4,13 +4,14 @@ def code(value = {atome_id: identity, content: ""})
   ide_atome_id = container_id.to_s + "_code_editor"
   content = value[:content]
   container_preset = value.merge({atome_id: container_id, parent: :intuition,
-                                  drag: true, y: 33, width: 500, height: 300,
+                                   y: 33, width: 500, height: 300,
                                   shadow: {x: 0, y: 0, blur: 6, thickness: 0,
                                            color: {red: 0, green: 0, blue: 0, alpha: 0.6}, invert: false}})
   editor_value = {atome_id: ide_atome_id, width: 500, height: 300, y: 24}
 
   # we create the code editor container
   container = box(container_preset)
+  handle=container.box({x:0, x: 0, width: "100%", height: 24, color: :black, atome_id: "handler_"+ide_atome_id})
   code_editor = container.box(editor_value)
   code_editor.type(:machine)
   #code_editor.selector({machine: :code_editor})
@@ -33,6 +34,7 @@ def code(value = {atome_id: identity, content: ""})
   close.touch do
     grab(container_id).delete
   end
+  container.drag({handle: "handler_"+ide_atome_id})
   code_editor
 
 end

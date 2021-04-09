@@ -51,7 +51,17 @@ module PropertyHtml
            else
              {}
            end
-    jq_object.draggable(lock)
+    if value[:handle]
+      handle = {handle: "#" + value[:handle]}
+    else
+      handle = {}
+    end
+
+    options = lock.merge(handle)
+    jq_object.draggable(options)
+    #jq_object.draggable({handle: "#"+handle, axis: "x"})
+
+
     jq_object.on(:drag) do |evt|
       # we send the position to the proc
       proc.call(evt) if proc.is_a?(Proc)
