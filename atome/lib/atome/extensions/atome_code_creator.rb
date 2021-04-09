@@ -4,7 +4,7 @@ def code(value = {atome_id: identity, content: ""})
   ide_atome_id = container_id.to_s + "_code_editor"
   content = value[:content]
   container_preset = value.merge({atome_id: container_id, parent: :intuition,
-                                   y: 33, width: 500, height: 300,
+                                   width: 500, height: 300,
                                   shadow: {x: 0, y: 0, blur: 6, thickness: 0,
                                            color: {red: 0, green: 0, blue: 0, alpha: 0.6}, invert: false}})
   editor_value = {atome_id: ide_atome_id, width: 500, height: 300, y: 24}
@@ -29,9 +29,13 @@ def code(value = {atome_id: identity, content: ""})
   close = container.box({width: 20, height: 20, x: 30, y: 3, color: :gray})
   run.touch do
     clear(:view)
+    #the line below store the current state in the buffer object
+    grab(:buffer).content=grab(:buffer).content.merge(code_editor: {content: ATOME.get_ide_content(ide_atome_id), x: grab(container_id).x, y: grab(container_id).y})
     compile(ATOME.get_ide_content(ide_atome_id))
   end
   close.touch do
+    #the line below store the current state in the buffer object
+    grab(:buffer).content=grab(:buffer).content.merge(code_editor: {content: ATOME.get_ide_content(ide_atome_id), x: grab(container_id).x, y: grab(container_id).y})
     grab(container_id).delete
   end
   container.drag({handle: "handler_"+ide_atome_id})
