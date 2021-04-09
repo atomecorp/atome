@@ -1,3 +1,4 @@
+- ide_text_size
 - Video recording
 - urgent automatic generation of id and place id just after the atome_id at atome creation
 - make all method Quark ready!
