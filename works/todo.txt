@@ -1,9 +1,9 @@
 Bugs : find a solution for parent altering the view
 - animation
-- Video audio recording
 - play events callbacks
 - youtube integration
 - ide_text_size
+- audio recording
 - documentation end users, framework users and devellopers also add how to create new type new methods and new tools
 - write data flow of video player and check if all other type works the same!
 - keycode to keychar

@@ -1,3 +1,5 @@
+- Video recording
+- urgent automatic generation of id and place id just after the atome_id at atome creation
 - make all method Quark ready!
 - Alignment(text and objects)
 - debug demo
@@ -19,4 +21,3 @@
 - midi native + web
 - restore / compile atome
 - read_local_file
-- urgent automatic generation of id and place id just after the atome_id at atome creation

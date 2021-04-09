@@ -1,6 +1,6 @@
 # alignment
 
-b=box({atome_id: :titi,color: :orange, width: :auto, height: :auto,xx: 69, x: 69, yy: 69, y: 69})
+box({atome_id: :titi,color: :orange, width: :auto, height: :auto,xx: 69, x: 69, yy: 69, y: 69})
 t=text({content:  "click the grey to get it's position", color: :red })
 
 # t=text(:guide)
