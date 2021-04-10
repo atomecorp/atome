@@ -21,6 +21,7 @@ class Atome
     type = sanitizer.delete(:type)
     render = sanitizer.delete(:render)
     content = sanitizer.delete(:content)
+    center = sanitizer.delete(:center)
     essential = {atome_id: atome_id}.merge({type: type}).merge({render: render})
     #  we create the essential properties of the atome
     create(essential)
@@ -30,7 +31,9 @@ class Atome
       {id: sanitizer[:id]}.merge(sanitizer)
     end
     # we change sanitizer hash order so the content property that trigger the rendering is placed at the end
+    # and finally the center that must know the  content to be able to the center the object
     sanitizer[:content] = content
+    sanitizer[:center] = center
     set sanitizer
   end
 

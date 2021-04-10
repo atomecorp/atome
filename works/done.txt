@@ -1,3 +1,10 @@
+- bug :
+      code_editor_font_size=12
+      c=circle({size: 33})
+      c2=circle({size: 33, x: 69})
+      t=c.text({content: "-", center: true, color: :black})
+      t2=c2.text({content: "+", center: true, color: :black, x: 69})
+:debug center method : center property is put at the end of the hash to be able to center object at creation time
 - ide_text_size
 - Video recording
 - urgent automatic generation of id and place id just after the atome_id at atome creation
