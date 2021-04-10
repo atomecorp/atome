@@ -42,4 +42,15 @@ module PropertyHtml
       content(content, false)
     end
   end
+
+  def record_html(params)
+    if params == :stop
+      jq_get(atome_id).unbind(:mousemove)
+    else
+      jq_get(atome_id).on(:mousemove) do |evt|
+        proc = params[:proc]
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    end
+  end
 end
