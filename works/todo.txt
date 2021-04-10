@@ -1,4 +1,6 @@
 Bugs : find a solution for parent affecting the :view
+- value exchange between properties ex:  b.blur=c.color + reflexion on how tools handle this
+-  esay install (on line of command) +atome create my app
 - check require with code editor
 - add color theme to code editor
 - play events callbacks

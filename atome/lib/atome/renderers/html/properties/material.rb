@@ -72,9 +72,22 @@ module PropertyHtml
                " "
              end
     if type == :text || type == :image
-      jq_get(atome_id).css("filter", "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")")
+      filter = jq_get(atome_id).css('filter')
+      if  filter == "none"
+        prev_prop=""
+      else
+        prev_prop= "#{filter} "
+      end
+      jq_get(atome_id).css('filter', prev_prop  + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")")
     else
-      jq_get(atome_id).css("box-shadow", x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert)
+      # new below
+      prev_prop = jq_get(atome_id).css('box-shadow')
+      if prev_prop == "none"
+        prev_prop=""
+      else
+        prev_prop = "#{prev_prop}, "
+      end
+      jq_get(atome_id).css("box-shadow", prev_prop+x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert)
     end
   end
 end

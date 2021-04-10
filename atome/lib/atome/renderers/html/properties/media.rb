@@ -31,5 +31,4 @@ module PropertyHtml
       end
     end
   end
-
 end

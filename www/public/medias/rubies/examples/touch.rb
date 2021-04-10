@@ -7,7 +7,7 @@ b.touch({ option: :down }) do
 end
 t=text({content: "kill touch\non box"})
 t.touch do
-  b.touch({ option: :stop })
+  b.touch({remove: :true })
 end
 
 c = circle({ x: 33, y: 96, text: { content: "on mouse up", center: true, color: :black, size: 12 } })

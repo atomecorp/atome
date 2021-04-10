@@ -19,7 +19,7 @@ module PropertyHtml
   def preset_html(value)
     value
   end
-
+  #
   def edit_html(value)
     if value == true
       jq_get(atome_id).attr("contenteditable", "true")
@@ -52,5 +52,11 @@ module PropertyHtml
         proc.call(evt) if proc.is_a?(Proc)
       end
     end
+  end
+
+  def select_html(params)
+    alert "selected"
+    jq_get(atome_id).css("border","1px dashed red")
+    jq_get(atome_id).selectable
   end
 end

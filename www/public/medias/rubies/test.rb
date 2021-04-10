@@ -1,1 +1,1 @@
-box(x: 350, color: :orange)
+box(center: true, color: :orange, smooth: 6)
