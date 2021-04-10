@@ -1,5 +1,6 @@
 Bugs : find a solution for parent affecting the :view
-- animation
+- check require with code editor
+- add color theme to code editor
 - play events callbacks
 - youtube integration
 - audio recording
