@@ -1,13 +1,11 @@
-
-
 animator = {
     is_mobile: function () {
         atome.jsIsMobile();
     },
     animation: function (value) {
-        let target=Opal.Object.$get(value.target);
-        let target_id=target.atome_id;
-        let objectType=target.type;
+        let target = Opal.Object.$get(value.target);
+        let target_id = target.atome_id;
+        let objectType = target.type;
         let start = value.start;
         let end = value.end;
         let duration = value.duration;
