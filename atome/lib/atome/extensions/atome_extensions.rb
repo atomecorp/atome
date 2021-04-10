@@ -115,7 +115,7 @@ def read(filename, &proc)
 end
 
 def version
-  "v:0.015"
+  "v:0.017"
 end
 
 def notification(message, duration)
