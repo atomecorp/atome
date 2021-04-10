@@ -124,3 +124,46 @@ def notification(message, duration)
     notification.delete
   end
 end
+
+def animate(params)
+  if params[:start][:blur]
+    value_found = params[:start][:blur]
+    params[:start][:filter] = "blur(#{value_found}px)"
+    params[:start].delete(:blur)
+  end
+  if params[:end][:blur]
+    value_found = params[:end][:blur]
+    params[:end][:filter] = "blur(#{value_found}px)"
+    params[:end].delete(:blur)
+  end
+  if params[:start][:smooth]
+    value_found = params[:start][:smooth]
+    params[:start][:borderRadius] = value_found
+    params[:start].delete(:smooth)
+  end
+  if params[:end][:smooth]
+    value_found = params[:end][:smooth]
+    params[:end][:borderRadius] = value_found
+    params[:end].delete(:smooth)
+  end
+
+  if params[:start][:color]
+    value_found = params[:start][:color]
+    params[:start][:background] = value_found
+    params[:start].delete(:color)
+  end
+  if params[:end][:color]
+    value_found = params[:end][:color]
+    params[:end][:background] = value_found
+    params[:end].delete(:color)
+  end
+  ATOME.animate_html(params)
+end
+
+def animate=(params)
+  animate(params)
+end
+
+def anim(params)
+  animate(params)
+end

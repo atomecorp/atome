@@ -55,4 +55,10 @@ module HtmlHelpers
 
   end
 
+
+  # anim
+  def animate_html(params)
+    JSUtils.animator(params)
+  end
+
 end

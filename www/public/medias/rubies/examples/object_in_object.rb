@@ -10,4 +10,4 @@ c.drag(true) do |evt|
   b.color(:green)
 end
 
-box({color: :orange, center: true, text: {content: :hello, color: :yellow, center: {reference: :parent, axis: :y}}})
+box({color: :orange, center: true, text: {content: :hello, color: :yellow, center: true}})

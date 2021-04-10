@@ -38,10 +38,15 @@ class Quark
   end
 
   def [](option)
-    required_atome = read[option]
+    if option.instance_of?(Integer) || option.instance_of?(Range)
+      required_atome = read[option]
+    else
+      # an atome_id is passed we look for it's index and retrieve the atome
+      index= @property.index(option)
+      required_atome = read[index]
+    end
     Quark.new(required_atome)
   end
-
 
   def each(&proc)
     @property.each do |property|

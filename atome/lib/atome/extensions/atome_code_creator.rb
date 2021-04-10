@@ -12,7 +12,7 @@ def code(value = {atome_id: identity, content: ""})
 
   # we create the code editor container
   container = box(container_preset)
-  container.box({x:0, x: 0, width: "100%", height: handle_size, color: :black, atome_id: "handler_"+ide_atome_id})
+  container.box({x:0, y: 0, width: "100%", height: handle_size, color: :black, atome_id: "handler_"+ide_atome_id})
   code_editor = container.box(editor_value)
   code_editor.type(:machine)
   #code_editor.selector({machine: :code_editor})
