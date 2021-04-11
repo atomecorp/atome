@@ -109,3 +109,4 @@ window.ondrop = function (e) {
 function message_server(type, message) {
     send_message(type, message);
 }
+

@@ -103,7 +103,12 @@ def clear(value)
 
 end
 
+def atome_require file
+  alert "the file '#{file}' is required"
+end
+
 def compile(code)
+  code=code.gsub("require ","atome_require ")
   eval(code)
 end
 

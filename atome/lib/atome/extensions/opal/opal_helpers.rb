@@ -29,4 +29,3 @@ module JSUtils
   end
 
 end
-
