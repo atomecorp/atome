@@ -6,7 +6,7 @@ def run_demo(path)
 end
 
 def demo_navigator(demo_list, index)
-  text({content: demo_list.keys[index], color: :white, fixed: true, yy:3, x: 3})
+  text({content: "#{index} : "+demo_list.keys[index], color: :white, fixed: true, yy:3, x: 3})
   next_example = demo_list.keys[index + 1]
   previous_example = demo_list.keys[index - 1]
   back = text({ content: :demos, xx: 20, z:300})
@@ -39,7 +39,7 @@ end
 def demo_reel(demo_list)
   clear(:view)
   demo_list.each_with_index do |demo, index|
-    the_code = text({content: demo[0], y: 20 * index, size: 16})
+    the_code = text({content:"#{index} : "+ demo[0], y: 20 * index, size: 16})
     the_code.touch do
       run_demo(demo[1])
       demo_navigator(demo_list, index)

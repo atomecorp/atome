@@ -16,21 +16,24 @@ class Atome
   # atome creation
   def initialize(properties = {})
     # the hash below add the missing properties without creating a condition
-    sanitizer = {atome_id: identity, render: true, type: :particle, content: {}}.merge(properties)
+    sanitizer = { atome_id: identity, render: true, type: :particle, content: {}, selector: {}, id: "a_#{object_id}" }.merge(properties)
     atome_id = sanitizer.delete(:atome_id)
     type = sanitizer.delete(:type)
     render = sanitizer.delete(:render)
     content = sanitizer.delete(:content)
-    essential = {atome_id: atome_id}.merge({type: type}).merge({render: render})
+    center = sanitizer.delete(:center)
+    essential = { atome_id: atome_id }.merge({ type: type }).merge({ render: render })
     #  we create the essential properties of the atome
     create(essential)
     # now the basic atome is created we can set all others properties
     # id theres an id we put it at the start of the hash
     if sanitizer[:id]
-      {id: sanitizer[:id]}.merge(sanitizer)
+      { id: sanitizer[:id] }.merge(sanitizer)
     end
     # we change sanitizer hash order so the content property that trigger the rendering is placed at the end
+    # and finally the center that must know the  content to be able to the center the object
     sanitizer[:content] = content
+    sanitizer[:center] = center
     set sanitizer
   end
 

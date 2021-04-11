@@ -27,6 +27,38 @@ class Event
     `#{@native}.originalEvent.touches[#{touch_nb}].pageY`
   end
 
+  def offset_x=(value)
+    @offset_x = value
+  end
+
+  def offset_x
+    @offset_x
+  end
+
+  def offset_y=(value)
+    @offset_y = value
+  end
+
+  def offset_y
+    @offset_y
+  end
+
+  def start=(value)
+    @drag_star = value
+  end
+
+  def start
+    @drag_star
+  end
+
+  def stop=(value)
+    @drag_stop = value
+  end
+
+  def stop
+    @drag_stop
+  end
+
 end
 
 module Events

@@ -1,96 +1,145 @@
 module PropertyHtml
   def touch_html(value)
-    # value = value.read
-    proc = value[:proc]
-    option = value[:option]
-    case option
-    when :stop
+    if value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
-    when :down
-      jq_get(atome_id).on("touchstart mousedown") do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
-    when :up
-      jq_get(atome_id).on("touchend mouseup") do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
-    when :long
-      jq_get(atome_id).on("touchstart mousedown") do |evt|
-        @trig = true
-        wait 1.2 do
-          if @trig
-            proc.call(evt) if proc.is_a?(Proc)
+    else
+      proc = value[:proc]
+      option = value[:option]
+      case option
+      when :down
+        jq_get(atome_id).on("touchstart mousedown") do |evt|
+          proc.call(evt) if proc.is_a?(Proc)
+        end
+      when :up
+        jq_get(atome_id).on("touchend mouseup") do |evt|
+          proc.call(evt) if proc.is_a?(Proc)
+        end
+      when :long
+        jq_get(atome_id).on("touchstart mousedown") do |evt|
+          @trig = true
+          wait 1.2 do
+            if @trig
+              proc.call(evt) if proc.is_a?(Proc)
+            end
           end
         end
-      end
-      jq_get(atome_id).on("touchend mouseup") do
-        @trig = false
-      end
-    else
-      jq_get(atome_id).on(:click) do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
+        jq_get(atome_id).on("touchend mouseup") do
+          @trig = false
+        end
+      else
+        jq_get(atome_id).on(:click) do |evt|
+          proc.call(evt) if proc.is_a?(Proc)
+        end
       end
     end
+
   end
 
   def drag_html(value)
-    # value = value.read
     if value == true
       value = {}
       value[:lock] = ""
     end
     proc = value[:proc]
     jq_object = jq_get(atome_id)
+    grid = {}
+    if value[:grid]
+      grid = { grid: [value[:grid][:x], value[:grid][:y]] }
+    end
+    containment = {}
+    if value[:containment]
+      case value[:containment]
+      when :view
+        containment = { containment: "document" }
+      when Hash
+        default = { x: 96, xx: 96, y: 96, yy: 96 }
+        params = default.merge(value[:containment])
+        containment = { containment: [params[:x], params[:y], params[:xx], params[:yy]] }
+      else
+        containment = { containment: "parent" }
+      end
+    end
     lock = case value[:lock]
-           when :parent
-             {containment: "parent"}
            when :x
-             {axis: "y"}
+             { axis: "y" }
            when :y
-             {axis: "x"}
+             { axis: "x" }
            else
              {}
            end
-    jq_object.draggable(lock)
+    if value[:handle]
+      handle = { handle: "#" + value[:handle] }
+    else
+      handle = {}
+    end
+    fixed={}
+    if value[:fixed]
+      fixed={opacity: 0.0000000000001, helper: :clone}
+    end
+
+    options = lock.merge(handle).merge(containment).merge(grid).merge(fixed)
+    jq_object.draggable(options)
+    x_position_start = 0
+    y_position_start = 0
+    jq_object.on(:dragstart) do |evt|
+      evt.start= true
+      evt.stop= false
+      evt.offset_x = 0
+      evt.offset_y = 0
+      jq_get(atome_id).css("left", "#{x}px")
+      jq_get(atome_id).css("right", "auto")
+      jq_get(atome_id).css("top", "#{y}px")
+      jq_get(atome_id).css("bottom", "auto")
+       x_position_start = evt.page_x
+       y_position_start = evt.page_y
+      proc.call(evt) if proc.is_a?(Proc)
+    end
     jq_object.on(:drag) do |evt|
+      evt.start = false
+      evt.stop = false
+      x_pos = evt.page_x - x_position_start
+      y_pos = evt.page_y - y_position_start
+      evt.offset_x = x_pos
+      evt.offset_y = y_pos
       # we send the position to the proc
       proc.call(evt) if proc.is_a?(Proc)
       # we update the position of the atome
       update_position
     end
-    jq_object.on(:dragstart) do |evt|
-      jq_get(atome_id).css("left", "#{x}px")
-      jq_get(atome_id).css("right", "auto")
-      jq_get(atome_id).css("top", "#{y}px")
-      jq_get(atome_id).css("bottom", "auto")
-    end
-    jq_object.on(:dragstop) do
+    jq_object.on(:dragstop) do |evt|
+      x_pos = jq_object.offset.left - x_position_start
+      y_pos = jq_object.offset.top - y_position_start
+      evt.offset_x = x_pos
+      evt.offset_y = y_pos
+      evt.start = false
+      evt.stop = true
       change_position_origin
+      proc.call(evt) if proc.is_a?(Proc)
     end
   end
 
   def key_html(value)
-    # value = value.read
     proc = value[:proc]
     option = value[:option]
-    ## the line below is important for the object to get focus if not keypress wont be triggered
+    # the lines below is important for the object to get focus if not keypress wont be triggered
     atome = grab(atome_id)
     atome.edit(true)
     if option == :down
       jq_get(atome_id).on("keydown") do |evt|
         proc.call(evt) if proc.is_a?(Proc)
-        #evt.prevent_default
+        evt.prevent_default
       end
     elsif option == :up
       jq_get(atome_id).on("keyup") do |evt|
         proc.call(evt) if proc.is_a?(Proc)
+        evt.prevent_default
       end
     elsif option == :stop
       jq_get(atome_id).unbind("keypress")
-      atome.edit(:false)
+      atome.edit(false)
     else
       jq_get(atome_id).on(:keypress) do |evt|
-        #evt.prevent_default
+        evt.prevent_default
         proc.call(evt) if proc.is_a?(Proc)
       end
     end

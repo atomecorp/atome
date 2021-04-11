@@ -9,7 +9,7 @@ def atome_methods
   spatial = %i[x xx y yy z center rotate position alignment]
   media = %i[content video box circle text image audio info example]
   inputs = %i[camera microphone midi keyboard]
-  utility = %i[edit record enliven selector render preset monitor]
+  utility = %i[edit record enliven selector render preset monitor select]
   material = %i[color opacity border overflow]
   { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event }
 end

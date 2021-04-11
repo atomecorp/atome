@@ -1,16 +1,15 @@
 class DrawingHelper {
     constructor(width, height, drawingEventListener) {
+        // $.getScript("js/third_parties/rendering_engines/createjs.min.js", function () {});
+        // $.getScript("js/third_parties/rendering_engines/zim.min.js", function () {});
         this.width = width;
         this.height = height;
-
         this.drawingEventListener = drawingEventListener;
-
         this.modeType = {
             Use: 'Use',
             Select: 'Select',
             Draw: 'Draw'
         };
-
         this.mode = this.modeType.Use;
 
         this.frame = new Frame("view",
@@ -129,6 +128,8 @@ class DrawingHelper {
             this.drawingEventListener.onConnected();
         });
     }
+
+
 
     setMode(mode) {
         console.log("mode set to " + mode);

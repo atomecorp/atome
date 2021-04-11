@@ -103,7 +103,12 @@ def clear(value)
 
 end
 
+def atome_require file
+  alert "the file '#{file}' is required"
+end
+
 def compile(code)
+  code=code.gsub("require ","atome_require ")
   eval(code)
 end
 
@@ -115,7 +120,7 @@ def read(filename, &proc)
 end
 
 def version
-  "v:0.015"
+  "v:0.017"
 end
 
 def notification(message, duration)
@@ -123,4 +128,47 @@ def notification(message, duration)
   ATOME.send(:wait, duration) do
     notification.delete
   end
+end
+
+def animate(params)
+  if params[:start][:blur]
+    value_found = params[:start][:blur]
+    params[:start][:filter] = "blur(#{value_found}px)"
+    params[:start].delete(:blur)
+  end
+  if params[:end][:blur]
+    value_found = params[:end][:blur]
+    params[:end][:filter] = "blur(#{value_found}px)"
+    params[:end].delete(:blur)
+  end
+  if params[:start][:smooth]
+    value_found = params[:start][:smooth]
+    params[:start][:borderRadius] = value_found
+    params[:start].delete(:smooth)
+  end
+  if params[:end][:smooth]
+    value_found = params[:end][:smooth]
+    params[:end][:borderRadius] = value_found
+    params[:end].delete(:smooth)
+  end
+
+  if params[:start][:color]
+    value_found = params[:start][:color]
+    params[:start][:background] = value_found
+    params[:start].delete(:color)
+  end
+  if params[:end][:color]
+    value_found = params[:end][:color]
+    params[:end][:background] = value_found
+    params[:end].delete(:color)
+  end
+  ATOME.animate_html(params)
+end
+
+def animate=(params)
+  animate(params)
+end
+
+def anim(params)
+  animate(params)
 end

@@ -1,9 +1,14 @@
-Bugs : find a solution for parent altering the view
-- animation
-- Video audio recording
+Bugs : find a solution for parent affecting the :view
+- bugs key afte is unr key demo code editor is unusable
+- check monitoring on all object, on a specific property, etc..
+- implement display mode : list, bloc, natural, ...
+- value exchange between properties ex:  b.blur=c.color + reflexion on how tools handle this
+-  esay install (on line of command) +atome create my app
+- check require with code editor
+- add color theme to code editor
 - play events callbacks
 - youtube integration
-- ide_text_size
+- audio recording
 - documentation end users, framework users and devellopers also add how to create new type new methods and new tools
 - write data flow of video player and check if all other type works the same!
 - keycode to keychar

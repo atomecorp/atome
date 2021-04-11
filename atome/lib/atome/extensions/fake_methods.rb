@@ -19,3 +19,7 @@ end
 def scroll(value = nil)
   value
 end
+
+def animation
+
+end

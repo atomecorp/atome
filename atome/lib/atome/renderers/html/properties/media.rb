@@ -2,6 +2,7 @@ module PropertyHtml
   def content_html(value = "", type_mutation = false)
     if render
       if type == :text
+        #alert grab(parent.read.last).selector[:machine]
         value = value.to_s.gsub("\n", "<br>")
         if type_mutation
           # we use the color scheme of the color method to display the text correctly
@@ -30,5 +31,4 @@ module PropertyHtml
       end
     end
   end
-
 end

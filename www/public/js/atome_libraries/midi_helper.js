@@ -1,7 +1,9 @@
 class MidiHelper {
     constructor(midiEventListener) {
-        this.midiEventListener = midiEventListener;
+        $.getScript("js/third_parties/audio_engines/webmidi.min.js", function () {
 
+        });
+        this.midiEventListener = midiEventListener;
         this.interfaces_out = [];
         this.interfaces_in = [];
 

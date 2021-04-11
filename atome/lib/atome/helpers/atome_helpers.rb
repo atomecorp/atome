@@ -123,4 +123,8 @@ module AtomeHelpers
     fixed_html(value)
   end
 
+  # def find(query)
+  #   child
+  # end
+
 end

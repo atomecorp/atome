@@ -24,5 +24,8 @@ module JSUtils
     @opal_parser
   end
 
-end
+  def self.animator(params)
+    $$.animator.animation(params)
+  end
 
+end
