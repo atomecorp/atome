@@ -3,6 +3,7 @@ let drawingHelper;
 let midiHelper;
 let videoHelper;
 let audioHelper;
+let animationHelper;
 
 let databaseEventListener = {
     onConnected: function (event) {
@@ -23,7 +24,7 @@ let fileSystemPermissionEventListener = {
 let drawingEventListener = {
     onConnected: function () {
         console.log('Drawing initialized successfully');
-        drawingHelper.setMode(drawingHelper.modeType.Draw);
+            drawingHelper.setMode(drawingHelper.modeType.Draw);
     }
 };
 
@@ -52,6 +53,10 @@ document.addEventListener("deviceready", function () {
     //fileHelper
     fileHelper = new FileHelper(5 * 1024 * 1024, fileSystemPermissionEventListener);
 }, false);
+
+
+//AnimationHelper
+animationHelper = new AnimationHelper();
 
 //drawingHelper
 // drawingHelper = new DrawingHelper(1024, 768, drawingEventListener);
@@ -91,15 +96,15 @@ window.ondrop = function (e) {
 
 // dynamic loading of js script
 // we test ig the server respond, if so we load the websocket library
-var p = new Ping();
-p.ping("https://github.com", function (err, data) {
-    if (err) {
-        // server not ready
-    } else {
-        // $.getScript("js/atome_libraries/web_socket_helper.js", function () {
-        // });
-    }
-});
+// var p = new Ping();
+// p.ping("https://github.com", function (err, data) {
+//     if (err) {
+//         server not ready
+//     } else {
+//         $.getScript("js/atome_libraries/web_socket_helper.js", function () {
+//         });
+//     }
+// });
 
 function message_server(type, message) {
     send_message(type, message);

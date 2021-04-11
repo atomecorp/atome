@@ -1,5 +1,6 @@
 class AudioHelper{
     constructor() {
+        $.getScript("js/third_parties/audio_engines/tone.min.js", function () {});
         this.audioEventListener = audioEventListener;
     }
 

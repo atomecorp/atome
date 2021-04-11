@@ -1,4 +1,5 @@
 Bugs : find a solution for parent affecting the :view
+- implement display mode : list, bloc, natural, ...
 - value exchange between properties ex:  b.blur=c.color + reflexion on how tools handle this
 -  esay install (on line of command) +atome create my app
 - check require with code editor

@@ -36,48 +36,85 @@ module PropertyHtml
   end
 
   def drag_html(value)
-    # value = value.read
     if value == true
       value = {}
       value[:lock] = ""
     end
     proc = value[:proc]
     jq_object = jq_get(atome_id)
+    grid = {}
+    if value[:grid]
+      grid = { grid: [value[:grid][:x], value[:grid][:y]] }
+    end
+    containment = {}
+    if value[:containment]
+      case value[:containment]
+      when :view
+        containment = { containment: "document" }
+      when Hash
+        default = { x: 96, xx: 96, y: 96, yy: 96 }
+        params = default.merge(value[:containment])
+        containment = { containment: [params[:x], params[:y], params[:xx], params[:yy]] }
+      else
+        containment = { containment: "parent" }
+      end
+    end
     lock = case value[:lock]
-           when :parent
-             {containment: "parent"}
            when :x
-             {axis: "y"}
+             { axis: "y" }
            when :y
-             {axis: "x"}
+             { axis: "x" }
            else
              {}
            end
     if value[:handle]
-      handle = {handle: "#" + value[:handle]}
+      handle = { handle: "#" + value[:handle] }
     else
       handle = {}
     end
+    fixed={}
+    if value[:fixed]
+      fixed={opacity: 0.0000000000001, helper: :clone}
+    end
 
-    options = lock.merge(handle)
+    options = lock.merge(handle).merge(containment).merge(grid).merge(fixed)
     jq_object.draggable(options)
-    #jq_object.draggable({handle: "#"+handle, axis: "x"})
-
-
+    x_position_start = 0
+    y_position_start = 0
+    jq_object.on(:dragstart) do |evt|
+      evt.start= true
+      evt.stop= false
+      evt.offset_x = 0
+      evt.offset_y = 0
+      jq_get(atome_id).css("left", "#{x}px")
+      jq_get(atome_id).css("right", "auto")
+      jq_get(atome_id).css("top", "#{y}px")
+      jq_get(atome_id).css("bottom", "auto")
+       x_position_start = evt.page_x
+       y_position_start = evt.page_y
+      proc.call(evt) if proc.is_a?(Proc)
+    end
     jq_object.on(:drag) do |evt|
+      evt.start = false
+      evt.stop = false
+      x_pos = evt.page_x - x_position_start
+      y_pos = evt.page_y - y_position_start
+      evt.offset_x = x_pos
+      evt.offset_y = y_pos
       # we send the position to the proc
       proc.call(evt) if proc.is_a?(Proc)
       # we update the position of the atome
       update_position
     end
-    jq_object.on(:dragstart) do |evt|
-      jq_get(atome_id).css("left", "#{x}px")
-      jq_get(atome_id).css("right", "auto")
-      jq_get(atome_id).css("top", "#{y}px")
-      jq_get(atome_id).css("bottom", "auto")
-    end
-    jq_object.on(:dragstop) do
+    jq_object.on(:dragstop) do |evt|
+      x_pos = jq_object.offset.left - x_position_start
+      y_pos = jq_object.offset.top - y_position_start
+      evt.offset_x = x_pos
+      evt.offset_y = y_pos
+      evt.start = false
+      evt.stop = true
       change_position_origin
+      proc.call(evt) if proc.is_a?(Proc)
     end
   end
 

@@ -1,3 +1,10 @@
+class AnimationHelper{
+    constructor() {
+        $.getScript("js/third_parties/rendering_engines/popmotion.global.min.js", function () {
+        });
+    }
+}
+
 animator = {
     is_mobile: function () {
         atome.jsIsMobile();
