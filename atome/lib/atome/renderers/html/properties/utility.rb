@@ -46,6 +46,8 @@ module PropertyHtml
   def record_html(params)
     if params == :stop
       jq_get(atome_id).unbind(:mousemove)
+      jq_get(atome_id).unbind(:mousedown)
+      jq_get(atome_id).unbind(:mouseup)
     else
       jq_get(atome_id).on(:mousemove) do |evt|
         proc = params[:proc]

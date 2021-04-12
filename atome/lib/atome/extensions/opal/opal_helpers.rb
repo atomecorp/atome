@@ -28,4 +28,8 @@ module JSUtils
     $$.animator.animation(params)
   end
 
+  def self.get_object_under_pointer(evt)
+    ` atome.jsGet_items_under_pointer(#{evt.to_n});`
+  end
+
 end
