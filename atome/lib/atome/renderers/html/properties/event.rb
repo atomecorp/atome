@@ -72,45 +72,45 @@ module PropertyHtml
     else
       handle = {}
     end
-    fixed={}
+    fixed = {}
     if value[:fixed]
-      fixed={opacity: 0.0000000000001, helper: :clone}
+      fixed = { opacity: 0.0000000000001, helper: :clone }
     end
 
     options = lock.merge(handle).merge(containment).merge(grid).merge(fixed)
     jq_object.draggable(options)
     x_position_start = 0
     y_position_start = 0
+    offset_x = 0
+    offset_y = 0
     jq_object.on(:dragstart) do |evt|
-      evt.start= true
-      evt.stop= false
-      evt.offset_x = 0
-      evt.offset_y = 0
+      evt.start = true
+      evt.stop = false
+      evt.offset_x = offset_x
+      evt.offset_y = offset_y
       jq_get(atome_id).css("left", "#{x}px")
       jq_get(atome_id).css("right", "auto")
       jq_get(atome_id).css("top", "#{y}px")
       jq_get(atome_id).css("bottom", "auto")
-       x_position_start = evt.page_x
-       y_position_start = evt.page_y
+      x_position_start = evt.page_x
+      y_position_start = evt.page_y
       proc.call(evt) if proc.is_a?(Proc)
     end
     jq_object.on(:drag) do |evt|
       evt.start = false
       evt.stop = false
-      x_pos = evt.page_x - x_position_start
-      y_pos = evt.page_y - y_position_start
-      evt.offset_x = x_pos
-      evt.offset_y = y_pos
+      offset_x = evt.page_x - x_position_start
+      offset_y = evt.page_y - y_position_start
+      evt.offset_x = offset_x
+      evt.offset_y = offset_y
       # we send the position to the proc
       proc.call(evt) if proc.is_a?(Proc)
       # we update the position of the atome
       update_position
     end
     jq_object.on(:dragstop) do |evt|
-      x_pos = jq_object.offset.left - x_position_start
-      y_pos = jq_object.offset.top - y_position_start
-      evt.offset_x = x_pos
-      evt.offset_y = y_pos
+      evt.offset_x = offset_x
+      evt.offset_y = offset_y
       evt.start = false
       evt.stop = true
       change_position_origin
@@ -127,23 +127,28 @@ module PropertyHtml
     if option == :down
       jq_get(atome_id).on("keydown") do |evt|
         proc.call(evt) if proc.is_a?(Proc)
-        evt.prevent_default
+        unless self.type == :text || self.type == :particle
+          evt.prevent_default
+        end
       end
     elsif option == :up
       jq_get(atome_id).on("keyup") do |evt|
         proc.call(evt) if proc.is_a?(Proc)
-        evt.prevent_default
+        unless self.type == :text || self.type == :particle
+          evt.prevent_default
+        end
       end
     elsif option == :stop
       jq_get(atome_id).unbind("keypress")
       atome.edit(false)
     else
       jq_get(atome_id).on(:keypress) do |evt|
-        evt.prevent_default
+        unless self.type == :text || self.type == :particle
+          evt.prevent_default
+        end
         proc.call(evt) if proc.is_a?(Proc)
       end
     end
-
   end
 
 end

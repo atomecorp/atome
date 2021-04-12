@@ -10,6 +10,34 @@ const atome = {
             mobile = "desktop";
         }
         return mobile;
+    },jsGet_items_under_pointer(e) {
+        // if (active === true) {
+        // alert (e.clientX);
+        //     $(window).click(function (e) {
+                var x = e.clientX,
+                    y = e.clientY,
+                    elementMouseIsOver = document.elementsFromPoint(x, y);
+                var collected_atomes = [];
+                for (var item in elementMouseIsOver) {
+                    element = $(elementMouseIsOver[item]);
+                    if (element.attr('id')) {
+                        collected_atomes.push(element.attr('id'));
+                    }
+                }
+                var element_to_remove = ["view", "intuition", "device", "user_device"];
+
+                element_to_remove.forEach(function (item, index, arr) {
+                    remove_item_from_Array(collected_atomes, item);
+                });
+                // alert(collected_atomes);
+                // $(window).unbind("click");
+                return collected_atomes;
+            // });
+        // }
+        // else {
+        //     $(window).unbind("click");
+        // }
+
     },
 
     jsReader: function (filename, proc) {
@@ -88,3 +116,33 @@ const atome = {
         });
     }
 };
+
+
+
+// function get_under_pointer(active) {
+//     if (active === true) {
+//         $(window).click(function (e) {
+//             var x = e.clientX,
+//                 y = e.clientY,
+//                 elementMouseIsOver = document.elementsFromPoint(x, y);
+//             var collected_atomes = [];
+//             for (var item in elementMouseIsOver) {
+//                 element = $(elementMouseIsOver[item]);
+//                 if (element.attr('id')) {
+//                     collected_atomes.push(element.attr('id'));
+//                 }
+//             }
+//             var element_to_remove = ["view", "intuition", "device", "user_device"];
+//
+//             element_to_remove.forEach(function (item, index, arr) {
+//                 remove_item_from_Array(collected_atomes, item);
+//             });
+//             alert(collected_atomes);
+//             return collected_atomes;
+//         });
+//     } else {
+//         $(window).unbind("click");
+//     }
+// }
+
+

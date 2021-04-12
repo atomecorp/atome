@@ -8,6 +8,10 @@ class Element
     `videoHelper.addVideoPlayer(#{parent}, false)`
   end
 
+  def off(value)
+    ` $(window).off(#{value});`
+  end
+
 end
 
 class Event
