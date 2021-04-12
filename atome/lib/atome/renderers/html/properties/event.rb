@@ -149,7 +149,6 @@ module PropertyHtml
         proc.call(evt) if proc.is_a?(Proc)
       end
     end
-
   end
 
 end
