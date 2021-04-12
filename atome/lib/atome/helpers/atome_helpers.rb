@@ -124,7 +124,30 @@ module AtomeHelpers
   end
 
   # def find(query)
+  #   alert "poil"
   #   child
   # end
+
+
+  def eden_search(query)
+    case query[:type]
+    when :image
+      Universe.images[query[:name]]
+    when :video
+      Universe.videos[query[:name]]
+    when :audio
+      Universe.audios[query[:name]]
+    else
+      query
+    end
+  end
+  
+  def find(query)
+    if query[:scope] == :eden
+      eden_search(query)
+    else
+      "a look at eDen"
+    end
+  end
 
 end

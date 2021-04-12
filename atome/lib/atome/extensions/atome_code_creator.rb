@@ -2,7 +2,9 @@ def code(value = {atome_id: identity, content: ""})
   JSUtils.load_opal_parser
   container_id = value[:atome_id]
   ide_atome_id = container_id.to_s + "_code_editor"
-  content = value[:content]
+  # fixme : we have todo .gsub("atome_require","require") twice for some reasons!!!
+  content_found = value[:content].gsub("atome_require","require")
+  content_found= content_found.gsub("atome_require","require")
   handle_size=24
   container_preset ={atome_id: container_id, parent: :intuition,
                                    width: 500, height: 300,
@@ -25,7 +27,7 @@ def code(value = {atome_id: identity, content: ""})
     container.width = code_editor.width
     container.height = code_editor.height
   end
-  ATOME.load_codemirror(ide_atome_id, content)
+  ATOME.load_codemirror(ide_atome_id, content_found)
   run = container.circle({width: 20, height: 20, x: 3, y: 3})
   close = container.box({width: 20, height: 20, x: 30, y: 3, color: :gray})
   run.touch do
