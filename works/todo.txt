@@ -1,4 +1,6 @@
 Bugs : find a solution for parent affecting the :view
+- add help and example for all api
+- every api must have it's list of potions and value with it's unit ( for future conversion)
 - bugs key afte is unr key demo code editor is unusable
 - check monitoring on all object, on a specific property, etc..
 - implement display mode : list, bloc, natural, ...

@@ -58,6 +58,13 @@ html, body {
     -webkit-overflow-scrolling: touch;
 }
 
+.ui-selected{
+    border: #00bb00 solid 3px;
+}
+
+.ui-selecting{
+    border: orange solid 3px;
+}
 
 .selected {
     outline: 2px dashed white;
