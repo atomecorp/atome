@@ -1,7 +1,9 @@
 Bugs : find a solution for parent affecting the :view
+- video shadow badly placed
+- find a solution to convert type sctipt to js
 - add help and example for all api
 - every api must have it's list of potions and value with it's unit ( for future conversion)
-- bugs key afte is unr key demo code editor is unusable
+- bugs key after the key demo, then the code editor is unusable
 - check monitoring on all object, on a specific property, etc..
 - implement display mode : list, bloc, natural, ...
 - value exchange between properties ex:  b.blur=c.color + reflexion on how tools handle this
