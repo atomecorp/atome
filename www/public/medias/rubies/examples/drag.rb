@@ -1,6 +1,8 @@
 # drag
 
 t=text({content:  "drag the grey box!", x: 33, y: 33 })
+t2=text({content:  "click me to destroy drag on the moto", x: 33, yy: 96 })
+
 b=box({center: true})
 b.drag(true) do |evt|
   b.rotate(evt.page_x)
@@ -53,4 +55,7 @@ boat.drag({ fixed: true }) do |evt|
   img.blur(evt.offset_x/66)
   img.size(evt.offset_x/6+132)
   t.content("drag the boat will change tha property of the moto")
+end
+t2.touch do
+  img.drag(:destroy)
 end

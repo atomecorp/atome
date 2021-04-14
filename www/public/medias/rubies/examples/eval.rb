@@ -1,6 +1,5 @@
 # eval example
 
-# require "opal-parser"
 eval("box(x: 96,y: 96, smooth: 6, color: :orange)")
 begin
   eval 'x = {id: 1'

@@ -9,27 +9,6 @@ def result(params)
   text("msg from atome_extension line 9 : #{result}")
 end
 
-# def eden_search(query)
-#   case query[:type]
-#   when :image
-#     Universe.images[query[:name]]
-#   when :video
-#     Universe.videos[query[:name]]
-#   when :audio
-#     Universe.audios[query[:name]]
-#   else
-#     query
-#   end
-# end
-
-# def find(query)
-#   if query[:scope] == :eden
-#     eden_search(query)
-#   else
-#     "a look at eDen"
-#   end
-# end
-
 def identity
   "a_" + object_id.to_s + "_" + Atome.atomes.length.to_s + "_" + Time.now.strftime("%Y%m%d%H%M%S")
 end

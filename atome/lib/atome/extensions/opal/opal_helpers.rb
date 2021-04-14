@@ -18,6 +18,7 @@ module JSUtils
 
   def self.load_opal_parser
     `$.getScript('js/dynamic_libraries/opal/opal_parser.js', function (data, textStatus, jqxhr) {#{@opal_parser = true}})`
+    require "opal-parser"
   end
 
   def self.opal_parser_ready
@@ -29,7 +30,7 @@ module JSUtils
   end
 
   def self.get_object_under_pointer(evt)
-    ` atome.jsGet_items_under_pointer(#{evt.to_n});`
+    ` atome.jsGet_items_under_pointer(#{evt.to_n})`
   end
 
 end

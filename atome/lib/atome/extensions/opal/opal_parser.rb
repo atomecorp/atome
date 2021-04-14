@@ -1,1 +1,1 @@
-require "opal-parser"
+# require "opal-parser"

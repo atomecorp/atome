@@ -9,7 +9,7 @@ class Element
   end
 
   def off(value)
-    ` $(window).off(#{value});`
+    ` $(window).off(#{value})`
   end
 
 end
