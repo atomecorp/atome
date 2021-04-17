@@ -94,5 +94,4 @@ module PropertyHtml
       jq_get(atome_id).height
     end
   end
-
 end
