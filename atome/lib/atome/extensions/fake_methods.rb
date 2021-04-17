@@ -23,3 +23,8 @@ end
 def animation
 
 end
+
+
+def selectable
+
+end

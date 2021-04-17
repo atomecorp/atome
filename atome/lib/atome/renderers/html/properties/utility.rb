@@ -60,10 +60,31 @@ module PropertyHtml
     end
   end
 
-  def select_html(params)
-    # alert "selected"
-    # jq_get(atome_id).css("border","1px dashed red")
-    jq_get(:view).selectable
+  def selection_html
+    selected_items=Element['.ui-selected']
+    collected_items=[]
+    selected_items.each do |jq_atome|
+      collected_items << jq_atome.id
+    end
+    # alert " return all selected items: #{collected_items}"
+    ATOME.atomise(:batch, collected_items)
+    # atomise
+  end
+
+  def select_html(value)
+    if value==false
+      alert(:stop)
+    else
+      proc = value[:proc]
+      jq_get(atome_id).selectable
+      jq_get(atome_id).on(:selectablestop) do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    end
+
+
+
+
   end
 
   def convert_html( property)
@@ -75,5 +96,6 @@ module PropertyHtml
       jq_get(atome_id).height
     end
   end
+
 
 end
