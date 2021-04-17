@@ -7,14 +7,14 @@ module HtmlHelpers
     video_play(options, proc)
   end
 
-  def resize_html(value=true,&proc)
-    if value==:false
+  def resize_html(value = true, &proc)
+    if value == :false
       Element.find(JSUtils.device).off(:resize)
     else
       Element.find(JSUtils.device).resize(:resize) do
         width = jq_get(:view).css("width").sub("px", "").to_i
         height = jq_get(:view).css("height").sub("px", "").to_i
-        proc.call({width: width, height: height}) if proc.is_a?(Proc)
+        proc.call({ width: width, height: height }) if proc.is_a?(Proc)
       end
     end
   end
@@ -58,7 +58,6 @@ module HtmlHelpers
     end
 
   end
-
 
   # anim
   def animate_html(params)

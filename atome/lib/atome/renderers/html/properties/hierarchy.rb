@@ -6,5 +6,4 @@ module PropertyHtml
   def child_html(value)
     jq_get(atome_id).append(jq_get(value))
   end
-
 end

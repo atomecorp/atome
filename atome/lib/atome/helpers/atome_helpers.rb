@@ -131,11 +131,6 @@ module AtomeHelpers
     children.parent(self.atome_id)
   end
 
-  # def find(query)
-  #   alert "poil"
-  #   child
-  # end
-
   def eden_search(query)
     #fixme Universe will be a db that contain users user's media and so on, for now Universe only hold default medias
     case query[:type]

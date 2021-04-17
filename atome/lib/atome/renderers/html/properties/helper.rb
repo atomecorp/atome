@@ -23,5 +23,4 @@ module PropertyHtml
   def clear_repeat_html(value)
     clear_interval(value)
   end
-
 end

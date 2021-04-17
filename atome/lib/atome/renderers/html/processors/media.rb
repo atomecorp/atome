@@ -14,6 +14,7 @@ module ProcessorHtml
     unless height
       self.height = jq_get(atome_id).find("video").height
     end
+    jq_get(atome_id).find("video").css("height", "100%")
     jq_get(atome_id).find("video").css("width", "100%")
   end
 
@@ -34,7 +35,7 @@ module ProcessorHtml
     jq_get(atome_id).css("background-size", "100% 100%")
   end
 
-  def camera_creator_helper(value)
+  def camera_creator_helper
     `
     let mediaEventListener = {
         onReady: function (recorderHelper) {

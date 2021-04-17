@@ -71,7 +71,7 @@ module PropertyHtml
              else
                " "
              end
-    if type == :text || type == :image
+    if type == :text || type == :image || :video
       filter = jq_get(atome_id).css('filter')
       if  filter == "none"
         prev_prop=""

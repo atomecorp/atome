@@ -42,7 +42,7 @@ class Quark
       required_atome = read[option]
     else
       # an atome_id is passed we look for it's index and retrieve the atome
-      index= @property.index(option)
+      index = @property.index(option)
       required_atome = read[index]
     end
     Quark.new(required_atome)

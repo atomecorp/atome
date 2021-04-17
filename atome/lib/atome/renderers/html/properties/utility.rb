@@ -66,9 +66,7 @@ module PropertyHtml
     selected_items.each do |jq_atome|
       collected_items << jq_atome.id
     end
-    # alert " return all selected items: #{collected_items}"
     ATOME.atomise(:batch, collected_items)
-    # atomise
   end
 
   def select_html(value)
@@ -92,6 +90,8 @@ module PropertyHtml
       jq_get(atome_id).width
     when :height
       jq_get(atome_id).height
+    else
+      [jq_get(atome_id).width,jq_get(atome_id).height]
     end
   end
 end

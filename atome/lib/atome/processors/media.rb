@@ -1,5 +1,4 @@
 module Processors
-
   def media_pre_processor(type, preset, value)
     if value.instance_of?(Hash) && value[:proc]
       # if a proc is found we yield we search for child of the requested type to be treated , ex :
@@ -15,12 +14,12 @@ module Processors
       if value == true
         value = {}
       elsif value.instance_of?(String)
-        value = {content: value}
+        value = { content: value }
       end
       preset_found = grab(:preset).get(:content)
       preset_found = preset_found[preset]
       # we overload the parent to the current and finally add the value set by user
-      preset_found = preset_found.merge({parent: atome_id}).merge(value)
+      preset_found = preset_found.merge({ parent: atome_id }).merge(value)
       Atome.new(preset_found)
     end
   end

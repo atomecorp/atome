@@ -17,10 +17,8 @@ def code(value = {atome_id: identity, content: ""})
   container.box({x:0, y: 0, width: "100%", height: handle_size, color: :black, atome_id: "handler_"+ide_atome_id})
   code_editor = container.box(editor_value)
   code_editor.type(:machine)
-  #code_editor.selector({machine: :code_editor})
   code_editor.touch({option: :stop}) do |evt|
     evt
-    #evt.stop_immediate_propagation
   end
   code_editor.size({value: container_preset[:width], option: {'nw': '#nwgrip'}}) do |evt_size|
     evt_size

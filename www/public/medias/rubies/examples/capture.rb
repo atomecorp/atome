@@ -1,17 +1,11 @@
 # capture demo
 
-recorder = box({width: 30, height: 30, color: :red, x: 30, y: 166, smooth: 33})
-stop = box({width: 30, height: 30, color: :green, x: 90, y: 166, smooth: 33})
+recorder = text({content: "click to start logging",width: 30, height: 30, color: :red, x: 33, y: 96, smooth: 33})
+stop = text({content: "click to stop logging",width: 30, height: 30, color: :black, x: 33, y: 123, smooth: 33})
 starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 text({content: "try touch drag and resize on window"})
 text = text({content: "mouse pointer position and timer", y: 33})
 recorder.touch do
-  grab(:view).record(true) do |evt|
-    ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-    elapsed = ending - starting
-    pointer = "cursor move : #{evt.page_x}, #{evt.page_y} : #{elapsed}"
-    text.content = pointer
-  end
 
   grab(:view).touch({option: :down}) do |evt|
     ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -40,6 +34,13 @@ recorder.touch do
     ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     elapsed = ending - starting
     pointer = "resize the view  #{evt[:width]}, #{evt[:height]} : #{elapsed}"
+    text.content = pointer
+  end
+
+  grab(:view).record(true) do |evt|
+    ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    elapsed = ending - starting
+    pointer = "cursor move : #{evt.page_x}, #{evt.page_y} : #{elapsed}"
     text.content = pointer
   end
 
