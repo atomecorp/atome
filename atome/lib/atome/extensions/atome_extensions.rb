@@ -151,3 +151,7 @@ end
 def anim(params)
   animate(params)
 end
+
+def selection
+  ATOME.selection_html
+end

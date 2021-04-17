@@ -90,4 +90,40 @@ module PropertyHtml
       jq_get(atome_id).css("box-shadow", prev_prop+x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert)
     end
   end
+
+  def fill_html(value)
+    self.x = self.y = 0
+    if value.class == Hash
+      target = value[:target]
+      size = value[:size]
+      number = value[:number]
+    else
+      target = if value.class == Atome
+                 value
+               else
+                 get(value)
+               end
+    end
+    if size.nil?
+      size = self.size
+    end
+    width = if target.width.class == String && target.width.end_with?("%")
+              target.convert(:width)
+            else
+              target.width
+            end
+    height = if target.height.class == String && target.width.end_with?("%")
+               target.convert(:height)
+             else
+               target.height
+             end
+    jq_get(atome_id).css('width', width)
+    jq_get(atome_id).css('height', height)
+    jq_get(atome_id).css('background-repeat', 'space')
+    if number
+      size = width / number
+    else
+    end
+    jq_get(atome_id).css('background-size', size)
+  end
 end

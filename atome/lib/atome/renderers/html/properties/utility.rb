@@ -37,10 +37,10 @@ module PropertyHtml
       jq_get(atome_id).css("user-select: text", "none")
     end
 
-    jq_get(atome_id).keyup do
-      content = jq_get(atome_id).html.gsub("<br>", "\n").gsub("<div>", "\n").gsub("</div>", "").delete(";").gsub("&nbsp", " ")
-      content(content, false)
-    end
+    # jq_get(atome_id).keyup do
+    #   # content = jq_get(atome_id).html.gsub("<br>", "\n").gsub("<div>", "\n").gsub("</div>", "").delete(";").gsub("&nbsp", " ")
+    #   # content(content, false)
+    # end
   end
 
   def record_html(params)
@@ -60,9 +60,38 @@ module PropertyHtml
     end
   end
 
-  def select_html(params)
-    # alert "selected"
-    # jq_get(atome_id).css("border","1px dashed red")
-    jq_get(:view).selectable
+  def selection_html
+    selected_items = Element['.ui-selected']
+    collected_items = []
+    selected_items.each do |jq_atome|
+      collected_items << jq_atome.id
+    end
+    # alert " return all selected items: #{collected_items}"
+    ATOME.atomise(:batch, collected_items)
+    # atomise
+  end
+
+  def select_html(value)
+    if value == :destroy
+      jq_get(atome_id).selectable(:destroy)
+      elsif value == :disable
+      jq_get(atome_id).selectable(:disable)
+    else
+      proc = value[:proc]
+      jq_get(atome_id).selectable
+      jq_get(atome_id).on(:selectablestop) do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    end
+  end
+
+  def convert_html(property)
+    property = property.to_sym
+    case property
+    when :width
+      jq_get(atome_id).width
+    when :height
+      jq_get(atome_id).height
+    end
   end
 end

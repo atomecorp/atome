@@ -123,6 +123,14 @@ module AtomeHelpers
     fixed_html(value)
   end
 
+  def convert(property)
+    convert_html property
+  end
+
+  def insert(children)
+    children.parent(self.atome_id)
+  end
+
   # def find(query)
   #   alert "poil"
   #   child
