@@ -37,10 +37,10 @@ module PropertyHtml
       jq_get(atome_id).css("user-select: text", "none")
     end
 
-    jq_get(atome_id).keyup do
-      content = jq_get(atome_id).html.gsub("<br>", "\n").gsub("<div>", "\n").gsub("</div>", "").delete(";").gsub("&nbsp", " ")
-      content(content, false)
-    end
+    # jq_get(atome_id).keyup do
+    #   # content = jq_get(atome_id).html.gsub("<br>", "\n").gsub("<div>", "\n").gsub("</div>", "").delete(";").gsub("&nbsp", " ")
+    #   # content(content, false)
+    # end
   end
 
   def record_html(params)
