@@ -15,7 +15,8 @@ module PropertyHtml
       end
     when String, Symbol, Number
       jq_get(atome_id).css('filter', 'blur(' + value.to_s + 'px)')
-    when Boolean
+    else
+      ""
     end
   end
 

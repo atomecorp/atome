@@ -34,7 +34,7 @@ module ProcessorHtml
     jq_get(atome_id).css("background-size", "100% 100%")
   end
 
-  def camera_creator_helper(value)
+  def camera_creator_helper
     `
     let mediaEventListener = {
         onReady: function (recorderHelper) {

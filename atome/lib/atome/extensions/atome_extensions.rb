@@ -82,12 +82,12 @@ def clear(value)
 
 end
 
-def atome_require file
+def atome_require(file)
   alert "atome_require message i replace atome_require with require to be able to load the file '#{file}'"
 end
 
 def compile(code)
-  code=code.gsub("require ","atome_require ")
+  code = code.gsub("require ", "atome_require ")
   eval(code)
 end
 
@@ -103,7 +103,7 @@ def version
 end
 
 def notification(message, duration)
-  notification = text({content: message, color: :orange, x: 69, y: 69})
+  notification = text({ content: message, color: :orange, x: 69, y: 69 })
   ATOME.send(:wait, duration) do
     notification.delete
   end
