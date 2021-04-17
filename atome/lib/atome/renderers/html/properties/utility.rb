@@ -65,4 +65,15 @@ module PropertyHtml
     # jq_get(atome_id).css("border","1px dashed red")
     jq_get(:view).selectable
   end
+
+  def convert_html( property)
+    property = property.to_sym
+    case property
+    when :width
+      jq_get(atome_id).width
+    when :height
+      jq_get(atome_id).height
+    end
+  end
+
 end
