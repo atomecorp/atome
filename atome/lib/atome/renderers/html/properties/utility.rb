@@ -61,8 +61,8 @@ module PropertyHtml
   end
 
   def selection_html
-    selected_items=Element['.ui-selected']
-    collected_items=[]
+    selected_items = Element['.ui-selected']
+    collected_items = []
     selected_items.each do |jq_atome|
       collected_items << jq_atome.id
     end
@@ -72,8 +72,10 @@ module PropertyHtml
   end
 
   def select_html(value)
-    if value==false
-      alert(:stop)
+    if value == :destroy
+      jq_get(atome_id).selectable(:destroy)
+      elsif value == :disable
+      jq_get(atome_id).selectable(:disable)
     else
       proc = value[:proc]
       jq_get(atome_id).selectable
@@ -81,13 +83,9 @@ module PropertyHtml
         proc.call(evt) if proc.is_a?(Proc)
       end
     end
-
-
-
-
   end
 
-  def convert_html( property)
+  def convert_html(property)
     property = property.to_sym
     case property
     when :width
@@ -96,6 +94,5 @@ module PropertyHtml
       jq_get(atome_id).height
     end
   end
-
 
 end
