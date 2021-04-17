@@ -37,12 +37,8 @@ def demo_navigator(demo_list, index)
 end
 
 def demo_reel(demo_list)
-  # grab(:view).color({ red: 0.21, green: 0.21, blue: 0.21, alpha: 1 })
-  # './app/scripts/examples.rb'
   require './app/scripts/background.rb'
-  blue_gradient=['#4160A9', '#2F3EC3']
-  green_gradient=['#3F7070', '#0FB172']
-  bluegreen_gradient=['#0FB172', '#2F3EC3']
+  bluegreen_gradient=[ { red: 0, green: 0.3, blue: 0.3 },{ red: 0, green: 0.2, blue: 0.2 }]
   Background.theme(bluegreen_gradient)
   clear(:view)
   demo_list.each_with_index do |demo, index|

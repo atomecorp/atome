@@ -14,6 +14,7 @@ module ProcessorHtml
     unless height
       self.height = jq_get(atome_id).find("video").height
     end
+    jq_get(atome_id).find("video").css("height", "100%")
     jq_get(atome_id).find("video").css("width", "100%")
   end
 
