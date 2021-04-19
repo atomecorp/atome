@@ -3,7 +3,7 @@ module Processors
     # we have to ensure the parent list is an array if not we put it in a array
     if parent_list.instance_of?(Hash) && parent_list[:proc]
       parent_list.each do
-        puts "processor hierarchy.rb to refactorise  this loop is used twice"
+        #fixme processor hierarchy.rb to factorise:  this loop is used twice!
         @parent.read.each do |parent|
           parent = grab(parent)
           parent_list[:proc].call(parent) if parent_list[:proc].is_a?(Proc)
@@ -29,6 +29,12 @@ module Processors
         parent_html(parent_found)
       end
     end
+    # below if current object have child we refresh them all
+    if child
+      child.each do |child_found|
+        child_found.render(true)
+      end
+    end
   end
 
   def parent_getter_processor
@@ -39,9 +45,6 @@ module Processors
     # we have to ensure the child list is an array if not we put it in a array
     if child_list.instance_of?(Hash) && child_list[:proc]
       # if  a proc is found we yield each child so they can be treated , ex :
-      # a.child do |child_found|
-      #child_found.color(:red)
-      #end
       child_list.each do
         @child.read.each do |child|
           child = grab(child)
@@ -76,5 +79,14 @@ module Processors
   def child_getter_processor
     @child
   end
+
+  def remove_child child
+    remove_instance_variable_content(:child, child)
+  end
+
+  def remove_parent parent
+    remove_instance_variable_content(:parent, parent)
+  end
+
 end
 

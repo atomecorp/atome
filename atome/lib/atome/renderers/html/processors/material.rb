@@ -30,7 +30,6 @@ module ProcessorHtml
     else
       value
     end
-
     value
   end
 end

@@ -1,5 +1,7 @@
 module PropertyHtml
   def blur_html(value)
+    # the line below get  any filter all already apply to the object
+    prev_prop = previous_filer_found
     case value
     when Array
       properties = []
@@ -11,10 +13,10 @@ module PropertyHtml
       if value[:invert]
         jq_get(atome_id).css('backdrop-filter', 'blur(' + value[:value].to_s + 'px)')
       else
-        jq_get(atome_id).css('filter', 'blur(' + value[:value].to_s + 'px)')
+        jq_get(atome_id).css('filter', prev_prop + 'blur(' + value[:value].to_s + 'px)')
       end
     when String, Symbol, Number
-      jq_get(atome_id).css('filter', 'blur(' + value.to_s + 'px)')
+      jq_get(atome_id).css('filter', prev_prop + 'blur(' + value.to_s + 'px)')
     else
       ""
     end

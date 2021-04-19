@@ -8,7 +8,6 @@ unless File.directory?("app/temp")
   FileUtils.mkdir_p("app/temp")
 end
 
-
 def generate_demos_list
   require "./scripts/demo_generator.rb"
 end

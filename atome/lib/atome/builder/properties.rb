@@ -30,7 +30,8 @@ class Quark
     unless @property.instance_of?(Array)
       @property = [@property]
     end
-    @property.concat(values)
+    # alert "#{values} : #{values.class}"
+    @property.concat(values).uniq!
   end
 
   def length
