@@ -6,6 +6,7 @@ class AnimationHelper{
 }
 
 animator = {
+
     is_mobile: function () {
         atome.jsIsMobile();
     },
@@ -54,7 +55,6 @@ animator = {
 
         if (typeof (start) == "object") {
             const start_opt = Object.keys(value.start);
-
             start_opt.forEach((item) => {
                 let key = item;
                 const val = value.start[item];

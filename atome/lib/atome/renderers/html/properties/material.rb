@@ -1,7 +1,7 @@
 module PropertyHtml
   def color_html(values)
     angle = 180
-    diffusion = :linear
+    diffusion = "linear"
     if type == :text
       # we use a stencil to allow gradient in text
       jq_get(atome_id).css("-webkit-background-clip", "text")
@@ -66,43 +66,21 @@ module PropertyHtml
     end
   end
 
+
   def shadow_html(value)
     if value.instance_of?(Array)
       value.each do |shadow|
         shadow_html(shadow)
       end
     else
-      x = value[:x]
-      y = value[:y]
-      blur = value[:blur]
-      thickness = value[:thickness]
-      color = color_helper(value[:color])
-      invert = if value[:invert]
-                 :inset
-               else
-                 " "
-               end
-      if type == :text || type == :image || type == :video
-        # the line below get  any filter all already apply to the object
-        prev_prop = previous_filer_found
-        jq_get(atome_id).css('filter', prev_prop + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")")
-      else
-        # new below
-        prev_prop = jq_get(atome_id).css('box-shadow')
-        if prev_prop == "none"
-          prev_prop = ""
-        else
-          prev_prop = "#{prev_prop}, "
-        end
-        jq_get(atome_id).css("box-shadow", prev_prop + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert)
-      end
+      shadow_html_format=shadow_helper(value)
+      jq_get(atome_id).css(shadow_html_format[0],shadow_html_format[1])
     end
 
   end
 
   def fill_html(value)
     self.x = self.y = 0
-    target=""
     size=""
     number=""
     if value.class == Hash

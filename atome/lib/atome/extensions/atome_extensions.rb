@@ -133,13 +133,28 @@ def animate(params)
 
   if params[:start][:color]
     value_found = params[:start][:color]
+    value_found=grab(params[:target]).color_helper(value_found)
     params[:start][:background] = value_found
     params[:start].delete(:color)
   end
   if params[:end][:color]
     value_found = params[:end][:color]
+    value_found=grab(params[:target]).color_helper(value_found)
     params[:end][:background] = value_found
     params[:end].delete(:color)
+  end
+
+  if params[:start][:shadow]
+    value_found = params[:start][:shadow]
+    value_found=grab(params[:target]).shadow_helper(value_found)
+    params[:start][value_found[0]] = value_found[1]
+    params[:start].delete(:shadow)
+  end
+  if params[:end][:shadow]
+    value_found = params[:end][:shadow]
+    value_found=grab(params[:target]).shadow_helper(value_found)
+    params[:end][value_found[0]] = value_found[1]
+    params[:end].delete(:shadow)
   end
   ATOME.animate_html(params)
 end
