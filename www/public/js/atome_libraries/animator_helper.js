@@ -11,7 +11,7 @@ animator = {
         atome.jsIsMobile();
     },
     animation: function (value) {
-        let target = Opal.Object.$get(value.target);
+        let target = Opal.Object.$grab(value.target);
         let target_id = target.atome_id;
         let objectType = target.type;
         let start = value.start;

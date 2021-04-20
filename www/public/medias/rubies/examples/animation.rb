@@ -11,7 +11,7 @@ b.touch do
             duration: 1000,
             loop: 1,
             curve: :easing,
-            target: b.id
+            target: b.atome_id
           })
 end
 animate({
@@ -20,5 +20,5 @@ animate({
           duration: 2000,
           loop: 3,
           curve: :easing,
-          target: b.id
+          target: b.atome_id
         })
