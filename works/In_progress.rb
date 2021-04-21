@@ -95,5 +95,4 @@ def shape(path)
   alert "get shape from file and extarct svg"
 end
 
-
 a=shape("scale")
