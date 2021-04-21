@@ -4,7 +4,15 @@ module Processors
     if value == true
       value = default
     end
-    value = default.merge(value)
+    if value.instance_of?(Array)
+      collected_values=[]
+      value.each do |value_found|
+        collected_values << default.merge(value_found)
+      end
+      value = collected_values
+    else
+      value = default.merge(value)
+    end
     @shadow = atomise(:shadow, value)
     shadow_html(value)
   end
