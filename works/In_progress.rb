@@ -16,14 +16,14 @@ def open_tool(tool_id, size)
   #        target: tool_id
   #      })
 
-  # animate({
-  #           start: {  shadow: { x: 0, y: size / 15, thickness: 0, blur: size / 3, color: { red: 0, green: 0, blue: 0, alpha: 0.3 } }},
-  #           end: {  shadow: { x: 10, y: -size / 15, thickness: 3, blur: size / 3, color: { red: 1, green: 0, blue: 0, alpha: 0.7 } }},
-  #           duration: 1000,
-  #           loop: 1,
-  #           curve: :easing,
-  #           target: tool_id
-  #         })
+  animate({
+            start: {  shadow: { x: 0, y: size / 15, thickness: 0, blur: size / 3, color: { red: 0, green: 0, blue: 0, alpha: 0.3 } }},
+            end: {  shadow: { x: 10, y: -size / 15, thickness: 3, blur: size / 3, color: { red: 1, green: 0, blue: 0, alpha: 0.7 } }},
+            duration: 1000,
+            loop: 1,
+            curve: :easing,
+            target: tool_id
+          })
 
   # animate({
   #           start: {   blur: 0},
