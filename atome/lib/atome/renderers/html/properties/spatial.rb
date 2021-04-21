@@ -63,7 +63,7 @@ module PropertyHtml
       reference = value[:reference]
       axis = value[:axis]
       offset = value[:offset]
-      dynamic=value[:dynamic]
+      # dynamic=value[:dynamic]
     else
       reference = :parent
       axis = value
