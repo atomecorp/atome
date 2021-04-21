@@ -17,6 +17,6 @@ class Device
     # the object below is used to store the right management for current device
     Atome.new({ atome_id: :right, render: false })
     # this object hold temporary items (useful for batch treatment) named collector could be rename ephemeral
-    Atome.new({ atome_id: :buffer, render: false })
+    Atome.new({ atome_id: :buffer, render: false , content: {resize: []}})
   end
 end

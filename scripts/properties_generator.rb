@@ -28,7 +28,7 @@ def is_preset
 end
 
 def need_pre_processing
-  %i[atome_id private can box circle text image video audio camera microphone midi text image video audio box circle parent child type]
+  %i[atome_id private can box circle text image video audio camera microphone midi text image video audio box circle parent child type shadow]
 end
 
 def need_processing
@@ -40,7 +40,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment camera microphone midi]
+  %i[atome_id box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment camera microphone midi shadow]
 end
 
 # def return_created_property
