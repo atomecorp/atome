@@ -6,11 +6,12 @@ class AnimationHelper{
 }
 
 animator = {
+
     is_mobile: function () {
         atome.jsIsMobile();
     },
     animation: function (value) {
-        let target = Opal.Object.$get(value.target);
+        let target = Opal.Object.$grab(value.target);
         let target_id = target.atome_id;
         let objectType = target.type;
         let start = value.start;
@@ -54,7 +55,6 @@ animator = {
 
         if (typeof (start) == "object") {
             const start_opt = Object.keys(value.start);
-
             start_opt.forEach((item) => {
                 let key = item;
                 const val = value.start[item];

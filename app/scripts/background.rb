@@ -9,8 +9,7 @@ module Background
     texture_tile.z(0)
     texture_tile.width("100%")
     texture_tile.height("100%")
-
-    device.insert(texture_tile)
+    device.insert(texture_tile.atome_id)
   end
 end
 

@@ -1,33 +1,4 @@
 module AtomeHelpers
-  def remove_item_from_hash(object)
-    new_list = {}
-    object.each do |id_of_atome, content|
-      unless id_of_atome == atome_id
-        new_list[id_of_atome] = content
-      end
-    end
-    new_list
-  end
-
-  def delete_from_parent
-    self.parent do |parent_found|
-      new_child_list = []
-      parent_found.child do |child_found|
-        unless child_found.atome_id == atome_id
-          new_child_list << child_found.atome_id
-        end
-      end
-      update_property(parent_found, :child, new_child_list)
-
-    end
-  end
-
-  def delete_child
-    unless self.child.nil?
-      self.child.delete
-    end
-  end
-
   def delete
     delete_from_parent
     delete_child
@@ -40,7 +11,6 @@ module AtomeHelpers
     value = { x: 0, y: 0, offset: { x: 6, y: 6 } }.merge(value)
     (0..value[:y]).each do |y_val|
       (1..value[:x]).each do |x_val|
-
         atome_property = self.inspect.merge({ atome_id: self.atome_id.to_s + x_val.to_s,
                                               x: self.x + self.width * x_val + value[:offset][:x] * x_val,
                                               y: self.width * y_val + value[:offset][:y] * y_val })
@@ -109,7 +79,7 @@ module AtomeHelpers
     end
   end
 
-  AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("5.196.69.103:9292"))
+  AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("ws.atome.one"))
 
   def message(data)
     AtomeHelpers.class_variable_get("@@web_socket").send(data)
@@ -128,7 +98,14 @@ module AtomeHelpers
   end
 
   def insert(children)
-    children.parent(self.atome_id)
+    grab(children).parent(self.atome_id)
+  end
+
+  def extract(child_to_detach)
+    self.remove_child child_to_detach
+    child_to_treat = grab(child_to_detach)
+    child_to_treat.remove_parent self.atome_id.to_s
+    child_to_treat.render(true)
   end
 
   def eden_search(query)

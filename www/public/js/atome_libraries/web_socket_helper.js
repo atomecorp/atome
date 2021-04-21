@@ -1,7 +1,7 @@
 class WebSocketHelper {
     constructor(serverAddress) {
         //TODO: Switch to wss once a certificate created.
-        this.serverAddress = 'ws://' + serverAddress;
+        this.serverAddress = 'wss://' + serverAddress;
         this._reconnect = true;
 
         this.webSocket = new WebSocket(this.serverAddress);

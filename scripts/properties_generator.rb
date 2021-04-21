@@ -4,7 +4,7 @@ def atome_methods
   event = %i[touch drag over key]
   geometry = %i[width height size]
   helper = %i[tactile display]
-  hierarchy = %i[parent child insert]
+  hierarchy = %i[parent child]
   identity = %i[atome_id id type language private can]
   spatial = %i[x xx y yy z center rotate position alignment]
   media = %i[content video box circle text image audio info example]
@@ -15,11 +15,10 @@ def atome_methods
 end
 
 def types
-  %i[user machine shape image video audio input text midi]
+  %i[user machine shape image video audio input text midi tool]
 end
 
 FileUtils.mkdir_p "atome/lib/atome/generated_methods"
-
 
 def is_preset
   # in this case presets are used to create atome suing their types with specific settings
@@ -29,7 +28,7 @@ def is_preset
 end
 
 def need_pre_processing
-  %i[atome_id private can box circle text image video audio camera microphone midi text image video audio box circle parent child type]
+  %i[atome_id private can box circle text image video audio camera microphone midi text image video audio box circle parent child type shadow]
 end
 
 def need_processing
@@ -41,7 +40,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment camera microphone midi]
+  %i[atome_id box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment camera microphone midi shadow]
 end
 
 # def return_created_property

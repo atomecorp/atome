@@ -7,6 +7,7 @@ end
 e = box({atome_id: :e, x: 160})
 t = text({content: 'some texts', atome_id: :t, x: 96, width: 39, height: 39})
 t.parent([e.atome_id, c.atome_id])
+grab(:view).extract(t.atome_id)
 t.parent do |father|
  father.set({ rotate: 36, y: 66})
 end

@@ -18,6 +18,6 @@ c.touch({ option: :up}) do
          duration: 2000,
          loop: 3,
          curve: :easing,
-         target: c.id
+         target: c.atome_id
        })
 end

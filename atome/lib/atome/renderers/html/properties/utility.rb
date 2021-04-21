@@ -1,9 +1,11 @@
 module PropertyHtml
   def render_html(value)
     if value
+      jq_get(atome_id).remove
       jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
       properties_found = self.properties
       properties_found.delete(:render)
+      # fixme "attention the filter are re applied at each render : \n#{properties_found}"
       properties_found.each do |property, value_found|
         self.send(property, value_found)
       end
@@ -37,10 +39,6 @@ module PropertyHtml
       jq_get(atome_id).css("user-select: text", "none")
     end
 
-    # jq_get(atome_id).keyup do
-    #   # content = jq_get(atome_id).html.gsub("<br>", "\n").gsub("<div>", "\n").gsub("</div>", "").delete(";").gsub("&nbsp", " ")
-    #   # content(content, false)
-    # end
   end
 
   def record_html(params)
@@ -72,7 +70,7 @@ module PropertyHtml
   def select_html(value)
     if value == :destroy
       jq_get(atome_id).selectable(:destroy)
-      elsif value == :disable
+    elsif value == :disable
       jq_get(atome_id).selectable(:disable)
     else
       proc = value[:proc]
@@ -91,7 +89,26 @@ module PropertyHtml
     when :height
       jq_get(atome_id).height
     else
-      [jq_get(atome_id).width,jq_get(atome_id).height]
+      [jq_get(atome_id).width, jq_get(atome_id).height]
     end
   end
+
+  def previous_filer_found
+    filter = jq_get(atome_id).css('filter')
+    if filter == "none"
+      prev_prop = ""
+    else
+      filters = filter.split(")")
+      collected_filter = []
+      filters.each do |filer_found|
+        if filer_found.start_with?(" drop-shadow")
+          collected_filter << filer_found
+        end
+      end
+      collected_filter = collected_filter.join(")")
+      prev_prop = "#{collected_filter} "
+    end
+    prev_prop
+  end
+
 end

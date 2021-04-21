@@ -1,7 +1,7 @@
 module PropertyHtml
   def color_html(values)
     angle = 180
-    diffusion = :linear
+    diffusion = "linear"
     if type == :text
       # we use a stencil to allow gradient in text
       jq_get(atome_id).css("-webkit-background-clip", "text")
@@ -9,10 +9,16 @@ module PropertyHtml
     end
 
     if !values.instance_of?(Array) || values.length == 1
-      color = color_helper(values)
+      if values.instance_of?(Array)
+        value = values[0]
+      else
+        value = values
+      end
+      color = color_helper(value)
       val = "linear-gradient(0deg,#{color},#{color})"
       jq_get(atome_id).css("background-image", val)
     else
+
       gradient = []
       values.each do |color_found|
         if color_found[:angle]
@@ -60,39 +66,23 @@ module PropertyHtml
     end
   end
 
+
   def shadow_html(value)
-    x = value[:x]
-    y = value[:y]
-    blur = value[:blur]
-    thickness = value[:thickness]
-    color = color_helper(value[:color])
-    invert = if value[:invert]
-               :inset
-             else
-               " "
-             end
-    if type == :text || type == :image || :video
-      filter = jq_get(atome_id).css('filter')
-      if  filter == "none"
-        prev_prop=""
-      else
-        prev_prop= "#{filter} "
+    if value.instance_of?(Array)
+      value.each do |shadow|
+        shadow_html(shadow)
       end
-      jq_get(atome_id).css('filter', prev_prop  + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")")
     else
-      # new below
-      prev_prop = jq_get(atome_id).css('box-shadow')
-      if prev_prop == "none"
-        prev_prop=""
-      else
-        prev_prop = "#{prev_prop}, "
-      end
-      jq_get(atome_id).css("box-shadow", prev_prop+x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert)
+      shadow_html_format=shadow_helper(value)
+      jq_get(atome_id).css(shadow_html_format[0],shadow_html_format[1])
     end
+
   end
 
   def fill_html(value)
     self.x = self.y = 0
+    size=""
+    number=""
     if value.class == Hash
       target = value[:target]
       size = value[:size]

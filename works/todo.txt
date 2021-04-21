@@ -1,4 +1,8 @@
 Bugs : find a solution for parent affecting the :view
+- bug duplicate doesnt duplicate children ( not resolve because I dont know how to handle children id , namespace could be the solution
+- lasso stop selecting is bugged
+- update method : change object property without re render ( instance variable set)
+- shadow is bugged!!
 - video shadow badly placed
 - find a solution to convert type sctipt to js
 - add help and example for all api

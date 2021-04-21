@@ -63,6 +63,7 @@ module PropertyHtml
       reference = value[:reference]
       axis = value[:axis]
       offset = value[:offset]
+      # dynamic=value[:dynamic]
     else
       reference = :parent
       axis = value
@@ -72,6 +73,12 @@ module PropertyHtml
     if reference == :parent
       reference = parent.last
     end
+
+    # if dynamic
+    #   grab(:buffer).content[:resize] << self
+    # elsif dynamic==false
+    #   grab(:buffer).content[:resize].delete(self)
+    # end
     if offset
       ofset_y = "left+#{x} top+#{y}"
       ofsset_x = "left+#{x} top+#{y}"
@@ -104,6 +111,7 @@ module PropertyHtml
                        of: "##{reference}"
       }
     end
+
     position_html(center_value)
   end
 

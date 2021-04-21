@@ -51,7 +51,6 @@ def demo_reel(demo_list)
 end
 
 JSUtils.load_opal_parser
-# require "opal-parser"
 
 ATOME.wait 1 do
   read("./medias/rubies/examples/!demos.rb") do |data|
