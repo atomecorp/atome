@@ -79,7 +79,7 @@ module AtomeHelpers
     end
   end
 
-  AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("5.196.69.103:9292"))
+  AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("ws.atome.one"))
 
   def message(data)
     AtomeHelpers.class_variable_get("@@web_socket").send(data)
