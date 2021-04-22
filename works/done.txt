@@ -1,4 +1,19 @@
 - animation
+- parser when using eval
+- key press
+- text_size
+- size
+- Shadow
+- fit methods
+- center
+- dynamic positioning and centering
+- detach group
+- drag
+- clear object (remove child)
+- delete methods
+- update method : change object property without re render ( instance variable set)
+- bugs : shadow is buggy!!
+- bugs : key after the key demo, then the code editor is unusable
 - bug :
       code_editor_font_size=12
       c=circle({size: 33})

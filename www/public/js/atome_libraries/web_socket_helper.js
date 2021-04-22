@@ -27,6 +27,7 @@ class WebSocketHelper {
     connect(serverAddress) {
         //fixme: find a way to restore the socket
         console.log("connection lost try ro reconnect");
+        // new WebSocketHelper(serverAddress);
     }
 
     sendMessage(type, message) {
