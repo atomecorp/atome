@@ -7,21 +7,27 @@ class WebSocketHelper {
         this.webSocket = new WebSocket(this.serverAddress);
         const self = this;
 
-        this.webSocket.onopen = function(event) {
+        this.webSocket.onopen = function (event) {
         };
 
-        this.webSocket.onmessage = function(messageEvent) {
+        this.webSocket.onmessage = function (messageEvent) {
             Opal.eval(messageEvent.data);
         };
 
-        this.webSocket.onerror = function(event) {
+        this.webSocket.onerror = function (event) {
         };
 
-        this.webSocket.onclose = function(closeEvent) {
-            if(self._reconnect) {
+        this.webSocket.onclose = function (closeEvent) {
+            if (self._reconnect) {
                 setTimeout(() => self.connect(self.serverAddress), 3000);
             }
         };
+    }
+
+    connect(serverAddress) {
+        //fixme: find a way to restore the socket
+        console.log("connection lost try ro reconnect");
+        // new WebSocketHelper(serverAddress);
     }
 
     sendMessage(type, message) {
