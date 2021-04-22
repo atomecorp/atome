@@ -8,13 +8,17 @@ module Processors
       size = value[:value]
       if width && height && width != :auto && height != :auto
         if width > height
-          ratio = size / width
-          self.width = size
-          self.height = height * ratio
+          if size
+            ratio = size / width
+            self.width = size
+            self.height = height * ratio
+          end
         else
-          ratio = size / height
-          self.height = size
-          self.width = width * ratio
+          if size
+            ratio = size / height
+            self.height = size
+            self.width = width * ratio
+          end
         end
       else
         self.height = size

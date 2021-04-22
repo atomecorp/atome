@@ -114,6 +114,16 @@ module AtomeHelpers
     child_to_treat.render(true)
   end
 
+
+  def attach(children)
+    insert(children)
+  end
+
+
+  def detach(child_to_detach)
+    extract(child_to_detach)
+  end
+
   def eden_search(query)
     #fixme Universe will be a db that contain users user's media and so on, for now Universe only hold default medias
     case query[:type]

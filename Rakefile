@@ -18,7 +18,7 @@ def generate_methods
   require "./scripts/properties_generator.rb"
 end
 
- generate_methods
+# generate_methods
 
 def update_opal_libraries
   file 'www/public/js/dynamic_libraries/opal/opal.js': ["www/public/js/dynamic_libraries/opal"] do |t|
@@ -40,7 +40,7 @@ def update_opal_libraries
   end
 end
 
- update_opal_libraries
+update_opal_libraries
 
 def update_medias_list
   # todo : only copy if there's a change! use monitoring if possible
@@ -70,19 +70,19 @@ def update_medias_list
       image_info = ImageSize.path(image)
       width = image_info.width
       height = image_info.height
-      images_list[filename.to_sym] = {width: width, height: height, path: path}
+      images_list[filename.to_sym] = { width: width, height: height, path: path }
     end
 
     videos.each do |video|
       path = video.sub("www/public/", "./")
       filename = File.basename(video, File.extname(video))
-      videos_list[filename.to_sym] = {path: path}
+      videos_list[filename.to_sym] = { path: path }
     end
 
     audios.each do |audio|
       path = audio.sub("www/public/", "./")
       filename = File.basename(audio, File.extname(audio))
-      audios_list[filename.to_sym] = {path: path}
+      audios_list[filename.to_sym] = { path: path }
     end
 
     medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
@@ -94,7 +94,6 @@ end
 medias_dir_to_inspect = Dir.glob("www/public/medias/**/*")
 eve_medias_dir_to_inspect = Dir.glob("eVe/medias/**/*")
 nb_of_medias_files = (medias_dir_to_inspect.length + eve_medias_dir_to_inspect.length).to_s
-
 
 unless File.exist?("app/temp/nb_of_medias_files")
   File.write("app/temp/nb_of_medias_files", "")
@@ -161,7 +160,7 @@ task 'run::server': required_js_lib do
     #   sleep 2
     #   system("open", "http://localhost:9292")
     # end
-     # sh "puma -b tcp://127.0.0.1:9292"
+    # sh "puma -b tcp://127.0.0.1:9292"
     ##sh "puma -b 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'"
     sh "rackup --server puma --port 9292  --env production"
     #Rack::Server.start(config: 'config.ru', server: 'puma')

@@ -1,42 +1,32 @@
 Bugs : find a solution for parent affecting the :view
-- bug duplicate doesnt duplicate children ( not resolve because I dont know how to handle children id , namespace could be the solution
+- bug duplicate doesn't duplicate children ( not resolve because I dont know how to handle children id , namespace could be the solution
 - lasso stop selecting is bugged
-- update method : change object property without re render ( instance variable set)
-- shadow is bugged!!
 - video shadow badly placed
-- find a solution to convert type sctipt to js
+- find a solution to convert type script to js
 - add help and example for all api
-- every api must have it's list of potions and value with it's unit ( for future conversion)
-- bugs key after the key demo, then the code editor is unusable
-- check monitoring on all object, on a specific property, etc..
-- implement display mode : list, bloc, natural, ...
+- every api must have it's list of methods and values with it's unit (for future conversion)
 - value exchange between properties ex:  b.blur=c.color + reflexion on how tools handle this
--  esay install (on line of command) +atome create my app
+- easy install (on line of command) + atome create "my_app"
 - check require with code editor
 - add color theme to code editor
+- check monitoring on all object, on a specific property, etc..
+- implement display mode : list, bloc, natural, ...
+- color theme for U.I.
+- text selection (adding color or touch event)
 - play events callbacks
 - youtube integration
+- play audio
 - audio recording
-- documentation end users, framework users and devellopers also add how to create new type new methods and new tools
+- documentation end users, framework users and developers also add how to create new type new methods and new tools
 - write data flow of video player and check if all other type works the same!
-- keycode to keychar
+- keycode to key-char
 - font chooser
 - cleanup demo
-- detach group
-- dynamic positioning and centering
 - when eval should output error in console
-- parser when using eval
-- key press
 - make eVe a gem
-- text_size
 - code editor : restore position and size, stop drag, text size
 - key_Shortcut
 - bidirectional mode
-- size
-- Shadow
-- center
-- drag
-- fit
 - stack events and remove (by name or order)
 - init sequence
 - basic U.I.
@@ -57,10 +47,7 @@ Bugs : find a solution for parent affecting the :view
          to write or delete a stacked property ex :
                                     a.colors[1](:red)
                                     a.colors(:id)(:red)
-- fit methods
-- text size
-- clear object (remove child)
-- text selection (adding color or touch event)
+
 - atomes namespaces
     examples :
         a=find({id: :my_atome}}
@@ -70,7 +57,7 @@ Bugs : find a solution for parent affecting the :view
         restore ({atome: :a.atome_id, children: false}) # only  the atome is restored
         duplicate(a)
         delete(a)
-- delete methods
+
 - time operations
 - text child = font  (size color touch events) try with an image as child of text
         ex :

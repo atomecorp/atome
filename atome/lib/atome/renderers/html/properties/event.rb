@@ -157,8 +157,32 @@ module PropertyHtml
     end
   end
 
-  # def verif_html(id)
-  #   # alert id
-  #   jq_get(id).draggable("destroy")
-  # end
+  def scale_html(value)
+      default = { option: { handles: 'all' } }
+      unless value.instance_of?(Hash)
+        value = { option: value }
+      end
+      value = default.merge(value)
+      option = value[:option]
+      if value[:ratio]
+        option = option.merge(aspectRatio: true)
+      end
+      if value[:add]
+        option = option.merge(alsoResize: "##{value[:add].to_s}")
+      end
+      jq_get(atome_id).resizable(option)
+      jq_get(atome_id).resize do
+        if type == :text
+          @width = atomise(:width, jq_get(atome_id).css("width").to_i)
+          @height = atomise(:height, jq_get(atome_id).css("height").to_i)
+          size = @width.read / 5
+          jq_get(atome_id).css("font-size", size.to_s + "px")
+        else
+          self.width(jq_get(atome_id).css("width").to_i, false)
+          self.height(jq_get(atome_id).css("height").to_i, false)
+        end
+        proc = value[:proc]
+        proc.call(self.width, self.height) if proc.is_a?(Proc)
+      end
+  end
 end
