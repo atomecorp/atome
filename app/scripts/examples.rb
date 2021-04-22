@@ -9,15 +9,19 @@ def demo_navigator(demo_list, index)
   text({ content: "#{index} : " + demo_list.keys[index], color: :white, fixed: true, yy: 3, x: 3 })
   next_example = demo_list.keys[index + 1]
   previous_example = demo_list.keys[index - 1]
-  back = text({ content: :demos, xx: 20, z: 300 })
+  back = text({ content: :demos, xx: 20, z: 300, parent: :intuition })
   back.touch do
+    # we clear the buffer to avoid treatment on no more existent atome
+    grab(:buffer).content[:resize]=[]
     demo_reel(demo_list)
   end
 
   unless index == 0
     index = index - 1
-    previous_demo = text(content: :previous, y: 33, xx: 20, z: 300)
+    previous_demo = text(content: :previous, y: 33, xx: 20, z: 300, parent: :intuition )
     previous_demo.touch do
+      # we clear the buffer to avoid treatment on no more existent atome
+      grab(:buffer).content[:resize]=[]
       path = demo_list[previous_example]
       run_demo(path)
       demo_navigator(demo_list, index - 1)
@@ -26,8 +30,10 @@ def demo_navigator(demo_list, index)
 
   unless demo_list.length == index + 1
     index = index + 1
-    next_demo = text({ content: :next, y: 69, xx: 20 })
+    next_demo = text({ content: :next, y: 69, xx: 20, parent: :intuition  })
     next_demo.touch do
+      # we clear the buffer to avoid treatment on no more existent atome
+      grab(:buffer).content[:resize]=[]
       path = demo_list[next_example]
       run_demo(path)
       demo_navigator(demo_list, index + 1)
@@ -38,7 +44,7 @@ end
 
 def demo_reel(demo_list)
   require './app/scripts/background.rb'
-  bluegreen_gradient=[ { red: 0, green: 0.3, blue: 0.3 },{ red: 0, green: 0.2, blue: 0.2 }]
+  bluegreen_gradient=[ { red: 0.3, green: 0.1, blue: 0.9 },{ red: 0.3, green: 0.1, blue: 0.6 }]
   Background.theme(bluegreen_gradient)
   clear(:view)
   demo_list.each_with_index do |demo, index|
@@ -52,17 +58,7 @@ end
 
 JSUtils.load_opal_parser
 
-ATOME.wait 1 do
   read("./medias/rubies/examples/!demos.rb") do |data|
     demos = compile(data)
     demo_reel(demos)
   end
-end
-
-demo_reel = text({ content: :demos, xx: 200 })
-demo_reel.touch do
-  read("./medias/rubies/examples/!demos.rb") do |data|
-    demos = compile(data)
-    demo_reel(demos)
-  end
-end
