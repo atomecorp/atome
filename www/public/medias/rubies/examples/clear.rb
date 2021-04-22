@@ -9,3 +9,11 @@ image({content: :moto, size: 96, y: 96})
 t.touch do
   clear(:view)
 end
+
+b=box({x: 96, y: 96})
+b.circle(true)
+b.text("touch the box to clear it's content")
+
+b.touch do
+  b.clear(true)
+end

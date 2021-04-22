@@ -7,6 +7,12 @@ module AtomeHelpers
     delete_html
   end
 
+  def clear(value)
+    if self.child
+      self.child.delete
+    end
+  end
+
   def duplicate(value)
     value = { x: 0, y: 0, offset: { x: 6, y: 6 } }.merge(value)
     (0..value[:y]).each do |y_val|

@@ -12,7 +12,3 @@ ATOME.resize_html do |evt|
     element.center=element.center
   end
 end
-c.touch do
-  grab(:buffer).content[:resize]=[]
-end
-# alert "must invalidate the function  or it'll try to re center object that doesnt exist anymore, cf convert example"
