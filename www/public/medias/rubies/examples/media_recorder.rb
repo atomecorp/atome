@@ -3,13 +3,13 @@ c = circle(y: 200)
 c.text('Rec')
 c.touch do
   `
-    recorderHelper.startRecording();
+    recorderHelper.startRecording()
   `
 end
 b = box(x: 200, y: 200)
 b.text('Stop')
 b.touch do
   `
-    recorderHelper.stopRecording();
+    recorderHelper.stopRecording()
   `
 end
