@@ -134,11 +134,9 @@ module AtomeHelpers
     child_to_treat.render(true)
   end
 
-
   def attach(children)
     insert(children)
   end
-
 
   def detach(child_to_detach)
     extract(child_to_detach)
@@ -160,16 +158,36 @@ module AtomeHelpers
 
   def find(query)
     unless query[:scope]
-      query[:scope] = :current
+      query[:scope] = :child
     end
     case query[:scope]
     when :eden
-      eden_search(query)
-    when :current
-      child
+      found = eden_search(query)
+    when :child
+      found = child
     else
-      "a look at eDen"
     end
+    if methods.include?(query.keys[0])
+      value_to_find = query[query.keys[0]]
+      method_to_look_at=query.keys[0]
+      # alert self.atome_id
+      # alert value_to_find
+      found_items=[]
+      found.each do |found_item|
+         value_to_find
+         # alert method_to_look_at
+         if found_item.send(method_to_look_at)==value_to_find
+           found_items  << found_item
+         end
+         found=batch(found_items)
+      end
+    end
+    found
+    # if query[:tag]
+    #fix me tag case should be removed and replace
+    #with a generic methods that catch all available properties
+    # eg :find(color: :red) => get all red atomes
+    # end
   end
 
 end

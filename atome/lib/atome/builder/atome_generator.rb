@@ -16,7 +16,7 @@ class Atome
   # atome creation
   def initialize(properties = {})
     # the hash below add the missing properties without creating a condition
-    sanitizer = { atome_id: identity, render: true, type: :particle,  content: {}, selector: {}, id: "a_#{object_id}" }.merge(properties)
+    sanitizer = { atome_id: identity, render: true, type: :particle, content: {}, selector: {}, id: "a_#{object_id}" }.merge(properties)
     atome_id = sanitizer.delete(:atome_id)
     type = sanitizer.delete(:type)
     render = sanitizer.delete(:render)
@@ -42,6 +42,11 @@ class Atome
     self.atome_id(atome_id)
     register_atome
     set properties
+  end
+
+  def add(value)
+    prev_value = self.send(value.keys[0])
+    self.send(value.keys[0], [prev_value, value[value.keys[0]]])
   end
 
   def get(property)

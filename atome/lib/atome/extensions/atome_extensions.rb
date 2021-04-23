@@ -28,6 +28,10 @@ def grab(atome_id)
   end
 end
 
+def find(query)
+  grab(:view).find(query)
+end
+
 def batch(objects)
   batched_atomes = []
   objects.each do |atome_id|
@@ -59,28 +63,6 @@ end
 
 def clear(value)
   grab(:view).clear(value)
-  # if value.instance_of?(Hash)
-  #   case value.keys[0]
-  #   when :wait
-  #     clear_wait_html(value[:wait])
-  #   when :repeat
-  #     clear_repeat_html(value[:repeat])
-  #   when :view
-  #     # future use for specific view child treatment
-  #   else
-  #     value
-  #   end
-  # else
-  #   case value
-  #   when :view
-  #     if grab(:view).child
-  #       grab(:view).child.delete
-  #     end
-  #   else
-  #     value
-  #   end
-  # end
-
 end
 
 def atome_require(file)
