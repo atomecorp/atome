@@ -57,6 +57,7 @@ class Atome
     properties.each do |property, value|
       send(property.to_s, value)
     end
+
   end
 
   def register_atome

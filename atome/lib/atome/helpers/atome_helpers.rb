@@ -163,6 +163,7 @@ module AtomeHelpers
     case query[:scope]
     when :eden
       found = eden_search(query)
+      return found
     when :child
       found = child
     else
@@ -170,24 +171,16 @@ module AtomeHelpers
     if methods.include?(query.keys[0])
       value_to_find = query[query.keys[0]]
       method_to_look_at=query.keys[0]
-      # alert self.atome_id
-      # alert value_to_find
       found_items=[]
       found.each do |found_item|
          value_to_find
-         # alert method_to_look_at
          if found_item.send(method_to_look_at)==value_to_find
            found_items  << found_item
          end
-         found=batch(found_items)
       end
+      found=batch(found_items)
     end
     found
-    # if query[:tag]
-    #fix me tag case should be removed and replace
-    #with a generic methods that catch all available properties
-    # eg :find(color: :red) => get all red atomes
-    # end
   end
 
 end
