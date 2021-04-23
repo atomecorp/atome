@@ -134,11 +134,9 @@ module AtomeHelpers
     child_to_treat.render(true)
   end
 
-
   def attach(children)
     insert(children)
   end
-
 
   def detach(child_to_detach)
     extract(child_to_detach)
@@ -160,16 +158,29 @@ module AtomeHelpers
 
   def find(query)
     unless query[:scope]
-      query[:scope] = :current
+      query[:scope] = :child
     end
     case query[:scope]
     when :eden
-      eden_search(query)
-    when :current
-      child
+      found = eden_search(query)
+      return found
+    when :child
+      found = child
     else
-      "a look at eDen"
     end
+    if methods.include?(query.keys[0])
+      value_to_find = query[query.keys[0]]
+      method_to_look_at=query.keys[0]
+      found_items=[]
+      found.each do |found_item|
+         value_to_find
+         if found_item.send(method_to_look_at)==value_to_find
+           found_items  << found_item
+         end
+      end
+      found=batch(found_items)
+    end
+    found
   end
 
 end
