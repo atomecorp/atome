@@ -1,7 +1,10 @@
 # monitoring
 
 b = box({x: 220, y: 50})
-t = text({content: "drag the box", x: 66})
+t = text({content: "drag the box", x: 33,y: 96})
+t2 = text({content: "start monitoring", x: 33,y: 33})
+t3 = text({content: "stop monitoring", x: 33,y: 66})
+
 t.touch do
   b.color(:red)
 end
@@ -11,8 +14,15 @@ b.touch do
   i+=3
 end
 b.drag(true)
-properties={}
-b.monitor(true) do |evt|
-  properties[evt[:property]]=evt[:value]
-  t.content("\n#{properties}")
+
+t2.touch do
+  properties={}
+  b.monitor(true) do |evt|
+    properties[evt[:property]]=evt[:value]
+    t.content("\n#{properties}")
+  end
+end
+
+t3.touch do
+  b.monitor({ option: false })
 end
