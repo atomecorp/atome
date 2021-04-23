@@ -8,9 +8,30 @@ module AtomeHelpers
   end
 
   def clear(value)
-    if self.child
-      self.child.delete
+    if value.instance_of?(Hash)
+      case value.keys[0]
+      when :wait
+        clear_wait_html(value[:wait])
+      when :repeat
+        clear_repeat_html(value[:repeat])
+      when :view
+        # future use for specific view child treatment
+      else
+        value
+      end
+    else
+      case value
+      when :view
+        if grab(:view).child
+          grab(:view).child.delete
+        end
+      else
+        if self.child
+          self.child.delete
+        end
+      end
     end
+
   end
 
   def duplicate(value)

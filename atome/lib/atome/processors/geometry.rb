@@ -1,9 +1,11 @@
 module Processors
-  def size_processor(value)
+  def size_pre_processor(value)
     if value.instance_of?(Hash) && value[:value].nil?
     else
       if value.instance_of?(Number) || value.instance_of?(Integer)
-        value = {value: value}
+        value = { value: value }
+      elsif value.instance_of?(String) || value.instance_of?(Symbol)
+        value = { fit: value }
       end
       size = value[:value]
       if width && height && width != :auto && height != :auto
@@ -25,5 +27,10 @@ module Processors
         self.width = size
       end
     end
+    if self.size
+      value = self.size.merge(value)
+    end
+    @size = atomise(:size, value)
+    size_html(value)
   end
 end

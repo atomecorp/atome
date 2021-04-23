@@ -9,7 +9,8 @@ format=text({content: :format, x: margin.x+100, y: 9})
 edit=text({content: :edit, x: format.x+100, y: 9})
 fit=text({content: :fit, x: edit.x+100, y: 9, color: :white})
 scale.touch do
-  t.size(25) do |evt|
+  t.size(25)
+  t.scale(true) do |evt|
     #puts evt
   end
 end
@@ -24,7 +25,9 @@ margin.touch do
   t.set(width: :auto,height: :auto, x: 33, xx: 33)
 end
 format.touch do
-  b.size(333)
+  b.scale(true) do
+
+  end
 end
 drag.touch do
   b.drag(true)

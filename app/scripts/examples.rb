@@ -1,3 +1,5 @@
+JSUtils.load_opal_parser
+
 def run_demo(path)
   clear(:view)
   read(path) do |data|
@@ -43,9 +45,9 @@ def demo_navigator(demo_list, index)
 end
 
 def demo_reel(demo_list)
-  require './app/scripts/background.rb'
-  bluegreen_gradient=[ { red: 0.3, green: 0.1, blue: 0.9 },{ red: 0.3, green: 0.1, blue: 0.6 }]
-  Background.theme(bluegreen_gradient)
+  # require './app/scripts/background.rb'
+  # bluegreen_gradient=[ { red: 0.3, green: 0.1, blue: 0.9 },{ red: 0.3, green: 0.1, blue: 0.6 }]
+  # Background.theme(bluegreen_gradient)
   clear(:view)
   demo_list.each_with_index do |demo, index|
     the_code = text({ content: "#{index} : " + demo[0], y: 20 * index, size: 16 })
@@ -56,7 +58,6 @@ def demo_reel(demo_list)
   end
 end
 
-JSUtils.load_opal_parser
 
   read("./medias/rubies/examples/!demos.rb") do |data|
     demos = compile(data)

@@ -20,9 +20,22 @@ module PropertyHtml
   end
 
   def size_html(value)
-    if value == :fit
+    case value[:fit]
+    when :fit
       self.width = grab(parent.last).convert(:width)
       self.height = grab(parent.last).convert(:height)
+    when true
+      self.width = grab(parent.last).convert(:width)
+      self.height = grab(parent.last).convert(:height)
+    when :width
+      parent_width = grab(parent.last).convert(:width)
+      self.width = parent_width
+      self.height = parent_width / ratio
+    when :height
+      parent_height = grab(parent.last).convert(:height)
+      self.height = parent_height
+      self.width = parent_height * ratio
+    else
     end
   end
 

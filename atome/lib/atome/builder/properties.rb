@@ -26,16 +26,19 @@ class Quark
   def add(values)
     # the test below is necessary when xcreate a new atome with parent
     # in this ca se the parent is injected in the atome properties as a Symbol
-    # but Child and parent must be placed in an array
+    # but child and parent must be placed in an array
     unless @property.instance_of?(Array)
       @property = [@property]
     end
-    # alert "#{values} : #{values.class}"
     @property.concat(values).uniq!
   end
 
   def length
     @property.length
+  end
+
+  def include(item)
+    @property.include?(item)
   end
 
   def [](option)

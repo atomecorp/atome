@@ -12,9 +12,9 @@ end
 
 
 def notification(message,duration)
-  notificatio=text({content: message, x: 300, y: 69})
+  notification=text({content: message, x: 300, y: 69})
   grab(:atome).wait duration do
-    notificatio.delete()
+    notification.delete()
   end
 end
 
