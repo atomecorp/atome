@@ -12,11 +12,6 @@ class Element
     ` $(window).off(#{value})`
   end
 
-  # def resize(&proc)
-  #   id= self.attr("id")
-  #   `$(#{id}).resize()`
-  # end
-
 end
 
 class Event

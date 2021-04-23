@@ -12,7 +12,7 @@ b.touch do
 end
 b.drag(true)
 properties={}
-b.monitor(:ok) do |evt|
+b.monitor(true) do |evt|
   properties[evt[:property]]=evt[:value]
   t.content("\n#{properties}")
 end

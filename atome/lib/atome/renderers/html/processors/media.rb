@@ -31,6 +31,7 @@ module ProcessorHtml
         self.height = image_found[:height]
       end
     end
+    self.ratio(self.width/self.height)
     jq_get(atome_id).css("background-image", "url(#{path})")
     jq_get(atome_id).css("background-size", "100% 100%")
   end

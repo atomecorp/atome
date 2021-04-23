@@ -2,7 +2,7 @@ def atome_methods
   communication = %i[share]
   effect = %i[blur shadow smooth]
   event = %i[touch drag over key scale]
-  geometry = %i[width height size]
+  geometry = %i[width height size ratio]
   helper = %i[tactile display]
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language private can]
@@ -28,11 +28,11 @@ def is_preset
 end
 
 def need_pre_processing
-  %i[atome_id private can box circle text image video audio camera microphone midi text image video audio box circle parent child type shadow]
+  %i[atome_id private can box circle text image video audio camera microphone midi text image video audio box circle parent child type shadow size]
 end
 
 def need_processing
-  %i[size monitor]
+  %i[monitor]
 end
 
 def getter_need_processing
@@ -40,13 +40,9 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment camera microphone midi shadow]
+  %i[atome_id box circle text image video audio text image video audio box circle parent child info example selector monitor type alignment camera microphone midi shadow ratio size]
 end
 
-# def return_created_property
-#   # twe return the result of the method instead of object holding the property
-#   %i[box circle text image video audio camera microphone midi]
-# end
 
 batch_delete = <<STRDELIM
   def delete(value, &proc)
