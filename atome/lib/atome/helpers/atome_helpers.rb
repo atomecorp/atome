@@ -41,7 +41,6 @@ module AtomeHelpers
         atome_property = self.inspect.merge({ atome_id: self.atome_id.to_s + x_val.to_s,
                                               x: self.x + self.width * x_val + value[:offset][:x] * x_val,
                                               y: self.width * y_val + value[:offset][:y] * y_val })
-        atome_property[:monitor] = :poil
         Atome.new(atome_property)
       end
     end

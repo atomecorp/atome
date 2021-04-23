@@ -87,8 +87,6 @@ t9.x(123).touch do
   t9.content(i.size)
 end
 
-t=text({ content: :verif, y: 222 })
-
 
 #   #fixme :  quark should be able to read property, ex: alert i.parent.width # to get width
 
@@ -102,7 +100,7 @@ the_parent.monitor(true) do
     end
   end
 end
-c=circle({y: 333})
+c=text({content: "stop dynamic scale", y: 222})
 c.touch do
-  the_parent.monitor(false)
+  the_parent.monitor({ option: false })
 end

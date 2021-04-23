@@ -61,8 +61,10 @@ module InternalHelpers
   end
 
   def broadcast(property, value)
-    proc = @monitor.read[:proc]
-    monitor_processor({ property: property, value: value, proc: proc })
+    if @monitor[:option]
+      proc = @monitor.read[:proc]
+      monitor_processor({ property: property, value: value, proc: proc })
+    end
   end
 
   def delete_from_parent

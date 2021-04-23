@@ -20,7 +20,7 @@ def code(value = {atome_id: identity, content: ""})
   code_editor.touch({option: :stop}) do |evt|
     evt
   end
-  code_editor.size({value: container_preset[:width], option: {'nw': '#nwgrip'}}) do |evt_size|
+  code_editor.scale({value: container_preset[:width], option: {'nw': '#nwgrip'}}) do |evt_size|
     evt_size
     container.width = code_editor.width
     container.height = code_editor.height
