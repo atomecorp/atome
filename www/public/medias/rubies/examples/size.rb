@@ -11,7 +11,7 @@ t8 = text({ content: :size_69, y: t7.y + t1.height + 9 })
 #box 1
 b = box({ x: 333, width: 333, height: 96, drag: true, atome_id: :the_box })
 #box 2
-b2 = box({color: :orange, x: 333, y: 123, width: 96, height: 333, drag: true, atome_id: :the_box2 })
+b2 = box({ color: :orange, x: 333, y: 123, width: 96, height: 333, drag: true, atome_id: :the_box2 })
 i = b.image({ content: :sky, drag: true })
 
 t1.touch do
@@ -87,10 +87,9 @@ t9.x(123).touch do
   t9.content(i.size)
 end
 
+#fixme :  quark should be able to read property, ex: alert i.parent.width # to get width
 
-#   #fixme :  quark should be able to read property, ex: alert i.parent.width # to get width
-
-the_parent= grab(i.parent.last)
+the_parent = grab(i.parent.last)
 the_parent.monitor(true) do
   #fixme :  quark should be able to read property, ex: alert i.parent.width # to get width
   parent_atome = grab(i.parent.read[0])
@@ -100,7 +99,7 @@ the_parent.monitor(true) do
     end
   end
 end
-c=text({content: "stop dynamic scale", y: 222})
+c = text({ content: "stop dynamic scale", y: 222 })
 c.touch do
   the_parent.monitor({ option: false })
 end

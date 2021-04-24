@@ -12,13 +12,11 @@ def generate_demos_list
   require "./scripts/demo_generator.rb"
 end
 
-generate_demos_list
 
 def generate_methods
   require "./scripts/properties_generator.rb"
 end
 
-generate_methods
 
 def update_opal_libraries
   file 'www/public/js/dynamic_libraries/opal/opal.js': ["www/public/js/dynamic_libraries/opal"] do |t|
@@ -40,7 +38,6 @@ def update_opal_libraries
   end
 end
 
-update_opal_libraries
 
 def update_medias_list
   # todo : only copy if there's a change! use monitoring if possible
@@ -96,8 +93,6 @@ def update_medias_list
     File.open(t.name, "w") { |file| file.write(medias_list) }
   end
 end
-# to force update media_list uncomment below
-update_medias_list
 
 medias_dir_to_inspect = Dir.glob("www/public/medias/**/*")
 eve_medias_dir_to_inspect = Dir.glob("eVe/medias/**/*")
@@ -291,3 +286,10 @@ task "clean" do
   rm_f "www/public/js/dynamic_libraries/opal/opal.js"
   rm_f "www/public/js/dynamic_libraries/opal/opal_parser.js"
 end
+
+
+# generate_demos_list
+# generate_methods
+# update_opal_libraries
+# to force update media_list uncomment below
+# update_medias_list
