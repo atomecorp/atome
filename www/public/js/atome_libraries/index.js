@@ -110,3 +110,31 @@ function message_server(type, message) {
     send_message(type, message);
 }
 
+function alarm( date2){
+    const date1 = new Date();
+    // const date2 = new Date();
+    // const date1 = new Date('7/13/2010');
+    // const date2 = new Date('12/15/2010');
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    alert(diffTime + " milliseconds");
+    console.log(diffDays + " days");
+}
+
+// alarm("ok");
+setInterval(function () {
+    var date = new Date();
+    if (date.getDate() === 24 && date.getHours() === 18 && date.getMinutes === 29) {
+        alert("Surprise!!");
+    }
+}, 1000);
+const now = new Date();
+
+setTimeout(function(){
+    const now2 = new Date();
+    alarm(now, now2);
+
+
+}, 3000);
+// alert(now.getDay());
+
