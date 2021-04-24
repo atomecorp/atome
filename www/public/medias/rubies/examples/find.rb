@@ -1,14 +1,19 @@
 # find example
 
-b = box(size: 66)
-b.tag("my_tag")
-c = circle(x: 200)
-circle({x: 200, y: 66, color: :green, tag: :other_one})
-t = text({ content: "click the box", y: 66 })
-batch([b,c, t]).tag('my_cool_tag')
+t= text"touch me to blur all red object "
+t2= text({content: "touch me to resize all object of the type shape ", y:16})
 
-find({ tag: "my_cool_tag" }).color(:yellow)
+b = box({ size: 66 , y: 33, color: :red})
+b.tag("my_tag")
+circle({ x: 200, y: 33 })
+circle({x: 200, y: 96, color: :green, tag: :other_tag})
+
 b.add({ tag: :new_tag })
-b.touch do
-  t.content("my tags are #{b.tag}")
+
+t.touch do
+  find({ color: :red }).blur(3)
+end
+
+t2.touch do
+  find({ type: :shape }).size(33)
 end

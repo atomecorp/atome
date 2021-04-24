@@ -170,15 +170,18 @@ module AtomeHelpers
     end
     if methods.include?(query.keys[0])
       value_to_find = query[query.keys[0]]
-      method_to_look_at=query.keys[0]
-      found_items=[]
+      method_to_look_at = query.keys[0]
+      found_items = []
       found.each do |found_item|
-         value_to_find
-         if found_item.send(method_to_look_at)==value_to_find
-           found_items  << found_item
-         end
+        if found_item.send(method_to_look_at).instance_of?(Array)
+          if found_item.send(method_to_look_at).include?(value_to_find)
+            found_items << found_item
+          end
+        elsif found_item.send(method_to_look_at) == value_to_find
+          found_items << found_item
+        end
       end
-      found=batch(found_items)
+      found = batch(found_items)
     end
     found
   end

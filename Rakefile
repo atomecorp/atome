@@ -97,7 +97,7 @@ def update_medias_list
   end
 end
 # to force update media_list uncomment below
-# update_medias_list
+update_medias_list
 
 medias_dir_to_inspect = Dir.glob("www/public/medias/**/*")
 eve_medias_dir_to_inspect = Dir.glob("eVe/medias/**/*")
