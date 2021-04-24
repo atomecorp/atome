@@ -1,9 +1,10 @@
 # dynamic centering example
 
 b = box({ width: 700, height: 120, drag: true, center: { dynamic: true } })
-c = circle
+c = circle({y:33})
 c.text({content: "activate dynamic 'continuous' centering", color: :white})
-t = text({ content: "ok", color: :black, center: :x , y: 333})
+t2=text({content: "remove dynamic centering on box", color: :white, y: 0})
+t = text({ content: "ok", color: :white, center: :x , y: 69})
 
 c.touch do
   grab(:buffer).content[:resize] = [t, b]
@@ -13,4 +14,8 @@ c.touch do
       element.center=element.center
     end
   end
+end
+
+t2.touch do
+  grab(:buffer).content[:resize] = [t]
 end
