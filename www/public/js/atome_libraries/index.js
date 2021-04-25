@@ -117,17 +117,18 @@ function alarm( date2){
     // const date2 = new Date('12/15/2010');
     const diffTime = Math.abs(date2 - date1);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    alert(diffTime + " milliseconds");
+    // alert(diffTime + " milliseconds");
+    Opal.Atome.$text(diffTime + " milliseconds");
     console.log(diffDays + " days");
 }
 
 // alarm test
-setTimeout(function () {
-    var date = new Date();
-    if (date.getDate() === 24 && date.getHours() === 18 && date.getMinutes === 29) {
-        alert("Surprise!!");
-    }
-}, 1000);
+// setTimeout(function () {
+//     var date = new Date();
+//     if (date.getDate() === 24 && date.getHours() === 18 && date.getMinutes === 29) {
+//         alert("Surprise!!");
+//     }
+// }, 1000);
 
 
 function verif_alarm(){
@@ -137,6 +138,10 @@ function verif_alarm(){
     setTimeout(function(){
         const now2 = new Date();
         alarm(now, now2);
+        // var new_date=now.toString();
+        // var new_date2=now2.toString();
+        // var result=new_date+ " : "+new_date2;
+        // Opal.Atome.$text(result);
 
     }, 3000);
 }

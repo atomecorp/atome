@@ -50,9 +50,9 @@ const atome = {
         });
     },
     jsProgram: function (date, proc) {
-        // alert(date);
-       const new_date=date.toString();
-        Opal.Atome.$text(new_date);
+        verif_alarm();
+       // const new_date=date.toString();
+       //  Opal.Atome.$text(new_date);
         // $.ajax({
         //     url: filename,
         //     dataType: 'text',
