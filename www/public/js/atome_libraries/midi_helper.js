@@ -40,7 +40,6 @@ class MidiHelper {
         this.output.playNote(note, channel, options);
     }
     send_cc(controller, value) {
-        alert(controller);
         this.output.sendControlChange(controller, value);
     }
 
