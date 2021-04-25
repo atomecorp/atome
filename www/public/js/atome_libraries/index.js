@@ -121,20 +121,25 @@ function alarm( date2){
     console.log(diffDays + " days");
 }
 
-// alarm("ok");
+// alarm test
 setInterval(function () {
     var date = new Date();
     if (date.getDate() === 24 && date.getHours() === 18 && date.getMinutes === 29) {
         alert("Surprise!!");
     }
 }, 1000);
-const now = new Date();
-
-setTimeout(function(){
-    const now2 = new Date();
-    alarm(now, now2);
 
 
-}, 3000);
-// alert(now.getDay());
+function verif_alarm(){
+    // alert(now.getDay());
+    const now = new Date();
+
+    setTimeout(function(){
+        const now2 = new Date();
+        alarm(now, now2);
+
+    }, 3000);
+}
+
+// verif_alarm();
 

@@ -39,6 +39,10 @@ class MidiHelper {
         options= options.$to_n();
         this.output.playNote(note, channel, options);
     }
+    send_cc(controller, value) {
+        alert(controller);
+        this.output.sendControlChange(controller, value);
+    }
 
     stop(note, channel, options) {
         options= options.$to_n();

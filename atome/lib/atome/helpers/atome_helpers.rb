@@ -84,6 +84,10 @@ module AtomeHelpers
         channel = values[:midi][:play].delete(:channel)
         options = values[:midi][:play]
         midi_play(note, channel, options)
+      when :control
+        controller = values[:midi][:control].delete(:controller)
+        value = values[:midi][:control].delete(:value)
+        midi_controller(controller, value)
       when :stop
         note = values[:midi][:stop].delete(:note)
         channel = values[:midi][:stop].delete(:channel)
