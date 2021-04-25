@@ -8,6 +8,11 @@ module PropertyHtml
     set_timeout(seconds, &proc)
   end
 
+
+  def program_html(date, &proc)
+    set_program(date, &proc)
+  end
+
   def repeat_html(delay = 1, repeat = 5, &proc)
     if delay.instance_of?(Hash)
       repeat = delay[:times]

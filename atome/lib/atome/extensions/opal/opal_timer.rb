@@ -1,5 +1,6 @@
 module JSUtils
   # timeout
+
   def set_timeout(time)
     unless ATOME.content[:time_out]
       ATOME.content[:time_out] = []
@@ -59,4 +60,18 @@ module JSUtils
     end
     ATOME.content[:intervals] = {}
   end
+end
+
+
+# program
+
+def set_program(date)
+  # unless ATOME.content[:time_out]
+  #   ATOME.content[:time_out] = []
+  # end
+  # alert(date)
+
+  program =`atome.jsProgram(#{date})`
+  # ATOME.add_timeout(timeout)
+  # timeout
 end

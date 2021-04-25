@@ -122,7 +122,7 @@ function alarm( date2){
 }
 
 // alarm test
-setInterval(function () {
+setTimeout(function () {
     var date = new Date();
     if (date.getDate() === 24 && date.getHours() === 18 && date.getMinutes === 29) {
         alert("Surprise!!");
@@ -142,4 +142,5 @@ function verif_alarm(){
 }
 
 // verif_alarm();
-
+// const now3 = new Date();
+// alert(now3);
