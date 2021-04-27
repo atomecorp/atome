@@ -77,7 +77,7 @@ V - Open source technology needed
 
 - Roda : is a ruby web framework that hold the server version of atome (https://roda.jeremyevans.net)
 
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/roda.png" width="100" />
+<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/roda.svg" width="100" />
 
 - Puma : is a ruby web server to start the server version of atome (https://puma.io)
 
