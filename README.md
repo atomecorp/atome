@@ -37,7 +37,8 @@ prerequisite
 - cordova
 
 
-###[See full documentation to install the whole framework from scratch ](./documentation/atome.md)
+[See full documentation to install the whole framework from scratch ](./documentation/atome.md)
+_
 
 
 Installation (fast start)
