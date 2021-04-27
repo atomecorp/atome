@@ -87,3 +87,27 @@ There two possibles ways to build an atome object:
 - or the lazy the way using preset
 
   a=box()
+  
+  how to
+  -
+  
+  create a new tool
+  
+  how to add new properties
+  
+  property generator 
+  
+  	simple property
+	
+	options 
+		pre and post processing
+		rendering
+		
+		
+adding a js functionality 
+	how to communicate with ruby
+	
+	
+
+
+	
