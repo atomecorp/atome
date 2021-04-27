@@ -1,6 +1,7 @@
 <div align="right">
 
-###[Main menu](./atome.md)
+[Main menu](./atome.md)
+-
 </div>
 
 Install prerequisite library
