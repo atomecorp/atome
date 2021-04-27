@@ -8,6 +8,9 @@
 
 guideline 
 
+the ruby scripting layer must hold all the apis available to developers 
+those API must remain consistent all along the way and be able all availlable atome atome even if it produce no result  
+
 the renderer should always be abstracted from the ruby code 
 
 to do so we have a folder conatining the different renderer available  
