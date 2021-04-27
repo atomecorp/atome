@@ -4,11 +4,13 @@
 -
 </div>
 
-##**What's in the box**
+What's in the box
+-
 
 
+**The atome framework is based on the Cordova framework, it also add many new features :**
 
-####The atome framework is based on the Cordova framework, and also many additional features :
+
 
 - a ruby interpreter
 

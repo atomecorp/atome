@@ -4,8 +4,8 @@
 -
 </div>
 
-##**working with atome framework :**
-
+working with atome framework :
+-
 any atome properties can be set using a unique value using the syntax below :
 
     a=box()

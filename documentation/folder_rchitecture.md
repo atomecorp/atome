@@ -4,7 +4,8 @@
 ###[Main menu](./atome.md)
 </div>
 
-##**Architecture of the folders :**
+Architecture of the folders :
+-
 
 The folders dedicated to the atome framework are :
 

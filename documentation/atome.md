@@ -19,7 +19,6 @@ Cross platform development framework
 
 **[- Architecture of the folders](./folder_rchitecture.md)**
 
-**[- Rendering engine](./rendering_engine.md)**
 
 **[- how to enhance the framework (contributors)](./enhance_atome.md)**
 

@@ -4,9 +4,10 @@
 -
 </div>
 
+How to enhance the framework :
+-
+**guideline**
 
-
-guideline 
 
 the ruby scripting layer must hold all the apis available to developers 
 those API must remain consistent all along the way and be able all availlable atome atome even if it produce no result  
@@ -15,11 +16,12 @@ the tool and Pai should never alter the original atome in order to stay non dest
 
 the renderer should always be abstracted from the ruby code 
 
-to do so we have a folder conatining the different renderer available  
+to do so we have a folder containing the different renderers available  
 for each renderer if code needs to to be wrapped we used a three steps methods the renderer the abstraction code(opal extensions) and finally the foreign code (javascript)
 
-##**How to enhance the framework :**
 
+Creste a new type
+-
 
 how to create new type:
 ex create a "web" type

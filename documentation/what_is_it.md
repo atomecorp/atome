@@ -6,11 +6,13 @@
 
 ##**what is (an) atome?**
 
-###The concept
+The concept
+-
 
-The idea is to have only on kind or type of object where any tools can be apply onto whatever it's type.
+The idea behind atome is to have only one kind of object, so any tools can be apply onto it whatever it's type.
 
-###atome : the uniq object format
+atome : the uniq object format
+-
 
 an atome is a collection of properties
 atome type is also an property so atome can mutable
