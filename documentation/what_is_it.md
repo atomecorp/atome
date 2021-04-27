@@ -21,14 +21,14 @@ EG :
     a=image(content: :moto)
 
 
-![An image](../ressources/icons/100.png) 
 
-<img src="https://camo.githubusercontent.com/..." data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
+<img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/moto.png" width="100" />
 
     a.type(:text)
 moto
 
     a.render({value: :list, option: :property, ordered: :alphabetically })
+<img src="https://github.com/atomecorp/atome/raw/development/documentation/iamges/list.png" width="100" />
 
 
 
