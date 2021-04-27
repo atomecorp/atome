@@ -4,7 +4,8 @@
 -
 </div>
 
-##**what is (an) atome?**
+what is (an) atome?
+-
 
 The concept
 -
