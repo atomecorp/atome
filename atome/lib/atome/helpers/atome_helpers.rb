@@ -190,4 +190,17 @@ module AtomeHelpers
     found
   end
 
+
+  def group(value = nil, &proc)
+    if value.nil? && !proc
+      @group&.read
+    else
+      content= find(value[:condition])
+      Atome.new({type: :find,render: false, name: value[:name],content: content, condition: value[:condition], dynamic:value[:dynamic]})
+      value = properties_common(value, &proc)
+      @group= atomise(:content,value)
+      self
+    end
+  end
+
 end

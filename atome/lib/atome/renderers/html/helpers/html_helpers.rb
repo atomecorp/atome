@@ -39,7 +39,6 @@ module HtmlHelpers
   end
 
   def change_position_origin
-
     jq_get(atome_id).css("left", "#{x}px")
     jq_get(atome_id).css("right", "auto")
     jq_get(atome_id).css("top", "#{y}px")

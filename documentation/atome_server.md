@@ -1,3 +1,4 @@
+
 add an entry to the DNS to accept websocket eg : ws.atome.one pkg install nginx mkdir /usr/local/etc/nginx/vdomain
 
  create dir :

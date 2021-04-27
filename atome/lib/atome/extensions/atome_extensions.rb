@@ -159,3 +159,7 @@ end
 def selection
   ATOME.selection_html
 end
+
+def group(params)
+    grab(:view).group(params)
+end

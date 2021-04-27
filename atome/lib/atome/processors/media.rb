@@ -24,6 +24,34 @@ module Processors
     end
   end
 
+  def container_pre_processor(value)
+    media_pre_processor(:shape, :container, value)
+  end
+
+  def container_getter_processor
+    child_collected = []
+    child do |child_found|
+      if child_found.type == :shape
+        child_collected << child_found.atome_id
+      end
+    end
+    atomise(:temp, child_collected)
+  end
+
+  def shape_pre_processor(value)
+    media_pre_processor(:shape, :box, value)
+  end
+
+  def shape_getter_processor
+    child_collected = []
+    child do |child_found|
+      if child_found.type == :shape
+        child_collected << child_found.atome_id
+      end
+    end
+    atomise(:temp, child_collected)
+  end
+
   def box_pre_processor(value)
     media_pre_processor(:shape, :box, value)
   end
