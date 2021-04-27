@@ -4,6 +4,15 @@
 ###[Main menu](./atome.md)
 </div>
 
+
+
+guideline 
+
+the renderer should always be abstracted from the ruby code 
+
+to do so we have a folder conatining the different renderer available  
+for each renderer if code needs to to be wrapped we used a three steps methods the renderer the abstraction code(opal extensions) and finally the foreign code (javascript)
+
 ##**How to enhance the framework :**
 
 
