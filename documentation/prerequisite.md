@@ -3,9 +3,8 @@
 ###[Main menu](./atome.md)
 </div>
 
-##**fast start :**
-
-
+Install prerequisite library
+-
 
 
     ruby :
