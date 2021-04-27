@@ -5,7 +5,7 @@
 Cross platform development
 -
 
-###[- kickstart atome](./kickstart.md)
+###[- how to start](./kickstart.md)
 
 ###[- prerequisite](./prerequisite.md)
 
