@@ -4,7 +4,7 @@
 ###[Main menu](./atome.md)
 </div>
 
-##**kickstart :**
+##**how to start :**
 
     cordova platform add browser
     cordova plugin add cordova-sqlite-storage
