@@ -1,47 +1,48 @@
 # atome 
 
- ![](ressources/icons/100.png)
- 
-Cross platform development
--
-prerequisite:
-cordova
+ <img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/atome.svg" width="100" />
 
-I - Installation
+ 
+Cross platform development environment
+-
+
+I - Installation (fast start)
 - 
-cordova platform add browser
-cordova plugin add cordova-sqlite-storage
-cordova plugin add cordova-plugin-file
-bundle update
-bundle install
-bundle exec rake run::browser
+    cordova platform add browser
+    cordova plugin add cordova-sqlite-storage
+    cordova plugin add cordova-plugin-file
+    bundle update
+    bundle install
+    bundle exec rake run::browser
 
 for more infos:
 read atome.md in documentations directory
 
-II - The framework
+##[II -Full documentation](./documentation/atome.md)
+
+III - The framework
 - 
 
-- atome is a cross platform development environment.all apis work identically to ensure the exact same rendering on Android, Freebsd, linux, MacOs, Web, Windows.
+- atome is a cross platform development, all apis work identically, to ensure the exact same rendering on Android, Freebsd, linux, MacOs, Web, Windows.
 
 - atome can build web site, mobile or desktop applications, games, presentations, and more...
 
 - atome as well as all the included libraries are entirely open source with a very permissive MIT licence. it means you can do what you want want with it. 
 
-- atome comes with a powerful multi-rendering engine (it can render any atome object across several different render engine simultaneously )
+- atome comes with a powerful multi-rendering engine (it can render any atome object across several different render engine simultaneously)
 
-- atome's solutions can be deploy as a client, a server or both, as well as O.S. mode
+- atome's solutions can be deploy as a client, a server or both, as well as boot at startup (Operating System. mode)
 
 - the framework is totally hybrid, it means it can be executed in a web browser, a web view or as a full native application
 
-- when deploy as a server, any machine can host the server even without running, PHP , ruby, ...
+- You can deploy on any machine you can optionally setup the framework to keep the functionality of a server even if the host machine only serve static files (can't run a sever side language)
 
-- any application created with atome can be used as a data holder, in this case it behave like an universal multimedia document ( think pdf with sound , videos,  animations, interactivity,but entirely editable and scriptable!)
+- any application created with atome can be used as a data holder, in this case it behave like an universal multimedia document ( think pdf with sound, videos,  animations, interactivity, but entirely editable and scriptable!)
 
 - the powerful scripting engine can script any atome object on the fly at runtime.
 
 
-III Guideline and philosophy
+IV Guideline and philosophy
 -
 
 The idea behind the atome concept is to have a kind of "universal portable intelligent application with documents", this means : 
@@ -63,17 +64,31 @@ to keep this idea working we have to follow the following rules during atome dev
 V - Open source technology needed
 -
 - Ruby : is the language used to script all atomes apis (https://www.ruby-lang.org)
+  
+<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/ruby.png" width="100" />
 
 - Cordova : a cross platform framework to create applications with web view rendering (https://cordova.apache.org)
 
+<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/cordova.png" width="100" />
+
 - Opal : is a ruby gem used to compile the ruby language to JS (https://opalrb.com)
+
+<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/opal.png" width="100" />
 
 - Roda : is a ruby web framework that hold the server version of atome (https://roda.jeremyevans.net)
 
+<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/roda.png" width="100" />
+
 - Puma : is a ruby web server to start the server version of atome (https://puma.io)
 
+<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/puma.png" width="100" />
 
-V - Open source libraries included
+- FreeBSD : is a Unix environment with jails, allow to create and boot embedded applications on any compatible machine (standard PC, Raspberry, Beaglebone, etc..) (https://www.freebsd.org/fr/)
+
+<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/freebsd.png" width="100" />
+
+
+VI - Open source libraries included
 -
 
 - Jquery : is a js framework to simplify JS development (https://jquery.com)
@@ -87,13 +102,12 @@ V - Open source libraries included
 - ThreeJS :is a html canvas rendering 3D engine (https://threejs.org)
 
 
-VI - Optional open source Software related to atome's framework
+VII - Optional open source Software related to atome's framework
 -
 - QAudio : a cross-platform C++ library for Audio Digital Signal Processing (https://cycfi.github.io/q/)
 
 - Urho3D : is a cross platform 3D rendering and game engine used create native applications(or web rendering) using Webassembly (https://urho3d.github.io)
 
-- FreeBSD : is a Unix environment with jails, allow to create and boot embedded applications on any compatible machine (standard PC, Raspberry, Beaglebone, etc..) (https://www.freebsd.org/fr/)
 
 
  

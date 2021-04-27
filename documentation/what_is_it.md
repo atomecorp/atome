@@ -22,13 +22,13 @@ EG :
 
 
 
-<img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/moto.png" width="100" />
+<img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/moto.png" width="333" />
 
     a.type(:text)
 moto
 
     a.render({value: :list, option: :property, ordered: :alphabetically })
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/iamges/list.png" width="100" />
+<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/list.png" width="400px" />
 
 
 
