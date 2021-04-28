@@ -1,29 +1,18 @@
-# atome 
+ atome
+ -
 
  <img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/atome.svg" width="100" />
  
-Cross platform development framework
+***Documentation***
 -
 
-**[- what is atome ](./what_is_it.md)**
 
-**[- prerequisite](./prerequisite.md)**
+**[I - What is atome ](./framework/what_is_it.md)**
 
-**[- Fast launch](./kickstart.md)**
+**[II - Installation](./installation/kickstart.md)**
 
-**[- What's in the box](./box_content.md)**
+**[III - Tutorials](./tutorials/tutorials.md)**
 
-**[- Why an other cross platform framework ?](./why.md)**
+**[IV - Website( made with atome) ](http://atome.one)**
 
-**[- What can it be used for ?](./what.md)**
-
-**[- Architecture of the folders](./folder_rchitecture.md)**
-
-
-**[- how to enhance the framework (contributors)](./enhance_atome.md)**
-
-**[- working with atome framework  (developers)](./working_with_atome.md)**
-
-**[- logic and datas flows](./datas_flows.md)**
-
-
+**[V - Contact : queries@atome.one](mailto:contact@atome.one)**

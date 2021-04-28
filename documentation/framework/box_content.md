@@ -1,8 +1,13 @@
-<div align="right">
+<span align="right">
 
-[Main menu](./atome.md)
+[Main menu](../atome.md)
 -
-</div>
+</span>
+<span align="left">
+
+[back](./what_is_it.md)
+
+</span>
 
 What's in the box
 -
@@ -38,7 +43,7 @@ What's in the box
 
 - theses tools are have non destructive effect on atome 
   
-- atome alterations have an history of all modifications applied to it,  it's possible to restore an atome at any point of it's life
+- atome alterations have an history of all modifications applied to it, it's possible to restore an atome at any point of it's life
 
 - expendable API system
 

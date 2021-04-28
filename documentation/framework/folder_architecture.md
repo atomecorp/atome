@@ -1,8 +1,13 @@
+<span align="right">
 
-<div align="right">
+[Main menu](../atome.md)
+-
+</span>
+<span align="left">
 
-###[Main menu](./atome.md)
-</div>
+[back](./what_is_it.md)
+
+</span>
 
 Architecture of the folders :
 -

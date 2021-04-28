@@ -1,8 +1,13 @@
-<div align="right">
+<span align="right">
 
-[Main menu](./atome.md)
+[Main menu](../atome.md)
 -
-</div>
+</span>
+<span align="left">
+
+[back](./tutorials.md)
+
+</span>
 
 How to enhance the framework :
 -

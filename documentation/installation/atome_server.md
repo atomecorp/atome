@@ -1,4 +1,13 @@
+<span align="right">
 
+[Main menu](../atome.md)
+-
+</span>
+<span align="left">
+
+[back](./kickstart.md)
+
+</span>
 add an entry to the DNS to accept websocket eg : ws.atome.one pkg install nginx mkdir /usr/local/etc/nginx/vdomain
 
  create dir :
