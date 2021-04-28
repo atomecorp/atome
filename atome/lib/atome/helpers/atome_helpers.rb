@@ -111,8 +111,8 @@ module AtomeHelpers
 
   AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("ws.atome.one"))
 
-  def message(data)
-    AtomeHelpers.class_variable_get("@@web_socket").send(data)
+  def message(data, callback)
+    AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
   end
 
   def shell(command)
