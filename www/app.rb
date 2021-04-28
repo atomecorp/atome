@@ -6,7 +6,7 @@
 # bundle update
 # bundle install
 # to run: rackup --server puma --port 4567  or without puma : rackup -p 4567
-if  RUBY_PLATFORM == "x64-mingw32"
+if RUBY_PLATFORM == "x64-mingw32"
   require "em/pure_ruby"
 end
 require "sequel"
@@ -64,13 +64,15 @@ class App < Roda
           data = JSON.parse(client_data)
           puts data
           case data["type"]
-          when "connection"
+          when "connect"
+
+          when "push"
 
           when "code"
             ws.send(data["text"])
           when "command"
-            terminal_content=%x{#{data["text"]}}
-            massage_back="text('#{terminal_content}')"
+            terminal_content = %x{#{data["text"]}}
+            massage_back = "text('#{terminal_content}')"
             ws.send(massage_back)
           end
           #if data["connection"]
