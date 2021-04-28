@@ -71,5 +71,3 @@ Optional open source Software related to atome's framework
 
 [Full documentation here](./documentation/atome.md)
 -
-
- 

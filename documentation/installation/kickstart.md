@@ -118,5 +118,5 @@ The different modes :
 - native (urho 3D)
 
 
-[Install atome server](./atome_server.md)
+[Install atome infrastructure](./atome_server.md)
 -
