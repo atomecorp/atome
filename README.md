@@ -3,7 +3,8 @@
 
 <img src="https://github.com/atomecorp/atome/raw/development/documentation/images/3.png" width="666" />
 
-#atome
+atome
+-
 
 
 Cross platform development environment
