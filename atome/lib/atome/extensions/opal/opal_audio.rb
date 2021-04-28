@@ -7,6 +7,10 @@ module JSUtils
     `audioHelper.basicSynth(#{atome_id},#{options},#{proc})`
   end
 
+  def midi_controller(controller, value)
+    `midiHelper.send_cc(#{controller} ,#{value})`
+  end
+
   def midi_play(note, channel, options)
     `midiHelper.play(#{note} ,#{channel}, #{options})`
   end

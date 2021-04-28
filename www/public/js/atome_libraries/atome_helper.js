@@ -49,6 +49,18 @@ const atome = {
             }
         });
     },
+    jsProgram: function (date, proc) {
+        verif_alarm();
+       // const new_date=date.toString();
+       //  Opal.Atome.$text(new_date);
+        // $.ajax({
+        //     url: filename,
+        //     dataType: 'text',
+        //     success: function (data) {
+        //         return proc.$call(data);
+        //     }
+        // });
+    },
     jsLoadCodeEditor: function (atome_id, content) {
         $('<link/>', {
             rel: 'stylesheet',

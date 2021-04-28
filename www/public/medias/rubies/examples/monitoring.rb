@@ -5,9 +5,6 @@ t = text({content: "drag the box", x: 33,y: 96})
 t2 = text({content: "start monitoring", x: 33,y: 33})
 t3 = text({content: "stop monitoring", x: 33,y: 66})
 
-t.touch do
-  b.color(:red)
-end
 i=3
 b.touch do
   b.smooth(i)

@@ -84,6 +84,10 @@ module AtomeHelpers
         channel = values[:midi][:play].delete(:channel)
         options = values[:midi][:play]
         midi_play(note, channel, options)
+      when :control
+        controller = values[:midi][:control].delete(:controller)
+        value = values[:midi][:control].delete(:value)
+        midi_controller(controller, value)
       when :stop
         note = values[:midi][:stop].delete(:note)
         channel = values[:midi][:stop].delete(:channel)
@@ -184,6 +188,19 @@ module AtomeHelpers
       found = batch(found_items)
     end
     found
+  end
+
+
+  def group(value = nil, &proc)
+    if value.nil? && !proc
+      @group&.read
+    else
+      content= find(value[:condition])
+      Atome.new({type: :find,render: false, name: value[:name],content: content, condition: value[:condition], dynamic:value[:dynamic]})
+      value = properties_common(value, &proc)
+      @group= atomise(:content,value)
+      self
+    end
   end
 
 end

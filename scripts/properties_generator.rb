@@ -4,18 +4,18 @@ def atome_methods
   event = %i[touch drag over key scale]
   geometry = %i[width height size ratio]
   helper = %i[tactile display]
-  hierarchy = %i[parent child]
+  hierarchy = %i[parent child path]
   identity = %i[atome_id id type language private can]
   spatial = %i[x xx y yy z center rotate position alignment]
-  media = %i[content video box circle text image audio info example]
+  media = %i[content container video shape box circle text image audio info example name]
   inputs = %i[camera microphone midi keyboard]
-  utility = %i[edit record enliven tag selector render preset monitor select]
+  utility = %i[edit record enliven tag selector render preset monitor select dynamic condition]
   material = %i[color opacity border overflow fill]
   { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event }
 end
 
 def types
-  %i[user machine shape image video audio input text midi tool]
+  %i[user machine shape image video audio input text midi tool virtual]
 end
 
 FileUtils.mkdir_p "atome/lib/atome/generated_methods"
@@ -24,11 +24,11 @@ def is_preset
   # in this case presets are used to create atome suing their types with specific settings
   # so it add the methods in the atome_object_creator methods
   # the generated property will then  return the result of the method instead of object itself
-  %i[box circle text image video audio camera microphone midi]
+  %i[container shape box circle text image video audio camera microphone midi]
 end
 
 def need_pre_processing
-  %i[atome_id private can box circle text image video audio camera microphone midi text image video audio box circle parent child type shadow size]
+  %i[atome_id private can container shape box circle text image video audio camera microphone midi text image video audio parent child type shadow size]
 end
 
 def need_processing
@@ -40,9 +40,8 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id box circle text image video audio text image video audio box circle parent child info example selector tag monitor type alignment camera microphone midi shadow ratio size]
+  %i[atome_id container shape box circle text image video audio text image video audio parent child info example selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition, path]
 end
-
 
 batch_delete = <<STRDELIM
   def delete(value, &proc)

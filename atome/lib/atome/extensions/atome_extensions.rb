@@ -57,6 +57,12 @@ def wait(seconds)
   end
 end
 
+def program(date)
+  program_html(date) do
+    yield
+  end
+end
+
 def repeat(delay = 3, repeat = 5, &proc)
   repeat_html(delay, repeat, &proc)
 end
@@ -152,4 +158,8 @@ end
 
 def selection
   ATOME.selection_html
+end
+
+def group(params)
+    grab(:view).group(params)
 end
