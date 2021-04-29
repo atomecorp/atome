@@ -11,4 +11,9 @@ c.touch do
     c.delete
   end
 end
-grab(:device).color({red: 0.4})
+b=box({x: 666, drag: true, atome_id: :the_box})
+t=b.text({ content: :ok , yy: 3, color: :black})
+i=image({content: :atome, size: 33, x: 96})
+#
+i.transfer(b.atome_id)
+t.content ("logo parent is #{i.parent}")

@@ -146,6 +146,11 @@ module AtomeHelpers
     extract(child_to_detach)
   end
 
+  def transfer(new_parent)
+    grab(new_parent).insert(self.atome_id)
+    grab(self.parent[0].read).extract(self.atome_id)
+  end
+
   def eden_search(query)
     #fixme Universe will be a db that contain users user's media and so on, for now Universe only hold default medias
     case query[:type]
@@ -200,6 +205,18 @@ module AtomeHelpers
       value = properties_common(value, &proc)
       @group= atomise(:content,value)
       self
+    end
+  end
+
+
+  def to_h
+    properties
+  end
+
+
+  def each(&proc)
+    @property.each do |property|
+      proc.call(grab(property)) if proc.is_a?(Proc)
     end
   end
 

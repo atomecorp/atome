@@ -12,7 +12,6 @@
 The concept
 -
 
-
 atome object is the uniq object that can hold any type of data!
 
 Think pdf but collaborative and editable!

@@ -1,16 +1,84 @@
 module PropertyHtml
+
+  def render_list(value)
+    atome_parent = parent[0].read
+    jq_get(atome_parent).append(jq_get(atome_id))
+    temp_list_obj_id = "#{atome_id}_temp_list_obj"
+    grab(temp_list_obj_id).delete
+    i = 0
+    list_width = 666
+    list_height = 30
+    x_offset = 3
+    back_color={red: 0, green: 0, blue: 0, alpha: 0.3}
+    line_color= {red: 0, green: 0, blue: 0, alpha: 0.3}
+    text_color= :orange
+    list = box({ atome_id: temp_list_obj_id, width: 666, height: 333, x: self.x, y: self.y, scale: true, overflow: :scroll, color: back_color, drag: true })
+    case value[:list]
+    when :property
+      properties.each do |property, data|
+        list.box({ overflow: :scroll, color: line_color, height: list_height, width: "100%", scale: true, y: (list_height + x_offset) * i, text: { content: "#{property} : #{data}", color: text_color, width: :auto, center: true, x: x_offset } })
+        i += 1
+      end
+    when :child
+
+    else
+      child.each do |property|
+        # we exclude the list from the list of the child
+        unless property.atome_id == temp_list_obj_id
+          prop = property.to_h
+          prop.delete(:parent)
+          prop_type = prop.delete(:type)
+          display_size = 30
+          y_position = 33 * i
+          x_offset = 3
+          visual = {}
+          options = value[:visualize]
+          visual_found = options.include?(:visual)
+          if visual_found
+            visual = { prop_type => prop.merge({ size: display_size, y: 0, x: x_offset }) }
+          end
+          infos_collected = []
+          options.each do |option|
+            unless option==:visual
+              infos_collected << "#{option} : #{property.send(option)}"
+            end
+          end
+          infos = { content: infos_collected.join(" , "), x: x_offset * 2 + display_size, color: text_color }
+          line=list.box({overflow: :scroll, color: line_color, height: list_height, width: list_width, y: y_position }.merge(visual))
+          line.text(infos)
+          i += 1
+        end
+
+      end
+    end
+
+  end
+
   def render_html(value)
+    # first in any case we remove the atome if it already exist
+    jq_get(atome_id).remove
+    # we also remove pseudo element created when using different rendering type : list, bloc, ...
+    temp_list_obj_id = "#{atome_id}_temp_list_obj"
+    grab(temp_list_obj_id).delete
     if value
-      jq_get(atome_id).remove
       jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
       properties_found = self.properties
       properties_found.delete(:render)
-      # fixme "attention the filter are re applied at each render : \n#{properties_found}"
-      properties_found.each do |property, value_found|
-        self.send(property, value_found)
+      if value == true
+        # fixme "attention the filter are re applied at each render : \n#{properties_found}"
+        properties_found.each do |property, value_found|
+          self.send(property, value_found)
+        end
+      elsif value.instance_of?(Hash)
+        case value[:mode]
+        when :list
+          render_list(value)
+        when :bloc
+          # todo
+        else
+          puts "no rendering"
+        end
       end
-    else
-      jq_get(atome_id).remove
     end
   end
 
