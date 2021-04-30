@@ -18,6 +18,27 @@ module ProcessorHtml
     jq_get(atome_id).find("video").css("width", "100%")
   end
 
+  def audio_creator_helper(value)
+    audio_found = find({type: :audio, scope: :eden, name: value})
+    path = if audio_found.nil?
+             "././medias/audios/audio_missing.wav"
+           else
+             audio_found[:path]
+           end
+    jq_get(atome_id).create_audio(atome_id)
+    jq_get(atome_id).find("audio").html("<source  src=" + path + " type='audio/wav'></source>")
+
+    unless width
+      self.width = jq_get(atome_id).find("audio").width
+    end
+    unless height
+      self.height = jq_get(atome_id).find("audio").height
+    end
+    jq_get(atome_id).find("audio").css("height", "100%")
+    jq_get(atome_id).find("audio").css("width", "100%")
+  end
+
+
   def image_creator_helper(value)
     image_found = find({type: :image, scope: :eden, name: value})
     if image_found.nil?
