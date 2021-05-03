@@ -8,7 +8,7 @@ def run_demo(path)
 end
 
 def demo_navigator(demo_list, index)
-  text({ content: "#{index} : " + demo_list.keys[index], color: :white, fixed: true, yy: 3, x: 3 })
+  text({ content: "#{index} : " + demo_list.keys[index], color: :white, fixed: true, yy: 3, xx: 3 })
   next_example = demo_list.keys[index + 1]
   previous_example = demo_list.keys[index - 1]
   back = text({ content: :demos, xx: 20, z: 300, parent: :intuition })
