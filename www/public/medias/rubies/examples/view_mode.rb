@@ -27,6 +27,3 @@ a.drag(true)
 a.circle({ color: :green, x: 39, y:33, atome_id: :the_circle })
 a.text({ content: :kool, color: :yellow, x: 0, y:96, atome_id: :the_text})
 a.box({width: 33, height: 69, x: 36, atome_id: :the_box})
-
-toto=text({ content: :hhhh , x: 333})
-titi=toto.text({ content: :daco , x: 399})

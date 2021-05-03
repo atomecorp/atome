@@ -1,5 +1,6 @@
 Bugs : find a solution for parent affecting the :view
 
+- scale bug when remove scale and going to next example
 - add follow method to follow an object etheir it's position or it's size eg : when the text is typed the bow around enlarge too
 - finished svg object with path
 - bug duplicate doesn't duplicate children ( not resolve because I dont know how to handle children id , namespace could be the solution

@@ -9,17 +9,17 @@
 # c.attach(b.atome_id)
 
 # ###### text size fit ######
-b = box({ x: 333, atome_id: :the_box, color: :pink, width: 333, height: 60, scale: true })
-t = b.text({ content: :the_text, y: 0, color: :yellow, atome_id: :the_text })
-# t.size({ fit: :width, dynamic: true })
-
-b.touch do
-    `
-  //jQuery("#the_box").fitText(1.2);
-  alert("good");
-  `
-  # alert :ok
-end
+# b = box({ x: 333, atome_id: :the_box, color: :pink, width: 333, height: 60, scale: true })
+# t = b.text({ content: :the_text, y: 0, color: :yellow, atome_id: :the_text })
+# # t.size({ fit: :width, dynamic: true })
+#
+# b.touch do
+#     `
+#   //jQuery("#the_box").fitText(1.2);
+#   alert("good");
+#   `
+#   # alert :ok
+# end
 
 # ###### atome accumulation ######
 
@@ -33,5 +33,8 @@ end
 #
 # a= group({content: [:poil, :poilu], name: :my_group, dynamic: true, condition: { color: :red }})
 # alert a.inspect
-# s=shape({content: :atome})
+
+
+# ###### svg shape ######
+# s=shape({content: :atome, path: :atome})
 # alert (s.inspect)

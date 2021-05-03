@@ -7,7 +7,7 @@ def atome_methods
   hierarchy = %i[parent child path]
   identity = %i[atome_id id type language private can]
   spatial = %i[x xx y yy z center rotate position alignment]
-  media = %i[content container video shape box circle text image audio info example name]
+  media = %i[content group container video shape box circle text image audio info example name]
   inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven tag selector render preset monitor select dynamic condition]
   material = %i[color opacity border overflow fill]
@@ -15,7 +15,7 @@ def atome_methods
 end
 
 def types
-  %i[user machine shape image video audio input text midi tool virtual]
+  %i[user machine shape image video audio input text midi tool virtual group container ]
 end
 
 FileUtils.mkdir_p "atome/lib/atome/generated_methods"
@@ -28,7 +28,7 @@ def is_preset
 end
 
 def need_pre_processing
-  %i[atome_id private can container shape box circle text image video audio camera microphone midi text image video audio parent child type shadow size]
+  %i[atome_id private can group container shape box circle text  camera microphone midi text image video audio parent child type shadow size condition]
 end
 
 def need_processing
@@ -40,7 +40,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id container shape box circle text image video audio text image video audio parent child info example selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition, path]
+  %i[atome_id group container shape box circle text image video audio text image video audio parent child info example selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition, path condition]
 end
 
 batch_delete = <<STRDELIM
