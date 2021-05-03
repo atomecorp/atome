@@ -46,6 +46,11 @@ module AtomeHelpers
     end
   end
 
+
+  def atomiser(value)
+    self.instance_variable_set("@" + value.keys[0], self.atomise(value.keys[0].to_sym, value.values[0]))
+  end
+
   def properties(params = nil)
     if params || params == false
       error("info is read only!! for now")

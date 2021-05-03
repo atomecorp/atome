@@ -26,15 +26,14 @@ module Processors
 
 
   def group_pre_processor(value)
-    alert "values are : #{value}"
-    parent_found= self.atome_id
-
-
+    # parent_found= self.atome_id
 
     # content = find(value[:condition])
-        # Atome.new({ type: :find, render: false, name: value[:name], content: content, condition: value[:condition], dynamic: value[:dynamic] })
+    new_group=Atome.new({ type: :find, render: false, name: value[:name], content: content, condition: value[:condition], dynamic: value[:dynamic] })
+    alert "media.rb line 33, group is : #{new_group.inspect}"
+
         # value = properties_common(value, &proc)
-        @group = atomise(:content, value)
+        # @group = atomise(:content, value)
   end
 
   def container_pre_processor(value)

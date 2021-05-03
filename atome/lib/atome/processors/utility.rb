@@ -9,7 +9,7 @@ module Processors
   end
 
   def condition_pre_processor(value)
-    alert value
+    alert "utility.rb line 12 #{value}"
     ## @condition = atomise(:condition,value)
     #     content = find(value[:condition])
     #     Atome.new({ type: :find, render: false, name: value[:name], content: content, condition: value[:condition], dynamic: value[:dynamic] })
