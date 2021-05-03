@@ -24,7 +24,7 @@ let fileSystemPermissionEventListener = {
 let drawingEventListener = {
     onConnected: function () {
         console.log('Drawing initialized successfully');
-            drawingHelper.setMode(drawingHelper.modeType.Draw);
+        drawingHelper.setMode(drawingHelper.modeType.Draw);
     }
 };
 

@@ -1,7 +1,4 @@
 module JSUtils
-  def audio_play(options, &proc)
-    `mediaHelper.playAudio(#{atome_id},#{options},#{proc})`
-  end
 
   def audio_dsp(options, &proc)
     `audioHelper.basicSynth(#{atome_id},#{options},#{proc})`

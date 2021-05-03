@@ -24,6 +24,19 @@ module Processors
     end
   end
 
+
+  def group_pre_processor(value)
+    alert "values are : #{value}"
+    parent_found= self.atome_id
+
+
+
+    # content = find(value[:condition])
+        # Atome.new({ type: :find, render: false, name: value[:name], content: content, condition: value[:condition], dynamic: value[:dynamic] })
+        # value = properties_common(value, &proc)
+        @group = atomise(:content, value)
+  end
+
   def container_pre_processor(value)
     media_pre_processor(:shape, :container, value)
   end

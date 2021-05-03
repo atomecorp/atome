@@ -10,10 +10,8 @@ class WebSocket
     @web_socket = `new WebSocketHelper(#{address})`
   end
 
-  def send(data)
+  def send(data, callback)
     # FIXME: Change default to user authentication.
-    default = { type: :code, message: :box }
-    data = default.merge(data)
-    `#{@web_socket}.sendMessage(#{data[:type]}, #{data[:message]})`
+    `#{@web_socket}.sendMessage(#{data.to_n}, #{callback})`
   end
 end

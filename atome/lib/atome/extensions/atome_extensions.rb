@@ -72,7 +72,7 @@ def clear(value)
 end
 
 def atome_require(file)
-  alert "atome_require message i replace atome_require with require to be able to load the file '#{file}'"
+  alert "atome_require message I replace atome_require with require to be able to load the file '#{file}'"
 end
 
 def compile(code)

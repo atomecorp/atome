@@ -83,13 +83,13 @@ def update_medias_list
     end
 
     audios.each do |audio|
+
       path = audio.sub("www/public/", "./")
       filename = File.basename(audio, File.extname(audio))
       audios_list[filename.to_sym] = { path: path }
     end
-
     medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-    medias_list = medias_list + "\n" + "module Universe\ndef self.images\n#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{$audios_list}\nend\nend"
+    medias_list = medias_list + "\n" + "module Universe\ndef self.images\n#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
     File.open(t.name, "w") { |file| file.write(medias_list) }
   end
 end
@@ -277,9 +277,19 @@ task 'production::electron': required_js_lib do
   sh "cordova run electron"
 end
 
-desc "Cleanup generated files"
-task "clean" do
+# desc "Cleanup generated files"
+# task "clean" do
+#   rm_f "app/temp/media_list.rb"
+#   rm_f "www/public/js/dynamic_libraries/atome.js"
+#   rm_f "www/public/js/dynamic_libraries/atome_app.js"
+#   rm_f "www/public/js/dynamic_libraries/atome_medias.js"
+#   rm_f "www/public/js/dynamic_libraries/opal/opal.js"
+#   rm_f "www/public/js/dynamic_libraries/opal/opal_parser.js"
+# end
+
+def cleanup_temp_files
   rm_f "app/temp/media_list.rb"
+  rm_f "app/temp/nb_of_medias_files.rb"
   rm_f "www/public/js/dynamic_libraries/atome.js"
   rm_f "www/public/js/dynamic_libraries/atome_app.js"
   rm_f "www/public/js/dynamic_libraries/atome_medias.js"
@@ -291,5 +301,7 @@ end
 generate_demos_list
 generate_methods
 update_opal_libraries
-# to force update media_list uncomment below
+# # to force update media_list uncomment below
 update_medias_list
+# # to cleanup all generated files
+cleanup_temp_files

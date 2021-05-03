@@ -1,7 +1,15 @@
 Bugs : find a solution for parent affecting the :view
+
+- scale bug when remove scale and going to next example
+- add follow method to follow an object etheir it's position or it's size eg : when the text is typed the bow around enlarge too
+- finished svg object with path
 - bug duplicate doesn't duplicate children ( not resolve because I dont know how to handle children id , namespace could be the solution
 - lasso stop selecting is bugged
 - video shadow badly placed
+-  accumulate objects, ex :
+    a=box
+    circle({x: {after: a.atome_id}})
+- distribute({objects: [a,t,c,e,i], axis: :x})
 - find a solution to convert type script to js
 - add help and example for all api
 - every api must have it's list of methods and values with it's unit (for future conversion)

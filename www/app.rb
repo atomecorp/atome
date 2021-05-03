@@ -12,6 +12,7 @@ end
 require "sequel"
 require "faye/websocket"
 require "json"
+require "securerandom"
 
 class String
   def is_json?
@@ -24,6 +25,12 @@ class String
 end
 
 class App < Roda
+
+
+  @@channels = {}
+  @@user
+
+
   #plugin :mail_processor
   eden = Sequel.connect("sqlite://eden_doors.sqlite3")
   unless File.exist?("eden_doors.sqlite3")
@@ -55,6 +62,7 @@ class App < Roda
   # require "../atome/lib/atome/big_bang.rb"
   plugin :static, %w[/css /js /medias]
   plugin "faye/websocket", adapter: :thin, ping: 45
+
   route do |r|
     if Faye::WebSocket.websocket?(env)
       ws = Faye::WebSocket.new(env)
@@ -62,11 +70,49 @@ class App < Roda
         client_data = event.data
         if client_data.is_json?
           data = JSON.parse(client_data)
-          puts data
+          # puts data
           case data["type"]
-          when "connect"
+          when "login"
+            user_id = data["username"]
+            # @user_id[user_id]=ws
+            # @user[data["username"]] = ws
+            # ws.send()
+            # message_back = "text ({content: '#{data["username"]} with id : #{data["id"]} is connected!', y:330})"
+            # message_back={id: data["id"], log: true}
+            #
+            session_id = SecureRandom.uuid
+            message_back = JSON.generate({ type: :response,request_id: data["request_id"], session_id: session_id, log: true })
+            ws.send(message_back)
 
-          when "push"
+          when "start_channel"
+            channel_id = SecureRandom.uuid
+            # self.channels(channel_id)
+            @@channels[channel_id] = []
+            # @session[data["username"]] =session_id
+            message_back = JSON.generate({ type: :response,request_id: data["request_id"], channel_id: channel_id })
+            ws.send(message_back)
+          when "list_channels"
+            message_back = JSON.generate({ type: :response,request_id: data["request_id"], channels: @@channels.keys })
+            ws.send(message_back)
+          when "connect_channel"
+            channel_id=data["channel_id"]
+            @@channels[channel_id] << ws
+            message_back = JSON.generate({ type: :response,request_id: data["request_id"], connected: true })
+            ws.send(message_back)
+          when "push_to_channel"
+            channel_id = data["channel_id"]
+            message_received = data["message"]
+            #fixme the type depend on the kind if received message
+            message_to_push = JSON.generate({ type: :code, content: message_received })
+            @@channels[channel_id].each do |ws_found|
+              # we exclude the sender from the recipient
+              unless ws_found == ws
+                ws_found.send(message_to_push)
+              end
+            end
+
+            message_back = JSON.generate({ type: :response,request_id: data["request_id"], pushed: true })
+            ws.send(message_back)
 
           when "code"
             ws.send(data["text"])
@@ -74,6 +120,8 @@ class App < Roda
             terminal_content = %x{#{data["text"]}}
             massage_back = "text('#{terminal_content}')"
             ws.send(massage_back)
+          else
+            ws.send("unknown message received")
           end
           #if data["connection"]
           #  ws.send('{"connection":{"username":"Régis","accepted":"true"}}')

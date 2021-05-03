@@ -4,7 +4,7 @@ module HtmlHelpers
   end
 
   def play_html(options, &proc)
-    video_play(options, proc)
+    js_play(options, proc)
   end
 
   def resize_html(value = true, &proc)

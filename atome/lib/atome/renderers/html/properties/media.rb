@@ -2,15 +2,14 @@ module PropertyHtml
   def content_html(value = "", type_mutation = false)
     if render
       if type == :text
-        #alert grab(parent.read.last).selector[:machine]
-        value = value.to_s.gsub("\n", "<br>")
+        # value = value.to_s.gsub("\n", "<br>")
         if type_mutation
           # we use the color scheme of the color method to display the text correctly
           self.color(color)
         end
-        jq_get(atome_id).html(value)
         # FIXME:children are deleted,  we must preserve them when setting html content
-        jq_get(atome_id).html(value)
+        # jq_get(atome_id).html(value+jq_get(atome_id).html)
+        jq_get(atome_id).text(value)
       elsif type == :shape
         if type_mutation
           jq_get(atome_id).css("-webkit-background-clip", "padding")
@@ -21,6 +20,8 @@ module PropertyHtml
         end
       elsif type == :video
         video_creator_helper(value)
+      elsif type == :audio
+        audio_creator_helper(value)
       elsif type == :camera
         camera_creator_helper(value)
       elsif type == :image

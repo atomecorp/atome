@@ -7,4 +7,15 @@ module Processors
       proc.call(value) if proc.is_a?(Proc)
     end
   end
+
+  def condition_pre_processor(value)
+    alert value
+    ## @condition = atomise(:condition,value)
+    #     content = find(value[:condition])
+    #     Atome.new({ type: :find, render: false, name: value[:name], content: content, condition: value[:condition], dynamic: value[:dynamic] })
+    #     value = properties_common(value, &proc)
+    #     @group = atomise(:content, value)
+    #     self
+  end
+
 end

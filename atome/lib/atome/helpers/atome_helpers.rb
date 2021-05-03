@@ -111,8 +111,8 @@ module AtomeHelpers
 
   AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("ws.atome.one"))
 
-  def message(data)
-    AtomeHelpers.class_variable_get("@@web_socket").send(data)
+  def message(data, callback)
+    AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
   end
 
   def shell(command)
@@ -144,6 +144,11 @@ module AtomeHelpers
 
   def detach(child_to_detach)
     extract(child_to_detach)
+  end
+
+  def transfer(new_parent)
+    grab(new_parent).insert(self.atome_id)
+    grab(self.parent[0].read).extract(self.atome_id)
   end
 
   def eden_search(query)
@@ -190,16 +195,25 @@ module AtomeHelpers
     found
   end
 
+  # def group(value = nil, &proc)
+  #   if value.nil? && !proc
+  #     @group&.read
+  #   else
+  #     content = find(value[:condition])
+  #     Atome.new({ type: :find, render: false, name: value[:name], content: content, condition: value[:condition], dynamic: value[:dynamic] })
+  #     value = properties_common(value, &proc)
+  #     @group = atomise(:content, value)
+  #     self
+  #   end
+  # end
 
-  def group(value = nil, &proc)
-    if value.nil? && !proc
-      @group&.read
-    else
-      content= find(value[:condition])
-      Atome.new({type: :find,render: false, name: value[:name],content: content, condition: value[:condition], dynamic:value[:dynamic]})
-      value = properties_common(value, &proc)
-      @group= atomise(:content,value)
-      self
+  def to_h
+    properties
+  end
+
+  def each(&proc)
+    @property.each do |property|
+      proc.call(grab(property)) if proc.is_a?(Proc)
     end
   end
 
