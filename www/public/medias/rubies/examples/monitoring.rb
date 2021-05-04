@@ -25,7 +25,7 @@ t2.touch do
   properties = {}
   grab(:view).child.monitor(true) do |evt|
     properties[evt[:property]] = evt[:value]
-    cc.content ("\n#{properties}")
+    cc.content ("#{properties}\n")
   end
 
 end
@@ -38,13 +38,10 @@ t4.touch do
   properties = {}
   b.monitor(true) do |evt|
     properties[evt[:property]] = evt[:value]
-    cc.content ("\n#{properties}")
+    cc.content ("#{properties}\n")
   end
 end
 
 t5.touch do
   b.monitor({ option: false })
-end
-c.touch do
-  grab(:view).clear(:view)
 end

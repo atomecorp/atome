@@ -37,8 +37,12 @@ class Quark
     @property.length
   end
 
-  def include(item)
+  def include?(item)
     @property.include?(item)
+  end
+
+  def concat(items)
+    @property.concat(items).uniq!
   end
 
   def [](option)

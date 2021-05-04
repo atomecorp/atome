@@ -9,26 +9,29 @@ def atome_methods
   spatial = %i[x xx y yy z center rotate position alignment]
   media = %i[content group container video shape box circle text image audio info example name]
   inputs = %i[camera microphone midi keyboard]
-  utility = %i[edit record enliven tag selector render preset monitor select dynamic condition]
+  utility = %i[edit record enliven tag selector render preset monitor select dynamic condition treatment]
   material = %i[color opacity border overflow fill]
-  { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity, events: event }
+  { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
+    medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity,
+    events: event }
 end
 
 def types
-  %i[user machine shape image video audio input text midi tool virtual group container ]
+  %i[user machine shape image video audio input text midi tool virtual group container]
 end
 
 FileUtils.mkdir_p "atome/lib/atome/generated_methods"
 
-def is_preset
+def is_atome
   # in this case presets are used to create atome suing their types with specific settings
   # so it add the methods in the atome_object_creator methods
-  # the generated property will then  return the result of the method instead of object itself
-  %i[container shape box circle text image video audio camera microphone midi]
+  # the generated property will then return the result of the method instead of object itself
+  %i[container shape box circle text image video audio camera microphone midi group]
 end
 
 def need_pre_processing
-  %i[atome_id private can group container shape box circle text  camera microphone midi text image video audio parent child type shadow size condition]
+  %i[atome_id private can group container shape box circle text  camera microphone midi text image video audio parent
+  child type shadow size]
 end
 
 def need_processing
@@ -36,11 +39,12 @@ def need_processing
 end
 
 def getter_need_processing
-  %i[private can parent child].concat(is_preset)
+  %i[private can parent child].concat(is_atome)
 end
 
 def no_rendering
-  %i[atome_id group container shape box circle text image video audio text image video audio parent child info example selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition, path condition]
+  %i[atome_id group container shape box circle text image video audio text image video audio parent child info example
+  selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment]
 end
 
 batch_delete = <<STRDELIM
@@ -85,7 +89,7 @@ atome_methods.each do |property_type, property|
       rendering = "#{method_name}_html(value)"
     end
 
-    unless is_preset.include?(method_name)
+    unless is_atome.include?(method_name)
       method_return = "self"
     end
     method_content = <<STRDELIM
@@ -159,7 +163,7 @@ STRDELIM
 File.write("atome/lib/atome/generated_methods/atome_methods.rb", methods_list)
 
 methods_to_create = []
-is_preset.each do |object_list|
+is_atome.each do |object_list|
   methods_created = <<STRDEILM
 def #{object_list}(value = {})
   grab(:view).#{object_list}(value)

@@ -39,7 +39,7 @@ t1.touch do
 end
 
 t2.touch do
-  if i.parent.include(b.atome_id)
+  if i.parent.include?(b.atome_id)
     i.parent(b2.atome_id)
     grab(b.atome_id).extract(i.atome_id)
   else

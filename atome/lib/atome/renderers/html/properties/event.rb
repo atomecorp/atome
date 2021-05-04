@@ -40,6 +40,11 @@ module PropertyHtml
     if value == true
       value = {}
     end
+    if value == :destroy || value[:option] == :destroy
+      # we initiate the scale first so it won't break if scale is destroy twice,
+      # else : destroy scale then clear view will crash
+      jq_get(atome_id).draggable()
+    end
     if value == :destroy
       jq_object.draggable(:destroy)
     elsif value == :disable
