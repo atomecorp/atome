@@ -10,29 +10,29 @@ const atome = {
             mobile = "desktop";
         }
         return mobile;
-    },jsGet_items_under_pointer(e) {
+    }, jsGet_items_under_pointer(e) {
         // if (active === true) {
         // alert (e.clientX);
         //     $(window).click(function (e) {
-                var x = e.clientX,
-                    y = e.clientY,
-                    elementMouseIsOver = document.elementsFromPoint(x, y);
-                var collected_atomes = [];
-                for (var item in elementMouseIsOver) {
-                    element = $(elementMouseIsOver[item]);
-                    if (element.attr('id')) {
-                        collected_atomes.push(element.attr('id'));
-                    }
-                }
-                var element_to_remove = ["view", "intuition", "device", "user_device"];
+        var x = e.clientX,
+            y = e.clientY,
+            elementMouseIsOver = document.elementsFromPoint(x, y);
+        var collected_atomes = [];
+        for (var item in elementMouseIsOver) {
+            element = $(elementMouseIsOver[item]);
+            if (element.attr('id')) {
+                collected_atomes.push(element.attr('id'));
+            }
+        }
+        var element_to_remove = ["view", "intuition", "device", "user_device"];
 
-                element_to_remove.forEach(function (item, index, arr) {
-                    remove_item_from_Array(collected_atomes, item);
-                });
-                // alert(collected_atomes);
-                // $(window).unbind("click");
-                return collected_atomes;
-            // });
+        element_to_remove.forEach(function (item, index, arr) {
+            remove_item_from_Array(collected_atomes, item);
+        });
+        // alert(collected_atomes);
+        // $(window).unbind("click");
+        return collected_atomes;
+        // });
         // }
         // else {
         //     $(window).unbind("click");
@@ -49,17 +49,13 @@ const atome = {
             }
         });
     },
-    jsProgram: function (date, proc) {
-        verif_alarm();
-       // const new_date=date.toString();
-       //  Opal.Atome.$text(new_date);
-        // $.ajax({
-        //     url: filename,
-        //     dataType: 'text',
-        //     success: function (data) {
-        //         return proc.$call(data);
-        //     }
-        // });
+    jsSchedule: function (years, months, days, hours, minutes, seconds, proc) {
+        const now = new Date();
+        const formatedDate = new Date(years, months - 1, days, hours, minutes, seconds);
+        const diffTime = Math.abs(formatedDate - now);
+        setTimeout(function () {
+            Opal.JSUtils.$schedule_callback(proc);
+        }, diffTime);
     },
     jsLoadCodeEditor: function (atome_id, content) {
         $('<link/>', {

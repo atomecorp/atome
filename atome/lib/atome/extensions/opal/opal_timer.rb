@@ -60,18 +60,16 @@ module JSUtils
     end
     ATOME.content[:intervals] = {}
   end
+
+  # schedule
+  def set_schedule(years, months, days, hours, minutes, seconds, &proc)
+    # proc_to_send={proc_content: proc}
+    `atome.jsSchedule(#{years},#{months},#{days},#{hours},#{minutes},#{seconds},#{proc})`
+  end
+
+  def self.schedule_callback(proc)
+    proc.call
+  end
 end
 
 
-# program
-
-def set_program(date)
-  # unless ATOME.content[:time_out]
-  #   ATOME.content[:time_out] = []
-  # end
-  # alert(date)
-
-  program =`atome.jsProgram(#{date})`
-  # ATOME.add_timeout(timeout)
-  # timeout
-end

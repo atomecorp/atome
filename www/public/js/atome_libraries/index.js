@@ -110,7 +110,7 @@ function message_server(type, message) {
     send_message(type, message);
 }
 
-function alarm( date2){
+function alarm(date2) {
     const date1 = new Date();
     // const date2 = new Date();
     // const date1 = new Date('7/13/2010');
@@ -130,19 +130,20 @@ function alarm( date2){
 //     }
 // }, 1000);
 
+// function verif_alarm(){
+//     const now = new Date();
+//     alarm("04 2021 18 43 56");
+// }
 
-function verif_alarm(){
+function verif_alarm() {
     // alert(now.getDay());
     const now = new Date();
-
-    setTimeout(function(){
-        const now2 = new Date();
-        alarm(now, now2);
+    setTimeout(function () {
+        alarm(now);
         // var new_date=now.toString();
         // var new_date2=now2.toString();
         // var result=new_date+ " : "+new_date2;
         // Opal.Atome.$text(result);
-
     }, 3000);
 }
 

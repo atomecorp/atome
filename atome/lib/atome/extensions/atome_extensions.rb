@@ -57,10 +57,68 @@ def wait(seconds)
   end
 end
 
-def program(date)
-  program_html(date) do
-    yield
+def schedule(date, &proc)
+  date=date.to_s
+  delimiters = [",", " ", ":", "-"]
+  formated_date = date.split(Regexp.union(delimiters))
+
+  missing_datas=Time.now
+  missing_datas=missing_datas.to_s
+  delimiters = [",", " ", ":", "-"]
+  missing_datas_formated_date = missing_datas.split(Regexp.union(delimiters))
+
+  # seconds = missing_datas_formated_date[5]
+  # minutes = missing_datas_formated_date[4]
+  # hours = missing_datas_formated_date[3]
+  # days = missing_datas_formated_date[2]
+  # months = missing_datas_formated_date[1]
+  # years = missing_datas_formated_date[0]
+
+
+  case formated_date.length
+  when 1
+    seconds = formated_date[0]
+    minutes = missing_datas_formated_date[4]
+    hours = missing_datas_formated_date[3]
+    days = missing_datas_formated_date[2]
+    months = missing_datas_formated_date[1]
+    years = missing_datas_formated_date[0]
+
+  when 2
+    seconds = formated_date[0]
+    minutes = formated_date[1]
+    hours = missing_datas_formated_date[3]
+    days = missing_datas_formated_date[2]
+    months = missing_datas_formated_date[1]
+    years = missing_datas_formated_date[0]
+  when 3
+    seconds = formated_date[0]
+    minutes = formated_date[1]
+    hours = formated_date[2]
+    days = missing_datas_formated_date[2]
+    months = missing_datas_formated_date[1]
+    years = missing_datas_formated_date[0]
+  when 4
+    seconds = formated_date[0]
+    minutes = formated_date[1]
+    hours = formated_date[2]
+    days = formated_date[3]
+  when 5
+    seconds = formated_date[0]
+    minutes = formated_date[1]
+    hours = formated_date[2]
+    days = formated_date[3]
+    months = formated_date[4]
+    years = missing_datas_formated_date[0]
+  else
+    years = formated_date[0]
+    months = formated_date[1]
+    days = formated_date[2]
+    hours = formated_date[3]
+    minutes = formated_date[4]
+    seconds = formated_date[5]
   end
+  schedule_html(years, months, days, hours, minutes, seconds, &proc)
 end
 
 def repeat(delay = 3, repeat = 5, &proc)
@@ -122,26 +180,26 @@ def animate(params)
 
   if params[:start][:color]
     value_found = params[:start][:color]
-    value_found=grab(params[:target]).color_helper(value_found)
+    value_found = grab(params[:target]).color_helper(value_found)
     params[:start][:background] = value_found
     params[:start].delete(:color)
   end
   if params[:end][:color]
     value_found = params[:end][:color]
-    value_found=grab(params[:target]).color_helper(value_found)
+    value_found = grab(params[:target]).color_helper(value_found)
     params[:end][:background] = value_found
     params[:end].delete(:color)
   end
 
   if params[:start][:shadow]
     value_found = params[:start][:shadow]
-    value_found=grab(params[:target]).shadow_helper(value_found)
+    value_found = grab(params[:target]).shadow_helper(value_found)
     params[:start][value_found[0]] = value_found[1]
     params[:start].delete(:shadow)
   end
   if params[:end][:shadow]
     value_found = params[:end][:shadow]
-    value_found=grab(params[:target]).shadow_helper(value_found)
+    value_found = grab(params[:target]).shadow_helper(value_found)
     params[:end][value_found[0]] = value_found[1]
     params[:end].delete(:shadow)
   end
@@ -161,5 +219,5 @@ def selection
 end
 
 def group(params)
-    grab(:view).group(params)
+  grab(:view).group(params)
 end
