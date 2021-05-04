@@ -25,6 +25,7 @@ module Processors
   end
 
   def group_pre_processor(value)
+    #todo allow group deletion and remove all monitoring binding
     #if there's a condition we feed the content else we treat the content directly
     if value[:condition]
       content_found = find(value[:condition])

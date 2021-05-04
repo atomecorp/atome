@@ -8,10 +8,14 @@ def run_demo(path)
 end
 
 def demo_navigator(demo_list, index)
-  text({ content: "#{index} : " + demo_list.keys[index], color: :white, fixed: true, yy: 3, xx: 3 })
+  grab(:demo_list).delete
+  grab(:demo_back).delete
+  grab(:demo_prev).delete
+  grab(:demo_next).delete
+  text({ content: "#{index} : " + demo_list.keys[index], color: :white, fixed: true, yy: 3, xx: 3, atome_id: :demo_list })
   next_example = demo_list.keys[index + 1]
   previous_example = demo_list.keys[index - 1]
-  back = text({ content: :demos, xx: 20, z: 300, parent: :intuition })
+  back = text({ content: :demos, xx: 20, z: 300, parent: :intuition, atome_id: :demo_back})
   back.touch do
     # we clear the buffer to avoid treatment on no more existent atome
     grab(:buffer).content[:resize]=[]
@@ -20,7 +24,7 @@ def demo_navigator(demo_list, index)
 
   unless index == 0
     index = index - 1
-    previous_demo = text(content: :previous, y: 33, xx: 20, z: 300, parent: :intuition )
+    previous_demo = text(content: :previous, y: 33, xx: 20, z: 300, parent: :intuition, atome_id: :demo_prev )
     previous_demo.touch do
       # we clear the buffer to avoid treatment on no more existent atome
       grab(:buffer).content[:resize]=[]
@@ -32,7 +36,7 @@ def demo_navigator(demo_list, index)
 
   unless demo_list.length == index + 1
     index = index + 1
-    next_demo = text({ content: :next, y: 69, xx: 20, parent: :intuition  })
+    next_demo = text({ content: :next, y: 69, xx: 20, parent: :intuition , atome_id: :demo_next })
     next_demo.touch do
       # we clear the buffer to avoid treatment on no more existent atome
       grab(:buffer).content[:resize]=[]

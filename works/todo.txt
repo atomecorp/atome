@@ -1,4 +1,6 @@
 Bugs : find a solution for parent affecting the :view
+
+- todo allow group deletion and remove all monitoring binding
 - create a better monitoring system adding all monitored objects to an @@variable call ecah time an property is atomise ( InternalHelpers - atomise):
 - scale bug when remove scale and going to next example
 - add follow method to follow an object etheir it's position or it's size eg : when the text is typed the bow around enlarge too
