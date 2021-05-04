@@ -2,14 +2,15 @@ module PropertyHtml
   def content_html(value = "", type_mutation = false)
     if render
       if type == :text
+        value = value.to_s
         if type_mutation
           # we use the color scheme of the color method to display the text correctly
           self.color(color)
         end
-        html_content= jq_get(atome_id).html
-        text_content= jq_get(atome_id).text
+        jq_get(atome_id).remove_text
+        child_of_text_atome = jq_get(atome_id).html
         value = value.to_s.gsub("\n", "<br>")
-        new_content=html_content.gsub(text_content,value)
+        new_content = value + child_of_text_atome
         jq_get(atome_id).html(new_content)
       elsif type == :shape
         if type_mutation

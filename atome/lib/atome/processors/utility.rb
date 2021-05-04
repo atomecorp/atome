@@ -8,14 +8,4 @@ module Processors
     end
   end
 
-  def condition_pre_processor(value)
-    alert "utility.rb line 12 #{value}"
-    ## @condition = atomise(:condition,value)
-    #     content = find(value[:condition])
-    #     Atome.new({ type: :find, render: false, name: value[:name], content: content, condition: value[:condition], dynamic: value[:dynamic] })
-    #     value = properties_common(value, &proc)
-    #     @group = atomise(:content, value)
-    #     self
-  end
-
 end

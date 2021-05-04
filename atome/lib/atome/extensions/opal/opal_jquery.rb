@@ -16,6 +16,13 @@ class Element
     ` $(window).off(#{value})`
   end
 
+  def remove_text
+    current_jq_id = self.attr('id')
+    `
+    let isTextNode = (_, el) => el.nodeType === Node.TEXT_NODE;
+    $("#"+#{current_jq_id}).contents().filter(isTextNode).remove();
+    `
+  end
 end
 
 class Event
@@ -66,9 +73,8 @@ class Event
   def stop
     @drag_stop
     #fixme this method collide with opal jquery event.rb
-   `#@native.stopPropagation()`
+    `#@native.stopPropagation()`
   end
-
 
 end
 
