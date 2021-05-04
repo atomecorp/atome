@@ -100,6 +100,12 @@ module PropertyHtml
       jq_get(atome_id).css("-moz-user-select", "text")
       jq_get(atome_id).css("-o-user-select", "text")
       jq_get(atome_id).css("user-select: text", "text")
+      # bind key to save the content
+      jq_get(atome_id).on(:keyup) do
+        new_content=jq_get(atome_id).text
+        @content=atomise(:content,new_content)
+      end
+
     elsif value == false
       jq_get(atome_id).attr("contenteditable", "false")
       jq_get(atome_id).css("-webkit-user-select", "none")
@@ -107,6 +113,8 @@ module PropertyHtml
       jq_get(atome_id).css("-moz-user-select", "none")
       jq_get(atome_id).css("-o-user-select", "none")
       jq_get(atome_id).css("user-select: text", "none")
+      # unbind key
+      jq_get(atome_id).unbind("keypress")
     end
 
   end
