@@ -11,9 +11,6 @@ const atome = {
         }
         return mobile;
     }, jsGet_items_under_pointer(e) {
-        // if (active === true) {
-        // alert (e.clientX);
-        //     $(window).click(function (e) {
         var x = e.clientX,
             y = e.clientY,
             elementMouseIsOver = document.elementsFromPoint(x, y);
@@ -29,15 +26,7 @@ const atome = {
         element_to_remove.forEach(function (item, index, arr) {
             remove_item_from_Array(collected_atomes, item);
         });
-        // alert(collected_atomes);
-        // $(window).unbind("click");
         return collected_atomes;
-        // });
-        // }
-        // else {
-        //     $(window).unbind("click");
-        // }
-
     },
 
     jsReader: function (filename, proc) {
