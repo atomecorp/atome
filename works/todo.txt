@@ -1,4 +1,6 @@
 Bugs : find a solution for parent affecting the :view
+- rename jsvideohelper to jsmediahepler
+- create a better fit or size fit to fit parent and or child or else test dynamic and keep :ratio ,and dynamic with fit width
 - finish disposition api to accumulate atome below
 - integrate dynamic centering method found in center example
 - In "Schedule" method chek if date is not set before current time to avoid bad triggering
