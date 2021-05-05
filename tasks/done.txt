@@ -1,3 +1,8 @@
+- video callback
+- code editor : restore position and size, stop drag, text size
+- play audio
+- scale bug when remove scale and going to next example
+- create a better monitoring system adding all monitored objects to an @@variable call each time an property is atomise ( InternalHelpers - atomise):
 - animation
 - parser when using eval
 - key press

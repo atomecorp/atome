@@ -1,11 +1,10 @@
 class VideoHelper {
 
-
     addVideoPlayer(parentId, controls) {
         const videoElement = $('<video />', {
             controls: controls
         });
-        videoElement.appendTo($('#'+parentId));
+        videoElement.appendTo($('#' + parentId));
         return videoElement[0];
     }
 
@@ -14,43 +13,35 @@ class VideoHelper {
         const audioElement = $('<audio />', {
             controls: controls
         });
-        audioElement.appendTo($('#'+parentId));
+        audioElement.appendTo($('#' + parentId));
         return audioElement[0];
+    }
+
+    playMedia(media, atome_id, options, proc) {
+        if (options === 'play' || typeof (options) == 'number') {
+            media.currentTime = options;
+            media.play();
+            media.addEventListener("timeupdate", function () {
+                Opal.JSUtils.$js_play_callback(media.currentTime, proc);
+            });
+        } else if (options === 'pause') {
+            Opal.JSUtils.$js_play_set_instance_variable(atome_id, media.currentTime);
+            media.pause();
+        } else if (options === 'stop') {
+            Opal.JSUtils.$js_play_set_instance_variable(atome_id, 0);
+            media.pause();
+            media.currentTime = 0;
+        }
     }
 
     playAudio(atome_id, options, proc) {
         const media = $("#" + atome_id + ' audio')[0];
-        if (options === true || options === 'true') {
-            options = 0;
-            media.play();
-        }
-        else{
-            media.pause();
-        }
-        // media.addEventListener("timeupdate", function () {
-        //     Opal.Event.$playing(proc, media.currentTime);
-        // });
-        // //media.currentTime is run twice, because if not depending on the context it may not be interpreted
-        // media.currentTime = options;
-        // media.addEventListener('loadedmetadata', function () {
-        //     media.currentTime = options;
-        // }, false);
-
+        this.playMedia(media, atome_id, options, proc);
     }
 
-    playVideo(atome_id, options, timerListener) {
+    playVideo(atome_id, options, proc) {
         const media = $("#" + atome_id + ' video')[0];
-        if (options === true || options === 'true') {
-            options = 0;
-        }
-        media.addEventListener("timeupdate", function () {
-            Opal.Events.$playing(timerListener, media.currentTime);
-        });
-        //media.currentTime is run twice, because if not depending on the context it may not be interpreted
-        media.currentTime = options;
-        media.addEventListener('loadedmetadata', function () {
-            media.currentTime = options;
-        }, false);
-        media.play();
+        this.playMedia(media, atome_id, options, proc);
+
     }
 }

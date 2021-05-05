@@ -9,7 +9,7 @@ module PropertyHtml
   end
 
   def schedule_html(years, months, days, hours, minutes, seconds, &proc)
-    set_schedule(years, months, days, hours, minutes, seconds, &proc)
+    js_schedule(years, months, days, hours, minutes, seconds, &proc)
   end
 
   def repeat_html(delay = 1, repeat = 5, &proc)
