@@ -6,7 +6,7 @@ def atome_methods
   helper = %i[tactile display]
   hierarchy = %i[parent child path]
   identity = %i[atome_id id type language private can]
-  spatial = %i[x xx y yy z center rotate position alignment]
+  spatial = %i[x xx y yy z center rotate position alignment disposition]
   media = %i[content group container video shape box circle text image audio info example name]
   inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven tag selector render preset monitor select dynamic condition treatment]
