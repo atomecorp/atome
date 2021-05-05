@@ -62,13 +62,12 @@ module JSUtils
   end
 
   # schedule
-  def set_schedule(years, months, days, hours, minutes, seconds, &proc)
-    # proc_to_send={proc_content: proc}
+  def js_schedule(years, months, days, hours, minutes, seconds, &proc)
     `atome.jsSchedule(#{years},#{months},#{days},#{hours},#{minutes},#{seconds},#{proc})`
   end
 
   def self.schedule_callback(proc)
-    proc.call
+    proc.call if proc.is_a?(Proc)
   end
 end
 

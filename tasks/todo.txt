@@ -5,9 +5,7 @@ Bugs : find a solution for parent affecting the :view
 - integrate dynamic centering method found in center example
 - In "Schedule" method chek if date is not set before current time to avoid bad triggering
 - todo allow group deletion and remove all monitoring binding
-- create a better monitoring system adding all monitored objects to an @@variable call ecah time an property is atomise ( InternalHelpers - atomise):
-- scale bug when remove scale and going to next example
-- add follow method to follow an object etheir it's position or it's size eg : when the text is typed the bow around enlarge too
+- add follow method to follow an object when it's position or it's size change eg : when the text is typed the bow around enlarge too
 - finished svg object with path
 - bug duplicate doesn't duplicate children ( not resolve because I dont know how to handle children id , namespace could be the solution
 - lasso stop selecting is bugged
@@ -26,10 +24,10 @@ Bugs : find a solution for parent affecting the :view
 - check monitoring on all object, on a specific property, etc..
 - implement display mode : list, bloc, natural, ...
 - color theme for U.I.
+- better text scaling get width set font size etc...
 - text selection (adding color or touch event)
 - play events callbacks
 - youtube integration
-- play audio
 - audio recording
 - documentation end users, framework users and developers also add how to create new type new methods and new tools
 - write data flow of video player and check if all other type works the same!
@@ -38,7 +36,6 @@ Bugs : find a solution for parent affecting the :view
 - cleanup demo
 - when eval should output error in console
 - make eVe a gem
-- code editor : restore position and size, stop drag, text size
 - key_Shortcut
 - bidirectional mode
 - stack events and remove (by name or order)
@@ -50,7 +47,7 @@ Bugs : find a solution for parent affecting the :view
 - scratch mode
 - notification system : text => wait x seconds => delete
 - add methods
-    - staked event strategy
+    - stacked event strategy
         optionally possible to add an id to the stacked property
         to get a stacked property ex: (please note methods are pluralized
                                     a.colors[1]

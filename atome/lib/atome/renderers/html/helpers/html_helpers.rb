@@ -3,7 +3,15 @@ module HtmlHelpers
     jq_get(atome_id).remove
   end
 
-  def play_html(options, &proc)
+  def play_html(options, proc)
+    case options
+    when true
+      options = :play
+    when false
+      options = :stop
+    else
+      options
+    end
     js_play(options, proc)
   end
 

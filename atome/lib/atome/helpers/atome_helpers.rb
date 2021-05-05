@@ -71,8 +71,18 @@ module AtomeHelpers
     properties
   end
 
-  def play(options, &proc)
-    play_html(options, &proc)
+  def play(options=nil, &proc)
+    if options.nil?
+      @play
+    else
+      # the condition below check we dont specify a play position and if the
+      # @play contain a play position, if so it resume playback specify in @play
+      if (@play.instance_of?(Integer) || @play.instance_of?(Number)) && (options== true || options== :play)
+          options=@play
+      end
+      @play=options
+      play_html(options, proc)
+    end
   end
 
   def transmit(values)
