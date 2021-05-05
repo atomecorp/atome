@@ -43,7 +43,7 @@ module Processors
       self.child.each do |child_found|
         child_found.monitor(true) do |evt|
           unless  content_found.include?(child_found.atome_id)
-            if value[:condition].keys[0] == evt[:property] && value[:condition].values[0] == evt[:value]
+            if value[:treatment] && (value[:condition].keys[0] == evt[:property] && value[:condition].values[0] == evt[:value])
                 value[:treatment].each do |prop, val|
                   child_found.send(prop, val)
                 end
@@ -52,9 +52,12 @@ module Processors
         end
       end
     end
-    value[:treatment].each do |prop, val|
-      self.content.send(prop, val)
+    if value[:treatment]
+      value[:treatment].each do |prop, val|
+        self.content.send(prop, val)
+      end
     end
+
     value= value.merge({ type: :find, render: false })
     Atome.new(value)
   end
