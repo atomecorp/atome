@@ -299,7 +299,7 @@ end
 
 
 # generate_demos_list
-# generate_methods
+generate_methods
 # update_opal_libraries
 # # # to force update media_list uncomment below
 # update_medias_list
