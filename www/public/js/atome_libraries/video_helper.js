@@ -22,6 +22,10 @@ class VideoHelper {
         const media = $("#" + atome_id + ' audio')[0];
         if (options === true || options === 'true') {
             options = 0;
+            media.play();
+        }
+        else{
+            media.pause();
         }
         // media.addEventListener("timeupdate", function () {
         //     Opal.Event.$playing(proc, media.currentTime);
@@ -31,7 +35,7 @@ class VideoHelper {
         // media.addEventListener('loadedmetadata', function () {
         //     media.currentTime = options;
         // }, false);
-        media.play();
+
     }
 
     playVideo(atome_id, options, timerListener) {
