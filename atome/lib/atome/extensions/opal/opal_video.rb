@@ -14,7 +14,7 @@ module JSUtils
     proc.call(timer) if proc.is_a?(Proc)
   end
 
-  def self.js_play_set_instance_variable(atome_id,timer)
-    grab(atome_id).instance_variable_set( "@play", { play: timer } )
+  def self.js_play_set_instance_variable(atome_id,timer, status)
+    grab(atome_id).instance_variable_set( "@play", { play: timer, status: status} )
   end
 end
