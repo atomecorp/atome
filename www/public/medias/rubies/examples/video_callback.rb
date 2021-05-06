@@ -29,10 +29,10 @@ c2.touch do
 end
 
 d = circle({ x: 333, y: 120, color: :green })
-d.text({ content: "play from 11", center: true })
+d.text({ content: "play from 33", center: true })
 
 d.touch do
-  v.play(11)
+  v.play(33)
   t2.content(v.play[:status])
 end
 
