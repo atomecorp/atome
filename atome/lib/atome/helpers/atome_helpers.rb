@@ -76,22 +76,22 @@ module AtomeHelpers
     else
       case options
       when true
-        options = { play: :play }
+        options = { play: :play, status: :playing }
       when false
-        options = { play: :stop }
+        options = { play: :stop, status: :stopped  }
       when :pause
-        options = { play: :pause }
+        options = { play: :pause, status: :paused  }
       when :stop
-        options = { play: :stop }
+        options = { play: :stop, status: :stopped  }
       when :play
-        options = { play: :play }
+        options = { play: :play, status: :playing  }
       else
-        options = { play: options }
+        options = { play: options, status: :playing }
       end
       # the condition below check we dont specify a play position and if the
       # @play contain a play position, if so it resume playback specify in @play
       if @play && ((@play[:play].instance_of?(Integer) || @play[:play].instance_of?(Number)) && (options[:play] == true || options[:play]  == :play))
-        options = { play: @play[:play] }
+        options = { play: @play[:play],status: :playing }
       # if @play
       #   alert @play
       #   options = { play: 12 }

@@ -30,10 +30,10 @@ class VideoHelper {
                 Opal.JSUtils.$js_play_callback(media.currentTime, proc);
             });
         } else if (options === 'pause') {
-            Opal.JSUtils.$js_play_set_instance_variable(atome_id, media.currentTime);
+            Opal.JSUtils.$js_play_set_instance_variable(atome_id, media.currentTime, 'paused');
             media.pause();
         } else if (options === 'stop') {
-            Opal.JSUtils.$js_play_set_instance_variable(atome_id, 0);
+            Opal.JSUtils.$js_play_set_instance_variable(atome_id, 0, 'stopped');
             media.pause();
             media.currentTime = 0;
         }
