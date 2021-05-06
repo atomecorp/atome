@@ -5,7 +5,7 @@ t2.touch do
   t2.content(v.play[:status])
 end
 v = video(:superman)
-t = text({ content: :hello, xx: 3 })
+t = text({ content: :hello, xx: 96 })
 v.touch do
   v.play(true) do |evt|
     t.content(evt)
