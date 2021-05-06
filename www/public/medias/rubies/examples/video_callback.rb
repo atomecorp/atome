@@ -1,6 +1,6 @@
 # video callback example
 
-v = video(:avengers)
+v = video(:superman)
 t = text({ content: :timer, x: 600 })
 v.touch do
   v.play(true) do |evt|
@@ -22,9 +22,9 @@ c2.touch do
 end
 
 d = circle({ x: 333, y: 120, color: :green })
-d.text({ content: "play from 11", center: true })
+d.text({ content: "play from 33", center: true })
 
 d.touch do
-  v.play(11)
+  v.play(33)
 end
 

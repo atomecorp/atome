@@ -4,14 +4,6 @@ module HtmlHelpers
   end
 
   def play_html(options, proc)
-    case options
-    when true
-      options = :play
-    when false
-      options = :stop
-    else
-      options
-    end
     js_play(options, proc)
   end
 

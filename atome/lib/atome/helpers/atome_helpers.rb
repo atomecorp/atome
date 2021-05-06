@@ -46,7 +46,6 @@ module AtomeHelpers
     end
   end
 
-
   def atomiser(value)
     self.instance_variable_set("@" + value.keys[0], self.atomise(value.keys[0].to_sym, value.values[0]))
   end
@@ -71,17 +70,34 @@ module AtomeHelpers
     properties
   end
 
-  def play(options=nil, &proc)
+  def play(options = nil, &proc)
     if options.nil?
       @play
     else
+      case options
+      when true
+        options = { play: :play }
+      when false
+        options = { play: :stop }
+      when :pause
+        options = { play: :pause }
+      when :stop
+        options = { play: :stop }
+      when :play
+        options = { play: :play }
+      else
+        options = { play: options }
+      end
       # the condition below check we dont specify a play position and if the
       # @play contain a play position, if so it resume playback specify in @play
-      if (@play.instance_of?(Integer) || @play.instance_of?(Number)) && (options== true || options== :play)
-          options=@play
+      if @play && ((@play[:play].instance_of?(Integer) || @play[:play].instance_of?(Number)) && (options[:play] == true || options[:play]  == :play))
+        options = { play: @play[:play] }
+      # if @play
+      #   alert @play
+      #   options = { play: 12 }
       end
-      @play=options
-      play_html(options, proc)
+      @play = options
+      play_html(options[:play], proc)
     end
   end
 
@@ -102,7 +118,8 @@ module AtomeHelpers
       when :control
         controller = values[:midi][:control].delete(:controller)
         value = values[:midi][:control].delete(:value)
-        midi_controller(controller, value)
+        channel = values[:midi][:control].delete(:channel)
+        midi_controller(controller, value,channel,channel,channel)
       when :stop
         note = values[:midi][:stop].delete(:note)
         channel = values[:midi][:stop].delete(:channel)
