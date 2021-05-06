@@ -19,7 +19,12 @@ class VideoHelper {
 
     playMedia(media, atome_id, options, proc) {
         if (options === 'play' || typeof (options) == 'number') {
-            media.currentTime = options;
+            if(typeof (options)=='string'){
+                media.currentTime = 0;
+            }
+            else{
+                media.currentTime = options;
+            }
             media.play();
             media.addEventListener("timeupdate", function () {
                 Opal.JSUtils.$js_play_callback(media.currentTime, proc);

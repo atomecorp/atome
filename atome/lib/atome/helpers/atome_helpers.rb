@@ -118,7 +118,8 @@ module AtomeHelpers
       when :control
         controller = values[:midi][:control].delete(:controller)
         value = values[:midi][:control].delete(:value)
-        midi_controller(controller, value)
+        channel = values[:midi][:control].delete(:channel)
+        midi_controller(controller, value,channel,channel,channel)
       when :stop
         note = values[:midi][:stop].delete(:note)
         channel = values[:midi][:stop].delete(:channel)
