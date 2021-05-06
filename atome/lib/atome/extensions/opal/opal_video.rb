@@ -15,6 +15,6 @@ module JSUtils
   end
 
   def self.js_play_set_instance_variable(atome_id,timer)
-    grab(atome_id).instance_variable_set( "@play", timer )
+    grab(atome_id).instance_variable_set( "@play", { play: timer } )
   end
 end
