@@ -7,7 +7,13 @@ module PropertyHtml
       jq_get(atome_id).css("-webkit-background-clip", "text")
       jq_get(atome_id).css("-webkit-text-fill-color", "transparent")
     end
-    unless self.type== :shape && self.path
+    if self.type== :shape && self.path
+      # in this case we're on a vector file
+      `$('#the_path').children().css({fill: 'blue'})`
+      `$('#the_path').children().css({stroke: 'red'})`
+
+      alert 'html properties render message'
+      else
       # we exclude the case when the path is defined because it means we need to use a svg
       if !values.instance_of?(Array) || values.length == 1
         if values.instance_of?(Array)
