@@ -7,15 +7,19 @@ module PropertyHtml
           # we use the color scheme of the color method to display the text correctly
           self.color(color)
         end
-        jq_get(atome_id).remove_text
+        jq_get(atome_id).remove_text(atome_id)
         child_of_text_atome = jq_get(atome_id).html
         value = value.to_s.gsub("\n", "<br>")
         new_content = value + child_of_text_atome
         jq_get(atome_id).html(new_content)
       elsif type == :shape
-        if type_mutation
-          jq_get(atome_id).css("-webkit-background-clip", "padding")
-          jq_get(atome_id).css("background-color", color)
+        if self.path
+          path_getter_helper(self.path)
+        else
+          if type_mutation
+            jq_get(atome_id).css("-webkit-background-clip", "padding")
+            jq_get(atome_id).css("background-color", color)
+          end
         end
         if value[:tension]
           self.smooth(value[:tension])

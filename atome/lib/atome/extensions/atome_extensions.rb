@@ -67,14 +67,6 @@ def schedule(date, &proc)
   delimiters = [",", " ", ":", "-"]
   missing_datas_formated_date = missing_datas.split(Regexp.union(delimiters))
 
-  # seconds = missing_datas_formated_date[5]
-  # minutes = missing_datas_formated_date[4]
-  # hours = missing_datas_formated_date[3]
-  # days = missing_datas_formated_date[2]
-  # months = missing_datas_formated_date[1]
-  # years = missing_datas_formated_date[0]
-
-
   case formated_date.length
   when 1
     seconds = formated_date[0]
@@ -136,13 +128,6 @@ end
 def compile(code)
   code = code.gsub("require ", "atome_require ")
   eval(code)
-end
-
-@http = Http.new
-
-def read(filename, &proc)
-  #  read remote file
-  @http.get(filename, &proc)
 end
 
 def version

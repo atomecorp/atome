@@ -2,7 +2,7 @@ JSUtils.load_opal_parser
 
 def run_demo(path)
   clear(:view)
-  read(path) do |data|
+  ATOME.reader(path) do |data|
     compile data
   end
 end
@@ -63,7 +63,7 @@ def demo_reel(demo_list)
 end
 
 
-  read("./medias/rubies/examples/!demos.rb") do |data|
+ATOME.reader("./medias/rubies/examples/!demos.rb") do |data|
     demos = compile(data)
     demo_reel(demos)
   end

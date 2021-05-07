@@ -1,4 +1,4 @@
-require "c_lexer"
+# require "c_lexer"
 require "opal"
 require "opal-jquery"
 require "uglifier"
@@ -300,8 +300,8 @@ end
 
 generate_demos_list
 generate_methods
-# update_opal_libraries
-# # to force update media_list uncomment below
-# update_medias_list
-# # to cleanup all generated files
-# cleanup_temp_files
+update_opal_libraries
+# to force update media_list uncomment below
+update_medias_list
+# to cleanup all generated files
+cleanup_temp_files
