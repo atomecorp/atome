@@ -8,17 +8,7 @@ module PropertyHtml
       jq_get(atome_id).css("-webkit-text-fill-color", "transparent")
     end
     if self.type== :shape && self.path
-      # in this case we're on a vector file
-      # `$('#the_path').children().css({fill: 'blue'})`
-      `$('#the_path').children().css({stroke: 'red'})`
-      `$('#the_path').children().children().css({stroke: 'yellow'})`
-      # `$('#tool').css({stroke: 'blue'})`
-      #
-      # `$('#blur').css({fill: 'blue'})`
-      `$('#blur').css({stroke: 'green'})`
-      # `$('svg').children().css('fill', 'blue');`
-      # `$('svg').children().css('stroke', 'orange');`
-      alert 'html properties render message'
+      `$('#'+#{atome_id}).children().css({fill: #{values}})`
       else
       # we exclude the case when the path is defined because it means we need to use a svg
       if !values.instance_of?(Array) || values.length == 1
@@ -61,7 +51,14 @@ module PropertyHtml
     pattern = value[:pattern]
     thickness = value[:thickness]
     color = color_helper(value[:color])
-    jq_get(atome_id).css("border", thickness.to_s + "px " + pattern + " " + color)
+    if self.type== :shape && self.path
+      `$('#'+#{atome_id}).children().css({stroke: #{color}})`
+      `$('#'+#{atome_id}).children().css('stroke-width', #{thickness})`
+    else
+      jq_get(atome_id).css("border", thickness.to_s + "px " + pattern + " " + color)
+    end
+
+
   end
 
   def overflow_html(value)

@@ -77,8 +77,8 @@ module ProcessorHtml
         self.height = image_found[:height]
       end
       self.ratio(self.width / self.height)
-      jq_get(atome_id).css("background-image", "linear-gradient(0deg, transparent, transparent)")
-      jq_get(atome_id).css("background-color", :transparent)
+      # jq_get(atome_id).css("background-image", "linear-gradient(0deg, transparent, transparent)")
+      # jq_get(atome_id).css("background-color", :transparent)
       jq_get(atome_id).append(data)
     end
   end

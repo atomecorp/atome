@@ -2,7 +2,7 @@ module DefaultValues
   def default_values
     # here are the default preset for common objects
 
-    visual = { color: :lightgray, y: 0, z: 0, overflow: :visible, parent: :view }
+    visual = { color: :transparent, y: 0, z: 0, overflow: :visible, parent: :view }
     shape = visual.merge({ type: :shape, width: 70, height: 70, content: { points: 2 } })
     container = { width: 70, height: 70, type: :shape, parent: :view, y: 0, z: 0, color: :transparent }
     box = visual.merge(shape)
