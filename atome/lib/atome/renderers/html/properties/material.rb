@@ -11,7 +11,8 @@ module PropertyHtml
       # in this case we're on a vector file
       `$('#the_path').children().css({fill: 'blue'})`
       `$('#the_path').children().css({stroke: 'red'})`
-
+      # `$('#blur').css({fill: 'blue'})`
+      # `$('#blur').css({stroke: 'red'})`
       alert 'html properties render message'
       else
       # we exclude the case when the path is defined because it means we need to use a svg
