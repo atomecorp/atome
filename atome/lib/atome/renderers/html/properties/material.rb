@@ -9,10 +9,15 @@ module PropertyHtml
     end
     if self.type== :shape && self.path
       # in this case we're on a vector file
-      `$('#the_path').children().css({fill: 'blue'})`
+      # `$('#the_path').children().css({fill: 'blue'})`
       `$('#the_path').children().css({stroke: 'red'})`
-      `$('#blur').css({fill: 'blue'})`
-      `$('#blur').css({stroke: 'red'})`
+      `$('#the_path').children().children().css({stroke: 'yellow'})`
+      # `$('#tool').css({stroke: 'blue'})`
+      #
+      # `$('#blur').css({fill: 'blue'})`
+      `$('#blur').css({stroke: 'green'})`
+      # `$('svg').children().css('fill', 'blue');`
+      # `$('svg').children().css('stroke', 'orange');`
       alert 'html properties render message'
       else
       # we exclude the case when the path is defined because it means we need to use a svg

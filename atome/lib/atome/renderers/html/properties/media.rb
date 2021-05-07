@@ -7,7 +7,7 @@ module PropertyHtml
           # we use the color scheme of the color method to display the text correctly
           self.color(color)
         end
-        jq_get(atome_id).remove_text
+        jq_get(atome_id).remove_text(atome_id)
         child_of_text_atome = jq_get(atome_id).html
         value = value.to_s.gsub("\n", "<br>")
         new_content = value + child_of_text_atome

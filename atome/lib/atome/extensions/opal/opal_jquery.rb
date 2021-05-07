@@ -16,11 +16,10 @@ class Element
     ` $(window).off(#{value})`
   end
 
-  def remove_text
-    current_jq_id = self.attr('id')
+  def remove_text(atome_id)
     `
     let isTextNode = (_, el) => el.nodeType === Node.TEXT_NODE;
-    $("#"+#{current_jq_id}).contents().filter(isTextNode).remove();
+    $("#"+#{atome_id}).contents().filter(isTextNode).remove();
     `
   end
 end
