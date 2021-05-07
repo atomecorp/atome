@@ -1,6 +1,6 @@
 module ProcessorHtml
   def video_creator_helper(value)
-    video_found = find({type: :video, scope: :eden, name: value})
+    video_found = find({ type: :video, scope: :eden, name: value })
     path = if video_found.nil?
              "././medias/videos/video_missing.mp4"
            else
@@ -19,7 +19,7 @@ module ProcessorHtml
   end
 
   def audio_creator_helper(value)
-    audio_found = find({type: :audio, scope: :eden, name: value})
+    audio_found = find({ type: :audio, scope: :eden, name: value })
     path = if audio_found.nil?
              "././medias/audios/audio_missing.wav"
            else
@@ -38,9 +38,8 @@ module ProcessorHtml
     jq_get(atome_id).find("audio").css("width", "100%")
   end
 
-
   def image_creator_helper(value)
-    image_found = find({type: :image, scope: :eden, name: value})
+    image_found = find({ type: :image, scope: :eden, name: value })
     if image_found.nil?
       path = "././medias/images/image_missing.svg"
     else
@@ -52,9 +51,36 @@ module ProcessorHtml
         self.height = image_found[:height]
       end
     end
-    self.ratio(self.width/self.height)
+    self.ratio(self.width / self.height)
     jq_get(atome_id).css("background-image", "url(#{path})")
     jq_get(atome_id).css("background-size", "100% 100%")
+  end
+
+  class_variable_set("@@http", Http.new) # you can access without offense
+  def reader(filename, &proc)
+    #  read remote file
+    @@http.get(filename, &proc)
+  end
+
+  def path_getter_helper(value)
+    image_found = find({ type: :image, scope: :eden, name: value })
+    if image_found.nil?
+      path_found = "././medias/images/image_missing.svg"
+    else
+      path_found = image_found[:path]
+    end
+    reader(path_found) do |data|
+      if width.nil?
+        self.width = image_found[:width]
+      end
+      if height.nil?
+        self.height = image_found[:height]
+      end
+      self.ratio(self.width / self.height)
+      jq_get(atome_id).css("background-image", "linear-gradient(0deg, transparent, transparent)")
+      jq_get(atome_id).css("background-color", :transparent)
+      jq_get(atome_id).append(data)
+    end
   end
 
   def camera_creator_helper

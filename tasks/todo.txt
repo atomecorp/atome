@@ -1,4 +1,5 @@
 Bugs : find a solution for parent affecting the :view
+- big bug when trying convert example then windows resize example
 - rename jsvideohelper to jsmediahepler
 - create a better fit or size fit to fit parent and or child or else test dynamic and keep :ratio ,and dynamic with fit width
 - finish disposition api to accumulate atome below

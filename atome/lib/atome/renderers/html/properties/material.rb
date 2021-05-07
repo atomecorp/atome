@@ -7,36 +7,38 @@ module PropertyHtml
       jq_get(atome_id).css("-webkit-background-clip", "text")
       jq_get(atome_id).css("-webkit-text-fill-color", "transparent")
     end
-
-    if !values.instance_of?(Array) || values.length == 1
-      if values.instance_of?(Array)
-        value = values[0]
-      else
-        value = values
-      end
-      color = color_helper(value)
-      val = "linear-gradient(0deg,#{color},#{color})"
-      jq_get(atome_id).css("background-image", val)
-    else
-
-      gradient = []
-      values.each do |color_found|
-        if color_found[:angle]
-          angle = color_found[:angle]
+    unless self.type== :shape && self.path
+      # we exclude the case when the path is defined because it means we need to use a svg
+      if !values.instance_of?(Array) || values.length == 1
+        if values.instance_of?(Array)
+          value = values[0]
+        else
+          value = values
         end
-        if color_found[:diffusion]
-          diffusion = color_found[:diffusion]
-        end
-        gradient << color_helper(color_found)
-      end
-      case diffusion
-      when :linear
-        val = "#{diffusion}-gradient(#{angle}deg,#{gradient.join(",")})"
+        color = color_helper(value)
+        val = "linear-gradient(0deg,#{color},#{color})"
+        jq_get(atome_id).css("background-image", val)
       else
-        val = "#{diffusion}-gradient(#{gradient.join(",")})"
+        gradient = []
+        values.each do |color_found|
+          if color_found[:angle]
+            angle = color_found[:angle]
+          end
+          if color_found[:diffusion]
+            diffusion = color_found[:diffusion]
+          end
+          gradient << color_helper(color_found)
+        end
+        case diffusion
+        when :linear
+          val = "#{diffusion}-gradient(#{angle}deg,#{gradient.join(",")})"
+        else
+          val = "#{diffusion}-gradient(#{gradient.join(",")})"
+        end
+        jq_get(atome_id).css("background-image", val)
       end
-      jq_get(atome_id).css("background-image", val)
     end
+
   end
 
   def opacity_html(value)
