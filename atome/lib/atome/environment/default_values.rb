@@ -5,7 +5,7 @@ module DefaultValues
     visual = { color: :transparent, y: 0, z: 0, overflow: :visible, parent: :view }
     shape = visual.merge({ type: :shape, width: 70, height: 70, content: { points: 2 } })
     container = { width: 70, height: 70, type: :shape, parent: :view, y: 0, z: 0, color: :transparent }
-    box = visual.merge(shape)
+    box = visual.merge(shape).merge({ color: :lightgray})
     circle = visual.merge(shape).merge({ color: :red, content: { points: 4, tension: "100%" } })
     text = visual.merge({ type: :text, color: { red: 0.69, green: 0.69, blue: 0.69 }, size: 16, content: lorem })
     image = visual.merge({ type: :image, content: :atome })

@@ -1,6 +1,10 @@
+- add touch event stop bubbling
+- clear intuition doesn't work
+- find a solution for callback : both for library loading and svg (base 64) loadingatome api should wait for data to be ready
+- check animation callback
 - Bugs : find a solution for parent affecting the :view
 - rename jsvideohelper to jsmediahepler
-- create a better fit or size fit to fit parent and or child or else test dynamic and keep :ratio ,and dynamic with fit width
+- create a better fit or size fit, to be able to fit parent and or child or both. test dynamic and keep :ratio ,and dynamic with fit width
 - finish disposition api to accumulate atome below
 - integrate dynamic centering method found in center example
 - In "Schedule" method chek if date is not set before current time to avoid bad triggering
