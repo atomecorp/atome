@@ -8,10 +8,16 @@ module PropertyHtml
       case option
       when :down
         jq_get(atome_id).on("touchstart mousedown") do |evt|
+          if value[:stop]
+            evt.stop_propagation
+          end
           proc.call(evt) if proc.is_a?(Proc)
         end
       when :up
         jq_get(atome_id).on("touchend mouseup") do |evt|
+          if value[:stop]
+            evt.stop_propagation
+          end
           proc.call(evt) if proc.is_a?(Proc)
         end
       when :long
@@ -19,6 +25,9 @@ module PropertyHtml
           @trig = true
           wait 1.2 do
             if @trig
+              if value[:stop]
+                evt.stop_propagation
+              end
               proc.call(evt) if proc.is_a?(Proc)
             end
           end
@@ -28,6 +37,9 @@ module PropertyHtml
         end
       else
         jq_get(atome_id).on(:click) do |evt|
+          if value[:stop]
+            evt.stop_propagation
+          end
           proc.call(evt) if proc.is_a?(Proc)
         end
       end
