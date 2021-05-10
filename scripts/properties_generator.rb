@@ -86,7 +86,7 @@ atome_methods.each do |property_type, property|
     end
 
     unless no_rendering.include?(method_name)
-      rendering = "#{method_name}_html(value)"
+      rendering = "#{method_name}_html(value,password)"
     end
 
     unless is_atome.include?(method_name)
@@ -94,7 +94,7 @@ atome_methods.each do |property_type, property|
     end
     method_content = <<STRDELIM
   def #{method_name}(value =nil ,password=nil, &proc)
-    if self.right && password!=:f639C0i63 && :#{method_name} != :type && :#{method_name} != :atome_id
+    if self.right && password!=self.right[:password] && :#{method_name} != :type && :#{method_name} != :atome_id
           right_pre_processor(:#{method_name},value, self.right, &proc)
     else
       if value.nil? && !proc

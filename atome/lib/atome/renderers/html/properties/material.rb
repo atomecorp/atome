@@ -1,5 +1,5 @@
 module PropertyHtml
-  def color_html(values)
+  def color_html(values, password)
     angle = 180
     diffusion = "linear"
     if type == :text
@@ -7,7 +7,7 @@ module PropertyHtml
       jq_get(atome_id).css("-webkit-background-clip", "text")
       jq_get(atome_id).css("-webkit-text-fill-color", "transparent")
     end
-    if self.type== :shape && self.path
+    if self.type== :shape && self.path(nil, password)
       `$('#'+#{atome_id}).children().css({fill: #{values}})`
       else
       # we exclude the case when the path is defined because it means we need to use a svg

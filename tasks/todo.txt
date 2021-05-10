@@ -1,5 +1,7 @@
-_ destroy object when clearing view @@atomes=[] , find strategy to delete intuition  object, and also when deleting and it's child
+- protect instance variable set and atomise methods when using right management
+- destroy object when clearing view @@atomes=[] , find strategy to delete intuition  object, and also when deleting and it's child
 - Right management
+- test to use opal map for easier debug
 - internalisation
 - add touch event stop bubbling
 - add help and example for all api

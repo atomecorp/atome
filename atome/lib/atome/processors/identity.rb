@@ -5,7 +5,7 @@ module Processors
     # authorisation = false
     if authorisation == true
       alert :go
-      self.send(property, value, :f639C0i63, &proc)
+      self.send(property, value, self.right[:password], &proc)
     else
       alert "stop : #{property}, #{value},"
     end
