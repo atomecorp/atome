@@ -1,4 +1,19 @@
 module AtomeHelpers
+
+  def right(value = nil, &proc)
+    if value.nil? && !proc
+      @right&.read
+    else
+      value = properties_common(value, &proc)
+      @right = atomise(:right,value)
+      self
+    end
+  end
+
+  def right=(value, &proc)
+    right(value, &proc)
+  end
+
   def delete
     delete_from_parent
     delete_child

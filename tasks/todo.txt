@@ -1,4 +1,8 @@
+_ destroy object when clearing view @@atomes=[] , find strategy to delete intuition  object, and also when deleting and it's child
+- Right management
+- internalisation
 - add touch event stop bubbling
+- add help and example for all api
 - clear intuition doesn't work
 - find a solution for callback : both for library loading and svg (base 64) loadingatome api should wait for data to be ready
 - check animation callback
@@ -19,7 +23,6 @@
     circle({x: {after: a.atome_id}})
 - distribute({objects: [a,t,c,e,i], axis: :x})
 - find a solution to convert type script to js
-- add help and example for all api
 - every api must have it's list of methods and values with it's unit (for future conversion)
 - value exchange between properties ex:  b.blur=c.color + reflexion on how tools handle this
 - easy install (on line of command) + atome create "my_app"

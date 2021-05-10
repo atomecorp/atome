@@ -5,7 +5,7 @@ def atome_methods
   geometry = %i[width height size ratio]
   helper = %i[tactile display]
   hierarchy = %i[parent child]
-  identity = %i[atome_id id type language private can]
+  identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
   media = %i[content group container video shape box circle text image audio path info example name]
   inputs = %i[camera microphone midi keyboard]
@@ -30,7 +30,7 @@ def is_atome
 end
 
 def need_pre_processing
-  %i[atome_id private can group container shape box circle text  camera microphone midi text image video audio parent
+  %i[atome_id group container shape box circle text  camera microphone midi text image video audio parent
   child type shadow size]
 end
 
@@ -39,7 +39,7 @@ def need_processing
 end
 
 def getter_need_processing
-  %i[private can parent child].concat(is_atome)
+  %i[parent child].concat(is_atome)
 end
 
 def no_rendering
@@ -72,7 +72,7 @@ atome_methods.each do |property_type, property|
     atome_methods_list << method_name
     # atome properties generator
     if need_pre_processing.include?(method_name)
-      pre_processor = "#{method_name}_pre_processor(value, &proc)"
+      pre_processor = "#{method_name}_pre_processor(value,password, &proc)"
     else
       set_instance_variable = "@#{method_name} = atomise(:#{method_name},value)"
     end
@@ -93,16 +93,20 @@ atome_methods.each do |property_type, property|
       method_return = "self"
     end
     method_content = <<STRDELIM
-  def #{method_name}(value = nil, &proc)
-    if value.nil? && !proc
-      #{getter_processor}
+  def #{method_name}(value =nil ,password=nil, &proc)
+    if self.right && password!=:f639C0i63 && :#{method_name} != :type && :#{method_name} != :atome_id
+          right_pre_processor(:#{method_name},value, self.right, &proc)
     else
-      value = properties_common(value, &proc)
-      #{pre_processor}
-      #{set_instance_variable}
-      #{processor}
-      #{rendering}
-      #{method_return}
+      if value.nil? && !proc
+        #{getter_processor}
+      else
+        value = properties_common(value, &proc)
+        #{pre_processor}
+        #{set_instance_variable}
+        #{processor}
+        #{rendering}
+        #{method_return}
+      end
     end
   end 
 

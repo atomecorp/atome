@@ -1,4 +1,16 @@
 module Processors
+
+  def right_pre_processor(property, value, authorisation, &proc)
+    # alert "treat this:  #{property}, #{value}, #{right}, #{proc}"
+    # authorisation = false
+    if authorisation == true
+      alert :go
+      self.send(property, value, :f639C0i63, &proc)
+    else
+      alert "stop : #{property}, #{value},"
+    end
+  end
+
   def atome_id_pre_processor(value)
     # just to ensure atome_id uniqueness and prevent any identity change id set before
     uniqueness = true
@@ -33,12 +45,12 @@ module Processors
     "set #{value}"
   end
 
-  def can_processor(value)
-    "set #{value}"
-  end
-
   def private_getter_processor(value)
     "get #{value}"
+  end
+
+  def can_processor(value)
+    "set #{value}"
   end
 
   def can_getter_processor(value)

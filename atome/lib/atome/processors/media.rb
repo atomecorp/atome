@@ -1,12 +1,13 @@
 module Processors
-  def media_pre_processor(type, preset, value)
+  def media_pre_processor(type, preset, value,password=nil)
+    # alert "media processor message: #{password}"
     if value.instance_of?(Hash) && value[:proc]
       # if a proc is found we yield we search for child of the requested type to be treated , ex :
       # a.text do |text_found|
       #text_found.color(:red)
       #end
-      child do |child_found|
-        if child_found.type == type
+      self.child(nil,password) do |child_found|
+        if child_found.type(nil,password) == type
           value[:proc].call(child_found) if value[:proc].is_a?(Proc)
         end
       end
@@ -20,11 +21,13 @@ module Processors
       preset_found = preset_found[preset]
       # we overload the parent to the current and finally add the value set by user
       preset_found = preset_found.merge({ parent: atome_id }).merge(value)
-      Atome.new(preset_found)
+      # unless password
+        Atome.new(preset_found)
+      # end
     end
   end
 
-  def group_pre_processor(value)
+  def group_pre_processor(value, password=nil)
     #todo allow group deletion and remove all monitoring binding
     #if there's a condition we feed the content else we treat the content directly
     if value[:condition]
@@ -45,7 +48,7 @@ module Processors
           unless  content_found.include?(child_found.atome_id)
             if value[:treatment] && (value[:condition].keys[0] == evt[:property] && value[:condition].values[0] == evt[:value])
                 value[:treatment].each do |prop, val|
-                  child_found.send(prop, val)
+                  child_found.send(prop, val, password)
                 end
             end
           end
@@ -62,8 +65,8 @@ module Processors
     Atome.new(value)
   end
 
-  def container_pre_processor(value)
-    media_pre_processor(:shape, :container, value)
+  def container_pre_processor(value, password=nil)
+    media_pre_processor(:shape, :container, value, password)
   end
 
   def container_getter_processor
@@ -76,8 +79,8 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def shape_pre_processor(value)
-    media_pre_processor(:shape, :box, value)
+  def shape_pre_processor(value, password=nil)
+    media_pre_processor(:shape, :shape, value, password)
   end
 
   def shape_getter_processor
@@ -90,8 +93,8 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def box_pre_processor(value)
-    media_pre_processor(:shape, :box, value)
+  def box_pre_processor(value, password=nil)
+    media_pre_processor(:shape, :box, value, password)
   end
 
   def box_getter_processor
@@ -104,8 +107,8 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def circle_pre_processor(value)
-    media_pre_processor(:shape, :circle, value)
+  def circle_pre_processor(value, password=nil)
+    media_pre_processor(:shape, :circle, value, password)
   end
 
   def circle_getter_processor
@@ -118,8 +121,8 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def text_pre_processor(value)
-    media_pre_processor(:text, :text, value)
+  def text_pre_processor(value, password=nil)
+    media_pre_processor(:text, :text, value, password)
   end
 
   def text_getter_processor
@@ -132,8 +135,8 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def image_pre_processor(value)
-    media_pre_processor(:image, :image, value)
+  def image_pre_processor(value, password=nil)
+    media_pre_processor(:image, :image, value, password)
   end
 
   def image_getter_processor
@@ -146,8 +149,8 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def video_pre_processor(value)
-    media_pre_processor(:video, :video, value)
+  def video_pre_processor(value, password=nil)
+    media_pre_processor(:video, :video, value, password)
   end
 
   def video_getter_processor
@@ -159,8 +162,8 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def audio_pre_processor(value)
-    media_pre_processor(:audio, :audio, value)
+  def audio_pre_processor(value, password=nil)
+    media_pre_processor(:audio, :audio, value, password)
   end
 
   def audio_getter_processor
