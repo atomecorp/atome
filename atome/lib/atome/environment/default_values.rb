@@ -11,7 +11,7 @@ module DefaultValues
     image = visual.merge({ type: :image, content: :atome })
     video = visual.merge({ type: :video, content: :lion_king })
     audio = visual.merge({ type: :audio, content: :riff })
-    particle = { type: :particle }
+    particle = { type: :particle, render: false }
     collector = { type: :collector }
     camera = visual.merge({ type: :camera })
     microphone = visual.merge({ type: :microphone })

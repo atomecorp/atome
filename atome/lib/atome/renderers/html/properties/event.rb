@@ -207,4 +207,5 @@ module PropertyHtml
       proc.call(self.width, self.height) if proc.is_a?(Proc)
     end
   end
+
 end

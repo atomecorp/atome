@@ -79,6 +79,20 @@ module Processors
     atomise(:temp, child_collected)
   end
 
+  def particle_pre_processor(value, password=nil)
+    media_pre_processor(:particle, :particle, value, password)
+  end
+
+  def particle_getter_processor
+    child_collected = []
+    child do |child_found|
+      if child_found.type == :particle
+        child_collected << child_found.atome_id
+      end
+    end
+    atomise(:temp, child_collected)
+  end
+
   def shape_pre_processor(value, password=nil)
     media_pre_processor(:shape, :shape, value, password)
   end
