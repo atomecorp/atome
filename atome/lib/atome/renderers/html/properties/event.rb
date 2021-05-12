@@ -21,19 +21,17 @@ module PropertyHtml
           proc.call(evt) if proc.is_a?(Proc)
         end
       when :long
+        waiter=""
         jq_get(atome_id).on("touchstart mousedown") do |evt|
-          @trig = true
-          wait 1.2 do
-            if @trig
-              if value[:stop]
-                evt.stop_propagation
-              end
-              proc.call(evt) if proc.is_a?(Proc)
+          waiter= ATOME.wait 1.2 do
+            if value[:stop]
+              evt.stop_propagation
             end
+            proc.call(evt) if proc.is_a?(Proc)
           end
         end
         jq_get(atome_id).on("touchend mouseup") do
-          @trig = false
+          ATOME.clear({wait: waiter})
         end
       else
         jq_get(atome_id).on(:click) do |evt|
