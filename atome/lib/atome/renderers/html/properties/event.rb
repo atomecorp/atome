@@ -24,10 +24,12 @@ module PropertyHtml
         waiter=""
         jq_get(atome_id).on("touchstart mousedown") do |evt|
           waiter= ATOME.wait 1.2 do
-            if value[:stop]
-              evt.stop_propagation
+            unless @dragged == :true
+              if value[:stop]
+                evt.stop_propagation
+              end
+              proc.call(evt) if proc.is_a?(Proc)
             end
-            proc.call(evt) if proc.is_a?(Proc)
           end
         end
         jq_get(atome_id).on("touchend mouseup") do
@@ -116,6 +118,7 @@ module PropertyHtml
         proc.call(evt) if proc.is_a?(Proc)
       end
       jq_object.on(:drag) do |evt|
+        @dragged=:true
         evt.start = false
         evt.stop = false
         offset_x = evt.page_x - x_position_start
@@ -128,6 +131,7 @@ module PropertyHtml
         update_position
       end
       jq_object.on(:dragstop) do |evt|
+        @dragged=:false
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         evt.start = false
