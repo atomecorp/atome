@@ -49,7 +49,8 @@ Install prerequisite library
 To install application:
     git clone https://github.com/atomecorp/atome.git
     cd atome/www/public
-    git submodule add  https://github.com/atomecorp/js.git
+    git submodule add https://github.com/atomecorp/third_parties_libraries.git
+    #  to later update lib : git submodule update --remote
     sudo npm install -g cordova
     sudo cordova plugin add cordova-sqlite-storage
     sudo cordova plugin add cordova-plugin-file

@@ -3,7 +3,7 @@ module PropertyHtml
     if value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
     else
-      proc = value[:proc]
+      @touch_proc = value[:proc]
       option = value[:option]
       case option
       when :down
@@ -11,14 +11,14 @@ module PropertyHtml
           if value[:stop]
             evt.stop_propagation
           end
-          proc.call(evt) if proc.is_a?(Proc)
+          @touch_proc.call(evt) if @touch_proc.is_a?(Proc)
         end
       when :up
         jq_get(atome_id).on("touchend mouseup") do |evt|
           if value[:stop]
             evt.stop_propagation
           end
-          proc.call(evt) if proc.is_a?(Proc)
+          @touch_proc.call(evt) if @touch_proc.is_a?(Proc)
         end
       when :long
         waiter=""
@@ -28,7 +28,7 @@ module PropertyHtml
               if value[:stop]
                 evt.stop_propagation
               end
-              proc.call(evt) if proc.is_a?(Proc)
+              @touch_proc.call(evt) if @touch_proc.is_a?(Proc)
             end
           end
         end
@@ -40,7 +40,7 @@ module PropertyHtml
           if value[:stop]
             evt.stop_propagation
           end
-          proc.call(evt) if proc.is_a?(Proc)
+          @touch_proc.call(evt) if @touch_proc.is_a?(Proc)
         end
       end
     end
@@ -58,11 +58,13 @@ module PropertyHtml
       jq_get(atome_id).draggable()
     end
     if value == :destroy
+      @drag_proc=nil
       jq_object.draggable(:destroy)
     elsif value == :disable
+      @drag_proc=nil
       jq_object.draggable(:disable)
     else
-      proc = value[:proc]
+      @drag_proc = value[:proc]
       grid = {}
       if value[:grid]
         grid = { grid: [value[:grid][:x], value[:grid][:y]] }
@@ -115,7 +117,7 @@ module PropertyHtml
         jq_get(atome_id).css("bottom", "auto")
         x_position_start = evt.page_x
         y_position_start = evt.page_y
-        proc.call(evt) if proc.is_a?(Proc)
+        @drag_proc.call(evt) if @drag_proc.is_a?(Proc)
       end
       jq_object.on(:drag) do |evt|
         @dragged=:true
@@ -126,7 +128,7 @@ module PropertyHtml
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         # we send the position to the proc
-        proc.call(evt) if proc.is_a?(Proc)
+        @drag_proc.call(evt) if @drag_proc.is_a?(Proc)
         # we update the position of the atome
         update_position
       end
@@ -137,28 +139,28 @@ module PropertyHtml
         evt.start = false
         evt.stop = true
         change_position_origin
-        proc.call(evt) if proc.is_a?(Proc)
+        @proc.call(evt) if @proc.is_a?(Proc)
       end
     end
 
   end
 
   def key_html(value)
-    proc = value[:proc]
+    @key_proc = value[:proc]
     option = value[:option]
     # the lines below is important for the object to get focus if not keypress wont be triggered
     atome = grab(atome_id)
     atome.edit(true)
     if option == :down
       jq_get(atome_id).on("keydown") do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
+        @key_proc.call(evt) if @key_proc.is_a?(Proc)
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
       end
     elsif option == :up
       jq_get(atome_id).on("keyup") do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
+        @key_proc.call(evt) if @key_proc.is_a?(Proc)
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
@@ -171,7 +173,7 @@ module PropertyHtml
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
-        proc.call(evt) if proc.is_a?(Proc)
+        @key_proc.call(evt) if @key_proc.is_a?(Proc)
       end
     end
   end
@@ -205,8 +207,8 @@ module PropertyHtml
         self.width(jq_get(atome_id).css("width").to_i, false)
         self.height(jq_get(atome_id).css("height").to_i, false)
       end
-      proc = value[:proc]
-      proc.call(self.width, self.height) if proc.is_a?(Proc)
+      @scale_proc = value[:proc]
+      @scale_proc.call(self.width, self.height) if @scale_proc.is_a?(Proc)
     end
   end
 
