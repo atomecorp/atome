@@ -3,7 +3,6 @@ module PropertyHtml
     if value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
     else
-      @touch_proc = value[:proc]
       option = value[:option]
       case option
       when :down
@@ -11,24 +10,24 @@ module PropertyHtml
           if value[:stop]
             evt.stop_propagation
           end
-          @touch_proc.call(evt) if @touch_proc.is_a?(Proc)
+          value[:proc].call(evt) if value[:proc].is_a?(Proc)
         end
       when :up
         jq_get(atome_id).on("touchend mouseup") do |evt|
           if value[:stop]
             evt.stop_propagation
           end
-          @touch_proc.call(evt) if @touch_proc.is_a?(Proc)
+          value[:proc].call(evt) if value[:proc].is_a?(Proc)
         end
       when :long
         waiter=""
         jq_get(atome_id).on("touchstart mousedown") do |evt|
           waiter= ATOME.wait 1.2 do
-            unless @dragged == :true
+            unless self.drag[:drag] == :moving
               if value[:stop]
                 evt.stop_propagation
               end
-              @touch_proc.call(evt) if @touch_proc.is_a?(Proc)
+              value[:proc].call(evt) if value[:proc].is_a?(Proc)
             end
           end
         end
@@ -40,7 +39,7 @@ module PropertyHtml
           if value[:stop]
             evt.stop_propagation
           end
-          @touch_proc.call(evt) if @touch_proc.is_a?(Proc)
+          value[:proc].call(evt) if value[:proc].is_a?(Proc)
         end
       end
     end
@@ -56,15 +55,13 @@ module PropertyHtml
       # we initiate the scale first so it won't break if scale is destroy twice,
       # else : destroy scale then clear view will crash
       jq_get(atome_id).draggable()
-    end
-    if value == :destroy
-      @drag_proc=nil
       jq_object.draggable(:destroy)
-    elsif value == :disable
-      @drag_proc=nil
+    elsif value == :disable || value[:option] ==  :disable
+      # we initiate the scale first so it won't break if scale is diasble twice,
+      # else : destroy scale then clear view will crash
+      jq_get(atome_id).draggable()
       jq_object.draggable(:disable)
     else
-      @drag_proc = value[:proc]
       grid = {}
       if value[:grid]
         grid = { grid: [value[:grid][:x], value[:grid][:y]] }
@@ -117,10 +114,10 @@ module PropertyHtml
         jq_get(atome_id).css("bottom", "auto")
         x_position_start = evt.page_x
         y_position_start = evt.page_y
-        @drag_proc.call(evt) if @drag_proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
       jq_object.on(:drag) do |evt|
-        @dragged=:true
+        self.drag[:drag]=:moving
         evt.start = false
         evt.stop = false
         offset_x = evt.page_x - x_position_start
@@ -128,39 +125,38 @@ module PropertyHtml
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         # we send the position to the proc
-        @drag_proc.call(evt) if @drag_proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
         # we update the position of the atome
         update_position
       end
       jq_object.on(:dragstop) do |evt|
-        @dragged=:false
+        self.drag[:drag]= true
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         evt.start = false
         evt.stop = true
         change_position_origin
-        @proc.call(evt) if @proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
     end
 
   end
 
   def key_html(value)
-    @key_proc = value[:proc]
     option = value[:option]
     # the lines below is important for the object to get focus if not keypress wont be triggered
     atome = grab(atome_id)
     atome.edit(true)
     if option == :down
       jq_get(atome_id).on("keydown") do |evt|
-        @key_proc.call(evt) if @key_proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
       end
     elsif option == :up
       jq_get(atome_id).on("keyup") do |evt|
-        @key_proc.call(evt) if @key_proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
@@ -173,7 +169,7 @@ module PropertyHtml
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
-        @key_proc.call(evt) if @key_proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
     end
   end
@@ -207,8 +203,7 @@ module PropertyHtml
         self.width(jq_get(atome_id).css("width").to_i, false)
         self.height(jq_get(atome_id).css("height").to_i, false)
       end
-      @scale_proc = value[:proc]
-      @scale_proc.call(self.width, self.height) if @scale_proc.is_a?(Proc)
+      value[:proc].call(self.width, self.height) if value[:proc].is_a?(Proc)
     end
   end
 

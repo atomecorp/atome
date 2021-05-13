@@ -71,8 +71,8 @@ module AtomeHelpers
     else
       properties = {}
       instance_variables.map do |attribute|
-        puts "#{attribute} instance_variables may be changed to atome_methods.each atome_helper.rb line 74\n
- or try to remove @touch_proc and @dragged and find a solution to replace it"
+        # puts "#{attribute} instance_variables may be changed to atome_methods.each atome_helper.rb line 74\n
+ # or try to remove @touch_proc and @dragged and find a solution to replace it"
         if instance_variable_get(attribute).nil?
           properties[attribute.sub("@".to_sym, "")] = nil
           # elsif instance_variable_get(attribute).class == Quark

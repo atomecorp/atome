@@ -1,3 +1,4 @@
+- after running  right management exexample next examples became unstable
 - add acceleration curve varaiable for animation
 - protect instance variable set and atomise methods when using right management
 - destroy object when clearing view @@atomes=[] , find strategy to delete intuition  object, and also when deleting and it's child
