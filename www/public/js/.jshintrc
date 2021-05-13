@@ -1,0 +1,7 @@
+{
+  "browser": true,
+  "esversion": 8,
+  "globals": {
+    "Opal": true
+  }
+}
