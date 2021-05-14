@@ -27,4 +27,54 @@ module PropertyHtml
   def clear_repeat_html(value)
     clear_interval(value)
   end
+
+  def client_height(atome_requested)
+    `var test = document.getElementById(#{atome_requested});
+var height = (test.clientHeight + 1);
+return height;
+`
+
+  end
+
+  def client_width(atome_requested)
+    `var test = document.getElementById(#{atome_requested});
+var width = (test.clientWidth + 1);
+return width;
+`
+  end
+
+  def html_verif(value)
+    # puts (value)
+    # alert value
+    # alert self.atome_id
+    # alert self.width
+    # var fontSize = 12;
+    # var test = document.getElementById("Test");
+    alert client_height(atome_id)
+    alert client_width(atome_id)
+    current_atome = jq_get(atome_id)
+    fontSize = current_atome.css('font-size')
+    # current_atome.style.fontSize = fontSize;
+
+    # alert current_atome.css('client_height')
+    `
+    var test = document.getElementById(#{atome_id});
+//alert(test.clientHeight + 1);
+    var fontSize = #{fontSize};
+    test.style.fontSize = fontSize;
+    var height = (test.clientHeight + 1) + "px";
+    var width = (test.clientWidth + 1) + "px"
+    //alert(height);
+    //alert(width);
+`
+    # jq_width = (current_atome.clientWidth + 1) + "px"
+    # alert jq_height
+    # alert jq_width
+
+    # var test = document.getElementById("Test");
+    # test.style.fontSize = fontSize;
+    # var height = (test.clientHeight + 1) + "px";
+    # var width = (test.clientWidth + 1) + "px"
+
+  end
 end
