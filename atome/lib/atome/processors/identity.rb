@@ -1,11 +1,11 @@
 module Processors
 
-  def right_pre_processor(property, value, authorisation, &proc)
+  def authorization_pre_processor(property, value, authorisation, &proc)
     # alert "treat this:  #{property}, #{value}, #{right}, #{proc}"
     # authorisation = false
     if authorisation == true
       alert :go
-      self.send(property, value, self.right[:password], &proc)
+      self.send(property, value, self.authorization[:password], &proc)
     else
       alert "stop : #{property}, #{value},"
     end

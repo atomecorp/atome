@@ -1,17 +1,17 @@
 module AtomeHelpers
 
-  def right(value = nil, &proc)
+  def authorization(value = nil, &proc)
     if value.nil? && !proc
-      @right&.read
+      @authorization&.read
     else
       value = properties_common(value, &proc)
-      @right = atomise(:right, value)
+      @authorization = atomise(:right, value)
       self
     end
   end
 
-  def right=(value, &proc)
-    right(value, &proc)
+  def authorization=(value, &proc)
+    authorization(value, &proc)
   end
 
   def delete

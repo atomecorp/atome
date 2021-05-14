@@ -95,8 +95,8 @@ atome_methods.each do |property_type, property|
     end
     method_content = <<STRDELIM
   def #{method_name}(value =nil ,password=nil, &proc)
-    if self.right && password!=self.right[:password] && :#{method_name} != :type && :#{method_name} != :atome_id
-          right_pre_processor(:#{method_name},value, self.right, &proc)
+    if self.authorization && password!=self.authorization[:password] && :#{method_name} != :type && :#{method_name} != :atome_id
+          authorization_pre_processor(:#{method_name},value, self.authorization, &proc)
     else
       if value.nil? && !proc
         #{getter_processor}
