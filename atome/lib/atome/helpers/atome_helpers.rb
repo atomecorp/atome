@@ -22,7 +22,7 @@ module AtomeHelpers
     delete_html
   end
 
-  def clear(value)
+  def clear(value=true)
     if value.instance_of?(Hash)
       case value.keys[0]
       when :wait
