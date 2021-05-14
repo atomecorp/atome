@@ -3,7 +3,7 @@
 b=box
 b.touch do
   b.authorization({ users: :all, write: false, password: :my_secret})
-  b.color(:red,"false pass")
+  b.color(:red,"rong password")
   b.color(:yellowgreen,b.authorization[:password])
   b.x(99,:my_secret)
 end

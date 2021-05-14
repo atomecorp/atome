@@ -3,12 +3,16 @@ module Processors
   def authorization_pre_processor(property, value, authorisation, &proc)
     # alert "treat this:  #{property}, #{value}, #{right}, #{proc}"
     # authorisation = false
-    if authorisation == true
-      alert :go
-      self.send(property, value, self.authorization[:password], &proc)
-    else
+    # if authorisation == true
+    #   alert :go
+    #   self.send(property, value, self.authorization[:password], &proc)
+    # else
+    #   alert "stop : #{property}, #{value},"
+    # end
+    unless authorisation == true
       alert "stop : #{property}, #{value},"
     end
+
   end
 
   def atome_id_pre_processor(value)

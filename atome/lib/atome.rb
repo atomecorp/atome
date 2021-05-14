@@ -75,6 +75,7 @@ require "atome/builder/properties"
 require "atome/builder/atome_generator"
 # Atome helper (methods available at main Object level)
 require "atome/extensions/atome_extensions"
+require "atome/extensions/atome_utilities"
 # class to create a new device
 require "atome/environment/device"
 # elementary atomes for basic environment

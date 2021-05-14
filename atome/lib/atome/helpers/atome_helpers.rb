@@ -5,7 +5,7 @@ module AtomeHelpers
       @authorization&.read
     else
       value = properties_common(value, &proc)
-      @authorization = atomise(:right, value)
+      @authorization = atomise(:authorization, value)
       self
     end
   end

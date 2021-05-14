@@ -15,7 +15,7 @@ class Device
     # the object below is used to message other atomes (could be a user, a device, or any atomes locally or on the network)
     Atome.new({ atome_id: :messenger, render: false })
     # the object below is used to store the right management for current device
-    Atome.new({ atome_id: :right, render: false })
+    Atome.new({ atome_id: :authorization, render: false, content: "the_admin_password" })
     # this object hold temporary items (useful for batch treatment) named collector could be rename ephemeral
     Atome.new({ atome_id: :buffer, render: false , content: {resize: []}})
   end
