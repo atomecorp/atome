@@ -2,8 +2,8 @@ module PropertyHtml
   def width_html(value)
     type = grab(atome_id).type
     if type == :texto
-      # jq_get(atome_id).css("font-size", value)
-      # jq_get(atome_id).css("width", "auto")
+      jq_get(atome_id).css("font-size", value)
+      jq_get(atome_id).css("width", "auto")
       # jq_get(atome_id).css("width", value)
       # jq_get(atome_id).css("width", value)
       # jq_get(atome_id).css("font-size", "001vmin")
@@ -16,9 +16,9 @@ module PropertyHtml
 
   def height_html(value)
     type = grab(atome_id).type
-    if type == :texto
-      # jq_get(atome_id).css("font-size", value)
-      # jq_get(atome_id).css("height", "auto")
+    if type == :text
+      jq_get(atome_id).css("font-size", value)
+      jq_get(atome_id).css("height", "auto")
       # jq_get(atome_id).css("height", value)
       # jq_get(atome_id).css("font-size", "1vmin")
     else

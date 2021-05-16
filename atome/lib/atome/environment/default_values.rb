@@ -7,7 +7,7 @@ module DefaultValues
     container = { width: 70, height: 70, type: :shape, parent: :view, y: 0, z: 0, color: :transparent }
     box = visual.merge(shape).merge({ color: :lightgray })
     circle = visual.merge(shape).merge({ color: :red, content: { points: 4, tension: "100%" } })
-    text = visual.merge({ type: :text, color: { red: 0.69, green: 0.69, blue: 0.69 }, visual: 33, width: :auto, height: :auto, content: lorem })
+    text = visual.merge({ type: :text, color: { red: 0.69, green: 0.69, blue: 0.69 }, content: lorem })
     image = visual.merge({ type: :image, content: :atome })
     video = visual.merge({ type: :video, content: :lion_king })
     audio = visual.merge({ type: :audio, content: :riff })
