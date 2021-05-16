@@ -190,4 +190,11 @@ module Processors
     atomise(:temp, child_collected)
   end
 
+  def visual_pre_processor(value,password)
+    unless @visual
+      @visual = atomise(:visual,value)
+    end
+    visual_html(value,password)
+  end
+
 end

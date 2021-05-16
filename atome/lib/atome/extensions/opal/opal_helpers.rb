@@ -11,8 +11,25 @@ module JSUtils
     `$(document)`
   end
 
+  # helper to get text or any html element real size
+  # def self.client_height(atome_requested)
+  #   `(document.getElementById(#{atome_requested}).clientHeight + 1)`
+  # end
+  #
+  # def self.client_width(atome_requested)
+  #   `(document.getElementById(#{atome_requested}).clientWidth + 1)`
+  # end
+
+  def self.fit_text_width(atome_id)
+    `fitTextWidth(#{atome_id}) `
+  end
+
+  def self.fit_text_height(atome_id)
+    `fitTextHeight(#{atome_id}) `
+  end
+
   # helper to check if we have a tactile device
-  def is_mobile
+  def mobile?
     `atome.jsIsMobile()`
   end
 

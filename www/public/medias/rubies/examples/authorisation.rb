@@ -8,6 +8,8 @@ b.touch do
   b.color(:yellowgreen, b.authorization[:password])
   b.x(99, :my_secret)
   b.width(99, :my_secret)
+  b.color(:purple, "false pass")
+
 end
 
 b2 = b.box({ x: 333, atome_id: :the_box2 })
