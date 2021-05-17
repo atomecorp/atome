@@ -2,17 +2,23 @@ module Processors
   def size_pre_processor(value)
     if value.instance_of?(Hash) && value[:value].nil?
       if value[:fit]
-        requested_width=grab(value[:fit]).width
-        requested_height=grab(value[:fit]).height
+        requested_width = grab(value[:fit]).width
+        requested_height = grab(value[:fit]).height
         if value[:margin].instance_of?(Hash)
-          margin_x=value[:margin][:x]
-          margin_y=value[:margin][:y]
+          margin_x = value[:margin][:x]
+          margin_y = value[:margin][:y]
         else
-          margin_x=value[:margin]
-          margin_y=value[:margin]
+          margin_x = value[:margin]
+          margin_y = value[:margin]
         end
-        self.width=requested_width+margin_x
-        self.height=requested_height+margin_y
+        unless margin_x
+          margin_x=0
+        end
+        unless margin_y
+          margin_y=0
+        end
+        self.width = requested_width + margin_x
+        self.height = requested_height + margin_y
       end
     else
       if value.instance_of?(Number) || value.instance_of?(Integer)

@@ -1,3 +1,18 @@
+- bug disposition demo crash when running it from examples
+- bug after running fit example the whole examples crash
+- add : # sub text method api
+        t=text("hello to everyone")
+        select(text.word(1)).color(:yellow)
+        select(text.line(0)).y(9)
+        select(text.char(9)).visual({path: :arial})
+        text.select({ word: 2 }).set(color: :red, atome_id: :my_word)
+        text.select({ word: :to }).set(visual: 33, atome_id: :my_word2)
+        text.select({ atome: :my_word }).touch do
+          alert :so_good
+        end
+- Bug if no size of width  given and try to set visual fit: :width visual is trap in an infinite loop
+- visual fit width cut a each word instead of fiiting the whole text in the container
+- visual fit text hyphen the last cahr of the last last line cf : fill example
 - after running  right management exexample next examples became unstable :  (atome_id: undefined method `atome_id' for nil) error
 - add acceleration curve varaiable for animation
 - protect instance variable set and atomise methods when using right management

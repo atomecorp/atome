@@ -190,6 +190,20 @@ module Processors
     atomise(:temp, child_collected)
   end
 
+  def web_pre_processor(value, password=nil)
+    media_pre_processor(:web, :web, value, password)
+  end
+
+  def web_getter_processor
+    child_collected = []
+    child do |child_found|
+      if child_found.type == :web
+        child_collected << child_found.atome_id
+      end
+    end
+    atomise(:temp, child_collected)
+  end
+
   def visual_pre_processor(value,password)
     unless @visual
       @visual = atomise(:visual,value)

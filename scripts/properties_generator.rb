@@ -1,17 +1,17 @@
 def atome_methods
   communication = %i[share]
   effect = %i[blur shadow smooth]
-  event = %i[touch drag over key scale]
+  event = %i[touch drag over key scale drop over]
   geometry = %i[width height size ratio]
   helper = %i[tactile display]
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
-  media = %i[content particle group container video shape box circle text image audio path info example name visual]
+  media = %i[content particle group container video shape box circle text image audio web path info example name visual]
   inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven tag selector render preset monitor select dynamic condition treatment]
   material = %i[color opacity border overflow fill]
-  { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
+  {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
     medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity,
     events: event }
 end
@@ -26,11 +26,11 @@ def is_atome
   # in this case presets are used to create atome suing their types with specific settings
   # so it add the methods in the atome_object_creator methods
   # the generated property will then return the result of the method instead of object itself
-  %i[particle container shape box circle text image video audio camera microphone midi group]
+  %i[particle container shape box web circle text image video audio camera microphone midi group]
 end
 
 def need_pre_processing
-  %i[atome_id particle group container shape box circle text  camera microphone midi text image video audio parent
+  %i[atome_id particle group container shape box web circle text camera microphone midi text image video audio parent
   child type shadow size drag visual]
 end
 
@@ -43,7 +43,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id group container shape box circle text image video audio text image video audio parent child info example
+  %i[atome_id group container shape box web circle text image video audio text image video audio parent child info example
   selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
   particle visual]
 end
