@@ -61,6 +61,11 @@ class Quark
       proc.call(grab(property)) if proc.is_a?(Proc)
     end
   end
+  def each_with_index(&proc)
+    @property.each_with_index do |property, index|
+      proc.call(grab(property),index) if proc.is_a?(Proc)
+    end
+  end
 
   def last
     @property.last
