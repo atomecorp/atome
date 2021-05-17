@@ -3,8 +3,8 @@
 c = circle
 c.x(250)
 c.over(:enter) do
-  c.color (:green)
+  c.color(:green)
 end
 c.over(:exit) do
-  c.color (:blue)
+  c.color(:blue)
 end

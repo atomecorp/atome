@@ -20,9 +20,9 @@ module PropertyHtml
           value[:proc].call(evt) if value[:proc].is_a?(Proc)
         end
       when :long
-        waiter=""
+        waiter = ""
         jq_get(atome_id).on("touchstart mousedown") do |evt|
-          waiter= ATOME.wait 1.2 do
+          waiter = ATOME.wait 1.2 do
             unless self.drag[:drag] == :moving
               if value[:stop]
                 evt.stop_propagation
@@ -32,7 +32,7 @@ module PropertyHtml
           end
         end
         jq_get(atome_id).on("touchend mouseup") do
-          ATOME.clear({wait: waiter})
+          ATOME.clear({ wait: waiter })
         end
       else
         jq_get(atome_id).on(:click) do |evt|
@@ -56,7 +56,7 @@ module PropertyHtml
       # else : destroy scale then clear view will crash
       jq_get(atome_id).draggable()
       jq_object.draggable(:destroy)
-    elsif value == :disable || value[:option] ==  :disable
+    elsif value == :disable || value[:option] == :disable
       # we initiate the scale first so it won't break if scale is diasble twice,
       # else : destroy scale then clear view will crash
       jq_get(atome_id).draggable()
@@ -117,7 +117,7 @@ module PropertyHtml
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
       jq_object.on(:drag) do |evt|
-        self.drag[:drag]=:moving
+        self.drag[:drag] = :moving
         evt.start = false
         evt.stop = false
         offset_x = evt.page_x - x_position_start
@@ -130,7 +130,7 @@ module PropertyHtml
         update_position
       end
       jq_object.on(:dragstop) do |evt|
-        self.drag[:drag]= true
+        self.drag[:drag] = true
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         evt.start = false
@@ -220,7 +220,7 @@ module PropertyHtml
   end
 
   def over_html(value)
-      proc = value[:proc]
+    proc = value[:proc]
     option = value[:options]
     if option == :enter || option == :in
       jq_get(atome_id).mouseenter do |evt|
