@@ -117,7 +117,7 @@ module PropertyHtml
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
       jq_object.on(:drag) do |evt|
-        self.drag[:drag] = :moving
+        drag[:drag] = :moving
         evt.start = false
         evt.stop = false
         offset_x = evt.page_x - x_position_start
@@ -130,7 +130,7 @@ module PropertyHtml
         update_position
       end
       jq_object.on(:dragstop) do |evt|
-        self.drag[:drag] = true
+        drag[:drag] = true
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         evt.start = false
@@ -217,7 +217,6 @@ module PropertyHtml
     else
       jq_get(atome_id).droppable(:destroy)
     end
-
   end
 
   def over_html(value)

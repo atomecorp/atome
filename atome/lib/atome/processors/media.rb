@@ -1,6 +1,5 @@
 module Processors
   def media_pre_processor(type, preset, value,password=nil)
-    # alert "media processor message: #{password}"
     if value.instance_of?(Hash) && value[:proc]
       # if a proc is found we yield we search for child of the requested type to be treated , ex :
       # a.text do |text_found|
@@ -21,9 +20,7 @@ module Processors
       preset_found = preset_found[preset]
       # we overload the parent to the current and finally add the value set by user
       preset_found = preset_found.merge({ parent: atome_id }).merge(value)
-      # unless password
         Atome.new(preset_found)
-      # end
     end
   end
 
