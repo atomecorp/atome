@@ -54,12 +54,12 @@ module PropertyHtml
     if value == :destroy || value[:option] == :destroy
       # we initiate the scale first so it won't break if scale is destroy twice,
       # else : destroy scale then clear view will crash
-      jq_get(atome_id).draggable()
+      jq_get(atome_id).draggable
       jq_object.draggable(:destroy)
     elsif value == :disable || value[:option] == :disable
       # we initiate the scale first so it won't break if scale is diasble twice,
       # else : destroy scale then clear view will crash
-      jq_get(atome_id).draggable()
+      jq_get(atome_id).draggable
       jq_object.draggable(:disable)
     else
       grid = {}
@@ -208,32 +208,41 @@ module PropertyHtml
   end
 
   def drop_html(value)
-    # current_atome = r_get(atome.atome_id)
-    # atome_id = '#' + atome.atome_id
-    # if params != true
-    #   proc = params[:proc]
-    #   params[:params]
-    # else
-    #   :true
-    # end
-    # JS_utils.drop(atome_id, proc)
-  end
-
-  def over_html(value)
-    proc = value[:proc]
-    option = value[:options]
-    if option == :enter || option == :in
-      jq_get(atome_id).mouseenter do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
-    elsif option == :exit || option == :leave || option == :out
-      jq_get(atome_id).mouseleave do |evt|
+    if value != false
+      proc = value[:proc]
+      jq_get(atome_id).droppable
+      jq_get(atome_id).on(:drop) do |evt|
         proc.call(evt) if proc.is_a?(Proc)
       end
     else
-      jq_get(atome_id).mouseover do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
-      end
+      jq_get(atome_id).droppable(:destroy)
     end
+
+  end
+
+  def over_html(value)
+
+    if value != false
+      proc = value[:proc]
+      option = value[:options]
+      if option == :enter || option == :in
+        jq_get(atome_id).mouseenter do |evt|
+          proc.call(evt) if proc.is_a?(Proc)
+        end
+      elsif option == :exit || option == :leave || option == :out
+        jq_get(atome_id).mouseleave do |evt|
+          proc.call(evt) if proc.is_a?(Proc)
+        end
+      else
+        jq_get(atome_id).mouseover do |evt|
+          proc.call(evt) if proc.is_a?(Proc)
+        end
+      end
+    else
+      jq_get(atome_id).unbind(:mouseenter)
+      jq_get(atome_id).unbind(:mouseleave)
+      jq_get(atome_id).unbind(:mouseover)
+    end
+
   end
 end
