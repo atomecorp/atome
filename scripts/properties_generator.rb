@@ -45,7 +45,7 @@ end
 def no_rendering
   %i[atome_id group container shape box web circle text image video audio text image video audio parent child info example
   selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-  particle visual]
+  particle visual language]
 end
 
 batch_delete = <<STRDELIM

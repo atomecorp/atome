@@ -10,7 +10,7 @@ module Processors
     #   alert "stop : #{property}, #{value},"
     # end
     unless authorisation == true
-      alert "stop : #{property}, #{value},"
+      alert "from identity.rb line 1, stop : #{property}, #{value},"
     end
 
   end

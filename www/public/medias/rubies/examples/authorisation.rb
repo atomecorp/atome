@@ -2,7 +2,6 @@
 
 b = box({atome_id: :the_box, x: 99})
 b.touch do
-  alert 'poil'
   b.authorization({ users: :all, write: false, password: :my_secret })
   b.color(:red, "false pass")
   b.color(:yellowgreen, b.authorization[:password])
@@ -18,6 +17,6 @@ c = circle({ y: 96 ,atome_id: :the_circle})
 c.touch do
   clear(:view)
   Atome.atomes.each do |atome|
-    alert atome[0]
+    notification atome[0]
   end
 end
