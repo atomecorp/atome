@@ -27,4 +27,20 @@ module PropertyHtml
   def clear_repeat_html(value)
     clear_interval(value)
   end
+
+  def display_html(value)
+
+    case value
+    when :vr
+      # if atome.type == :image
+      #   wait 0.0001 do
+          alert content
+          # path = $images_list[atome.content.to_sym][:path]
+          # jq_get(atome_id).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false device-orientation-permission-ui='enabled: false'> <a-sky src='" + path + "' rotation='0 -130 0'></a-sky></a-scene>")
+        # end
+      # end
+    when :swap
+      #replaceElementTag(:img)
+    end
+  end
 end
