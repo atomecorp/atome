@@ -16,7 +16,7 @@ module PropertyHtml
 
   def height_html(value)
     type = grab(atome_id).type
-    if type == :text
+    if type == :texto
       jq_get(atome_id).css("font-size", value)
       jq_get(atome_id).css("height", "auto")
       # jq_get(atome_id).css("height", value)

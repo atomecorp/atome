@@ -75,7 +75,9 @@ module PropertyHtml
       jq_get(atome_id).css("word-wrap", "nowrap")
     end
     values = values.merge({ size: jq_get(atome_id).css('font-size').gsub("px", "") })
-    @visual= atomise(:visual, values)
+    @visual = atomise(:visual, values)
+    @width = atomise(:width, JSUtils.client_width(atome_id))
+    @height = atomise(:height, JSUtils.client_height(atome_id))
   end
 
   def color_html(values)

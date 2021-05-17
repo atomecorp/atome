@@ -54,7 +54,7 @@ def demo_reel(demo_list)
   Background.theme(bluegreen_gradient)
   clear(:view)
   demo_list.each_with_index do |demo, index|
-    the_code = text({ content: "#{index} : " + demo[0], y: 20 * index, size: 16 })
+    the_code = text({ content: "#{index} : " + demo[0], y: 20 * index, visual: 16 })
     the_code.touch do
       run_demo(demo[1])
       demo_navigator(demo_list, index)
