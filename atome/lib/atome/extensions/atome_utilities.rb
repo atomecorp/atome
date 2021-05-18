@@ -9,14 +9,14 @@ def notification(message, size = 16)
     # alert_box.width = alert_content.width
   else
     style = grab(:UI).content
-    alert_box = box(style.merge({atome_id: :alert}))
-    alert_content = alert_box.text({x: margin,
-                                    y: margin,
-                                    visual: {size: size, path: :arial},
-                                    atome_id: :alert_content,
-                                    content: "#{message}\n",
-                                    color: :white})
-    alert_box.height = size + margin*2
+    alert_box = box(style.merge({ atome_id: :alert }))
+    alert_content = alert_box.text({ x: margin,
+                                     y: margin,
+                                     visual: { size: size, path: :arial },
+                                     atome_id: :alert_content,
+                                     content: "#{message}\n",
+                                     color: :white })
+    alert_box.height = size + margin * 2
     # alert_box.width = alert_content.width + margin*2
     alert_box.touch do
       alert_content.content("")
@@ -25,4 +25,8 @@ def notification(message, size = 16)
   end
   alert_box.xx(33)
   alert_box.yy(33)
+end
+
+def notif(message, size)
+  notification(message, size)
 end
