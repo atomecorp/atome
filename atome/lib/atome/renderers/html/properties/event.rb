@@ -23,7 +23,7 @@ module PropertyHtml
         waiter = ""
         jq_get(atome_id).on("touchstart mousedown") do |evt|
           waiter = ATOME.wait 1.2 do
-            unless self.drag[:drag] == :moving
+            unless drag && drag[:drag] == :moving
               if value[:stop]
                 evt.stop_propagation
               end
