@@ -20,7 +20,6 @@
 - Right management
 - test to use opal map for easier debug
 - internalisation
-- add touch event stop bubbling
 - add help and example for all api
 - clear intuition doesn't work
 - find a solution for callback : both for library loading and svg (base 64) loadingatome api should wait for data to be ready
