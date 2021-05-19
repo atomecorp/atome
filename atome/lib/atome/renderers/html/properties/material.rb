@@ -1,7 +1,7 @@
 module PropertyHtml
 
   def visual_html(values)
-    if values.instance_of?(Integer)
+    if values.instance_of?(Integer) || values.instance_of?(Number) || values.instance_of?(Float)
       values = { size: values }
     elsif values.instance_of?(String)
       values = { path: values }
@@ -18,7 +18,7 @@ module PropertyHtml
     size_get = values[:size]
     # for later use
     width_get = values[:width]
-    haight_get = values[:haight]
+    haight_get = values[:height]
     alignment_get = values[:alignment]
     wrap_get = values[:wrap]
     fit_get = values[:fit]
@@ -90,6 +90,7 @@ module PropertyHtml
     end
     if self.type == :shape && self.path(nil,)
       `$('#'+#{atome_id}).children().css({fill: #{values}})`
+      elsif self.type == :image
     else
       # we exclude the case when the path is defined because it means we need to use a svg
       if !values.instance_of?(Array) || values.length == 1

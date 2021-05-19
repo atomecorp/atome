@@ -10,3 +10,6 @@ c=circle({size: 33, x: 0})
 c.touch do
   t.visual({fit: :width})
 end
+
+# viusal params : visual: {size: 33,path: :arial,alignment: :right,wrap: " " , fit: :height  }
+# visual default : { path: :ruboto, size: 33, alignment: :center, wrap: " ", fit: :none }

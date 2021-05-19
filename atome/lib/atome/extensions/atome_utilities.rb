@@ -9,7 +9,7 @@ def notification(message, size = 16)
     # alert_box.width = alert_content.width
   else
     style = grab(:UI).content
-    alert_box = box(style.merge({ atome_id: :alert }))
+    alert_box = box(style.merge({ atome_id: :alert , parent: :intuition}))
     alert_content = alert_box.text({ x: margin,
                                      y: margin,
                                      visual: { size: size, path: :arial },
