@@ -76,6 +76,7 @@ module PropertyHtml
     end
     values = values.merge({ size: jq_get(atome_id).css('font-size').gsub("px", "") })
     @visual = atomise(:visual, values)
+    # important @width and @height are also update when setting content (media.rb content_html line 15 1§)
     @width = atomise(:width, JSUtils.client_width(atome_id))
     @height = atomise(:height, JSUtils.client_height(atome_id))
   end

@@ -12,6 +12,8 @@ module PropertyHtml
         value = value.to_s.gsub("\n", "<br>")
         new_content = value + child_of_text_atome
         jq_get(atome_id).html(new_content)
+        @width = atomise(:width, JSUtils.client_width(atome_id))
+        @height = atomise(:height, JSUtils.client_height(atome_id))
       elsif type == :web
         if type_mutation
           # we use the color scheme of the color method to display the text correctly
