@@ -134,12 +134,12 @@ def version
   "v:0.017"
 end
 
-def notification(message, duration)
-  notification = text({ content: message, color: :orange, x: 69, y: 69 })
-  ATOME.send(:wait, duration) do
-    notification.delete
-  end
-end
+# def notification(message, duration)
+#   notification = text({ content: message, color: :orange, x: 69, y: 69 })
+#   ATOME.send(:wait, duration) do
+#     notification.delete
+#   end
+# end
 
 def animate(params)
   if params[:start][:blur]

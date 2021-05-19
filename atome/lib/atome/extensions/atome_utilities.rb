@@ -1,12 +1,16 @@
 def notification(message, size = 16)
   margin = 6
   if grab(:alert)
-    alert_box = grab(:alert)
-    alert_messages = grab(:alert_content)
-    new_content = "#{alert_messages.content}#{message}\n"
-    alert_messages.content(new_content)
-    alert_box.height = alert_box.height + size
-    # alert_box.width = alert_content.width
+    # if message== :clear
+    #   grab(:alert).delete
+    # else
+      alert_box = grab(:alert)
+      alert_messages = grab(:alert_content)
+      new_content = "#{alert_messages.content}#{message}\n"
+      alert_messages.content(new_content)
+      alert_box.height = alert_box.height + size
+    # end
+
   else
     style = grab(:UI).content
     alert_box = box(style.merge({ atome_id: :alert , parent: :intuition}))
