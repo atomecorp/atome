@@ -163,6 +163,8 @@ module PropertyHtml
       end
     elsif option == :stop
       jq_get(atome_id).unbind("keypress")
+      jq_get(atome_id).unbind("keydown")
+      jq_get(atome_id).unbind("keyup")
       atome.edit(false)
     else
       jq_get(atome_id).on(:keypress) do |evt|

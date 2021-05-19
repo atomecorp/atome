@@ -1,6 +1,8 @@
 module PropertyHtml
 
   def visual_html(values)
+    # we must unbind all keyboard shortcuts to make it work
+    grab(:device).key(option: :stop)
     if values.instance_of?(Integer) || values.instance_of?(Number) || values.instance_of?(Float)
       values = { size: values }
     elsif values.instance_of?(String)
@@ -79,6 +81,8 @@ module PropertyHtml
     # important @width and @height are also update when setting content (media.rb content_html line 15 1§)
     @width = atomise(:width, JSUtils.client_width(atome_id))
     @height = atomise(:height, JSUtils.client_height(atome_id))
+    # we reload the keyboard shortcut
+    kickstart_keyboard_shortcut
   end
 
   def color_html(values)

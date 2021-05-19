@@ -1,3 +1,4 @@
+- fixme we must find a solution allow shortcut and auto sized text
 - bug disposition demo crash when running it from examples
 - bug after running fit example the whole examples crash
 - add : # sub text method api
