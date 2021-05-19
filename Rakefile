@@ -301,7 +301,7 @@ end
 # generate_demos_list
 # generate_methods
 # update_opal_libraries
-# # to force update media_list uncomment below
+# to force update media_list uncomment below
 # update_medias_list
 # # to cleanup all generated files
 # cleanup_temp_files
