@@ -48,9 +48,10 @@ Install prerequisite library
 
 To install application:
     git clone https://github.com/atomecorp/atome.git
-    cd atome/www/public
-    git submodule add https://github.com/atomecorp/third_parties_libraries.git
-    #  to later update lib : git submodule update --remote
+    
+cd atome/www/public
+
+
     sudo npm install -g cordova
     sudo cordova plugin add cordova-sqlite-storage
     sudo cordova plugin add cordova-plugin-file
@@ -105,6 +106,26 @@ if cordova Cannot find module 'shelljs' error
 try:
 
     sudo cordova platform remove browser
+
+if cordova osx doesn't compile
+
+    sudo cordova plugin remove browser
+    sudo cordova platform remove osx
+    sudo cordova plugin remove cordova-sqlite-storage
+    sudo cordova plugin remove cordova-plugin-file
+
+    sudo cordova platform add osx
+test with :
+
+    cordova platform add osx
+It should work, then you just have to add plugin again: 
+
+    sudo cordova plugin add cordova-sqlite-storage
+    sudo cordova plugin add cordova-plugin-file
+
+Electron:
+   
+to make it work index should be found in the root of the www folder, to do so 
 
 
 The different modes :
