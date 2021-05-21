@@ -117,7 +117,7 @@ if cordova osx doesn't compile
     sudo cordova platform add osx
 test with :
 
-    cordova platform add osx
+    sudo cordova platform add osx
 It should work, then you just have to add plugin again: 
 
     sudo cordova plugin add cordova-sqlite-storage
