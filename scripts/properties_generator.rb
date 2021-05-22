@@ -7,7 +7,7 @@ def atome_methods
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
-  media = %i[content particle group container video shape box circle text image audio web path info example name visual active]
+  media = %i[content particle group container video shape box circle text image audio web path info example name visual active inactive]
   inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven tag selector render preset monitor select dynamic condition treatment]
   material = %i[color opacity border overflow fill]
@@ -35,7 +35,7 @@ def need_pre_processing
 end
 
 def need_processing
-  %i[monitor]
+  %i[monitor active inactive]
 end
 
 def getter_need_processing
@@ -45,7 +45,7 @@ end
 def no_rendering
   %i[atome_id group container shape box web circle text image video audio text image video audio parent child info example
   selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-  particle visual language active]
+  particle visual language active inactive]
 end
 
 batch_delete = <<STRDELIM
@@ -78,7 +78,7 @@ atome_methods.each do |property_type, property|
       set_instance_variable = "@#{method_name} = atomise(:#{method_name},value)"
     end
     if need_processing.include?(method_name)
-      processor = "#{method_name}_processor(value)"
+      processor = "#{method_name}_processor(value,password)"
     end
     if getter_need_processing.include?(method_name)
       getter_processor = "#{method_name}_getter_processor(value)"

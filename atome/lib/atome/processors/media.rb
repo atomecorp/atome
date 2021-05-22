@@ -1,12 +1,12 @@
 module Processors
-  def media_pre_processor(type, preset, value,password=nil)
+  def media_pre_processor(type, preset, value, password = nil)
     if value.instance_of?(Hash) && value[:proc]
       # if a proc is found we yield we search for child of the requested type to be treated , ex :
       # a.text do |text_found|
       #text_found.color(:red)
       #end
-      self.child(nil,password) do |child_found|
-        if child_found.type(nil,password) == type
+      self.child(nil, password) do |child_found|
+        if child_found.type(nil, password) == type
           value[:proc].call(child_found) if value[:proc].is_a?(Proc)
         end
       end
@@ -20,33 +20,33 @@ module Processors
       preset_found = preset_found[preset]
       # we overload the parent to the current and finally add the value set by user
       preset_found = preset_found.merge({ parent: atome_id }).merge(value)
-        Atome.new(preset_found)
+      Atome.new(preset_found)
     end
   end
 
-  def group_pre_processor(value, password=nil)
+  def group_pre_processor(value, password = nil)
     #todo allow group deletion and remove all monitoring binding
     #if there's a condition we feed the content else we treat the content directly
     if value[:condition]
       content_found = find(value[:condition])
     else
-      content_found=[]
+      content_found = []
     end
     if value[:content]
       content_found.concat(value[:content])
     end
     # we we atomise the content so it can be process directly
-    value[:content]=self.atomiser(content: content_found)
+    value[:content] = self.atomiser(content: content_found)
     if value[:dynamic]
       # first we remove the scope that don't need to be treated
       value[:condition].delete(:scope)
       self.child.each do |child_found|
         child_found.monitor(true) do |evt|
-          unless  content_found.include?(child_found.atome_id)
+          unless content_found.include?(child_found.atome_id)
             if value[:treatment] && (value[:condition].keys[0] == evt[:property] && value[:condition].values[0] == evt[:value])
-                value[:treatment].each do |prop, val|
-                  child_found.send(prop, val, password)
-                end
+              value[:treatment].each do |prop, val|
+                child_found.send(prop, val, password)
+              end
             end
           end
         end
@@ -58,11 +58,11 @@ module Processors
       end
     end
 
-    value= value.merge({ type: :find, render: false })
+    value = value.merge({ type: :find, render: false })
     Atome.new(value)
   end
 
-  def container_pre_processor(value, password=nil)
+  def container_pre_processor(value, password = nil)
     media_pre_processor(:shape, :container, value, password)
   end
 
@@ -76,7 +76,7 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def particle_pre_processor(value, password=nil)
+  def particle_pre_processor(value, password = nil)
     media_pre_processor(:particle, :particle, value, password)
   end
 
@@ -90,7 +90,7 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def shape_pre_processor(value, password=nil)
+  def shape_pre_processor(value, password = nil)
     media_pre_processor(:shape, :shape, value, password)
   end
 
@@ -104,7 +104,7 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def box_pre_processor(value, password=nil)
+  def box_pre_processor(value, password = nil)
     media_pre_processor(:shape, :box, value, password)
   end
 
@@ -118,7 +118,7 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def circle_pre_processor(value, password=nil)
+  def circle_pre_processor(value, password = nil)
     media_pre_processor(:shape, :circle, value, password)
   end
 
@@ -132,7 +132,7 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def text_pre_processor(value, password=nil)
+  def text_pre_processor(value, password = nil)
     media_pre_processor(:text, :text, value, password)
   end
 
@@ -146,7 +146,7 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def image_pre_processor(value, password=nil)
+  def image_pre_processor(value, password = nil)
     media_pre_processor(:image, :image, value, password)
   end
 
@@ -160,7 +160,7 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def video_pre_processor(value, password=nil)
+  def video_pre_processor(value, password = nil)
     media_pre_processor(:video, :video, value, password)
   end
 
@@ -173,7 +173,7 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def audio_pre_processor(value, password=nil)
+  def audio_pre_processor(value, password = nil)
     media_pre_processor(:audio, :audio, value, password)
   end
 
@@ -187,7 +187,7 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def web_pre_processor(value, password=nil)
+  def web_pre_processor(value, password = nil)
     media_pre_processor(:web, :web, value, password)
   end
 
@@ -201,11 +201,23 @@ module Processors
     atomise(:temp, child_collected)
   end
 
-  def visual_pre_processor(value,password)
+  def visual_pre_processor(value, password)
     unless @visual
-      @visual = atomise(:visual,value)
+      @visual = atomise(:visual, value)
     end
-    visual_html(value,password)
+    visual_html(value, password)
+  end
+
+  def active_processor(value, password)
+    if value[:exec] == true
+      value[:proc].call if value[:proc].is_a?(Proc)
+    end
+  end
+
+  def inactive_processor(value, password)
+    if value[:exec] == true
+      value[:proc].call if value[:proc].is_a?(Proc)
+    end
   end
 
 end
