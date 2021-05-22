@@ -7,7 +7,7 @@ def atome_methods
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
-  media = %i[content particle group container video shape box circle text image audio web path info example name visual active inactive]
+  media = %i[content particle group container video shape box circle text image audio web tool path info example name visual active inactive]
   inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven tag selector render preset monitor select dynamic condition treatment]
   material = %i[color opacity border overflow fill]
@@ -26,11 +26,11 @@ def is_atome
   # in this case presets are used to create atome suing their types with specific settings
   # so it add the methods in the atome_object_creator methods
   # the generated property will then return the result of the method instead of object itself
-  %i[particle container shape box web circle text image video audio camera microphone midi group]
+  %i[particle container shape box web circle text image tool video audio camera microphone midi group]
 end
 
 def need_pre_processing
-  %i[atome_id particle group container shape box web circle text camera microphone midi text image video audio parent
+  %i[atome_id particle group container shape box web circle text camera microphone midi text image video audio tool parent
   child type shadow size drag visual]
 end
 
@@ -43,7 +43,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id group container shape box web circle text image video audio text image video audio parent child info example
+  %i[atome_id group container shape box web circle text image video audio tool parent child info example
   selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
   particle visual language active inactive]
 end

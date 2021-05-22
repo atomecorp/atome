@@ -1,4 +1,5 @@
 - fixme we must find a solution allow shortcut and auto sized text
+- bug when using stop and option down with a touch the stop event is ignored
 - bug disposition demo crash when running it from examples
 - bug after running fit example the whole examples crash
 - add : # sub text method api

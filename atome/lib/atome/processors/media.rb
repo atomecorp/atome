@@ -220,4 +220,18 @@ module Processors
     end
   end
 
+  def tool_pre_processor(value, password = nil)
+    media_pre_processor(:shape, :tool, value, password)
+  end
+
+  def tool_getter_processor
+    child_collected = []
+    child do |child_found|
+      if child_found.type == :tool
+        child_collected << child_found.atome_id
+      end
+    end
+    atomise(:temp, child_collected)
+  end
+
 end
