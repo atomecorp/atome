@@ -67,28 +67,29 @@ def kickstart_keyboard_shortcut
   end
 end
 
-
-def notification(message,option=nil, size = 16)
+def notification(message, option = nil, size = 16)
   margin = 6
-  if option== :clear
-    grab(:alert_content).content("")
-  elsif option ==:delete
-    grab(:alert).delete
-  end
   if grab(:alert)
-    # if message== :clear
-    #   grab(:alert).delete
-    # else
-      alert_box = grab(:alert)
-      alert_messages = grab(:alert_content)
-      new_content = "#{alert_messages.content}#{message}\n"
+    alert_box = grab(:alert)
+    alert_messages = grab(:alert_content)
+    if option == :clear
+      alert_messages.content("")
+      alert_box.height = 0
+    elsif option == :delete
+      alert_messages.content("")
+      alert_box.delete(true)
+    else
+      if alert_messages.content == "\n" || alert_messages.content == ""
+        new_content = "#{message}"
+      else
+        new_content = "#{alert_messages.content}\n#{message}"
+      end
       alert_messages.content(new_content)
       alert_box.height = alert_box.height + size
-    # end
-
+    end
   else
     style = grab(:UI).content
-    alert_box = box(style.merge({ atome_id: :alert , parent: :intuition}))
+    alert_box = box(style.merge({ atome_id: :alert, parent: :intuition }))
     alert_content = alert_box.text({ x: margin,
                                      y: margin,
                                      visual: { size: size, path: :arial },

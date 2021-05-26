@@ -251,11 +251,11 @@ module PropertyHtml
 
     case value[:event]
     when :touch
-        if value[:x] && value[:y]
-          jq_get(atome_id).trigger("click", [value[:x], value[:y], value[:x]])
-        else
-          jq_get(atome_id).trigger("click")
-        end
+      if value[:x] && value[:y]
+        jq_get(atome_id).trigger("click", [value[:x], value[:y], value[:x]])
+      else
+        jq_get(atome_id).trigger("click")
+      end
     else
       jq_get(atome_id).trigger("click")
     end
