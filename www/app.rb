@@ -26,10 +26,8 @@ end
 
 class App < Roda
 
-
   @@channels = {}
   @@user
-
 
   #plugin :mail_processor
   eden = Sequel.connect("sqlite://eden_doors.sqlite3")
@@ -81,7 +79,7 @@ class App < Roda
             # message_back={id: data["id"], log: true}
             #
             session_id = SecureRandom.uuid
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], session_id: session_id, log: true })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], session_id: session_id, log: true })
             ws.send(message_back)
 
           when "start_channel"
@@ -89,15 +87,15 @@ class App < Roda
             # self.channels(channel_id)
             @@channels[channel_id] = []
             # @session[data["username"]] =session_id
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], channel_id: channel_id })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], channel_id: channel_id })
             ws.send(message_back)
           when "list_channels"
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], channels: @@channels.keys })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], channels: @@channels.keys })
             ws.send(message_back)
           when "connect_channel"
-            channel_id=data["channel_id"]
+            channel_id = data["channel_id"]
             @@channels[channel_id] << ws
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], connected: true })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], connected: true })
             ws.send(message_back)
           when "push_to_channel"
             channel_id = data["channel_id"]
@@ -110,13 +108,14 @@ class App < Roda
                 ws_found.send(message_to_push)
               end
             end
-
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], pushed: true })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], pushed: true })
             ws.send(message_back)
-            when "read"
-              puts "reading now #{data}"
-              message_to_push = JSON.generate({ type: :code, content: message_received })
-              # ws.send(data["box"])
+          when "read"
+
+            # puts `ls`
+            file_content= File.read(data["message"])
+            message_to_push = JSON.generate({ type: :read, content: file_content})
+            ws.send(message_to_push)
           when "code"
             message_to_push = JSON.generate({ type: :code, content: data["message"] })
             puts "coding now : #{data}"

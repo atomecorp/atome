@@ -1,7 +1,7 @@
 class WebSocketHelper {
     constructor(serverAddress, socket_type) {
         //TODO: Switch to wss once a certificate created.
-        this.serverAddress = socket_type+'://' + serverAddress;
+        this.serverAddress = socket_type + '://' + serverAddress;
         this._reconnect = true;
         this.callbacks = {};
 
@@ -13,15 +13,17 @@ class WebSocketHelper {
 
         this.webSocket.onmessage = function (messageEvent) {
             const data = JSON.parse(messageEvent.data);
-
-            if(data.type === "response") {
+            if (data.type === "response") {
                 const callback = self.callbacks[data.request_id];
                 callback.$response(data);
-            } else if(data.type === "code") {
+            } else if (data.type === "code") {
                 Opal.eval(data.content);
-            }
-            else{
-                puts (data);
+            } else if (data.type === "read") {
+                // alert("read from websocket : "+data.content);
+                Opal.Atome.$text(data.content);
+
+            } else {
+                console.log(data );
             }
         };
 
