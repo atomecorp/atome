@@ -20,7 +20,7 @@ class MidiHelper {
                 for (const interfaceName of WebMidi.inputs) {
                     self.interfaces_in.push(interfaceName["name"]);
                 }
-                self.output = WebMidi.outputs[13];
+                self.output = WebMidi.outputs[2];
 
                 self.midiEventListener.onConnected();
             }

@@ -1,7 +1,7 @@
 def atome_methods
   communication = %i[share]
   effect = %i[blur shadow smooth]
-  event = %i[touch drag over key scale drop over]
+  event = %i[touch drag over key scale drop over virtual_event]
   geometry = %i[width height size ratio]
   helper = %i[tactile display]
   hierarchy = %i[parent child]

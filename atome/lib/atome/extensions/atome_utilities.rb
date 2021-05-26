@@ -68,8 +68,13 @@ def kickstart_keyboard_shortcut
 end
 
 
-def notification(message, size = 16)
+def notification(message,option=nil, size = 16)
   margin = 6
+  if option== :clear
+    grab(:alert_content).content("")
+  elsif option ==:delete
+    grab(:alert).delete
+  end
   if grab(:alert)
     # if message== :clear
     #   grab(:alert).delete
@@ -96,9 +101,10 @@ def notification(message, size = 16)
       alert_content.content("")
       alert_box.delete(true)
     end
+    alert_box.xx(33)
+    alert_box.yy(33)
   end
-  alert_box.xx(33)
-  alert_box.yy(33)
+
 end
 
 def notif(message, size)
