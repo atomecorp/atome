@@ -5,9 +5,9 @@ class Http
 end
 
 class WebSocket
-  def initialize(address)
+  def initialize(address="0.0.0.0:9292", socket_type="ws")
     super()
-    @web_socket = `new WebSocketHelper(#{address})`
+    @web_socket = `new WebSocketHelper(#{address}, #{socket_type})`
   end
 
   def send(data, callback)

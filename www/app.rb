@@ -113,13 +113,21 @@ class App < Roda
 
             message_back = JSON.generate({ type: :response,request_id: data["request_id"], pushed: true })
             ws.send(message_back)
-
+            when "read"
+              puts "reading now #{data}"
+              message_to_push = JSON.generate({ type: :code, content: message_received })
+              # ws.send(data["box"])
           when "code"
-            ws.send(data["text"])
+            message_to_push = JSON.generate({ type: :code, content: data["message"] })
+            puts "coding now : #{data}"
+            puts "coding this now : #{data["message"]}"
+
+            ws.send(message_to_push)
           when "command"
-            terminal_content = %x{#{data["text"]}}
-            massage_back = "text('#{terminal_content}')"
-            ws.send(massage_back)
+            puts "command now : #{data}"
+            # terminal_content = %x{#{data["text"]}}
+            # message_back = "text('#{terminal_content}')"
+            # ws.send(message_back)
           else
             ws.send("unknown message received")
           end

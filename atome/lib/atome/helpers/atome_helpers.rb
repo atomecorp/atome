@@ -1,4 +1,15 @@
 module AtomeHelpers
+  # here we can change the server used to handle websocket
+  # AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("ws.atome.one", "wss"))
+  AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("0.0.0.0:9292", "ws"))
+
+  def message(data, callback)
+    AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
+  end
+
+  def shell(command)
+    AtomeHelpers.class_variable_get("@@web_socket").send({ type: :command, message: command })
+  end
 
   def authorization(value = nil, &proc)
     if value.nil? && !proc
@@ -159,15 +170,7 @@ def transmit(values)
   end
 end
 
-AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("ws.atome.one"))
 
-def message(data, callback)
-  AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
-end
-
-def shell(command)
-  AtomeHelpers.class_variable_get("@@web_socket").send({ type: :command, message: command })
-end
 
 def fixed(value)
   fixed_html(value)

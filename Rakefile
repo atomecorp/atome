@@ -177,10 +177,10 @@ def cleanup_temp_files
 end
 
 
-# generate_demos_list
 rm_r "www/public/medias/e_rubies/tools", force: true
 FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
 generate_methods
+# generate_demos_list
 # update_opal_libraries
 # #to force update media_list uncomment below
 # update_medias_list
