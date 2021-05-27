@@ -1,4 +1,5 @@
 source "https://rubygems.org"
+gem "rake"
 # comment "c_lexer" if generating arm version of atome
 gem "rubocop"
 #gem "c_lexer"
