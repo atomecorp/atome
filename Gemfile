@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 # comment "c_lexer" if generating arm version of atome
 gem "rubocop"
-gem "c_lexer"
+#gem "c_lexer"
 gem "filewatcher"
 gem "image_size"
 gem "opal", "1.0.5"
