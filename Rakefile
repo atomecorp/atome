@@ -5,7 +5,6 @@ require "uglifier"
 require "fileutils"
 require "filewatcher"
 
-
 unless File.directory?("app/temp")
   FileUtils.mkdir_p("app/temp")
 end

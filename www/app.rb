@@ -10,6 +10,7 @@ if RUBY_PLATFORM == "x64-mingw32"
   require "em/pure_ruby"
 end
 require "sequel"
+require "rufus-scheduler"
 require "faye/websocket"
 require "json"
 require "securerandom"
@@ -42,14 +43,7 @@ class App < Roda
   end
 
   index_content = File.read("public/index.html")
-  # below test line to supress
-  #index_content += "<script>setTimeout(function(){ Opal.Object.$text('good!! Roda & puma are initialized'); }, 500);setTimeout(function(){ Opal.Object.$circle() ;Opal.eval('box(x: 200)'); }, 3000)</script>"
-  #  index_content += "<script>setTimeout(function(){
-  #var ws = new WebSocket('ws://192.168.103.147:9292');
-  #   ws.onopen = function () {
-  #    ws.send('Hello Server! view');
-  #}
-  #}, 3000)</script>"
+
   index_content = index_content.gsub('<script type="text/javascript" src="../cordova.js"></script>', "")
   # below an attempt to load atome in pure ruby not opal
   # require "../atome/lib/atome/core/neutron.rb"
@@ -111,32 +105,28 @@ class App < Roda
             message_back = JSON.generate({ type: :response, request_id: data["request_id"], pushed: true })
             ws.send(message_back)
           when "read"
-
-            # puts `ls`
-            file_content= File.read(data["message"])
-            message_to_push = JSON.generate({ type: :read, content: file_content})
+            file_content= File.read(data["file"])
+            if data["options"]
+              hashed_content={ content: file_content }.merge(data["options"])
+            else
+              hashed_content={ content: file_content }
+            end
+            message_to_push = JSON.generate({ type: :read,target: data["target"],atome: data["atome"], content: hashed_content })
+            ws.send(message_to_push)
+          when "atome"
+            message_to_push = JSON.generate({ type: :atome,target: data["target"],atome: data["atome"], content: data["content"]})
             ws.send(message_to_push)
           when "code"
-            message_to_push = JSON.generate({ type: :code, content: data["message"] })
-            puts "coding now : #{data}"
-            puts "coding this now : #{data["message"]}"
-
+            message_to_push = JSON.generate({ type: :code, content: data["content"] })
             ws.send(message_to_push)
           when "command"
-            puts "command now : #{data}"
-            # terminal_content = %x{#{data["text"]}}
-            # message_back = "text('#{terminal_content}')"
-            # ws.send(message_back)
+            file_content= `#{data["content"]}`
+            hashed_content={ content: file_content }.merge(data["options"])
+            message_to_push = JSON.generate({ type: :read,target: data["target"],atome: data["atome"], content: hashed_content })
+            ws.send(message_to_push)
           else
             ws.send("unknown message received")
           end
-          #if data["connection"]
-          #  ws.send('{"connection":{"username":"Régis","accepted":"true"}}')
-          #elsif data["type"] == "code"
-          #  ws.send(data["text"])
-          #else
-          #  data
-          #end
         end
       end
       #ws.on :open do |event|

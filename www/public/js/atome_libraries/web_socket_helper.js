@@ -10,7 +10,9 @@ class WebSocketHelper {
 
         this.webSocket.onopen = function (event) {
         };
-
+        var atome;
+        var target;
+        var content;
         this.webSocket.onmessage = function (messageEvent) {
             const data = JSON.parse(messageEvent.data);
             if (data.type === "response") {
@@ -18,11 +20,22 @@ class WebSocketHelper {
                 callback.$response(data);
             } else if (data.type === "code") {
                 Opal.eval(data.content);
-            } else if (data.type === "read") {
-                // alert("read from websocket : "+data.content);
-                Opal.Atome.$text(data.content);
+            }
+            else if (data.type === "read") {
+                 atome=data.atome;
+                 target=data.target;
+                 content=data.content;
+                 var new_content=Opal.hash(content);
+                Opal.Object.$atomic_request(target,atome, new_content);
+            }
+            else if (data.type === "atome") {
+                 atome=data.atome;
+                 target=data.target;
+                 content=data.content;
+                Opal.Object.$atomic_request(target,atome, content);
+            }
 
-            } else {
+            else {
                 console.log(data );
             }
         };

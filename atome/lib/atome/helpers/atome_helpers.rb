@@ -3,13 +3,13 @@ module AtomeHelpers
   # AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("ws.atome.one", "wss"))
   AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("0.0.0.0:9292", "ws"))
 
-  def message(data, callback)
+  def message(data, callback=nil)
     AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
   end
 
-  def shell(command)
-    AtomeHelpers.class_variable_get("@@web_socket").send({ type: :command, message: command })
-  end
+  # def shell(command)
+  #   AtomeHelpers.class_variable_get("@@web_socket").send({ type: :command, message: command })
+  # end
 
   def authorization(value = nil, &proc)
     if value.nil? && !proc
