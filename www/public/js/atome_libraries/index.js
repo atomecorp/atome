@@ -113,3 +113,5 @@ function message_server(type, message) {
 // $.get('https://atome.one/medias/datas/meteo_datas.txt', function(data) {
 //     alert(data);
 // });
+
+

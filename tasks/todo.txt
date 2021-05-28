@@ -1,8 +1,10 @@
-- bug when opening code editor using shortcut then executing code, error : undefined method read for nil
+- bug : when parent object fit it's child : try fit.rb example then when can't clear view
+- bug : when setting  fit then when  setting fit: : width or height doesn't work : try size.rb example
+- bug : when opening code editor using shortcut then executing code, error : undefined method read for nil
 - fixme we must find a solution allow shortcut and auto sized text
-- bug when using stop and option down with a touch the stop event is ignored
-- bug disposition demo crash when running it from examples
-- bug after running fit example the whole examples crash
+- bug : when using stop and option down with a touch the stop event is ignored
+- bug : disposition demo crash when running it from examples
+- bug : after running fit example the whole examples crash
 - add : # sub text method api
         t=text("hello to everyone")
         select(text.word(1)).color(:yellow)
