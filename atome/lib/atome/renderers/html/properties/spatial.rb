@@ -63,9 +63,9 @@ module PropertyHtml
     if value.instance_of?(Hash)
       offset_x=value[:x]
       offset_y=value[:y]
-      value=value.keys[0]
+      # value=value.keys[0]
     end
-    grab(:view).child do |child_found|
+    grab(self.parent.last).child do |child_found|
       unless child_found.atome_id == atome_id
         if child_found.x
           x_found = child_found.x + child_found.width
@@ -88,17 +88,19 @@ module PropertyHtml
     unless offset_x
       offset_x=0
     end
+
     unless offset_y
       offset_y=0
     end
-    case value
-    when :x
-      self.x = max_x+offset_x
-    when :y
-      self.y = max_y+offset_y
-    else
 
+    if value[:x]
+      self.x = max_x+offset_x
     end
+
+    if value[:y]
+      self.y = max_y+offset_y
+    end
+
   end
 
   def center_html(value)
