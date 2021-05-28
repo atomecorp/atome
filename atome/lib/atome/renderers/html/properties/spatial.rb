@@ -68,14 +68,31 @@ module PropertyHtml
     grab(self.parent.last).child do |child_found|
       unless child_found.atome_id == atome_id
         if child_found.x
-          x_found = child_found.x + child_found.width
+          # alert child_found.convert(:width)
+          if child_found.width.instance_of?(String)
+            x_found = child_found.x + child_found.convert(:width)
+          else
+            x_found = child_found.x + child_found.width
+          end
         else
-          x_found = child_found.width
+          if child_found.width.instance_of?(String)
+            x_found = child_found.convert(:width)
+          else
+            x_found = child_found.width
+          end
         end
         if child_found.y
-          y_found = child_found.y + child_found.height
+          if child_found.height.instance_of?(String)
+            y_found = child_found.y + child_found.convert(:height)
+          else
+            y_found = child_found.y + child_found.height
+          end
         else
-          y_found = child_found.height
+          if child_found.height.instance_of?(String)
+            y_found = child_found.convert(:height)
+          else
+            y_found = child_found.height
+          end
         end
         if x_found > max_x
           max_x = x_found
