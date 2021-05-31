@@ -1,3 +1,4 @@
+- add : max_row and max_column to matrix
 - bug : when parent object fit it's child : try fit.rb example then when can't clear view
 - bug : when setting  fit then when  setting fit: : width or height doesn't work : try size.rb example
 - bug : when opening code editor using shortcut then executing code, error : undefined method read for nil
