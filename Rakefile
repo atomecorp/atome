@@ -179,10 +179,10 @@ end
 # generate_methods
 # generate_demos_list
 # update_opal_libraries
-##to force update media_list uncomment below
+# #to force update media_list uncomment below
 # update_medias_list
-#to cleanup all generated files
-#cleanup_temp_files
+# #to cleanup all generated files
+# cleanup_temp_files
 
 
 # the tasks
