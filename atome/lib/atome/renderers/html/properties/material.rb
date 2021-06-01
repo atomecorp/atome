@@ -8,7 +8,7 @@ module PropertyHtml
     elsif values.instance_of?(String)
       values = { path: values }
     end
-    basic_visuals = { path: :ruboto, size: 33, alignment: :center, wrap: " ", fit: :none }
+    basic_visuals = { path: :arial, size: 33, alignment: :center, wrap: " ", fit: :none }
 
     if @visual.read.instance_of?(Hash)
       # if it's a hash it means that the visual already exist
@@ -162,10 +162,14 @@ module PropertyHtml
   end
 
   def shadow_html(value)
+
     if value.instance_of?(Array)
       value.each do |shadow|
         shadow_html(shadow)
       end
+    elsif value==:delete
+      jq_get(atome_id).css("box-shadow", "0px 0px  0px  0px")
+      jq_get(atome_id).css("filter", "drop-shadow( 0px 0px 0px )")
     else
       shadow_html_format = shadow_helper(value)
       jq_get(atome_id).css(shadow_html_format[0], shadow_html_format[1])

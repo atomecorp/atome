@@ -10,6 +10,8 @@ module Processors
         collected_values << default.merge(value_found)
       end
       value = collected_values
+    elsif value ==false || value ==:delete
+      value = :delete
     else
       value = default.merge(value)
     end

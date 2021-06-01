@@ -1,6 +1,8 @@
-# shadow exmaple
+# shadow example
 
 b = box({ id: :box_test, x: 160, y: 160 })
+b.text("touch me")
+
 b.shadow({ x: 5, y: 5, blur: 7, color: :black, thickness: 0, invert: true })
 b.shadow({ add: :true, x: 20, y: 20, color: "rgba(0,0,0,1)", blur: 16, thickness: 0 })
 c = circle({ x: 96, y: 96, drag: true, id: :circle_test })
@@ -16,3 +18,7 @@ t.shadow({ x: 3, y: 33, color: "rgba(0,0,0,1)", blur: 3, thickness: 0 })
 img = image({ content: :boat, size: 96, x: 196, drag: true })
 img.shadow({ x: 7, y: 3, color: "rgba(0,0,0,0.5)", blur: 7, thickness: 0 })
 img.shadow({ x: -66, y: 3, color: "rgba(0,0,0,0.6)", blur: 17, thickness: 0 })
+
+b.touch do
+  b.shadow(false)
+end
