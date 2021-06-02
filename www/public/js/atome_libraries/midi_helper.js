@@ -13,7 +13,6 @@ class MidiHelper {
             if (err) {
                 self.midiEventListener.onError(err);
             } else {
-                // console.log("WebMidi enabled!");
                 // alert(WebMidi.outputs);
                 for (const interfaceName of WebMidi.outputs) {
                     self.interfaces_out.push(interfaceName["name"]);
