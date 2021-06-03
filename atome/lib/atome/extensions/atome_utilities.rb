@@ -317,10 +317,14 @@ end
 
 
 def atomic_request(target=nil,atome=:notification, content)
-  if target
-    grab(target).send(atome, content)
-  else
-    Object.send(atome, content)
-  end
+  eval("#{target}(#{content})")
+  # alert target
+  # alert atome
+  # alert content
+  # if target
+  #   grab(target).send(atome, content)
+  # else
+  #   Object.send(atome, content)
+  # end
 end
 
