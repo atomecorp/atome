@@ -316,8 +316,13 @@ end
 
 
 
-def atomic_request(target=nil,atome=:notification, content)
-  eval("#{target}(#{content})")
+def atomic_request(target=nil, content, options)
+  # content=eval
+  # eval("#{target}(#{content})")
+  if target
+    Object.send(target, content[:content], options[:options])
+  end
+
   # alert target
   # alert atome
   # alert content

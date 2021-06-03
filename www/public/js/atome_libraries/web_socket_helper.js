@@ -10,7 +10,7 @@ class WebSocketHelper {
 
         this.webSocket.onopen = function (event) {
         };
-        var atome;
+        var options;
         var target;
         var content;
         this.webSocket.onmessage = function (messageEvent) {
@@ -22,11 +22,14 @@ class WebSocketHelper {
                 Opal.eval(data.content);
             }
             else if (data.type === "read") {
-                 atome=data.atome;
+                 // atome=data.atome;
                  target=data.target;
                  content=data.content;
-                 var new_content=Opal.hash(content);
-                Opal.Object.$atomic_request(target,atome, new_content);
+                options=data.options;
+
+                var new_content=Opal.hash(content);
+                var new_options=Opal.hash(options);
+                Opal.Object.$atomic_request(target, new_content, new_options);
             }
             else if (data.type === "atome") {
                  atome=data.atome;

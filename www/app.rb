@@ -105,24 +105,40 @@ class App < Roda
             message_back = JSON.generate({ type: :response, request_id: data["request_id"], pushed: true })
             ws.send(message_back)
           when "read"
-            file_content= File.read(data["file"])
-            if data["options"]
-              hashed_content={ content: file_content }.merge(data["options"])
-            else
-              hashed_content={ content: file_content }
-            end
-            message_to_push = JSON.generate({ type: :read,target: data["target"],atome: data["atome"], content: hashed_content })
+            file_content = File.read(data["file"])
+            hashed_content = { content: file_content }
+            hashed_options = { options: data["options"].to_s }
+            message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
+            ws.send(message_to_push)
+          when "list"
+            files_found = Dir[data["path"] + "/*"]
+            hashed_content = { content: files_found }
+            hashed_options = { options: data["options"].to_s }
+            message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
+            ws.send(message_to_push)
+          when "write"
+            File.write(data["file"], data["content"])
+            hashed_content = { content: data["content"].to_s }
+            hashed_options = { options: data["options"].to_s }
+            message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
+            ws.send(message_to_push)
+          when "delete"
+            # File.write(data["file"], data["content"])
+            File.delete(data["file"])
+            hashed_content = { content: data["file"].to_s }
+            hashed_options = { options: data["options"].to_s }
+            message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
             ws.send(message_to_push)
           when "atome"
-            message_to_push = JSON.generate({ type: :atome,target: data["target"],atome: data["atome"], content: data["content"]})
+            message_to_push = JSON.generate({ type: :atome, target: data["target"], atome: data["atome"], content: data["content"] })
             ws.send(message_to_push)
           when "code"
             message_to_push = JSON.generate({ type: :code, content: data["content"] })
             ws.send(message_to_push)
           when "command"
-            file_content= `#{data["content"]}`
-            hashed_content={ content: file_content }.merge(data["options"])
-            message_to_push = JSON.generate({ type: :read,target: data["target"],atome: data["atome"], content: hashed_content })
+            file_content = `#{data["content"]}`
+            hashed_content = { content: file_content }.merge(data["options"])
+            message_to_push = JSON.generate({ type: :read, target: data["target"], atome: data["atome"], content: hashed_content })
             ws.send(message_to_push)
           else
             ws.send("unknown message received")
