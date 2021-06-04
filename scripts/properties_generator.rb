@@ -16,6 +16,7 @@ def atome_methods
     events: event }
 end
 
+
 def types
   %i[user machine shape image video audio input text midi tool virtual group container particle]
 end
