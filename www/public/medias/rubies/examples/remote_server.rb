@@ -12,3 +12,12 @@ b.touch do
   ATOME.message({type: :atome,target: b.atome_id,atome: :color,  content: "red"})
   ATOME.message({type: :atome,target: b.atome_id,atome: :smooth,  content: 9})
 end
+
+
+# # c.touch do
+# #   # todo: addpassword to write and delete methods
+# #   # ATOME.message({type: :delete, file: "public/medias/datas/meteo_datas_new.txt", target: :toto, options:{color: :yellowgreen}})
+# #   # ATOME.message({type: :write, file: "public/medias/datas/meteo_datas_new.txt",content: :hello, target: :toto, options:{color: :yellowgreen}})
+# #   # ATOME.message({type: :list, path: "public/medias/datas/",target: :delete_images, options:{color: :yellowgreen}})
+# #   # ATOME.message({type: :read, file: "public/medias/datas/meteo_datas.txt",target: :toto, options:{color: :yellowgreen}})
+# # end
