@@ -1,3 +1,6 @@
+- inline video iOS
+- Background video
+- add touch event stop bubbling
 - big bug when trying convert example then windows resize example
 - video callback
 - code editor : restore position and size, stop drag, text size

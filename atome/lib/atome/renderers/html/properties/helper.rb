@@ -27,4 +27,13 @@ module PropertyHtml
   def clear_repeat_html(value)
     clear_interval(value)
   end
+
+  def display_html(value)
+    case value
+    when :vr
+      path = $images_list[content][:path]
+      jq_get(atome_id).css("background", "transparent")
+      jq_get(atome_id).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false device-orientation-permission-ui='enabled: false'> <a-sky src='" + path + "' rotation='0 -130 0'></a-sky></a-scene>")
+    end
+  end
 end

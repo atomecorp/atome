@@ -11,5 +11,4 @@ ATOME.resize_html(true) do |evt|
   new_size=c.convert(:width)
   t.content("width set : 33%, in pixel :\n"+new_size.to_s+" px")
 end
-t.size(16)
 t.x(450)

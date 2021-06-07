@@ -3,32 +3,43 @@ module PropertyHtml
     if value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
     else
-      proc = value[:proc]
       option = value[:option]
       case option
       when :down
         jq_get(atome_id).on("touchstart mousedown") do |evt|
-          proc.call(evt) if proc.is_a?(Proc)
+          if value[:stop]
+            evt.stop_propagation
+          end
+          value[:proc].call(evt) if value[:proc].is_a?(Proc)
         end
       when :up
         jq_get(atome_id).on("touchend mouseup") do |evt|
-          proc.call(evt) if proc.is_a?(Proc)
+          if value[:stop]
+            evt.stop_propagation
+          end
+          value[:proc].call(evt) if value[:proc].is_a?(Proc)
         end
       when :long
+        waiter = ""
         jq_get(atome_id).on("touchstart mousedown") do |evt|
-          @trig = true
-          wait 1.2 do
-            if @trig
-              proc.call(evt) if proc.is_a?(Proc)
+          waiter = ATOME.wait 1.2 do
+            unless drag && drag[:drag] == :moving
+              if value[:stop]
+                evt.stop_propagation
+              end
+              value[:proc].call(evt) if value[:proc].is_a?(Proc)
             end
           end
         end
         jq_get(atome_id).on("touchend mouseup") do
-          @trig = false
+          ATOME.clear({ wait: waiter })
         end
       else
         jq_get(atome_id).on(:click) do |evt|
-          proc.call(evt) if proc.is_a?(Proc)
+          if value[:stop]
+            evt.stop_propagation
+          end
+          value[:proc].call(evt) if value[:proc].is_a?(Proc)
         end
       end
     end
@@ -43,14 +54,14 @@ module PropertyHtml
     if value == :destroy || value[:option] == :destroy
       # we initiate the scale first so it won't break if scale is destroy twice,
       # else : destroy scale then clear view will crash
-      jq_get(atome_id).draggable()
-    end
-    if value == :destroy
+      jq_get(atome_id).draggable
       jq_object.draggable(:destroy)
-    elsif value == :disable
+    elsif value == :disable || value[:option] == :disable
+      # we initiate the scale first so it won't break if scale is diasble twice,
+      # else : destroy scale then clear view will crash
+      jq_get(atome_id).draggable
       jq_object.draggable(:disable)
     else
-      proc = value[:proc]
       grid = {}
       if value[:grid]
         grid = { grid: [value[:grid][:x], value[:grid][:y]] }
@@ -63,7 +74,7 @@ module PropertyHtml
         when Hash
           default = { x: 96, xx: 96, y: 96, yy: 96 }
           params = default.merge(value[:containment])
-          containment = { containment: [params[:x], params[:y], params[:xx], params[:yy]] }
+          containment = { containment: [params[:x], params[:y], params[:xx], params[:yy]]}
         else
           containment = { containment: "parent" }
         end
@@ -103,9 +114,10 @@ module PropertyHtml
         jq_get(atome_id).css("bottom", "auto")
         x_position_start = evt.page_x
         y_position_start = evt.page_y
-        proc.call(evt) if proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
       jq_object.on(:drag) do |evt|
+        drag[:drag] = :moving
         evt.start = false
         evt.stop = false
         offset_x = evt.page_x - x_position_start
@@ -113,51 +125,53 @@ module PropertyHtml
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         # we send the position to the proc
-        proc.call(evt) if proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
         # we update the position of the atome
         update_position
       end
       jq_object.on(:dragstop) do |evt|
+        drag[:drag] = true
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         evt.start = false
         evt.stop = true
         change_position_origin
-        proc.call(evt) if proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
     end
 
   end
 
   def key_html(value)
-    proc = value[:proc]
     option = value[:option]
     # the lines below is important for the object to get focus if not keypress wont be triggered
     atome = grab(atome_id)
     atome.edit(true)
     if option == :down
       jq_get(atome_id).on("keydown") do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
       end
     elsif option == :up
       jq_get(atome_id).on("keyup") do |evt|
-        proc.call(evt) if proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
       end
     elsif option == :stop
       jq_get(atome_id).unbind("keypress")
+      jq_get(atome_id).unbind("keydown")
+      jq_get(atome_id).unbind("keyup")
       atome.edit(false)
     else
       jq_get(atome_id).on(:keypress) do |evt|
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
-        proc.call(evt) if proc.is_a?(Proc)
+        value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
     end
   end
@@ -191,8 +205,59 @@ module PropertyHtml
         self.width(jq_get(atome_id).css("width").to_i, false)
         self.height(jq_get(atome_id).css("height").to_i, false)
       end
+      value[:proc].call(self.width, self.height) if value[:proc].is_a?(Proc)
+    end
+  end
+
+  def drop_html(value)
+    if value != false
       proc = value[:proc]
-      proc.call(self.width, self.height) if proc.is_a?(Proc)
+      jq_get(atome_id).droppable
+      jq_get(atome_id).on(:drop) do |evt|
+        proc.call(evt) if proc.is_a?(Proc)
+      end
+    else
+      jq_get(atome_id).droppable(:destroy)
+    end
+  end
+
+  def over_html(value)
+
+    if value != false
+      proc = value[:proc]
+      option = value[:options]
+      if option == :enter || option == :in
+        jq_get(atome_id).mouseenter do |evt|
+          proc.call(evt) if proc.is_a?(Proc)
+        end
+      elsif option == :exit || option == :leave || option == :out
+        jq_get(atome_id).mouseleave do |evt|
+          proc.call(evt) if proc.is_a?(Proc)
+        end
+      else
+        jq_get(atome_id).mouseover do |evt|
+          proc.call(evt) if proc.is_a?(Proc)
+        end
+      end
+    else
+      jq_get(atome_id).unbind(:mouseenter)
+      jq_get(atome_id).unbind(:mouseleave)
+      jq_get(atome_id).unbind(:mouseover)
+    end
+
+  end
+
+  def virtual_event_html(value)
+
+    case value[:event]
+    when :touch
+      if value[:x] && value[:y]
+        jq_get(atome_id).trigger("click", [value[:x], value[:y], value[:x]])
+      else
+        jq_get(atome_id).trigger("click")
+      end
+    else
+      jq_get(atome_id).trigger("click")
     end
   end
 end

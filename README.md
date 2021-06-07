@@ -63,7 +63,7 @@ Open source technology used
 
 
 
-Optional open source Software related to atome's framework
+Optional open source software related to atome's framework
 -
 - QAudio : a cross-platform C++ library for Audio Digital Signal Processing (https://cycfi.github.io/q/)
 

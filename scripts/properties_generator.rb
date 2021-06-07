@@ -1,23 +1,24 @@
 def atome_methods
   communication = %i[share]
   effect = %i[blur shadow smooth]
-  event = %i[touch drag over key scale]
+  event = %i[touch drag over key scale drop over virtual_event]
   geometry = %i[width height size ratio]
   helper = %i[tactile display]
   hierarchy = %i[parent child]
-  identity = %i[atome_id id type language private can]
+  identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
-  media = %i[content group container video shape box circle text image audio path info example name]
+  media = %i[content particle group container video shape box circle text image audio web tool path info example name visual active inactive]
   inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven tag selector render preset monitor select dynamic condition treatment]
   material = %i[color opacity border overflow fill]
-  { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
+  {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
     medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity,
     events: event }
 end
 
+
 def types
-  %i[user machine shape image video audio input text midi tool virtual group container]
+  %i[user machine shape image video audio input text midi tool virtual group container particle]
 end
 
 FileUtils.mkdir_p "atome/lib/atome/generated_methods"
@@ -26,25 +27,26 @@ def is_atome
   # in this case presets are used to create atome suing their types with specific settings
   # so it add the methods in the atome_object_creator methods
   # the generated property will then return the result of the method instead of object itself
-  %i[container shape box circle text image video audio camera microphone midi group]
+  %i[particle container shape box web circle text image tool video audio camera microphone midi group]
 end
 
 def need_pre_processing
-  %i[atome_id private can group container shape box circle text  camera microphone midi text image video audio parent
-  child type shadow size]
+  %i[atome_id particle group container shape box web circle text camera microphone midi text image video audio tool parent
+  child type shadow size drag visual]
 end
 
 def need_processing
-  %i[monitor]
+  %i[monitor active inactive]
 end
 
 def getter_need_processing
-  %i[private can parent child].concat(is_atome)
+  %i[parent child].concat(is_atome)
 end
 
 def no_rendering
-  %i[atome_id group container shape box circle text image video audio text image video audio parent child info example
-  selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment]
+  %i[atome_id group container shape box web circle text image video audio tool parent child info example
+  selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
+  particle visual language active inactive]
 end
 
 batch_delete = <<STRDELIM
@@ -72,12 +74,12 @@ atome_methods.each do |property_type, property|
     atome_methods_list << method_name
     # atome properties generator
     if need_pre_processing.include?(method_name)
-      pre_processor = "#{method_name}_pre_processor(value, &proc)"
+      pre_processor = "#{method_name}_pre_processor(value,password, &proc)"
     else
       set_instance_variable = "@#{method_name} = atomise(:#{method_name},value)"
     end
     if need_processing.include?(method_name)
-      processor = "#{method_name}_processor(value)"
+      processor = "#{method_name}_processor(value,password)"
     end
     if getter_need_processing.include?(method_name)
       getter_processor = "#{method_name}_getter_processor(value)"
@@ -86,23 +88,27 @@ atome_methods.each do |property_type, property|
     end
 
     unless no_rendering.include?(method_name)
-      rendering = "#{method_name}_html(value)"
+      rendering = "#{method_name}_html(value,password)"
     end
 
     unless is_atome.include?(method_name)
       method_return = "self"
     end
     method_content = <<STRDELIM
-  def #{method_name}(value = nil, &proc)
-    if value.nil? && !proc
-      #{getter_processor}
+  def #{method_name}(value =nil ,password=nil, &proc)
+    if self.authorization && password!=self.authorization[:password] && :#{method_name} != :type && :#{method_name} != :atome_id
+          authorization_pre_processor(:#{method_name},value, self.authorization, &proc)
     else
-      value = properties_common(value, &proc)
-      #{pre_processor}
-      #{set_instance_variable}
-      #{processor}
-      #{rendering}
-      #{method_return}
+      if value.nil? && !proc
+        #{getter_processor}
+      else
+        value = properties_common(value, &proc)
+        #{pre_processor}
+        #{set_instance_variable}
+        #{processor}
+        #{rendering}
+        #{method_return}
+      end
     end
   end 
 
@@ -153,6 +159,10 @@ methods_list = <<STRDELIM
 module AtomeHelpers
   def methods
     #{atome_methods_list.sort}
+  end
+
+  def methods_categories
+    #{atome_methods}
   end
 
   def types

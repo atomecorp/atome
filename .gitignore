@@ -23,3 +23,4 @@
 /.rakeTasks
 /www/public/js/dynamic_libraries/*
 /www/public/medias/rubies/examples/!demos.rb
+/plugins/*

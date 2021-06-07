@@ -10,6 +10,7 @@ if RUBY_PLATFORM == "x64-mingw32"
   require "em/pure_ruby"
 end
 require "sequel"
+require "rufus-scheduler"
 require "faye/websocket"
 require "json"
 require "securerandom"
@@ -26,10 +27,8 @@ end
 
 class App < Roda
 
-
   @@channels = {}
   @@user
-
 
   #plugin :mail_processor
   eden = Sequel.connect("sqlite://eden_doors.sqlite3")
@@ -44,14 +43,7 @@ class App < Roda
   end
 
   index_content = File.read("public/index.html")
-  # below test line to supress
-  #index_content += "<script>setTimeout(function(){ Opal.Object.$text('good!! Roda & puma are initialized'); }, 500);setTimeout(function(){ Opal.Object.$circle() ;Opal.eval('box(x: 200)'); }, 3000)</script>"
-  #  index_content += "<script>setTimeout(function(){
-  #var ws = new WebSocket('ws://192.168.103.147:9292');
-  #   ws.onopen = function () {
-  #    ws.send('Hello Server! view');
-  #}
-  #}, 3000)</script>"
+
   index_content = index_content.gsub('<script type="text/javascript" src="../cordova.js"></script>', "")
   # below an attempt to load atome in pure ruby not opal
   # require "../atome/lib/atome/core/neutron.rb"
@@ -81,7 +73,7 @@ class App < Roda
             # message_back={id: data["id"], log: true}
             #
             session_id = SecureRandom.uuid
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], session_id: session_id, log: true })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], session_id: session_id, log: true })
             ws.send(message_back)
 
           when "start_channel"
@@ -89,15 +81,15 @@ class App < Roda
             # self.channels(channel_id)
             @@channels[channel_id] = []
             # @session[data["username"]] =session_id
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], channel_id: channel_id })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], channel_id: channel_id })
             ws.send(message_back)
           when "list_channels"
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], channels: @@channels.keys })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], channels: @@channels.keys })
             ws.send(message_back)
           when "connect_channel"
-            channel_id=data["channel_id"]
+            channel_id = data["channel_id"]
             @@channels[channel_id] << ws
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], connected: true })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], connected: true })
             ws.send(message_back)
           when "push_to_channel"
             channel_id = data["channel_id"]
@@ -110,26 +102,47 @@ class App < Roda
                 ws_found.send(message_to_push)
               end
             end
-
-            message_back = JSON.generate({ type: :response,request_id: data["request_id"], pushed: true })
+            message_back = JSON.generate({ type: :response, request_id: data["request_id"], pushed: true })
             ws.send(message_back)
-
+          when "read"
+            file_content = File.read(data["file"])
+            hashed_content = { content: file_content }
+            hashed_options = { options: data["options"].to_s }
+            message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
+            ws.send(message_to_push)
+          when "list"
+            files_found = Dir[data["path"] + "/*"]
+            hashed_content = { content: files_found }
+            hashed_options = { options: data["options"].to_s }
+            message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
+            ws.send(message_to_push)
+          when "write"
+            File.write(data["file"], data["content"])
+            hashed_content = { content: data["content"].to_s }
+            hashed_options = { options: data["options"].to_s }
+            message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
+            ws.send(message_to_push)
+          when "delete"
+            # File.write(data["file"], data["content"])
+            File.delete(data["file"])
+            hashed_content = { content: data["file"].to_s }
+            hashed_options = { options: data["options"].to_s }
+            message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
+            ws.send(message_to_push)
+          when "atome"
+            message_to_push = JSON.generate({ type: :atome, target: data["target"], atome: data["atome"], content: data["content"] })
+            ws.send(message_to_push)
           when "code"
-            ws.send(data["text"])
+            message_to_push = JSON.generate({ type: :code, content: data["content"] })
+            ws.send(message_to_push)
           when "command"
-            terminal_content = %x{#{data["text"]}}
-            massage_back = "text('#{terminal_content}')"
-            ws.send(massage_back)
+            file_content = `#{data["content"]}`
+            hashed_content = { content: file_content }.merge(data["options"])
+            message_to_push = JSON.generate({ type: :read, target: data["target"], atome: data["atome"], content: hashed_content })
+            ws.send(message_to_push)
           else
             ws.send("unknown message received")
           end
-          #if data["connection"]
-          #  ws.send('{"connection":{"username":"Régis","accepted":"true"}}')
-          #elsif data["type"] == "code"
-          #  ws.send(data["text"])
-          #else
-          #  data
-          #end
         end
       end
       #ws.on :open do |event|

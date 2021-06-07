@@ -1,6 +1,6 @@
 class DatabaseHelper {
     constructor(databaseName) {
-        // $.getScript("js/third_parties/databases/dexie.min.js", function () {});
+        // $.getScript("js/third_parties_libraries/databases/dexie.min.js", function () {});
         this.db = new Dexie(databaseName);
     }
 

@@ -75,6 +75,11 @@ class Event
     `#@native.stopPropagation()`
   end
 
+  # def stop_propagation(evt)
+  #   alert "stop propagation opal_jquery"
+  #   `#@native.stopPropagation()`
+  # end
+
 end
 
 module Events

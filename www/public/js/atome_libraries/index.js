@@ -109,3 +109,9 @@ window.ondrop = function (e) {
 function message_server(type, message) {
     send_message(type, message);
 }
+
+// $.get('https://atome.one/medias/datas/meteo_datas.txt', function(data) {
+//     alert(data);
+// });
+
+

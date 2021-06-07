@@ -13,8 +13,8 @@ module JSUtils
     `atome.jsLoadCodeEditor(#{atome_id},#{content})`
   end
 
-  def set_codemirror_font_size(atome_id, font_size)
-    code_editor_font_size="#{font_size}px"
+  def codemirror_font_size(font_size)
+    code_editor_font_size = "#{font_size}px"
     `$(".CodeMirror").css("fontSize", #{code_editor_font_size})`
   end
 

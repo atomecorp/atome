@@ -52,18 +52,18 @@ const atome = {
             type: 'text/css',
             href: 'css/codemirror.css'
         }).appendTo('head');
-        $.getScript('js/third_parties/ide/codemirror.min.js', function (data, textStatus, jqxhr) {
-            $.getScript('js/third_parties/ide/active-line.min.js', function (data, textStatus, jqxhr) {
-                $.getScript('js/third_parties/ide/closebrackets.min.js', function (data, textStatus, jqxhr) {
-                    $.getScript('js/third_parties/ide/closetag.min.js', function (data, textStatus, jqxhr) {
-                        $.getScript('js/third_parties/ide/dialog.min.js', function (data, textStatus, jqxhr) {
-                            $.getScript('js/third_parties/ide/formatting.min.js', function (data, textStatus, jqxhr) {
-                                $.getScript('js/third_parties/ide/javascript.min.js', function (data, textStatus, jqxhr) {
-                                    $.getScript('js/third_parties/ide/jump-to-line.min.js', function (data, textStatus, jqxhr) {
-                                        $.getScript('js/third_parties/ide/matchbrackets.min.js', function (data, textStatus, jqxhr) {
-                                            $.getScript('js/third_parties/ide/ruby.min.js', function (data, textStatus, jqxhr) {
-                                                $.getScript('js/third_parties/ide/search.min.js', function (data, textStatus, jqxhr) {
-                                                    $.getScript('js/third_parties/ide/searchcursor.min.js', function (data, textStatus, jqxhr) {
+        $.getScript('js/third_parties_libraries/ide/codemirror.min.js', function (data, textStatus, jqxhr) {
+            $.getScript('js/third_parties_libraries/ide/active-line.min.js', function (data, textStatus, jqxhr) {
+                $.getScript('js/third_parties_libraries/ide/closebrackets.min.js', function (data, textStatus, jqxhr) {
+                    $.getScript('js/third_parties_libraries/ide/closetag.min.js', function (data, textStatus, jqxhr) {
+                        $.getScript('js/third_parties_libraries/ide/dialog.min.js', function (data, textStatus, jqxhr) {
+                            $.getScript('js/third_parties_libraries/ide/formatting.min.js', function (data, textStatus, jqxhr) {
+                                $.getScript('js/third_parties_libraries/ide/javascript.min.js', function (data, textStatus, jqxhr) {
+                                    $.getScript('js/third_parties_libraries/ide/jump-to-line.min.js', function (data, textStatus, jqxhr) {
+                                        $.getScript('js/third_parties_libraries/ide/matchbrackets.min.js', function (data, textStatus, jqxhr) {
+                                            $.getScript('js/third_parties_libraries/ide/ruby.min.js', function (data, textStatus, jqxhr) {
+                                                $.getScript('js/third_parties_libraries/ide/search.min.js', function (data, textStatus, jqxhr) {
+                                                    $.getScript('js/third_parties_libraries/ide/searchcursor.min.js', function (data, textStatus, jqxhr) {
                                                         ide_container_id = "#" + atome_id;
                                                         ide_id = 'ide_' + atome_id;
                                                         $(ide_container_id).append("<textarea id=" + ide_id + " name='code'></textarea>");

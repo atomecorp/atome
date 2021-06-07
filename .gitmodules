@@ -1,0 +1,3 @@
+[submodule "www/public/js_libraries"]
+	path = www/public/js_libraries
+	url = https://github.com/atomecorp/js_libraries.git

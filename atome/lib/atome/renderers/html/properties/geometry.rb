@@ -1,24 +1,10 @@
 module PropertyHtml
   def width_html(value)
-    type = grab(atome_id).type
-    if type == :text
-      jq_get(atome_id).css("font-size", value)
-      jq_get(atome_id).css("width", "auto")
-      # jq_get(atome_id).css("width", value)
-    else
-      jq_get(atome_id).css("width", value)
-    end
+    jq_get(atome_id).css("width", value)
   end
 
   def height_html(value)
-    type = grab(atome_id).type
-    if type == :text
-      jq_get(atome_id).css("font-size", value)
-      jq_get(atome_id).css("height", "auto")
-      # jq_get(atome_id).css("height", value)
-    else
-      jq_get(atome_id).css("height", value)
-    end
+    jq_get(atome_id).css("height", value)
   end
 
   def size_html(value)
@@ -37,7 +23,6 @@ module PropertyHtml
       self.width = grab(parent.last).convert(:width)
       self.height = grab(parent.last).convert(:height)
     when :width
-      # alert value
       parent_width = grab(parent.last).convert(:width)
       self.width = parent_width
       self.height = parent_width / size_ratio

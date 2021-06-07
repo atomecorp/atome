@@ -10,6 +10,18 @@ demo_scripts.each do |demo_name|
     scripts_list << "#{script_name}: '#{script_path}'"
   end
 end
+
+
+eVe_demo_scripts=Dir["www/public/medias/e_rubies/examples**/*.rb"]
+eVe_demo_scripts.each do |demo_name|
+  script_name= File.basename(demo_name, '.rb')
+  demo_name="./medias/e_rubies/examples/"+File.basename(demo_name)
+  script_path=demo_name
+
+  unless script_name== "!demos"
+    scripts_list << "#{script_name}: '#{script_path}'"
+  end
+end
 file=<<STRDELIM
 {#{scripts_list.join(",\n")}}
 STRDELIM

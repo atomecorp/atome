@@ -9,7 +9,7 @@ format=text({content: :format, x: margin.x+100, y: 9})
 edit=text({content: :edit, x: format.x+100, y: 9})
 fit=text({content: :fit, x: edit.x+100, y: 9, color: :white})
 scale.touch do
-  t.size(25)
+  t.visual(25)
   t.scale(true) do |evt|
     #puts evt
   end

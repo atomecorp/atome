@@ -1,6 +1,6 @@
 class MidiHelper {
     constructor(midiEventListener) {
-        $.getScript("js/third_parties/audio_engines/webmidi.min.js", function () {
+        $.getScript("js/third_parties_libraries/audio_engines/webmidi.min.js", function () {
 
         });
         this.midiEventListener = midiEventListener;
@@ -13,14 +13,14 @@ class MidiHelper {
             if (err) {
                 self.midiEventListener.onError(err);
             } else {
-                console.log("WebMidi enabled!");
+                // alert(WebMidi.outputs);
                 for (const interfaceName of WebMidi.outputs) {
                     self.interfaces_out.push(interfaceName["name"]);
                 }
                 for (const interfaceName of WebMidi.inputs) {
                     self.interfaces_in.push(interfaceName["name"]);
                 }
-                self.output = WebMidi.outputs[13];
+                self.output = WebMidi.outputs[0];
 
                 self.midiEventListener.onConnected();
             }

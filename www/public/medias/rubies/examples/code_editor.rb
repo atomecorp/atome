@@ -16,11 +16,11 @@ t2.center(true)
 
 c.touch do
   code_editor_font_size=code_editor_font_size-5
-  ATOME.set_codemirror_font_size("ide_atome_id", code_editor_font_size)
+  ATOME.codemirror_font_size("ide_atome_id", code_editor_font_size)
 
 end
 
 c2.touch do
   code_editor_font_size=code_editor_font_size+5
-  ATOME.set_codemirror_font_size("ide_atome_id", code_editor_font_size)
+  ATOME.codemirror_font_size("ide_atome_id", code_editor_font_size)
 end

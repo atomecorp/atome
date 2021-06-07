@@ -7,7 +7,7 @@ cc = circle({width: 33, height: 33, y: 69, x: 69, color: :yellow, atome_id: :the
 
 ATOME.repeat 5, 0 do |evt|
   t.content(evt.abs)
-  read("./medias/rubies/text_read.rb") do |datas_get|
+  ATOME.reader("./medias/rubies/text_read.rb") do |datas_get|
     datas=eval(datas_get)
     temperature= datas[:temperature]
     wind= datas[:wind]

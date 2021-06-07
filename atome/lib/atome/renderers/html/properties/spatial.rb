@@ -57,10 +57,67 @@ module PropertyHtml
   end
 
   def disposition_html(value)
-    if value == :accumulate
-      value = :relative
+    max_x = 0
+    max_y = 0
+
+    if value.instance_of?(Hash)
+      offset_x=value[:x]
+      offset_y=value[:y]
+      # value=value.keys[0]
     end
-    jq_get(atome_id).css(:position, value)
+    grab(self.parent.last).child do |child_found|
+      unless child_found.atome_id == atome_id
+        if child_found.x
+          # alert child_found.convert(:width)
+          if child_found.width.instance_of?(String)
+            x_found = child_found.x + child_found.convert(:width)
+          else
+            x_found = child_found.x + child_found.width
+          end
+        else
+          if child_found.width.instance_of?(String)
+            x_found = child_found.convert(:width)
+          else
+            x_found = child_found.width
+          end
+        end
+        if child_found.y
+          if child_found.height.instance_of?(String)
+            y_found = child_found.y + child_found.convert(:height)
+          else
+            y_found = child_found.y + child_found.height
+          end
+        else
+          if child_found.height.instance_of?(String)
+            y_found = child_found.convert(:height)
+          else
+            y_found = child_found.height
+          end
+        end
+        if x_found > max_x
+          max_x = x_found
+        end
+        if y_found > max_y
+          max_y = y_found
+        end
+      end
+    end
+    unless offset_x
+      offset_x=0
+    end
+
+    unless offset_y
+      offset_y=0
+    end
+
+    if value[:x]
+      self.x = max_x+offset_x
+    end
+
+    if value[:y]
+      self.y = max_y+offset_y
+    end
+
   end
 
   def center_html(value)

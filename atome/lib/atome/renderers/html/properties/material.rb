@@ -1,4 +1,90 @@
 module PropertyHtml
+
+  def visual_html(values)
+    # we must unbind all keyboard shortcuts to make it work
+    grab(:device).key(option: :stop)
+    if values.instance_of?(Integer) || values.instance_of?(Number) || values.instance_of?(Float)
+      values = { size: values }
+    elsif values.instance_of?(String)
+      values = { path: values }
+    end
+    basic_visuals = { path: :arial, size: 33, alignment: :center, wrap: " ", fit: :none }
+
+    if @visual.read.instance_of?(Hash)
+      # if it's a hash it means that the visual already exist
+      values = @visual.read.merge(values)
+    else
+      values = basic_visuals.merge(values)
+    end
+    path_get = values[:path]
+    size_get = values[:size]
+    # for later use
+    width_get = values[:width]
+    haight_get = values[:height]
+    alignment_get = values[:alignment]
+    wrap_get = values[:wrap]
+    fit_get = values[:fit]
+
+    jq_get(atome_id).css("font-size", size_get)
+    jq_get(atome_id).css("font-family", path_get)
+    case fit_get
+    when :width
+      jq_get(atome_id).css("word-break", "unset")
+      jq_get(atome_id).css("word-wrap", "unset")
+      jq_get(atome_id).css("hyphens", "unset")
+      if self.edit == true
+        self.edit(false)
+        JSUtils.fit_text_width(atome_id)
+        self.edit(true)
+      else
+        JSUtils.fit_text_width(atome_id)
+      end
+
+    when :height
+      jq_get(atome_id).css("word-break", "unset")
+      jq_get(atome_id).css("word-wrap", "unset")
+      jq_get(atome_id).css("hyphens", "unset")
+      if self.edit == true
+        self.edit(false)
+        JSUtils.fit_text_height(atome_id)
+        # self.edit(true)
+      else
+        JSUtils.fit_text_height(atome_id)
+      end
+    when :both
+      jq_get(atome_id).css("word-break", "unset")
+      jq_get(atome_id).css("word-wrap", "unset")
+      jq_get(atome_id).css("hyphens", "unset")
+      if self.edit == true
+        self.edit(false)
+        JSUtils.fit_text_width(atome_id)
+        JSUtils.fit_text_height(atome_id)
+        # self.edit(true)
+      else
+        JSUtils.fit_text_width(atome_id)
+        JSUtils.fit_text_height(atome_id)
+      end
+    end
+    # todo add edit and word break if the were set before
+
+
+    jq_get(atome_id).css("text-align", alignment_get)
+    case wrap_get
+    when " "
+      jq_get(atome_id).css("word-wrap", "break-word")
+      jq_get(atome_id).css("hyphens", "auto")
+    else
+      jq_get(atome_id).css("word-wrap", "nowrap")
+    end
+    values = values.merge({ size: jq_get(atome_id).css('font-size').gsub("px", "") })
+    @visual = atomise(:visual, values)
+    # important @width and @height are also update when setting content (media.rb content_html line 15 1§)
+    @width = atomise(:width, JSUtils.client_width(atome_id))
+    @height = atomise(:height, JSUtils.client_height(atome_id))
+    # we reload the keyboard shortcut
+    kickstart_keyboard_shortcut
+  end
+
   def color_html(values)
     angle = 180
     diffusion = "linear"
@@ -7,9 +93,10 @@ module PropertyHtml
       jq_get(atome_id).css("-webkit-background-clip", "text")
       jq_get(atome_id).css("-webkit-text-fill-color", "transparent")
     end
-    if self.type== :shape && self.path
+    if self.type == :shape && self.path(nil,)
       `$('#'+#{atome_id}).children().css({fill: #{values}})`
-      else
+      elsif self.type == :image
+    else
       # we exclude the case when the path is defined because it means we need to use a svg
       if !values.instance_of?(Array) || values.length == 1
         if values.instance_of?(Array)
@@ -40,7 +127,6 @@ module PropertyHtml
         jq_get(atome_id).css("background-image", val)
       end
     end
-
   end
 
   def opacity_html(value)
@@ -51,14 +137,12 @@ module PropertyHtml
     pattern = value[:pattern]
     thickness = value[:thickness]
     color = color_helper(value[:color])
-    if self.type== :shape && self.path
+    if self.type == :shape && self.path
       `$('#'+#{atome_id}).children().css({stroke: #{color}})`
       `$('#'+#{atome_id}).children().css('stroke-width', #{thickness})`
     else
       jq_get(atome_id).css("border", thickness.to_s + "px " + pattern + " " + color)
     end
-
-
   end
 
   def overflow_html(value)
@@ -77,23 +161,25 @@ module PropertyHtml
     end
   end
 
-
   def shadow_html(value)
+
     if value.instance_of?(Array)
       value.each do |shadow|
         shadow_html(shadow)
       end
+    elsif value==:delete
+      jq_get(atome_id).css("box-shadow", "0px 0px  0px  0px")
+      jq_get(atome_id).css("filter", "drop-shadow( 0px 0px 0px )")
     else
-      shadow_html_format=shadow_helper(value)
-      jq_get(atome_id).css(shadow_html_format[0],shadow_html_format[1])
+      shadow_html_format = shadow_helper(value)
+      jq_get(atome_id).css(shadow_html_format[0], shadow_html_format[1])
     end
-
   end
 
   def fill_html(value)
     self.x = self.y = 0
-    size=""
-    number=""
+    size = ""
+    number = ""
     if value.class == Hash
       target = value[:target]
       size = value[:size]

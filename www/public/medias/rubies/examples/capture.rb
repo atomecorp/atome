@@ -1,10 +1,10 @@
 # capture demo
 
-recorder = text({content: "click to start logging",width: 30, height: 30, color: :red, x: 33, y: 96, smooth: 33})
-stop = text({content: "click to stop logging",width: 30, height: 30, color: :black, x: 33, y: 123, smooth: 33})
+recorder = text({content: "click to start logging",width: 30, height: 30, color: :red, x: 33, y: 96, smooth: 33, width: :auto})
+stop = text({content: "click to stop logging",width: 30, height: 30, color: :black, x: 33, y: 123, smooth: 33, width: :auto})
 starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-text({content: "try touch drag and resize on window"})
-text = text({content: "mouse pointer position and timer", y: 33})
+text({content: "try touch drag and resize on window", width: :auto})
+text = text({content: "mouse pointer position and timer", y: 33, width: :auto})
 recorder.touch do
 
   grab(:view).touch({option: :down}) do |evt|
