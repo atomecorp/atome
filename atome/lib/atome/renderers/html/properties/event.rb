@@ -74,7 +74,7 @@ module PropertyHtml
         when Hash
           default = { x: 96, xx: 96, y: 96, yy: 96 }
           params = default.merge(value[:containment])
-          containment = { containment: [params[:x], params[:y], params[:xx], params[:yy]] }
+          containment = { containment: [params[:x], params[:y], params[:xx], params[:yy]]}
         else
           containment = { containment: "parent" }
         end
@@ -259,6 +259,5 @@ module PropertyHtml
     else
       jq_get(atome_id).trigger("click")
     end
-    # alert value
   end
 end

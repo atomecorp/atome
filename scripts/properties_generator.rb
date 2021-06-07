@@ -161,6 +161,10 @@ module AtomeHelpers
     #{atome_methods_list.sort}
   end
 
+  def methods_categories
+    #{atome_methods}
+  end
+
   def types
     #{types.sort}
   end
