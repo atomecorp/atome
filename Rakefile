@@ -174,15 +174,15 @@ def cleanup_temp_files
 end
 
 
-# rm_r "www/public/medias/e_rubies/tools", force: true
-# FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
+rm_r "www/public/medias/e_rubies/tools", force: true
+FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
 generate_methods
-# generate_demos_list
-# update_opal_libraries
-# #to force update media_list uncomment below
-# update_medias_list
-# #to cleanup all generated files
-# cleanup_temp_files
+generate_demos_list
+update_opal_libraries
+#to force update media_list uncomment below
+update_medias_list
+#to cleanup all generated files
+cleanup_temp_files
 
 
 # the tasks
@@ -199,7 +199,7 @@ task 'run::server': required_js_lib do
     # todo:  wait for page to respond instead of 2 sec sleep
     # Thread.new do
     #   sleep 2
-    #   system("open", "http://localhost:9292")
+      system("open", "http://localhost:9292")
     # end
      #sh "puma -b tcp://127.0.0.1:9292"
     ##sh "puma -b 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'"
