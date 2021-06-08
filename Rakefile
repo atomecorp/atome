@@ -151,18 +151,6 @@ atome_medias = "www/public/js/dynamic_libraries/atome_medias.js"
 required_js_lib = [opal, opal_jquery, parser, atome, atome_app, atome_medias]
 
 
-
-
-# desc "Cleanup generated files"
-# task "clean" do
-#   rm_f "app/temp/media_list.rb"
-#   rm_f "www/public/js/dynamic_libraries/atome.js"
-#   rm_f "www/public/js/dynamic_libraries/atome_app.js"
-#   rm_f "www/public/js/dynamic_libraries/atome_medias.js"
-#   rm_f "www/public/js/dynamic_libraries/opal/opal.js"
-#   rm_f "www/public/js/dynamic_libraries/opal/opal_parser.js"
-# end
-
 def cleanup_temp_files
   rm_f "app/temp/media_list.rb"
   rm_f "app/temp/nb_of_medias_files.rb"
@@ -176,13 +164,13 @@ end
 
 # rm_r "www/public/medias/e_rubies/tools", force: true
 # FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
-generate_methods
-generate_demos_list
-update_opal_libraries
-#to force update media_list uncomment below
-update_medias_list
-#to cleanup all generated files
-cleanup_temp_files
+# generate_methods
+# generate_demos_list
+# update_opal_libraries
+# #to force update media_list uncomment below
+# update_medias_list
+# #to cleanup all generated files
+# cleanup_temp_files
 
 
 # the tasks
