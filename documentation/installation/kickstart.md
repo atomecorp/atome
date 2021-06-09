@@ -102,6 +102,19 @@ to run in production mode :
 trouble shooting :
 -
 
+if bundle update fail when installing eventmachine
+    - try install open ssl 
+    - on mac :  
+
+    brew install openssl
+
+    gem install eventmachine -- --with-openssl-dir=/usr/local/opt/openssl@1.1
+or if it fail :
+
+    bundle config build.eventmachine --with-cppflags=-I$(brew --prefix openssl)/include
+    bundle install
+    
+
 if cordova Cannot find module 'shelljs' error
 try:
 
