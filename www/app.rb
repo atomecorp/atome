@@ -122,6 +122,13 @@ class App < Roda
             hashed_options = { options: data["options"].to_s }
             message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
             ws.send(message_to_push)
+          # when "copy"
+            # FileUtils.cp data["source"], data["dest"]
+            # File.write(data["file"], data["content"])
+            # hashed_content = { content: data["content"].to_s }
+            # hashed_options = { options: data["options"].to_s }
+            # message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
+            # ws.send(message_to_push)
           when "delete"
             # File.write(data["file"], data["content"])
             File.delete(data["file"])
