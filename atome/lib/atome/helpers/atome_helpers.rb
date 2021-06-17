@@ -1,8 +1,14 @@
 module AtomeHelpers
-  # here we can change the server used to handle websocket
-  AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("ws.atome.one", "wss"))
-  # AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new("0.0.0.0:9292", "ws"))
-
+  # below we can use this method to set the websocket server
+  def websocket(adress="0.0.0.0:9292", ssl=false)
+    if ssl
+      ssl="wss"
+    else
+      ssl="ws"
+    end
+    # here we can change the server used to handle websocket
+    AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new(adress, ssl))
+  end
   def message(data, callback=nil)
     AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
   end
