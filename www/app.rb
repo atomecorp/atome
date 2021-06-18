@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-puts "------------------\n"*9
 # instructions to install :
 # gem install bundler roda sqlite3 sequel rack-unreloader faye-websocket websocket-extensions websocket-driver puma -N
 # important if crash the gem install rack-unreloader -v 1.7.0 gem install roda -v 2.26.0
