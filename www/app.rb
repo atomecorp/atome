@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # instructions to install :
 # gem install bundler roda sqlite3 sequel rack-unreloader faye-websocket websocket-extensions websocket-driver puma -N
 # important if crash the gem install rack-unreloader -v 1.7.0 gem install roda -v 2.26.0
@@ -122,8 +121,9 @@ class App < Roda
             hashed_options = { options: data["options"].to_s }
             message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
             ws.send(message_to_push)
+          when "copy"
+            FileUtils.cp data["source"], data["dest"]
           when "delete"
-            # File.write(data["file"], data["content"])
             File.delete(data["file"])
             hashed_content = { content: data["file"].to_s }
             hashed_options = { options: data["options"].to_s }

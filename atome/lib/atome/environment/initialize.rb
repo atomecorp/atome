@@ -6,7 +6,8 @@ ATOME = Atome.new(atome_id: :atome, render: false, content: {})
 # now we create the basic universe for the device and it's forthcoming atomes
 Device.new
 MESSENGER = grab(:messenger)
-
+# we initialise the websocket to atome.one
+ATOME.websocket("ws.atome.one", true)
 # we load the the keyboard shortcut at startup
 kickstart_keyboard_shortcut
 

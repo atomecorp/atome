@@ -188,6 +188,18 @@ module Processors
   end
 
   def web_pre_processor(value, password = nil)
+    if value.instance_of?(Hash)
+      type_found = value[:type]
+      case type_found
+      when :iframe
+        value= "<iframe width='100%' height='180%' src='#{value[:path]}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
+      when :image
+        value= "<image src='#{value[:path]}'/>"
+      when :audio
+      when :video
+      else
+      end
+    end
     media_pre_processor(:web, :web, value, password)
   end
 
