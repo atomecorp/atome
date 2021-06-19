@@ -4,9 +4,9 @@ require "opal-jquery"
 require "uglifier"
 require "fileutils"
 require "filewatcher"
-
-unless File.directory?("app/temp")
-  FileUtils.mkdir_p("app/temp")
+temp_dir="app/temp"
+unless File.directory?(temp_dir)
+  FileUtils.mkdir_p(temp_dir)
 end
 
 def generate_demos_list
@@ -40,13 +40,15 @@ def update_opal_libraries
 end
 
 
-def update_medias_list
+def update_medias_list(temp_dir)
   # todo : only copy if there's a change! use monitoring if possible
   if File.directory?("eVe/medias/.")
     FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
   end
-  rm_f "app/temp/media_list.rb"
-  file 'app/temp/media_list.rb': ["app/temp"] do |t|
+  rm_f temp_dir+"/media_list.rb"
+  file "#{temp_dir}/media_list.rb": ["#{temp_dir}"] do |t|
+
+  # file temp_dir+'/media_list.rb': [temp_dir] do |t|
     require "image_size"
     a_images = Dir.glob("./www/public/medias/images/**/*").select { |e| File.file? e }
     e_images = Dir.glob("./www/public/medias/e_images/**/*").select { |e| File.file? e }
@@ -90,7 +92,7 @@ def update_medias_list
       audios_list[filename.to_sym] = { path: path }
     end
     medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-    medias_list = medias_list + "\n" + "module Universe\ndef self.images\n#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
+    medias_list = medias_list + "\n" + "module Universe\ndef self.images\n@images_list=#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
     File.open(t.name, "w") { |file| file.write(medias_list) }
   end
 end
@@ -99,28 +101,28 @@ medias_dir_to_inspect = Dir.glob("www/public/medias/**/*")
 eve_medias_dir_to_inspect = Dir.glob("eVe/medias/**/*")
 nb_of_medias_files = (medias_dir_to_inspect.length + eve_medias_dir_to_inspect.length).to_s
 
-unless File.exist?("app/temp/nb_of_medias_files")
-  File.write("app/temp/nb_of_medias_files", "")
+unless File.exist?(temp_dir+"/nb_of_medias_files")
+  File.write(temp_dir+"/nb_of_medias_files", "")
 end
 
-nb_of_medias_files_stored = File.read("app/temp/nb_of_medias_files")
+nb_of_medias_files_stored = File.read(temp_dir+"/nb_of_medias_files")
 # we only update the media lib if there"s a change in number of medias file
-if nb_of_medias_files != nb_of_medias_files_stored || !File.file?("app/temp/nb_of_medias_files")
-  update_medias_list
-  File.write("app/temp/nb_of_medias_files", nb_of_medias_files)
+if nb_of_medias_files != nb_of_medias_files_stored || !File.file?(temp_dir+"/nb_of_medias_files")
+  update_medias_list(temp_dir)
+  File.write(temp_dir+"/nb_of_medias_files", nb_of_medias_files)
 end
-media_monitoring = unless File.file?("app/temp/media_list.rb")
-                     update_medias_list
+media_monitoring = unless File.file?(temp_dir+"/media_list.rb")
+                     update_medias_list(temp_dir)
                    end
 FileUtils.mkdir_p "www/public/js/dynamic_libraries/"
 file 'www/public/js/dynamic_libraries/atome_medias.js': media_monitoring do |t|
   builder = Opal::Builder.new
-  builder.build("./app/temp/media_list.rb")
+  builder.build("./#{temp_dir}/media_list.rb")
   File.write(t.name, builder.to_s)
 end
 
 directory "www/public/js/dynamic_libraries/opal"
-directory "app/temp"
+directory temp_dir
 
 atome_monitoring = Dir.glob("atome/lib/**/*")
 file 'www/public/js/dynamic_libraries/atome.js': atome_monitoring do |t|
@@ -151,9 +153,9 @@ atome_medias = "www/public/js/dynamic_libraries/atome_medias.js"
 required_js_lib = [opal, opal_jquery, parser, atome, atome_app, atome_medias]
 
 
-def cleanup_temp_files
-  rm_f "app/temp/media_list.rb"
-  rm_f "app/temp/nb_of_medias_files.rb"
+def cleanup_temp_files(temp_dir)
+  rm_f temp_dir+"/media_list.rb"
+  rm_f temp_dir+"/nb_of_medias_files.rb"
   rm_f "www/public/js/dynamic_libraries/atome.js"
   rm_f "www/public/js/dynamic_libraries/atome_app.js"
   rm_f "www/public/js/dynamic_libraries/atome_medias.js"
@@ -164,13 +166,13 @@ end
 
 # rm_r "www/public/medias/e_rubies/tools", force: true
 # FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
-# generate_methods
-# generate_demos_list
-# update_opal_libraries
+generate_methods
+generate_demos_list
+update_opal_libraries
 # #to force update media_list uncomment below
-# update_medias_list
+update_medias_list(temp_dir)
 # #to cleanup all generated files
-# cleanup_temp_files
+# cleanup_temp_files(temp_dir)
 
 
 # the tasks
