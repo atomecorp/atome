@@ -192,9 +192,9 @@ module Processors
       type_found = value[:type]
       case type_found
       when :iframe
-        value= "<iframe width='100%' height='180%' src='#{value[:path]}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
+        value = "<iframe width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
       when :image
-        value= "<image src='#{value[:path]}'/>"
+        value = "<image width ='640' height= '480' src='#{value[:path]}?#{Time.now}'/>"
       when :audio
       when :video
       else

@@ -1,4 +1,5 @@
 - debug web api so it'll accept atome_id
+- debug web api so we can set width and height (fisew values for now
 - add : max_row and max_column to matrix
 - bug : when parent object fit it's child : try fit.rb example then when can't clear view
 - bug : when setting  fit then when  setting fit: : width or height doesn't work : try size.rb example
