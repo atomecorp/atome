@@ -98,7 +98,7 @@ certbot --nginx -d atome.one -d ws.atome.one
 
 add your address and follow instructions
 
-    crontab -e 
+    crontab -e o
 
 add the line below: 
 
@@ -109,4 +109,40 @@ Install fsu
 -
 Install docker on machine then run (after having updated <your_ip_address>):
 
-    docker run --name=mediasoup-demo -p 4443:4443/tcp -p 2000-2020:2000-2020/udp -p 2000-2020:2000-2020/tcp -p 3000-3001:3000-3001/tcp --init -e DEBUG="mediasoup:INFO* WARN ERROR" -e PROTOO_LISTEN_PORT="4443" -e MEDIASOUP_LISTEN_IP="0.0.0.0" -e MEDIASOUP_ANNOUNCED_IP="<your_ip_address>" -e MEDIASOUP_MIN_PORT="2000" -e MEDIASOUP_MAX_PORT="2020" -e MEDIASOUP_USE_VALGRIND="false" -e MEDIASOUP_VALGRIND_OPTIONS="--leak-check=full --track-fds=yes --log-file=/storage/mediasoup_valgrind_%p.log" dmandry/mediasoup-demo:latest
+    docker run --name=mediasoup-demo -p 4443:4443/tcp -p 2000-2020:2000-2020/udp -p 2000-2020:2000-2020/tcp -p 3000-3001:3000-3001/tcp --init -e DEBUG="mediasoup:INFO* WARN ERROR" -e PROTOO_LISTEN_PORT="4443" -e MEDIASOUP_LISTEN_IP="0.0.0.0" -e MEDIASOUP_ANNOUNCED_IP="<your_ip_address>" -e MEDIASOUP_MIN_PORT="2000" -e MEDIASOUP_MAX_PORT="2020" -e MEDIASOUP_USE_VALGRIND="false" -e MEDIASOUP_VALGRIND_OPTIONS="--leak-check=full --track-fds=yes --log-file=/storage/mediasoup_valgrind_%p.log" vanjoge/mediasoup-demo:v3
+    
+Générer un certificat et la clé privé pour le localhost et l'enregistrer dans le dossier "certs" du server
+
+    openssl req -x509 -out localhost.crt -keyout localhost.key -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost'
+
+ou sous windows
+
+     MSYS_NO_PATHCONV=1 openssl req -x509 -out localhost.crt -keyout localhost.key -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost'  
+  
+Modifier le config.js du server pour utiliser le certificat et la clé.
+    
+Dans le dossier server :
+    
+    npm install
+    npm start
+    
+Dans le dossier client:
+
+    npm install
+    npm start
+    
+Tester avec Firefox ou safari. Chrome et edge n'accepte pas les wss sans certificat valide.
+
+Se connecter sur le port 4443 en HTTPS pour accepter le certificat des wss.
+Se connecter sur le port 3002 pour lancer le client.
+    
+Générer un docker du serveur après avoir renommé le config.example.js en config.js
+
+    \mediasoup-demo\server\docker\build.sh
+    
+Lancer le docker avec la commande suivante (exemple sous windows)
+
+    docker run --name=mediasoup-demo -p 4443:4443/tcp -p 40000-49999:40000-49999/udp -p 40000-49999:40000-49999/tcp -p 3000-3001:3000-3001/tcp --init -v c:/Tmp/mediasoup/certs:/service/certs -e HTTPS_CERT_FULLCHAIN="/service/certs/fullchain.pem" -e HTTPS_CERT_PRIVKEY="/service/certs/privkey.pem" -e MEDIASOUP_ANNOUNCED_IP="192.168.103.92" -e MEDIASOUP_LISTEN_IP="0.0.0.0" mediasoup-demo:v3
+    
+    
+Wait 10 mn for server starting...
