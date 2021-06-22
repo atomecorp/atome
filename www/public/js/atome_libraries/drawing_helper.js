@@ -1,7 +1,7 @@
 class DrawingHelper {
     constructor(width, height, drawingEventListener) {
-        // $.getScript("js/third_parties_libraries/rendering_engines/createjs.min.js", function () {});
-        // $.getScript("js/third_parties_libraries/rendering_engines/zim.min.js", function () {});
+        // $.getScript("js/third_parties/rendering_engines/createjs.min.js", function () {});
+        // $.getScript("js/third_parties/rendering_engines/zim.min.js", function () {});
         this.width = width;
         this.height = height;
         this.drawingEventListener = drawingEventListener;

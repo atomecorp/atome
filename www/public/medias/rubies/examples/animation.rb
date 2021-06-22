@@ -3,7 +3,7 @@
 b = box()
 b.y(300)
 b.x(400)
-text({content: "touch the box or the circle!!", x: 450, y: 250, size: 16, color: :lightgray, width: :auto})
+text({content: "touch the box or the circle!!", x: 450, y: 250, color: :lightgray, width: :auto})
 b.touch do
   animate({
             start: { smooth: 0, blur: 0, rotate: 0, color: { red: 1, green: 1, blue: 1 } },

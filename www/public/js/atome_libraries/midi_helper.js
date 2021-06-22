@@ -1,6 +1,6 @@
 class MidiHelper {
     constructor(midiEventListener) {
-        $.getScript("js/third_parties_libraries/audio_engines/webmidi.min.js", function () {
+        $.getScript("js/third_parties/audio_engines/webmidi.min.js", function () {
 
         });
         this.midiEventListener = midiEventListener;
