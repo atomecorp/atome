@@ -111,6 +111,16 @@ Install docker on machine then run (after having updated <your_ip_address>):
 
     docker run --name=mediasoup-demo -p 4443:4443/tcp -p 2000-2020:2000-2020/udp -p 2000-2020:2000-2020/tcp -p 3000-3001:3000-3001/tcp --init -e DEBUG="mediasoup:INFO* WARN ERROR" -e PROTOO_LISTEN_PORT="4443" -e MEDIASOUP_LISTEN_IP="0.0.0.0" -e MEDIASOUP_ANNOUNCED_IP="<your_ip_address>" -e MEDIASOUP_MIN_PORT="2000" -e MEDIASOUP_MAX_PORT="2020" -e MEDIASOUP_USE_VALGRIND="false" -e MEDIASOUP_VALGRIND_OPTIONS="--leak-check=full --track-fds=yes --log-file=/storage/mediasoup_valgrind_%p.log" vanjoge/mediasoup-demo:v3
     
+
+to install mediasoup clone the atome_sfu_soup repository :
+
+    git clone https://github.com/atomecorp/atome_sfu_soup.git
+
+créer un dossier certs dans le dossier server de mediasoup
+    
+    mkdir certs
+    cd certs
+
 Générer un certificat et la clé privé pour le localhost et l'enregistrer dans le dossier "certs" du server
 
     openssl req -x509 -out localhost.crt -keyout localhost.key -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost'
@@ -119,13 +129,27 @@ ou sous windows
 
      MSYS_NO_PATHCONV=1 openssl req -x509 -out localhost.crt -keyout localhost.key -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost'  
   
-Modifier le config.js du server pour utiliser le certificat et la clé.
-    
+Dans le dossier serveur odifier le config.js du server pour utiliser le certificat et la clé.
+    remplacer `${__dirname}/certs/fullchain.pem` et  `${__dirname}/certs/privkey.pem` par les fichiers générés dans le dossier certs
+exemple :
+        `${__dirname}/certs/fullchain.pem`
+with:
+        `${__dirname}/certs/localhost.crt`
+also
+        `${__dirname}/certs/privkey.pem`
+with:
+        `${__dirname}/certs/localhost.key`
+
 Dans le dossier server :
     
     npm install
     npm start
-    
+
+Dans le dossier app : cd ../
+
+    npm install --legacy-peer-deps
+    npm start
+
 Dans le dossier client:
 
     npm install
