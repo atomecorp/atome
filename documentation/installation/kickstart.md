@@ -48,6 +48,7 @@ Install prerequisite library
 
 To install application:
     git clone https://github.com/atomecorp/atome.git
+    git submodule update --init --recursive
     
 cd atome/www/public
 
