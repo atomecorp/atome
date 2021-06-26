@@ -1,1 +1,0 @@
-{radiation: 69, wind: 60, humidity: 132, temperature: -6}
