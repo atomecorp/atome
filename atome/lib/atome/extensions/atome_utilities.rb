@@ -1,5 +1,13 @@
 # here stand some atome's function to allow atome's objects manipulation
 
+
+def web_state(val=nil)
+  if val
+    AtomeHelpers.class_variable_set("@@web_state", val)
+  else
+    AtomeHelpers.class_variable_get("@@web_state")
+  end
+end
 # the result method is used to get the return queries of the database
 def result(params)
   result = {}
@@ -313,7 +321,6 @@ end
 def notif(message, size)
   notification(message, size)
 end
-
 
 
 def atomic_request(target=nil, content, options)

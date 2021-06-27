@@ -9,6 +9,9 @@ module AtomeHelpers
     # here we can change the server used to handle websocket
     AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new(adress, ssl))
   end
+
+
+
   def message(data, callback=nil)
     AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
   end
@@ -37,6 +40,10 @@ module AtomeHelpers
     Atome.atomes = remove_item_from_hash(Atome.atomes)
     grab(:black_hole).content[atome_id] = self
     delete_html
+  end
+
+  def ping(adress="https://atome.one/", error="puts' impossible to connect atome main server'", success="")
+    ping_html(adress, error, success)
   end
 
   def clear(value=true)

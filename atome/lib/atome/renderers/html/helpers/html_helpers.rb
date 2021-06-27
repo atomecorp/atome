@@ -63,4 +63,8 @@ module HtmlHelpers
     JSUtils.animator(params)
   end
 
+  def ping_html(adress, error, success)
+    JSUtils.ping(adress, error, success)
+  end
+
 end

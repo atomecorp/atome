@@ -1,4 +1,5 @@
 # play videos
+
 button=circle({size: 33})
 button.text("fullscreen")
 v=video({atome_id: :the_video, shadow: {blur: 6 , thickness: 1, x: 0, y:0, color: :black}, scale: true,drag: true})

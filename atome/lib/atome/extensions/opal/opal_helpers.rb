@@ -50,4 +50,8 @@ module JSUtils
     ` atome.jsGet_items_under_pointer(#{evt.to_n})`
   end
 
+  def self.ping(adress, error, success)
+    `atome.jsPing(#{adress},#{success}, #{error})`
+  end
+
 end
