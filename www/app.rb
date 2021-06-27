@@ -107,7 +107,7 @@ class App < Roda
             file_content = File.read(data["file"])
             hashed_content = { content: file_content }
             hashed_options = { options: data["options"].to_s }
-            message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
+            message_to_push = JSON.generate({ type: :read,atome: data["atome"],  target: data["target"], content: hashed_content, options: hashed_options })
             ws.send(message_to_push)
           when "list"
             files_found = Dir[data["path"] + "/*"]
@@ -137,8 +137,8 @@ class App < Roda
             ws.send(message_to_push)
           when "command"
             file_content = `#{data["content"]}`
-            hashed_content = { content: file_content }.merge(data["options"])
-            message_to_push = JSON.generate({ type: :read, target: data["target"], atome: data["atome"], content: hashed_content })
+            # hashed_content = { content: file_content }.merge(data["options"])
+            message_to_push = JSON.generate({ type: :command, target: data["target"], atome: data["atome"], content: file_content })
             ws.send(message_to_push)
           else
             ws.send("unknown message received")
