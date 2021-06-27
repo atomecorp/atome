@@ -1,6 +1,5 @@
 class WebSocketHelper {
     constructor(serverAddress, socket_type) {
-        //TODO: Switch to wss once a certificate created.
         this.serverAddress = socket_type + '://' + serverAddress;
         this._reconnect = true;
         this.callbacks = {};
@@ -9,6 +8,7 @@ class WebSocketHelper {
         const self = this;
 
         this.webSocket.onopen = function (event) {
+            Opal.Object.$web_state("connected");
         };
         var options;
         var target;
@@ -22,20 +22,30 @@ class WebSocketHelper {
                 Opal.eval(data.content);
             }
             else if (data.type === "read") {
-                 // atome=data.atome;
-                 target=data.target;
-                 content=data.content;
-                options=data.options;
-
+                 const type=data.atome;
+                const target=data.target;
+                const content=data.content;
+                const options=data.options;
+                // alert(type);
                 var new_content=Opal.hash(content);
                 var new_options=Opal.hash(options);
                 Opal.Object.$atomic_request(target, new_content, new_options);
             }
             else if (data.type === "atome") {
-                 atome=data.atome;
-                 target=data.target;
-                 content=data.content;
-                Opal.Object.$atomic_request(target,atome, content);
+                const atome=data.atome;
+                const target=data.target;
+                const content=data.content;
+                Opal.Object.$atomic_request(target, content,atome);
+            }
+            else if (data.type === "command") {
+                console.log("---------");
+                console.log("the command send is : ");
+                console.log(data);
+                console.log("---------");
+                // atome=data.atome;
+                // target=data.target;
+                // content=data.content;
+                // Opal.Object.$atomic_request(target,atome, content);
             }
 
             else {
@@ -44,6 +54,10 @@ class WebSocketHelper {
         };
 
         this.webSocket.onerror = function (event) {
+            Opal.Object.$web_state("disconected");
+// console.log(event);
+            // console.clear();
+            // return false;
         };
 
         this.webSocket.onclose = function (closeEvent) {
@@ -56,6 +70,7 @@ class WebSocketHelper {
     connect(serverAddress) {
         //fixme: find a way to restore the socket
         console.log("connection lost try ro reconnect");
+        // alert ("do something here !!");
         // new WebSocketHelper(serverAddress);
     }
 
