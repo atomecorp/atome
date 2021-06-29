@@ -105,6 +105,11 @@ add the line below:
     0 0 * * * /usr/local/bin/certbot renew
 
 
+
+to restart nginx type :
+
+        service nginx restart
+
 Install fsu
 -
 Install docker on machine then run (after having updated <your_ip_address>):
@@ -150,10 +155,10 @@ Dans le dossier app : cd ../
     npm install --legacy-peer-deps
     npm start
 
-Dans le dossier client:
+Dans le app/lib/RoomClient.js
+changer l'adresse atome.one du server si necessaire
 
-    npm install
-    npm start
+    this.url = "wss://atome.one:4443/?roomId=0&peerId=" + peerId;
     
 Tester avec Firefox ou safari. Chrome et edge n'accepte pas les wss sans certificat valide.
 
