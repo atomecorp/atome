@@ -129,7 +129,7 @@ ou sous windows
 
      MSYS_NO_PATHCONV=1 openssl req -x509 -out localhost.crt -keyout localhost.key -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost'  
   
-Dans le dossier serveur odifier le config.js du server pour utiliser le certificat et la clé.
+Dans le dossier serveur modifier le config.js du server pour utiliser le certificat et la clé.
     remplacer `${__dirname}/certs/fullchain.pem` et  `${__dirname}/certs/privkey.pem` par les fichiers générés dans le dossier certs
 exemple :
         `${__dirname}/certs/fullchain.pem`
