@@ -16,7 +16,6 @@
 /www/public/js/atome.js
 /www/public/js/atome_app.js
 /www/public/js/atome_medias.js
-/www/public/js/third_parties/opal/*
 /package.json
 /package-lock.json
 /Gemfile.lock
@@ -24,3 +23,4 @@
 /www/public/js/dynamic_libraries/*
 /www/public/medias/rubies/examples/!demos.rb
 /plugins/*
+/www/public/js/third_parties/
