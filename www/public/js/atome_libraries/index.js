@@ -197,38 +197,80 @@ function message_server(type, message) {
 // }
 
 ///////////////// konva /////////////////
-function test(){
-        var elemClientWidth = window.innerWidth;
-    var elemClientHeight = window.innerHeight;
-    $("#view").append("<div id='container' width="+elemClientWidth+" height= "+elemClientHeight+"></div>");
-//     // first we need to create a stage
-    var stage = new Konva.Stage({
-        container: 'container',   // id of container <div>
-        width: 500,
-        height: 500
-    });
+// function test(){
+//         var elemClientWidth = window.innerWidth;
+//     var elemClientHeight = window.innerHeight;
+//     $("#view").append("<div id='container' width="+elemClientWidth+" height= "+elemClientHeight+"></div>");
+// //     // first we need to create a stage
+//     var stage = new Konva.Stage({
+//         container: 'container',   // id of container <div>
+//         width: 500,
+//         height: 500
+//     });
+//
+// // then create layer
+//     var layer = new Konva.Layer();
+//
+// // create our shape
+//     var circle = new Konva.Circle({
+//         x: stage.width() / 2,
+//         y: stage.height() / 2,
+//         radius: 70,
+//         fill: 'red',
+//         stroke: 'black',
+//         strokeWidth: 4,
+//
+//     });
+//
+// // add the shape to the layer
+//     layer.add(circle);
+//
+// // add the layer to the stage
+//     stage.add(layer);
+//
+// // draw the image
+//     layer.draw();
+// };
+///////////////// paper /////////////////
+// function test(){
+//
+//     window.onload = function() {
+//             var elemClientWidth = window.innerWidth;
+//     var elemClientHeight = window.innerHeight;
+//
+//
+// $("#view").append("<canvas id='pap_c' width="+elemClientWidth+" height= "+elemClientHeight+"></canvas>");
+//
+//         // Get a reference to the canvas object
+//         var canvas = document.getElementById('pap_c');
+//         // Create an empty project and a view for the canvas:
+//         paper.setup(canvas);
+//         // Create a Paper.js Path to draw a line into it:
+//         var path = new paper.Path();
+//         // Give the stroke a color
+//         path.strokeColor = 'white';
+//         var start = new paper.Point(100, 100);
+//         // Move to start and draw a line from there
+//         path.moveTo(start);
+//         // Note that the plus operator on Point objects does not work
+//         // in JavaScript. Instead, we need to call the add() function:
+//         path.lineTo(start.add([ 200, -50 ]));
+//         // Draw the view now:
+//         paper.view.draw();
+//     }
+// }
 
-// then create layer
-    var layer = new Konva.Layer();
-
-// create our shape
-    var circle = new Konva.Circle({
-        x: stage.width() / 2,
-        y: stage.height() / 2,
-        radius: 70,
-        fill: 'red',
-        stroke: 'black',
-        strokeWidth: 4,
-
-    });
-
-// add the shape to the layer
-    layer.add(circle);
-
-// add the layer to the stage
-    stage.add(layer);
-
-// draw the image
-    layer.draw();
-};
 ///////////////// zim /////////////////
+function test(){
+
+    const frame = new Frame("fit", 1024, 768, "rgba(125,125,125,0)", "rgba(125,125,125,0)");
+    frame.on("ready", ()=>{ // ES6 Arrow Function - similar to function(){}
+
+        const stage = frame.stage;
+        const stageW = frame.width;
+        const stageH = frame.height;
+
+        const big = new Bloob().pos(100,0,LEFT,CENTER);
+
+    }); // end of ready
+}
