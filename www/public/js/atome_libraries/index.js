@@ -263,14 +263,55 @@ function message_server(type, message) {
 ///////////////// zim /////////////////
 function test(){
 
-    const frame = new Frame("fit", 1024, 768, "rgba(125,125,125,0)", "rgba(125,125,125,0)");
-    frame.on("ready", ()=>{ // ES6 Arrow Function - similar to function(){}
+
+                var elemClientWidth = window.innerWidth;
+    var elemClientHeight = window.innerHeight;
+    this.frame = new Frame("view",
+        elemClientWidth,
+        elemClientHeight,
+        "rgba(125,125,125,0)",
+        "rgba(125,125,125,0)",
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        "atomeZimCanvas");
+    frame.on("ready",function(){ // ES6 Arrow Function - similar to function(){}
 
         const stage = frame.stage;
         const stageW = frame.width;
         const stageH = frame.height;
 
-        const big = new Bloob().pos(100,0,LEFT,CENTER);
+        STYLE = {
+            move:false,
+            scale:series(2,1,.5),
+            color:series(green, pink, blue),
+            // allowToggle:false
+        };
 
+        const big = new Bloob().pos(100,0,LEFT,CENTER);
+        const med = new Bloob().pos(150,150,RIGHT,BOTTOM);
+        const sma = new Bloob().pos(200,150,RIGHT,TOP);
+
+        big.on("pressmove", ()=>{
+            med.points = sma.points = big.points;
+            stage.update();
+        });
+        med.on("pressmove", ()=>{
+            big.points = sma.points = med.points;
+            stage.update();
+        });
+        sma.on("pressmove", ()=>{
+            big.points = med.points = sma.points;
+            stage.update();
+        });
+
+        STYLE = {};
+        stage.update();
+        // this is needed to show any changes
     }); // end of ready
 }
