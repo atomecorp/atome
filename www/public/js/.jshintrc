@@ -1,7 +1,32 @@
 {
   "browser": true,
+  "devel": true,
+  "bitwise": true,
   "esversion": 8,
+  "trailing": true,
+  "quotmark": false,
+  "indent": 4,
+  "latedef": "nofunc",
   "globals": {
-    "Opal": true
+    "$": true,
+    "Frame": true,
+    "Opal": true,
+    "module": false,
+    "exports": false,
+    "require": false,
+    "cordova": false,
+    "File": true,
+    "FileSystem": true,
+    "FileReader": true,
+    "FileWriter": true,
+    "FileError": true,
+    "LocalFileSystem": true,
+    "Metadata": true,
+    "Flags": true,
+    "DirectoryEntry": true,
+    "resolveLocalFileSystemURL": false,
+    "requestFileSystem": true,
+    "FILESYSTEM_PREFIX": true,
+    "FILESYSTEM_PROTOCOL": true
   }
 }
