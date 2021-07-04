@@ -10,6 +10,5 @@ b.touch do
                   from: 'jeezs@jeezs.net',
                   to: 'jeezs@icloud.com',
                   subject: "the human framework",
-                  attachment:['/home/atome/www/public/medias/images/freebsd.png', '/home/atome/www/public/medias/images/jeezs.png']
-                })
+                  attachment:['/home/atome/www/public/medias/images/freebsd.png', '/home/atome/www/public/medias/images/jeezs.png'] })
 end
