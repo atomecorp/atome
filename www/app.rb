@@ -132,14 +132,14 @@ class App < Roda
             ws.send(message_to_push)
           when "mail"
             if data["from"]
-              sender = data[:from]
+              sender = data["from"]
             else
               sender = "contact@atome.one"
             end
             receiver = data[:to]
-            mail_subject = data[:subject]
-            content = data[:content]
-            attachment = data[:attachment]
+            mail_subject = data["subject"]
+            content = data["content"]
+            attachment = data["attachment"]
             attachments = []
 
             if attachment
