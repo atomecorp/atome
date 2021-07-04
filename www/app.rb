@@ -13,6 +13,7 @@ require "rufus-scheduler"
 require "faye/websocket"
 require "json"
 require "securerandom"
+require 'mail'
 
 class String
   def is_json?
@@ -107,7 +108,7 @@ class App < Roda
             file_content = File.read(data["file"])
             hashed_content = { content: file_content }
             hashed_options = { options: data["options"].to_s }
-            message_to_push = JSON.generate({ type: :read,atome: data["atome"],  target: data["target"], content: hashed_content, options: hashed_options })
+            message_to_push = JSON.generate({ type: :read, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
             ws.send(message_to_push)
           when "list"
             files_found = Dir[data["path"] + "/*"]
@@ -129,6 +130,46 @@ class App < Roda
             hashed_options = { options: data["options"].to_s }
             message_to_push = JSON.generate({ type: :read, target: data["target"], content: hashed_content, options: hashed_options })
             ws.send(message_to_push)
+          when "mail"
+            if data["from"]
+              sender = data[:from]
+            else
+              sender = "contact@atome.one"
+            end
+            receiver = data[:to]
+            mail_subject = data[:subject]
+            content = data[:content]
+            attachment = data[:attachment]
+            attachments = []
+
+            if attachment
+              if attachment.instance_of?(Array)
+                attachment.each do |file|
+                  filename = File.basename(file)
+                  attachments << { file: file, filename: filename }
+                end
+              else
+                filename = File.basename(attachment)
+                attachments << { file: attachment, filename: filename }
+              end
+            end
+
+            mail = Mail.new do
+              from sender
+              to receiver
+              subject mail_subject
+              body content
+              attachments.each do |file_to_add|
+                # add_file attachment
+                file = file_to_add[:file]
+                filename = file_to_add[:filename]
+                add_file :filename => filename, :content => File.read(file)
+              end
+            end
+
+            mail.delivery_method :sendmail
+
+            mail.deliver
           when "atome"
             message_to_push = JSON.generate({ type: :atome, target: data["target"], atome: data["atome"], content: data["content"] })
             ws.send(message_to_push)
