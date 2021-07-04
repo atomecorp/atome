@@ -312,7 +312,7 @@ function zim_test() {
 function svg_test() {
     var url = "js/third_parties/rendering_engines/svg.min.js";
     $.getScript(url, function () {
-        var draw = SVG().addTo('body').size(300, 300);
+        var draw = SVG().addTo('#view').size(300, 300);
         var rect = draw.rect(100, 100).attr({fill: '#f06'});
     });
 }
