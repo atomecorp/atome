@@ -136,7 +136,7 @@ class App < Roda
             else
               sender = "contact@atome.one"
             end
-            receiver = data[:to]
+            receiver = data["to"]
             mail_subject = data["subject"]
             content = data["content"]
             attachment = data["attachment"]
