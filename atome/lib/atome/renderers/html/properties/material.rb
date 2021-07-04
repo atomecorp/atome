@@ -161,20 +161,7 @@ module PropertyHtml
     end
   end
 
-  def shadow_html(value)
 
-    if value.instance_of?(Array)
-      value.each do |shadow|
-        shadow_html(shadow)
-      end
-    elsif value==:delete
-      jq_get(atome_id).css("box-shadow", "0px 0px  0px  0px")
-      jq_get(atome_id).css("filter", "drop-shadow( 0px 0px 0px )")
-    else
-      shadow_html_format = shadow_helper(value)
-      jq_get(atome_id).css(shadow_html_format[0], shadow_html_format[1])
-    end
-  end
 
   def fill_html(value)
     self.x = self.y = 0

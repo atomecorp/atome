@@ -168,9 +168,9 @@ end
 # FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
 generate_methods
 generate_demos_list
-update_opal_libraries
+# update_opal_libraries
 # #to force update media_list uncomment below
-update_medias_list(temp_dir)
+# update_medias_list(temp_dir)
 # #to cleanup all generated files
 # cleanup_temp_files(temp_dir)
 

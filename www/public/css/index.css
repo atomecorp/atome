@@ -3,6 +3,7 @@
 }
 
 
+
 html, body {
     -webkit-touch-callout: none;
     -webkit-text-size-adjust: none;
@@ -56,6 +57,11 @@ html, body {
     background-size: 100%;
     background-repeat: no-repeat;
     -webkit-overflow-scrolling: touch;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
 }
 
 .ui-selected{

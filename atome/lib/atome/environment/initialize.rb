@@ -8,9 +8,10 @@ Device.new
 MESSENGER = grab(:messenger)
 # we initialise the websocket to atome.one
 web_state(:disconnected)
+# we set the websoccket address
 ATOME.websocket("ws.atome.one", true)
-# ATOME.websocket
 # we load the the keyboard shortcut at startup
-kickstart_keyboard_shortcut
+# todo kickstart_keyboard_shortcut make the envirronement editable wich lead to permanently open the keyboeard on mobile device
+# kickstart_keyboard_shortcut
 
 

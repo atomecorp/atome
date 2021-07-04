@@ -1,6 +1,6 @@
 
 t=text( "touch me to set the websocket adress to localhost ('0.0.0.0:9292')")
-t2=ext({y: 30, content: "touch me to reset the websocket adress to atome.one" })
+t2=text({y: 30, content: "touch me to reset the websocket adress to atome.one" })
 
 t.touch do
   ATOME.websocket

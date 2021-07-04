@@ -116,7 +116,6 @@ module PropertyHtml
       # unbind key
       jq_get(atome_id).unbind("keypress")
     end
-
   end
 
   def record_html(params)

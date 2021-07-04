@@ -191,10 +191,12 @@ module Processors
     if value.instance_of?(Hash)
       type_found = value[:type]
       case type_found
+        #Time.now is used to force refresh if the image changes
       when :iframe
-        value = "<iframe width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
+        value = "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
       when :image
-        value = "<image width ='640' height= '480' src='#{value[:path]}?#{Time.now}'/>"
+        #Time.now is used to force refresh if the image changes
+        value = "<image class='atome' width ='100%' height= '100%' src='#{value[:path]}?#{Time.now}'/>"
       when :audio
       when :video
       else

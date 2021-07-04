@@ -209,6 +209,7 @@ def group(params)
 end
 
 def kickstart_keyboard_shortcut
+  # alert :called
   # keyboard short cut
   grab(:device).key({ option: :down }) do |evt|
     if evt.alt_key
