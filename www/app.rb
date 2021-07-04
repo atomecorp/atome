@@ -141,7 +141,6 @@ class App < Roda
             content = data["content"]
             attachment = data["attachment"]
             attachments = []
-
             if attachment
               if attachment.instance_of?(Array)
                 attachment.each do |file|
@@ -153,14 +152,19 @@ class App < Roda
                 attachments << { file: attachment, filename: filename }
               end
             end
-
+            puts "----- + -----"
+            puts "sender: #{sender}"
+            puts "receiver: #{receiver}"
+            puts "mail_subject: #{mail_subject}"
+            puts "content: #{content}"
+            puts "attachments: #{attachments}"
+            puts "----- - -----"
             mail = Mail.new do
               from sender
               to receiver
               subject mail_subject
               body content
               attachments.each do |file_to_add|
-                # add_file attachment
                 file = file_to_add[:file]
                 filename = file_to_add[:filename]
                 add_file :filename => filename, :content => File.read(file)
