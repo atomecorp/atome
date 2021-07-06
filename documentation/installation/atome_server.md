@@ -112,9 +112,12 @@ to restart nginx type :
 
 Install fsu
 -
-Install docker on machine then run (after having updated <your_ip_address>):
 
-    docker run --name=mediasoup-demo -p 4443:4443/tcp -p 2000-2020:2000-2020/udp -p 2000-2020:2000-2020/tcp -p 3000-3001:3000-3001/tcp --init -e DEBUG="mediasoup:INFO* WARN ERROR" -e PROTOO_LISTEN_PORT="4443" -e MEDIASOUP_LISTEN_IP="0.0.0.0" -e MEDIASOUP_ANNOUNCED_IP="<your_ip_address>" -e MEDIASOUP_MIN_PORT="2000" -e MEDIASOUP_MAX_PORT="2020" -e MEDIASOUP_USE_VALGRIND="false" -e MEDIASOUP_VALGRIND_OPTIONS="--leak-check=full --track-fds=yes --log-file=/storage/mediasoup_valgrind_%p.log" vanjoge/mediasoup-demo:v3
+[comment]: <> (deprecated )
+
+[comment]: <> (Install docker on machine then run &#40;after having updated <your_ip_address>&#41;:)
+
+[comment]: <> (    docker run --name=mediasoup-demo -p 4443:4443/tcp -p 2000-2020:2000-2020/udp -p 2000-2020:2000-2020/tcp -p 3000-3001:3000-3001/tcp --init -e DEBUG="mediasoup:INFO* WARN ERROR" -e PROTOO_LISTEN_PORT="4443" -e MEDIASOUP_LISTEN_IP="0.0.0.0" -e MEDIASOUP_ANNOUNCED_IP="<your_ip_address>" -e MEDIASOUP_MIN_PORT="2000" -e MEDIASOUP_MAX_PORT="2020" -e MEDIASOUP_USE_VALGRIND="false" -e MEDIASOUP_VALGRIND_OPTIONS="--leak-check=full --track-fds=yes --log-file=/storage/mediasoup_valgrind_%p.log" vanjoge/mediasoup-demo:v3)
     
 
 to install mediasoup clone the atome_sfu_soup repository :
@@ -126,7 +129,7 @@ create "certs" folder inside the "server" folder of mediasoup
     mkdir certs
     cd certs
 
-Generate a certificate and private key for localhost and stor eit  in "certs" folder inside "server" folder
+Generate a certificate and private key for localhost and store it  in "certs" folder inside "server" folder
 
     openssl req -x509 -out localhost.crt -keyout localhost.key -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost'
 
@@ -158,12 +161,13 @@ In the  app folder: cd ../
 in app/lib/RoomClient.js
 change atome.one address of server if necessary
 
-    this.url = "wss://atome.one:4443/?roomId=0&peerId=" + peerId;
+    this.url = "wss://ws.mediasoup.atome.one:443/?roomId=0&peerId=" + peerId;
     
 Test with Firefox and safari. Chrome and edge doesn't accept wss without a valid certificate.
 
-Connect on port 4443 with HTTPS to accept wss certificate.
-Connect on port 3002 to run the client.
+Connect on port 443 with HTTPS to accept wss certificate.
+
+[comment]: <> (Connect on port 3002 to run the client.)
     
 
 [comment]: <> (Deprecated below: )
