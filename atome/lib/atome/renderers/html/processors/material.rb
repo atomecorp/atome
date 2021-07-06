@@ -45,7 +45,6 @@ module ProcessorHtml
                " "
              end
     if type == :text || type == :image || type == :video
-      alert :kool
       # the line below get  any filter all already apply to the object
       prev_prop = previous_filer_found
       shadow_html_format = ['filter', prev_prop + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")"]
