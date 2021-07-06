@@ -121,22 +121,22 @@ to install mediasoup clone the atome_sfu_soup repository :
 
     git clone https://github.com/atomecorp/atome_sfu_soup.git
 
-créer un dossier certs dans le dossier server de mediasoup
+create "certs" folder inside the "server" folder of mediasoup
     
     mkdir certs
     cd certs
 
-Générer un certificat et la clé privé pour le localhost et l'enregistrer dans le dossier "certs" du server
+Generate a certificate and private key for localhost and stor eit  in "certs" folder inside "server" folder
 
     openssl req -x509 -out localhost.crt -keyout localhost.key -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost'
 
-ou sous windows
+or using Windows
 
      MSYS_NO_PATHCONV=1 openssl req -x509 -out localhost.crt -keyout localhost.key -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost'  
   
-Dans le dossier serveur modifier le config.js du server pour utiliser le certificat et la clé.
-    remplacer `${__dirname}/certs/fullchain.pem` et  `${__dirname}/certs/privkey.pem` par les fichiers générés dans le dossier certs
-exemple :
+in "server" folder change config.js to use certificate and key, to do so : 
+    remplace `${__dirname}/certs/fullchain.pem` and  `${__dirname}/certs/privkey.pem` by the geneated files found in "certs" folder
+example :
         `${__dirname}/certs/fullchain.pem`
 with:
         `${__dirname}/certs/localhost.crt`
@@ -145,33 +145,36 @@ also
 with:
         `${__dirname}/certs/localhost.key`
 
-Dans le dossier server :
+In the "server" folder :
     
     npm install
     npm start
 
-Dans le dossier app : cd ../
+In the  app folder: cd ../
 
     npm install --legacy-peer-deps
     npm start
 
-Dans le app/lib/RoomClient.js
-changer l'adresse atome.one du server si necessaire
+in app/lib/RoomClient.js
+change atome.one address of server if necessary
 
     this.url = "wss://atome.one:4443/?roomId=0&peerId=" + peerId;
     
-Tester avec Firefox ou safari. Chrome et edge n'accepte pas les wss sans certificat valide.
+Test with Firefox and safari. Chrome and edge doesn't accept wss without a valid certificate.
 
-Se connecter sur le port 4443 en HTTPS pour accepter le certificat des wss.
-Se connecter sur le port 3002 pour lancer le client.
+Connect on port 4443 with HTTPS to accept wss certificate.
+Connect on port 3002 to run the client.
     
-Générer un docker du serveur après avoir renommé le config.example.js en config.js
 
-    \mediasoup-demo\server\docker\build.sh
-    
-Lancer le docker avec la commande suivante (exemple sous windows)
+[comment]: <> (Deprecated below: )
 
-    docker run --name=mediasoup-demo -p 4443:4443/tcp -p 40000-49999:40000-49999/udp -p 40000-49999:40000-49999/tcp -p 3000-3001:3000-3001/tcp --init -v c:/Tmp/mediasoup/certs:/service/certs -e HTTPS_CERT_FULLCHAIN="/service/certs/fullchain.pem" -e HTTPS_CERT_PRIVKEY="/service/certs/privkey.pem" -e MEDIASOUP_ANNOUNCED_IP="192.168.103.92" -e MEDIASOUP_LISTEN_IP="0.0.0.0" mediasoup-demo:v3
+[comment]: <> (Generate a docker of the server after renamimg  config.example.js with config.js)
+
+[comment]: <> (    \mediasoup-demo\server\docker\build.sh)
+    
+[comment]: <> (run  docker run the following command  &#40;example using Windows&#41;)
+
+[comment]: <> (    docker run --name=mediasoup-demo -p 4443:4443/tcp -p 40000-49999:40000-49999/udp -p 40000-49999:40000-49999/tcp -p 3000-3001:3000-3001/tcp --init -v c:/Tmp/mediasoup/certs:/service/certs -e HTTPS_CERT_FULLCHAIN="/service/certs/fullchain.pem" -e HTTPS_CERT_PRIVKEY="/service/certs/privkey.pem" -e MEDIASOUP_ANNOUNCED_IP="192.168.103.92" -e MEDIASOUP_LISTEN_IP="0.0.0.0" mediasoup-demo:v3)
     
     
-Wait 10 mn for server starting...
+[comment]: <> (Wait 10 mn for server starting...)
