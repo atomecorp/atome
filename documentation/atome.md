@@ -1,7 +1,7 @@
  atome
  -
 
- <img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/atome.svg" width="100" />
+ <img src="https://github.com/atomecorp/atome/raw/master/www/public/medias/images/atome.svg" width="100" />
  
 ***Documentation***
 -

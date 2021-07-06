@@ -47,7 +47,17 @@ Install prerequisite library
 		sudo install git :
 
 To install application:
+
+
     git clone https://github.com/atomecorp/atome.git
+
+to add submodule : 
+
+		cd www/public/js
+        git submodule add https://github.com/atomecorp/third_parties.git
+
+to update submodule :
+
     git submodule update --init --force --remote
 
 

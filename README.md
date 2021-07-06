@@ -1,7 +1,7 @@
-<img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/atome.svg" width="100" />
+<img src="https://github.com/atomecorp/atome/raw/master/www/public/medias/images/atome.svg" width="100" />
 
 
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/3.png" width="666" />
+<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/3.png" width="666" />
 
 atome
 -
@@ -27,39 +27,39 @@ Cross platform development environment
 
 
 
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/ruby.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/cordova.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/opal.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/roda.svg" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/freebsd.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/puma.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/ruby.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/cordova.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/opal.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/roda.svg" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/freebsd.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/puma.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 Open source technology used
 -
 
 - Ruby : is the language used to script all atomes apis (https://www.ruby-lang.org)
   
-[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/ruby.png" width="100" />)
+[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/ruby.png" width="100" />)
 
 - Cordova : a cross platform framework to create applications with web view rendering (https://cordova.apache.org)
 
-[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/cordova.png" width="100" />)
+[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/cordova.png" width="100" />)
 
 - Opal : is a ruby gem used to compile the ruby language to JS (https://opalrb.com)
 
-[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/opal.png" width="100" />)
+[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/opal.png" width="100" />)
 
 - Roda : is a ruby web framework that hold the server version of atome (https://roda.jeremyevans.net)
 
-[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/roda.svg" width="100" />)
+[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/roda.svg" width="100" />)
 
 - Puma : is a ruby web server to start the server version of atome (https://puma.io)
 
-[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/puma.png" width="100" />)
+[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/puma.png" width="100" />)
 
 - FreeBSD : is a Unix environment with jails, allow to create and boot embedded applications on any compatible machine (standard PC, Raspberry, Beaglebone, etc..) (https://www.freebsd.org/fr/)
 
-[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/logos/freebsd.png" width="100" />)
+[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/freebsd.png" width="100" />)
 
 
 
