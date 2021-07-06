@@ -53,8 +53,8 @@ To install application:
 
 to add submodule : 
 
-		cd www/public/js
-        git submodule add https://github.com/atomecorp/third_parties.git
+    cd www/public/js
+    git submodule add https://github.com/atomecorp/third_parties.git
 
 to update submodule :
 
