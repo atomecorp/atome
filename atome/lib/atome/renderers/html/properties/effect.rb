@@ -75,7 +75,10 @@ module PropertyHtml
   end
 
   def clip_html(value)
-    alert value
     jq_get(atome_id).css("clip-path": "url(##{value[:path]})")
+  end
+
+  def noise_html(value)
+    `generateNoise(#{atome_id},100,0.6, 633, 633,false); // target, intensity, opacity, width, height, color`
   end
 end

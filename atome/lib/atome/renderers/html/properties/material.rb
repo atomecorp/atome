@@ -95,7 +95,12 @@ module PropertyHtml
     end
     if self.type == :shape && self.path(nil,)
       `$('#'+#{atome_id}).children().css({fill: #{values}})`
-      elsif self.type == :image
+    # elsif self.type == :image
+      # alert values
+
+      # alert :here_must_do_something
+      # color = color_helper(values)
+      # "linear-gradient(0deg,#{color},#{color})"
     else
       # we exclude the case when the path is defined because it means we need to use a svg
       if !values.instance_of?(Array) || values.length == 1
@@ -104,9 +109,18 @@ module PropertyHtml
         else
           value = values
         end
+        # alert value
         color = color_helper(value)
         val = "linear-gradient(0deg,#{color},#{color})"
-        jq_get(atome_id).css("background-image", val)
+        if self.type == :image
+          # alert "we're on an image type"
+          # alert (jq_get(atome_id).css("background-image"))
+          new_background= val+","+jq_get(atome_id).css("background-image")
+          alert new_background
+          jq_get(atome_id).css("background-image", new_background)
+        else
+          jq_get(atome_id).css("background-image", val)
+        end
       else
         gradient = []
         values.each do |color_found|

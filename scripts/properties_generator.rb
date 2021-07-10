@@ -1,6 +1,6 @@
 def atome_methods
   communication = %i[share]
-  effect = %i[blur shadow smooth mask clip]
+  effect = %i[blur shadow smooth mask clip noise]
   event = %i[touch drag over key scale drop over virtual_event]
   geometry = %i[width height size ratio]
   helper = %i[tactile display]
