@@ -23,7 +23,6 @@ module PropertyHtml
   end
 
   def shadow_html(value)
-
     if value.instance_of?(Array)
       value.each do |shadow|
         shadow_html(shadow)
@@ -53,7 +52,6 @@ module PropertyHtml
     jq_get(atome_id).css("border-radius", formated_params)
   end
 
-
   def mask_html(value)
     mask_path= $images_list[value[:content]][:path]
     repeat=value[:repeat]
@@ -71,7 +69,6 @@ module PropertyHtml
     end
     jq_get(atome_id).css("-webkit-mask-image": "url(#{mask_path})","-webkit-mask-size": "#{value[:size]}px","-webkit-mask-position": "#{value[:position]}","-webkit-mask-repeat": repeat)
     jq_get(atome_id).css("mask-image": "url(#{mask_path})","mask-size": "#{value[:size]}px","mask-position": "#{value[:position]}","mask-repeat": repeat)
-
   end
 
   def clip_html(value)
@@ -79,6 +76,6 @@ module PropertyHtml
   end
 
   def noise_html(value)
-    `generateNoise(#{atome_id},100,0.6, 633, 633,false); // target, intensity, opacity, width, height, color`
+    `generateNoise(#{atome_id},#{value[:intensity]},#{value[:opacity]}, #{value[:width]}, #{value[:height]},#{value[:color]}); // target, intensity, opacity, width, height, color`
   end
 end

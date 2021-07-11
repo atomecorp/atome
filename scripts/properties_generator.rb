@@ -11,11 +11,10 @@ def atome_methods
   inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven tag selector render preset monitor select dynamic condition treatment]
   material = %i[color opacity border overflow fill]
-  {spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
+  { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
     medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity,
     events: event }
 end
-
 
 def types
   %i[user machine shape image video audio input text midi tool virtual group container particle]
@@ -32,7 +31,7 @@ end
 
 def need_pre_processing
   %i[atome_id particle group container shape box web circle text camera microphone midi text image video audio tool parent
-  child type shadow size drag visual]
+  child type shadow size drag visual noise]
 end
 
 def need_processing
@@ -46,7 +45,7 @@ end
 def no_rendering
   %i[atome_id group container shape box web circle text image video audio tool parent child info example
   selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-  particle visual language active inactive]
+  particle visual language active inactive noise]
 end
 
 batch_delete = <<STRDELIM

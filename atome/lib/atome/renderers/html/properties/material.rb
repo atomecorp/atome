@@ -109,14 +109,13 @@ module PropertyHtml
         else
           value = values
         end
-        # alert value
         color = color_helper(value)
         val = "linear-gradient(0deg,#{color},#{color})"
         if self.type == :image
-          # alert "we're on an image type"
-          # alert (jq_get(atome_id).css("background-image"))
+          if jq_get(atome_id).css("background-image").start_with?("url")
+            self.mask_html({content: self.content})
+          end
           new_background= val+","+jq_get(atome_id).css("background-image")
-          alert new_background
           jq_get(atome_id).css("background-image", new_background)
         else
           jq_get(atome_id).css("background-image", val)
