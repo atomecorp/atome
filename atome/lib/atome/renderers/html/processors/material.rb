@@ -44,31 +44,7 @@ module ProcessorHtml
              else
                " "
              end
-    # if type == :text || type == :image || type == :video
-    #   # the line below get  any filter all already apply to the object
-    #   prev_prop = previous_filer_found
-    #   shadow_html_format = ['filter', prev_prop + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")"]
-    # else
-    #   # new below
-    #   prev_prop = jq_get(atome_id).css('box-shadow')
-    #   if prev_prop == "none"
-    #     prev_prop = ""
-    #   else
-    #     prev_prop = "#{prev_prop}, "
-    #   end
-    #   shadow_html_format = ["box-shadow", prev_prop + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert]
-    # end
-    ######
-
-    # if type ==:image
-    #   # path=jq_get(atome_id).css("background-image")
-    # #   path=  $images_list[content][:path]
-    # #   jq_get(atome_id).css('--webkit-mask-image', "url(#{path}")
-    # #   jq_get(atome_id).css('--webkit-mask-box-image', "url(#{path}")
-    # end
-
     if thickness != 0 || invert ==:inset
-      # new below
       prev_prop = jq_get(atome_id).css('box-shadow')
       if prev_prop == "none"
         prev_prop = ""
@@ -80,12 +56,6 @@ module ProcessorHtml
       prev_prop = previous_filer_found
       shadow_html_format = ['filter', prev_prop + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")"]
     end
-    # if invert
-    #   alert value
-    # end
-    # prev_prop = previous_filer_found
-    # shadow_html_format = ['filter', prev_prop + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")"]
-    # ######
     shadow_html_format
   end
 end

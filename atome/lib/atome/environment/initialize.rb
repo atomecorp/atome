@@ -14,4 +14,6 @@ ATOME.websocket("ws.atome.one", true)
 # todo kickstart_keyboard_shortcut make the envirronement editable wich lead to permanently open the keyboeard on mobile device
 # kickstart_keyboard_shortcut
 
+$renderer=[]
+
 
