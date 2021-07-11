@@ -67,7 +67,6 @@ module PropertyHtml
     end
     # todo add edit and word break if the were set before
 
-
     jq_get(atome_id).css("text-align", alignment_get)
     case wrap_get
     when " "
@@ -95,7 +94,7 @@ module PropertyHtml
     end
     if self.type == :shape && self.path(nil,)
       `$('#'+#{atome_id}).children().css({fill: #{values}})`
-    # elsif self.type == :image
+      # elsif self.type == :image
       # alert values
 
       # alert :here_must_do_something
@@ -113,9 +112,9 @@ module PropertyHtml
         val = "linear-gradient(0deg,#{color},#{color})"
         if self.type == :image
           if jq_get(atome_id).css("background-image").start_with?("url")
-            self.mask_html({content: self.content})
+            self.mask_html({ content: self.content })
           end
-          new_background= val+","+jq_get(atome_id).css("background-image")
+          new_background = val + "," + jq_get(atome_id).css("background-image")
           jq_get(atome_id).css("background-image", new_background)
         else
           jq_get(atome_id).css("background-image", val)
@@ -137,7 +136,15 @@ module PropertyHtml
         else
           val = "#{diffusion}-gradient(#{gradient.join(",")})"
         end
-        jq_get(atome_id).css("background-image", val)
+        if self.type == :image
+          if jq_get(atome_id).css("background-image").start_with?("url")
+            self.mask_html({ content: self.content })
+          end
+          new_background = val + "," + jq_get(atome_id).css("background-image")
+          jq_get(atome_id).css("background-image", new_background)
+        else
+          jq_get(atome_id).css("background-image", val)
+        end
       end
     end
   end
@@ -173,8 +180,6 @@ module PropertyHtml
       jq_get(atome_id).css("overflow", value)
     end
   end
-
-
 
   def fill_html(value)
     self.x = self.y = 0
