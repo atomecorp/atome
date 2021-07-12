@@ -3,6 +3,7 @@ def atome_methods
   effect = %i[blur shadow smooth mask clip noise]
   event = %i[touch drag over key scale drop over virtual_event]
   geometry = %i[width height size ratio]
+  generator = %i[say]
   helper = %i[tactile display]
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
@@ -13,7 +14,7 @@ def atome_methods
   material = %i[color opacity border overflow fill]
   { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
     medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity,
-    events: event }
+    events: event, generator: generator }
 end
 
 def types

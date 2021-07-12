@@ -93,6 +93,11 @@ window.ondrop = function (e) {
     }
 };
 
+// function say(sentence){
+//     let utterance = new SpeechSynthesisUtterance(sentence);
+//     speechSynthesis.speak(utterance);
+// }
+// say("Bisous ma petite Babeth");
 // dynamic loading of js script
 // we test ig the server respond, if so we load the websocket library
 // var p = new Ping();
@@ -117,31 +122,69 @@ function message_server(type, message) {
 
 ///////////////// fabric /////////////////
 
-function fabric(the_id) {
+function fabric_rect(canvas){
+    // alert (canvas);
+    // var canvas = new fabric.Canvas(the_id);
+    var rect = new fabric.Rect({
+        id: 'myidj',
+        left: 100,
+        top: 100,
+        fill: 'blue',
+        width: 20,
+        height: 20
+    });
+    canvas.add(rect);
+}
+
+function fabric_circle(canvas){
+    // var canvas = new fabric.Canvas(the_id);
+    var circle = new fabric.Circle({
+        radius: 20, fill: 'green', left: 100, top: 100
+    });
+    canvas.add(circle);
+    alert("hgffhg");
+}
+
+
+function fabric_initialised(the_id){
     var elemClientWidth = window.innerWidth;
     var elemClientHeight = window.innerHeight;
     $("#view").append("<canvas id='"+the_id+"' width=" + elemClientWidth + " height= " + elemClientHeight + "></canvas>");
-    if (Opal.Atome.$renderer("fabric")){
-        alert("good");
+    window.addEventListener('resize', reportWindowSize);
+    // create a wrapper around native canvas element (with id="c")
+    var canvas = new fabric.Canvas(the_id);
+    function reportWindowSize() {
+        // add to main atome's on_resize method
+        canvas.setWidth(window.innerWidth);
+        canvas.setHeight(window.innerHeight);
+        canvas.calcOffset();
+    }
+    var rect = new fabric.Rect({
+        id: 'myid',
+        left: 100,
+        top: 100,
+        fill: 'blue',
+        width: 20,
+        height: 20
+    });
+    canvas.add(rect);
+    return canvas;
+}
+
+function fabric(the_id) {
+    if (Opal.Atome.$initialised_libraries("fabric")){
+       canvas= fabric_initialised(the_id);
+        return canvas;
     }
     else{
-        alert("bad");
         var url = "js/third_parties/rendering_engines/fabric.min.js";
         $.getScript(url, function () {
-            window.addEventListener('resize', reportWindowSize);
-            // create a wrapper around native canvas element (with id="c")
-            var canvas = new fabric.Canvas(the_id);
-            function reportWindowSize() {
-                // add to main atome's on_resize method
-                canvas.setWidth(window.innerWidth);
-                canvas.setHeight(window.innerHeight);
-                canvas.calcOffset();
-            }
+            // now we run the  fabric renderer
+            fabric_initialised(the_id);
 // we have the renderer to renderer list
-            Opal.Atome.$initialised_renderer("fabric");
+            Opal.Atome.$libraries("fabric");
         });
     }
-
 
 }
 function fabric_test(the_id) {

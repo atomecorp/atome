@@ -17,6 +17,12 @@ module PropertyHtml
       repeat = delay[:times]
       delay = delay[:every]
     end
+    # below we exec the call a first time
+    proc.call
+    # as we exec one time above we subtract one below
+    unless repeat==0
+      repeat=repeat-1
+    end
     set_interval(delay, repeat, &proc)
   end
 
