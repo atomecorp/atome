@@ -8,4 +8,13 @@ module Processors
     end
   end
 
+  def render_processor(value)
+    case engine
+    when :fabric
+      # render_analysis(:star,value, nil)
+      alert self.properties
+    else
+      render_html(value)
+    end
+  end
 end

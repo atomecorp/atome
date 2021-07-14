@@ -1,5 +1,3 @@
-
-
 const atome = {
     //address="https://github.com"
     jsPing: function (address, sucess, error) {

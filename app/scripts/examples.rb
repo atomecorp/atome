@@ -12,10 +12,10 @@ def demo_navigator(demo_list, index)
   grab(:demo_back).delete
   grab(:demo_prev).delete
   grab(:demo_next).delete
-  text({ content: "#{index} : " + demo_list.keys[index], color: :white, fixed: true, yy: 3, xx: 3, atome_id: :demo_list })
+  text({ content: "#{index} : " + demo_list.keys[index], color: :white, fixed: true, yy: 3, xx: 3, atome_id: :demo_list, visual: {alignment: :right}  })
   next_example = demo_list.keys[index + 1]
   previous_example = demo_list.keys[index - 1]
-  back = text({ content: :demos, xx: 20, z: 300, parent: :intuition, atome_id: :demo_back})
+  back = text({ content: :demos, xx: 20, z: 300, parent: :intuition, atome_id: :demo_back, visual: {alignment: :right} })
   back.touch do
     # we clear the buffer to avoid treatment on no more existent atome
     grab(:buffer).content[:resize]=[]
@@ -24,7 +24,7 @@ def demo_navigator(demo_list, index)
 
   unless index == 0
     index = index - 1
-    previous_demo = text(content: :previous, y: 33, xx: 20, z: 300, parent: :intuition, atome_id: :demo_prev )
+    previous_demo = text(content: :previous, y: 33, xx: 20, z: 300, parent: :intuition, atome_id: :demo_prev, visual: {alignment: :right} )
     previous_demo.touch do
       # we clear the buffer to avoid treatment on no more existent atome
       grab(:buffer).content[:resize]=[]
@@ -36,7 +36,7 @@ def demo_navigator(demo_list, index)
 
   unless demo_list.length == index + 1
     index = index + 1
-    next_demo = text({ content: :next, y: 69, xx: 20, parent: :intuition , atome_id: :demo_next })
+    next_demo = text({ content: :next, y: 69, xx: 20, parent: :intuition , atome_id: :demo_next, visual: {alignment: :right}  })
     next_demo.touch do
       # we clear the buffer to avoid treatment on no more existent atome
       grab(:buffer).content[:resize]=[]
@@ -54,7 +54,7 @@ def demo_reel(demo_list)
   Background.theme(bluegreen_gradient)
   clear(:view)
   demo_list.each_with_index do |demo, index|
-    the_code = text({ content: "#{index} : " + demo[0], y: 20 * index, visual: 16 })
+    the_code = text({ content: "#{index} : " + demo[0], y: 20 * index,  visual: {alignment: :left, size: 15} })
     the_code.touch do
       run_demo(demo[1])
       demo_navigator(demo_list, index)

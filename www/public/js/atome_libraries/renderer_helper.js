@@ -1,6 +1,5 @@
 // renderer global utils
 function dyn_lib_load(library, id, params) {
-
     let achieve = new Promise(function (resolve, reject) {
         var url = "js/third_parties/rendering_engines/" + library + ".min.js";
         $.getScript(url, function () {

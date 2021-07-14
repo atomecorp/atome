@@ -13,7 +13,7 @@ ATOME.websocket("ws.atome.one", true)
 # we load the the keyboard shortcut at startup
 # todo kickstart_keyboard_shortcut make the envirronement editable wich lead to permanently open the keyboeard on mobile device
 # kickstart_keyboard_shortcut
-
+$default_renderer="html"
 $renderer=[]
 
 

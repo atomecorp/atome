@@ -1,4 +1,5 @@
 - inline video iOS
+- text align bug (visual: {alignement :left}) doesn't work
 - Background video
 - add touch event stop bubbling
 - big bug when trying convert example then windows resize example

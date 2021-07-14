@@ -1,0 +1,4 @@
+module HeadlessProperty
+
+end
+

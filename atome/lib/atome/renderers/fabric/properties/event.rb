@@ -1,0 +1,3 @@
+module FabricProperty
+
+end

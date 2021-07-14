@@ -38,7 +38,7 @@ require "atome/renderers/html/properties/inputs"
 require "atome/renderers/html/properties/spatial"
 require "atome/renderers/html/properties/utility"
 require "atome/renderers/html/properties/material"
-require "atome/renderers/html/helpers/html_helpers"
+require "atome/renderers/html/helpers/helpers"
 require "atome/renderers/html"
 # generated property
 require "atome/generated_methods/communications"

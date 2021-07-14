@@ -1,13 +1,42 @@
 # here stand some atome's function to allow atome's objects manipulation
+def render_analysis(methods, val, passsword)
+  renderer = case val[:engine]
+  when :fabric
+    "#{methods}_fabric"
+  when :zim
+    "zim_#{methods}_zim"
+  when :html
+    "#{methods}_html"
+  when :headless
+    "#{methods}_headless"
+  when :speech
+    "#{methods}_speech"
+  else
+    "#{methods}_#{$default_renderer}"
+             end
+  send(renderer, val, passsword)
+end
 
+def initialised_libraries(render_engine)
+  if render_engine
+    $renderer.include?(:fabric)
+  else
+    $renderer
+  end
+end
 
-def web_state(val=nil)
+def libraries(render_engine)
+  $renderer |= [render_engine]
+end
+
+def web_state(val = nil)
   if val
     AtomeHelpers.class_variable_set("@@web_state", val)
   else
     AtomeHelpers.class_variable_get("@@web_state")
   end
 end
+
 # the result method is used to get the return queries of the database
 def result(params)
   result = {}
@@ -66,12 +95,12 @@ def wait(seconds)
 end
 
 def schedule(date, &proc)
-  date=date.to_s
+  date = date.to_s
   delimiters = [",", " ", ":", "-"]
   formated_date = date.split(Regexp.union(delimiters))
 
-  missing_datas=Time.now
-  missing_datas=missing_datas.to_s
+  missing_datas = Time.now
+  missing_datas = missing_datas.to_s
   delimiters = [",", " ", ":", "-"]
   missing_datas_formated_date = missing_datas.split(Regexp.union(delimiters))
 
@@ -290,11 +319,11 @@ def notification(message, option = nil, size = 16)
       alert_messages.content("")
       alert_box.delete(true)
     else
-      if alert_messages.content == "\n" || alert_messages.content == ""
-        new_content = "#{message}"
+      new_content = if alert_messages.content == "\n" || alert_messages.content == ""
+        "#{message}"
       else
-        new_content = "#{alert_messages.content}\n#{message}"
-      end
+        "#{alert_messages.content}\n#{message}"
+                    end
       alert_messages.content(new_content)
       alert_box.height = alert_box.height + size
     end
@@ -323,21 +352,13 @@ def notif(message, size)
   notification(message, size)
 end
 
-
-def atomic_request(target=nil, content, options)
-  # content=eval
-  # eval("#{target}(#{content})")
+def atomic_request(target = nil, content, options)
   if target
     Object.send(target, content[:content], options[:options])
   end
-
-  # alert target
-  # alert atome
-  # alert content
-  # if target
-  #   grab(target).send(atome, content)
-  # else
-  #   Object.send(atome, content)
-  # end
 end
 
+
+# def star(val)
+#   render_analysis(:star,val, nil)
+# end

@@ -1,0 +1,2 @@
+module ZimProperty
+end

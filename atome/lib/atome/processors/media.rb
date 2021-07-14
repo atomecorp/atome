@@ -20,6 +20,7 @@ module Processors
       preset_found = preset_found[preset]
       # we overload the parent to the current and finally add the value set by user
       preset_found = preset_found.merge({ parent: atome_id }).merge(value)
+      #now we create the new ateom
       Atome.new(preset_found)
     end
   end
@@ -106,6 +107,10 @@ module Processors
 
   def box_pre_processor(value, password = nil)
     media_pre_processor(:shape, :box, value, password)
+  end
+
+  def star_pre_processor(value, password = nil)
+    media_pre_processor(:shape, :star, value, password)
   end
 
   def box_getter_processor

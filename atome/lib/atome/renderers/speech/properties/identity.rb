@@ -1,0 +1,4 @@
+module SpeechProperty
+
+end
+
