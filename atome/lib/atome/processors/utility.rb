@@ -12,7 +12,7 @@ module Processors
     case engine
     when :fabric
       # render_analysis(:star,value, nil)
-      alert self.properties
+      render_fabric(value)
     else
       render_html(value)
     end

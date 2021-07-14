@@ -306,3 +306,7 @@ task 'production::electron': required_js_lib do
   sh "cordova run electron"
 end
 
+
+
+# main_lib = Dir.glob("./atome/lib/atome/**/*.rb")
+# File.write("./atome/lib/atome_full_list.rb", "require '"+main_lib.join("'\nrequire '")+"'")

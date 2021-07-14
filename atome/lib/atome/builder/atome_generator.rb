@@ -4,6 +4,11 @@ class Atome
   include Properties
   include Processors
   include RenderHtml
+  include RenderFabric
+  include RenderHeadless
+  include RenderSpeech
+  include RenderThree
+  include RenderZim
   include InternalHelpers
   include AtomeHelpers
 
