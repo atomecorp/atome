@@ -14,6 +14,8 @@ require "atome/extensions/opal/opal_video"
 require "atome/extensions/opal/opal_jquery"
 
 # render helper
+require './atome/lib/atome/renderers/renderers.rb'
+
 require './atome/lib/atome/renderers/fabric/helpers/html_helpers.rb'
 require './atome/lib/atome/renderers/fabric/processors/communication.rb'
 require './atome/lib/atome/renderers/fabric/processors/effect.rb'

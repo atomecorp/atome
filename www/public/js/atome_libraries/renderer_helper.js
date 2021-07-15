@@ -119,7 +119,6 @@ function dyn_lib_load(library, id, params) {
 const fabric_list = {};
 
 function add_fabric_object(canvas, params) {
-    alert (params);
     // first we test if the renderer is ready
     if ($('#' + canvas).length === 0) {
         setTimeout(function () {
@@ -163,6 +162,8 @@ function fabric(the_id, params) {
         var canvas = new fabric.Canvas(the_id);
         // we had the canvas to the canvas list
         fabric_list[the_id] = canvas;
+        Opal.Object.$canvas_list("fabric", the_id, canvas);
+        // on resize we resize the canvas
         $(window).resize(function () {
             canvas.setWidth(window.innerWidth);
             canvas.setHeight(window.innerHeight);
@@ -178,8 +179,51 @@ function fabric(the_id, params) {
     }
 }
 
-// three renderer
+function get_fabric_obj(canvas, id) {
+    let obj = "";
+    // if (canvas.toString().length > 0){
+        canvas.getObjects().forEach(function (object) {
+            if (object.id == id) {
+                obj = object;
+            }
+            else{
+                obj=false;
+            }
+        });
+    // }
+    //     else{
+    //     obj=false;
+    // }
+    return obj;
+}
 
+function fabric_prop(canvas_id,obj_id,params) {
+    canvas=Opal.Object.$get_canvas("fabric",canvas_id);
+    if (canvas == false){
+        i=0;
+        setTimeout(function () {
+            if( i< 3000){
+                fabric_prop(canvas_id,obj_id,params) ;
+            }
+            i++;
+        }, 1);
+    }
+    else{
+        object=get_fabric_obj(canvas,obj_id,params);
+        params = params.$to_n();
+        object.set(params);
+        canvas.renderAll();
+    }
+
+}
+
+// three renderer
 function three(the_id, params) {
 
 }
+
+
+
+
+////////////
+

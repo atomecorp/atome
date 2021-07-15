@@ -301,8 +301,8 @@ def kickstart_keyboard_shortcut
         #key z
       else
       end
-    elsif evt.ctrl_key
-    else
+    # elsif evt.ctrl_key
+    # else
     end
   end
 end
@@ -337,7 +337,6 @@ def notification(message, option = nil, size = 16)
                                      content: "#{message}\n",
                                      color: :white })
     alert_box.height = size + margin * 2
-    # alert_box.width = alert_content.width + margin*2
     alert_box.touch do
       alert_content.content("")
       alert_box.delete(true)
@@ -357,8 +356,3 @@ def atomic_request(target = nil, content, options)
     Object.send(target, content[:content], options[:options])
   end
 end
-
-
-# def star(val)
-#   render_analysis(:star,val, nil)
-# end
