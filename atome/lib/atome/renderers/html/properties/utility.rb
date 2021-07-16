@@ -88,9 +88,9 @@ module PropertyHtml
     value
   end
 
-  def preset_html(value)
-    value
-  end
+  # def preset_html(value)
+  #   value
+  # end
 
   def edit_html(value)
     if value == true

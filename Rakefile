@@ -168,7 +168,7 @@ end
 # # FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
 # #to cleanup all generated files
 # cleanup_temp_files(temp_dir)
-# generate_methods
+generate_methods
 # generate_demos_list
 # update_opal_libraries
 # # # #to force update media_list uncomment below
@@ -307,6 +307,6 @@ task 'production::electron': required_js_lib do
 end
 
 
-
+# #create a rb list of all renderer files
 # main_lib = Dir.glob("./atome/lib/atome/**/*.rb")
 # File.write("./atome/lib/atome_full_list.rb", "require '"+main_lib.join("'\nrequire '")+"'")

@@ -5,7 +5,7 @@ console.touch do
   console.delete
 end
 
-b = box({ x: 220, y: 50 })
+b = box({ x: 333, y: 50 })
 text({ content: "drag the box", x: 33, y: 3, color: :orange })
 t2 = text({ content: "start monitoring all", x: 33, y: 33 })
 t3 = text({ content: "stop monitoring all", x: 33, y: 66 })

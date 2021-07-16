@@ -42,9 +42,9 @@ module ProcessorHtml
     invert = if value[:invert]
                :inset
              else
-               " "
+               false
              end
-    if thickness != 0 || invert ==:inset
+    if value[:bounding] || invert
       prev_prop = jq_get(atome_id).css('box-shadow')
       if prev_prop == "none"
         prev_prop = ""
@@ -54,6 +54,7 @@ module ProcessorHtml
       shadow_html_format = ["box-shadow", prev_prop + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert]
     else
       prev_prop = previous_filer_found
+
       shadow_html_format = ['filter', prev_prop + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")"]
     end
     shadow_html_format

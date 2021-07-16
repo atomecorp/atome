@@ -46,7 +46,7 @@ end
 def no_rendering
   %i[atome_id group container shape box star web circle text image video audio tool parent child info example
   selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-  particle visual language active inactive noise engine render]
+  particle visual language active inactive noise engine render id preset]
 end
 
 batch_delete = <<STRDELIM
@@ -88,8 +88,19 @@ atome_methods.each do |property_type, property|
     end
 
     unless no_rendering.include?(method_name)
-      rendering = "\nif $default_renderer== :html ||$default_renderer.nil? \n#{method_name}_html(value,password)\nelse\n send('#{method_name}_'+$default_renderer,value,password)\nend"
-      # rendering = "#{method_name}_html(value,password)\nputs '#{method_name}'"
+      # rendering = "#{method_name}_html(value,password)"
+
+      rendering = <<STRDELIM
+if $default_renderer== :html ||$default_renderer.nil?
+  #{method_name}_html(value,password)
+else
+ send('#{method_name}_'+$default_renderer,value,password)
+end
+STRDELIM
+
+# rendering = "\nif $default_renderer== :html ||$default_renderer.nil? \n#{method_name}_html(value,password)\nelse\n send('#{method_name}_'+$default_renderer,value,password)\nend"
+
+# rendering = "#{method_name}_html(value,password)\nputs '#{method_name}'"
       # rendering = "#{method_name}_html(value,password)"
       # rendering="send('#{method_name}_'+$default_renderer,value,password)"
       # $default_renderer

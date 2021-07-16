@@ -22,3 +22,5 @@ img.shadow({ x: -66, y: 3, color: "rgba(0,0,0,0.6)", blur: 17, thickness: 0 })
 b.touch do
   b.shadow(false)
 end
+
+# bounding:  true force box shadow false force filter shadow , using invert also force box shadow

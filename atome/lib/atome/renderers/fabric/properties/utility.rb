@@ -36,4 +36,8 @@ module FabricProperty
     #   end
     # end
   end
+
+  # def preset_fabric(value)
+  #   value
+  # end
 end
