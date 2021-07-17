@@ -88,15 +88,18 @@ atome_methods.each do |property_type, property|
     end
 
     unless no_rendering.include?(method_name)
-      # rendering = "#{method_name}_html(value,password)"
 
       rendering = <<STRDELIM
-if $default_renderer== :html ||$default_renderer.nil?
+if $default_renderer.nil?
   #{method_name}_html(value,password)
+elsif $default_renderer.instance_of?(Array)
+alert ("multirendering")
+#{method_name}_html(value,password)
 else
  send('#{method_name}_'+$default_renderer,value,password)
 end
 STRDELIM
+      # rendering = "#{method_name}_html(value,password)"
 
 # rendering = "\nif $default_renderer== :html ||$default_renderer.nil? \n#{method_name}_html(value,password)\nelse\n send('#{method_name}_'+$default_renderer,value,password)\nend"
 

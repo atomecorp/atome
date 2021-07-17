@@ -11,7 +11,8 @@ def render_analysis(methods, val, passsword)
     "#{methods}_headless"
   when :speech
     "#{methods}_speech"
-  else
+             else
+               alert "other rendering to catch!!!"
     "#{methods}_#{$default_renderer}"
              end
   send(renderer, val, passsword)
