@@ -4,7 +4,7 @@ b=box({x:300, y: 33})
 t=text({content: "click me to kill the repeat process", width: 33})
 countdown=text("")
 countdown.y(66)
-repeater= ATOME.repeat 0.1, 300 do |evt|
+repeater= repeat 0.1, 300 do |evt|
   unless evt
     evt=0
   end
@@ -15,5 +15,5 @@ repeater= ATOME.repeat 0.1, 300 do |evt|
   countdown.content(content)
 end
 t.touch do
-  ATOME.clear({repeat: repeater})
+  t.clear({repeat: repeater})
 end

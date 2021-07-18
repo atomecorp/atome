@@ -90,7 +90,7 @@ def lorem
 end
 
 def wait(seconds)
-  wait_html(seconds) do
+  ATOME.wait_html(seconds) do
     yield
   end
 end
@@ -152,7 +152,7 @@ def schedule(date, &proc)
 end
 
 def repeat(delay = 3, repeat = 5, &proc)
-  repeat_html(delay, repeat, &proc)
+  ATOME.repeat_html(delay, repeat, &proc)
 end
 
 def clear(value)

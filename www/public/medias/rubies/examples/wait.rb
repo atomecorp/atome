@@ -2,12 +2,12 @@
 
 b=box({x:300})
 t=text("click me to kill the wait process")
-waiter= ATOME.wait 5 do
+waiter= .wait 5 do
   b.set({color: :orange, smooth: 20})
 end
 
 t.touch do
-  ATOME.clear({wait: waiter})
+  t.clear({wait: waiter})
 end
 
 

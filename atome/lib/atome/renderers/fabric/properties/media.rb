@@ -15,6 +15,10 @@ module FabricProperty
   #   end
   end
 
+  def box_fabric(params)
+    # alert params
+  end
+
   def content_fabric(params)
 
   end
