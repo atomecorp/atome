@@ -107,7 +107,7 @@ def send_to_renderer(renderer,value,password)
       when :zim
     #{method_name}_zim(value,password)
     else
-      nil
+      #{method_name}_html(value,password)
     end
 end
 

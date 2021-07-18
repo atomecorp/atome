@@ -75,6 +75,13 @@ module JSUtils
   end
 
   def speech_dsp(params)
+
+    if params.instance_of?(String) || params.instance_of?(Symbol) || params.instance_of?(Integer)
+      params = { content: params }
+    end
+    unless params[:voice]
+      params[:voice] = get_language
+    end
     sentence = params[:content]
     voice_number = language_code(params[:voice])
     `say(#{sentence}, #{voice_number})`
