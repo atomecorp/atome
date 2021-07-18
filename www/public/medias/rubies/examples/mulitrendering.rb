@@ -1,5 +1,5 @@
 # example multi rendering
 
-$default_renderer=[:speech, :html]
+renderer([:speech, :html])
 
 box()

@@ -89,11 +89,7 @@ def lorem
   STRDELIM
 end
 
-def wait(seconds)
-  ATOME.wait_html(seconds) do
-    yield
-  end
-end
+
 
 def schedule(date, &proc)
   date = date.to_s
@@ -151,12 +147,27 @@ def schedule(date, &proc)
   schedule_html(years, months, days, hours, minutes, seconds, &proc)
 end
 
+def wait(seconds)
+  ATOME.wait_html(seconds) do
+    yield
+  end
+end
+
 def repeat(delay = 3, repeat = 5, &proc)
   ATOME.repeat_html(delay, repeat, &proc)
 end
 
 def clear(value)
   grab(:view).clear(value)
+end
+
+def renderer params=nil
+  if params
+    $default_renderer=params
+  else
+    $default_renderer
+  end
+
 end
 
 def atome_require(file)
