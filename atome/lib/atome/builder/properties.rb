@@ -6,7 +6,7 @@ class Quark
   end
 
   def read
-    @property
+      @property
   end
 
   # recipient for created atome

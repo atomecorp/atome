@@ -1,5 +1,6 @@
 module Processors
   def media_pre_processor(type, preset, value, password = nil)
+    # alert self.inspect
     if value.instance_of?(Hash) && value[:proc]
       # if a proc is found we yield we search for child of the requested type to be treated , ex :
       # a.text do |text_found|
@@ -20,7 +21,7 @@ module Processors
       preset_found = preset_found[preset]
       # we overload the parent to the current and finally add the value set by user
       preset_found = preset_found.merge({ parent: atome_id }).merge(value)
-      #now we create the new ateom
+      #now we create the new atome
       Atome.new(preset_found)
     end
   end
@@ -110,6 +111,7 @@ module Processors
   end
 
   def star_pre_processor(value, password = nil)
+    # star_fabric(value)
     media_pre_processor(:shape, :star, value, password)
   end
 

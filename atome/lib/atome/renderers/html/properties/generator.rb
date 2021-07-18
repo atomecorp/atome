@@ -1,5 +1,5 @@
 module PropertyHtml
-  def say_html(value)
-    speech_dsp(value)
+  def say_html(params)
+    speech_dsp(params)
   end
 end

@@ -22,25 +22,48 @@ class Atome
   def initialize(properties = {})
     # the hash below add the missing properties without creating a condition
     sanitizer = { atome_id: identity, render: true, type: :particle, content: {}, selector: {}, id: "a_#{object_id}" }.merge(properties)
-    atome_id = sanitizer.delete(:atome_id)
-    type = sanitizer.delete(:type)
-    render = sanitizer.delete(:render)
-    content = sanitizer.delete(:content)
-    center = sanitizer.delete(:center)
-    engine = sanitizer.delete(:engine)
-    preset = sanitizer.delete(:preset)
-    essential = { atome_id: atome_id }.merge({ type: type }).merge({ engine: engine }).merge({ preset: preset }).merge({ render: render })
+    # below we reorder the atome properties before treatment
+    sanitized_atome_id = { atome_id: sanitizer.delete(:atome_id) }
+    sanitized_type = { type: sanitizer.delete(:type) }
+    sanitized_language = if sanitizer[:language]
+                           { language: sanitizer.delete(:language) }
+                         else
+                           {}
+                         end
+    sanitized_engine = if sanitizer[:engine]
+                         { engine: sanitizer.delete(:engine) }
+                       else
+                         {}
+                       end
+    sanitized_preset = if sanitizer[:preset]
+                         { preset: sanitizer.delete(:preset) }
+                       else
+                         {}
+                       end
+    sanitized_render = if sanitizer[:render]
+                         { render: sanitizer.delete(:render) }
+                       else
+                         {}
+                       end
+    sanitized_content = if sanitizer[:content]
+                         { content: sanitizer.delete(:content) }
+                        else
+                         {}
+                        end
+    sanitized_center = if sanitizer[:center]
+                          { center: sanitizer.delete(:center) }
+                       else
+                          {}
+                        end
+    essential = sanitized_atome_id.merge(sanitized_type).merge(sanitized_language).merge(sanitized_engine).merge(sanitized_preset).merge(sanitized_render)
     #  we create the essential properties of the atome
     create(essential)
     # now the basic atome is created we can set all others properties
     # id theres an id we put it at the start of the hash
-    if sanitizer[:id]
-      { id: sanitizer[:id] }.merge(sanitizer)
-    end
     # we change sanitizer hash order so the content property that trigger the rendering is placed at the end
     # and finally the center that must know the  content to be able to the center the object
-    sanitizer[:content] = content
-    sanitizer[:center] = center
+    sanitizer = sanitizer.merge(sanitized_content).merge(sanitized_center)
+
     set sanitizer
   end
 

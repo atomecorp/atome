@@ -8,9 +8,10 @@ def atome_methods
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
-  media = %i[content particle group container video shape box star circle text image audio web tool path info example name visual active inactive]
+  media = %i[content particle group container video shape box star circle text image audio web tool path info example
+             name visual active inactive]
   inputs = %i[camera microphone midi keyboard]
-  utility = %i[edit record enliven tag selector render preset monitor select dynamic condition treatment engine]
+  utility = %i[edit record enliven tag selector preset monitor select dynamic condition treatment render engine]
   material = %i[color opacity border overflow fill]
   { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
     medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity,
@@ -32,7 +33,7 @@ end
 
 def need_pre_processing
   %i[atome_id particle group container shape box star web circle text camera microphone midi text image video audio tool parent
-  child type shadow size drag visual noise ]
+  child type shadow size drag visual noise say]
 end
 
 def need_processing
@@ -46,7 +47,7 @@ end
 def no_rendering
   %i[atome_id group container shape box star web circle text image video audio tool parent child info example
   selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-  particle visual language active inactive noise engine render id preset]
+  particle visual language active inactive noise engine render id preset say]
 end
 
 batch_delete = <<STRDELIM
@@ -90,24 +91,37 @@ atome_methods.each do |property_type, property|
     unless no_rendering.include?(method_name)
 
       rendering = <<STRDELIM
+
+def send_to_renderer(renderer,value,password)
+   case renderer
+      when :html
+      #{method_name}_html(value,password)
+      when :fabric
+     #{method_name}_fabric(value,password)
+      when :headless
+         #{method_name}_headless(value,password)
+      when :speech
+       #{method_name}_speech(value,password)
+      when :three
+   #{method_name}_three(value,password)
+      when :zim
+    #{method_name}_zim(value,password)
+    else
+      nil
+    end
+end
+
 if $default_renderer.nil?
   #{method_name}_html(value,password)
 elsif $default_renderer.instance_of?(Array)
-alert ("multirendering")
-#{method_name}_html(value,password)
+  $default_renderer.each do |renderer|
+    send_to_renderer(renderer,value,password)
+  end
 else
- send('#{method_name}_'+$default_renderer,value,password)
+  send_to_renderer($default_renderer,value,password)
 end
 STRDELIM
       # rendering = "#{method_name}_html(value,password)"
-
-# rendering = "\nif $default_renderer== :html ||$default_renderer.nil? \n#{method_name}_html(value,password)\nelse\n send('#{method_name}_'+$default_renderer,value,password)\nend"
-
-# rendering = "#{method_name}_html(value,password)\nputs '#{method_name}'"
-      # rendering = "#{method_name}_html(value,password)"
-      # rendering="send('#{method_name}_'+$default_renderer,value,password)"
-      # $default_renderer
-      # rendering =  "render_analysis(:#{method_name}, value, password)"
     end
 
     unless is_atome.include?(method_name)

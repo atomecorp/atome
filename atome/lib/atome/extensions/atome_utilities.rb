@@ -1,19 +1,19 @@
 # here stand some atome's function to allow atome's objects manipulation
 def render_analysis(methods, val, passsword)
   renderer = case val[:engine]
-  when :fabric
-    "#{methods}_fabric"
-  when :zim
-    "zim_#{methods}_zim"
-  when :html
-    "#{methods}_html"
-  when :headless
-    "#{methods}_headless"
-  when :speech
-    "#{methods}_speech"
+             when :fabric
+               "#{methods}_fabric"
+             when :zim
+               "zim_#{methods}_zim"
+             when :html
+               "#{methods}_html"
+             when :headless
+               "#{methods}_headless"
+             when :speech
+               "#{methods}_speech"
              else
                alert "other rendering to catch!!!"
-    "#{methods}_#{$default_renderer}"
+               "#{methods}_#{$default_renderer}"
              end
   send(renderer, val, passsword)
 end
@@ -302,8 +302,8 @@ def kickstart_keyboard_shortcut
         #key z
       else
       end
-    # elsif evt.ctrl_key
-    # else
+      # elsif evt.ctrl_key
+      # else
     end
   end
 end
@@ -321,9 +321,9 @@ def notification(message, option = nil, size = 16)
       alert_box.delete(true)
     else
       new_content = if alert_messages.content == "\n" || alert_messages.content == ""
-        "#{message}"
-      else
-        "#{alert_messages.content}\n#{message}"
+                      "#{message}"
+                    else
+                      "#{alert_messages.content}\n#{message}"
                     end
       alert_messages.content(new_content)
       alert_box.height = alert_box.height + size

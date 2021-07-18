@@ -1,6 +1,5 @@
 module InternalHelpers
   def atomise(property, value)
-
     # this method create a quark object from atome properties for further processing
     unless @monitor.nil? || @monitor == false
       # if the atome is monitored it broadcast the changes
