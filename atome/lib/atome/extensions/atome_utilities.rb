@@ -161,6 +161,10 @@ def clear(value)
   grab(:view).clear(value)
 end
 
+def atomes(full_list)
+  ATOME.atomes(full_list)
+end
+
 def renderer params=nil
   if params
     $default_renderer=params

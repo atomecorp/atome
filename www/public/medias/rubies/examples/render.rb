@@ -1,10 +1,21 @@
-# render
-
-t=text("touch to circle to remove the circle from rendering")
-c = circle({atome_id: :c, x: 300})
+# refresh example
+JSUtils.load_opal_parser
+# alert grab(:view).child
+c=circle
+c.text("click me")
+color=[:red, :green,:yellowgreen, :purple, :blue, :yellow, :orange, :pink, :black, :white].sample
+time=Time.now
+text({content: time, color: color, x:66, y: 66})
 c.touch do
-  c.render(false)
-  ATOME.wait 2 do
-    c.render(true)
+  # alert grab(:view).child
+  clear(:view)
+  # alert @@atomes
+  wait 3 do
+    ATOME.reader("./medias/rubies/examples/refresh.rb") do |data|
+      compile data
+    end
   end
 end
+t=text("standard version")
+t.xx(33)
+alert ATOME.poil

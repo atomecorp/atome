@@ -1,4 +1,4 @@
-#red file
+#eaxample read file
 # JSUtils.load_opal_parser
 
 t=text("Touch me load and exec the ruby code")

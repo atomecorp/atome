@@ -169,7 +169,7 @@ end
 # #to cleanup all generated files
 # cleanup_temp_files(temp_dir)
 generate_methods
-# generate_demos_list
+generate_demos_list
 # update_opal_libraries
 # # # # #to force update media_list uncomment below
 # update_medias_list(temp_dir)
