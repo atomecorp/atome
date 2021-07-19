@@ -89,8 +89,6 @@ def lorem
   STRDELIM
 end
 
-
-
 def schedule(date, &proc)
   date = date.to_s
   delimiters = [",", " ", ":", "-"]
@@ -165,9 +163,9 @@ def atomes(full_list)
   ATOME.atomes(full_list)
 end
 
-def renderer params=nil
+def renderer params = nil
   if params
-    $default_renderer=params
+    $default_renderer = params
   else
     $default_renderer
   end
@@ -370,5 +368,36 @@ end
 def atomic_request(target = nil, content, options)
   if target
     Object.send(target, content[:content], options[:options])
+  end
+end
+
+def reader(params, &proc)
+  ATOME.reader(params, &proc)
+end
+
+def refresh (params=nil)
+  if params.nil?
+    target = :all
+  elsif params.instance_of?(String)
+    target = :all
+    source = params
+  else
+    target = params[:target]
+    source = params[:source]
+  end
+  clear(:view)
+  unless source
+    source = if $environment == :atome
+               "./medias/app/app.rb"
+             else
+               "./medias/e_app/app.rb"
+             end
+  end
+  if target == :all || target.nil?
+    reader(source) do |data|
+      compile data
+    end
+  else
+    alert("refresh #{target} only!")
   end
 end

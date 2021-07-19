@@ -11,7 +11,7 @@ c.touch do
   clear(:view)
   # alert @@atomes
   wait 3 do
-    ATOME.reader("./medias/rubies/examples/refresh.rb") do |data|
+    reader("./medias/rubies/examples/refresh.rb") do |data|
       compile data
     end
   end

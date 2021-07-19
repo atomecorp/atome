@@ -62,6 +62,9 @@ module ProcessorHtml
   def reader(filename, &proc)
     #  read remote file
     @@http.get(filename, &proc)
+    # temp patch before using a DB to store current script
+    $current_script=filename
+
   end
 
   def path_getter_helper(value)

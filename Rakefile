@@ -132,16 +132,28 @@ file 'www/public/js/dynamic_libraries/atome.js': atome_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
+# app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app.rb") + Dir.glob("eVe/projects/**/*") + Dir.glob("eVe/eVe/lib/**/*")
+# file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
+#   builder = Opal::Builder.new
+#   if File.exist?("./eVe")
+#     builder.build("./eVe/app.rb")
+#   else
+#     builder.build("./app/app.rb")
+#   end
+#   File.write(t.name, builder.to_s)
+# end
 app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app.rb") + Dir.glob("eVe/projects/**/*") + Dir.glob("eVe/eVe/lib/**/*")
 file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
   builder = Opal::Builder.new
   if File.exist?("./eVe")
-    builder.build("./eVe/app.rb")
+    builder.build("./www/public/medias/e_app/eVe_lib.rb")
+    builder.build("./www/public/medias/e_app/app.rb")
   else
-    builder.build("./app/app.rb")
+    builder.build(" ./www/public/medias/app/app.rb")
   end
   File.write(t.name, builder.to_s)
 end
+
 
 opal = "www/public/js/dynamic_libraries/opal/opal.js"
 opal_jquery = "www/public/js/dynamic_libraries/opal/opal_jquery.js"
@@ -164,15 +176,15 @@ def cleanup_temp_files(temp_dir)
 end
 
 
-# # rm_r "www/public/medias/e_rubies/tools", force: true
-# # FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
-# #to cleanup all generated files
-# cleanup_temp_files(temp_dir)
-# generate_methods
-# generate_demos_list
-# update_opal_libraries
-# # # # #to force update media_list uncomment below
-# update_medias_list(temp_dir)
+# rm_r "www/public/medias/e_rubies/tools", force: true
+# FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
+#to cleanup all generated files
+cleanup_temp_files(temp_dir)
+generate_methods
+generate_demos_list
+update_opal_libraries
+# # # #to force update media_list uncomment below
+update_medias_list(temp_dir)
 
 
 
