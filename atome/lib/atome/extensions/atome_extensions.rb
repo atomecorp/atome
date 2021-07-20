@@ -1,10 +1,5 @@
 class Atome
 
-  def verif
-    "checked!!"
-  end
-
-
   def atomes(full_list=false)
     atomes_found=[]
     system_atomes=[:atome,:preset, :black_hole, :device, :intuition,:view, :messenger, :authorization, :buffer, "UI"]

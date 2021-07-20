@@ -256,20 +256,17 @@ module Processors
   end
 
   def content_pre_processor(value, password)
-    # formated_value={}
-    # formated_value[:french]=value
     # treatment to get local version of text
     if value.instance_of?(Hash) && type== :text
-      # @content = atomise(:content, value[:atome_id]= atome_id)
       @content = atomise(:content, value.merge(atome_id: atome_id))
       required_language = self.language || grab(:view).language
       all_language_content=value
       value= all_language_content[required_language]
-    elsif   type== :text
+    elsif  type== :text
       formated_value={default: value, atome_id: atome_id}
       @content = atomise(:content, formated_value)
     else
-        @content = atomise(:content, value)
+      @content = atomise(:content, value)
     end
     def send_to_renderer(renderer, value, password)
       case renderer
@@ -310,21 +307,6 @@ module Processors
     else
       @content&.read
     end
-    # if (@content&.read).instance_of?(Hash)
-    #   @content&.read
-    #   # alert "international mode : #{grab(:view).language}"
-    #   # required_language = self.language || grab(:view).language
-    #   # all_language_content=@content&.read
-    #   # alert @content&.read
-    #   # all_language_content.each do |key, value|
-    #   #    alert key
-    #   #  end
-    #   # all_language_content[:french]
-    # else
-    #   @content&.read
-    # end
-
-
   end
 
 end
