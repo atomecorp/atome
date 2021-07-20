@@ -93,7 +93,7 @@ atome_methods.each do |property_type, property|
       rendering = <<STRDELIM
 
 # lambda below to avoid mthod in method
-send_to_renderer = -> (renderer,value,password) do
+send_to_#{method_name}_renderer = -> (renderer,value,password) do
 case renderer
       when :html
       #{method_name}_html(value,password)
@@ -116,10 +116,10 @@ if $default_renderer.nil?
   #{method_name}_html(value,password)
 elsif $default_renderer.instance_of?(Array)
   $default_renderer.each do |renderer|
-send_to_renderer.call(renderer,value,password)
+send_to_#{method_name}_renderer.call(renderer,value,password)
   end
 else
-send_to_renderer.call($default_renderer,value,password)
+send_to_#{method_name}_renderer.call($default_renderer,value,password)
 
 end
 STRDELIM

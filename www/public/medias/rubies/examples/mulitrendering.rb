@@ -2,4 +2,5 @@
 
 renderer([:speech, :html])
 
-box()
+b=box({y: 33})
+b.x(666)
