@@ -16,7 +16,7 @@ ATOME.websocket("ws.atome.one", true)
 $renderer_list=[:html, :fabric,:headless,:speech, :three, :zim]
 $default_renderer=nil
 $renderer=[]
-$current_script="./medias/app/app.rb"
-$environment=:atome
+# $current_script="./medias/app/app.rb"
+# $environment=:atome
 
 

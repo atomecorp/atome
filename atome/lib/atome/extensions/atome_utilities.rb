@@ -425,3 +425,4 @@ def current_code code=nil
     $current_script
   end
 end
+

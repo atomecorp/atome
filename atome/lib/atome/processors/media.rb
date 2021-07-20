@@ -255,4 +255,66 @@ module Processors
     atomise(:temp, child_collected)
   end
 
+  def content_pre_processor(value, password)
+
+    @content = atomise(:content, value)
+    # treatment to get local version of text
+    if value.instance_of?(Hash) && type== :text
+      required_language = self.language || grab(:view).language
+      all_language_content=value
+      value= all_language_content[required_language]
+    end
+    def send_to_renderer(renderer, value, password)
+      case renderer
+      when :html
+        content_html(value, password)
+      when :fabric
+        content_fabric(value, password)
+      when :headless
+        content_headless(value, password)
+      when :speech
+        content_speech(value, password)
+      when :three
+        content_three(value, password)
+      when :zim
+        content_zim(value, password)
+      else
+        content_html(value, password)
+      end
+    end
+
+    if $default_renderer.nil?
+      content_html(value, password)
+    elsif $default_renderer.instance_of?(Array)
+      $default_renderer.each do |renderer|
+        send_to_renderer(renderer, value, password)
+      end
+    else
+      send_to_renderer($default_renderer, value, password)
+    end
+
+  end
+
+  def content_getter_processor
+    # alert  grab(:view).language
+    # if  self.type== :text
+    #   alert @content&.read
+    # end
+    # if (@content&.read).instance_of?(Hash)
+    #   @content&.read
+    #   # alert "international mode : #{grab(:view).language}"
+    #   # required_language = self.language || grab(:view).language
+    #   # all_language_content=@content&.read
+    #   # alert @content&.read
+    #   # all_language_content.each do |key, value|
+    #   #    alert key
+    #   #  end
+    #   # all_language_content[:french]
+    # else
+    #   @content&.read
+    # end
+    @content&.read
+
+  end
+
 end

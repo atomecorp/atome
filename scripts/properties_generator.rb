@@ -33,7 +33,7 @@ end
 
 def need_pre_processing
   %i[atome_id particle group container shape box star web circle text camera microphone midi text image video audio tool parent
-  child type shadow size drag visual noise say]
+  child type shadow size drag visual noise say content]
 end
 
 def need_processing
@@ -41,13 +41,13 @@ def need_processing
 end
 
 def getter_need_processing
-  %i[parent child].concat(is_atome)
+  %i[parent child content].concat(is_atome)
 end
 
 def no_rendering
   %i[atome_id group container shape box star web circle text image video audio tool parent child info example
   selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-  particle visual language active inactive noise engine render id preset say]
+  particle visual language active inactive noise engine render id preset say content]
 end
 
 batch_delete = <<STRDELIM
@@ -123,7 +123,6 @@ end
 STRDELIM
       # rendering = "#{method_name}_html(value,password)"
     end
-
     unless is_atome.include?(method_name)
       method_return = "self"
     end

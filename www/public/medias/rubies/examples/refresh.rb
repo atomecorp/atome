@@ -8,7 +8,7 @@ time=Time.now
 text({content: time, color: color, x:66, y: 66, atome_id: :text_1})
 c.color(color)
 c.touch do
-  # refresh
+  refresh
 end
 # Possible syntax are :
 # refresh("./medias/rubies/examples/animation.rb")
