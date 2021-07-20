@@ -378,26 +378,50 @@ end
 def refresh (params=nil)
   if params.nil?
     target = :all
-  elsif params.instance_of?(String)
+  elsif params.instance_of?(String) || params.instance_of?(Array)
     target = :all
     source = params
+
   else
     target = params[:target]
     source = params[:source]
   end
-  clear(:view)
   unless source
-    source = if $environment == :atome
-               "./medias/app/app.rb"
-             else
-               "./medias/e_app/app.rb"
-             end
+    source=current_code
   end
   if target == :all || target.nil?
+    clear(:view)
+    alert source
     reader(source) do |data|
       compile data
     end
   else
-    alert("refresh #{target} only!")
+    # # we  colect it's content
+    # collected_atome=[]
+    # grab(:view).child do |atome|
+    #   if atome.atome_id.to_s != target.to_s
+    #     collected_atome << atome
+    #   end
+    # end
+    # clear(:view)
+    # reader(source) do |data|
+    #   compile data
+    # end
+    #  collected_atome.each do |atome|
+    #    alert atome.atome_id
+    #    grab(atome.atome_id).delete
+    #    Atome.new(atome.properties)
+    #  end
+  end
+  # temp patch before using a DB to store current script
+  $current_script=source
+  # alert $current_script
+end
+
+def current_code code=nil
+  if code
+    $current_script=code
+  else
+    $current_script
   end
 end

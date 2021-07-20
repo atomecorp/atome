@@ -1,2 +1,2 @@
 # your code here ...
-require './app/scripts/examples.rb'
+require "./www/public/medias/app/scripts/examples.rb"

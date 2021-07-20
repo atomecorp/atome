@@ -61,10 +61,13 @@ module ProcessorHtml
   class_variable_set("@@http", Http.new) # you can access without offense
   def reader(filename, &proc)
     #  read remote file
-    @@http.get(filename, &proc)
-    # temp patch before using a DB to store current script
-    $current_script=filename
-
+    if filename.instance_of?(Array)
+      filename.each do |file|
+        @@http.get(file, &proc)
+      end
+    else
+      @@http.get(filename, &proc)
+    end
   end
 
   def path_getter_helper(value)

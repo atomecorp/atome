@@ -1,2 +1,3 @@
 # your code here ...
+alert  $current_script
 require './app/scripts/examples.rb'

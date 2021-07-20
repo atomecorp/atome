@@ -149,7 +149,8 @@ file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
     builder.build("./www/public/medias/e_app/eVe_lib.rb")
     builder.build("./www/public/medias/e_app/app.rb")
   else
-    builder.build(" ./www/public/medias/app/app.rb")
+    builder.build("./www/public/medias/app/atome_lib.rb")
+    builder.build("./www/public/medias/app/app.rb")
   end
   File.write(t.name, builder.to_s)
 end
