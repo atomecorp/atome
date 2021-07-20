@@ -391,7 +391,6 @@ def refresh (params=nil)
   end
   if target == :all || target.nil?
     clear(:view)
-    alert source
     reader(source) do |data|
       compile data
     end
