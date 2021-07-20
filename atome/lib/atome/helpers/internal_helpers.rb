@@ -9,7 +9,6 @@ module InternalHelpers
   end
 
   def properties_common(value, &proc)
-
     formatted_value=value
     if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
       property = {}

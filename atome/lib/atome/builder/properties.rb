@@ -6,7 +6,7 @@ class Quark
   end
 
   def read
-      @property
+    @property
   end
 
   # recipient for created atome
@@ -17,6 +17,13 @@ class Quark
 
   def to_s
     read.to_s
+  end
+
+  def language(international_content)
+    atome_id=@property.delete(:atome_id)
+    @property=@property.merge(international_content)
+    grab(atome_id).content(@property)
+    @property
   end
 
   def <<(property)
@@ -61,9 +68,10 @@ class Quark
       proc.call(grab(property)) if proc.is_a?(Proc)
     end
   end
+
   def each_with_index(&proc)
     @property.each_with_index do |property, index|
-      proc.call(grab(property),index) if proc.is_a?(Proc)
+      proc.call(grab(property), index) if proc.is_a?(Proc)
     end
   end
 
