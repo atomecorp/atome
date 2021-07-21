@@ -173,11 +173,15 @@ def renderer params = nil
 end
 
 def atome_require(file)
-  alert "atome_require message I replace atome_require with require to be able to load the file '#{file}'"
+  file = file.sub("./www/public/", "")
+  reader(file) do |data|
+    compile data
+  end
+  # alert "atome_require message I replace atome_require with require to be able to load the file '#{file}'"
 end
 
 def compile(code)
-  code = code.gsub("require ", "atome_require ")
+  code = code.gsub("require", "atome_require")
   eval(code)
 end
 
@@ -375,7 +379,7 @@ def reader(params, &proc)
   ATOME.reader(params, &proc)
 end
 
-def refresh (params=nil)
+def refresh (params = nil)
   if params.nil?
     target = :all
   elsif params.instance_of?(String) || params.instance_of?(Array)
@@ -387,7 +391,7 @@ def refresh (params=nil)
     source = params[:source]
   end
   unless source
-    source=current_code
+    source = current_code
   end
   if target == :all || target.nil?
     clear(:view)
@@ -413,13 +417,13 @@ def refresh (params=nil)
     #  end
   end
   # temp patch before using a DB to store current script
-  $current_script=source
+  $current_script = source
   # alert $current_script
 end
 
-def current_code code=nil
+def current_code code = nil
   if code
-    $current_script=code
+    $current_script = code
   else
     $current_script
   end
