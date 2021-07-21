@@ -169,7 +169,6 @@ def renderer params = nil
   else
     $default_renderer
   end
-
 end
 
 def atome_require(file)
@@ -181,7 +180,7 @@ def atome_require(file)
 end
 
 def compile(code)
-  code = code.gsub("require", "atome_require")
+  code = code.gsub("require ", "atome_require ")
   eval(code)
 end
 

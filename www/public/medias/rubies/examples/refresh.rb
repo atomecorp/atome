@@ -8,8 +8,7 @@ time=Time.now
 text({content: time, color: color, x:66, y: 66, atome_id: :text_1})
 c.color(color)
 c.touch do
-  refresh
-  # refresh("./medias/rubies/examples/refresh.rb")
+  refresh("./medias/rubies/examples/refresh.rb")
 end
 # Possible syntax are :
 # refresh #without arguments it refresh the current page
