@@ -1,5 +1,7 @@
 # example listen speech recognition
 
+t=text("Say box, then red then smooth, also try blue circle")
+
 listen(:english) do |sentence|
   t.content = sentence
   if sentence.include?("box")
