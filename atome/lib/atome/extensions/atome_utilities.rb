@@ -428,3 +428,7 @@ def current_code code = nil
   end
 end
 
+def listen(&proc)
+  ATOME.listen_html(&proc)
+end
+

@@ -9,6 +9,7 @@ require "atome/extensions/opal/opal_database"
 require "atome/extensions/opal/opal_generator.rb"
 require "atome/extensions/opal/opal_helpers"
 require "atome/extensions/opal/opal_io"
+require "atome/extensions/opal/opal_input"
 require "atome/extensions/opal/opal_timer"
 require "atome/extensions/opal/opal_video"
 require "atome/extensions/opal/opal_jquery"
@@ -173,6 +174,7 @@ require './atome/lib/atome/renderers/zim/properties/spatial.rb'
 require './atome/lib/atome/renderers/zim/properties/utility.rb'
 require './atome/lib/atome/renderers/zim.rb'
 # generated property
+require "atome/generated_methods/analyser"
 require "atome/generated_methods/communications"
 require "atome/generated_methods/effects"
 require "atome/generated_methods/events"

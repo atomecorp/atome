@@ -5,14 +5,8 @@ const atome = {
         p.ping(address, function (err, data) {
             if (err) {
                 Opal.eval(error);
-                // alert("server not ready");
-             // alert(error);
             } else {
                 Opal.eval(sucess);
-                // alert(sucess);
-                // alert("server ready");
-                // $.getScript("js/atome_libraries/web_socket_helper.js", function () {
-                // });
             }
         });
     },

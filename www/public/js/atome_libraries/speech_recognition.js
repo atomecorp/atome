@@ -1,8 +1,8 @@
 class UserRecognition {
-    constructor() {
+    constructor(proc) {
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const start_recognition = new SpeechRecognition();
-        this.recognition=start_recognition
+        this.recognition=start_recognition;
         start_recognition.continuous = true;
         start_recognition.interimResults = true;
         start_recognition.lang = 'fr-FR';
@@ -11,12 +11,10 @@ class UserRecognition {
                 .map(result => result[0])
                 .map(result => result.transcript)
                 .join('');
-            console.log(transcript);
+            Opal.JSUtils.$speech_recognition_callback(transcript,proc);
         });
+        this.recognition.start();
     }
 }
 
-speechAnalysis =new UserRecognition
-$("#stoper").click(function(){
-    speechAnalysis.recognition.start();
-});
+

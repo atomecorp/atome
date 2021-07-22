@@ -1,4 +1,9 @@
-module FabricProperty
+module PropertyHtml
+
+  def listen_html(&proc)
+    js_speech_recognition(&proc)
+  end
+
   # def camera_html(value="")
   #   value
   # end

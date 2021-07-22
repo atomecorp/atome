@@ -1,4 +1,5 @@
 module JSUtils
+  # speech synthesis
   def language_code(language_code)
     case language_code
     when :french
@@ -38,5 +39,6 @@ module JSUtils
     voice_number = language_code(params[:voice])
     `say(#{sentence}, #{voice_number})`
   end
+
 
 end

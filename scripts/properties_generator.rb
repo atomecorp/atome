@@ -1,4 +1,5 @@
 def atome_methods
+  analyser=%i[listen]
   communication = %i[share]
   effect = %i[blur shadow smooth mask clip noise]
   event = %i[touch drag over key scale drop over virtual_event]
@@ -13,7 +14,7 @@ def atome_methods
   inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven tag selector preset monitor select dynamic condition treatment render engine]
   material = %i[color opacity border overflow fill]
-  { spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
+  { analyser: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
     medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity,
     events: event, generator: generator }
 end
