@@ -1,19 +1,30 @@
 class UserRecognition {
     constructor(language,proc) {
-       // var  language='fr-FR';
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const start_recognition = new SpeechRecognition();
-        this.recognition=start_recognition;
-        start_recognition.continuous = true;
-        start_recognition.interimResults = true;
-        start_recognition.lang = language;
-        start_recognition.addEventListener('result', e => {
+        const recognition = new SpeechRecognition();
+        this.recognition=recognition;
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = language;
+        recognition.addEventListener('result', e => {
             const transcript = Array.from(e.results)
                 .map(result => result[0])
                 .map(result => result.transcript)
                 .join('');
             Opal.JSUtils.$speech_recognition_callback(transcript,proc);
         });
+        this.recognition.onstart = function () {
+            console.log("started");
+        };
+
+        this.recognition.onend = function () {
+            console.log("stop");
+        };
+
+        this.recognition.onerror = function (event) {
+            recognition.start();
+            console.log(event);
+        };
         this.recognition.start();
     }
 }
