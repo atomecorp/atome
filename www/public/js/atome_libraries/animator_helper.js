@@ -4,7 +4,6 @@ class AnimationHelper{
     }
 }
 animator = {
-
     is_mobile: function () {
         atome.jsIsMobile();
     },
