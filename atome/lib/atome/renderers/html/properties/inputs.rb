@@ -1,7 +1,8 @@
 module PropertyHtml
 
-  def listen_html(&proc)
-    js_speech_recognition(&proc)
+  def listen_html(local_lang,&proc)
+
+    js_speech_recognition(local_lang,&proc)
   end
 
   # def camera_html(value="")

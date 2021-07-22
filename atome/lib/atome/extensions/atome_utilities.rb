@@ -428,7 +428,10 @@ def current_code code = nil
   end
 end
 
-def listen(&proc)
-  ATOME.listen_html(&proc)
+def listen(local_lang, &proc)
+  unless local_lang
+    local_lang = grab(:view).language
+  end
+  ATOME.listen_html(local_lang,&proc)
 end
 

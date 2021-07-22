@@ -40,5 +40,4 @@ module JSUtils
     `say(#{sentence}, #{voice_number})`
   end
 
-
 end
