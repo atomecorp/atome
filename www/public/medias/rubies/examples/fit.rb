@@ -7,6 +7,7 @@ b.touch do
 end
 b2 = box({ x: 333 })
 t = b2.text({ content: "hit the red or orange circle", visual: :Impact })
+# t.edit(true)
 t.width(96)
 
 c0 = circle({ size: 33, x: 96, color: :yellowgreen })

@@ -1,6 +1,6 @@
 # touch example
 
-b = box({ x: 96, y: 6, text: { content: "on mouse down", center: true, color: :black, size: 12 } })
+b = box({ x: 96, y: 6, text: { content: "on mouse down", center: true, color: :black } })
 b.touch({ option: :down }) do
   b.color(:orange)
   b.x = b.x + 10
@@ -10,7 +10,7 @@ t.touch do
   b.touch({remove: :true })
 end
 
-c = circle({ x: 33, y: 96, text: { content: "on mouse up", center: true, color: :black, size: 12 } })
+c = circle({ x: 33, y: 96, text: { content: "on mouse up", center: true, color: :black } })
 c.touch({ option: :up}) do
   anim({
          start: {x: 0, y: 0, smooth: 0, rotate: 20},

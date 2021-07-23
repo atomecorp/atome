@@ -1,7 +1,7 @@
 # repeat
 
 b=box({x:300, y: 33})
-t=text({content: "click me to kill the repeat process", width: 33})
+t=text({content: "click me to kill the repeat process"})
 countdown=text("")
 countdown.y(66)
 repeater= repeat 0.1, 300 do |evt|

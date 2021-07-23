@@ -8,7 +8,7 @@ module DefaultValues
     box = visual.merge(shape).merge({ color: :lightgray, preset: :box })
     star = visual.merge(shape).merge({ color: :red, preset: :star, renderer: :fabric })
     circle = visual.merge(shape).merge({ color: :red, content: { points: 4, tension: "100%" }, preset: :circle })
-    text = visual.merge({x: 0, width: 333, height: 33,type: :text, color: { red: 0.69, green: 0.69, blue: 0.69 }, content: lorem, edit: false, visual: {alignment: :left} })
+    text = visual.merge({x: 0, width: :auto, height: :auto,type: :text, color: { red: 0.69, green: 0.69, blue: 0.69 }, content: lorem, edit: false, visual: {alignment: :left} })
     image = visual.merge({ type: :image, content: :atome })
     video = visual.merge({ type: :video, content: :lion_king })
     audio = visual.merge({ type: :audio, content: :riff })

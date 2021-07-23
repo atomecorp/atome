@@ -1,6 +1,6 @@
 # Scroll
 
-t = text({content: "drag the circle out the window",width: 39, x: 66, fixed: true})
+t = text({content: "drag the circle out the window", x: 66, fixed: true})
 c = circle({x: 96, y: 96})
 c.drag(true)
 
