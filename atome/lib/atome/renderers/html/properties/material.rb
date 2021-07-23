@@ -80,8 +80,6 @@ module PropertyHtml
     # important @width and @height are also update when setting content (media.rb content_html line 15 1§)
     @width = atomise(:width, JSUtils.client_width(atome_id))
     @height = atomise(:height, JSUtils.client_height(atome_id))
-    # we reload the keyboard shortcut
-    kickstart_keyboard_shortcut
   end
 
   def color_html(values)

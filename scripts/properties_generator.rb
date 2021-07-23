@@ -2,7 +2,7 @@ def atome_methods
   analyser=%i[listen]
   communication = %i[share]
   effect = %i[blur shadow smooth mask clip noise]
-  event = %i[touch drag over key scale drop over virtual_event]
+  event = %i[touch drag over key scale drop virtual_event]
   geometry = %i[width height size ratio]
   generator = %i[say]
   helper = %i[tactile display]
