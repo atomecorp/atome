@@ -127,8 +127,47 @@ There two possibles ways to build an atome object:
 		
 adding a js functionality 
 	how to communicate with ruby
-	
-	
 
+create a complex api using js ruby and callback
+-
+        
+- 1 create a new file in /www/public/js/atome_libraries/ ex: "dummy_helper.js" 
+  
+- 2 add a class (please note that you must at least pass pass a proc argument to create a callback. ex :
+    
+        class DummyClass {
+            constructor(args1,proc) {
+                treated_datas="the result is :  "+args1
+                Opal.JSUtils.$dummy_callback(treated_datas,proc);
+            }
+        }
+- 3 create an opal helper in /atome/lib/atome/extensions/opal/ ex: opal_dummy.rb
+  
+- 4 add the above file (dummy_opal.rb) to the require list in /atome/lib/atome.rb ex :
+  
+        require "atome/extensions/opal/opal_dummy"
+  
+- 5 in this file you'll create JSUtils module then add two methods within : 
+  1 that call the js script newly created: "dummy_helper.js" and the second that receive the callback: "dummy_callback", ex :
 
+      module JSUtils
+        def js_speech_recognition(my_arg, &proc)
+          `dummy_helper(#{my_arg},#{proc})`
+        end
+      
+        def self.dummy_callback(my_arg, proc)
+          proc.call(my_arg) if proc.is_a?(Proc)
+        end
+  end
+
+-6 now open the /scripts/properties_generator.rb file and add the new method you want to be generated.
+ex : "dummy" in  the most corresponding category found at the top the page  ex in :misc=%i[] so misc=%i[dummy]
+
+- 7 at least you have to manually create a rendering methods in /atome/lib/atome/renderers/html/properties and other renderer if you want (fabric,three, zim, ...) ex: 
+
+      module FabricProperty
+        def dummy_html(value)
+          puts data
+        end
+      end
 	
