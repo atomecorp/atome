@@ -143,25 +143,25 @@ module PropertyHtml
   end
 
   def key_html(value)
-    option = value[:option]
+    options = value[:options]
     # the lines below is important for the object to get focus if not keypress wont be triggered
     atome = grab(atome_id)
     atome.edit(true)
-    if option == :down
+    if options == :down
       jq_get(atome_id).on("keydown") do |evt|
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
       end
-    elsif option == :up
+    elsif options == :up
       jq_get(atome_id).on("keyup") do |evt|
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
         unless self.type == :text || self.type == :particle
           evt.prevent_default
         end
       end
-    elsif option == :stop
+    elsif options == :stop
       jq_get(atome_id).unbind("keypress")
       jq_get(atome_id).unbind("keydown")
       jq_get(atome_id).unbind("keyup")

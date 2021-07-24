@@ -62,6 +62,8 @@ html, body {
     -moz-user-drag: none;
     -o-user-drag: none;
     user-drag: none;
+    caret-color: lightgrey;
+    caret-shape: bar;
 }
 
 .ui-selected{

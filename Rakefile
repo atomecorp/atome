@@ -276,7 +276,8 @@ end
 desc "production browser"
 task 'production::browser': required_js_lib do
   production opal, opal_jquery, parser, atome
-  sh "cordova run browser"
+  sh "cordova run browser --release"
+
 end
 
 desc "production osx"

@@ -30,3 +30,15 @@ c2.touch do
   b2.size({ fit: t.atome_id, margin: 66 })
   t.center(true)
 end
+
+
+# text fit box size
+
+tt=text ({ content: "Super", x: 333, y: 120 } )
+tt.border(({ color: :green, thickness: 3, pattern: :solid }))
+bb=box({x:333, y: 333, width: 333, height: 150})
+bb.text("touch me to make the upper text fit my size")
+bb.touch do
+  tt.size({ fit: bb.atome_id})
+  tt.visual({fit: :width})
+end

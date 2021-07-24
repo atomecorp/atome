@@ -1,4 +1,20 @@
 const atome = {
+    select_text_content: function (atome_id, selection) {
+        document.querySelector('#'+atome_id).onfocus = function(e) {
+            var el = this;
+            requestAnimationFrame(function() {
+                selectElementContents(el);
+            });
+        };
+
+        function selectElementContents(el) {
+            var range = document.createRange();
+            range.selectNodeContents(el);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    },
     //address="https://github.com"
     jsPing: function (address, sucess, error) {
         var p = new Ping();

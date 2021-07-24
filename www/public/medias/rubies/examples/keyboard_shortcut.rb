@@ -1,6 +1,6 @@
 # keyboard shortcut
 
-grab(:view).key({option: :down}) do |evt|
+grab(:view).key({options: :down}) do |evt|
   if evt.alt_key
     evt.stop_propagation
     evt.stop_immediate_propagation

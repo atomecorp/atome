@@ -256,7 +256,7 @@ end
 
 def kickstart_keyboard_shortcut
   # keyboard short cut
-  grab(:device).key({ option: :down }) do |evt|
+  grab(:device).key({ options: :down }) do |evt|
     if evt.alt_key
       evt.stop_propagation
       evt.stop_immediate_propagation

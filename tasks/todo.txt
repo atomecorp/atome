@@ -1,3 +1,4 @@
+- enhance : standardize :option argument that is sometimes singular somtimes plural (keep plural everywherer)
 - debug web api so it'll accept atome_id
 - debug web api so we can set width and height (fixed values for now)
 -  demo 'authorisation' cause crash when playing the next demo

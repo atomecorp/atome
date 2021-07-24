@@ -28,6 +28,11 @@ module JSUtils
     `fitTextHeight(#{atome_id}) `
   end
 
+  def self.select_text_content(atome_id, selection)
+    # alert selection
+    `atome.select_text_content(#{atome_id}, #{selection})`
+  end
+
   # helper to check if we have a tactile device
   def mobile?
     `atome.jsIsMobile()`

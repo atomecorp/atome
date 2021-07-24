@@ -2,7 +2,7 @@ module PropertyHtml
 
   def visual_html(values)
     # we must unbind all keyboard shortcuts to make it work
-    grab(:device).key(option: :stop)
+    grab(:device).key(options: :stop)
     if values.instance_of?(Integer) || values.instance_of?(Number) || values.instance_of?(Float)
       values = { size: values }
     elsif values.instance_of?(String)
@@ -22,6 +22,7 @@ module PropertyHtml
     width_get = values[:width]
     haight_get = values[:height]
     alignment_get = values[:alignment]
+    selection= values[:select]
     wrap_get = values[:wrap]
     fit_get = values[:fit]
 
@@ -68,6 +69,12 @@ module PropertyHtml
     # todo add edit and word break if the were set before
 
     jq_get(atome_id).css("text-align", alignment_get)
+
+    if selection
+      # we select the text
+      # alert selection
+      JSUtils.select_text_content(atome_id, selection)
+    end
     case wrap_get
     when " "
       jq_get(atome_id).css("word-wrap", "break-word")
