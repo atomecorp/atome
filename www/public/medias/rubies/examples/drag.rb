@@ -16,7 +16,7 @@ b.drag(true) do |evt|
 end
 dragger=box({width: 96, height: 96, x:333, y: 200})
 handle=dragger.box({width: 96, height: 16, color: :orange, atome_id: :the_handle})
-handle.text({content: "drag me from here", size: 12, color: :black})
+handle.text({content: "drag me from here", visual: 12, color: :black})
 dragger.drag({handle: :the_handle}) do |evt|
   t.content("I can only be dragged using the bar above")
 end

@@ -1,8 +1,8 @@
 # overflow
 
 
-b = text({x: 369, y: 50, content: "touch me to change text overflow"})
-container=circle({width:300, height: 300})
+b = text({x: 369, y: 30, content: "touch me to change text overflow"})
+container=circle({width:300, height: 300, y: 99})
 container.text({content: lorem, x: 66, width: 300})
 i=0
 b.touch do

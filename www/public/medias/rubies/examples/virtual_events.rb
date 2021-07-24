@@ -10,7 +10,7 @@ c.touch do
   end
 end
 
-t=text({content:  "touch me send a virtual event", x: 99})
+t=text({content:  "touch me send a virtual touch to the circle", x: 99})
 
 t.touch do
   grab(:circle_1 ).virtual_event({ event: :touch ,x: 30, y:30})

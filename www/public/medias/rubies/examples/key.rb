@@ -12,7 +12,7 @@ c.touch do
 end
 
 c2=circle({width: 300,y: 300, color: :orange})
-t2=c2.text({content: "Here key will be captured on key up!", width: 33, color: :black, x: 33, y: 15 , size: 16, center: true})
+t2=c2.text({content: "Here key will be captured on key up!", color: :black, x: 3, y: 15 , center: true})
 c2.key({options: :up}) do |evt|
   t2.content(evt.key_code)
   t2.center(true)
