@@ -14,4 +14,8 @@ class Atome
     end
     atomes_found
   end
+
+  def address(&proc)
+    address_html(&proc)
+  end
 end

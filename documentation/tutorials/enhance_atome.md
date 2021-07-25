@@ -128,7 +128,7 @@ There two possibles ways to build an atome object:
 adding a js functionality 
 	how to communicate with ruby
 
-create a complex api using js ruby and callback
+create a complex api using js, ruby and a callback
 -
         
 - 1 create a new file in /www/public/js/atome_libraries/ ex: "dummy_helper.js" 
@@ -140,7 +140,9 @@ create a complex api using js ruby and callback
                 treated_datas="the result is :  "+args1
                 Opal.JSUtils.$dummy_callback(treated_datas,proc);
             }
-        }
+
+[comment]: <> (        })
+  
 - 3 create an opal helper in /atome/lib/atome/extensions/opal/ ex: opal_dummy.rb
   
 - 4 add the above file (dummy_opal.rb) to the require list in /atome/lib/atome.rb ex :

@@ -195,21 +195,31 @@ module Processors
   end
 
   def web_pre_processor(value, password = nil)
+
     if value.instance_of?(Hash)
-      type_found = value[:type]
-      case type_found
-        #Time.now is used to force refresh if the image changes
-      when :iframe
-        value = "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
-      when :image
-        #Time.now is used to force refresh if the image changes
-        value = "<image class='atome' width ='100%' height= '100%' src='#{value[:path]}?#{Time.now}'/>"
-      when :audio
-      when :video
+      if value[:type]
+        type_found = value[:type]
+        case type_found
+          #Time.now is used to force refresh if the image changes
+        when :iframe
+          value = "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
+        when :image
+          #Time.now is used to force refresh if the image changes
+          value = "<image class='atome' width ='100%' height= '100%' src='#{value[:path]}?#{Time.now}'/>"
+        when :audio
+        when :video
+        else
+          value = "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
+
+        end
+        media_pre_processor(:web, :web, value, password)
+      elsif value[:address]
+        JSUtils.adress(value[:address])
       else
       end
+
     end
-    media_pre_processor(:web, :web, value, password)
+
   end
 
   def web_getter_processor
@@ -257,17 +267,18 @@ module Processors
 
   def content_pre_processor(value, password)
     # treatment to get local version of text
-    if value.instance_of?(Hash) && type== :text
+    if value.instance_of?(Hash) && type == :text
       @content = atomise(:content, value.merge(atome_id: atome_id))
       required_language = self.language || grab(:view).language
-      all_language_content=value
-      value= all_language_content[required_language]
-    elsif  type== :text
-      formated_value={default: value, atome_id: atome_id}
+      all_language_content = value
+      value = all_language_content[required_language]
+    elsif type == :text
+      formated_value = { default: value, atome_id: atome_id }
       @content = atomise(:content, formated_value)
     else
       @content = atomise(:content, value)
     end
+
     def send_to_renderer(renderer, value, password)
       case renderer
       when :html

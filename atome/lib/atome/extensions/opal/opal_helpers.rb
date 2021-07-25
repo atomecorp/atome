@@ -59,4 +59,17 @@ module JSUtils
     `atome.jsPing(#{adress},#{success}, #{error})`
   end
 
+  def self.adress_callback(datas, proc)
+    proc.call(datas) if proc.is_a?(Proc)
+  end
+
+  def self.on_adress_change(&proc)
+    `atome.jsAdress(#{proc})`
+  end
+
+  def self.adress(adress)
+    `history.pushState({ atome: #{adress} }, "page_label", "../"+#{adress})`
+  end
+
+
 end

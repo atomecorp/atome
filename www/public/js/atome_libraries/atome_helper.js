@@ -1,4 +1,12 @@
 const atome = {
+    jsAdress: function (proc) {
+        window.addEventListener('popstate', function (event) {
+            // var address_bar_content= "location: " + document.location + ", state: " + JSON.stringify(event.state);
+            // var address_bar_content={location:  document.location, state: JSON.stringify(event.state)};
+            var address_bar_content=Opal.hash({location:  document.location, state: JSON.stringify(event.state)});
+            Opal.JSUtils.$adress_callback(address_bar_content,proc);
+        });
+    },
     select_text_content: function (atome_id, selection) {
         document.querySelector('#'+atome_id).onfocus = function(e) {
             var el = this;
