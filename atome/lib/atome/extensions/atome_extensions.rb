@@ -18,4 +18,5 @@ class Atome
   def address(&proc)
     address_html(&proc)
   end
+
 end

@@ -71,5 +71,4 @@ module JSUtils
     `history.pushState({ atome: #{adress} }, "page_label", "../"+#{adress})`
   end
 
-
 end
