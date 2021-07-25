@@ -765,3 +765,108 @@ function example_test() {
         ///code here
     });
 }
+
+//////////////////////////////// file operation tests /////////////////
+
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+    // function store_file(fileName){
+    //     var type = window.TEMPORARY;
+    //     var size = 5*1024*1024;
+    //     window.requestFileSystem(type, size, successCallback, errorCallback);
+    // }
+    //
+    // store_file("toto");
+    // function createFile(filename) {
+    //     var type = window.TEMPORARY;
+    //     var size = 5*1024*1024;
+    //     window.requestFileSystem(type, size, successCallback, errorCallback);
+    //     function successCallback(fs) {
+    //         fs.root.getFile(filename, {create: true, exclusive: true}, function(fileEntry) {
+    //             // alert('File creation successfull!');
+    //         }, errorCallback);
+    //     }
+    //     function errorCallback(error) {
+    //         // alert("ERROR: " + error.code)
+    //     }
+    // }
+
+    function writeFile(filename, content) {
+        var type = window.TEMPORARY;
+        var size = 5*1024*1024;
+        window.requestFileSystem(type, size, successCallback, errorCallback);
+
+        function successCallback(fs) {
+            fs.root.getFile(filename, {create: true}, function(fileEntry) {
+
+                fileEntry.createWriter(function(fileWriter) {
+                    fileWriter.onwriteend = function(e) {
+                        // alert('Write completed.');
+                    };
+
+                    fileWriter.onerror = function(e) {
+                        // alert('Write failed: ' + e.toString());
+                    };
+
+                    var blob = new Blob([content], {type: 'text/plain'});
+                    fileWriter.write(blob);
+                }, errorCallback);
+            }, errorCallback);
+        }
+
+        function errorCallback(error) {
+            // alert("ERROR: " + error.code);
+        }
+    }
+
+    function readFile(filename) {
+        var type = window.TEMPORARY;
+        var size = 5*1024*1024;
+        window.requestFileSystem(type, size, successCallback, errorCallback);
+
+        function successCallback(fs) {
+            fs.root.getFile(filename, {}, function(fileEntry) {
+
+                fileEntry.file(function(file) {
+                    var reader = new FileReader();
+
+                    reader.onloadend = function(e) {
+                         fileReaderCallBack(this.result);
+                    };
+                    reader.readAsText(file);
+                }, errorCallback);
+            }, errorCallback);
+        }
+
+        function errorCallback(error) {
+            console.log("file reader error: " + error.code);
+        }
+    }
+
+    function removeFile(filename) {
+        var type = window.TEMPORARY;
+        var size = 5*1024*1024;
+        window.requestFileSystem(type, size, successCallback, errorCallback);
+        function successCallback(fs) {
+            fs.root.getFile(filename, {create: false}, function(fileEntry) {
+                fileEntry.remove(function() {
+                    // alert('File removed.');
+                }, errorCallback);
+            }, errorCallback);
+        }
+
+        function errorCallback(error) {
+            // alert("ERROR: " + error.code);
+        }
+    }
+    function fileReaderCallBack(filecontent){
+        alert (filecontent);
+    }
+    // createFile("tototo.rb");
+    // writeFile("totototi.rb", "my content good");
+    // readFile("tototo.rb");
+    // removeFile("totototi.rb");
+
+}

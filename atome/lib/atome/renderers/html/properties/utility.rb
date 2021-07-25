@@ -93,7 +93,8 @@ module PropertyHtml
   # end
 
   def edit_html(value)
-    if value == true
+    case value
+    when true
       jq_get(atome_id).attr("contenteditable", "true")
       jq_get(atome_id).css("-webkit-user-select", "text")
       jq_get(atome_id).css("-khtml-user-select", "text")
@@ -102,11 +103,13 @@ module PropertyHtml
       jq_get(atome_id).css("user-select: text", "text")
       # bind key to save the content
       jq_get(atome_id).on(:keyup) do
-        new_content=jq_get(atome_id).text
-        @content=atomise(:content,new_content)
+        new_content = jq_get(atome_id).html
+        new_content = new_content.gsub("<br>", "\n").gsub("</div>", "").gsub("<div>", "\n")
+        current_language = self.language || grab(:view).language
+        @content = atomise(:content, {current_language=>  new_content })
       end
 
-    elsif value == false
+    when false
       jq_get(atome_id).attr("contenteditable", "false")
       jq_get(atome_id).css("-webkit-user-select", "none")
       jq_get(atome_id).css("-khtml-user-select", "none")
@@ -145,9 +148,10 @@ module PropertyHtml
   end
 
   def select_html(value)
-    if value == :destroy
+    case value
+    when :destroy
       jq_get(atome_id).selectable(:destroy)
-    elsif value == :disable
+    when :disable
       jq_get(atome_id).selectable(:disable)
     else
       proc = value[:proc]

@@ -1,3 +1,4 @@
+- todo text when edited lose internationalisation, we must add curent languqga before saving
 - inline video iOS
 - text align bug (visual: {alignement :left}) doesn't work
 - Background video

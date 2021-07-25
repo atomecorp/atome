@@ -1,3 +1,4 @@
+- remove atome_id from content property when read also replace default in content with current language found in grab(:view).language
 - bug when detach then re attach children are not restored
 - enhance : standardize :option argument that is sometimes singular somtimes plural (keep plural everywherer)
 - debug web api so it'll accept atome_id

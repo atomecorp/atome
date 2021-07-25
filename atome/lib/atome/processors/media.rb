@@ -313,7 +313,11 @@ module Processors
   def content_getter_processor
     # alert  grab(:view).language
     if self.type == :text
-      # @content=@content+(@content&.read)+atome_id
+      # if  @content.read.instance_of?(Hash)
+      #   @content.read[:default]
+      # else
+      #   @content
+      # end
       @content
     else
       @content&.read
