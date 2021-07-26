@@ -870,7 +870,9 @@ function onDeviceReady() {
     // removeFile("totototi.rb");
 
 }
-
+// navigator.geolocation.getCurrentPosition(function(position) {
+//     alert ("kjh");
+// });
 
 // function map(id,longitude, lattitude,){
 //     if ("geolocation" in navigator) {

@@ -1,5 +1,7 @@
 const atome = {
     jsMap: function (id,longitude, lattitude,) {
+
+
         if ("geolocation" in navigator) {
             if (longitude){
                 var mymap = L.map(id).setView([longitude, lattitude], 6);
@@ -14,18 +16,49 @@ const atome = {
                 $(".leaflet-control-attribution").remove();
             }
             else{
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var mymap = L.map(id).setView([position.coords.latitude, position.coords.longitude], 15);
-                    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-                        maxZoom: 18,
-                        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-                            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                        id: 'mapbox/streets-v11',
-                        tileSize: 512,
-                        zoomOffset: -1
-                    }).addTo(mymap);
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position){
+                        var latitude = position.coords.latitude;
+                        var longitude = position.coords.longitude;
+                    });
+
+
+                    var map = L.map(id);
+
+                    L.tileLayer('http://{s}.tile.cloudmade.com/1cc75fcc8e2243d1b2f6aab1e5850be1/998/256/{z}/{x}/{y}.png', {
+                        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+                        maxZoom: 18
+                    }).addTo(map);
+
+                    map.locate({setView: true, maxZoom: 16});
+
+                    function onLocationFound(e) {
+                        var radius = e.accuracy / 2;
+
+                        L.marker(e.latlng).addTo(map)
+                            .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+                        L.circle(e.latlng, radius).addTo(map);
+                    }
+
+                    map.on('locationfound', onLocationFound);
+
+                }else {
+                    alert("Geolocation API is not supported in your browser. :(");
+                }
                     $(".leaflet-control-attribution").remove();
-                });
+                // navigator.geolocation.getCurrentPosition(function(position) {
+                //     var mymap = L.map(id).setView([position.coords.latitude, position.coords.longitude], 15);
+                //     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                //         maxZoom: 18,
+                //         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                //             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                //         id: 'mapbox/streets-v11',
+                //         tileSize: 512,
+                //         zoomOffset: -1
+                //     }).addTo(mymap);
+                //     $(".leaflet-control-attribution").remove();
+                // });
             }
 
         } else {
