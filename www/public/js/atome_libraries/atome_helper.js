@@ -1,3 +1,12 @@
+function onLocationFound(e) {
+    var radius = e.accuracy / 2;
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+}
+
 const atome = {
     jsMap: function (id,longitude, lattitude,) {
 
@@ -26,20 +35,13 @@ const atome = {
                     var map = L.map(id);
 
                     L.tileLayer('http://{s}.tile.cloudmade.com/1cc75fcc8e2243d1b2f6aab1e5850be1/998/256/{z}/{x}/{y}.png', {
-                        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+                        // attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
                         maxZoom: 18
                     }).addTo(map);
 
                     map.locate({setView: true, maxZoom: 16});
 
-                    function onLocationFound(e) {
-                        var radius = e.accuracy / 2;
 
-                        L.marker(e.latlng).addTo(map)
-                            .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-                        L.circle(e.latlng, radius).addTo(map);
-                    }
 
                     map.on('locationfound', onLocationFound);
 
