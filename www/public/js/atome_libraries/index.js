@@ -910,3 +910,8 @@ function onDeviceReady() {
 //     }
 //
 // }
+
+
+
+
+

@@ -20,7 +20,6 @@ module PropertyHtml
         i += 1
       end
     when :child
-
     else
       child.each do |property|
         # we exclude the list from the list of the child

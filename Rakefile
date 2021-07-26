@@ -170,12 +170,12 @@ end
 # rm_r "www/public/medias/e_rubies/tools", force: true
 # FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
 #to cleanup all generated files
-# cleanup_temp_files(temp_dir)
-# generate_methods
-# generate_demos_list
-# update_opal_libraries
-# # # # #to force update media_list uncomment below
-# update_medias_list(temp_dir)
+cleanup_temp_files(temp_dir)
+generate_methods
+generate_demos_list
+update_opal_libraries
+# # # #to force update media_list uncomment below
+update_medias_list(temp_dir)
 
 
 
