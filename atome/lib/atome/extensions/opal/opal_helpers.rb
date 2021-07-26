@@ -71,4 +71,10 @@ module JSUtils
     `history.pushState({ atome: #{adress} }, "page_label", "../"+#{adress})`
   end
 
+  def self.map(atome_id,longitude,lattitude)
+    `atome.jsMap(#{atome_id},#{longitude},#{lattitude})`
+  end
+
+
+
 end
