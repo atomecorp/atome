@@ -53,7 +53,8 @@ def demo_reel(demo_list)
   bluegreen_gradient=[ { red: 0.3, green: 0.1, blue: 0.9 },{ red: 0.3, green: 0.1, blue: 0.6 }]
   Background.theme(bluegreen_gradient)
   clear(:view)
-  demo_list.each_with_index do |demo, index|
+  sorted_list=demo_list.sort
+  sorted_list.each_with_index do |demo, index|
     the_code = text({ content: "#{index} : " + demo[0], y: 20 * index,  visual: {alignment: :left, size: 15} })
     the_code.touch do
       run_demo(demo[1])
@@ -66,6 +67,5 @@ end
 
 ATOME.reader("./medias/rubies/examples/!demos.rb") do |data|
     demos = compile(data)
-    demos=demos.sort
     demo_reel(demos)
   end
