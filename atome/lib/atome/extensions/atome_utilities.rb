@@ -434,3 +434,6 @@ def listen(local_lang, &proc)
   ATOME.listen_html(local_lang,&proc)
 end
 
+def meteo(location, &proc)
+  ATOME.meteo_html(location,&proc)
+end

@@ -13,7 +13,10 @@ module PropertyHtml
   end
 
   def calendar_html(params)
-
     JSUtils.calendar(atome_id, params)
+  end
+
+  def meteo_html(location,&proc)
+    JSUtils.meteo(location,&proc)
   end
 end

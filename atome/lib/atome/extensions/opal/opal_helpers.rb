@@ -79,5 +79,12 @@ module JSUtils
     `new CalendarHelper(#{atome_id}, #{params})`
   end
 
+  def self.meteo_callback(datas,proc)
+    proc.call(datas) if proc.is_a?(Proc)
+  end
+
+  def self.meteo(location,&proc)
+    `new MeteoHelper(#{location}, #{proc})`
+  end
 
 end

@@ -1,7 +1,6 @@
 module PropertyHtml
 
   def listen_html(local_lang,&proc)
-
     js_speech_recognition(local_lang,&proc)
   end
 
