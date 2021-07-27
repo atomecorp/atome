@@ -75,6 +75,9 @@ module JSUtils
     `atome.jsMap(#{atome_id},#{longitude},#{lattitude})`
   end
 
+  def self.calendar(atome_id, params)
+    `new CalendarHelper(#{atome_id}, #{params});`
+  end
 
 
 end

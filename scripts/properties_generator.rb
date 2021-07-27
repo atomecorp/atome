@@ -13,7 +13,7 @@ def atome_methods
              name visual active inactive]
   inputs = %i[camera microphone midi keyboard]
   utility = %i[edit record enliven tag selector preset monitor select dynamic condition treatment render engine]
-  misc=%i[map]
+  misc=%i[map calendar]
   material = %i[color opacity border overflow fill]
   { analyser: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
     medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity,

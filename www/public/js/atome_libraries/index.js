@@ -73,6 +73,8 @@ videoHelper = new VideoHelper();
 //audioHelper
 audioHelper = new AudioHelper(audioEventListener);
 
+
+
 window.ondragover = function (e) {
     e.preventDefault();
 };
