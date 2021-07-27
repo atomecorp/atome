@@ -66,5 +66,6 @@ end
 
 ATOME.reader("./medias/rubies/examples/!demos.rb") do |data|
     demos = compile(data)
+    demos=demos.sort
     demo_reel(demos)
   end
