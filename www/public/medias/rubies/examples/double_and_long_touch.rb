@@ -18,3 +18,6 @@ c.touch ({ option: :long, delay: 1 }) do
     c.color=:red
   end
 end
+
+# delay(in seconds) is optional and set latency before tow touchs or the time to wait
+
