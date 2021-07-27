@@ -76,7 +76,7 @@ module JSUtils
   end
 
   def self.calendar(atome_id, params)
-    `new CalendarHelper(#{atome_id}, #{params});`
+    `new CalendarHelper(#{atome_id}, #{params})`
   end
 
 

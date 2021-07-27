@@ -4,6 +4,7 @@ module PropertyHtml
       jq_get(atome_id).unbind("drag touchstart mousedown")
     else
       option = value[:option]
+      delay = value[:delay] || 1.2
       case option
       when :down
         jq_get(atome_id).on("touchstart mousedown") do |evt|
@@ -22,7 +23,7 @@ module PropertyHtml
       when :long
         waiter = ""
         jq_get(atome_id).on("touchstart mousedown") do |evt|
-          waiter = ATOME.wait 1.2 do
+          waiter = ATOME.wait delay do
             unless drag && drag[:drag] == :moving
               if value[:stop]
                 evt.stop_propagation
@@ -34,6 +35,29 @@ module PropertyHtml
         jq_get(atome_id).on("touchend mouseup") do
           ATOME.clear({ wait: waiter })
         end
+      when :double
+        ready = false
+        jq_get(atome_id).on("touchstart mousedown") do |evt|
+          if ready == false
+            @touch_counter = 0
+            ready=true
+          end
+          waiter=ATOME.wait delay do
+            ready = false
+            @touch_counter = 0
+          end
+          if @touch_counter >= 1
+            value[:proc].call(evt) if value[:proc].is_a?(Proc)
+            clear({wait: waiter})
+            ready = false
+            @touch_counter = 0
+          end
+          @touch_counter += 1
+        end
+        jq_get(atome_id).on("touchend mouseup") do
+          #   ATOME.clear({ wait: waiter })
+        end
+
       else
         jq_get(atome_id).on(:click) do |evt|
           if value[:stop]
@@ -74,7 +98,7 @@ module PropertyHtml
         when Hash
           default = { x: 96, xx: 96, y: 96, yy: 96 }
           params = default.merge(value[:containment])
-          containment = { containment: [params[:x], params[:y], params[:xx], params[:yy]]}
+          containment = { containment: [params[:x], params[:y], params[:xx], params[:yy]] }
         else
           containment = { containment: "parent" }
         end
@@ -87,11 +111,11 @@ module PropertyHtml
              else
                {}
              end
-      if value[:handle]
-        handle = { handle: "#" + value[:handle] }
+      handle = if value[:handle]
+        { handle: "#" + value[:handle] }
       else
-        handle = {}
-      end
+        {}
+               end
       fixed = {}
       if value[:fixed]
         fixed = { opacity: 0.0000000000001, helper: :clone }
