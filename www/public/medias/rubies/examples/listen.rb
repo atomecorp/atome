@@ -1,8 +1,8 @@
 # example listen speech recognition
 
-t=text("Say box, then red then smooth, also try blue circle")
+t = text("Say box, dessine moi un cercle, mets le en jaune, avance le vers la droite")
 
-listen(:english) do |sentence|
+listen(:french) do |sentence|
   t.content = sentence
   if sentence.include?("box")
     grab(:the_box).delete
@@ -18,6 +18,18 @@ listen(:english) do |sentence|
     circle({ atome_id: :the_circle, x: 66, y: 66 })
     if sentence.include?("blue")
       grab(:the_circle).color("blue")
+    end
+  elsif t.content.include?("cercle")
+    # grab(:the_circle).delete
+    unless grab(:the_circle)
+      circle({ atome_id: :the_circle, x: 66, y: 66 })
+    end
+    if t.content.include?("jaune")
+      grab(:the_circle).color("yellow")
+    elsif t.content.include?("avance") && t.content.include?("droite")
+      grab(:the_circle).x=grab(:the_circle).x+90
+    elsif t.content.include?("recule") && t.content.include?("gauche")
+      grab(:the_circle).x=grab(:the_circle).x-90
     end
   else
   end
