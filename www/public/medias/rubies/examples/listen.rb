@@ -1,6 +1,6 @@
 # example listen speech recognition
 
-t = text("Say box, dessine moi un cercle, mets le en jaune, avance le vers la droite")
+t = text({content:  "Say box, dessine moi un cercle, mets le en jaune, avance le vers la droite", y: 66, x: 33 })
 
 listen(:french) do |sentence|
   t.content = sentence

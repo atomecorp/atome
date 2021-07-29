@@ -1,7 +1,22 @@
 module PropertyHtml
 
-  def listen_html(local_lang,&proc)
-    js_speech_recognition(local_lang,&proc)
+  def listen_html(params, &proc)
+    if params.instance_of?(Hash)
+      language = params[:language]
+      status = params[:status]
+    else
+      if params == :start
+        status = :start
+        language = ""
+      elsif params == :stop
+        status = :stop
+        language = ""
+      else
+        language = params
+        status = :start
+      end
+    end
+    speech_recognition(language, status, &proc)
   end
 
   # def camera_html(value="")
