@@ -12,7 +12,7 @@ def atome_methods
   media = %i[content particle group container video shape box star circle text image audio web tool path info example
              name visual active inactive]
   inputs = %i[camera microphone midi keyboard]
-  utility = %i[edit record enliven tag selector preset monitor select dynamic condition treatment render engine]
+  utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine]
   misc=%i[map calendar]
   material = %i[color opacity border overflow fill]
   { analyser: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,

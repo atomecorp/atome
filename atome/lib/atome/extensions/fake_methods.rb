@@ -24,7 +24,3 @@ def animation
 
 end
 
-
-def selectable
-
-end

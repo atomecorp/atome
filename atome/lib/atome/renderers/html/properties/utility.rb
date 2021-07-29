@@ -146,7 +146,7 @@ module PropertyHtml
     ATOME.atomise(:batch, collected_items)
   end
 
-  def select_html(value)
+  def selectable_html(value)
     case value
     when :destroy
       jq_get(atome_id).selectable(:destroy)

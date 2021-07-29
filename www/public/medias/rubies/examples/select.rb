@@ -14,7 +14,7 @@ treated_item=[]
 start.touch do
   start.content("selection activated").color(:red)
   stop.content("click me twice to stop selecting").color(:black)
-  grab(:view).select(true) do
+  grab(:view).selectable(true) do
     selection.each do |atome_found|
       treated_item << atome_found
     end
@@ -28,5 +28,5 @@ stop.touch(option: :up) do
   treated_item.each do |item_found|
     item_found.color(:red).drag(:destroy)
   end
-  grab(:view).select(:destroy)
+  grab(:view).selectable(:destroy)
 end
