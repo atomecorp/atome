@@ -191,4 +191,8 @@ module PropertyHtml
     prev_prop
   end
 
+  def pay_html(link)
+    JSUtils.pay(atome_id,link)
+  end
+
 end

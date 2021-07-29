@@ -1,7 +1,9 @@
 # example listen speech recognition
 
 t = text({content:  "Say box, dessine moi un cercle, mets le en jaune, avance le vers la droite", y: 66, x: 33 })
-
+t.touch do
+  listen(:stop)
+end
 listen(:french) do |sentence|
   t.content = sentence
   if sentence.include?("box")
@@ -19,18 +21,20 @@ listen(:french) do |sentence|
     if sentence.include?("blue")
       grab(:the_circle).color("blue")
     end
-  elsif t.content.include?("cercle")
-    # grab(:the_circle).delete
+  elsif sentence.include?("cercle")
+    grab(:the_circle).delete
     unless grab(:the_circle)
       circle({ atome_id: :the_circle, x: 66, y: 66 })
     end
-    if t.content.include?("jaune")
+    if sentence.include?("jaune")
       grab(:the_circle).color("yellow")
-    elsif t.content.include?("avance") && t.content.include?("droite")
+    elsif sentence.include?("avance") && sentence.include?("droite")
       grab(:the_circle).x=grab(:the_circle).x+90
-    elsif t.content.include?("recule") && t.content.include?("gauche")
+    elsif sentence.include?("recule") && sentence.include?("gauche")
       grab(:the_circle).x=grab(:the_circle).x-90
     end
+    # listen(:stop)
+    # listen(:start)
   else
   end
 end

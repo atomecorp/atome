@@ -1,4 +1,4 @@
-class UserRecognition {
+class SpeechRecognitionHelper {
 
     constructor(language,proc) {
          self=this;
