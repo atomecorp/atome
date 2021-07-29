@@ -8,6 +8,8 @@ module ProcessorHtml
            end
     jq_get(atome_id).create_video(atome_id)
     jq_get(atome_id).find("video").html("<source src=" + path + " type='video/mp4'></source>")
+    # add poster for mobile devices
+    jq_get(atome_id).find("video").attr("poster","././medias/images/freebsd.png")
     # playsinline below is used to prevent ios to play video fullscreen by defaulr
     jq_get(atome_id).find("video").attr('playsinline', '')
     unless width
