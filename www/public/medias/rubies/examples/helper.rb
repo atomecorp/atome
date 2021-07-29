@@ -29,7 +29,7 @@ class Atome
         links = file_content[:links]
         documentation = file_content[:documentation]
 
-        b = Object.box({ width: 300, height: 600, smooth: 6, shadow: { invert: true }, color: { alpha: 0.3 }, xx: 3, parent: :intuition })
+        b = Object.box({ width: 300, height: 600, smooth: 6, shadow: { invert: true }, color: { alpha: 0.3 }, xx: 3, parent: :intuition, drag: true })
         # b.drag(true)
         b.text({ content: property, x: 9, disposition: { y: 3 }, visual: 30 })
         b.text({ content: "type: #{categories}", x: 15, disposition: { y: 3 } })
