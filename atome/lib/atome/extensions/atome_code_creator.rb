@@ -1,4 +1,4 @@
-def code(value = { atome_id: identity, content: "" })
+def coding(value = { atome_id: identity, content: "" })
   JSUtils.load_opal_parser
   container_id = value[:atome_id]
   ide_atome_id = container_id.to_s + "_code_editor"

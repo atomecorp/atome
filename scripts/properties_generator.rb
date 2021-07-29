@@ -9,10 +9,10 @@ def atome_methods
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
-  media = %i[content particle group container video shape box star circle text image audio web tool path info example
+  media = %i[content particle group container video shape box star circle text image audio web tool path info example cell
              name visual active inactive]
   inputs = %i[camera microphone midi keyboard]
-  utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay]
+  utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay code exec]
   misc=%i[map calendar]
   material = %i[color opacity border overflow fill]
   { analyser: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
@@ -21,20 +21,20 @@ def atome_methods
 end
 
 def types
-  %i[user machine shape image video audio input text midi tool virtual group container particle]
+  %i[user machine shape image video audio input text midi tool virtual group container particle cell]
 end
 
 FileUtils.mkdir_p "atome/lib/atome/generated_methods"
 
 def is_atome
-  # in this case presets are used to create atome suing their types with specific settings
+  # in this case presets are used to create atome using their types with specific settings
   # so it add the methods in the atome_object_creator methods
   # the generated property will then return the result of the method instead of object itself
-  %i[particle container shape box star web circle text image tool video audio camera microphone midi group]
+  %i[particle container shape box star web circle text image tool video audio camera microphone midi group cell]
 end
 
 def need_pre_processing
-  %i[atome_id particle group container shape box star web circle text camera microphone midi text image video audio tool parent
+  %i[atome_id particle group container shape box star web circle text camera microphone midi text image video audio tool cell  parent
   child type shadow size drag visual noise say content]
 end
 
@@ -49,7 +49,7 @@ end
 def no_rendering
   %i[atome_id group container shape box star web circle text image video audio tool parent child info example
   selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-  particle visual language active inactive noise engine render id preset say content]
+  particle cell visual language active inactive noise engine render id preset say content]
 end
 
 batch_delete = <<STRDELIM

@@ -54,7 +54,12 @@ class Atome
                           { center: sanitizer.delete(:center) }
                        else
                           {}
-                        end
+                       end
+    sanitized_exec = if sanitizer[:exec]
+                       { exec: sanitizer.delete(:exec) }
+                     else
+                       {}
+                     end
     essential = sanitized_atome_id.merge(sanitized_type).merge(sanitized_language).merge(sanitized_engine).merge(sanitized_preset).merge(sanitized_render)
     #  we create the essential properties of the atome
     create(essential)
@@ -62,7 +67,7 @@ class Atome
     # id theres an id we put it at the start of the hash
     # we change sanitizer hash order so the content property that trigger the rendering is placed at the end
     # and finally the center that must know the  content to be able to the center the object
-    sanitizer = sanitizer.merge(sanitized_content).merge(sanitized_center)
+    sanitizer = sanitizer.merge(sanitized_content).merge(sanitized_exec).merge(sanitized_center)
 
     set sanitizer
   end

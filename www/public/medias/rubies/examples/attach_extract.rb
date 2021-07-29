@@ -9,5 +9,4 @@ t.set({ width: 999, height: :auto })
 t.touch do
   grab(:the_box).extract(:the_text)
   grab(:the_circle).attach(:the_text)
-  grab(:the_text).content("attached but lost my content please debug me!!")
 end

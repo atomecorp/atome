@@ -23,7 +23,7 @@ grab(:view).key({options: :down}) do |evt|
           width_size=150
           height_size=150
         end
-        code({atome_id: :code_editor, content: code_editor_content,
+        coding({atome_id: :code_editor, content: code_editor_content,
               x: x_position,
               y: y_position,
               width: width_size,

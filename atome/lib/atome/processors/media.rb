@@ -106,6 +106,20 @@ module Processors
     atomise(:temp, child_collected)
   end
 
+  def cell_pre_processor(value, password = nil)
+    media_pre_processor(:cell, :cell, value, password)
+  end
+
+  def cell_getter_processor
+    child_collected = []
+    child do |child_found|
+      if child_found.type == :cell
+        child_collected << child_found.atome_id
+      end
+    end
+    atomise(:temp, child_collected)
+  end
+
   def box_pre_processor(value, password = nil)
     media_pre_processor(:shape, :box, value, password)
   end
@@ -278,23 +292,23 @@ module Processors
     else
       @content = atomise(:content, value)
     end
-
-    def send_to_renderer(renderer, value, password)
+    # lambda below to avoid mthod in method
+    send_to_content_renderer = -> (renderer,value,password) do
       case renderer
       when :html
-        content_html(value, password)
+        width_html(value,password)
       when :fabric
-        content_fabric(value, password)
+        width_fabric(value,password)
       when :headless
-        content_headless(value, password)
+        width_headless(value,password)
       when :speech
-        content_speech(value, password)
+        width_speech(value,password)
       when :three
-        content_three(value, password)
+        width_three(value,password)
       when :zim
-        content_zim(value, password)
+        width_zim(value,password)
       else
-        content_html(value, password)
+        width_html(value,password)
       end
     end
 
@@ -302,16 +316,15 @@ module Processors
       content_html(value, password)
     elsif $default_renderer.instance_of?(Array)
       $default_renderer.each do |renderer|
-        send_to_renderer(renderer, value, password)
+        send_to_width_renderer.call(renderer,value,password)
       end
     else
-      send_to_renderer($default_renderer, value, password)
+      send_to_content_renderer.call($default_renderer, value, password)
     end
 
   end
 
   def content_getter_processor
-    # alert  grab(:view).language
     if self.type == :text
       # if  @content.read.instance_of?(Hash)
       #   @content.read[:default]

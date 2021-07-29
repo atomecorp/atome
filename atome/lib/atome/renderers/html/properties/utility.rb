@@ -105,7 +105,7 @@ module PropertyHtml
         new_content = jq_get(atome_id).html
         new_content = new_content.gsub("<br>", "\n").gsub("</div>", "").gsub("<div>", "\n")
         current_language = self.language || grab(:view).language
-        @content = atomise(:content, {current_language=>  new_content })
+        @content = atomise(:content, { current_language => new_content })
       end
 
     when false
@@ -192,7 +192,19 @@ module PropertyHtml
   end
 
   def pay_html(link)
-    JSUtils.pay(atome_id,link)
+    JSUtils.pay(atome_id, link)
+  end
+
+  def code_html(code)
+    JSUtils.load_opal_parser
+    Object.compile(code)
+  end
+
+  def exec_html(params)
+    if params
+      JSUtils.load_opal_parser
+      Object.compile(content)
+    end
   end
 
 end

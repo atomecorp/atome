@@ -916,4 +916,3 @@ function onDeviceReady() {
 
 
 
-

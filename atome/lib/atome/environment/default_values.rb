@@ -21,11 +21,12 @@ module DefaultValues
     web = visual.merge({ type: :web, width: 66, height: 66 })
     user = visual.merge({ type: :user, name: :anonymous, pass: :none, content: :anonymous })
     color = { red: 0, green: 0, blue: 0, alpha: 1, angle: 180, diffusion: :linear }
+    cell={ type: :cell, exec: true }
     history = {}
     authorisation = { creator: :atome, read: :all, write: :all } # only set only creator can change it unless specific authorisation set by creator()
     shadow = { x: 0, y: 0, blur: 7, thickness: 0, color: [alpha: 0.3], invert: false }
     border = { thickness: 1, pattern: :solid, color: :red }
     blur = { default: 5 }
-    { camera: camera, microphone: microphone, midi: midi, container: container, shape: shape, box: box,star: star, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur }
+    { cell: cell,camera: camera, microphone: microphone, midi: midi, container: container, shape: shape, box: box,star: star, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur }
   end
 end
