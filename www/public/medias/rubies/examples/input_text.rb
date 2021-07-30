@@ -1,7 +1,7 @@
 # input text example
 
 def input_text(default_text)
-  t = text({ content: default_text, x: 333, y: 33, atome_id: :my_tex_input })
+  t = text({ content: default_text, x: 333, y: 33, atome_id: :my_text_input })
   t.visual(33)
   t.key(:down) do |evt|
     w_get = JSUtils.client_width(t.atome_id)
@@ -16,9 +16,9 @@ def input_text(default_text)
   t.key(:up) do |evt|
     # todo: get and limit number of char
     `
-     var myDiv = $('#my_tex_input');
+     var myDiv = $('#my_text_input');
     myDiv.text(myDiv.text().substring(0,15))
-alert(myDiv.text().length);
+//alert(myDiv.text().length);
 `
     w_get = JSUtils.client_width(t.atome_id)
     t.width = if w_get < 99
