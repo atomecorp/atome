@@ -2,7 +2,7 @@
 
 class Atome
   def help(property, view = :raw)
-    reader("./utils/infos/#{property}.rb") do |file_content|
+    reader("/public/utils/infos/#{property}.rb") do |file_content|
       case view
       when :raw
         # alert file_content
