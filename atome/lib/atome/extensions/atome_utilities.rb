@@ -181,7 +181,15 @@ end
 
 def compile(code)
   code = code.gsub("require ", "atome_require ")
-  eval(code)
+  ################# patch
+  # require 'corelib/array/pack'
+  # code = code.bytes
+  # code = code.pack('c*')
+  # code=code[1][0].unpack("H*")
+  # code=code.read.encode("UTF-8", invalid: :replace)
+  ################# patch
+  code=code.encode("UTF-8", invalid: :replace)
+  Object.eval(code)
 end
 
 def version
