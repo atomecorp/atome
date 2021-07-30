@@ -239,6 +239,10 @@ module AtomeHelpers
     end
   end
 
+  def verif(params)
+    alert self.atome_id
+  end
+
   def find(query)
     unless query[:scope]
       query[:scope] = :child
@@ -252,7 +256,6 @@ module AtomeHelpers
     else
     end
     if methods.include?(query.keys[0])
-      alert query.keys[0]
       value_to_find = query[query.keys[0]]
       method_to_look_at = query.keys[0]
       found_items = []

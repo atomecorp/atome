@@ -17,3 +17,14 @@ end
 t2.touch do
   find({ type: :shape }).size(33)
 end
+
+# find API
+# find({what: :infos, target: :color, where: :utils_folder})
+# Search type scope name atome_id color etc…
+# find({ color: :red }).blur(3)
+# b=box({color: :red, blur: 3})
+# c=circle({color: :red, blur: 3, x: 333})
+# find({ color: :red, y: 32, option: exclusive }).y(333)
+#option exclusisive mean both condition must be respected
+find({ color: :red, y: 32, option: exclusive }).find(type: :shape)
+#find can be chained
