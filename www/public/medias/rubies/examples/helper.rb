@@ -2,10 +2,9 @@
 
 class Atome
   def help(property, view = :raw)
-    reader("/public/utils/infos/#{property}.rb") do |file_content|
+    reader("./medias/utils/infos/#{property}.rb") do |file_content|
       case view
       when :raw
-        # alert file_content
       when :formated
         categorised_methods = {}
         ATOME.methods_categories.each do |key, values|
