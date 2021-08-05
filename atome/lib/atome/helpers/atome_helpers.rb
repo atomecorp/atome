@@ -239,16 +239,22 @@ module AtomeHelpers
     end
   end
 
-  def child_analysis (collected_child, atome)
-    if atome.child && atome.child.length > 0
-      atome.child.each do |baby_child|
-        child_analysis collected_child, baby_child
+  def child_analysis (collected_child, atome, recursive)
+    if recursive == true  || recursive >0
+      if recursive.instance_of?(Number) || recursive.instance_of?(Integer)
+        recursive=recursive-1
       end
-    else
-      collected_child << atome
+      if atome.child && atome.child.length > 0
+        collected_child << atome.atome_id
+        atome.child.each do |baby_child|
+          child_analysis collected_child, baby_child, recursive
+        end
+      else
+        collected_child << atome.atome_id
+      end
+      collected_child.uniq!
     end
-    # atome.child
-    collected_child
+
   end
 
   def find(query)
@@ -256,6 +262,9 @@ module AtomeHelpers
       # if there's no scope we assume we need to search amongst the the current atome's children
       query[:scope] = :child
     end
+    ##### filtering unnecessary params
+    recursive = query.delete(:recursive)
+
     case query[:scope]
     when :eden
       # we will search in dbs and files
@@ -264,15 +273,13 @@ module AtomeHelpers
     when :child
       # we will search amongst current atome's children
       collected_child = []
-      # if child
+      if child
         child.each do |child_found|
-          # collected_child << child_found.atome_id
-          # child_analysis collected_child, child_found
-          # if child_found.child && child_found.child.length > 0
-          #   find_children atome
-          # end
-
-        # end
+          collected_child << child_found.atome_id
+          if  recursive
+            child_analysis collected_child, child_found, recursive
+          end
+        end
       end
 
       alert collected_child
@@ -287,7 +294,7 @@ module AtomeHelpers
     ##### filtering unnecessary params
     scope = query.delete(:scope)
     condition = query.delete(:condition)
-    recursive = query.delete(:recursive)
+
 
     query.keys.each do |method_to_look_at|
       # alert  method_to_look_at
@@ -295,27 +302,27 @@ module AtomeHelpers
       # alert found
     end
     ########### old below
-    if methods.include?(query.keys[0])
-      value_to_find = query[query.keys[0]]
-      method_to_look_at = query.keys[0]
-      found_items = []
-
-      found.each do |found_item|
-        # we will look for child
-        if found_item.child && found_item.child.length > 0
-          # alert "search for children of children"
-        end
-        if found_item.send(method_to_look_at).instance_of?(Array)
-          if found_item.send(method_to_look_at).include?(value_to_find)
-            found_items << found_item
-          end
-        elsif found_item.send(method_to_look_at) == value_to_find
-          found_items << found_item
-        end
-      end
-      found = batch(found_items)
-    end
-    found
+    # if methods.include?(query.keys[0])
+    #   value_to_find = query[query.keys[0]]
+    #   method_to_look_at = query.keys[0]
+    #   found_items = []
+    #
+    #   found.each do |found_item|
+    #     # we will look for child
+    #     if found_item.child && found_item.child.length > 0
+    #       # alert "search for children of children"
+    #     end
+    #     if found_item.send(method_to_look_at).instance_of?(Array)
+    #       if found_item.send(method_to_look_at).include?(value_to_find)
+    #         found_items << found_item
+    #       end
+    #     elsif found_item.send(method_to_look_at) == value_to_find
+    #       found_items << found_item
+    #     end
+    #   end
+    #   found = batch(found_items)
+    # end
+    # found
   end
 
   # def group(value = nil, &proc)
