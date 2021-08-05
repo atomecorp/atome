@@ -225,7 +225,7 @@ module AtomeHelpers
     grab(self.parent[0].read).extract(self.atome_id)
   end
 
-  def eden_search(query)
+  def eden_find(query)
     #FIXME: Universe will be a db that contain users user's media and so on, for now Universe only hold default medias
     case query[:type]
     when :image
@@ -239,27 +239,34 @@ module AtomeHelpers
     end
   end
 
-  def verif(params)
-    alert self.atome_id
-  end
+
 
   def find(query)
     unless query[:scope]
+      # if there's no scope we assume we need to search amongst the the current atome's children
       query[:scope] = :child
     end
     case query[:scope]
     when :eden
-      found = eden_search(query)
+      # we will search in dbs and files
+      found = eden_find(query)
       return found
     when :child
+      # we will search amongst current atome's children
       found = child
     else
+      ''
     end
     if methods.include?(query.keys[0])
       value_to_find = query[query.keys[0]]
       method_to_look_at = query.keys[0]
       found_items = []
+
       found.each do |found_item|
+        # we will look for child
+        if found_item.child.length > 0
+          alert "search for chldren of children"
+        end
         if found_item.send(method_to_look_at).instance_of?(Array)
           if found_item.send(method_to_look_at).include?(value_to_find)
             found_items << found_item
