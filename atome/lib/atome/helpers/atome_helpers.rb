@@ -2,9 +2,9 @@ module AtomeHelpers
   # below we can use this method to set the websocket server
   def websocket(adress = "0.0.0.0:9292", ssl = false)
     ssl = if ssl
-      "wss"
-    else
-      "ws"
+            "wss"
+          else
+            "ws"
           end
     # here we can change the server used to handle websocket
     AtomeHelpers.class_variable_set("@@web_socket", WebSocket.new(adress, ssl))
@@ -96,10 +96,10 @@ module AtomeHelpers
         # puts "#{attribute} instance_variables may be changed to atome_methods.each atome_helper.rb line 74\n
         # or try to remove @touch_proc and @dragged and find a solution to replace it"
         properties[attribute.sub("@".to_sym, "")] = if instance_variable_get(attribute).nil?
-          nil
-          # elsif instance_variable_get(attribute).class == Quark
-        else
-          instance_variable_get(attribute).read
+                                                      nil
+                                                      # elsif instance_variable_get(attribute).class == Quark
+                                                    else
+                                                      instance_variable_get(attribute).read
                                                     end
       end
       properties
@@ -115,18 +115,18 @@ module AtomeHelpers
       @play
     else
       options = case options
-      when true
-        { play: :play, status: :playing }
-      when false
-        { play: :stop, status: :stopped }
-      when :pause
-        { play: :pause, status: :paused }
-      when :stop
-        { play: :stop, status: :stopped }
-      when :play
-        { play: :play, status: :playing }
-      else
-        { play: options, status: :playing }
+                when true
+                  { play: :play, status: :playing }
+                when false
+                  { play: :stop, status: :stopped }
+                when :pause
+                  { play: :pause, status: :paused }
+                when :stop
+                  { play: :stop, status: :stopped }
+                when :play
+                  { play: :play, status: :playing }
+                else
+                  { play: options, status: :playing }
                 end
       # the condition below check we dont specify a play position and if the
       # @play contain a play position, if so it resume playback specify in @play
@@ -145,9 +145,9 @@ module AtomeHelpers
     case values.keys[0]
     when :midi
       msg = if values[:midi].instance_of?(Hash)
-        values[:midi].keys[0]
-      else
-        values[:midi]
+              values[:midi].keys[0]
+            else
+              values[:midi]
             end
       case msg
       when :play
@@ -239,7 +239,17 @@ module AtomeHelpers
     end
   end
 
-
+  def child_analysis (collected_child, atome)
+    if atome.child && atome.child.length > 0
+      atome.child.each do |baby_child|
+        child_analysis collected_child, baby_child
+      end
+    else
+      collected_child << atome
+    end
+    # atome.child
+    collected_child
+  end
 
   def find(query)
     unless query[:scope]
@@ -253,10 +263,38 @@ module AtomeHelpers
       return found
     when :child
       # we will search amongst current atome's children
-      found = child
+      collected_child = []
+      # if child
+        child.each do |child_found|
+          # collected_child << child_found.atome_id
+          # child_analysis collected_child, child_found
+          # if child_found.child && child_found.child.length > 0
+          #   find_children atome
+          # end
+
+        # end
+      end
+
+      alert collected_child
+      # if found_item.child && found_item.child.length > 0
+      #   alert "search for children of children"
+      # end
+      # alert found.read.class
     else
       ''
     end
+
+    ##### filtering unnecessary params
+    scope = query.delete(:scope)
+    condition = query.delete(:condition)
+    recursive = query.delete(:recursive)
+
+    query.keys.each do |method_to_look_at|
+      # alert  method_to_look_at
+      # alert query[method_to_look_at]
+      # alert found
+    end
+    ########### old below
     if methods.include?(query.keys[0])
       value_to_find = query[query.keys[0]]
       method_to_look_at = query.keys[0]
@@ -264,8 +302,8 @@ module AtomeHelpers
 
       found.each do |found_item|
         # we will look for child
-        if found_item.child.length > 0
-          alert "search for chldren of children"
+        if found_item.child && found_item.child.length > 0
+          # alert "search for children of children"
         end
         if found_item.send(method_to_look_at).instance_of?(Array)
           if found_item.send(method_to_look_at).include?(value_to_find)
