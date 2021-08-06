@@ -59,13 +59,9 @@ module AtomeHelpers
     else
       case value
       when :view
-        if grab(:view).child
-          grab(:view).child.delete
-        end
+        grab(:view).child&.delete
       else
-        if self.child
-          self.child.delete
-        end
+        self.child&.delete
       end
     end
 
@@ -240,67 +236,89 @@ module AtomeHelpers
   end
 
   def child_analysis (collected_child, atome, recursive)
-    if recursive == true  || recursive >0
+    if recursive == true || recursive > 0
       if recursive.instance_of?(Number) || recursive.instance_of?(Integer)
-        recursive=recursive-1
+        recursive = recursive - 1
       end
       if atome.child && atome.child.length > 0
-        collected_child << atome.atome_id
+        collected_child << atome
         atome.child.each do |baby_child|
           child_analysis collected_child, baby_child, recursive
         end
       else
-        collected_child << atome.atome_id
+        collected_child << atome
       end
       collected_child.uniq!
     end
-
   end
 
-  def find(query)
+  def find(query, filtered_list)
+
+    if filtered_list
+      alert (query)
+      alert (filtered_list)
+    end
     unless query[:scope]
       # if there's no scope we assume we need to search amongst the the current atome's children
-      query[:scope] = :child
+      query[:scope] = :atome
+    end
+    unless query[:condition]
+      # if there's no condition we assume user want to use the or condition
+      query[:condition] = :or
     end
     ##### filtering unnecessary params
     recursive = query.delete(:recursive)
+    scope = query.delete(:scope)
+    condition = query.delete(:condition)
 
-    case query[:scope]
+    case scope
     when :eden
       # we will search in dbs and files
       found = eden_find(query)
       return found
-    when :child
+    when :atome
       # we will search amongst current atome's children
       collected_child = []
-      if child
-        child.each do |child_found|
-          collected_child << child_found.atome_id
-          if  recursive
-            child_analysis collected_child, child_found, recursive
-          end
+      child&.each do |child_found|
+        collected_child << child_found
+        if recursive
+          child_analysis collected_child, child_found, recursive
         end
       end
 
-      alert collected_child
-      # if found_item.child && found_item.child.length > 0
-      #   alert "search for children of children"
-      # end
-      # alert found.read.class
+      match_items = []
+      restricted_items = collected_child.clone
+
+      collected_child.each do |child_match_query|
+        query.each_key do |method_to_look_at|
+          value_to_find = query[method_to_look_at]
+          if child_match_query.send(method_to_look_at).instance_of?(Array)
+            if child_match_query.send(method_to_look_at).include?(value_to_find)
+              match_items << child_match_query
+            else
+              restricted_items.delete(child_match_query)
+            end
+          elsif child_match_query.send(method_to_look_at) == value_to_find
+            match_items << child_match_query
+          else
+            restricted_items.delete(child_match_query)
+          end
+        end
+      end
+      if condition == :or
+        atome_to_treat = batch(restricted_items.uniq!)
+      elsif condition == :and
+        atome_to_treat = batch(match_items.uniq!)
+      end
+
+      # grab(:finder).content(atome_to_treat)
+      # alert  grab(:finder).content
+      return atome_to_treat
+
     else
       ''
     end
 
-    ##### filtering unnecessary params
-    scope = query.delete(:scope)
-    condition = query.delete(:condition)
-
-
-    query.keys.each do |method_to_look_at|
-      # alert  method_to_look_at
-      # alert query[method_to_look_at]
-      # alert found
-    end
     ########### old below
     # if methods.include?(query.keys[0])
     #   value_to_find = query[query.keys[0]]
@@ -308,10 +326,6 @@ module AtomeHelpers
     #   found_items = []
     #
     #   found.each do |found_item|
-    #     # we will look for child
-    #     if found_item.child && found_item.child.length > 0
-    #       # alert "search for children of children"
-    #     end
     #     if found_item.send(method_to_look_at).instance_of?(Array)
     #       if found_item.send(method_to_look_at).include?(value_to_find)
     #         found_items << found_item

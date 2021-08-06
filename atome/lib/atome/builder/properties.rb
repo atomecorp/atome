@@ -52,6 +52,10 @@ class Quark
     @property.concat(items).uniq!
   end
 
+  def find(atomes_list)
+    grab(:view).find(atomes_list, self)
+  end
+
   def [](option)
     if option.instance_of?(Integer) || option.instance_of?(Range)
       required_atome = read[option]
