@@ -300,9 +300,9 @@ module AtomeHelpers
           end
         end
       end
-      if condition == :or
+      if condition == :and
         atome_to_treat = batch(restricted_items)
-      elsif condition == :and
+      elsif condition == :or
         atome_to_treat = batch(match_items)
       end
 

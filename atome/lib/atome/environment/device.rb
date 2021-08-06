@@ -18,8 +18,6 @@ class Device
     Atome.new({ atome_id: :authorization, render: false, content: "the_admin_password" })
     # this object hold temporary items (useful for batch treatment) named collector could be rename ephemeral
     Atome.new({ atome_id: :buffer, render: false, content: { resize: [] } })
-    # this object collect finded object
-    # Atome.new({ atome_id: :finder, render: false, content: [] })
     # this object hold UI styles
     ui_style = { color: { red: 0.3, green: 0.3, blue: 0.3, alpha: 0.3 }, smooth: 6, width: 333, drag: true, blur: { value: 6, invert: true }, shadow: { blur: 3, x: 0, y: 0, thickness: 3, color: { alpha: 0.3 } } }
     Atome.new({ atome_id: :UI, render: false, content: ui_style })
