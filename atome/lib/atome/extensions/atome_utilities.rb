@@ -66,9 +66,6 @@ def grab(atome_id)
   end
 end
 
-# def find(query)
-#   grab(:view).find(query)
-# end
 
 def batch(objects)
   batched_atomes = []

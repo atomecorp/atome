@@ -52,8 +52,12 @@ class Quark
     @property.concat(items).uniq!
   end
 
-  def find(atomes_list)
-    grab(:view).find(atomes_list, self)
+  def find(query)
+    atome_list=[]
+    self.each do |atome|
+      atome_list<< atome
+    end
+    grab(:view).find(query, atome_list)
   end
 
   def [](option)

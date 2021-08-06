@@ -252,12 +252,7 @@ module AtomeHelpers
     end
   end
 
-  def find(query, filtered_list)
-
-    if filtered_list
-      alert (query)
-      alert (filtered_list)
-    end
+  def find(query)
     unless query[:scope]
       # if there's no scope we assume we need to search amongst the the current atome's children
       query[:scope] = :atome
@@ -306,9 +301,9 @@ module AtomeHelpers
         end
       end
       if condition == :or
-        atome_to_treat = batch(restricted_items.uniq!)
+        atome_to_treat = batch(restricted_items)
       elsif condition == :and
-        atome_to_treat = batch(match_items.uniq!)
+        atome_to_treat = batch(match_items)
       end
 
       # grab(:finder).content(atome_to_treat)
