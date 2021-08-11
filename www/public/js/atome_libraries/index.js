@@ -1017,7 +1017,7 @@ function removeDiacritics(str) {
 // document.addEventListener("deviceready", OnStartMediaStreaming, false);
 
 function startMediaStreaming() {
-    const mediaStreamingHelper = new MediaStreamingHelper(
+    mediaStreamingHelper = new MediaStreamingHelper(
         {
             server: "ws.mediasoup.atome.one",
             port: 443,

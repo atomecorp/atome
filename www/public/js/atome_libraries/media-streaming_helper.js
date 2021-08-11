@@ -78,6 +78,62 @@ class MediaStreamingHelper {
         };
     }
 
+    muteMicrophone() {
+        this._microphoneProducer.pause();
+
+        const message = {
+            request: true,
+            id: this._generateRandomNumber(),
+            method: "pauseProducer",
+            data: {
+                "producerId": this._microphoneProducer.id
+            }
+        };
+        this._sendRequest(message);
+    }
+
+    unmuteMicrophone() {
+        this._microphoneProducer.resume();
+
+        const message = {
+            request: true,
+            id: this._generateRandomNumber(),
+            method: "resumeProducer",
+            data: {
+                "producerId": this._microphoneProducer.id
+            }
+        };
+        this._sendRequest(message);
+    }
+
+    pauseWebcam() {
+        this._webcamProducer.pause();
+
+        const message = {
+            request: true,
+            id: this._generateRandomNumber(),
+            method: "pauseProducer",
+            data: {
+                "producerId": this._webcamProducer.id
+            }
+        };
+        this._sendRequest(message);
+    }
+
+    resumeWebcam() {
+        this._webcamProducer.resume();
+
+        const message = {
+            request: true,
+            id: this._generateRandomNumber(),
+            method: "resumeProducer",
+            data: {
+                "producerId": this._webcamProducer.id
+            }
+        };
+        this._sendRequest(message);
+    }
+
     _joinRoom(microphoneCallback, cameraCallback) {
         this._mediasoupDevice = new window.mediasoup.Device();
 
@@ -228,7 +284,9 @@ class MediaStreamingHelper {
                 {
                     track: audioTrack
                 }
-            ).catch(reason => {
+            ).then((result) => {
+                this._microphoneProducer = result;
+            }).catch(reason => {
                 console.log('Cannot produce audio track. Reason: ' + reason);
             });
         }).catch(function(error) {
@@ -244,7 +302,9 @@ class MediaStreamingHelper {
                 {
                     track: videoTrack
                 }
-            ).catch(reason => {
+            ).then((result) => {
+                this._webcamProducer = result;
+            }).catch(reason => {
                 console.log('Cannot produce video track. Reason: ' + reason);
             });
         }).catch(function(error) {
