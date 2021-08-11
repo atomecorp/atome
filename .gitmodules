@@ -7,3 +7,6 @@
 [submodule "www/public/js/third_parties"]
 	path = www/public/js/third_parties
 	url = https://github.com/atomecorp/third_parties.git
+[submodule "www/public/js/-f"]
+	path = www/public/js/-f
+	url = https://github.com/atomecorp/third_parties.git

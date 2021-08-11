@@ -4,6 +4,7 @@ let midiHelper;
 let videoHelper;
 let audioHelper;
 let animationHelper;
+let mediaStreamingHelper;
 
 let databaseEventListener = {
     onConnected: function (event) {
@@ -72,7 +73,6 @@ videoHelper = new VideoHelper();
 
 //audioHelper
 audioHelper = new AudioHelper(audioEventListener);
-
 
 
 window.ondragover = function (e) {
@@ -797,18 +797,18 @@ function onDeviceReady() {
 
     function writeFile(filename, content) {
         var type = window.TEMPORARY;
-        var size = 5*1024*1024;
+        var size = 5 * 1024 * 1024;
         window.requestFileSystem(type, size, successCallback, errorCallback);
 
         function successCallback(fs) {
-            fs.root.getFile(filename, {create: true}, function(fileEntry) {
+            fs.root.getFile(filename, {create: true}, function (fileEntry) {
 
-                fileEntry.createWriter(function(fileWriter) {
-                    fileWriter.onwriteend = function(e) {
+                fileEntry.createWriter(function (fileWriter) {
+                    fileWriter.onwriteend = function (e) {
                         // alert('Write completed.');
                     };
 
-                    fileWriter.onerror = function(e) {
+                    fileWriter.onerror = function (e) {
                         // alert('Write failed: ' + e.toString());
                     };
 
@@ -825,17 +825,17 @@ function onDeviceReady() {
 
     function readFile(filename) {
         var type = window.TEMPORARY;
-        var size = 5*1024*1024;
+        var size = 5 * 1024 * 1024;
         window.requestFileSystem(type, size, successCallback, errorCallback);
 
         function successCallback(fs) {
-            fs.root.getFile(filename, {}, function(fileEntry) {
+            fs.root.getFile(filename, {}, function (fileEntry) {
 
-                fileEntry.file(function(file) {
+                fileEntry.file(function (file) {
                     var reader = new FileReader();
 
-                    reader.onloadend = function(e) {
-                         fileReaderCallBack(this.result);
+                    reader.onloadend = function (e) {
+                        fileReaderCallBack(this.result);
                     };
                     reader.readAsText(file);
                 }, errorCallback);
@@ -849,11 +849,12 @@ function onDeviceReady() {
 
     function removeFile(filename) {
         var type = window.TEMPORARY;
-        var size = 5*1024*1024;
+        var size = 5 * 1024 * 1024;
         window.requestFileSystem(type, size, successCallback, errorCallback);
+
         function successCallback(fs) {
-            fs.root.getFile(filename, {create: false}, function(fileEntry) {
-                fileEntry.remove(function() {
+            fs.root.getFile(filename, {create: false}, function (fileEntry) {
+                fileEntry.remove(function () {
                     // alert('File removed.');
                 }, errorCallback);
             }, errorCallback);
@@ -863,15 +864,17 @@ function onDeviceReady() {
             // alert("ERROR: " + error.code);
         }
     }
-    function fileReaderCallBack(filecontent){
-        alert (filecontent);
+
+    function fileReaderCallBack(filecontent) {
+        alert(filecontent);
     }
+
     // createFile("tototo.rb");
     // writeFile("totototi.rb", "my content good");
     // readFile("tototo.rb");
     // removeFile("totototi.rb");
-
 }
+
 // navigator.geolocation.getCurrentPosition(function(position) {
 //     alert ("kjh");
 // });
@@ -914,8 +917,8 @@ function onDeviceReady() {
 // }
 
 
-function removeDiacritics (str) {
-    String.fromCharCode(65,66,67)
+function removeDiacritics(str) {
+    String.fromCharCode(65, 66, 67)
     // var defaultDiacriticsRemovalMap = [
     //     {'base':'A', 'letters':/[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g},
     //     {'base':'AA','letters':/[\uA732]/g},
@@ -1009,4 +1012,68 @@ function removeDiacritics (str) {
     //
     // return str;
 
+}
+
+// document.addEventListener("deviceready", OnStartMediaStreaming, false);
+
+function startMediaStreaming() {
+    const mediaStreamingHelper = new MediaStreamingHelper(
+        {
+            server: "ws.mediasoup.atome.one",
+            port: 443,
+            roomId: 0,
+            peerId: Math.random().toString(16).substr(2, 8)
+        });
+
+    mediaStreamingHelper.join((audioTrack) => {
+            const stream = new MediaStream();
+
+            stream.addTrack(audioTrack);
+
+            const audioElement = document.createElement('audio');
+            audioElement.autoplay = true;
+            audioElement.playsInline = true;
+            audioElement.controls = false;
+            $('#view').append(audioElement);
+
+            audioElement.srcObject = stream;
+
+            audioElement.play().catch(reason => {
+                console.log(('Cannot play audio element. Reason: ' + reason));
+            });
+        },
+        (videoTrack) => {
+            const stream = new MediaStream();
+
+            stream.addTrack(videoTrack);
+
+            const videoElement = document.createElement('video');
+            videoElement.autoplay = true;
+            videoElement.playsInline = true;
+            videoElement.muted = true;
+            videoElement.controls = false;
+            $('#view').append(videoElement);
+
+            videoElement.srcObject = stream;
+
+            videoElement.play().catch(reason => {
+                console.log(('Cannot play video element. Reason: ' + reason));
+            });
+        },
+        (error) => {
+            console.log("Microphone error: " + error);
+        },
+        (error) => {
+            console.log("Camera error: " + error);
+        },
+        (error) => {
+            console.log("Server error: " + error);
+        });
+}
+
+function randomString() {
+    for (i = 1; i <= 8; i++) {
+        rnd += randomChars.substring(rn = Math.floor(Math.random() * randomChars.length), rn + 1);
+    }
+    return rnd;
 }
