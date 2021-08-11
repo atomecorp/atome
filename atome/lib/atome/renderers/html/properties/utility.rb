@@ -207,4 +207,8 @@ module PropertyHtml
     end
   end
 
+  def cursor_html(params)
+    jq_get(atome_id).css('cursor', params)
+  end
+
 end

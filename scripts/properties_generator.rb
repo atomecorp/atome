@@ -12,7 +12,8 @@ def atome_methods
   media = %i[content particle group container video shape box star circle text image audio web tool path info example cell
              name visual active inactive]
   inputs = %i[camera microphone midi keyboard]
-  utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay code exec]
+  utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay 
+               code exec cursor ]
   misc=%i[map calendar]
   material = %i[color opacity border overflow fill]
   { analyser: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
@@ -35,7 +36,7 @@ end
 
 def need_pre_processing
   %i[atome_id particle group container shape box star web circle text camera microphone midi text image video audio tool cell  parent
-  child type shadow size drag visual noise say content]
+     child type shadow size drag visual noise say content]
 end
 
 def need_processing
@@ -48,8 +49,8 @@ end
 
 def no_rendering
   %i[atome_id group container shape box star web circle text image video audio tool parent child info example
-  selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-  particle cell visual language active inactive noise engine render id preset say content]
+     selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
+     particle cell visual language active inactive noise engine render id preset say content]
 end
 
 batch_delete = <<STRDELIM
