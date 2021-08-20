@@ -1,7 +1,7 @@
 # capture demo
 
-recorder = text({content: "click to start logging",width: 30, height: 30, color: :red, x: 33, y: 96, smooth: 33, width: :auto})
-stop = text({content: "click to stop logging",width: 30, height: 30, color: :black, x: 33, y: 123, smooth: 33, width: :auto})
+recorder = text({content: "click to start logging", height: 30, color: :red, x: 33, y: 96, smooth: 33, width: :auto})
+stop = text({content: "click to stop logging", height: 30, color: :black, x: 33, y: 123, smooth: 33, width: :auto})
 starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 text({content: "try touch drag and resize on window", width: :auto})
 text = text({content: "mouse pointer position and timer", y: 33, width: :auto})
@@ -49,7 +49,7 @@ end
 stop.touch do
   grab(:view).record(:stop)
 end
-image({content: :green_planet, x: 196, y: 196, atome_id: :the_planet})
+image({content: :green_planet, x: 196, y: 196, atome_id: :the_planet, drag: :true})
 
-box({x: 196, y: 196, color: :yellowgreen, atome_id: :my_nice_box})
-circle({x: 222, y: 222, atome_id: :the_circle})
+box({x: 196, y: 196, color: :yellowgreen, atome_id: :my_nice_box, drag: :true})
+circle({x: 222, y: 222, atome_id: :the_circle, drag: :true})

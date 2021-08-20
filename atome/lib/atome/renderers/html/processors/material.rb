@@ -42,9 +42,9 @@ module ProcessorHtml
     invert = if value[:invert]
                :inset
              else
-               false
+               ""
              end
-    if value[:bounding] || invert
+    if value[:bounding] == true || invert ==:inset
       prev_prop = jq_get(atome_id).css('box-shadow')
       if prev_prop == "none"
         prev_prop = ""

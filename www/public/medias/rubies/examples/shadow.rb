@@ -23,4 +23,4 @@ b.touch do
   b.shadow(false)
 end
 
-# bounding:  true force box shadow false force filter shadow , using invert also force box shadow
+# {bounding:  true} : force box shadow false force filter shadow , using invert also force box shadow
