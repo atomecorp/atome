@@ -4,6 +4,9 @@ def input_text(default_text)
   t = text({ content: default_text, x: 333, y: 33, atome_id: :my_text_input })
   t.visual(33)
   t.key(:down) do |evt|
+    `if($("#"+#{t.atome_id}).text().length === 15 && event.keyCode != 8) {
+  	event.preventDefault();
+ }`
     w_get = JSUtils.client_width(t.atome_id)
     t.width = :auto
     t.width = if w_get > 300
@@ -15,11 +18,15 @@ def input_text(default_text)
 
   t.key(:up) do |evt|
     # todo: get and limit number of char
-    `
-     var myDiv = $('#my_text_input');
-    myDiv.text(myDiv.text().substring(0,15))
-//alert(myDiv.text().length);
-`
+    # we use .read to get the content according to the current language
+    # content_found=t.content.read
+    # content_length=content_found.values[0].length
+    # # t.content.read.length
+    # if content_length > 10
+    #   t.content = content_found
+    # else
+    #
+    # end
     w_get = JSUtils.client_width(t.atome_id)
     t.width = if w_get < 99
                 99
@@ -44,4 +51,4 @@ def input_text(default_text)
   return t
 end
 
-input_text("type your text here,I will disapear!!")
+input_text("type here,15 char max!!")
