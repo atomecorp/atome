@@ -140,6 +140,14 @@ if cordova osx doesn't compile
     sudo cordova plugin remove cordova-plugin-file
 
     sudo cordova platform add osx
+
+if cordova osx still doesn't compile, try :
+
+    goto xcode -> File -> project Settings
+    and change build system to "Legacy Build System"
+
+    
+
 test with :
 
     sudo cordova platform add osx

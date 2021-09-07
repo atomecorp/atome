@@ -63,6 +63,7 @@ module ProcessorHtml
   class_variable_set("@@http", Http.new) # you can access without offense
 
   def reader(filename, &proc)
+    alert filename
     #  read remote file
     if filename.instance_of?(Array)
       filename.each do |file|
