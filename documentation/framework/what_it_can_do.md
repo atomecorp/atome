@@ -1,0 +1,24 @@
+- image and text manipulation
+- Batch treatment
+- Home automation
+- coding 
+- education
+- Music
+- VJ
+- Video treatment
+- drawing
+- photo editing
+- Collaboration
+- Voice recognition
+- voice synthesys
+- Context and internalisation translation
+- Payment
+- Scheduling with calendar
+- remote computing and rendering
+- Audio and synthesis generator
+- Video editing
+- animation
+- interactive document production
+- Visio conference
+- applications and web generator
+
