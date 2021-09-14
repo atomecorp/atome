@@ -9,10 +9,8 @@ module Processors
     when :disable
       @drag = atomise(:drag,{ option: :disable})
     else
-       @drag = atomise(:drag,value)
+      @drag = atomise(:drag,value)
     end
-
-
   end
 
 end
