@@ -20,11 +20,11 @@ module Processors
   end
 
   def noise_pre_processor(value)
-    if value== true
+    if value == true
       value={}
     end
-    default_value={intensity:50, opacity: 0.3,width: self.width,height: self.height, color: false}
-    value=default_value.merge(value)
+    default_value = {intensity: 50, opacity: 0.3, width: self.width, height: self.height, color: false}
+    value = default_value.merge(value)
     @noise = atomise(:noise, value)
     noise_html(value)
   end
