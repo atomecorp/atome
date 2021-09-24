@@ -197,25 +197,31 @@ def version
 end
 
 def animate(params)
-  alert "We must get all filter present in  #{params[:target]} and those found in the params to the animation "
+  # alert params
+  # alert Element.find("#"+params[:target]).css('filter')
+  filter_found=Element.find("#"+params[:target]).css('filter')
+  # alert "We must get all filter present in  #{params[:target]} and those found in the params to the animation "
+  filter_list = %w[blur contrast brightness
+                  grayscale hue-rotate invert opacity 
+                  saturate sepia drop-shadow url, backdrop-filter]
   if params[:start][:blur]
     value_found = params[:start][:blur]
-    params[:start][:filter] = "blur(#{value_found}px)"
+    params[:start][:filter] = filter_found+" blur(#{value_found}px)"
     params[:start].delete(:blur)
   end
   if params[:end][:blur]
     value_found = params[:end][:blur]
-    params[:end][:filter] = "blur(#{value_found}px)"
+    params[:end][:filter] = filter_found+" blur(#{value_found}px)"
     params[:end].delete(:blur)
   end
   if params[:start][:contrast]
     value_found = params[:start][:contrast]
-    params[:start][:filter] = "contrast(#{value_found})"
+    params[:start][:filter] = "blur(0px) contrast(#{value_found})"
     params[:start].delete(:contrast)
   end
   if params[:end][:contrast]
     value_found = params[:end][:contrast]
-    params[:end][:filter] = "contrast(#{value_found})"
+    params[:end][:filter] = "blur(4px) contrast(#{value_found})"
     params[:end].delete(:contrast)
   end
   if params[:start][:smooth]
@@ -254,7 +260,7 @@ def animate(params)
     params[:end][value_found[0]] = value_found[1]
     params[:end].delete(:shadow)
   end
-  alert params
+  # alert params
   ATOME.animate_html(params)
 end
 
