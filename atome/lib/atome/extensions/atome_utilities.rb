@@ -197,7 +197,6 @@ def version
 end
 
 def animate(params)
-  # alert params
   # alert Element.find("#"+params[:target]).css('filter')
   filter_found=Element.find("#"+params[:target]).css('filter')
   # alert "We must get all filter present in  #{params[:target]} and those found in the params to the animation "
