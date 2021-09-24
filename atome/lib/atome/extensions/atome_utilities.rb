@@ -197,6 +197,7 @@ def version
 end
 
 def animate(params)
+  alert "We must get all filter present in  #{params[:target]} and those found in the params to the animation "
   if params[:start][:blur]
     value_found = params[:start][:blur]
     params[:start][:filter] = "blur(#{value_found}px)"
@@ -253,6 +254,7 @@ def animate(params)
     params[:end][value_found[0]] = value_found[1]
     params[:end].delete(:shadow)
   end
+  alert params
   ATOME.animate_html(params)
 end
 
