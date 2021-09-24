@@ -207,6 +207,16 @@ def animate(params)
     params[:end][:filter] = "blur(#{value_found}px)"
     params[:end].delete(:blur)
   end
+  if params[:start][:contrast]
+    value_found = params[:start][:contrast]
+    params[:start][:filter] = "contrast(#{value_found})"
+    params[:start].delete(:contrast)
+  end
+  if params[:end][:contrast]
+    value_found = params[:end][:contrast]
+    params[:end][:filter] = "contrast(#{value_found})"
+    params[:end].delete(:contrast)
+  end
   if params[:start][:smooth]
     value_found = params[:start][:smooth]
     params[:start][:borderRadius] = value_found

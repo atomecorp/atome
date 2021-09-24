@@ -1,3 +1,5 @@
+- Bug only the last  filter can be animated theuy have to be stack (certainly in ww/public.js/atome_libraries/animator_helper.js)
+
 - bug :(uglly fix see FIXEME in def extract method). when an atome is extract then attached it lose it's content, we have to re add the content: check "parent example"
 - accented chars  when using parser (JSUtils.load_opal_parser)  tested in example it crash
 - remove atome_id from content property when read also replace default in content with current language found in grab(:view).language
