@@ -192,7 +192,8 @@ function fabric_poc(the_id) {
 
 }
 
-function fabric_test(the_id) {
+function fabric_test() {
+    the_id='fabrication';
     var elemClientWidth = window.innerWidth;
     var elemClientHeight = window.innerHeight;
     $("#view").append("<canvas id='" + the_id + "' width=" + elemClientWidth + " height= " + elemClientHeight + "></canvas>");
@@ -562,7 +563,8 @@ function anime_test() {
 }
 
 ///////////////// three_test js  /////////////////
-function three_test(atome_id) {
+function three_test() {
+    atome_id="the_three_one";
     var view_width = $("#view").css("width");
     var view_height = $("#view").css("height");
     $("#view").append("<canvas id=" + atome_id + " width=" + view_width + " height= " + view_height + "></canvas>");
