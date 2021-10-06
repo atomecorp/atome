@@ -166,7 +166,6 @@ def cleanup_temp_files(temp_dir)
   rm_f "www/public/js/dynamic_libraries/opal/opal_parser.js"
 end
 
-
 # rm_r "www/public/medias/e_rubies/tools", force: true
 # FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
 # # to cleanup all generated files
