@@ -27,7 +27,7 @@ Install prerequisite library
 	on OSX :
 	 - using Brew :
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-                    c
+                    brew install npm
     - using MacPort :
                     sudo port install npm6
 	on Windows	  
