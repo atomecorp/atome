@@ -176,8 +176,6 @@ end
 # # to force update media_list uncomment below
 update_medias_list(temp_dir)
 
-
-
 # the tasks
 
 desc "Run atomic_reaction"
