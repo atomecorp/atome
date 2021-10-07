@@ -141,6 +141,16 @@ module PropertyHtml
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
       jq_object.on(:drag) do |evt|
+
+        # # tests
+        # puts @on_change
+        # # grab(self.change[:atome_id]).send(self.change[:property],evt.page_x)
+        # grab(@on_change[:atome_id]).send(@on_change[:property],evt.page_x)
+        # value[:proc].call(evt) if value[:proc].is_a?(Proc)
+        # if @on_change[:property]== :x
+        #   @on_change[:proc].call(evt.page_x) if @on_change[:proc].is_a?(Proc)
+        # end
+        # # # tests
         drag[:drag] = :moving
         evt.start = false
         evt.stop = false

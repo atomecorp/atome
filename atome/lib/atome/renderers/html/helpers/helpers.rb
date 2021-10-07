@@ -26,6 +26,7 @@ module HtmlHelpers
   end
 
   def update_position
+
     # this method update the position in x, y,xx,yy properties
     jq_object = jq_get(atome_id)
     x_position = jq_object.css("left").sub("px", "").to_i
@@ -36,6 +37,12 @@ module HtmlHelpers
     @y = atomise(:y, y_position)
     @xx = atomise(:x, xx_position)
     @yy = atomise(:y, yy_position)
+    # tests
+    if @on_change[:property]== :x_test
+      puts @on_change
+      @on_change[:proc].call(@x) if @on_change[:proc].is_a?(Proc)
+    end
+    # tests
   end
 
   def change_position_origin
