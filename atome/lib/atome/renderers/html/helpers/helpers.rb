@@ -38,7 +38,7 @@ module HtmlHelpers
     @xx = atomise(:x, xx_position)
     @yy = atomise(:y, yy_position)
     # tests
-    if @on_change[:property]== :x_test
+    if @on_change && (@on_change[:property]== :x_test ||@on_change[:property]== :all )
       puts @on_change
       @on_change[:proc].call(@x) if @on_change[:proc].is_a?(Proc)
     end
