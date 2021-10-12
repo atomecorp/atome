@@ -4,9 +4,11 @@ gem "rubocop","1.22.0"
 #gem "c_lexer"
 gem "filewatcher", "1.1.1"
 gem "image_size", "2.1.2"
-# gem "opal", "1.0.5"
 gem "opal", "1.2.0"
 gem "opal-jquery", "0.4.5"
+# paggio is a needed dependency for opal-browser
+gem 'paggio', github: 'hmdne/paggio'
+gem "opal-browser"
 gem "rake", "13.0.6"
 gem "uglifier", "4.2.0"
 gem "parser", "3.0.2.0"
