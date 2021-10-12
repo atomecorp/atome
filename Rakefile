@@ -1,7 +1,7 @@
 # require "c_lexer"
 require "opal"
 require "opal-jquery"
-# require "opal-browser"
+require 'opal-browser'
 require "uglifier"
 require "fileutils"
 require "filewatcher"
