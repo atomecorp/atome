@@ -55,7 +55,7 @@ animator = {
             start_opt.forEach((item) => {
                 let key = item;
                 const val = value.start[item];
-                if (key === "background" && objectType === "text") {
+                if (key == "background" && objectType == "text") {
                     key = "color";
                 }
                 a_start[key] = val;
@@ -68,7 +68,7 @@ animator = {
             end_option.forEach((item) => {
                 let key = item;
                 const val = value.end[item];
-                if (key === "background" && objectType === "text") {
+                if (key == "background" && objectType == "text") {
                     key = "color";
                 }
                 a_end[key] = val;

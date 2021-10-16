@@ -235,15 +235,24 @@ def animate(params)
   end
 
   if params[:start][:color]
+
     value_found = params[:start][:color]
     value_found = grab(params[:target]).color_helper(value_found)
-    params[:start][:background] = value_found
+    # if type == :text
+    #   params[:start][:color] = value_found
+    # else
+      params[:start][:background] = value_found
+    # end
     params[:start].delete(:color)
   end
   if params[:end][:color]
     value_found = params[:end][:color]
     value_found = grab(params[:target]).color_helper(value_found)
-    params[:end][:background] = value_found
+    # if type == :text
+    #   params[:end][:color] = value_found
+    # else
+      params[:end][:background] = value_found
+    # end
     params[:end].delete(:color)
   end
 
