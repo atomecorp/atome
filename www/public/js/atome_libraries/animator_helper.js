@@ -54,9 +54,17 @@ animator = {
             const start_opt = Object.keys(value.start);
             start_opt.forEach((item) => {
                 let key = item;
-                const val = value.start[item];
+                let val = value.start[item];
                 if (key == "background" && objectType == "text") {
-                    key = "color";
+                    if (typeof(val)== "string"){
+                        val= "linear-gradient(0deg, "+val+","+val+")";
+                        key="background-image";
+                    }
+                    else
+                    {
+                        alert("write the code for gradient");
+                    }
+
                 }
                 a_start[key] = val;
             });
@@ -67,13 +75,22 @@ animator = {
             const end_option = Object.keys(value.end);
             end_option.forEach((item) => {
                 let key = item;
-                const val = value.end[item];
+                let val = value.end[item];
                 if (key == "background" && objectType == "text") {
-                    key = "color";
+                    if (typeof(val)== "string"){
+                        val= "linear-gradient(0deg, "+val+","+val+")";
+                        key="background-image";
+                    }
+                    else
+                    {
+                        alert("write the code for gradient");
+                    }
+
                 }
                 a_end[key] = val;
             });
         } else {
+
             a_end[property] = end;
         }
         a_duration[property] = duration;
@@ -83,7 +100,7 @@ animator = {
 //popmotion
         const {easing, tween, styler} = window.popmotion;
         const divStyler = styler(document.querySelector('#' + target_id));
-        tween({
+            tween({
             from: a_start,
             to: a_end,
             duration: duration,
@@ -93,5 +110,4 @@ animator = {
         })
             .start(divStyler.set);
     },
-
 };

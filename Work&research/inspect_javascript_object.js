@@ -1,0 +1,1 @@
+alert(JSON.stringify(my_object, null, 4));
