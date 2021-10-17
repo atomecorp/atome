@@ -88,7 +88,6 @@ animator = {
                         val = "linear-gradient(0deg, " + gradient.join(",") + ")";
                     }
                 }
-                alert(val);
                 a_start[key] = val;
             });
         } else {

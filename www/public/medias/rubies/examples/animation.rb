@@ -47,3 +47,16 @@ c.touch do
           })
 
 end
+
+title=text({content: "animated gradient", visual: 66})
+
+title.animate({
+                # start: {  color: { red: 1, green: 1, blue: 1 } },
+                # end: {  color: { red: 1, green: 0, blue: 0 } },
+                start: { color: [{ red: 1, green: 0.2, blue: 1, alpha: 0.3 }, { red: 0, green: 0.2, blue: 1, alpha: 0.3 }] },
+                end: { color: [{ red: 1, green: 0, blue: 0, alpha: 1 }, { red: 0, green: 1, blue: 0, alpha: 1}] },
+                duration: 1000,
+                loop: 10,
+                curve: :easing,
+                target: title.atome_id
+              })
