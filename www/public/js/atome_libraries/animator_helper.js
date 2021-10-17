@@ -1,8 +1,10 @@
-class AnimationHelper{
+class AnimationHelper {
     constructor() {
-        $.getScript("js/third_parties/rendering_engines/popmotion.global.min.js", function () {});
+        $.getScript("js/third_parties/rendering_engines/popmotion.global.min.js", function () {
+        });
     }
 }
+
 animator = {
     is_mobile: function () {
         atome.jsIsMobile();
@@ -56,16 +58,37 @@ animator = {
                 let key = item;
                 let val = value.start[item];
                 if (key == "background" && objectType == "text") {
-                    if (typeof(val)== "string"){
-                        val= "linear-gradient(0deg, "+val+","+val+")";
-                        key="background-image";
-                    }
-                    else
-                    {
-                        alert("write the code for gradient");
-                    }
+                    key = "background-image";
+                    if (typeof (val) == "string") {
+                        val = "linear-gradient(0deg, " + val + "," + val + ")";
 
+                    } else {
+                        //  gradient handling here
+                        let gradient = [];
+                        $.each(val, function (key_nb, values) {
+                            let color = "";
+                            let i = 0;
+                            $.each(values, function (key, value) {
+                                if (i == 0) {
+                                    separator = "";
+                                } else {
+                                    separator = ",";
+                                }
+                                // red green blue are formatted to be coded on 8 bit not the alpha
+
+                                if (i<3){
+                                    value = parseFloat(value) * 255;
+                                }
+                                color = color + separator + value;
+                                i += 1;
+                            });
+                            color = "rgba(" + color + ")";
+                            gradient.push(color);
+                        });
+                        val = "linear-gradient(0deg, " + gradient.join(",") + ")";
+                    }
                 }
+                alert(val);
                 a_start[key] = val;
             });
         } else {
@@ -77,20 +100,37 @@ animator = {
                 let key = item;
                 let val = value.end[item];
                 if (key == "background" && objectType == "text") {
-                    if (typeof(val)== "string"){
-                        val= "linear-gradient(0deg, "+val+","+val+")";
-                        key="background-image";
+                    key = "background-image";
+                    if (typeof (val) == "string") {
+                        val = "linear-gradient(0deg, " + val + "," + val + ")";
+                    } else {
+                        //  gradient handling here
+                        let gradient = [];
+                        $.each(val, function (key_nb, values) {
+                            let color = "";
+                            let i = 0;
+                            $.each(values, function (key, value) {
+                                if (i == 0) {
+                                    separator = "";
+                                } else {
+                                    separator = ",";
+                                }
+                                // red green blue are formatted to be coded on 8 bit not the alpha
+                                if (i<3){
+                                    value = parseFloat(value) * 255;
+                                }
+                                color = color + separator + value;
+                                i += 1;
+                            });
+                            color = "rgba(" + color + ")";
+                            gradient.push(color);
+                        });
+                        val = "linear-gradient(0deg, " + gradient.join(",") + ")";
                     }
-                    else
-                    {
-                        alert("write the code for gradient");
-                    }
-
                 }
                 a_end[key] = val;
             });
         } else {
-
             a_end[property] = end;
         }
         a_duration[property] = duration;
@@ -100,7 +140,7 @@ animator = {
 //popmotion
         const {easing, tween, styler} = window.popmotion;
         const divStyler = styler(document.querySelector('#' + target_id));
-            tween({
+        tween({
             from: a_start,
             to: a_end,
             duration: duration,
