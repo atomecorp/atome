@@ -26,17 +26,19 @@ function generateNoise(target_id, intensity, opacity, width, height, color, remo
     }
    let  target = $("#" + target_id);
     var new_background = "";
+    var bg = target.css("backgroundImage");
+    var   target_atome=Opal.Atome.$grab(target_id);
     if (remove) {
-        target_atome=Opal.Atome.$grab(target_id);
-        var bg = target.css("backgroundImage");
+
         if (target_atome.type =="image"){
             let image_name=target_atome.content;
-            var bgs = bg.split(image_name);
+             bgs = bg.split(image_name);
             path=bgs[0].split("url(\"").pop();
             extension=bgs[1].split("\")")[0];
             let new_background = "url("+path+image_name+extension+ ")";
             target.css("background-repeat", "repeat");
             target.css("backgroundImage", new_background);
+            // target.css("-webkit-mask-image",new_background);
         }
         else {
 
@@ -49,6 +51,14 @@ function generateNoise(target_id, intensity, opacity, width, height, color, remo
         new_background = "url(" + canvas.toDataURL("image/png") + ")" + "," + target.css("backgroundImage");
         target.css("background-repeat", "repeat");
         target.css("backgroundImage", new_background);
+        if (target_atome.type =="image"){
+            let image_name=target_atome.content;
+             bgs = bg.split(image_name);
+            path=bgs[0].split("url(\"").pop();
+            extension=bgs[1].split("\")")[0];
+            let new_background = "url("+path+image_name+extension+ ")";
+            target.css("-webkit-mask-image",new_background);
+        }
 
         // : url(masks.svg#mask1)
     }
