@@ -82,6 +82,6 @@ module PropertyHtml
     if  value[:height]==:auto
       value[:height]= convert(:height)
     end
-    `generateNoise(#{atome_id},#{value[:intensity]},#{value[:opacity]}, #{value[:width]}, #{value[:height]},#{value[:color]}); // target, intensity, opacity, width, height, color`
+    `generateNoise(#{atome_id},#{value[:intensity]},#{value[:opacity]}, #{value[:width]}, #{value[:height]},#{value[:color]},#{value[:delete]}); // target, intensity, opacity, width, height, color`
   end
 end

@@ -127,17 +127,19 @@ module PropertyHtml
       else
         gradient = []
         values.each do |color_found|
-          if color_found[:angle]
+          if color_found[:angle] || color_found[:diffusion]
             angle = color_found[:angle]
-          end
-          if color_found[:diffusion]
             diffusion = color_found[:diffusion]
+          else
+            gradient << color_helper(color_found)
           end
-          gradient << color_helper(color_found)
         end
         case diffusion
         when :linear
           val = "#{diffusion}-gradient(#{angle}deg,#{gradient.join(",")})"
+          # alert atome_id+ " : "+values.to_s
+          # alert gradient
+          # alert val
         else
           val = "#{diffusion}-gradient(#{gradient.join(",")})"
         end

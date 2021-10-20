@@ -1,8 +1,9 @@
-function generateNoise(target, intensity, opacity, width, height, color) {
+function generateNoise(target_id, intensity, opacity, width, height, color, remove) {
+
     var canvas = document.createElement("canvas"),
         ctx = canvas.getContext('2d'),
         x, y,
-        opacity = opacity || 0.3;
+        opacities = opacity || 0.3;
     canvas.width = width || 450;
     canvas.height = height || 450;
     color = color || false;
@@ -19,11 +20,37 @@ function generateNoise(target, intensity, opacity, width, height, color) {
                 green = number;
                 blue = number;
             }
-            ctx.fillStyle = "rgba(" + red + "," + green + "," + blue + "," + opacity + ")";
+            ctx.fillStyle = "rgba(" + red + "," + green + "," + blue + "," + opacities + ")";
             ctx.fillRect(x, y, 1, 1);
         }
     }
-    target=$("#" + target);
-    var new_background = "url(" + canvas.toDataURL("image/png") + ")" + "," + target.css("backgroundImage");
-    target.css("backgroundImage", new_background);
- }
+   let  target = $("#" + target_id);
+    var new_background = "";
+    if (remove) {
+        target_atome=Opal.Atome.$grab(target_id);
+        var bg = target.css("backgroundImage");
+        if (target_atome.type =="image"){
+            let image_name=target_atome.content;
+            var bgs = bg.split(image_name);
+            path=bgs[0].split("url(\"").pop();
+            extension=bgs[1].split("\")")[0];
+            let new_background = "url("+path+image_name+extension+ ")";
+            target.css("background-repeat", "repeat");
+            target.css("backgroundImage", new_background);
+        }
+        else {
+
+            let bgs = bg.split('linear-gradient');
+            let new_background = 'linear-gradient' + bgs.pop();
+            target.css("background-repeat", "repeat");
+            target.css("backgroundImage", new_background);
+        }
+    } else {
+        new_background = "url(" + canvas.toDataURL("image/png") + ")" + "," + target.css("backgroundImage");
+        target.css("background-repeat", "repeat");
+        target.css("backgroundImage", new_background);
+
+        // : url(masks.svg#mask1)
+    }
+
+}
