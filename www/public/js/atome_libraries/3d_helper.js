@@ -1,5 +1,4 @@
 class Third_d_Helper{
-
     constructor() {
         this.dummy_var="Cool!";
         $.getScript("js/third_parties/rendering_engines/three.min.js", function () {});
@@ -20,7 +19,6 @@ class Third_d_Helper{
     }
 
 }
-
 function third_d_test(atome_id) {
     var url = "js/third_parties/rendering_engines/three.min.js";
     $.getScript(url, function () {
