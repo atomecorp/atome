@@ -29,7 +29,6 @@ module JSUtils
   end
 
   def self.select_text_content(atome_id, selection)
-    # alert selection
     `atome.select_text_content(#{atome_id}, #{selection})`
   end
 

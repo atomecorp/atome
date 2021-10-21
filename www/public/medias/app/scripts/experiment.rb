@@ -1,5 +1,5 @@
 # `three_test()`
-wait 2 do
+# wait 0.2 do
   `third_d.basic3D()`
-end
+# end
 # `third_d_test("poilu")`
