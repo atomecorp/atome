@@ -218,9 +218,9 @@ function fabric_prop(canvas_id,obj_id,params) {
 }
 
 // three renderer
-function three(the_id, params) {
-
-}
+// function three(the_id, params) {
+//
+// }
 
 
 
