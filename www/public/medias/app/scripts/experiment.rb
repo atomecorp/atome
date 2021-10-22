@@ -64,3 +64,5 @@ c3.touch do
   `third_d.touch("toto")`
   `third_d.anim("toto")`
 end
+
+sphere({ atome_id: :the_sphere })

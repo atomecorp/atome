@@ -5,8 +5,7 @@ let videoHelper;
 let audioHelper;
 let animationHelper;
 let mediaStreamingHelper;
-let third_d_Helper;
-
+// let third_d_Helper;
 
 let databaseEventListener = {
     onConnected: function (event) {
@@ -75,11 +74,8 @@ videoHelper = new VideoHelper();
 //third_d_Helper
 third_d = new Third_d_Helper();
 
-
-
 //audioHelper
 audioHelper = new AudioHelper(audioEventListener);
-
 
 window.ondragover = function (e) {
     e.preventDefault();

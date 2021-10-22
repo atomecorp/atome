@@ -18,8 +18,6 @@ class Atome
     Quark.space
   end
 
-
-
   # atome creation
   def initialize(properties = {})
     # the hash below add the missing properties without creating a condition

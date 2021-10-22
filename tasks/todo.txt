@@ -1,3 +1,4 @@
+- rewirite group Api we should be able to to write : g=group([b, c], g.color(:red) , and remove the stupid 'treatment' property
 - Bug only the last  filter can be animated theuy have to be stack
 - Bug  shadow doesn't work when a mask is applied on an image
 - bug :(ugly fix see FIXEME in def extract method). when an atome is extract then attached it lose it's content, we have to re add the content: check "parent example"

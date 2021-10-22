@@ -1,6 +1,5 @@
 module Processors
   def media_pre_processor(type, preset, value, password = nil)
-    # alert self.inspect
     if value.instance_of?(Hash) && value[:proc]
       # if a proc is found we yield we search for child of the requested type to be treated , ex :
       # a.text do |text_found|
@@ -29,11 +28,11 @@ module Processors
   def group_pre_processor(value, password = nil)
     #todo allow group deletion and remove all monitoring binding
     #if there's a condition we feed the content else we treat the content directly
-    if value[:condition]
-      content_found = find(value[:condition])
-    else
-      content_found = []
-    end
+    content_found = if value[:condition]
+                      find(value[:condition])
+                    else
+                      []
+                    end
     if value[:content]
       content_found.concat(value[:content])
     end
@@ -147,6 +146,20 @@ module Processors
     child_collected = []
     child do |child_found|
       if child_found.type == :shape
+        child_collected << child_found.atome_id
+      end
+    end
+    atomise(:temp, child_collected)
+  end
+
+  def sphere_pre_processor(value, password = nil)
+    media_pre_processor(:volume, :sphere, value, password)
+  end
+
+  def sphere_getter_processor
+    child_collected = []
+    child do |child_found|
+      if child_found.type == :sphere
         child_collected << child_found.atome_id
       end
     end
@@ -293,22 +306,22 @@ module Processors
       @content = atomise(:content, value)
     end
     # lambda below to avoid mthod in method
-    send_to_content_renderer = -> (renderer,value,password) do
+    send_to_content_renderer = -> (renderer, value, password) do
       case renderer
       when :html
-        width_html(value,password)
+        width_html(value, password)
       when :fabric
-        width_fabric(value,password)
+        width_fabric(value, password)
       when :headless
-        width_headless(value,password)
+        width_headless(value, password)
       when :speech
-        width_speech(value,password)
+        width_speech(value, password)
       when :three
-        width_three(value,password)
+        width_three(value, password)
       when :zim
-        width_zim(value,password)
+        width_zim(value, password)
       else
-        width_html(value,password)
+        width_html(value, password)
       end
     end
 
@@ -316,7 +329,7 @@ module Processors
       content_html(value, password)
     elsif $default_renderer.instance_of?(Array)
       $default_renderer.each do |renderer|
-        send_to_width_renderer.call(renderer,value,password)
+        send_to_width_renderer.call(renderer, value, password)
       end
     else
       send_to_content_renderer.call($default_renderer, value, password)

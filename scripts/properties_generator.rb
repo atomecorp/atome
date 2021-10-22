@@ -1,5 +1,5 @@
 def atome_methods
-  analyser=%i[listen]
+  analyser = %i[listen]
   communication = %i[share]
   effect = %i[blur shadow smooth mask clip noise]
   event = %i[touch drag over key scale drop virtual_event]
@@ -9,16 +9,16 @@ def atome_methods
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
-  media = %i[content particle group container video shape box star circle text image audio web tool path info example cell
-             name visual active inactive]
+  media = %i[content particle group container video shape box star circle sphere text
+             image audio web tool path info example cell name visual active inactive]
   inputs = %i[camera microphone midi keyboard]
-  utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay 
+  utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
                code exec cursor ]
-  misc=%i[map calendar]
+  misc = %i[map calendar]
   material = %i[color opacity border overflow fill]
-  { analyser: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect, inputs: inputs,
-    medias: media, hierarchies: hierarchy, utilities: utility, communications: communication, identities: identity,
-    events: event, generator: generator, misc: misc}
+  { analyser: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect,
+    inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication,
+    identities: identity, events: event, generator: generator, misc: misc }
 end
 
 def types
@@ -31,12 +31,12 @@ def is_atome
   # in this case presets are used to create atome using their types with specific settings
   # so it add the methods in the atome_object_creator methods
   # the generated property will then return the result of the method instead of object itself
-  %i[particle container shape box star web circle text image tool video audio camera microphone midi group cell]
+  %i[particle container shape box star web circle sphere text image tool video audio camera microphone midi group cell]
 end
 
 def need_pre_processing
-  %i[atome_id particle group container shape box star web circle text camera microphone midi text image video audio tool cell  parent
-     child type shadow size drag visual noise say content]
+  %i[atome_id particle group container shape box star web circle sphere text camera microphone midi
+  text image video audio tool cell parent child type shadow size drag visual noise say content]
 end
 
 def need_processing
@@ -48,7 +48,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id group container shape box star web circle text image video audio tool parent child info example
+  %i[atome_id group container shape box star web circle sphere text image video audio tool parent child info example
      selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
      particle cell visual language active inactive noise engine render id preset say content]
 end

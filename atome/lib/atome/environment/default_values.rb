@@ -1,13 +1,15 @@
 module DefaultValues
   def default_values
     # here are the default preset for common objects
-
     visual = { color: :transparent, y: 0, z: 0, parent: :view }
     shape = visual.merge({ type: :shape, width: 70, height: 70, content: { points: 2 } })
+    volume = visual.merge({ type: :volume, width: 70, height: 70, content: { points: 2 } })
+
     container = { width: 70, height: 70, type: :shape, parent: :view, y: 0, z: 0, color: :transparent }
     box = visual.merge(shape).merge({ color: :lightgray, preset: :box })
     star = visual.merge(shape).merge({ color: :red, preset: :star, renderer: :fabric })
     circle = visual.merge(shape).merge({ color: :red, content: { points: 4, tension: "100%" }, preset: :circle })
+    sphere = visual.merge(volume).merge({ color: :red, content: { points: 4, tension: "100%" }, preset: :sphere })
     text = visual.merge({x: 0, width: :auto, height: :auto,type: :text, color: { red: 0.69, green: 0.69, blue: 0.69 }, content: lorem, edit: false, visual: {alignment: :left} })
     image = visual.merge({ type: :image, content: :atome })
     video = visual.merge({ type: :video, content: :lion_king })
@@ -27,6 +29,6 @@ module DefaultValues
     shadow = { x: 0, y: 0, blur: 7, thickness: 0, color: [alpha: 0.3], invert: false }
     border = { thickness: 1, pattern: :solid, color: :red }
     blur = { default: 5 }
-    { cell: cell,camera: camera, microphone: microphone, midi: midi, container: container, shape: shape, box: box,star: star, circle: circle, text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur }
+    { cell: cell,camera: camera, microphone: microphone, midi: midi, container: container, shape: shape, box: box,star: star, circle: circle, sphere: sphere,text: text, image: image, video: video, audio: audio, particle: particle, collector: collector, tool: tool, web: web, user: user, color: color, history: history, authorisation: authorisation, shadow: shadow, border: border, blur: blur }
   end
 end

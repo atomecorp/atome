@@ -36,6 +36,8 @@ module PropertyHtml
         if value[:tension]
           self.smooth(value[:tension])
         end
+      elsif type == :volume
+        alert "create 3D object!"
       elsif type == :video
         video_creator_helper(value)
       elsif type == :audio
