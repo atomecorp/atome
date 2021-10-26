@@ -1,6 +1,6 @@
 # `three_test()`
 wait 1 do
-#   `third_d.universe()`
+  #   `third_d.universe()`
 end
 # `third_d_test("poilu")`
 `third_d.universe()`
@@ -46,8 +46,8 @@ class Atome
 end
 
 c = circle
-c2 = circle({x: 300, color: :yellow})
-c3 = circle({x: 600, color: :yellowgreen})
+c2 = circle({ x: 300, color: :yellow })
+c3 = circle({ x: 600, color: :yellowgreen })
 c.touch do
   cube("toto")
   # cube({ color: :red })
@@ -65,4 +65,22 @@ c3.touch do
   `third_d.anim("toto")`
 end
 
-sphere({ atome_id: :the_sphere })
+# star({ y: 330, x: 333, atome_id: :titi })
+sphere({ atome_id: :the_sphere, y: 220 })
+
+title = box({atome_id: :the_box})
+wait 1 do
+  title.animate({
+                  start: { smooth: 0, blur: 0, rotate: 0, color: { red: 1, green: 1, blue: 1 } },
+                  end: { smooth: 25, rotate: 180, blur: 3, color: { red: 1, green: 0, blue: 0 } },
+                  duration: 1000,
+                  loop: 100,
+                  curve: :easing,
+                  # target: title.atome_id
+                })
+  # alert title.inspect
+end
+
+
+
+

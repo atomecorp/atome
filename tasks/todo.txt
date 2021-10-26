@@ -1,3 +1,6 @@
+- create a remote view demo (vnc like)
+- make animation an atome object
+- make fx an atome object
 - rewirite group Api we should be able to to write : g=group([b, c], g.color(:red) , and remove the stupid 'treatment' property
 - Bug only the last  filter can be animated theuy have to be stack
 - Bug  shadow doesn't work when a mask is applied on an image

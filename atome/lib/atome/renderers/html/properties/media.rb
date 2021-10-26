@@ -1,55 +1,53 @@
 module PropertyHtml
   def content_html(value = "", type_mutation = false)
-    if render
-      if type == :text
-        value = value.to_s
-        if type_mutation
-          # we use the color scheme of the color method to display the text correctly
-          self.color(color)
-        end
-        jq_get(atome_id).remove_text(atome_id)
-        child_of_text_atome = jq_get(atome_id).html
-        value = value.to_s.gsub("\n", "<br>")
-        new_content = value + child_of_text_atome
-        jq_get(atome_id).html(new_content)
-        @width = atomise(:width, JSUtils.client_width(atome_id))
-        @height = atomise(:height, JSUtils.client_height(atome_id))
-      elsif type == :web
-        if type_mutation
-          # we use the color scheme of the color method to display the text correctly
-          self.color(color)
-        end
-        jq_get(atome_id).remove_text(atome_id)
-        child_of_text_atome = jq_get(atome_id).html
-        new_content = value + child_of_text_atome
-        jq_get(atome_id).html(new_content)
-        jq_get(atome_id).html(new_content)
-      elsif type == :shape
-        if self.path
-          path_getter_helper(self.path)
-        else
-          if type_mutation
-            jq_get(atome_id).css("-webkit-background-clip", "padding")
-            jq_get(atome_id).css("background-color", color)
-          end
-        end
-        if value[:tension]
-          self.smooth(value[:tension])
-        end
-      elsif type == :volume
-        alert "create 3D object!"
-      elsif type == :video
-        video_creator_helper(value)
-      elsif type == :audio
-        audio_creator_helper(value)
-      elsif type == :camera
-        camera_creator_helper(value)
-      elsif type == :image
-        image_creator_helper(value)
-        if type_mutation
-          jq_get(atome_id).css("background-color", "transparent")
-        end
+    # if render
+    case type
+    when :text
+      value = value.to_s
+      if type_mutation
+        # we use the color scheme of the color method to display the text correctly
+        color(color)
       end
+      jq_get(atome_id).remove_text(atome_id)
+      child_of_text_atome = jq_get(atome_id).html
+      value = value.to_s.gsub("\n", "<br>")
+      new_content = value + child_of_text_atome
+      jq_get(atome_id).html(new_content)
+      @width = atomise(:width, JSUtils.client_width(atome_id))
+      @height = atomise(:height, JSUtils.client_height(atome_id))
+    when :web
+      if type_mutation
+        # we use the color scheme of the color method to display the text correctly
+        color(color)
+      end
+      jq_get(atome_id).remove_text(atome_id)
+      child_of_text_atome = jq_get(atome_id).html
+      new_content = value + child_of_text_atome
+      jq_get(atome_id).html(new_content)
+      jq_get(atome_id).html(new_content)
+    when :shape
+      if path
+        path_getter_helper(path)
+      elsif type_mutation
+        jq_get(atome_id).css("-webkit-background-clip", "padding")
+        jq_get(atome_id).css("background-color", color)
+      end
+      smooth(value[:tension]) if value[:tension]
+    # when :volume
+    #   alert "create 3D object!"
+    when :video
+      video_creator_helper(value)
+    when :audio
+      audio_creator_helper(value)
+    when :camera
+      camera_creator_helper(value)
+    when :image
+      image_creator_helper(value)
+      jq_get(atome_id).css("background-color", "transparent") if type_mutation
+    else
+      # no treatment
     end
+    # end
+    # return unless render
   end
 end

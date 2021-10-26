@@ -6,19 +6,19 @@ module PropertyHtml
     when Array
       properties = []
       value.each do |param|
-        properties << param.to_s + 'px'
+        properties << "#{param}px"
       end
-      properties.join(" ").to_s
+      properties.join(' ').to_s
     when Hash
       if value[:invert]
-        jq_get(atome_id).css('backdrop-filter', 'blur(' + value[:value].to_s + 'px)')
+        jq_get(atome_id).css('backdrop-filter', "blur(#{value[:value]}px)")
       else
-        jq_get(atome_id).css('filter', prev_prop + 'blur(' + value[:value].to_s + 'px)')
+        jq_get(atome_id).css('filter', "#{prev_prop}blur(#{value[:value]}px)")
       end
     when String, Symbol, Number
-      jq_get(atome_id).css('filter', prev_prop + 'blur(' + value.to_s + 'px)')
+      jq_get(atome_id).css('filter', "#{prev_prop}blur(#{value}px)")
     else
-      ""
+      ''
     end
   end
 
@@ -28,8 +28,8 @@ module PropertyHtml
         shadow_html(shadow)
       end
     elsif value==:delete
-      jq_get(atome_id).css("box-shadow", "0px 0px  0px  0px")
-      jq_get(atome_id).css("filter", "drop-shadow( 0px 0px 0px )")
+      jq_get(atome_id).css('box-shadow', '0px 0px  0px  0px')
+      jq_get(atome_id).css('filter', 'drop-shadow( 0px 0px 0px )')
     else
       shadow_html_format = shadow_helper(value)
       jq_get(atome_id).css(shadow_html_format[0], shadow_html_format[1])
@@ -41,32 +41,32 @@ module PropertyHtml
                       when Array
                         properties = []
                         value.each do |param|
-                          properties << param.to_s + "px"
+                          properties << "#{param}px"
                         end
-                        properties.join(" ").to_s
+                        properties.join(' ').to_s
                       when Integer
                         value
                       else
                         value
                       end
-    jq_get(atome_id).css("border-radius", formated_params)
+    jq_get(atome_id).css('border-radius', formated_params)
   end
 
   def mask_html(value)
     mask_path= $images_list[value[:content]][:path]
     repeat=value[:repeat]
-    case repeat
-    when false
-      repeat="no-repeat"
-    when true
-      repeat="repeat"
-    when "x"
-      repeat="repeat-x"
-      when "y"
-        repeat="repeat-y"
+    repeat = case repeat
+             when false
+               'no-repeat'
+             when true
+               'repeat'
+             when 'x'
+               'repeat-x'
+             when 'y'
+               'repeat-y'
     else
-      repeat="no-repeat"
-    end
+               'no-repeat'
+             end
     jq_get(atome_id).css("-webkit-mask-image": "url(#{mask_path})","-webkit-mask-size": "#{value[:size]}px","-webkit-mask-position": "#{value[:position]}","-webkit-mask-repeat": repeat)
     jq_get(atome_id).css("mask-image": "url(#{mask_path})","mask-size": "#{value[:size]}px","mask-position": "#{value[:position]}","mask-repeat": repeat)
   end

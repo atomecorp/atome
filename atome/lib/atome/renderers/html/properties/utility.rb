@@ -80,6 +80,7 @@ module PropertyHtml
           puts "no rendering"
         end
       end
+      nil unless value
     end
   end
 
@@ -115,8 +116,10 @@ module PropertyHtml
       jq_get(atome_id).css("-moz-user-select", "none")
       jq_get(atome_id).css("-o-user-select", "none")
       jq_get(atome_id).css("user-select: text", "none")
-      # unbind key
+      # unbind keypress
       jq_get(atome_id).unbind("keypress")
+    else
+      # type code here
     end
   end
 

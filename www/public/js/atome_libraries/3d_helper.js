@@ -50,9 +50,26 @@ class Third_d_Helper {
             new THREE.MeshPhongMaterial({color: "red", opacity: 0.5, transparent: true})
         );
         cube.position.y = -2;
+        cube.position.x = -9;
         cube.position.z = -10;
         cube.name = params;
         this.scene.add(cube);
+        this.renderer.render(this.scene, this.camera);
+    }
+
+    addSphere(params) {
+        // const geometry = new THREE.SphereGeometry( 15, 32, 16 );
+        // const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+        // const sphere = new THREE.Mesh( geometry, material );
+        // scene.add( sphere );
+        var sphere = new THREE.Mesh(
+            new THREE.SphereGeometry(3, 32, 32),
+            new THREE.MeshPhongMaterial({color: "red", opacity: 0.5, transparent: true})
+        );
+        sphere.position.y = -2;
+        sphere.position.z = -10;
+        sphere.name = params;
+        this.scene.add(sphere);
         this.renderer.render(this.scene, this.camera);
     }
 
