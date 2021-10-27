@@ -6,7 +6,7 @@
 # bundle install
 # to run: rackup --server puma --port 4567  or without puma : rackup -p 4567
 #
-puts RUBY_VERSION
+# puts RUBY_VERSION
 if RUBY_PLATFORM == "x64-mingw32"
   require "em/pure_ruby"
 end
@@ -20,7 +20,7 @@ require 'mail'
 class String
   def is_json?
     begin
-      !!JSON.parse(self)
+      !JSON.parse(self).nil?
     rescue
       false
     end
