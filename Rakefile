@@ -175,7 +175,7 @@ end
 # generate_demos_list
 # update_opal_libraries
 # # to force update media_list uncomment below
-update_medias_list(temp_dir)
+# update_medias_list(temp_dir)
 
 # the tasks
 
