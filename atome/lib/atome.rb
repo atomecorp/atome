@@ -22,6 +22,7 @@ require './atome/lib/atome/renderers/fabric/properties/analyser.rb'
 require './atome/lib/atome/renderers/fabric/properties/misc.rb'
 require './atome/lib/atome/renderers/fabric/processors/communication.rb'
 require './atome/lib/atome/renderers/fabric/processors/effect.rb'
+require './atome/lib/atome/renderers/fabric/processors/behaviour.rb'
 require './atome/lib/atome/renderers/fabric/processors/event.rb'
 require './atome/lib/atome/renderers/fabric/processors/geometry.rb'
 require './atome/lib/atome/renderers/fabric/processors/helper.rb'
@@ -33,6 +34,7 @@ require './atome/lib/atome/renderers/fabric/processors/spatial.rb'
 require './atome/lib/atome/renderers/fabric/processors/utility.rb'
 require './atome/lib/atome/renderers/fabric/properties/communication.rb'
 require './atome/lib/atome/renderers/fabric/properties/effect.rb'
+require './atome/lib/atome/renderers/fabric/properties/behaviour.rb'
 require './atome/lib/atome/renderers/fabric/properties/event.rb'
 require './atome/lib/atome/renderers/fabric/properties/generator.rb'
 require './atome/lib/atome/renderers/fabric/properties/geometry.rb'
@@ -50,6 +52,7 @@ require './atome/lib/atome/renderers/headless/properties/analyser.rb'
 require './atome/lib/atome/renderers/headless/properties/misc.rb'
 require './atome/lib/atome/renderers/headless/processors/communication.rb'
 require './atome/lib/atome/renderers/headless/processors/effect.rb'
+require './atome/lib/atome/renderers/headless/processors/behaviour.rb'
 require './atome/lib/atome/renderers/headless/processors/event.rb'
 require './atome/lib/atome/renderers/headless/processors/geometry.rb'
 require './atome/lib/atome/renderers/headless/processors/helper.rb'
@@ -61,6 +64,7 @@ require './atome/lib/atome/renderers/headless/processors/spatial.rb'
 require './atome/lib/atome/renderers/headless/processors/utility.rb'
 require './atome/lib/atome/renderers/headless/properties/communication.rb'
 require './atome/lib/atome/renderers/headless/properties/effect.rb'
+require './atome/lib/atome/renderers/headless/properties/behaviour.rb'
 require './atome/lib/atome/renderers/headless/properties/event.rb'
 require './atome/lib/atome/renderers/headless/properties/generator.rb'
 require './atome/lib/atome/renderers/headless/properties/geometry.rb'
@@ -78,6 +82,7 @@ require './atome/lib/atome/renderers/html/properties/analyser.rb'
 require './atome/lib/atome/renderers/html/properties/misc.rb'
 require './atome/lib/atome/renderers/html/processors/communication.rb'
 require './atome/lib/atome/renderers/html/processors/effect.rb'
+require './atome/lib/atome/renderers/html/processors/behaviour.rb'
 require './atome/lib/atome/renderers/html/processors/event.rb'
 require './atome/lib/atome/renderers/html/processors/geometry.rb'
 require './atome/lib/atome/renderers/html/processors/helper.rb'
@@ -89,6 +94,7 @@ require './atome/lib/atome/renderers/html/processors/spatial.rb'
 require './atome/lib/atome/renderers/html/processors/utility.rb'
 require './atome/lib/atome/renderers/html/properties/communication.rb'
 require './atome/lib/atome/renderers/html/properties/effect.rb'
+require './atome/lib/atome/renderers/html/properties/behaviour.rb'
 require './atome/lib/atome/renderers/html/properties/event.rb'
 require './atome/lib/atome/renderers/html/properties/generator.rb'
 require './atome/lib/atome/renderers/html/properties/geometry.rb'
@@ -106,6 +112,7 @@ require './atome/lib/atome/renderers/speech/properties/analyser.rb'
 require './atome/lib/atome/renderers/speech/properties/misc.rb'
 require './atome/lib/atome/renderers/speech/processors/communication.rb'
 require './atome/lib/atome/renderers/speech/processors/effect.rb'
+require './atome/lib/atome/renderers/speech/processors/behaviour.rb'
 require './atome/lib/atome/renderers/speech/processors/event.rb'
 require './atome/lib/atome/renderers/speech/processors/geometry.rb'
 require './atome/lib/atome/renderers/speech/processors/helper.rb'
@@ -117,6 +124,7 @@ require './atome/lib/atome/renderers/speech/processors/spatial.rb'
 require './atome/lib/atome/renderers/speech/processors/utility.rb'
 require './atome/lib/atome/renderers/speech/properties/communication.rb'
 require './atome/lib/atome/renderers/speech/properties/effect.rb'
+require './atome/lib/atome/renderers/speech/properties/behaviour.rb'
 require './atome/lib/atome/renderers/speech/properties/event.rb'
 require './atome/lib/atome/renderers/speech/properties/generator.rb'
 require './atome/lib/atome/renderers/speech/properties/geometry.rb'
@@ -134,6 +142,7 @@ require './atome/lib/atome/renderers/three/properties/analyser.rb'
 require './atome/lib/atome/renderers/three/properties/misc.rb'
 require './atome/lib/atome/renderers/three/processors/communication.rb'
 require './atome/lib/atome/renderers/three/processors/effect.rb'
+require './atome/lib/atome/renderers/three/processors/behaviour.rb'
 require './atome/lib/atome/renderers/three/processors/event.rb'
 require './atome/lib/atome/renderers/three/processors/geometry.rb'
 require './atome/lib/atome/renderers/three/processors/helper.rb'
@@ -145,6 +154,7 @@ require './atome/lib/atome/renderers/three/processors/spatial.rb'
 require './atome/lib/atome/renderers/three/processors/utility.rb'
 require './atome/lib/atome/renderers/three/properties/communication.rb'
 require './atome/lib/atome/renderers/three/properties/effect.rb'
+require './atome/lib/atome/renderers/three/properties/behaviour.rb'
 require './atome/lib/atome/renderers/three/properties/event.rb'
 require './atome/lib/atome/renderers/three/properties/generator.rb'
 require './atome/lib/atome/renderers/three/properties/geometry.rb'
@@ -162,6 +172,7 @@ require './atome/lib/atome/renderers/zim/properties/analyser.rb'
 require './atome/lib/atome/renderers/zim/properties/misc.rb'
 require './atome/lib/atome/renderers/zim/processors/communication.rb'
 require './atome/lib/atome/renderers/zim/processors/effect.rb'
+require './atome/lib/atome/renderers/zim/processors/behaviour.rb'
 require './atome/lib/atome/renderers/zim/processors/event.rb'
 require './atome/lib/atome/renderers/zim/processors/geometry.rb'
 require './atome/lib/atome/renderers/zim/processors/helper.rb'
@@ -173,6 +184,7 @@ require './atome/lib/atome/renderers/zim/processors/spatial.rb'
 require './atome/lib/atome/renderers/zim/processors/utility.rb'
 require './atome/lib/atome/renderers/zim/properties/communication.rb'
 require './atome/lib/atome/renderers/zim/properties/effect.rb'
+require './atome/lib/atome/renderers/zim/properties/behaviour.rb'
 require './atome/lib/atome/renderers/zim/properties/event.rb'
 require './atome/lib/atome/renderers/zim/properties/generator.rb'
 require './atome/lib/atome/renderers/zim/properties/geometry.rb'
@@ -186,17 +198,18 @@ require './atome/lib/atome/renderers/zim/properties/spatial.rb'
 require './atome/lib/atome/renderers/zim/properties/utility.rb'
 require './atome/lib/atome/renderers/zim.rb'
 # generated property
-require "atome/generated_methods/analyser"
+require "atome/generated_methods/analysers"
 require "atome/generated_methods/communications"
 require "atome/generated_methods/effects"
 require "atome/generated_methods/events"
 require "atome/generated_methods/geometries"
-require "atome/generated_methods/generator"
+require "atome/generated_methods/behaviors"
+require "atome/generated_methods/generators"
 require "atome/generated_methods/helpers"
 require "atome/generated_methods/hierarchies"
 require "atome/generated_methods/identities"
 require "atome/generated_methods/medias"
-require "atome/generated_methods/misc"
+require "atome/generated_methods/miscs"
 require "atome/generated_methods/inputs"
 require "atome/generated_methods/spatials"
 require "atome/generated_methods/utilities"
@@ -207,6 +220,7 @@ require "atome/processors/effect"
 require "atome/processors/event"
 require "atome/processors/generator"
 require "atome/processors/geometry"
+require "atome/processors/behaviour"
 require "atome/processors/helper"
 require "atome/processors/hierarchy"
 require "atome/processors/identity"

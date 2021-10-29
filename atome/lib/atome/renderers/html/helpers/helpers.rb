@@ -61,7 +61,6 @@ module HtmlHelpers
 
   # anim
   def animate_html(params)
-    alert params
     JSUtils.animator(params)
   end
 

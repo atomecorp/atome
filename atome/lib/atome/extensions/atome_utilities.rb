@@ -197,11 +197,10 @@ def version
 end
 
 def animate(params)
-  alert atome_id
   # alert Element.find("#"+params[:target]).css('filter')
-  unless params[:target]
-    params[:target]=atome_id
-  end
+  # unless params[:target]
+  #   params[:target]=atome_id
+  # end
   filter_found=Element.find("#"+params[:target]).css('filter')
   # alert "We must get all filter present in  #{params[:target]} and those found in the params to the animation "
   filter_list = %w[blur contrast brightness
@@ -352,7 +351,6 @@ def kickstart_keyboard_shortcut
         #key y
       when 90
         #key z
-      else
       end
       # elsif evt.ctrl_key
       # else
