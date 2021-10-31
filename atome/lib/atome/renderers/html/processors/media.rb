@@ -69,6 +69,7 @@ module ProcessorHtml
         @@http.get(file, &proc)
       end
     else
+      # filename= filename+"?"+(0...50).map { ('a'..'z').to_a[rand(26)] }.join
       @@http.get(filename, &proc)
     end
   end
