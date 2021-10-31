@@ -105,7 +105,7 @@ end
 
 
 b = box({ x: 300 })
-# b.connect("192.168.0.47:9292")
+b.connect("192.168.0.47:9292")
 
 b.touch do
   # atome is the method target the atome_id if no method given notification is used by default
