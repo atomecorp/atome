@@ -1,15 +1,14 @@
-source "https://rubygems.org"
+# source "https://rubygems.org"
 # comment "c_lexer" if generating arm version of atome
-gem "rubocop"
 #gem "c_lexer"
+gem "rubocop"
 gem "filewatcher"
 gem "image_size"
 gem "opal"
 gem "opal-jquery"
 # paggio is a needed dependency for opal-browser
-# gem 'paggio', github: 'hmdne/paggio'
-# gem 'paggio'
-# gem "opal-browser"
+gem 'paggio', github: 'hmdne/paggio'
+gem "opal-browser"
 # end opal-browser
 gem "rake"
 gem "uglifier"
