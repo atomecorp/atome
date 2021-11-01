@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+#source "https://rubygems.org"
 # comment "c_lexer" if generating arm version of atome
 #gem "c_lexer"
 gem "rubocop"
