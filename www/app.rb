@@ -185,7 +185,7 @@ class App < Roda
           when "command"
             file_content = `#{data["content"]}`
             # hashed_content = { content: file_content }.merge(data["options"])
-            message_to_push = JSON.generate({ type: :command, target: data["target"], atome: data["atome"], content: file_content })
+            message_to_push = JSON.generate({ type: :code, target: data["target"], atome: data["atome"], content: file_content })
             ws.send(message_to_push)
           else
             ws.send("unknown message received")

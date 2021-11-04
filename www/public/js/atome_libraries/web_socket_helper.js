@@ -38,16 +38,28 @@ class WebSocketHelper {
                 Opal.Object.$atomic_request(target, content,atome);
             }
             else if (data.type === "command") {
-                console.log("---------");
-                console.log("the command send is : ");
-                console.log(data);
-                console.log("---------");
+                // console.log("---------");
+                // console.log("the command send is : ");
+                // console.log(data);
+                // console.log("---------");
                 // atome=data.atome;
                 // target=data.target;
                 // content=data.content;
                 // Opal.Object.$atomic_request(target,atome, content);
-            }
 
+                // const type=data.atome;
+                const target=data.target;
+                const content=data.content;
+                const options=data.options;
+                const atome=data.atome;
+                // alert (content);
+                // var the_content=Opal.hash(content::content);
+                var the_content={};
+                the_content.content=content;
+                the_content=Opal.hash(the_content);
+                // var the_new_options=Opal.hash(options);
+                Opal.Object.$atomic_request(target, the_content, "no");
+            }
             else {
                 console.log(data );
             }

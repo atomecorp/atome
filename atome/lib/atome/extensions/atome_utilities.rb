@@ -403,6 +403,7 @@ def notif(message, size)
 end
 
 def atomic_request(target = nil, content, options)
+  # alert "#{target} : #{content}"
   if target
     Object.send(target, content[:content], options[:options])
   end

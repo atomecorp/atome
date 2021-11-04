@@ -11,7 +11,19 @@ module AtomeHelpers
   end
 
   def message(data, callback = nil)
-    AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
+    # if an address is supply we create a new websocket to contact the specified server
+    if data[:address]
+      ssl = if data[:ssl]
+              "wss"
+            else
+              "ws"
+            end
+      WebSocket.new(data[:address], ssl)
+        AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
+      # end
+    else
+      AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
+    end
   end
 
   # def shell(command)
