@@ -31,6 +31,16 @@ class WebSocketHelper {
                 var new_options=Opal.hash(options);
                 Opal.Object.$atomic_request(target, new_content, new_options);
             }
+            else if (data.type === "monitor") {
+                // const type=data.atome;
+                const target=data.target;
+                const file=data.file;
+                const options=data.options;
+                // alert(type);
+                var hashed_file=Opal.hash(file);
+                var hashed_options=Opal.hash(options);
+                Opal.Object.$atomic_request(target, hashed_file, hashed_options);
+            }
             else if (data.type === "atome") {
                 const atome=data.atome;
                 const target=data.target;
@@ -66,7 +76,7 @@ class WebSocketHelper {
         };
 
         this.webSocket.onerror = function (event) {
-            Opal.Object.$web_state("disconected");
+            // Opal.Object.$web_state("disconected");
 // console.log(event);
             // console.clear();
             // return false;

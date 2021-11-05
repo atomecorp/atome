@@ -113,23 +113,40 @@ end
 
 
 b = box({ x: 300 })
+b.y(300)
 # b.connect("192.168.0.47:9292")
 # b.connect("192.168.1.56:9292")
+# wait 1 do
+#   every 1,0 do
+#     # ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: ["public/medias/rubies/test.rb","public/medias/rubies/text_read.rb"], target: :tryout, atome: :text, options: { color: :yellowgreen } })
+#     ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: "public/medias/e_projects/chambon/code.rb", target: :tryout, atome: :text, options: { color: :yellowgreen } })
+#     # ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: , target: :my_callback, atome: :text, options: { color: :yellowgreen } })
+#   end
+# end
+wait 1 do
+  ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: ["public/medias/rubies/test.rb","public/medias/rubies/text_read.rb"], target: :tryout, atome: :text, options: { color: :yellowgreen } })
+end
 
 b.touch do
   # ATOME.websocket("localhost:9292")
-
+  # ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: "public/medias/rubies/text_read.rb", target: :my_callback, atome: :text, options: { color: :yellowgreen } })
+  # alert :kool
   # atome is the method target the atome_id if no method given notification is used by default
   # if no target then atome seek for a standard method
   # ATOME.message({type: :command, content: "pwd",target: b.atome_id, atome: :text , options:{color: :yellow, x: 333}})
+  ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: ["public/medias/rubies/test.rb","public/medias/rubies/text_read.rb"], target: :tryout, atome: :text, options: { color: :yellowgreen } })
   ATOME.message({ address: "localhost:9292",ssl: false,type: :read, file: "public/medias/rubies/test.rb", target: :my_callback, atome: :text, options: { color: :yellowgreen } })
   ATOME.message({ type: :code, content: "circle({x: 33,y: 33})" })
-  ATOME.message({type: :command, content: "cd public; ls; setxkbmap fr",target: :tryout, atome: :text , options:{color: :yellow, x: 333}})
+  # ATOME.message({type: :command, content: "cd public; ls; setxkbmap fr",target: :tryout, atome: :text , options:{color: :yellow, x: 333}})
+  ATOME.message({type: :command, content: "cd public; ls",target: :tryout, atome: :text , options:{color: :yellow, x: 333}})
 
 
   # ATOME.message({type: :atome,target: :my_callback,atome: :color,  content: "red"})
   # ATOME.message({type: :atome,target: b.atome_id,atome: :smooth,  content: 9})
 end
+
+
+
 
 
 

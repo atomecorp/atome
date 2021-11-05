@@ -151,7 +151,11 @@ def wait(seconds)
   end
 end
 
-def repeat(delay = 3, repeat = 5, &proc)
+def repeat(delay = 3, repeat = 0, &proc)
+  ATOME.repeat_html(delay, repeat, &proc)
+end
+
+def every(delay = 3, repeat = 5, &proc)
   ATOME.repeat_html(delay, repeat, &proc)
 end
 

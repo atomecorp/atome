@@ -12,7 +12,7 @@ module PropertyHtml
     js_schedule(years, months, days, hours, minutes, seconds, &proc)
   end
 
-  def repeat_html(delay = 1, repeat = 5, &proc)
+  def repeat_html(delay = 1, repeat = à, &proc)
     if delay.instance_of?(Hash)
       repeat = delay[:times]
       delay = delay[:every]

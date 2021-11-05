@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+
+# threads=[]
 # instructions to install :
 # gem install bundler roda sqlite3 sequel rack-unreloader faye-websocket websocket-extensions websocket-driver puma -N
 # important if crash the gem install rack-unreloader -v 1.7.0 gem install roda -v 2.26.0
@@ -6,6 +8,10 @@
 # bundle install
 # to run: rackup --server puma --port 4567  or without puma : rackup -p 4567
 #
+# Filewatcher.new(file).watch do |changes|
+#
+# end
+
 # puts RUBY_VERSION
 if RUBY_PLATFORM == "x64-mingw32"
   require "em/pure_ruby"
@@ -15,7 +21,9 @@ require "rufus-scheduler"
 require "faye/websocket"
 require "json"
 require "securerandom"
-require 'mail'
+require "mail"
+require "digest"
+require "filewatcher"
 
 class String
   def is_json?
@@ -26,11 +34,15 @@ class String
     end
   end
 end
-
+# threads << Thread.new do
+#   puts "hello from thread 1"
 class App < Roda
 
   @@channels = {}
   @@user
+
+
+
 
   #plugin :mail_processor
   eden = Sequel.connect("sqlite://eden_doors.sqlite3")
@@ -56,7 +68,6 @@ class App < Roda
   # require "../atome/lib/atome/big_bang.rb"
   plugin :static, %w[/css /js /medias]
   plugin "faye/websocket", adapter: :thin, ping: 45
-
   route do |r|
     if Faye::WebSocket.websocket?(env)
       ws = Faye::WebSocket.new(env)
@@ -107,11 +118,82 @@ class App < Roda
             message_back = JSON.generate({ type: :response, request_id: data["request_id"], pushed: true })
             ws.send(message_back)
           when "read"
-            file_content = File.read(data["file"])
-            hashed_content = { content: file_content }
-            hashed_options = { options: data["options"].to_s }
-            message_to_push = JSON.generate({ type: :read, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
-            ws.send(message_to_push)
+              file_content = File.read(data["file"])
+              hashed_content = { content: file_content }
+              hashed_options = { options: data["options"].to_s }
+              message_to_push = JSON.generate({ type: :read, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
+              ws.send(message_to_push)
+          when "monitor"
+            file= data["file"]
+
+            # puts file
+            # if !file.instance_of?(Array)
+            #   file=[file]
+            # end
+
+            # @@threads << Thread.new do
+            #   puts "hello from thread"
+            #   Filewatcher.new(file).watch do |changes|
+            #       #     file_content = File.read(changes)
+            #       hashed_content = { content: file_content }
+            #       hashed_options = { options: data["options"].to_s }
+            #       message_to_push = JSON.generate({ type: :monitor, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
+            #       # puts ws.inspect
+            #       # puts "---"
+            #       puts "hashed_content : #{hashed_content}}"
+            #       puts "hashed_options : #{hashed_options}}"
+            #       puts "message_to_push : #{message_to_push}}"
+            #       ws.send(message_to_push)
+            #       # @@channels[channel_id].each do |ws_found|
+            #       #   # we exclude the sender from the recipient
+            #       #   unless ws_found == ws
+            #       #     ws_found.send(message_to_push)
+            #       #   end
+            #       # end
+            #   end
+            #   puts "koolll!!!!"
+            # end
+            # @@threads.each(&:join)
+
+            # t= Thread.new do
+            #   puts "hello from thread"
+            #   Filewatcher.new(file).watch do |changes|
+            #     #     file_content = File.read(changes)
+            #     hashed_content = { content: file_content }
+            #     hashed_options = { options: data["options"].to_s }
+            #     message_to_push = JSON.generate({ type: :monitor, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
+            #     # puts ws.inspect
+            #     # puts "---"
+            #     puts "hashed_content : #{hashed_content}}"
+            #     puts "hashed_options : #{hashed_options}}"
+            #     puts "message_to_push : #{message_to_push}}"
+            #     ws.send(message_to_push)
+            #     # @@channels[channel_id].each do |ws_found|
+            #     #   # we exclude the sender from the recipient
+            #     #   unless ws_found == ws
+            #     #     ws_found.send(message_to_push)
+            #     #   end
+            #     # end
+            #   end
+            #
+            # end
+            #
+            # t.join
+
+
+
+            # # ugly patch below needs to use filewatcher above instead
+            # if @file_require == (Digest::SHA256.hexdigest File.read data["file"])
+            #   @file_require = Digest::SHA256.hexdigest File.read data["file"]
+            # else
+            #   @file_require = Digest::SHA256.hexdigest File.read data["file"]
+            #   # file_content = File.read()
+            #   file = data["file"]
+            #   hashed_file= { content: file }
+            #   hashed_options = { options: data["options"].to_s }
+            #   message_to_push = JSON.generate({ type: :monitor, atome: data["atome"], target: data["target"], file: hashed_file, options: hashed_options })
+            #   ws.send(message_to_push)
+            # end
           when "list"
             files_found = Dir[data["path"] + "/*"]
             hashed_content = { content: files_found }
@@ -154,13 +236,13 @@ class App < Roda
                 attachments << { file: attachment, filename: filename }
               end
             end
-            puts "----- + -----"
-            puts "sender: #{sender}"
-            puts "receiver: #{receiver}"
-            puts "mail_subject: #{mail_subject}"
-            puts "content: #{content}"
-            puts "attachments: #{attachments}"
-            puts "----- - -----"
+            # puts "----- + -----"
+            # puts "sender: #{sender}"
+            # puts "receiver: #{receiver}"
+            # puts "mail_subject: #{mail_subject}"
+            # puts "content: #{content}"
+            # puts "attachments: #{attachments}"
+            # puts "----- - -----"
             mail = Mail.new do
               from sender
               to receiver
@@ -188,7 +270,7 @@ class App < Roda
             message_to_push = JSON.generate({ type: :command, target: data["target"], atome: data["atome"], content: file_content })
             ws.send(message_to_push)
           else
-            ws.send("unknown message received")
+            # ws.send("unknown message received")
           end
         end
       end
@@ -213,4 +295,52 @@ class App < Roda
       end
     end
   end
+
+
+  #   puts "koolll!!!!"
+  # end
+
+
+
+  # my_fct
+
 end
+# end
+
+# threads << Thread.new do
+#   puts "hello from thread 2"
+#
+#   # def my_fct
+#   #   puts "koom\n*999"
+#   # end
+#
+#
+#   # my_fct
+#   file="poiuo"
+#
+#   i=0
+#   while i< 33
+#     puts i
+#     i+=1
+#     sleep 0.3
+#   end
+#
+#   # Filewatcher.new(file).watch do |changes|
+#   #   #       #     f◊ile_content = File.read(changes)
+#   #   #       hashed_content = { content: file_content }
+#   #   #       hashed_options = { options: data["options"].to_s }
+#   #   #       message_to_push = JSON.generate({ type: :monitor, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
+#   #   #       # puts ws.inspect
+#   #   #       # puts "---"
+#   #   #       puts "hashed_content : #{hashed_content}}"
+#   #   #       puts "hashed_options : #{hashed_options}}"
+#   #   #       puts "message_to_push : #{message_to_push}}"
+#   #   #       ws.send(message_to_push)
+#   #   #       # @@channels[channel_id].each do |ws_found|
+#   #   #       #   # we exclude the sender from the recipient
+#   #   #       #   unless ws_found == ws
+#   #   #       #     ws_found.send(message_to_push)
+#   #   #       #   end
+#   # end
+# end
+# threads.each(&:join)
