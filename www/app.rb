@@ -34,15 +34,14 @@ class String
     end
   end
 end
+
 # threads << Thread.new do
 #   puts "hello from thread 1"
 class App < Roda
 
   @@channels = {}
   @@user
-
-
-
+  @@test_socket = []
 
   #plugin :mail_processor
   eden = Sequel.connect("sqlite://eden_doors.sqlite3")
@@ -71,6 +70,7 @@ class App < Roda
   route do |r|
     if Faye::WebSocket.websocket?(env)
       ws = Faye::WebSocket.new(env)
+      @@test_socket << ws
       ws.on :message do |event|
         client_data = event.data
         if client_data.is_json?
@@ -118,13 +118,13 @@ class App < Roda
             message_back = JSON.generate({ type: :response, request_id: data["request_id"], pushed: true })
             ws.send(message_back)
           when "read"
-              file_content = File.read(data["file"])
-              hashed_content = { content: file_content }
-              hashed_options = { options: data["options"].to_s }
-              message_to_push = JSON.generate({ type: :read, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
-              ws.send(message_to_push)
+            file_content = File.read(data["file"])
+            hashed_content = { content: file_content }
+            hashed_options = { options: data["options"].to_s }
+            message_to_push = JSON.generate({ type: :read, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
+            ws.send(message_to_push)
           when "monitor"
-            file= data["file"]
+            file = data["file"]
 
             # puts file
             # if !file.instance_of?(Array)
@@ -180,16 +180,19 @@ class App < Roda
             #
             # t.join
 
-
-
             # # ugly patch below needs to use filewatcher above instead
+            # t=Thread.new do
+            #   sleep 12
+            #   puts   file = data["file"]
+            # end
+            # t.join
             # if @file_require == (Digest::SHA256.hexdigest File.read data["file"])
             #   @file_require = Digest::SHA256.hexdigest File.read data["file"]
             # else
             #   @file_require = Digest::SHA256.hexdigest File.read data["file"]
             #   # file_content = File.read()
             #   file = data["file"]
-            #   hashed_file= { content: file }
+            #   hashed_file = { content: file }
             #   hashed_options = { options: data["options"].to_s }
             #   message_to_push = JSON.generate({ type: :monitor, atome: data["atome"], target: data["target"], file: hashed_file, options: hashed_options })
             #   ws.send(message_to_push)
@@ -296,17 +299,33 @@ class App < Roda
     end
   end
 
-
   #   puts "koolll!!!!"
   # end
 
-
-
   # my_fct
-
+  def self.callback_verif(val)
+    # puts "--------"
+    ws = @@test_socket[0]
+    puts val
+    file_content = File.read(val)
+    msg = { "type": "read", "atome": "text", "target": "my_callback", "content": { "content": file_content }, "options": { "options": "{\"color\"=>\"yellowgreen\"}" } }
+    message_to_push = JSON.generate(msg)
+    ws.send(message_to_push)
+  end
 end
+
 # end
 
+# Update all connections in a single thread
+def monitor(val)
+  Thread.new do
+    Filewatcher.new(val).watch do |changes|
+      App.callback_verif(changes)
+    end
+  end
+end
+
+monitor "public/medias/e_projects/chambon/code.rb"
 # threads << Thread.new do
 #   puts "hello from thread 2"
 #

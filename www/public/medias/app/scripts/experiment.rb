@@ -107,12 +107,11 @@ def my_callback(val, opt)
 end
 
 def tryout val
-  alert val
+  alert "vall is : #{val.inspect}"
 end
 
 
-
-b = box({ x: 300 })
+b = box({ x: 300, atome_id: :the_box })
 b.y(300)
 # b.connect("192.168.0.47:9292")
 # b.connect("192.168.1.56:9292")
@@ -124,7 +123,7 @@ b.y(300)
 #   end
 # end
 wait 1 do
-  ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: ["public/medias/rubies/test.rb","public/medias/rubies/text_read.rb"], target: :tryout, atome: :text, options: { color: :yellowgreen } })
+  # ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: ["public/medias/rubies/test.rb","public/medias/rubies/text_read.rb"], target: :tryout, atome: :text, options: { color: :yellowgreen } })
 end
 
 b.touch do

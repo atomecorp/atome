@@ -26,7 +26,6 @@ class WebSocketHelper {
                 const target=data.target;
                 const content=data.content;
                 const options=data.options;
-                // alert(type);
                 var new_content=Opal.hash(content);
                 var new_options=Opal.hash(options);
                 Opal.Object.$atomic_request(target, new_content, new_options);
