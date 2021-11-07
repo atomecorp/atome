@@ -67,7 +67,7 @@
 #
 # # star({ y: 330, x: 333, atome_id: :titi })
 # sphere({ atome_id: :the_sphere, y: 220 })
-
+#
 # title = box({atome_id: :the_box})
 # wait 1 do
 #   title.animation({
@@ -133,7 +133,7 @@ b.touch do
   # atome is the method target the atome_id if no method given notification is used by default
   # if no target then atome seek for a standard method
   # ATOME.message({type: :command, content: "pwd",target: b.atome_id, atome: :text , options:{color: :yellow, x: 333}})
-  ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: ["public/medias/rubies/test.rb","public/medias/rubies/text_read.rb"], target: :tryout, atome: :text, options: { color: :yellowgreen } })
+  ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: ["public/medias/rubies/test.rb","public/medias/e_projects/chambon/code.rb"], target: :tryout, atome: :text, options: { color: :yellowgreen } })
   ATOME.message({ address: "localhost:9292",ssl: false,type: :read, file: "public/medias/rubies/test.rb", target: :my_callback, atome: :text, options: { color: :yellowgreen } })
   ATOME.message({ type: :code, content: "circle({x: 33,y: 33})" })
   # ATOME.message({type: :command, content: "cd public; ls; setxkbmap fr",target: :tryout, atome: :text , options:{color: :yellow, x: 333}})

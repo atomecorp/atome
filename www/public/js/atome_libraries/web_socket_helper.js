@@ -30,6 +30,19 @@ class WebSocketHelper {
                 var new_options=Opal.hash(options);
                 Opal.Object.$atomic_request(target, new_content, new_options);
             }
+            else if (data.type === "eval") {
+                if(data.options=="clear"){
+                    Opal.Atome.$clear("view");
+                }
+                Opal.eval(data.content.content);
+                // const type=data.atome;
+                // const target=data.target;
+                // const content=data.content;
+                // const options=data.options;
+                // var new_content=Opal.hash(content);
+                // var new_options=Opal.hash(options);
+                // Opal.Object.$atomic_request(target, new_content, new_options);
+            }
             else if (data.type === "monitor") {
                 // const type=data.atome;
                 const target=data.target;

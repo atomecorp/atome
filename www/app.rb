@@ -1,16 +1,11 @@
 # frozen_string_literal: true
 
-# threads=[]
 # instructions to install :
 # gem install bundler roda sqlite3 sequel rack-unreloader faye-websocket websocket-extensions websocket-driver puma -N
 # important if crash the gem install rack-unreloader -v 1.7.0 gem install roda -v 2.26.0
 # bundle update
 # bundle install
 # to run: rackup --server puma --port 4567  or without puma : rackup -p 4567
-#
-# Filewatcher.new(file).watch do |changes|
-#
-# end
 
 # puts RUBY_VERSION
 if RUBY_PLATFORM == "x64-mingw32"
@@ -35,8 +30,6 @@ class String
   end
 end
 
-# threads << Thread.new do
-#   puts "hello from thread 1"
 class App < Roda
 
   @@channels = {}
@@ -70,7 +63,7 @@ class App < Roda
   route do |r|
     if Faye::WebSocket.websocket?(env)
       ws = Faye::WebSocket.new(env)
-      @@test_socket << ws
+      @@test_socket[0] = ws
       ws.on :message do |event|
         client_data = event.data
         if client_data.is_json?
@@ -124,9 +117,9 @@ class App < Roda
             message_to_push = JSON.generate({ type: :read, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
             ws.send(message_to_push)
           when "monitor"
-            file = data["file"]
-
-            # puts file
+            # file = data["file"]
+            # monitor "public/medias/e_projects/chambon/code.rb"
+            # puts file.class
             # if !file.instance_of?(Array)
             #   file=[file]
             # end
@@ -134,9 +127,14 @@ class App < Roda
             # @@threads << Thread.new do
             #   puts "hello from thread"
             #   Filewatcher.new(file).watch do |changes|
-            #       #     file_content = File.read(changes)
-            #       hashed_content = { content: file_content }
-            #       hashed_options = { options: data["options"].to_s }
+            #           file_content = file
+            #       hashed_content = { content: data["file"] }
+            # hashed_options = { options: data["options"].to_s }
+            msg = { type: :monitor, atome: data["atome"], target: data["target"], content: data["file"], options: data["options"] }
+            monitor msg
+            # puts "------"
+            # puts file.class
+            # puts "------"
             #       message_to_push = JSON.generate({ type: :monitor, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
             #       # puts ws.inspect
             #       # puts "---"
@@ -299,67 +297,23 @@ class App < Roda
     end
   end
 
-  #   puts "koolll!!!!"
-  # end
-
-  # my_fct
-  def self.callback_verif(val)
-    # puts "--------"
+  def self.monitor_callback(val, params)
     ws = @@test_socket[0]
-    puts val
     file_content = File.read(val)
-    msg = { "type": "read", "atome": "text", "target": "my_callback", "content": { "content": file_content }, "options": { "options": "{\"color\"=>\"yellowgreen\"}" } }
+    params[:content] = val
+    msg = { "type": "eval", "atome": "text", "target": "tryout", "content": { "content": file_content }, "options": "clear" }
+     params[:content]= { "content": { "content": file_content } }
+    puts msg
     message_to_push = JSON.generate(msg)
     ws.send(message_to_push)
   end
 end
 
-# end
-
 # Update all connections in a single thread
-def monitor(val)
+def monitor(params)
   Thread.new do
-    Filewatcher.new(val).watch do |changes|
-      App.callback_verif(changes)
+    Filewatcher.new(params[:content]).watch do |changes|
+      App.monitor_callback(changes, params)
     end
   end
 end
-
-monitor "public/medias/e_projects/chambon/code.rb"
-# threads << Thread.new do
-#   puts "hello from thread 2"
-#
-#   # def my_fct
-#   #   puts "koom\n*999"
-#   # end
-#
-#
-#   # my_fct
-#   file="poiuo"
-#
-#   i=0
-#   while i< 33
-#     puts i
-#     i+=1
-#     sleep 0.3
-#   end
-#
-#   # Filewatcher.new(file).watch do |changes|
-#   #   #       #     f◊ile_content = File.read(changes)
-#   #   #       hashed_content = { content: file_content }
-#   #   #       hashed_options = { options: data["options"].to_s }
-#   #   #       message_to_push = JSON.generate({ type: :monitor, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
-#   #   #       # puts ws.inspect
-#   #   #       # puts "---"
-#   #   #       puts "hashed_content : #{hashed_content}}"
-#   #   #       puts "hashed_options : #{hashed_options}}"
-#   #   #       puts "message_to_push : #{message_to_push}}"
-#   #   #       ws.send(message_to_push)
-#   #   #       # @@channels[channel_id].each do |ws_found|
-#   #   #       #   # we exclude the sender from the recipient
-#   #   #       #   unless ws_found == ws
-#   #   #       #     ws_found.send(message_to_push)
-#   #   #       #   end
-#   # end
-# end
-# threads.each(&:join)
