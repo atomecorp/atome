@@ -123,6 +123,7 @@ b.y(300)
 #   end
 # end
 wait 1 do
+  ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: ["public/medias/rubies/test.rb","public/medias/rubies/users/code.rb"], target: :tryout, atome: :text, options: { color: :yellowgreen } })
   # ATOME.message({ address: "localhost:9292",ssl: false,type: :monitor, file: ["public/medias/rubies/test.rb","public/medias/rubies/text_read.rb"], target: :tryout, atome: :text, options: { color: :yellowgreen } })
 end
 
