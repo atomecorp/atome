@@ -11,7 +11,7 @@ def atome_methods
   spatial = %i[x xx y yy z center rotate position alignment disposition]
   media = %i[content particle group container video shape box star circle sphere text
              image audio web tool path info example cell name visual active inactive]
-  inputs = %i[camera microphone midi keyboard]
+  inputs = %i[camera microphone midi keyboard read write]
   utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
                code exec cursor ]
   misc = %i[map calendar]
@@ -41,7 +41,7 @@ def need_pre_processing
 end
 
 def need_processing
-  %i[monitor active inactive render]
+  %i[monitor active inactive render read write]
 end
 
 def getter_need_processing
@@ -51,7 +51,7 @@ end
 def no_rendering
   %i[atome_id group container shape box star web circle sphere text image video audio tool parent child info example
      selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-     particle cell visual language active inactive noise engine render id preset say content]
+     particle cell visual language active inactive noise engine render id preset say content read write]
 end
 
 batch_delete = <<STRDELIM

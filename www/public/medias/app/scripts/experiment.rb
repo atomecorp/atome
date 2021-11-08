@@ -107,7 +107,7 @@ def my_callback(val, opt)
 end
 
 def tryout val
-  alert "vall is : #{val.inspect}"
+  alert "value is : #{val.inspect}"
 end
 
 

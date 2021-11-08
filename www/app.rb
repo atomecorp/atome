@@ -116,6 +116,9 @@ class App < Roda
             hashed_options = { options: data["options"].to_s }
             message_to_push = JSON.generate({ type: :read, atome: data["atome"], target: data["target"], content: hashed_content, options: hashed_options })
             ws.send(message_to_push)
+          when "set"
+            msg = { type: :monitor, atome: data["atome"], target: data["target"], output: data["output"],  content: data["content"],options: data["options"] }
+            set_output msg
           when "monitor"
             # file = data["file"]
             # monitor "public/medias/e_projects/chambon/code.rb"
@@ -124,14 +127,20 @@ class App < Roda
             #   file=[file]
             # end
 
+
             # @@threads << Thread.new do
             #   puts "hello from thread"
             #   Filewatcher.new(file).watch do |changes|
             #           file_content = file
             #       hashed_content = { content: data["file"] }
             # hashed_options = { options: data["options"].to_s }
-            msg = { type: :monitor, atome: data["atome"], target: data["target"], content: data["file"], options: data["options"] }
-            monitor msg
+            if data["file"]
+              msg = { type: :monitor, atome: data["atome"], target: data["target"], content: data["file"], options: data["options"] }
+              monitor msg
+            else
+              msg = { type: :monitor, atome: data["atome"], target: data["target"], input: data["input"], options: data["options"] }
+              capture_input msg
+            end
             # puts "------"
             # puts file.class
             # puts "------"
@@ -302,12 +311,23 @@ class App < Roda
     file_content = File.read(val)
     params[:content] = val
     msg = { "type": "eval", "atome": "text", "target": "tryout", "content": { "content": file_content }, "options": "clear" }
-     params[:content]= { "content": { "content": file_content } }
-    puts msg
+    params[:content] = { "content": { "content": file_content } }
+    message_to_push = JSON.generate(msg)
+    ws.send(message_to_push)
+  end
+
+  def self.device_output_callback( params)
+    ws = @@test_socket[0]
+    file_content = params[:content]
+    msg = { "type": "read", "atome": "text", "target": "tryout", "content": { "content": file_content }, "options": "clear" }
+    params[:content] = { "content": { "content": file_content } }
     message_to_push = JSON.generate(msg)
     ws.send(message_to_push)
   end
 end
+
+
+
 
 # Update all connections in a single thread
 def monitor(params)
@@ -317,3 +337,39 @@ def monitor(params)
     end
   end
 end
+
+@bbb_ready = false
+@bbb_thread = false
+
+def capture_input params
+  unless @bbb_ready
+    @bbb_ready = true
+    puts "bbb is ready"
+    # require "./beagleboard"
+
+  end
+  if @bbb_thread
+    @bbb_thread.exit
+  end
+
+  @bbb_thread = Thread.new do
+
+    i = 0
+    while i < 2000
+      puts i
+      sleep 1
+      i += 1
+    end
+  end
+end
+
+
+def set_output params
+  App.device_output_callback( params)
+end
+
+
+# capture_input(1, { my_condition: :callback })
+#
+# capture_input(1, { my_condition: :callback })
+# capture_input(1, { my_condition: :callback })
