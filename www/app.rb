@@ -63,6 +63,7 @@ class App < Roda
   route do |r|
     if Faye::WebSocket.websocket?(env)
       ws = Faye::WebSocket.new(env)
+      # @@test_socket[0] = ws
       @@test_socket[0] = ws
       ws.on :message do |event|
         client_data = event.data
