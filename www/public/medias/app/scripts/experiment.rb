@@ -108,6 +108,7 @@ end
 
 def tryout val
   alert "value is : #{val.inspect}"
+
 end
 
 
