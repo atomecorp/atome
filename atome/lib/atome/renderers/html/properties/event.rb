@@ -28,6 +28,9 @@ module PropertyHtml
               if value[:stop]
                 evt.stop_propagation
               end
+              # alert evt.page_x
+              # evt.offset_x = offset_x
+              # evt.offset_y = offset_y
               value[:proc].call(evt) if value[:proc].is_a?(Proc)
             end
           end
@@ -40,15 +43,15 @@ module PropertyHtml
         jq_get(atome_id).on("touchstart mousedown") do |evt|
           if ready == false
             @touch_counter = 0
-            ready=true
+            ready = true
           end
-          waiter=ATOME.wait delay do
+          waiter = ATOME.wait delay do
             ready = false
             @touch_counter = 0
           end
           if @touch_counter >= 1
             value[:proc].call(evt) if value[:proc].is_a?(Proc)
-            clear({wait: waiter})
+            clear({ wait: waiter })
             ready = false
             @touch_counter = 0
           end
@@ -112,9 +115,9 @@ module PropertyHtml
                {}
              end
       handle = if value[:handle]
-        { handle: "#" + value[:handle] }
-      else
-        {}
+                 { handle: "#" + value[:handle] }
+               else
+                 {}
                end
       fixed = {}
       if value[:fixed]
