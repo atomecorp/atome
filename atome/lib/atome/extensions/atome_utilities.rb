@@ -428,15 +428,13 @@ def refresh (params = nil)
     target = params[:target]
     source = params[:source]
   end
-  unless source
-    source = current_code
-  end
+  source ||= current_code
   if target == :all || target.nil?
     clear(:view)
     reader(source) do |data|
       compile data
     end
-  else
+  # else
     # # we  colect it's content
     # collected_atome=[]
     # grab(:view).child do |atome|
@@ -468,9 +466,7 @@ def current_code code = nil
 end
 
 def listen(local_lang, &proc)
-  unless local_lang
-    local_lang = grab(:view).language
-  end
+  local_lang ||= grab(:view).language
   ATOME.listen_html(local_lang,&proc)
 end
 

@@ -19,7 +19,7 @@ module AtomeHelpers
               "ws"
             end
       WebSocket.new(data[:address], ssl)
-        AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
+      AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
       # end
     else
       AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
@@ -48,7 +48,10 @@ module AtomeHelpers
     delete_from_parent
     delete_child
     Atome.atomes = remove_item_from_hash(Atome.atomes)
-    grab(:black_hole).content[atome_id] = self
+    # the condition below exclude intuition's atomes as they don"t have to be stored in the blackhole
+    unless self.parent.include?(:intuition)
+      grab(:black_hole).content[atome_id] = self
+    end
     delete_html
   end
 
@@ -77,6 +80,28 @@ module AtomeHelpers
       end
     end
 
+  end
+
+  @@copy = []
+
+  def copy params = nil
+    @@copy << self
+  end
+
+  def paste options = nil
+    case options
+    when :parent
+    when :properties
+      self.set(@@copy.last.properties)
+    when :all
+      @@copy.each do |copied_item|
+        copied_properties = copied_item.properties.merge({ parent: self.atome_id })
+        Atome.new(copied_properties)
+      end
+    else
+      copied_properties = @@copy.last.properties.merge({ parent: self.atome_id })
+      Atome.new(copied_properties)
+    end
   end
 
   def duplicate(value)

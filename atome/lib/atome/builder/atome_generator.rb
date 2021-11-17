@@ -68,7 +68,6 @@ class Atome
     # we change sanitizer hash order so the content property that trigger the rendering is placed at the end
     # and finally the center that must know the  content to be able to the center the object
     sanitizer = sanitizer.merge(sanitized_content).merge(sanitized_exec).merge(sanitized_center)
-
     set sanitizer
   end
 

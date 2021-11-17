@@ -16,7 +16,7 @@ def atome_methods
                code exec cursor ]
   misc = %i[map calendar]
   material = %i[color opacity border overflow fill]
-  behaviour=%i[animation animator]
+  behaviour = %i[animation animator]
   { analysers: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect,
     inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication,
     identities: identity, events: event, generators: generator, miscs: misc, behaviors: behaviour }
@@ -212,11 +212,20 @@ File.write("atome/lib/atome/generated_methods/atome_methods.rb", methods_list)
 
 methods_to_create = []
 is_atome.each do |object_list|
-  methods_created = <<STRDEILM
+  if object_list == :tool
+    methods_created = <<STRDEILM
+def #{object_list}(value = {})
+  grab(:intuition).#{object_list}(value)
+end
+STRDEILM
+  else
+    methods_created = <<STRDEILM
 def #{object_list}(value = {})
   grab(:view).#{object_list}(value)
 end
 STRDEILM
+  end
+
   methods_to_create << methods_created
 end
 
