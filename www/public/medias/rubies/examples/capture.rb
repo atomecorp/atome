@@ -49,7 +49,7 @@ end
 stop.touch do
   grab(:view).record(:stop)
 end
-image({content: :green_planet, x: 196, y: 196, atome_id: :the_planet, drag: :true})
+image({content: :green_planet, x: 196, y: 196, atome_id: :the_planet, drag: true})
 
-box({x: 196, y: 196, color: :yellowgreen, atome_id: :my_nice_box, drag: :true})
-circle({x: 222, y: 222, atome_id: :the_circle, drag: :true})
+box({x: 196, y: 196, color: :yellowgreen, atome_id: :my_nice_box, drag: true})
+circle({x: 222, y: 222, atome_id: :the_circle, drag: true})

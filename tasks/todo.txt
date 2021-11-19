@@ -1,3 +1,9 @@
+- bug in demos :
+    remote desktop callback :target is used as a function isnstead of using the atome_id
+    Paypal throw an error message but work
+    Mutltirender call an unvalaible methods
+    Play audio work only once
+    Schedule doesnt work
 - register machine on atome server at each startup (send a message to the atome server with name and acress of the new online machine)
 - add read local file (server mode)
 - create a remote view demo (vnc like)

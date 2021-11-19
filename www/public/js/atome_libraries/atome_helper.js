@@ -181,3 +181,22 @@ const atome = {
         });
     }
 };
+
+// var supportsTouch = false;
+// if ('ontouchstart' in window) {
+//     //iOS & android
+//     supportsTouch = true;
+// alert ("tactile");
+// } else if(window.navigator.msPointerEnabled) {
+//     alert ("je sais pas pour  w10");
+//     // Windows
+//     // To test for touch capable hardware
+//     if(navigator.msMaxTouchPoints) {
+//         supportsTouch = true;
+//         alert ("Tactile pour windows");
+//     }
+//
+// }
+// else {
+//     alert ("pas tactile du tout");
+// }

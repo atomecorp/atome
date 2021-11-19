@@ -1,5 +1,6 @@
 module PropertyHtml
   def touch_html(value)
+    @verif=0
     if value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
     else
@@ -8,30 +9,35 @@ module PropertyHtml
       case option
       when :down
         jq_get(atome_id).on("touchstart mousedown") do |evt|
-          if value[:stop]
-            evt.stop_propagation
-          end
+          alert "#{evt.type} : #{@verif} on #{atome_id}"
+          @verif+=1
+          # the method below is used when a browser received touchdown and mousedown at the same time
+          # this avoid the event to be traeted twice by android browser
+          evt.prevent
           value[:proc].call(evt) if value[:proc].is_a?(Proc)
+          evt.stop_propagation if value[:stop]
+
+          ############
         end
       when :up
         jq_get(atome_id).on("touchend mouseup") do |evt|
-          if value[:stop]
-            evt.stop_propagation
-          end
+          # the method below is used when a browser received touchdown and mousedown at the same time
+          # this avoid the event to be traeted twice by android browser
+          evt.prevent
           value[:proc].call(evt) if value[:proc].is_a?(Proc)
+          evt.stop_propagation if value[:stop]
+
         end
       when :long
         waiter = ""
         jq_get(atome_id).on("touchstart mousedown") do |evt|
+          # the method below is used when a browser received touchdown and mousedown at the same time
+          # this avoid the event to be traeted twice by android browser
+          evt.prevent
           waiter = ATOME.wait delay do
             unless drag && drag[:drag] == :moving
-              if value[:stop]
-                evt.stop_propagation
-              end
-              # alert evt.page_x
-              # evt.offset_x = offset_x
-              # evt.offset_y = offset_y
               value[:proc].call(evt) if value[:proc].is_a?(Proc)
+              evt.stop_propagation if value[:stop]
             end
           end
         end
@@ -41,6 +47,9 @@ module PropertyHtml
       when :double
         ready = false
         jq_get(atome_id).on("touchstart mousedown") do |evt|
+          # the method below is used when a browser received touchdown and mousedown at the same time
+          # this avoid the event to be traeted twice by android browser
+          evt.prevent
           if ready == false
             @touch_counter = 0
             ready = true
@@ -63,21 +72,72 @@ module PropertyHtml
 
       else
         jq_get(atome_id).on(:click) do |evt|
-          if value[:stop]
-            evt.stop_propagation
-          end
+          # the method below is used when a browser received touchdown and mousedown at the same time
+          # this avoid the event to be traeted twice by android browser
+          evt.prevent
           value[:proc].call(evt) if value[:proc].is_a?(Proc)
+          evt.stop_propagation if value[:stop]
         end
       end
     end
 
   end
 
+  ############ base
+  # def touch_html(value)
+  #   @verif=0
+  #   jq_get(atome_id).on("touchstart mousedown") do |evt|
+  #   #   jq_get(atome_id).on("touchstart ") do |evt|
+  #
+  #     view_width=grab(:view).convert(:width)
+  #     view_height=grab(:view).convert(:height)
+  #   safety=true
+  #     # grab(:infos).content("type: #{evt.type}, x: #{evt.page_x},y: #{evt.page_y}, screen width :#{view_width} screen height :#{view_height}")
+  #
+  #   # if safety
+  #     grab(:infos).content("#{evt.type}, event nb: #{@verif}")
+  #     @verif+=1
+  #     safety=false
+  #   # end
+  #
+  #     # grab(:infos).content("type: #{evt.type}, x: #{evt.touch_x},y: #{evt.touch_y}, screen width :#{view_width} screen height :#{view_height}")
+  #     # grab(:infos).content("#{evt.touch_x}\n#{evt.touch_y}")
+  #     # alert ("#{evt.touch_x}\n#{evt.touch_y}")
+  #     # value[:proc].call(evt) if value[:proc].is_a?(Proc)
+  #   end
+  #
+  # end
+
+  ################### test
+
+  # def touch_html(value)
+  #   @verif=0
+  #   # jq_get(atome_id).on("touchstart mousedown") do |evt|
+  #   jq_get(atome_id).on(:click) do |evt|
+  #
+  #     alert value
+  #
+  #     # safety=:true
+  #     # if safety==:true
+  #     grab(:infos).content("#{evt.type}, event nb: #{@verif}")
+  #     @verif+=1
+  #     evt
+  #     # false
+  #     # end
+  #   end
+  #
+  # end
+
+  ############### bug
+  # def touch_html(value)
+  #   jq_get(atome_id).on("touchstart mousedown") do |evt|
+  #     grab(:infos).content(evt.type)
+  #   end
+  # end
+
   def drag_html(value)
     jq_object = jq_get(atome_id)
-    if value == true
-      value = {}
-    end
+    value = {} if value == true
     if value == :destroy || value[:option] == :destroy
       # we initiate the scale first so it won't break if scale is destroy twice,
       # else : destroy scale then clear view will crash
@@ -90,9 +150,7 @@ module PropertyHtml
       jq_object.draggable(:disable)
     else
       grid = {}
-      if value[:grid]
-        grid = { grid: [value[:grid][:x], value[:grid][:y]] }
-      end
+      grid = { grid: [value[:grid][:x], value[:grid][:y]] } if value[:grid]
       containment = {}
       if value[:containment]
         case value[:containment]
@@ -120,9 +178,7 @@ module PropertyHtml
                  {}
                end
       fixed = {}
-      if value[:fixed]
-        fixed = { opacity: 0.0000000000001, helper: :clone }
-      end
+      fixed = { opacity: 0.0000000000001, helper: :clone } if value[:fixed]
 
       options = lock.merge(handle).merge(containment).merge(grid).merge(fixed).merge({ multiple: true })
       jq_object.draggable(options)
@@ -184,30 +240,25 @@ module PropertyHtml
     # the lines below is important for the object to get focus if not keypress wont be triggered
     atome = grab(atome_id)
     atome.edit(true)
-    if options == :down
+    case options
+    when :down
       jq_get(atome_id).on("keydown") do |evt|
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
-        unless self.type == :text || self.type == :particle
-          evt.prevent_default
-        end
+        evt.prevent_default unless self.type == :text || self.type == :particle
       end
-    elsif options == :up
+    when :up
       jq_get(atome_id).on("keyup") do |evt|
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
-        unless self.type == :text || self.type == :particle
-          evt.prevent_default
-        end
+        evt.prevent_default unless self.type == :text || self.type == :particle
       end
-    elsif options == :stop
+    when :stop
       jq_get(atome_id).unbind("keypress")
       jq_get(atome_id).unbind("keydown")
       jq_get(atome_id).unbind("keyup")
       atome.edit(false)
     else
       jq_get(atome_id).on(:keypress) do |evt|
-        unless self.type == :text || self.type == :particle
-          evt.prevent_default
-        end
+        evt.prevent_default unless self.type == :text || self.type == :particle
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
     end
@@ -215,17 +266,11 @@ module PropertyHtml
 
   def scale_html(value)
     default = { option: { handles: 'all' } }
-    unless value.instance_of?(Hash)
-      value = { option: value }
-    end
+    value = { option: value } unless value.instance_of?(Hash)
     value = default.merge(value)
     option = value[:option]
-    if value[:ratio]
-      option = option.merge(aspectRatio: true)
-    end
-    if value[:add]
-      option = option.merge(alsoResize: "##{value[:add].to_s}")
-    end
+    option = option.merge(aspectRatio: true) if value[:ratio]
+    option = option.merge(alsoResize: "##{value[:add].to_s}") if value[:add]
     if value[:option] == :destroy
       # we initiate the scale first so it won't break if scale is destroy twice,
       # else : destroy scale then clear view will crash
@@ -263,11 +308,12 @@ module PropertyHtml
     if value != false
       proc = value[:proc]
       option = value[:options]
-      if option == :enter || option == :in
+      case option
+      when :enter, :in
         jq_get(atome_id).mouseenter do |evt|
           proc.call(evt) if proc.is_a?(Proc)
         end
-      elsif option == :exit || option == :leave || option == :out
+      when :exit, :leave, :out
         jq_get(atome_id).mouseleave do |evt|
           proc.call(evt) if proc.is_a?(Proc)
         end
@@ -285,7 +331,6 @@ module PropertyHtml
   end
 
   def virtual_event_html(value)
-
     case value[:event]
     when :touch
       if value[:x] && value[:y]
