@@ -1,6 +1,6 @@
 module PropertyHtml
   def touch_html(value)
-    @verif=0
+    # @verif=0
     if value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
     else
@@ -9,8 +9,9 @@ module PropertyHtml
       case option
       when :down
         jq_get(atome_id).on("touchstart mousedown") do |evt|
-          alert "#{evt.type} : #{@verif} on #{atome_id}"
-          @verif+=1
+          # alert "#{evt.type} : #{@verif} on #{atome_id}"
+          # alert "#{evt.type}"
+          # @verif+=1
           # the method below is used when a browser received touchdown and mousedown at the same time
           # this avoid the event to be traeted twice by android browser
           evt.prevent

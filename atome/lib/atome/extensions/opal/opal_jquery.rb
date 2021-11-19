@@ -33,6 +33,7 @@ class Event
     self.key
   end
 
+
   def touch_x(touch_nb = 0)
     `#{@native}.originalEvent.touches[#{touch_nb}].pageX`
   end
