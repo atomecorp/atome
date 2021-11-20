@@ -14,7 +14,7 @@ module PropertyHtml
           # @verif+=1
           # the method below is used when a browser received touchdown and mousedown at the same time
           # this avoid the event to be traeted twice by android browser
-          evt.prevent
+          # evt.prevent
           value[:proc].call(evt) if value[:proc].is_a?(Proc)
           evt.stop_propagation if value[:stop]
 
