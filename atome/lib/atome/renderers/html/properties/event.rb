@@ -1,6 +1,5 @@
 module PropertyHtml
   def touch_html(value)
-    # @verif=0
     if value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
     else
@@ -17,7 +16,6 @@ module PropertyHtml
           # evt.prevent
           value[:proc].call(evt) if value[:proc].is_a?(Proc)
           evt.stop_propagation if value[:stop]
-
           ############
         end
       when :up
