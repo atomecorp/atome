@@ -52,6 +52,7 @@ animator = {
             loop = 0;
         }
 
+
         if (typeof (start) == "object") {
             const start_opt = Object.keys(value.start);
             start_opt.forEach((item) => {
@@ -61,7 +62,6 @@ animator = {
                     key = "background-image";
                     if (typeof (val) == "string") {
                         val = "linear-gradient(0deg, " + val + "," + val + ")";
-
                     } else {
                         //  gradient handling here
                         let gradient = [];
@@ -84,6 +84,7 @@ animator = {
                             });
                             color = "rgba(" + color + ")";
                             gradient.push(color);
+
                         });
                         val = "linear-gradient(0deg, " + gradient.join(",") + ")";
                     }
@@ -98,7 +99,10 @@ animator = {
             end_option.forEach((item) => {
                 let key = item;
                 let val = value.end[item];
+
+
                 if (key == "background" && objectType == "text") {
+
                     key = "background-image";
                     if (typeof (val) == "string") {
                         val = "linear-gradient(0deg, " + val + "," + val + ")";
@@ -127,6 +131,15 @@ animator = {
                         val = "linear-gradient(0deg, " + gradient.join(",") + ")";
                     }
                 }
+                if (key == "background") {
+                   if ($("#"+target_id).children.length > 0){
+                       // alert ($("#"+target_id).children.length);
+                       // alert (target_id);
+                       mask_target_id=$("#"+target_id).children().first().attr('id');
+                       // alert (target_id);
+
+                   }
+                }
                 a_end[key] = val;
             });
         } else {
@@ -138,15 +151,35 @@ animator = {
         a_finished[property] = finished;
 //popmotion
         const {easing, tween, styler} = window.popmotion;
-        const divStyler = styler(document.querySelector('#' + target_id));
-        tween({
-            from: a_start,
-            to: a_end,
-            duration: duration,
-            ease: easing[curve],
-            flip: loop,
-            yoyo: yoyo
-        })
-            .start(divStyler.set);
+
+
+        if(mask_target_id){
+            const mask_divStyler = styler(document.querySelector('#' + mask_target_id));
+            a_mask_start= {background: a_start.background};
+            a_mask__end= {background: a_end.background};
+            tween({
+                from: a_mask_start,
+                to: a_mask__end,
+                duration: duration,
+                ease: easing[curve],
+                flip: loop,
+                yoyo: yoyo
+            })
+                .start(mask_divStyler.set);
+        }
+        delete(a_start.background);
+        delete(a_end.background);
+
+            const divStyler = styler(document.querySelector('#' + target_id));
+            tween({
+                from: a_start,
+                to: a_end,
+                duration: duration,
+                ease: easing[curve],
+                flip: loop,
+                yoyo: yoyo
+            })
+                .start(divStyler.set);
+
     },
 };

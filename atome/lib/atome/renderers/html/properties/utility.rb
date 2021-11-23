@@ -176,7 +176,7 @@ module PropertyHtml
     end
   end
 
-  def previous_filer_found
+  def previous_filter_found
     filter = jq_get(atome_id).css('filter')
     if filter == "none"
       prev_prop = ""

@@ -53,7 +53,7 @@ module ProcessorHtml
       end
       shadow_html_format = ["box-shadow", prev_prop + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert]
     else
-      prev_prop = previous_filer_found
+      prev_prop = previous_filter_found
 
       shadow_html_format = ['filter', prev_prop + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")"]
     end

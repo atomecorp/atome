@@ -1,7 +1,7 @@
 module PropertyHtml
   def blur_html(value)
     # the line below get  any filter all already apply to the object
-    prev_prop = previous_filer_found
+    prev_prop = previous_filter_found
     case value
     when Array
       properties = []
@@ -67,6 +67,7 @@ module PropertyHtml
     else
                'no-repeat'
              end
+    mask_path= $images_list[value[:content]][:path]
     jq_get(atome_id).css("-webkit-mask-image": "url(#{mask_path})","-webkit-mask-size": "#{value[:size]}px","-webkit-mask-position": "#{value[:position]}","-webkit-mask-repeat": repeat)
     jq_get(atome_id).css("mask-image": "url(#{mask_path})","mask-size": "#{value[:size]}px","mask-position": "#{value[:position]}","mask-repeat": repeat)
   end
@@ -84,4 +85,7 @@ module PropertyHtml
     end
     `generateNoise(#{atome_id},#{value[:intensity]},#{value[:opacity]}, #{value[:width]}, #{value[:height]},#{value[:color]},#{value[:delete]}); // target, intensity, opacity, width, height, color`
   end
+
+
+
 end

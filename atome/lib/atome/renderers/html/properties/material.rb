@@ -10,19 +10,19 @@ module PropertyHtml
     end
     basic_visuals = { path: :arial, size: 33, alignment: :center, wrap: " ", fit: :none }
 
-    if @visual.read.instance_of?(Hash)
-      # if it's a hash it means that the visual already exist
-      values = @visual.read.merge(values)
-    else
-      values = basic_visuals.merge(values)
-    end
+    values = if @visual.read.instance_of?(Hash)
+               # if it's a hash it means that the visual already exist
+               @visual.read.merge(values)
+             else
+               basic_visuals.merge(values)
+             end
     path_get = values[:path]
     size_get = values[:size]
     # for later use
     width_get = values[:width]
     haight_get = values[:height]
     alignment_get = values[:alignment]
-    selection= values[:select]
+    selection = values[:select]
     wrap_get = values[:wrap]
     fit_get = values[:fit]
 
@@ -90,6 +90,11 @@ module PropertyHtml
   end
 
   def color_html(values)
+    # if values == :red
+    # #   if jq_get(atome_id).children().length == 0
+    #     alert self.properties
+    #   # end
+    # end
     angle = 180
     diffusion = "linear"
     if type == :text
@@ -99,28 +104,36 @@ module PropertyHtml
     end
     if self.type == :shape && self.path(nil,)
       `$('#'+#{atome_id}).children().css({fill: #{values}})`
-      # elsif self.type == :image
-      # alert values
-
-      # alert :here_must_do_something
-      # color = color_helper(values)
-      # "linear-gradient(0deg,#{color},#{color})"
     else
+
       # we exclude the case when the path is defined because it means we need to use a svg
+
       if !values.instance_of?(Array) || values.length == 1
-        if values.instance_of?(Array)
-          value = values[0]
-        else
-          value = values
-        end
+
+        value = if values.instance_of?(Array)
+                  values[0]
+                else
+                  values
+                end
         color = color_helper(value)
         val = "linear-gradient(0deg,#{color},#{color})"
         if self.type == :image
+
           if jq_get(atome_id).css("background-image").start_with?("url")
-            self.mask_html({ content: self.content })
+            if jq_get(atome_id).children().length() == 0
+              jq_get(atome_id).append("<div id= '#{atome_id}_mask' style='position: absolute;display:block; background-color: transparent;width:100%;height:100%''></div>")
+            end
+            sub_atome = jq_get(atome_id).children.first
+            atome_background = jq_get(atome_id).css("background-image")
+            sub_atome.css("-webkit-mask-image": atome_background)
+            sub_atome.css("mask-image": atome_background)
           end
           new_background = val + "," + jq_get(atome_id).css("background-image")
-          jq_get(atome_id).css("background-image", new_background)
+          if sub_atome
+            sub_atome.css("background-image", new_background)
+          else
+            jq_get(atome_id).css("background-image", new_background)
+          end
         else
           jq_get(atome_id).css("background-image", val)
         end
@@ -134,15 +147,15 @@ module PropertyHtml
             gradient << color_helper(color_found)
           end
         end
-        case diffusion
-        when :linear
-          val = "#{diffusion}-gradient(#{angle}deg,#{gradient.join(",")})"
-          # alert atome_id+ " : "+values.to_s
-          # alert gradient
-          # alert val
-        else
-          val = "#{diffusion}-gradient(#{gradient.join(",")})"
-        end
+        val = case diffusion
+              when :linear
+                "#{diffusion}-gradient(#{angle}deg,#{gradient.join(",")})"
+                # alert atome_id+ " : "+values.to_s
+                # alert gradient
+                # alert val
+              else
+                "#{diffusion}-gradient(#{gradient.join(",")})"
+              end
         if self.type == :image
           if jq_get(atome_id).css("background-image").start_with?("url")
             self.mask_html({ content: self.content })

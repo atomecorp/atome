@@ -35,6 +35,11 @@ class Atome
                        else
                          {}
                        end
+    sanitized_color = if sanitizer[:color]
+                         { color: sanitizer.delete(:color) }
+                      else
+                        {}
+                      end
     sanitized_preset = if sanitizer[:preset]
                          { preset: sanitizer.delete(:preset) }
                        else
@@ -67,7 +72,7 @@ class Atome
     # id theres an id we put it at the start of the hash
     # we change sanitizer hash order so the content property that trigger the rendering is placed at the end
     # and finally the center that must know the  content to be able to the center the object
-    sanitizer = sanitizer.merge(sanitized_content).merge(sanitized_exec).merge(sanitized_center)
+    sanitizer = sanitizer.merge(sanitized_content).merge(sanitized_exec).merge(sanitized_center).merge(sanitized_color)
     set sanitizer
   end
 
