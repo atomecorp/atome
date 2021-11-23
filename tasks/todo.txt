@@ -4,6 +4,17 @@
     Mutltirender call an unvalaible methods
     Play audio work only once
     Schedule doesnt work
+
+- bug when coloring an image the alpaha has a problem ex :
+        b=box
+        i=b.image(:home)
+        i.size=99
+        i.x=i.x=33
+        b.x=b.y=333
+        # i.shadow({ smooth: 33, y: 12 })
+        b.color=i.color=:black
+        b.shadow({ smooth: 33, y: 12 })
+        
 - register machine on atome server at each startup (send a message to the atome server with name and acress of the new online machine)
 - add read local file (server mode)
 - create a remote view demo (vnc like)

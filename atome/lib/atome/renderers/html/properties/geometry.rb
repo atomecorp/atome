@@ -1,6 +1,11 @@
 module PropertyHtml
   def width_html(value)
     jq_get(atome_id).css("width", value)
+    # alert jq_get(atome_id).children().length()
+    # if jq_get(atome_id).children().length() > 0
+    #   alert atome_id
+    #   # jq_get(atome_id).append("<div id= '#{atome_id}_mask' style='position: absolute;display:block; background-color: transparent;width:100%;height:100%''></div>")
+    # end
   end
 
   def height_html(value)

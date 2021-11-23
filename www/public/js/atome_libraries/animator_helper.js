@@ -152,8 +152,8 @@ animator = {
 //popmotion
         const {easing, tween, styler} = window.popmotion;
 
-
-        if(mask_target_id){
+        if (typeof mask_target_id != "undefined") {
+        // if(mask_target_id){
             const mask_divStyler = styler(document.querySelector('#' + mask_target_id));
             a_mask_start= {background: a_start.background};
             a_mask__end= {background: a_end.background};

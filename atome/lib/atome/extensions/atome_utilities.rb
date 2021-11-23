@@ -206,9 +206,12 @@ def animate(params)
   #   params[:target]=atome_id
   # end
   # patch blow if no blur is assigned blur animation doesn't work
-  unless self.blur
-    blur(0)
-  end
+  # if self.instance_of?(Atome)
+  #   unless self.blur
+  #     self.blur(0)
+  #   end
+  # end
+
   filter_found=Element.find("#"+params[:target]).css('filter')
   # alert "We must get all filter present in  #{params[:target]} and those found in the params to the animation "
   filter_list = %w[blur contrast brightness

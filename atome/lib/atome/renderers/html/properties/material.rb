@@ -121,19 +121,37 @@ module PropertyHtml
 
           if jq_get(atome_id).css("background-image").start_with?("url")
             if jq_get(atome_id).children().length() == 0
-              jq_get(atome_id).append("<div id= '#{atome_id}_mask' style='position: absolute;display:block; background-color: transparent;width:100%;height:100%''></div>")
+              jq_get(atome_id).append("<div id= '#{atome_id}_mask' style='position: absolute;display: inline-block; background-color: transparent;width:100%;height:100%''></div>")
             end
             sub_atome = jq_get(atome_id).children.first
+            # alert sub_atome
             atome_background = jq_get(atome_id).css("background-image")
-            sub_atome.css("-webkit-mask-image": atome_background)
+            # sub_atome.css("-webkit-mask-image": atome_background)
             sub_atome.css("mask-image": atome_background)
+            sub_atome.css("mask-size": "100% 100%")
+            # sub_atome.css("mask-size": "50% 50%")
           end
-          new_background = val + "," + jq_get(atome_id).css("background-image")
-          if sub_atome
-            sub_atome.css("background-image", new_background)
-          else
-            jq_get(atome_id).css("background-image", new_background)
-          end
+          # new_background = val + "," + jq_get(atome_id).css("background-image")
+            if sub_atome
+              # new_background = val + "," + jq_get(atome_id).css("background-image")
+              # new_background = "linear-gradient(0deg,rgba(255,0,0,0.3),rgba(255,0,0,0.3))"
+              new_background = val
+              # alert new_background
+              # alert new_background.class
+              sub_atome.css("background-image", new_background)
+
+
+            else
+              new_background = val + "," + jq_get(atome_id).css("background-image")
+
+              jq_get(atome_id).css("background-image", new_background)
+            end
+          # sub_atome.css("width", "33px");
+          # sub_atome.css("height", "100px");
+          # sub_atome.css("top", "0px");
+          # sub_atome.css("left", "0px");
+          # sub_atome.css("height", "100px");
+          # sub_atome.css("background-position", " bottom 0px right 0px");
         else
           jq_get(atome_id).css("background-image", val)
         end

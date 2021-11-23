@@ -53,13 +53,15 @@ function generateNoise(target_id, intensity, opacity, width, height, color, remo
         target.css("backgroundImage", new_background);
         if (target_atome.type =="image"){
             let image_name=target_atome.content;
+            // alert (bg);
              bgs = bg.split(image_name);
             path=bgs[0].split("url(\"").pop();
-            extension=bgs[1].split("\")")[0];
-            let new_background = "url("+path+image_name+extension+ ")";
-            target.css("-webkit-mask-image",new_background);
+            if (typeof bgs[1] != "undefined") {
+                extension=bgs[1].split("\")")[0];
+                let new_background = "url("+path+image_name+extension+ ")";
+                target.css("-webkit-mask-image",new_background);
+            }
         }
-
         // : url(masks.svg#mask1)
     }
 
