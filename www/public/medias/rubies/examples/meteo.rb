@@ -35,7 +35,7 @@ meteo_of("clermont-ferrand")
 b = box({ x: 300, y: 3, size: 33, color: :red })
 
 b.touch do
-  content_found = grab(:my_text_input).content.read
+  content_found = grab(:my_text_input).content.q_read
   content_toe_send = content_found[grab(:view).language] || content_found[:default]
   meteo_of content_toe_send
 end

@@ -90,11 +90,9 @@ def lorem
 end
 
 def schedule(date, &proc)
-  alert date
   date = date.to_s
   delimiters = [",", " ", ":", "-"]
   formated_date = date.split(Regexp.union(delimiters))
-
   missing_datas = Time.now
   missing_datas = missing_datas.to_s
   delimiters = [",", " ", ":", "-"]

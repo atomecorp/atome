@@ -19,6 +19,10 @@ class Quark
     q_read.to_s
   end
 
+  def to_i
+    q_read.to_i
+  end
+
   def language(international_content)
     atome_id = @property.delete(:atome_id)
     @property = @property.merge(international_content)

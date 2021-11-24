@@ -304,7 +304,8 @@ module Processors
       all_language_content = value
       value = all_language_content[required_language]
     elsif type == :text
-      formated_value = { default: value, atome_id: atome_id }
+      # formated_value = { default: value, atome_id: atome_id }
+     formated_value=value
       @content = atomise(:content, formated_value)
     else
       @content = atomise(:content, value)
