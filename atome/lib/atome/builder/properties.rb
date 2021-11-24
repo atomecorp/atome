@@ -5,7 +5,7 @@ class Quark
     @property = property
   end
 
-  def read
+  def q_read
     @property
   end
 
@@ -16,12 +16,12 @@ class Quark
   end
 
   def to_s
-    read.to_s
+    q_read.to_s
   end
 
   def language(international_content)
-    atome_id=@property.delete(:atome_id)
-    @property=@property.merge(international_content)
+    atome_id = @property.delete(:atome_id)
+    @property = @property.merge(international_content)
     grab(atome_id).content(@property)
     @property
   end
@@ -53,20 +53,20 @@ class Quark
   end
 
   def find(query)
-    atome_list=[]
+    atome_list = []
     self.each do |atome|
-      atome_list<< atome
+      atome_list << atome
     end
     grab(:view).find(query, atome_list)
   end
 
   def [](option)
     if option.instance_of?(Integer) || option.instance_of?(Range)
-      required_atome = read[option]
+      required_atome = q_read[option]
     else
       # an atome_id is passed we look for it's index and retrieve the atome
       index = @property.index(option)
-      required_atome = read[index]
+      required_atome = q_read[index]
     end
     Quark.new(required_atome)
   end

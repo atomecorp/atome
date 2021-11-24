@@ -10,7 +10,7 @@ def atome_methods
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
   media = %i[content particle group container video shape box star circle sphere text
-             image audio web tool path info example cell name visual active inactive]
+             image audio web  path info example cell name visual active inactive]
   inputs = %i[camera microphone midi keyboard read write]
   utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
                code exec cursor ]
@@ -23,7 +23,7 @@ def atome_methods
 end
 
 def types
-  %i[user machine shape image video audio input text midi tool virtual group container particle cell]
+  %i[user machine shape image video audio input text midi  virtual group container particle cell]
 end
 
 FileUtils.mkdir_p "atome/lib/atome/generated_methods"
@@ -32,12 +32,12 @@ def is_atome
   # in this case presets are used to create atome using their types with specific settings
   # so it add the methods in the atome_object_creator methods
   # the generated property will then return the result of the method instead of object itself
-  %i[particle container shape box star web circle sphere text image tool video audio camera microphone midi group cell]
+  %i[particle container shape box star web circle sphere text image  video audio camera microphone midi group cell]
 end
 
 def need_pre_processing
   %i[atome_id particle group container shape box star web circle sphere text camera microphone midi
-  text image video audio tool cell parent child type shadow size drag visual noise say content]
+  text image video audio  cell parent child type shadow size drag visual noise say content]
 end
 
 def need_processing
@@ -49,7 +49,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id group container shape box star web circle sphere text image video audio tool parent child info example
+  %i[atome_id group container shape box star web circle sphere text image video audio  parent child info example
      selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
      particle cell visual language active inactive noise engine render id preset say content read write]
 end
@@ -57,14 +57,14 @@ end
 batch_delete = <<STRDELIM
   def delete(value, &proc)
 		collected_atomes=[]
-		if read.instance_of?(Array)
-		  read.each do |atome|
+		if q_read.instance_of?(Array)
+		  q_read.each do |atome|
 			grab(atome).send(:delete, value, &proc)
 			collected_atomes << atome
 		  end
 		else
-		  grab(read).send(:delete, value, &proc)
-		  collected_atomes << read
+		  grab(q_read).send(:delete, value, &proc)
+		  collected_atomes << q_read
 		end
 	# we return and atomise collected atomes in case of chain treatment
 	ATOME.atomise(:batch, collected_atomes)
@@ -89,7 +89,7 @@ atome_methods.each do |property_type, property|
     if getter_need_processing.include?(method_name)
       getter_processor = "#{method_name}_getter_processor(value)"
     else
-      getter_processor = "@#{method_name}&.read"
+      getter_processor = "@#{method_name}&.q_read"
     end
 
     unless no_rendering.include?(method_name)
@@ -168,14 +168,14 @@ STRDELIM
     batch_method = <<STRDELIM
       def #{method_name}(value, &proc)
         collected_atomes=[]
-        if read.instance_of?(Array)
-          read.each do |atome|
+        if q_read.instance_of?(Array)
+          q_read.each do |atome|
             grab(atome).send(:#{method_name}, value, &proc)
             collected_atomes << atome
           end
         else
-          grab(read).send(:#{method_name}, value, &proc)
-          collected_atomes << read
+          grab(q_read).send(:#{method_name}, value, &proc)
+          collected_atomes << q_read
         end
         # we return and atomise collected atomes in case of chain treatment
         ATOME.atomise(:batch, collected_atomes)
@@ -212,19 +212,19 @@ File.write("atome/lib/atome/generated_methods/atome_methods.rb", methods_list)
 
 methods_to_create = []
 is_atome.each do |object_list|
-  if object_list == :tool
-    methods_created = <<STRDEILM
-def #{object_list}(value = {})
-  grab(:intuition).#{object_list}(value)
-end
-STRDEILM
-  else
+#   if object_list == :tool
+#     methods_created = <<STRDEILM
+# def #{object_list}(value = {})
+#   grab(:intuition).#{object_list}(value)
+# end
+# STRDEILM
+#   else
     methods_created = <<STRDEILM
 def #{object_list}(value = {})
   grab(:view).#{object_list}(value)
 end
 STRDEILM
-  end
+  # end
 
   methods_to_create << methods_created
 end

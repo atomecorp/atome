@@ -4,7 +4,7 @@ module Processors
     if parent_list.instance_of?(Hash) && parent_list[:proc]
       parent_list.each do
         #fixme processor hierarchy.rb to factorise:  this loop is used twice!
-        @parent.read.each do |parent|
+        @parent.q_read.each do |parent|
           parent = grab(parent)
           parent_list[:proc].call(parent) if parent_list[:proc].is_a?(Proc)
         end
@@ -46,7 +46,7 @@ module Processors
     if child_list.instance_of?(Hash) && child_list[:proc]
       # if  a proc is found we yield each child so they can be treated , ex :
       child_list.each do
-        @child.read.each do |child|
+        @child.q_read.each do |child|
           child = grab(child)
           child_list[:proc].call(child) if child_list[:proc].is_a?(Proc)
         end

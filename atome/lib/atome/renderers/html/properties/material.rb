@@ -10,9 +10,9 @@ module PropertyHtml
     end
     basic_visuals = { path: :arial, size: 33, alignment: :center, wrap: " ", fit: :none }
 
-    values = if @visual.read.instance_of?(Hash)
+    values = if @visual.q_read.instance_of?(Hash)
                # if it's a hash it means that the visual already exist
-               @visual.read.merge(values)
+               @visual.q_read.merge(values)
              else
                basic_visuals.merge(values)
              end

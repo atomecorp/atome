@@ -32,7 +32,7 @@ module AtomeHelpers
 
   def authorization(value = nil, &proc)
     if value.nil? && !proc
-      @authorization&.read
+      @authorization&.q_read
     else
       value = properties_common(value, &proc)
       @authorization = atomise(:authorization, value)
@@ -132,7 +132,7 @@ module AtomeHelpers
                                                       nil
                                                       # elsif instance_variable_get(attribute).class == Quark
                                                     else
-                                                      instance_variable_get(attribute).read
+                                                      instance_variable_get(attribute).q_read
                                                     end
       end
       properties
@@ -235,7 +235,7 @@ module AtomeHelpers
     # FIXME: ugly patch to keep text content find why it's lost
     if child_to_treat.type == :text
       lang = child_to_treat.language || grab(:view).language
-      prev_content = child_to_treat.content.read
+      prev_content = child_to_treat.content.q_read
       if prev_content.instance_of?(Hash)
         content_to_refresh = prev_content[lang] || prev_content[:default]
         child_to_treat.content(content_to_refresh)
@@ -255,7 +255,7 @@ module AtomeHelpers
 
   def transfer(new_parent)
     grab(new_parent).insert(self.atome_id)
-    grab(self.parent[0].read).extract(self.atome_id)
+    grab(self.parent[0].q_read).extract(self.atome_id)
   end
 
   def eden_find(query)
@@ -373,7 +373,7 @@ module AtomeHelpers
 
   # def group(value = nil, &proc)
   #   if value.nil? && !proc
-  #     @group&.read
+  #     @group&.q_read
   #   else
   #     content = find(value[:condition])
   #     Atome.new({ type: :find, render: false, name: value[:name], content: content, condition: value[:condition], dynamic: value[:dynamic] })

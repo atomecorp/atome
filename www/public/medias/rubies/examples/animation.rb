@@ -1,21 +1,22 @@
 
+
 # animation example
 
+wait 1 do
+  i=image({ color: { green: 1 ,  alpha: 0.3 }, content: :boat , atome_id: :the_boat})
+  i.color({ red: 1 ,  alpha: 0.3 })
+  i.noise({ opacity: 0.6 })
 
-i=image({ color: { green: 1 ,  alpha: 0.3 }, content: :boat , atome_id: :the_boat})
-i.color({ red: 1 ,  alpha: 0.3 })
-i.noise({ opacity: 0.6 })
-
-wait 2 do
-  i.animate({
-              start: { smooth: 0, blur: 0, rotate: 33, color: { red: 0, green: 1, blue: 0, alpha: 0.2 } },
-              end: { smooth: 25, rotate: 180, blur: 20, color: { red: 1, green: 0, blue: 0 } },
-              duration: 1000,
-              loop: 15,
-              curve: :easing,
-              target: i.atome_id
-            })
-end
+  wait 2 do
+    i.animate({
+                start: { smooth: 0, blur: 0, rotate: 33, color: { red: 0, green: 1, blue: 0, alpha: 0.2 } },
+                end: { smooth: 25, rotate: 180, blur: 20, color: { red: 1, green: 0, blue: 0 } },
+                duration: 1000,
+                loop: 15,
+                curve: :easing,
+                target: i.atome_id
+              })
+  end
 
   b = box()
   b.y(300)
@@ -41,7 +42,18 @@ end
           })
 
   c = circle({ color: :black, center: true })
-  moto = image({ content: :moto, size: 96, y: 96, x: 96, drag: true })
+  moto = image({ content: :moto, size: 130, y: 130, x: 96, drag: true, color: {green: 1 , alpha: 0.6} })
+
+  moto.touch do
+    animate({
+              start: { smooth: 0, blur: 0, rotate: 33, color: { red: 0, green: 1, blue: 0, alpha: 0.2 } },
+              end: { smooth: 25, rotate: 180, blur: 20, color: { red: 1, green: 0, blue: 0 } },
+              duration: 1000,
+              loop: 15,
+              curve: :easing,
+              target: moto.atome_id
+            })
+  end
 
   c.touch do
     size = 96
@@ -78,3 +90,4 @@ end
                   target: title.atome_id
                 })
 
+end

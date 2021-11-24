@@ -11,19 +11,19 @@ module JSUtils
   end
 
   def add_timeout(timeout)
-    @content.read[:time_out] << timeout
+    @content.q_read[:time_out] << timeout
   end
 
   def clear_timeout(params)
-    @content.read[:time_out].delete(params)
+    @content.q_read[:time_out].delete(params)
     `clearTimeout(#{params})`
   end
 
   def clear_timeouts
-    @content.read[:time_out].each do |timeout|
+    @content.q_read[:time_out].each do |timeout|
       `clearTimeout(#{timeout})`
     end
-    @content.read[:time_out] = []
+    @content.q_read[:time_out] = []
   end
 
   # repeat
@@ -47,7 +47,7 @@ module JSUtils
   end
 
   def add_interval(interval, repeat)
-    @content.read[:intervals][interval] = repeat
+    @content.q_read[:intervals][interval] = repeat
   end
 
   def clear_interval(interval)

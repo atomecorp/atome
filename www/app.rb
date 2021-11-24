@@ -288,9 +288,9 @@ class App < Roda
       #ws.on :open do |event|
       #  #ws = nil
       #end
-      #ws.on :close do |event|
-      #  #ws = nil
-      #end
+      ws.on :close do |event|
+       #ws = nil
+      end
       ws.rack_response
     end
     r.root do

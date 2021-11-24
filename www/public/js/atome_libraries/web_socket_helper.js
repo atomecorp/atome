@@ -6,10 +6,29 @@ class WebSocketHelper {
 
         this.webSocket = new WebSocket(this.serverAddress);
         const self = this;
-
+        const sockSock = this.webSocket;
         this.webSocket.onopen = function (event) {
             Opal.Object.$web_state("connected");
+/// hack to keep the socket alive
+            let timerId = 0;
+
+            function keepAlive(timeout = 2000) {
+
+                if (sockSock.readyState == sockSock.OPEN) {
+                    sockSock.send('');
+                }
+                timerId = setTimeout(keepAlive, timeout);
+            }
+
+            keepAlive();
+            // function cancelKeepAlive() {
+            //     if (timerId) {
+            //         clearTimeout(timerId);
+            //     }
+            // }
         };
+
+
         var options;
         var target;
         var content;
@@ -20,18 +39,16 @@ class WebSocketHelper {
                 callback.$response(data);
             } else if (data.type === "code") {
                 Opal.eval(data.content);
-            }
-            else if (data.type === "read") {
-                 const type=data.atome;
-                const target=data.target;
-                const content=data.content;
-                const options=data.options;
-                var new_content=Opal.hash(content);
-                var new_options=Opal.hash(options);
+            } else if (data.type === "read") {
+                const type = data.atome;
+                const target = data.target;
+                const content = data.content;
+                const options = data.options;
+                var new_content = Opal.hash(content);
+                var new_options = Opal.hash(options);
                 Opal.Object.$atomic_request(target, new_content, new_options);
-            }
-            else if (data.type === "eval") {
-                if(data.options=="clear"){
+            } else if (data.type === "eval") {
+                if (data.options == "clear") {
                     Opal.Atome.$clear("view");
                 }
                 Opal.eval(data.content.content);
@@ -42,24 +59,21 @@ class WebSocketHelper {
                 // var new_content=Opal.hash(content);
                 // var new_options=Opal.hash(options);
                 // Opal.Object.$atomic_request(target, new_content, new_options);
-            }
-            else if (data.type === "monitor") {
+            } else if (data.type === "monitor") {
                 // const type=data.atome;
-                const target=data.target;
-                const file=data.file;
-                const options=data.options;
+                const target = data.target;
+                const file = data.file;
+                const options = data.options;
                 // alert(type);
-                var hashed_file=Opal.hash(file);
-                var hashed_options=Opal.hash(options);
+                var hashed_file = Opal.hash(file);
+                var hashed_options = Opal.hash(options);
                 Opal.Object.$atomic_request(target, hashed_file, hashed_options);
-            }
-            else if (data.type === "atome") {
-                const atome=data.atome;
-                const target=data.target;
-                const content=data.content;
-                Opal.Object.$atomic_request(target, content,atome);
-            }
-            else if (data.type === "command") {
+            } else if (data.type === "atome") {
+                const atome = data.atome;
+                const target = data.target;
+                const content = data.content;
+                Opal.Object.$atomic_request(target, content, atome);
+            } else if (data.type === "command") {
                 // console.log("---------");
                 // console.log("the command send is : ");
                 // console.log(data);
@@ -70,20 +84,19 @@ class WebSocketHelper {
                 // Opal.Object.$atomic_request(target,atome, content);
 
                 // const type=data.atome;
-                const target=data.target;
-                const content=data.content;
-                const options=data.options;
-                const atome=data.atome;
+                const target = data.target;
+                const content = data.content;
+                const options = data.options;
+                const atome = data.atome;
                 // alert (content);
                 // var the_content=Opal.hash(content::content);
-                var the_content={};
-                the_content.content=content;
-                the_content=Opal.hash(the_content);
+                var the_content = {};
+                the_content.content = content;
+                the_content = Opal.hash(the_content);
                 // var the_new_options=Opal.hash(options);
                 Opal.Object.$atomic_request(target, the_content, "no");
-            }
-            else {
-                console.log(data );
+            } else {
+                console.log(data);
             }
         };
 
@@ -117,4 +130,6 @@ class WebSocketHelper {
         this._reconnect = false;
         this.webSocket.close();
     }
+
+
 }

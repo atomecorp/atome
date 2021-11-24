@@ -4,7 +4,7 @@ module Processors
   end
 
   def camera_getter_processor
-    @camera&.read
+    @camera&.q_read
   end
 
   def microphone_pre_processor(value)
@@ -12,7 +12,7 @@ module Processors
   end
 
   def microphone_getter_processor
-    @microphone&.read
+    @microphone&.q_read
   end
 
   def midi_pre_processor(value)
@@ -20,7 +20,7 @@ module Processors
   end
 
   def midi_getter_processor
-    @midi&.read
+    @midi&.q_read
   end
 
   def read_processor(value)

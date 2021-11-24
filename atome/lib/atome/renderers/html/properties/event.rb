@@ -1,5 +1,6 @@
 module PropertyHtml
   def touch_html(value)
+    # alert atome_id
     if value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
     else
@@ -199,7 +200,6 @@ module PropertyHtml
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
       jq_object.on(:drag) do |evt|
-
         # # tests
         # puts @on_change
         # # grab(self.change[:atome_id]).send(self.change[:property],evt.page_x)
@@ -280,7 +280,7 @@ module PropertyHtml
       if type == :text
         @width = atomise(:width, jq_get(atome_id).css("width").to_i)
         @height = atomise(:height, jq_get(atome_id).css("height").to_i)
-        size = @width.read / 5
+        size = @width.q_read / 5
         jq_get(atome_id).css("font-size", size.to_s + "px")
       else
         self.width(jq_get(atome_id).css("width").to_i, false)

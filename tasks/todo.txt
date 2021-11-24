@@ -1,3 +1,8 @@
+- todo : preset should be a method, eg : a.preset(circle), PS: code is partially present in "def media_pre_processor ..." and "def preset_processor"
+- todo : Atome.new() should not create an atome in the browser but wait for a type to decide if it'll do so
+- demo that crash : size
+                    parent
+                    Schedule
 - bug in demos :
     remote desktop callback :target is used as a function isnstead of using the atome_id
     Paypal throw an error message but work
@@ -5,7 +10,7 @@
     Play audio work only once
     Schedule doesnt work
 
-- bug when coloring an image the alpaha has a problem ex :
+- bug when coloring an image the alpha has a problem ex :
         b=box
         i=b.image(:home)
         i.size=99
@@ -14,13 +19,13 @@
         # i.shadow({ smooth: 33, y: 12 })
         b.color=i.color=:black
         b.shadow({ smooth: 33, y: 12 })
-        
+
 - register machine on atome server at each startup (send a message to the atome server with name and acress of the new online machine)
 - add read local file (server mode)
 - create a remote view demo (vnc like)
 - make animation an atome object
 - make fx an atome object
-- rewirite group Api we should be able to to write : g=group([b, c], g.color(:red) , and remove the stupid 'treatment' property
+- rewrite group Api we should be able to to write : g=group([b, c], g.color(:red) , and remove the stupid 'treatment' property
 - Bug only the last  filter can be animated theuy have to be stack
 - Bug  shadow doesn't work when a mask is applied on an image
 - bug :(ugly fix see FIXME in def extract method). when an atome is extract then attached it lose it's content, we have to re add the content: check "parent example"

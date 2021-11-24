@@ -35,10 +35,10 @@ module InternalHelpers
     end
     prev_instance_variable_content = instance_variable_get("@#{instance_name}")
     if prev_instance_variable_content
-      if prev_instance_variable_content.read.instance_of?(Array)
-        value = prev_instance_variable_content.read.concat(value)
+      if prev_instance_variable_content.q_read.instance_of?(Array)
+        value = prev_instance_variable_content.q_read.concat(value)
       else
-        prev_instance_variable_content = [prev_instance_variable_content.read]
+        prev_instance_variable_content = [prev_instance_variable_content.q_read]
         value = prev_instance_variable_content.concat(value)
       end
     end
@@ -55,14 +55,14 @@ module InternalHelpers
   end
 
   def remove_instance_variable_content(instance_name, value)
-    prev_value= instance_variable_get("@#{instance_name}").read
+    prev_value= instance_variable_get("@#{instance_name}").q_read
     prev_value.delete(value)
     update_property(self, instance_name, prev_value)
   end
 
   def broadcast(property, value)
     if @monitor[:option]
-      proc = @monitor.read[:proc]
+      proc = @monitor.q_read[:proc]
       monitor_processor({ property: property, value: value, proc: proc })
     end
   end

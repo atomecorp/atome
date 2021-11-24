@@ -90,6 +90,7 @@ def lorem
 end
 
 def schedule(date, &proc)
+  alert date
   date = date.to_s
   delimiters = [",", " ", ":", "-"]
   formated_date = date.split(Regexp.union(delimiters))
@@ -190,7 +191,7 @@ def compile(code)
   # code = code.bytes
   # code = code.pack('c*')
   # code=code[1][0].unpack("H*")
-  # code=code.read.encode("UTF-8", invalid: :replace)
+  # code=code.q_read.encode("UTF-8", invalid: :replace)
   ################# patch
   code=code.encode("UTF-8", invalid: :replace)
   Object.eval(code)

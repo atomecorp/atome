@@ -1,7 +1,7 @@
 module PropertyHtml
 
   def render_list(value)
-    atome_parent = parent[0].read
+    atome_parent = parent[0].q_read
     jq_get(atome_parent).append(jq_get(atome_id))
     temp_list_obj_id = "#{atome_id}_temp_list_obj"
     grab(temp_list_obj_id).delete
@@ -87,10 +87,6 @@ module PropertyHtml
   def language_html(value)
     value
   end
-
-  # def preset_html(value)
-  #   value
-  # end
 
   def edit_html(value)
     case value
@@ -213,5 +209,6 @@ module PropertyHtml
   def cursor_html(params)
     jq_get(atome_id).css('cursor', params)
   end
+
 
 end

@@ -22,6 +22,10 @@ module Processors
       preset_found = preset_found.merge({ parent: atome_id }).merge(value)
       #now we create the new atome
       Atome.new(preset_found)
+      ########### or
+      # a=Atome.new(value)
+      # a.parent(atome_id)
+      # a.preset(preset)
     end
   end
 
@@ -278,19 +282,19 @@ module Processors
     end
   end
 
-  def tool_pre_processor(value, password = nil)
-    media_pre_processor(:shape, :tool, value, password)
-  end
+  # def tool_pre_processor(value, password = nil)
+  #   media_pre_processor(:shape, :tool, value, password)
+  # end
 
-  def tool_getter_processor
-    child_collected = []
-    child do |child_found|
-      if child_found.type == :tool
-        child_collected << child_found.atome_id
-      end
-    end
-    atomise(:temp, child_collected)
-  end
+  # def tool_getter_processor
+  #   child_collected = []
+  #   child do |child_found|
+  #     if child_found.type == :tool
+  #       child_collected << child_found.atome_id
+  #     end
+  #   end
+  #   atomise(:temp, child_collected)
+  # end
 
   def content_pre_processor(value, password)
     # treatment to get local version of text
@@ -339,14 +343,14 @@ module Processors
 
   def content_getter_processor
     if self.type == :text
-      # if  @content.read.instance_of?(Hash)
-      #   @content.read[:default]
+      # if  @content.q_read.instance_of?(Hash)
+      #   @content.q_read[:default]
       # else
       #   @content
       # end
       @content
     else
-      @content&.read
+      @content&.q_read
     end
   end
 

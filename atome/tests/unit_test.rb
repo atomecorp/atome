@@ -152,7 +152,7 @@
 #  files_collected.each do |rb_file|
 #    File.file? rb_file
 #    file = File.open(rb_file)
-#    file_data = file.read
+#    file_data = file.q_read
 #    concatenate[rb_file] = file_data
 #  end
 #
