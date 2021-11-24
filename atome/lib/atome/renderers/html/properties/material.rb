@@ -256,4 +256,8 @@ module PropertyHtml
     end
     jq_get(atome_id).css('background-size', size)
   end
+
+  def blend_html(value)
+    jq_get(atome_id).css("mix-blend-mode", value)
+  end
 end

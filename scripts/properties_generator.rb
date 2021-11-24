@@ -15,7 +15,7 @@ def atome_methods
   utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
                code exec cursor ]
   misc = %i[map calendar]
-  material = %i[color opacity border overflow fill]
+  material = %i[color opacity border overflow fill blend]
   behaviour = %i[animation animator]
   { analysers: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect,
     inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication,
