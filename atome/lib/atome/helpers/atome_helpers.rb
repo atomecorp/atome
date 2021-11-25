@@ -44,15 +44,17 @@ module AtomeHelpers
     authorization(value, &proc)
   end
 
-  def delete
-    delete_from_parent
-    delete_child
-    Atome.atomes = remove_item_from_hash(Atome.atomes)
-    # the condition below exclude intuition's atomes as they don"t have to be stored in the blackhole
-    unless self.parent.include?(:intuition)
-      grab(:black_hole).content[atome_id] = self
+  def delete(val=true)
+    if val
+      delete_from_parent
+      delete_child
+      Atome.atomes = remove_item_from_hash(Atome.atomes)
+      # the condition below exclude intuition's atomes as they don"t have to be stored in the blackhole
+      unless self.parent.include?(:intuition)
+        grab(:black_hole).content[atome_id] = self
+      end
+      delete_html
     end
-    delete_html
   end
 
   def ping(adress = "https://atome.one/", error = "puts' impossible to connect atome main server'", success = "")

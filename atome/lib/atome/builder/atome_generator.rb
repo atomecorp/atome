@@ -20,7 +20,7 @@ class Atome
 
   # atome creation
   def initialize(properties = {})
-    # unless properties == {}
+    unless properties == {}
       # the hash below add the missing properties without creating a condition
       sanitizer = { atome_id: identity, render: true, type: :particle, content: {}, selector: {}, id: "a_#{object_id}" }.merge(properties)
       # below we reorder the atome properties before treatment
@@ -75,7 +75,7 @@ class Atome
       # and finally the center that must know the  content to be able to the center the object
       sanitizer = sanitizer.merge(sanitized_content).merge(sanitized_exec).merge(sanitized_center).merge(sanitized_color)
       set sanitizer
-    # end
+    end
 
   end
 
