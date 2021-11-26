@@ -22,6 +22,29 @@ module PropertyHtml
     end
   end
 
+  def hue_html(value)
+
+    # the line below get  any filter all already apply to the object
+    prev_prop = previous_filter_found
+    case value
+    when Array
+      properties = []
+      value.each do |param|
+        properties << "#{param}px"
+      end
+      properties.join(' ').to_s
+
+    when Hash
+      # hue-rotate(180deg)
+      jq_get(atome_id).css('filter', "#{prev_prop}hue-rotate(#{value}deg)")
+    when String, Symbol, Number
+      jq_get(atome_id).css('filter', "hue-rotate(#{value}deg)")
+    else
+      ''
+
+    end
+  end
+
   def shadow_html(value)
     if value.instance_of?(Array)
       value.each do |shadow|
