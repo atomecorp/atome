@@ -191,7 +191,7 @@ def compile(code)
   # code=code[1][0].unpack("H*")
   # code=code.q_read.encode("UTF-8", invalid: :replace)
   ################# patch
-  code=code.encode("UTF-8", invalid: :replace)
+  code = code.encode("UTF-8", invalid: :replace)
   Object.eval(code)
 end
 
@@ -200,31 +200,29 @@ def version
 end
 
 def animate(params)
+  unless params[:target]
+    params[:target] = atome_id
+  end
+  # patch below if no blur is assigned blur animation doesn't work
+  if self.instance_of?(Atome)
+    unless self.blur
+      self.blur(0)
+    end
+  end
 
-  # alert Element.find("#"+params[:target]).css('filter')
-  # unless params[:target]
-  #   params[:target]=atome_id
-  # end
-  # patch blow if no blur is assigned blur animation doesn't work
-  # if self.instance_of?(Atome)
-  #   unless self.blur
-  #     self.blur(0)
-  #   end
-  # end
-
-  filter_found=Element.find("#"+params[:target]).css('filter')
+  filter_found = Element.find("#" + params[:target]).css('filter')
   # alert "We must get all filter present in  #{params[:target]} and those found in the params to the animation "
-  filter_list = %w[blur contrast brightness
-                  grayscale hue-rotate invert opacity
-                  saturate sepia drop-shadow url, backdrop-filter]
+  # filter_list = %w[blur contrast brightness
+  #                 grayscale hue-rotate invert opacity
+  #                 saturate sepia drop-shadow url, backdrop-filter]
   if params[:start][:blur]
     value_found = params[:start][:blur]
-    params[:start][:filter] = filter_found+" blur(#{value_found}px)"
+    params[:start][:filter] = filter_found + " blur(#{value_found}px)"
     params[:start].delete(:blur)
   end
   if params[:end][:blur]
     value_found = params[:end][:blur]
-    params[:end][:filter] = filter_found+" blur(#{value_found}px)"
+    params[:end][:filter] = filter_found + " blur(#{value_found}px)"
     params[:end].delete(:blur)
   end
   if params[:start][:contrast]
@@ -255,7 +253,7 @@ def animate(params)
     # if type == :text
     #   params[:start][:color] = value_found
     # else
-      params[:start][:background] = value_found
+    params[:start][:background] = value_found
     # end
     params[:start].delete(:color)
   end
@@ -265,7 +263,7 @@ def animate(params)
     # if type == :text
     #   params[:end][:color] = value_found
     # else
-      params[:end][:background] = value_found
+    params[:end][:background] = value_found
     # end
     params[:end].delete(:color)
   end
@@ -441,7 +439,7 @@ def refresh (params = nil)
     reader(source) do |data|
       compile data
     end
-  # else
+    # else
     # # we  colect it's content
     # collected_atome=[]
     # grab(:view).child do |atome|
@@ -474,9 +472,9 @@ end
 
 def listen(local_lang, &proc)
   local_lang ||= grab(:view).language
-  ATOME.listen_html(local_lang,&proc)
+  ATOME.listen_html(local_lang, &proc)
 end
 
 def meteo(location, &proc)
-  ATOME.meteo_html(location,&proc)
+  ATOME.meteo_html(location, &proc)
 end

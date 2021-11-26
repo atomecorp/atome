@@ -7,7 +7,7 @@ todo : change atome_id format and prevent user to set it : atome_id : user.machi
 - bug in demos :
     remote desktop callback :target is used as a function isnstead of using the atome_id
     Paypal throw an error message but work
-    Mutltirender call an unvalaible methods
+    Multi-render call an unvailable methods
     Play audio work only once
     Schedule doesnt work
 
