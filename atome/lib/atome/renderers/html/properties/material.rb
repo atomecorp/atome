@@ -90,11 +90,6 @@ module PropertyHtml
   end
 
   def color_html(values)
-    # if values == :red
-    # #   if jq_get(atome_id).children().length == 0
-    #     alert self.properties
-    #   # end
-    # end
     angle = 180
     diffusion = "linear"
     if type == :text
@@ -118,7 +113,6 @@ module PropertyHtml
         color = color_helper(value)
         val = "linear-gradient(0deg,#{color},#{color})"
         if self.type == :image
-
           if jq_get(atome_id).css("background-image").start_with?("url")
             if jq_get(atome_id).children().length() == 0
               jq_get(atome_id).append("<div id= '#{atome_id}_mask' style='position: absolute;display: inline-block; background-color: transparent;width:100%;height:100%''></div>")
@@ -132,20 +126,19 @@ module PropertyHtml
             # sub_atome.css("mask-size": "50% 50%")
           end
           # new_background = val + "," + jq_get(atome_id).css("background-image")
-            if sub_atome
-              # new_background = val + "," + jq_get(atome_id).css("background-image")
-              # new_background = "linear-gradient(0deg,rgba(255,0,0,0.3),rgba(255,0,0,0.3))"
-              new_background = val
-              # alert new_background
-              # alert new_background.class
-              sub_atome.css("background-image", new_background)
+          if sub_atome
+            # new_background = val + "," + jq_get(atome_id).css("background-image")
+            # new_background = "linear-gradient(0deg,rgba(255,0,0,0.3),rgba(255,0,0,0.3))"
+            new_background = val
+            # alert new_background
+            # alert new_background.class
+            sub_atome.css("background-image", new_background)
 
+          else
+            new_background = val + "," + jq_get(atome_id).css("background-image")
 
-            else
-              new_background = val + "," + jq_get(atome_id).css("background-image")
-
-              jq_get(atome_id).css("background-image", new_background)
-            end
+            jq_get(atome_id).css("background-image", new_background)
+          end
           # sub_atome.css("width", "33px");
           # sub_atome.css("height", "100px");
           # sub_atome.css("top", "0px");

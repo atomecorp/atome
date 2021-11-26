@@ -23,4 +23,8 @@ b.touch do
   b.shadow(false)
 end
 
+force=text({content: "force box shadow", visual: 33, y:9})
+
+force.shadow({ x: 3, y: 3, color: "rgba(0,0,0,1)", blur: 3, thickness: 0, bounding: true })
+
 # {bounding:  true} : force box shadow false force filter shadow , using invert also force box shadow

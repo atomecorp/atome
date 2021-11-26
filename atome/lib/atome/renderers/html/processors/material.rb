@@ -22,11 +22,7 @@ module ProcessorHtml
               else
                 1
               end
-      if value[:content]
-        value = value[:content]
-      else
-        value = "rgba(#{red},#{green},#{blue},#{alpha})"
-      end
+      value = value[:content] || "rgba(#{red},#{green},#{blue},#{alpha})"
     else
       value
     end
@@ -42,20 +38,22 @@ module ProcessorHtml
     invert = if value[:invert]
                :inset
              else
-               ""
+               ''
              end
-    if value[:bounding] == true || invert ==:inset
+    if value[:bounding] == true || invert == :inset
       prev_prop = jq_get(atome_id).css('box-shadow')
-      if prev_prop == "none"
-        prev_prop = ""
-      else
-        prev_prop = "#{prev_prop}, "
-      end
-      shadow_html_format = ["box-shadow", prev_prop + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + thickness.to_s + "px " + color + " " + invert]
+      prev_prop = if prev_prop == 'none'
+                    ''
+                  else
+                    "#{prev_prop}, "
+                  end
+      shadow_html_format = ['box-shadow',
+                            "#{prev_prop}#{x}px #{y}px #{blur}px #{thickness}px #{color} #{invert}"]
     else
       prev_prop = previous_filter_found
 
-      shadow_html_format = ['filter', prev_prop + "drop-shadow(" + x.to_s + "px " + y.to_s + "px " + blur.to_s + "px " + color + ")"]
+      shadow_html_format = ['filter',
+                            "#{prev_prop}drop-shadow(#{x}px #{y}px #{blur}px #{color})"]
     end
     shadow_html_format
   end

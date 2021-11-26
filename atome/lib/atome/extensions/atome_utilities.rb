@@ -200,6 +200,7 @@ def version
 end
 
 def animate(params)
+
   # alert Element.find("#"+params[:target]).css('filter')
   # unless params[:target]
   #   params[:target]=atome_id

@@ -76,7 +76,7 @@ animator = {
                                 }
                                 // red green blue are formatted to be coded on 8 bit not the alpha
 
-                                if (i<3){
+                                if (i < 3) {
                                     value = parseFloat(value) * 255;
                                 }
                                 color = color + separator + value;
@@ -89,13 +89,16 @@ animator = {
                         val = "linear-gradient(0deg, " + gradient.join(",") + ")";
                     }
                 }
+                // alert(  val);
                 a_start[key] = val;
+
             });
         } else {
             a_start[property] = start;
         }
         if (typeof (end) == "object") {
             const end_option = Object.keys(value.end);
+            // alert (end_option);
             end_option.forEach((item) => {
                 let key = item;
                 let val = value.end[item];
@@ -119,7 +122,7 @@ animator = {
                                     separator = ",";
                                 }
                                 // red green blue are formatted to be coded on 8 bit not the alpha
-                                if (i<3){
+                                if (i < 3) {
                                     value = parseFloat(value) * 255;
                                 }
                                 color = color + separator + value;
@@ -131,14 +134,18 @@ animator = {
                         val = "linear-gradient(0deg, " + gradient.join(",") + ")";
                     }
                 }
-                if (key == "background") {
-                   if ($("#"+target_id).children.length > 0){
-                       // alert ($("#"+target_id).children.length);
-                       // alert (target_id);
-                       mask_target_id=$("#"+target_id).children().first().attr('id');
-                       // alert (target_id);
 
-                   }
+                if (key == "background") {
+
+
+                    if($("#" + target_id+"_mask").length == 0) {
+                        mask_target_id = $("#" + target_id).attr('id');
+
+                    }
+                    else{
+                        mask_target_id = $("#" + target_id).children().first().attr('id');
+
+                    }
                 }
                 a_end[key] = val;
             });
@@ -153,13 +160,13 @@ animator = {
         const {easing, tween, styler} = window.popmotion;
 
         if (typeof mask_target_id != "undefined") {
-        // if(mask_target_id){
+            // if(mask_target_id){
             const mask_divStyler = styler(document.querySelector('#' + mask_target_id));
-            a_mask_start= {background: a_start.background};
-            a_mask__end= {background: a_end.background};
+            a_mask_start = {background: a_start.background};
+            a_mask_end = {background: a_end.background};
             tween({
                 from: a_mask_start,
-                to: a_mask__end,
+                to: a_mask_end,
                 duration: duration,
                 ease: easing[curve],
                 flip: loop,
@@ -167,10 +174,12 @@ animator = {
             })
                 .start(mask_divStyler.set);
         }
-        delete(a_start.background);
-        delete(a_end.background);
+        delete (a_start.background);
+        delete (a_end.background);
 
+        if (Object.keys(a_start).length > 0) {
             const divStyler = styler(document.querySelector('#' + target_id));
+
             tween({
                 from: a_start,
                 to: a_end,
@@ -180,6 +189,12 @@ animator = {
                 yoyo: yoyo
             })
                 .start(divStyler.set);
+        }
+        // else {
+        //
+        // }
+        // ;
+
 
     },
 };
