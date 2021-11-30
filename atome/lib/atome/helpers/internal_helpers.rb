@@ -9,20 +9,26 @@ module InternalHelpers
   end
 
   def properties_common(value, &proc)
-    formatted_value=value
-    if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
-      property = {}
-      property[:proc] = proc
-      property[:options] = value
-      formatted_value = property
-    elsif proc && value.instance_of?(Hash)
-      formatted_value = value.merge(proc: proc)
-    elsif proc && (value.instance_of?(Integer) || value.instance_of?(String) || value.instance_of?(Symbol))
-      formatted_value = { value: value, proc: proc }
-    elsif proc
-      formatted_value = { proc: proc }
+
+    if display.nil? || display != :none
+      formatted_value=value
+      if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
+        property = {}
+        property[:proc] = proc
+        property[:options] = value
+        formatted_value = property
+      elsif proc && value.instance_of?(Hash)
+        formatted_value = value.merge(proc: proc)
+      elsif proc && (value.instance_of?(Integer) || value.instance_of?(String) || value.instance_of?(Symbol))
+        formatted_value = { value: value, proc: proc }
+      elsif proc
+        formatted_value = { proc: proc }
+      end
+      formatted_value
+    else
+      alert "we have to make it work for \"#{display}\""
     end
-    formatted_value
+
   end
 
   def update_property(atome, property, value)
