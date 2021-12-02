@@ -54,6 +54,7 @@ module PropertyHtml
   end
 
   def render_html(value)
+
     # first in any case we remove the atome if it already exist
     jq_get(atome_id).remove
     # we also remove pseudo element: (the one created when using different rendering type : list, bloc, ...)

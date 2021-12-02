@@ -35,7 +35,16 @@ module PropertyHtml
   end
 
   def display_html(value)
+    # The dsiaply api is used both to view special items and or prevent the dsiplay  the
     case value
+
+    when false
+      jq_get(atome_id).css(display: :none)
+    when true
+      jq_get(atome_id).css(display: :block)
+
+    when :none
+      jq_get(atome_id).css(display: :none)
     when :vr
       path = $images_list[content][:path]
       jq_get(atome_id).css("background", "transparent")

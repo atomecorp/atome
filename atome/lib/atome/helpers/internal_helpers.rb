@@ -1,6 +1,7 @@
 module InternalHelpers
   def atomise(property, value)
     # this method create a quark object from atome properties for further processing
+    # typically this method is sused to change an object without displaying the vhanges
     unless @monitor.nil? || @monitor == false
       # if the atome is monitored it broadcast the changes
       broadcast(property, value)
@@ -10,7 +11,7 @@ module InternalHelpers
 
   def properties_common(value, &proc)
 
-    if display.nil? || display != :none
+    # if display.nil? || display != :none
       formatted_value=value
       if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
         property = {}
@@ -25,9 +26,9 @@ module InternalHelpers
         formatted_value = { proc: proc }
       end
       formatted_value
-    else
-      alert "we have to make it work for \"#{display}\""
-    end
+    # else
+    #   alert "we have to make it work for \"#{display}\""
+    # end
 
   end
 
