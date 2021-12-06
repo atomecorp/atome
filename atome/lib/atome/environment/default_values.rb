@@ -18,7 +18,7 @@ module DefaultValues
     camera = visual.merge({ type: :camera })
     microphone = visual.merge({ type: :microphone })
     midi = visual.merge(shape).merge(type: :midi)
-    tool = visual.merge({ type: :tool, width: 33, height: 33, color: { red: 1, green: 1, blue: 0, alpha: 0.3 }, smooth: 3, parent: :intuition, content: [], overflow: :visible })
+    tool = visual.merge({ type: :tool, width: 33, height: 33, color: { red: 1, green: 0, blue: 1, alpha: 0.9 }, smooth: 3, parent: :intuition, content: [], overflow: :visible })
     web = visual.merge({ type: :web, width: 66, height: 66 })
     user = visual.merge({ type: :user, name: :anonymous, pass: :none, content: :anonymous })
     color = { red: 0, green: 0, blue: 0, alpha: 1, angle: 180, diffusion: :linear }
