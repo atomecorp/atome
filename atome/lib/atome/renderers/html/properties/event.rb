@@ -75,7 +75,9 @@ module PropertyHtml
           # the method below is used when a browser received touchdown and mousedown at the same time
           # this avoid the event to be traeted twice by android browser
           evt.prevent
-          value[:proc].call(evt) if value[:proc].is_a?(Proc)
+          # value[:proc].call(evt) if value[:proc].is_a?(Proc)
+          # modification below to allow self with proc ( proc / lambda change conetxt)
+          instance_exec evt, &value[:proc] if value[:proc].is_a?(Proc)
           evt.stop_propagation if value[:stop]
         end
       end
