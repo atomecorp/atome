@@ -5,7 +5,7 @@ def atome_methods
   event = %i[touch drag over key scale drop virtual_event]
   geometry = %i[width height size ratio]
   generator = %i[say]
-  helper = %i[tactile display orientation]
+  helper = %i[tactile display orientation status]
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
@@ -49,7 +49,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id group container orientation shape box star web circle sphere text image video audio  parent child info example
+  %i[atome_id group container orientation status shape box star web circle sphere text image video audio  parent child info example
      selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
      particle cell visual language active inactive noise engine render id preset say content read write]
 end
