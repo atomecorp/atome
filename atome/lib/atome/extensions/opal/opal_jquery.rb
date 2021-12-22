@@ -12,9 +12,9 @@ class Element
     `videoHelper.addAudioPlayer(#{parent}, false)`
   end
 
-  def off(value)
-    ` $(window).off(#{value})`
-  end
+  # def off(value)
+  #   ` $(window).off(#{value})`
+  # end
 
   def remove_text(atome_id)
     `

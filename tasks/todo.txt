@@ -3,6 +3,8 @@
 - todo : change atome_id format and prevent user to set it : atome_id : user.machine.date.obj_id
 - todo : preset should be a method, eg : a.preset(circle), PS: code is partially present in "def media_pre_processor ..." and "def preset_processor"
 - todo : Atome.new() should not create an atome in the browser but wait for a type to decide if it'll do so
+- todo : animation should update the animated property at every tick
+- todo: : animation must trigger an event on finished
 - demo that crash : size
                     parent
                     Schedule

@@ -88,7 +88,11 @@ class Atome
 
   def add(value)
     prev_value = self.send(value.keys[0])
+    # alert prev_value
+    # alert value.keys[0]
+    # alert value[value.keys[0]]
     self.send(value.keys[0], [prev_value, value[value.keys[0]]])
+    # alert :kool
   end
 
   def get(property)

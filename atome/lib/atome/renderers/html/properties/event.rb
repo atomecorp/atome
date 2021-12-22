@@ -1,89 +1,110 @@
 module PropertyHtml
   def touch_html(value)
-    # alert atome_id
-    if value[:remove]
+    if value.instance_of?(Array)
+      jq_get(atome_id).unbind("touchstart mousedown touchend mouseup")
+      jq_get(atome_id).off('click')
+      # current_atome="##{atome_id}"
+      # `$(#{current_atome}).off('click');`
+      value.each do |val|
+        # jq_get(atome_id).off('click')
+        touch_html(val)
+      end
+    elsif value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
+      jq_get(atome_id).off('click')
+        # current_atome="##{atome_id}"
+        # `$(#{current_atome}).off('click');`
     else
-      option = value[:option]
-      delay = value[:delay] || 1.2
-      case option
-      when :down
-        jq_get(atome_id).on("touchstart mousedown") do |evt|
-          # alert "#{evt.type} : #{@verif} on #{atome_id}"
-          # alert "#{evt.type}"
-          # @verif+=1
-          # the method below is used when a browser received touchdown and mousedown at the same time
-          # this avoid the event to be traeted twice by android browser
-          # evt.prevent
-          value[:proc].call(evt) if value[:proc].is_a?(Proc)
-          evt.stop_propagation if value[:stop]
-          ############
-        end
-      when :up
-        jq_get(atome_id).on("touchend mouseup") do |evt|
-          # the method below is used when a browser received touchdown and mousedown at the same time
-          # this avoid the event to be traeted twice by android browser
-          evt.prevent
-          value[:proc].call(evt) if value[:proc].is_a?(Proc)
-          evt.stop_propagation if value[:stop]
+        option = value[:option]
+        delay = value[:delay] || 1.2
+        case option
+        when :down
+          jq_get(atome_id).on("touchstart mousedown") do |evt|
+            # alert "#{evt.type} : #{@verif} on #{atome_id}"
+            # alert "#{evt.type}"
+            # @verif+=1
+            # the method below is used when a browser received touchdown and mousedown at the same time
+            # this avoid the event to be traeted twice by android browser
+            # evt.prevent
+            value[:proc].call(evt) if value[:proc].is_a?(Proc)
+            evt.stop_propagation if value[:stop]
+            ############
+          end
+        when :up
+          jq_get(atome_id).on("touchend mouseup") do |evt|
+            # the method below is used when a browser received touchdown and mousedown at the same time
+            # this avoid the event to be traeted twice by android browser
+            evt.prevent
+            value[:proc].call(evt) if value[:proc].is_a?(Proc)
+            evt.stop_propagation if value[:stop]
 
-        end
-      when :long
-        waiter = ""
-        jq_get(atome_id).on("touchstart mousedown") do |evt|
-          # the method below is used when a browser received touchdown and mousedown at the same time
-          # this avoid the event to be traeted twice by android browser
-          evt.prevent
-          waiter = ATOME.wait delay do
-            unless drag && drag[:drag] == :moving
-              value[:proc].call(evt) if value[:proc].is_a?(Proc)
+          end
+        when :long
+          waiter = ""
+          jq_get(atome_id).on("touchstart mousedown") do |evt|
+            # the method below is used when a browser received touchdown and mousedown at the same time
+            # this avoid the event to be treated twice by android browser
+            evt.prevent
+            waiter = ATOME.wait delay do
+              unless drag && drag[:drag] == :moving
+                value[:proc].call(evt) if value[:proc].is_a?(Proc)
+                evt.stop_propagation if value[:stop]
+              end
+            end
+            # below we catch the mous out to stop long touch from beeing executed
+            grab(atome_id).over(:exit) do
+              ATOME.clear({ wait: waiter })
               evt.stop_propagation if value[:stop]
             end
+            evt.stop_propagation if value[:stop]
+
           end
-        end
-        jq_get(atome_id).on("touchend mouseup") do
-          ATOME.clear({ wait: waiter })
-        end
-      when :double
-        ready = false
-        jq_get(atome_id).on("touchstart mousedown") do |evt|
-          # the method below is used when a browser received touchdown and mousedown at the same time
-          # this avoid the event to be traeted twice by android browser
-          evt.prevent
-          if ready == false
-            @touch_counter = 0
-            ready = true
+          jq_get(atome_id).on("touchend mouseup") do |evt|
+            ATOME.clear({ wait: waiter })
+            evt.stop_propagation if value[:stop]
           end
-          waiter = ATOME.wait delay do
-            ready = false
-            @touch_counter = 0
+        when :double
+          ready = false
+          jq_get(atome_id).on("touchstart mousedown") do |evt|
+            # the method below is used when a browser received touchdown and mousedown at the same time
+            # this avoid the event to be traeted twice by android browser
+            evt.prevent
+            if ready == false
+              @touch_counter = 0
+              ready = true
+            end
+            waiter = ATOME.wait delay do
+              ready = false
+              @touch_counter = 0
+            end
+            if @touch_counter >= 1
+              value[:proc].call(evt) if value[:proc].is_a?(Proc)
+              clear({ wait: waiter })
+              ready = false
+              @touch_counter = 0
+            end
+            @touch_counter += 1
           end
-          if @touch_counter >= 1
-            value[:proc].call(evt) if value[:proc].is_a?(Proc)
-            clear({ wait: waiter })
-            ready = false
-            @touch_counter = 0
+          jq_get(atome_id).on("touchend mouseup") do
+            #   ATOME.clear({ wait: waiter })
           end
-          @touch_counter += 1
-        end
-        jq_get(atome_id).on("touchend mouseup") do
-          #   ATOME.clear({ wait: waiter })
+
+        else
+          jq_get(atome_id).on(:click) do |evt|
+            # the method below is used when a browser received touchdown and mousedown at the same time
+            # this avoid the event to be traeted twice by android browser
+            evt.prevent
+            # value[:proc].call(evt) if value[:proc].is_a?(Proc)
+            # modification below to allow self with proc ( proc / lambda change conetxt)
+            instance_exec evt, &value[:proc] if value[:proc].is_a?(Proc)
+            evt.stop_propagation if value[:stop]
+          end
         end
 
-      else
-        jq_get(atome_id).on(:click) do |evt|
-          # the method below is used when a browser received touchdown and mousedown at the same time
-          # this avoid the event to be traeted twice by android browser
-          evt.prevent
-          # value[:proc].call(evt) if value[:proc].is_a?(Proc)
-          # modification below to allow self with proc ( proc / lambda change conetxt)
-          instance_exec evt, &value[:proc] if value[:proc].is_a?(Proc)
-          evt.stop_propagation if value[:stop]
-        end
-      end
     end
 
   end
+
 
   ############ base
   # def touch_html(value)
