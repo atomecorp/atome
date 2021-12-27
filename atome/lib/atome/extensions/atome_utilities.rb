@@ -162,7 +162,7 @@ def clear(value)
   grab(:view).clear(value)
 end
 
-def atomes(full_list)
+def atomes(full_list=false)
   ATOME.atomes(full_list)
 end
 
