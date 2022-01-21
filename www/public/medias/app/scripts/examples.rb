@@ -82,7 +82,7 @@ def run_demo(path)
   end
 end
 
-demo_container = grab(:intuition).box({ yy: 0, color: { alpha: 0.3 }, width: 120, height: 399 , overflow: :scroll })
+demo_container = grab(:intuition).box({atome_id: :demo_container, yy: 0, color: { alpha: 0.3 }, width: 120, height: 399 , overflow: :scroll })
 demo_container.touch do
   if self.height == 66
     self.height(333)
@@ -90,12 +90,13 @@ demo_container.touch do
     self.height(66)
   end
 end
-
 ATOME.reader("./medias/rubies/examples/!demos.rb") do |data|
   demos = compile(data)
   demos.keys.each_with_index do |demo_title, index|
+    demo_c=grab(:demo_container)
     title = demo_container.text ({content: index.to_s+" - "+demo_title, visual: 12})
     title.y = index * 24 + 12
+    demo_container.color(:red)
     title.touch(stop: true) do
       self.color(:red)
       run_demo demos[demo_title]
