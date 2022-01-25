@@ -14,14 +14,14 @@ The concept
 
 atome object is the uniq object that can hold any type of data!
 
-Think pdf but collaborative and editable!
+Think pdf but collaborative, truly multimedia and editable!
 -
 
 An atome can be anything from a single property to a full blown document.
 
-an atome can hold a simple property such as a color, or an image,a text, an effect, a video, a group of object or even full complex document mixing many types.
+Per example an atome can hold a simple property such as a color, or an image,a text, an effect, a video, a script, a group of objects or a complex document mixing many types, even tools are also atomes.
 
-Say goodbye to applications : atome can be modified by any tools created for them.
+Say goodbye to applications : any atome can be modified by any tools created for them.
 -
 
 The idea behind atome is to have only one kind of object, so any tools applied onto it will have an action whatever the atome's content.
