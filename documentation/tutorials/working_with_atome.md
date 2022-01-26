@@ -26,23 +26,23 @@ you can send also the properties to the atome using parenthesis ou the equal sig
 
 The basic objects
 
-    preset
-    black_hole
-    device
-    intuition
-    view
-    messenger
-    right
-    buffer
+- those objects are created by the system at startup : 
 
-the buffer is used to store temporary element such as  the position and content of system element like the code editor or the list of element to remain centered when the main windows is resized,
+    preset :  hold the default properties's values for predefined atome  ( box, image text, ...)
+    black_hole : a container for all deleted object
+    device : Used to identify user device (computer , phone , tablet), also used for Namespace and generate identity of newly created atomes
+    intuition : A visual layer used to hold user tools
+    view : Where user create and modify there projects
+    messenger : A special object used for communication and collaboration
+    authorization : this atome is used to authorise or not creation , use, communication and modification of atome
+    buffer : an atome used to store temporary object, it is used to store temporary element such as  the position and content of system element like the code editor or the list of element to remain centered when the main windows is resized,
 eg:
+
 
     b = box({ width: 700, height: 120, drag: true, center: { dynamic: true } })
     c = circle
     t = text({ content: "ok", color: :black, center: :x })
 
-    ATOME.atomise(:batch, [b, c, t])
     grab(:buffer).content[:resize] = [t, b]
     ATOME.resize_html do |evt|
         t.content("#{evt[:width]}  #{evt[:height]}")

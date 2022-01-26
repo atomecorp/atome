@@ -5,20 +5,21 @@
 - education
 - Music
 - VJ
-- Video treatment
 - drawing
 - photo editing
 - Collaboration
 - Voice recognition
-- voice synthesys
+- voice synthesis
 - Context and internalisation translation
 - Payment
 - Scheduling with calendar
 - remote computing and rendering
 - Audio and synthesis generator
+- Video effects
 - Video editing
 - animation
 - interactive document production
 - Visio conference
-- applications and web generator
+- applications
+- web site
 

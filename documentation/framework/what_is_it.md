@@ -37,7 +37,7 @@ The idea behind atome is to have only one uniq file type, so any tool applied on
 Say goodbye to file format: here any tools can alter any data.
 -
 
-- No filetype but instead unique objet called an atome 
+- No filetype but instead a unique objet call  "atome" 
 - Any atome can then be modified by any available api or tool.
 - Only one type means no more file format, this is the guaranty that documents can always be open, shared and edited.
 
