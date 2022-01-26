@@ -1,5 +1,4 @@
 # refresh example
-JSUtils.load_opal_parser
 
 c=circle({ atome_id: :circle})
 c.text({content: "click me", atome_id: :text_2 })

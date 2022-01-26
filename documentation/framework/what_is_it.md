@@ -28,7 +28,7 @@ The idea behind atome is to have only one uniq file type, so any tool applied on
 
 - Simplify the automation of batch process as objects always have a similar architecture whatever it's type (from a simple box thru a video montage to a complex page description) it's always an atome)
 - Simplify the development and tests of new tools. Ruby language allow you to script anything on the fly
-- Reduce development due to Ruby language and the similarity of all object an all API
+- Reduce development time due to Ruby language and the similarity of all object an all API
 - Easy debug due to high level of readability of ruby
 - Reduce the number of tools needed for an application. (you dont ever have to wrote a specific tool for a specific medias anymore, as the same tool now work on any atome).
 - and many many other advantages ...
@@ -49,38 +49,49 @@ Guideline and philosophy
 -
 
 
-to keep this idea working we have to follow the following rules during atome development :
+to keep this concept working we must follow the following rules during atome development :
 
 - All Apis must run of all targeted platform (their should be no difference from one platform to another.)
-- any property or new api must always work on any type of atome, to keep the consistency of the "atome uniq object"
+- Any property or new api must always work on any type of atome, to keep the consistency of the "atome uniq object"
+- New atome must 
 
 
 atome explained : the uniq object format
 -
 
-an atome is a collection of properties
+an atome is a  property ( position, size, type, etc..)
 
-it's  type is also an property so atome can be mutable!
+a single property (atome) can hold multiples properties cf: child property
+
+    b=box({ drag: true, atome_id: :the_box })
+    t=text({ content: "touch me to extract me from the box,\nand attach me to the circle ",y: 99, atome_id: :the_text  })
+    grab(:the_box).attach(:the_text)
+    puts  b.child # =>  ["the_text"]
+    
+
+atome's property are mutable even it's type ( useful to display a same atome in different manner, or use the data of the atome as a repository of style, or simply sawp it's functionality while retaining it's properties) 
 
 a single atome can be displayed in different way according it's rendering mode and or it's type. 
 
-EG : 
+EG :
+    
 
     a=image(content: :moto)
 
 
 <img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/moto.png" width="333" />
 
+    a.color(:white) #important else the text xill be transparent
     a.type(:text)
 moto
 
-    a.render({value: :list, option: :property, ordered: :alphabetically })
+    a.render({mode: :list, list: :property, sort: :alphabetically })
 <img src="https://github.com/atomecorp/atome/raw/development/documentation/images/list.png" width="400px" />
 
 
 
 - Anything that define an atome is a property.
-  any atome can contain an other atome or a group of atomes as a property ex :
+  any atome can contain an other atome or a group of atome as a property ex :
 
 
     b = box({x: 300, drag: true})
@@ -90,23 +101,34 @@ moto
     b.text('hello')
     puts b.child #=> [c, t] (c and t is now a child of b)
     b.touch do
-    # b children can be treated in one passe
+    # b children can be treated in one pass
     # look at child example for more examples
     b.child.color(:green)
     end
 
-The atome properties can be set using a string or integer eg :
+Many atome properties can be set using a string or integer, it's a shortcut to set the content property eg :
 
-    text("hello)
+    text("hello") # equivalent to text({content: "hello"})
+    # or
+    image(:boat) # shortcut for image({content: :boat})
 
-Those value are always define internally using a key-value pair (Hash type) and can be set so :
+internally properties are always define using a key-value pair (Hash type) and can be set so :
 
     text({content: "hello"})
 
-those values can be a String, an Integer, a hash(key-value) or an array.
-The atome can receive a second optional parameters to refresh the view or not.
-in this case the atome is till rendered in the view but the newly added parameters does not refresh the objet.
-(Please not the 'refresh option' behavior is not the same as the render property, the refresh option is used when a property is modify by the view it self we want to modification to be stored into the atome structure, but but want the view to be re-rendered)
+Hash's values can be a String, an Integer, a hash or an array.
+
+The atomiser method allow to modifying atome without interpreting/ refreshing the newly set property.
+in this case the atome need rendered to refresh it's content
+
+    b = box()
+    b.atomiser({ color: :red })
+    b.atomiser({ smooth: 6})
+
+    wait 2 do
+      b.render(true)
+    end
+
 
 - Any property can be define using an unique value (passed as a String , Symbole or a numeric  value)
 
@@ -137,12 +159,18 @@ in this case the atome is till rendered in the view but the newly added paramete
 
 - methods can be chained or assigned 
 
-        b=box(width: 33)
-        b.color(:red).x(96).blur(3)
-        #or
-        c=circle(color: :red)
-        b.color=c.color
-        c.y=b.blur
+
+    b=box(width: 33)
+    b.color(:red).x(96).blur(3)
+
+    #or
+    b=box(width: 33)
+    b.color(:red).x(96).blur(3)
+    c=circle(color: :red)
+    b.color=c.color
+    c.y=b.blur
+      
+
 
 
 
@@ -150,6 +178,7 @@ in this case the atome is till rendered in the view but the newly added paramete
 
 please note that any property can potentially have multiples parameters even the simplest one
 
+    # not implemented need a rework
     a=box()
     a.set({x: {content: 200, unit: :meters}) 
 
@@ -163,6 +192,7 @@ a simple gradient :
 
 - all properties are treated identically and can be swap at any time.Type mutation is also possible : ex change the type of object from an image to text type
 
+
     x=image({color: :white, content: :boat })
     ATOME.wait 2 do
     x.type(:text) #now the objet is rendered as a text object
@@ -172,12 +202,10 @@ a simple gradient :
 
 here some possible definition of an atome
 
-    a=box({color: red}) # an red box is created
-    a.set(smooth: 3) # the box has rounded corner the view is refreshed
+    a=box({color: :red}) # an red box is created
+    a.set(smooth: 9) # the box has rounded corner the view is refreshed
     a.set({width: 250},true )# the box is now 250px wide the view is forced to refresh
-    a.set({border: :orange, thickness: 3}, false) #the atome is still red the view is not refreshed (no border!)
-    a.set([[color: :red, top: 20],[color: :blue, bottom: 0]], false) #the first parameters is an array that contain an array of color to allow a gradient , finally the view is not refreshed the atome remains 'red'.
-    a.color([{color: :yellow, top: 0}, {color: :orange, bottom: 0}]) # another way to set the atome property using the property name instead of using the 'set' methods, this time the view is refreshed
+    a.set({ border: { color: :orange, thickness: 7, pattern: :solid } })
 
 **[- Architecture of the folders](./folder_architecture.md)**
 -
