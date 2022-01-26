@@ -50,7 +50,7 @@ Other methods in the "properties_generator" file can be ignored for now
 
 Now next time we'll run the framework the necessary file will be created
 
-if you try to run your application with th following code:
+if you try to run your application with the following code:
 
     
     b=box
