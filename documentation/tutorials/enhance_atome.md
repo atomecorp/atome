@@ -28,7 +28,9 @@ to do so we have a folder containing the different renderers available   you'll 
 
 Build a new atome
 -
-let's create a new type of atome
+let's create a new type of atome :
+
+in the scr
 
 Build a new tool
   -
