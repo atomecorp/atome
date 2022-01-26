@@ -23,7 +23,7 @@ def atome_methods
 end
 
 def types
-  %i[user machine shape image video audio input text midi  virtual group container particle cell]
+  %i[user machine shape image video audio input text midi virtual group container particle cell]
 end
 
 FileUtils.mkdir_p "atome/lib/atome/generated_methods"
@@ -32,7 +32,7 @@ def is_atome
   # in this case presets are used to create atome using their types with specific settings
   # so it add the methods in the atome_object_creator methods
   # the generated property will then return the result of the method instead of object itself
-  %i[particle container shape box star web circle sphere text image  video audio camera microphone midi group cell]
+  %i[particle container shape box star web circle sphere text image video audio camera microphone midi group cell]
 end
 
 def need_pre_processing
