@@ -24,19 +24,21 @@ Per example an atome can hold a simple property such as a color, or an image,a t
 Say goodbye to applications : any atome can be modified by any tools created for them.
 -
 
-The idea behind atome is to have only one uniq file type, so any tools applied on a given atome will lead to an action whatever the atome's content.
+The idea behind atome is to have only one uniq file type, so any tool applied on a given atome will lead to an action whatever the atome is.
 
-- Simplify the automation of batch process as the object is always the same whatever it's type (from a simple box thru a video montage to a complex page description) it's always an atome)
+- Simplify the automation of batch process as objects always have a similar architecture whatever it's type (from a simple box thru a video montage to a complex page description) it's always an atome)
 - Simplify the development and tests of new tools. Ruby language allow you to script anything on the fly
-- Reduce the number of tools needed for an application. (you dont ever have to wrote a specific tool for a specific medias anymore, as the same tool now work on any atome.
-- and many many other ...
+- Reduce development due to Ruby language and the similarity of all object an all API
+- Easy debug due to high level of readability of ruby
+- Reduce the number of tools needed for an application. (you dont ever have to wrote a specific tool for a specific medias anymore, as the same tool now work on any atome).
+- and many many other advantages ...
 
 
 Say goodbye to file format: here any tools can alter any data.
 -
 
-- no filetype but instead unique objet called an atome 
-- These atomes can then be modified by any available api.
+- No filetype but instead unique objet called an atome 
+- Any atome can then be modified by any available api or tool.
 - Only one type means no more file format, this is the guaranty that documents can always be open, shared and edited.
 
 

@@ -45,7 +45,7 @@ module AtomeHelpers
   end
 
   def delete(val=true)
-    alert "big_problem_with_child_here : #{val}"
+    puts "big problem with child of child deletion : #{val}"
     if val
       delete_from_parent
       delete_child
