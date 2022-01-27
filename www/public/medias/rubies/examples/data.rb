@@ -1,5 +1,6 @@
 # data example
-# data property is used to store datas inside the atome
+# data property is used to store data inside the atome
+
 bb=box(width: 333)
 bb.text("touch me")
 bb.data("data stored here")
