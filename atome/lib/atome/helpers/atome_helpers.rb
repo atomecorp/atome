@@ -45,10 +45,10 @@ module AtomeHelpers
   end
 
   def delete(val=true)
-    puts "big problem with child of child deletion : #{val}"
+    # puts "big problem with child of child deletion : #{val}"
     if val
-      delete_from_parent
       delete_child
+      delete_from_parent
       Atome.atomes = remove_item_from_hash(Atome.atomes)
       # the condition below exclude intuition's atomes as they don"t have to be stored in the blackhole
       unless self.parent.include?(:intuition)
