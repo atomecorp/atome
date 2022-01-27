@@ -26,16 +26,24 @@ you can send also the properties to the atome using parenthesis ou the equal sig
 
 The basic objects
 
-- those objects are created by the system at startup : 
+those objects are created by the system at startup : 
+-
 
-    preset :  hold the default properties's values for predefined atome  ( box, image text, ...)
-    black_hole : a container for all deleted object
-    device : Used to identify user device (computer , phone , tablet), also used for Namespace and generate identity of newly created atomes
-    intuition : A visual layer used to hold user tools
-    view : Where user create and modify there projects
-    messenger : A special object used for communication and collaboration
-    authorization : this atome is used to authorise or not creation , use, communication and modification of atome
-    buffer : an atome used to store temporary object, it is used to store temporary element such as  the position and content of system element like the code editor or the list of element to remain centered when the main windows is resized,
+- preset :  hold the default properties's values for predefined atome  ( box, image text, ...)
+
+- black_hole : a container for all deleted object
+
+- device : Used to identify user device (computer , phone , tablet), also used for Namespace and generate identity of newly created atomes
+
+- intuition : A visual layer used to hold user tools
+
+- view : Where user create and modify there projects
+
+- messenger : A special object used for communication and collaboration
+
+- authorization : this atome is used to authorise or not creation , use, communication and modification of atome
+
+buffer : an atome used to store temporary object, it is used to store temporary element such as  the position and content of system element like the code editor or the list of element to remain centered when the main windows is resized,
 eg:
 
 

@@ -110,6 +110,4 @@ module PropertyHtml
   end
 
 
-
-
 end

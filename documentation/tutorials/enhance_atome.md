@@ -15,6 +15,7 @@ How to enhance the framework :
 
 
 the ruby scripting layer hold all the apis available to developers 
+
 those API must remain consistent all along the way and must be available on any atome even if it produce no result  
 
 the tool and API should never alter the original atome in order to stay non destructive  
