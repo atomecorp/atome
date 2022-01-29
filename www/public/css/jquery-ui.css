@@ -1311,3 +1311,42 @@ a.ui-button:active,
 	-webkit-box-shadow: 0px 0px 5px #666666;
 	box-shadow: 0px 0px 5px #666666;
 }
+
+
+/* atome styles */
+
+.ui-slider .ui-slider-handle {  outline: none; border: none; background-color: lightgray;  border-radius: 33px; height: 12px;
+	width: 12px;}
+
+/* Horizontal */
+
+#divSlider { background:  rgb(60, 60, 60, 1); outline: none; border: none; }
+#divSlider .ui-slider-range { background: orange; outline: none; border: none; }
+
+#divSlider.ui-slider .ui-slider-handle {
+	height: 12px;
+	width: 12px;
+	padding-left: -6px;
+	padding-right: 0px;
+	margin-left: 0px;
+	margin-bottom: -3px;
+	margin-top: 6px;
+	box-shadow: 0px 0px 5px black;
+}
+
+/* vertical */
+
+
+#divSliderV { background:  rgb(60, 60, 60, 1); outline: none; border: none; }
+#divSliderV .ui-slider-range { background: orange; outline: none; border: none; }
+
+#divSliderV  .ui-slider-handle {
+	height: 12px;
+	width: 12px;
+	padding-left: 0px;
+	padding-right: 0px;
+	margin-left: 6px;
+	margin-bottom: -3px;
+	margin-top: 5px;
+	box-shadow: 0px 0px 5px black;
+}
