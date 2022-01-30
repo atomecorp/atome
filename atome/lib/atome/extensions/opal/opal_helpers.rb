@@ -71,7 +71,7 @@ module JSUtils
     `history.pushState({ atome: #{adress} }, "page_label", "../"+#{adress})`
   end
 
-  def self.map(atome_id,longitude,lattitude)
+  def self.map(atome_id, longitude, lattitude)
     `atome.jsMap(#{atome_id},#{longitude},#{lattitude})`
   end
 
@@ -79,12 +79,55 @@ module JSUtils
     `new CalendarHelper(#{atome_id}, #{params})`
   end
 
-  def self.meteo_callback(datas,proc)
+  def self.meteo_callback(datas, proc)
     proc.call(datas) if proc.is_a?(Proc)
   end
 
-  def self.meteo(location,&proc)
+  def self.meteo(location, &proc)
     `new MeteoHelper(#{location}, #{proc})`
+  end
+
+  def self.slider_callback target, function
+
+    grab(target).send(function, :orange)
+  end
+
+  def self.slider(atome_id, params)
+
+    if params[:type] == :circular
+      `
+      circular_sliders(
+      #{atome_id}, #{params[:id]},
+      #{params[:length]}, #{params[:thickness]},
+      #{params[:helper_length]},  #{params[:helper_thickness]},
+      #{params[:value_size]},
+      #{params[:back_color]}, #{params[:range_color]}, #{params[:helper_color]}, #{params[:value_color]},
+      #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]}, #{params[:orientation]}, #{params[:smoothing]});
+//test
+$("#"+#{params[:id]}).css("position", "absolute");
+$("#"+#{params[:id]}).css("left", 66);
+$("#"+#{params[:id]}).css("top", 33);
+`
+
+    else
+
+      `
+      rectangular_sliders(
+      #{atome_id}, #{params[:id]},
+      #{params[:length]}, #{params[:thickness]},
+      #{params[:helper_length]},  #{params[:helper_thickness]},
+      #{params[:value_size]},
+      #{params[:back_color]}, #{params[:range_color]}, #{params[:helper_color]}, #{params[:value_color]},
+      #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]}, #{params[:orientation]}, #{params[:smoothing]});
+//test
+Opal.JSUtils.$slider_callback(#{params[:target]},#{params[:function]});
+
+$("#"+#{params[:id]}).css("position", "absolute");
+$("#"+#{params[:id]}).css("left", 66);
+$("#"+#{params[:id]}).css("top", 33);
+`
+    end
+
   end
 
 end

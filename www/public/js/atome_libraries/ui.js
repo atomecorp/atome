@@ -38,7 +38,6 @@ function circular_sliders(target, id, length, thickness, helper_length, helper_t
         .css('font-size', value_size)
         .css('font-weight', 'bold')
         .css('position', 'relative')
-        // .css('margin-left', '0 auto')
         .css('width', '100%')
         .css('text-align', 'center')
         .css("color", value_color)
@@ -91,6 +90,7 @@ function rectangular_sliders(target, id, length, thickness, helper_length, helpe
 
     //  value text params here
     $("#" + id).append("<div id='" + id + "_value'>" + value + "</div>");
+    $("#" + slider_value_id).attr("contenteditable",true);
     $("#" + slider_value_id)
         .css("font-size", value_size + "px")
         .css("color", value_color);
@@ -117,7 +117,8 @@ function rectangular_sliders(target, id, length, thickness, helper_length, helpe
             .css("width", thickness)
             .css("text-align", "center")
             .css("top", parseInt(length) + parseInt(value_size) / 2 + "px")
-            .css("position", "absolute");
+            .css("position", "absolute")
+            .css("min-width", "25px");
 
         // text unit positioning here
         $("#" + slider_unit_id)

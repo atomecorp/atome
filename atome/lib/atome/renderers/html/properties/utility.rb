@@ -210,6 +210,9 @@ module PropertyHtml
   def cursor_html(params)
     jq_get(atome_id).css('cursor', params)
   end
+  def  slider_html(params)
 
+    JSUtils.slider(atome_id, params)
+  end
 
 end
