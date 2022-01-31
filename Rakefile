@@ -5,9 +5,17 @@ require "opal-jquery"
 require "uglifier"
 require "fileutils"
 require "filewatcher"
-temp_dir="app/temp"
+temp_dir="temp"
+
+
+
 unless File.directory?(temp_dir)
   FileUtils.mkdir_p(temp_dir)
+end
+
+FileUtils.cp_r "a_www/.", "www/"
+if File.directory?("eVe")
+  FileUtils.cp_r "eVe/e_www/.", "www" , remove_destination: true
 end
 
 def generate_demos_list
@@ -43,9 +51,7 @@ end
 
 def update_medias_list(temp_dir)
   # todo : only copy if there's a change! use monitoring if possible
-  if File.directory?("eVe/medias/.")
-    FileUtils.cp_r "eVe/medias/.", "www/public/medias/"
-  end
+
   rm_f temp_dir+"/media_list.rb"
   file "#{temp_dir}/media_list.rb": ["#{temp_dir}"] do |t|
 
@@ -92,14 +98,16 @@ def update_medias_list(temp_dir)
       filename = File.basename(audio, File.extname(audio))
       audios_list[filename.to_sym] = { path: path }
     end
-    medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
-    medias_list = medias_list + "\n" + "module Universe\ndef self.images\n@images_list=#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
-    File.open(t.name, "w") { |file| file.write(medias_list) }
+    # medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
+    # medias_list = medias_list + "\n" + "module Universe\ndef self.images\n@images_list=#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
+
+  medias_list = "module Universe\ndef self.images\n@images_list=#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
+  File.open(t.name, "w") { |file| file.write(medias_list) }
   end
 end
 
 medias_dir_to_inspect = Dir.glob("www/public/medias/**/*")
-eve_medias_dir_to_inspect = Dir.glob("eVe/medias/**/*")
+eve_medias_dir_to_inspect = Dir.glob("eVe/e_www/public/medias/**/*")
 nb_of_medias_files = (medias_dir_to_inspect.length + eve_medias_dir_to_inspect.length).to_s
 
 unless File.exist?(temp_dir+"/nb_of_medias_files")
@@ -133,15 +141,15 @@ file 'www/public/js/dynamic_libraries/atome.js': atome_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app.rb") + Dir.glob("eVe/projects/**/*") + Dir.glob("eVe/eVe/lib/**/*")
+app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app.rb") + Dir.glob("eVe/e_www/public/medias/e_projects/**/*") + Dir.glob("eVe/eVe/lib/**/*")
 file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
   builder = Opal::Builder.new
   if File.exist?("./eVe")
-    builder.build("./www/public/medias/e_app/eVe_lib.rb")
-    builder.build("./www/public/medias/e_app/app.rb")
+    builder.build("./eVe/e_www/public/medias/e_app/eVe_lib.rb")
+    builder.build("./eVe/e_www//public/medias/e_app/app.rb")
   else
-    builder.build("./www/public/medias/app/atome_lib.rb")
-    builder.build("./www/public/medias/app/app.rb")
+    builder.build("./app/atome_lib.rb")
+    builder.build("./app/app.rb")
   end
   File.write(t.name, builder.to_s)
 end
