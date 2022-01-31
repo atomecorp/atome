@@ -24,7 +24,7 @@ end
 
 
 def generate_methods
-  require "./scripts/properties_generator.rb"
+  require "./scripts/atome_properties_generator.rb"
 end
 
 
