@@ -102,12 +102,7 @@ module JSUtils
       #{params[:value_size]},
       #{params[:back_color]}, #{params[:range_color]}, #{params[:helper_color]}, #{params[:value_color]},
       #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]},  #{params[:smoothing]},#{params[:target]},#{params[:function]});
-//test
-$("#"+#{params[:id]}).css("position", "absolute");
-$("#"+#{params[:id]}).css("left", 99);
-$("#"+#{params[:id]}).css("top", 33);
 `
-
     else
 
       `
@@ -118,12 +113,7 @@ $("#"+#{params[:id]}).css("top", 33);
       #{params[:value_size]},
       #{params[:back_color]}, #{params[:range_color]}, #{params[:helper_color]}, #{params[:value_color]},
       #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]}, #{params[:smoothing]},#{params[:target]},#{params[:function]}, #{params[:type]});
-//test
-//Opal.JSUtils.$slider_callback(#{params[:target]},#{params[:function]});
 
-$("#"+#{params[:id]}).css("position", "absolute");
-$("#"+#{params[:id]}).css("left", 99);
-$("#"+#{params[:id]}).css("top", 33);
 `
     end
 

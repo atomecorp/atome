@@ -56,16 +56,16 @@ def update_medias_list(temp_dir)
 
   # file temp_dir+'/media_list.rb': [temp_dir] do |t|
     require "image_size"
-    a_images = Dir.glob("./www/public/medias/images/**/*").select { |e| File.file? e }
-    e_images = Dir.glob("./www/public/medias/e_images/**/*").select { |e| File.file? e }
+    a_images = Dir.glob("./a_www/public/medias/images/**/*").select { |e| File.file? e }
+    e_images = Dir.glob("./eVe/e_www/public/medias/images/**/*").select { |e| File.file? e }
     images = a_images.concat(e_images)
     images_list = {}
-    a_videos = Dir.glob("./www/public/medias/videos/**/*").select { |e| File.file? e }
-    e_videos = Dir.glob("./www/public/medias/e_videos/**/*").select { |e| File.file? e }
+    a_videos = Dir.glob("./a_www/public/medias/videos/**/*").select { |e| File.file? e }
+    e_videos = Dir.glob("./eVe/e_www/public/medias/videos/**/*").select { |e| File.file? e }
     videos = a_videos.concat(e_videos)
     videos_list = {}
-    a_audios = Dir.glob("./www/public/medias/audios/**/*").select { |e| File.file? e }
-    e_audios = Dir.glob("./www/public/medias/e_audios/**/*").select { |e| File.file? e }
+    a_audios = Dir.glob("./a_www/public/medias/audios/**/*").select { |e| File.file? e }
+    e_audios = Dir.glob("./eVe/e_www/public/medias/audios/**/*").select { |e| File.file? e }
     audios = a_audios.concat(e_audios)
     audios = audios.concat(videos)
     audios_list = {}
@@ -140,12 +140,12 @@ file 'www/public/js/dynamic_libraries/atome.js': atome_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app.rb") + Dir.glob("eVe/e_www/public/medias/e_projects/**/*") + Dir.glob("eVe/eVe/lib/**/*")
+app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app/app.rb") + Dir.glob("eVe/e_www/public/medias/projects/**/*") + Dir.glob("eVe/eVe/lib/**/*")
 file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
   builder = Opal::Builder.new
   if File.exist?("./eVe")
-    builder.build("./eVe/e_www/public/medias/e_app/eVe_lib.rb")
-    builder.build("./eVe/e_www//public/medias/e_app/app.rb")
+    builder.build("./eVe/app/eVe_lib.rb")
+    builder.build("./eVe/app/app.rb")
   else
     builder.build("./app/atome_lib.rb")
     builder.build("./app/app.rb")
@@ -174,8 +174,8 @@ def cleanup_temp_files(temp_dir)
   rm_f "www/public/js/dynamic_libraries/opal/opal_parser.js"
 end
 
-# rm_r "www/public/medias/e_rubies/tools", force: true
-# FileUtils.cp_r "eVe/medias/e_rubies/tools", "www/public/medias/e_rubies/tools"
+# rm_r "www/public/medias/rubies/tools", force: true
+# FileUtils.cp_r "eVe/medias/rubies/tools", "www/public/medias/rubies/tools"
 ## to cleanup all generated files
 # cleanup_temp_files(temp_dir)
 generate_methods
