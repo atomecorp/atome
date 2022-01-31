@@ -1,5 +1,7 @@
 // Circular slider
-function circular_sliders(target, id, length, thickness, helper_length, helper_thickness, value_size, back_color, range_color, helper_color, value_color, value, unit, min, max, orientation, smoothing) {
+function circular_sliders(target, id, length, thickness, helper_length, helper_thickness, value_size, back_color,
+                          range_color, helper_color, value_color, value, unit, min, max, orientation,
+                          smoothing,atome_to_treat,function_to_trig) {
 
     $("#" + target).append("<div id='" + id + "'></div>");
 
@@ -53,7 +55,9 @@ function circular_sliders(target, id, length, thickness, helper_length, helper_t
 
 
 // Rectangular slider
-function rectangular_sliders(target, id, length, thickness, helper_length, helper_thickness, value_size, back_color, range_color, helper_color, value_color, value, unit, min, max, orientation, smoothing) {
+function rectangular_sliders(target, id, length, thickness, helper_length, helper_thickness, value_size, back_color,
+                             range_color, helper_color, value_color, value, unit, min, max, orientation, smoothing,
+                              atome_to_treat,function_to_trig) {
 
     $("#" + target).append("<div id='" + id + "'></div>");
     ////////
@@ -72,14 +76,16 @@ function rectangular_sliders(target, id, length, thickness, helper_length, helpe
         max: max,
         value: value,
         slide: function (event, ui) {
-            console.log(ui.value);
+            // console.log(ui.value);
+            Opal.JSUtils.$slider_callback(atome_to_treat,function_to_trig,ui.value);
+
             $("#" + id + "_value").text(ui.value);
         }
     })
         .css("background", back_color)
         .css("outline", "none")
         .css("border", "none");
-
+    Opal.JSUtils.$slider_callback(atome_to_treat,function_to_trig,value);
     $("#" + slider_id + " .ui-slider-range")
         .css("background", range_color)
         .css("outline", "none")

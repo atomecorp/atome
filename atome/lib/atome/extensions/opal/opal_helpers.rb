@@ -87,9 +87,8 @@ module JSUtils
     `new MeteoHelper(#{location}, #{proc})`
   end
 
-  def self.slider_callback target, function
-
-    grab(target).send(function, :orange)
+  def self.slider_callback target, function, value
+    grab(target).send(function, value)
   end
 
   def self.slider(atome_id, params)
@@ -102,7 +101,7 @@ module JSUtils
       #{params[:helper_length]},  #{params[:helper_thickness]},
       #{params[:value_size]},
       #{params[:back_color]}, #{params[:range_color]}, #{params[:helper_color]}, #{params[:value_color]},
-      #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]}, #{params[:orientation]}, #{params[:smoothing]});
+      #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]}, #{params[:orientation]}, #{params[:smoothing]},#{params[:target]},#{params[:function]});
 //test
 $("#"+#{params[:id]}).css("position", "absolute");
 $("#"+#{params[:id]}).css("left", 66);
@@ -118,9 +117,9 @@ $("#"+#{params[:id]}).css("top", 33);
       #{params[:helper_length]},  #{params[:helper_thickness]},
       #{params[:value_size]},
       #{params[:back_color]}, #{params[:range_color]}, #{params[:helper_color]}, #{params[:value_color]},
-      #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]}, #{params[:orientation]}, #{params[:smoothing]});
+      #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]}, #{params[:orientation]}, #{params[:smoothing]},#{params[:target]},#{params[:function]});
 //test
-Opal.JSUtils.$slider_callback(#{params[:target]},#{params[:function]});
+//Opal.JSUtils.$slider_callback(#{params[:target]},#{params[:function]});
 
 $("#"+#{params[:id]}).css("position", "absolute");
 $("#"+#{params[:id]}).css("left", 66);
