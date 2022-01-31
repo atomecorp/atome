@@ -104,7 +104,6 @@ module JSUtils
       #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]},  #{params[:smoothing]},#{params[:target]},#{params[:function]});
 `
     else
-
       `
       rectangular_sliders(
       #{atome_id}, #{params[:id]},
@@ -113,7 +112,6 @@ module JSUtils
       #{params[:value_size]},
       #{params[:back_color]}, #{params[:range_color]}, #{params[:helper_color]}, #{params[:value_color]},
       #{params[:value]},#{params[:unit]},#{params[:min]},#{params[:max]}, #{params[:smoothing]},#{params[:target]},#{params[:function]}, #{params[:type]});
-
 `
     end
 
