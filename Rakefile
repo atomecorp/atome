@@ -8,7 +8,6 @@ require "filewatcher"
 temp_dir="temp"
 
 
-
 unless File.directory?(temp_dir)
   FileUtils.mkdir_p(temp_dir)
 end
