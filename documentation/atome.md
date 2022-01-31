@@ -1,8 +1,8 @@
  atome
  -
 
- <img src="https://github.com/atomecorp/atome/raw/master/www/public/medias/images/atome.svg" width="100" />
- 
+ <img src="./a_www/public/medias/images/atome.svg" width="100" />
+
 ***Documentation***
 -
 

@@ -1,7 +1,7 @@
-<img src="https://github.com/atomecorp/atome/raw/master/www/public/medias/images/atome.svg" width="100" />
+<img src="./a_www/public/medias/images/atome.svg" width="100" />
 
 
-<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/3.png" width="666" />
+<img src="./documentation/images/3.png" width="666" />
 
 atome
 -
@@ -27,12 +27,12 @@ Cross platform development environment
 
 
 
-<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/ruby.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/cordova.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/opal.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/roda.svg" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/freebsd.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/puma.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="./documentation/images/logos/ruby.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="./documentation/images/logos/cordova.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="./documentation/images/logos/opal.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="./documentation/images/logos/roda.svg" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="./documentation/images/logos/freebsd.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="./documentation/images/logos/puma.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 Open source technology used
 -
