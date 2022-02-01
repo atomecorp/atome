@@ -478,3 +478,10 @@ end
 def meteo(location, &proc)
   ATOME.meteo_html(location, &proc)
 end
+
+
+def generate(method, &block )
+  unless ATOME.methods.include?(method)
+    Atome.send( :define_method, method, &block )
+  end
+end
