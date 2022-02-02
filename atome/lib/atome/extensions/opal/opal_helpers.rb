@@ -92,11 +92,10 @@ module JSUtils
   end
 
   def self.slider(atome_id, params)
-
     if params[:type] == :circular
       `
       circular_sliders(
-      #{atome_id}, #{params[:id]},
+      #{params[:atome_id]},#{params[:target]},
       #{params[:length]}, #{params[:thickness]},
       #{params[:helper_length]},  #{params[:helper_thickness]},
       #{params[:value_size]},
@@ -106,7 +105,7 @@ module JSUtils
     else
       `
       rectangular_sliders(
-      #{atome_id}, #{params[:id]},
+      #{params[:atome_id]},#{params[:target]},
       #{params[:length]}, #{params[:thickness]},
       #{params[:helper_length]},  #{params[:helper_thickness]},
       #{params[:value_size]},
