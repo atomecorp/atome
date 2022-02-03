@@ -87,8 +87,13 @@ module JSUtils
     `new MeteoHelper(#{location}, #{proc})`
   end
 
-  def self.slider_callback target, function, value
-    grab(target).send(function, value)
+  def self.slider_callback target, function, value, atome_id=nil
+    if atome_id
+      slider_value_id ="#{atome_id}_value"
+      grab(slider_value_id).content(value.to_s)
+      grab(target).send(function, value)
+    end
+
   end
 
   def self.slider(atome_id, params)
