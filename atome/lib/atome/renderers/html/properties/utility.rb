@@ -8,15 +8,16 @@ module PropertyHtml
     i = 0
     list_width = 666
     list_height = 30
-    x_offset = 3
+    x_offset = 9
     back_color = { red: 0, green: 0, blue: 0, alpha: 0.3 }
     line_color = { red: 0, green: 0, blue: 0, alpha: 0.3 }
     text_color = :orange
-    list = box({ atome_id: temp_list_obj_id, width: 666, height: 333, x: self.x, y: self.y, scale: true, overflow: :scroll, color: back_color, drag: true })
+    list = box({ atome_id: temp_list_obj_id, width: 333, height: 333, x: self.x, y: self.y, scale: true, overflow: :auto, color: back_color,  shadow: {bounding: true} })
     case value[:list]
     when :property
       properties.each do |property, data|
-        list.box({ overflow: :scroll, color: line_color, height: list_height, width: "100%", scale: true, y: (list_height + x_offset) * i, text: { content: "#{property} : #{data}", color: text_color, width: :auto, center: true, x: x_offset } })
+        list.box({overflow: :auto,color: line_color, scale: true,height: list_height, width: "100%", y: ((list_height + x_offset) * i)+x_offset,text: {overflow: :auto,visual: 12, content: "#{property} : #{data}", color: text_color, width: :auto, x: x_offset }  })
+        # list.box({ overflow: :scroll, color: line_color, height: list_height, width: "100%", scale: true, y: (list_height + x_offset) * i, text: {visual: 12, content: "#{property} : #{data}", color: text_color, width: :auto, center: true, x: x_offset } })
         i += 1
       end
     when :child
