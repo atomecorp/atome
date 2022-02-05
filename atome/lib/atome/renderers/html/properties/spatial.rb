@@ -187,7 +187,7 @@ module PropertyHtml
 
   def fixed_html(value)
     if value
-      jq_get(atome_id).css("position", :fixed)
+      jq_get(atome_id).css("position", :sticky)
     else
       jq_get(atome_id).css("position", :absolute)
     end

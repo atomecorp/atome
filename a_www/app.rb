@@ -59,7 +59,7 @@ class App < Roda
   # require "../atome/lib/atome/core/electron.rb"
   # require "../atome/lib/atome/big_bang.rb"
   plugin :static, %w[/css /js /medias]
-  plugin "faye/websocket"
+  # plugin "faye/websocket"
   route do |r|
     if Faye::WebSocket.websocket?(env)
       ws = Faye::WebSocket.new(env)

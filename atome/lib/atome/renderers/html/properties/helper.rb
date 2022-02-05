@@ -35,14 +35,12 @@ module PropertyHtml
   end
 
   def display_html(value)
-    # The dsiaply api is used both to view special items and or prevent the dsiplay  the
+    # The display api is used both to view special items and or prevent the display
     case value
-
     when false
       jq_get(atome_id).css(display: :none)
     when true
       jq_get(atome_id).css(display: :block)
-
     when :none
       jq_get(atome_id).css(display: :none)
     when :vr

@@ -8,21 +8,40 @@ module PropertyHtml
     i = 0
     list_width = 666
     list_height = 30
-    x_offset = 9
+    x_offset = 6
+    y_offset =30
     back_color = { red: 0, green: 0, blue: 0, alpha: 0.3 }
-    line_color = { red: 0, green: 0, blue: 0, alpha: 0.3 }
+    line_color_0 = { red: 0.3, green: 0.3, blue: 0.3, alpha: 0.6 }
+    line_color_1 = { red: 0.3, green: 0.3, blue: 0.3, alpha: 0.3 }
     text_color = :orange
-    list = box({ atome_id: temp_list_obj_id, width: 333, height: 333, x: self.x, y: self.y, scale: true, overflow: :auto, color: back_color,  shadow: {bounding: true} })
+    list = box({ atome_id: temp_list_obj_id, width: 333, height: 333, x: self.x, y: self.y, scale: true, overflow: :auto, color: back_color,  blur: { value: 9, invert: true },shadow: { bounding: true, x: 0, y: 0, blur: 15, thickness: 0, invert: false}, drag: true })
+
+
     case value[:list]
     when :property
-      properties.each do |property, data|
-        list.box({overflow: :auto,color: line_color, scale: true,height: list_height, width: "100%", y: ((list_height + x_offset) * i)+x_offset,text: {overflow: :auto,visual: 12, content: "#{property} : #{data}", color: text_color, width: :auto, x: x_offset }  })
-        # list.box({ overflow: :scroll, color: line_color, height: list_height, width: "100%", scale: true, y: (list_height + x_offset) * i, text: {visual: 12, content: "#{property} : #{data}", color: text_color, width: :auto, center: true, x: x_offset } })
+      properties.each_with_index do |property, index|
+        puts "index : #{property.class}"
+        # list.box({overflow: :hidd
+        # en,color: line_color, height: list_height-list_height/4, width: 666, y: (list_height  * i)+x_offset,text: {center: :y,overflow: :auto,visual: 12, content: "#{property} : #{data}", color: text_color, width: :auto, x: x_offset }  })
+        if(index % 2==0)
+          line_color=line_color_0
+        else
+          line_color=line_color_1
+        end
+        # alert color_to_use
+        line=list.box({overflow: :hidden, color: line_color, height: list_height, width: 666, y: (list_height  * i)+y_offset})
+        line.text({ center: :y, overflow: :auto, visual: 12, content: "#{property[0]} : #{property[1]}", color: text_color, width: :auto, x: x_offset } )
+
+
         i += 1
       end
     when :child
+      child.each do |property|
+        alert property
+      end
     else
       child.each do |property|
+
         # we exclude the list from the list of the child
         unless property.atome_id == temp_list_obj_id
           prop = property.to_h
