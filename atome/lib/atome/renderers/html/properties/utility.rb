@@ -18,10 +18,8 @@ module PropertyHtml
 
     case value[:list]
     when :property
-      alert "use list method here "
+      # todo "use list method here "
       properties.each_with_index do |property, index|
-        puts "index : #{property.class}"
-        # list.box({overflow: :hidd
         # en,color: line_color, height: list_height-list_height/4, width: 666, y: (list_height  * i)+x_offset,text: {center: :y,overflow: :auto,visual: 12, content: "#{property} : #{data}", color: text_color, width: :auto, x: x_offset }  })
         line_color = if (index % 2 == 0)
                        line_color_0
