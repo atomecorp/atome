@@ -9,13 +9,12 @@ module PropertyHtml
     list_width = 666
     list_height = 30
     x_offset = 6
-    y_offset =30
+    y_offset = 30
     back_color = { red: 0, green: 0, blue: 0, alpha: 0.3 }
     line_color_0 = { red: 0.3, green: 0.3, blue: 0.3, alpha: 0.6 }
     line_color_1 = { red: 0.3, green: 0.3, blue: 0.3, alpha: 0.3 }
     text_color = :orange
-    list = box({ atome_id: temp_list_obj_id, width: 333, height: 333, x: self.x, y: self.y, scale: true, overflow: :auto, color: back_color,  blur: { value: 9, invert: true },shadow: { bounding: true, x: 0, y: 0, blur: 15, thickness: 0, invert: false}, drag: true })
-
+    list = box({ atome_id: temp_list_obj_id, width: 333, height: 333, x: self.x, y: self.y, scale: true, overflow: :auto, color: back_color, blur: { value: 9, invert: true }, shadow: { bounding: true, x: 0, y: 0, blur: 15, thickness: 0, invert: false }, drag: true })
 
     case value[:list]
     when :property
@@ -23,15 +22,14 @@ module PropertyHtml
         puts "index : #{property.class}"
         # list.box({overflow: :hidd
         # en,color: line_color, height: list_height-list_height/4, width: 666, y: (list_height  * i)+x_offset,text: {center: :y,overflow: :auto,visual: 12, content: "#{property} : #{data}", color: text_color, width: :auto, x: x_offset }  })
-        if(index % 2==0)
-          line_color=line_color_0
+        if (index % 2 == 0)
+          line_color = line_color_0
         else
-          line_color=line_color_1
+          line_color = line_color_1
         end
         # alert color_to_use
-        line=list.box({overflow: :hidden, color: line_color, height: list_height, width: 666, y: (list_height  * i)+y_offset})
-        line.text({ center: :y, overflow: :auto, visual: 12, content: "#{property[0]} : #{property[1]}", color: text_color, width: :auto, x: x_offset } )
-
+        line = list.box({ overflow: :hidden, color: line_color, height: list_height, width: 666, y: (list_height * i) + y_offset })
+        line.text({ center: :y, overflow: :auto, visual: 12, content: "#{property[0]} : #{property[1]}", color: text_color, width: :auto, x: x_offset })
 
         i += 1
       end
@@ -230,8 +228,23 @@ module PropertyHtml
   def cursor_html(params)
     jq_get(atome_id).css('cursor', params)
   end
-  def  slider_html(params)
+
+  def slider_html(params)
     JSUtils.slider(atome_id, params)
   end
 
+  def list_html(params)
+
+    list_box = box({ width: params[:width], height: params[:height], overflow: :auto })
+    list_box.color("rgb(66,66,66)")
+    list_box.shadow(true)
+    line_height = params[:line][:height]
+    params[:content].each_with_index do |line_content, index|
+      line = list_box.text(line_content[:value])
+      line.x(line_height / 2)
+      line.y(line_height * index + line_height / 2)
+      line.visual(line_height / 1.5)
+    end
+    list_box
+  end
 end

@@ -13,7 +13,7 @@ def atome_methods
              image audio web  path info example cell name visual active inactive]
   inputs = %i[camera microphone midi keyboard read write]
   utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
-               code exec cursor data parameter]
+               code exec cursor data parameter list]
   misc = %i[map calendar]
   material = %i[color opacity border overflow fill blend]
   behaviour = %i[animation animator]
@@ -32,7 +32,7 @@ def is_atome
   # in this case presets are used to create atome using their types with specific settings
   # so it add the methods in the atome_object_creator methods
   # the generated property will then return the result of the method instead of object itself
-  %i[particle container shape box star web circle sphere text image video audio camera microphone midi group cell]
+  %i[particle container shape box star web circle sphere text image video audio camera microphone midi group cell list]
 end
 
 def need_pre_processing
