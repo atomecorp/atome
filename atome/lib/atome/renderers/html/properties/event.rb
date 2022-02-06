@@ -316,6 +316,8 @@ module PropertyHtml
     value = default.merge(value)
     option = value[:option]
     option = option.merge(aspectRatio: true) if value[:ratio]
+    option = option.merge(maxHeight: value[:height][:max]) if value[:height]
+    option = option.merge(maxWidth: value[:width][:max]) if value[:width]
     option = option.merge(alsoResize: "##{value[:add].to_s}") if value[:add]
     if value[:option] == :destroy
       # we initiate the scale first so it won't break if scale is destroy twice,

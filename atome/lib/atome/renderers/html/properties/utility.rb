@@ -18,15 +18,16 @@ module PropertyHtml
 
     case value[:list]
     when :property
+      alert "use list method here "
       properties.each_with_index do |property, index|
         puts "index : #{property.class}"
         # list.box({overflow: :hidd
         # en,color: line_color, height: list_height-list_height/4, width: 666, y: (list_height  * i)+x_offset,text: {center: :y,overflow: :auto,visual: 12, content: "#{property} : #{data}", color: text_color, width: :auto, x: x_offset }  })
-        if (index % 2 == 0)
-          line_color = line_color_0
-        else
-          line_color = line_color_1
-        end
+        line_color = if (index % 2 == 0)
+                       line_color_0
+                     else
+                       line_color_1
+                     end
         # alert color_to_use
         line = list.box({ overflow: :hidden, color: line_color, height: list_height, width: 666, y: (list_height * i) + y_offset })
         line.text({ center: :y, overflow: :auto, visual: 12, content: "#{property[0]} : #{property[1]}", color: text_color, width: :auto, x: x_offset })
@@ -72,7 +73,6 @@ module PropertyHtml
   end
 
   def render_html(value)
-
     # first in any case we remove the atome if it already exist
     jq_get(atome_id).remove
     # we also remove pseudo element: (the one created when using different rendering type : list, bloc, ...)
@@ -235,7 +235,12 @@ module PropertyHtml
 
   def list_html(params)
 
-    list_box = box({ width: params[:width], height: params[:height], overflow: :auto })
+    generated_atome_id = if params[:atome_id]
+                           { atome_id: params[:atome_id] }
+                         else
+                           {}
+                         end
+    list_box = box({ width: params[:width], height: params[:height], overflow: :auto }.merge(generated_atome_id))
     list_box.color("rgb(66,66,66)")
     list_box.shadow(true)
     line_height = params[:line][:height]
