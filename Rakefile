@@ -86,14 +86,14 @@ def update_medias_list(temp_dir)
     end
 
     videos.each do |video|
-      path = video.sub("www/public/", "./")
+      path = video.sub("a_www/public/", "./").sub("/eVe/e_www/", "./")
       filename = File.basename(video, File.extname(video))
       videos_list[filename.to_sym] = { path: path }
     end
 
     audios.each do |audio|
 
-      path = audio.sub("www/public/", "./")
+      path = audio.sub("a_www/public/", "./").sub("/eVe/e_www/", "./")
       filename = File.basename(audio, File.extname(audio))
       audios_list[filename.to_sym] = { path: path }
     end

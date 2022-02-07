@@ -1,3 +1,5 @@
+- Fixme : image path are incorrect in server mode
+- done: Video and audio  paths must  be corrected
 - todo : change context in all existing event as I've done with touch event
 - todo unify render and display  methods they should be the same API
 - todo : change atome_id format and prevent user to set it : atome_id : user.machine.date.obj_id
