@@ -177,24 +177,47 @@ animator = {
         delete (a_start.background);
         delete (a_end.background);
 
+        // const element = document.querySelector('#view');
         if (Object.keys(a_start).length > 0) {
             const divStyler = styler(document.querySelector('#' + target_id));
-
             tween({
                 from: a_start,
                 to: a_end,
                 duration: duration,
                 ease: easing[curve],
+                // type: "spring",
                 flip: loop,
-                yoyo: yoyo
-            })
-                .start(divStyler.set);
+                yoyo: yoyo,
+                onUpdate: latest => console.log(latest)
+                // onChange: {
+                //     x: (x) => (alert("ook"))// you do you
+                // },
+                // onUpdate: latest => console.log(latest)
+                // onComplete: (val) =>{}
+
+
+
+            }).start(divStyler.set);
+
+
+            //     .start(divStyler.set,{
+            //     update: v => {
+            //
+            //         console.log(v);
+            //         // announcementStyler.set({
+            //         //     x: `${-v}%`
+            //         // });
+            //     },
+            //     stop: () => {
+            //         // alert ("stop");
+            //         // animation stopped
+            //     }
+            // });
+                // .start(divStyler.set);
         }
         // else {
         //
         // }
         // ;
-
-
     },
 };
