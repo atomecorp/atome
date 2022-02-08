@@ -13,7 +13,7 @@ def atome_methods
              image audio web  path info example cell name visual active inactive]
   inputs = %i[camera microphone midi keyboard read write]
   utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
-               code exec cursor data parameter list]
+               code exec cursor data parameter list action]
   misc = %i[map calendar]
   material = %i[color opacity border overflow fill blend]
   behaviour = %i[animation animator]
@@ -45,13 +45,13 @@ def need_processing
 end
 
 def getter_need_processing
-  %i[parent child content].concat(is_atome)
+  %i[parent child content action].concat(is_atome)
 end
 
 def no_rendering
   %i[atome_id group container orientation status shape box star web circle sphere text image video audio  parent child info example
      selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-     particle cell visual language active inactive noise engine render id preset say content read write data parameter]
+     particle cell visual language active inactive noise engine render id preset say content read write data parameter action]
 end
 
 batch_delete = <<STRDELIM

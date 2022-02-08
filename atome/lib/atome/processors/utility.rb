@@ -26,4 +26,9 @@ module Processors
       render_html(value)
     end
   end
+
+  def action_getter_processor
+    proc= @action.q_read[:proc]
+    instance_exec &proc if proc.is_a?(Proc)
+  end
 end

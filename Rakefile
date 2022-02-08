@@ -143,7 +143,7 @@ app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app/app.rb") + Dir.glob("e
 file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
   builder = Opal::Builder.new
   if File.exist?("./eVe")
-    builder.build("./eVe/app/eVe_lib.rb")
+    builder.build("./eVe/eVe/lib/eVe.rb")
     builder.build("./eVe/app/app.rb")
   else
     builder.build("./app/atome_lib.rb")
