@@ -24,7 +24,7 @@ function generateNoise(target_id, intensity, opacity, width, height, color, remo
             ctx.fillRect(x, y, 1, 1);
         }
     }
-    let  target = $("#" + target_id).children().first();
+    let  target = $("#" + target_id);
     var new_background = "";
     var bg = target.css("backgroundImage");
     var   target_atome=Opal.Atome.$grab(target_id);

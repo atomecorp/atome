@@ -1,4 +1,6 @@
 - Fixme : image path are incorrect in server mode
+- Fixme : if a touch is added to a drag object , the object stick to the user pointer
+- todo : add fulscreen mode to video
 - done: Video and audio  paths must  be corrected
 - todo : change context in all existing event as I've done with touch event
 - todo unify render and display  methods they should be the same API
@@ -15,9 +17,17 @@
     blend : raise an error if the demo is not finished
     remote desktop callback :target is used as a function isnstead of using the atome_id
     Paypal throw an error message but work
-    Multi-render call an unvailable methods
+    Media recorder dont playback
+    Multi-render call an unavailable methods
+    Mask raise an error but work
     Play audio work only once
     Schedule doesnt work
+    noise gradient : gradient doesnt work and raise an error
+    Key : doesn't work over the box
+    Keyboard shortcut : crash when using alt-r
+    view mode view child crash
+    vr mode crash
+    web adress bar cant get content
 
 - bug when coloring an image the alpha has a problem ex :
         b=box

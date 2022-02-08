@@ -1,6 +1,6 @@
 # mail example
 
-text("send mail")
+text("touch the box to send mail to jeezs")
 
 
 b=box({x: 333})
