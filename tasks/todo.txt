@@ -11,6 +11,8 @@
                     parent
                     Schedule
 - bug in demos :
+    capture : still capture on drag
+    blend : raise an error if the demo is not finished
     remote desktop callback :target is used as a function isnstead of using the atome_id
     Paypal throw an error message but work
     Multi-render call an unvailable methods

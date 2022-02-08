@@ -82,7 +82,7 @@ def run_demo(path)
   end
 end
 
-demo_container = grab(:intuition).box({atome_id: :demo_container, yy: 0, color: { alpha: 0.3 }, width: 120, height: 399 , overflow: :scroll })
+demo_container = grab(:intuition).box({atome_id: :demo_container, yy: 0,xx: 0 , color: { alpha: 0.3 }, width: 120, height: 399 , overflow: :scroll })
 # demo_container.touch do
 #   if self.height == 66
 #     self.height(333)
