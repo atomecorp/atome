@@ -1,3 +1,5 @@
+- Fixme : Urgent resize grain when resizing object
+- Fixme : Grain must remain when changing color
 - Fixme : image path are incorrect in server mode
 - Fixme : if a touch is added to a drag object , the object stick to the user pointer
 - todo : add fulscreen mode to video

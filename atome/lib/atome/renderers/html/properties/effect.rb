@@ -100,10 +100,12 @@ module PropertyHtml
   end
 
   def noise_html(value)
-    if  value[:width]==:auto
+
+    if  value[:width]==:auto || ( value[:width].class == String && value[:height].include?("%"))
       value[:width]= convert(:width)
+
     end
-    if  value[:height]==:auto
+    if  value[:height]==:auto || (value[:height].class == String && value[:height].include?("%"))
       value[:height]= convert(:height)
     end
     `generateNoise(#{atome_id},#{value[:intensity]},#{value[:opacity]}, #{value[:width]}, #{value[:height]},#{value[:color]},#{value[:delete]}); // target, intensity, opacity, width, height, color`
