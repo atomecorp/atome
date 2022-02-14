@@ -95,7 +95,6 @@ atome_methods.each do |property_type, property|
     unless no_rendering.include?(method_name)
 
       rendering = <<STRDELIM
-
 # lambda below to avoid mthod in method
 send_to_#{method_name}_renderer = -> (renderer,value,password) do
 case renderer
@@ -126,6 +125,7 @@ else
 send_to_#{method_name}_renderer.call($default_renderer,value,password)
 
 end
+
 STRDELIM
       # rendering = "#{method_name}_html(value,password)"
     end
@@ -140,19 +140,28 @@ STRDELIM
       if value.nil? && !proc
         #{getter_processor}
       else
+if "#{method_name}"== "atome_id"
+save= {value.to_s =>  {genesis: value, time: Time.now.to_f}}
+else
+save= {atome_id => {#{method_name}: value, time: Time.now.to_f}}
+end
+Quark.time(save)
+
         value = properties_common(value, &proc)
         #{pre_processor}
         #{set_instance_variable}
         #{processor}
         #{rendering}
         #{method_return}
+
       end
     end
-  end 
+  end#{' '}
 
  def #{method_name}=(value, &proc)
   #{method_name}(value, &proc)
  end
+
 STRDELIM
     category << method_content.each_line.reject { |x| x.strip == "" }.join
   end
@@ -212,14 +221,14 @@ File.write("atome/lib/atome/generated_methods/atome_methods.rb", methods_list)
 
 methods_to_create = []
 is_atome.each do |object_list|
-#   if object_list == :tool
-#     methods_created = <<STRDEILM
-# def #{object_list}(value = {})
-#   grab(:intuition).#{object_list}(value)
-# end
-# STRDEILM
-#   else
-    methods_created = <<STRDEILM
+  #   if object_list == :tool
+  #     methods_created = <<STRDEILM
+  # def #{object_list}(value = {})
+  #   grab(:intuition).#{object_list}(value)
+  # end
+  # STRDEILM
+  #   else
+  methods_created = <<STRDEILM
 def #{object_list}(value = {})
   grab(:view).#{object_list}(value)
 end

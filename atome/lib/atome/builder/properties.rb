@@ -15,6 +15,20 @@ class Quark
     Atome.class_variable_set("@@atomes", {}) # you can access without offense
   end
 
+  def self.time event=nil
+    # this method create a class variable to store history
+    if event.nil?
+      Atome.class_variable_set("@@history", []) # you can access without offense
+    else
+      Atome.class_variable_get("@@history")<< event
+    end
+  end
+
+  def self.get_history
+    # this method create a class variable to store history
+    Atome.class_variable_get("@@history") # you can access without offense
+  end
+
   def to_s
     q_read.to_s
   end

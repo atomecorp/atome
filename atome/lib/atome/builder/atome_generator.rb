@@ -16,6 +16,8 @@ class Atome
   def self.sparkle
     # the line create a space to hold new created atomes
     Quark.space
+    # the line create a space to hold History
+    Quark.time
   end
 
   # atome creation
