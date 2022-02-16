@@ -1,6 +1,6 @@
 module JSUtils
   def jq_get(atome_id)
-    Element.find("#" + atome_id)
+    Element.find("##{atome_id}" )
   end
 
   def self.device
@@ -86,6 +86,15 @@ module JSUtils
   def self.meteo(location, &proc)
     `new MeteoHelper(#{location}, #{proc})`
   end
+
+  def self.js_fullscreen (element,params)
+    `atome.jsFullscreen(#{element},#{params})`
+  end
+
+  def self.reboot
+    `window.location.reload()`
+  end
+
 
   def self.slider_callback target, function, value, atome_id=nil
     if atome_id

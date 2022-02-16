@@ -49,4 +49,20 @@ module PropertyHtml
       jq_get(atome_id).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false device-orientation-permission-ui='enabled: false'> <a-sky src='" + path + "' rotation='0 -130 0'></a-sky></a-scene>")
     end
   end
+
+
+  def fullscreen_html (value)
+    element = if type==:video
+      Element.find("##{atome_id} video" )
+    else
+      jq_get(atome_id)
+              end
+    JSUtils.js_fullscreen(element, value)
+  end
+
+
+  def reboot_html
+    JSUtils.reboot
+  end
+  
 end

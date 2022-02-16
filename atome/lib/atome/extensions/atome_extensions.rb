@@ -19,4 +19,8 @@ class Atome
     address_html(&proc)
   end
 
+  def reboot
+    reboot_html
+  end
+
 end

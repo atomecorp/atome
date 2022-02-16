@@ -1,5 +1,45 @@
+
+var requestFullscreen = function (element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    } else {
+        element.webkitRequestFullscreen();
+        console.log('Fullscreen API is not supported.');
+    }
+};
+
+var exitFullscreen = function () {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    } else {
+        console.log('Fullscreen API is not supported.');
+    }
+};
+
 const atome = {
-    jsMap: function (id,longitude, lattitude,) {
+    jsFullscreen: function (element,value) {
+       if (value==true){
+           requestFullscreen(element.get(0));
+       }
+       else{
+           exitFullscreen();
+       }
+
+
+    },
+    jsMap: function (id,longitude, lattitude) {
         if ("geolocation" in navigator) {
             if (typeof(longitude)== "number"){
                 var mymap = L.map(id).setView([longitude, lattitude], 6);

@@ -5,7 +5,7 @@ def atome_methods
   event = %i[touch drag over key scale drop virtual_event]
   geometry = %i[width height size ratio]
   generator = %i[say]
-  helper = %i[tactile display orientation status]
+  helper = %i[tactile display orientation status fullscreen]
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
