@@ -7,9 +7,9 @@
 - Fixme : Urgent resize grain when resizing object
 - Fixme : Grain must remain when changing color
 - Fixme : image path are incorrect in server mode
-- Fixme : if a touch is added to a drag object , the object stick to the user pointer
+- resolved : if a touch is added to a drag object , the object stick to the user pointer
 - todo : add fulscreen mode to video
-- done: Video and audio  paths must  be corrected
+- resolved: Video and audio  paths must  be corrected
 - todo : change context in all existing event as I've done with touch event
 - todo unify render and display  methods they should be the same API
 - todo : change atome_id format and prevent user to set it : atome_id : user.machine.date.obj_id

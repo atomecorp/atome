@@ -33,14 +33,14 @@ module PropertyHtml
           ############
         end
       when :up
-        jq_get(atome_id).on("touchstart mousedown") do |evt|
-          @allow_up_event=true
-        end
+        # jq_get(atome_id).on("touchstart mousedown") do |evt|
+        #   @allow_up_event = true
+        # end
 
         jq_get(atome_id).on("touchend mouseup") do |evt|
           # alert @@prevent_up_event
           # grab(:verification).content(:up)
-          if @allow_up_event==true
+          # if @allow_up_event == true
             # alert  "atome : #{atome_id}, prevent : #{self.prevent}"
 
             # the method below is used when a browser received touchdown and mousedown at the same time
@@ -48,8 +48,8 @@ module PropertyHtml
             evt.prevent
             value[:proc].call(evt) if value[:proc].is_a?(Proc)
             evt.stop_propagation if value[:stop]
-            @allow_up_event=false
-          end
+            # @allow_up_event = false
+          # end
           # @@prevent_up_event = false
         end
       when :long
@@ -64,7 +64,7 @@ module PropertyHtml
           # this avoid the event to be treated twice by android browser
           evt.prevent
           waiter = ATOME.wait delay do
-            @allow_up_event=true
+            @allow_up_event = true
 
             # alert  self.prevent
             # self.prevent(true)
@@ -352,7 +352,6 @@ module PropertyHtml
   end
 
   def over_html(value)
-
     if value != false
       proc = value[:proc]
       option = value[:options]
@@ -390,4 +389,5 @@ module PropertyHtml
       jq_get(atome_id).trigger("click")
     end
   end
+
 end
