@@ -1,3 +1,8 @@
+- todo : remove id, add a_id, change atome_id for id
+- todo : stick on screen border
+- todo : canvas for noise optimisation
+- todo : Natural tableur
+- todo : basic properties for tools ( orientation, active, open
 - Fixme : Urgent resize grain when resizing object
 - Fixme : Grain must remain when changing color
 - Fixme : image path are incorrect in server mode

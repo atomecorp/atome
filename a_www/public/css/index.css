@@ -13,7 +13,8 @@ html, body {
     font-size: 12px;
     margin: 0px;
     padding: 0px;
-    background: rgba(69, 39, 96, 1);
+    /*background: rgba(69, 39, 96, 1);*/
+    background: rgba(39, 39, 39, 1);
     overflow: hidden;
     -webkit-overflow-scrolling: touch;
     /*padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-right, 0px);*/

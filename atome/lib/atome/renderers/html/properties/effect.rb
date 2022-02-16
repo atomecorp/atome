@@ -136,14 +136,14 @@ module PropertyHtml
 #     jq_get(atome_id).prepend("<image style='opacity: #{value[:opacity]} ;display: block; position: absolute;width: 100%;
 # height:100%; left: 0px; top: 0px' src='././medias/images/noise.svg' width = 100% height=100%/>")
 
-    #todo : create and parametise svg and use it as background
-    # var Canvas = document.createElement("canvas");
-    # ... do your canvas drawing....
-    # $('body').css({'background-image':"url(" + Canvas.toDataURL("image/png")+ ")" });
-
-    prev_background = jq_get(atome_id).css("background-image")
-    jq_get(atome_id).css("background-image", "url(././medias/images/noise.svg), #{prev_background} ")
-
+    # #todo : create and parametise svg and use it as background
+    # # var Canvas = document.createElement("canvas");
+    # # ... do your canvas drawing....
+    # # $('body').css({'background-image':"url(" + Canvas.toDataURL("image/png")+ ")" });
+    #
+    # prev_background = jq_get(atome_id).css("background-image")
+    # jq_get(atome_id).css("background-image", "url(././medias/images/noise.svg), #{prev_background} ")
+    #
 
     # jq_get(atome_id).addClass("noise")
 
