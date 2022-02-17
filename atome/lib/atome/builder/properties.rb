@@ -104,4 +104,6 @@ class Quark
   def last
     @property.last
   end
+
+
 end
