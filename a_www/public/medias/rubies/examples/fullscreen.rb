@@ -17,7 +17,7 @@ button.touch do
 end
 
 button2.touch do
-  grab(:intuition).fullscreen(true)
+  grab(:view).fullscreen(:all)
 end
 
 button3.touch do

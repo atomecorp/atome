@@ -33,9 +33,13 @@ const atome = {
        if (value==true){
            requestFullscreen(element.get(0));
        }
-       else{
+       else if(value== false){
            exitFullscreen();
        }
+       else {
+           requestFullscreen(document.documentElement);
+       }
+
 
 
     },

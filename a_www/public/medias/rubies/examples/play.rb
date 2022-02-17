@@ -7,10 +7,10 @@ button2=box({height: 33, x: 9, width: 222, smooth: 33, y: 66})
 button2.text({content:  "full page", x: 6 })
 
 
-v=video({drag: true,atome_id: :the_video, shadow: {blur: 6 , thickness: 1, x: 0, y:0, color: :black}, scale: true, x: 222, y: 90})
+v=video({drag: true,atome_id: :the_video, shadow: {blur: 6 , thickness: 1, x: 0, y:0, color: :black}, scale: true, x: 333, y: 150})
 v.touch do
   v.play(true)
-  v.size(99)
+  v.size(666)
 end
 
 button.touch do
