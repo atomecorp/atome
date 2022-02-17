@@ -76,7 +76,7 @@ module PropertyHtml
   end
 
   def mask_html(value)
-    mask_path= $images_list[value[:content]][:path]
+    mask_path= eden_find({type: :image,name:  value[:content]})[:path]
     repeat=value[:repeat]
     repeat = case repeat
              when false
@@ -90,7 +90,6 @@ module PropertyHtml
     else
                'no-repeat'
              end
-    mask_path= $images_list[value[:content]][:path]
     jq_get(atome_id).css("-webkit-mask-image": "url(#{mask_path})","-webkit-mask-size": "#{value[:size]}px","-webkit-mask-position": "#{value[:position]}","-webkit-mask-repeat": repeat)
     jq_get(atome_id).css("mask-image": "url(#{mask_path})","mask-size": "#{value[:size]}px","mask-position": "#{value[:position]}","mask-repeat": repeat)
   end

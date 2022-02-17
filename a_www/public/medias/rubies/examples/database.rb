@@ -1,9 +1,8 @@
-c = circle({x: 9, y: 9, width: 36, height: 36, color: :green})
-c2 = circle({x: 69, y: 9, width: 36, height: 36, color: :red})
+c = circle({x: 69, y: 9, width: 36, height: 36, color: :green})
+c2 = circle({x: 150, y: 9, width: 36, height: 36, color: :red})
+db = Database.new(:atomeDB)
 
 c.touch do
-  db = Database.new(:atomeDB)
-
   db.create_table(:user, "id, login, password, date")
   db.create_table(:document, "id, content, user_id, date")
   db.create_user({id: "a_87764", date: "2021-03-15", login: :regis, password: :alknx87978hjg})
@@ -26,4 +25,5 @@ c.touch do
 end
 c2.touch do
   db.delete
+  text({content: " db removed", visual: 33, color: :red, y: 69, width: 222})
 end

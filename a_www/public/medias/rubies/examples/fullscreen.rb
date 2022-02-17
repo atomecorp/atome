@@ -20,6 +20,9 @@ button2.touch do
   grab(:view).fullscreen(:all)
 end
 
-button3.touch do
+circle({x:333})
+box({x:333, y: 99})
+text({content: :hello, visual: 99, x: 666, y: 66})
+batch([button3, img]).touch do
   grab(:view).fullscreen(false)
 end
