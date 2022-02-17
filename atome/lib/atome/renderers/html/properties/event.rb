@@ -64,7 +64,7 @@ module PropertyHtml
           # this avoid the event to be treated twice by android browser
           evt.prevent
           waiter = ATOME.wait delay do
-            @allow_up_event = true
+            # @allow_up_event = true
 
             # alert  self.prevent
             # self.prevent(true)
