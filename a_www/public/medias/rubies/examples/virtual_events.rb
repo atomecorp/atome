@@ -1,6 +1,6 @@
 # virtual_event example
 
-c=circle({atome_id: :circle_1})
+c=circle({atome_id: :circle_1, x: 69, y: 99})
 
 c.touch do
   if c.color==:red

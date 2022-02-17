@@ -1,6 +1,6 @@
 # visual example
 
-t = text({content: "type_some_text,_try_to_press_return_and_touch_the_red_circle", visual: :Impact, x: 96})
+t = text({content: "type_some_text,_try_to_press_return_and_touch_the_red_circle", visual: :Impact, x: 150})
 t.touch({option: :down}) do
   grab(:device).edit(false)
 end
@@ -14,7 +14,7 @@ t.visual({wrap: " "})
 t.visual({ fit: :width})
 t.edit( true)
 t.border({color: :orange, thickness: 7, pattern: :solid})
-c=circle({size: 33, x: 0})
+c=circle({size: 33, x: 69})
 c.touch do
   t.visual({fit: :width})
 end
