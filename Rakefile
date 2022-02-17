@@ -139,7 +139,7 @@ file 'www/public/js/dynamic_libraries/atome.js': atome_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app/app.rb") + Dir.glob("eVe/e_www/public/medias/projects/**/*") + Dir.glob("eVe/eVe/lib/**/*")
+app_monitoring = Dir.glob("app/**/*") + Dir.glob("eVe/app/**/*") + Dir.glob("eVe/e_www/public/medias/projects/**/*") + Dir.glob("eVe/eVe/lib/**/*")
 file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
   builder = Opal::Builder.new
   if File.exist?("./eVe")
