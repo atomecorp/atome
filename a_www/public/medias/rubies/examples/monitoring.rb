@@ -2,7 +2,7 @@
 console = Atome.new({ atome_id: :console, parent: :intuition, type: :shape, width: :auto, x: 0, xx: 0, yy: 0, height: 33, color: { alpha: 0.3 } })
 cc = Atome.new({ parent: :console, type: :text, content: :hello, color: :yellowgreen, x: 6, y: 6 })
 console.touch do
-  console.delete
+  console.delete(true)
 end
 
 b = box({ x: 333, y: 50 })

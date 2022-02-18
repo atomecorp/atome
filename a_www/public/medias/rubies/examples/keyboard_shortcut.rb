@@ -57,7 +57,7 @@ grab(:view).key({options: :down}) do |evt|
                         y: grab(:code_editor).y,
                         width: grab(:code_editor).width,
                         height: grab(:code_editor).height})
-        grab("code_editor").delete
+        grab("code_editor").delete(true)
         evt.prevent_default
       end
     else

@@ -1,6 +1,12 @@
 module HtmlHelpers
-  def delete_html
-    jq_get(atome_id).remove
+  def delete_html(val)
+    if val ==true
+      jq_get(atome_id).remove
+    else
+      # send("#{val}_html", 0)
+      jq_get(atome_id).css("background-image", "");
+    end
+
   end
 
   def play_html(options, proc)
@@ -8,8 +14,8 @@ module HtmlHelpers
   end
 
   def resize_html(value = true, &proc)
-    if value == :false
-      Element.find(JSUtils.device).off(:resize)
+    if value == false
+      Element.find(JSUtils.device).off(:resize, nil)
     else
       Element.find(JSUtils.device).resize(:resize) do
         width = jq_get(:view).css("width").sub("px", "").to_i

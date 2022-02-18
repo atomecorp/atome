@@ -74,21 +74,26 @@ module InternalHelpers
     end
   end
 
-  def delete_from_parent
-    self.parent do |parent_found|
-      new_child_list = []
-      parent_found.child do |child_found|
-        unless child_found.atome_id == atome_id
-          new_child_list << child_found.atome_id
+  def remove_from_parent
+    if parent
+      parent.each do |parent_found|
+        new_child_list = []
+        if parent_found.child
+          parent_found.child do |child_found|
+            unless child_found.atome_id == atome_id
+              new_child_list << child_found.atome_id
+            end
+          end
         end
+          update_property(parent_found, :child, new_child_list)
       end
-      update_property(parent_found, :child, new_child_list)
     end
+
   end
 
-  def delete_child
+  def delete_child(option={remove_from_parent: true})
     unless self.child.nil?
-      self.child.delete
+      child.delete(true,option)
     end
   end
 end

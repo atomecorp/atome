@@ -44,18 +44,49 @@ module AtomeHelpers
     authorization(value, &proc)
   end
 
-  def delete(val=true)
+  def delete(val = nil,option={remove_from_parent: true})
+    # alert option
     # puts "big problem with child of child deletion : #{val}"
-    if val
-      delete_child
-      delete_from_parent
+    case val
+    when nil
+      # we get the black_hole's content
+      atome_id_to_get= self.atome_id
+      # alert grab(:black_hole).content
+    when true
+      puts "#{atome_id} : #{option}"
+      unless child.nil? || child.q_read ==[]
+        delete_child({remove_from_parent: false})
+        # alert "#{child} : #{child.class}"
+      end
+      remove_from_parent
       Atome.atomes = remove_item_from_hash(Atome.atomes)
       # the condition below exclude intuition's atomes as they don"t have to be stored in the blackhole
-      unless self.parent.include?(:intuition)
+      unless system
         grab(:black_hole).content[atome_id] = self
       end
-      delete_html
+      delete_html(true)
+    when :atome_id
+      puts "forbidden to delete the atome_id"
+    else
+      # we delete the property found in val
+      instance_variable_set("@#{val}", nil)
+      # delete_html(val)
     end
+    # if val
+    #   if ATOME.methods.include?(val)
+    #     # instance_variable_set("@#{val}", nil)
+    #     # delete_html(val)
+    #   else
+    #     delete_child
+    #     delete_from_parent
+    #     Atome.atomes = remove_item_from_hash(Atome.atomes)
+    #     # the condition below exclude system object as they don"t have to be stored in the blackhole
+    #     unless system
+    #       # grab(:black_hole).content[atome_id] = self
+    #     end
+    #     delete_html(true)
+    #   end
+    # end
   end
 
   def ping(adress = "https://atome.one/", error = "puts' impossible to connect atome main server'", success = "")
@@ -74,12 +105,14 @@ module AtomeHelpers
       else
         value
       end
+
     else
       case value
       when :view
-        grab(:view).child&.delete
+        # we only remove the child not the view
+        grab(:view).child&.delete(true)
       else
-        self.child&.delete
+        self.child&.delete(true)
       end
     end
 

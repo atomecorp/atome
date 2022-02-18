@@ -4,7 +4,9 @@ module PropertyHtml
     atome_parent = parent[0].q_read
     jq_get(atome_parent).append(jq_get(atome_id))
     temp_list_obj_id = "#{atome_id}_temp_list_obj"
-    grab(temp_list_obj_id).delete
+    if grab(temp_list_obj_id)
+      grab(temp_list_obj_id).delete(true)
+    end
     i = 0
     list_width = 666
     list_height = 30
@@ -75,7 +77,9 @@ module PropertyHtml
     jq_get(atome_id).remove
     # we also remove pseudo element: (the one created when using different rendering type : list, bloc, ...)
     temp_list_obj_id = "#{atome_id}_temp_list_obj"
-    grab(temp_list_obj_id).delete
+    if grab(temp_list_obj_id)
+      grab(temp_list_obj_id).delete(true)
+    end
     if value
       jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
       properties_found = self.properties

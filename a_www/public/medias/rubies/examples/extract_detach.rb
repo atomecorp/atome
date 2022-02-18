@@ -18,6 +18,6 @@ c.touch do
     grab(:intuition).insert(c.atome_id)
   end
   c.touch do
-    c.delete
+    c.delete(true)
   end
 end

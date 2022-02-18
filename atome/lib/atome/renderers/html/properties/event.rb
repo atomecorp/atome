@@ -188,12 +188,12 @@ module PropertyHtml
     if value == :destroy || value[:option] == :destroy
       # we initiate the scale first so it won't break if scale is destroy twice,
       # else : destroy scale then clear view will crash
-      jq_get(atome_id).draggable
+      # jq_get(atome_id).draggable
       jq_object.draggable(:destroy)
     elsif value == :disable || value[:option] == :disable
       # we initiate the scale first so it won't break if scale is diasble twice,
       # else : destroy scale then clear view will crash
-      jq_get(atome_id).draggable
+      # jq_get(atome_id).draggable
       jq_object.draggable(:disable)
     else
       grid = {}
@@ -225,7 +225,7 @@ module PropertyHtml
                  {}
                end
       fixed = {}
-      fixed = { opacity: 0.0000000000001, helper: :clone } if value[:fixed]
+      fixed = { opacity: 0.0000000000000001, helper: :clone } if value[:fixed]
 
       options = lock.merge(handle).merge(containment).merge(grid).merge(fixed).merge({ multiple: true })
       jq_object.draggable(options)

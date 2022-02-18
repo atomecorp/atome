@@ -12,10 +12,8 @@ t.parent do |father|
 end
 t.parent.blur(2)
 wait 1 do
- grab(:view).attach(grab(:the_father_text))
+ grab(:view).attach(:the_father_text)
  t.set(x: 33, y: 33, )
- #fixme bug we have to re add the content
- t.content("bug we have to re add the content")
  t.width(:auto)
 end
 #both parent are treated

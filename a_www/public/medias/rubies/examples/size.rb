@@ -19,22 +19,22 @@ i = b.image({ content: :sky, drag: true })
 t1.touch do
   if i.content == :sky
     size_found = i.size
-    i.delete
+    i.delete(true)
     i = b.image({ content: :moto, drag: true })
     i.size(size_found)
   elsif i.content == :moto
     size_found = i.size
-    i.delete
+    i.delete(true)
     i = b.image({ content: :ballanim, drag: true })
     i.size(size_found)
   elsif i.content == :ballanim
     size_found = i.size
-    i.delete
+    i.delete(true)
     i = b.image({ content: :eyes, drag: true })
     i.size(size_found)
   else
     size_found = i.size
-    i.delete
+    i.delete(true)
     i = b.image({ content: :boat, drag: true })
     i.size(size_found)
   end

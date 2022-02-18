@@ -7,7 +7,7 @@ end
 listen(:french) do |sentence|
   t.content = sentence
   if sentence.include?("box")
-    grab(:the_box).delete
+    grab(:the_box).delete(true)
     box({ atome_id: :the_box, x: 333 })
     if sentence.include?("red")
       grab(:the_box).color("red")
@@ -16,13 +16,13 @@ listen(:french) do |sentence|
       grab(:the_box).smooth(9)
     end
   elsif sentence.include?("circle")
-    grab(:the_circle).delete
+    grab(:the_circle).delete(true)
     circle({ atome_id: :the_circle, x: 66, y: 66 })
     if sentence.include?("blue")
       grab(:the_circle).color("blue")
     end
   elsif sentence.include?("cercle")
-    grab(:the_circle).delete
+    grab(:the_circle).delete(true)
     unless grab(:the_circle)
       circle({ atome_id: :the_circle, x: 66, y: 66 })
     end

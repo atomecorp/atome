@@ -29,7 +29,7 @@ c.touch do
   ATOME.schedule(time) do
     i=image({ content: :boat , drag: :true, x: 99, y:99 })
     i.touch do
-      i.delete
+      i.delete(true)
     end
   end
   t.content("countdown started")

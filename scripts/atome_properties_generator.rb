@@ -5,7 +5,7 @@ def atome_methods
   event = %i[touch drag over key scale drop virtual_event]
   geometry = %i[width height size ratio]
   generator = %i[say]
-  helper = %i[tactile display orientation status fullscreen]
+  helper = %i[tactile display orientation status fullscreen system]
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
@@ -49,21 +49,22 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id group container orientation status shape box star web circle sphere text image video audio  parent child info example
-     selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path treatment
-     particle cell visual language active inactive noise engine render id preset say content read write data parameter action]
+  %i[atome_id group container orientation status shape box star web circle sphere text image video audio  parent child
+  info example selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path
+  treatment particle cell visual language active inactive noise engine render id preset say content read write data
+  parameter system action]
 end
 
 batch_delete = <<STRDELIM
-  def delete(value, &proc)
+  def delete(value,option={remove_from_parent: true}, &proc)
 		collected_atomes=[]
 		if q_read.instance_of?(Array)
 		  q_read.each do |atome|
-			grab(atome).send(:delete, value, &proc)
+			grab(atome)&.send(:delete, value,option, &proc)
 			collected_atomes << atome
 		  end
 		else
-		  grab(q_read).send(:delete, value, &proc)
+		  grab(q_read)&.send(:delete, value,option, &proc)
 		  collected_atomes << q_read
 		end
 	# we return and atomise collected atomes in case of chain treatment

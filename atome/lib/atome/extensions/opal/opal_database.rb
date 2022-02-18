@@ -37,6 +37,7 @@ class Database
   end
 
   def delete
+    alert :poipoip
     `#{@db}.deleteDb()`
   end
 end

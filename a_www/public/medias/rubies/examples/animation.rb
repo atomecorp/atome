@@ -1,7 +1,6 @@
 
 
 # animation example
-
 wait 1 do
   i=image({ color: { green: 1 ,  alpha: 0.3 }, content: :boat , atome_id: :the_boat})
   i.color({ red: 1 ,  alpha: 0.3 })

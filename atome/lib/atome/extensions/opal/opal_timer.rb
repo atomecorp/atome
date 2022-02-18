@@ -15,7 +15,7 @@ module JSUtils
   end
 
   def clear_timeout(params)
-    @content.q_read[:time_out].delete(params)
+    @content.q_read[:time_out]&.delete(params)
     `clearTimeout(#{params})`
   end
 
