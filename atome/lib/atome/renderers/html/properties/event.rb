@@ -1,8 +1,17 @@
 module PropertyHtml
 
   def touch_html(value)
+
+
+    # jq_get(atome_id).unbind("touchstart mousedown touchend mouseup")
+    # if value[:add]
+    #   alert "yes add it!!! #{value[:add]}"
+    # else
+    #   alert "when touch we must delete prev if theres no add : #{value[:add]}"
+    # end
     # @@prevent_up_event=:poil
     if value.instance_of?(Array)
+
       jq_get(atome_id).unbind("touchstart mousedown touchend mouseup")
       jq_get(atome_id).off('click')
       # current_atome="##{atome_id}"
@@ -10,6 +19,7 @@ module PropertyHtml
       value.each do |val|
         # jq_get(atome_id).off('click')
         touch_html(val)
+        alert "ecternalise the  touch fct and unbind at first pass "
       end
     elsif value[:remove]
       jq_get(atome_id).unbind("drag touchstart mousedown")
