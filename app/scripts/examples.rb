@@ -94,7 +94,7 @@ ATOME.reader("./medias/rubies/examples/!demos.rb") do |data|
   demos = compile(data)
   demos.keys.each_with_index do |demo_title, index|
     demo_c=grab(:demo_container)
-    title = demo_container.text ({content: index.to_s+" - "+demo_title, visual: 12})
+    title = demo_container.text ({content: index.to_s+" - "+demo_title, visual: 12, x: 9})
     title.y = index * 24 + 12
     # demo_container.color(:red)
     title.touch(stop: true) do

@@ -88,12 +88,17 @@ class Atome
     set properties
   end
 
-  def add(value)
-    prev_value = self.send(value.keys[0])
-    # alert prev_value
-    # alert value.keys[0]
-    # alert value[value.keys[0]]
-    self.send(value.keys[0], [prev_value, value[value.keys[0]]])
+  def add(value, &proc)
+    if proc.is_a?(Proc)
+      current_key=value
+      prev_value = self.send(current_key)
+      current_value = { proc: proc }
+    else
+      current_key=value.keys[0]
+      current_value = value[current_key]
+      prev_value = self.send(current_key)
+    end
+    self.send(current_key, [prev_value, current_value])
     # alert :kool
   end
 

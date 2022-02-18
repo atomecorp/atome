@@ -44,49 +44,40 @@ module AtomeHelpers
     authorization(value, &proc)
   end
 
-  def delete(val = nil,option={remove_from_parent: true})
-    # alert option
-    # puts "big problem with child of child deletion : #{val}"
+  def delete(val = true, option = { remove_from_parent: true })
     case val
     when nil
       # we get the black_hole's content
-      atome_id_to_get= self.atome_id
-      # alert grab(:black_hole).content
+      # atome_id_to_get= self.atome_id
     when true
-      puts "#{atome_id} : #{option}"
-      unless child.nil? || child.q_read ==[]
-        delete_child({remove_from_parent: false})
-        # alert "#{child} : #{child.class}"
-      end
-      remove_from_parent
+      delete_child({ remove_from_parent: false }) unless child.nil? || child.q_read == []
+      remove_from_parent if option[:remove_from_parent] == true
       Atome.atomes = remove_item_from_hash(Atome.atomes)
       # the condition below exclude intuition's atomes as they don"t have to be stored in the blackhole
-      unless system
-        grab(:black_hole).content[atome_id] = self
-      end
+      # grab(:black_hole).content[atome_id] = self unless system
+      grab(:black_hole).content[atome_id] = self
       delete_html(true)
     when :atome_id
       puts "forbidden to delete the atome_id"
     else
       # we delete the property found in val
+      alert "what is the point of this condition"
       instance_variable_set("@#{val}", nil)
-      # delete_html(val)
     end
-    # if val
-    #   if ATOME.methods.include?(val)
-    #     # instance_variable_set("@#{val}", nil)
-    #     # delete_html(val)
-    #   else
-    #     delete_child
-    #     delete_from_parent
-    #     Atome.atomes = remove_item_from_hash(Atome.atomes)
-    #     # the condition below exclude system object as they don"t have to be stored in the blackhole
-    #     unless system
-    #       # grab(:black_hole).content[atome_id] = self
-    #     end
-    #     delete_html(true)
-    #   end
-    # end
+  end
+
+  def resurrect the_atome_id, remove_parent = false
+    atome_found = grab(:black_hole).content[the_atome_id]
+    # alert atome_found.touch[:proc].to_s
+    atome_found&.child&.q_read&.each do |child_found|
+      resurrect(child_found, true)
+    end
+    unless atome_found.nil?
+      atome_props = atome_found.properties
+      atome_props.delete(:parent) if remove_parent
+      Atome.new(atome_props)
+    end
+
   end
 
   def ping(adress = "https://atome.one/", error = "puts' impossible to connect atome main server'", success = "")
@@ -310,9 +301,7 @@ module AtomeHelpers
 
   def child_analysis (collected_child, atome, recursive)
     if recursive == true || recursive > 0
-      if recursive.instance_of?(Number) || recursive.instance_of?(Integer)
-        recursive = recursive - 1
-      end
+      recursive = recursive - 1 if recursive.instance_of?(Number) || recursive.instance_of?(Integer)
       if atome.child && atome.child.length > 0
         collected_child << atome
         atome.child.each do |baby_child|
@@ -349,9 +338,7 @@ module AtomeHelpers
       collected_child = []
       child&.each do |child_found|
         collected_child << child_found
-        if recursive
-          child_analysis collected_child, child_found, recursive
-        end
+        child_analysis collected_child, child_found, recursive if recursive
       end
 
       match_items = []
