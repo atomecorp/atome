@@ -76,7 +76,7 @@ Background.theme(bluegreen_gradient)
 JSUtils.load_opal_parser
 
 def run_demo(path)
-  clear(:view)
+  grab(:view).clear(true)
   ATOME.reader(path) do |data|
     compile data
   end

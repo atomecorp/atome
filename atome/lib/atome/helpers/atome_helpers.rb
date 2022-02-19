@@ -44,7 +44,6 @@ module AtomeHelpers
     authorization(value, &proc)
   end
 
-
   def delete(val = true, option = { remove_from_parent: true })
     case val
     when nil
@@ -92,19 +91,11 @@ module AtomeHelpers
         clear_wait_html(value[:wait])
       when :repeat
         clear_repeat_html(value[:repeat])
-      when :view
-        # future use for specific view child treatment
       else
         value
       end
     else
-      case value
-      when :view
-        # we only remove the child not the view
-        grab(:view).child&.delete(true)
-      else
-        self.child&.delete(true)
-      end
+      self.child&.delete(true)
     end
 
   end
