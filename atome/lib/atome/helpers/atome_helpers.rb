@@ -44,6 +44,7 @@ module AtomeHelpers
     authorization(value, &proc)
   end
 
+
   def delete(val = true, option = { remove_from_parent: true })
     case val
     when nil
@@ -52,11 +53,11 @@ module AtomeHelpers
     when true
       delete_child({ remove_from_parent: false }) unless child.nil? || child.q_read == []
       remove_from_parent if option[:remove_from_parent] == true
-      Atome.atomes = remove_item_from_hash(Atome.atomes)
       # the condition below exclude intuition's atomes as they don"t have to be stored in the blackhole
       # grab(:black_hole).content[atome_id] = self unless system
       grab(:black_hole).content[atome_id] = self
       delete_html(true)
+      Atome.atomes.delete(atome_id)
     when :atome_id
       puts "forbidden to delete the atome_id"
     else
@@ -96,7 +97,6 @@ module AtomeHelpers
       else
         value
       end
-
     else
       case value
       when :view

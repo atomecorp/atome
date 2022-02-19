@@ -37,9 +37,7 @@ module InternalHelpers
   end
 
   def add_to_instance_variable(instance_name, value)
-    unless value.instance_of?(Array)
-      value = [value]
-    end
+    value = [value] unless value.instance_of?(Array)
     prev_instance_variable_content = instance_variable_get("@#{instance_name}")
     if prev_instance_variable_content
       if prev_instance_variable_content.q_read.instance_of?(Array)
@@ -54,18 +52,18 @@ module InternalHelpers
   def remove_item_from_hash(object)
     new_list = {}
     object.each do |id_of_atome, content|
-      unless id_of_atome == atome_id
-        new_list[id_of_atome] = content
-      end
+        new_list[id_of_atome] = content unless id_of_atome == atome_id
     end
     new_list
   end
 
-  def remove_instance_variable_content(instance_name, value)
-    prev_value= instance_variable_get("@#{instance_name}").q_read
-    prev_value.delete(value)
-    update_property(self, instance_name, prev_value)
-  end
+
+
+  # def remove_instance_variable_content(instance_name, value)
+  #   prev_value= instance_variable_get("@#{instance_name}").q_read
+  #   prev_value.delete(value)
+  #   update_property(self, instance_name, prev_value)
+  # end
 
   def broadcast(property, value)
     if @monitor[:option]
@@ -75,25 +73,21 @@ module InternalHelpers
   end
 
   def remove_from_parent
-    if parent
-      parent.each do |parent_found|
+    parent&.each do |parent_found|
         new_child_list = []
-        if parent_found.child
-          parent_found.child do |child_found|
-            unless child_found.atome_id == atome_id
-              new_child_list << child_found.atome_id
+        if parent_found
+          parent_found&.child do |child_found|
+            unless child_found.nil?
+              new_child_list << child_found.atome_id unless child_found.atome_id == atome_id
             end
           end
         end
-          update_property(parent_found, :child, new_child_list)
+        update_property(parent_found, :child, new_child_list)
       end
-    end
 
   end
 
   def delete_child(option={remove_from_parent: true})
-    unless self.child.nil?
-      child.delete(true,option)
-    end
+    child.delete(true,option) unless self.child.nil?
   end
 end
