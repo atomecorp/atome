@@ -80,12 +80,12 @@ module Processors
     @child
   end
 
-  def remove_child child
-    remove_instance_variable_content(:child, child)
+  def remove_child child_to_remove
+    remove_instance_variable_content(:child, child_to_remove)
   end
 
-  def remove_parent parent
-    remove_instance_variable_content(:parent, parent)
+  def remove_parent parent_to_remove
+    remove_instance_variable_content(:parent, parent_to_remove)
   end
 
 end

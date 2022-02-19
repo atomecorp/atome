@@ -58,12 +58,11 @@ module InternalHelpers
   end
 
 
-
-  # def remove_instance_variable_content(instance_name, value)
-  #   prev_value= instance_variable_get("@#{instance_name}").q_read
-  #   prev_value.delete(value)
-  #   update_property(self, instance_name, prev_value)
-  # end
+  def remove_instance_variable_content(instance_name, value)
+    prev_value= instance_variable_get("@#{instance_name}").q_read
+    prev_value.delete(value)
+    update_property(self, instance_name, prev_value)
+  end
 
   def broadcast(property, value)
     if @monitor[:option]
