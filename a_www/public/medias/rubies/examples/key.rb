@@ -1,7 +1,7 @@
 # key
 
 b=box({color: :orange, atome_id: :the_box, x: 69})
-t=text({content: "type some text over the box, \n touch the circle to stop the input capture \n ", x:96, y: 20})
+t=text({content: "type some text over the box, \n touch the circle to stop the input capture \n ", x: 150, y: 20})
 b.key(options: :press) do |key|
   t.content(key.key_code)
 end

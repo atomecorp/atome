@@ -1,4 +1,5 @@
 - todo : remove id, add a_id, change atome_id for id
+- todo : touch api need enhancements, touch are accumulated but should not , need a full rework
 - todo : stick on screen border
 - todo : pass a touch event to object below (alt bar prevent object below to receive event)
 - todo : canvas for noise optimisation

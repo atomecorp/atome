@@ -97,9 +97,9 @@ class Atome
       current_key=value.keys[0]
       current_value = value[current_key]
       prev_value = self.send(current_key)
+
     end
     self.send(current_key, [prev_value, current_value])
-    # alert :kool
   end
 
   def get(property)

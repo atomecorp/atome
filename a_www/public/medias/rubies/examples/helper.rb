@@ -28,7 +28,7 @@ class Atome
         links = file_content[:links]
         documentation = file_content[:documentation]
 
-        b = Object.box({ width: 300, height: 600, smooth: 6, shadow: { invert: true }, color: { alpha: 0.3 }, xx: 3, parent: :intuition, drag: true })
+        b = Object.box({ width: 300, height: 600, smooth: 6, shadow: { invert: true }, color: { alpha: 0.3 }, x: 3, parent: :intuition, drag: true })
         # b.drag(true)
         b.text({ content: property, x: 9, disposition: { y: 3 }, visual: 30 })
         b.text({ content: "type: #{categories}", x: 15, disposition: { y: 3 } })
@@ -40,18 +40,18 @@ class Atome
           demo_code.edit(true)
           ex.touch do
             Object.clear(:view)
-            code_extracted = if demo_code.content.read.instance_of?(Hash)
+            code_extracted = if demo_code.content.q_read.instance_of?(Hash)
                                # todo: add internalisation below not .values[0]
-                               demo_code.content.read.values[0]
+                               demo_code.content.q_read.values[0]
                              else
-                               demo_code.content.read
+                               demo_code.content.q_read
                              end
             Object.instance_eval(code_extracted)
           end
         end
         clear_view = b.text({ content: "clear", xx: 33, disposition: { y: 3 }, color: :orange })
         clear_view.touch do
-          clear(:view)
+          grab(:view).clear(true)
         end
       else
         # we send to the requested method

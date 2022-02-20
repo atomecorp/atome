@@ -1,5 +1,5 @@
 c = circle({x: 69, y: 9, width: 36, height: 36, color: :green})
-c2 = circle({x: 150, y: 9, width: 36, height: 36, color: :red})
+c2 = circle({x: 69, y: 150, width: 36, height: 36, color: :red})
 db = Database.new(:atomeDB)
 
 c.touch do

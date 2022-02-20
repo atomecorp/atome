@@ -49,7 +49,7 @@ class Quark
   end
 
   def add(values)
-    # the test below is necessary when xcreate a new atome with parent
+    # the test below is necessary when create a new atome with parent
     # in this ca se the parent is injected in the atome properties as a Symbol
     # but child and parent must be placed in an array
     unless @property.instance_of?(Array)
