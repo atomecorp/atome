@@ -40,7 +40,6 @@ module PropertyHtml
       end
     else
       child.each do |property|
-
         # we exclude the list from the list of the child
         unless property.atome_id == temp_list_obj_id
           prop = property.to_h
@@ -62,7 +61,7 @@ module PropertyHtml
             end
           end
           infos = { content: infos_collected.join(" , "), x: x_offset * 2 + display_size, color: text_color }
-          line = list.box({ overflow: :scroll, color: line_color, height: list_height, width: list_width, y: y_position }.merge(visual))
+          line = list.box({ overflow: :scroll, color: :gray, height: list_height, width: list_width, y: y_position, visual: 15 }.merge(visual))
           line.text(infos)
           i += 1
         end

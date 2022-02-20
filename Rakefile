@@ -99,7 +99,7 @@ def update_medias_list(temp_dir)
     end
     # medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
     # medias_list = medias_list + "\n" + "module Universe\ndef self.images\n@images_list=#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
-  medias_list = "module Universe\ndef self.images\n@images_list=#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
+  medias_list = "module Universe\ndef self.images\n#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
   File.open(t.name, "w") { |file| file.write(medias_list) }
   end
 end

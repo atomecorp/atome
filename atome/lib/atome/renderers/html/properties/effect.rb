@@ -140,9 +140,9 @@ module PropertyHtml
     # # ... do your canvas drawing....
     # # $('body').css({'background-image':"url(" + Canvas.toDataURL("image/png")+ ")" });
     #
-    # prev_background = jq_get(atome_id).css("background-image")
-    # jq_get(atome_id).css("background-image", "url(././medias/images/noise.svg), #{prev_background} ")
-    #
+    prev_background = jq_get(atome_id).css("background-image")
+    jq_get(atome_id).css("background-image", "url(././medias/images/noise.svg), #{prev_background} ")
+
 
     # jq_get(atome_id).addClass("noise")
 

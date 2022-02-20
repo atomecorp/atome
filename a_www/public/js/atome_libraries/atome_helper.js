@@ -78,7 +78,6 @@ const atome = {
     },
     jsAdress: function (proc) {
         window.addEventListener('popstate', function (event) {
-
             // var address_bar_content= "location: " + document.location + ", state: " + JSON.stringify(event.state);
             // var address_bar_content={location:  document.location, state: JSON.stringify(event.state)};
             var address_bar_content=Opal.hash({location:  document.location, state: JSON.stringify(event.state)});

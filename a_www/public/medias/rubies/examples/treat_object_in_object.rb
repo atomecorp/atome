@@ -1,4 +1,4 @@
-b=box({atome_id: :the_box, drag: true,atome_id: :the_box})
+b=box({drag: true,atome_id: :the_box})
 t=b.text({content: :hello, atome_id: :the_text})
 b.text({content: :cool, x: 72, atome_id: :the_text_1})
 b.text({content: :super, y: 66, atome_id: :the_text_2})

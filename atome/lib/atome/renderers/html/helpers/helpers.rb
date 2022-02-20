@@ -82,7 +82,7 @@ module HtmlHelpers
         touch_html_helper(val)
       end
     elsif value[:remove]
-      # jq_get(atome_id).unbind("drag touchstart mousedown")
+      jq_get(atome_id).unbind("drag touchstart mousedown")
       jq_get(atome_id).off('click')
     else
       option = value[:option]

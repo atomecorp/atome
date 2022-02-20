@@ -10,7 +10,9 @@ c2=circle({x: 200, y: 96, color: :green, tag: :other_tag})
 b.add({ tag: :new_tag })
 
 t.touch do
-  find({ tag: "my_cool_tag" }).color(:yellow)
+  grab(:view).find({ tag: "my_cool_tag" }).color(:yellow)
+  grab(:view).find({ tag: "my_cool_tag" }).each do |item|
+  end
   t.content("the box have the tags : #{b.tag}, \nthe green circle has the tag :#{c2.tag} ")
 end
 

@@ -7,8 +7,8 @@
       </filter>
     </defs>  
        <g>
-         <rect  stroke='none' fill='rgba(0, 0,0, 0.0)' x='0' y='0' width='100%' height='100%' filter='url(#noise)' opacity="0.15" />
-<!--         <rect  stroke='none' fill='rgba(0, 0,0, 0.0)' x='0' y='0' width='100%' height='100%' filter='url(#noise)'  />-->
+<!--         <rect  stroke='none' fill='rgba(0, 0,0, 0.0)' x='0' y='0' width='100%' height='100%' filter='url(#noise)' opacity="0.15" />-->
+         <rect  stroke='none' fill='rgba(0, 0,0, 0.0)' x='0' y='0' width='100%' height='100%' filter='url(#noise)'  />
 	   </g>
    </svg>
    

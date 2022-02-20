@@ -44,7 +44,8 @@ module PropertyHtml
     when :none
       jq_get(atome_id).css(display: :none)
     when :vr
-      path = $images_list[content][:path]
+      # path = $images_list[content][:path]
+      path = Universe.images[content][:path]
       jq_get(atome_id).css("background", "transparent")
       jq_get(atome_id).append("<a-scene className='aframebox' embedded vr-mode-ui='enabled': false device-orientation-permission-ui='enabled: false'> <a-sky src='" + path + "' rotation='0 -130 0'></a-sky></a-scene>")
     end
