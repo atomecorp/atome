@@ -98,7 +98,7 @@ atome_methods.each do |property_type, property|
       rendering = <<STRDELIM
 # below the condition if the value is an atome it  get the corresponding property in the atome passed
 if value.class==Atome
-  value= value.#{method_name}
+  value = value.#{method_name}
 end
 # lambda below to avoid method in method
 send_to_#{method_name}_renderer = -> (renderer,value,password) do

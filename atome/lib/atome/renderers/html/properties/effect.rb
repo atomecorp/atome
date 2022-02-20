@@ -56,6 +56,8 @@ module PropertyHtml
     elsif type != :particle
       shadow_html_format = shadow_helper(value)
       jq_get(atome_id).css(shadow_html_format[0], shadow_html_format[1])
+    else
+      nil
     end
   end
 

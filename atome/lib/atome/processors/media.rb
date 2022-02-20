@@ -311,8 +311,8 @@ module Processors
       @content = atomise(:content, value)
     end
     # below the condition if the value is an atome it  get the corresponding property in the atome passed
-    if value.class==Atome
-      value= value.content
+    if value.class == Atome
+      value = value.content
     end
     # lambda below to avoid method in method
     send_to_content_renderer = -> (renderer, value, password) do
