@@ -96,7 +96,11 @@ atome_methods.each do |property_type, property|
     unless no_rendering.include?(method_name)
 
       rendering = <<STRDELIM
-# lambda below to avoid mthod in method
+# below the condition if the value is an atome it  get the corresponding property in the atome passed
+if value.class==Atome
+  value= value.#{method_name}
+end
+# lambda below to avoid method in method
 send_to_#{method_name}_renderer = -> (renderer,value,password) do
 case renderer
       when :html

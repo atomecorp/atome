@@ -310,7 +310,11 @@ module Processors
     else
       @content = atomise(:content, value)
     end
-    # lambda below to avoid mthod in method
+    # below the condition if the value is an atome it  get the corresponding property in the atome passed
+    if value.class==Atome
+      value= value.content
+    end
+    # lambda below to avoid method in method
     send_to_content_renderer = -> (renderer, value, password) do
       case renderer
       when :html

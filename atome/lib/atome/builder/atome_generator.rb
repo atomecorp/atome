@@ -90,11 +90,11 @@ class Atome
 
   def add(value, &proc)
     if proc.is_a?(Proc)
-      current_key=value
+      current_key = value
       prev_value = self.send(current_key)
       current_value = { proc: proc }
     else
-      current_key=value.keys[0]
+      current_key = value.keys[0]
       current_value = value[current_key]
       prev_value = self.send(current_key)
 
@@ -107,10 +107,23 @@ class Atome
   end
 
   def set(properties)
+    # The condition below filter some properties in case an atome is passed in the set methods
+    if properties.class == Atome
+      properties = properties.properties
+      properties.delete(:atome_id)
+      properties.delete(:authorization)
+      properties.delete(:monitor)
+      properties.delete(:type)
+      properties.delete(:render)
+      properties.delete(:engine)
+      properties.delete(:selector)
+      properties.delete(:id)
+      properties.delete(:parent)
+      properties.delete(:child)
+    end
     properties.each do |property, value|
       send(property.to_s, value)
     end
-
   end
 
   def register_atome
