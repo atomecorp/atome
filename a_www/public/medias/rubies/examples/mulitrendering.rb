@@ -1,7 +1,7 @@
 # example multi rendering
 
-renderer([:speech, :html])
+renderer([:html,:speech])
 
-b=box({y: 33})
+b=circle()
 b.x(666)
 # renderer(:html)

@@ -15,7 +15,7 @@ ATOME.websocket("ws.atome.one", true)
 # on mobile device
 # kickstart_keyboard_shortcut
 $renderer_list=[:html, :fabric,:headless,:speech, :three, :zim]
-$default_renderer=nil
-$renderer=[]
+$default_renderer=:html
+# $renderer=[]
 
 

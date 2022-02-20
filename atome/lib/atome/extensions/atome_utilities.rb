@@ -18,17 +18,17 @@ def render_analysis(methods, val, passsword)
   send(renderer, val, passsword)
 end
 
-def initialised_libraries(render_engine)
-  if render_engine
-    $renderer.include?(:fabric)
-  else
-    $renderer
-  end
-end
+# def initialised_libraries(render_engine)
+#   if render_engine
+#     $renderer.include?(:fabric)
+#   else
+#     $renderer
+#   end
+# end
 
-def libraries(render_engine)
-  $renderer |= [render_engine]
-end
+# def libraries(render_engine)
+#   $renderer |= [render_engine]
+# end
 
 def web_state(val = nil)
   if val
@@ -435,7 +435,7 @@ def refresh (params = nil)
   end
   source ||= current_code
   if target == :all || target.nil?
-    clear(:view)
+    grab(:view).clear(true)
     reader(source) do |data|
       compile data
     end

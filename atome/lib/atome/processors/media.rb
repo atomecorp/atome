@@ -330,14 +330,15 @@ module Processors
       end
     end
 
-    if $default_renderer.nil?
+    if $default_renderer==:html
       content_html(value, password)
-    elsif $default_renderer.instance_of?(Array)
-      $default_renderer.each do |renderer|
-        send_to_width_renderer.call(renderer, value, password)
-      end
-    else
-      send_to_content_renderer.call($default_renderer, value, password)
+      # content_html(value, password)
+    # elsif $default_renderer.instance_of?(Array)
+    #   # $default_renderer.each do |renderer|
+    #   #   # send_to_width_renderer.call(renderer, value, password)
+    #   # end
+    # else
+    #   send_to_content_renderer.call($default_renderer, value, password)
     end
 
   end

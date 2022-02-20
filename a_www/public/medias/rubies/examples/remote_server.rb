@@ -16,7 +16,8 @@ b.touch do
   # ATOME.message({type: :command, content: "pwd",target: b.atome_id, atome: :text , options:{color: :yellow, x: 333}})
   ATOME.message({ type: :read, file: "public/medias/rubies/test.rb", target: :my_callback, atome: :text, options: { color: :yellowgreen } })
   ATOME.message({ type: :code, content: "circle({x: 33,y: 33})" })
-  ATOME.message({type: :command, content: "cd public; ls; setxkbmap fr",target: b.atome_id, atome: :text , options:{color: :yellow, x: 333}})
+
+  # ATOME.message({type: :command, content: "cd public; ls; setxkbmap fr",target: b.atome_id, atome: :text , options:{color: :yellow, x: 333}})
   # ATOME.message({type: :atome,target: :my_callback,atome: :color,  content: "red"})
   # ATOME.message({type: :atome,target: b.atome_id,atome: :smooth,  content: 9})
 end
