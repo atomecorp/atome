@@ -48,6 +48,8 @@ end
 
 stop.touch do
   grab(:view).record(:stop)
+  grab(:view).child.record(:stop)
+  grab(:view).child.drag(x: 33)
 end
 image({content: :green_planet, x: 196, y: 196, atome_id: :the_planet, drag: true})
 

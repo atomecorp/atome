@@ -44,7 +44,8 @@ def result(params)
   params.each do |key_pair|
     result[key_pair[0]] = key_pair[1]
   end
-  text("msg from atome_extension line 9 : #{result}")
+  grab(:the_result)&.delete(true)
+  text({ content: "msg from atome_extension line 9 : #{result}", visual: 12, x: 120, y: 12, atome_id: :the_result })
 end
 
 def identity

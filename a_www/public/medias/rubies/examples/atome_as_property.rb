@@ -1,9 +1,9 @@
 # atome as property :
 
-p=particle({ color: :red, smooth: 30, content: "anything can be passed" })
-t =text({x: 99, content: p})
-t.color(p)
-b=box
+p=particle({ color: :red, smooth: 30, content: "anything can be passed", x: 222 })
+t =text({x: p, content: p})
+
+b=box({x: p.smooth })
 b.smooth(p)
 b.color(p)
 

@@ -1,5 +1,8 @@
-- todo : canvas for noise optimisation
 - todo : update animation framework to latest version
+- todo : search table list and ide design
+- todo : canvas for noise optimisation
+- todo : generate the index html according to context (atome/eVe) to avoid having two versions (one in atome and one in eVe)
+- todo :capture example doesn't work correctly it still monitor object after stop and alway drag on view
 - todo : remove id, add a_id, change atome_id for id
 - todo : touch api need enhancements, touch are accumulated but should not , need a full rework
 - todo : stick on screen border
@@ -12,7 +15,7 @@
 - Fixme : image path are incorrect in server mode
 - Fixme : "resize_html" should never be call directly but used a "resize" method instead
 - resolved : if a touch is added to a drag object , the object stick to the user pointer
-- done : add fulscreen mode to video
+- done : add fullscreen mode to video
 - resolved: Video and audio  paths must  be corrected
 - todo : change context in all existing event as I've done with touch event
 - todo unify render and display  methods they should be the same API
