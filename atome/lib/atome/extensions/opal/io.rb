@@ -11,7 +11,6 @@ class WebSocket
   end
 
   def send(data, callback)
-    puts " so godd!!!!!!!!!#{data}"
     # FIXME: Change default to user authentication.
     `#{@web_socket}.sendMessage(#{data.to_n}, #{callback})`
   end

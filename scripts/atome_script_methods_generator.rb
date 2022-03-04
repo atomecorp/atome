@@ -13,7 +13,7 @@ def atome_methods
   hierarchy = %i[parent child]
   identity = %i[atome_id id type language]
   spatial = %i[x xx y yy z center rotate position alignment disposition]
-  media = %i[content particle group container video shape box star circle sphere text
+  media = %i[html content particle group container video shape box star circle sphere text
                 image audio web path info example cell name visual active inactive]
   inputs = %i[camera microphone midi keyboard read write]
   utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
@@ -58,7 +58,7 @@ def no_rendering
   %i[atome_id group container orientation status shape box star web circle sphere text image video audio parent child
       info example selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path
       treatment particle cell visual language active inactive engine id preset say content read write data
-      parameter system action animation]
+      parameter system action animation html]
 end
 
 batch_delete = <<STRDELIM

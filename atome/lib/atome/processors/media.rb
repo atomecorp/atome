@@ -1,6 +1,5 @@
 module Processors
   def media_pre_processor(type, preset, value, password = nil)
-    # puts "#################"
     # puts "def media_pre_processor :  #{value}"
     #  puts "#################"
     if value.instance_of?(Hash) && value[:proc]
@@ -17,6 +16,7 @@ module Processors
       if value == true
         value = {}
       elsif value.instance_of?(String)
+        alert "msg from media.rb  : correct me I shoudn't be a string!!"
         value = { content: value }
       end
       if value[:value] == true
@@ -30,6 +30,7 @@ module Processors
       # we overload the parent to the current and finally add the value set by user
       preset_found = preset_found.merge({ parent: atome_id }).merge(value)
       #now we create the new atome
+
       new_atome = Atome.new(preset_found)
       # the condition add an animation property for time sensitive medias
       case new_atome.type
@@ -239,23 +240,23 @@ module Processors
   end
 
   def web_pre_processor(value, password = nil)
-
     if value.instance_of?(Hash)
-      if value[:type]
-        type_found = value[:type]
+      if value[:html]
+        type_found = value[:html]
         case type_found
           #Time.now is used to force refresh if the image changes
         when :iframe
-          value = "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
+          web_content = { content: "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>" }
         when :image
           #Time.now is used to force refresh if the image changes
-          value = "<image class='atome' width ='100%' height= '100%' src='#{value[:path]}?#{Time.now}'/>"
+          web_content = { content: "<image class='atome' width ='100%' height= '100%' src='#{value[:path]}?#{Time.now}'/>" }
         when :audio
         when :video
         else
-          value = "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
-
+          web_content = { content: "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>" }
         end
+        value = value.merge(web_content)
+        value[:type]=:web
         media_pre_processor(:web, :web, value, password)
       elsif value[:address]
         JSUtils.adress(value[:address])
