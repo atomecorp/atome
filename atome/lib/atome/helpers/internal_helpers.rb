@@ -9,26 +9,29 @@ module InternalHelpers
     Quark.new(value)
   end
 
-  def properties_common(value, &proc)
-
-    # if display.nil? || display != :none
-      formatted_value=value
-      if proc && (value.instance_of?(String) || value.instance_of?(Symbol))
-        property = {}
-        property[:proc] = proc
-        property[:options] = value
-        formatted_value = property
-      elsif proc && value.instance_of?(Hash)
-        formatted_value = value.merge(proc: proc)
-      elsif proc && (value.instance_of?(Integer) || value.instance_of?(String) || value.instance_of?(Symbol))
-        formatted_value = { value: value, proc: proc }
-      elsif proc
-        formatted_value = { proc: proc }
+  def send_to_render_engine( property, value, password)
+    # below the condition allow to get the value from corresponding property in the atome found
+    # puts "renderer : #{renderer}"
+    $default_renderer.each do |render_engines|
+      value = value.send(property) if value.instance_of?(Atome)
+      case render_engines
+      when :html
+        send("#{property}_html", value, password)
+      when :fabric
+        send("#{property}_html", value, password)
+        send("#{property}_fabric", value, password)
+      when :headless
+        send("#{property}_headless", value, password)
+      when :speech
+        send("#{property}_speech", value, password)
+      when :three
+        send("#{property}_three", value, password)
+      when :zim
+        send("#{property}_zim", value, password)
+      else
+        send("#{property}_html", value, password)
       end
-      formatted_value
-    # else
-    #   alert "we have to make it work for \"#{display}\""
-    # end
+    end
 
   end
 
@@ -49,17 +52,17 @@ module InternalHelpers
     end
     update_property(self, instance_name, value)
   end
+
   def remove_item_from_hash(object)
     new_list = {}
     object.each do |id_of_atome, content|
-        new_list[id_of_atome] = content unless id_of_atome == atome_id
+      new_list[id_of_atome] = content unless id_of_atome == atome_id
     end
     new_list
   end
 
-
   def remove_instance_variable_content(instance_name, value)
-    prev_value= instance_variable_get("@#{instance_name}").q_read
+    prev_value = instance_variable_get("@#{instance_name}").q_read
     prev_value.delete(value)
     update_property(self, instance_name, prev_value)
   end
@@ -73,20 +76,20 @@ module InternalHelpers
 
   def remove_from_parent
     parent&.each do |parent_found|
-        new_child_list = []
-        if parent_found
-          parent_found&.child do |child_found|
-            unless child_found.nil?
-              new_child_list << child_found.atome_id unless child_found.atome_id == atome_id
-            end
+      new_child_list = []
+      if parent_found
+        parent_found&.child do |child_found|
+          unless child_found.nil?
+            new_child_list << child_found.atome_id unless child_found.atome_id == atome_id
           end
         end
-        update_property(parent_found, :child, new_child_list)
       end
+      update_property(parent_found, :child, new_child_list)
+    end
 
   end
 
-  def delete_child(option={remove_from_parent: true})
-    child.delete(true,option) unless self.child.nil?
+  def delete_child(option = { remove_from_parent: true })
+    child.delete(true, option) unless self.child.nil?
   end
 end

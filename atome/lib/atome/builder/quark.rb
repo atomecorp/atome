@@ -7,6 +7,7 @@ class Quark
 
   def q_read
     @property
+
   end
 
   # recipient for created atome
@@ -15,12 +16,12 @@ class Quark
     Atome.class_variable_set("@@atomes", {}) # you can access without offense
   end
 
-  def self.time event=nil
+  def self.time event = nil
     # this method create a class variable to store history
     if event.nil?
       Atome.class_variable_set("@@history", []) # you can access without offense
     else
-      Atome.class_variable_get("@@history")<< event
+      Atome.class_variable_get("@@history") << event
     end
   end
 
@@ -55,7 +56,17 @@ class Quark
     unless @property.instance_of?(Array)
       @property = [@property]
     end
-    @property.concat(values).uniq!
+    case values
+    when Symbol || String
+    when Hash
+      # values = add_atome_id_if_user_dont values
+      @property << values
+      # values=[values]
+    else
+      # false
+      @property.concat(values).uniq!
+    end
+
   end
 
   def length
@@ -104,6 +115,5 @@ class Quark
   def last
     @property.last
   end
-
 
 end

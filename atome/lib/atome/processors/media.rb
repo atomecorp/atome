@@ -1,5 +1,8 @@
 module Processors
   def media_pre_processor(type, preset, value, password = nil)
+    # puts "#################"
+    # puts "def media_pre_processor :  #{value}"
+    #  puts "#################"
     if value.instance_of?(Hash) && value[:proc]
       # if a proc is found we yield we search for child of the requested type to be treated , ex :
       # a.text do |text_found|
@@ -16,16 +19,26 @@ module Processors
       elsif value.instance_of?(String)
         value = { content: value }
       end
+      if value[:value] == true
+        value.delete(:value)
+      end
+      if value[:proc] == nil
+        value.delete(:proc)
+      end
       preset_found = grab(:preset).get(:content)
       preset_found = preset_found[preset]
       # we overload the parent to the current and finally add the value set by user
       preset_found = preset_found.merge({ parent: atome_id }).merge(value)
       #now we create the new atome
-      Atome.new(preset_found)
-      ########### or
-      # a=Atome.new(value)
-      # a.parent(atome_id)
-      # a.preset(preset)
+      new_atome = Atome.new(preset_found)
+      # the condition add an animation property for time sensitive medias
+      case new_atome.type
+      when :video
+        new_atome.animation({ id: :video })
+      when :audio
+        new_atome.animation({ id: :audio })
+      end
+      new_atome
     end
   end
 
@@ -305,46 +318,46 @@ module Processors
       value = all_language_content[required_language]
     elsif type == :text
       # formated_value = { default: value, atome_id: atome_id }
-     formated_value=value
+      formated_value = value
       @content = atomise(:content, formated_value)
     else
       @content = atomise(:content, value)
     end
-    # below the condition if the value is an atome it  get the corresponding property in the atome passed
-    if value.class == Atome
-      value = value.content
-    end
-    # lambda below to avoid method in method
-    send_to_content_renderer = -> (renderer, value, password) do
-      case renderer
-      when :html
-        width_html(value, password)
-      when :fabric
-        width_fabric(value, password)
-      when :headless
-        width_headless(value, password)
-      when :speech
-        width_speech(value, password)
-      when :three
-        width_three(value, password)
-      when :zim
-        width_zim(value, password)
-      else
-        width_html(value, password)
-      end
-    end
 
-    if $default_renderer==:html
-      content_html(value, password)
-      # content_html(value, password)
+    send_to_render_engine(:content, value, password)
+    # below the condition if the value is an atome it  get the corresponding property in the atome passed
+    # if value.class == Atome
+    #   value = value.content
+    # end
+    # # lambda below to avoid method in method
+    # send_to_content_renderer = -> (renderer, value, password) do
+    #   case renderer
+    #   when :html
+    #     width_html(value, password)
+    #   when :fabric
+    #     width_fabric(value, password)
+    #   when :headless
+    #     width_headless(value, password)
+    #   when :speech
+    #     width_speech(value, password)
+    #   when :three
+    #     width_three(value, password)
+    #   when :zim
+    #     width_zim(value, password)
+    #   else
+    #     width_html(value, password)
+    #   end
+    # end
+    #
+    # if $default_renderer == :html
+    #   content_html(value, password)
     # elsif $default_renderer.instance_of?(Array)
-    #   # $default_renderer.each do |renderer|
-    #   #   # send_to_width_renderer.call(renderer, value, password)
-    #   # end
+    #   $default_renderer.each do |renderer|
+    #     send_to_content_renderer.call(renderer, value, password)
+    #   end
     # else
     #   send_to_content_renderer.call($default_renderer, value, password)
-    end
-
+    # end
   end
 
   def content_getter_processor

@@ -101,84 +101,99 @@ module PropertyHtml
   end
 
   def noise_html(value)
-    if  value[:width]==:auto || ( value[:width].class == String && value[:height].include?("%"))
-      value[:width]= convert(:width)
 
-    end
-    if  value[:height]==:auto || (value[:height].class == String && value[:height].include?("%"))
-      value[:height]= convert(:height)
-    end
+    if value[:delete]
+      # clean_back=jq_get(atome_id).css("background-image").sub("url(././medias/images/noise.svg),","")
+     back=jq_get(atome_id).css("background-image")
+      backs=back.split("),")
+      clean_backs=[]
+      clean_back=""
+      backs.each do |new_back|
+        unless new_back.end_with?('noise.svg"')
+          clean_backs << new_back
+        end
+        clean_back=clean_backs.join(",")
+      end
+      jq_get(atome_id).css("background-image", clean_back)
+    else
+      if  value[:width]==:auto || ( value[:width].class == String && value[:height].include?("%"))
+        value[:width]= convert(:width)
 
-    # old way below
-    # `generateNoise(#{atome_id},#{value[:intensity]},#{value[:opacity]}, #{value[:width]}, #{value[:height]},#{value[:color]},#{value[:delete]}); // target, intensity, opacity, width, height, color`
+      end
+      if  value[:height]==:auto || (value[:height].class == String && value[:height].include?("%"))
+        value[:height]= convert(:height)
+      end
 
-    # temp patch below
+      # old way below
+      # `generateNoise(#{atome_id},#{value[:intensity]},#{value[:opacity]}, #{value[:width]}, #{value[:height]},#{value[:color]},#{value[:delete]}); // target, intensity, opacity, width, height, color`
+
+      # temp patch below
 
 
-    # noise.width(value[:width])
-    # noise.height(value[:height])
-    # if type ==:text
+      # noise.width(value[:width])
+      # noise.height(value[:height])
+      # if type ==:text
       # alert atome_id
       # noise=self.image(:noise)
-    # fill({target: noise, number: 7})
-    # jq_get(atome_id).css("background-image", "././medias/images/noise.svg")
+      # fill({target: noise, number: 7})
+      # jq_get(atome_id).css("background-image", "././medias/images/noise.svg")
 
-    # jq_get(atome_id).css("-webkit-background-clip", "text")
-    # jq_get(atome_id).css("-webkit-text-fill-color", "transparent")
+      # jq_get(atome_id).css("-webkit-background-clip", "text")
+      # jq_get(atome_id).css("-webkit-text-fill-color", "transparent")
 
-    # "././medias/images/noise.svg"
-    # background-image:
-    # else
-    #   noise=self.image(:noise)
-    # jq_get(atome_id).css("background-image", "././medias/images/noise.svg")
+      # "././medias/images/noise.svg"
+      # background-image:
+      # else
+      #   noise=self.image(:noise)
+      # jq_get(atome_id).css("background-image", "././medias/images/noise.svg")
 
-    # jq_get(atome_id).prepend("<div>jhgjhgjhg</div>")
+      # jq_get(atome_id).prepend("<div>jhgjhgjhg</div>")
 
-#     jq_get(atome_id).prepend("<image style='opacity: #{value[:opacity]} ;display: block; position: absolute;width: 100%;
-# height:100%; left: 0px; top: 0px' src='././medias/images/noise.svg' width = 100% height=100%/>")
+      #     jq_get(atome_id).prepend("<image style='opacity: #{value[:opacity]} ;display: block; position: absolute;width: 100%;
+      # height:100%; left: 0px; top: 0px' src='././medias/images/noise.svg' width = 100% height=100%/>")
 
-    # #todo : create and parametise svg and use it as background
-    # # var Canvas = document.createElement("canvas");
-    # # ... do your canvas drawing....
-    # # $('body').css({'background-image':"url(" + Canvas.toDataURL("image/png")+ ")" });
-    #
-    prev_background = jq_get(atome_id).css("background-image")
-    jq_get(atome_id).css("background-image", "url(././medias/images/noise.svg), #{prev_background} ")
-
-
-    # jq_get(atome_id).addClass("noise")
-
-     # jq_get(atome_id).css("background-image","linear-gradient(0deg, red, blue)")
-    # atome_background = jq_get(atome_id).css("background-image")
-    # alert  atome_background
-    # jq_get(atome_id).css("background-color",'blue')
-    #   noise.x(0)
-    #   noise.y(0)
-    #   noise.width("100%")
-    #   noise.height("100%")
-    #   noise.opacity(value[:opacity])
-    #   noise.color(value[:color])
-    #   noise.z(-6)
-    # end
+      # #todo : create and parametise svg and use it as background
+      # # var Canvas = document.createElement("canvas");
+      # # ... do your canvas drawing....
+      # # $('body').css({'background-image':"url(" + Canvas.toDataURL("image/png")+ ")" });
+      #
+      prev_background = jq_get(atome_id).css("background-image")
+      jq_get(atome_id).css("background-image", "url(././medias/images/noise.svg), #{prev_background} ")
 
 
+      # jq_get(atome_id).addClass("noise")
 
-#   #   `
-# 	# <svg  width='100%' height='100%' version='1.1' xmlns='http://www.w3.org/2000/svg' style="opacity: 1">
-# 	#    <defs>
-#   #     <filter id='noise' >
-#   #     	  <feTurbulence type='fractalNoise' baseFrequency='0.7'  numOctaves='2' result='noisy' />
-# 	#         <feColorMatrix type='saturate' values='0'/>
-#   #       <feBlend in='SourceGraphic' in2='noisy' mode='multiply' />
-#   #     </filter>
-#   #   </defs>
-#   #      <g>
-#   #   <rect  stroke='none' fill='rgba(0, 0,0, 0.0)' x='0' y='0' width='100%' height='100%' filter='url(#noise)' />
-# 	#    </g>
-#   #  </svg>
-# #
-# # `
+      # jq_get(atome_id).css("background-image","linear-gradient(0deg, red, blue)")
+      # atome_background = jq_get(atome_id).css("background-image")
+      # alert  atome_background
+      # jq_get(atome_id).css("background-color",'blue')
+      #   noise.x(0)
+      #   noise.y(0)
+      #   noise.width("100%")
+      #   noise.height("100%")
+      #   noise.opacity(value[:opacity])
+      #   noise.color(value[:color])
+      #   noise.z(-6)
+      # end
 
+
+
+      #   #   `
+      # 	# <svg  width='100%' height='100%' version='1.1' xmlns='http://www.w3.org/2000/svg' style="opacity: 1">
+      # 	#    <defs>
+      #   #     <filter id='noise' >
+      #   #     	  <feTurbulence type='fractalNoise' baseFrequency='0.7'  numOctaves='2' result='noisy' />
+      # 	#         <feColorMatrix type='saturate' values='0'/>
+      #   #       <feBlend in='SourceGraphic' in2='noisy' mode='multiply' />
+      #   #     </filter>
+      #   #   </defs>
+      #   #      <g>
+      #   #   <rect  stroke='none' fill='rgba(0, 0,0, 0.0)' x='0' y='0' width='100%' height='100%' filter='url(#noise)' />
+      # 	#    </g>
+      #   #  </svg>
+      # #
+      # # `
+    end
 
   end
 

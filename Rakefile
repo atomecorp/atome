@@ -5,27 +5,25 @@ require "opal-jquery"
 require "uglifier"
 require "fileutils"
 require "filewatcher"
-temp_dir="temp"
+temp_dir = "temp"
 
+FileUtils.mkdir_p(temp_dir) unless File.directory?(temp_dir)
 
-unless File.directory?(temp_dir)
-  FileUtils.mkdir_p(temp_dir)
-end
-
+###### eve specific ######
+@eVe = (true if Dir.exist?('eVe'))
 FileUtils.cp_r "a_www/.", "www/"
-if File.directory?("eVe")
-  FileUtils.cp_r "eVe/e_www/.", "www" , remove_destination: true
-end
+FileUtils.cp_r "eVe/e_www/.", "www", remove_destination: true if @eVe == true
 
 def generate_demos_list
   require "./scripts/demo_generator.rb"
 end
 
-
 def generate_methods
-  require "./scripts/atome_properties_generator.rb"
+  require "./scripts/atome_script_methods_generator.rb"
 end
-
+if @eVe
+  require "./eVe/scripts/eVe_script_methods_generator.rb"
+end
 
 def update_opal_libraries
   file 'www/public/js/dynamic_libraries/opal/opal.js': ["www/public/js/dynamic_libraries/opal"] do |t|
@@ -42,19 +40,17 @@ def update_opal_libraries
 
   file 'www/public/js/dynamic_libraries/opal/opal_parser.js': ["www/public/js/dynamic_libraries/opal"] do |t|
     parser = Opal::Builder.new
-    parser.build('./atome/lib/atome/extensions/opal/opal_parser.rb')
+    parser.build('./atome/lib/atome/extensions/opal/parser.rb')
     File.write(t.to_s, parser.to_s)
   end
 end
 
-
 def update_medias_list(temp_dir)
   # todo : only copy if there's a change! use monitoring if possible
 
-  rm_f temp_dir+"/media_list.rb"
+  rm_f temp_dir + "/media_list.rb"
   file "#{temp_dir}/media_list.rb": ["#{temp_dir}"] do |t|
 
-  # file temp_dir+'/media_list.rb': [temp_dir] do |t|
     require "image_size"
     a_images = Dir.glob("./a_www/public/medias/images/**/*").select { |e| File.file? e }
     e_images = Dir.glob("./eVe/e_www/public/medias/images/**/*").select { |e| File.file? e }
@@ -67,7 +63,6 @@ def update_medias_list(temp_dir)
     a_audios = Dir.glob("./a_www/public/medias/audios/**/*").select { |e| File.file? e }
     e_audios = Dir.glob("./eVe/e_www/public/medias/audios/**/*").select { |e| File.file? e }
     audios = a_audios.concat(e_audios)
-    audios = audios.concat(videos)
     audios_list = {}
 
     images.each do |image|
@@ -76,12 +71,8 @@ def update_medias_list(temp_dir)
       image_info = ImageSize.path(image)
       width = image_info.width
       height = image_info.height
-      unless width
-        width=333
-      end
-      unless height
-        height=333
-      end
+      width = 333 unless width
+      height = 333 unless height
       images_list[filename.to_sym] = { width: width, height: height, path: path }
     end
 
@@ -99,8 +90,8 @@ def update_medias_list(temp_dir)
     end
     # medias_list = "$images_list=" + images_list.to_s + "\n$videos_list=" + videos_list.to_s + "\n$audios_list=" + audios_list.to_s
     # medias_list = medias_list + "\n" + "module Universe\ndef self.images\n@images_list=#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
-  medias_list = "module Universe\ndef self.images\n#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
-  File.open(t.name, "w") { |file| file.write(medias_list) }
+    medias_list = "module Universe\ndef self.images\n#{images_list}\nend\ndef self.videos\n#{videos_list}\nend\ndef self.audios\n#{audios_list}\nend\nend"
+    File.open(t.name, "w") { |file| file.write(medias_list) }
   end
 end
 
@@ -108,19 +99,15 @@ medias_dir_to_inspect = Dir.glob("www/public/medias/**/*")
 eve_medias_dir_to_inspect = Dir.glob("eVe/e_www/public/medias/**/*")
 nb_of_medias_files = (medias_dir_to_inspect.length + eve_medias_dir_to_inspect.length).to_s
 
-unless File.exist?(temp_dir+"/nb_of_medias_files")
-  File.write(temp_dir+"/nb_of_medias_files", "")
-end
+File.write(temp_dir + "/nb_of_medias_files", "") unless File.exist?(temp_dir + "/nb_of_medias_files")
 
-nb_of_medias_files_stored = File.read(temp_dir+"/nb_of_medias_files")
+nb_of_medias_files_stored = File.read(temp_dir + "/nb_of_medias_files")
 # we only update the media lib if there"s a change in number of medias file
-if nb_of_medias_files != nb_of_medias_files_stored || !File.file?(temp_dir+"/nb_of_medias_files")
+if nb_of_medias_files != nb_of_medias_files_stored || !File.file?(temp_dir + "/nb_of_medias_files")
   update_medias_list(temp_dir)
-  File.write(temp_dir+"/nb_of_medias_files", nb_of_medias_files)
+  File.write(temp_dir + "/nb_of_medias_files", nb_of_medias_files)
 end
-media_monitoring = unless File.file?(temp_dir+"/media_list.rb")
-                     update_medias_list(temp_dir)
-                   end
+media_monitoring = (update_medias_list(temp_dir) unless File.file?(temp_dir + "/media_list.rb"))
 FileUtils.mkdir_p "www/public/js/dynamic_libraries/"
 file 'www/public/js/dynamic_libraries/atome_medias.js': media_monitoring do |t|
   builder = Opal::Builder.new
@@ -152,7 +139,6 @@ file 'www/public/js/dynamic_libraries/atome_app.js': app_monitoring do |t|
   File.write(t.name, builder.to_s)
 end
 
-
 opal = "www/public/js/dynamic_libraries/opal/opal.js"
 opal_jquery = "www/public/js/dynamic_libraries/opal/opal_jquery.js"
 parser = "www/public/js/dynamic_libraries/opal/opal_parser.js"
@@ -162,10 +148,9 @@ atome_medias = "www/public/js/dynamic_libraries/atome_medias.js"
 
 required_js_lib = [opal, opal_jquery, parser, atome, atome_app, atome_medias]
 
-
 def cleanup_temp_files(temp_dir)
-  rm_f temp_dir+"/media_list.rb"
-  rm_f temp_dir+"/nb_of_medias_files.rb"
+  rm_f temp_dir + "/media_list.rb"
+  rm_f temp_dir + "/nb_of_medias_files.rb"
   rm_f "www/public/js/dynamic_libraries/atome.js"
   rm_f "www/public/js/dynamic_libraries/atome_app.js"
   rm_f "www/public/js/dynamic_libraries/atome_medias.js"
@@ -174,7 +159,6 @@ def cleanup_temp_files(temp_dir)
 end
 
 # rm_r "www/public/medias/rubies/tools", force: true
-# FileUtils.cp_r "eVe/medias/rubies/tools", "www/public/medias/rubies/tools"
 ## to cleanup all generated files
 # cleanup_temp_files(temp_dir)
 generate_methods
@@ -195,8 +179,8 @@ task 'run::server': required_js_lib do
     require "rack"
     # below we put the browser opening in a thread to delay waiting for th server to be ready
     # todo:  wait for page to respond instead of 2 sec sleep
-    all_threads=[]
-    all_threads<<Thread.new do
+    all_threads = []
+    all_threads << Thread.new do
       sleep 2
       # file="poil"
       # Filewatcher.new(file).watch do |changes|
@@ -205,7 +189,7 @@ task 'run::server': required_js_lib do
       system("open", "http://localhost:9292")
     end
     # all_threads.each(&:join)
-     #sh "puma -b tcp://127.0.0.1:9292"
+    #sh "puma -b tcp://127.0.0.1:9292"
     ##sh "puma -b 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'"
     sh "rackup --server puma --port 9292  --env production"
 
@@ -320,7 +304,6 @@ task 'production::electron': required_js_lib do
   production opal, opal_jquery, parser, atome
   sh "cordova run electron"
 end
-
 
 # #create a rb list of all renderer files
 # main_lib = Dir.glob("./atome/lib/atome/**/*.rb")

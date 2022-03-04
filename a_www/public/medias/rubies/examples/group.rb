@@ -1,6 +1,6 @@
 # group example
 
-t = text({ content: "Make the yellowgreen circle red , so it'll belong to the group so it'll be blurred and draggable", atome_id: :the_text })
+t = text({ content: "Click to add the yellowgreen circle to the group so it'll be blurred and draggable", atome_id: :the_text })
 image({content: :boat, x:666,atome_id: :pix_1,})
 image({content: :moto, y:333, atome_id: :pix_2})
 b = box({ size: 66, y: 33, color: :red, atome_id: :tutu })

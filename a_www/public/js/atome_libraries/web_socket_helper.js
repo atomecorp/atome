@@ -1,3 +1,15 @@
+// function cooyl(val) {
+//     alert(val);
+// }
+//
+// setTimeout(cooyl("good"), 2000);
+
+// setTimeout(myGreeting, 2000, "hello");
+//
+// function myGreeting(val) {
+//     alert(val);
+// }
+
 class WebSocketHelper {
     constructor(serverAddress, socket_type) {
         this.serverAddress = socket_type + '://' + serverAddress;
@@ -114,6 +126,11 @@ class WebSocketHelper {
         };
     }
 
+    // verif(message, callback) {
+    //     this.callbacks[message.request_id] = callback;
+    //     this.webSocket.send(JSON.stringify(message));
+    // }
+
     connect(serverAddress) {
         //fixme: find a way to restore the socket
         console.log("connection lost try ro reconnect");
@@ -121,10 +138,18 @@ class WebSocketHelper {
         // new WebSocketHelper(serverAddress);
     }
 
-    sendMessage(message, callback) {
-        this.callbacks[message.request_id] = callback;
-        this.webSocket.send(JSON.stringify(message));
+    sendMessage(message, callback, socket_helper=null) {
+        if (!socket_helper) {
+            socket_helper = this;
+        }
+        if (socket_helper.webSocket.readyState === 1) {
+            socket_helper.callbacks[message.request_id] = callback;
+            socket_helper.webSocket.send(JSON.stringify(message));
+        } else {
+            setTimeout(socket_helper.sendMessage, 1, message, callback, socket_helper);
+        }
     }
+
 
     close() {
         this._reconnect = false;
@@ -133,3 +158,27 @@ class WebSocketHelper {
 
 
 }
+
+// Make the function wait until the connection is made...
+// function waitForSocketConnection(socket,message,org_callback, callback){
+//     alert (message);
+//     setTimeout(
+//         function () {
+//             if (socket.readyState === 1) {
+//                 // console.log("Connection is made")
+//                 if (callback != null){
+//                         this.callbacks[message.request_id] = org_callback;
+//                         this.webSocket.send(JSON.stringify(message));
+//                 }
+//             } else {
+//                 console.log("wait for connection...");
+//                 waitForSocketConnection(socket,message,org_callback, callback);
+//             }
+//
+//         }, 5); // wait 5 milisecond for the connection...
+// }
+
+// function verif(current_socket, current_callback,message, callback){
+//     current_callback[message.request_id] = callback;
+//     current_socket.send(JSON.stringify(message));
+// }

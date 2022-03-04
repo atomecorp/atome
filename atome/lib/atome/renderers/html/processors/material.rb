@@ -22,7 +22,7 @@ module ProcessorHtml
               else
                 1
               end
-      value = value[:content] || "rgba(#{red},#{green},#{blue},#{alpha})"
+      value = value[:value] || "rgba(#{red},#{green},#{blue},#{alpha})"
     else
       value
     end

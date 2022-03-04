@@ -7,5 +7,6 @@ module ProcessorHtml
         self.set ({ property[0] => property[1] })
       end
     end
+
   end
 end

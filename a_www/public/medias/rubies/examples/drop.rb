@@ -1,9 +1,9 @@
 # drop example
+c = circle
 
 b = box()
 b.x(250)
 b.drag(true)
-c = circle
 c.x(390)
 c.drop(true) do
   c.color (:black)

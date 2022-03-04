@@ -1,7 +1,7 @@
 module FabricProperty
   def render_fabric(value)
     # `add_fabric_object("canvas_id", #{val})`
-    alert(inspect)
+
     if initialised_libraries(:fabric)
       `add_fabric_object(#{inspect[:atome_id]}, #{{type: :triangle,radius: 16, fill: 'red', id: "circle_id", left: 300, top: 100}})`
     else

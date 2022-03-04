@@ -5,12 +5,12 @@ module Processors
       value = default
     end
     if value.instance_of?(Array)
-      collected_values=[]
+      collected_values = []
       value.each do |value_found|
         collected_values << default.merge(value_found)
       end
       value = collected_values
-    elsif value ==false || value ==:delete
+    elsif value == false || value == :delete
       value = :delete
     else
       value = default.merge(value)
@@ -20,14 +20,24 @@ module Processors
   end
 
   def noise_pre_processor(value)
-    if value == true
-      value={}
-    elsif value==:destroy || value==:delete
-      value={delete: true}
+    if value.instance_of? Array
+      value.each do |val_found|
+        noise_pre_processor(val_found)
+      end
+    elsif value== :delete || value== :remove
+      value = {delete: true}
+    else
+      # alert "msg fom noise_pre_processor : #{value} -  #{value.class}"
+      # if value == true
+      #   value = {}
+      # elsif value == :destroy || value == :delete
+      #   value = { delete: true }
+      # end
+      default_value = { intensity: 50, opacity: 0.3, width: width, height: height, color: false, delete: false }
+      value = default_value.merge(value)
     end
-    default_value = {intensity: 50, opacity: 0.3, width: self.width, height: self.height, color: false, delete: false}
-    value = default_value.merge(value)
-    @noise = atomise(:noise, value)
-    noise_html(value)
+
+     value
+    # @noise = atomise(:noise, value)
   end
 end

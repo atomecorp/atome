@@ -4,9 +4,7 @@ module PropertyHtml
     atome_parent = parent[0].q_read
     jq_get(atome_parent).append(jq_get(atome_id))
     temp_list_obj_id = "#{atome_id}_temp_list_obj"
-    if grab(temp_list_obj_id)
-      grab(temp_list_obj_id).delete(true)
-    end
+    grab(temp_list_obj_id)&.delete(true)
     i = 0
     list_width = 666
     list_height = 30
@@ -16,7 +14,7 @@ module PropertyHtml
     line_color_0 = { red: 0.3, green: 0.3, blue: 0.3, alpha: 0.6 }
     line_color_1 = { red: 0.3, green: 0.3, blue: 0.3, alpha: 0.3 }
     text_color = :orange
-    list = box({ atome_id: temp_list_obj_id, width: 333, height: 333, x: self.x, y: self.y, scale: true, overflow: :auto, color: back_color, blur: { value: 9, invert: true }, shadow: { bounding: true, x: 0, y: 0, blur: 15, thickness: 0, invert: false }, drag: true })
+    list = grab(:view).box({ atome_id: temp_list_obj_id, width: 333, height: 333, x: self.x, y: self.y, scale: true, overflow: :auto, color: back_color, blur: { value: 9, invert: true }, shadow: { bounding: true, x: 0, y: 0, blur: 15, thickness: 0, invert: false }, drag: true })
 
     case value[:list]
     when :property
@@ -36,7 +34,7 @@ module PropertyHtml
       end
     when :child
       child.each do |property|
-        alert property
+        alert "msg from utility.rb render list : #{property}"
       end
     else
       child.each do |property|
@@ -68,40 +66,99 @@ module PropertyHtml
 
       end
     end
-
   end
 
   def render_html(value)
+    properties_found = self.properties
+    # the line below remove the render from the list of properties to avoid infinite loop
+
     # first in any case we remove the atome if it already exist
     jq_get(atome_id).remove
+
     # we also remove pseudo element: (the one created when using different rendering type : list, bloc, ...)
     temp_list_obj_id = "#{atome_id}_temp_list_obj"
-    if grab(temp_list_obj_id)
-      grab(temp_list_obj_id).delete(true)
-    end
-    if value
-      jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
-      properties_found = self.properties
-      properties_found.delete(:render)
-      if value == true
-        # we render the object in natural mode
-        # fixme "attention the filter are re applied at each render : \n#{properties_found}"
-        properties_found.each do |property, value_found|
-          self.send(property, value_found)
-        end
-      elsif value.instance_of?(Hash)
-        # the object will be render in other mode could be list , bloc , spoken , etc...
-        case value[:mode]
-        when :list
-          render_list(value)
-        when :bloc
-          # todo
-        else
-          puts "no rendering"
+    grab(temp_list_obj_id)&.delete(true)
+    puts "render_html : #{atome_id} #{value}"
+    # now we created the atome
+    jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
+    if value[:value] == false
+      jq_get(atome_id).remove
+    elsif value[:value] == true
+
+      if parent
+        parent.each do |parent_found|
+          jq_get(parent_found.atome_id).append("<div class='atome' id='#{atome_id}'></div>")
         end
       end
-      nil unless value
+      properties_found.delete(:render)
+      properties_found.each do |property, value_found|
+        self.send(property, value_found)
+      end
+    elsif value[:mode] == :list
+      render_list(value)
+    elsif value[:mode] == :bloc
+      # todo
+    else
+      # # natural mode
+      # # we render the object in natural mode
+      #     # fixme "attention the filter are re applied at each render : \n#{properties_found}"
+      #     properties_found.each do |property, value_found|
+      #       self.send(property, value_found)
+      #     end
     end
+
+    # if  value[:value]=false
+    #   alert :poi
+    #   jq_get(atome_id).remove
+    # end
+    # jq_get(atome_id).remove
+
+    # if parent && value.instance_of?(Hash)
+    #   # puts "render_html :  #{atome_id}"
+    #
+    # else
+    #   # jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
+    # end
+
+    # properties_found = self.properties
+
+    # if value == true
+    #   # we render the object in natural mode
+    #   # fixme "attention the filter are re applied at each render : \n#{properties_found}"
+    #   properties_found.each do |property, value_found|
+    #     self.send(property, value_found)
+    #   end
+    # elsif
+    # if value.instance_of?(Hash)
+    #   # the object will be render in other mode could be list , bloc , spoken , etc...
+    #   # puts "render_html #{atome_id}, #{value}"
+    #   # case value
+    #   # when ->(h) { h[:value] == true }
+    #   #   jq_get("user_device").append("<div class='atome' id='#{atome_id}'></div>")
+    #   #   properties_found = self.properties
+    #   #   # properties_found.delete(:render)
+    #   # when ->(h) { h[:value] == false }
+    #   #   jq_get(atome_id).remove
+    #   #   else
+    #   # end
+
+    ###############@ copy and get code below ##############
+    # puts "render_html for list :  #{value}"
+    #   case value[:mode]
+    #   when :list
+    #     render_list(value)
+    #   when :bloc
+    #     # todo
+    #   else
+    #     # we render the object in natural mode
+    #     # fixme "attention the filter are re applied at each render : \n#{properties_found}"
+    #     properties_found.each do |property, value_found|
+    #       self.send(property, value_found)
+    #     end
+    #   end
+    # end
+    nil unless value
+    # end
   end
 
   def language_html(value)
@@ -110,7 +167,7 @@ module PropertyHtml
 
   def edit_html(value)
     case value
-    when true
+    when ->(h) { h[:value] == true }
       jq_get(atome_id).attr("contenteditable", "true")
       jq_get(atome_id).css("-webkit-user-select", "text")
       jq_get(atome_id).css("-khtml-user-select", "text")
@@ -125,7 +182,7 @@ module PropertyHtml
         @content = atomise(:content, { current_language => new_content })
       end
 
-    when false
+    when ->(h) { h[:value] == false }
       jq_get(atome_id).attr("contenteditable", "false")
       jq_get(atome_id).css("-webkit-user-select", "none")
       jq_get(atome_id).css("-khtml-user-select", "none")

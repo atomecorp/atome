@@ -9,12 +9,19 @@ b=box({color: :transparent})
 b.shadow({ x: 16, y: 16, blur: 7, color: :black})
 
 a=b.image({content: :boat})
+a.x=a.y(90)
 a.noise({ opacity: 0.6 })
 a.color({red: 1, green: 0.3, blue: 0.5, alpha: 0.5})
 # add gradient
 a.color([{red: 0, green: 1, blue: 1, alpha: 0.1}, {red: 1, green: 0, blue: 0, alpha: 0.1}, {red: 0, green: 1, blue: 0, alpha: 0.1}, {angle: 150}, {diffusion: :linear}])
 a.opacity(0.7)
 a.drag(true)
+a.touch do
+  a.noise(:delete)
+end
+c.touch do
+  c.noise(:delete)
+end
 
 # # with shape
 # svg = shape({ path: :apple, drag: true, width: 333, height: 333, atome_id: :the_path})
@@ -22,5 +29,3 @@ a.drag(true)
 #   `$('#the_path').children().css({fill: 'blue'}).css({stroke: 'yellow'})`
 #   svg.noise({ opacity: 1 })
 # end
-
-

@@ -1,22 +1,22 @@
 # here stand some atome's function to allow atome's objects manipulation
-def render_analysis(methods, val, passsword)
-  renderer = case val[:engine]
-             when :fabric
-               "#{methods}_fabric"
-             when :zim
-               "zim_#{methods}_zim"
-             when :html
-               "#{methods}_html"
-             when :headless
-               "#{methods}_headless"
-             when :speech
-               "#{methods}_speech"
-             else
-               alert "other rendering to catch!!!"
-               "#{methods}_#{$default_renderer}"
-             end
-  send(renderer, val, passsword)
-end
+# def render_analysis(methods, val, passsword)
+#   renderer = case val[:engine]
+#              when :fabric
+#                "#{methods}_fabric"
+#              when :zim
+#                "zim_#{methods}_zim"
+#              when :html
+#                "#{methods}_html"
+#              when :headless
+#                "#{methods}_headless"
+#              when :speech
+#                "#{methods}_speech"
+#              else
+#                alert "other rendering to catch!!!"
+#                "#{methods}_#{$default_renderer}"
+#              end
+#   send(renderer, val, passsword)
+# end
 
 # def initialised_libraries(render_engine)
 #   if render_engine
@@ -48,9 +48,13 @@ def result(params)
   text({ content: "msg from atome_extension line 9 : #{result}", visual: 12, x: 120, y: 12, atome_id: :the_result })
 end
 
-def identity
-  "a_" + object_id.to_s + "_" + Atome.atomes.length.to_s + "_" + Time.now.strftime("%Y%m%d%H%M%S")
-end
+# def identity
+#   "a_" + object_id.to_s + "_" + Atome.atomes.length.to_s + "_" + Time.now.strftime("%Y%m%d%H%M%S")
+# end
+#
+# def identity_generator
+#   {a_id: identity}
+# end
 
 def get(id)
   Atome.atomes.values.each do |atome|
@@ -163,15 +167,17 @@ def clear(value)
   grab(:view).clear(value)
 end
 
-def atomes(full_list=false)
+def atomes(full_list = false)
   ATOME.atomes(full_list)
 end
 
 def renderer params = nil
-  if params
+  if params.nil?
+    $default_renderer
+  elsif params.instance_of?(Array)
     $default_renderer = params
   else
-    $default_renderer
+    $default_renderer = [params]
   end
 end
 
@@ -197,100 +203,100 @@ def compile(code)
 end
 
 def version
-  "v:0.017"
+  "v:0.06"
 end
 
-def animate(params)
-  unless params[:target]
-    params[:target] = atome_id
-  end
-  # patch below if no blur is assigned blur animation doesn't work
-  if self.instance_of?(Atome)
-    unless self.blur
-      self.blur(0)
-    end
-  end
-
-  filter_found = Element.find("#" + params[:target]).css('filter')
-  # alert "We must get all filter present in  #{params[:target]} and those found in the params to the animation "
-  # filter_list = %w[blur contrast brightness
-  #                 grayscale hue-rotate invert opacity
-  #                 saturate sepia drop-shadow url, backdrop-filter]
-  if params[:start][:blur]
-    value_found = params[:start][:blur]
-    params[:start][:filter] = filter_found + " blur(#{value_found}px)"
-    params[:start].delete(:blur)
-  end
-  if params[:end][:blur]
-    value_found = params[:end][:blur]
-    params[:end][:filter] = filter_found + " blur(#{value_found}px)"
-    params[:end].delete(:blur)
-  end
-  if params[:start][:contrast]
-    value_found = params[:start][:contrast]
-    params[:start][:filter] = "blur(0px) contrast(#{value_found})"
-    params[:start].delete(:contrast)
-  end
-  if params[:end][:contrast]
-    value_found = params[:end][:contrast]
-    params[:end][:filter] = "blur(4px) contrast(#{value_found})"
-    params[:end].delete(:contrast)
-  end
-  if params[:start][:smooth]
-    value_found = params[:start][:smooth]
-    params[:start][:borderRadius] = value_found
-    params[:start].delete(:smooth)
-  end
-  if params[:end][:smooth]
-    value_found = params[:end][:smooth]
-    params[:end][:borderRadius] = value_found
-    params[:end].delete(:smooth)
-  end
-
-  if params[:start][:color]
-
-    value_found = params[:start][:color]
-    value_found = grab(params[:target]).color_helper(value_found)
-    # if type == :text
-    #   params[:start][:color] = value_found
-    # else
-    params[:start][:background] = value_found
-    # end
-    params[:start].delete(:color)
-  end
-  if params[:end][:color]
-    value_found = params[:end][:color]
-    value_found = grab(params[:target]).color_helper(value_found)
-    # if type == :text
-    #   params[:end][:color] = value_found
-    # else
-    params[:end][:background] = value_found
-    # end
-    params[:end].delete(:color)
-  end
-
-  if params[:start][:shadow]
-    value_found = params[:start][:shadow]
-    value_found = grab(params[:target]).shadow_helper(value_found)
-    params[:start][value_found[0]] = value_found[1]
-    params[:start].delete(:shadow)
-  end
-  if params[:end][:shadow]
-    value_found = params[:end][:shadow]
-    value_found = grab(params[:target]).shadow_helper(value_found)
-    params[:end][value_found[0]] = value_found[1]
-    params[:end].delete(:shadow)
-  end
-  ATOME.animate_html(params)
-end
-
-def animate=(params)
-  animate(params)
-end
-
-def anim(params)
-  animate(params)
-end
+# def animate(params)
+#   unless params[:target]
+#     params[:target] = atome_id
+#   end
+#   # patch below if no blur is assigned blur animation doesn't work
+#   if self.instance_of?(Atome)
+#     unless self.blur
+#       self.blur(0)
+#     end
+#   end
+#
+#   filter_found = Element.find("#" + params[:target]).css('filter')
+#   # alert "We must get all filter present in  #{params[:target]} and those found in the params to the animation "
+#   # filter_list = %w[blur contrast brightness
+#   #                 grayscale hue-rotate invert opacity
+#   #                 saturate sepia drop-shadow url, backdrop-filter]
+#   if params[:start][:blur]
+#     value_found = params[:start][:blur]
+#     params[:start][:filter] = filter_found + " blur(#{value_found}px)"
+#     params[:start].delete(:blur)
+#   end
+#   if params[:end][:blur]
+#     value_found = params[:end][:blur]
+#     params[:end][:filter] = filter_found + " blur(#{value_found}px)"
+#     params[:end].delete(:blur)
+#   end
+#   if params[:start][:contrast]
+#     value_found = params[:start][:contrast]
+#     params[:start][:filter] = "blur(0px) contrast(#{value_found})"
+#     params[:start].delete(:contrast)
+#   end
+#   if params[:end][:contrast]
+#     value_found = params[:end][:contrast]
+#     params[:end][:filter] = "blur(4px) contrast(#{value_found})"
+#     params[:end].delete(:contrast)
+#   end
+#   if params[:start][:smooth]
+#     value_found = params[:start][:smooth]
+#     params[:start][:borderRadius] = value_found
+#     params[:start].delete(:smooth)
+#   end
+#   if params[:end][:smooth]
+#     value_found = params[:end][:smooth]
+#     params[:end][:borderRadius] = value_found
+#     params[:end].delete(:smooth)
+#   end
+#
+#   if params[:start][:color]
+#
+#     value_found = params[:start][:color]
+#     value_found = grab(params[:target]).color_helper(value_found)
+#     # if type == :text
+#     #   params[:start][:color] = value_found
+#     # else
+#     params[:start][:background] = value_found
+#     # end
+#     params[:start].delete(:color)
+#   end
+#   if params[:end][:color]
+#     value_found = params[:end][:color]
+#     value_found = grab(params[:target]).color_helper(value_found)
+#     # if type == :text
+#     #   params[:end][:color] = value_found
+#     # else
+#     params[:end][:background] = value_found
+#     # end
+#     params[:end].delete(:color)
+#   end
+#
+#   if params[:start][:shadow]
+#     value_found = params[:start][:shadow]
+#     value_found = grab(params[:target]).shadow_helper(value_found)
+#     params[:start][value_found[0]] = value_found[1]
+#     params[:start].delete(:shadow)
+#   end
+#   if params[:end][:shadow]
+#     value_found = params[:end][:shadow]
+#     value_found = grab(params[:target]).shadow_helper(value_found)
+#     params[:end][value_found[0]] = value_found[1]
+#     params[:end].delete(:shadow)
+#   end
+#   ATOME.animate_html(params)
+# end
+#
+# def animate=(params)
+#   animate(params)
+# end
+#
+# def anim(params)
+#   animate(params)
+# end
 
 def selection
   ATOME.selection_html
@@ -480,9 +486,8 @@ def meteo(location, &proc)
   ATOME.meteo_html(location, &proc)
 end
 
-
-def generate(method, &block )
+def generate(method, &block)
   unless ATOME.methods.include?(method)
-    Atome.send( :define_method, method, &block )
+    Atome.send(:define_method, method, &block)
   end
 end

@@ -12,7 +12,7 @@ Technical:
 
 **[II - Init sequence](./installation/kickstart.md)**
 
-**[III - Rendering](./tutorials/tutorials.md)**
+**[III - Rendering](./technical/rendering.md)**
 
 **[IV - Abstraction mode](./tutorials/tutorials.md)**
 

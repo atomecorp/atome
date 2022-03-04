@@ -20,8 +20,8 @@ module PropertyHtml
     # below we exec the call a first time
     proc.call
     # as we exec one time above we subtract one below
-    unless repeat==0
-      repeat=repeat-1
+    unless repeat == 0
+      repeat = repeat - 1
     end
     set_interval(delay, repeat, &proc)
   end
@@ -35,11 +35,11 @@ module PropertyHtml
   end
 
   def display_html(value)
-    # The display api is used both to view special items and or prevent the display
+    # The display api @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&    jhfgerggru is used both to view special items and or prevent the display
     case value
-    when false
+    when ->(h) { h[:value] == false }
       jq_get(atome_id).css(display: :none)
-    when true
+    when ->(h) { h[:value] == true }
       jq_get(atome_id).css(display: :block)
     when :none
       jq_get(atome_id).css(display: :none)
@@ -51,19 +51,18 @@ module PropertyHtml
     end
   end
 
-
   def fullscreen_html (value)
-    element = if type==:video
-      Element.find("##{atome_id} video" )
-    else
-      jq_get(atome_id)
+    element = if type == :video
+                Element.find("##{atome_id} video")
+              else
+                jq_get(atome_id)
               end
-    JSUtils.js_fullscreen(element, value)
+    alert  "fullscreen_html: #{value}"
+    JSUtils.js_fullscreen(element, value[value])
   end
-
 
   def reboot_html
     JSUtils.reboot
   end
-  
+
 end

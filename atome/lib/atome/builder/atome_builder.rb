@@ -23,7 +23,7 @@ class Atome
   # atome creation
   def initialize(properties = {})
     unless properties == {}
-      # the hash below add the missing properties without creating a condition
+      # the hash below add the @  missing properties without creating a condition
       sanitizer = { atome_id: identity, render: true, type: :particle, content: {}, selector: {}, id: "a_#{object_id}" }.merge(properties)
       # below we reorder the atome properties before treatment
       sanitized_atome_id = { atome_id: sanitizer.delete(:atome_id) }
@@ -88,6 +88,7 @@ class Atome
     set properties
   end
 
+
   def add(value, &proc)
     if proc.is_a?(Proc)
       current_key = value
@@ -100,7 +101,6 @@ class Atome
     end
     self.send(current_key, [prev_value, current_value])
   end
-
   def get(property)
     send(property)
   end

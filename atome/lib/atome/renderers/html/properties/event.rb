@@ -11,7 +11,7 @@ module PropertyHtml
       # jq_get(atome_id).unbind("touchstart mousedown touchend mouseup")
       # jq_get(atome_id).off('click')
       touch_html_helper(value)
-      end
+    end
   end
 
   def drag_html(value)
@@ -176,26 +176,48 @@ module PropertyHtml
     if value != false
       proc = value[:proc]
       option = value[:options]
-      case option
-      when :enter, :in
-        jq_get(atome_id).mouseenter do |evt|
-          proc.call(evt) if proc.is_a?(Proc)
-        end
-      when :exit, :leave, :out
-        jq_get(atome_id).mouseleave do |evt|
-          proc.call(evt) if proc.is_a?(Proc)
+
+      # option = value
+      # alert option
+
+      # if value[:enter] == true
+      #   jq_get(atome_id).mouseenter do |evt|
+      #     proc.call(evt) if proc.is_a?(Proc)
+      #   end
+      # elsif value[:exit] == true
+      #   jq_get(atome_id).mouseleave do |evt|
+      #     proc.call(evt) if proc.is_a?(Proc)
+      #   end
+      #
+      # elsif value[:over] == true
+      #   jq_get(atome_id).mouseover do |evt|
+      #     proc.call(evt) if proc.is_a?(Proc)
+      #   end
+      # else
+      #   jq_get(atome_id).unbind(:mouseenter)
+      #   jq_get(atome_id).unbind(:mouseleave)
+      #   jq_get(atome_id).unbind(:mouseover)
+      # end
+        case option
+        when :enter, :in
+          jq_get(atome_id).mouseenter do |evt|
+            proc.call(evt) if proc.is_a?(Proc)
+          end
+        when :exit, :leave, :out
+          jq_get(atome_id).mouseleave do |evt|
+            proc.call(evt) if proc.is_a?(Proc)
+          end
+        else
+          jq_get(atome_id).mouseover do |evt|
+            proc.call(evt) if proc.is_a?(Proc)
+          end
         end
       else
-        jq_get(atome_id).mouseover do |evt|
-          proc.call(evt) if proc.is_a?(Proc)
-        end
+        jq_get(atome_id).unbind(:mouseenter)
+        jq_get(atome_id).unbind(:mouseleave)
+        jq_get(atome_id).unbind(:mouseover)
       end
-    else
-      jq_get(atome_id).unbind(:mouseenter)
-      jq_get(atome_id).unbind(:mouseleave)
-      jq_get(atome_id).unbind(:mouseover)
-    end
-
+    # end
   end
 
   def virtual_event_html(value)

@@ -9,10 +9,6 @@ module HtmlHelpers
 
   end
 
-  def play_html(options, proc)
-    js_play(options, proc)
-  end
-
   def resize_html(value = true, &proc)
     if value == false
       Element.find(JSUtils.device).off(:resize, nil)
@@ -65,10 +61,10 @@ module HtmlHelpers
 
   end
 
-  # anim
-  def animate_html(params)
-    JSUtils.animator(params)
-  end
+  # # anim
+  # def animate_html(params)
+  #   JSUtils.animator(params)
+  # end
 
   def ping_html(adress, error, success)
     JSUtils.ping(adress, error, success)

@@ -1,3 +1,6 @@
+- fixme example 31 double click .. always click!
+- fixme example 38 double click .. extarct detach is fucked
+- fixme example 71 on size can't be unbind
 - todo : update animation framework to latest version
 - todo : search table list and ide design
 - todo : canvas for noise optimisation
@@ -24,6 +27,7 @@
 - todo : Atome.new() should not create an atome in the browser but wait for a type to decide if it'll do so
 - todo : animation should update the animated property at every tick
 - todo: : animation must trigger an event on finished
+- todo : add method should check if the same value is already present and so added twice, ex : v.add({ animation: { id: :video } })
 - demo that crash : size
                     parent
                     Schedule

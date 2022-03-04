@@ -1,6 +1,6 @@
 # text
 
-b=box({ atome_id: :tutu, y: 96,x: 96, width: 333,height: 333})
+b=box({ atome_id: :tutu, y: 96,x: 96, width: 333,height: 333, overflow: :auto})
 t=text({content: lorem, color: :red,   atome_id: "toto", width: :auto})
 scale=text({content: :scale, x: 9, y: 9})
 drag=text({content: :drag, x: scale.x+100, y: 9})

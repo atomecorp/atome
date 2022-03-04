@@ -19,11 +19,12 @@ module AtomeHelpers
               "ws"
             end
       WebSocket.new(data[:address], ssl)
-      AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
-      # end
-    else
-      AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
+      # AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
+    # else
     end
+
+    AtomeHelpers.class_variable_get("@@web_socket").send(data, callback)
+
   end
 
   # def shell(command)
@@ -34,7 +35,7 @@ module AtomeHelpers
     if value.nil? && !proc
       @authorization&.q_read
     else
-      value = properties_common(value, &proc)
+      value = format_parameters_to_hash(value, &proc)
       @authorization = atomise(:authorization, value)
       self
     end
@@ -95,7 +96,7 @@ module AtomeHelpers
         value
       end
     else
-      self.child&.delete(true)
+      child&.delete(true)
     end
 
   end
@@ -161,36 +162,36 @@ module AtomeHelpers
     properties
   end
 
-  def play(options = nil, &proc)
-    if options.nil?
-      @play
-    else
-      options = case options
-                when true
-                  { play: :play, status: :playing }
-                when false
-                  { play: :stop, status: :stopped }
-                when :pause
-                  { play: :pause, status: :paused }
-                when :stop
-                  { play: :stop, status: :stopped }
-                when :play
-                  { play: :play, status: :playing }
-                else
-                  { play: options, status: :playing }
-                end
-      # the condition below check we dont specify a play position and if the
-      # @play contain a play position, if so it resume playback specify in @play
-      if @play && ((@play[:play].instance_of?(Integer) || @play[:play].instance_of?(Number)) && (options[:play] == true || options[:play] == :play))
-        options = { play: @play[:play], status: :playing }
-        # if @play
-        #   alert @play
-        #   options = { play: 12 }
-      end
-      @play = options
-      play_html(options[:play], proc)
-    end
-  end
+  # def play(options = nil, &proc)
+  #   if options.nil?
+  #     @play
+  #   else
+  #     options = case options
+  #               when true
+  #                 { play: :play, status: :playing }
+  #               when false
+  #                 { play: :stop, status: :stopped }
+  #               when :pause
+  #                 { play: :pause, status: :paused }
+  #               when :stop
+  #                 { play: :stop, status: :stopped }
+  #               when :play
+  #                 { play: :play, status: :playing }
+  #               else
+  #                 { play: options, status: :playing }
+  #               end
+  #     # the condition below check we dont specify a play position and if the
+  #     # @play contain a play position, if so it resume playback specify in @play
+  #     if @play && ((@play[:play].instance_of?(Integer) || @play[:play].instance_of?(Number)) && (options[:play] == true || options[:play] == :play))
+  #       options = { play: @play[:play], status: :playing }
+  #       # if @play
+  #       #   alert @play
+  #       #   options = { play: 12 }
+  #     end
+  #     @play = options
+  #     play_html(options[:play], proc)
+  #   end
+  # end
 
   def transmit(values)
     case values.keys[0]

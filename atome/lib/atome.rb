@@ -1,18 +1,18 @@
 # ruby main Object extensions
-require "atome/extensions/ruby/object"
+require "atome/extensions/ruby/object_extensions"
 # default_value
 require "atome/environment/default_values"
 # opal specific
-require "atome/extensions/opal/opal_audio"
-require "atome/extensions/opal/opal_code_editor"
-require "atome/extensions/opal/opal_database"
-require "atome/extensions/opal/opal_generator.rb"
-require "atome/extensions/opal/opal_helpers"
-require "atome/extensions/opal/opal_io"
-require "atome/extensions/opal/opal_input"
-require "atome/extensions/opal/opal_timer"
-require "atome/extensions/opal/opal_video"
-require "atome/extensions/opal/opal_jquery"
+require "atome/extensions/opal/audio"
+require "atome/extensions/opal/code_editor"
+require "atome/extensions/opal/database"
+require "atome/extensions/opal/generator.rb"
+require "atome/extensions/opal/helpers"
+require "atome/extensions/opal/io"
+require "atome/extensions/opal/input"
+require "atome/extensions/opal/timer"
+require "atome/extensions/opal/video"
+require "atome/extensions/opal/jquery"
 
 # render helper
 require './atome/lib/atome/renderers/renderers.rb'
@@ -235,16 +235,18 @@ require "atome/helpers/internal_helpers"
 require "atome/generated_methods/atome_methods"
 # main atome builder
 require "atome/generated_methods/batch"
-require "atome/builder/properties"
+require "atome/builder/quark"
+# methods to simplify object creation
+# todo : may be place the two lines below at the of the file if it doesn't work
+require "atome/generated_methods/atome_object_creator"
+require "atome/extensions/atome_code_creator"
+
 #Quark.genesis
-require "atome/builder/atome_generator"
+require "atome/builder/atome_builder"
 # Atome helper (methods available at main Object level)
-require "atome/extensions/atome_extensions"
+require "atome/extensions/atome_helpers.rb"
 require "atome/extensions/atome_utilities"
 # class to create a new device
 require "atome/environment/device"
 # elementary atomes for basic environment
 require "atome/environment/initialize"
-# methods to simplify object creation
-require "atome/generated_methods/atome_object_creator"
-require "atome/extensions/atome_code_creator"

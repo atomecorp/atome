@@ -23,7 +23,7 @@ module Processors
     when :zim
       render_zim(value)
     else
-      render_html(value)
+      nil
     end
   end
 
