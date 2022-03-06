@@ -1,5 +1,5 @@
 def params_conversion params
-  # alert  "msg from behaviour/params_conversion:  #{params}"
+  alert  "msg from behaviour/params_conversion:  #{params}"
   params
 end
 
