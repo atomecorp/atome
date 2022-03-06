@@ -40,7 +40,7 @@ def format_router params
 end
 
 def sanitize_array params
-  formated_array=[]
+  formated_array = []
   params.each do |param|
     formated_array << format_router(param)
   end
@@ -79,7 +79,7 @@ def box(value = nil, password = nil, &proc)
     generated_id = [{ a_d: id_generator }]
     generated_id
     values = format(value)
-    puts "######### results #########"
+    # puts "######### results #########"
     puts "#{values} \n #{values.class}"
     # add_missing_prop
     # reorder
@@ -94,10 +94,22 @@ def box(value = nil, password = nil, &proc)
 
 end
 
-box({ x: { data: 44, axis: 33 }, color: :orange, width: 55,
-      blur: { radiance: 12, data: 33 },
-      shadow: [{ data: true, id: :tutu }, true ] })
+# box({ x: { data: 44, axis: 33 }, color: :orange, width: 55,
+#       blur: { radiance: 12, data: 33 },
+#       shadow: [{ data: true, id: :tutu }, true ] })
 
-¬
-# box({ shadow: [true,false] })
+b = box({ shadow: [true, false] })
+
+# { shape: { a_id: :a876876, datas: { points: 4 }, preset: :box } }
+
+{ a876876: { type: :shape,
+             datas: { points: 4 },
+             preset: :box,
+             a876876: { type: :color,
+                        data: :red,
+                        x: 33,
+                        y: 66
+             }
+} }
+
 

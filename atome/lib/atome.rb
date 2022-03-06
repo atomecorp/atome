@@ -11,7 +11,7 @@ require "atome/extensions/opal/helpers"
 require "atome/extensions/opal/io"
 require "atome/extensions/opal/input"
 require "atome/extensions/opal/timer"
-require "atome/extensions/opal/video"
+require "atome/extensions/opal/player"
 require "atome/extensions/opal/jquery"
 
 # render helper
