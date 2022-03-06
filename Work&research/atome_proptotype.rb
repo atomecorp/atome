@@ -105,10 +105,15 @@ b = box({ shadow: [true, false] })
 { a876876: { type: :shape,
              datas: { points: 4 },
              preset: :box,
-             a876876: { type: :color,
+             a8766576: { type: :color,
                         data: :red,
                         x: 33,
                         y: 66
+             },
+             a9879867: { type: :color,
+                         data: :blue,
+                         x: 33,
+                         y: 66
              }
 } }
 
