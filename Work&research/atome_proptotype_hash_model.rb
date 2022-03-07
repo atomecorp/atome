@@ -25,14 +25,18 @@ class Atome
   end
 
   def color val = nil
-    if val
-      @atome[identity_generator + "c"] = { type: :color, data: val }
-    else
+    if val.nil?
       @atome.each do |key, value|
         if value[:type] == :color
-          return value[:data]
+          if val == :a_id
+            return value[:data]
+          end
         end
       end
+    elsif val == :a_id
+      @atome.keys[0]
+    else
+      @atome[identity_generator + "c"] = { type: :color, data: val }
     end
   end
 
@@ -47,8 +51,6 @@ class Atome
       end
     end
   end
-
-
 
   def x val; end
 
@@ -163,7 +165,7 @@ puts b.color
 puts b.id
 puts b.a_id
 puts "#####"
-puts b.color.a_id
+puts b.color(:a_id)
 # b.grab(:toto)
 
 # a.color(:red)
