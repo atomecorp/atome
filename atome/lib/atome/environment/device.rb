@@ -1,8 +1,7 @@
 class Device
   include DefaultValues
-  `console.clear()`
+  # `console.clear()`
   def initialize
-
     # the object below is used to store the basic presets for common type of atomes
     Atome.new({ atome_id: :preset, content: default_values, render: false })
     #the object below is used to hide some atomes rom the device view while still rendered

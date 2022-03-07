@@ -118,6 +118,8 @@ atome_methods.each do |property_type, property|
                   	   else
       # the code below break child and parent apis
       #             		   value= atome_format_sanitizer(:#{method_name},value, &proc)
+# puts "message from atome script generator, method_name : #{method_name} , value : " +value.to_s+" current object : "+object_id.to_s
+
                   		 if "#{method_name}"== "atome_id"
                   		   save= {value.to_s =>  {genesis: value, time: Time.now.to_f}}
                   		 else

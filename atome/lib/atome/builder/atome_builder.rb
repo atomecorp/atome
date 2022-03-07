@@ -83,11 +83,11 @@ class Atome
 
   def create(properties)
     atome_id = properties.delete(:atome_id)
-    self.atome_id(atome_id)
+    atome_id(atome_id)
     register_atome
     set properties
+    # alert inspect
   end
-
 
   def add(value, &proc)
     if proc.is_a?(Proc)
@@ -101,6 +101,7 @@ class Atome
     end
     self.send(current_key, [prev_value, current_value])
   end
+
   def get(property)
     send(property)
   end
