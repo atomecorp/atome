@@ -152,7 +152,7 @@ module HtmlHelpers
           # the method below is used when a browser received touchdown and mousedown at the same time
           # this avoid the event to be traeted twice by android browser
           evt.prevent
-          # modification below to allow self with proc ( proc / lambda change conetxt)
+          # modification below to allow self with proc ( proc / lambda change context)
           instance_exec evt, &value[:proc] if value[:proc].is_a?(Proc)
           evt.stop_propagation if value[:stop]
         end

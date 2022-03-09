@@ -23,32 +23,30 @@ end
 # Keep all properties methods
 module Electron
   # test methods below
-  # def left(value = nil)
-  #   if value.nil?
-  #     get_property_content :left
-  #   elsif value.instance_of? Hash
-  #     value = value[:add]
-  #     sanitizer(:left, value)
-  #     render_property(:left)
-  #   else
-  #     delete_property(:left)
-  #     sanitizer(:left, value)
-  #     render_property(:left)
-  #   end
-  # end
 
   def left(value = nil)
-    if value.nil?
-      get_property_content :left
-    # elsif value.instance_of? Hash
-    #   value = value[:add]
-    #   sanitizer(:left, value)
-    #   render_property(:left)
-    else
-      delete_property(:left)
-      sanitizer(:left, value)
-      render_property(:left)
+    getter_setter(value) do
+      sanitizer2(:left, value) do |treated_val|
+        treated_val = pre_processor treated_val
+        check_add :left, treated_val[:left]
+        atome_creation treated_val
+        render_property(:left)
+        # post_processor treated_val
+        # return method_return treated_val
+      end
     end
+  end
+
+  def pre_processor(params)
+    params
+  end
+
+  def post_processor(params)
+    params
+  end
+
+  def method_return(params)
+    params
   end
 
   def top(value = nil)
@@ -134,6 +132,25 @@ class Atome
     atomes << a_id
   end
 
+  def atome_creation(atome)
+    a_id = identity
+    @atome << { a_id: a_id }.merge(atome)
+    atomes = Universe.atomes
+    atomes << a_id
+  end
+
+  def sanitizer2(property, value, &proc)
+    if value.instance_of? Array
+      value.each_with_index do |val, index|
+        # we multiple values are send we assume the user want to add all the values of the array
+        val = { add: val } if index.positive? && !val.instance_of?(Hash)
+        sanitizer2(property, val, &proc)
+      end
+    else
+      instance_exec({ property => value }, &proc)
+    end
+  end
+
   def sanitizer(property, value)
     if value.instance_of? Array
       value.each do |val|
@@ -146,13 +163,25 @@ class Atome
     end
   end
 
-  def to_s
-    @atome.to_s
+  def getter_setter(value)
+    if value.nil?
+      get_property_content :left
+    else
+      yield value
+    end
+  end
+
+  def check_add(property, value)
+    delete_property(property) unless value.instance_of? Hash
+  end
+
+  def check
+    @atome
   end
 
   def find_property(property)
     @atome.each do |atome_found|
-      yield atome_found[property] unless atome_found[property].nil?
+      yield atome_found unless atome_found[property].nil?
     end
   end
 
@@ -188,27 +217,41 @@ class Atome
   def render; end
 end
 
-# Atome.class_variable_set('@@atomes', [])
-# Atome.class_variable_set('@@username', :jeezs)
-
 a = Atome.new({ type: :shape, preset: :box, color: %i[red yellow], left: 30, top: 66 })
 # puts a.to_s
 # a.color({ data: :pink, add: true, left: 33, y: 22 })
 # puts a.color
-puts '------ new value ------'
+# puts '------ new value ------'
 a.left(55)
-puts '------ other  value ------'
-
+# puts '------ other  value ------'
+a.left([33, 99]) # should work
+a.left({ add: 66 })
 a.left({ add: 20 })
 
-# puts a.to_s
-puts '------ left property ------'
-# a.render
-puts a.left.to_s
-# puts
-# puts a.to_s
-# b = Atome.new({ type: :shape, preset: :circle, color: :orange, left: 90, y: 9 })
-#
-# puts "######"
-# puts b.to_s
-# puts a.to_s
+puts '######### now I have to catch the case when an atome is send cf : color #########'
+# puts a.check.join("\n")
+# # puts a.to_s
+# puts '------ left property ------'
+# # a.render
+puts a.left
+# # puts
+# # puts a.to_s
+# # b = Atome.new({ type: :shape, preset: :circle, color: :orange, left: 90, y: 9 })
+# #
+# # puts "######"
+# # puts b.to_s
+# # puts a.to_s
+
+# def safely_open_door(val,&block)
+#   if val.instance_of? Array
+#     val.each do |titi|
+#       safely_open_door(titi, &block)
+#     end
+#   else
+#     instance_exec(val+" ok!",&block)
+#   end
+# end
+# # instance_eval(self) { @secret }
+# safely_open_door(["good", "kool"]) do |toto|
+#   puts toto
+# end
