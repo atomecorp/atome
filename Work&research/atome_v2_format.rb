@@ -1,4 +1,12 @@
 # frozen_string_literal: true
+# module is used for data conversion
+class Quark
+
+  def q_read
+
+  end
+
+end
 
 # module is used for data conversion
 module Converter
@@ -122,11 +130,11 @@ end
 
 # this module hold material
 module Material
-  def child(value = nil)
+  def child(value = nil, add=nil)
     getter_setter(:child, value) do
       atome_sanitizer(:child, value) do |treated_val|
         treated_val = pre_processor treated_val
-        check_add :child, treated_val[:child]
+        check_add :child, add
         atome_creation treated_val
         render_property(:child)
         post_processor treated_val
@@ -267,8 +275,9 @@ class Atome
 
   def atome_creation(atome)
     a_id = Universe.identity
-    @molecule << { a_id: a_id }.merge(atome)
-    Universe.atomes(a_id)
+    # @molecule << { a_id: a_id }.merge(atome)
+    @molecule << { a_id => atome }
+    # Universe.atomes(a_id)
     # molecules << a_id
   end
 
@@ -315,15 +324,14 @@ class Atome
 
   def find_property(property)
     @molecule.each do |atome_found|
-      yield atome_found if atome_found[property]
+      yield atome_found if atome_found.values[0][property]
     end
   end
 
   def get_property_content(property)
     value_found = []
     find_property(property) do |properties_found|
-      # puts "properties_found #{property}: #{properties_found}"
-      value_found << properties_found[property]
+      value_found << properties_found.values[0][property]
     end
     value_found
   end
@@ -343,16 +351,21 @@ class Atome
       a_id_found << a_id
     end
     find_property(property) do |properties_found|
-      " rendering: (#{property}=#{properties_found}), parent: #{a_id_found[0]}"
+      "rendering: (#{property}=#{properties_found}), parent: #{a_id_found[0]}"
     end
   end
 
   def add(atome)
+    # send(atome, :add)
     send(atome.keys[0], atome.values[0], :add)
+  end
+
+  def inspect
+    @molecule.to_s
   end
 end
 
-# a = Atome.new({ type: :shape, preset: :box, child: %i[sphere circle], color: %i[red yellow], left: 30, top: 66 })
+a = Atome.new({ type: :shape, preset: :box, child: %i[sphere circle], color: %i[red yellow], left: 30, top: 66 })
 # a.color({ add: :green })
 # a.color(:pink)
 # a=Atome.new({})
@@ -413,14 +426,15 @@ end
 # # puts
 # puts a.check
 # # b = Atome.new({ type: :shape, preset: :circle, color: :orange, left: 90, y: 9 })
-a = Atome.new({ type: :shape, preset: :box, color: %i[red yellow], left: 30, top: 66 })
-puts a.inspect
-puts a.type
-puts a.preset
-puts a.color
-puts "######"
+# a = Atome.new({ type: :shape, preset: :box, color: %i[red yellow], left: 30, top: 66 })
 
-a_9879879 = { color: :a_87687687687 }
+puts "######"
+# puts a.child
+# puts a.preset
+puts a.color
+# puts a.inspect
+
+# a_9879879 = { color: :a_87687687687 }
 
 # devrait etre :
 
@@ -436,10 +450,9 @@ a_9879879 = { color: :a_87687687687 }
 #                               :type=>:shape}, {:a_id=>"a_1820_jeezs_20220310163458_2", :preset=>:box}, {:a_id=>"a_1820_jeezs_20220310163458_3", :red=>0.9}, {:a_id=>"a_1820_jeezs_20220310163458_4", :green=>1}, {:a_id=>"a_1820_jeezs_20220310163458_5", :blue=>0.3}, {:a_id=>"a_1820_jeezs_20220310163458_6", :alpha=>1}, {:a_id=>"a_1820_jeezs_20220310163458_7", :red=>0.9}, {:a_id=>"a_1820_jeezs_20220310163458_8", :green=>1}, {:a_id=>"a_1820_jeezs_20220310163458_9", :blue=>0.3}, {:a_id=>"a_1820_jeezs_20220310163458_10", :alpha=>1}, {:a_id=>"a_1820_jeezs_20220310163458_11", :left=>30}, {:a_id=>"a_1820_jeezs_20220310163458_12", :top=>66}]
 #
 
+@molecule = { a_1820_jeezs_20220310163458_0: { type: :shape }, a_1820_jeezs_20220310163458_1: { type: :molecule } }
 
-@molecule= { a_1820_jeezs_20220310163458_0: { type: :shape }, a_1820_jeezs_20220310163458_1: {type: :molecule}}
-# comment savoir qu'on a faire a une molecule et connaitre son type?
-
+# comment savoir qu'on a faire a une molecule et connaître son type?
 
 # # puts b.to_s
 # # puts a.to_s
