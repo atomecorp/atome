@@ -27,7 +27,7 @@ module Universe
   def self.identity
     username = Universe.username
     atomes = Universe.atomes
-    "a_#{object_id}_#{username}_#{Time.now.strftime('%Y%m%d%H%M%S')}_#{atomes.length}"
+    "a_#{object_id}_#{username}_#{Time.now.strftime('%Y%m%d%H%M%S')}_#{atomes.length}#{rand}"
   end
 
   def self.username
@@ -105,7 +105,7 @@ module Spatial
     getter_setter(:left, value) do
       atome_sanitizer(:left, value) do |treated_val|
         treated_val = pre_processor treated_val
-        check_add(:top, add)
+        check_add(:left, add)
         atome_creation treated_val
         render_property(:left)
         post_processor treated_val
@@ -261,11 +261,7 @@ class Atome
   include Converter
 
   def initialize(params)
-    @molecule = []
-    # puts "***********"
-    # puts @molecule
-    # a_id = Universe.identity
-    # Universe.molecules(a_id)
+    @molecule = {}
     default_values = { parent: :view }
     params = default_values.merge(params)
     params.each_pair do |property, value|
@@ -276,7 +272,7 @@ class Atome
   def atome_creation(atome)
     a_id = Universe.identity
     # @molecule << { a_id: a_id }.merge(atome)
-    @molecule << { a_id => atome }
+    @molecule[a_id] = atome
     # Universe.atomes(a_id)
     # molecules << a_id
   end
@@ -323,21 +319,24 @@ class Atome
   end
 
   def find_property(property)
-    @molecule.each do |atome_found|
-      yield atome_found if atome_found.values[0][property]
+    @molecule.each do |a_id_found, atome_found|
+      yield a_id_found if atome_found[property]
     end
   end
 
   def get_property_content(property)
     value_found = []
-    find_property(property) do |properties_found|
-      value_found << properties_found.values[0][property]
+    find_property(property) do |property_found|
+      value_found << @molecule[property_found]
     end
     value_found
   end
 
   def delete_property(property)
-    @molecule.delete_if { |atome_found| atome_found[property] }
+    find_property(property) do |properties_found|
+      @molecule.delete(properties_found)
+    end
+    # @molecule.values.delete_if { |atome_found| atome_found[property] }
   end
 
   # send_to_render_engine atome_found
@@ -365,7 +364,7 @@ class Atome
   end
 end
 
-a = Atome.new({ type: :shape, preset: :box, child: %i[sphere circle], color: %i[red yellow], left: 30, top: 66 })
+# a = Atome.new({ type: :shape, preset: :box, child: %i[sphere circle], color: %i[red yellow], left: 30, top: 66 })
 # a.color({ add: :green })
 # a.color(:pink)
 # a=Atome.new({})
@@ -426,13 +425,17 @@ a = Atome.new({ type: :shape, preset: :box, child: %i[sphere circle], color: %i[
 # # puts
 # puts a.check
 # # b = Atome.new({ type: :shape, preset: :circle, color: :orange, left: 90, y: 9 })
-# a = Atome.new({ type: :shape, preset: :box, color: %i[red yellow], left: 30, top: 66 })
+# a = Atome.new({ type: :shape, preset: :box, color: %i[red yellow], left: [30,55], top: 66 })
+# a = Atome.new({ type: :shape, preset: :box, color: %i[red yellow], left: [30,55], top: 66 })
+a= Atome.new({left: [77, 99]})
 
+a.add({left: 88})
+a.left(66)
 puts "######"
-# puts a.child
-# puts a.preset
-puts a.color
-# puts a.inspect
+# # puts a.child
+# # puts a.preset
+puts a.left
+# puts a.left
 
 # a_9879879 = { color: :a_87687687687 }
 
