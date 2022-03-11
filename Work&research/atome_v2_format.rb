@@ -360,7 +360,12 @@ class Atome
   end
 
   def inspect
-    @molecule.to_s
+    molecule_content=[]
+    @molecule.values.each do |atome_found|
+      molecule_content << atome_found
+    end
+    # molecule_content.join("\n")
+    molecule_content.to_s
   end
 end
 
@@ -426,16 +431,17 @@ end
 # puts a.check
 # # b = Atome.new({ type: :shape, preset: :circle, color: :orange, left: 90, y: 9 })
 # a = Atome.new({ type: :shape, preset: :box, color: %i[red yellow], left: [30,55], top: 66 })
-# a = Atome.new({ type: :shape, preset: :box, color: %i[red yellow], left: [30,55], top: 66 })
-a= Atome.new({left: [77, 99]})
+a = Atome.new({ type: :shape,child: :toto, preset: :box, color: %i[red yellow], left: [30,55], top: 66 })
+# a= Atome.new({left: [77, 99]})
 
 a.add({left: 88})
-a.left(66)
+# a.left(66)
 puts "######"
-# # puts a.child
-# # puts a.preset
-puts a.left
+# puts a.child
+# puts a.preset
+# puts a.color
 # puts a.left
+puts a.inspect
 
 # a_9879879 = { color: :a_87687687687 }
 
