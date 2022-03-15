@@ -50,7 +50,7 @@ module Universe
   def self.identity
     username = Universe.username
     atomes = Universe.atomes
-    "a_#{object_id}_#{username}_#{Time.now.strftime('%Y%m%d%H%M%S')}_#{atomes.length}"
+    :"a_#{object_id}_#{username}_#{Time.now.strftime('%Y%m%d%H%M%S')}_#{atomes.length}"
   end
 
   def self.username
@@ -70,23 +70,36 @@ end
 # handle all operations for complexes molecules (molecules)
 module MoleculeHelper
   # handle all operations for complexes molecules (molecules)
-  def molecules_list
-    { color: { red: 0, green: 0, blue: 0, alpha: 1, left: 0, top: 0, bottom: nil, right: nil, radiation: :linear } }
+  def molecules_types_atomes
+    { color: { red: 0, green: 0, blue: 0, alpha: 1, left: 0, top: 0, bottom: nil, right: nil, radiation: :linear },
+      position: { left: 0, top: 0, right: 0, bottom: 0, back: 0, front: 0 },
+      dimension: { width: 100, height: 100, depth: 1 } }
   end
 
-  def particle_sanitizer(properties, values)
-    # puts 'I may create an uniq method to iterate on array before sanitizing'
-    # puts 'by so it may also catch when an atome is passed'
-    # puts "values: #{values} "
+  def get_molecule_atomes(molecule_type)
+    molecules_types_atomes[molecule_type]
+  end
+
+  def molecule_sanitizer(properties, values)
+    #   # puts 'I may create an uniq method to iterate on array before sanitizing'
+    #   # puts 'by so it may also catch when an atome is passed'
     if values.instance_of? Array
       values.each do |value|
-        particle_sanitizer(properties, { add: value })
+        molecule_sanitizer(properties, { add: value })
       end
     else
-      values = to_rgb(values)
-      values.each do |property, value|
-        send(property, value)
-      end
+      molecule_id = @molecule.keys[0]
+      molecule_to_insert = get_molecule_atomes(properties).merge({ params: values, parent: molecule_id})
+      # puts "****** : #{self.inspect}, molecule : #{@molecule.values}"
+      @molecule[molecule_id][properties] = molecule_to_insert
+      puts "******  molecule : #{@molecule}"
+      # Molecule.new(molecule_to_insert)
+
+      # puts "molecule_to_insert: #{molecule_to_insert}"
+      # values = to_rgb(values)
+      # values.each do |property, value|
+      #   send(property, value)
+      # end
     end
   end
 end
@@ -94,8 +107,8 @@ end
 # this module contains all available molecules
 module MoleculeMethods
   def color(value = nil)
-    getter_setter(:type, value) do
-      particle_sanitizer(:color, value)
+    getter_setter(:color, value) do
+      molecule_sanitizer(:color, value)
     end
   end
 end
@@ -103,66 +116,50 @@ end
 # Keep all spatial methods
 module Spatial
   # test methods below
-  # def left(value = nil, add = nil)
-  #   getter_setter(:left, value) do
-  #     atome_sanitizer(:left, value) do |sanitized_value|
-  #       sanitized_value = pre_processor sanitized_value
-  #       check_add(:left, add)
-  #       atome_creation sanitized_value
-  #       render_property(:left)
-  #       post_processor sanitized_value
-  #       return method_return sanitized_value
-  #     end
-  #   end
-  # end
+  def left(value = nil, stack_property = nil)
+    current_property = :left
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
 
-  def top  (value = nil, stack_property = nil)
+  def top(value = nil, stack_property = nil)
     current_property = :top
-    optional_processor = { pre_process: false, post_process: false }
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
+  def bottom(value = nil, stack_property = nil)
+    current_property = :bottom
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
+  def right(value = nil, stack_property = nil)
+    current_property = :right
+    optional_processor = {}
     properties_common(value, current_property, stack_property, optional_processor)
   end
 end
 
 # this module hold material
 module Material
-  # def child(value = nil, add = nil)
-  #   getter_setter(:child, value) do
-  #     atome_sanitizer(:child, value) do |sanitized_value|
-  #       sanitized_value = pre_processor sanitized_value
-  #       check_add :child, add
-  #       atome_creation sanitized_value
-  #       render_property(:child)
-  #       post_processor sanitized_value
-  #       return method_return sanitized_value
-  #     end
-  #   end
-  # end
+  def child(value = nil, stack_property = nil)
+    current_property = :child
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
 
-  # def type(value = nil, add = nil)
-  #   getter_setter(:type, value) do
-  #     atome_sanitizer(:type, value) do |sanitized_value|
-  #       sanitized_value = pre_processor sanitized_value
-  #       check_add :type, add
-  #       atome_creation sanitized_value
-  #       render_property(:type)
-  #       post_processor sanitized_value
-  #       return method_return sanitized_value
-  #     end
-  #   end
-  # end
+  def type(value = nil, stack_property = nil)
+    current_property = :type
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
 
-  # def preset(value = nil, add = nil)
-  #   getter_setter(:preset, value) do
-  #     atome_sanitizer(:preset, value) do |sanitized_value|
-  #       sanitized_value = pre_processor sanitized_value
-  #       check_add :preset, add
-  #       atome_creation sanitized_value
-  #       render_property(:preset)
-  #       post_processor sanitized_value
-  #       return method_return sanitized_value
-  #     end
-  #   end
-  # end
+  def preset(value = nil, stack_property = nil)
+    current_property = :preset
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
 
   def parent(value = nil, stack_property = nil)
     current_property = :parent
@@ -170,57 +167,35 @@ module Material
     properties_common(value, current_property, stack_property, optional_processor)
   end
 
-  # def red(value = nil)
-  #   getter_setter(:red, value) do
-  #     atome_sanitizer(:red, value) do |sanitized_value|
-  #       sanitized_value = pre_processor sanitized_value
-  #       check_add :red, sanitized_value[:red]
-  #       atome_creation sanitized_value
-  #       render_property(:red)
-  #       post_processor sanitized_value
-  #       return method_return sanitized_value
-  #     end
-  #   end
-  # end
-  #
-  # def green(value = nil)
-  #   getter_setter(:green, value) do
-  #     atome_sanitizer(:green, value) do |sanitized_value|
-  #       sanitized_value = pre_processor sanitized_value
-  #       check_add :green, sanitized_value[:green]
-  #       atome_creation sanitized_value
-  #       render_property(:green)
-  #       post_processor sanitized_value
-  #       return method_return sanitized_value
-  #     end
-  #   end
-  # end
-  #
-  # def blue(value = nil)
-  #   getter_setter(:blue, value) do
-  #     atome_sanitizer(:blue, value) do |sanitized_value|
-  #       sanitized_value = pre_processor sanitized_value
-  #       check_add :blue, sanitized_value[:blue]
-  #       atome_creation sanitized_value
-  #       render_property(:blue)
-  #       post_processor sanitized_value
-  #       return method_return sanitized_value
-  #     end
-  #   end
-  # end
-  #
-  # def alpha(value = nil)
-  #   getter_setter(:alpha, value) do
-  #     atome_sanitizer(:alpha, value) do |sanitized_value|
-  #       sanitized_value = pre_processor sanitized_value
-  #       check_add :alpha, sanitized_value[:alpha]
-  #       atome_creation sanitized_value
-  #       render_property(:alpha)
-  #       post_processor sanitized_value
-  #       return method_return sanitized_value
-  #     end
-  #   end
-  # end
+  def red(value = nil, stack_property = nil)
+    current_property = :red
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
+  def green(value = nil, stack_property = nil)
+    current_property = :green
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
+  def blue(value = nil, stack_property = nil)
+    current_property = :blue
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
+  def alpha(value = nil, stack_property = nil)
+    current_property = :alpha
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
+  def radiation(value = nil, stack_property = nil)
+    current_property = :radiation
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
 end
 
 # this module ....
@@ -229,7 +204,7 @@ module Electron
     value = send("#{property}_pre_processor", value) if options[:pre_process]
     # if the pre_processor decide that the value shouldn't be store and render it return nil
     atome_creation(property, value, stack_property) if options[:store_property]
-    property_rendering(property, value) if options[:render_property]
+    send_to_render_engine(property, value) if options[:render_property]
     value = send("#{property}_post_processor", value) if options[:post_process]
     method_return value
   end
@@ -246,12 +221,12 @@ module Electron
   def parent_pre_processor(params)
     # here we can decide to render or not the property setting store render_property to false
     # we can also decide to store or not the atome setting store_property property to false
-    puts 'Pre processing applied!'
+    # puts '- Parent pre processing applied!'
     params
   end
 
   def parent_post_processor(params)
-    puts 'post processing done!'
+    # puts '- Parent post processing applied!'
     params
   end
 
@@ -282,7 +257,6 @@ class Molecule
   def atome_creation(property, value, stack_property)
     check_stack_property property, stack_property
     a_id = Universe.identity
-    # puts atome
     @molecule[a_id] = { property => value }
     Universe.atomes(a_id)
   end
@@ -349,17 +323,12 @@ class Molecule
     find_property(property) do |properties_found|
       @molecule.delete(properties_found)
     end
-    # @molecule.values.delete_if { |atome_found| atome_found[property] }
   end
 
-  # def send_to_render_engine(atome_to_render)
-  #   puts "send to render engine : #{atome_to_render}"
-  # end
-
-  def property_rendering(property, value)
+  def send_to_render_engine(property, value)
     render_engines = @molecule[:render] || [:html]
     render_engines.each do |render_engine|
-      puts "rendering prop '#{property}' with value  '#{value} width engine #{render_engine}'"
+      puts "rendering prop: '#{property}'  value:  '#{value}, with engine : #{render_engine}'"
     end
   end
 
@@ -376,7 +345,12 @@ class Molecule
   end
 end
 
-# a = Atome.new({ type: :shape, preset: :box, child: %i[sphere circle], color: %i[red yellow], left: 30, top: 66 })
+a = Molecule.new({ type: :shape, parent: :view, preset: :box, child: %i[sphere circle],
+                   color: %i[red yellow], left: 30, top: 66 })
+a.color({ add: :green })
+# a = Molecule.new({ type: :shape, parent: :view, top: 33 })
+# puts a.inspect
+
 # a.color({ add: :green })
 # a.color(:pink)
 # a=Atome.new({})
@@ -441,8 +415,7 @@ end
 # c = Molecule.new({ type: :shape, child: :toto, preset: :box, color: %i[red yellow], left: [30, 55], top: 66 })
 # a = Molecule.new({ type: :shape, child: :toto, preset: :box, color: %i[red yellow], left: [30, 55], top: 66 })
 # a= Atome.new({left: [77, 99]})
-a = Molecule.new({ parent: %i[hello super], top: 33 })
-puts a.inspect
+# a = Molecule.new({ parent: %i[hello super], top: 33 })
 # a.add({ parent: :the_father })
 # a.left(66)
 
