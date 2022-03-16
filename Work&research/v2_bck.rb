@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
+
 # the aim of this class, is to allow property extra treatment before reading datas
 class Atome
+
+  def inspect
+  #this method allow to make atome more human readable
+    self.q_read
+  end
+
   def initialize(value)
     @value = value
   end
@@ -14,6 +21,10 @@ class Atome
       broadcast(property, value)
     end
     Atome.new(value)
+  end
+
+  def a_id
+     @value
   end
 
   def q_read
@@ -50,7 +61,6 @@ module Universe
   def identity
     username = Universe.username
     atomes = Universe.atomes
-    puts "identity created #{object_id}"
     :"a_#{object_id}_#{username}_#{Time.now.strftime('%Y%m%d%H%M%S')}_#{atomes.length}"
   end
 
@@ -89,7 +99,7 @@ module MoleculeHelper
         molecule_sanitizer(properties, { add: value })
       end
     else
-      molecule_id = @molecule.keys[0]
+      molecule_id = a_id
       molecule_to_insert = get_molecule_atomes(properties).merge({ params: values })
       # puts "****** : #{self.inspect}, molecule : #{@molecule.values}"
       @molecule[molecule_id][properties] = molecule_to_insert
@@ -246,16 +256,6 @@ class Molecule
   include MoleculeMethods
   include Converter
 
-  def initialize(params = {})
-    a_id = identity
-    @molecule = { a_id => { molecule: nil } }
-    Universe.atomes(a_id)
-    default_values = { parent: :view }
-    params = default_values.merge(params)
-    params.each_pair do |property, value|
-      send(property, value)
-    end
-  end
 
   #   def atome_creation(property, value)
   #     a_id = Universe.identity
@@ -265,15 +265,35 @@ class Molecule
   #     # molecules << a_id
   #   end
 
+  def initialize(params = {})
+    @molecule={}
+    # This method is call when a new molecule is needed to hold all peroperties (atomes)
+    # please note that the molecule itself is an atome
+    particle= atome_creation(:type, :entity,true)
+    # puts particle
+    # a_id = identity
+    # @molecule = { a_id => { molecule: nil } }
+    # Universe.atomes(a_id)
+    default_values = { parent: :view, type: :particle }
+    params = default_values.merge(params)
+    # now wee wil parse the params passed and create an atome for each property found
+    params.each_pair do |property, value|
+      send(property, value)
+    end
+  end
+
+
   def atome_creation(property, value, need_to_be_stacked)
     # the method below delete any identical property if it doesnt need to be stack
     delete_property(property) unless need_to_be_stacked
     a_id = identity
     @molecule[a_id] = { property => Atome.atomise(property, value) }
-    # puts @molecule
-    #
-    # @molecule.values[0].merge(@molecule[a_id] = { property => value })
-    # Universe.atomes(a_id)
+    Universe.atomes(a_id)
+    @molecule
+  end
+
+  def a_id
+    @molecule.keys[0]
   end
 
   def check_hash_content(property, values_to_parse, &block)
@@ -357,18 +377,33 @@ class Molecule
   end
 end
 
-a = Molecule.new({ type: :shape, parent: :view, preset: :box, child: %i[sphere circle],
-                   # color: %i[red yellow],
-                   left: 30, top: 66 })
+a = Molecule.new({ type: :shape, parent: :view, preset: :box})
+puts a.inspect
+# a = Molecule.new({ { type: :shape, parent: :view, preset: :box,, child: %i[sphere circle],
+#                    # color: %i[red yellow],
+#                    left: 30, top: 66 })
 
-b = Molecule.new({ type: :text, parent: :view, preset: :box, child: :the_object,
-                   # color: %i[red yellow],
-                   left: 06, top: 99 })
+# b = Molecule.new({ type: :text, parent: :view, preset: :box, child: :the_object,
+#                    # color: %i[red yellow],
+#                    left: 06, top: 99 })
+
+# puts a.a_id
+# puts b.a_id
 # a.color({ add: :green })
 # a.type(:choco)
 #
 # puts "---------------------------"
 # puts a.parent
+#  a.parent.each do |val|
+#    puts val.q_read.class
+# end
+# puts a.a_id
+# puts a.inspect
+# b= a.parent.a_id
+# puts b
+# puts b[:parent]
+
+
 # puts a.inspect
 # a = Molecule.new({ type: :shape, parent: :view, top: 33 })
 # puts a.inspect
@@ -505,5 +540,6 @@ b = Molecule.new({ type: :text, parent: :view, preset: :box, child: :the_object,
 # # hash[:a_id]= hash.values[0].merge(verif)
 # hash[:a_id]= hash[:a_id].merge(verif)
 # puts hash
+
 
 
