@@ -24,7 +24,7 @@ class Atome
   end
 
   def a_id
-     @value
+    @value
   end
 
   def q_read
@@ -402,7 +402,7 @@ device= Molecule.new({ type: :device, name: :mac_mini, view: :my_view})
 my_doc=Molecule.new({ type: :shape,preset: :box, name: :the_box, id: :first_box})
 
 
-puts my_doc.inspect
+puts user.inspect
 # a = Molecule.new({ { type: :shape, parent: :view, preset: :box,, child: %i[sphere circle],
 #                    # color: %i[red yellow],
 #                    left: 30, top: 66 })
