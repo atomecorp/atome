@@ -402,7 +402,6 @@ device= Molecule.new({ type: :device, name: :mac_mini, view: :my_view})
 my_doc=Molecule.new({ type: :shape,preset: :box, name: :the_box, id: :first_box})
 
 
-
 puts my_doc.inspect
 # a = Molecule.new({ { type: :shape, parent: :view, preset: :box,, child: %i[sphere circle],
 #                    # color: %i[red yellow],
