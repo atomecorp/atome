@@ -160,6 +160,24 @@ module Material
     properties_common(value, current_property, stack_property, optional_processor)
   end
 
+  def id(value = nil, stack_property = nil)
+    current_property = :id
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
+  def name(value = nil, stack_property = nil)
+    current_property = :name
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
+  def view(value = nil, stack_property = nil)
+    current_property = :view
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
   def type(value = nil, stack_property = nil)
     current_property = :type
     optional_processor = {}
@@ -377,8 +395,15 @@ class Molecule
   end
 end
 
-a = Molecule.new({ type: :shape, parent: :view, preset: :box})
-puts a.inspect
+user = Molecule.new({ type: :user, name: :jeezs})
+device= Molecule.new({ type: :device, name: :mac_mini, view: :my_view})
+     Molecule.new({ type: :toolbox, name: :intuition})
+    view = Molecule.new({ type: :view, name: :view, id: :my_view})
+my_doc=Molecule.new({ type: :shape,preset: :box, name: :the_box, id: :first_box})
+
+
+
+puts my_doc.inspect
 # a = Molecule.new({ { type: :shape, parent: :view, preset: :box,, child: %i[sphere circle],
 #                    # color: %i[red yellow],
 #                    left: 30, top: 66 })

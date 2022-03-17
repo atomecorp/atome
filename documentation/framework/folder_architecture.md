@@ -26,7 +26,7 @@ The folders dedicated to the atome framework are :
 
 6- plugins : (Hold Cordova's plugins no use for us right now)
 
-7- ressources : (parts of Cordova , used to store application icons and splashscreen)
+7- resources : (parts of Cordova , used to store application icons and splashscreen)
 
 8- scripts :  contains four files
 - Bootstrap automatise the install of atome framework
