@@ -84,7 +84,9 @@ module MoleculeHelper
   def molecules_types_atomes
     { color: { red: 0, green: 0, blue: 0, alpha: 1, left: 0, top: 0, bottom: nil, right: nil, radiation: :linear },
       position: { left: 0, top: 0, right: 0, bottom: 0, back: 0, front: 0 },
-      dimension: { width: 100, height: 100, depth: 1 } }
+      dimension: { width: 100, height: 100, depth: 1 },
+      atome: {}
+    }
   end
 
   def get_molecule_atomes(molecule_type)
@@ -100,10 +102,10 @@ module MoleculeHelper
       end
     else
       molecule_id = a_id
-      molecule_to_insert = get_molecule_atomes(properties).merge({ params: values })
+      # molecule_to_insert = get_molecule_atomes(properties).merge({ params: values })
       # puts "****** : #{self.inspect}, molecule : #{@molecule.values}"
-      @molecule[molecule_id][properties] = molecule_to_insert
-      puts "****** the molecule id found is not the id of the molecule but the id of the atome (parent)\n  molecule content: #{@molecule}"
+      # @molecule[molecule_id][properties] = molecule_to_insert
+      # puts "****** the molecule id found is not the id of the molecule but the id of the atome (parent)\n  molecule content: #{@molecule}"
       # Molecule.new(molecule_to_insert)
 
       # puts "molecule_to_insert: #{molecule_to_insert}"
@@ -120,6 +122,12 @@ module MoleculeMethods
   def color(value = nil)
     getter_setter(:color, value) do
       molecule_sanitizer(:color, value)
+    end
+  end
+
+  def atome(value = nil)
+    getter_setter(:atome, value) do
+      molecule_sanitizer(:atome, value)
     end
   end
 end
@@ -292,8 +300,10 @@ class Molecule
     # a_id = identity
     # @molecule = { a_id => { molecule: nil } }
     # Universe.atomes(a_id)
-    default_values = { parent: :view, type: :particle }
-    params = default_values.merge(params)
+    # default_values = { type: :particle }
+    # params = default_values.merge(params)
+    puts params
+
     # now wee wil parse the params passed and create an atome for each property found
     params.each_pair do |property, value|
       send(property, value)
@@ -394,15 +404,17 @@ class Molecule
     @molecule
   end
 end
+# universe=Molecule.new({name: :universe,atome: { type: :user, name: :jeezs}})
+universe=Molecule.new(atome: { type: :universe, name: :mind})
 
-user = Molecule.new({ type: :user, name: :jeezs})
-device= Molecule.new({ type: :device, name: :mac_mini, view: :my_view})
-     Molecule.new({ type: :toolbox, name: :intuition})
-    view = Molecule.new({ type: :view, name: :view, id: :my_view})
-my_doc=Molecule.new({ type: :shape,preset: :box, name: :the_box, id: :first_box})
+# user = Molecule.new({ type: :user, name: :jeezs})
+# device= Molecule.new({ type: :device, name: :mac_mini, view: :my_view})
+#      Molecule.new({ type: :toolbox, name: :intuition})
+#     view = Molecule.new({ type: :view, name: :view, id: :my_view})
+# my_doc=Molecule.new({ type: :shape,preset: :box, name: :the_box, id: :first_box})
 
 
-puts user.inspect
+puts universe.inspect
 # a = Molecule.new({ { type: :shape, parent: :view, preset: :box,, child: %i[sphere circle],
 #                    # color: %i[red yellow],
 #                    left: 30, top: 66 })
