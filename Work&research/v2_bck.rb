@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-
 # the aim of this class, is to allow property extra treatment before reading datas
 class Atome
 
   def inspect
-  #this method allow to make atome more human readable
+    #this method allow to make atome more human readable
     self.q_read
   end
 
@@ -59,13 +58,17 @@ end
 # module Universe contain basic elements
 module Universe
   def identity
-    username = Universe.username
+    creator = Universe.creator
     atomes = Universe.atomes
-    :"a_#{object_id}_#{username}_#{Time.now.strftime('%Y%m%d%H%M%S')}_#{atomes.length}"
+    :"a_#{object_id}_#{Universe.user_active}_#{Time.now.strftime('%Y%m%d%H%M%S')}_#{atomes.length}"
   end
 
-  def self.username
-    :jeezs
+  def self.creator(user = nil)
+    user ||= :universe
+    @user = user
+  end
+  def self.user_active
+    @user
   end
 
   def self.atomes(new_atome = nil)
@@ -135,6 +138,13 @@ end
 # Keep all spatial methods
 module Spatial
   # test methods below
+  #
+  def universe(value = nil, stack_property = nil)
+    current_property = :universe
+    optional_processor = {}
+    properties_common(value, current_property, stack_property, optional_processor)
+  end
+
   def left(value = nil, stack_property = nil)
     current_property = :left
     optional_processor = {}
@@ -282,7 +292,6 @@ class Molecule
   include MoleculeMethods
   include Converter
 
-
   #   def atome_creation(property, value)
   #     a_id = Universe.identity
   #     # @molecule << { a_id: a_id }.merge(atome)
@@ -290,26 +299,26 @@ class Molecule
   #     # Universe.atomes(a_id)
   #     # molecules << a_id
   #   end
+  #
 
   def initialize(params = {})
-    @molecule={}
+    @molecule = {}
     # This method is call when a new molecule is needed to hold all peroperties (atomes)
     # please note that the molecule itself is an atome
-    particle= atome_creation(:type, :entity,true)
+    # particle= atome_creation(:type, :entity,true)
     # puts particle
     # a_id = identity
     # @molecule = { a_id => { molecule: nil } }
     # Universe.atomes(a_id)
     # default_values = { type: :particle }
     # params = default_values.merge(params)
-    puts params
+    # puts params
 
     # now wee wil parse the params passed and create an atome for each property found
     params.each_pair do |property, value|
       send(property, value)
     end
   end
-
 
   def atome_creation(property, value, need_to_be_stacked)
     # the method below delete any identical property if it doesnt need to be stack
@@ -404,8 +413,13 @@ class Molecule
     @molecule
   end
 end
+
 # universe=Molecule.new({name: :universe,atome: { type: :user, name: :jeezs}})
-universe=Molecule.new(atome: { type: :universe, name: :mind})
+Universe.creator(:jeezs)
+puts Universe.user_active
+universe=Molecule.new({ universe: :mind })
+
+# universe=Molecule.new(atome: { universe: :mind})
 
 # user = Molecule.new({ type: :user, name: :jeezs})
 # device= Molecule.new({ type: :device, name: :mac_mini, view: :my_view})
@@ -413,8 +427,24 @@ universe=Molecule.new(atome: { type: :universe, name: :mind})
 #     view = Molecule.new({ type: :view, name: :view, id: :my_view})
 # my_doc=Molecule.new({ type: :shape,preset: :box, name: :the_box, id: :first_box})
 
-
 puts universe.inspect
+
+
+# module Creator
+#
+#   def self.user
+#     @user
+#   end
+#   def self.creator(user = nil)
+#     user ||= :universe
+#     @user = user
+#   end
+# end
+# puts "------"
+# puts Creator.creator
+# Creator.creator(:jeezs)
+# puts Creator.user
+
 # a = Molecule.new({ { type: :shape, parent: :view, preset: :box,, child: %i[sphere circle],
 #                    # color: %i[red yellow],
 #                    left: 30, top: 66 })
@@ -438,7 +468,6 @@ puts universe.inspect
 # b= a.parent.a_id
 # puts b
 # puts b[:parent]
-
 
 # puts a.inspect
 # a = Molecule.new({ type: :shape, parent: :view, top: 33 })
@@ -578,4 +607,4 @@ puts universe.inspect
 # puts hash
 
 
-
+puts "------ New start ------"
