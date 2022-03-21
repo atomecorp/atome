@@ -56,9 +56,9 @@ module Converter
 end
 
 # module Universe contain basic elements
-module Universe
-  def identity
-    creator = Universe.creator
+class Universe
+  def self.identity
+    # creator = Universe.creator
     atomes = Universe.atomes
     :"a_#{object_id}_#{Universe.user_active}_#{Time.now.strftime('%Y%m%d%H%M%S')}_#{atomes.length}"
   end
@@ -67,6 +67,7 @@ module Universe
     user ||= :universe
     @user = user
   end
+
   def self.user_active
     @user
   end
@@ -155,6 +156,7 @@ module Spatial
     current_property = :top
     optional_processor = {}
     properties_common(value, current_property, stack_property, optional_processor)
+    @top = self
   end
 
   def bottom(value = nil, stack_property = nil)
@@ -263,6 +265,7 @@ module Electron
         properties_router(current_property, sanitized_value, options, stack_property)
       end
     end
+    @top = self
   end
 
   def parent_pre_processor(params)
@@ -284,7 +287,7 @@ end
 
 # Class  Molecule
 class Molecule
-  include Universe
+  # include Universe
   include Electron
   include Spatial
   include Material
@@ -323,9 +326,10 @@ class Molecule
   def atome_creation(property, value, need_to_be_stacked)
     # the method below delete any identical property if it doesnt need to be stack
     delete_property(property) unless need_to_be_stacked
-    a_id = identity
-    @molecule[a_id] = { property => Atome.atomise(property, value) }
-    Universe.atomes(a_id)
+    a_id = Universe.identity
+    atome_number = Universe.atomes.length
+    @molecule[atome_number] = { property => Atome.atomise(property, value) }
+    Universe.atomes(self)
     @molecule
   end
 
@@ -373,9 +377,7 @@ class Molecule
 
   def getter_setter(property, value)
     if value.nil?
-      values_found = get_property_content property
-      Atome.new({ property => values_found })
-      # {  property => values_found }
+      instance_variable_get "@#{property}"
     else
       yield value
     end
@@ -416,8 +418,11 @@ end
 
 # universe=Molecule.new({name: :universe,atome: { type: :user, name: :jeezs}})
 Universe.creator(:jeezs)
-puts Universe.user_active
-universe=Molecule.new({ universe: :mind })
+universe = Molecule.new({ universe: :mind, top: 44 })
+
+# puts Universe.user_active
+# puts universe.inspect
+puts atome_number = Universe.atomes[1].left.inspect
 
 # universe=Molecule.new(atome: { universe: :mind})
 
@@ -426,9 +431,6 @@ universe=Molecule.new({ universe: :mind })
 #      Molecule.new({ type: :toolbox, name: :intuition})
 #     view = Molecule.new({ type: :view, name: :view, id: :my_view})
 # my_doc=Molecule.new({ type: :shape,preset: :box, name: :the_box, id: :first_box})
-
-puts universe.inspect
-
 
 # module Creator
 #
@@ -606,5 +608,4 @@ puts universe.inspect
 # hash[:a_id]= hash[:a_id].merge(verif)
 # puts hash
 
-
-puts "------ New start ------"
+# puts "------ New start ------"
