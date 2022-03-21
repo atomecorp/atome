@@ -419,11 +419,10 @@ end
 # universe=Molecule.new({name: :universe,atome: { type: :user, name: :jeezs}})
 Universe.creator(:jeezs)
 universe = Molecule.new({ universe: :mind, top: 44 })
-
+puts universe.inspect
 # puts Universe.user_active
 # puts universe.inspect
-puts atome_number = Universe.atomes[1].left.inspect
-
+# puts atome_number = Universe.atomes[1].left.inspect
 # universe=Molecule.new(atome: { universe: :mind})
 
 # user = Molecule.new({ type: :user, name: :jeezs})
