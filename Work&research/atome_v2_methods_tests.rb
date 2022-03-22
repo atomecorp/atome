@@ -11,11 +11,11 @@ module AtomeDummyMethods
     properties_common(property, value, stack_property, optional_processor)
   end
 
-  # def left(value = nil, stack_property = nil)
-  #  property = :left
-  #   optional_processor = {}
-  #   properties_common(property, value, stack_property, optional_processor)
-  # end
+  def left(value = nil, stack_property = nil)
+   property = :left
+    optional_processor = {}
+    properties_common(property, value, stack_property, optional_processor)
+  end
 
   def top(value = nil, stack_property = nil)
     property = :top
