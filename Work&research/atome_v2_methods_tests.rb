@@ -11,6 +11,12 @@ module AtomeDummyMethods
     properties_common(property, value, stack_property, optional_processor)
   end
 
+  def parent(value = nil, stack_property = nil)
+    property = :parent
+    optional_processor = { pre_process: true, post_process: true }
+    properties_common(property, value, stack_property, optional_processor)
+  end
+
   def left(value = nil, stack_property = nil)
    property = :left
     optional_processor = {}
@@ -29,11 +35,11 @@ module AtomeDummyMethods
   #   properties_common(property, value, stack_property, optional_processor)
   # end
   #
-  # def right(value = nil, stack_property = nil)
-  #   property = :right
-  #   optional_processor = {}
-  #   properties_common(property, value, stack_property, optional_processor)
-  # end
+  def right(value = nil, stack_property = nil)
+    property = :right
+    optional_processor = {}
+    properties_common(property, value, stack_property, optional_processor)
+  end
   #
   # def child(value = nil, stack_property = nil)
   #   property = :child
@@ -71,11 +77,7 @@ module AtomeDummyMethods
   #   properties_common(property, value, stack_property, optional_processor)
   # end
   #
-  # def parent(value = nil, stack_property = nil)
-  #   property = :parent
-  #   optional_processor = { pre_process: true, post_process: true }
-  #   properties_common(property, value, stack_property, optional_processor)
-  # end
+
   #
   # def red(value = nil, stack_property = nil)
   #   property = :red
