@@ -60,7 +60,7 @@ module Electron
       if @atome
         @atome[property]
       else
-        puts " we  really need to pass the atome here or think about another architecture. property: #{property}, @atome : #{@atome}"
+        puts "we really need to pass the atome here or think about another architecture. property: #{property}, @atome : #{@atome}"
       end
     else
       # We we will create anew atome but before we must check and sanitize the datas passed
@@ -118,7 +118,7 @@ module Electron
     unless @monitor.nil? || @monitor == false
       # if the atome is monitored it broadcast the changes
       broadcast(property, value)
-     end
+    end
     if need_to_be_stacked
       # in this case we get the old property's value or create the property if it doesn't exist
       # then we merge with the values to be added
@@ -147,7 +147,7 @@ module Electron
   end
 
   def delete_property(property)
-    @atome[property]=nil
+    @atome[property] = nil
     # find_property(property) do |properties_found|
     #   # @atome.delete(properties_found)
     # end
@@ -165,7 +165,6 @@ class Atome
       send(property, value)
     end
   end
-
 
   def send_to_render_engine(property, value)
     render_engines = @atome[:render] || [:html]
@@ -208,10 +207,10 @@ class Particle < Atome
   end
 
   def delete(val)
-    if val== true
+    if val == true
       # puts @value
-        @value.values[0][:property]
-       puts "we have to pass the 'atome' to to be able to delete the wanted property"
+      @value.values[0][:property]
+      puts "we have to pass the 'atome' to to be able to delete the wanted property"
     end
   end
 
@@ -229,12 +228,12 @@ class Particle < Atome
 
   def each(&proc)
     @value.each do |property, value|
-    proc.call(Particle.new({ property => value })) if proc.is_a?(Proc)
+      proc.call(Particle.new({ property => value })) if proc.is_a?(Proc)
+    end
   end
 end
-end
 
-Universe.creator(:jeezs)
+Universe.creator(:eVe)
 verif = Atome.new({ universe: :mind, top: [44, 55] })
 verif.add({ top: 66 })
 verif.add({ left: 33 })
@@ -243,8 +242,12 @@ verif.left(verif.top)
 
 # verif.add({ left: verif.top })
 # puts verif.left
- verif.left.delete(true)
+verif.left.delete(true)
 puts verif.left.parent
+puts verif.inspect
+Universe.atomes.each do |a_found|
+  puts a_found.inspect
+end
 # puts verif.left.class
 # puts verif.top.left(66)
 # universe.add(99)
