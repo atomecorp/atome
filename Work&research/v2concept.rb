@@ -1,9 +1,10 @@
 class Universe
   def self.creator(user)
     @user = user
-    @atomes=[]
+    @atomes = []
     Atome.new({ universe: :universe })
   end
+
   def self.atomes_add(new_atome)
     @atomes << new_atome
   end
@@ -11,6 +12,7 @@ class Universe
   def self.atomes
     @atomes
   end
+
   def self.active_creator
     @user
   end
@@ -41,6 +43,7 @@ end
 class Atome
   def initialize(params)
     @atome = {}
+    puts "check for needs to be stored , rendered?"
     params.each do |property, value|
       @atome[property] = Particle.new(property, value)
     end
@@ -48,51 +51,57 @@ class Atome
     @atome
   end
 
-  def type
-    @atome[:type]
-  end
-
-  def property_common(property, value, dynamic)
+  def property_common(property, value, dynamic, optional_processing)
     if value.nil?
+      # the method is a getter
       @atome[property]
-    elsif value.instance_of?(Particle) && dynamic
-      @atome[property] = value
-    elsif value.instance_of?(Particle)
-      value.value.each do |value_found|
-        @atome[property] = Particle.new(property, value_found)
-      end
+      # elsif value.instance_of?(Particle) && dynamic
+      #   @atome[property] = value
+      # elsif value.instance_of?(Particle)
+      #   value.value.each do |value_found|
+      #     @atome[property] = Particle.new(property, value_found)
+      #   end
     else
-      # send "set_#{property}_value", value
-      @atome[property] = Particle.new(property, value)
+      # @atome[property] = Particle.new(property, value)
+      atome_router(property, value, dynamic, optional_processing)
     end
   end
 
-  def atome_router(property, value, options, stack_property)
-    value = send("#{property}_pre_processor", value) if options[:pre_process]
+  def atome_router(property, value, dynamic, optional_processing)
+    value = send("#{property}_pre_processor", value) if optional_processing[:pre_process]
     # if the pre_processor decide that the value shouldn't be store and render it must return nil
-    atome_creation(property, value, stack_property) if options[:store_property] != false
-    send_to_render_engine(property, value) if options[:render_property] != false
-    value = send("#{property}_post_processor", value) if options[:post_process]
-    method_return value
-    @atome[property]
+    atome_creation(property, value,dynamic) if optional_processing[:store_property] != false
+    # send_to_render_engine(property, value) if options[:render_property] != false
+    # value = send("#{property}_post_processor", value) if options[:post_process]
+    # method_return value
+    # @atome[property]
+
+  end
+
+  def atome_creation(property, value,dynamic)
+    # the method below delete any identical property if it doesnt need to be stack
+    unless @monitor.nil? || @monitor == false
+      # if the atome is monitored it broadcast the changes
+      broadcast(property, value)
+    end
+    # if value.instance_of?(Particle) && dynamic
+    #   @atome[property] = value
+    # elsif value.instance_of?(Particle)
+    #   value.value.each do |value_found|
+    #     @atome[property] = Particle.new(property, value_found)
+    #   end
+    # end
   end
 
   ########## solution
-
-  # def set_preset_value(value)
-  #   @atome[:preset] = Particle.new(:preset, value)
-  # end
-  #
-  # def set_preset_particle(value)
-  #   @atome[:preset] = value
-  # end
-  #
-  # def get_preset
-  #   @atome[:preset]
-  # end
+  def type(value = nil, dynamic = false)
+    optional_processor = { pre_process: false, post_process: false }
+    property_common(:type, value, dynamic, optional_processor)
+  end
 
   def preset(value = nil, dynamic = false)
-    property_common(:preset, value, dynamic)
+    optional_processor = { pre_process: false, post_process: false }
+    property_common(:preset, value, dynamic, optional_processor)
   end
 
   def preset=(value)
