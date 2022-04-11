@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    atome (0.1.00001)
+    atome (0.1.00002)
       artoo (~> 1.8)
       faye-websocket (~> 0.1)
       guard (~> 2.1)
