@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'atome'
+require 'fileutils'
+
+case ARGV[0]
+when 'create'
+  project_name = ARGV[1]
+  Dir.mkdir project_name.to_s
+  current_path = `pwd`.chomp
+  gem_assets_location = File.join(File.dirname(__FILE__), '../vendor/assets/')
+  gem_run_helpers = File.join(File.dirname(__FILE__), '../run_helpers')
+  target_template_location = "#{current_path}/#{project_name}"
+  Dir.entries(gem_assets_location).select do |entry|
+    if File.join(entry) && !%w[. ..].include?(entry)
+      entry = "#{File.dirname(__FILE__)}/../vendor/assets/#{entry}"
+      FileUtils.cp_r entry, target_template_location
+    end
+  end
+  # now run the rake task to build the needed libraries (atome, renderers, etc...)
+  `cd #{gem_run_helpers};rake system_builder #{current_path}/#{project_name}`
+  # `cd #{project_name};bundle update`
+  # `cd #{project_name};bundle install`
+  # `cd #{project_name};bundle exec guard`
+when 'run'
+  case ARGV[0]
+  when :android
+  when :browser
+  when :freebsd
+  when :ios
+  when :linux
+  when :osx
+  when :server
+  when :windows
+  else
+    # type code here
+  end
+
+when 'build'
+  # puts "first parameter is : #{ARGV[1]}"
+  # puts "second parameter is : #{ARGV[2]}"
+  # puts 'run command'
+end

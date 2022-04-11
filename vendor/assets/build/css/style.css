@@ -1,0 +1,53 @@
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html, body {
+
+    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 12px;
+    margin: 0px;
+    padding: 0px;
+    background: rgba(39, 39, 39, 1);
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    color: lightgray;
+}
+
+
+#device {
+    left: 0;
+    font-size: 25px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+}
+
+
+
+.ui-selected{
+    border: #00bb00 solid 3px;
+}
+
+.ui-selecting{
+    border: orange solid 3px;
+}
+
+.selected {
+    outline: 2px dashed white;
+}
+
+
+
+
+
