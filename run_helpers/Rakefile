@@ -6,43 +6,51 @@ require 'uglifier'
 
 Opal.append_path "app"
 
-
-def build_opal_browser user_project_path, gem_location
-  File.open("#{user_project_path}/myfiledejolietest.txt", "w") do |f|
-    f.puts user_project_path
-    f.puts gem_location
+def build_opal_browser(user_project_path)
+  puts "###### browser path :   #{`pwd`} ######"
+  opal_browser = "#{user_project_path}/build/js/opal/opal_browser.js"
+  File.binwrite opal_browser, Opal::Builder.build("../lib/atome/renderers/opal/opal_browser.rb").to_s
+  uglified = Uglifier.new.compile(File.read(opal_browser))
+  File.open(opal_browser, "w") do |f|
+    f.puts uglified
   end
 end
 
+def build_atome_kernel(user_project_path,gem_location)
+  atome_kernel = "#{user_project_path}/build/js/atome/kernel.js"
+  builder = Opal::Builder.new
+  builder.append_paths("#{gem_location}/../lib/")
+  File.binwrite atome_kernel, builder.build("#{gem_location}/../lib/atome.rb").to_s
+end
 
-def build_atome_kernel user_project_path, gem_location
-  File.open("#{user_project_path}/myfiledejolietest.txt", "w") do |f|
-    f.puts user_project_path
-    f.puts gem_location
+def build_opal_parser(user_project_path)
+  opal_parser = "#{user_project_path}/build/js/opal/opal_parser.js"
+  File.binwrite opal_parser, Opal::Builder.build("../lib/atome/renderers/opal/opal_parser.rb").to_s
+  uglified = Uglifier.new.compile(File.read(opal_parser))
+  File.open(opal_parser, "w") do |f|
+    f.puts uglified
   end
 end
 
-def build_opal_parser user_project_path, gem_location
-  File.open("#{user_project_path}/myfiledejolietest.txt", "w") do |f|
-    f.puts user_project_path
-    f.puts gem_location
+def build_user_code(user_project_path)
+  application = "#{user_project_path}/build/js/application.js"
+  File.binwrite application, Opal::Builder.build("../vendor/assets/index.rb").to_s
+  uglified = Uglifier.new.compile(File.read(application))
+  File.open(application, "w") do |f|
+    f.puts uglified
   end
 end
-def build_user_code user_project_path, gem_location
-  File.open("#{user_project_path}/myfiledejolietest.txt", "w") do |f|
-    f.puts user_project_path
-    f.puts gem_location
-  end
-end
-
 
 task :system_builder do
   user_project_path=ARGV[1]
   gem_location = File.join(File.dirname(__FILE__))
-  poil user_project_path, gem_location
+  build_atome_kernel(user_project_path,gem_location)
+  build_opal_browser(user_project_path)
+  build_opal_parser(user_project_path)
+  build_user_code(user_project_path)
 end
-task :build do
 
+task :build do
   # code_to_debug = File.read("./app/app.rb")
 
   # ############# start of the patch

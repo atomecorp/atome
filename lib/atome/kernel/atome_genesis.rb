@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 # this class hold all created atomes
+
+
 class Universe
   def self.initialize
     Atome.new({ type: :user })

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-require_relative 'atome/version'
-require 'atome/kernel/properties/geometry'
-require 'atome/kernel/atome_genesis'
-puts "look why this file is already run\n"*9
+require 'atome/version.rb'
+require 'atome/kernel/properties/geometry.rb'
+require 'atome/kernel/atome_genesis.rb'
+puts "look why this file code is executed\n"*9
 #  current_path_location = `pwd`.chomp
 #  temp_location = '/tmp/com.atome.one'
 #  user_script_location=File.join(File.dirname(__FILE__), '../tmp/')
