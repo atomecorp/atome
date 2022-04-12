@@ -6,13 +6,40 @@ require 'uglifier'
 
 Opal.append_path "app"
 
-task :system_builder do
-  user_project_path=ARGV[1]
-  gem_location = File.join(File.dirname(__FILE__))
+
+def build_opal_browser user_project_path, gem_location
   File.open("#{user_project_path}/myfiledejolietest.txt", "w") do |f|
     f.puts user_project_path
     f.puts gem_location
   end
+end
+
+
+def build_atome_kernel user_project_path, gem_location
+  File.open("#{user_project_path}/myfiledejolietest.txt", "w") do |f|
+    f.puts user_project_path
+    f.puts gem_location
+  end
+end
+
+def build_opal_parser user_project_path, gem_location
+  File.open("#{user_project_path}/myfiledejolietest.txt", "w") do |f|
+    f.puts user_project_path
+    f.puts gem_location
+  end
+end
+def build_user_code user_project_path, gem_location
+  File.open("#{user_project_path}/myfiledejolietest.txt", "w") do |f|
+    f.puts user_project_path
+    f.puts gem_location
+  end
+end
+
+
+task :system_builder do
+  user_project_path=ARGV[1]
+  gem_location = File.join(File.dirname(__FILE__))
+  poil user_project_path, gem_location
 end
 task :build do
 
