@@ -20,7 +20,7 @@ require "securerandom"
 require "mail"
 require "digest"
 require "filewatcher"
-
+require "artoo"
 
 
 class String
@@ -51,14 +51,13 @@ class App < Roda
     end
   end
 
-  index_content = File.read("../view/index.html")
+  index_content = File.read("../build/index.html")
 
   # index_content = index_content.gsub('<script type="text/javascript" src="../cordova.js"></script>', "")
   # below an attempt to load atome in pure ruby not opal
-  require "../atome/lib/atome.rb"
-  box("je sais pas ou ca passe")
-  opts[:root] = '../view'
-  plugin :static, %w[/css /js /medias], root: '../view'
+  require 'atome'
+  opts[:root] = '../build'
+  plugin :static, %w[/css /js /medias], root: '../build'
   # plugin "faye/websocket"
   route do |r|
     if Faye::WebSocket.websocket?(env)
