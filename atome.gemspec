@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name = 'atome'
   spec.version = Atome::VERSION
   spec.authors = ['Jean-Eric Godard']
-  spec.email = ['jeezs@jeezs.net']
+  spec.email = ['jeezs@atopme.one']
 
   spec.summary = 'the creative framework'
   spec.description = 'the creative framework.'
