@@ -7,7 +7,7 @@
 
 require 'roda'
  Thread.new do
-  sleep 0.9
+  sleep 1.5
   system("open", "http://127.0.0.1:9292")
 end
 

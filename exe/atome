@@ -2,6 +2,23 @@
 # frozen_string_literal: true
 
 require 'fileutils'
+
+def run option = :browser, location = nil
+  case option
+  when :server
+    require 'atome'
+    puts "######"
+    if location
+      `cd ./#{location}/server;rackup --server puma --port 9292  --env production`
+    else
+      `cd ./server;rackup --server puma --port 9292  --env production`
+    end
+  else
+    # nothing for now
+  end
+
+end
+
 case ARGV[0]
 when 'create'
   project_name = ARGV[1]
@@ -18,6 +35,7 @@ when 'create'
   end
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
   `cd #{app_builder_helpers};rake system_builder #{current_path}/#{project_name}`
+  run(:server, project_name)
 when 'run'
   case ARGV[1]
   when 'android'
@@ -27,8 +45,7 @@ when 'run'
   when 'linux'
   when 'osx'
   when 'server'
-    require 'atome'
-    `cd ./server;rackup --server puma --port 9292  --env production`
+    run(:server)
   when 'windows'
   else
     # type code here

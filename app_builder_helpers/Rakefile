@@ -9,35 +9,40 @@ require 'uglifier'
 Opal.append_path 'app'
 
 def build_opal_browser(user_project_path)
-  opal_browser = "#{user_project_path}/build/js/opal/opal_browser.js"
-  File.binwrite opal_browser, Opal::Builder.build('../lib/atome/renderers/opal/opal_browser.rb').to_s
-  uglified = Uglifier.new.compile(File.read(opal_browser))
-  File.open(opal_browser, 'w') do |f|
+  browser_js = "#{user_project_path}/build/js/opal/opal_browser.js"
+  browser_content= Opal::Builder.build('../lib/atome/renderers/opal/opal_browser.rb').to_s
+  browser_content.gsub!("$$$('STDERR')['$write_proc='](typeof(process) === 'object' && typeof(process.stderr) === 'object' ? function(s){process.stderr.write(s)} : function(s){console.warn(s)});","$$$('STDERR')['$write_proc='](typeof(process) === 'object' && typeof(process.stderr) === 'object' ? function(s){process.stderr.write(s)} : function(s){});")
+  uglified = Uglifier.new.compile(browser_content)
+  File.open(browser_js, 'w') do |f|
     f.puts uglified
   end
 end
 
 def build_atome_kernel(user_project_path, gem_location)
-  atome_kernel = "#{user_project_path}/build/js/atome/kernel.js"
+  kernel_js = "#{user_project_path}/build/js/atome/kernel.js"
   builder = Opal::Builder.new
   builder.append_paths("#{gem_location}/../lib/")
-  File.binwrite atome_kernel, builder.build("#{gem_location}/../lib/atome.rb").to_s
+  kernel_content=builder.build("#{gem_location}/../lib/atome.rb").to_s
+  uglified = Uglifier.new.compile(kernel_content)
+  File.open(kernel_js, 'w') do |f|
+    f.puts uglified
+  end
 end
 
 def build_opal_parser(user_project_path)
-  opal_parser = "#{user_project_path}/build/js/opal/opal_parser.js"
-  File.binwrite opal_parser, Opal::Builder.build('../lib/atome/renderers/opal/opal_parser.rb').to_s
-  uglified = Uglifier.new.compile(File.read(opal_parser))
-  File.open(opal_parser, 'w') do |f|
+  parser_js = "#{user_project_path}/build/js/opal/opal_parser.js"
+  parser_content = Opal::Builder.build('../lib/atome/renderers/opal/opal_parser.rb').to_s
+  uglified = Uglifier.new.compile(parser_content)
+  File.open(parser_js, 'w') do |f|
     f.puts uglified
   end
 end
 
 def build_user_code(user_project_path)
-  application = "#{user_project_path}/build/js/application.js"
-  File.binwrite application, Opal::Builder.build('../vendor/assets/index.rb').to_s
-  uglified = Uglifier.new.compile(File.read(application))
-  File.open(application, 'w') do |f|
+  application_js = "#{user_project_path}/build/js/application.js"
+  application_content= Opal::Builder.build('../vendor/assets/index.rb').to_s
+  uglified = Uglifier.new.compile(application_content)
+  File.open(application_js, 'w') do |f|
     f.puts uglified
   end
 end
