@@ -8,52 +8,54 @@ require 'uglifier'
 
 Opal.append_path 'app'
 
-def build_opal_browser(user_project_path)
+def build_opal_browser(user_project_path, production = false)
   browser_js = "#{user_project_path}/build/js/opal/opal_browser.js"
-  browser_content= Opal::Builder.build('../lib/atome/renderers/opal/opal_browser.rb').to_s
-  browser_content.gsub!("$$$('STDERR')['$write_proc='](typeof(process) === 'object' && typeof(process.stderr) === 'object' ? function(s){process.stderr.write(s)} : function(s){console.warn(s)});","$$$('STDERR')['$write_proc='](typeof(process) === 'object' && typeof(process.stderr) === 'object' ? function(s){process.stderr.write(s)} : function(s){});")
-  uglified = Uglifier.new.compile(browser_content)
+  browser_content = Opal::Builder.build('../lib/atome/renderers/opal/opal_browser.rb').to_s
+  browser_content.gsub!("$$$('STDERR')['$write_proc='](typeof(process) === 'object' && typeof(process.stderr) === 'object' ? function(s){process.stderr.write(s)} : function(s){console.warn(s)});", "$$$('STDERR')['$write_proc='](typeof(process) === 'object' && typeof(process.stderr) === 'object' ? function(s){process.stderr.write(s)} : function(s){});")
+  browser_content = Uglifier.new.compile(browser_content) if production
   File.open(browser_js, 'w') do |f|
-    f.puts uglified
+    f.puts browser_content
   end
 end
 
-def build_atome_kernel(user_project_path, gem_location)
+def build_atome_kernel(user_project_path, gem_location, production = false)
   kernel_js = "#{user_project_path}/build/js/atome/kernel.js"
   builder = Opal::Builder.new
   builder.append_paths("#{gem_location}/../lib/")
-  kernel_content=builder.build("#{gem_location}/../lib/atome.rb").to_s
-  uglified = Uglifier.new.compile(kernel_content)
+  kernel_content = builder.build("#{gem_location}/../lib/atome.rb").to_s
+  kernel_content = Uglifier.new.compile(kernel_content) if production
   File.open(kernel_js, 'w') do |f|
-    f.puts uglified
+    f.puts kernel_content
   end
 end
 
-def build_opal_parser(user_project_path)
+def build_opal_parser(user_project_path, production = false)
   parser_js = "#{user_project_path}/build/js/opal/opal_parser.js"
   parser_content = Opal::Builder.build('../lib/atome/renderers/opal/opal_parser.rb').to_s
-  uglified = Uglifier.new.compile(parser_content)
+  parser_content = Uglifier.new.compile(parser_content) if production
   File.open(parser_js, 'w') do |f|
-    f.puts uglified
+    f.puts parser_content
   end
 end
 
-def build_user_code(user_project_path)
+def build_user_code(user_project_path, production = false)
   application_js = "#{user_project_path}/build/js/application.js"
-  application_content= Opal::Builder.build('../vendor/assets/index.rb').to_s
-  uglified = Uglifier.new.compile(application_content)
+  application_content = Opal::Builder.build('../vendor/assets/index.rb').to_s
+  application_content = Uglifier.new.compile(application_content) if production
   File.open(application_js, 'w') do |f|
-    f.puts uglified
+    f.puts application_content
   end
 end
 
 task :system_builder do
+  # change to false for not production mode and faster compile time
+  production = false
   user_project_path = ARGV[1]
   gem_location = File.join(File.dirname(__FILE__))
-  build_atome_kernel(user_project_path, gem_location)
-  build_opal_browser(user_project_path)
-  build_opal_parser(user_project_path)
-  build_user_code(user_project_path)
+  build_atome_kernel(user_project_path, gem_location, production)
+  build_opal_browser(user_project_path, production)
+  build_opal_parser(user_project_path, production)
+  build_user_code(user_project_path, production)
 end
 
 task :build do

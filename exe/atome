@@ -7,12 +7,30 @@ def run option = :browser, location = nil
   case option
   when :server
     require 'atome'
-    puts "######"
     if location
       `cd ./#{location}/server;rackup --server puma --port 9292  --env production`
     else
       `cd ./server;rackup --server puma --port 9292  --env production`
     end
+  when :browser
+    if location
+      `cd ./#{location}/build;open index.html`
+    else
+      `cd ./build;open index.html`
+    end
+  when :osx
+    puts `pwd`
+    require 'webview_ruby'
+    webview = WebviewRuby::Webview.new
+    webview.set_title("atome")
+    webview.set_size(480, 360)
+    if location
+      webview.navigate("file:/#{`pwd`}/#{location}/build/index.html")
+    else
+      webview.navigate("file:#{`pwd`.chomp}/build/index.html")
+    end
+
+    webview.run
   else
     # nothing for now
   end
@@ -35,15 +53,16 @@ when 'create'
   end
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
   `cd #{app_builder_helpers};rake system_builder #{current_path}/#{project_name}`
-  run(:server, project_name)
 when 'run'
   case ARGV[1]
   when 'android'
   when 'browser'
+    run(:browser)
   when 'freebsd'
   when 'ios'
   when 'linux'
   when 'osx'
+    run(:osx)
   when 'server'
     run(:server)
   when 'windows'
