@@ -3,7 +3,21 @@
 
 require 'fileutils'
 
-def run option = :browser, location = nil
+def delete_all(dir)
+  Dir.foreach(dir) do |e|
+    # Don't bother with . and ..
+    next if %w[. ..].include? e
+    fullname = dir + File::Separator + e
+    if FileTest.directory?(fullname)
+      delete_all(fullname)
+    else
+      File.delete(fullname)
+    end
+  end
+  Dir.delete(dir)
+end
+
+def run(option = :browser, location = nil)
   case option
   when :server
     require 'atome'
@@ -19,17 +33,15 @@ def run option = :browser, location = nil
       `cd ./build;open index.html`
     end
   when :osx
-    puts `pwd`
     require 'webview_ruby'
     webview = WebviewRuby::Webview.new
-    webview.set_title("atome")
+    webview.set_title('atome')
     webview.set_size(480, 360)
     if location
       webview.navigate("file:/#{`pwd`}/#{location}/build/index.html")
     else
       webview.navigate("file:#{`pwd`.chomp}/build/index.html")
     end
-
     webview.run
   else
     # nothing for now
@@ -40,6 +52,8 @@ end
 case ARGV[0]
 when 'create'
   project_name = ARGV[1]
+  force = ARGV[2]
+  delete_all(project_name) if force == 'force'
   Dir.mkdir project_name.to_s
   current_path = `pwd`.chomp
   gem_assets_location = File.join(File.dirname(__FILE__), '../vendor/assets/')
@@ -53,6 +67,7 @@ when 'create'
   end
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
   `cd #{app_builder_helpers};rake system_builder #{current_path}/#{project_name}`
+  run(:server, project_name)
 when 'run'
   case ARGV[1]
   when 'android'
