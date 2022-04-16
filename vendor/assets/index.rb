@@ -139,34 +139,26 @@
 require 'browser/socket'
 
 ws =Browser::Socket.new 'ws://127.0.0.1:9292'
-  # on :open do
-  #   alert :open
-  #   # every 1 do
-  #   #   p :ping
-  #   # end
-  # end
-  #
-  # on :message do |e|
-  #   alert "------ #{e} ------"
-  # end
-  #
-  # send :my_message
-
-# end
-
 ws.on :open do
-  # alert :open
-  ws.send(:hello)
-
-  alert  ws.alive?
-  ws.write(:hello)
 end
 
 ws.on :message do |e|
-    alert "------ #{e.data} ------"
-    ws.send(:hello)
+    alert e.data
 end
 
+
+def send_message(socket,msg)
+if  socket.alive?
+  socket.send(msg )
+else
+  after 0.1 do
+    send_message(socket,msg)
+  end
+end
+
+end
+
+send_message(ws,:hello_folks)
 
 
 
