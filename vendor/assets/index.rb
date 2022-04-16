@@ -136,8 +136,8 @@
 
 
 
-require 'browser/socket'
-
+# require 'browser/socket'
+alert :sogood
 ws =Browser::Socket.new 'ws://127.0.0.1:9292'
 ws.on :open do
 end
@@ -158,7 +158,9 @@ end
 
 end
 
-send_message(ws,:hello_folks)
+my_msg={ foo: "bar" }
+my_msg=JSON.generate(my_msg)
+send_message(ws,my_msg)
 
 
 

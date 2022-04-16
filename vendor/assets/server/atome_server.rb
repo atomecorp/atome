@@ -45,10 +45,10 @@ class App < Roda
       ws.on :message do |event|
         client_data = event.data
         if client_data.is_json?
-          data = JSON.parse(client_data)
-          ws.send(data)
+          # data = JSON.parse(client_data)
+          ws.send("json")
         else
-          ws.send(client_data)
+          ws.send("other")
         end
       end
       ws.on :open do
