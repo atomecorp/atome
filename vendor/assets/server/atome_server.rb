@@ -41,23 +41,21 @@ class App < Roda
   plugin :static, %w[/css /js /medias], root: '../build'
   route do |r|
     if Faye::WebSocket.websocket?(env)
-      ws = Faye::WebSocket.new(env)
-      ws.on :message do |event|
+      websocket = Faye::WebSocket.new(env)
+      websocket.on :message do |event|
         client_data = event.data
         if client_data.is_json?
-          # data = JSON.parse(client_data)
-          ws.send("json")
-        else
-          ws.send("other")
+          # to get hash from data:  data_to_hash = JSON.parse(client_data)
+          websocket.send(client_data)
         end
       end
-      ws.on :open do
-        # ws.send(event.data)
+      websocket.on :open do
+        # websocket.send(event.data)
       end
-      ws.on :close do
-        # ws.send(event.data)
+      websocket.on :close do
+        # websocket.send(event.data)
       end
-      ws.rack_response
+      websocket.rack_response
     end
     r.root do
       r.redirect "/index"

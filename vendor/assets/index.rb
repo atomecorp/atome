@@ -137,7 +137,7 @@
 
 
 # require 'browser/socket'
-alert :sogood
+
 ws =Browser::Socket.new 'ws://127.0.0.1:9292'
 ws.on :open do
 end
