@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 # atome server
 
-if RUBY_PLATFORM == "x64-mingw32"
-  require "em/pure_ruby"
+if RUBY_PLATFORM == 'x64-mingw32'
+  require 'em/pure_ruby'
 end
-require "roda"
-require "sequel"
-require "rufus-scheduler"
-require "faye/websocket"
-require "json"
-require "securerandom"
-require "mail"
-require "digest"
+require 'digest/sha2'
+require 'roda'
+require 'sequel'
+require 'rufus-scheduler'
+require 'faye/websocket'
+require 'json'
+require 'securerandom'
+require 'mail'
+require 'digest'
 
 class String
   def is_json?

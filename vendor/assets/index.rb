@@ -161,6 +161,26 @@ end
 my_msg={ foo: "bar" }
 my_msg=JSON.generate(my_msg)
 send_message(ws,my_msg)
+# aa=Digest::SHA1.hexdigest "foo"
+# alert aa
+# if RUBY_ENGINE.downcase == 'opal'
+#   puts "ok"
+#   # require 'atome/extensions/sha_opal.rb'
+# else
+#   require 'atome/extensions/sha_ruby.rb'
+#   puts "pas ok"
+#
+# end
 
 
+# if RUBY_ENGINE.downcase != 'opal'
+#   alert :no
+# else
+#   alert :good
+# end
+
+# alert calculate_sha("jeezs")
+puts "hellodf=lkjsmlfkjmhljsmfglhkjmflghkjdmlfgkjhmslkfgjh".to_i(36)
+
+puts "foo".hash
 
