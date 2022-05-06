@@ -1,6 +1,45 @@
 require 'net/ping'
 require '../lib/atome.rb'
 
+# to sort :
+
+def atome_methods
+  analyser = %i[listen]
+  communication = %i[share]
+  effect = %i[blur shadow smooth mask clip noise hue]
+  event = %i[touch drag over key scale drop virtual_event]
+  geometry = %i[width height size ratio]
+  generator = %i[say]
+  helper = %i[tactile display orientation status fullscreen system]
+  hierarchy = %i[parent child]
+  identity = %i[atome_id id type language]
+  spatial = %i[x xx y yy z center rotate position alignment disposition]
+  media = %i[content particle group container video shape box star circle sphere text
+             image audio web  path info example cell name visual active inactive]
+  inputs = %i[camera microphone midi keyboard read write]
+  utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
+               code exec cursor data parameter list action]
+  misc = %i[map calendar]
+  material = %i[color opacity border overflow fill blend]
+  behaviour = %i[animation animator]
+  type = %i[user machine shape image video audio input text midi virtual group container particle cell]
+
+  { analysers: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect,
+    inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication,
+    identities: identity, events: event, generators: generator, misc: misc, behaviors: behaviour, type: type }
+end
+
+atomes = []
+atome_methods.each do |key, values|
+  values.each do |value|
+    atomes << value
+  end
+end
+puts atomes
+puts "-----"
+puts atomes.length
+puts "-----"
+
 # interpreter = RUBY_ENGINE.downcase
 # # puts interpreter
 # platform = RUBY_PLATFORM.downcase
@@ -159,19 +198,30 @@ require '../lib/atome.rb'
 #
 # a=box({color:[:orange,{red:0.9, green: 0.3, blue: 0.6}]}, x: 9, y: 9, width: 333, height: 333, id: :my_box)
 # a.x(99).y(3)
-#
-# # 3 kind of atomes :
-#
-#
-#
-#
-#
 
-# def up?(host)
+# # 3 kind of atomes :
+# simple : {x: 33}
+# complex : {shape: {content: [1,3,9,6] }}
+# composite /stacked {color: [{red:0, green: 1, blue: 0.3, alpha: 0.9, diffusion: :radial}]}
+
+# Database architecture:
+# @den : contain atomes of first level : users /machine etc + link to child's aui
+# options : aui not nil and uniq sha for pass
+
+# theres 3 type of data for simples atomes
+# 1- finite value, always formatted from 0 to 1. ex :{ red: 0.3}
+# 2 infinite value. ex: (x= 6876879879876, width: 9898787676576, etc...)
+# 3 string/symbol ( data/ link, etc ..). ex: {path: ".my_pix.png"}
+
+# complex atomes hold their data in a hash
+
+# composite atomes hold their datas ain an array
 #   check = Net::Ping::External.new(host)
 #   check.ping?
 # end
 #
+
+# def up?(host)
 # chost = 'google.com'
 # puts up?(chost) # prints "true" if ping replies
 
@@ -182,8 +232,8 @@ EM.run {
   websocket = Faye::WebSocket::Client.new('ws://127.0.0.1:9292/')
   websocket.on :open do |event|
     p [:websocket_opened]
-    my_msg={ kool: "hyper" }
-    my_msg=JSON.generate(my_msg)
+    my_msg = { kool: "hyper" }
+    my_msg = JSON.generate(my_msg)
     websocket.send(my_msg)
   end
 
@@ -196,3 +246,6 @@ EM.run {
     ws = nil
   end
 }
+
+
+

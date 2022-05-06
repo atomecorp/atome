@@ -39,7 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'guard-rake', '~> 1.0'
   spec.add_runtime_dependency 'image_size', '~> 3.0'
   spec.add_runtime_dependency 'mail', '~> 2.1'
-  spec.add_runtime_dependency 'net-ping', '~> 1.7'
+  spec.add_runtime_dependency 'net-ping', '~> 2.0'
   spec.add_runtime_dependency 'opal', '~> 1.4'
   spec.add_runtime_dependency 'opal-browser', '~> 0.3'
   spec.add_runtime_dependency 'opal-jquery', '~> 0.4'
