@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 # atome server
-
 if RUBY_PLATFORM == 'x64-mingw32'
   require 'em/pure_ruby'
 end
 require 'digest/sha2'
+require 'net/ping'
 require 'roda'
 require 'sequel'
 require 'rufus-scheduler'
@@ -13,6 +13,38 @@ require 'json'
 require 'securerandom'
 require 'mail'
 require 'digest'
+
+
+
+## comment below when test will be done
+File.delete("./eden.sqlite3") if File.exist?("./eden.sqlite3")
+
+
+if File.exist?("eden.sqlite3")
+  eden=Sequel.connect("sqlite://eden.sqlite3")
+else
+  eden=Sequel.connect("sqlite://eden.sqlite3")
+  eden.create_table :objects do
+    primary_key :atome_id
+    String :id
+    String :type
+    String :name
+    String :content
+    Float :numb
+  end
+end
+items = eden[:objects]
+
+# populate the table
+items.insert(name: 'abc', numb: rand * 100)
+items.insert(name: 'def', numb: rand * 100)
+items.insert(name: 'ghi', numb: rand * 100)
+
+
+puts "Item count: #{items.count}"
+
+
+puts "The average price is: #{items.avg(:numb)}"
 
 class String
   def is_json?

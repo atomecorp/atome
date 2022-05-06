@@ -21,21 +21,21 @@ class Atome
     :clermont
   end
 
-  def current_machine
-    platform = RUBY_PLATFORM.downcase
-    output = `#{(platform =~ /win32/) ? 'ipconfig /all' : 'ifconfig'}`
-    case platform
-    when /darwin/
-      $1 if output =~ /en1.*?(([A-F0-9]{2}:){5}[A-F0-9]{2})/im
-    when /win32/
-      $1 if output =~ /Physical Address.*?(([A-F0-9]{2}-){5}[A-F0-9]{2})/im
-      # Cases for other platforms...
-    else
-      nil
-    end
-    # todo check the code above and create a sensible identity
-    platform
-  end
+  # def current_machine
+  #   platform = RUBY_PLATFORM.downcase
+  #   output = `#{(platform =~ /win32/) ? 'ipconfig /all' : 'ifconfig'}`
+  #   case platform
+  #   when /darwin/
+  #     $1 if output =~ /en1.*?(([A-F0-9]{2}:){5}[A-F0-9]{2})/im
+  #   when /win32/
+  #     $1 if output =~ /Physical Address.*?(([A-F0-9]{2}-){5}[A-F0-9]{2})/im
+  #     # Cases for other platforms...
+  #   else
+  #     nil
+  #   end
+  #   # todo check the code above and create a sensible identity
+  #   platform
+  # end
 
   def self.current_user
     @user
@@ -47,23 +47,28 @@ class Atome
     @user = user
   end
 
-  def id_generator(number)
-    charset = Array('A'..'Z') + Array('a'..'z')+Array(0...9)
-    Array.new(number) { charset.sample }.join
-    # "#{Atome.current_user}_#{current_machine}_#{location}_#{(Time.now.to_f * 1000).to_i}"
-    # "object_#{Universe.atomes.length}"
-  end
+  # def id_generator(number)
+  #   charset = Array('A'..'Z') + Array('a'..'z') + Array(0...9)
+  #   Array.new(number) { charset.sample }.join
+  #   # "#{Atome.current_user}_#{current_machine}_#{location}_#{(Time.now.to_f * 1000).to_i}"
+  #   # "object_#{Universe.atomes.length}"
+  # end
 
   def initialize(params = {})
-    default_params = { render: { a_0_id: {engine: :html} },    type: {
-      a_1_id: { particle: true } }}
-    primary_id="#{id_generator(9)}_#{params.keys[0]}".to_sym
-    params = default_params.merge(params.values[0])
+    default_params = { render: [{ engine: [{ value: :html }] }], type: [{ value: :particle }] }
+    # primary_id="#{id_generator(9)}_#{params.keys[0]}".to_sym
+    aui="#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}}"
+    puts "aui is : #{aui}"
+    params = default_params.merge(params)
+    puts params
     @atome = {}
+    puts "-----------------"
     params.each do |property, value|
-      @atome[property]=value
+      puts @atome[property]=value
     end
-    Universe.atomes_add(primary_id, @atome)
+    puts "-----------------"
+
+    Universe.atomes_add(aui, @atome)
   end
 
   def properties_common(value, property, dynamic, optional_processing)
@@ -81,3 +86,4 @@ end
 
 # initialize Universe
 Universe.connected
+puts "is anyone connected"

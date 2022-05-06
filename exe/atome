@@ -67,7 +67,7 @@ when 'create'
   end
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
   `cd #{app_builder_helpers};rake system_builder #{current_path}/#{project_name}`
-  run(:browser, project_name)
+  run(:server, project_name)
 when 'run'
   case ARGV[1]
   when 'android'

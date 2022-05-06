@@ -143,7 +143,7 @@ ws.on :open do
 end
 
 ws.on :message do |e|
-    alert e.data
+  puts "message received from websocket#{ e.data}"
 end
 
 
@@ -184,3 +184,33 @@ puts "hellodf=lkjsmlfkjmhljsmfglhkjmflghkjdmlfgkjhmslkfgjh".to_i(36)
 
 puts "foo".hash
 
+######### Storage example #########
+require 'browser/storage'
+
+$storage = $window.storage
+$storage[:hello] = { jeezs: { data: :kool } }
+
+# alert($storage[:hello][:jeezs])
+$storage[:hello][:jeezs][:toto]=:titi
+puts  "storage content is : #{$storage[:hello]}"
+
+
+# require 'browser/database/sql'
+#
+# db = Browser::Database::SQL.new 'test'
+# db.transaction {|t|
+#   t.query('CREATE TABLE test(ID INTEGER PRIMARY KEY ASC, text TEXT)').then {
+#     t.query('INSERT INTO test (id, text) VALUES(?, ?)', 1, 'huehue')
+#   }.then {
+#     t.query('INSERT INTO test (id, text) VALUES(?, ?)', 2, 'jajaja')
+#   }.then {
+#     t.query('SELECT * FROM test')
+#   }.then {|r|
+#     r.each {|row|
+#       alert row.inspect
+#     }
+#   }
+# }
+
+ ping('apple.com')
+puts  "Universe  identity is : #{Universe.app_identity}"
