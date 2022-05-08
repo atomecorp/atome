@@ -38,28 +38,51 @@ def build_opal_parser(user_project_path, production = false)
   end
 end
 
-def build_user_code(user_project_path, production = false)
+
+def build_user_code(user_project_path, source_code, production = false)
   application_js = "#{user_project_path}/build/js/application.js"
-  application_content = Opal::Builder.build('../vendor/assets/index.rb').to_s
+  builder = Opal::Builder.new
+  builder.append_paths("#{user_project_path}/")
+  application_content = builder.build(source_code).to_s
   application_content = Uglifier.new.compile(application_content) if production
   File.open(application_js, 'w') do |f|
     f.puts application_content
   end
 end
 
-task :system_builder do
-  # change to false for not production mode and faster compile time
-  production = false
-  user_project_path = ARGV[1]
+task :build_user_code, :user_project_path, :production  do  |t, args|
+  user_project_path = args[:user_project_path]
+  production = args[:production]
+  if  production== 'production'
+    production = true
+  else
+    production = false
+  end
+  source_code = "#{user_project_path}/index.rb"
+  build_user_code(user_project_path, source_code, production)
+end
+
+task :system_builder , :user_project_path, :production  do  |t, args|
+  user_project_path = args[:user_project_path]
+  production = args[:production]
+  if  production== 'production'
+    production = true
+  else
+    production = false
+  end
   gem_location = File.join(File.dirname(__FILE__))
+  source_code = '../vendor/assets/index.rb'
   build_atome_kernel(user_project_path, gem_location, production)
   build_opal_browser(user_project_path, production)
   build_opal_parser(user_project_path, production)
-  build_user_code(user_project_path, production)
+  build_user_code(user_project_path, source_code, production)
 end
+
 
 task :build do
   puts 'nothing for now'
 end
+
+
 
 task default: :build

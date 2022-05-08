@@ -49,10 +49,24 @@ def run(option = :browser, location = nil)
 
 end
 
+def build_app(production, run = nil, run_option = :browser)
+  current_path = `pwd`.chomp
+  # now run the rake task to build the needed libraries (atome, renderers, etc...)
+  app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
+  `cd #{app_builder_helpers};rake build_user_code[#{current_path},#{production}]`
+  if run == 'run'
+    puts "we run the app"
+    # run(run_option)
+  end
+
+end
+
 case ARGV[0]
 when 'create'
   project_name = ARGV[1]
-  force = ARGV[2]
+  production = ARGV[2]
+  force = ARGV[3]
+  run = ARGV[4]
   delete_all(project_name) if force == 'force'
   Dir.mkdir project_name.to_s
   current_path = `pwd`.chomp
@@ -66,8 +80,13 @@ when 'create'
     end
   end
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
-  `cd #{app_builder_helpers};rake system_builder #{current_path}/#{project_name}`
-  run(:server, project_name)
+  `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
+  if run
+    run(:server, project_name)
+  end
+when 'build'
+  production = ARGV[1]
+  build_app production
 when 'run'
   case ARGV[1]
   when 'android'

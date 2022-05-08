@@ -1,3 +1,5 @@
+alert "good news for me"
+require 'view_example'
 # def toto(e)
 #   e.prevent
 #   e.on.inner_text = "Super Clicked!"

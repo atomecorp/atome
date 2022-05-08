@@ -1,0 +1,1 @@
+alert "test of require"
