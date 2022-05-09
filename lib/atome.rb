@@ -10,4 +10,3 @@ require 'atome/extensions/sha'
 require 'atome/extensions/ping'
 Universe.initialize
 puts "@atome_client_ready is : #{@atome_client_ready}"
-# Atome.set_current_user(:jeezs)

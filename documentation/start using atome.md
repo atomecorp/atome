@@ -9,6 +9,11 @@ or atome create :
     atome create myproject production
 for production mode (all javascript file will be minimized and uglified)
 
+
+to overwrite an existing project :
+
+    atome create myproject production force
+
 # 2 - Run the application
 
 go into the project :

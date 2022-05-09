@@ -5,7 +5,6 @@ require 'fileutils'
 
 def delete_all(dir)
   Dir.foreach(dir) do |e|
-    # Don't bother with . and ..
     next if %w[. ..].include? e
     fullname = dir + File::Separator + e
     if FileTest.directory?(fullname)
@@ -61,7 +60,7 @@ when 'create'
   project_name = ARGV[1]
   production = ARGV[2]
   force = ARGV[3]
-  delete_all(project_name) if force == 'force'
+  delete_all(project_name) if force == 'force' && File.directory?(project_name)
   Dir.mkdir project_name.to_s
   current_path = `pwd`.chomp
   gem_assets_location = File.join(File.dirname(__FILE__), '../vendor/assets/')
@@ -77,10 +76,9 @@ when 'create'
   `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
 when 'build'
   production = ARGV[1]
-  run= ARGV[2]
-  run_option = ARGV[3]
   build_app(production)
 when 'run'
+  production = ARGV[2]
   case ARGV[1]
   when 'android'
   when 'browser'
@@ -91,10 +89,22 @@ when 'run'
   when 'osx'
     run(:osx)
   when 'server'
+    file = File.open("#{`pwd`.chomp}/server/config.ru")
+    text=file.read
+    text.gsub!("run Unreloader","")
+    text.gsub!("run App.freeze.app","")
+    if production == 'production'
+      text=text+"\nrun App.freeze.app"
+    else
+      text=text+"\nrun Unreloader"
+    end
+    File.open("#{`pwd`.chomp}/server/config.ru", 'w') do |f|
+      f.puts text
+    end
     run(:server)
   when 'windows'
   else
-      run(:browser)
+    run(:browser)
   end
 else
   # type code here
