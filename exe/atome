@@ -18,20 +18,24 @@ def delete_all(dir)
   Dir.delete(dir)
 end
 
-def run(platform, location)
+def run(platform, location, port=9292)
   case platform
   when :server
     require 'atome'
-    `cd .#{location}/server;rackup --server puma --port 9292  --env production`
+    Thread.new do
+      sleep 1.5
+      system("open", "http://127.0.0.1:#{port}")
+    end
+    `cd .#{location}/server;rackup --server puma --port #{port}  --env production`
   when :browser
     `cd .#{location}/build;open index.html`
   when :osx
-    require 'webview_ruby'
-    webview = WebviewRuby::Webview.new
-    webview.set_title('atome')
-    webview.set_size(480, 360)
-    webview.navigate("file:/#{`pwd`}#{location}/build/index.html")
-    webview.run
+    # require 'webview_ruby'
+    # webview = WebviewRuby::Webview.new
+    # webview.set_title('atome')
+    # webview.set_size(480, 360)
+    # webview.navigate("file:/#{`pwd`}#{location}/build/index.html")
+    # webview.run
   else
     `cd .#{location}/build;open index.html`
   end
@@ -49,6 +53,8 @@ end
 location = '/'
 force = nil
 production = nil
+port=9292
+
 if ARGV.include?('production')
   production = 'production'
 end
@@ -56,6 +62,10 @@ end
 if ARGV.include?('force')
   force = 'force'
 end
+
+if ARGV.include?('port:')
+    port= ARGV[ARGV.find_index('port:')+1]
+  end
 
 platforms = %w[android browser server osx freebsd ios linux osx windows]
 # now setting build_target
@@ -71,7 +81,6 @@ end
 
 if ARGV.include?('create')
   project_name = ARGV[1]
-
   delete_all(project_name) if force == 'force' && File.directory?(project_name)
   Dir.mkdir project_name.to_s
   current_path = `pwd`.chomp
@@ -116,7 +125,7 @@ if ARGV.include?('run')
     File.open("#{`pwd`.chomp}#{location}/server/config.ru", 'w') do |f|
       f.puts text
     end
-    run(:server, location)
+    run(:server, location,port)
   when 'windows'
   else
     run(:browser, location)

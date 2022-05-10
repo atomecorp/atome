@@ -33,7 +33,13 @@ to run in production mode (faster server mode)
 
     atome run server production
 
-possible options to run the app are : browser, server , android, Freebsd, iOS, OSX, Windows
+to set the server port
+
+    atome run server port: 9299
+
+Supported platforms with the run command are : browser, server , android, Freebsd, iOS, OSX, Windows
+
+    atome run osx
 
 # compile the app :
 
@@ -47,6 +53,6 @@ for production mode (compressed and uglified javascript files) type :
 
 Please note, is possible to mix multiple options to create run and set some options in one pas:
 
-     atome create myproject server force run production
+     atome create myproject server force run production port: 9293
 
 

@@ -12,7 +12,7 @@ def ping(address, my_proc)
   # else
   #   alert :kool
     ` var p = new Ping();
-        p.ping('http://'+#{address}+'', function (err, data) {
+        p.ping('https://'+#{address}+'', function (err, data) {
             if (err) {
                return false;
             } else {

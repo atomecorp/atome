@@ -15,9 +15,9 @@ module AtomeGeometryMethods
   #   # properties_common(property, value, stack_property, optional_processor)
   # end
 
-  def color params, formated=false
+  def color(params, formated = false)
+    formated
     puts "params #{params} must be formated"
-
   end
 
   def parent(value = nil, stack_property = nil)
