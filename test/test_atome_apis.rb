@@ -31,6 +31,7 @@ end
 
 atomes = []
 atome_methods.each do |key, values|
+  key
   values.each do |value|
     atomes << value
   end
@@ -230,7 +231,12 @@ require 'json'
 
 EM.run {
   websocket = Faye::WebSocket::Client.new('ws://127.0.0.1:9292/')
+  # websocket = Faye::WebSocket::Client.new('ws://127.0.0.1:4567/')
+  #
+  # websocket = Faye::WebSocket::Client.new('wss://ws.atome.one')
+
   websocket.on :open do |event|
+    event
     p [:websocket_opened]
     my_msg = { kool: "hyper" }
     my_msg = JSON.generate(my_msg)
@@ -238,12 +244,14 @@ EM.run {
   end
 
   websocket.on :message do |event|
+    event
     p [event.data]
   end
 
   websocket.on :close do |event|
+    event
     p [:close, event.code, event.reason]
-    ws = nil
+    # ws = nil
   end
 }
 

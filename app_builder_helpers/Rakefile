@@ -51,6 +51,7 @@ def build_user_code(user_project_path, source_code, production = false)
 end
 
 task :build_user_code, :user_project_path, :production  do  |t, args|
+  t
   user_project_path = args[:user_project_path]
   production = args[:production]
   if  production== 'production'
@@ -63,6 +64,7 @@ task :build_user_code, :user_project_path, :production  do  |t, args|
 end
 
 task :system_builder , :user_project_path, :production  do  |t, args|
+  t
   user_project_path = args[:user_project_path]
   production = args[:production]
   if  production== 'production'

@@ -29,15 +29,24 @@ server version
 
     atome run server
 
+to run in production mode (faster server mode)
+
+    atome run server production
+
 possible options to run the app are : browser, server , android, Freebsd, iOS, OSX, Windows
 
 # compile the app :
 
  to build your app and re-generate javascript script from ruby type: 
 
-  atome build 
+    atome build 
 
-for production mode type :
+for production mode (compressed and uglified javascript files) type :
 
     atome build production
+
+Please note, is possible to mix multiple options to create run and set some options in one pas:
+
+     atome create myproject server force run production
+
 

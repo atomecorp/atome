@@ -3,47 +3,37 @@
 
 require 'fileutils'
 
+# below are the methods needed for atome creation and run
+
 def delete_all(dir)
   Dir.foreach(dir) do |e|
     next if %w[. ..].include? e
-    fullname = dir + File::Separator + e
-    if FileTest.directory?(fullname)
-      delete_all(fullname)
+    full_name = dir + File::Separator + e
+    if FileTest.directory?(full_name)
+      delete_all(full_name)
     else
-      File.delete(fullname)
+      File.delete(full_name)
     end
   end
   Dir.delete(dir)
 end
 
-def run(option = :browser, location = nil)
-  case option
+def run(platform, location)
+  case platform
   when :server
     require 'atome'
-    if location
-      `cd ./#{location}/server;rackup --server puma --port 9292  --env production`
-    else
-      `cd ./server;rackup --server puma --port 9292  --env production`
-    end
+    `cd .#{location}/server;rackup --server puma --port 9292  --env production`
   when :browser
-    if location
-      `cd ./#{location}/build;open index.html`
-    else
-      `cd ./build;open index.html`
-    end
+    `cd .#{location}/build;open index.html`
   when :osx
     require 'webview_ruby'
     webview = WebviewRuby::Webview.new
     webview.set_title('atome')
     webview.set_size(480, 360)
-    if location
-      webview.navigate("file:/#{`pwd`}/#{location}/build/index.html")
-    else
-      webview.navigate("file:#{`pwd`.chomp}/build/index.html")
-    end
+    webview.navigate("file:/#{`pwd`}#{location}/build/index.html")
     webview.run
   else
-    # nothing for now
+    `cd .#{location}/build;open index.html`
   end
 
 end
@@ -55,11 +45,33 @@ def build_app(production)
   `cd #{app_builder_helpers};rake build_user_code[#{current_path},#{production}]`
 end
 
-case ARGV[0]
-when 'create'
+# below we analyse the ARGV
+location = '/'
+force = nil
+production = nil
+if ARGV.include?('production')
+  production = 'production'
+end
+
+if ARGV.include?('force')
+  force = 'force'
+end
+
+platforms = %w[android browser server osx freebsd ios linux osx windows]
+# now setting build_target
+
+build_target = 'browser'
+
+platforms.each do |platform|
+  if ARGV.include?(platform)
+    build_target = platform
+  end
+
+end
+
+if ARGV.include?('create')
   project_name = ARGV[1]
-  production = ARGV[2]
-  force = ARGV[3]
+
   delete_all(project_name) if force == 'force' && File.directory?(project_name)
   Dir.mkdir project_name.to_s
   current_path = `pwd`.chomp
@@ -74,38 +86,41 @@ when 'create'
   end
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
   `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
-when 'build'
-  production = ARGV[1]
+  location = "/#{project_name}"
+end
+
+if ARGV.include?('build')
   build_app(production)
-when 'run'
-  production = ARGV[2]
-  case ARGV[1]
+end
+
+if ARGV.include?('run')
+  case build_target
   when 'android'
   when 'browser'
-    run(:browser)
+    run(:browser, location)
   when 'freebsd'
   when 'ios'
   when 'linux'
   when 'osx'
-    run(:osx)
+    run(:osx, location)
   when 'server'
-    file = File.open("#{`pwd`.chomp}/server/config.ru")
-    text=file.read
-    text.gsub!("run Unreloader","")
-    text.gsub!("run App.freeze.app","")
+    file = File.open("#{`pwd`.chomp}#{location}/server/config.ru")
+    text = file.read
+    text = text.gsub("run Unreloader", "")
+    text = text.gsub("run App.freeze.app", "")
     if production == 'production'
-      text=text+"\nrun App.freeze.app"
+      text = text + "\nrun App.freeze.app"
     else
-      text=text+"\nrun Unreloader"
+      text = text + "\nrun Unreloader"
     end
-    File.open("#{`pwd`.chomp}/server/config.ru", 'w') do |f|
+    File.open("#{`pwd`.chomp}#{location}/server/config.ru", 'w') do |f|
       f.puts text
     end
-    run(:server)
+    run(:server, location)
   when 'windows'
   else
-    run(:browser)
+    run(:browser, location)
   end
-else
-  # type code here
 end
+
+
