@@ -2,7 +2,8 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-
+require 'securerandom'
+require 'digest/sha2'
 # below are the methods needed for atome creation and run
 
 def delete_all(dir)
@@ -18,24 +19,27 @@ def delete_all(dir)
   Dir.delete(dir)
 end
 
-def run(platform, location, port=9292)
-  case platform
+def create
+  #  todo:  implement  app identity must be on either the index.html and server and match use a sha for to compare for
+  # security
+  uuid = SecureRandom.uuid
+  sha = Digest::SHA256.hexdigest(uuid)
+  puts " uuid is : #{uuid}, sha is #{sha}"
+end
+
+def run(build_target, location, port = 9292)
+  case build_target
   when :server
     require 'atome'
-    Thread.new do
+    threads = []
+    threads<<  Thread.new do
       sleep 1.5
       system("open", "http://127.0.0.1:#{port}")
     end
-    `cd .#{location}/server;rackup --server puma --port #{port}  --env production`
+      `cd .#{location}/server;rackup --server puma --port #{port}  --env production`
   when :browser
     `cd .#{location}/build;open index.html`
   when :osx
-    # require 'webview_ruby'
-    # webview = WebviewRuby::Webview.new
-    # webview.set_title('atome')
-    # webview.set_size(480, 360)
-    # webview.navigate("file:/#{`pwd`}#{location}/build/index.html")
-    # webview.run
   else
     `cd .#{location}/build;open index.html`
   end
@@ -53,7 +57,7 @@ end
 location = '/'
 force = nil
 production = nil
-port=9292
+port = 9292
 
 if ARGV.include?('production')
   production = 'production'
@@ -64,8 +68,8 @@ if ARGV.include?('force')
 end
 
 if ARGV.include?('port:')
-    port= ARGV[ARGV.find_index('port:')+1]
-  end
+  port = ARGV[ARGV.find_index('port:') + 1]
+end
 
 platforms = %w[android browser server osx freebsd ios linux osx windows]
 # now setting build_target
@@ -76,10 +80,10 @@ platforms.each do |platform|
   if ARGV.include?(platform)
     build_target = platform
   end
-
 end
 
 if ARGV.include?('create')
+  create
   project_name = ARGV[1]
   delete_all(project_name) if force == 'force' && File.directory?(project_name)
   Dir.mkdir project_name.to_s
@@ -94,12 +98,21 @@ if ARGV.include?('create')
     end
   end
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
-  `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
   location = "/#{project_name}"
+  # fixme : use build_app instead of the command below
+  `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
 end
 
 if ARGV.include?('build')
   build_app(production)
+end
+if ARGV.include?('guard')
+  Thread.new do
+    sleep 1.2
+    Dir.chdir("./#{location}") do
+    system("guard")
+    end
+  end
 end
 
 if ARGV.include?('run')
@@ -125,11 +138,12 @@ if ARGV.include?('run')
     File.open("#{`pwd`.chomp}#{location}/server/config.ru", 'w') do |f|
       f.puts text
     end
-    run(:server, location,port)
+    run(:server, location, port)
   when 'windows'
   else
     run(:browser, location)
   end
+
 end
 
 

@@ -1,5 +1,6 @@
 alert "good news for me"
-require 'view_example'
+# todo change server strategy and use index.html to test server and connect to it if no connection stay use opal
+require 'application/view_example'
 # def toto(e)
 #   e.prevent
 #   e.on.inner_text = "Super Clicked!"

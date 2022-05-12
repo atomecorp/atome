@@ -12,7 +12,6 @@ require 'faye/websocket'
 require 'json'
 require 'securerandom'
 require 'mail'
-require 'digest'
 require 'atome'
 
 class String
@@ -77,7 +76,6 @@ class App < Roda
 
   puts "Item count: #{items.count}"
 
-
   puts "The average price is: #{items.avg(:width)}"
 
 
@@ -94,7 +92,9 @@ class App < Roda
         if client_data.is_json?
           # to get hash from data:  data_to_hash = JSON.parse(client_data)
           # websocket.send(client_data)
-          websocket.send("The average price is: #{items.avg(:width)}")
+          websocket.send("The average price must be: #{items.avg(:width)}")
+          uuid = SecureRandom.uuid
+          websocket.send("The coded uuid is : #{uuid}")
         end
       end
       websocket.on :open do

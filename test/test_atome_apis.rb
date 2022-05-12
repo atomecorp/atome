@@ -3,43 +3,43 @@ require '../lib/atome.rb'
 
 # to sort :
 
-def atome_methods
-  analyser = %i[listen]
-  communication = %i[share]
-  effect = %i[blur shadow smooth mask clip noise hue]
-  event = %i[touch drag over key scale drop virtual_event]
-  geometry = %i[width height size ratio]
-  generator = %i[say]
-  helper = %i[tactile display orientation status fullscreen system]
-  hierarchy = %i[parent child]
-  identity = %i[atome_id id type language]
-  spatial = %i[x xx y yy z center rotate position alignment disposition]
-  media = %i[content particle group container video shape box star circle sphere text
-             image audio web  path info example cell name visual active inactive]
-  inputs = %i[camera microphone midi keyboard read write]
-  utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
-               code exec cursor data parameter list action]
-  misc = %i[map calendar]
-  material = %i[color opacity border overflow fill blend]
-  behaviour = %i[animation animator]
-  type = %i[user machine shape image video audio input text midi virtual group container particle cell]
-
-  { analysers: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect,
-    inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication,
-    identities: identity, events: event, generators: generator, misc: misc, behaviors: behaviour, type: type }
-end
-
-atomes = []
-atome_methods.each do |key, values|
-  key
-  values.each do |value|
-    atomes << value
-  end
-end
-puts atomes
-puts "-----"
-puts atomes.length
-puts "-----"
+# def atome_methods
+#   analyser = %i[listen]
+#   communication = %i[share]
+#   effect = %i[blur shadow smooth mask clip noise hue]
+#   event = %i[touch drag over key scale drop virtual_event]
+#   geometry = %i[width height size ratio]
+#   generator = %i[say]
+#   helper = %i[tactile display orientation status fullscreen system]
+#   hierarchy = %i[parent child]
+#   identity = %i[atome_id id type language]
+#   spatial = %i[x xx y yy z center rotate position alignment disposition]
+#   media = %i[content particle group container video shape box star circle sphere text
+#              image audio web  path info example cell name visual active inactive]
+#   inputs = %i[camera microphone midi keyboard read write]
+#   utility = %i[edit record enliven tag selector preset monitor selectable dynamic condition treatment render engine pay
+#                code exec cursor data parameter list action]
+#   misc = %i[map calendar]
+#   material = %i[color opacity border overflow fill blend]
+#   behaviour = %i[animation animator]
+#   type = %i[user machine shape image video audio input text midi virtual group container particle cell]
+#
+#   { analysers: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect,
+#     inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication,
+#     identities: identity, events: event, generators: generator, misc: misc, behaviors: behaviour, type: type }
+# end
+#
+# atomes = []
+# atome_methods.each do |key, values|
+#   key
+#   values.each do |value|
+#     atomes << value
+#   end
+# end
+# puts atomes
+# puts "-----"
+# puts atomes.length
+# puts "-----"
 
 # interpreter = RUBY_ENGINE.downcase
 # # puts interpreter

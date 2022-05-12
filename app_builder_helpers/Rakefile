@@ -59,7 +59,7 @@ task :build_user_code, :user_project_path, :production  do  |t, args|
   else
     production = false
   end
-  source_code = "#{user_project_path}/index.rb"
+  source_code = "#{user_project_path}/application/index.rb"
   build_user_code(user_project_path, source_code, production)
 end
 
@@ -73,7 +73,7 @@ task :system_builder , :user_project_path, :production  do  |t, args|
     production = false
   end
   gem_location = File.join(File.dirname(__FILE__))
-  source_code = '../vendor/assets/index.rb'
+  source_code = '../vendor/assets/application/index.rb'
   build_atome_kernel(user_project_path, gem_location, production)
   build_opal_browser(user_project_path, production)
   build_opal_parser(user_project_path, production)
