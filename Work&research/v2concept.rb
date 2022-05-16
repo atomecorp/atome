@@ -133,7 +133,6 @@ class Atome
       end
     end
   end
-
 end
 
 class Particle
@@ -143,17 +142,16 @@ class Particle
 
   def value
     values = []
-    instance_variable_get(self.instance_variables[0]).each do |val|
+    instance_variable_get(instance_variables[0]).each do |val|
       values << val[:value]
     end
     values
   end
 
   def <<(val)
-    property_we_wil_add_into = instance_variable_get(self.instance_variables[0])
+    property_we_wil_add_into = instance_variable_get(instance_variables[0])
     property_we_wil_add_into << { value: val.values[0], id: Universe.identity_generator }
   end
-
 end
 
 Universe.creator(:eVe)
