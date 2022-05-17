@@ -19,6 +19,16 @@ def build_opal_browser(user_project_path, production = false)
 end
 
 def build_atome_kernel(user_project_path, gem_location, production = false)
+  # now add identity to the app
+  #########################
+  file_location ="#{gem_location}/../lib/atome.rb"
+  file = File.open(file_location)
+  file_content = file.read
+  file_content.gsub!(":app_identity",":uniq_generated_app_identity")
+  File.open(file_location, 'w') do |f|
+    f.puts file_content
+  end
+  #########################
   kernel_js = "#{user_project_path}/build/js/atome/kernel.js"
   builder = Opal::Builder.new
   builder.append_paths("#{gem_location}/../lib/")

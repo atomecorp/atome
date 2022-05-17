@@ -18,6 +18,10 @@ class Universe
     @atomes[atome_id] = new_atome
   end
 
+  def self.atomes
+    @atomes
+  end
+
   class << self
     attr_reader :atomes
   end

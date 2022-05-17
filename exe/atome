@@ -26,6 +26,13 @@ def create
   sha = Digest::SHA256.hexdigest(uuid)
   puts " uuid is : #{uuid}, sha is #{sha}"
 end
+def guard_check
+  if ARGV.include?('guard')
+    loop do
+      sleep 9
+    end
+  end
+end
 
 def run(build_target, location, port = 9292)
   case build_target
@@ -34,14 +41,17 @@ def run(build_target, location, port = 9292)
     threads = []
     threads<<  Thread.new do
       sleep 1.5
-      system("open", "http://127.0.0.1:#{port}")
+      # system("open", "http://127.0.0.1:#{port}")
+      `cd .#{location}/build;open index.html`
     end
       `cd .#{location}/server;rackup --server puma --port #{port}  --env production`
   when :browser
     `cd .#{location}/build;open index.html`
+    guard_check
   when :osx
   else
     `cd .#{location}/build;open index.html`
+    guard_check
   end
 
 end
@@ -126,7 +136,8 @@ if ARGV.include?('run')
   when 'osx'
     run(:osx, location)
   when 'server'
-    file = File.open("#{`pwd`.chomp}#{location}/server/config.ru")
+    config_location="#{`pwd`.chomp}#{location}/server/config.ru"
+    file = File.open(config_location)
     text = file.read
     text = text.gsub("run Unreloader", "")
     text = text.gsub("run App.freeze.app", "")
@@ -135,7 +146,7 @@ if ARGV.include?('run')
     else
       text = text + "\nrun Unreloader"
     end
-    File.open("#{`pwd`.chomp}#{location}/server/config.ru", 'w') do |f|
+    File.open(config_location, 'w') do |f|
       f.puts text
     end
     run(:server, location, port)
@@ -145,5 +156,3 @@ if ARGV.include?('run')
   end
 
 end
-
-

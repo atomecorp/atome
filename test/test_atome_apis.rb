@@ -255,5 +255,6 @@ EM.run {
   end
 }
 
-
-
+# todo: Identify user with WS
+# todo: add an ID to the each app
+# todo: Set port in index.html when using WS

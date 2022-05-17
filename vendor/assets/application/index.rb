@@ -1,4 +1,12 @@
-alert "good news for me"
+
+
+b=box()
+# b.x(33)
+def custom_code val
+  `console.log(#{val})`
+end
+
+custom_code "good news for you"
 # todo change server strategy and use index.html to test server and connect to it if no connection stay use opal
 require 'application/view_example'
 # def toto(e)

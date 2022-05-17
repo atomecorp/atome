@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 class Atome
-  VERSION = '0.26'
+  VERSION = '0.29'
 end
