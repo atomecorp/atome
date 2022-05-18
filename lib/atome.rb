@@ -11,4 +11,5 @@ require 'atome/extensions/ping'
 Universe.initialize
 puts "@atome_client_ready is : #{@atome_client_ready}"
 
-Atome.new( identity: {type: :eVe, aui: :app_identity})
+# Atome.new( identity: {type: :eVe, aui: :app_identity})
+alert(:app_identity)

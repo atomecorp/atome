@@ -18,17 +18,22 @@ def build_opal_browser(user_project_path, production = false)
   end
 end
 
-def build_atome_kernel(user_project_path, gem_location, production = false)
+
+
+def build_atome_kernel(user_project_path, gem_location,  production = false)
+  #project_name = user_project_path.split('/').last
   # now add identity to the app
-  #########################
-  file_location ="#{gem_location}/../lib/atome.rb"
-  file = File.open(file_location)
-  file_content = file.read
-  file_content.gsub!(":app_identity",":uniq_generated_app_identity")
+  identity_file = "#{user_project_path}/identity"
+  identity_content = File.open(identity_file).read.chomp
+
+  # identity_content="ok"
+  file_location = "#{gem_location}/../lib/atome.rb"
+  file_content = File.open(file_location).read
+  file_content.gsub!(":app_identity", ":a_#{identity_content}")
   File.open(file_location, 'w') do |f|
     f.puts file_content
   end
-  #########################
+
   kernel_js = "#{user_project_path}/build/js/atome/kernel.js"
   builder = Opal::Builder.new
   builder.append_paths("#{gem_location}/../lib/")
@@ -48,7 +53,6 @@ def build_opal_parser(user_project_path, production = false)
   end
 end
 
-
 def build_user_code(user_project_path, source_code, production = false)
   application_js = "#{user_project_path}/build/js/application.js"
   builder = Opal::Builder.new
@@ -60,11 +64,11 @@ def build_user_code(user_project_path, source_code, production = false)
   end
 end
 
-task :build_user_code, :user_project_path, :production  do  |t, args|
+task :build_user_code, :user_project_path, :production do |t, args|
   t
   user_project_path = args[:user_project_path]
   production = args[:production]
-  if  production== 'production'
+  if production == 'production'
     production = true
   else
     production = false
@@ -73,11 +77,12 @@ task :build_user_code, :user_project_path, :production  do  |t, args|
   build_user_code(user_project_path, source_code, production)
 end
 
-task :system_builder , :user_project_path, :production  do  |t, args|
+task :system_builder, :user_project_path,:production do |t, args|
   t
   user_project_path = args[:user_project_path]
   production = args[:production]
-  if  production== 'production'
+  new_id = args[:new_id]
+  if production == 'production'
     production = true
   else
     production = false
@@ -90,11 +95,8 @@ task :system_builder , :user_project_path, :production  do  |t, args|
   build_user_code(user_project_path, source_code, production)
 end
 
-
 task :build do
   puts 'nothing for now'
 end
-
-
 
 task default: :build
