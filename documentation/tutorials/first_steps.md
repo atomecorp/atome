@@ -90,6 +90,11 @@ to run in production mode (faster server mode)
 
     atome run server production
 
+to update your application ti the latest atome version
+
+    gem update
+    atome update
+
 to set the server port
 
     atome run server port: 9299

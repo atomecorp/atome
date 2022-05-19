@@ -8,57 +8,111 @@ require 'uglifier'
 
 Opal.append_path 'app'
 
-def build_opal_browser(user_project_path, production = false)
-  browser_js = "#{user_project_path}/build/js/opal/opal_browser.js"
+def build_opal_browser(user_project_path)
+  opal_directory = "#{user_project_path}/build/js/opal"
+  browser_js = "#{opal_directory}/opal_browser.js"
+  unless File.directory?(opal_directory)
+    Dir.mkdir(opal_directory)
+  end
+
+  File.new browser_js, "w"
   browser_content = Opal::Builder.build('../lib/atome/renderers/opal/opal_browser.rb').to_s
   browser_content.gsub!("$$$('STDERR')['$write_proc='](typeof(process) === 'object' && typeof(process.stderr) === 'object' ? function(s){process.stderr.write(s)} : function(s){console.warn(s)});", "$$$('STDERR')['$write_proc='](typeof(process) === 'object' && typeof(process.stderr) === 'object' ? function(s){process.stderr.write(s)} : function(s){});")
-  browser_content = Uglifier.new.compile(browser_content) if production
+  # browser_content = Uglifier.new.compile(browser_content)
   File.open(browser_js, 'w') do |f|
     f.puts browser_content
   end
 end
 
+def build_identity(user_project_path)
+  #fixme: for now production can't be change when updating or force create, we should add a production method that uglified all libs on demand
 
+  #  now we add an uniq identity to the app
+  identity_js = "#{user_project_path}/build/js/identity.js"
+  File.new identity_js, "w"
+  builder = Opal::Builder.new
+  identity_content = builder.build("#{user_project_path}/identity.rb").to_s
+  # identity_content = Uglifier.new.compile(identity_content)
+  File.open(identity_js, 'w') do |f|
+    f.puts identity_content
+  end
+end
 
-def build_atome_kernel(user_project_path, gem_location,  production = false)
-  #project_name = user_project_path.split('/').last
-  # now add identity to the app
-  identity_file = "#{user_project_path}/identity"
-  identity_content = File.open(identity_file).read.chomp
-
-  # identity_content="ok"
-  file_location = "#{gem_location}/../lib/atome.rb"
-  file_content = File.open(file_location).read
-  file_content.gsub!(":app_identity", ":a_#{identity_content}")
-  File.open(file_location, 'w') do |f|
-    f.puts file_content
+def build_atome_kernel(user_project_path, gem_location)
+  #  now lets build the atome kernel
+  atome_directory = "#{user_project_path}/build/js/atome"
+  kernel_js = "#{atome_directory}/kernel.js"
+  unless File.directory?(atome_directory)
+    Dir.mkdir(atome_directory)
   end
 
-  kernel_js = "#{user_project_path}/build/js/atome/kernel.js"
+  File.new kernel_js, "w"
   builder = Opal::Builder.new
   builder.append_paths("#{gem_location}/../lib/")
   kernel_content = builder.build("#{gem_location}/../lib/atome.rb").to_s
-  kernel_content = Uglifier.new.compile(kernel_content) if production
+  # kernel_content = Uglifier.new.compile(kernel_content)
   File.open(kernel_js, 'w') do |f|
     f.puts kernel_content
   end
 end
 
-def build_opal_parser(user_project_path, production = false)
+def build_opal_parser(user_project_path)
   parser_js = "#{user_project_path}/build/js/opal/opal_parser.js"
+  File.new parser_js, "w"
   parser_content = Opal::Builder.build('../lib/atome/renderers/opal/opal_parser.rb').to_s
-  parser_content = Uglifier.new.compile(parser_content) if production
+  # parser_content = Uglifier.new.compile(parser_content) if production
   File.open(parser_js, 'w') do |f|
     f.puts parser_content
   end
 end
 
-def build_user_code(user_project_path, source_code, production = false)
+def build_user_code(user_project_path, source_code)
   application_js = "#{user_project_path}/build/js/application.js"
   builder = Opal::Builder.new
   builder.append_paths("#{user_project_path}/")
   application_content = builder.build(source_code).to_s
-  application_content = Uglifier.new.compile(application_content) if production
+
+  File.open(application_js, 'w') do |f|
+    f.puts application_content
+  end
+end
+
+def minimize_libraries(user_project_path)
+  # minimizing identity
+  identity_js = "#{user_project_path}/build/js/identity.js"
+  identity_content=File.open(identity_js).read
+  identity_content = Uglifier.new.compile(identity_content)
+  File.open(identity_js, 'w') do |f|
+    f.puts identity_content
+  end
+  # minimizing opal_browser
+  browser_js = "#{user_project_path}/build/js/opal/opal_browser.js"
+  browser_content=File.open(browser_js).read
+  browser_content = Uglifier.new.compile(browser_content)
+  File.open(browser_js, 'w') do |f|
+    f.puts browser_content
+  end
+  # minimizing opal_parser
+  parser_js = "#{user_project_path}/build/js/opal/opal_parser.js"
+  parser_content=File.open(parser_js).read
+  parser_content = Uglifier.new.compile(parser_content)
+  File.open(parser_js, 'w') do |f|
+    f.puts parser_content
+  end
+  # minimizing atome_lib
+  atome_js = "#{user_project_path}/build/js/atome/kernel.js"
+  atome_content=File.open(atome_js).read
+  atome_content = Uglifier.new.compile(atome_content)
+  File.open(atome_js, 'w') do |f|
+    f.puts atome_content
+  end
+end
+
+def minimize_user_code(user_project_path)
+  # minimizing user codes
+  application_js = "#{user_project_path}/build/js/application.js"
+  application_content=File.open(application_js).read
+  application_content = Uglifier.new.compile(application_content)
   File.open(application_js, 'w') do |f|
     f.puts application_content
   end
@@ -68,35 +122,48 @@ task :build_user_code, :user_project_path, :production do |t, args|
   t
   user_project_path = args[:user_project_path]
   production = args[:production]
-  if production == 'production'
-    production = true
-  else
-    production = false
-  end
   source_code = "#{user_project_path}/application/index.rb"
-  build_user_code(user_project_path, source_code, production)
+  build_user_code(user_project_path, source_code)
+  if production == 'production'
+    minimize_user_code(user_project_path)
+  end
 end
 
-task :system_builder, :user_project_path,:production do |t, args|
+task :system_builder, :user_project_path, :production do |t, args|
   t
   user_project_path = args[:user_project_path]
   production = args[:production]
-  new_id = args[:new_id]
-  if production == 'production'
-    production = true
-  else
-    production = false
-  end
+
   gem_location = File.join(File.dirname(__FILE__))
   source_code = '../vendor/assets/application/index.rb'
-  build_atome_kernel(user_project_path, gem_location, production)
-  build_opal_browser(user_project_path, production)
-  build_opal_parser(user_project_path, production)
-  build_user_code(user_project_path, source_code, production)
+  build_identity(user_project_path)
+  build_atome_kernel(user_project_path, gem_location)
+  build_opal_browser(user_project_path)
+  build_opal_parser(user_project_path)
+  build_user_code(user_project_path, source_code)
+  if production == 'production'
+    minimize_libraries(user_project_path)
+    minimize_user_code(user_project_path)
+  end
+
+  # todo catch and message to user when when there's no force and folder already exist
 end
 
-task :build do
-  puts 'nothing for now'
+task :system_updater, :user_project_path, :production do |t, args|
+  user_project_path = args[:user_project_path]
+  production = args[:production]
+
+  gem_location = File.join(File.dirname(__FILE__))
+  build_atome_kernel(user_project_path, gem_location)
+  build_opal_browser(user_project_path)
+  build_opal_parser(user_project_path)
+  if production == 'production'
+    minimize_libraries(user_project_path)
+    minimize_user_code(user_project_path)
+  end
 end
 
-task default: :build
+task default: :run
+
+
+# todo integrate pure JS (ruby2js) compilation
