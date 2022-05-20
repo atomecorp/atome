@@ -12,5 +12,5 @@ Universe.initialize
 puts "@atome_client_ready is : #{@atome_client_ready}"
 
 Atome.new( identity: {type: :eVe, aui: :app_identity})
-# alert Atome.application_identity
-alert :pouetingos
+puts Atome.application_identity
+# alert Universe.app_identity

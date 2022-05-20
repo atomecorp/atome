@@ -12,7 +12,8 @@ require 'faye/websocket'
 require 'json'
 require 'securerandom'
 require 'mail'
-require 'atome'
+require '../identity.rb'
+require  'atome'
 
 class String
   def is_json?
