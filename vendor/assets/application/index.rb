@@ -225,4 +225,4 @@ puts  "storage content is : #{$storage[:hello]}"
 
  ping('apple.com')
 puts  "Universe  identity is : #{Universe.app_identity}"
-alert Atome.application_identity
+alert Atome.aui

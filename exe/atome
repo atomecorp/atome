@@ -50,7 +50,7 @@ def create_application(project_name, force, production)
     coded_id = sha.gsub('-', '_')
     added_content = <<~STR
       class Atome
-        def self.application_identity
+        def self.aui
           "#{coded_id}"
         end
       end
