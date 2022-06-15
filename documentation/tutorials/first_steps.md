@@ -50,8 +50,6 @@ This is a more complex way to build atome but way a faster for the machine to pr
 
     a=Atome.new({preset:box)}
 
-
-
 # Here are a few common commands
 
 

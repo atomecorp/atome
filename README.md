@@ -27,7 +27,7 @@ Cross platform ecosystem
 Open source technology included
 -
 
-- Ruby : is the language used to script all atomes apis (https://www.ruby-lang.org)
+- Ruby : is the language used to script all atome's apis (https://www.ruby-lang.org)
 
 [comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/ruby.png" width="100" />)
 
@@ -90,7 +90,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Atome project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/atomecorp/atome/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Atome project's codebase, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/atomecorp/atome/blob/master/CODE_OF_CONDUCT.md).
 
 
 Example website:
