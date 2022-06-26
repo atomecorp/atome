@@ -45,17 +45,17 @@ def build_opal_browser(user_project_path)
   end
 end
 
-def build_identity(user_project_path)
+def build_aui(user_project_path)
   #fixme: for now production can't be change when updating or force create, we should add a production method that uglified all libs on demand
 
-  #  now we add an uniq identity to the app
-  identity_js = "#{user_project_path}/build/js/identity.js"
-  File.new identity_js, "w"
+  #  now we add an uniq aui to the app
+  aui_js = "#{user_project_path}/build/js/aui.js"
+  File.new aui_js, "w"
   builder = Opal::Builder.new
-  identity_content = builder.build("#{user_project_path}/identity.rb").to_s
-  # identity_content = Uglifier.new.compile(identity_content)
-  File.open(identity_js, 'w') do |f|
-    f.puts identity_content
+  aui_content = builder.build("#{user_project_path}/aui.rb").to_s
+  # aui_content = Uglifier.new.compile(aui_content)
+  File.open(aui_js, 'w') do |f|
+    f.puts aui_content
   end
 end
 
@@ -100,12 +100,12 @@ def build_user_code(user_project_path, source_code)
 end
 
 def minimize_libraries(user_project_path)
-  # minimizing identity
-  identity_js = "#{user_project_path}/build/js/identity.js"
-  identity_content=File.open(identity_js).read
-  identity_content = Uglifier.new.compile(identity_content)
-  File.open(identity_js, 'w') do |f|
-    f.puts identity_content
+  # minimizing aui
+  aui_js = "#{user_project_path}/build/js/aui.js"
+  aui_content=File.open(aui_js).read
+  aui_content = Uglifier.new.compile(aui_content)
+  File.open(aui_js, 'w') do |f|
+    f.puts aui_content
   end
   # minimizing opal_browser
   browser_js = "#{user_project_path}/build/js/opal/opal_browser.js"
@@ -158,7 +158,7 @@ task :system_builder, :user_project_path, :production do |t, args|
 
   gem_location = File.join(File.dirname(__FILE__))
   source_code = '../vendor/assets/application/index.rb'
-  build_identity(user_project_path)
+  build_aui(user_project_path)
   build_atome_kernel(user_project_path, gem_location)
   build_opal_browser(user_project_path)
   build_opal_parser(user_project_path)

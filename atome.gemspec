@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'arduino_firmata', '~> 0.3'
   spec.add_runtime_dependency 'faye-websocket', '~> 0.1'
+  spec.add_runtime_dependency 'geocoder', '~> 1.8'
   spec.add_runtime_dependency 'guard', '~> 2.1'
   spec.add_runtime_dependency 'guard-rake', '~> 1.0'
   spec.add_runtime_dependency 'image_size', '~> 3.0'

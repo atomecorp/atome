@@ -14,6 +14,7 @@
 # Getter
 # parental
 
+# This is the main entry for Atome class
 class Atome
   include AtomeGeometryMethods
 
@@ -54,19 +55,29 @@ class Atome
   #   # "object_#{Universe.atomes.length}"
   # end
 
+  # def geolocation
+  #   # public_ip = `curl https://api.ipify.org`
+  #   # results = Geocoder.search(public_ip)
+  #   # puts results.first.coordinates
+  # end
+
+  def identity_generator
+    {date: Time.now, location: geolocation}
+  end
+
   def initialize(params = {})
     default_params = { render: [{ engine: [{ value: :html }] }], type: [{ value: :particle }] }
     # primary_id="#{id_generator(9)}_#{params.keys[0]}".to_sym
-    aui="#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}}"
-    puts "aui is : #{aui}"
-    params = default_params.merge(params)
-    puts params
+    aui = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}}"
+    # puts "aui is : #{aui}"
+    params = default_params.merge(params).merge(identity: identity_generator)
+    # puts params
     @atome = {}
-    puts "-----------------"
+    # puts "-----------------"
     params.each do |property, value|
-      puts @atome[property]=value
+      @atome[property] = value
     end
-    puts "-----------------"
+    # puts "-----------------"
 
     Universe.atomes_add(aui, @atome)
   end
@@ -86,5 +97,5 @@ end
 
 # initialize Universe
 Universe.connected
- # Atome.new( identity: {type: :eVe, aui: :a_97987987987})
-puts "is anyone connected"
+# Atome.new( identity: {type: :eVe, aui: :a_97987987987})
+# puts "is anyone connected"

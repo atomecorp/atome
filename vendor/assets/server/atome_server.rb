@@ -12,7 +12,7 @@ require 'faye/websocket'
 require 'json'
 require 'securerandom'
 require 'mail'
-require '../identity.rb'
+require '../aui.rb'
 require  'atome'
 
 class String

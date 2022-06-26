@@ -55,7 +55,7 @@ def create_application(project_name, force, production)
         end
       end
     STR
-    file_location = "#{current_path}/#{project_name}/identity.rb"
+    file_location = "#{current_path}/#{project_name}/aui.rb"
     File.new file_location, 'w'
     File.open(file_location, 'w') do |f|
       f.puts added_content
@@ -152,6 +152,7 @@ if ARGV.include?('build')
 end
 
 if ARGV.include?('update')
+  # todo :  also update index.html and all other files except the application folder
   path = found_path('update')
   update_application(path, production)
 end
