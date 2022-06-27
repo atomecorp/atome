@@ -8,7 +8,7 @@ require 'atome/kernel/atome_genesis'
 require 'atome/kernel/generators/shapes'
 require 'atome/extensions/sha'
 require 'atome/extensions/ping'
-require 'atome/extensions/identity'
+require 'atome/extensions/geolocation'
 Universe.initialize
 puts "@atome_client_ready is : #{@atome_client_ready}"
 

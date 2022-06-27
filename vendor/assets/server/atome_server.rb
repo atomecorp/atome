@@ -3,25 +3,26 @@
 if RUBY_PLATFORM == 'x64-mingw32'
   require 'em/pure_ruby'
 end
+require  'atome'
+require '../aui.rb'
 require 'digest/sha2'
+require 'faye/websocket'
+require 'geocoder'
+require 'json'
+require 'mail'
 require 'net/ping'
 require 'roda'
-require 'sequel'
 require 'rufus-scheduler'
-require 'faye/websocket'
-require 'json'
 require 'securerandom'
-require 'mail'
-require '../aui.rb'
-require  'atome'
+require 'sequel'
 
 
 def geolocation
-  # this is just an override test for the geolocation method
-  :server_clermont
-  # public_ip = `curl https://api.ipify.org`
-  # results = Geocoder.search(public_ip)
-  # puts results.first.coordinates
+  # this method override the geolocation method
+    public_ip = `curl https://api.ipify.org`
+    results = Geocoder.search(public_ip)
+  # todo : format the return below
+     results.first.coordinates
 end
 
 

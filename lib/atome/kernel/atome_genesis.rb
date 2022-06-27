@@ -18,9 +18,7 @@
 class Atome
   include AtomeGeometryMethods
 
-  def location
-    :clermont
-  end
+
 
   # def current_machine
   #   platform = RUBY_PLATFORM.downcase
