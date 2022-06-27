@@ -104,14 +104,20 @@ def run_application(build_target, location, port = 9292)
     threads = []
     threads << Thread.new do
       sleep 1.5
-      `cd #{location}/build;open index.html`
+      `open http://localhost:9292/index`
     end
     `cd #{location}/server;rackup --server puma --port #{port}  --env production`
   when :browser
     `cd #{location}/build;open index.html`
     guard_check
+  when :native
+    # freebsd
+  when :linux
+    # freebsd
   when :osx
     # osx
+  when :windows
+    # windows
   else
     `cd #{location}/build;open index.html`
     guard_check
@@ -152,7 +158,7 @@ if ARGV.include?('build')
 end
 
 if ARGV.include?('update')
-  # todo :  also update index.html and all other files except the application folder
+  # TODO: also update index.html and all other files except the application folder
   path = found_path('update')
   update_application(path, production)
 end
@@ -175,15 +181,15 @@ if ARGV.include?('run')
 
   case build_target
   when 'android'
-    #todo write code here
+    # TODO: write code here
   when 'browser'
     run_application(:browser, path)
   when 'freebsd'
-    #todo write code here
+    # TODO: write code here
   when 'ios'
-    #todo write code here
+    # TODO: write code here
   when 'linux'
-    #todo write code here
+    # TODO: write code here
   when 'osx'
     run_application(:osx, path)
   when 'server'
@@ -203,7 +209,7 @@ if ARGV.include?('run')
     end
     run_application(:server, path, port)
   when 'windows'
-    #todo write code here
+    # TODO: write code here
   else
     run_application(:browser, path)
   end

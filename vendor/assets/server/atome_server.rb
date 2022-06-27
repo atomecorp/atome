@@ -15,6 +15,17 @@ require 'mail'
 require '../aui.rb'
 require  'atome'
 
+
+def geolocation
+  # this is just an override test for the geolocation method
+  :server_clermont
+  # public_ip = `curl https://api.ipify.org`
+  # results = Geocoder.search(public_ip)
+  # puts results.first.coordinates
+end
+
+
+
 class String
   def is_json?
     begin
@@ -73,7 +84,6 @@ class App < Roda
   items.insert(name: 'abc', width: rand * 100)
   items.insert(name: 'def', width: rand * 100)
   items.insert(name: 'ghi', width: rand * 100)
-
 
   puts "Item count: #{items.count}"
 

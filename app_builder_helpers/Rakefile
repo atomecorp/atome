@@ -32,9 +32,7 @@ Opal.append_path 'app'
 def build_opal_browser(user_project_path)
   opal_directory = "#{user_project_path}/build/js/opal"
   browser_js = "#{opal_directory}/opal_browser.js"
-  unless File.directory?(opal_directory)
-    Dir.mkdir(opal_directory)
-  end
+  Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
 
   File.new browser_js, "w"
   browser_content = Opal::Builder.build('../lib/atome/renderers/opal/opal_browser.rb').to_s
@@ -59,14 +57,19 @@ def build_aui(user_project_path)
   end
 end
 
+def copy_assets_files(user_project_path, gem_location)
+  build_location="#{gem_location}/../vendor/assets/build/"
+  server_location="#{gem_location}/../vendor/assets/server/"
+  FileUtils.copy_entry build_location, "#{user_project_path}/build", preserve: nil
+  FileUtils.copy_entry server_location, "#{user_project_path}/server",  preserve: nil
+end
+
 def build_atome_kernel(user_project_path, gem_location)
   # build_atome_to_js(user_project_path, gem_location)
   #  now lets build the atome kernel
   atome_directory = "#{user_project_path}/build/js/atome"
   kernel_js = "#{atome_directory}/kernel.js"
-  unless File.directory?(atome_directory)
-    Dir.mkdir(atome_directory)
-  end
+  Dir.mkdir(atome_directory) unless File.directory?(atome_directory)
 
   File.new kernel_js, "w"
   builder = Opal::Builder.new
@@ -146,9 +149,7 @@ task :build_user_code, :user_project_path, :production do |t, args|
   production = args[:production]
   source_code = "#{user_project_path}/application/index.rb"
   build_user_code(user_project_path, source_code)
-  if production == 'production'
-    minimize_user_code(user_project_path)
-  end
+  minimize_user_code(user_project_path) if production == 'production'
 end
 
 task :system_builder, :user_project_path, :production do |t, args|
@@ -176,6 +177,7 @@ task :system_updater, :user_project_path, :production do |t, args|
   production = args[:production]
 
   gem_location = File.join(File.dirname(__FILE__))
+  copy_assets_files(user_project_path, gem_location)
   build_atome_kernel(user_project_path, gem_location)
   build_opal_browser(user_project_path)
   build_opal_parser(user_project_path)

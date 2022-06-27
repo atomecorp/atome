@@ -1,5 +1,5 @@
 
-
+alert geolocation
 b=box()
 # b.x(33)
 def custom_code val

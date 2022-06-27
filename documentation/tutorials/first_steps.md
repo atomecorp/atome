@@ -75,14 +75,19 @@ go into the project :
 
     cd myproject
 
-Run the project :
+# Run the project :
+
 browser version
 
+- Warning : run the app doesn't refresh the user code, to refresh use the command 'build'
     atome run browser
 
-server version
+server version 
 
+- Warning : run the app doesn't refresh the user code, to refresh use the command 'build'
     atome run server
+
+By default the address port is 9292 : http://localhost:9292/index
 
 to run in production mode (faster server mode)
 
@@ -101,7 +106,7 @@ Supported platforms with the run command are : browser, server , android, Freebs
 
     atome run osx
 
-# compile the app :
+# compile the user app :
 
 to build your app and re-generate javascript script from ruby type:
 
