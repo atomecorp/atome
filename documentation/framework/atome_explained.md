@@ -8,6 +8,22 @@
 atome explained : the uniq object format
 -
 
+ # new atome format
+
+----------------
+atome structure :
+id: {hash: {key: : value}
+aui : {atome: {property: value}
+
+ex: a_01: {color:{x: 33, y: 69, red: 0.1, green: 0.2, blue: 1, alpha: 1: diffusion: :radial}}
+
+user can write: 
+a.color(:red)
+a.red(0.1)
+a.color(color:{x: 33, y: 69, red: 0.1})
+
+
+
 an atome is a  property ( position, size, type, etc..)
 
 a single property (atome) can hold multiples properties cf: child property

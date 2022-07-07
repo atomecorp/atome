@@ -5,7 +5,6 @@ if RUBY_PLATFORM == 'x64-mingw32'
 end
 require  'atome'
 require '../aui.rb'
-require './atome_native_extensions.rb'
 require 'digest/sha2'
 require 'faye/websocket'
 require 'geocoder'
@@ -16,15 +15,6 @@ require 'roda'
 require 'rufus-scheduler'
 require 'securerandom'
 require 'sequel'
-
-
-def geolocation
-  # this method override the geolocation method
-    public_ip = `curl https://api.ipify.org`
-    results = Geocoder.search(public_ip)
-  # todo : format the return below
-     results.first.coordinates
-end
 
 
 

@@ -1,4 +1,4 @@
-def ping(address, my_proc)
+def ping(address, my_proc: false)
   # if  RUBY_ENGINE.downcase != 'opal'
 
   def up?(host, my_proc)

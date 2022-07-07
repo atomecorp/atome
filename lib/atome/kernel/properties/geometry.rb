@@ -1,9 +1,7 @@
 # frozen_string_literal: true
+
 # here are the geometry  properties of atome
-
-
 module AtomeGeometryMethods
-
   # def dummy(value = nil, stack_property = nil)
   #   property = :dummy
   #   optional_processor = { pre_process: true, post_process: true, store_atome: false, render_atome: false }
@@ -15,9 +13,10 @@ module AtomeGeometryMethods
   #   # properties_common(property, value, stack_property, optional_processor)
   # end
 
-  def color(params, formated = false)
-    formated
-    puts "params #{params} must be formated"
+  def color(params, formatted: false)
+    p formatted
+    puts "params #{params} must be formatted"
+    "colorized"
   end
 
   def parent(value = nil, stack_property = nil)
@@ -37,6 +36,7 @@ module AtomeGeometryMethods
     optional_processor = {}
     properties_common(property, value, stack_property, optional_processor)
   end
+
   #
   # def bottom(value = nil, stack_property = nil)
   #   property = :bottom

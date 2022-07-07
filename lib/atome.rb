@@ -2,6 +2,13 @@
 
 require 'fileutils'
 require 'atome/version'
+if RUBY_ENGINE.downcase != 'opal'
+  # FIXME: find a better and more elegant solution to avoid opal to treat require
+  requirement="require 'atome/atome_native_extensions'"
+  # FIXME:  replace eval with a safer option
+  eval(requirement)
+end
+
 require 'atome/kernel/universe'
 require 'atome/kernel/properties/geometry'
 require 'atome/kernel/atome_genesis'

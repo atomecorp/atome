@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
+require 'geocoder'
 
 class Atome
   def geolocation
     # native version
     public_ip = `curl https://api.ipify.org`
-    Geocoder.search(public_ip)
-    # puts results.first.coordinates
+    results = Geocoder.search(public_ip)
+    results.first.coordinates
   end
 end
 

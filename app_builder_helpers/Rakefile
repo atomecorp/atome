@@ -66,12 +66,12 @@ def copy_assets_files(user_project_path, gem_location)
   FileUtils.copy_entry server_location, "#{user_project_path}/server", preserve: nil
 end
 
-def copy_atome_extensions(user_project_path, gem_location)
-  extensions_location = "#{gem_location}/../lib/atome/extensions/"
-  atome_native_extensions = "#{gem_location}/../lib/atome/atome_native_extensions.rb"
-  FileUtils.copy_entry extensions_location, "#{user_project_path}/server/extensions", preserve: nil
-  FileUtils.copy_entry atome_native_extensions, "#{user_project_path}/server/atome_native_extensions.rb", preserve: nil
-end
+# def copy_atome_extensions(user_project_path, gem_location)
+#   extensions_location = "#{gem_location}/../lib/atome/extensions/"
+#   atome_native_extensions = "#{gem_location}/../lib/atome/atome_native_extensions.rb"
+#   FileUtils.copy_entry extensions_location, "#{user_project_path}/server/extensions", preserve: nil
+#   FileUtils.copy_entry atome_native_extensions, "#{user_project_path}/server/atome_native_extensions.rb", preserve: nil
+# end
 
 def build_atome_kernel(user_project_path, gem_location)
   #  now lets build the atome kernel
@@ -219,7 +219,7 @@ task default: :run
 def build_common_libraries(user_project_path,production)
   gem_location = File.join(File.dirname(__FILE__))
   copy_assets_files(user_project_path, gem_location)
-  copy_atome_extensions(user_project_path, gem_location)
+  # copy_atome_extensions(user_project_path, gem_location)
   build_aui(user_project_path)
   build_atome_kernel(user_project_path, gem_location)
   build_opal_browser(user_project_path)

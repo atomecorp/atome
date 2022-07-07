@@ -15,10 +15,10 @@
 # parental
 
 # This is the main entry for Atome class
+
+# TODO: modify html file to be able to add meta data
 class Atome
   include AtomeGeometryMethods
-
-
 
   # def current_machine
   #   platform = RUBY_PLATFORM.downcase
@@ -40,8 +40,8 @@ class Atome
     @user
   end
 
-  def self.set_current_user(user)
-    # todo : create or load an existing user
+  def self.current_user=(user)
+    # TODO: create or load an existing user
     # if user needs to be create the current_user will be eVe
     @user = user
   end
@@ -51,12 +51,6 @@ class Atome
   #   Array.new(number) { charset.sample }.join
   #   # "#{Atome.current_user}_#{current_machine}_#{location}_#{(Time.now.to_f * 1000).to_i}"
   #   # "object_#{Universe.atomes.length}"
-  # end
-
-  # def geolocation
-  #   # public_ip = `curl https://api.ipify.org`
-  #   # results = Geocoder.search(public_ip)
-  #   # puts results.first.coordinates
   # end
 
   def identity_generator
@@ -80,7 +74,7 @@ class Atome
     Universe.atomes_add(aui, @atome)
   end
 
-  def properties_common(value, property, dynamic, optional_processing)
+  def properties_common(property, value, dynamic, optional_processing)
     # stack_property, optional_processor
     if value.nil?
       # the method is a getter

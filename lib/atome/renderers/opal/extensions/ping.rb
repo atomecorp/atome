@@ -1,5 +1,5 @@
 class Atome
-  def ping(address, my_proc)
+  def ping(address, my_proc=false)
     ` var p = new Ping();
         p.ping('https://'+#{address}+'', function (err, data) {
             if (err) {

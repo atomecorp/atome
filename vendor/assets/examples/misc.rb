@@ -216,4 +216,4 @@ puts "foo".hash
 
 
 puts  "Universe  identity is : #{Universe.app_identity}"
-alert Atome.aui
+# alert Atome.aui

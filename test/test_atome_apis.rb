@@ -44,7 +44,7 @@ require '../lib/atome.rb'
 # interpreter = RUBY_ENGINE.downcase
 # # puts interpreter
 # platform = RUBY_PLATFORM.downcase
-# Atome.set_current_user(:jeezs)
+# Atome.current_user=:jeezs
 # # box({ render: :headless })
 #
 # # a = Atome.new({ type: :shape, render: false, engine: :speech, preset: :box, id: :the_boxy,

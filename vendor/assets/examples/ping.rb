@@ -1,2 +1,3 @@
 # Storage example
-ping('apple.com')
+a=Atome.new
+a.ping('apple.com')

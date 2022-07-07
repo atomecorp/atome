@@ -80,14 +80,39 @@ go into the project :
 browser version
 
 - Warning : run the app doesn't refresh the user code, to refresh use the command 'build'
+
+
     atome run browser
+
 
 server version 
 
 - Warning : run the app doesn't refresh the user code, to refresh use the command 'build'
+   
+  
     atome run server
 
-By default the address port is 9292 : http://localhost:9292/index
+- By default the address port is 9292 : http://localhost:9292/index
+
+
+gem version
+
+    require 'atome'
+    a=Atome.new
+    puts a.inspect
+
+native version : android , iOS, Linux, windows 
+
+- Warning : run the app doesn't refresh the user code, to refresh use the command 'build'
+ 
+    
+    atome run osx
+
+OS version
+
+
+    go to https://github.com/atomecorp/atomic_builder
+
 
 to run in production mode (faster server mode)
 
