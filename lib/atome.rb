@@ -11,7 +11,7 @@ end
 
 require 'atome/kernel/universe'
 require 'atome/kernel/properties/geometry'
-require 'atome/kernel/atome_genesis'
+require 'atome/kernel/genesis'
 require 'atome/kernel/generators/shapes'
 Universe.initialize
 puts "@atome_client_ready is : #{@atome_client_ready}"

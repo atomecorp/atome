@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'arduino_firmata', '~> 0.3'
+  spec.add_runtime_dependency 'color', '~> 1.8'
   spec.add_runtime_dependency 'faye-websocket', '~> 0.1'
   spec.add_runtime_dependency 'geocoder', '~> 1.8'
   spec.add_runtime_dependency 'guard', '~> 2.1'

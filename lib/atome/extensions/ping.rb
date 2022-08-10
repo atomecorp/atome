@@ -10,6 +10,5 @@ def ping(address, my_proc: false)
 
   chost = address
   puts up?(chost, my_proc) # prints "true" if ping replies
-
   # end
 end

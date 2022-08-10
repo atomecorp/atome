@@ -11,11 +11,12 @@ class Universe
   end
 
   def self.initialize
-    @atomes = {}
+    @atomes = []
   end
 
-  def self.atomes_add(atome_id,new_atome)
-    @atomes[atome_id] = new_atome
+  def self.atomes_add(new_atome)
+    # @atomes[atome_id] = new_atome
+    @atomes << new_atome
   end
 
   def self.atomes
