@@ -9,6 +9,10 @@ module Utilities
     #   Utilities.class_variable_get("@@history")
     # end
   end
+
+  def content
+    @content
+  end
   def length
     @content.length
   end

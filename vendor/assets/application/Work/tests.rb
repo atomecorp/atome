@@ -46,14 +46,14 @@ a.colors(:red)
 a.children(:poili)
 # puts a.colors.atomes
 # puts a.children.atomes
-puts "------------- a -------------"
-puts a
-puts "------------- a.color -------------"
-puts a.color
-puts "------------- a.colors -------------"
-puts a.colors
-puts "------------- a.children -------------"
-puts a.children
+# puts "------------- a -------------"
+puts a.shapes.type
+# puts "------------- a.color -------------"
+# puts a.color
+# puts "------------- a.colors -------------"
+# puts a.colors
+# puts "------------- a.children -------------"
+# puts a.children
 # a.colors(0.9)
 # a.colors(0.33)
 # a.colors(0.93)
