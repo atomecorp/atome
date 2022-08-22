@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # use to sanitize and secure user input
 module Sanitizer
@@ -17,25 +18,26 @@ module Sanitizer
     @default_params
   end
 
-  def security_check(property)
-    if @drm[property]
-      #  drm found we find out if we are allow to access this property
-      true if (@drm[property][:write] & [Atome.current_user, :me]).any?
-    else
-      # no drm specified for this property
-      true
-    end
-  end
+  # def security_check(property)
+  #   if @drm[property]
+  #     #  drm found we find out if we are allow to access this property
+  #     true if (@drm[property][:write] & [Atome.current_user, :me]).any?
+  #   else
+  #     # no drm specified for this property
+  #     true
+  #   end
+  # end
 
   def validation(property, value)
-    allow = false
-    if property == :drm
-      allow = true if (value[:authorisation][:write] & [Atome.current_user, :me]).any?
-      @drm = value
-    else
-      allow = security_check(property)
-    end
-    allow
+    # allow = false
+    # if property == :drm
+    #   allow = true if (value[:authorisation][:write] & [Atome.current_user, :me]).any?
+    #   @drm = value
+    # else
+    #   allow = security_check(property)
+    # end
+    # allow
+    atomisation(property, value)
   end
 
   def atomisation(property, value)
@@ -71,7 +73,8 @@ module Sanitizer
                    end
   end
 
-  def atome_stack(atome_name,params)
+  def atome_stack(atome_name, params)
+    puts "atome_name is : #{atome_name}"
     # if the creator work for a company the company  the right will be as below
     # using authorisation : :me is the current user and is the one that run the app,
     # the Atome.current_user id a specific user
@@ -79,14 +82,16 @@ module Sanitizer
     # if they are atome, else just send to the renderer ---------"
     params = add_essential_properties(params)
     params[:parent] = id
-    instance_variable_set("@#{atome_name}",Atome.new(params))
+    Atome.new(params)
+    # instance_variable_set("@#{atome_name}", Atome.new(params))
     # TO_DO: dont forget to add the current atome as the parent for the new atome
     # TO_DO: reorder particle now
     # TO_DO: recursive test to check there no atome within the params
   end
 
   def particle_stack(particle_name, value)
-    particularize(particle_name, value)
+    puts "particle_stack : #{particle_name}:  #{value}"
+    # particularize(particle_name, value)
     # if the creator work for a company the company  the right will be as below
     # using authorisation : :me is the current user and is the one that run the app,
     # the Atome.current_user id a specific user

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # use to batch range
 class Quark
   def initialize(params = [])
@@ -21,6 +23,8 @@ class Quark
     end
     values
   end
+
+  def respond_to_missing?(name, *args); end
 
   def method_missing(name, *args)
     if args[0]

@@ -1,18 +1,21 @@
+# frozen_string_literal: true
+
 # basic atome operations
 module Utilities
-  Utilities.class_variable_set("@@history", {})
-
-  def self.history(params=nil)
+  # Utilities.class_variable_set('@@history', {})
+  @history = {}
+  def self.history(params = nil)
     # if params
-    class_variable_get("@@history")[Time.now]=params
+    instance_variable_get('@history')[Time.now] = params
     # else
     #   Utilities.class_variable_get("@@history")
     # end
   end
 
-  def content
-    @content
-  end
+  # def content
+  #   @content
+  # end
+
   def length
     @content.length
   end
