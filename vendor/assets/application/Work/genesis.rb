@@ -24,11 +24,12 @@ module Genesis
 
   def self.pluralized(method_name)
     Object.define_method method_name do |params = nil|
+      puts "params is : #{params}"
       if params
         @atomes ||= Atome.new # @atomes.type(:container)
-        param = { red: params, green: 66 }
+        # param = { red: params, green: 66 }
         # TODO: dont set content this way use  << or create a contents or use content.add(param)
-        @atomes.atomes(Atome.new(param))
+        @atomes.atomes(Atome.new(params))
       else
         @atomes
       end
@@ -61,7 +62,8 @@ module Genesis
   def atome_decision_stack(atome_name, params, proc)
     instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
     if params
-      atome_stack(atome_name, params)
+      parent = id
+      Sanitizer.atome_stack(atome_name, params, parent)
     else
       get_atome(atome_name)
     end
@@ -71,11 +73,10 @@ module Genesis
     Atome.atomes(atome_name)
     Object.define_method atome_name do |params = nil|
       instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
-      new_atome = Atome.new
-      new_atome.atome_stack(atome_name, params)
+      Sanitizer.atome_stack(atome_name, params)
     end
-    # TO_DO: we just have to pass the atome to attach it to the parent'
     Atome.define_method atome_name do |params = nil|
+      instance_exec({ options: :options }, &proc) if proc.is_a?(Proc)
       atome_decision_stack(atome_name, params, proc)
     end
     create_alternates_methods(atome_name, pluralized_name)

@@ -16,26 +16,27 @@ class Atome
   include Genesis
   @atomes = []
   @particles = []
-  # Atome.class_variable_set('@@atomes', [])
-  # Atome.class_variable_set('@@particles', [])
 
   def history
     Utilities.instance_variable_get('@history')
   end
 
+  # def set(params)
+  #   # Atome.new(params)
+  #   # puts self
+  # end
+
   def initialize(params = {})
-    params.each do |property, value|
-      validation(property, value)
+    params.each do |property, values|
+      validation(property, values)
     end
   end
 
   def self.atomes(atome = nil)
     # this method is used to hold all available type of atomes
     if atome
-      # class_variable_get('@@atomes').push(atome)
       instance_variable_get('@atomes').push(atome)
     else
-      # class_variable_get('@@atomes')
       instance_variable_get('@atomes')
     end
   end
@@ -43,10 +44,8 @@ class Atome
   def self.particles(particle = nil)
     # this method is used to hold all available type of particles
     if particle
-      # class_variable_get('@@atomes').push(atome)
       instance_variable_get('@particles').push(particle)
     else
-      # class_variable_get('@@atomes')
       instance_variable_get('@particles')
     end
   end
@@ -57,7 +56,7 @@ class Atome
 
   def self.identity(_atome)
     @number_of_temp_object = 0 if @number_of_temp_object.instance_of?(NilClass)
-    @number_of_temp_object += 1
+    "a_#{@number_of_temp_object += 1}"
   end
 
   def particularize(property, value)
