@@ -215,20 +215,20 @@ class Atome
 
   end
 
-  def particle_setter_helper(params)
+  def particle_setter_helper(params, particle_name)
     if @content
-      @content[:red] = params
+      @content[particle_name] = params
     else
-      render({ top: params })
-      @top = params
+      render({ particle_name => params })
+      instance_variable_set("@#{particle_name}", params)
     end
   end
 
   def top(params = nil)
     if params
-      particle_setter_helper(params)
+      particle_setter_helper(params, :top)
     elsif @content
-      @content[:red]
+      @content[:top]
     else
       @top
     end
@@ -338,13 +338,13 @@ puts b.colors[0].id
 
 puts '---------'
 b.colors[0].id(:toto)
-puts b.colors[0].id
+puts "b.colors[0].id : #{b.colors[0].id}"
 puts '-----color 0----'
-puts b.colors[0]
+puts "b.colors[0] : #{b.colors[0]}"
 puts '---------'
-b.top(99)
-puts b.top
-puts b.colors
+b.top("99%")
+puts "b.top : #{b.top}"
+puts" b.colors : #{b.colors}"
 puts '---------'
-puts b
+puts "b : #{b}"
 # puts b.shapes

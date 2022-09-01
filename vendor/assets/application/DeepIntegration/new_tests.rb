@@ -18,7 +18,7 @@ Genesis.new_particle(:red) do
 end
 Genesis.new_particle(:green)
 Genesis.new_particle(:blue)
-Genesis.new_atome(:left)
+Genesis.new_atome(:top)
 a = {
   id: :my_shapes_container,
   drms: { drm_id: { color: :read }, drm_id2: { red: :all } },
@@ -38,8 +38,8 @@ b
 # puts b.colors[1].red
 # puts "*********"
 
-b.delete(colors: 0)
-b.delete(colors: :color22)
+# b.delete(colors: 0)
+# b.delete(colors: :color22)
 # b.delete(:colors)
 # b.delete(true)
 # b.delete([{ colors: 0 }, {colors: :color2_2}])
@@ -52,9 +52,21 @@ b.delete(colors: :color22)
 # ------ make it works: ------
 # b.color.add({ red: 66 }) # irrelevant as color is uniq!
 # b.add(colors: { red: 999 })
-puts '---------'
-# b.left(33)
-# b.color({blue: 3})
-puts "we must integrate the file : atomeDeepIntegration \n check new tests\n
-methods modified :  id, colors, color, parent, particle_setter_helper, top "
+puts '----New test -----'
+# b.color({ blue: 9 })
+# puts b.colors[0].id
+#
+# puts '---------'
+# b.colors[0].id(:toto)
+# puts b.colors[0].id
+# puts '-----color 0----'
+# puts b.colors[0]
+# puts '---------'
+b.top(99)
+# puts b.top
+# puts "b.colors : #{b.colors}"
+# puts '---------'
+# puts b
+# puts "we must integrate the file : atomeDeepIntegration \n check new tests\n
+# methods modified :  id, colors, color, parent, particle_setter_helper, top"
 # puts b.shapes

@@ -66,7 +66,7 @@ class Atome
   end
 
   def render(params)
-    puts "rendering : #{params}"
+    # puts "rendering : #{params}"
   end
 
   def delete_helper_hash(params)
@@ -106,3 +106,6 @@ class Atome
     end
   end
 end
+
+# puts "we must integrate the file : atomeDeepIntegration \n check new tests\n
+# methods modified :  id, colors, color, parent, particle_setter_helper, top "
