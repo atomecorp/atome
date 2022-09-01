@@ -18,12 +18,13 @@ Genesis.new_particle(:red) do
 end
 Genesis.new_particle(:green)
 Genesis.new_particle(:blue)
+Genesis.new_atome(:left)
 a = {
   id: :my_shapes_container,
   drms: { drm_id: { color: :read }, drm_id2: { red: :all } },
   dnas: { dna_id: { author: :jeezs, date: :a_10_06_33 } },
   shapes: { shape1_id: { width: 33, height: 999 }, shape2_id: { width: 666, height: 333 } },
-  colors: { color1_id: { red: 0.3, green: 0.1 }, color2_2: { red: 0.9, green: 0.39 } }
+  colors: { color1_id: { red: 0.3, green: 0.1 }, color22: { red: 0.9, green: 0.39 } }
 }
 
 Atome.new()
@@ -38,7 +39,7 @@ b
 # puts "*********"
 
 b.delete(colors: 0)
-b.delete(colors: :color2_2)
+b.delete(colors: :color22)
 # b.delete(:colors)
 # b.delete(true)
 # b.delete([{ colors: 0 }, {colors: :color2_2}])
@@ -52,5 +53,8 @@ b.delete(colors: :color2_2)
 # b.color.add({ red: 66 }) # irrelevant as color is uniq!
 # b.add(colors: { red: 999 })
 puts '---------'
-puts b
+# b.left(33)
+# b.color({blue: 3})
+puts "we must integrate the file : atomeDeepIntegration \n check new tests\n
+methods modified :  id, colors, color, parent, particle_setter_helper, top "
 # puts b.shapes

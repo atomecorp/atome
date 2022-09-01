@@ -71,7 +71,7 @@ class Atome
     end
     # puts "-----------------"
 
-    Universe.atomes_add(aui, @atome)
+    Universe.atomes_add(aui)
   end
 
   def properties_common(property, value, dynamic, optional_processing)
