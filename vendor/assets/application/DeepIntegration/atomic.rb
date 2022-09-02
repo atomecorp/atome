@@ -19,10 +19,16 @@ class Atome
     Utilities.users_atomes(self)
   end
 
+  def validate_set(atome_found, params, new_content)
+    found_type = send(instance_variables[0].to_s.sub('@', '')).content[:type]
+    send(atome_found.to_s.sub('@', '')).content(new_content) if validation(:atomes, found_type, params)
+  end
+
   def set(params = nil)
     instance_variables.each do |atome_found|
       new_content = send(atome_found.to_s.sub('@', '')).content.merge(params)
-      send(atome_found.to_s.sub('@', '')).content(new_content)
+      # TODO: searching for type highly unreliable,we may had a type to pluralized methods and exclude it when reading
+      validate_set(atome_found, params, new_content)
     end
   end
 
@@ -73,7 +79,7 @@ class Atome
   end
 
   def render(params)
-    puts "rendering : #{params}"
+    # puts "rendering : #{params}"
   end
 
   def delete_helper_hash(params)

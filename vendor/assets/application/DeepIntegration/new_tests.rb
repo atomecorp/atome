@@ -30,9 +30,10 @@ a = {
 Atome.new()
 
 b = Atome.new(a)
+
 # p '------ Results ------'
 # b.color({red: 10})
-b
+
 # puts b.colors[1]
 # b.colors[1].red(99)
 # puts b.colors[1].red
@@ -43,8 +44,8 @@ b
 # b.delete(:colors)
 # b.delete(true)
 # b.delete([{ colors: 0 }, {colors: :color2_2}])
-#
-# b.colors.set({ red: 939 })
+puts "--------"
+b.colors.set({ red: 939 })
 # the lines below create badly formatted atome
 # b.colors.add({ red: 33 })
 # b.colors.add({ red: 66, id: :new_col })
@@ -63,11 +64,13 @@ puts '----New test -----'
 # puts '-----color 0----'
 # puts b.colors[0]
 # # puts '---------'
-# b.top(99)
+b.top(99)
 # puts b.top
-puts "b.colors : #{b.colors}"
-puts '---------'
-# puts b
+# puts "b.colors : #{b.colors}"
+# puts '---------'
+puts b
 # puts "we must integrate the file : atomeDeepIntegration \n check new tests\n
 # methods modified :  id, colors, color, parent, particle_setter_helper, top"
 # puts b.shapes
+
+# puts "still need to test pre and post rendering processor"

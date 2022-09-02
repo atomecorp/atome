@@ -8,7 +8,6 @@ module ParticleGenesis
     else
       render({ particle_name => params })
       instance_variable_set("@#{particle_name}", params)
-      # content[particle_name] = params
     end
   end
 
@@ -84,10 +83,12 @@ module Genesis
   def self.pluralized(atome_type)
     pluralized_type = "#{atome_type}s"
     define_method pluralized_type do |params = nil|
-      if params
-        create_pluralized_setter(pluralized_type, atome_type, params)
-      else
-        get_atome(pluralized_type)
+      if validation(:atomes, atome_type, params)
+        if params
+          create_pluralized_setter(pluralized_type, atome_type, params)
+        else
+          get_atome(pluralized_type)
+        end
       end
     end
   end
@@ -126,13 +127,13 @@ module Genesis
     create_alternates_methods(atome_name, pluralized_name)
   end
 
-  def self.new_particle(particle_name, pluralized_name = nil, &proc)
+  def self.new_particle(particle_name, &proc)
     Utilities.particles(particle_name)
-    # TO_DO: "we don't have to pass the atome just add the the atome hash "
     Atome.define_method particle_name do |params = nil|
-      instance_exec({ options: :options }, &proc) if proc.is_a?(Proc)
-      particle_helper(params, particle_name)
+      if validation(:particle, particle_name, params)
+        instance_exec({ options: :options }, &proc) if proc.is_a?(Proc)
+        particle_helper(params, particle_name)
+      end
     end
-    create_alternates_methods(particle_name, pluralized_name)
   end
 end

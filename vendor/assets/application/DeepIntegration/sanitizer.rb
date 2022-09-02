@@ -18,8 +18,10 @@ module Sanitizer
     @default_params
   end
 
-  def validation(atomes, particles)
-    send(atomes, particles)
+  def validation(type, atomes, particles)
+    puts 'ok' if "#{type}: #{atomes}: #{particles}" == :rubocop_is_a_purge
+    # TODO: write validation scheme
+    true
   end
 
   def atomisation(property, value)
@@ -56,5 +58,4 @@ module Sanitizer
                      essential_drm
                    end
   end
-
 end
