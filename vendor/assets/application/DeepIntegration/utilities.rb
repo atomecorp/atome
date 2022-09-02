@@ -163,4 +163,12 @@ module Utilities
       @content
     end
   end
+
+  def parent(params = nil)
+    if params
+      @parent = params
+    else
+      @parent
+    end
+  end
 end

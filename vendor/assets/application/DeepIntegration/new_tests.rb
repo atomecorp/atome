@@ -18,7 +18,7 @@ Genesis.new_particle(:red) do
 end
 Genesis.new_particle(:green)
 Genesis.new_particle(:blue)
-Genesis.new_atome(:top)
+Genesis.new_particle(:top)
 a = {
   id: :my_shapes_container,
   drms: { drm_id: { color: :read }, drm_id2: { red: :all } },

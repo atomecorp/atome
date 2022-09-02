@@ -75,8 +75,8 @@ module Genesis
       else
         # no colors found : we create it
         new_atome_id = "a_#{atome_name}_#{Utilities.atomes.length}"
-        puts new_atome_id
-        # send({ new_atome_id => params })
+        # puts atome_name
+        send(atome_name,{ new_atome_id => params })
       end
 
     else
