@@ -30,35 +30,42 @@ a = {
 Atome.new()
 
 b = Atome.new(a)
+# b = Atome.new
+puts '------ Results ------'
 
-# p '------ Results ------'
 # b.color({red: 10})
 
+
 # puts b.colors[1]
-# b.colors[1].red(99)
+# b.colors[0].red(99)
 # puts b.colors[1].red
 # puts "*********"
-
+# p b.colors
 # b.delete(colors: 0)
 # b.delete(colors: :color22)
 # b.delete(:colors)
 # b.delete(true)
-# b.delete([{ colors: 0 }, {colors: :color2_2}])
-puts "--------"
-b.colors.set({ red: 939 })
+# b.delete([{ colors: 0 }, {colors: :color22}])
+
+# puts "---- tests ----"
+# b.colors.set({ red: 939 })
 # the lines below create badly formatted atome
+
 # b.colors.add({ red: 33 })
 # b.colors.add({ red: 66, id: :new_col })
 # b.colors.replace(1,{ red: 996 })
 # b.colors.replace(:color1_id, { red: 393 })
+
 # ------ make it works: ------
 # b.color.add({ red: 66 }) # irrelevant as color is uniq!
-# b.add(colors: { red: 999 })
-puts '----New test -----'
+# b.add(colors: { red: 999999 })
+# puts '----New test -----'
 # b.color({ blue: 9 })
+# puts b.color
 # puts b.colors[0].id
 # puts '---------'
 # # puts Utilities.users_atomes
+
 # b.colors[0].id(:toto)
 # puts b.colors[0].id
 # puts '-----color 0----'
@@ -68,9 +75,11 @@ b.top(99)
 # puts b.top
 # puts "b.colors : #{b.colors}"
 # puts '---------'
-puts b
+# puts b
 # puts "we must integrate the file : atomeDeepIntegration \n check new tests\n
 # methods modified :  id, colors, color, parent, particle_setter_helper, top"
 # puts b.shapes
 
 # puts "still need to test pre and post rendering processor"
+
+# TODO: the id method is fucked!!

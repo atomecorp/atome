@@ -126,33 +126,38 @@ module Utilities
     "#{property} #{value}"
   end
 
-  def id_helper_for_content(params)
-    id_found = @content[:id]
-    container_found = grab(id_found)
-    parent_id_found = container_found.content[:parent]
-    parent_found = grab(parent_id_found)
-    parent_found.colors.instance_variable_set("@#{params}", container_found)
-    parent_found.colors.remove_instance_variable("@#{id_found}")
-    @content[:id]=params
-    parent_found.colors.class.send(:attr_accessor, params)
-  end
+  # def id_helper_for_content(params)
+  #   id_found = @content[:id]
+  #   container_found = grab(id_found)
+  #   parent_id_found = container_found.content[:parent]
+  #   parent_found = grab(parent_id_found)
+  #   parent_found.colors.instance_variable_set("@#{params}", container_found)
+  #   parent_found.colors.remove_instance_variable("@#{id_found}")
+  #   atomisation({ atome: @id, id: params })
+  #   @content[:id]=params
+  #   parent_found.colors.class.send(:attr_accessor, params)
+  # end
 
   def id_helper(params)
     if @content
-      id_helper_for_content(params)
+      # id_helper_for_content(params)
+      @content[:id]
     else
       @id = params
+    end
+    atomisation({ atome: @id, id: params })
+  end
+
+  def id_validation(params)
+    if params
+      id_helper(params)
+    else
+      @id
     end
   end
 
   def id(params = nil)
-    if params
-      id_helper(params)
-    elsif @content
-      @content[:id]
-    else
-      @id
-    end
+    id_validation(params) if validation(:atome, :id, params)
   end
 
   def content(params = nil)

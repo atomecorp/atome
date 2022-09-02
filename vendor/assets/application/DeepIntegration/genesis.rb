@@ -6,15 +6,14 @@ module ParticleGenesis
     if @content
       @content[particle_name] = params
     else
-      render({ particle_name => params })
       instance_variable_set("@#{particle_name}", params)
     end
+    atomisation({ particle_name => params })
   end
 
   def particle_helper(params, particle_name)
     if params
       particle_setter_helper(params, particle_name)
-      # content[particle_name] = params
     elsif @content
       content[particle_name]
     else
@@ -47,11 +46,9 @@ module Genesis
   end
 
   def set_essential_properties(atome_type, atome_id, property)
-    # if property.instance_of?(Hash)
     property[:parent] = id
     property[:type] = atome_type.to_sym
     property[:id] = atome_id
-    # end
     nil unless property.instance_of?(Hash)
   end
 
@@ -59,8 +56,7 @@ module Genesis
     params.each do |atome_id, property|
       set_essential_properties(atome_type, atome_id, property)
       # TODO : check if we need to pass the id or not
-      # we only add id for the renderer
-      render({ pluralized_type => property.merge({ id: atome_id }) })
+      atomisation({ pluralized_type => property })
       send(pluralized_type).class.send(:attr_accessor, atome_id)
       new_atome = Atome.new
       new_atome.instance_variable_set('@content', property)
@@ -107,6 +103,7 @@ module Genesis
       new_atome_id = "a_#{atome_name}_#{Utilities.atomes.length}"
       send(pluralized_name, { new_atome_id => params })
     end
+    atomisation({ atome_name => params })
   end
 
   def atome_decision_stack(atome_name, params, proc)
@@ -122,7 +119,7 @@ module Genesis
   def self.new_atome(atome_name, pluralized_name = nil, &proc)
     Utilities.atomes(atome_name)
     Atome.define_method atome_name do |params = nil|
-      atome_decision_stack(atome_name, params, proc)
+      atome_decision_stack(atome_name, params, proc) if validation(:atome, atome_name, params)
     end
     create_alternates_methods(atome_name, pluralized_name)
   end

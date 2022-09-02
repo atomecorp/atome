@@ -24,15 +24,22 @@ module Sanitizer
     true
   end
 
-  def atomisation(property, value)
-    pre_render_engine = Genesis.get_atome_helper("#{property}_render_pre_proc".to_sym)
-    instance_exec('render_pre_proc_options_passed', &pre_render_engine) if pre_render_engine.is_a?(Proc)
-    renderer(property, value)
-    post_render_engine = Genesis.get_atome_helper("#{property}_render_post_proc".to_sym)
-    instance_exec('render_post_proc_options_passed', &post_render_engine) if post_render_engine.is_a?(Proc)
-    broadcaster(property, value)
-    particularize(property, value)
-    historize(property, value)
+  def particularize(property, value)
+    instance_variable_set("@#{property}", value)
+  end
+
+  def atomisation(params)
+    params.each do |atome, particle|
+      pre_render_engine = Genesis.get_atome_helper("#{atome}_render_pre_proc".to_sym)
+      instance_exec('render_pre_proc_options_passed', &pre_render_engine) if pre_render_engine.is_a?(Proc)
+      instance_exec('render_pre_proc_options_passed', &pre_render_engine) if pre_render_engine.is_a?(Proc)
+      render(particle)
+      post_render_engine = Genesis.get_atome_helper("#{atome}_render_post_proc".to_sym)
+      instance_exec('render_post_proc_options_passed', &post_render_engine) if post_render_engine.is_a?(Proc)
+      broadcaster(atome, particle)
+      # particularize(atome, particle)
+      historize(atome, particle)
+    end
   end
 
   def self.add_essential_properties(atome_name, params, parent)
