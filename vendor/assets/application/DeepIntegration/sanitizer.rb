@@ -28,14 +28,24 @@ module Sanitizer
     instance_variable_set("@#{property}", value)
   end
 
+  def pre_process_atomisation(atome, particle)
+    pre_render_engine = Genesis.get_atome_helper("#{atome}_render_pre_proc".to_sym)
+    instance_exec("render_pre_proc_options_passed is : #{particle}", &pre_render_engine) if pre_render_engine.is_a?(Proc)
+  end
+
+  def post_process_atomisation(atome, particle)
+    post_render_engine = Genesis.get_atome_helper("#{atome}_render_post_proc".to_sym)
+    instance_exec("render_post_proc_options_passed is : #{particle}", &post_render_engine) if post_render_engine.is_a?(Proc)
+  end
+
   def atomisation(params)
+
     params.each do |atome, particle|
-      pre_render_engine = Genesis.get_atome_helper("#{atome}_render_pre_proc".to_sym)
-      instance_exec('render_pre_proc_options_passed', &pre_render_engine) if pre_render_engine.is_a?(Proc)
-      instance_exec('render_pre_proc_options_passed', &pre_render_engine) if pre_render_engine.is_a?(Proc)
+      # TODO: send the singularised atome instead of using chomp
+      atome = atome.to_s.chomp('s').to_sym
+      pre_process_atomisation(atome, particle)
       render(particle)
-      post_render_engine = Genesis.get_atome_helper("#{atome}_render_post_proc".to_sym)
-      instance_exec('render_post_proc_options_passed', &post_render_engine) if post_render_engine.is_a?(Proc)
+      post_process_atomisation(atome, particle)
       broadcaster(atome, particle)
       # particularize(atome, particle)
       historize(atome, particle)
@@ -43,6 +53,7 @@ module Sanitizer
   end
 
   def self.add_essential_properties(atome_name, params, parent)
+    puts "--------- Setting esential properties ---------"
     parent = { parent: parent }
     # TO_DO: postpone dna and set it thru a thread to avoid slowing the whole atome creation process
     essential_properties = { id: Atome.identity(self),

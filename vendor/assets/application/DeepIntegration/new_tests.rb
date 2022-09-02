@@ -6,8 +6,8 @@ require './atomic'
 Genesis.new_atome(:color) do |params|
   puts "extra color code executed!! : #{params}"
 end
-Genesis.new_atome_helper(:color_render_pre_proc) do
-  puts "Color helper pre render set\n"
+Genesis.new_atome_helper(:color_render_pre_proc) do |value|
+  puts ":======> Color helper pre render set #{value}\n"
 end
 Genesis.new_atome(:shape)
 Genesis.new_atome(:drm)
@@ -19,6 +19,14 @@ end
 Genesis.new_particle(:green)
 Genesis.new_particle(:blue)
 Genesis.new_particle(:top)
+Genesis.new_atome_helper(:top_render_pre_proc) do |value|
+  puts "top helper pre render set : #{value}\n"
+end
+
+# Genesis.new_atome_helper(:y_render_pre_proc) do |params|
+#   puts 'atome helper render_pre_proc is executed : '+params
+# end
+
 a = {
   id: :my_shapes_container,
   drms: { drm_id: { color: :read }, drm_id2: { red: :all } },

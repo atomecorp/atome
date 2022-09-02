@@ -12,13 +12,26 @@ class Atome
   include Utilities
   include Genesis
   include Helper
+  include Photons
 
   def initialize(params = {})
     @id = params.delete(:id) if params[:id]
+
     params.each do |atomes, particles|
+      params = Sanitizer.add_essential_properties(atomes, particles, :view)
+      puts "I must found a solution how to merge default params with value passed as a symbol #{params}"
       send(atomes, particles)
     end
     Utilities.users_atomes(self)
+  end
+
+  def self.current_user
+    @user = :jeezs
+  end
+
+  def self.identity(_atome)
+    @number_of_temp_object = 0 if @number_of_temp_object.instance_of?(NilClass)
+    "a_#{@number_of_temp_object += 1}"
   end
 
   def validate_set(atome_found, params, found_type)
@@ -66,9 +79,7 @@ class Atome
     end
   end
 
-  def render(params)
-    puts "rendering : #{params}"
-  end
+
 
   def delete(params = nil)
     case params
