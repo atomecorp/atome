@@ -43,29 +43,30 @@ b
 # b.delete(:colors)
 # b.delete(true)
 # b.delete([{ colors: 0 }, {colors: :color2_2}])
-
+#
 # b.colors.set({ red: 939 })
+# the lines below create badly formatted atome
 # b.colors.add({ red: 33 })
 # b.colors.add({ red: 66, id: :new_col })
-# b.colors.replace(1,{ red: 99 })
-# b.colors.replace(:color1_id, { red: 33 })
+# b.colors.replace(1,{ red: 996 })
+# b.colors.replace(:color1_id, { red: 393 })
 # ------ make it works: ------
 # b.color.add({ red: 66 }) # irrelevant as color is uniq!
 # b.add(colors: { red: 999 })
 puts '----New test -----'
 # b.color({ blue: 9 })
 # puts b.colors[0].id
-#
 # puts '---------'
+# # puts Utilities.users_atomes
 # b.colors[0].id(:toto)
 # puts b.colors[0].id
 # puts '-----color 0----'
 # puts b.colors[0]
-# puts '---------'
-b.top(99)
+# # puts '---------'
+# b.top(99)
 # puts b.top
-# puts "b.colors : #{b.colors}"
-# puts '---------'
+puts "b.colors : #{b.colors}"
+puts '---------'
 # puts b
 # puts "we must integrate the file : atomeDeepIntegration \n check new tests\n
 # methods modified :  id, colors, color, parent, particle_setter_helper, top"

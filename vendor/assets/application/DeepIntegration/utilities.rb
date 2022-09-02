@@ -75,7 +75,7 @@ module Utilities
   end
 
   def grab(params)
-    Utilities.atomes.each do |atome|
+    Utilities.users_atomes.each do |atome|
       return atome if atome.id == params
     end
   end
@@ -126,7 +126,6 @@ module Utilities
     "#{property} #{value}"
   end
 
-
   def id_helper_for_content(params)
     id_found = @content[:id]
     container_found = grab(id_found)
@@ -145,6 +144,7 @@ module Utilities
       @id = params
     end
   end
+
   def id(params = nil)
     if params
       id_helper(params)
@@ -154,7 +154,6 @@ module Utilities
       @id
     end
   end
-
 
   def content(params = nil)
     if params

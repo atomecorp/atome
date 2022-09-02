@@ -1,7 +1,32 @@
 # frozen_string_literal: true
 
+# used to generate atome
+module ParticleGenesis
+  def particle_setter_helper(params, particle_name)
+    if @content
+      @content[particle_name] = params
+    else
+      render({ particle_name => params })
+      instance_variable_set("@#{particle_name}", params)
+      # content[particle_name] = params
+    end
+  end
+
+  def particle_helper(params, particle_name)
+    if params
+      particle_setter_helper(params, particle_name)
+      # content[particle_name] = params
+    elsif @content
+      content[particle_name]
+    else
+      instance_variable_get("@#{particle_name}")
+    end
+  end
+end
+
 # used to store and retrieve atome optional methods
 module Genesis
+  include ParticleGenesis
   @optionals_methods = {}
 
   def self.set_atome_helper(property_name, &proc)
@@ -22,28 +47,34 @@ module Genesis
     end
   end
 
-  def pluralized_helper(atome_type, params)
+  def set_essential_properties(atome_type, atome_id, property)
+    # if property.instance_of?(Hash)
+    property[:parent] = id
+    property[:type] = atome_type.to_sym
+    property[:id] = atome_id
+    # end
+    nil unless property.instance_of?(Hash)
+  end
+
+  def pluralized_helper(pluralized_type, atome_type, params)
     params.each do |atome_id, property|
-      if property.instance_of?(Hash)
-        property[:parent] = id
-        # property[:type] = :color
-      end
+      set_essential_properties(atome_type, atome_id, property)
       # TODO : check if we need to pass the id or not
       # we only add id for the renderer
-      render({ atome_type => property.merge({ id: atome_id }) })
-      send(atome_type).class.send(:attr_accessor, atome_id)
+      render({ pluralized_type => property.merge({ id: atome_id }) })
+      send(pluralized_type).class.send(:attr_accessor, atome_id)
       new_atome = Atome.new
       new_atome.instance_variable_set('@content', property)
-      send(atome_type).instance_variable_set("@#{atome_id}", new_atome)
+      send(pluralized_type).instance_variable_set("@#{atome_id}", new_atome)
     end
   end
 
-  def create_pluralized_setter(atome_type, params)
-    pluralised_instance_variable = "@#{atome_type}"
+  def create_pluralized_setter(pluralized_type, atome_type, params)
+    pluralised_instance_variable = "@#{pluralized_type}"
     unless instance_variable_get(pluralised_instance_variable)
       instance_variable_set(pluralised_instance_variable, Atome.new)
     end
-    pluralized_helper(atome_type, params)
+    pluralized_helper(pluralized_type, atome_type, params)
   end
 
   def get_atome(atome_name)
@@ -51,34 +82,37 @@ module Genesis
   end
 
   def self.pluralized(atome_type)
-    define_method atome_type do |params = nil|
+    pluralized_type = "#{atome_type}s"
+    define_method pluralized_type do |params = nil|
       if params
-        create_pluralized_setter(atome_type, params)
+        create_pluralized_setter(pluralized_type, atome_type, params)
       else
-        get_atome(atome_type)
+        get_atome(pluralized_type)
       end
     end
   end
 
-  def self.create_alternates_methods(atome_name, pluralized_name)
-    method_equal(atome_name)
-    pluralized(pluralized_name || "#{atome_name}s")
+  def self.create_alternates_methods(atome_type, pluralized_name)
+    method_equal(atome_type)
+    pluralized(pluralized_name || atome_type)
+  end
+
+  def atome_test_if_already_exist(atome_name, pluralized_name, params)
+    if instance_variable_get("@#{pluralized_name}")
+      new_params = send(pluralized_name)[0].content.merge(params)
+      send(pluralized_name)[0].content(new_params)
+    else
+      # no colors found : we create it
+      new_atome_id = "a_#{atome_name}_#{Utilities.atomes.length}"
+      send(pluralized_name, { new_atome_id => params })
+    end
   end
 
   def atome_decision_stack(atome_name, params, proc)
     instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
     pluralized_atome_name = "#{atome_name}s".to_sym
     if params
-      if  instance_variable_get("@#{pluralized_atome_name}")
-        new_params = send(pluralized_atome_name)[0].content.merge(params)
-        send(pluralized_atome_name)[0].content(new_params)
-      else
-        # no colors found : we create it
-        new_atome_id = "a_#{atome_name}_#{Utilities.atomes.length}"
-        # puts atome_name
-        send(atome_name,{ new_atome_id => params })
-      end
-
+      atome_test_if_already_exist(atome_name, pluralized_atome_name, params)
     else
       send(pluralized_atome_name).read[0]
     end
@@ -92,29 +126,12 @@ module Genesis
     create_alternates_methods(atome_name, pluralized_name)
   end
 
-  def particle_setter_helper(params, particle_name)
-    if @content
-      @content[particle_name] = params
-    else
-      render({ particle_name => params })
-      # instance_variable_set("@#{particle_name}", params)
-      content[particle_name] = params
-    end
-  end
-
   def self.new_particle(particle_name, pluralized_name = nil, &proc)
     Utilities.particles(particle_name)
     # TO_DO: "we don't have to pass the atome just add the the atome hash "
     Atome.define_method particle_name do |params = nil|
       instance_exec({ options: :options }, &proc) if proc.is_a?(Proc)
-      if params
-        particle_setter_helper(params, particle_name)
-        # content[particle_name] = params
-      elsif @content
-        content[particle_name]
-      else
-        instance_variable_get(particle_name)
-      end
+      particle_helper(params, particle_name)
     end
     create_alternates_methods(particle_name, pluralized_name)
   end

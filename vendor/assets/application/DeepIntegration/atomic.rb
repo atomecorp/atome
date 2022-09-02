@@ -26,16 +26,23 @@ class Atome
     end
   end
 
+  def add_helper(params)
+    params[:id] = "atome_#{instance_variables.length}" unless params[:id]
+    atome_id = params.delete(:id)
+    self.class.send(:attr_accessor, atome_id)
+    new_atome = Atome.new
+    new_atome.content(params.merge({ id: atome_id }))
+    instance_variable_set("@#{atome_id}", new_atome)
+  end
+
   def add(params = {})
     if id
+      type_found = { type: params.keys[0].to_s.chomp('s') }
       params.each do |atome, particle|
-        send(atome).add(particle)
+        send(atome).add(particle.merge(type_found))
       end
     else
-      params[:id] = "atome_#{instance_variables.length}" unless params[:id]
-      atome_id = params.delete(:id)
-      self.class.send(:attr_accessor, atome_id)
-      instance_variable_set("@#{atome_id}", params)
+      add_helper(params)
     end
   end
 
@@ -66,7 +73,7 @@ class Atome
   end
 
   def render(params)
-    # puts "rendering : #{params}"
+    puts "rendering : #{params}"
   end
 
   def delete_helper_hash(params)
