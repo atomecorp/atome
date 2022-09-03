@@ -44,7 +44,7 @@ module Sanitizer
       # TODO: send the singularised atome instead of using chomp
       atome = atome.to_s.chomp('s').to_sym
       pre_process_atomisation(atome, particle)
-      render(particle)
+      render({ atome => particle })
       post_process_atomisation(atome, particle)
       broadcaster(atome, particle)
       # particularize(atome, particle)
@@ -53,19 +53,13 @@ module Sanitizer
   end
 
   def self.add_essential_properties(atome_name, params, parent)
-    parent = { parent: parent }
-    # TO_DO: postpone dna and set it thru a thread to avoid slowing the whole atome creation process
-    essential_properties = { id: Atome.identity(self),
-                             dna: { creator: Atome.current_user, date: Time.now, software: 987_986,
-                                    location: :location }, parent: :view, render: { opal: true } }
-    params = essential_properties.merge(parent).merge(params)
+    parent = { parent: { value: parent } }
+    dna = { dna: { creator: Atome.current_user, date: Time.now, software: 987_986,
+                   location: :location } }
+    render = { renderer: { opal: true } }
     specific_properties = Sanitizer.default_params[atome_name]
-    params = essential_properties.merge(specific_properties).merge(params) if specific_properties
-    drm_generated = { drm: add_essential_drm(params) }
-    drm_generated.merge(params)
-    { "#{atome_name}s" => drm_generated.merge(params)}
-    ###############
-
+    drm = { drm: add_essential_drm(params) }
+    drm.merge(dna).merge(parent).merge(render).merge(specific_properties).merge(params)
 
   end
 

@@ -46,7 +46,6 @@ module Genesis
   end
 
   def set_essential_properties(atome_type, atome_id, property)
-    puts property
     property[:parent] = id
     property[:type] = atome_type.to_sym
     property[:id] = atome_id

@@ -15,21 +15,34 @@ class Atome
   include Photons
 
   def initialize(params = {})
-    @id = params.delete(:id) if params[:id]
+    if params[:id]
+      @id = params.delete(:id)
+      # else
+      # @id = Atome.generate_identity unless params[:id]
+    end
     params.each do |atomes, particles|
       # TODO: get the correct parent not always the view
-      params = Sanitizer.add_essential_properties(atomes, particles, :view)
-      # particles=particles.merge(params)
+      check_params(atomes, particles)
       send(atomes, particles)
     end
     Utilities.users_atomes(self)
+  end
+
+  def check_params(atomes, particles)
+    particles.each do |particle_id, particle|
+      # TODO : we must send the singularised atomes not rename it!
+      singular_atome = atomes.to_s.chomp('s').to_sym
+      new_particle = Sanitizer.add_essential_properties(singular_atome, particle, id)
+      particle = new_particle.merge(particle)
+      particles[particle_id] = particle
+    end
   end
 
   def self.current_user
     @user = :jeezs
   end
 
-  def self.identity(_atome)
+  def self.generate_identity
     @number_of_temp_object = 0 if @number_of_temp_object.instance_of?(NilClass)
     "a_#{@number_of_temp_object += 1}"
   end
@@ -78,8 +91,6 @@ class Atome
       replace_helper(targets, new_atome)
     end
   end
-
-
 
   def delete(params = nil)
     case params
