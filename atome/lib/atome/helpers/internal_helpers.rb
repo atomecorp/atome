@@ -49,6 +49,7 @@ module InternalHelpers
     end
     update_property(self, instance_name, value)
   end
+
   def remove_item_from_hash(object)
     new_list = {}
     object.each do |id_of_atome, content|

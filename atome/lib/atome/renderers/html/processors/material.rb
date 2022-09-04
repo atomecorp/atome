@@ -3,17 +3,17 @@ module ProcessorHtml
     case value
     when Hash
       red = if value[:red]
-              value[:red] * 255
+              (value[:red] * 255).floor()
             else
               0
             end
       green = if value[:green]
-                value[:green] * 255
+                (value[:green] * 255).floor()
               else
                 0
               end
       blue = if value[:blue]
-               value[:blue] * 255
+               (value[:blue] * 255).floor()
              else
                0
              end

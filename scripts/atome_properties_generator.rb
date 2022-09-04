@@ -37,7 +37,7 @@ end
 
 def need_pre_processing
   %i[atome_id particle group container shape box star web circle sphere text camera microphone midi
-  text image video audio  cell parent child type shadow size drag visual noise say content]
+  text image video audio  cell parent child type shadow size drag visual noise say content tag]
 end
 
 def need_processing

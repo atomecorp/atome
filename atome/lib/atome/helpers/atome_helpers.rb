@@ -123,15 +123,17 @@ module AtomeHelpers
   end
 
   def duplicate(value)
+    new_atome=""
     value = { x: 0, y: 0, offset: { x: 6, y: 6 } }.merge(value)
     (0..value[:y]).each do |y_val|
       (1..value[:x]).each do |x_val|
         atome_property = self.inspect.merge({ atome_id: self.atome_id.to_s + x_val.to_s,
                                               x: self.x + self.width * x_val + value[:offset][:x] * x_val,
                                               y: self.width * y_val + value[:offset][:y] * y_val })
-        Atome.new(atome_property)
+        new_atome=Atome.new(atome_property)
       end
     end
+    new_atome
   end
 
   def atomiser(value)
