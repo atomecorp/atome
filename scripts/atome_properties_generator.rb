@@ -1,3 +1,4 @@
+# V: 0.67
 def atome_methods
   analyser = %i[listen]
   communication = %i[share]
