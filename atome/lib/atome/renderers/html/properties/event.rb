@@ -164,8 +164,9 @@ module PropertyHtml
     if value != false
       proc = value[:proc]
       jq_get(atome_id).droppable
+      current_atome=self
       jq_get(atome_id).on(:drop) do |evt, ui|
-        proc.call(evt, ui) if proc.is_a?(Proc)
+        proc.call(evt, ui,current_atome) if proc.is_a?(Proc)
       end
     else
       jq_get(atome_id).droppable(:destroy)

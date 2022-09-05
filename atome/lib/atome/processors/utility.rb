@@ -28,18 +28,19 @@ module Processors
   end
 
   def action_getter_processor
-    proc= @action.q_read[:proc]
+    proc = @action.q_read[:proc]
     instance_exec &proc if proc.is_a?(Proc)
   end
 
-
   def tag_pre_processor(params)
-  if @tag.nil?
-    @tag=atomise(:tag, params)
-  elsif @tag
-    if @tag.instance_of?(Quark)
-      @tag=atomise(:tag, @tag&.q_read.merge(params))
+    if params === :delete
+      @tag = atomise(:tag, {  })
+    elsif @tag.nil?
+      @tag = atomise(:tag, params)
+    elsif @tag
+      if @tag.instance_of?(Quark)
+        @tag = atomise(:tag, @tag&.q_read.merge(params))
+      end
     end
-  end
   end
 end

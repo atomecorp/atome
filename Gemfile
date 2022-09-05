@@ -11,6 +11,7 @@ gem "opal-jquery"
 # gem "opal-browser"
 # end opal-browser
 gem "rake"
+gem 'rubocop', group: 'development'
 gem "uglifier"
 gem "parser"
 # gem "roda", "2.26.0"
