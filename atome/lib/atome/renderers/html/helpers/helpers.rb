@@ -1,6 +1,6 @@
 module HtmlHelpers
   def delete_html(val)
-    if val ==true
+    if val == true
       jq_get(atome_id).remove
     else
       # send("#{val}_html", 0)
@@ -32,7 +32,6 @@ module HtmlHelpers
   end
 
   def update_position
-
     # this method update the position in x, y,xx,yy properties
     jq_object = jq_get(atome_id)
     x_position = jq_object.css("left").sub("px", "").to_i
@@ -74,7 +73,7 @@ module HtmlHelpers
     JSUtils.ping(adress, error, success)
   end
 
-  # events's helper
+  # event's helper
 
   def touch_html_helper(value)
     if value.instance_of?(Array)
@@ -86,21 +85,31 @@ module HtmlHelpers
       jq_get(atome_id).off('click')
     else
       option = value[:option]
-      delay = value[:delay] || 1.2
+      delay = value[:delay] || 0.6
       case option
       when :down
         jq_get(atome_id).on("touchstart mousedown") do |evt|
+          # puts evt.to_n
           # the method below is used when a browser received touchdown and mousedown at the same time
           # this avoid the event to be treated twice by android browser
-          value[:proc].call(evt) if value[:proc].is_a?(Proc)
+          # value[:proc].call(evt, self ) if value[:proc].is_a?(Proc)
+          instance_exec evt, &value[:proc] if value[:proc].is_a?(Proc)
+          # if value[:immediate]
+          #   alert :kool
+          #   virtual_event(evt)
+          # end
           evt.stop_propagation if value[:stop]
+        end
+        self.touch({ option: :up }) do
+          @touch_counter = 0
         end
       when :up
         jq_get(atome_id).on("touchend mouseup") do |evt|
           # the method below is used when a browser received touchdown and mousedown at the same time
           # this avoid the event to be traeted twice by android browser
           evt.prevent
-          value[:proc].call(evt) if value[:proc].is_a?(Proc)
+          # value[:proc].call(evt, self) if value[:proc].is_a?(Proc)
+          instance_exec evt, &value[:proc] if value[:proc].is_a?(Proc)
           evt.stop_propagation if value[:stop]
         end
       when :long
@@ -111,11 +120,12 @@ module HtmlHelpers
           evt.prevent
           waiter = ATOME.wait delay do
             unless drag && drag[:drag] == :moving
-              value[:proc].call(evt) if value[:proc].is_a?(Proc)
+              # value[:proc].call(evt, self) if value[:proc].is_a?(Proc)
+              instance_exec evt, &value[:proc] if value[:proc].is_a?(Proc)
               evt.stop_propagation if value[:stop]
             end
           end
-          # below we catch the mous out to stop long touch from beeing executed
+          # below we catch the mous out to stop long touch from being executed
           grab(atome_id).over(:exit) do
             ATOME.clear({ wait: waiter })
             evt.stop_propagation if value[:stop]
@@ -130,27 +140,28 @@ module HtmlHelpers
         ready = false
         jq_get(atome_id).on("touchstart mousedown") do |evt|
           # the method below is used when a browser received touchdown and mousedown at the same time
-          # this avoid the event to be traeted twice by android browser
+          # this avoid the event to be targeted twice by android browser
           evt.prevent
           if ready == false
             @touch_counter = 0
             ready = true
           end
-          waiter = ATOME.wait delay do
+          waiter = ATOME.wait 1 do
             ready = false
             @touch_counter = 0
           end
           if @touch_counter >= 1
-            value[:proc].call(evt) if value[:proc].is_a?(Proc)
+            # value[:proc].call(evt, self) if value[:proc].is_a?(Proc)
+            instance_exec evt, &value[:proc] if value[:proc].is_a?(Proc)
             clear({ wait: waiter })
             ready = false
             @touch_counter = 0
           end
           @touch_counter += 1
         end
-        jq_get(atome_id).on("touchend mouseup") do
-          ATOME.clear({ wait: waiter })
-        end
+        # jq_get(atome_id).on("touchend mouseup") do
+        #   # ATOME.clear({ wait: waiter })
+        # end
       else
         jq_get(atome_id).on(:click) do |evt|
           # the method below is used when a browser received touchdown and mousedown at the same time

@@ -142,7 +142,12 @@ class Atome
 
   def [](query = nil)
     if query
-      self.properties[query]
+      if  self.properties[query]
+        self.properties[query]
+      else
+        self.content[query]
+      end
+
     else
       self.properties
     end

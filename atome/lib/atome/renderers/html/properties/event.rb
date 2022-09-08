@@ -11,7 +11,7 @@ module PropertyHtml
       # jq_get(atome_id).unbind("touchstart mousedown touchend mouseup")
       # jq_get(atome_id).off('click')
       touch_html_helper(value)
-      end
+    end
   end
 
   def drag_html(value)
@@ -20,7 +20,12 @@ module PropertyHtml
     if value == :destroy || value[:option] == :destroy
       # we initiate the scale first so it won't break if scale is destroy twice,
       # else : destroy scale then clear view will crash
-      jq_object.draggable(:destroy)
+      # jq_object.draggable(:destroy)
+      `
+if ($('#'+#{atome_id}).data('ui-draggable')) { // error to call destroy if not there
+   $('#'+#{atome_id}).draggable('destroy');
+}
+`
     elsif value == :disable || value[:option] == :disable
       # we initiate the scale first so it won't break if scale is diasble twice,
       # else : destroy scale then clear view will crash
@@ -98,6 +103,7 @@ module PropertyHtml
         change_position_origin
         value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
+
     end
 
   end
@@ -164,9 +170,9 @@ module PropertyHtml
     if value != false
       proc = value[:proc]
       jq_get(atome_id).droppable
-      current_atome=self
+      current_atome = self
       jq_get(atome_id).on(:drop) do |evt, ui|
-        proc.call(evt, ui,current_atome) if proc.is_a?(Proc)
+        proc.call(evt, ui, current_atome) if proc.is_a?(Proc)
       end
     else
       jq_get(atome_id).droppable(:destroy)
@@ -180,15 +186,23 @@ module PropertyHtml
       case option
       when :enter, :in
         jq_get(atome_id).mouseenter do |evt|
-          proc.call(evt) if proc.is_a?(Proc)
+          # proc.call(evt) if proc.is_a?(Proc)
+          instance_exec evt, &proc if proc.is_a?(Proc)
+
         end
       when :exit, :leave, :out
         jq_get(atome_id).mouseleave do |evt|
-          proc.call(evt) if proc.is_a?(Proc)
+          # proc.call(evt) if proc.is_a?(Proc)
+          instance_exec evt, &proc if proc.is_a?(Proc)
         end
+      when :remove
+        jq_get(atome_id).unbind(:mouseenter)
+        jq_get(atome_id).unbind(:mouseleave)
+        jq_get(atome_id).unbind(:mouseover)
       else
         jq_get(atome_id).mouseover do |evt|
-          proc.call(evt) if proc.is_a?(Proc)
+          # proc.call(evt) if proc.is_a?(Proc)
+          instance_exec evt, &proc if proc.is_a?(Proc)
         end
       end
     else
@@ -208,7 +222,7 @@ module PropertyHtml
         jq_get(atome_id).trigger("click")
       end
     else
-      jq_get(atome_id).trigger("click")
+      jq_get(atome_id).trigger(value[:event])
     end
   end
 

@@ -1,5 +1,4 @@
 module Processors
-
   def drag_pre_processor(value)
     case value
     when true
@@ -14,3 +13,4 @@ module Processors
   end
 
 end
+
