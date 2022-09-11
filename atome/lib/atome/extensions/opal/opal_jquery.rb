@@ -33,7 +33,6 @@ class Event
     self.key
   end
 
-
   # def js
   #   @native
   # end
@@ -76,6 +75,14 @@ class Event
 
   def stop=(value)
     @drag_stop = value
+  end
+
+  def end=(value)
+    @drag_end = value
+  end
+
+  def end
+    @drag_end
   end
 
   def stop

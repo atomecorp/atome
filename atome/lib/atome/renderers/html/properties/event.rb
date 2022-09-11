@@ -68,9 +68,12 @@ if ($('#'+#{atome_id}).data('ui-draggable')) { // error to call destroy if not t
       y_position_start = 0
       offset_x = 0
       offset_y = 0
+      proc = value[:proc]
+
       jq_object.on(:dragstart) do |evt|
         evt.start = true
-        evt.stop = false
+        # evt.stop = false
+        evt.end = false
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         jq_get(atome_id).css("left", "#{x}px")
@@ -79,30 +82,40 @@ if ($('#'+#{atome_id}).data('ui-draggable')) { // error to call destroy if not t
         jq_get(atome_id).css("bottom", "auto")
         x_position_start = evt.page_x
         y_position_start = evt.page_y
-        value[:proc].call(evt) if value[:proc].is_a?(Proc)
+        instance_exec evt, &proc if proc.is_a?(Proc)
+        # value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
-      jq_object.on(:drag) do |evt|
-        drag[:drag] = :moving
-        evt.start = false
-        evt.stop = false
-        offset_x = evt.page_x - x_position_start
-        offset_y = evt.page_y - y_position_start
-        evt.offset_x = offset_x
-        evt.offset_y = offset_y
-        # we send the position to the proc
-        value[:proc].call(evt) if value[:proc].is_a?(Proc)
-        # we update the position of the atome
-        update_position
-      end
+
       jq_object.on(:dragstop) do |evt|
         drag[:drag] = true
         evt.offset_x = offset_x
         evt.offset_y = offset_y
         evt.start = false
-        evt.stop = true
+        # evt.stop = true
+        evt.end =true
+        # alert evt.methods
+        # alert evt.start
+        instance_exec evt, &proc if proc.is_a?(Proc)
         change_position_origin
-        value[:proc].call(evt) if value[:proc].is_a?(Proc)
+        # value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
+
+      jq_object.on(:drag) do |evt|
+
+        drag[:drag] = :moving
+        # evt.start = false
+        # evt.stop = false
+        offset_x = evt.page_x - x_position_start
+        offset_y = evt.page_y - y_position_start
+        evt.offset_x = offset_x
+        evt.offset_y = offset_y
+        # we send the position to the proc
+        instance_exec evt, &proc if proc.is_a?(Proc)
+        # value[:proc].call(evt) if value[:proc].is_a?(Proc)
+        # we update the position of the atome
+        update_position
+      end
+
 
     end
 
