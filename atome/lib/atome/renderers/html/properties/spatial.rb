@@ -143,6 +143,7 @@ module PropertyHtml
     # elsif dynamic==false
     #   grab(:buffer).content[:resize].delete(self)
     # end
+
     if offset
       ofset_y = "left+#{x} top+#{y}"
       ofsset_x = "left+#{x} top+#{y}"
@@ -158,17 +159,32 @@ module PropertyHtml
                        at: "left middle",
                        of: "##{reference}"
       }
+      if value[:dynamic]
+        ATOME.resize_html do |evt|
+          self.center(:y)
+        end
+      end
     when :x
       center_value = { atome_id: atome_id,
                        my: ofsset_x,
                        at: "middle top",
                        of: "##{reference}"
       }
+      if value[:dynamic]
+        ATOME.resize_html do |evt|
+          self.center(:x)
+        end
+      end
     when :all
       center_value = { atome_id: atome_id,
                        at: "center",
                        of: "##{reference}"
       }
+      if value[:dynamic]
+        ATOME.resize_html do |evt|
+          self.center(:all)
+        end
+      end
     else
       center_value = { atome_id: atome_id,
                        at: "center",
