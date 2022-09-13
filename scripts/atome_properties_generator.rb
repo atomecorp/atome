@@ -14,13 +14,14 @@ def atome_methods
              image audio web  path info example cell name visual active inactive]
   inputs = %i[camera microphone midi keyboard read write]
   utility = %i[edit record enliven tag selector selected preset monitor selectable dynamic condition treatment render engine pay
-               code exec cursor data parameter action]
+               code exec cursor data parameter action state]
+  info=%i[state]
   misc = %i[map calendar]
   material = %i[color opacity border overflow fill blend]
   behaviour = %i[animation animator]
   { analysers: analyser, spatials: spatial, helpers: helper, materials: material, geometries: geometry, effects: effect,
     inputs: inputs, medias: media, hierarchies: hierarchy, utilities: utility, communications: communication,
-    identities: identity, events: event, generators: generator, miscs: misc, behaviors: behaviour }
+    identities: identity, events: event, generators: generator, miscs: misc, behaviors: behaviour, infos: info }
 end
 
 def types
@@ -53,7 +54,7 @@ def no_rendering
   %i[atome_id group container orientation touch status shape box star web circle sphere text image video audio  parent child
   info example selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path
   treatment particle cell visual language active inactive noise engine render id preset say content read write data
-  parameter system action selected]
+  parameter system action selected state]
 end
 
 batch_delete = <<STRDELIM
