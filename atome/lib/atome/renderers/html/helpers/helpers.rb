@@ -69,26 +69,30 @@ module HtmlHelpers
     JSUtils.animator(params)
   end
 
-  def ping_html(adress, error, success)
-    JSUtils.ping(adress, error, success)
+  def ping_html(address, error, success)
+    JSUtils.ping(address, error, success)
   end
 
   # event's helper
-
   def touch_html_helper(value)
-    if value.instance_of?(Array)
-      value.each do |val|
-        touch_html_helper(val)
-      end
-    elsif value[:remove]
-      jq_get(atome_id).unbind("drag touchstart mousedown")
+    # if value.instance_of?(Array)
+    #   # del
+    #   alert :array_found
+    #   # value.each do |val|
+    #   #   touch_html_helper(val)
+    #   # end
+    # end
+    if value[:remove]
+      jq_get(atome_id).unbind("drag touchstart mousedown touchend mouseup")
       jq_get(atome_id).off('click')
     else
       option = value[:option]
       delay = value[:delay] || 0.6
       case option
       when :down
+        # here is the solution
         jq_get(atome_id).on("touchstart mousedown") do |evt|
+          # puts "down passed"
           # puts evt.to_n
           # the method below is used when a browser received touchdown and mousedown at the same time
           # this avoid the event to be treated twice by android browser
@@ -100,11 +104,12 @@ module HtmlHelpers
           # end
           evt.stop_propagation if value[:stop]
         end
-        self.touch({ option: :up }) do
-          @touch_counter = 0
-        end
+        # self.touch({ option: :up }) do
+        #   @touch_counter = 0
+        # end
       when :up
         jq_get(atome_id).on("touchend mouseup") do |evt|
+          # puts "up passed"
           # the method below is used when a browser received touchdown and mousedown at the same time
           # this avoid the event to be traeted twice by android browser
           evt.prevent

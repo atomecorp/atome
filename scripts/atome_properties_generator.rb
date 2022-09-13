@@ -37,7 +37,7 @@ def is_atome
 end
 
 def need_pre_processing
-  %i[atome_id particle group container shape box star web circle sphere text camera microphone midi
+  %i[atome_id particle group container touch shape box star web circle sphere text camera microphone midi
   text image video audio  cell parent child type shadow size drag visual noise say content tag]
 end
 
@@ -50,7 +50,7 @@ def getter_need_processing
 end
 
 def no_rendering
-  %i[atome_id group container orientation status shape box star web circle sphere text image video audio  parent child
+  %i[atome_id group container orientation touch status shape box star web circle sphere text image video audio  parent child
   info example selector tag monitor type alignment camera microphone midi shadow ratio size name dynamic condition path
   treatment particle cell visual language active inactive noise engine render id preset say content read write data
   parameter system action selected]

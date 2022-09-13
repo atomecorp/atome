@@ -1,19 +1,22 @@
 module PropertyHtml
 
   def touch_html(value)
-    if value.instance_of?(Array)
-      # jq_get(atome_id).unbind("touchstart mousedown touchend mouseup")
-      # jq_get(atome_id).off('click')
-      value.each do |val|
-        touch_html_helper(val)
-      end
-    else
-      # jq_get(atome_id).unbind("touchstart mousedown touchend mouseup")
-      # jq_get(atome_id).off('click')
-      touch_html_helper(value)
+    # if value.instance_of?(Array)
+    # alert :multiple
+    # jq_get(atome_id).unbind("touchstart mousedown touchend mouseup")
+    # jq_get(atome_id).off('click')
+    # puts value.class
+    value.each do |val|
+      touch_html_helper(val)
     end
+    # else
+    #   # jq_get(atome_id).unbind("touchstart mousedown touchend mouseup")
+    #   # jq_get(atome_id).off('click')
+    #   touch_html_helper(value)
+    # end
   end
 
+  # val is: {"option"=>"down", "proc"=>#<Proc:0x18c>}
   def drag_html(value)
     jq_object = jq_get(atome_id)
     value = {} if value == true
@@ -27,10 +30,16 @@ if ($('#'+#{atome_id}).data('ui-draggable')) { // error to call destroy if not t
 }
 `
     elsif value == :disable || value[:option] == :disable
-      # we initiate the scale first so it won't break if scale is diasble twice,
+      # we initiate the scale first so it won't break if scale is disable twice,
       # else : destroy scale then clear view will crash
       jq_object.draggable(:disable)
     else
+
+      # #################### tests #################
+      # p_f= drag[:proc]
+      # drag[:proc]=nil
+      # #################### tests #################
+
       grid = {}
       grid = { grid: [value[:grid][:x], value[:grid][:y]] } if value[:grid]
       containment = {}
@@ -69,7 +78,6 @@ if ($('#'+#{atome_id}).data('ui-draggable')) { // error to call destroy if not t
       offset_x = 0
       offset_y = 0
       proc = value[:proc]
-
       jq_object.on(:dragstart) do |evt|
         evt.start = true
         # evt.stop = false
@@ -82,6 +90,7 @@ if ($('#'+#{atome_id}).data('ui-draggable')) { // error to call destroy if not t
         jq_get(atome_id).css("bottom", "auto")
         x_position_start = evt.page_x
         y_position_start = evt.page_y
+        # alert p_f
         instance_exec evt, &proc if proc.is_a?(Proc)
         # value[:proc].call(evt) if value[:proc].is_a?(Proc)
       end
@@ -92,7 +101,7 @@ if ($('#'+#{atome_id}).data('ui-draggable')) { // error to call destroy if not t
         evt.offset_y = offset_y
         evt.start = false
         # evt.stop = true
-        evt.end =true
+        evt.end = true
         # alert evt.methods
         # alert evt.start
         instance_exec evt, &proc if proc.is_a?(Proc)
@@ -115,8 +124,6 @@ if ($('#'+#{atome_id}).data('ui-draggable')) { // error to call destroy if not t
         # we update the position of the atome
         update_position
       end
-
-
     end
 
   end
