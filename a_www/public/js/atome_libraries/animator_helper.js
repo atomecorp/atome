@@ -103,8 +103,7 @@ animator = {
                 let key = item;
                 let val = value.end[item];
 
-
-                if (key == "background" && objectType == "text") {
+                if (key === "background" && objectType === "text") {
 
                     key = "background-image";
                     if (typeof (val) == "string") {
