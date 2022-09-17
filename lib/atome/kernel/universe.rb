@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-# all created atomes are listed here
 
+# all created atomes are listed here
 class Universe
   def self.app_identity
     # each app hav its own identity, this allow to generate new user identities from th

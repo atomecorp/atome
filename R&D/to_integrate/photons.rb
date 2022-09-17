@@ -21,7 +21,6 @@ module Photons
     end
   end
 
-
   def opal_id(params)
     puts "Main/parent id is : #{params}"
   end
