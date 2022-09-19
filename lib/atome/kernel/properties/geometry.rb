@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # here are the geometry  properties of atome
-module AtomeGeometryMethods
+# module AtomeGeometryMethods
   # def dummy(value = nil, stack_property = nil)
   #   property = :dummy
   #   optional_processor = { pre_process: true, post_process: true, store_atome: false, render_atome: false }
@@ -13,29 +13,29 @@ module AtomeGeometryMethods
   #   # properties_common(property, value, stack_property, optional_processor)
   # end
 
-  def color(params, formatted: false)
-    p formatted
-    puts "params #{params} must be formatted"
-    "colorized"
-  end
+  # def color(params, formatted: false)
+  #   p formatted
+  #   puts "params #{params} must be formatted"
+  #   "colorized"
+  # end
+  #
+  # def parent(value = nil, stack_property = nil)
+  #   property = :parent
+  #   optional_processor = { pre_process: true, post_process: true }
+  #   properties_common(property, value, stack_property, optional_processor)
+  # end
 
-  def parent(value = nil, stack_property = nil)
-    property = :parent
-    optional_processor = { pre_process: true, post_process: true }
-    properties_common(property, value, stack_property, optional_processor)
-  end
-
-  def left(value = nil, stack_property = nil)
-    property = :left
-    optional_processor = {}
-    properties_common(property, value, stack_property, optional_processor)
-  end
-
-  def top(value = nil, stack_property = nil)
-    property = :top
-    optional_processor = {}
-    properties_common(property, value, stack_property, optional_processor)
-  end
+  # def left(value = nil, stack_property = nil)
+  #   property = :left
+  #   optional_processor = {}
+  #   properties_common(property, value, stack_property, optional_processor)
+  # end
+  #
+  # def top(value = nil, stack_property = nil)
+  #   property = :top
+  #   optional_processor = {}
+  #   properties_common(property, value, stack_property, optional_processor)
+  # end
 
   #
   # def bottom(value = nil, stack_property = nil)
@@ -44,11 +44,11 @@ module AtomeGeometryMethods
   #   properties_common(property, value, stack_property, optional_processor)
   # end
   #
-  def right(value = nil, stack_property = nil)
-    property = :right
-    optional_processor = {}
-    properties_common(property, value, stack_property, optional_processor)
-  end
+  # def right(value = nil, stack_property = nil)
+  #   property = :right
+  #   optional_processor = {}
+  #   properties_common(property, value, stack_property, optional_processor)
+  # end
   #
   # def child(value = nil, stack_property = nil)
   #   property = :child
@@ -117,4 +117,4 @@ module AtomeGeometryMethods
   #   optional_processor = {}
   #   properties_common(property, value, stack_property, optional_processor)
   # end
-end
+# end

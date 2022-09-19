@@ -156,23 +156,23 @@ module Utilities
     end
   end
 
-  def id(params = nil)
-    id_validation(params) if validation(:atome, :id, params)
-  end
+  # def id(params = nil)
+  #   id_validation(params) if validation(:atome, :id, params)
+  # end
 
-  def content(params = nil)
-    if params
-      @content = params
-    else
-      @content
-    end
-  end
+  # def content(params = nil)
+  #   if params
+  #     @content = params
+  #   else
+  #     @content
+  #   end
+  # end
 
-  def parent(params = nil)
-    if params
-      @parent = params
-    else
-      @parent
-    end
-  end
+  # def parent(params = nil)
+  #   if params
+  #     @parent = params
+  #   else
+  #     @parent
+  #   end
+  # end
 end

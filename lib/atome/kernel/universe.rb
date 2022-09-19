@@ -14,13 +14,10 @@ class Universe
     @atomes = []
   end
 
+
   def self.atomes_add(new_atome)
     # @atomes[atome_id] = new_atome
     @atomes << new_atome
-  end
-
-  def self.atomes
-    @atomes
   end
 
   class << self
@@ -30,6 +27,4 @@ class Universe
   def self.connected
     true
   end
-
 end
-
