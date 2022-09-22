@@ -9,15 +9,14 @@
 #
 # end
 
-
 def shape (params)
- verif= Universe.atomes[0]
- place= Universe.atomes.index verif
- Universe.atomes[place]=nil
- puts Universe.atomes[place]
+  verif = Universe.atomes[0]
+  place = Universe.atomes.index verif
+  Universe.atomes[place] = nil
+  puts Universe.atomes[place]
 
- # puts Universe.atomes[0].id
- # Universe.atomes[0].shape(params)
+  # puts Universe.atomes[0].id
+  # Universe.atomes[0].shape(params)
   # puts Universe.atomes[0].inspect
   # strategy atomes shoud be formatted as follow : atomes={@id => atome}
   # try to delete doing @id= nil , then atomes.delete(@id)
@@ -26,6 +25,7 @@ def shape (params)
   ##   generate_method method
   # #end
 end
+
 a = Atome.new({ x: 30, id: :s1, width: 30,
                 color: { id: :c1, red: 1, green: 0, stack: [{ id: :c2, red: 1 }, { id: 3, red: 0 }] } })
 
@@ -60,3 +60,30 @@ puts Atome.current_machine
 # # delete replace
 # # update
 # # get read
+
+######### other solution #########
+a = Atome.new({ shape: { y: 99 } })
+a.shape(x: 66)
+a.shapes({ x: 33, y: 199 })
+{ shapes: { id: :all_shapes, x: 33, y: 200, content: [{ id: :shape1, type: :shape, x: 66, y: 99, width: 120, height: 333 }] } }
+# exeption below try to find another strategy
+a.group(:child1, :child3)
+{ groups: { id: :all_groups, children: [:child1, :chlid3] } }
+
+a.text(:hello)
+{ texts: { id: :all_texts, content: [{ id: :text1, type: :text, content: :hello, width: 333, height: 33,
+                                       colors: {
+                                         id: :all_colors, content: [{ id: :col1, red: 0, green: 0.3, blue: 0.9,
+                                                                      alpha: 1, diffusion: :linear, x: 33, Y: 33 }]
+                                       } }] } }
+
+a.set
+a.replace
+a.add
+a.new(:jkl)
+
+######### best solution #########
+{ id => { type => { id => { particles: :value } } } }
+{ s_all: { shapes: { s1: { x: 30 } } } }
+{ s_all: { shapes: { s1: { x: 30, colors: { c1: { red: 1, green: 1, blue: 1, alpha: 1 } } } } } }
+{ g_all: { groups: { g1: { x: 30, child: [:child1, :child3] } } } }

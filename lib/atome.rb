@@ -26,6 +26,7 @@ Universe.initialize
 # Atome.new( identity: {type: :eVe, aui: Atome.aui})
 # puts Atome.aui
 # puts Universe.app_identity
+require 'atome/kernel/generators/sanitizer'
 require 'atome/kernel/generators/generator'
 Atome.current_user = :jeezs
-require 'atome/tests'
+require 'atome/tests2'
