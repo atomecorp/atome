@@ -30,14 +30,16 @@ end
 
 a = Atome.new(shape: { s1: { x: 30, width: 30,
                          color: { c1: {  red: 1, green: 0, stack: [{ id: :c2, red: 1 }, { id: 3, red: 0 }] } }} })
-puts a .class
+puts "---------"
+puts a.color
+# puts a .class
 # a.new(:hello)
 # #easy way =>
 # a = shape(x: 30, id: :s1, width: 30,
 #           color: { id: :c1, red: 1, green: 0, stack: [{ id: :c2, red: 1 }, { id: 3, red: 0 }] })
 
-######### best solution #########
-{ id: { type: { id: { particles: :value } } } }
-{ s_all: { shapes: { s1: { x: 30 } } } }
-{ s_all: { shapes: { s1: { x: 30, colors: { c1: { red: 1, green: 1, blue: 1, alpha: 1 } } } } } }
-{ g_all: { groups: { g1: { x: 30, child: [:child1, :child3] } } } }
+# ######### best solution #########
+# { id: { type: { id: { particles: :value } } } }
+# { s_all: { shapes: { s1: { x: 30 } } } }
+# { s_all: { shapes: { s1: { x: 30, colors: { c1: { red: 1, green: 1, blue: 1, alpha: 1 } } } } } }
+# { g_all: { groups: { g1: { x: 30, child: [:child1, :child3] } } } }

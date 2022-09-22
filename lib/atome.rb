@@ -17,6 +17,8 @@ require 'atome/kernel/universe'
 # require 'atome/kernel/properties/geometry'
 require 'atome/kernel/generators/genesis'
 require 'atome/extensions/utilities'
+require 'atome/kernel/generators/sanitizer'
+require 'atome/kernel/generators/generator'
 require 'atome/kernel/atome'
 require 'atome/kernel/properties/essential'
 
@@ -26,7 +28,6 @@ Universe.initialize
 # Atome.new( identity: {type: :eVe, aui: Atome.aui})
 # puts Atome.aui
 # puts Universe.app_identity
-require 'atome/kernel/generators/sanitizer'
-require 'atome/kernel/generators/generator'
+
 Atome.current_user = :jeezs
 require 'atome/tests2'

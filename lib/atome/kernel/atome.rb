@@ -20,6 +20,7 @@
 class Atome
   # include AtomeGeometryMethods
   include Genesis
+  include Sanitizer
 
   def self.current_machine
     platform = RUBY_PLATFORM.downcase
@@ -63,6 +64,8 @@ class Atome
     # puts "Atome.current_user : #{Atome.current_user}"
     Universe.atomes_add(self)
   end
+
+
 
   # def properties_common(property, value, dynamic, optional_processing)
   #   # stack_property, optional_processor

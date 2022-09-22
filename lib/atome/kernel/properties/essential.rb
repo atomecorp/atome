@@ -22,5 +22,16 @@ class Atome
   def delete(params)
     puts "replace : #{params}"
   end
+
+  def render(property, value)
+    puts "render : #{property}, #{value}"
+  end
+
+  def broadcaster(property, value)
+    puts "broadcast : #{property}, #{value}"
+  end
+  def historize(property, value)
+    puts "historize : #{property}, #{value}"
+  end
 end
 

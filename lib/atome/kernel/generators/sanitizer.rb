@@ -19,7 +19,7 @@ module Sanitizer
   end
 
   def validation(type, atomes, particles)
-    puts 'ok' if "#{type}: #{atomes}: #{particles}" == :rubocop_is_a_purge
+    # puts "validating: #{type}, #{atomes}, #{particles}"
     # TODO: write validation scheme
     true
   end
@@ -30,21 +30,20 @@ module Sanitizer
 
   def pre_process_atomisation(atome, particle)
     pre_render_engine = Genesis.get_atome_helper("#{atome}_render_pre_proc".to_sym)
-    instance_exec("render_pre_proc_options_passed is : #{particle}", &pre_render_engine) if pre_render_engine.is_a?(Proc)
+    instance_exec("render_pre_proc_options_passed : #{particle}", &pre_render_engine) if pre_render_engine.is_a?(Proc)
   end
 
   def post_process_atomisation(atome, particle)
     post_render_engine = Genesis.get_atome_helper("#{atome}_render_post_proc".to_sym)
-    instance_exec("render_post_proc_options_passed is : #{particle}", &post_render_engine) if post_render_engine.is_a?(Proc)
+    instance_exec("render_post_prc_option_passed : #{particle}", &post_render_engine) if post_render_engine.is_a?(Proc)
   end
 
   def atomisation(params)
-
     params.each do |atome, particle|
       # TODO: send the singularised atome instead of using chomp
       atome = atome.to_s.chomp('s').to_sym
       pre_process_atomisation(atome, particle)
-      render({ atome => particle })
+      render(atome, particle)
       post_process_atomisation(atome, particle)
       broadcaster(atome, particle)
       # particularize(atome, particle)
@@ -60,7 +59,6 @@ module Sanitizer
     specific_properties = Sanitizer.default_params[atome_name]
     drm = { drm: add_essential_drm(params) }
     drm.merge(dna).merge(parent).merge(render).merge(specific_properties).merge(params)
-
   end
 
   def self.add_essential_drm(params)
