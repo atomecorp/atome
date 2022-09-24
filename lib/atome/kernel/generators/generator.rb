@@ -22,10 +22,18 @@ Genesis.new_particle(:height)
 Genesis.new_particle(:parent)
 ####### atomes below
 Genesis.new_atome(:color) do |params|
-  # puts "extra atome code executed!! : #{params}"
+  puts "extra atome color code executed!! : #{params}"
 end
 Genesis.new_atome_helper(:color_render_pre_proc) do
   puts "Color helper pre render set\n"
+end
+
+Genesis.new_atome_helper(:color_getter_pre_proc) do
+  puts "---- Color color_getter_pre_proc set now \n"
+end
+
+Genesis.new_atome_helper(:color_render_post_proc) do
+  puts "Color helper post render verified!!!\n"
 end
 Genesis.new_atome(:child)
 Genesis.new_atome(:space)
@@ -35,6 +43,10 @@ end
 Genesis.new_atome(:drm) do
   puts "and the drms!!! "
 end
+
+# Genesis.new_atome(:current_user) do
+#   puts "and the drms!!! "
+# end
 
 
 

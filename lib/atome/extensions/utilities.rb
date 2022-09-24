@@ -20,14 +20,14 @@ module Utilities
     end
   end
 
-  def self.particles(particle = nil)
-    # this method is used to hold all available type of particles
-    if particle
-      instance_variable_get('@particles').push(particle)
-    else
-      instance_variable_get('@particles')
-    end
-  end
+  # def self.particles(particle = nil)
+  #   # this method is used to hold all available type of particles
+  #   if particle
+  #     instance_variable_get('@particles').push(particle)
+  #   else
+  #     instance_variable_get('@particles')
+  #   end
+  # end
 
   def self.users_atomes(atome = nil)
     # this method is used to hold all available type of atomes

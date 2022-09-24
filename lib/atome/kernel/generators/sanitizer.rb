@@ -18,7 +18,7 @@ module Sanitizer
     @default_params
   end
 
-  def validation(type, atomes, particles)
+  def validation(method_to_authorise)
     # puts "validating: #{type}, #{atomes}, #{particles}"
     # TODO: write validation scheme
     true

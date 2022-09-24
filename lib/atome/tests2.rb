@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 # the entry class
-class Atome
-  def initialize(params)
-    params.each do |k,v|
-      send k,v
-    end
-
-  end
-
-
-end
+# class Atome
+#   def initialize(params)
+#     params.each do |k,v|
+#       send k,v
+#     end
+#
+#   end
+#
+#
+# end
 
 # def shape (params)
 #   verif = Universe.atomes[0]
@@ -31,7 +31,14 @@ end
 a = Atome.new(shape: { s1: { x: 30, width: 30,
                          color: { c1: {  red: 1, green: 0, stack: [{ id: :c2, red: 1 }, { id: 3, red: 0 }] } }} })
 puts "---------"
+a.left(32)
+a.color(:red) do |params_send|
+  puts " send :: #{params_send}"
+end
+
+puts "instance_variables : #{a.instance_variables}"
 puts a.color
+puts a.left
 # puts a .class
 # a.new(:hello)
 # #easy way =>
