@@ -241,7 +241,6 @@ module Processors
         when :video
         else
           value = "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
-
         end
         media_pre_processor(:web, :web, value, password)
       elsif value[:address]
