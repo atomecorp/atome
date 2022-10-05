@@ -18,37 +18,31 @@ module Sanitizer
     @default_params
   end
 
-  def validation(method_to_authorise)
-    # puts "validating: #{type}, #{atomes}, #{particles}"
+  def validation(atome_instance_var)
     # TODO: write validation scheme
-    true
+    true if atome_instance_var
+  end
+
+  def sanitizer(params)
+    # TODO: write sanitizer scheme
+    params
+  end
+
+  def add_missing(params)
+    new_params = if params.instance_of? Hash
+                   [params = drms(params).merge(params)]
+                 else
+                   params
+                 end
+    new_params.each do |param|
+      param[:render] = render unless param[:render]
+    end
+
+    params
   end
 
   def particularize(property, value)
     instance_variable_set("@#{property}", value)
-  end
-
-  def pre_process_atomisation(atome, particle)
-    pre_render_engine = Genesis.get_atome_helper("#{atome}_render_pre_proc".to_sym)
-    instance_exec("render_pre_proc_options_passed : #{particle}", &pre_render_engine) if pre_render_engine.is_a?(Proc)
-  end
-
-  def post_process_atomisation(atome, particle)
-    post_render_engine = Genesis.get_atome_helper("#{atome}_render_post_proc".to_sym)
-    instance_exec("render_post_prc_option_passed : #{particle}", &post_render_engine) if post_render_engine.is_a?(Proc)
-  end
-
-  def atomisation(params)
-    params.each do |atome, particle|
-      # TODO: send the singularised atome instead of using chomp
-      atome = atome.to_s.chomp('s').to_sym
-      pre_process_atomisation(atome, particle)
-      render(atome, particle)
-      post_process_atomisation(atome, particle)
-      broadcaster(atome, particle)
-      # particularize(atome, particle)
-      historize(atome, particle)
-    end
   end
 
   def self.add_essential_properties(atome_name, params, parent)

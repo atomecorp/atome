@@ -1,4 +1,8 @@
 class Atome
+
+  def identity (params)
+    @identity=params
+  end
   def new(params)
     puts "add/new : #{params}"
   end
@@ -23,15 +27,13 @@ class Atome
     puts "replace : #{params}"
   end
 
-  def render(property, value)
-    puts "render : #{property}, #{value}"
+  def [](params)
+    instance_variable_get(instance_variables[params])
   end
 
-  def broadcaster(property, value)
-    puts "broadcast : #{property}, #{value}"
+  def to_s
+    inspect.to_s
   end
-  def historize(property, value)
-    puts "historize : #{property}, #{value}"
-  end
+
 end
 

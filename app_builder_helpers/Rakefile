@@ -9,27 +9,27 @@ require 'uglifier'
 
 Opal.append_path 'app'
 
-def build_atome_to_js(user_project_path, source_code)
-  #  now lets build the atome kernel
-  atome_directory = "#{user_project_path}/build/js/atome"
-  atome_js = "#{atome_directory}/atome.js"
-  unless File.directory?(atome_directory)
-    Dir.mkdir(atome_directory)
-  end
-
-  File.new atome_js, "w"
-  source_code_rb = File.open(source_code)
-  # atome_rb = File.open("#{gem_location}/../vendor/assets/application/atome.rb")
-  # source_code_rb = File.open("#{gem_location}/../lib/atome.rb")
-  source_code_rb_content = source_code_rb.read
-  source_content = Ruby2JS.convert(source_code_rb_content).to_s
-  # # atome_content=Ruby2JS.convert("a={age:3}\na.age+=1")
-  # atome_content = Uglifier.new.compile(atome_content)
-  File.open(atome_js, 'w') do |f|
-    f.puts source_content
-  end
-
-end
+# def build_atome_to_js(user_project_path, source_code)
+#   #  now lets build the atome kernel
+#   atome_directory = "#{user_project_path}/build/js/atome"
+#   atome_js = "#{atome_directory}/atome.js"
+#   unless File.directory?(atome_directory)
+#     Dir.mkdir(atome_directory)
+#   end
+#
+#   File.new atome_js, "w"
+#   source_code_rb = File.open(source_code)
+#   # atome_rb = File.open("#{gem_location}/../vendor/assets/application/atome.rb")
+#   # source_code_rb = File.open("#{gem_location}/../lib/atome.rb")
+#   source_code_rb_content = source_code_rb.read
+#   source_content = Ruby2JS.convert(source_code_rb_content).to_s
+#   # # atome_content=Ruby2JS.convert("a={age:3}\na.age+=1")
+#   # atome_content = Uglifier.new.compile(atome_content)
+#   File.open(atome_js, 'w') do |f|
+#     f.puts source_content
+#   end
+#
+# end
 
 def build_opal_browser(user_project_path)
   opal_directory = "#{user_project_path}/build/js/opal"

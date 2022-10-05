@@ -50,34 +50,38 @@ class Atome
   end
 
   def identity_generator
-    {date: Time.now, location: geolocation}
+    { date: Time.now, location: geolocation }
+  end
+
+  def additional_helper(params)
+    virtual_atome = Atome.new({})
+    @additional = virtual_atome
+    params.each_with_index do |additional, index|
+      new_atome = Atome.new({})
+      virtual_atome.instance_variable_set("@virtual#{index}", new_atome)
+      additional.each do |param, value|
+        new_atome.send(param, value)
+      end
+    end
+  end
+
+  def additional(params = nil)
+    if params
+      additional_helper(params)
+    else
+      @additional
+    end
   end
 
   def initialize(params = {})
     default_params = { render: [{ engine: [{ value: :html }] }], type: [{ value: :particle }] }
     @aui = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
-    params = default_params.merge(params).merge(identity: identity_generator)
-    # @atome = {}
-    # params.each do |property, value|
-    #   @atome[property] = value
-    # end
-    # puts "Atome.current_user : #{Atome.current_user}"
+    # params = default_params.merge(params).merge(identity: identity_generator)
+    params.each do |atome, values|
+      send(atome, values)
+    end
     Universe.atomes_add(self)
   end
-
-
-
-  # def properties_common(property, value, dynamic, optional_processing)
-  #   # stack_property, optional_processor
-  #   if value.nil?
-  #     # the method is a getter
-  #     @atome[property]
-  #   else
-  #     # here we set the value to the property
-  #     @atome[property] = value
-  #     # atome_router(property, value, dynamic, optional_processing)
-  #   end
-  # end
 
 end
 

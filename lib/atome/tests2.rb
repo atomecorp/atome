@@ -1,52 +1,34 @@
-# frozen_string_literal: true
-# the entry class
-# class Atome
-#   def initialize(params)
-#     params.each do |k,v|
-#       send k,v
-#     end
-#
-#   end
-#
-#
-# end
+# new_format
 
-# def shape (params)
-#   verif = Universe.atomes[0]
-#   place = Universe.atomes.index verif
-#   Universe.atomes[place] = nil
-#   puts Universe.atomes[place]
-#
-#   # puts Universe.atomes[0].id
-#   # Universe.atomes[0].shape(params)
-#   # puts Universe.atomes[0].inspect
-#   # strategy atomes shoud be formatted as follow : atomes={@id => atome}
-#   # try to delete doing @id= nil , then atomes.delete(@id)
-#   ## bad idea!! if getter_preprocess try the following method:
-#   ## instances_variables.each do  |method|
-#   ##   generate_method method
-#   # #end
-# end
+other_test = { shape:
+                 { id: :my_shape, width: 333, color: { id: :c0, red: 0.3, green: 1, blue: 1, alpha: 1,
+                                                       additional:
+                                                         [{ id: :col1, red: 1, green: 0, blue: 0.1, alpha: 1 },
+                                                          { id: :col2, red: 0, green: 1, blue: 0.6, alpha: 1 }] } } }
+x = Atome.new(other_test)
+# puts x.shape.width(333)
 
-a = Atome.new(shape: { s1: { x: 30, width: 30,
-                         color: { c1: {  red: 1, green: 0, stack: [{ id: :c2, red: 1 }, { id: 3, red: 0 }] } }} })
-puts "---------"
-a.left(32)
-a.color(:red) do |params_send|
-  puts " send :: #{params_send}"
-end
+# i=Utilities.grab(:my_shape).width(666)
+# puts ''
+# puts i
+puts x.shape.width(333)
 
-puts "instance_variables : #{a.instance_variables}"
-puts a.color
-puts a.left
-# puts a .class
-# a.new(:hello)
-# #easy way =>
-# a = shape(x: 30, id: :s1, width: 30,
-#           color: { id: :c1, red: 1, green: 0, stack: [{ id: :c2, red: 1 }, { id: 3, red: 0 }] })
+# puts "--#{Utilities.grab(:my_shape)}"
+b=Utilities.grab(:my_shape)
 
-# ######### best solution #########
-# { id: { type: { id: { particles: :value } } } }
-# { s_all: { shapes: { s1: { x: 30 } } } }
-# { s_all: { shapes: { s1: { x: 30, colors: { c1: { red: 1, green: 1, blue: 1, alpha: 1 } } } } } }
-# { g_all: { groups: { g1: { x: 30, child: [:child1, :child3] } } } }
+puts b.width
+# puts x.shape.width
+# puts x.shape.color
+# puts x.shape.set_width(933)
+# puts x.shape.width=963
+# puts x.shape.width
+# puts x.shape.color.additional
+
+# puts x.shape.set_color({red: 99})
+
+# puts x.shape.colors[0].red(0)
+# x.shape.colors([{ id: :c3, red: 0.3, green: 1 }])
+# puts x.shape.id
+# puts x.shape.colors[0].red
+# x.shape.colors[0].red(0.999)
+# puts x.shape.colors[0].red

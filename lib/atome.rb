@@ -14,9 +14,9 @@ if RUBY_ENGINE.downcase != 'opal'
 end
 
 require 'atome/kernel/universe'
-# require 'atome/kernel/properties/geometry'
 require 'atome/kernel/generators/genesis'
 require 'atome/extensions/utilities'
+require 'atome/renderers/renderer'
 require 'atome/kernel/generators/sanitizer'
 require 'atome/kernel/generators/generator'
 require 'atome/kernel/atome'

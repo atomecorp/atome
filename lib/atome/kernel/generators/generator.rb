@@ -1,53 +1,46 @@
-# frozen_string_literal: true
+# generators
 
-# require './main'
-
-####### particle below
-
-Genesis.new_particle(:left) do
-  # puts "extra particle code executed!!"
-end
-
-Genesis.new_particle(:top)
-Genesis.new_particle(:type)
-Genesis.new_particle(:id)
-Genesis.new_particle(:red)
-Genesis.new_particle(:green)
-Genesis.new_particle(:blue)
-Genesis.new_particle(:alpha)
-Genesis.new_particle(:diffusion)
-Genesis.new_particle(:atomes)
-Genesis.new_particle(:width)
-Genesis.new_particle(:height)
-Genesis.new_particle(:parent)
-####### atomes below
-Genesis.new_atome(:color) do |params|
-  puts "extra atome color code executed!! : #{params}"
-end
-Genesis.new_atome_helper(:color_render_pre_proc) do
-  puts "Color helper pre render set\n"
-end
-
-Genesis.new_atome_helper(:color_getter_pre_proc) do
-  puts "---- Color color_getter_pre_proc set now \n"
-end
-
-Genesis.new_atome_helper(:color_render_post_proc) do
-  puts "Color helper post render verified!!!\n"
-end
-Genesis.new_atome(:child)
-Genesis.new_atome(:space)
-Genesis.new_atome(:shape) do
+Genesis.atome_creator(:shape, [:html]) do
   # puts "and now!!! "
 end
-Genesis.new_atome(:drm) do
-  puts "and the drms!!! "
+Genesis.atome_creator(:shadow)
+# Genesis.atome_creator(:additional)
+Genesis.atome_creator(:content, [])
+Genesis.atome_creator(:color) do |params|
+  puts "extra color atome code executed!! : #{params}"
 end
 
-# Genesis.new_atome(:current_user) do
-#   puts "and the drms!!! "
-# end
+Genesis.atome_creator_option(:color_pre_save_proc) do
+  puts "optional color_pre_save_proc\n"
+end
 
+Genesis.atome_creator_option(:color_post_save_proc) do
+  puts "optional color_post_save_proc\n"
+end
 
+Genesis.atome_creator_option(:color_pre_render_proc) do
+  puts "optional color_pre_render_proc\n"
+end
 
+Genesis.atome_creator_option(:color_post_render_proc) do
+  puts "optional color_post_render_proc\n"
+end
+
+Genesis.atome_creator_option(:color_getter_pre_proc) do
+  puts "optional color_getter_pre_proc\n"
+end
+
+Genesis.particle_creator(:id)
+Genesis.particle_creator(:left)
+Genesis.particle_creator(:right)
+Genesis.particle_creator(:width)
+Genesis.particle_creator(:height)
+Genesis.particle_creator(:red)
+Genesis.particle_creator(:green)
+Genesis.particle_creator(:blue)
+Genesis.particle_creator(:alpha)
+Genesis.particle_creator(:type)
+Genesis.particle_creator(:render)
+Genesis.particle_creator(:date)
+Genesis.particle_creator(:location)
 
