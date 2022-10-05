@@ -13,13 +13,12 @@ module GenesisHelper
   def history(property, value)
     "broadcast : #{property} #{value}"
   end
-
 end
 
 # genesis kernel
 module GenesisKernel
   # particle's methods
-  def set_new_particle(particle, params, proc)
+  def set_new_particle(particle, params, &proc)
     return false unless validation(particle)
 
     Genesis.run_optional_methods_helper("#{particle}_pre_save_proc".to_sym)
@@ -43,7 +42,7 @@ module GenesisKernel
 
   def new_particle(particle, params, proc)
     if params
-      set_new_particle(particle, params, proc)
+      set_new_particle(particle, params, &proc)
     else
       get_new_particle(particle)
     end
@@ -77,15 +76,15 @@ module GenesisKernel
 
   def new_atome(atome, params, proc)
     if params
-      sanitizer(params)
-      add_missing(params)
+      params = sanitizer(params)
+      params = add_missing(params)
       set_new_atome(atome, params, proc)
     else
       get_new_atome(atome)
     end
   end
 
-  def additional_atomes(atome, params, _proc)
+  def additional_atomes(atome, params)
     atome_instance_variable = "@#{atome}"
     if params
       instance_variable_get(atome_instance_variable).additional(params)
@@ -118,15 +117,14 @@ module Genesis
     instance_exec(&proc) if proc.is_a?(Proc)
   end
 
-  def self.additional_atome_methods(method_name, render, &proc)
+  def self.additional_atome_methods(method_name)
     # here is the pluralized
     Atome.define_method "#{method_name}s" do |params = nil|
-      additional_atomes(method_name, params, render, &proc)
+      additional_atomes(method_name, params)
     end
-
     # here is the fast methods
-    Atome.define_method "set_#{method_name}" do |params = nil|
-      set_new_atome(method_name, params, render, &proc)
+    Atome.define_method "set_#{method_name}" do |params = nil, &proc|
+      set_new_atome(method_name, params, proc)
     end
     Atome.define_method "get_#{method_name}" do
       get_new_atome(method_name)
@@ -139,15 +137,15 @@ module Genesis
     # we add the new method to the atome's collection of methods
     Utilities.atomes(method_name)
     # we define many methods : easy, method=,pluralised and the fasts one, here is the easy
-    Atome.define_method method_name do |params = nil|
-      new_atome(method_name, params, render, &proc)
+    Atome.define_method method_name do |params, &user_proc|
+      params[:render]=render unless params[:render]
+      new_atome(method_name, params, user_proc)
     end
-
     # no we also add the method= for easy setting
-    define_method("#{method_name}=") do |params|
-      new_atome(method_name, params, render, &proc)
+    define_method("#{method_name}=") do |params, &user_proc|
+      new_atome(method_name, params, user_proc)
     end
-    additional_atome_methods(method_name, render, &proc)
+    additional_atome_methods(method_name)
   end
 
   def self.additional_particle_methods(method_name)
@@ -162,15 +160,16 @@ module Genesis
   end
 
   def self.particle_creator(method_name, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
     # we add the new method to the particle's collection of methods
     Utilities.particles(method_name)
-    Atome.define_method method_name do |params = nil|
-      new_particle(method_name, params, proc)
+    Atome.define_method method_name do |params = nil, &user_proc|
+      new_particle(method_name, params, user_proc)
     end
     # no we also add the method= for easy setting
-    define_method("#{method_name}=") do |params|
-      new_particle(method_name, params, proc)
+    define_method("#{method_name}=") do |params, &user_proc|
+      new_particle(method_name, params, user_proc)
     end
-    additional_particle_methods(method_name, &proc)
+    additional_particle_methods(method_name)
   end
 end

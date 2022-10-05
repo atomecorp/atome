@@ -25,9 +25,8 @@ require 'atome/kernel/properties/essential'
 Universe.initialize
 # puts "@atome_client_ready is : #{@atome_client_ready}"
 
-# Atome.new( identity: {type: :eVe, aui: Atome.aui})
-# puts Atome.aui
-# puts Universe.app_identity
+# puts "app_identity is : #{Universe.app_identity}"
 
 Atome.current_user = :jeezs
-require 'atome/tests2'
+
+require 'atome/kernel/sparkle'

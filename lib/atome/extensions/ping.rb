@@ -1,10 +1,9 @@
 def ping(address, my_proc: false)
   # if  RUBY_ENGINE.downcase != 'opal'
-
   def up?(host, my_proc)
     check = Net::Ping::External.new(host)
     if check.ping?
-      puts my_proc
+      puts "ping respond!! "
     end
   end
 

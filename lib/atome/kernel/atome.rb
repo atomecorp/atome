@@ -1,8 +1,6 @@
 # frozen_string_literal: true
-# here is the atome kernel
 
-# todo :
-# Id generator
+# TODO: Id generator
 # Add missing params (methods for noobs only?)
 # Sanitizer (methods for noobs only?)
 # Sort params (methods for noobs only?)
@@ -13,30 +11,31 @@
 # Add or set
 # Getter
 # parental
+# modify html file to be able to add meta data
 
 # This is the main entry for Atome class
-
-# TODO: modify html file to be able to add meta data
 class Atome
-  # include AtomeGeometryMethods
   include Genesis
   include Sanitizer
 
-  def self.current_machine
-    platform = RUBY_PLATFORM.downcase
-    output = `#{(platform =~ /win32/) ? 'ipconfig /all' : 'ifconfig'}`
+  def self.current_machine_decision(platform, output)
     case platform
     when /darwin/
-      $1 if output =~ /en1.*?(([A-F0-9]{2}:){5}[A-F0-9]{2})/im
-      puts :darwin
+      ::Regexp.last_match(1) if output =~ /en1.*?(([A-F0-9]{2}:){5}[A-F0-9]{2})/im
     when /win32/
-      $1 if output =~ /Physical Address.*?(([A-F0-9]{2}-){5}[A-F0-9]{2})/im
-      # Cases for other platforms...
+      ::Regexp.last_match(1) if output =~ /Physical Address.*?(([A-F0-9]{2}-){5}[A-F0-9]{2})/im
     else
-      nil
+      # Cases for other platforms...
+      'unknown platform'
     end
-    # todo check the code above and create a sensible identity
     platform
+  end
+
+  def self.current_machine
+    platform = RUBY_PLATFORM.downcase
+    output = `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
+    current_machine_decision(platform, output)
+    # TODO: check the code above and create a sensible identity
   end
 
   def self.current_user
@@ -74,15 +73,14 @@ class Atome
   end
 
   def initialize(params = {})
-    default_params = { render: [{ engine: [{ value: :html }] }], type: [{ value: :particle }] }
-    @aui = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
+    # default_params = { render: [{ engine: [{ value: :html }] }], type: [{ value: :particle }] }
+    # @aui = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
     # params = default_params.merge(params).merge(identity: identity_generator)
     params.each do |atome, values|
       send(atome, values)
     end
     Universe.atomes_add(self)
   end
-
 end
 
 # initialize Universe

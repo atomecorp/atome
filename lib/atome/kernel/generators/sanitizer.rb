@@ -34,10 +34,12 @@ module Sanitizer
                  else
                    params
                  end
-    new_params.each do |param|
-      param[:render] = render unless param[:render]
-    end
-
+    # new_params.each do |param|
+    #   param[:render] = render unless param[:render]
+    # end
+    render = Genesis.default_value[:render]
+    # new_params={render: render}.merge(new_params)
+    # puts new_params
     params
   end
 
