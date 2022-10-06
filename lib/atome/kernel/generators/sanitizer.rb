@@ -28,38 +28,7 @@ module Sanitizer
     params
   end
 
-  def add_missing(atome, params)
-    # new_params = if params.instance_of? Hash
-    #                [params = drms(params).merge(params)]
-    #              else
-    #                params
-    #              end
-    unless params[:id]
-      type = params[:type] || atome
-      params[:id] = "#{type}_#{Universe.atomes.length}"
-    end
-    render = Genesis.default_value[:render]
-    params[:render] = render unless params[:render]
-    # new_params={render: render}.merge(new_params)
-    # puts new_params
-    params
-  end
-
-  def particularize(property, value)
-    instance_variable_set("@#{property}", value)
-  end
-
-  def self.add_essential_properties(atome_name, params, parent)
-    parent = { parent: { value: parent } }
-    dna = { dna: { creator: Atome.current_user, date: Time.now, software: 987_986,
-                   location: :location } }
-    render = { renderer: { opal: true } }
-    specific_properties = Sanitizer.default_params[atome_name]
-    drm = { drm: add_essential_drm(params) }
-    drm.merge(dna).merge(parent).merge(render).merge(specific_properties).merge(params)
-  end
-
-  def self.add_essential_drm(params)
+  def add_essential_drm(params)
     essential_drm = { authorisation: { read: [Atome.current_user], write: [Atome.current_user] },
                       atome: { read: [:all], write: [:me] } }
     params[:drm] = if params[:drm]
@@ -68,4 +37,21 @@ module Sanitizer
                      essential_drm
                    end
   end
+
+  def add_missing_id(atome_type, params)
+    type = params[:type] || atome_type
+    params[:id] = "#{type}_#{Universe.atomes.length}"
+  end
+
+  def add_essential_properties(atome_type, params)
+    # FIXME : inject this in async mode to avoid big lag!
+    @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
+    # params[:parent] = :view unless params[:parent]
+    params[:drm] = add_essential_drm(params) unless params[:drm]
+    add_missing_id(atome_type, params) unless params[:id]
+    render = Genesis.default_value[:render]
+    params[:render] = render unless params[:render]
+    params
+  end
+
 end

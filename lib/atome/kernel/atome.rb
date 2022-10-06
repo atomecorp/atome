@@ -76,6 +76,8 @@ class Atome
     # default_params = { render: [{ engine: [{ value: :html }] }], type: [{ value: :particle }] }
     # @aui = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
     # params = default_params.merge(params).merge(identity: identity_generator)
+    # TODO: check if we need to add properties for the root object before sending the params
+
     params.each do |atome, values|
       send(atome, values)
     end
