@@ -77,7 +77,7 @@ module GenesisKernel
   def new_atome(atome, params, proc)
     if params
       params = sanitizer(params)
-      params = add_missing(params)
+      params = add_missing(atome,params)
       set_new_atome(atome, params, proc)
     else
       get_new_atome(atome)
@@ -132,13 +132,12 @@ module Genesis
   end
 
   # we create the easy methods here : ¬
-  def self.atome_creator(method_name, render = Genesis.default_value[:render], &proc)
+  def self.atome_creator(method_name, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
     # we add the new method to the atome's collection of methods
     Utilities.atomes(method_name)
     # we define many methods : easy, method=,pluralised and the fasts one, here is the easy
     Atome.define_method method_name do |params, &user_proc|
-      params[:render]=render unless params[:render]
       new_atome(method_name, params, user_proc)
     end
     # no we also add the method= for easy setting

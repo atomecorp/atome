@@ -28,16 +28,18 @@ module Sanitizer
     params
   end
 
-  def add_missing(params)
-    new_params = if params.instance_of? Hash
-                   [params = drms(params).merge(params)]
-                 else
-                   params
-                 end
-    # new_params.each do |param|
-    #   param[:render] = render unless param[:render]
-    # end
+  def add_missing(atome, params)
+    # new_params = if params.instance_of? Hash
+    #                [params = drms(params).merge(params)]
+    #              else
+    #                params
+    #              end
+    unless params[:id]
+      type = params[:type] || atome
+      params[:id] = "#{type}_#{Universe.atomes.length}"
+    end
     render = Genesis.default_value[:render]
+    params[:render] = render unless params[:render]
     # new_params={render: render}.merge(new_params)
     # puts new_params
     params
