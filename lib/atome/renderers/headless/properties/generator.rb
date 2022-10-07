@@ -55,4 +55,8 @@ module HeadlessRenderer
   def height_headless(params, &proc)
     puts "----puts render height_headless #{params}"
   end
+
+  def type_headless(params, &proc)
+    puts "----puts render type_headless #{params}"
+  end
 end

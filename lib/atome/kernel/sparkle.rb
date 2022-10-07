@@ -16,7 +16,7 @@
 
 # atome.atome is allow to  create a new atome using best performances but params must be formatted and ordered correctly
 view = Atome.new({
-                  shape: {render: [:html], id: :view,left: 0, right: 0, top: 0, bottom: 0,color: {render: [:headless],id: :c1, red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }} })
+                  shape: {type: :shape,render: [:html], id: :view,left: 0, right: 0, top: 0, bottom: 0,color: {type: :color,render: [:headless],id: :c1, red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }} })
 
 # Bad test
 

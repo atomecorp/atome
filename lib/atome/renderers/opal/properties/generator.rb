@@ -53,5 +53,8 @@ module OpalRenderer
   def height_html(params, &proc)
     puts "----puts render height_html #{params}"
   end
+  def type_html(params, &proc)
+    puts "----puts render type_headless #{params}"
+  end
 
 end

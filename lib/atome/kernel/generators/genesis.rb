@@ -49,8 +49,11 @@ module GenesisKernel
   def create_new_atomes(params, instance_var,atome)
     new_atome = Atome.new({})
     instance_variable_set(instance_var, new_atome)
-
+    # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
+    # creating an atome using Atome.new
+    params={type: atome}.merge(params)
     # we extract render to ensure it's the first element of the hash
+    params={render: params.delete(:render)}.merge(params)
     params.each do |param, value|
       new_atome.send("set_#{param}", value)
     end
