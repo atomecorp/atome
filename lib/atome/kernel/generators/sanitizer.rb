@@ -25,12 +25,14 @@ module Sanitizer
 
   def sanitizer(params)
     # TODO: write sanitizer scheme
-    # se reorder render and place it a the beginning of the hash
-    render_found = params.delete(:render)
-    params = { render: render_found }.merge(params)
-    # se reorder id and place it a the beginning of the hash before render
+
+    # we reorder id and place it a the beginning of the hash before render
     id_found = params.delete(:id)
-    { id: id_found }.merge(params)
+    params = { id: id_found }.merge(params)
+
+    # we reorder render and place it a the beginning of the hash
+    render_found = params.delete(:render)
+    { render: render_found }.merge(params)
   end
 
   def add_essential_drm(params)
@@ -57,8 +59,8 @@ module Sanitizer
   def add_essential_properties(atome_type, params)
     params[:id] = add_missing_id(atome_type, params) unless params[:id]
     # FIXME : inject this in async mode to avoid big lag!
-    @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
     params[:drm] = add_essential_drm(params) unless params[:drm]
+
     render = Genesis.default_value[:render]
     params[:render] = render unless params[:render]
     check_parent(params)

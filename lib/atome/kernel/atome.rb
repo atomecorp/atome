@@ -18,6 +18,12 @@ class Atome
   include Genesis
   include Sanitizer
 
+  def self.atome(params)
+    id_found = params.delete(:id)
+    params = { id: id_found }.merge(params)
+    Atome.new( params)
+  end
+
   def self.current_machine_decision(platform, output)
     case platform
     when /darwin/
@@ -73,10 +79,9 @@ class Atome
   end
 
   def initialize(params = {})
-    # TODO: check if we need to add properties for the root object before sending the params
-    # TODO : check if we need reorder to place id at the beginning of th hash, if yes uncomment below
-    id_found = params.delete(:id)
-    params = { id: id_found }.merge(params)
+    # # TODO: check if we need to add properties for the root object before sending the params
+    # id_found = params.delete(:id)
+    # params = { id: id_found }.merge(params)
     params.each do |atome, values|
       send(atome, values)
     end

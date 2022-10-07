@@ -14,18 +14,18 @@ end
 # genesis kernel
 module GenesisKernel
   # particle's methods
-  def set_new_particle(particle, params, &proc)
+  def set_new_particle(particle, value, &proc)
     return false unless validation(particle)
 
     Genesis.run_optional_methods_helper("#{particle}_pre_save_proc".to_sym)
     particle_instance_variable = "@#{particle}"
-    instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
-    instance_variable_set(particle_instance_variable, params)
+    instance_exec({ options: value }, &proc) if proc.is_a?(Proc)
+    instance_variable_set(particle_instance_variable, value)
     Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym)
-    Render.render(particle, params, self, &proc)
+    Render.render(particle, value, self, &proc)
     Genesis.run_optional_methods_helper("#{particle}_post_render_proc".to_sym)
-    broadcaster(particle, params)
-    history(particle, params)
+    broadcaster(particle, value)
+    history(particle, value)
   end
 
   def get_new_particle(particle)
@@ -46,21 +46,26 @@ module GenesisKernel
 
   # atome's methods
 
-  def set_new_atome(atome, params, proc)
-    return false unless validation(atome)
-
-    atome_instance_variable = "@#{atome}"
-    # now we exec the method specific to the type if it exist
-    instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
-    # FIXME: try to find a better place to add missing parent if possible
+  def create_new_atomes(params, instance_var)
     new_atome = Atome.new({})
-    # now we exec the first optional method
-    Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym)
-    instance_variable_set(atome_instance_variable, new_atome)
+    instance_variable_set(instance_var, new_atome)
+    # puts "::: checked params: #{params.delete(:render)}"
     params.each do |param, value|
       new_atome.send(param, value)
     end
+  end
+
+  def set_new_atome(atome, params, proc)
+    return false unless validation(atome)
+
+    instance_var = "@#{atome}"
+    # now we exec the method specific to the type if it exist
+    instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
+    # now we exec the first optional method
+    Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym)
+    create_new_atomes(params, instance_var)
     Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym)
+    @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
   end
 
   def get_new_atome(atome)
