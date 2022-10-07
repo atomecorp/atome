@@ -4,11 +4,13 @@
 Genesis.atome_creator(:shape) do
   # puts "and now!!! "
 end
+Genesis.atome_creator(:image) do
+end
 Genesis.atome_creator(:shadow)
 # Genesis.atome_creator(:additional)
 Genesis.atome_creator(:content)
 Genesis.atome_creator(:color) do |params|
-  # puts "extra color  code executed!! : #{params}"
+  puts "extra color code executed!! : #{params}"
 end
 
 Genesis.atome_creator_option(:color_pre_save_proc) do
@@ -32,7 +34,7 @@ Genesis.atome_creator_option(:color_getter_pre_proc) do
 end
 
 Genesis.particle_creator(:id) do
-  puts  "this is a specific dummy addon for this method!"
+  puts 'this is a specific dummy addon for this method!'
 end
 Genesis.particle_creator(:left)
 Genesis.particle_creator(:right)

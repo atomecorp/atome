@@ -25,10 +25,12 @@ module Sanitizer
 
   def sanitizer(params)
     # TODO: write sanitizer scheme
-    params
+    id_found = params.delete(:id)
+    { id: id_found }.merge(params)
   end
 
   def add_essential_drm(params)
+
     essential_drm = { authorisation: { read: [Atome.current_user], write: [Atome.current_user] },
                       atome: { read: [:all], write: [:me] } }
     params[:drm] = if params[:drm]
@@ -38,20 +40,25 @@ module Sanitizer
                    end
   end
 
+  def check_parent(params, atome_type)
+    parent = id || :eDen
+    params[:parent] = parent unless params[:parent]
+    params
+  end
+
   def add_missing_id(atome_type, params)
     type = params[:type] || atome_type
-    params[:id] = "#{type}_#{Universe.atomes.length}"
+    "#{type}_#{Universe.atomes.length}"
   end
 
   def add_essential_properties(atome_type, params)
+    params[:id] = add_missing_id(atome_type, params) unless params[:id]
     # FIXME : inject this in async mode to avoid big lag!
     @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
-    # params[:parent] = :view unless params[:parent]
     params[:drm] = add_essential_drm(params) unless params[:drm]
-    add_missing_id(atome_type, params) unless params[:id]
     render = Genesis.default_value[:render]
     params[:render] = render unless params[:render]
-    params
+    check_parent(params, atome_type)
   end
 
 end

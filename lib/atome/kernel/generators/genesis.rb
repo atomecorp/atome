@@ -2,10 +2,8 @@
 
 # Genesis helper
 module GenesisHelper
-
-
   def broadcaster(property, value)
-    "historise : #{property} #{value}"
+    "historize : #{property} #{value}"
   end
 
   def history(property, value)
@@ -52,12 +50,9 @@ module GenesisKernel
     return false unless validation(atome)
 
     atome_instance_variable = "@#{atome}"
-    # now we exec the method specific to the tyupe if it exist
+    # now we exec the method specific to the type if it exist
     instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
-    # FIXME try to find a better place to add missing parent if possible
-    #now we add the parent id-f not present
-    # parent= {parent: id}
-    # puts "the generated parent is: #{parent}"
+    # FIXME: try to find a better place to add missing parent if possible
     new_atome = Atome.new({})
     # now we exec the first optional method
     Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym)
@@ -79,8 +74,9 @@ module GenesisKernel
   def new_atome(atome, params, proc)
     if params
       params = sanitizer(params)
-      params = add_essential_properties(atome,params)
+      params = add_essential_properties(atome, params)
       set_new_atome(atome, params, proc)
+
     else
       get_new_atome(atome)
     end
@@ -139,7 +135,7 @@ module Genesis
     # we add the new method to the atome's collection of methods
     Utilities.atomes(method_name)
     # we define many methods : easy, method=,pluralised and the fasts one, here is the easy
-    Atome.define_method method_name do |params, &user_proc|
+    Atome.define_method method_name do |params = nil, &user_proc|
       new_atome(method_name, params, user_proc)
     end
     # no we also add the method= for easy setting

@@ -2,7 +2,7 @@
 
 require 'fileutils'
 require 'atome/version'
-
+@atome_client_ready=false
 def eval_protection
   binding
 end

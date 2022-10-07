@@ -3,7 +3,7 @@
 # Main render engine
 module Render
   def self.render(atome_type, atome_content, atome, &proc)
-    puts "renderer message (#{atome.id}) : #{atome_type}, #{atome_content}, #{proc.class}"
+    # puts "renderer message (#{atome.id}) : #{atome_type}, #{atome_content}, #{proc.class}"
     # atome_content.each do |content|
     #   next unless content[:render]
     #
