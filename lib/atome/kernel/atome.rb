@@ -17,11 +17,14 @@
 class Atome
   include Genesis
   include Sanitizer
-
+  include ServerRenderer
+  include HeadlessRenderer
+  include OpalRenderer
+  include Render
   def self.atome(params)
-    id_found = params.delete(:id)
-    params = { id: id_found }.merge(params)
-    Atome.new( params)
+    # id_found = params.delete(:id)
+    # params = { id: id_found }.merge(params)
+    Atome.new(params)
   end
 
   def self.current_machine_decision(platform, output)

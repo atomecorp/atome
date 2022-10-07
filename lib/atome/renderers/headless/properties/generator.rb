@@ -49,4 +49,10 @@ module HeadlessRenderer
   def parent_headless(params, &proc)
     puts "----puts render render #{params}"
   end
+  def width_headless(params, &proc)
+    puts "----puts render width_headless #{params}"
+  end
+  def height_headless(params, &proc)
+    puts "----puts render height_headless #{params}"
+  end
 end

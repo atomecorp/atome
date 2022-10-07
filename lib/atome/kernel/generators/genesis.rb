@@ -22,7 +22,7 @@ module GenesisKernel
     instance_exec({ options: value }, &proc) if proc.is_a?(Proc)
     instance_variable_set(particle_instance_variable, value)
     Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym)
-    Render.render(particle, value, self, &proc)
+    render_engine(particle, value, self, &proc)
     Genesis.run_optional_methods_helper("#{particle}_post_render_proc".to_sym)
     broadcaster(particle, value)
     history(particle, value)
@@ -46,12 +46,13 @@ module GenesisKernel
 
   # atome's methods
 
-  def create_new_atomes(params, instance_var)
+  def create_new_atomes(params, instance_var,atome)
     new_atome = Atome.new({})
     instance_variable_set(instance_var, new_atome)
-    # puts "::: checked params: #{params.delete(:render)}"
+
+    # we extract render to ensure it's the first element of the hash
     params.each do |param, value|
-      new_atome.send(param, value)
+      new_atome.send("set_#{param}", value)
     end
   end
 
@@ -63,7 +64,7 @@ module GenesisKernel
     instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
     # now we exec the first optional method
     Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym)
-    create_new_atomes(params, instance_var)
+    create_new_atomes(params, instance_var,atome)
     Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym)
     @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
   end

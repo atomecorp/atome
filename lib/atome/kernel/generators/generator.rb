@@ -34,7 +34,6 @@ Genesis.atome_creator_option(:color_getter_pre_proc) do
 end
 
 Genesis.particle_creator(:id) do
-  puts 'this is a specific dummy addon for this method!'
 end
 Genesis.particle_creator(:left)
 Genesis.particle_creator(:right)

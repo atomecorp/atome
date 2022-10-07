@@ -1,24 +1,21 @@
 # frozen_string_literal: true
 
+# main render routerclass Renderer
+# class Renderer
+#   include ServerRenderer
+#   include HeadlessRenderer
+#   include OpalRenderer
+# end
+
 # Main render engine
-class Renderer
-
-  include ServerRenderer
-  include HeadlessRenderer
-  include OpalRenderer
-end
-
 module Render
-
-  @render_engine = Renderer.new
-  # @server_render_engine = ServerRenderer.new
-  # @headless_render_engine = HeadlessRenderer.new
-  def self.render(property, value, atome, &proc)
-    required_renderers = atome.render
-    required_renderers.each do |renderer|
+  # @render_engine = Renderer.new
+  def render_engine(property, value, atome, &proc)
+    renderer_found = atome.render
+    puts "::::: self is #{self}"
+    renderer_found.each do |renderer|
       renderer_name = "#{property}_#{renderer}"
-      @render_engine.send(renderer_name, value, &proc)
+      send(renderer_name, value, &proc)
     end
   end
 end
-
