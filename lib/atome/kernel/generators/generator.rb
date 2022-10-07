@@ -50,6 +50,5 @@ Genesis.particle_creator(:type)
 Genesis.particle_creator(:render)
 Genesis.particle_creator(:drm)
 Genesis.particle_creator(:parent)
-puts '!!!!!!!!!!!!!!  no render for render method !!!!!!!!!!!!!!'
 Genesis.particle_creator(:date)
 Genesis.particle_creator(:location)

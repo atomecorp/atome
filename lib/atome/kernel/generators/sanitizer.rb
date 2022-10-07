@@ -25,12 +25,15 @@ module Sanitizer
 
   def sanitizer(params)
     # TODO: write sanitizer scheme
+    # se reorder render and place it a the beginning of the hash
+    render_found = params.delete(:render)
+    params = { render: render_found }.merge(params)
+    # se reorder id and place it a the beginning of the hash before render
     id_found = params.delete(:id)
     { id: id_found }.merge(params)
   end
 
   def add_essential_drm(params)
-
     essential_drm = { authorisation: { read: [Atome.current_user], write: [Atome.current_user] },
                       atome: { read: [:all], write: [:me] } }
     params[:drm] = if params[:drm]
@@ -40,7 +43,7 @@ module Sanitizer
                    end
   end
 
-  def check_parent(params, atome_type)
+  def check_parent(params)
     parent = id || :eDen
     params[:parent] = parent unless params[:parent]
     params
@@ -58,7 +61,6 @@ module Sanitizer
     params[:drm] = add_essential_drm(params) unless params[:drm]
     render = Genesis.default_value[:render]
     params[:render] = render unless params[:render]
-    check_parent(params, atome_type)
+    check_parent(params)
   end
-
 end

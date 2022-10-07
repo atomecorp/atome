@@ -73,8 +73,8 @@ module GenesisKernel
 
   def new_atome(atome, params, proc)
     if params
-      params = sanitizer(params)
       params = add_essential_properties(atome, params)
+      params = sanitizer(params)
       set_new_atome(atome, params, proc)
 
     else

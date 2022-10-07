@@ -74,7 +74,7 @@ class Atome
 
   def initialize(params = {})
     # TODO: check if we need to add properties for the root object before sending the params
-    # we reorder to place id at the beginning of th hash
+    # TODO : check if we need reorder to place id at the beginning of th hash, if yes uncomment below
     id_found = params.delete(:id)
     params = { id: id_found }.merge(params)
     params.each do |atome, values|
