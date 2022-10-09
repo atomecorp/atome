@@ -9,7 +9,8 @@ require 'digest/sha2'
 def found_path(arg_name)
   project_name = ARGV[ARGV.find_index(arg_name) + 1]
   path = `pwd`.chomp
-  if project_name != 'run' && project_name != 'guard' && !project_name.nil? && project_name != 'port:' && project_name != 'server' && project_name != 'build'
+  if project_name != 'run' && project_name != 'guard' && !project_name.nil? &&
+    project_name != 'port:' && project_name != 'server' && project_name != 'build'
     path = "#{path}/#{project_name}"
   end
   path
@@ -30,7 +31,6 @@ def delete_all(dir, user_application = false)
 end
 
 def build_app(path, production)
-  # current_path = `pwd`.chomp
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
   app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
   # now run the rake task to compile user code to javascript
@@ -90,17 +90,15 @@ def update_application(project_name, production)
 end
 
 def guard_check
-  if ARGV.include?('guard')
-    loop do
-      sleep 9
-    end
+  loop do
+    sleep 9
   end
+  nil unless ARGV.include?('guard')
 end
 
 def run_application(build_target, location, port = 9292)
   case build_target
   when :server
-    # require 'atome'
     threads = []
     threads << Thread.new do
       sleep 1.5
@@ -122,7 +120,6 @@ def run_application(build_target, location, port = 9292)
     `cd #{location}/build;open index.html`
     guard_check
   end
-
 end
 
 # below we analyse the ARGV

@@ -19,8 +19,5 @@ class Atome
       blue: rgb_color[:b] / 255,
       alpha: 1
     }
-
   end
 end
-
-

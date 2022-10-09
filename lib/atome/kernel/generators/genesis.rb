@@ -18,10 +18,13 @@ module GenesisKernel
     return false unless validation(particle)
 
     instance_exec({ options: value }, &proc) if proc.is_a?(Proc)
-    Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym, { method: particle, value: value, atome: self })
+    Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym,
+                                        { method: particle, value: value, atome: self })
     # render option below
-    Genesis.run_optional_methods_helper("#{particle}_render_proc".to_sym, { method: particle, value: value, atome: self, proc: proc })
-    Genesis.run_optional_methods_helper("#{particle}_post_render_proc".to_sym, { method: particle, value: value })
+    Genesis.run_optional_methods_helper("#{particle}_render_proc".to_sym,
+                                        { method: particle, value: value, atome: self, proc: proc })
+    Genesis.run_optional_methods_helper("#{particle}_post_render_proc".to_sym,
+                                        { method: particle, value: value })
     broadcaster(particle, value)
     history(particle, value)
   end
@@ -152,7 +155,7 @@ module Genesis
     additional_atome_methods(method_name)
   end
 
-  def self.optional_additional_particle_methods(method_name)
+  def self.optional_particle_methods(method_name)
     # we set the optional renderer here
     Genesis.atome_creator_option("#{method_name}_render_proc".to_sym) do |params|
       params[:atome].render_engine(params[:method], params[:value], params[:atome], &params[:proc])
@@ -172,7 +175,7 @@ module Genesis
     Atome.define_method "get_#{method_name}" do
       get_new_particle(method_name)
     end
-    optional_additional_particle_methods(method_name)
+    optional_particle_methods(method_name)
   end
 
   def self.particle_creator(method_name, &proc)

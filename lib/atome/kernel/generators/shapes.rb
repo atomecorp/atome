@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-def box(params = {}, formated = false)
-  formated
-  Atome.new(color: {})
+def box(params = {})
+  Atome.new(params)
 end

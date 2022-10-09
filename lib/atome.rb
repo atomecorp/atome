@@ -2,7 +2,7 @@
 
 require 'fileutils'
 require 'atome/version'
-@atome_client_ready=false
+@atome_client_ready = false
 def eval_protection
   binding
 end
@@ -25,11 +25,11 @@ require 'atome/kernel/generators/generator'
 require 'atome/kernel/atome'
 require 'atome/kernel/properties/essential'
 
-Universe.initialize
+Universe.send(:initialize)
 # puts "@atome_client_ready is : #{@atome_client_ready}"
 
 # puts "app_identity is : #{Universe.app_identity}"
 
 Atome.current_user = :jeezs
 
-require 'atome/kernel/sparkle'
+# require 'atome/kernel/sparkle'
