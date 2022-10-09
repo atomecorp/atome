@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+class Atome
+  include OpalRenderer
+end
 # init basic object for atome environment
 
 # let's create the view port
@@ -25,7 +28,7 @@ view = Atome.new({
 #                      shape: { left: 0, right: 0, top: 0, bottom: 0, id: :view, color: { id: :c1, render: [:headless], red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } })
 
 
-puts '--***--'
+# puts '--***--'
 
 # view.width(222) do |toto|
 #   puts "jhgjhgjh"
@@ -39,7 +42,7 @@ puts '--***--'
 #
 # puts view.width
 
-puts view
+# puts view
 
 # puts Utilities.grab(:c1)
 # puts Atome.current_machine

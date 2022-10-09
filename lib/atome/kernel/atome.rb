@@ -19,7 +19,7 @@ class Atome
   include Sanitizer
   include ServerRenderer
   include HeadlessRenderer
-  include OpalRenderer
+  # include OpalRenderer
   include Render
   def self.atome(params)
     # id_found = params.delete(:id)

@@ -46,6 +46,17 @@ Genesis.particle_creator(:green)
 Genesis.particle_creator(:blue)
 Genesis.particle_creator(:alpha)
 Genesis.particle_creator(:type)
+Genesis.atome_creator_option(:type_pre_render_proc) do |params|
+  "it works and get #{params}"
+end
+
+
+
+Genesis.atome_creator_option(:top_render_proc) do |params|
+  puts  "====---> Hurrey no rendering :  #{params}"
+end
+
+
 Genesis.particle_creator(:render)
 Genesis.particle_creator(:drm)
 Genesis.particle_creator(:parent)
