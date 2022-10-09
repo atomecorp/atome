@@ -10,13 +10,7 @@ require 'uglifier'
 Opal.append_path 'app'
 
 def build_browser_content
-  browser_content = Opal::Builder.build('../lib/atome/renderers/opal/opal_browser.rb').to_s
-  browser_content.gsub!(
-    "$$$('STDERR')['$write_proc='](typeof(process) === 'object' && typeof(process.stderr) === 'object' ?
-function(s){process.stderr.write(s)} : function(s){console.warn(s)});", "$$$('STDERR')['$write_proc='](typeof(process)
-=== 'object' && typeof(process.stderr) === 'object' ? function(s){process.stderr.write(s)} : function(s){});"
-  )
-  browser_content
+  Opal::Builder.build('../lib/atome/renderers/opal/opal_browser.rb').to_s
 end
 
 def build_opal_browser(user_project_path)
