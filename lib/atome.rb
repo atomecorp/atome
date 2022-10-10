@@ -32,4 +32,4 @@ Universe.send(:initialize)
 
 Atome.current_user = :jeezs
 
-# require 'atome/kernel/sparkle'
+require 'atome/kernel/sparkle'

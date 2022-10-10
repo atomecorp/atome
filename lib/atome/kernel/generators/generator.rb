@@ -10,28 +10,28 @@ Genesis.atome_creator(:shadow)
 # Genesis.atome_creator(:additional)
 Genesis.atome_creator(:content)
 Genesis.atome_creator(:color) do |params|
-  puts "extra color code executed!! : #{params}"
+  # puts "extra color code executed!! : #{params}"
 end
-
-Genesis.atome_creator_option(:color_pre_save_proc) do
-  # puts "optional color_pre_save_proc\n"
-end
-
-Genesis.atome_creator_option(:color_post_save_proc) do
-  # puts "optional color_post_save_proc\n"
-end
-
-Genesis.atome_creator_option(:color_pre_render_proc) do
-  # puts "optional color_pre_render_proc\n"
-end
-
-Genesis.atome_creator_option(:color_post_render_proc) do
-  # puts "optional color_post_render_proc\n"
-end
-
-Genesis.atome_creator_option(:color_getter_pre_proc) do
-  # puts "optional color_getter_pre_proc\n"
-end
+# Exemple below
+# Genesis.atome_creator_option(:color_pre_save_proc) do
+#   # puts "optional color_pre_save_proc\n"
+# end
+#
+# Genesis.atome_creator_option(:color_post_save_proc) do
+#   # puts "optional color_post_save_proc\n"
+# end
+#
+# Genesis.atome_creator_option(:color_pre_render_proc) do
+#   # puts "optional color_pre_render_proc\n"
+# end
+#
+# Genesis.atome_creator_option(:color_post_render_proc) do
+#   # puts "optional color_post_render_proc\n"
+# end
+#
+# Genesis.atome_creator_option(:color_getter_pre_proc) do
+#   # puts "optional color_getter_pre_proc\n"
+# end
 
 Genesis.particle_creator(:id) do
 end
@@ -50,9 +50,10 @@ Genesis.atome_creator_option(:type_pre_render_proc) do |params|
   "it works and get #{params}"
 end
 
-Genesis.atome_creator_option(:top_render_proc) do |params|
-  puts "====---> Hurrey no rendering :  #{params}"
-end
+# important exemple below how to prevent rendering
+# Genesis.atome_creator_option(:top_render_proc) do |params|
+#   puts "====---> Hurrey no rendering :  #{params}"
+# end
 
 Genesis.particle_creator(:render)
 Genesis.particle_creator(:drm)

@@ -6,8 +6,8 @@ html, body {
 
     font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 12px;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     background: rgba(39, 39, 39, 1);
     overflow: hidden;
     -webkit-overflow-scrolling: touch;
@@ -30,16 +30,14 @@ html, body {
     overflow: hidden;
     position: absolute;
     -webkit-overflow-scrolling: touch;
-    overflow: hidden;
 }
 
 
-
-.ui-selected{
+.ui-selected {
     border: #00bb00 solid 3px;
 }
 
-.ui-selecting{
+.ui-selecting {
     border: orange solid 3px;
 }
 
@@ -47,7 +45,21 @@ html, body {
     outline: 2px dashed white;
 }
 
-
-
+.atome {
+    cursor: default;
+    pointer-events: auto;
+    caret-color: transparent;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    position: absolute;
+    display: inline-block;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    -webkit-overflow-scrolling: touch;
+    -webkit-user-drag: none;
+    caret-shape: bar;
+}
 
 
