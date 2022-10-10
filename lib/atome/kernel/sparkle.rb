@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
-# class Atome
-include OpalRenderer
-include HeadlessRenderer
-# end
+# include OpalRenderer
+# include HeadlessRenderer
+# FIXME : try avoid type property duplication (it's the key of the hash and also specified in the hash itself)
+
 if RUBY_ENGINE.downcase == 'opal'
-  Atome.new({
-              shape: { render: [:html], type: :shape, id: :view, left: 0, right: 0, top: 0, bottom: 0,
-                       color: { render: [:html], type: :color,
-                                id: :c1, red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
-            })
+  $document.ready do
+    Atome.new({
+                shape: { render: [:html], type: :shape, id: :view, left: 0, right: 0, top: 0, bottom: 0,
+                         color: { render: [:html], type: :color,
+                                  id: :c1, red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
+              })
+  end
 else
   Atome.new({
               shape: { render: [:headless], type: :shape, id: :view, left: 0, right: 0, top: 0, bottom: 0,

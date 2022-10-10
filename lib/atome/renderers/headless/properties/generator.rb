@@ -2,9 +2,8 @@
 
 # headless render methods here
 module HeadlessRenderer
-  def render_headless(params, _atome, &proc)
+  def render_headless(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    "render render #{params}"
   end
 
   def id_headless(params, _atome, &proc)

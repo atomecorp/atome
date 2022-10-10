@@ -18,9 +18,9 @@ class Atome
   include Genesis
   include Sanitizer
   include ServerRenderer
-  # include HeadlessRenderer
-  # include OpalRenderer
   include Render
+  include OpalRenderer
+  include HeadlessRenderer
   def self.atome(params)
     # id_found = params.delete(:id)
     # params = { id: id_found }.merge(params)
