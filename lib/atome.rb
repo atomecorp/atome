@@ -34,4 +34,3 @@ Atome.current_user = :jeezs
 
 require 'atome/kernel/sparkle'
 
-# FIXME: check when creating gem version the new gem is not always fully updated we have to type gem uninstall first

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# include OpalRenderer
-# include HeadlessRenderer
 # FIXME : try avoid type property duplication (it's the key of the hash and also specified in the hash itself)
 
 if RUBY_ENGINE.downcase == 'opal'

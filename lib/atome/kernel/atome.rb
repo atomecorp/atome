@@ -22,8 +22,6 @@ class Atome
   include OpalRenderer
   include HeadlessRenderer
   def self.atome(params)
-    # id_found = params.delete(:id)
-    # params = { id: id_found }.merge(params)
     Atome.new(params)
   end
 
@@ -95,4 +93,3 @@ end
 # initialize Universe
 Universe.connected
 # Atome.new( identity: {type: :eVe, aui: :a_97987987987})
-# puts "is anyone connected"
