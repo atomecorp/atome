@@ -1,62 +1,79 @@
 # frozen_string_literal: true
 
-
 # headless render methods here
 module HeadlessRenderer
-  def render_headless(params, &proc)
-    puts "----puts render render #{params}"
-  end
-  def id_headless(params, &proc)
-    puts "----puts render render #{params}"
+  def render_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render render #{params}"
   end
 
-  def left_headless(params, &proc)
-    puts "----puts render render #{params}"
+  def id_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render id #{params}"
   end
 
-
-  def right_headless(params, &proc)
-    puts "----puts render render #{params}"
+  def left_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render left #{params}"
   end
 
-
-  def top_headless(params, &proc)
-    puts "----puts render render #{params}"
+  def right_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render right #{params}"
   end
 
-
-  def bottom_headless(params, &proc)
-    puts "----puts render render #{params}"
+  def top_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render top #{params}"
   end
 
-  def red_headless(params, &proc)
-    puts "----puts render render #{params}"
-  end
-  def green_headless(params, &proc)
-    puts "----puts render render #{params}"
-  end
-  def blue_headless(params, &proc)
-    puts "----puts render render #{params}"
-  end
-  def alpha_headless(params, &proc)
-    puts "----puts render render #{params}"
+  def bottom_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render bottom #{params}"
   end
 
-  def drm_headless(params, &proc)
-    puts "----puts render render #{params}"
+  def red_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render red #{params}"
   end
 
-  def parent_headless(params, &proc)
-    puts "----puts render render #{params}"
-  end
-  def width_headless(params, &proc)
-    puts "----puts render width_headless #{params}"
-  end
-  def height_headless(params, &proc)
-    puts "----puts render height_headless #{params}"
+  def green_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render green #{params}"
   end
 
-  def type_headless(params, &proc)
-    puts "----puts render type_headless #{params}"
+  def blue_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render blue #{params}"
+  end
+
+  def alpha_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render render #{params}"
+  end
+
+  def drm_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render alpha #{params}"
+  end
+
+  def parent_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render parent #{params}"
+  end
+
+  def width_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render width #{params}"
+  end
+
+  def height_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render height #{params}"
+  end
+
+  def type_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    "render type #{params}"
   end
 end

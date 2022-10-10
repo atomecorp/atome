@@ -2,90 +2,103 @@
 
 # opal render methods here
 module OpalRenderer
-  def render_html(params, &proc)
+  def color_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render html #{params}"
+    DOM do
+      div(id: :the_span)._atome "I'm all cooked up!"
+    end.append_to($document[:user_view])
+    @html_object = $document[:the_span]
+    @html_object.style['background-color'] = 'rgba(255, 255, 0,1)'
   end
 
-  def id_html(params, &proc)
+  def drm_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render id_html #{params}"
+    # alert parent
   end
 
-  def left_html(params, &proc)
+  def parent_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render left_html #{params}"
+    # alert parent
   end
 
-  def right_html(params, &proc)
+  def shape_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render right_html #{params}"
+    DOM do
+      @toto = div(id: :the_span)._atome "I'm all cooked up!"
+    end.append_to($document[:user_view])
+
+    alert @toto
+    @html_object = $document[:the_span]
+    @html_object.style['background-color'] = 'rgba(255, 0, 0, 0.3)'
   end
 
-  def top_html(params, &proc)
+  def id_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render top_html #{params}"
+    @html_object.id = params
+    # alert @html_object.id
   end
 
-  def bottom_html(params, &proc)
+  def width_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render bottom_html #{params}"
+    @html_object.style[:width] = "#{params}px"
   end
 
-  def red_html(params, &proc)
+  def height_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render red_html #{params}"
+    @html_object.style[:height] = "#{params}px"
+
+    # alert  @html_object
   end
 
-  def green_html(params, &proc)
+  def left_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render green_html #{params}"
+    @html_object.style[:left] = "#{params}px"
   end
 
-  def blue_html(params, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render blue_html #{params}"
+  def right_html(params, _atome)
+    @html_object.style[:right] = "#{params}px"
   end
 
-  def alpha_html(params, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render alpha_html #{params}"
+  def top_html(params, _atome)
+    @html_object.style[:top] = "#{params}px"
   end
 
-  def drm_html(params, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render drm_html #{params}"
+  def bottom_html(params, _atome)
+    @html_object.style[:bottom] = "#{params}px"
   end
 
-  def parent_html(params, &proc)
+  def type_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- parent_html is #{params}"
+    send("#{params}_html", params, _atome, &proc)
   end
 
-  def width_html(params, &proc)
+  def red_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render width_html #{params}"
+
+    # @html_object.style[:color]  = "#{params}px"
   end
 
-  def height_html(params, &proc)
+  def green_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    puts "---- render height_html #{params}"
+
+    # @html_object.style[:color]  = "#{params}px"
   end
 
-  def type_html(params, &proc)
-    puts "-------type"
+  def blue_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    send("#{params}_html", &proc)
+
+    # @html_object.style[:color]  = "#{params}px"
   end
 
-  def shape_html(&proc)
+  def alpha_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    # @html_object= `document.createElement('div')`
-    # puts '::::::: setting specific options for shape atome'
+    # @html_object.style[:color]  = "#{params}px"
   end
 
-  def color_html(&proc)
+  def render_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    # puts '::::::: setting specific options for color atome'
+    # puts _params
+    instance_exec(&proc) if proc.is_a?(Proc)
+    # "---- render html #{params}"
   end
 end

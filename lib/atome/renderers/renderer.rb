@@ -6,7 +6,7 @@ module Render
     renderer_found = atome.render
     renderer_found.each do |renderer|
       renderer_name = "#{property}_#{renderer}"
-      send(renderer_name, value, &proc)
+      send(renderer_name, value,atome, &proc)
     end
   end
 end

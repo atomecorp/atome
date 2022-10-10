@@ -2,6 +2,7 @@
 
 require 'geocoder'
 
+# add on for the atome method
 class Atome
   def geolocation
     # native version
