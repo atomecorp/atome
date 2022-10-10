@@ -4,12 +4,22 @@
 module OpalRenderer
 
   def render_html(_params, _atome, &proc)
+    # dummy method
     instance_exec(&proc) if proc.is_a?(Proc)
   end
 
   def type_html(params, atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
     send("#{params}_html", params, atome, &proc)
+  end
+
+  def shape_html(_params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    DOM do
+      @toto = div(id: :the_span).atome "I'm all cooked up!"
+    end.append_to($document[:user_view])
+    @html_object = $document[:the_span]
+    @html_object.style['background-color'] = 'rgba(255, 0, 0, 0.3)'
   end
 
   def color_html(_params, _atome, &proc)
@@ -29,15 +39,6 @@ module OpalRenderer
   def parent_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
     # alert parent
-  end
-
-  def shape_html(_params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    DOM do
-      @toto = div(id: :the_span).atome "I'm all cooked up!"
-    end.append_to($document[:user_view])
-    @html_object = $document[:the_span]
-    @html_object.style['background-color'] = 'rgba(255, 0, 0, 0.3)'
   end
 
   def id_html(params, _atome, &proc)

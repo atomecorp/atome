@@ -2,13 +2,31 @@
 
 # headless render methods here
 module HeadlessRenderer
+
   def render_headless(_params, _atome, &proc)
+    # dummy method
     instance_exec(&proc) if proc.is_a?(Proc)
   end
 
-  def id_headless(params, _atome, &proc)
+  def type_headless(params, atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    "render id #{params}"
+    # puts "1 - render type #{params}"
+    send("#{params}_headless", params, atome, &proc)
+  end
+
+  # type below
+  def shape_headless(_params, _atome, &proc)
+    # puts "2 - render shape #{_params}"
+    @headless_object=self
+  end
+
+  def color_headless(_params, _atome, &proc)
+    # puts "2 - render color #{_params}"
+  end
+
+  def id_headless(_params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    # puts "3 - render id #{_params}"
   end
 
   def left_headless(params, _atome, &proc)
@@ -71,8 +89,4 @@ module HeadlessRenderer
     "render height #{params}"
   end
 
-  def type_headless(params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    "render type #{params}"
-  end
 end
