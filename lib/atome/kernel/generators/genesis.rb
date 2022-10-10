@@ -56,7 +56,7 @@ module GenesisKernel
     # # we extract render to ensure it's the first element of the hash
     # params = { render: params.delete(:render) }.merge(params)
     params.each do |param, value|
-      new_atome.send("set_#{param}", value)
+      new_atome.send(param, value)
     end
   end
 
@@ -86,7 +86,6 @@ module GenesisKernel
       params = add_essential_properties(atome, params)
       params = sanitizer(params)
       set_new_atome(atome, params, proc)
-
     else
       get_new_atome(atome)
     end

@@ -25,7 +25,6 @@ module Sanitizer
 
   def sanitizer(params)
     # TODO: write sanitizer scheme
-
     # we reorder id and place it a the beginning of the hash before render
     # id_found = params.delete(:id)
     # params = { id: id_found }.merge(params)

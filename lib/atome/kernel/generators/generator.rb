@@ -17,8 +17,8 @@ Genesis.atome_creator(:color)
 # Genesis.atome_creator(:color) do |params|
   #   # puts "extra color code executed!! : #{params}"
   # end
-# Genesis.atome_creator_option(:color_pre_save_proc) do
-#   # puts "optional color_pre_save_proc\n"
+# Genesis.atome_creator_option(:color_pre_save_proc) do |params|
+#   puts "The params are : #{params}\n"
 # end
 #
 # Genesis.atome_creator_option(:color_post_save_proc) do
