@@ -93,3 +93,4 @@ end
 # initialize Universe
 Universe.connected
 # Atome.new( identity: {type: :eVe, aui: :a_97987987987})
+puts "atome version : #{Atome::VERSION}"

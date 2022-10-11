@@ -75,18 +75,6 @@ def build_opal_extensions(user_project_path, gem_location)
   end
 end
 
-def build_opal_sparkle(user_project_path, gem_location)
-  opal_directory = "#{user_project_path}/build/js/opal"
-  opal_sparkle_js = "#{opal_directory}/opal_sparkle.js"
-  File.new opal_sparkle_js, 'w'
-  builder = Opal::Builder.new
-  builder.append_paths("#{gem_location}/../atome/kernel/")
-  opal_sparkle_content = builder.build("#{gem_location}/../lib/atome/kernel/sparkle.rb").to_s
-  File.open(opal_sparkle_js, 'w') do |f|
-    f.puts opal_sparkle_content
-  end
-end
-
 def build_opal_parser(user_project_path)
   parser_js = "#{user_project_path}/build/js/opal/opal_parser.js"
   File.new parser_js, 'w'
@@ -218,7 +206,6 @@ def build_libraries(user_project_path, gem_location)
   build_opal_browser(user_project_path)
   build_opal_parser(user_project_path)
   build_opal_extensions(user_project_path, gem_location)
-  build_opal_sparkle(user_project_path, gem_location)
 end
 
 def minimize(user_project_path)
