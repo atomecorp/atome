@@ -23,11 +23,55 @@ module OpalRenderer
   end
 
   def color_html(_params, _atome, &proc)
-    id_found = id
-    $document[:style] << ".#{id_found}{background-color: red;}"
+    # id_found = id
+    # $document[:style] << ".#{id_found}{background-color: red;}"
     instance_exec(&proc) if proc.is_a?(Proc)
-    @html_object = $document[id_found]
     @html_type = :style
+    $document.head << DOM("<style id='#{id}'></style>")
+  end
+
+  def red_html(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    green_found = green
+    green_found ||= 0
+    blue_found = blue
+    blue_found ||= 0
+    alpha_found = alpha
+    alpha_found ||= 0
+    $document[id].inner_html = "\n.#{id}{background-color: rgba(#{params * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found})}\n"
+  end
+
+  def green_html(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    red_found = red
+    red_found ||= 0
+    blue_found = blue
+    blue_found ||= 0
+    alpha_found = alpha
+    alpha_found ||= 0
+    $document[id].inner_html = "\n.#{id}{background-color: rgba(#{red_found * 255},#{params * 255},#{blue_found * 255},#{alpha_found})}\n"
+  end
+
+  def blue_html(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    red_found = red
+    red_found ||= 0
+    green_found = green
+    green_found ||= 0
+    alpha_found = alpha
+    alpha_found ||= 0
+    $document[id].inner_html = "\n.#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{params * 255},#{alpha_found})}\n"
+  end
+
+  def alpha_html(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    red_found = red
+    red_found ||= 0
+    green_found = green
+    green_found ||= 0
+    blue_found = blue
+    blue_found ||= 0
+    $document[id].inner_html = "\n.#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{params})}\n"
   end
 
   def drm_html(_params, _atome, &proc)
@@ -58,49 +102,49 @@ module OpalRenderer
     @html_object.style[:height] = "#{params}px" unless @html_type == :style
   end
 
-  def red_html(params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    green_found = green
-    green_found ||= 0
-    blue_found = blue
-    blue_found ||= 0
-    alpha_found = alpha
-    alpha_found ||= 0
-    $document[:style] << ".#{id}{background-color: rgba(#{params * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found})}"
-  end
-
-  def green_html(params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    red_found = red
-    red_found ||= 0
-    blue_found = blue
-    blue_found ||= 0
-    alpha_found = alpha
-    alpha_found ||= 0
-    $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{params * 255},#{blue_found * 255},#{alpha_found})}"
-  end
-
-  def blue_html(params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    red_found = red
-    red_found ||= 0
-    green_found = green
-    green_found ||= 0
-    alpha_found = alpha
-    alpha_found ||= 0
-    $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{params * 255},#{alpha_found})}"
-  end
-
-  def alpha_html(params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    red_found = red
-    red_found ||= 0
-    green_found = green
-    green_found ||= 0
-    blue_found = blue
-    blue_found ||= 0
-    $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{params})}"
-  end
+  # def red_html(params, _atome, &proc)
+  #   instance_exec(&proc) if proc.is_a?(Proc)
+  #   green_found = green
+  #   green_found ||= 0
+  #   blue_found = blue
+  #   blue_found ||= 0
+  #   alpha_found = alpha
+  #   alpha_found ||= 0
+  #   $document[:style] << ".#{id}{background-color: rgba(#{params * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found})}"
+  # end
+  #
+  # def green_html(params, _atome, &proc)
+  #   instance_exec(&proc) if proc.is_a?(Proc)
+  #   red_found = red
+  #   red_found ||= 0
+  #   blue_found = blue
+  #   blue_found ||= 0
+  #   alpha_found = alpha
+  #   alpha_found ||= 0
+  #   $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{params * 255},#{blue_found * 255},#{alpha_found})}"
+  # end
+  #
+  # def blue_html(params, _atome, &proc)
+  #   instance_exec(&proc) if proc.is_a?(Proc)
+  #   red_found = red
+  #   red_found ||= 0
+  #   green_found = green
+  #   green_found ||= 0
+  #   alpha_found = alpha
+  #   alpha_found ||= 0
+  #   $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{params * 255},#{alpha_found})}"
+  # end
+  #
+  # def alpha_html(params, _atome, &proc)
+  #   instance_exec(&proc) if proc.is_a?(Proc)
+  #   red_found = red
+  #   red_found ||= 0
+  #   green_found = green
+  #   green_found ||= 0
+  #   blue_found = blue
+  #   blue_found ||= 0
+  #   $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{params})}"
+  # end
 
   def left_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
