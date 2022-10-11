@@ -36,8 +36,9 @@ module OpalRenderer
     # alert parent
   end
 
-  def parent_html(_params, _atome, &proc)
+  def parent_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
+    @html_object.append_to($document[params])
     # alert parent
   end
 

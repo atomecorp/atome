@@ -46,7 +46,7 @@ module Sanitizer
   end
 
   def check_parent(params)
-    parent = id || :eDen
+    parent = id || :user_view
     params[:parent] = parent unless params[:parent]
     params
   end

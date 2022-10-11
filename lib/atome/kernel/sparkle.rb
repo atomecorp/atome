@@ -15,7 +15,7 @@ else
     {
       shape: { render: [:headless], type: :shape, id: :view, left: 0, right: 0, top: 0, bottom: 0,
                color: { render: [:headless], type: :color,
-                        id: :c11, red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
+                        id: :c1, red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
     }
   )
 end
