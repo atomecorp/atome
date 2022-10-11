@@ -2,23 +2,20 @@
 
 # FIXME : try avoid type property duplication (it's the key of the hash and also specified in the hash itself)
 
+
+
 if RUBY_ENGINE.downcase == 'opal'
   $document.ready do
-    Atome.new({
-                shape: { render: [:html], id: :view, type: :shape, left: 0, right: 0, top: 0, bottom: 0,
+    Atome.new(  shape: { render: [:html], id: :view, type: :shape, parent: :user_view, left: 0, right: 0, top: 0, bottom: 0,
                          color: { render: [:html], id: :c1, type: :color,
                                   red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }
-                }
-              })
+    })
   end
 else
-  Atome.new(
-    {
-      shape: { render: [:headless], id: :view, type: :shape, left: 0, right: 0, top: 0, bottom: 0,
-               color: { render: [:headless], id: :c1, type: :color,
-                        red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
-    }
-  )
+  Atome.new(  shape: { render: [:headless], id: :view, type: :shape, parent: :user_view, left: 0, right: 0, top: 0, bottom: 0,
+                       color: { render: [:headless], id: :c1, type: :color,
+                                red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }
+  })
 end
 
 # init basic object for atome environment

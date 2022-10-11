@@ -17,6 +17,7 @@ module HeadlessRenderer
   # type below
   def shape_headless(_params, _atome, &proc)
     # puts "2 - render shape #{_params}"
+    puts id
     @headless_object=self
   end
 

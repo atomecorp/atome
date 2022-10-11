@@ -16,7 +16,7 @@ module OpalRenderer
     id_found = id
     instance_exec(&proc) if proc.is_a?(Proc)
     DOM do
-      div(id: id_found).atome "I'm totally cooked up!"
+      div(id: id_found).atome
     end.append_to($document[:user_view])
     @html_object = $document[id_found]
     @html_type = :div
@@ -33,6 +33,7 @@ module OpalRenderer
   def drm_html(_params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
   end
+
 
   def parent_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
@@ -57,6 +58,50 @@ module OpalRenderer
     @html_object.style[:height] = "#{params}px" unless @html_type == :style
   end
 
+  def red_html(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    green_found = green
+    green_found ||= 0
+    blue_found = blue
+    blue_found ||= 0
+    alpha_found = alpha
+    alpha_found ||= 0
+    $document[:style] << ".#{id}{background-color: rgba(#{params * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found})}"
+  end
+
+  def green_html(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    red_found = red
+    red_found ||= 0
+    blue_found = blue
+    blue_found ||= 0
+    alpha_found = alpha
+    alpha_found ||= 0
+    $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{params * 255},#{blue_found * 255},#{alpha_found})}"
+  end
+
+  def blue_html(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    red_found = red
+    red_found ||= 0
+    green_found = green
+    green_found ||= 0
+    alpha_found = alpha
+    alpha_found ||= 0
+    $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{params * 255},#{alpha_found})}"
+  end
+
+  def alpha_html(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    red_found = red
+    red_found ||= 0
+    green_found = green
+    green_found ||= 0
+    blue_found = blue
+    blue_found ||= 0
+    $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{params})}"
+  end
+
   def left_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
     @html_object.style[:left] = "#{params}px" unless @html_type == :style
@@ -74,26 +119,4 @@ module OpalRenderer
     @html_object.style[:bottom] = "#{params}px" unless @html_type == :style
   end
 
-  def red_html(_params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-
-    # @html_object.style[:color]  = "#{params}px"
-  end
-
-  def green_html(_params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-
-    # @html_object.style[:color]  = "#{params}px"
-  end
-
-  def blue_html(_params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-
-    # @html_object.style[:color]  = "#{params}px"
-  end
-
-  def alpha_html(_params, _atome, &proc)
-    instance_exec(&proc) if proc.is_a?(Proc)
-    # @html_object.style[:color]  = "#{params}px"
-  end
 end
