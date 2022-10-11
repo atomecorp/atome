@@ -5,17 +5,18 @@
 if RUBY_ENGINE.downcase == 'opal'
   $document.ready do
     Atome.new({
-                shape: { render: [:html], type: :shape, id: :view, left: 0, right: 0, top: 0, bottom: 0,
-                         color: { render: [:html], type: :color,
-                                  id: :c1, red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
+                shape: { render: [:html], id: :view, type: :shape, left: 0, right: 0, top: 0, bottom: 0,
+                         color: { render: [:html], id: :c1, type: :color,
+                                  red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }
+                }
               })
   end
 else
   Atome.new(
     {
-      shape: { render: [:headless], type: :shape, id: :view, left: 0, right: 0, top: 0, bottom: 0,
-               color: { render: [:headless], type: :color,
-                        id: :c1, red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
+      shape: { render: [:headless], id: :view, type: :shape, left: 0, right: 0, top: 0, bottom: 0,
+               color: { render: [:headless], id: :c1, type: :color,
+                        red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
     }
   )
 end
