@@ -17,8 +17,7 @@ module HeadlessRenderer
   # type below
   def shape_headless(_params, _atome, &proc)
     # puts "2 - render shape #{_params}"
-    puts id
-    @headless_object=self
+    @headless_object = self
   end
 
   def color_headless(_params, _atome, &proc)
@@ -87,7 +86,17 @@ module HeadlessRenderer
 
   def height_headless(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
-    "render height #{params}"
+    puts  "render height #{params}"
+  end
+
+  def smooth_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    puts "render smooth #{params}"
+  end
+
+  def touch_headless(params, _atome, &proc)
+    instance_exec(&proc) if proc.is_a?(Proc)
+    puts "render touch #{params}"
   end
 
 end

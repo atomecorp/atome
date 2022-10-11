@@ -102,50 +102,6 @@ module OpalRenderer
     @html_object.style[:height] = "#{params}px" unless @html_type == :style
   end
 
-  # def red_html(params, _atome, &proc)
-  #   instance_exec(&proc) if proc.is_a?(Proc)
-  #   green_found = green
-  #   green_found ||= 0
-  #   blue_found = blue
-  #   blue_found ||= 0
-  #   alpha_found = alpha
-  #   alpha_found ||= 0
-  #   $document[:style] << ".#{id}{background-color: rgba(#{params * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found})}"
-  # end
-  #
-  # def green_html(params, _atome, &proc)
-  #   instance_exec(&proc) if proc.is_a?(Proc)
-  #   red_found = red
-  #   red_found ||= 0
-  #   blue_found = blue
-  #   blue_found ||= 0
-  #   alpha_found = alpha
-  #   alpha_found ||= 0
-  #   $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{params * 255},#{blue_found * 255},#{alpha_found})}"
-  # end
-  #
-  # def blue_html(params, _atome, &proc)
-  #   instance_exec(&proc) if proc.is_a?(Proc)
-  #   red_found = red
-  #   red_found ||= 0
-  #   green_found = green
-  #   green_found ||= 0
-  #   alpha_found = alpha
-  #   alpha_found ||= 0
-  #   $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{params * 255},#{alpha_found})}"
-  # end
-  #
-  # def alpha_html(params, _atome, &proc)
-  #   instance_exec(&proc) if proc.is_a?(Proc)
-  #   red_found = red
-  #   red_found ||= 0
-  #   green_found = green
-  #   green_found ||= 0
-  #   blue_found = blue
-  #   blue_found ||= 0
-  #   $document[:style] << ".#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{params})}"
-  # end
-
   def left_html(params, _atome, &proc)
     instance_exec(&proc) if proc.is_a?(Proc)
     @html_object.style[:left] = "#{params}px" unless @html_type == :style
@@ -163,4 +119,26 @@ module OpalRenderer
     @html_object.style[:bottom] = "#{params}px" unless @html_type == :style
   end
 
+
+  def smooth_html(params, _atome, &proc)
+    formated_params = case params
+                      when Array
+                        properties = []
+                        params.each do |param|
+                          properties << "#{param}px"
+                        end
+                        properties.join(' ').to_s
+                      when Integer
+                        "#{params}px"
+                      else
+                        params
+                      end
+    @html_object.style['border-radius'] = formated_params unless @html_type == :style
+  end
+
+  def touch_html(params, _atome, &proc)
+    @html_object.on :click do |e|
+      instance_exec(&proc) if proc.is_a?(Proc)
+    end
+  end
 end

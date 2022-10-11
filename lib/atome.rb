@@ -22,6 +22,7 @@ require 'atome/renderers/headless/properties/generator'
 require 'atome/renderers/renderer'
 require 'atome/kernel/generators/sanitizer'
 require 'atome/kernel/generators/generator'
+require 'atome/kernel/generators/shapes'
 require 'atome/kernel/atome'
 require 'atome/kernel/properties/essential'
 
@@ -33,6 +34,9 @@ Universe.send(:initialize)
 Atome.current_user = :jeezs
 
 require 'atome/kernel/sparkle'
+
+
+
 
 
 

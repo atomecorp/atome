@@ -17,7 +17,7 @@ module GenesisKernel
   def set_new_particle(particle, value, &proc)
     return false unless validation(particle)
 
-    instance_exec({ options: value }, &proc) if proc.is_a?(Proc)
+    # instance_exec({ options: value }, &proc) if proc.is_a?(Proc)
     Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym,
                                         { method: particle, value: value, atome: self })
     # render option below
@@ -65,7 +65,7 @@ module GenesisKernel
 
     instance_var = "@#{atome}"
     # now we exec the method specific to the type if it exist
-    instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
+    # instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
     # now we exec the first optional method
     Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { value: params })
     create_new_atomes(params, instance_var, atome)

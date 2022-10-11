@@ -11,6 +11,7 @@ Genesis.atome_creator(:shadow)
 Genesis.atome_creator(:content)
 
 Genesis.atome_creator(:color)
+Genesis.atome_creator(:shadow)
 
 # Example below
 
@@ -50,6 +51,9 @@ Genesis.particle_creator(:green)
 Genesis.particle_creator(:blue)
 Genesis.particle_creator(:alpha)
 Genesis.particle_creator(:type)
+Genesis.particle_creator(:smooth)
+Genesis.particle_creator(:blur)
+Genesis.particle_creator(:touch)
 Genesis.atome_creator_option(:type_pre_render_proc) do |params|
   "it works and get #{params}"
 end
