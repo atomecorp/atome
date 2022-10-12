@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-
+# TODO: parent are not set correctly if not explicitly specified when attaching a child ex: b=box();c=b.box, c is not
+# attached to b
 # Genesis helper
 module GenesisHelper
   def broadcaster(property, value)
