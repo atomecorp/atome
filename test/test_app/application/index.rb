@@ -53,17 +53,21 @@
 # end
 #
 # # alert
-b = box({ width: 333 , left: 666})
+
+
+b = box({ width: 333 , left: 666,id: :poil})
 b.height(33)
 b.left(333)
 
+
 b.smooth([33, 2, 90])
 b.touch(true) do
-  color({ render: [:html], id: "color_#{Universe.atomes.length}", type: :color,
+  color({ render: :html, id: "color_#{Universe.atomes.length}", type: :color,
           red: 1, green: 0.69, blue: 1, alpha: 1 })
 end
 c=b.box({left: 333})
-c.parent(b.id)
+# c.parent(b.id)
+# alert b.id
 # b.left(99)
 b.top(99)
 
