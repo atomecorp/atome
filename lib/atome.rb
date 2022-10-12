@@ -6,7 +6,7 @@ require 'atome/version'
 def eval_protection
   binding
 end
-
+# FIXME: atome run doesnt run the code
 if RUBY_ENGINE.downcase != 'opal'
   # FIXME: find a better and more elegant solution to avoid opal to treat require
   # FIXME:  replace eval with a safer option
