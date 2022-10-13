@@ -1,0 +1,6 @@
+text(:chambon)
+b=box(color: :red)
+b.drag(true)
+# b.read("hello")
+grab(:device).read(1)
+grab(:device).write("hello")

@@ -1,0 +1,1 @@
+{temperature: 33, wind: 45, humidity: 79, pressure: 6}

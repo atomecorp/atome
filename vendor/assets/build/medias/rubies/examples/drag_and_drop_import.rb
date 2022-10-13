@@ -1,0 +1,1 @@
+text("drop a png on the window to import the medias (not availlable on safari for now)")
