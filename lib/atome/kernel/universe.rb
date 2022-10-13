@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # all created atomes are listed here
 class Universe
   def self.app_identity
@@ -12,7 +13,6 @@ class Universe
   def self.initialize
     @atomes = []
   end
-
 
   def self.atomes_add(new_atome)
     # @atomes[atome_id] = new_atome

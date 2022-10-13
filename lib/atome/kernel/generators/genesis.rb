@@ -4,11 +4,11 @@
 # Genesis helper
 module GenesisHelper
   def broadcaster(property, value)
-    "historize : #{property} #{value}"
+    "broadcast : #{property} #{value}"
   end
 
   def history(property, value)
-    "broadcast : #{property} #{value}"
+    "historize : #{property} #{value}"
   end
 end
 
@@ -19,8 +19,8 @@ module GenesisKernel
     return false unless validation(particle)
 
     # instance_exec({ options: value }, &proc) if proc.is_a?(Proc)
-     Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym,
-                                                                    { method: particle, value: value, atome: self })
+    Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym,
+                                        { method: particle, value: value, atome: self })
     # puts Genesis.pre_render_methods_helper("#{particle}_pre_render_proc".to_sym,
     #                                          { method: particle, value: value, atome: self })
 
@@ -129,11 +129,40 @@ module Genesis
   end
 
   # #fIXME : remove the methods below its only for test
-  # def self.pre_render_methods_helper(method_name, params)
-  #   proc = nil
-  #   proc = @optionals_methods[method_name] if @optionals_methods
-  #   instance_exec(params, &proc) if proc.is_a?(Proc)
-  # end
+
+  # render methods generator
+
+  def self.generate_html_renderer(method_name, &methods_proc)
+    current_renderer = :html
+    generated_method_name = "#{method_name}_#{current_renderer}".to_sym
+    Atome.define_method generated_method_name do |value, atome, &user_proc|
+      instance_exec(value, atome, user_proc, &methods_proc) if methods_proc.is_a?(Proc)
+    end
+  end
+
+  def self.generate_server_renderer(method_name, &methods_proc)
+    current_renderer = :headless
+    generated_method_name = "#{method_name}_#{current_renderer}".to_sym
+    Atome.define_method generated_method_name do |value, atome, &user_proc|
+      instance_exec(value, atome, user_proc, &methods_proc) if methods_proc.is_a?(Proc)
+    end
+  end
+
+  # rendering methods are generated below:
+  def self.generate_renderers_methods(method_name)
+    # now we auto generate all rendering methods
+    Utilities.renderer_list.each do |render_method|
+      define_singleton_method("generate_#{render_method}_renderer") do |method_name, &methods_proc|
+        current_renderer = render_method
+        generated_method_name = "#{method_name}_#{current_renderer}".to_sym
+        Atome.define_method generated_method_name do |value, atome, &user_proc|
+          instance_exec(value, atome, user_proc, &methods_proc) if methods_proc.is_a?(Proc)
+        end
+      end
+
+      send("generate_#{render_method}_renderer", method_name)
+    end
+  end
 
   def self.additional_atome_methods(method_name)
     # here is the pluralized
@@ -147,19 +176,20 @@ module Genesis
     Atome.define_method "get_#{method_name}" do
       get_new_atome(method_name)
     end
+    generate_renderers_methods(method_name)
   end
 
   # we create the easy methods here : ¬
   def self.atome_creator(method_name, &proc)
     instance_exec(method_name, &proc) if proc.is_a?(Proc)
     # we add the new method to the atome's collection of methods
-    Utilities.atomes(method_name)
+    Utilities.atome_list(method_name)
     # we define many methods : easy, method=,pluralised and the fasts one, here is the easy
     Atome.define_method method_name do |params = nil, &user_proc|
       new_atome(method_name, params, user_proc)
     end
     # no we also add the method= for easy setting
-    define_method("#{method_name}=") do |params, &user_proc|
+    Atome.define_method("#{method_name}=") do |params, &user_proc|
       new_atome(method_name, params, user_proc)
     end
     additional_atome_methods(method_name)
@@ -185,18 +215,21 @@ module Genesis
     Atome.define_method "get_#{method_name}" do
       get_new_particle(method_name)
     end
+    # now we auto generate all rendering methods
+    generate_renderers_methods(method_name)
+
     optional_particle_methods(method_name)
   end
 
   def self.particle_creator(method_name, &proc)
     instance_exec(method_name, &proc) if proc.is_a?(Proc)
     # we add the new method to the particle's collection of methods
-    Utilities.particles(method_name)
+    Utilities.particle_list(method_name)
     Atome.define_method method_name do |params = nil, &user_proc|
       new_particle(method_name, params, user_proc)
     end
     # no we also add the method= for easy setting
-    define_method("#{method_name}=") do |params, &user_proc|
+    Atome.define_method("#{method_name}=") do |params, &user_proc|
       new_particle(method_name, params, user_proc)
     end
     additional_particle_methods(method_name)

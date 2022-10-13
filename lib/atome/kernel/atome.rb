@@ -19,8 +19,8 @@ class Atome
   include Sanitizer
   include ServerRenderer
   include Render
-  include OpalRenderer
-  include HeadlessRenderer
+  # include OpalRenderer
+  # include HeadlessRenderer
   def self.atome(params)
     Atome.new(params)
   end
@@ -48,6 +48,7 @@ class Atome
   def self.current_user
     @user
   end
+
 
   def self.current_user=(user)
     # TODO: create or load an existing user

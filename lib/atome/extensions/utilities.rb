@@ -2,30 +2,30 @@
 
 # Utilities
 module Utilities
-  @history = {}
-  @atomes = []
-  @particles = []
-  @active_atomes = []
+  @atome_list = []
+  @particle_list = []
+  @renderer_list = [:html, :headless, :server]
 
-  def self.history(params = nil)
-    instance_variable_get('@history')[Time.now] = params
+
+  def self.renderer_list(atome = nil)
+    @renderer_list
   end
-
-  def self.atomes(atome = nil)
+  def self.atome_list(atome = nil)
     # this method is used to hold all available type of atomes
     if atome
-      instance_variable_get('@atomes').push(atome)
+      instance_variable_get('@atome_list').push(atome)
     else
-      instance_variable_get('@atomes')
+      instance_variable_get('@atome_list')
     end
   end
 
-  def self.particles(particle = nil)
+  #
+  def self.particle_list(particle = nil)
     # this method is used to hold all available type of particles
     if particle
-      instance_variable_get('@particles').push(particle)
+      instance_variable_get('@particle_list').push(particle)
     else
-      instance_variable_get('@particles')
+      instance_variable_get('@particle_list')
     end
   end
 

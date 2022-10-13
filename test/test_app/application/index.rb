@@ -1,26 +1,66 @@
+
+
 # Genesis.atome_creator_option(:color_pre_save_proc) do |params|
 #   params={ render: [:html], id: "color_#{Universe.atomes.length}", type: :color,
 #            red: 0, green: 0.3, blue: 0.2, alpha: 1 }
 # end
 #
 
-Genesis.particle_creator(:left)
-class Atome
-  def rotate_html(params, _atome)
-    alert "#the req params is : #{params}"
-  end
-end
 
-Genesis.particle_creator(:rotate)
+# class Atome
+#   def rotate_html(params, _atome)
+#     alert "#the req params is : #{params}"
+#   end
+# end
+#
+#
+# # TODO: auto generate html and headless methods to facilitate atome creation and test
+# # TODO: generate all optionals particles and atomes method to pass the params send.
+# Genesis.atome_creator_option(:rotate_pre_render_proc) do |params|
+#   # params=params
+#   alert "rotate params is : #{params[:method]}"
+# end
+##################################
 
 
-# TODO: auto generate html and headless methods to facilitate atome creation and test
-# TODO: generate all optionals particles and atomes method to pass the params send.
-Genesis.atome_creator_option(:rotate_pre_render_proc) do |params|
-  # params=params
-  alert "rotate params is : #{params[:method]}"
-end
+# Genesis.generate_html_renderer(:type) do |params, atome, &proc|
+#   instance_exec(&proc) if proc.is_a?(Proc)
+#   send("#{params}_html", params, atome, &proc)
+# end
 
+# Genesis.generate_html_renderer(:shape) do |params, atome, &proc|
+#   id_found = id
+#   instance_exec(&proc) if proc.is_a?(Proc)
+#   DOM do
+#     div(id: id_found).atome
+#   end.append_to($document[:user_view])
+#   @html_object = $document[id_found]
+#   @html_type = :div
+# end
+
+# Genesis.generate_html_renderer(:color) do |params, atome, &proc|
+#   instance_exec(&proc) if proc.is_a?(Proc)
+#   @html_type = :style
+#   $document.head << DOM("<style id='#{id}'></style>")
+# end
+
+
+
+
+# Genesis.generate_html_renderer(:parent) do |params, atome, &proc|
+#   instance_exec(&proc) if proc.is_a?(Proc)
+#   if @html_type == :style
+#     $document[params].add_class(id)
+#   else
+#     @html_object.append_to($document[params])
+#   end
+# end
+
+##################################
+
+# Genesis.particle_creator(:rotate)
+
+# alert Utilities.renderer_list
 b = box({ width: 333 , left: 666,id: :poil})
 b.height(33)
 b.left(333)
@@ -37,9 +77,32 @@ c=b.box({left: 333})
 # alert b.id
 # b.left(99)
 b.top(99)
-b.rotate(999)
+# Genesis.generate_html_renderer(:rotate) do
+#   puts ' hello rotator : too,much cool'
+# end
 
 
+Genesis.particle_creator(:rotate) do |params, atome, &proc |
+  # puts atome
+  # instance_exec(method_name, params, atome, &proc) if proc.is_a?(Proc)
+end
+
+b.rotate(999) do
+  puts :poilu
+end
+
+# drag example
+Genesis.particle_creator(:drag)
+Genesis.generate_headless_renderer(:drag) do |value, atome, user_proc|
+  puts "msg from drag method: value is #{value} , atome class is #{atome.class}"
+  instance_exec(&user_proc) if user_proc.is_a?(Proc)
+end
+a = Atome.new(render: [:headless], id: :poil, type: :shape, parent: :user_view, left: 0, right: 0, top: 0, bottom: 0,
+              color: { render: [:headless], id: :c31, type: :color,
+                       red: 0.15, green: 0.15, blue: 0.15, alpha: 1 })
+a.drag(11199) do
+  puts :poilu_du_drag
+end
 
 
 # box(:ok)
