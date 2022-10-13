@@ -1,59 +1,25 @@
-# `console.clear()`
-
-# class Atome
-#   def smooth_html(params, _atome, &proc)
-#     formated_params = case params
-#                       when Array
-#                         properties = []
-#                         params.each do |param|
-#                           properties << "#{param}px"
-#                         end
-#                         properties.join(' ').to_s
-#                       when Integer
-#                         "#{params}px"
-#                       else
-#                         params
-#                       end
-#     @html_object.style['border-radius'] = formated_params unless @html_type == :style
-#     # @html_object.style.apply {
-#     #   background color: 'black'
-#     #   color 'orange'
-#     #   border radius: "120px"
-#     # #   font family: 'Verdana'
-#     # }
-#   end
-#
-#   def touch_html(params, _atome, &proc)
-#     @html_object.on :click do |e|
-#       instance_exec(&proc) if proc.is_a?(Proc)
-#     end
-#   end
-# end
-
-# $document[:style] << ".#{id}{background-color: rgba(#{params * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found})}"
-
-# $document.ready do
-
-# def box(params = {})
-#   temp_default = { render: [:html], id: "box_#{Universe.atomes.length}", type: :shape, width: 99, height: 99, left: 9, top: 9,
-#                    color: { render: [:html], id: "color_#{Universe.atomes.length}", type: :color,
-#                             red: 0.69, green: 0.69, blue: 0.69, alpha: 1 } }
-#   params = temp_default.merge(params)
-#
-#   Atome.new(params)
+# Genesis.atome_creator_option(:color_pre_save_proc) do |params|
+#   params={ render: [:html], id: "color_#{Universe.atomes.length}", type: :color,
+#            red: 0, green: 0.3, blue: 0.2, alpha: 1 }
 # end
 #
-# def circle(params = {})
-#   temp_default = { render: [:html], id: "box_#{Universe.atomes.length}", type: :shape, width: 99, height: 99, left: 9, top: 9,
-#                    color: { render: [:html], id: "color_#{Universe.atomes.length}", type: :color,
-#                             red: 1, green: 0.69, blue: 1, alpha: 1 }, smooth: "100%" }
-#   params = temp_default.merge(params)
-#
-#   Atome.new(params)
-# end
-#
-# # alert
 
+Genesis.particle_creator(:left)
+class Atome
+  def rotate_html(params, _atome)
+    alert "#the req params is : #{params}"
+  end
+end
+
+Genesis.particle_creator(:rotate)
+
+
+# TODO: auto generate html and headless methods to facilitate atome creation and test
+# TODO: generate all optionals particles and atomes method to pass the params send.
+Genesis.atome_creator_option(:rotate_pre_render_proc) do |params|
+  # params=params
+  alert "rotate params is : #{params[:method]}"
+end
 
 b = box({ width: 333 , left: 666,id: :poil})
 b.height(33)
@@ -62,14 +28,17 @@ b.left(333)
 
 b.smooth([33, 2, 90])
 b.touch(true) do
-  color({ render: :html, id: "color_#{Universe.atomes.length}", type: :color,
-          red: 1, green: 0.69, blue: 1, alpha: 1 })
+
+  color({ render: [:html], id: "color_#{Universe.atomes.length}", type: :color,
+          red: 1, green: 0.33, blue: 0.22, alpha: 1 })
 end
 c=b.box({left: 333})
 # c.parent(b.id)
 # alert b.id
 # b.left(99)
 b.top(99)
+b.rotate(999)
+
 
 
 

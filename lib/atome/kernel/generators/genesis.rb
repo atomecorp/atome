@@ -19,8 +19,11 @@ module GenesisKernel
     return false unless validation(particle)
 
     # instance_exec({ options: value }, &proc) if proc.is_a?(Proc)
-    Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym,
-                                        { method: particle, value: value, atome: self })
+     Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym,
+                                                                    { method: particle, value: value, atome: self })
+    # puts Genesis.pre_render_methods_helper("#{particle}_pre_render_proc".to_sym,
+    #                                          { method: particle, value: value, atome: self })
+
     # render option below
     Genesis.run_optional_methods_helper("#{particle}_render_proc".to_sym,
                                         { method: particle, value: value, atome: self, proc: proc })
@@ -124,6 +127,13 @@ module Genesis
     proc = @optionals_methods[method_name] if @optionals_methods
     instance_exec(params, &proc) if proc.is_a?(Proc)
   end
+
+  # #fIXME : remove the methods below its only for test
+  # def self.pre_render_methods_helper(method_name, params)
+  #   proc = nil
+  #   proc = @optionals_methods[method_name] if @optionals_methods
+  #   instance_exec(params, &proc) if proc.is_a?(Proc)
+  # end
 
   def self.additional_atome_methods(method_name)
     # here is the pluralized
