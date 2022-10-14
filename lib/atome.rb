@@ -35,7 +35,8 @@ Atome.current_user = :jeezs
 
 require 'atome/kernel/sparkle'
 
-
+# TODO: create a system to secure and validate generated renderer methods , optional methods and atome's methods
+# test below uncomment when production mode
 # require '../test/test_app/application/index'
 
 

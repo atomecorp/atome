@@ -19,15 +19,18 @@ Genesis.atome_creator(:shadow)
   #   # puts "extra color code executed!! : #{params}"
   # end
 # Genesis.atome_creator_option(:color_pre_save_proc) do |params|
-#   puts "The params are : #{params}\n"
+#   puts "1- optional color_pre_save_proc: #{params}\n"
 # end
 #
-# Genesis.atome_creator_option(:color_post_save_proc) do
-#   # puts "optional color_post_save_proc\n"
+# Genesis.atome_creator_option(:color_post_save_proc) do |params|
+#   puts "2- optional color_post_save_proc: #{params}\n"
 # end
-#
-# Genesis.atome_creator_option(:color_pre_render_proc) do
-#   # puts "optional color_pre_render_proc\n"
+# #
+# Genesis.atome_creator_option(:left_pre_render_proc) do
+#   puts "3 - optional color_pre_render_proc\n"
+# end
+# Genesis.atome_creator_option(:left_post_render_proc) do
+#   puts "4 - optional color_post_render_proc\n"
 # end
 #
 # Genesis.atome_creator_option(:color_post_render_proc) do
@@ -56,6 +59,7 @@ Genesis.particle_creator(:blur)
 Genesis.particle_creator(:touch)
 Genesis.atome_creator_option(:type_pre_render_proc) do |params|
   "it works and get #{params}"
+  params[:value]
 end
 
 # important exemple below how to prevent rendering
@@ -75,6 +79,7 @@ Genesis.particle_creator(:location)
 
 Genesis.generate_html_renderer(:type) do |value, atome, proc|
   send("#{value}_html", value, atome, proc)
+
 end
 
 Genesis.generate_html_renderer(:shape) do |value, atome, proc|

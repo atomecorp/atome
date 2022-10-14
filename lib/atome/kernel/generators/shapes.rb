@@ -3,8 +3,6 @@
 
 class Atome
   def box(params = {})
-    # TODO: use default render instead of html by default
-    puts 'use default render instead of html by default'
     default_renderer=Sanitizer.default_params[:render]
     generated_id = params[:id] || "box_#{Universe.atomes.length}"
     generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
