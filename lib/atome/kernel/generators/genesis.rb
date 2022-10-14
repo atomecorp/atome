@@ -22,8 +22,6 @@ module GenesisKernel
     # now we exec the first optional method
     value = Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym,
                                                 { method: particle, value: value, atome: self, proc: proc })
-    # particle_instance_variable = "@#{particle}"
-    # self.instance_variable_set(particle_instance_variable, value)
     # render option below
     Genesis.run_optional_methods_helper("#{particle}_render_proc".to_sym,
                                         { method: particle, value: value, atome: self, proc: proc })
@@ -57,10 +55,6 @@ module GenesisKernel
     new_atome = Atome.new({})
     instance_variable_set(instance_var, new_atome)
     # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
-    # creating an atome using Atome.new
-    # params = { type: atome }.merge(params)
-    # # we extract render to ensure it's the first element of the hash
-    # params = { render: params.delete(:render) }.merge(params)
     params.each do |param, value|
       new_atome.send(param, value)
     end
@@ -68,13 +62,10 @@ module GenesisKernel
 
   def set_new_atome(atome, params, proc)
     return false unless validation(atome)
-    puts "atome : #{atome} "
+
     instance_var = "@#{atome}"
-    # now we exec the method specific to the type if it exist
-    # instance_exec({ options: params }, &proc) if proc.is_a?(Proc)
     # now we exec the first optional method
     params=Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { params: params, proc: proc })
-
     create_new_atomes(params, instance_var, atome)
     # now we exec the second optional method
     Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym, { value: params, proc: proc })
@@ -131,7 +122,6 @@ module Genesis
   # #fIXME : remove the methods below its only for test
 
   # render methods generator
-
   def self.generate_html_renderer(method_name, &methods_proc)
     current_renderer = :html
     generated_method_name = "#{method_name}_#{current_renderer}".to_sym

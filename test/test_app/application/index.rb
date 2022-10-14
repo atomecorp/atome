@@ -94,16 +94,31 @@ end
 # drag example
 Genesis.particle_creator(:drag)
 Genesis.generate_headless_renderer(:drag) do |value, atome, user_proc|
-  puts "msg from drag method: value is #{value} , atome class is #{atome.class}"
+  puts "msg from headless drag method: value is #{value} , atome class is #{atome.class}"
   instance_exec(&user_proc) if user_proc.is_a?(Proc)
 end
-a = Atome.new(render: [:headless], id: :poil, type: :shape, parent: :user_view, left: 0, right: 0, top: 0, bottom: 0,
-              color: { render: [:headless], id: :c31, type: :color,
-                       red: 0.15, green: 0.15, blue: 0.15, alpha: 1 })
-a.drag(11199) do
+
+Genesis.generate_html_renderer(:drag) do |value, atome, user_proc|
+  puts "msg from html drag method: value is #{value} , atome class is #{atome.class}"
+  instance_exec(&user_proc) if user_proc.is_a?(Proc)
+end
+# it work :
+# a = Atome.new(
+#   { render: [:headless], id: :poil, type: :shape, parent: :user_view, left: 0, right: 0, top: 0, bottom: 0,
+#     color: { render: [:headless], id: :c31, type: :color,
+#              red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
+# )
+# doesn't work :
+a = Atome.new(
+   shape: { render: [:html], id: :crasher, type: :shape, parent: :view, left: 99, right: 99, width: 99, height: 99,
+             color: { render: [:html], id: :c315, type: :color,
+                      red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
+)
+# puts a.inspect
+a.shape.drag(11199) do
   puts :poilu_du_drag
 end
-circle
+# circle
 
 # box(:ok)
 

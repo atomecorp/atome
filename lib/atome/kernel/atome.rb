@@ -49,7 +49,6 @@ class Atome
     @user
   end
 
-
   def self.current_user=(user)
     # TODO: create or load an existing user
     # if user needs to be create the current_user will be eVe
@@ -82,8 +81,6 @@ class Atome
 
   def initialize(params = {})
     # # TODO: check if we need to add properties for the root object before sending the params
-    # id_found = params.delete(:id)
-    # params = { id: id_found }.merge(params)
     params.each do |atome, values|
       send(atome, values)
     end
