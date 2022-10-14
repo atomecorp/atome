@@ -110,9 +110,7 @@ module Genesis
   include GenesisHelper
   include GenesisKernel
 
-  def self.default_value
-    { render: [:html] }
-  end
+
 
   # include ParticleGenesis
   @optionals_methods = {}
@@ -156,6 +154,11 @@ module Genesis
         current_renderer = render_method
         generated_method_name = "#{method_name}_#{current_renderer}".to_sym
         Atome.define_method generated_method_name do |value, atome, &user_proc|
+          # puts "#{value}: #{atome.class}: --- (#{user_proc}) --- ::: #{methods_proc}"
+          # methods_proc=nil
+          # puts "::: #{methods_proc.class} : #{generated_method_name}"
+          # puts "--- (#{user_proc}) ---"
+
           instance_exec(value, atome, user_proc, &methods_proc) if methods_proc.is_a?(Proc)
         end
       end

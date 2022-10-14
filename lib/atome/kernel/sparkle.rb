@@ -3,6 +3,7 @@
 # FIXME : try avoid type property duplication (it's the key of the hash and also specified in the hash itself)
 
 if RUBY_ENGINE.downcase == 'opal'
+  Sanitizer.default_params[:render] = :html
   $document.ready do
     Atome.new({ render: [:html], id: :view, type: :shape, parent: :user_view, left: 0, right: 0, top: 0, bottom: 0,
                 color: { render: [:html], id: :c1, type: :color,
@@ -11,6 +12,7 @@ if RUBY_ENGINE.downcase == 'opal'
     )
   end
 else
+  Sanitizer.default_params[:render] = :headless
   Atome.new(render: [:headless], id: :view, type: :shape, parent: :user_view, left: 0, right: 0, top: 0, bottom: 0,
             color: { render: [:headless], id: :c1, type: :color,
                      red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }

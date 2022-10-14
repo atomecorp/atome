@@ -103,7 +103,7 @@ a = Atome.new(render: [:headless], id: :poil, type: :shape, parent: :user_view, 
 a.drag(11199) do
   puts :poilu_du_drag
 end
-
+circle
 
 # box(:ok)
 
@@ -408,4 +408,5 @@ end
 #     font family: 'Verdana'
 #   }
 # end
+
 

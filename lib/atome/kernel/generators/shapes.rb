@@ -3,8 +3,11 @@
 
 class Atome
   def box(params = {})
+    # TODO: use default render instead of html by default
+    puts 'use default render instead of html by default'
+    default_renderer=Sanitizer.default_params[:render]
     generated_id = params[:id] || "box_#{Universe.atomes.length}"
-    generated_render = params[:render] || :html unless params[:render].instance_of? Hash
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
     generated_parent = params[:parent] || id
 
     temp_default = { render: [generated_render], id: generated_id, type: :shape, parent: generated_parent, width: 99, height: 99, left: 9, top: 9,
@@ -15,8 +18,10 @@ class Atome
   end
 
   def circle(params = {})
+    default_renderer=Sanitizer.default_params[:render]
+
     generated_id = params[:id] || "circle_#{Universe.atomes.length}"
-    generated_render = params[:render] || :html unless params[:render].instance_of? Hash
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
     generated_parent = params[:parent] || id
 
     temp_default = { render: [generated_render], id: generated_id, type: :shape, parent: generated_parent, width: 99, height: 99, left: 9, top: 9,

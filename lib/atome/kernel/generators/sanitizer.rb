@@ -3,6 +3,7 @@
 # use to sanitize and secure user input
 module Sanitizer
   @default_params = {
+    render: [:html],
     color: { x: 0, y: 0, z: 0, red: 0.6, green: 0.6, blue: 0.6, alpha: 1, diffusion: :linear },
     box: { width: 100, height: 100, x: 100, y: 100,
            color: { x: 0, y: 0, z: 0, red: 0.9, green: 0.9, blue: 0.9, alpha: 1, diffusion: :linear },
@@ -61,7 +62,7 @@ module Sanitizer
     # FIXME : inject this in async mode to avoid big lag!
     params[:drm] = add_essential_drm(params) unless params[:drm]
 
-    render = Genesis.default_value[:render]
+    render= Sanitizer.default_params[:render]
     params[:render] = render unless params[:render]
     check_parent(params)
   end
