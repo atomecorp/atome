@@ -76,57 +76,6 @@ def dragCallback(page_x,page_y)
   puts "#{page_x}:#{page_y}"
 end
 
-# drag example
-
-`// target elements with the "draggable" class
-interact('.draggable')
-  .draggable({
-    // enable inertial throwing
-    inertia: true,
-    // keep the element within the area of it's parent
-    modifiers: [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-        endOnly: true
-      })
-    ],
-    // enable autoScroll
-    autoScroll: true,
-
-    listeners: {
-      // call this function on every dragmove event
-      move: dragMoveListener,
-
-      // call this function on every dragend event
-      end (event) {
-        var textEl = event.target.querySelector('p')
-
-        textEl && (textEl.textContent =
-          'moved a distance of ' +
-          (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
-                     Math.pow(event.pageY - event.y0, 2) | 0))
-            .toFixed(2) + 'px')
-      }
-    }
-  })
-
-function dragMoveListener (event) {
-
-  var target = event.target
-  // keep the dragged position in the data-x/data-y attributes
-  var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-  var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-  // translate the element
-  target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-  // update the posiion attributes
-  target.setAttribute('data-x', x)
-  target.setAttribute('data-y', y)
-// CallBack here
-  Opal.Atome.$dragCallback(event.pageX,event.pageY);
-}
-`
 Genesis.particle_creator(:drag)
 Genesis.generate_headless_renderer(:drag) do |value, atome, user_proc|
   puts "msg from headless drag method: value is #{value} , atome class is #{atome.class}"
@@ -147,6 +96,7 @@ end
 #     color: { render: [:headless], id: :c31, type: :color,
 #              red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
 # )
+
 # doesn't work :
 a = Atome.new(
   shape: { render: [:html], id: :crasher, type: :shape, parent: :view, left: 99, right: 99, width: 99, height: 99,
@@ -155,7 +105,7 @@ a = Atome.new(
 )
 # puts a.inspect
 a.shape.drag(true) do |e|
-  puts :drag_is_ok
+  puts "drag_is_ok : #{e.x},#{e.y}"
 end
 
 a.shape.touch(true) do
