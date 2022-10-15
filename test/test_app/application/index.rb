@@ -1,11 +1,8 @@
-
-
 # Genesis.atome_creator_option(:color_pre_save_proc) do |params|
 #   params={ render: [:html], id: "color_#{Universe.atomes.length}", type: :color,
 #            red: 0, green: 0.3, blue: 0.2, alpha: 1 }
 # end
 #
-
 
 # class Atome
 #   def rotate_html(params, _atome)
@@ -21,7 +18,6 @@
 #   alert "rotate params is : #{params[:method]}"
 # end
 ##################################
-
 
 # Genesis.generate_html_renderer(:type) do |params, atome, &proc|
 #   instance_exec(&proc) if proc.is_a?(Proc)
@@ -44,9 +40,6 @@
 #   $document.head << DOM("<style id='#{id}'></style>")
 # end
 
-
-
-
 # Genesis.generate_html_renderer(:parent) do |params, atome, &proc|
 #   instance_exec(&proc) if proc.is_a?(Proc)
 #   if @html_type == :style
@@ -61,10 +54,9 @@
 # Genesis.particle_creator(:rotate)
 
 # alert Utilities.renderer_list
-b = box({ width: 333 , left: 666,id: :poil})
+b = box({ width: 333, left: 666, id: :poil })
 b.height(33)
 b.left(333)
-
 
 b.smooth([33, 2, 90])
 b.touch(true) do
@@ -72,7 +64,7 @@ b.touch(true) do
   color({ render: [:html], id: "color_#{Universe.atomes.length}", type: :color,
           red: 1, green: 0.33, blue: 0.22, alpha: 1 })
 end
-c=b.box({left: 333})
+c = b.box({ left: 333 })
 # c.parent(b.id)
 # alert b.id
 # b.left(99)
@@ -81,8 +73,7 @@ b.top(99)
 #   puts ' hello rotator : too,much cool'
 # end
 
-
-Genesis.particle_creator(:rotate) do |params, atome, &proc |
+Genesis.particle_creator(:rotate) do |params, atome, &proc|
   # puts atome
   # instance_exec(method_name, params, atome, &proc) if proc.is_a?(Proc)
 end
@@ -110,15 +101,76 @@ end
 # )
 # doesn't work :
 a = Atome.new(
-   shape: { render: [:html], id: :crasher, type: :shape, parent: :view, left: 99, right: 99, width: 99, height: 99,
-             color: { render: [:html], id: :c315, type: :color,
-                      red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
+  shape: { render: [:html], id: :crasher, type: :shape, parent: :view, left: 99, right: 99, width: 99, height: 99,
+           color: { render: [:html], id: :c315, type: :color,
+                    red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
 )
 # puts a.inspect
 a.shape.drag(11199) do
   puts :poilu_du_drag
 end
-# circle
+# Genesis.atome_creator_option(:color_pre_save_proc) do |params|
+#   # puts "1- optional color_pre_save_proc: #{params[:params].class}\n"
+#   # toto=params
+#   # TODO we must be able use default render instead of an exmplicit value
+#   # { render: [:html], id: :c315, type: :color,
+#   #   red: 1, green: 0.15, blue: 0.15, alpha: 0.6 }
+#   # params[:params]
+#   # toto
+#   # if params[:value].instance_of?(Symbol) || params[:value].instance_of?(String)
+#   #   params[:value] = { render: [:html], id: :c319, type: :color,
+#   #                     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
+#   # end
+#   puts params[:value][:parent]
+#   params[:value] = { render: [:html], id: :c333, parent: params[:value][:parent],type: :color,
+#                     red: 0, green: 1, blue: 0.15, alpha: 0.6 }
+#   # params[:value] = :green
+#   params
+# end
+
+
+c = circle
+Genesis.atome_creator_option(:color_pre_save_proc) do |params|
+  # puts "1- optional color_pre_save_proc: #{params[:params].class}\n"
+  # toto=params
+  # TODO we must be able use default render instead of an exmplicit value
+  # { render: [:html], id: :c315, type: :color,
+  #   red: 1, green: 0.15, blue: 0.15, alpha: 0.6 }
+  # params[:params]
+  # toto
+  # if params[:value].instance_of?(Symbol) || params[:value].instance_of?(String)
+  #   params[:value] = { render: [:html], id: :c319, type: :color,
+  #                     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
+  # end
+  puts params[:value][:parent]
+  params[:value] = { render: [:html], id: :c333,type: :color,
+     parent: params[:value][:parent],   red: 0, green: 1, blue: 0.15, alpha: 1 }
+  # params[:value] = :green
+  params
+end
+# c.color(
+#   { render: [:html], id: :c319, type: :color,
+#     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
+# )
+Genesis.atome_creator_option(:color_sanitizer_proc) do |params|
+
+  # red_code = Color::CSS["red"].html
+  # puts red_code
+  unless params.instance_of? Hash
+    params={ render: [:html], id: :c319, type: :color,
+             red: 1, green: 1, blue: 0.15, alpha: 0.6 }
+    params
+  end
+end
+
+# c.color(:green)
+puts "------"
+c.color(:green)
+# c.color(
+#   { render: [:html], id: :c319, type: :color,
+#     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
+# )
+
 
 # box(:ok)
 

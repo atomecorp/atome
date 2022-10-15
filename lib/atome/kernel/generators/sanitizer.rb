@@ -58,12 +58,20 @@ module Sanitizer
   end
 
   def add_essential_properties(atome_type, params)
-    params[:id] = add_missing_id(atome_type, params) unless params[:id]
-    # FIXME : inject this in async mode to avoid big lag!
-    params[:drm] = add_essential_drm(params) unless params[:drm]
 
-    render= Sanitizer.default_params[:render]
-    params[:render] = render unless params[:render]
-    check_parent(params)
+    params=Genesis.run_optional_methods_helper("#{atome_type}_sanitizer_proc".to_sym, params)
+    # TODO remove the condition below once the line above works
+    # if params.instance_of? Hash
+      params[:id] = add_missing_id(atome_type, params) unless params[:id]
+      # FIXME : inject this in async mode to avoid big lag!
+      params[:drm] = add_essential_drm(params) unless params[:drm]
+
+      render= Sanitizer.default_params[:render]
+      params[:render] = render unless params[:render]
+      check_parent(params)
+    # else
+    #   params
+    # end
+
   end
 end

@@ -65,8 +65,8 @@ module GenesisKernel
 
     instance_var = "@#{atome}"
     # now we exec the first optional method
-    params=Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { params: params, proc: proc })
-    create_new_atomes(params, instance_var, atome)
+    params=Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { value: params, proc: proc })
+    create_new_atomes(params[:value], instance_var, atome)
     # now we exec the second optional method
     Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym, { value: params, proc: proc })
     @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
@@ -119,7 +119,7 @@ module Genesis
     instance_exec(params, &proc) if proc.is_a?(Proc)
   end
 
-  # #fIXME : remove the methods below its only for test
+  # #fIXME : we may have to remove the 2 methods below its only for test
 
   # render methods generator
   def self.generate_html_renderer(method_name, &methods_proc)
@@ -158,13 +158,20 @@ module Genesis
       params[:value]
     end
   end
+
   def self.optional_atome_methods(method_name)
     Genesis.atome_creator_option("#{method_name}_pre_save_proc".to_sym) do |params, proc|
       # we return the value
-      params[:params]
+      params
+    end
+
+    Genesis.atome_creator_option("#{method_name}_sanitizer_proc".to_sym) do |params, proc|
+      # we return the value
+      params
     end
 
   end
+
   def self.additional_atome_methods(method_name)
     # here is the pluralized
     Atome.define_method "#{method_name}s" do |params = nil|
