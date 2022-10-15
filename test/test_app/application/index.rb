@@ -128,7 +128,6 @@ end
 #   params
 # end
 
-
 c = circle
 Genesis.atome_creator_option(:color_pre_save_proc) do |params|
   # puts "1- optional color_pre_save_proc: #{params[:params].class}\n"
@@ -143,8 +142,8 @@ Genesis.atome_creator_option(:color_pre_save_proc) do |params|
   #                     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
   # end
   puts params[:value][:parent]
-  params[:value] = { render: [:html], id: :c333,type: :color,
-     parent: params[:value][:parent],   red: 0, green: 1, blue: 0.15, alpha: 1 }
+  params[:value] = { render: [:html], id: :c333, type: :color,
+                     parent: params[:value][:parent], red: 0, green: 1, blue: 0.15, alpha: 1 }
   # params[:value] = :green
   params
 end
@@ -153,24 +152,44 @@ end
 #     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
 # )
 Genesis.atome_creator_option(:color_sanitizer_proc) do |params|
-
-  # red_code = Color::CSS["red"].html
-  # puts red_code
   unless params.instance_of? Hash
-    params={ render: [:html], id: :c319, type: :color,
-             red: 1, green: 1, blue: 0.15, alpha: 0.6 }
-    params
+    if RUBY_ENGINE.downcase == 'opal'
+      rgb_color = `d = document.createElement("div");
+    d.style.color = #{params};
+    document.body.appendChild(d)
+   rgb_color=(window.getComputedStyle(d).color);
+d.remove();
+`
+      color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+      rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
+        color_converted[color_converted.keys[index]] = component.to_i/255
+      end
+      # alert color_converted
+    else
+      rgb_color = Color::CSS["red"].css_rgb
+      color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+      rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
+        component = component.to_i/100
+        color_converted[color_converted.keys[index]] = component
+      end
+      puts color_converted
+    end
+
+    params = { render: [:html], id: :c319, type: :color}.merge(color_converted)
+
   end
+  alert ("Pass the id of the parent to attach to it and generate the id correctly, color is : #{params}")
+  params
+
 end
 
 # c.color(:green)
 puts "------"
-c.color(:green)
+c.color(:orange)
 # c.color(
 #   { render: [:html], id: :c319, type: :color,
 #     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
 # )
-
 
 # box(:ok)
 
