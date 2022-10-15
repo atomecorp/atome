@@ -11,6 +11,35 @@ Genesis.atome_creator(:shadow)
 Genesis.atome_creator(:content)
 
 Genesis.atome_creator(:color)
+
+Genesis.atome_creator_option(:color_sanitizer_proc) do |params,atome|
+  unless params.instance_of? Hash
+    if RUBY_ENGINE.downcase == 'opal'
+      rgb_color = `d = document.createElement("div");
+	d.style.color = #{params};
+	document.body.appendChild(d)
+   rgb_color=(window.getComputedStyle(d).color);
+d.remove();
+`
+      color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+      rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
+        color_converted[color_converted.keys[index]] = component.to_i / 255
+      end
+    else
+      rgb_color = Color::CSS["red"].css_rgb
+      color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+      rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
+        component = component.to_i / 100
+        color_converted[color_converted.keys[index]] = component
+      end
+    end
+    params = { render: [:html], id: "color_#{atome.id}", type: :color }.merge(color_converted)
+  end
+  # alert ("Pass the id of the parent to attach to it and generate the id correctly, color is : #{params}")
+  params
+end
+
+
 Genesis.atome_creator(:shadow)
 
 # Example below

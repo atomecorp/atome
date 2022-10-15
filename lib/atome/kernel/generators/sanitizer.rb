@@ -58,8 +58,8 @@ module Sanitizer
   end
 
   def add_essential_properties(atome_type, params)
-
-    params=Genesis.run_optional_methods_helper("#{atome_type}_sanitizer_proc".to_sym, params)
+    # params_to_sanitize={atome: self, params: params}
+    params=Genesis.run_optional_methods_helper("#{atome_type}_sanitizer_proc".to_sym, params, self)
     # TODO remove the condition below once the line above works
     # if params.instance_of? Hash
       params[:id] = add_missing_id(atome_type, params) unless params[:id]

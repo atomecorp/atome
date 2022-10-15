@@ -129,59 +129,58 @@ end
 # end
 
 c = circle
-Genesis.atome_creator_option(:color_pre_save_proc) do |params|
-  # puts "1- optional color_pre_save_proc: #{params[:params].class}\n"
-  # toto=params
-  # TODO we must be able use default render instead of an exmplicit value
-  # { render: [:html], id: :c315, type: :color,
-  #   red: 1, green: 0.15, blue: 0.15, alpha: 0.6 }
-  # params[:params]
-  # toto
-  # if params[:value].instance_of?(Symbol) || params[:value].instance_of?(String)
-  #   params[:value] = { render: [:html], id: :c319, type: :color,
-  #                     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
-  # end
-  puts params[:value][:parent]
-  params[:value] = { render: [:html], id: :c333, type: :color,
-                     parent: params[:value][:parent], red: 0, green: 1, blue: 0.15, alpha: 1 }
-  # params[:value] = :green
-  params
-end
+# Genesis.atome_creator_option(:color_pre_save_proc) do |params|
+#   # puts "1- optional color_pre_save_proc: #{params[:params].class}\n"
+#   # toto=params
+#   # TODO we must be able use default render instead of an exmplicit value
+#   # { render: [:html], id: :c315, type: :color,
+#   #   red: 1, green: 0.15, blue: 0.15, alpha: 0.6 }
+#   # params[:params]
+#   # toto
+#   # if params[:value].instance_of?(Symbol) || params[:value].instance_of?(String)
+#   #   params[:value] = { render: [:html], id: :c319, type: :color,
+#   #                     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
+#   # end
+#   puts params[:value][:parent]
+#   params[:value] = { render: [:html], id: :c333, type: :color,
+#                      parent: params[:value][:parent], red: 0, green: 1, blue: 0.15, alpha: 1 }
+#   # params[:value] = :green
+#   params
+# end
 # c.color(
 #   { render: [:html], id: :c319, type: :color,
 #     red: 1, green: 1, blue: 0.15, alpha: 0.6 }
 # )
-Genesis.atome_creator_option(:color_sanitizer_proc) do |params|
-  unless params.instance_of? Hash
-    if RUBY_ENGINE.downcase == 'opal'
-      rgb_color = `d = document.createElement("div");
-    d.style.color = #{params};
-    document.body.appendChild(d)
-   rgb_color=(window.getComputedStyle(d).color);
-d.remove();
-`
-      color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
-      rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
-        color_converted[color_converted.keys[index]] = component.to_i/255
-      end
-      # alert color_converted
-    else
-      rgb_color = Color::CSS["red"].css_rgb
-      color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
-      rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
-        component = component.to_i/100
-        color_converted[color_converted.keys[index]] = component
-      end
-      puts color_converted
-    end
-
-    params = { render: [:html], id: :c319, type: :color}.merge(color_converted)
-
-  end
-  alert ("Pass the id of the parent to attach to it and generate the id correctly, color is : #{params}")
-  params
-
-end
+# Genesis.atome_creator_option(:color_sanitizer_proc) do |params|
+#   unless params.instance_of? Hash
+#     if RUBY_ENGINE.downcase == 'opal'
+#       rgb_color = `d = document.createElement("div");
+# 	d.style.color = #{params};
+# 	document.body.appendChild(d)
+#    rgb_color=(window.getComputedStyle(d).color);
+# d.remove();
+# `
+#       color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+#       rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
+#         color_converted[color_converted.keys[index]] = component.to_i/255
+#       end
+#       # alert color_converted
+#     else
+#       rgb_color = Color::CSS["red"].css_rgb
+#       color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+#       rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
+#         component = component.to_i/100
+#         color_converted[color_converted.keys[index]] = component
+#       end
+#       puts color_converted
+#     end
+#
+#     params = { render: [:html], id: :c319, type: :color}.merge(color_converted)
+#
+#   end
+#   alert ("Pass the id of the parent to attach to it and generate the id correctly, color is : #{params}")
+#   params
+# end
 
 # c.color(:green)
 puts "------"
@@ -495,4 +494,43 @@ c.color(:orange)
 #   }
 # end
 
+
+# Genesis.atome_creator_option(:color_sanitizer_proc) do |params|
+#   unless params.instance_of? Hash
+#     if RUBY_ENGINE.downcase == 'opal'
+#       rgb_color = `d = document.createElement("div");
+# 	d.style.color = #{params};
+# 	document.body.appendChild(d)
+#    rgb_color=(window.getComputedStyle(d).color);
+# d.remove();
+# `
+#       color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+#       rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
+#         color_converted[color_converted.keys[index]] = component.to_i/255
+#       end
+#       # alert color_converted
+#     else
+#       rgb_color = Color::CSS["red"].css_rgb
+#       color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+#       rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
+#         component = component.to_i/100
+#         color_converted[color_converted.keys[index]] = component
+#       end
+#       puts color_converted
+#     end
+#
+#     params = { render: [:html], id: :c319, type: :color}.merge(color_converted)
+#
+#   end
+#   alert ("Pass the id of the parent to attach to it and generate the id correctly, color is : #{params}")
+#   params
+#
+# end
+
+c=circle({left: 666})
+c.color(
+  { render: [:html], id: :c3190, type: :color,
+    red: 1, green: 0.6, blue: 0.15, alpha: 0.6 }
+)
+c.color(:orange)
 

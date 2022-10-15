@@ -113,10 +113,10 @@ module Genesis
     @optionals_methods[property_name] = proc
   end
 
-  def self.run_optional_methods_helper(method_name, params)
+  def self.run_optional_methods_helper(method_name, params, atome=nil)
     proc = nil
     proc = @optionals_methods[method_name] if @optionals_methods
-    instance_exec(params, &proc) if proc.is_a?(Proc)
+    instance_exec(params,atome, &proc) if proc.is_a?(Proc)
   end
 
   # #fIXME : we may have to remove the 2 methods below its only for test
@@ -165,7 +165,7 @@ module Genesis
       params
     end
 
-    Genesis.atome_creator_option("#{method_name}_sanitizer_proc".to_sym) do |params, proc|
+    Genesis.atome_creator_option("#{method_name}_sanitizer_proc".to_sym) do |params,atome, proc|
       # we return the value
       params
     end
