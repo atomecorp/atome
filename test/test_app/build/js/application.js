@@ -107,11 +107,18 @@ function dragMoveListener (event) {
       return nil
     };}, {$$arity: 3, $$s: self});
   a = $$('Atome').$new($hash2(["shape"], {"shape": $hash2(["render", "id", "type", "parent", "left", "right", "width", "height", "color"], {"render": ["html"], "id": "crasher", "type": "shape", "parent": "view", "left": 99, "right": 99, "width": 99, "height": 99, "color": $hash2(["render", "id", "type", "red", "green", "blue", "alpha"], {"render": ["html"], "id": "c315", "type": "color", "red": 1, "green": 0.15, "blue": 0.15, "alpha": 0.6})})}));
-  $send(a.$shape(), 'drag', [true], function $$5(){var self = $$5.$$s == null ? this : $$5.$$s;
+  $send(a.$shape(), 'drag', [true], function $$5(e){var self = $$5.$$s == null ? this : $$5.$$s;
 
-    return self.$puts("drag_is_ok")}, {$$arity: 0, $$s: self});
+    
+    
+    if (e == null) e = nil;;
+    return self.$puts("drag_is_ok");}, {$$arity: 1, $$s: self});
   $send(a.$shape(), 'touch', [true], function $$6(){
-    return a.$shape().$drag("remove")}, 0);
+    if ($eqeq(a.$shape().$drag(), "remove")) {
+      return a.$shape().$drag(true)
+    } else {
+      return a.$shape().$drag("remove")
+    }}, 0);
   c = self.$circle();
   self.$puts("------");
   c.$color("orange");

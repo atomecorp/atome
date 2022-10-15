@@ -154,13 +154,17 @@ a = Atome.new(
                     red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
 )
 # puts a.inspect
-a.shape.drag(true) do
+a.shape.drag(true) do |e|
   puts :drag_is_ok
 end
 
 a.shape.touch(true) do
    # @html_object.remove_class(:draggable)
-   a.shape.drag(:remove)
+   if a.shape.drag == :remove
+     a.shape.drag(true)
+   else
+     a.shape.drag(:remove)
+   end
   # @html_object.remove_class(:draggable)
 end
 # Genesis.atome_creator_option(:color_pre_save_proc) do |params|
