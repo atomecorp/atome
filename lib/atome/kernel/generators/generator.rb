@@ -210,6 +210,15 @@ Genesis.generate_html_renderer(:height) do |value, atome, proc|
   @html_object.style[:height] = "#{value}px" unless @html_type == :style
 end
 
+Genesis.particle_creator(:rotate) do |params, atome, &proc|
+  # puts atome
+  # alert :pl
+  instance_exec(method_name, params, atome, &proc) if proc.is_a?(Proc)
+end
+Genesis.generate_html_renderer(:rotate) do |value, atome, proc|
+  @html_object.style[:transform] = "rotate(#{value}deg)" unless @html_type == :style
+end
+
 Genesis.generate_html_renderer(:smooth) do |value, atome, proc|
   formated_params = case value
                     when Array

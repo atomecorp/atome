@@ -1,9 +1,3 @@
-# Genesis.atome_creator_option(:color_pre_save_proc) do |params|
-#   params={ render: [:html], id: "color_#{Universe.atomes.length}", type: :color,
-#            red: 0, green: 0.3, blue: 0.2, alpha: 1 }
-# end
-#
-
 # class Atome
 #   def rotate_html(params, _atome)
 #     alert "#the req params is : #{params}"
@@ -73,13 +67,10 @@ b.top(99)
 #   puts ' hello rotator : too,much cool'
 # end
 
-Genesis.particle_creator(:rotate) do |params, atome, &proc|
-  # puts atome
-  # instance_exec(method_name, params, atome, &proc) if proc.is_a?(Proc)
-end
+
 
 b.rotate(999) do
-  puts :poilu
+  alert :poilu
 end
 
 # drag example
@@ -106,8 +97,8 @@ a = Atome.new(
                     red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
 )
 # puts a.inspect
-a.shape.drag(11199) do
-  puts :poilu_du_drag
+a.shape.drag(true) do
+  puts :drag_is_ok
 end
 # Genesis.atome_creator_option(:color_pre_save_proc) do |params|
 #   # puts "1- optional color_pre_save_proc: #{params[:params].class}\n"
@@ -495,37 +486,6 @@ c.color(:orange)
 # end
 
 
-# Genesis.atome_creator_option(:color_sanitizer_proc) do |params|
-#   unless params.instance_of? Hash
-#     if RUBY_ENGINE.downcase == 'opal'
-#       rgb_color = `d = document.createElement("div");
-# 	d.style.color = #{params};
-# 	document.body.appendChild(d)
-#    rgb_color=(window.getComputedStyle(d).color);
-# d.remove();
-# `
-#       color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
-#       rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
-#         color_converted[color_converted.keys[index]] = component.to_i/255
-#       end
-#       # alert color_converted
-#     else
-#       rgb_color = Color::CSS["red"].css_rgb
-#       color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
-#       rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
-#         component = component.to_i/100
-#         color_converted[color_converted.keys[index]] = component
-#       end
-#       puts color_converted
-#     end
-#
-#     params = { render: [:html], id: :c319, type: :color}.merge(color_converted)
-#
-#   end
-#   alert ("Pass the id of the parent to attach to it and generate the id correctly, color is : #{params}")
-#   params
-#
-# end
 
 c=circle({left: 666})
 c.color(
