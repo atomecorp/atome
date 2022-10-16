@@ -13,35 +13,7 @@
 # end
 ##################################
 
-# Genesis.generate_html_renderer(:type) do |params, atome, &proc|
-#   instance_exec(&proc) if proc.is_a?(Proc)
-#   send("#{params}_html", params, atome, &proc)
-# end
 
-# Genesis.generate_html_renderer(:shape) do |params, atome, &proc|
-#   id_found = id
-#   instance_exec(&proc) if proc.is_a?(Proc)
-#   DOM do
-#     div(id: id_found).atome
-#   end.append_to($document[:user_view])
-#   @html_object = $document[id_found]
-#   @html_type = :div
-# end
-
-# Genesis.generate_html_renderer(:color) do |params, atome, &proc|
-#   instance_exec(&proc) if proc.is_a?(Proc)
-#   @html_type = :style
-#   $document.head << DOM("<style id='#{id}'></style>")
-# end
-
-# Genesis.generate_html_renderer(:parent) do |params, atome, &proc|
-#   instance_exec(&proc) if proc.is_a?(Proc)
-#   if @html_type == :style
-#     $document[params].add_class(id)
-#   else
-#     @html_object.append_to($document[params])
-#   end
-# end
 
 ##################################
 
@@ -70,7 +42,6 @@ b.top(99)
 b.rotate(999) do
   alert :poilu
 end
-
 
 
 # doesn't work :
@@ -485,4 +456,43 @@ c.color(
     red: 1, green: 0.6, blue: 0.15, alpha: 0.6 }
 )
 c.color(:orange)
+
+
+Genesis.atome_creator(:image)
+Genesis.particle_creator(:path)
+Genesis.generate_html_renderer(:path) do |value, atome, proc|
+  # we get the size below
+
+`
+const img = new Image();
+img.addEventListener("load", () => {
+#{self}.$width(img.naturalWidth);
+#{self}.$height(img.naturalHeight);
+});
+img.src = #{value};
+`
+#   path ||= "./medias/images/atome.svg"
+
+  # jq_get(atome_id).css("background-image", "url(#{path})")
+  # jq_get(atome_id).css("background-size", "100% 100%")
+  @html_object.style["background-image"]= "url(#{value})"
+  @html_object.style["background-size"]= "100% 100%"
+end
+Genesis.generate_html_renderer(:image) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    div(id: id_found).atome
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_type = :div
+end
+Genesis.atome_creator(:text)
+Genesis.atome_creator(:video)
+Genesis.atome_creator(:animator)
+image = Atome.new(
+  image: { render: [:html], id: :image_1, type: :image, parent: :view,path: "./medias/images/boat.png", left: 99, top: 120, width: 99, height: 199,
+
+  }
+)
 

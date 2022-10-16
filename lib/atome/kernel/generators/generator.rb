@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
 # generators
-Genesis.atome_creator(:shape) do
-  # puts "and now!!! "
-end
-Genesis.atome_creator(:image) do
-end
+Genesis.atome_creator(:shape)
+
 Genesis.atome_creator(:shadow)
 # Genesis.atome_creator(:additional)
 Genesis.atome_creator(:content)
@@ -107,9 +104,11 @@ Genesis.particle_creator(:location)
 # generate renderers
 
 Genesis.generate_html_renderer(:type) do |value, atome, proc|
+  puts " objet type is : #{value}"
   send("#{value}_html", value, atome, proc)
-
 end
+
+
 
 Genesis.generate_html_renderer(:shape) do |value, atome, proc|
   id_found = id
