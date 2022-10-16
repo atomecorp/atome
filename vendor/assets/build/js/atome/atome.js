@@ -1,7 +1,5 @@
 class AtomeDrag {
     constructor() {
-        // proc_found;
-        this.toto = "kool";
     }
 
     drag() {
@@ -24,55 +22,35 @@ class AtomeDrag {
                     // call this function on every dragmove event
 
                     move: dragMoveListener,
-start(event){
+                    start(event) {
 //TODO:  optimise this passing the proc to the drag callback
-    // lets get the current atome Object
-    let current_obj = event.target.id
-    // now get the grab proc
-     let proc_found = Opal.Utilities.$grab(current_obj).$instance_variable_get("@html_drag")
-    // this.proc=proc_found
-    // let ok=this.toto
-    // alert (ok);
-    // let's pass the proc to the dragCallback method
-    Opal.Atome.$dragCallback(event.pageX, event.pageY, current_obj, proc_found);
-
-},
+                        // lets get the current atome Object
+                        self.current_obj = Opal.Utilities.$grab(event.target.id)
+                        // now get the grab proc
+                        self.proc_meth = current_obj.$instance_variable_get("@html_drag")
+                        // self.proc_meth = proc_found;
+                    },
                     // call this function on every dragend event
                     end(event) {
-                        // var textEl = event.target.querySelector('p')
-                        //
-                        // textEl && (textEl.textContent =
-                        //     'moved a distance of ' +
-                        //     (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
-                        //         Math.pow(event.pageY - event.y0, 2) | 0))
-                        //         .toFixed(2) + 'px')
+
                     }
                 }
             })
 
         function dragMoveListener(event) {
-// alert(proc_found);
-
-//             alert (event.proc)
-            var target = event.target
+            const target = event.target
+            // the code below can be conditioned to receive the drag event without moving the object
             // keep the dragged position in the data-x/data-y attributes
-            var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-            var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
+            const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+            const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
             // translate the element
             target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
 
-            // update the posiion attributes
+            // update the position attributes
             target.setAttribute('data-x', x)
             target.setAttribute('data-y', y)
-// CallBack here
-// alert(event.proc)
-            // lets get the current atome Object
-            let current_obj = event.target.id
-            // now get the grab proc
-            let proc_found = Opal.Utilities.$grab(current_obj).$instance_variable_get("@html_drag")
-            // let's pass the proc to the dragCallback method
-            Opal.Atome.$dragCallback(event.pageX, event.pageY, current_obj, proc_found);
+            // CallBack here
+            Opal.Atome.$dragCallback(event.pageX, event.pageY,event.rect.left,event.rect.top,self.current_obj, self.proc_meth);
 
         }
     }

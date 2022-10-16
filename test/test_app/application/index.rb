@@ -67,41 +67,11 @@ b.top(99)
 #   puts ' hello rotator : too,much cool'
 # end
 
-
 b.rotate(999) do
   alert :poilu
 end
 
-def dragCallback(page_x,page_y, current_obj, proc)
-  # puts "#{page_x}:#{page_y}"
-  # alert proc
-  # puts "self is : #{self}"
-  # puts Utilities.grab(:crasher)
-  # proc_found= Utilities.grab(current_obj).instance_variable_get("@html_drag")
-  # puts proc_found.class
 
-  instance_exec(page_x,page_y,&proc) if proc.is_a?(Proc)
-end
-
-
-Genesis.particle_creator(:drag)
-Genesis.generate_headless_renderer(:drag) do |value, atome, user_proc|
-  puts "msg from headless drag method: value is #{value} , atome class is #{atome.class}"
-  instance_exec(&user_proc) if user_proc.is_a?(Proc)
-end
-
-
-Genesis.generate_html_renderer(:drag) do |value, atome, user_proc|
-  if value == :remove
-    @html_object.remove_class(:draggable)
-  else
-    @html_object.add_class(:draggable)
-  end
-  @html_drag=user_proc
-  # alert self.id
-  # puts "user_proc is #{user_proc}"
-  # instance_exec(&user_proc) if user_proc.is_a?(Proc)
-end
 
 # doesn't work :
 a = Atome.new(
@@ -111,19 +81,19 @@ a = Atome.new(
 )
 # puts a.inspect
 a.shape.drag(true) do |x, y|
-  puts "ok on passe ici : #{x}"
-  # puts "drag_is_ok : #{e.x},#{e.y}"
+  puts "drag position: #{x}"
 end
 
 a.shape.touch(true) do
-   # @html_object.remove_class(:draggable)
-   if a.shape.drag == :remove
-     a.shape.drag(true)
-   else
-     a.shape.drag(:remove)
-   end
   # @html_object.remove_class(:draggable)
+  if a.shape.drag == :remove
+    a.shape.drag(true)
+  else
+    a.shape.drag(:remove)
+  end
+  alert self.left
 end
+
 # Genesis.atome_creator_option(:color_pre_save_proc) do |params|
 #   # puts "1- optional color_pre_save_proc: #{params[:params].class}\n"
 #   # toto=params
@@ -509,9 +479,7 @@ c.color(:orange)
 #   }
 # end
 
-
-
-c=circle({left: 666})
+c = circle({ left: 666 })
 c.color(
   { render: [:html], id: :c3190, type: :color,
     red: 1, green: 0.6, blue: 0.15, alpha: 0.6 }

@@ -240,3 +240,28 @@ Genesis.generate_html_renderer(:touch) do |value, atome, proc|
     instance_exec(&proc) if proc.is_a?(Proc)
   end
 end
+
+
+#drag
+def dragCallback(page_x, page_y,x, y,current_object, proc)
+  current_object.instance_variable_set('@left',x)
+  current_object.instance_variable_set('@top',y)
+  instance_exec(page_x, page_y, &proc) if proc.is_a?(Proc)
+end
+
+Genesis.particle_creator(:drag)
+
+Genesis.generate_headless_renderer(:drag) do |value, atome, user_proc|
+  puts "msg from headless drag method: value is #{value} , atome class is #{atome.class}"
+  instance_exec(&user_proc) if user_proc.is_a?(Proc)
+end
+
+Genesis.generate_html_renderer(:drag) do |value, atome, user_proc|
+  # FIXME: we should find a s solution to pass the proc to the dragCallback toavoid the test below
+  @html_drag = user_proc if user_proc
+  if value == :remove
+    @html_object.remove_class(:draggable)
+  else
+    @html_object.add_class(:draggable)
+  end
+end
