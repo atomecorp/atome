@@ -72,9 +72,17 @@ b.rotate(999) do
   alert :poilu
 end
 
-def dragCallback(page_x,page_y)
-  puts "#{page_x}:#{page_y}"
+def dragCallback(page_x,page_y, current_obj, proc)
+  # puts "#{page_x}:#{page_y}"
+  # alert proc
+  # puts "self is : #{self}"
+  # puts Utilities.grab(:crasher)
+  # proc_found= Utilities.grab(current_obj).instance_variable_get("@html_drag")
+  # puts proc_found.class
+
+  instance_exec(page_x,page_y,&proc) if proc.is_a?(Proc)
 end
+
 
 Genesis.particle_creator(:drag)
 Genesis.generate_headless_renderer(:drag) do |value, atome, user_proc|
@@ -82,20 +90,18 @@ Genesis.generate_headless_renderer(:drag) do |value, atome, user_proc|
   instance_exec(&user_proc) if user_proc.is_a?(Proc)
 end
 
+
 Genesis.generate_html_renderer(:drag) do |value, atome, user_proc|
   if value == :remove
     @html_object.remove_class(:draggable)
   else
     @html_object.add_class(:draggable)
   end
-  instance_exec(&user_proc) if user_proc.is_a?(Proc)
+  @html_drag=user_proc
+  # alert self.id
+  # puts "user_proc is #{user_proc}"
+  # instance_exec(&user_proc) if user_proc.is_a?(Proc)
 end
-# it work :
-# a = Atome.new(
-#   { render: [:headless], id: :poil, type: :shape, parent: :user_view, left: 0, right: 0, top: 0, bottom: 0,
-#     color: { render: [:headless], id: :c31, type: :color,
-#              red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
-# )
 
 # doesn't work :
 a = Atome.new(
@@ -104,8 +110,9 @@ a = Atome.new(
                     red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
 )
 # puts a.inspect
-a.shape.drag(true) do |e|
-  puts "drag_is_ok : #{e.x},#{e.y}"
+a.shape.drag(true) do |x, y|
+  puts "ok on passe ici : #{x}"
+  # puts "drag_is_ok : #{e.x},#{e.y}"
 end
 
 a.shape.touch(true) do
@@ -191,7 +198,7 @@ c = circle
 # end
 
 # c.color(:green)
-puts "------"
+# puts "------"
 c.color(:orange)
 # c.color(
 #   { render: [:html], id: :c319, type: :color,
