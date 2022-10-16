@@ -467,6 +467,11 @@ img.addEventListener("load", () => {
 });
 img.src = #{value};
 `
+
+
+  #  @html_object[:src]=value
+  @html_object[:src] = value + '?'+Time.now.to_s
+
   @html_object.style["background-image"] = "url(#{value})"
   @html_object.style["background-size"] = "100% 100%"
 end
@@ -474,15 +479,24 @@ Genesis.generate_html_renderer(:image) do |value, atome, proc|
   id_found = id
   instance_exec(&proc) if proc.is_a?(Proc)
   DOM do
-    div(id: id_found).atome
+    image({ id: id_found}).atome
   end.append_to($document[:user_view])
   @html_object = $document[id_found]
-  @html_type = :div
+  @html_type = :image
+
+  # id_found = id
+  # instance_exec(&proc) if proc.is_a?(Proc)
+  # DOM do
+  #   div(id: id_found).atome
+  # end.append_to($document[:user_view])
+  # @html_object = $document[id_found]
+  # @html_type = :div
 end
 # verification
 image = Atome.new(
-  image: { render: [:html], id: :image_1, type: :image, parent: :view, path: "./medias/images/boat.png", left: 99, top: 120, width: 99, height: 199,
-
+  image: { render: [:html], id: :image_12, type: :image, parent: :view, path: "./medias/images/boat.png", left: 99, top: 120, width: 99, height: 199,
+           color: { render: [:html], id: :c315, type: :color,
+                    red: 0, green: 1, blue: 0, alpha: 0.6 }
   }
 )
 
@@ -506,13 +520,35 @@ Genesis.generate_html_renderer(:text) do |value, atome, proc|
   @html_object = $document[id_found]
   @html_type = :div
 end
+
+# verif
 text = Atome.new(
   image: { render: [:html], id: :text1, type: :text, parent: :view, visual:{size: 33},string: "hello!", left: 99, top: 333, width: 199, height: 99,
-           color: { render: [:html], id: :c315, type: :color,
-                    red: 1, green: 0.15, blue: 1, alpha: 0.6 }
+
   }
 )
+
+
+# video atome
 Genesis.atome_creator(:video)
+Genesis.generate_html_renderer(:video) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    video(id: id_found).atome
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_type = :video
+end
+
+# verif
+video = Atome.new(
+  image: { render: [:html], id: :video1, type: :video, parent: :view, path: "./medias/videos/avengers.mp4", left: 333, top: 333, width: 199, height: 99,
+
+  }
+)
+
+
 Genesis.atome_creator(:animator)
 
 
