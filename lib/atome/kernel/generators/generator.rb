@@ -104,7 +104,6 @@ Genesis.particle_creator(:location)
 # generate renderers
 
 Genesis.generate_html_renderer(:type) do |value, atome, proc|
-  puts " objet type is : #{value}"
   send("#{value}_html", value, atome, proc)
 end
 
