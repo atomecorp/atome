@@ -60,6 +60,7 @@ html, body {
     -webkit-overflow-scrolling: touch;
     -webkit-user-drag: none;
     caret-shape: bar;
+    overflow: hidden;
 }
 
 

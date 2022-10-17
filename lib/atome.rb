@@ -28,6 +28,7 @@ require 'atome/renderers/headless/properties/generator'
 require 'atome/kernel/generators/shapes'
 require 'atome/kernel/atome'
 require 'atome/kernel/properties/essential'
+require 'atome/extensions/helper'
 
 Universe.send(:initialize)
 # puts "@atome_client_ready is : #{@atome_client_ready}"

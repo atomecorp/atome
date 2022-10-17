@@ -11,6 +11,10 @@ class Atome
     puts "set : #{params}"
   end
 
+  def self.grab(val)
+    Utilities.grab(val)
+  end
+
   def add(params)
     puts "add : #{params}"
   end

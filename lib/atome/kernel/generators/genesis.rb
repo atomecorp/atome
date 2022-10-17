@@ -35,10 +35,9 @@ module GenesisKernel
 
   def get_new_particle(particle)
     return false unless validation(particle)
-
-    Genesis.run_optional_methods_helper("#{particle}_getter_pre_proc".to_sym, { value: false })
     particle_instance_variable = "@#{particle}"
-    instance_variable_get(particle_instance_variable)
+    value_getted=instance_variable_get(particle_instance_variable)
+    Genesis.run_optional_methods_helper("#{particle}_getter_pre_proc".to_sym, { value: value_getted, atome: self })
   end
 
   def new_particle(particle, params, proc)
@@ -76,9 +75,11 @@ module GenesisKernel
   def get_new_atome(atome)
     return false unless validation(atome)
 
-    Genesis.run_optional_methods_helper("#{atome}_getter_pre_proc".to_sym, { value: false })
+    # Genesis.run_optional_methods_helper("#{atome}_getter_pre_proc".to_sym, { value: false })
     atome_instance_variable = "@#{atome}"
-    instance_variable_get(atome_instance_variable)
+    value_getted=instance_variable_get(atome_instance_variable)
+    Genesis.run_optional_methods_helper("#{atome}_getter_pre_proc".to_sym, { value: value_getted })
+
   end
 
   def new_atome(atome, params, proc)
@@ -170,6 +171,11 @@ module Genesis
       params
     end
 
+    Genesis.atome_creator_option("#{method_name}_getter_pre_proc".to_sym) do |params,atome, proc|
+      # we return the value
+      params[:value]
+    end
+
   end
 
   def self.additional_atome_methods(method_name)
@@ -221,6 +227,11 @@ module Genesis
       # we return the value
       params[:value]
     end
+    Genesis.atome_creator_option("#{method_name}_getter_pre_proc".to_sym) do |params|
+      # we return the value
+      params[:value]
+    end
+
   end
 
   def self.additional_particle_methods(method_name)

@@ -60,3 +60,9 @@ class AtomeDrag {
 // Usage:
 let atomeDrag = new AtomeDrag();
 atomeDrag.drag();
+
+
+class Atomeanimation{
+
+
+}

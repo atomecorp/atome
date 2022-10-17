@@ -47,6 +47,8 @@ a = Atome.new(
            color: { render: [:html], id: :c315, type: :color,
                     red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
 )
+
+
 # puts a.inspect
 a.shape.drag(true) do |x, y|
   puts "drag position: #{x}"
@@ -446,7 +448,6 @@ c.color(:orange)
 #     font family: 'Verdana'
 #   }
 # end
-
 c = circle({ left: 666 })
 c.color(
   { render: [:html], id: :c3190, type: :color,
@@ -461,16 +462,16 @@ Genesis.atome_creator(:image)
 Genesis.particle_creator(:path)
 Genesis.generate_html_renderer(:path) do |value, atome, proc|
   # we get the size below
-#   `
-# const img = new Image();
-# img.addEventListener("load", () => {
-# #{self}.$width(img.naturalWidth);
-# #{self}.$height(img.naturalHeight);
-# });
-# img.src = #{value};
-# `
+  #   `
+  # const img = new Image();
+  # img.addEventListener("load", () => {
+  # #{self}.$width(img.naturalWidth);
+  # #{self}.$height(img.naturalHeight);
+  # });
+  # img.src = #{value};
+  # `
 
-  @html_object[:src] = value + '?'+Time.now.to_s
+  @html_object[:src] = value + '?' + Time.now.to_s
 
   # @html_object.style["background-image"] = "url(#{value})"
   # @html_object.style["background-size"] = "100% 100%"
@@ -479,7 +480,7 @@ Genesis.generate_html_renderer(:image) do |value, atome, proc|
   id_found = id
   instance_exec(&proc) if proc.is_a?(Proc)
   DOM do
-    img({ id: id_found}).atome
+    img({ id: id_found }).atome
   end.append_to($document[:user_view])
   @html_object = $document[id_found]
   @html_type = :image
@@ -497,11 +498,11 @@ Genesis.atome_creator(:text)
 Genesis.particle_creator(:string)
 
 Genesis.generate_html_renderer(:string) do |value, atome, proc|
-  @html_object.text=value
+  @html_object.text = value
 end
 Genesis.particle_creator(:visual)
 Genesis.generate_html_renderer(:visual) do |value, atome, proc|
-  @html_object.style['font-size']="#{value[:size]}px"
+  @html_object.style['font-size'] = "#{value[:size]}px"
 end
 Genesis.generate_html_renderer(:text) do |value, atome, proc|
   id_found = id
@@ -515,10 +516,10 @@ end
 
 # verif
 text = Atome.new(
-  text: { render: [:html], id: :text1, type: :text, parent: :view, visual:{size: 33},string: "hello!", left: 399, top: 633, width: 199, height: 99,
+  text: { render: [:html], id: :text1, type: :text, parent: :view, visual: { size: 33 }, string: "hello!", left: 399, top: 633, width: 199, height: 33,
   }
 )
-
+text.text.string(:kool)
 
 # video atome
 Genesis.atome_creator(:video)
@@ -539,7 +540,7 @@ video = Atome.new(
   }
 )
 
-
+# animation atome
 Genesis.atome_creator(:animation)
 Genesis.generate_html_renderer(:animation) do |value, atome, proc|
   id_found = id
@@ -555,26 +556,89 @@ Genesis.generate_html_renderer(:code) do |value, atome, proc|
   # alert proc
   # @html_object << value
 end
-Genesis.particle_creator(:target)
-Genesis.particle_creator(:bloc) do |&proc|
-  alert "we should exec the proc"
-  instance_exec(&proc) if proc.is_a?(Proc)
+Genesis.particle_creator(:target) do |params|
+  # alert params
+end
+
+Genesis.particle_creator(:bloc)
+Genesis.atome_creator_option(:bloc_pre_render_proc) do |params|
+  proc_found = params[:value][:bloc]
+  instance_exec(&proc_found) if proc_found.is_a?(Proc)
+
+  params[:value]
 end
 Genesis.generate_html_renderer(:target) do |value, atome, proc|
   @html_object
 end
-Genesis.generate_html_renderer(:bloc) do |value, atome, proc|
-  alert value
-end
+# Genesis.generate_html_renderer(:bloc) do |value, atome, proc|
+#   # alert value
+#
+# end
 
 # verif
 animation = Atome.new(
-  animation: { render: [:html], id: :anim1, type: :animation,target: :image1 ,code: "alert :poil",left: 333, top: 333, width: 199, height: 99,
-
+  animation: { render: [:html], id: :anim1, type: :animation, target: :image1, code: "alert :poil", left: 333, top: 333, width: 199, height: 99,
   }
 ) do
-  alert :soog
+  puts " proc exec added at atome creation level : #{self.class}"
 end
+# alert "#{video.class}: #{video.inspect}"
 
 # alert animation.inspect
+Genesis.particle_creator(:particles)
+Genesis.atome_creator_option(:particles_getter_pre_proc) do |params|
+  # proc_found= params[:value][:bloc]
+  # instance_exec(&proc_found) if proc_found.is_a?(Proc)
 
+  atome_found = params[:atome]
+  #
+  particles_hash = {}
+  atome_found.instance_variables.each do |particle_found|
+    particle_content = atome_found.instance_variable_get(particle_found)
+    particles_hash[particle_found] = particle_content
+  end
+  particles_hash
+  # atome_found.instance_variable_set('@particles', particles_hash)
+  # params[:value]=particles_hash
+end
+
+# text.text.overflow(:auto)
+# alert(Utilities.grab(:c315).particles)
+# Utilities.grab(:c315).particles(:poil)
+
+alert  "particles for atome color c315 should get but not store into @particles : #{Utilities.grab(:c315).particles}"
+# text.text.color(:red)
+alert grab(:c315)
+
+Genesis.particle_creator(:link)
+Genesis.particle_creator(:html_type)
+Genesis.particle_creator(:html_object)
+
+Genesis.atome_creator_option(:link_pre_render_proc) do |params|
+  # proc_found= params[:value][:bloc]
+  # instance_exec(&proc_found) if proc_found.is_a?(Proc)
+
+  atome_found = params[:atome]
+  atome_to_link = grab(params[:value])
+  # value
+  # alert atome_to_link
+  particles_found=atome_to_link.particles
+  atome_type= particles_found.delete('@type')
+  sanitized_particles={}
+  particles_found.each do |particle_name, value|
+    particle_name= particle_name.gsub('@','')
+    sanitized_particles[particle_name]=value
+  end
+  # alert sanitized_particles
+  # atome_found.send(atome_type,sanitized_particles)
+  atome_found.send(atome_type, :green)
+  # alert atome_found
+
+  # atome_found.send(atome_to_link)
+  params[:value]
+end
+
+# video.video.link(animation)
+# text.text.link(:c315)
+
+# alert text.text

@@ -83,10 +83,10 @@ Genesis.particle_creator(:type)
 Genesis.particle_creator(:smooth)
 Genesis.particle_creator(:blur)
 Genesis.particle_creator(:touch)
-Genesis.atome_creator_option(:type_pre_render_proc) do |params|
-  "it works and get #{params}"
-  params[:value]
-end
+# Genesis.atome_creator_option(:type_pre_render_proc) do |params|
+#   # alert "it works and get #{params}"
+#   params[:value]
+# end
 
 # important exemple below how to prevent rendering
 # Genesis.atome_creator_option(:top_render_proc) do |params|
@@ -263,3 +263,10 @@ Genesis.generate_html_renderer(:drag) do |value, atome, user_proc|
     @html_object.add_class(:draggable)
   end
 end
+
+Genesis.particle_creator(:overflow)
+Genesis.generate_html_renderer(:overflow) do |value, atome, proc|
+  @html_object.style[:overflow] = value unless @html_type == :style
+end
+
+Genesis.particle_creator(:bloc)
