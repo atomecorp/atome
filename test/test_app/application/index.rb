@@ -48,7 +48,6 @@ a = Atome.new(
                     red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
 )
 
-
 # puts a.inspect
 a.shape.drag(true) do |x, y|
   puts "drag position: #{x}"
@@ -606,9 +605,9 @@ end
 # alert(Utilities.grab(:c315).particles)
 # Utilities.grab(:c315).particles(:poil)
 
-alert  "particles for atome color c315 should get but not store into @particles : #{Utilities.grab(:c315).particles}"
+puts "particles for atome color c315 :: #{Utilities.grab(:c315).particles}"
 # text.text.color(:red)
-alert grab(:c315)
+# alert grab(:c315)
 
 Genesis.particle_creator(:link)
 Genesis.particle_creator(:html_type)
@@ -620,25 +619,20 @@ Genesis.atome_creator_option(:link_pre_render_proc) do |params|
 
   atome_found = params[:atome]
   atome_to_link = grab(params[:value])
-  # value
-  # alert atome_to_link
-  particles_found=atome_to_link.particles
-  atome_type= particles_found.delete('@type')
-  sanitized_particles={}
+  particles_found = atome_to_link.particles
+  atome_type = particles_found.delete('@type')
+  sanitized_particles = {}
   particles_found.each do |particle_name, value|
-    particle_name= particle_name.gsub('@','')
-    sanitized_particles[particle_name]=value
+    particle_name = particle_name.gsub('@', '')
+    sanitized_particles[particle_name] = value
   end
-  # alert sanitized_particles
-  # atome_found.send(atome_type,sanitized_particles)
-  atome_found.send(atome_type, :green)
-  # alert atome_found
-
-  # atome_found.send(atome_to_link)
+  sanitized_particles[:parent]=atome_found.id
+  atome_found.send(atome_type, sanitized_particles)
   params[:value]
 end
 
 # video.video.link(animation)
-# text.text.link(:c315)
-
+text.text.link(:c315)
+alert grab(:c315).red(0)
 # alert text.text
+# TODO: change parent to areray
