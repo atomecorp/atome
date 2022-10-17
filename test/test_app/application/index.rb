@@ -454,12 +454,13 @@ c.color(
 )
 c.color(:orange)
 
+############# new methods :
+
 # image atome
 Genesis.atome_creator(:image)
 Genesis.particle_creator(:path)
 Genesis.generate_html_renderer(:path) do |value, atome, proc|
   # we get the size below
-  puts self.inspect
 #   `
 # const img = new Image();
 # img.addEventListener("load", () => {
@@ -469,7 +470,6 @@ Genesis.generate_html_renderer(:path) do |value, atome, proc|
 # img.src = #{value};
 # `
 
-  #  @html_object[:src]=value
   @html_object[:src] = value + '?'+Time.now.to_s
 
   # @html_object.style["background-image"] = "url(#{value})"
@@ -481,22 +481,12 @@ Genesis.generate_html_renderer(:image) do |value, atome, proc|
   DOM do
     img({ id: id_found}).atome
   end.append_to($document[:user_view])
-  # $document.body.attach("<image id='#{id}' />").append_to($document.body)
-  # puts $document.body.methods
   @html_object = $document[id_found]
   @html_type = :image
-
-  # id_found = id
-  # instance_exec(&proc) if proc.is_a?(Proc)
-  # DOM do
-  #   div(id: id_found).atome
-  # end.append_to($document[:user_view])
-  # @html_object = $document[id_found]
-  # @html_type = :div
 end
 # verification
 image = Atome.new(
-  image: { render: [:html], id: :image_12, type: :image, parent: :view, path: "./medias/images/boat.png", left: 99, top: 120, width: 199, height: 199,
+  image: { render: [:html], id: :image1, type: :image, parent: :view, path: "./medias/images/boat.png", left: 99, top: 120, width: 199, height: 199,
            # color: { render: [:html], id: :c315, type: :color,
            #          red: 0, green: 1, blue: 1, alpha: 0.6 }
   }
@@ -525,8 +515,7 @@ end
 
 # verif
 text = Atome.new(
-  image: { render: [:html], id: :text1, type: :text, parent: :view, visual:{size: 33},string: "hello!", left: 399, top: 633, width: 199, height: 99,
-
+  text: { render: [:html], id: :text1, type: :text, parent: :view, visual:{size: 33},string: "hello!", left: 399, top: 633, width: 199, height: 99,
   }
 )
 
@@ -545,12 +534,47 @@ end
 
 # verif
 video = Atome.new(
-  image: { render: [:html], id: :video1, type: :video, parent: :view, path: "./medias/videos/avengers.mp4", left: 333, top: 333, width: 199, height: 99,
+  video: { render: [:html], id: :video1, type: :video, parent: :view, path: "./medias/videos/avengers.mp4", left: 333, top: 333, width: 199, height: 99,
 
   }
 )
 
 
-Genesis.atome_creator(:animator)
+Genesis.atome_creator(:animation)
+Genesis.generate_html_renderer(:animation) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    script(id: id_found)
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_type = :div
+end
+Genesis.particle_creator(:code)
+Genesis.generate_html_renderer(:code) do |value, atome, proc|
+  # alert proc
+  # @html_object << value
+end
+Genesis.particle_creator(:target)
+Genesis.particle_creator(:bloc) do |&proc|
+  alert "we should exec the proc"
+  instance_exec(&proc) if proc.is_a?(Proc)
+end
+Genesis.generate_html_renderer(:target) do |value, atome, proc|
+  @html_object
+end
+Genesis.generate_html_renderer(:bloc) do |value, atome, proc|
+  alert value
+end
 
+# verif
+animation = Atome.new(
+  animation: { render: [:html], id: :anim1, type: :animation,target: :image1 ,code: "alert :poil",left: 333, top: 333, width: 199, height: 99,
+
+  }
+) do
+  alert :soog
+end
+
+# alert animation.inspect
 

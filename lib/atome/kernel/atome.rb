@@ -79,8 +79,13 @@ class Atome
     end
   end
 
-  def initialize(params = {})
+  def initialize(params = {}, &proc)
     # # TODO: check if we need to add properties for the root object before sending the params
+    bloc=$proc
+    params={bloc: bloc}.merge(params) if proc.is_a?(Proc)
+    # params={bloc: {code: bloc }}.merge(params) if proc.is_a?(Proc)
+
+    # params={bloc: "tutu"}.merge(params)
     params.each do |atome, values|
       send(atome, values)
     end
