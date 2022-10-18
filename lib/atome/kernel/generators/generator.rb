@@ -32,7 +32,6 @@ d.remove();
     end
     params = { render: [:html], id: "color_#{atome.id}", type: :color }.merge(color_converted)
   end
-  # alert ("Pass the id of the parent to attach to it and generate the id correctly, color is : #{params}")
   params
 end
 
@@ -96,6 +95,13 @@ Genesis.particle_creator(:touch)
 Genesis.particle_creator(:render)
 Genesis.particle_creator(:drm)
 Genesis.particle_creator(:parent)
+
+Genesis.atome_creator_option(:parent_pre_render_proc) do |params|
+  unless params[:value].instance_of? Array
+    params[:value] = [params[:value]]
+  end
+  params[:value]
+end
 Genesis.particle_creator(:date)
 Genesis.particle_creator(:location)
 
@@ -171,15 +177,16 @@ Genesis.generate_html_renderer(:drm) do |value, atome, proc|
   # instance_exec(&proc) if proc.is_a?(Proc)
 end
 
-Genesis.generate_html_renderer(:parent) do |value, atome, proc|
+Genesis.generate_html_renderer(:parent) do |values, atome, proc|
   instance_exec(&proc) if proc.is_a?(Proc)
-  if @html_type == :style
-    $document[value].add_class(id)
-  else
-    @html_object.append_to($document[value])
+  values.each do |value|
+    if @html_type == :style
+      $document[value].add_class(id)
+    else
+      @html_object.append_to($document[value])
+    end
   end
 end
-
 Genesis.generate_html_renderer(:id) do |value, atome, proc|
   # send("#{value}_html", value, atome, proc)
 end
