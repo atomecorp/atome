@@ -32,54 +32,31 @@ end
 #   # alert value
 #
 # end
-
+Genesis.particle_creator(:data)
 # Anim verif
+
+anim1={
+  start: { smooth: 0, blur: 0, rotate: 0, color: { red: 1, green: 1, blue: 1 } },
+  end: { smooth: 25, rotate: 180, blur: 20, color: { red: 1, green: 0, blue: 0 } },
+  duration: 1000,
+  loop: 1,
+  curve: :easing,
+  target: :my_shape
+}
+
 animation = Atome.new(
-  animation: { render: [:html], id: :anim1, type: :animation, parent: [:view], target: :image1, code: "alert :web", left: 333, top: 333, width: 199, height: 99,
+  animation: { render: [:html], id: :anim1, type: :animation, parent: [:view], target: :image1, code: anim1, left: 333, top: 333, width: 199, height: 99,
   }
+  # animation: { render: [:html], id: :anim1, type: :animation, parent: [:view], target: :image1, code: "alert :web", left: 333, top: 333, width: 199, height: 99,
+  # }
 ) do
-  puts " proc exec added at atome creation level : #{self.class}"
+  puts "proc exec added at atome creation level : #{self.class}"
 end
-# alert animation.inspect
+Genesis.particle_creator(:play)
 
-# TODO: insert html elements
-
-#TODO int8!
-
+# animation=box
+animation.play(true)
 
 
-# def web_iframe(adress)
-#
-# end
-# def web(value, password = nil)
-#
-#   if value.instance_of?(Hash)
-#     if value[:type]
-#       type_found = value[:type]
-#       case type_found
-#         #Time.now is used to force refresh if the image changes
-#       when :iframe
-#         value = "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
-#       when :image
-#         #Time.now is used to force refresh if the image changes
-#         value = "<image class='atome' width ='100%' height= '100%' src='#{value[:path]}?#{Time.now}'/>"
-#       when :audio
-#       when :video
-#       else
-#         value = "<iframe class='atome' width='100%' height='180%' src='#{value[:path]}?#{Time.now}' frameborder='5' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen/>"
-#       end
-#       media_pre_processor(:web, :web, value, password)
-#     elsif value[:address]
-#       JSUtils.adress(value[:address])
-#     else
-#     end
-#
-#   end
-#
-# end
-#
-# m web({type: :iframe, path: "https://www.youtube.com/embed/usQDazZKWAk" })
-# web({ type: :image, path: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" })
+#TODO int8! : language
 
-
-# Genesis.particle_creator(:smooth)
