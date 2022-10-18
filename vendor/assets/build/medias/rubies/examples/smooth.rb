@@ -1,5 +1,3 @@
-# smooth example
+b = box({ width: 333, left: 333 })
 
-b=box({color: :orange})
-b.x(250)
-b.smooth([25 ,7])
+b.smooth([33, 2, 90])
