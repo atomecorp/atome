@@ -9,7 +9,7 @@ Genesis.atome_creator(:content)
 
 Genesis.atome_creator(:color)
 
-Genesis.atome_creator_option(:color_sanitizer_proc) do |params,atome|
+Genesis.atome_creator_option(:color_sanitizer_proc) do |params, atome|
   unless params.instance_of? Hash
     if RUBY_ENGINE.downcase == 'opal'
       rgb_color = `d = document.createElement("div");
@@ -35,14 +35,13 @@ d.remove();
   params
 end
 
-
 Genesis.atome_creator(:shadow)
 
 # Example below
 
 # Genesis.atome_creator(:color) do |params|
-  #   # puts "extra color code executed!! : #{params}"
-  # end
+#   # puts "extra color code executed!! : #{params}"
+# end
 # Genesis.atome_creator_option(:color_pre_save_proc) do |params|
 #   puts "1- optional color_pre_save_proc: #{params}\n"
 # end
@@ -105,15 +104,11 @@ end
 Genesis.particle_creator(:date)
 Genesis.particle_creator(:location)
 
-
-
 # generate renderers
 
 Genesis.generate_html_renderer(:type) do |value, atome, proc|
   send("#{value}_html", value, atome, proc)
 end
-
-
 
 Genesis.generate_html_renderer(:shape) do |value, atome, proc|
   id_found = id
@@ -183,10 +178,10 @@ Genesis.generate_html_renderer(:parent) do |values, atome, proc|
     if @html_type == :style
       # we remove previous class if the are of the same type of the type
       # ex if there's a color already assign we remove it to allow the new one to be visible
-      html_parent= grab(value).instance_variable_get("@html_object")
+      html_parent = grab(value).instance_variable_get("@html_object")
       html_parent.class_names.each do |class_name|
         if $document[class_name] && $document[class_name].attributes[:atome]
-          class_to_remove= $document[class_name].attributes[:id]
+          class_to_remove = $document[class_name].attributes[:id]
           html_parent.remove_class(class_to_remove)
         end
       end
@@ -255,11 +250,10 @@ Genesis.generate_html_renderer(:touch) do |value, atome, proc|
   end
 end
 
-
 #drag
-def dragCallback(page_x, page_y,x, y,current_object, proc)
-  current_object.instance_variable_set('@left',x)
-  current_object.instance_variable_set('@top',y)
+def dragCallback(page_x, page_y, x, y, current_object, proc)
+  current_object.instance_variable_set('@left', x)
+  current_object.instance_variable_set('@top', y)
   instance_exec(page_x, page_y, &proc) if proc.is_a?(Proc)
 end
 
@@ -286,3 +280,89 @@ Genesis.generate_html_renderer(:overflow) do |value, atome, proc|
 end
 
 Genesis.particle_creator(:bloc)
+
+# image
+
+Genesis.atome_creator(:image)
+Genesis.particle_creator(:path)
+Genesis.generate_html_renderer(:path) do |value, atome, proc|
+  @html_object[:src] = value
+end
+Genesis.generate_html_renderer(:image) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    img({ id: id_found }).atome
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_type = :image
+end
+
+# text
+
+Genesis.atome_creator(:text)
+Genesis.particle_creator(:string)
+
+Genesis.generate_html_renderer(:string) do |value, atome, proc|
+  @html_object.text = value
+end
+Genesis.particle_creator(:visual)
+Genesis.generate_html_renderer(:visual) do |value, atome, proc|
+  @html_object.style['font-size'] = "#{value[:size]}px"
+end
+Genesis.generate_html_renderer(:text) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    div(id: id_found).atome
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_type = :text
+end
+
+
+# video
+Genesis.atome_creator(:video)
+Genesis.generate_html_renderer(:video) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    video({ id: id_found, autoplay: true }).atome
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_type = :video
+end
+
+
+# particles method below to allow to retrieve all particles for an atome
+Genesis.particle_creator(:particles)
+Genesis.atome_creator_option(:particles_getter_pre_proc) do |params|
+  atome_found = params[:atome]
+  particles_hash = {}
+  atome_found.instance_variables.each do |particle_found|
+    particle_content = atome_found.instance_variable_get(particle_found)
+    particles_hash[particle_found] = particle_content
+  end
+  particles_hash
+end
+
+
+# link
+Genesis.particle_creator(:link)
+Genesis.atome_creator_option(:link_pre_render_proc) do |params|
+  atome_found = params[:atome]
+  atome_to_link = grab(params[:value])
+  particles_found = atome_to_link.particles
+  atome_type = particles_found.delete('@type')
+  sanitized_particles = {}
+  particles_found.each do |particle_name, value|
+    particle_name = particle_name.gsub('@', '')
+    sanitized_particles[particle_name] = value
+  end
+  sanitized_particles[:parent]=[atome_found.id]
+  atome_found.send(atome_type, sanitized_particles)
+  params[:value]
+end
+
+Genesis.particle_creator(:html_type)
+Genesis.particle_creator(:html_object)
