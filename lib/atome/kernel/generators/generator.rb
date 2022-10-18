@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 # generators
+
+Genesis.particle_creator(:html_type)
+Genesis.particle_creator(:html_object)
+
+
 Genesis.atome_creator(:shape)
 
 Genesis.atome_creator(:shadow)
@@ -363,6 +368,20 @@ Genesis.atome_creator_option(:link_pre_render_proc) do |params|
   atome_found.send(atome_type, sanitized_particles)
   params[:value]
 end
+Genesis.atome_creator(:web)
+Genesis.particle_creator(:path)
+Genesis.generate_html_renderer(:path) do |value, atome, proc|
+  @html_object[:src] = value
+end
+Genesis.generate_html_renderer(:web) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    iframe({ id: id_found }).atome
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_object.attributes[:allow]='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
+  @html_object.attributes[:allowfullscreen]=true
+  @html_type = :web
+end
 
-Genesis.particle_creator(:html_type)
-Genesis.particle_creator(:html_object)
