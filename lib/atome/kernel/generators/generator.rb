@@ -128,7 +128,7 @@ end
 Genesis.generate_html_renderer(:color) do |value, atome, proc|
   instance_exec(&proc) if proc.is_a?(Proc)
   @html_type = :style
-  $document.head << DOM("<style id='#{id}'></style>")
+  $document.head << DOM("<style atome='#{type}' id='#{id}'></style>")
 end
 
 Genesis.generate_html_renderer(:red) do |value, atome, proc|
@@ -181,6 +181,15 @@ Genesis.generate_html_renderer(:parent) do |values, atome, proc|
   instance_exec(&proc) if proc.is_a?(Proc)
   values.each do |value|
     if @html_type == :style
+      # we remove previous class if the are of the same type of the type
+      # ex if there's a color already assign we remove it to allow the new one to be visible
+      html_parent= grab(value).instance_variable_get("@html_object")
+      html_parent.class_names.each do |class_name|
+        if $document[class_name] && $document[class_name].attributes[:atome]
+          class_to_remove= $document[class_name].attributes[:id]
+          html_parent.remove_class(class_to_remove)
+        end
+      end
       $document[value].add_class(id)
     else
       @html_object.append_to($document[value])

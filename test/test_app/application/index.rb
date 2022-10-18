@@ -648,13 +648,39 @@
 # # alert text.text
 # # TODO: change parent to array
 
+# Genesis.generate_html_renderer(:color) do |value, atome, proc|
+#   instance_exec(&proc) if proc.is_a?(Proc)
+#   @html_type = :style
+#   $document.head << DOM("<style atome='#{type}' id='#{id}'></style>")
+# end
 
-b = box({ id: :c315, left: 333 })
+
+# Genesis.generate_html_renderer(:parent) do |values, atome, proc|
+#   instance_exec(&proc) if proc.is_a?(Proc)
+#   values.each do |value|
+#     if @html_type == :style
+#       html_parent= grab(value).instance_variable_get("@html_object")
+#       html_parent.class_names.each do |class_name|
+#         if $document[class_name] && $document[class_name].attributes[:atome]
+#           class_to_remove= $document[class_name].attributes[:id]
+#           html_parent.remove_class(class_to_remove)
+#         end
+#       end
+#       $document[value].add_class(id)
+#     else
+#       @html_object.append_to($document[value])
+#     end
+#   end
+# end
+
 a = circle({ id: :circle_12, color: :red })
+b = box({ id: :box_1, left: 333 })
 
-grab(:c315).parent(:circle_12)
-grab(:color_circle_12).parent([:c315])
+grab(:box_1).parent(:circle_12)
+grab(:color_circle_12).parent([:box_1])
+
+
 # a.shape.parent([:circle_12])
-puts "****#{b.id}***"
+# puts "****#{b.id}***"
 
 
