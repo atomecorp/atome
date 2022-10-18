@@ -33,18 +33,16 @@ end
 #
 # end
 
-
 # Anim verif
 animation = Atome.new(
-  animation: { render: [:html], id: :anim1, type: :animation, parent: [:view],target: :image1, code: "alert :poil", left: 333, top: 333, width: 199, height: 99,
+  animation: { render: [:html], id: :anim1, type: :animation, parent: [:view], target: :image1, code: "alert :poil", left: 333, top: 333, width: 199, height: 99,
   }
 ) do
   puts " proc exec added at atome creation level : #{self.class}"
 end
 # alert animation.inspect
 
+# TODO: insert html elements
 
-
-
-
+#TODO int8!
 
