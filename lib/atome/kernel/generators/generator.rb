@@ -332,7 +332,7 @@ Genesis.generate_html_renderer(:video) do |value, atome, proc|
   id_found = id
   instance_exec(&proc) if proc.is_a?(Proc)
   DOM do
-    video({ id: id_found, autoplay: true }).atome
+    video({ id: id_found, autoplay: false }).atome
   end.append_to($document[:user_view])
   @html_object = $document[id_found]
   @html_type = :video
