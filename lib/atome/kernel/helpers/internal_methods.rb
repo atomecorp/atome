@@ -1,5 +1,6 @@
 module Internal
   def self.read_ruby(file)
+    # TODO write a ruby script that'll list and sort all files so they can be read
     `
 fetch('medias/rubies/'+#{file})
   .then(response => response.text())

@@ -1,10 +1,10 @@
-# web_object example
+Atome.new(
+  image: { render: [:html], id: :image1, type: :image, parent: [:view], path: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg", left: 99, top: 320, width: 199, height: 199,
+  }
+)
 
-my_tube = web({type: :iframe, path: "https://www.youtube.com/embed/usQDazZKWAk" })
-my_tube.y = 150
-my_tube.drag(true)
-my_tube.width = 300
 
-web({ type: :image, path: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" })
-# web can also be specified without supplying any path ex :
-# web('<image src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"/>')my_tube.x = 300
+Atome.new(
+  web: { render: [:html], id: :youtube1, type: :web, parent: [:view], path: "https://www.youtube.com/embed/usQDazZKWAk", left: 33, top: 33, width: 199, height: 199,
+  }
+)

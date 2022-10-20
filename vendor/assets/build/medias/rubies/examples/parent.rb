@@ -1,6 +1,7 @@
+b=box({id: :c315})
 circle({id: :circle_12})
 grab(:c315).parent([:circle_12])
-a.shape.parent([:circle_12])
+b.parent([:circle_12])
 
 
 circle({ id: :circle_123, color: :cyan })

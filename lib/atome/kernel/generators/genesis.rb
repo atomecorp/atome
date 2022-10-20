@@ -40,8 +40,12 @@ module GenesisKernel
     Genesis.run_optional_methods_helper("#{particle}_getter_pre_proc".to_sym, { value: value_getted, atome: self })
   end
 
-  def new_particle(particle, params, proc)
+  def new_particle(particle, params, proc, &methodproc)
     if params
+      if methodproc.is_a?(Proc)
+        puts "#{particle} #{params}"
+        params = instance_exec(params, &methodproc)
+      end
       set_new_particle(particle, params, &proc)
     else
       get_new_particle(particle)
@@ -250,12 +254,12 @@ module Genesis
     optional_particle_methods(method_name)
   end
 
-  def self.particle_creator(method_name, &proc)
-    instance_exec(method_name, &proc) if proc.is_a?(Proc)
+  def self.particle_creator(method_name, &methodproc)
+    # instance_exec(method_name, &proc) if proc.is_a?(Proc)
     # we add the new method to the particle's collection of methods
     Utilities.particle_list(method_name)
     Atome.define_method method_name do |params = nil, &user_proc|
-      new_particle(method_name, params, user_proc)
+      new_particle(method_name, params, user_proc,&methodproc)
     end
     # no we also add the method= for easy setting
     Atome.define_method("#{method_name}=") do |params, &user_proc|

@@ -82,6 +82,7 @@ class Atome
   def initialize(params = {}, &proc)
     # We initialize the renderer here
     @render=[]
+    @child=[]
     # # TODO: check if we need to add properties for the root object before sending the params
     params.each do |atome, values|
       # We add the proc if it exist

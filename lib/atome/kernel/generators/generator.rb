@@ -70,8 +70,7 @@ Genesis.atome_creator(:shadow)
 #   # puts "optional color_getter_pre_proc\n"
 # end
 
-Genesis.particle_creator(:id) do
-end
+Genesis.particle_creator(:id)
 Genesis.particle_creator(:left)
 Genesis.particle_creator(:right)
 Genesis.particle_creator(:top)
@@ -98,7 +97,21 @@ Genesis.particle_creator(:touch)
 
 Genesis.particle_creator(:render)
 Genesis.particle_creator(:drm)
-Genesis.particle_creator(:parent)
+
+# Genesis.particle_creator(:parent) do |params|
+#   # alert params
+#   # child(params)
+#   params
+# end
+
+Genesis.particle_creator(:parent) do |parents|
+  parents.each do |parent|
+    alert "#{id} : #{parent} "
+    grab(parent).child << id
+  end
+  # child(params)
+  parents
+end
 
 Genesis.atome_creator_option(:parent_pre_render_proc) do |params|
   unless params[:value].instance_of? Array
@@ -113,6 +126,7 @@ Genesis.particle_creator(:location)
 
 Genesis.generate_html_renderer(:type) do |value, atome, proc|
   send("#{value}_html", value, atome, proc)
+  value
 end
 
 Genesis.generate_html_renderer(:shape) do |value, atome, proc|
@@ -224,11 +238,8 @@ Genesis.generate_html_renderer(:height) do |value, atome, proc|
   @html_object.style[:height] = "#{value}px" unless @html_type == :style
 end
 
-Genesis.particle_creator(:rotate) do |params, atome, &proc|
-  # puts atome
-  # alert :pl
-  instance_exec(method_name, params, atome, &proc) if proc.is_a?(Proc)
-end
+Genesis.particle_creator(:rotate)
+
 Genesis.generate_html_renderer(:rotate) do |value, atome, proc|
   @html_object.style[:transform] = "rotate(#{value}deg)" unless @html_type == :style
 end
@@ -289,10 +300,7 @@ Genesis.particle_creator(:bloc)
 # image
 
 Genesis.atome_creator(:image)
-Genesis.particle_creator(:path)
-Genesis.generate_html_renderer(:path) do |value, atome, proc|
-  @html_object[:src] = value
-end
+
 Genesis.generate_html_renderer(:image) do |value, atome, proc|
   id_found = id
   instance_exec(&proc) if proc.is_a?(Proc)
@@ -390,6 +398,7 @@ Genesis.particle_creator(:path)
 Genesis.generate_html_renderer(:path) do |value, atome, proc|
   @html_object[:src] = value
 end
+
 Genesis.generate_html_renderer(:web) do |value, atome, proc|
   id_found = id
   instance_exec(&proc) if proc.is_a?(Proc)
