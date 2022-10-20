@@ -1,12 +1,4 @@
 # animation atome
-# Genesis.particle_creator(:bloc)
-# Genesis.atome_creator_option(:bloc_pre_render_proc) do |params|
-#   proc_found = params[:value][:bloc]
-#   instance_exec(&proc_found) if proc_found.is_a?(Proc)
-#
-#   params[:value]
-# end
-
 
 Genesis.atome_creator(:animator)
 Genesis.generate_html_renderer(:animator) do |value, atome, proc|
@@ -19,10 +11,18 @@ Genesis.generate_html_renderer(:animator) do |value, atome, proc|
   @html_type = :div
 end
 Genesis.particle_creator(:code)
-Genesis.generate_html_renderer(:code) do |value, atome, proc|
-  # alert proc
-  # @html_object << value
+
+Genesis.atome_creator_option(:code_pre_render_proc) do |params|
+  def get_binding
+    binding
+  end
+
+  str = params[:value]
+  # eval "str + ' Fred'"
+  eval str, get_binding, __FILE__, __LINE__
+  params[:value]
 end
+
 Genesis.particle_creator(:target) do |params|
   # alert params
 end
@@ -30,14 +30,18 @@ end
 Genesis.generate_html_renderer(:target) do |value, atome, proc|
   @html_object
 end
-# Genesis.generate_html_renderer(:bloc) do |value, atome, proc|
-#   # alert value
-#
-# end
+
 Genesis.particle_creator(:data)
 # Genesis.particle_creator(:exec)
 
+def animation(params = {}, &proc)
+  Utilities.grab(:view).animation(params, &proc)
+end
+
+Genesis.particle_creator(:play)
+
 class Atome
+
   def animation(params = {}, &proc)
     generated_id = params[:id] || "animation_#{Universe.atomes.length}"
     generated_parent = params[:parent] || id
@@ -48,44 +52,33 @@ class Atome
     new_atome = Atome.new({ animator: params })
     new_atome.animator
   end
-end
 
-def animation(params = {}, &proc)
-  Utilities.grab(:view).animation(params, &proc)
-end
-
-Genesis.particle_creator(:play)
-
-class Atome
   def play_video(params, &proc)
     # puts "I play the video : #{params[:atome].html_object}"
-    params[:atome].html_object.style[:left] = "33px"
-    #
+    params[:atome].html_object.style[:left] = '33px'
 
-      params[:atome].html_object.play
-    # end
-    puts  "time is : #{params[:atome].html_object.currentTime}"
-    #TODO : change timeupdate for when possible requestVideoFrameCallback (opal-browser/opal/browser/event.rb line 36)
+    params[:atome].html_object.play
+    puts "time is : #{params[:atome].html_object.currentTime}"
+    # TODO : change timeupdate for when possible requestVideoFrameCallback (opal-browser/opal/browser/event.rb line 36)
     params[:atome].html_object.on(:timeupdate) do |e|
       # e.prevent # Prevent the default action (eg. form submission)
       # You can also use `e.stop` to stop propagating the event to other handlers.
-      puts "--- #{params[:atome].html_object.currentTime}:::#{e.methods}"
+      puts "--- #{params[:atome].html_object.currentTime}:::#{e}"
     end
     wait 2 do
-      params[:atome].html_object.currentTime= 33
+      params[:atome].html_object.currentTime = 33
     end
     wait 6 do
       params[:atome].html_object.pause
     end
     exec_found = params[:atome].bloc[:bloc] # this is the video callback not the play callback
-    instance_exec("::callback from video player", &exec_found) if exec_found.is_a?(Proc)
+    instance_exec('::callback from video player', &exec_found) if exec_found.is_a?(Proc)
   end
-
 
   def play_animator(params)
     puts "I play the animation : #{params}"
     exec_found = params[:atome].bloc
-    instance_exec("::callback from anim player", &exec_found) if exec_found.is_a?(Proc)
+    instance_exec('::callback from anim player', &exec_found) if exec_found.is_a?(Proc)
   end
 end
 
@@ -95,7 +88,29 @@ Genesis.atome_creator_option(:play_pre_render_proc) do |params|
 
   # bloc_found= params[:atome].bloc[:bloc]
   # instance_exec("call back from play render", &bloc_found) if bloc_found.is_a?(Proc)
-  instance_exec("::call back from play render", &proc_found) if proc_found.is_a?(Proc)
+  instance_exec('::call back from play render', &proc_found) if proc_found.is_a?(Proc)
+end
+
+Genesis.particle_creator(:time)
+Genesis.generate_html_renderer(:time) do |value, atome, proc|
+  # params[:atome].html_object.currentTime= 33
+  @html_object.currentTime = value
+end
+
+Genesis.particle_creator(:on) do |params|
+
+end
+
+# write({ string: :the_current_movie_is_stopped })
+Genesis.generate_html_renderer(:on) do |value, atome, proc|
+
+  @html_object.on(value) do |e|
+    write_text({ string: :the_current_movie_is_stopped })
+    alert :kool
+  end
+  # @html_object.currentTime= value
+
+  # @html_object.currentTime= value
 end
 
 # Anim verif
@@ -114,7 +129,7 @@ end
 # my_anim.play(true)
 
 my_animation = Atome.new(
-  animator: { render: [:html], id: :anim12, type: :animator, parent: [:view], target: :image1, code: anim1, left: 333, top: 333, width: 199, height: 99,
+  animator: { render: [:html], id: :anim12, type: :animator, parent: [:view], target: :image1, data: anim1, left: 333, top: 333, width: 199, height: 99,
   }
 # animator: { render: [:html], id: :anim1, type: :animator, parent: [:view], target: :image1, code: "alert :web", left: 333, top: 333, width: 199, height: 99,
 # }
@@ -123,7 +138,7 @@ my_animation = Atome.new(
 end
 
 my_video = Atome.new(
-  video: { render: [:html], data: :dummy, id: :video1, type: :video, parent: [:view], path: "./medias/videos/avengers.mp4", left: 333, top: 333, width: 199, height: 99,
+  video: { render: [:html], data: :dummy, id: :video1, type: :video, parent: [:view], path: './medias/videos/avengers.mp4', left: 333, top: 333, width: 199, height: 99,
   }
 ) do |params|
   puts "video callback here #{params}"
@@ -132,9 +147,99 @@ end
 
 # TODO int8! : language
 
+# verif video
+grab(:video1).time(5)
+
+grab(:video1).on(:pause) do |event|
+  alert :stopped
+end
+
 b = box
 b.touch(true) do
   grab(:video1).play(true) do |event|
     puts "i am the play callback : #{event}"
   end
 end
+
+#### code
+mycode = <<Struct
+circle({color: :red})
+Struct
+
+Atome.new(video: { id: :code1, code: mycode })
+
+
+
+# write({string: :hello_all, data: :lorem})
+
+######## tests
+
+module Genesis
+  def self.particle_creator(method_name, &proc)
+    instance_exec(method_name, &proc) if proc.is_a?(Proc)
+    # we add the new method to the particle's collection of methods
+    Utilities.particle_list(method_name)
+    Atome.define_method method_name do |params = nil, &user_proc|
+      new_particle(method_name, params, user_proc)
+    end
+    # no we also add the method= for easy setting
+    Atome.define_method("#{method_name}=") do |params, &user_proc|
+      new_particle(method_name, params, user_proc)
+    end
+    additional_particle_methods(method_name)
+  end
+end
+
+# ### tests ###
+
+class Atome
+  def write(params = {})
+    default_renderer = Sanitizer.default_params[:render]
+    generated_id = params[:id] || "text_#{Universe.atomes.length}"
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+    generated_parent = params[:parent] || id
+
+    temp_default = { render: [generated_render], id: generated_id, type: :text, parent: [generated_parent],
+                     visual: { size: 33 }, data: "lorem ipsum", left: 39, top: 33, width: 199, height: 33,
+                     color: { render: [generated_render], id: "color_#{generated_id}", type: :color,
+                              red: 0.09, green: 1, blue: 0.12, alpha: 1 } }
+
+    params = temp_default.merge(params)
+    new_atome = Atome.new({ text: params })
+    new_atome.text
+  end
+end
+
+def write(params = {})
+  alert "create an option for atome and use instance_exec instead of creating new method in atome that will conflict"
+  grab(:view).write(params)
+end
+
+Genesis.atome_creator(:text)
+
+class Atome
+  def text_data(value)
+    @html_object.text = value
+  end
+end
+Genesis.generate_html_renderer(:data) do |value, atome, proc|
+  #TODO create a method for ech type
+  send("#{type}_data",value)
+end
+
+Genesis.generate_html_renderer(:text) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    div(id: id_found).atome
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_type = :text
+end
+
+
+# text = Atome.new(
+#   text: { render: [:html], id: :text1, type: :text, parent: [:view], visual: { size: 33 }, data: "hello!", left: 300, top: 33, width: 199, height: 33, }
+# )
+# text.text.data(:kool)
+write({data: :kooloii})

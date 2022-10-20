@@ -306,11 +306,11 @@ end
 # text
 
 Genesis.atome_creator(:text)
-Genesis.particle_creator(:string)
-
-Genesis.generate_html_renderer(:string) do |value, atome, proc|
-  @html_object.text = value
-end
+# Genesis.particle_creator(:string)
+#
+# Genesis.generate_html_renderer(:string) do |value, atome, proc|
+#   @html_object.text = value
+# end
 Genesis.particle_creator(:visual)
 Genesis.generate_html_renderer(:visual) do |value, atome, proc|
   @html_object.style['font-size'] = "#{value[:size]}px"
