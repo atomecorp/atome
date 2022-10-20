@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # TODO: params shouldn't be merge but they must respect the order
-
+# TODO: Add default value for each methods below
+# TODO: Factorise codes below
 class Atome
   def box(params = {})
     default_renderer = Sanitizer.default_params[:render]
@@ -29,6 +30,7 @@ class Atome
     new_atome = Atome.new({ shape: params })
     new_atome.shape
   end
+
 end
 
 def box(params = {})
@@ -37,4 +39,8 @@ end
 
 def circle(params = {})
   Utilities.grab(:view).circle(params)
+end
+
+def text(params = {})
+  Utilities.grab(:view).text(params)
 end

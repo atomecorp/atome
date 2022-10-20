@@ -18,7 +18,8 @@ end
 
 require 'atome/kernel/universe'
 require 'atome/kernel/generators/genesis'
-require 'atome/extensions/utilities'
+require 'atome/kernel/helpers/internal_methods'
+require 'atome/kernel/helpers/utilities'
 require 'atome/renderers/renderer'
 require 'atome/kernel/generators/sanitizer'
 require 'atome/kernel/generators/generator'

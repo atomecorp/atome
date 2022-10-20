@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-require 'atome/extensions/sha'
-require 'atome/extensions/ping'
-require 'atome/extensions/geolocation'
+require 'atome/kernel/helpers/sha'
+require 'atome/kernel/helpers/ping'
+require 'atome/kernel/helpers/geolocation'

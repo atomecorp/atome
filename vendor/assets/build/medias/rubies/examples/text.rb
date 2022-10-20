@@ -1,5 +1,7 @@
 text = Atome.new(
-  text: { render: [:html], id: :text1, type: :text, parent: [:view], visual: { size: 33 }, string: "hello!", left: 399, top: 633, width: 199, height: 33,
-  }
+  text: { render: [:html], id: :text1, type: :text, parent: [:view], visual: { size: 33 }, data: "My text!", left: 300, top: 33, width: 199, height: 33, }
 )
 text.text.string(:kool)
+
+b=box({drag: true, left: 66, top: 66})
+b.text({ data: "drag the bloc behind me" })
