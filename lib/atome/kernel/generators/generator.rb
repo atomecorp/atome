@@ -3,8 +3,8 @@
 # generators
 
 Genesis.particle_creator(:html_type)
-Genesis.particle_creator(:html_object)
 
+Genesis.particle_creator(:html_object)
 
 Genesis.atome_creator(:shape)
 
@@ -305,9 +305,25 @@ end
 
 # text
 
-Genesis.atome_creator(:text)
-# Genesis.particle_creator(:string)
-#
+Genesis.atome_creator(:text) do |params|
+  # todo:  factorise code below
+  if params
+    default_renderer = Sanitizer.default_params[:render]
+    generated_id = params[:id] || "text_#{Universe.atomes.length}"
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+    generated_parent = params[:parent] || id
+
+    default_params = { render: [generated_render], id: generated_id, type: :text, parent: [generated_parent],
+                       visual: { size: 33 }, data: "hello world", left: 39, top: 33, width: 199, height: 33,
+                       color: { render: [generated_render], id: "color_#{generated_id}", type: :color,
+                                red: 0.09, green: 1, blue: 0.12, alpha: 1 } }
+    params = default_params.merge(params)
+    params
+  end
+  params
+end
+Genesis.particle_creator(:string)
+
 # Genesis.generate_html_renderer(:string) do |value, atome, proc|
 #   @html_object.text = value
 # end
@@ -315,6 +331,7 @@ Genesis.particle_creator(:visual)
 Genesis.generate_html_renderer(:visual) do |value, atome, proc|
   @html_object.style['font-size'] = "#{value[:size]}px"
 end
+
 Genesis.generate_html_renderer(:text) do |value, atome, proc|
   id_found = id
   instance_exec(&proc) if proc.is_a?(Proc)
@@ -385,3 +402,10 @@ Genesis.generate_html_renderer(:web) do |value, atome, proc|
   @html_type = :web
 end
 
+
+Genesis.particle_creator(:data)
+
+Genesis.generate_html_renderer(:data) do |value, atome, proc|
+  # TODO: create a method for each type
+  send("#{type}_data", value)
+end
