@@ -27,6 +27,13 @@ class Atome
     puts "replace : #{params}"
   end
 
+  def clear
+    child.each do |child_found|
+      grab(child_found).html_object&.remove
+    end
+    child([])
+  end
+
   def delete(params)
     puts "replace : #{params}"
   end

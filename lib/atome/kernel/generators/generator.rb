@@ -103,11 +103,14 @@ Genesis.particle_creator(:drm)
 #   # child(params)
 #   params
 # end
+Genesis.particle_creator(:child)
 
 Genesis.particle_creator(:parent) do |parents|
   parents.each do |parent|
-    alert "#{id} : #{parent} "
-    grab(parent).child << id
+    #TODO : create a root atome instead of using the condition below
+    if parent != :user_view
+      grab(parent).child << id
+    end
   end
   # child(params)
   parents
@@ -417,4 +420,22 @@ Genesis.particle_creator(:data)
 Genesis.generate_html_renderer(:data) do |value, atome, proc|
   # TODO: create a method for each type
   send("#{type}_data", value)
+end
+
+
+Genesis.particle_creator(:code)
+Genesis.atome_creator_option(:code_pre_render_proc) do |params|
+  def get_binding
+    binding
+  end
+  str = params[:value]
+  eval str, get_binding, __FILE__, __LINE__
+  params[:value]
+end
+Genesis.particle_creator(:on)
+
+Genesis.generate_html_renderer(:on) do |value, atome, proc|
+  @html_object.on(value) do |e|
+    instance_exec(e, &proc) if proc.is_a?(Proc)
+  end
 end

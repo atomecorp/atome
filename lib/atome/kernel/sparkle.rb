@@ -9,11 +9,12 @@ default_render = if RUBY_ENGINE.downcase == 'opal'
                    :headless
                  end
 
+
 Sanitizer.default_params[:render] = default_render
 Atome.new(
   { shape: { render: [default_render], id: :view, type: :shape, parent: [:user_view],
              left: 0, right: 0, top: 0, bottom: 0,overflow: :auto,
-             color: { render: [default_render], id: :c1, type: :color,
+             color: { render: [default_render], id: :view_color, type: :color,
                       red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } }
 )
 
