@@ -355,7 +355,28 @@ end
 
 
 # video
+
+
 Genesis.atome_creator(:video)
+
+# Genesis.atome_creator(:video) do |params, &proc|
+#   alert proc.class
+#   # todo:  factorise code below
+#   if params
+#     default_renderer = Sanitizer.default_params[:render]
+#     generated_id = params[:id] || "video_#{Universe.atomes.length}"
+#     generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+#     generated_parent = params[:parent] || id
+#
+#     default_params = { render: [generated_render], data: :dummy, id: generated_id, type: :video, parent: [generated_parent],
+#                        path: './medias/videos/video_missing.mp4', left: 39, top: 33, width: 199, height: 33}
+#     params = default_params.merge(params)
+#   end
+#   params
+# end
+
+
+
 Genesis.generate_html_renderer(:video) do |value, atome, proc|
   id_found = id
   instance_exec(&proc) if proc.is_a?(Proc)

@@ -28,7 +28,6 @@
 #   Utilities.grab(:view).animation(params, &proc)
 # end
 #
-Genesis.particle_creator(:play)
 #
 # class Atome
 #
@@ -42,28 +41,6 @@ Genesis.particle_creator(:play)
 #     new_atome = Atome.new({ animator: params })
 #     new_atome.animator
 #   end
-#
-def play_video(params, &proc)
-  # puts "I play the video : #{params[:atome].html_object}"
-  params[:atome].html_object.style[:left] = '33px'
-
-  params[:atome].html_object.play
-  puts "time is : #{params[:atome].html_object.currentTime}"
-  # TODO : change timeupdate for when possible requestVideoFrameCallback (opal-browser/opal/browser/event.rb line 36)
-  params[:atome].html_object.on(:timeupdate) do |e|
-    # e.prevent # Prevent the default action (eg. form submission)
-    # You can also use `e.stop` to stop propagating the event to other handlers.
-    puts "--- #{params[:atome].html_object.currentTime}:::#{e}"
-  end
-  wait 2 do
-    params[:atome].html_object.currentTime = 33
-  end
-  wait 6 do
-    params[:atome].html_object.pause
-  end
-  exec_found = params[:atome].bloc[:bloc] # this is the video callback not the play callback
-  instance_exec('::callback from video player', &exec_found) if exec_found.is_a?(Proc)
-end
 
 #
 #   def play_animator(params)
@@ -73,6 +50,25 @@ end
 #   end
 # end
 #
+
+Genesis.particle_creator(:play)
+
+def play_video(params, &proc)
+  # puts "I play the video : #{params[:atome].html_object}"
+  # params[:atome].html_object.style[:left] = '33px'
+
+  params[:atome].html_object.play
+  # TODO : change timeupdate for when possible requestVideoFrameCallback (opal-browser/opal/browser/event.rb line 36)
+  video_callback = params[:atome].bloc[:bloc] # this is the video callback not the play callback
+  play_callback = params[:proc] # this is the video callback not the play callback
+  params[:atome].html_object.on(:timeupdate) do |e|
+    # e.prevent # Prevent the default action (eg. form submission)
+    # You can also use `e.stop` to stop propagating the event to other handlers.
+    instance_exec(params[:atome].html_object.currentTime, &play_callback) if play_callback.is_a?(Proc)
+    instance_exec(params[:atome].html_object.currentTime, &video_callback) if video_callback.is_a?(Proc)
+  end
+end
+
 Genesis.atome_creator_option(:play_pre_render_proc) do |params|
   params[:atome].send("play_#{params[:atome].type}", params)
   proc_found = params[:proc]
@@ -82,10 +78,68 @@ Genesis.atome_creator_option(:play_pre_render_proc) do |params|
   instance_exec('::call back from play render', &proc_found) if proc_found.is_a?(Proc)
 end
 
+Genesis.particle_creator(:pause)
+
+def pause_video(params, &proc)
+  params[:atome].html_object.pause
+  exec_found = params[:atome].bloc[:bloc] # this is the video callback not the play callback
+  instance_exec('::callback from video player', &exec_found) if exec_found.is_a?(Proc)
+end
+
+Genesis.atome_creator_option(:pause_pre_render_proc) do |params|
+  params[:atome].send("pause_#{params[:atome].type}", params)
+  proc_found = params[:proc]
+  instance_exec('::call back from pause render', &proc_found) if proc_found.is_a?(Proc)
+end
+
 Genesis.particle_creator(:time)
 Genesis.generate_html_renderer(:time) do |value, atome, proc|
   # params[:atome].html_object.currentTime= 33
   @html_object.currentTime = value
+end
+
+my_video = Atome.new(
+  video: { render: [:html], data: :dummy, id: :video1, type: :video, parent: [:view], path: './medias/videos/avengers.mp4', left: 333, top: 333, width: 199, height: 99,
+  }
+) do |params|
+  puts "video callback here #{params}"
+end
+
+# my_video=video({path: './medias/videos/avengers.mp4', id: :video1}) do |params|
+#   puts "video callback here #{params}"
+# end
+
+
+my_video.video.play(true) do |currentTime|
+  puts "play callback time is : #{currentTime}"
+end
+
+wait 2 do
+  # my_video.video.time(15)
+  #
+  my_video.video.pause(true) do |p|
+    alert :paused
+  end
+  #   # params[:atome].html_object.pause
+  #   # params[:atome].html_object.currentTime = 33
+end
+# wait 6 do
+#   params[:atome].html_object.pause
+# end
+
+# verif video
+# grab(:video1).time(15)
+#
+grab(:video1).on(:pause) do |event|
+  alert :supercool
+  text({ data: :stopped })
+end
+
+b = box
+b.touch(true) do
+  grab(:video1).play(true) do |event|
+    puts "i am the play callback : #{event}"
+  end
 end
 
 #
@@ -118,31 +172,9 @@ end
 #
 #
 #
-my_video = Atome.new(
-  video: { render: [:html], data: :dummy, id: :video1, type: :video, parent: [:view], path: './medias/videos/avengers.mp4', left: 333, top: 333, width: 199, height: 99,
-  }
-) do |params|
-  puts "video callback here #{params}"
-end
-my_video.video.play(true)
 
-
-# verif video
-grab(:video1).time(5)
-#
-grab(:video1).on(:pause) do |event|
-  text({ data: :stopped })
-end
-
-b = box
-b.touch(true) do
-  grab(:video1).play(true) do |event|
-    puts "i am the play callback : #{event}"
-  end
-end
-
-
-# TODO int8! : language
+# TODO:  create a video object for noobs
+# TODO: int8! : language
 # TODO: record user actions
 # TODO: separate the audio in the video
 # TODO: add mute to video

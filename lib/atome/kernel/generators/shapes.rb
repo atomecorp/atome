@@ -44,3 +44,7 @@ end
 def text(params = {})
   Utilities.grab(:view).text(params)
 end
+
+def video(params = {})
+  Utilities.grab(:view).video(params)
+end
