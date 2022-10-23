@@ -86,7 +86,7 @@ Genesis.particle_creator(:smooth)
 Genesis.particle_creator(:blur)
 Genesis.particle_creator(:touch)
 # Genesis.atome_creator_option(:type_pre_render_proc) do |params|
-#   # alert "it works and get #{params}"
+#   # "it works and get #{params}"
 #   params[:value]
 # end
 
@@ -98,11 +98,7 @@ Genesis.particle_creator(:touch)
 Genesis.particle_creator(:render)
 Genesis.particle_creator(:drm)
 
-# Genesis.particle_creator(:parent) do |params|
-#   # alert params
-#   # child(params)
-#   params
-# end
+
 Genesis.particle_creator(:child)
 
 Genesis.particle_creator(:parent) do |parents|
@@ -112,7 +108,6 @@ Genesis.particle_creator(:parent) do |parents|
       grab(parent).child << id
     end
   end
-  # child(params)
   parents
 end
 
@@ -122,6 +117,7 @@ Genesis.atome_creator_option(:parent_pre_render_proc) do |params|
   end
   params[:value]
 end
+
 Genesis.particle_creator(:date)
 Genesis.particle_creator(:location)
 
@@ -190,9 +186,7 @@ Genesis.generate_html_renderer(:alpha) do |value, atome, proc|
   $document[id].inner_html = "\n.#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{value})}\n"
 end
 
-Genesis.generate_html_renderer(:drm) do |value, atome, proc|
-  # instance_exec(&proc) if proc.is_a?(Proc)
-end
+Genesis.generate_html_renderer(:drm)
 
 Genesis.generate_html_renderer(:parent) do |values, atome, proc|
   instance_exec(&proc) if proc.is_a?(Proc)
@@ -357,23 +351,23 @@ end
 # video
 
 
-Genesis.atome_creator(:video)
+# Genesis.atome_creator(:video)
 
-# Genesis.atome_creator(:video) do |params, &proc|
-#   alert proc.class
-#   # todo:  factorise code below
-#   if params
-#     default_renderer = Sanitizer.default_params[:render]
-#     generated_id = params[:id] || "video_#{Universe.atomes.length}"
-#     generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
-#     generated_parent = params[:parent] || id
-#
-#     default_params = { render: [generated_render], data: :dummy, id: generated_id, type: :video, parent: [generated_parent],
-#                        path: './medias/videos/video_missing.mp4', left: 39, top: 33, width: 199, height: 33}
-#     params = default_params.merge(params)
-#   end
-#   params
-# end
+Genesis.atome_creator(:video) do |params, &proc|
+  # new try here
+  # instance_exec(&proc) if proc.is_a?(Proc)
+  # todo:  factorise code below
+  if params
+    default_renderer = Sanitizer.default_params[:render]
+    generated_id = params[:id] || "video_#{Universe.atomes.length}"
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+    generated_parent = params[:parent] || id
+    default_params = { render: [generated_render],id: generated_id, type: :video, parent: [generated_parent],
+                      path: './medias/videos/video_missing.mp4', left: 39, top: 33, width: 199, height: 33}
+    params = default_params.merge(params)
+  end
+  params
+end
 
 
 

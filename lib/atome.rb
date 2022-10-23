@@ -55,6 +55,6 @@ require 'atome/kernel/sparkle'
 # end
 
 
-
+# puts Universe.atomes.length
 
 

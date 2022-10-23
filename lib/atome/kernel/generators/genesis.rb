@@ -35,6 +35,7 @@ module GenesisKernel
 
   def get_new_particle(particle)
     return false unless validation(particle)
+
     particle_instance_variable = "@#{particle}"
     value_getted=instance_variable_get(particle_instance_variable)
     Genesis.run_optional_methods_helper("#{particle}_getter_pre_proc".to_sym, { value: value_getted, atome: self })
@@ -43,7 +44,7 @@ module GenesisKernel
   def new_particle(particle, params, proc, &methodproc)
     if params
       if methodproc.is_a?(Proc)
-        puts "#{particle} #{params}"
+        puts "msg from new_particle : #{particle} #{params}"
         params = instance_exec(params, &methodproc)
       end
       set_new_particle(particle, params, &proc)
@@ -56,11 +57,16 @@ module GenesisKernel
 
   def create_new_atomes(params, instance_var, _atome)
     new_atome = Atome.new({})
+    Universe.atomes_add(new_atome)
     instance_variable_set(instance_var, new_atome)
     # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
+
     params.each do |param, value|
+      # puts   "ici #{new_atome.class} #{new_atome}\n#{param},#{value}"
+      # puts  "###### #{param},#{value}"
       new_atome.send(param, value)
     end
+    new_atome
   end
 
   def set_new_atome(atome, params, proc)
@@ -68,11 +74,13 @@ module GenesisKernel
 
     instance_var = "@#{atome}"
     # now we exec the first optional method
-    params=Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { value: params, proc: proc })
-    create_new_atomes(params[:value], instance_var, atome)
+    params = Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { value: params, proc: proc })
+    new_atome = create_new_atomes(params[:value], instance_var, atome)
+
     # now we exec the second optional method
     Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym, { value: params, proc: proc })
     @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
+    # new_atome
     self
   end
 
@@ -205,6 +213,7 @@ module Genesis
     Utilities.atome_list(method_name)
     # we define many methods : easy, method=,pluralised and the fasts one, here is the easy
     Atome.define_method method_name do |params = nil, &user_proc|
+      puts " from self.atome_creator\n#{params}"
       new_atome(method_name, params, user_proc, &methodproc)
     end
     # no we also add the method= for easy setting

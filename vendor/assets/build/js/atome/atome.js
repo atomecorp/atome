@@ -66,3 +66,15 @@ class Atomeanimation{
 
 
 }
+
+// TODO: put in a class
+
+const atome = {
+    jsSchedule: function (years, months, days, hours, minutes, seconds, proc) {
+        const now = new Date();
+        const formatedDate = new Date(years, months - 1, days, hours, minutes, seconds);
+        const diffTime = Math.abs(formatedDate - now);
+        setTimeout(function () {
+            Opal.Object.$schedule_callback(proc);
+        }, diffTime);
+    }}
