@@ -110,8 +110,8 @@ end
 
 module Genesis
 
-  def create_new_atomes(params, instance_var, _atome,&proc)
-    new_atome = Atome.new({},&proc)
+  def create_new_atomes(params, instance_var, _atome,&userproc)
+    new_atome = Atome.new({},&userproc)
     Universe.atomes_add(new_atome)
     instance_variable_set(instance_var, new_atome)
     # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
@@ -125,8 +125,11 @@ module Genesis
   end
   def new_atome(atome, params, userproc, &methodproc)
     if params
-      # alert "methodproc : \n#{methodproc}"
-      instance_exec(params, &userproc) if userproc.is_a?(Proc)
+      # alert "#{atome}\n#{params}\n#{userproc}\n#{methodproc}"
+      # params.delete(:bloc)
+      # if I want to store the proc do it right now
+      # the user proc is executed right now
+      # instance_exec(params, &toto) if toto.is_a?(Proc)
       # params[:bloc]=methodproc
       # the line below execute the proc associated to the method, ex Genesis.atome_creator(:color) do ...(proc)
       params = instance_exec(params, &methodproc) if methodproc.is_a?(Proc)
@@ -137,39 +140,62 @@ module Genesis
       get_new_atome(atome)
     end
   end
-  def set_new_atome(atome, params, proc )
+  def set_new_atome(atome, params, userproc )
     # instance_exec(params, &proc) if proc.is_a?(Proc)
     # instance_exec(params, &userproc) if userproc.is_a?(Proc)
-
+    params[:bloc]=userproc
     return false unless validation(atome)
 
     instance_var = "@#{atome}"
     # now we exec the first optional method
-    params = Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { value: params, proc: proc })
+    params = Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { value: params, proc: userproc })
 
-    new_atome = create_new_atomes(params[:value], instance_var, atome,&proc)
+    new_atome = create_new_atomes(params[:value], instance_var, atome,&userproc)
 
     # now we exec the second optional method
-    Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym, { value: params, proc: proc })
+    Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym, { value: params, proc: userproc })
     @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
     new_atome
   end
 end
 
+Genesis.atome_creator_option(:shape_pre_save_proc) do |params|
+  # alert params
+  bloc_found=params[:value][:bloc]
+  instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
+  # puts "2- optional color_post_save_proc: #{params}\n"
+
+  params
+end
+
+Genesis.atome_creator_option(:text_pre_save_proc) do |params|
+  # alert params
+  bloc_found=params[:value][:bloc]
+  instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
+  # puts "2- optional color_post_save_proc: #{params}\n"
+
+  params
+end
 
 class Atome
-  def initialize(params = {}, &proc)
-    # alert "params is #{params}"
+  def initialize(params = {}, &bloc)
+
     # We initialize the renderer here
     @render = []
     # @parent = []
     @child = []
     # # TODO: check if we need to add properties for the root object before sending the params
     # alert "params : #{params}"
+    # params[:shape] = { bloc: bloc }
+    # params[:bloc] = { bloc: bloc }
     params.each do |atome, values|
       # We add the proc if it exist
-      values[:bloc] = { bloc: proc }
-      new_atome= send(atome, values,&proc)
+      # alert atome
+
+      new_atome= send(atome, values,&bloc)
+      # new_atome= send(atome, values)
+
+
       # puts new_atome
       # Universe.atomes_add(new_atome)
       # puts "#{atome} #{new_atome}"
@@ -179,42 +205,94 @@ class Atome
   end
 end
 
-Genesis.atome_creator_option(:shape_pre_save_proc) do |params|
-  play_callback = params[:bloc] # this is the video callback not the play callback
-  # alert "shape: \n#{params}"
-  alert params
-  instance_exec("kool : params", &play_callback) if play_callback.is_a?(Proc)
-  # params[:atome].send("play_#{params[:atome].type}", params)
-  params
-end
 
-Genesis.atome_creator_option(:text_pre_save_proc) do |params|
-  play_callback = params[:proc] # this is the video callback not the play callback
-  # alert "text: \n#{params}"
-  # instance_exec("kool : params", &play_callback) if play_callback.is_a?(Proc)
-  # params[:atome].send("play_#{params[:atome].type}", params)
-  params
-end
 
-b=box({id: :my_box}) do |p|
+
+
+box({id: :my_box}) do |p|
   alert :ok_cest_ok_box
 end
 
-text=text({id: :my_text}) do |p|
-  alert :ok_cest_ok_text
-end
 Atome.new(
-  { shape: { render: [:html], id: :the_new, type: :shape, parent: [:view],
-             left: 0, right: 0, top: 0, bottom: 0,overflow: :auto,
-             color: { render: [:html], id: :the_new_color, type: :color,
-                      red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } }
+  { shape: { render: [:html], id: :view_test, type: :shape, parent: [:view],
+             left: 0, width: 90, top: 0, height: 90,overflow: :auto,
+             color: { render: [:html], id: :view_test_color, type: :color,
+                      red: 1, green: 0.15, blue: 0.15, alpha: 1 } } }
 ) do |p|
-  alert :koolybooly
+  alert "ok_cest_pout atomic box"
 end
 
-b.left(99) do |pa|
-  alert "ok #{pa}"
+def text(params = {}, &bloc)
+  Utilities.grab(:view).text(params,&bloc)
 end
+text({id: :my_text}) do |p|
+  alert :ok_cest_ok_text
+end
+
+text = Atome.new(
+  text: { render: [:html], id: :text1, type: :text, parent: [:view], visual: { size: 33 }, data: "My text!", left: 300, top: 33, width: 199, height: 33, }
+)do |p|
+  alert :ok_cest_ok_text_atomic
+end
+
+# Genesis.generate_html_renderer(:image) do |value, atome, proc|
+#   id_found = id
+#   instance_exec(&proc) if proc.is_a?(Proc)
+#   DOM do
+#     img({ id: id_found }).atome
+#   end.append_to($document[:user_view])
+#   @html_object = $document[id_found]
+#   @html_type = :image
+# end
+
+
+# Genesis.atome_creator(:text) do |params,&proc_do|
+#   instance_exec(&proc_do) if proc_do.is_a?(Proc)
+#   # todo:  factorise code below
+#   if params
+#     default_renderer = Sanitizer.default_params[:render]
+#     generated_id = params[:id] || "text_#{Universe.atomes.length}"
+#     generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+#     generated_parent = params[:parent] || id
+#
+#     default_params = { render: [generated_render], id: generated_id, type: :text, parent: [generated_parent],
+#                        visual: { size: 33 }, data: "hello world", left: 39, top: 33, width: 199, height: 33,
+#                        color: { render: [generated_render], id: "color_#{generated_id}", type: :color,
+#                                 red: 0.09, green: 1, blue: 0.12, alpha: 1 } }
+#     params = default_params.merge(params)
+#     params
+#   end
+#   params
+# end
+
+
+
+
+
+# Atome.new(
+#   image: { render: [:html], id: :image1, type: :image, parent: [:view], path: "./medias/images/boat.png", left: 99, top: 120, width: 199, height: 199,
+#   }
+# ) do |p|
+#   alert :ok_cest_ok_imageoo
+#
+# end
+# Atome.new(
+#   { shape: { render: [:html], id: :the_new, type: :shape, parent: [:view],
+#              left: 0, right: 0, top: 0, bottom: 0,overflow: :auto,
+#              color: { render: [:html], id: :the_new_color, type: :color,
+#                       red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } }
+# ) do |p|
+#   alert :koolybooly
+# end
+
+################@ left callback example
+# Genesis.generate_html_renderer(:left) do |value, atome, user_proc|
+#   instance_exec(&user_proc) if user_proc.is_a?(Proc)
+# end
+#
+# b.left(99) do |pa|
+#   alert "ok #{pa}"
+# end
 ############### verif using  video method
 
 # module Genesis
@@ -384,5 +462,16 @@ end
 # # # alert Universe.atomes.length
 
 
+
+###########
+# Genesis.generate_html_renderer(:drag) do |value, atome, user_proc|
+#   instance_exec(&user_proc) if user_proc.is_a?(Proc)
+# end
+#
+# b=box
+# b.drag(true) do |x, y|
+#   # below here is the callback :
+#   alert "drag position: #{x}"
+# end
 
 

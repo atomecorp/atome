@@ -44,7 +44,7 @@ module GenesisKernel
   def new_particle(particle, params, proc, &methodproc)
     if params
       if methodproc.is_a?(Proc)
-        puts "msg from new_particle : #{particle} #{params}"
+        # puts "msg from new_particle : #{particle} #{params}"
         params = instance_exec(params, &methodproc)
       end
       set_new_particle(particle, params, &proc)
@@ -208,16 +208,17 @@ module Genesis
 
   # we create the easy methods here : ¬
   def self.atome_creator(method_name, &methodproc)
+
     # instance_exec(method_name, &methodproc) if methodproc.is_a?(Proc)
     # we add the new method to the atome's collection of methods
     Utilities.atome_list(method_name)
     # we define many methods : easy, method=,pluralised and the fasts one, here is the easy
     Atome.define_method method_name do |params = nil, &user_proc|
-      puts " from self.atome_creator\n#{params}"
       new_atome(method_name, params, user_proc, &methodproc)
     end
     # no we also add the method= for easy setting
     Atome.define_method("#{method_name}=") do |params, &user_proc|
+      puts "user_proc is #{user_proc}"
       new_atome(method_name, params, user_proc)
     end
     optional_atome_methods(method_name)

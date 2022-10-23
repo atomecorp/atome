@@ -79,7 +79,7 @@ class Atome
     end
   end
 
-  def initialize(params = {}, &proc)
+  def initialize(params = {}, &bloc)
 
     # We initialize the renderer here
     @render = []
@@ -87,10 +87,16 @@ class Atome
     @child = []
     # # TODO: check if we need to add properties for the root object before sending the params
     # alert "params : #{params}"
+    # params[:bloc] = { bloc: proc }
+    params[:bloc] = { bloc: bloc }
     params.each do |atome, values|
       # We add the proc if it exist
-      values[:bloc] = { bloc: proc }
+
+
+      # new_atome= send(atome, values,&proc)
       new_atome= send(atome, values)
+
+
       # puts new_atome
       # Universe.atomes_add(new_atome)
       # puts "#{atome} #{new_atome}"

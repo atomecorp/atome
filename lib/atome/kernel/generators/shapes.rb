@@ -3,17 +3,22 @@
 # TODO: Add default value for each methods below
 # TODO: Factorise codes below
 class Atome
-  def box(params = {})
+  def box(params = {}, &bloc)
+    # params[:bloc]=proc if proc.is_a?(Proc)
+    # proc_found=params[:bloc]
+    # instance_exec(&bloc) if bloc.is_a?(Proc)
+
+
     default_renderer = Sanitizer.default_params[:render]
     generated_id = params[:id] || "box_#{Universe.atomes.length}"
     generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
     generated_parent = params[:parent] || id
 
-    temp_default = { render: [generated_render], id: generated_id, type: :shape, parent: [generated_parent], width: 99, height: 99, left: 9, top: 9,
+    temp_default = { render: [generated_render], id: generated_id,  type: :shape, parent: [generated_parent], width: 99, height: 99, left: 9, top: 9,
                      color: { render: [generated_render], id: "color_#{generated_id}", type: :color,
                               red: 0.69, green: 0.69, blue: 0.69, alpha: 1 } }
     params = temp_default.merge(params)
-    new_atome = Atome.new({ shape: params })
+    new_atome = Atome.new({ shape: params},&bloc )
     new_atome.shape
   end
 
@@ -33,18 +38,23 @@ class Atome
 
 end
 
-def box(params = {})
-  Utilities.grab(:view).box(params)
+def box(params = {}, &proc)
+  # params[:bloc]=proc if proc.is_a?(Proc)
+  Utilities.grab(:view).box(params,&proc)
 end
 
-def circle(params = {})
-  Utilities.grab(:view).circle(params)
+def circle(params = {}, &proc)
+  Utilities.grab(:view).circle(params,&proc)
 end
 
-def text(params = {})
+def text(params = {}, &bloc)
+  # alert "remove the code below!!!!"
+  # instance_exec(params, &bloc) if bloc.is_a?(Proc)
+  params[:bloc]= bloc
+  # params[:bloc]=&bloc
   Utilities.grab(:view).text(params)
 end
 
-def video(params = {})
-  Utilities.grab(:view).video(params)
+def video(params = {}, &proc)
+  Utilities.grab(:view).video(params,&proc)
 end

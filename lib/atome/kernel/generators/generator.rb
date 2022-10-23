@@ -265,6 +265,7 @@ end
 
 #drag
 def dragCallback(page_x, page_y, x, y, current_object, proc)
+  # Note this method is call from atome.js  :  AtomeDrag methods
   current_object.instance_variable_set('@left', x)
   current_object.instance_variable_set('@top', y)
   instance_exec(page_x, page_y, &proc) if proc.is_a?(Proc)
@@ -311,7 +312,7 @@ end
 # text
 
 Genesis.atome_creator(:text) do |params|
-  # todo:  factorise code below
+  # TODO: factorise code below
   if params
     default_renderer = Sanitizer.default_params[:render]
     generated_id = params[:id] || "text_#{Universe.atomes.length}"
