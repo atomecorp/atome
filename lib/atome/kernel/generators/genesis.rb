@@ -37,14 +37,13 @@ module GenesisKernel
     return false unless validation(particle)
 
     particle_instance_variable = "@#{particle}"
-    value_getted=instance_variable_get(particle_instance_variable)
+    value_getted = instance_variable_get(particle_instance_variable)
     Genesis.run_optional_methods_helper("#{particle}_getter_pre_proc".to_sym, { value: value_getted, atome: self })
   end
 
   def new_particle(particle, params, proc, &methodproc)
     if params
       if methodproc.is_a?(Proc)
-        # puts "msg from new_particle : #{particle} #{params}"
         params = instance_exec(params, &methodproc)
       end
       set_new_particle(particle, params, &proc)
@@ -62,8 +61,6 @@ module GenesisKernel
     # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
 
     params.each do |param, value|
-      # puts   "ici #{new_atome.class} #{new_atome}\n#{param},#{value}"
-      # puts  "###### #{param},#{value}"
       new_atome.send(param, value)
     end
     new_atome
@@ -89,7 +86,7 @@ module GenesisKernel
 
     # Genesis.run_optional_methods_helper("#{atome}_getter_pre_proc".to_sym, { value: false })
     atome_instance_variable = "@#{atome}"
-    value_getted=instance_variable_get(atome_instance_variable)
+    value_getted = instance_variable_get(atome_instance_variable)
     Genesis.run_optional_methods_helper("#{atome}_getter_pre_proc".to_sym, { value: value_getted })
 
   end
@@ -127,10 +124,15 @@ module Genesis
     @optionals_methods[property_name] = proc
   end
 
-  def self.run_optional_methods_helper(method_name, params, atome=nil)
+  def self.run_optional_methods_helper(method_name, params, atome = nil)
+
     proc = nil
     proc = @optionals_methods[method_name] if @optionals_methods
-    instance_exec(params,atome, &proc) if proc.is_a?(Proc)
+    # it should run a method like :
+    # bloc_render_proc
+    # render_getter_pre_proc
+    # bloc_post_render_proc
+    instance_exec(params, atome, &proc) if proc.is_a?(Proc)
   end
 
   # #fIXME : we may have to remove the 2 methods below its only for test
@@ -179,12 +181,12 @@ module Genesis
       params
     end
 
-    Genesis.atome_creator_option("#{method_name}_sanitizer_proc".to_sym) do |params,atome, proc|
+    Genesis.atome_creator_option("#{method_name}_sanitizer_proc".to_sym) do |params, atome, proc|
       # we return the value
       params
     end
 
-    Genesis.atome_creator_option("#{method_name}_getter_pre_proc".to_sym) do |params,atome, proc|
+    Genesis.atome_creator_option("#{method_name}_getter_pre_proc".to_sym) do |params, atome, proc|
       # we return the value
       params[:value]
     end
@@ -218,7 +220,6 @@ module Genesis
     end
     # no we also add the method= for easy setting
     Atome.define_method("#{method_name}=") do |params, &user_proc|
-      puts "user_proc is #{user_proc}"
       new_atome(method_name, params, user_proc)
     end
     optional_atome_methods(method_name)
@@ -269,7 +270,7 @@ module Genesis
     # we add the new method to the particle's collection of methods
     Utilities.particle_list(method_name)
     Atome.define_method method_name do |params = nil, &user_proc|
-      new_particle(method_name, params, user_proc,&methodproc)
+      new_particle(method_name, params, user_proc, &methodproc)
     end
     # no we also add the method= for easy setting
     Atome.define_method("#{method_name}=") do |params, &user_proc|

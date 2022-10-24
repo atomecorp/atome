@@ -349,13 +349,6 @@ Genesis.generate_html_renderer(:text) do |value, atome, proc|
 end
 
 
-# video
-
-
-# Genesis.atome_creator(:video)
-
-
-
 # particles method below to allow to retrieve all particles for an atome
 Genesis.particle_creator(:particles)
 Genesis.atome_creator_option(:particles_getter_pre_proc) do |params|
