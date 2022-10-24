@@ -1,4 +1,4 @@
-# # animation atome
+####################### animation tests
 #
 # Genesis.atome_creator(:animator)
 # Genesis.generate_html_renderer(:animator) do |value, atome, proc|
@@ -51,63 +51,6 @@
 # end
 #
 
-Genesis.particle_creator(:play)
-
-
-def play_video(params, &proc)
-  # puts "I play the video : #{params[:atome].html_object}"
-  # params[:atome].html_object.style[:left] = '33px'
-  # alert proc
-  params[:atome].html_object.play
-  # TODO : change timeupdate for when possible requestVideoFrameCallback (opal-browser/opal/browser/event.rb line 36)
-  video_callback = params[:atome].bloc[:bloc] # this is the video callback not the play callback
-  play_callback = params[:proc] # this is the video callback not the play callback
-  params[:atome].html_object.on(:timeupdate) do |e|
-    # e.prevent # Prevent the default action (eg. form submission)
-    # You can also use `e.stop` to stop propagating the event to other handlers.
-    instance_exec(params[:atome].html_object.currentTime, &video_callback) if video_callback.is_a?(Proc)
-    instance_exec(params[:atome].html_object.currentTime, &play_callback) if play_callback.is_a?(Proc)
-  end
-end
-
-Genesis.atome_creator_option(:play_pre_render_proc) do |params|
-  params[:atome].send("play_#{params[:atome].type}", params)
-end
-
-Genesis.particle_creator(:pause)
-
-def pause_video(params, &proc)
-  params[:atome].html_object.pause
-  exec_found = params[:atome].bloc[:bloc] # this is the video callback not the play callback
-  instance_exec('::callback from video player', &exec_found) if exec_found.is_a?(Proc)
-end
-
-Genesis.atome_creator_option(:pause_pre_render_proc) do |params|
-  params[:atome].send("pause_#{params[:atome].type}", params)
-  proc_found = params[:proc]
-  instance_exec('::call back from pause render', &proc_found) if proc_found.is_a?(Proc)
-end
-
-Genesis.particle_creator(:time)
-Genesis.generate_html_renderer(:time) do |value, atome, proc|
-  # params[:atome].html_object.currentTime= 33
-  @html_object.currentTime = value
-end
-
-
-############### verif using atome.new
-# my_video = Atome.new(
-#   video: { render: [:html], id: :video1, type: :video, parent: [:view], path: './medias/videos/avengers.mp4', left: 333, top: 333, width: 199, height: 99,
-#   }
-# ) do |params|
-#   puts "video callback time is  #{params}###"
-# end
-#
-# my_video.video.play(true) do |currentTime|
-#   puts "play callback time is : #{currentTime}!!!"
-# end
-
-
 module Genesis
 
   def create_new_atomes(params, instance_var, _atome,&userproc)
@@ -123,6 +66,7 @@ module Genesis
     end
     new_atome
   end
+
   def new_atome(atome, params, userproc, &methodproc)
     if params
       # alert "#{atome}\n#{params}\n#{userproc}\n#{methodproc}"
@@ -150,7 +94,7 @@ module Genesis
     # now we exec the first optional method
     params = Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { value: params, proc: userproc })
 
-    new_atome = create_new_atomes(params[:value], instance_var, atome,&userproc)
+    new_atome = create_new_atomes(params[:value], instance_var, atome, &userproc)
 
     # now we exec the second optional method
     Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym, { value: params, proc: userproc })
@@ -159,26 +103,14 @@ module Genesis
   end
 end
 
-Genesis.atome_creator_option(:shape_pre_save_proc) do |params|
-  # alert params
-  bloc_found=params[:value][:bloc]
-  instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
-  # puts "2- optional color_post_save_proc: #{params}\n"
-
-  params
-end
-
-Genesis.atome_creator_option(:text_pre_save_proc) do |params|
-  # alert params
-  bloc_found=params[:value][:bloc]
-  instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
-  # puts "2- optional color_post_save_proc: #{params}\n"
-
-  params
-end
-
 class Atome
   def initialize(params = {}, &bloc)
+
+    # if  params.keys[0][:id] ==:video1
+    #   alert params
+    # end
+
+    # instance_exec(&bloc) if proc.is_a?(bloc)
 
     # We initialize the renderer here
     @render = []
@@ -206,11 +138,28 @@ class Atome
 end
 
 
+#######################################################################################################################
 
+Genesis.atome_creator_option(:shape_pre_save_proc) do |params|
+  # alert params
+  bloc_found=params[:value][:bloc]
+  instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
+  # puts "2- optional color_post_save_proc: #{params}\n"
 
+  params
+end
+
+Genesis.atome_creator_option(:text_pre_save_proc) do |params|
+  # alert params
+  bloc_found=params[:value][:bloc]
+  instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
+  # puts "2- optional color_post_save_proc: #{params}\n"
+
+  params
+end
 
 box({id: :my_box}) do |p|
-  alert :ok_cest_ok_box
+  puts :ok_cest_ok_box
 end
 
 Atome.new(
@@ -219,162 +168,179 @@ Atome.new(
              color: { render: [:html], id: :view_test_color, type: :color,
                       red: 1, green: 0.15, blue: 0.15, alpha: 1 } } }
 ) do |p|
-  alert "ok_cest_pout atomic box"
+  puts "ok_cest_pout atomic box"
 end
 
 def text(params = {}, &bloc)
   Utilities.grab(:view).text(params,&bloc)
 end
 text({id: :my_text}) do |p|
-  alert :ok_cest_ok_text
+  puts :ok_cest_ok_text
 end
 
 text = Atome.new(
   text: { render: [:html], id: :text1, type: :text, parent: [:view], visual: { size: 33 }, data: "My text!", left: 300, top: 33, width: 199, height: 33, }
 )do |p|
-  alert :ok_cest_ok_text_atomic
+  puts :ok_cest_ok_text_atomic
 end
 
-# Genesis.generate_html_renderer(:image) do |value, atome, proc|
-#   id_found = id
-#   instance_exec(&proc) if proc.is_a?(Proc)
-#   DOM do
-#     img({ id: id_found }).atome
-#   end.append_to($document[:user_view])
-#   @html_object = $document[id_found]
-#   @html_type = :image
-# end
+# # TODO:  create a video object for noobs
+# # TODO: int8! : language
+# # TODO: record user actions
+# # TODO: separate the audio in the video
+# # TODO: add mute to video
+
+##################################### video tests #########################################
+
+def video(params = {}, &bloc)
+  # params[:bloc]=&bloc
+  Utilities.grab(:view).video(params,&bloc)
+end
+Genesis.particle_creator(:play)
 
 
-# Genesis.atome_creator(:text) do |params,&proc_do|
-#   instance_exec(&proc_do) if proc_do.is_a?(Proc)
-#   # todo:  factorise code below
-#   if params
-#     default_renderer = Sanitizer.default_params[:render]
-#     generated_id = params[:id] || "text_#{Universe.atomes.length}"
-#     generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
-#     generated_parent = params[:parent] || id
-#
-#     default_params = { render: [generated_render], id: generated_id, type: :text, parent: [generated_parent],
-#                        visual: { size: 33 }, data: "hello world", left: 39, top: 33, width: 199, height: 33,
-#                        color: { render: [generated_render], id: "color_#{generated_id}", type: :color,
-#                                 red: 0.09, green: 1, blue: 0.12, alpha: 1 } }
-#     params = default_params.merge(params)
-#     params
-#   end
-#   params
-# end
+Genesis.atome_creator(:video) do |params, &proc|
+  # new try here
+  # instance_exec(&proc) if proc.is_a?(Proc)
+  # todo:  factorise code below
+  if params
+    default_renderer = Sanitizer.default_params[:render]
+    generated_id = params[:id] || "video_#{Universe.atomes.length}"
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+    generated_parent = params[:parent] || id
+    default_params = { render: [generated_render],id: generated_id, type: :video, parent: [generated_parent],
+                       path: './medias/videos/video_missing.mp4', left: 139, top: 333, width: 199, height: 199}
+    params = default_params.merge(params)
+  end
+  params
+end
+
+
+
+Genesis.generate_html_renderer(:video) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    video({ id: id_found, autoplay: false }).atome
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_type = :video
+end
+
+
+
+def play_video(params, &proc)
+  # puts "I play the video : #{params[:atome].html_object}"
+  # params[:atome].html_object.style[:left] = '33px'
+  # alert params
+
+  params[:atome].html_object.play
+  # TODO : change timeupdate for when possible requestVideoFrameCallback (opal-browser/opal/browser/event.rb line 36)
+  video_callback = params[:atome].bloc # this is the video callback not the play callback
+  play_callback = params[:proc] # this is the video callback not the play callback
+  params[:atome].html_object.on(:timeupdate) do |e|
+    # video_callback = params[:atome].bloc[:bloc]
+    # e.prevent # Prevent the default action (eg. form submission)
+    # You can also use `e.stop` to stop propagating the event to other handlers.
+    instance_exec(params[:atome].html_object.currentTime, &video_callback) if video_callback.is_a?(Proc)
+    instance_exec(params[:atome].html_object.currentTime, &play_callback) if play_callback.is_a?(Proc)
+  end
+end
+
+Genesis.atome_creator_option(:play_pre_render_proc) do |params|
+  params[:atome].send("play_#{params[:atome].type}", params)
+end
+
+Genesis.particle_creator(:pause)
+
+def pause_video(params, &proc)
+  params[:atome].html_object.pause
+  exec_found= params[:proc]
+
+  # instance_exec('::callback from video player', &exec_found) if exec_found.is_a?(Proc)
+  # exec_found = params[:atome].bloc[:bloc] # this is the video callback not the play callback
+  # instance_exec('::callback from video player', &exec_found) if exec_found.is_a?(Proc)
+end
+
+Genesis.atome_creator_option(:pause_pre_render_proc) do |params|
+  params[:atome].send("pause_#{params[:atome].type}", params)
+  proc_found = params[:proc]
+  instance_exec('::call back from pause render', &proc_found) if proc_found.is_a?(Proc)
+end
+
+Genesis.particle_creator(:time)
+Genesis.generate_html_renderer(:time) do |value, atome, proc|
+  # params[:atome].html_object.currentTime= 33
+  @html_object.currentTime = value
+end
+
+
+############### verif using atome.new
+my_video = Atome.new(
+  video: { render: [:html], id: :video1, type: :video,left: 66, top: 66, parent: [:view], path: './medias/videos/superman.mp4', left: 333, top: 333, width: 199, height: 99,
+  }
+) do |params|
+  puts  "video callback time is  #{params}###"
+end
+my_video.video.top(33)
+my_video.video.left(33)
+
+my_video.video.touch(true) do
+  my_video.video.play(true) do |currentTime|
+    puts "play callback time is : #{currentTime}!!!"
+  end
+end
+
+my_video2 = Atome.new(
+  video: { render: [:html], id: :video9, type: :video,left: 366, top: 66, parent: [:view], path: './medias/videos/madmax.mp4', left: 333, top: 333, width: 199, height: 99,
+  }
+#FIXME : positioning doesnt work
+
+) do |params|
+  puts  "video callback time is  #{params}###"
+end
+my_video2.video.top(33)
+my_video2.video.left(333)
+
+my_video2.video.touch(true) do
+  my_video2.video.play(true) do |currentTime|
+    puts "play callback time is : #{currentTime}!!!"
+  end
+end
 
 
 
 
 
-# Atome.new(
-#   image: { render: [:html], id: :image1, type: :image, parent: [:view], path: "./medias/images/boat.png", left: 99, top: 120, width: 199, height: 199,
-#   }
-# ) do |p|
-#   alert :ok_cest_ok_imageoo
-#
-# end
-# Atome.new(
-#   { shape: { render: [:html], id: :the_new, type: :shape, parent: [:view],
-#              left: 0, right: 0, top: 0, bottom: 0,overflow: :auto,
-#              color: { render: [:html], id: :the_new_color, type: :color,
-#                       red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } }
-# ) do |p|
-#   alert :koolybooly
-# end
+#######################################################################################################################
 
-################@ left callback example
-# Genesis.generate_html_renderer(:left) do |value, atome, user_proc|
-#   instance_exec(&user_proc) if user_proc.is_a?(Proc)
-# end
-#
-# b.left(99) do |pa|
-#   alert "ok #{pa}"
-# end
-############### verif using  video method
 
-# module Genesis
-#   def new_atome(atome, params, userproc, &methodproc)
-#     if params
-#       instance_exec(params, &userproc) if userproc.is_a?(Proc)
-#       params = instance_exec(params, &methodproc) if methodproc.is_a?(Proc)
-#       params = add_essential_properties(atome, params)
-#       params = sanitizer(params)
-#       set_new_atome(atome, params, userproc)
-#     else
-#       get_new_atome(atome)
-#     end
-#   end
-# end
-#
-# my_video=video({path: './medias/videos/avengers.mp4', id: :video1}) do |params|
-#   alert "temporary test uncomment below when it'll work"
-#   # alert  "video callback here #{params}"
-# end
+my_video3=video({path: './medias/videos/avengers.mp4', id: :video16}) do |params|
+  # puts "temporary test uncomment below when it'll work"
+  puts  "video callback here #{params}"
+end
 #
 #
 # bbb=box
-#
-# bbb.color({ render: [:html], id: :view_color, type: :color,
-#                 red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }) do |params|
-#   alert :tutu
-# end
-#
-# bbb.set_color({ render: [:html], id: :view_color, type: :color,
-#                 red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }) do |params|
-#   alert :titi
-# end
-#
-# #
-# # my_video.play(true) do |currentTime|
-# #   puts "play callback time is : #{currentTime}!!!"
-# # end
-#
-# # grab(:video1).play(true) do |currentTime|
-# #     puts "play callback time is : #{currentTime}!!!"
-# #   end
-#
-# # alert my_video
-#
-# ######
-#
-# # alert(grab(:video1))
-#
-#
-# # wait 6 do
-# #   params[:atome].html_object.pause
-# # end
-#
-# # verif video
-# # grab(:video1).time(15)
-# # Universe.atomes.each do |atome_found|
-# #   alert "atome found: #{atome_found.id} "
-# # end
-# # alert grab(:video1)
-#
-# b = box
-# b.touch(true) do
-#   alert grab(:video1)
-#   grab(:video1).on(:pause) do |event|
-#     alert :supercool
-#     # text({ data: :stopped })
-#   end
-#   my_video.play(true) do |currentTime|
-#     puts "play callback time is : #{currentTime}!!!"
-#   end
-#   wait 2 do
-#     grab(:video1).time(37)
-#     # alert :kool
-#   end
-#   wait 6 do
-#     grab(:video1).pause(true) do |p|
-#       alert :paused
-#     end
-#   end
-# end
-#
+
+  grab(:video16).on(:pause) do |event|
+    alert :supercool
+    # text({ data: :stopped })
+  end
+my_video3.touch(true) do
+  grab(:video16).time(15)
+  my_video3.play(true) do |currentTime|
+    puts "play callback time is : #{currentTime}!!!"
+  end
+  wait 3 do
+    grab(:video16).pause(true) do |p|
+      alert :paused
+    end
+  end
+end
+
+
+
 # ######################################
 # # # Anim verif
 # #
@@ -399,79 +365,3 @@ end
 # # ) do
 # #   puts "non proc exec added at atome creation level : #{self.class}"
 # # end
-#
-#
-#
-#
-#
-# # TODO:  create a video object for noobs
-# # TODO: int8! : language
-# # TODO: record user actions
-# # TODO: separate the audio in the video
-# # TODO: add mute to video
-#
-#
-#
-# #
-# #
-# #
-# # Genesis.particle_creator(:parent) do |parents|
-# #   parents.each do |parent|
-# #     # #TODO : create a root atome instead of using the condition below
-# #     if parent != :user_view
-# #       # alert "grab(parent): #{grab(parent)}"
-# #       grab(parent).child << id
-# #     end
-# #   end
-# #   parents
-# # end
-# #
-# #
-# # Genesis.atome_creator_option(:parent_pre_render_proc) do |params|
-# #   unless params[:value].instance_of? Array
-# #     params[:value] = [params[:value]]
-# #   end
-# #   params[:value]
-# # end
-# #
-# # Genesis.generate_html_renderer(:parent) do |values, atome, proc|
-# #   instance_exec(&proc) if proc.is_a?(Proc)
-# #   values.each do |value|
-# #     if @html_type == :style
-# #       # we remove previous class if the are of the same type of the type
-# #       # ex if there's a color already assign we remove it to allow the new one to be visible
-# #       html_parent = grab(value).instance_variable_get("@html_object")
-# #       # alert value
-# #       html_parent.class_names.each do |class_name|
-# #         if $document[class_name] && $document[class_name].attributes[:atome]
-# #           class_to_remove = $document[class_name].attributes[:id]
-# #           html_parent.remove_class(class_to_remove)
-# #         end
-# #       end
-# #       $document[value].add_class(id)
-# #     else
-# #       @html_object.append_to($document[value])
-# #     end
-# #   end
-# # end
-# #
-# #
-# #
-# #
-# #
-# # # alert Universe.atomes.length
-
-
-
-###########
-# Genesis.generate_html_renderer(:drag) do |value, atome, user_proc|
-#   instance_exec(&user_proc) if user_proc.is_a?(Proc)
-# end
-#
-# b=box
-# b.drag(true) do |x, y|
-#   # below here is the callback :
-#   alert "drag position: #{x}"
-# end
-
-

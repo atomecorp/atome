@@ -55,6 +55,6 @@ def text(params = {}, &bloc)
   Utilities.grab(:view).text(params)
 end
 
-def video(params = {}, &proc)
-  Utilities.grab(:view).video(params,&proc)
-end
+# def video(params = {}, &proc)
+#   Utilities.grab(:view).video(params,&proc)
+# end
