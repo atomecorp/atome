@@ -10,3 +10,4 @@
 /Gemfile.lock
 *.ds_store
 *.idea
+/test/test_app/build/
