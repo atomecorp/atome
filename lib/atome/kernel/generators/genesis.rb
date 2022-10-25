@@ -17,8 +17,6 @@ module GenesisKernel
   # particle's methods
   def set_new_particle(particle, value, &proc)
     return false unless validation(particle)
-
-    # instance_exec({ options: value }, &proc) if proc.is_a?(Proc)
     # now we exec the first optional method
     value = Genesis.run_optional_methods_helper("#{particle}_pre_render_proc".to_sym,
                                                 { method: particle, value: value, atome: self, proc: proc })
@@ -54,37 +52,11 @@ module GenesisKernel
 
   # atome's methods
 
-  def create_new_atomes(params, instance_var, _atome)
-    new_atome = Atome.new({})
-    Universe.atomes_add(new_atome)
-    instance_variable_set(instance_var, new_atome)
-    # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
 
-    params.each do |param, value|
-      new_atome.send(param, value)
-    end
-    new_atome
-  end
-
-  def set_new_atome(atome, params, proc)
-    return false unless validation(atome)
-
-    instance_var = "@#{atome}"
-    # now we exec the first optional method
-    params = Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { value: params, proc: proc })
-    new_atome = create_new_atomes(params[:value], instance_var, atome)
-
-    # now we exec the second optional method
-    Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym, { value: params, proc: proc })
-    @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
-    # new_atome
-    self
-  end
 
   def get_new_atome(atome)
     return false unless validation(atome)
 
-    # Genesis.run_optional_methods_helper("#{atome}_getter_pre_proc".to_sym, { value: false })
     atome_instance_variable = "@#{atome}"
     value_getted = instance_variable_get(atome_instance_variable)
     Genesis.run_optional_methods_helper("#{atome}_getter_pre_proc".to_sym, { value: value_getted })
@@ -93,6 +65,7 @@ module GenesisKernel
 
   def new_atome(atome, params, userproc, &methodproc)
     if params
+      # the line below execute the proc associated to the method, ex Genesis.atome_creator(:color) do ...(proc)
       params = instance_exec(params, &methodproc) if methodproc.is_a?(Proc)
       params = add_essential_properties(atome, params)
       params = sanitizer(params)
@@ -100,6 +73,32 @@ module GenesisKernel
     else
       get_new_atome(atome)
     end
+  end
+
+  def set_new_atome(atome, params, userproc)
+    params[:bloc] = userproc
+    return false unless validation(atome)
+
+    instance_var = "@#{atome}"
+    new_atome = Atome.new({}, &userproc)
+    # now we exec the first optional method
+    params = Genesis.run_optional_methods_helper("#{atome}_pre_save_proc".to_sym, { value: params, atome: new_atome, proc: userproc })
+    new_atome = create_new_atomes(params[:value], instance_var, new_atome, &userproc)
+    # now we exec the second optional method
+    Genesis.run_optional_methods_helper("#{atome}_post_save_proc".to_sym, { value: params, atome: new_atome, proc: userproc })
+    @dna = "#{Atome.current_user}_#{Universe.app_identity}_#{Universe.atomes.length}"
+    new_atome
+  end
+
+  def create_new_atomes(params, instance_var, new_atome, &userproc)
+    # new_atome = Atome.new({}, &userproc)
+    Universe.atomes_add(new_atome)
+    instance_variable_set(instance_var, new_atome)
+    # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
+    params.each do |param, value|
+      new_atome.send(param, value)
+    end
+    new_atome
   end
 
   def additional_atomes(atome, params)
@@ -128,16 +127,13 @@ module Genesis
 
     proc = nil
     proc = @optionals_methods[method_name] if @optionals_methods
-    # it should run a method like :
+    # it run all methods that looks like :
     # bloc_render_proc
     # render_getter_pre_proc
     # bloc_post_render_proc
     instance_exec(params, atome, &proc) if proc.is_a?(Proc)
   end
 
-  # #fIXME : we may have to remove the 2 methods below its only for test
-
-  # render methods generator
   def self.generate_html_renderer(method_name, &methods_proc)
     current_renderer = :html
     generated_method_name = "#{method_name}_#{current_renderer}".to_sym
@@ -211,7 +207,6 @@ module Genesis
   # we create the easy methods here : ¬
   def self.atome_creator(method_name, &methodproc)
 
-    # instance_exec(method_name, &methodproc) if methodproc.is_a?(Proc)
     # we add the new method to the atome's collection of methods
     Utilities.atome_list(method_name)
     # we define many methods : easy, method=,pluralised and the fasts one, here is the easy
@@ -266,7 +261,6 @@ module Genesis
   end
 
   def self.particle_creator(method_name, &methodproc)
-    # instance_exec(method_name, &proc) if proc.is_a?(Proc)
     # we add the new method to the particle's collection of methods
     Utilities.particle_list(method_name)
     Atome.define_method method_name do |params = nil, &user_proc|
