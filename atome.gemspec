@@ -43,7 +43,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'mail', '~> 2.1'
   spec.add_runtime_dependency 'net-ping', '~> 2.0'
   spec.add_runtime_dependency 'opal', '~> 1.5'
-  spec.add_runtime_dependency 'opal-browser', '~> 0.3'
+  spec.add_runtime_dependency 'opal-browser', '~> 0.3.6'
   spec.add_runtime_dependency 'opal-jquery', '~> 0.4'
   spec.add_runtime_dependency 'parser', '~> 3.1'
   spec.add_runtime_dependency 'puma', '~> 5.6'
