@@ -11,3 +11,4 @@
 *.ds_store
 *.idea
 /test/test_app/build/
+/vendor/assets/build/js/third_parties/
