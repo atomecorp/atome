@@ -80,33 +80,16 @@ class Atome
   end
 
   def initialize(params = {}, &bloc)
-
-    # We initialize the renderer here
     @render = []
-    # @parent = []
     @child = []
     # # TODO: check if we need to add properties for the root object before sending the params
-    # alert "params : #{params}"
-    # params[:bloc] = { bloc: proc }
-    params[:bloc] = { bloc: bloc }
     params.each do |atome, values|
-      # We add the proc if it exist
-
-
-      # new_atome= send(atome, values,&proc)
-      new_atome= send(atome, values)
-
-
-      # puts new_atome
-      # Universe.atomes_add(new_atome)
-      # puts "#{atome} #{new_atome}"
+      send(atome, values, &bloc)
     end
-    # puts "uncomment the line below and make it work!!"
-    # Universe.atomes_add(self)
   end
+
 end
 
 # initialize Universe
 Universe.connected
 # Atome.new( identity: {type: :eVe, aui: :a_97987987987})
-puts "atome version : #{Atome::VERSION}"

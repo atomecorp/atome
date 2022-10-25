@@ -5,7 +5,6 @@ class Atome
     $window.navigator.geolocate.then do |pos|
       localisation[:latitude] =  pos.coords.latitude
       localisation[:longitude] =  pos.coords.longitude
-      # alert self.inspect
     end.rescue do |err|
       p  err
       localisation = nil

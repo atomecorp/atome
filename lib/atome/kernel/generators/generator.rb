@@ -42,6 +42,21 @@ end
 
 Genesis.atome_creator(:shadow)
 
+Genesis.atome_creator(:video) do |params, &proc|
+  # todo:  factorise code below
+  if params
+    default_renderer = Sanitizer.default_params[:render]
+    generated_id = params[:id] || "video_#{Universe.atomes.length}"
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+    generated_parent = params[:parent] || id
+    default_params = { render: [generated_render], id: generated_id, type: :video, parent: [generated_parent],
+                       path: './medias/videos/video_missing.mp4', left: 139, top: 333, width: 199, height: 199 }
+    params = default_params.merge(params)
+  end
+  params
+end
+
+
 # Example below
 
 # Genesis.atome_creator(:color) do |params|
@@ -85,6 +100,10 @@ Genesis.particle_creator(:type)
 Genesis.particle_creator(:smooth)
 Genesis.particle_creator(:blur)
 Genesis.particle_creator(:touch)
+Genesis.particle_creator(:play)
+Genesis.particle_creator(:pause)
+Genesis.particle_creator(:time)
+
 # Genesis.atome_creator_option(:type_pre_render_proc) do |params|
 #   # "it works and get #{params}"
 #   params[:value]
@@ -263,6 +282,17 @@ Genesis.generate_html_renderer(:touch) do |value, atome, proc|
   end
 end
 
+Genesis.generate_html_renderer(:video) do |value, atome, proc|
+  id_found = id
+  instance_exec(&proc) if proc.is_a?(Proc)
+  DOM do
+    video({ id: id_found, autoplay: false }).atome
+  end.append_to($document[:user_view])
+  @html_object = $document[id_found]
+  @html_type = :video
+end
+
+
 #drag
 def dragCallback(page_x, page_y, x, y, current_object, proc)
   # Note this method is call from atome.js  :  AtomeDrag methods
@@ -420,4 +450,33 @@ Genesis.generate_html_renderer(:on) do |value, atome, proc|
   @html_object.on(value) do |e|
     instance_exec(e, &proc) if proc.is_a?(Proc)
   end
+end
+
+Genesis.atome_creator_option(:shape_pre_save_proc) do |params|
+  current_atome = params[:atome]
+  bloc_found = params[:value][:bloc]
+  current_atome.instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
+  params
+end
+
+Genesis.atome_creator_option(:text_pre_save_proc) do |params|
+  current_atome = params[:atome]
+  bloc_found = params[:value][:bloc]
+  current_atome.instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
+  params
+end
+
+Genesis.atome_creator_option(:play_pre_render_proc) do |params|
+  params[:atome].send("play_#{params[:atome].type}", params)
+end
+
+Genesis.atome_creator_option(:pause_pre_render_proc) do |params|
+  params[:atome].send("pause_#{params[:atome].type}", params)
+  proc_found = params[:proc]
+  params[:atome].instance_exec('::call back from pause render', &proc_found) if proc_found.is_a?(Proc)
+end
+
+Genesis.generate_html_renderer(:time) do |value, atome, proc|
+  # params[:atome].html_object.currentTime= 33
+  @html_object.currentTime = value
 end

@@ -195,9 +195,9 @@ end
 task :system_updater, :user_project_path, :production do |_t, args|
   user_project_path = args[:user_project_path]
   production = args[:production]
-  build_common_libraries(user_project_path, production)
   gem_location = File.join(File.dirname(__FILE__))
   build_libraries(user_project_path, gem_location)
+  build_common_libraries(user_project_path, production)
 end
 
 task default: :run

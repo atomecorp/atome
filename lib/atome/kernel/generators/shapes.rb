@@ -4,11 +4,6 @@
 # TODO: Factorise codes below
 class Atome
   def box(params = {}, &bloc)
-    # params[:bloc]=proc if proc.is_a?(Proc)
-    # proc_found=params[:bloc]
-    # instance_exec(&bloc) if bloc.is_a?(Proc)
-
-
     default_renderer = Sanitizer.default_params[:render]
     generated_id = params[:id] || "box_#{Universe.atomes.length}"
     generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
@@ -22,7 +17,7 @@ class Atome
     new_atome.shape
   end
 
-  def circle(params = {})
+  def circle(params = {}, &bloc)
     default_renderer = Sanitizer.default_params[:render]
     generated_id = params[:id] || "circle_#{Universe.atomes.length}"
     generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
@@ -32,14 +27,13 @@ class Atome
                      color: { render: [generated_render], id: "color_#{generated_id}", type: :color,
                               red: 0.69, green: 0.69, blue: 0.69, alpha: 1 }, smooth: "100%" }
     params = temp_default.merge(params)
-    new_atome = Atome.new({ shape: params })
+    new_atome = Atome.new({ shape: params },&bloc)
     new_atome.shape
   end
 
 end
 
 def box(params = {}, &proc)
-  # params[:bloc]=proc if proc.is_a?(Proc)
   Utilities.grab(:view).box(params,&proc)
 end
 
@@ -48,13 +42,10 @@ def circle(params = {}, &proc)
 end
 
 def text(params = {}, &bloc)
-  # alert "remove the code below!!!!"
-  # instance_exec(params, &bloc) if bloc.is_a?(Proc)
-  params[:bloc]= bloc
-  # params[:bloc]=&bloc
-  Utilities.grab(:view).text(params)
+  Utilities.grab(:view).text(params, &bloc)
 end
 
-# def video(params = {}, &proc)
-#   Utilities.grab(:view).video(params,&proc)
-# end
+
+def video(params = {}, &bloc)
+  Utilities.grab(:view).video(params, &bloc)
+end

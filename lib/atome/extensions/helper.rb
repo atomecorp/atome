@@ -93,3 +93,20 @@ end
 def schedule_callback(proc)
   instance_exec(&proc) if proc.is_a?(Proc)
 end
+
+def play_video(params, &proc)
+  params[:atome].html_object.play
+  # TODO : change timeupdate for when possible requestVideoFrameCallback (opal-browser/opal/browser/event.rb line 36)
+  video_callback = params[:atome].bloc # this is the video callback not the play callback
+  play_callback = params[:proc] # this is the video callback not the play callback
+  params[:atome].html_object.on(:timeupdate) do |e|
+    # e.prevent # Prevent the default action (eg. form submission)
+    # You can also use `e.stop` to stop propagating the event to other handlers.
+    instance_exec(params[:atome].html_object.currentTime, &video_callback) if video_callback.is_a?(Proc)
+    instance_exec(params[:atome].html_object.currentTime, &play_callback) if play_callback.is_a?(Proc)
+  end
+end
+
+def pause_video(params, &proc)
+  params[:atome].html_object.pause
+end

@@ -41,20 +41,10 @@ Atome.current_user = :jeezs
 require 'atome/kernel/sparkle'
 
 # TODO: create a system to secure and validate generated renderer methods , optional methods and atome's methods
+# TODO: int8! : language
+# TODO: record user actions
+# TODO: separate the audio in the video
+# TODO: add mute to video
 
-# test below uncomment when production mode
-# require '../test/test_app/application/index'
-# if RUBY_ENGINE.downcase != 'opal'
-#   rgb_color = Color::CSS["red"].css_rgb
-#   color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
-#   rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
-#     component = component.to_i/100
-#     color_converted[color_converted.keys[index]] = component
-#   end
-#   puts color_converted
-# end
-
-
-# puts Universe.atomes.length
 
 
