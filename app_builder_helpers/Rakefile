@@ -217,7 +217,7 @@ end
 
 def build_common_libraries(user_project_path, production)
   gem_location = File.join(File.dirname(__FILE__))
-  copy_assets_files(user_project_path, gem_location)
+  # copy_assets_files(user_project_path, gem_location)
   build_libraries(user_project_path, gem_location)
   minimize(user_project_path) if production == 'production'
 end
