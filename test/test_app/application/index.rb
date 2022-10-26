@@ -79,17 +79,25 @@
 
 # ############# texts ###########
 # #drag
-b=box
+class Atome
+  def initialize(params = {}, &bloc)
+    @render = []
+    @child = []
+    @html_type = :unset
+    # # TODO: check if we need to add properties for the root object before sending the params
+    params.each do |atome, values|
+      send(atome, values, &bloc)
+    end
+  end
+end
 
 
 module Genesis
   def create_new_atomes(params, instance_var, new_atome, &userproc)
-    # new_atome = Atome.new({}, &userproc)
     Universe.atomes_add(new_atome)
     instance_variable_set(instance_var, new_atome)
     # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
     params.each do |param, value|
-      puts "puts #{param}: #{value}"
       new_atome.send(param, value)
     end
     new_atome
@@ -129,6 +137,7 @@ Genesis.atome_creator(:drag) do |params|
 end
 
 Genesis.generate_html_renderer(:drag) do |value, atome, proc|
+  alert :kool
 
 #   `let atomeDrag = new AtomeDrag();
 # atomeDrag.drag('atome');`
@@ -151,6 +160,7 @@ end
 #     @html_object.add_class(:draggable)
 #   end
 # end
+b=box
 
 b.drag({ lock: :x, }) do |position|
   # below here is the callback :

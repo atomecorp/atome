@@ -83,7 +83,7 @@ class Atome
   def initialize(params = {}, &bloc)
     @render = []
     @child = []
-    # @html_type = :unset
+    @html_type = :unset
     # # TODO: check if we need to add properties for the root object before sending the params
     params.each do |atome, values|
       send(atome, values, &bloc)
