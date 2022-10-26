@@ -213,15 +213,17 @@ Genesis.generate_html_renderer(:parent) do |values, atome, proc|
 
     case  @html_type
     when :style
-      # we remove previous class if the are of the same type of the type
+      # wGenesis.atome_creator(:drag)e remove previous class if the are of the same type of the type
       # ex if there's a color already assign we remove it to allow the new one to be visible
-      html_parent = grab(value).instance_variable_get("@html_object")
-      html_parent.class_names.each do |class_name|
-        if $document[class_name] && $document[class_name].attributes[:atome]
-          class_to_remove = $document[class_name].attributes[:id]
-          html_parent.remove_class(class_to_remove)
-        end
-      end
+
+      # uncomment below if we need to remove class
+      # #html_parent = grab(value).instance_variable_get("@html_object")
+      # html_parent.class_names.each do |class_name|
+      #   if $document[class_name] && $document[class_name].attributes[:atome]
+      #     class_to_remove = $document[class_name].attributes[:id]
+      #     html_parent.remove_class(class_to_remove)
+      #   end
+      # end
       $document[value].add_class(id)
 
     when :unset
@@ -462,4 +464,43 @@ end
 Genesis.generate_html_renderer(:time) do |value, atome, proc|
   # params[:atome].html_object.currentTime= 33
   @html_object.currentTime = value
+end
+
+
+#drag
+Genesis.generate_html_renderer(:drag) do |value, atome, proc|
+  instance_exec(&proc) if proc.is_a?(Proc)
+  @html_type = :style
+  $document.head << DOM("<style atome='#{type}' id='#{id}'></style>")
+end
+
+Genesis.particle_creator(:lock)
+Genesis.particle_creator(:target)
+
+Genesis.atome_creator(:drag) do |params|
+  # TODO: factorise code below
+  if params
+    default_renderer = Sanitizer.default_params[:render]
+    generated_id = params[:id] || "drag_#{Universe.atomes.length}"
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+    generated_parent = params[:parent] || id
+    default_params = { render: [generated_render], id: generated_id, type: :drag, parent: [generated_parent], target: [generated_parent]
+    }
+    params = default_params.merge(params)
+    params
+  end
+  params
+end
+
+Genesis.generate_html_renderer(:target) do |targets, atome, proc|
+  targets.each do |value|
+    atome_found = grab(value)
+    # we get the id of the drag and ad add it as a html class to all children so they become draggable
+    atome_found.html_object.add_class(id)
+  end
+  drag_id = atome.id
+  `
+let atomeDrag = new AtomeDrag();
+atomeDrag.drag(#{drag_id});
+`
 end

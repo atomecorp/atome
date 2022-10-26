@@ -1,6 +1,7 @@
 b=box
-b.drag(true) do |position|
+
+b.drag({ lock: :x, }) do |position|
   # below here is the callback :
-  puts "drag position: #{position}"
-  puts "id is: #{id}"
+  puts "callback drag position: #{position}"
+  puts "callback id is: #{id}"
 end

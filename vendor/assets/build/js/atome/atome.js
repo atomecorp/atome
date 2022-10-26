@@ -2,11 +2,15 @@ class AtomeDrag {
     constructor() {
     }
 
-    drag() {
+    drag(atome_drag_id) {
         // target elements with the "draggable" class
-        interact('.draggable')
+        self.current_obj = Opal.Utilities.$grab(atome_drag_id)
+        interact('.'+atome_drag_id)
             .draggable({
                 // enable inertial throwing
+                startAxis: 'x',
+                lockAxis: 'x',
+                // lockAxis: ''+lock_axis,
                 inertia: true,
                 // keep the element within the area of it's parent
                 modifiers: [
@@ -25,10 +29,9 @@ class AtomeDrag {
                     start(event) {
 //TODO:  optimise this passing the proc to the drag callback
                         // lets get the current atome Object
-                        self.current_obj = Opal.Utilities.$grab(event.target.id)
+                        // self.current_obj = Opal.Utilities.$grab(atome_drag_id)
                         // now get the grab proc
-                        self.proc_meth = current_obj.$instance_variable_get("@html_drag")
-                        // self.proc_meth = proc_found;
+                        self.proc_meth = current_obj.bloc
                     },
                     // call this function on every dragend event
                     end(event) {
@@ -49,18 +52,18 @@ class AtomeDrag {
             target.setAttribute('data-x', x)
             target.setAttribute('data-y', y)
             // CallBack here
-            self.current_obj.$dragCallback(event.pageX, event.pageY,event.rect.left,event.rect.top,self.current_obj, self.proc_meth);
+            self.current_obj.$dragCallback(event.pageX, event.pageY, event.rect.left, event.rect.top, self.current_obj, self.proc_meth);
         }
     }
 
 }
 
 // Usage:
-let atomeDrag = new AtomeDrag();
-atomeDrag.drag();
+// let atomeDrag = new AtomeDrag();
+// atomeDrag.drag('atome_id', 'options');
 
 
-class Atomeanimation{
+class Atomeanimation {
 
 
 }
@@ -75,4 +78,5 @@ const atome = {
         setTimeout(function () {
             Opal.Object.$schedule_callback(proc);
         }, diffTime);
-    }}
+    }
+}
