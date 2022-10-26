@@ -210,7 +210,9 @@ Genesis.generate_html_renderer(:drm)
 Genesis.generate_html_renderer(:parent) do |values, atome, proc|
   instance_exec(&proc) if proc.is_a?(Proc)
   values.each do |value|
-    if @html_type == :style
+
+    case  @html_type
+    when :style
       # we remove previous class if the are of the same type of the type
       # ex if there's a color already assign we remove it to allow the new one to be visible
       html_parent = grab(value).instance_variable_get("@html_object")
@@ -221,9 +223,14 @@ Genesis.generate_html_renderer(:parent) do |values, atome, proc|
         end
       end
       $document[value].add_class(id)
+
+    when :unset
     else
-      @html_object.append_to($document[value])
+          @html_object.append_to($document[value])
+
+
     end
+
   end
 end
 Genesis.generate_html_renderer(:id) do |value, atome, proc|
