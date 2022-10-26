@@ -49,3 +49,7 @@ end
 def video(params = {}, &bloc)
   Utilities.grab(:view).video(params, &bloc)
 end
+
+def drag(params = {}, &bloc)
+  Utilities.grab(:view).drag(params, &bloc)
+end

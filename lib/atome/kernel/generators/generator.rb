@@ -293,25 +293,7 @@ Genesis.generate_html_renderer(:video) do |value, atome, proc|
 end
 
 
-#drag
-
-Genesis.particle_creator(:drag)
-
-Genesis.generate_headless_renderer(:drag) do |value, atome, user_proc|
-  puts "msg from headless drag method: value is #{value} , atome class is #{atome.class}"
-  instance_exec(&user_proc) if user_proc.is_a?(Proc)
-end
-
-Genesis.generate_html_renderer(:drag) do |value, atome, user_proc|
-  # FIXME: we should find a s solution to pass the proc to the dragCallback toavoid the test below
-  @html_drag = user_proc if user_proc
-  if value == :remove
-    @html_object.remove_class(:draggable)
-  else
-    @html_object.add_class(:draggable)
-  end
-end
-
+# overflow
 Genesis.particle_creator(:overflow)
 Genesis.generate_html_renderer(:overflow) do |value, atome, proc|
   @html_object.style[:overflow] = value unless @html_type == :style
