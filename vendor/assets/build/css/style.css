@@ -63,4 +63,8 @@ html, body {
     overflow: visible;
 }
 
+.text {
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
 

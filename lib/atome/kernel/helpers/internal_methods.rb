@@ -21,11 +21,11 @@ fetch('medias/rubies/'+#{file})
   end
 
   def animator_data(value)
-    puts "send params to naimation engine"
+    puts "send params to animation engine"
   end
 
   def _data(value)
-    #dummy metho fto handle atome with no type
+    #dummy method to handle atome with no type
   end
 
 end

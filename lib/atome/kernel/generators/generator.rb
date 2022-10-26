@@ -350,9 +350,10 @@ Genesis.atome_creator(:text) do |params|
     generated_parent = params[:parent] || id
 
     default_params = { render: [generated_render], id: generated_id, type: :text, parent: [generated_parent],
-                       visual: { size: 33 }, data: "hello world", left: 39, top: 33, width: 199, height: 33,
+                       visual: { size: 33 }, data: "hello world", left: 39, top: 33,
                        color: { render: [generated_render], id: "color_#{generated_id}", type: :color,
-                                red: 0.09, green: 1, blue: 0.12, alpha: 1 } }
+                                red: 0.09, green: 1, blue: 0.12, alpha: 1 }
+    }
     params = default_params.merge(params)
     params
   end
@@ -360,9 +361,7 @@ Genesis.atome_creator(:text) do |params|
 end
 Genesis.particle_creator(:string)
 
-# Genesis.generate_html_renderer(:string) do |value, atome, proc|
-#   @html_object.text = value
-# end
+
 Genesis.particle_creator(:visual)
 Genesis.generate_html_renderer(:visual) do |value, atome, proc|
   @html_object.style['font-size'] = "#{value[:size]}px"
@@ -372,7 +371,7 @@ Genesis.generate_html_renderer(:text) do |value, atome, proc|
   id_found = id
   instance_exec(&proc) if proc.is_a?(Proc)
   DOM do
-    div(id: id_found).atome
+    div(id: id_found).atome.text
   end.append_to($document[:user_view])
   @html_object = $document[id_found]
   @html_type = :text
@@ -434,13 +433,12 @@ Genesis.generate_html_renderer(:data) do |value, atome, proc|
   send("#{type}_data", value)
 end
 
-
 Genesis.particle_creator(:code)
 Genesis.atome_creator_option(:code_pre_render_proc) do |params|
   def get_binding
     binding
   end
-  str = params[:value]
+  str = params[:value][:code]
   eval str, get_binding, __FILE__, __LINE__
   params[:value]
 end
