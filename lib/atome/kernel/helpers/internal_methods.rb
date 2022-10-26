@@ -21,11 +21,18 @@ fetch('medias/rubies/'+#{file})
   end
 
   def animator_data(value)
-    puts "send params to animation engine"
+    puts "send params to animation engine#{value}"
   end
 
   def _data(value)
     #dummy method to handle atome with no type
+  end
+
+  def dragCallback(page_x, page_y, x, y, current_object, proc)
+    # Note this method is call from atome.js  :  AtomeDrag methods
+    current_object.instance_variable_set('@left', x)
+    current_object.instance_variable_set('@top', y)
+    instance_exec({ x: page_x, y: page_y }, &proc) if proc.is_a?(Proc)
   end
 
 end

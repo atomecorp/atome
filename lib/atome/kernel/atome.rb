@@ -19,6 +19,7 @@ class Atome
   include Sanitizer
   include ServerRenderer
   include Render
+  include Internal
   # include OpalRenderer
   # include HeadlessRenderer
   def self.atome(params)

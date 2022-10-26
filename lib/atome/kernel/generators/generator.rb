@@ -294,12 +294,6 @@ end
 
 
 #drag
-def dragCallback(page_x, page_y, x, y, current_object, proc)
-  # Note this method is call from atome.js  :  AtomeDrag methods
-  current_object.instance_variable_set('@left', x)
-  current_object.instance_variable_set('@top', y)
-  instance_exec(page_x, page_y, &proc) if proc.is_a?(Proc)
-end
 
 Genesis.particle_creator(:drag)
 
@@ -450,16 +444,18 @@ Genesis.generate_html_renderer(:on) do |value, atome, proc|
   end
 end
 
-Genesis.atome_creator_option(:shape_pre_save_proc) do |params|
+Genesis.atome_creator_option(:shape_post_save_proc) do |params|
   current_atome = params[:atome]
-  bloc_found = params[:value][:bloc]
+  #FIXME: look why we have to look in [:value][:value] this looks suspect
+  bloc_found = params[:value][:value][:bloc]
   current_atome.instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
   params
 end
 
-Genesis.atome_creator_option(:text_pre_save_proc) do |params|
+Genesis.atome_creator_option(:text_post_save_proc) do |params|
   current_atome = params[:atome]
-  bloc_found = params[:value][:bloc]
+  #FIXME: look why we have to look in [:value][:value] this looks suspect
+  bloc_found = params[:value][:value][:bloc]
   current_atome.instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
   params
 end

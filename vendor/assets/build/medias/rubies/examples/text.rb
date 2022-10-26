@@ -12,8 +12,7 @@ wait 1.2 do
 end
 
 b = box({ drag: true, left: 66, top: 66 })
-my_text = b.text({ data: "drag the bloc behind me" })
+my_text = b.text({ data: "drag the bloc behind me", width: 333 })
 wait 2 do
-  my_text.left(99)
   my_text.color(:red)
 end

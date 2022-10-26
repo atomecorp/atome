@@ -45,13 +45,11 @@ class AtomeDrag {
             const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
             // translate the element
             target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
             // update the position attributes
             target.setAttribute('data-x', x)
             target.setAttribute('data-y', y)
             // CallBack here
-            Opal.Atome.$dragCallback(event.pageX, event.pageY,event.rect.left,event.rect.top,self.current_obj, self.proc_meth);
-
+            self.current_obj.$dragCallback(event.pageX, event.pageY,event.rect.left,event.rect.top,self.current_obj, self.proc_meth);
         }
     }
 
