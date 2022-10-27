@@ -78,12 +78,19 @@
 # # end
 # ############# Drag ###########
 
-
-def html_drag_helper(atome, options,parent=nil)
+def html_drag_helper(atome, options, parent = nil)
   drag_id = atome.id
+
+
+  # options[:restriction]=:parent
+  # options[:max]={ left: 333 ,right: 90, top: 333, bottom: 30}.to_n
+  # options[:max]=grab(:the_contraint_box).html_object
+  # options[:fixed]=true
+  options[:max]=options[:max].to_n
   `current_obj = Opal.Utilities.$grab(#{drag_id})`
 
-`interact('.'+#{drag_id})
+
+  `interact('.'+#{drag_id})
             .draggable({
                 // enable inertial throwing
                // startAxis: 'y',
@@ -93,8 +100,16 @@ def html_drag_helper(atome, options,parent=nil)
                 // keep the element within the area of it's parent
                 modifiers: [
                     interact.modifiers.restrictRect({
-                        restriction: 'parent',
+                        //restriction: 'parent',
+                        //restriction: { left: 333 ,right: 90, top: 333, bottom: 30},
+                        restriction: #{options[:max]},
+
+//elementRect: { left: , right: 0, top: 1, bottom: 1 }
                         // endOnly: true,
+
+
+
+
                     }),
 
                 ],
@@ -110,7 +125,7 @@ def html_drag_helper(atome, options,parent=nil)
                     //     console.log('current atome is: '+self.current_obj)
                     // },
                     start(event) {
- bloc=#{atome.bloc}
+                    bloc=#{atome.bloc}
 //TODO:  optimise this passing the proc to the drag callback
                         // lets get the current atome Object
                         // self.current_obj = Opal.Utilities.$grab(atome_drag_id)
@@ -125,29 +140,43 @@ def html_drag_helper(atome, options,parent=nil)
             })
 `
 
+  if options[:fixed]
+    `
+ function allow_drag(target,x,y){
+
+  }
+  `
+  else
+    `
+ function allow_drag(target,x,y){
+       target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+    // update the position attributes
+    target.setAttribute('data-x', x)
+    target.setAttribute('data-y', y)
+  }
+  `
+  end
+
+
 
 `
-        function dragMoveListener(event) {
-            const target = event.target
-            // the code below can be conditioned to receive the drag event without moving the object
-            // keep the dragged position in the data-x/data-y attributes
-            const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-            const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-            // translate the element
-            target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-            // update the position attributes
-            target.setAttribute('data-x', x)
-            target.setAttribute('data-y', y)
-            // CallBack here
-             var object_dragged_id=target.id
-            #{atome}.$dragCallback(event.pageX, event.pageY, event.rect.left, event.rect.top, #{atome},object_dragged_id, bloc);
-        }
+function dragMoveListener(event) {
+    const target = event.target
+    // the code below can be conditioned to receive the drag event without moving the object
+    // keep the dragged position in the data-x/data-y attributes
+    const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+    const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+    // translate the element
+      allow_drag(target,x,y)
+    // CallBack here
+    var object_dragged_id=Opal.Utilities.$grab(target.id)
+    #{atome}.$dragCallback(event.pageX, event.pageY, event.rect.left, event.rect.top, #{atome},object_dragged_id, bloc);
+}
 `
-
 end
 
 class Atome
-  def drag_remove_remove(current_atome)
+  def drag_remove_true(current_atome)
     current_atome.target.each do |value|
       atome_found = grab(value)
       # we get the id of the drag and ad add it as a html class to all children so they become draggable
@@ -157,41 +186,68 @@ class Atome
   end
 
   def shape_remove_drag(atome)
-    class_to_remove=  atome.drag.id
-     atome.html_object.remove_class(class_to_remove)
+    class_to_remove = atome.drag.id
+    atome.html_object.remove_class(class_to_remove)
   end
 
-  def dragCallback(page_x, page_y, x, y, current_object,object_dragged_id, proc=nil)
-    dragged_atome=grab(object_dragged_id)
+  def dragCallback(page_x, page_y, x, y, current_object, object_dragged_id, proc = nil)
+    dragged_atome=grab(object_dragged_id.id)
     dragged_atome.instance_variable_set('@left', x)
     dragged_atome.instance_variable_set('@top', y)
     current_object.instance_exec({ x: page_x, y: page_y }, &proc) if proc.is_a?(Proc)
   end
+
+
+  def constraint_helper(params,current_atome,option)
+    options = {}
+    current_atome.particles.each do |particle, value|
+      options[particle] = value if (particle != :id && particle != :render && particle != :child && particle != :html_type && particle != :type && particle != :html_object && particle != :target)
+    end
+    options = options.merge({option => params[:value] })
+    current_atome.target.each do |value|
+      atome_found = grab(value)
+      # we get the id of the drag and ad add it as a html class to all children so they become draggable
+      atome_found.html_object.remove_class(current_atome.id)
+      atome_found.html_object.add_class(current_atome.id)
+      html_drag_helper(current_atome, options)
+    end
+
+  end
 end
 
 Genesis.particle_creator(:remove)
+Genesis.particle_creator(:fixed)
+Genesis.particle_creator(:max)
+Genesis.particle_creator(:inside)
 Genesis.atome_creator_option(:remove_pre_render_proc) do |params|
-  type_found= params[:atome].type
-  current_atome=params[:atome]
-  particle_to_remove=params[:value]
-  current_atome.send("#{type_found}_remove_#{particle_to_remove}",current_atome)
+  type_found = params[:atome].type
+  current_atome = params[:atome]
+  particle_to_remove = params[:value]
+  current_atome.send("#{type_found}_remove_#{particle_to_remove}", current_atome)
+end
+
+Genesis.atome_creator_option(:max_pre_render_proc) do |params|
+  current_atome = params[:atome]
+  current_atome.constraint_helper(params,current_atome,:max)
+end
+
+Genesis.atome_creator_option(:inside_pre_render_proc) do |params|
+  current_atome = params[:atome]
+  params[:value]=grab(params[:value]).html_object
+  current_atome.constraint_helper(params,current_atome,:max)
 end
 
 Genesis.atome_creator_option(:lock_pre_render_proc) do |params|
-  current_atome= params[:atome]
-  options={}
-  current_atome.particles.each do |particle, value|
-    options[particle]=value if (particle != :id && particle != :render && particle != :child && particle != :html_type && particle != :type && particle != :html_object && particle != :target)
-  end
-  options=options.merge({ lock: params[:value] })
-  current_atome.target.each do |value|
-    atome_found = grab(value)
-    # we get the id of the drag and ad add it as a html class to all children so they become draggable
-    atome_found.html_object.remove_class(current_atome.id)
-    atome_found.html_object.add_class(current_atome.id)
-    html_drag_helper(current_atome,options)
-  end
+  current_atome = params[:atome]
+  current_atome.constraint_helper(params,current_atome,:lock)
 end
+
+Genesis.atome_creator_option(:fixed_pre_render_proc) do |params|
+  current_atome = params[:atome]
+  current_atome.constraint_helper(params,current_atome,:fixed)
+end
+
+
 
 Genesis.generate_html_renderer(:target) do |targets, atome, proc|
   targets.each do |value|
@@ -199,20 +255,25 @@ Genesis.generate_html_renderer(:target) do |targets, atome, proc|
     # we get the id of the drag and ad add it as a html class to all children so they become draggable
     atome_found.html_object.add_class(id)
   end
-  html_drag_helper(atome,{})
-
+  html_drag_helper(atome, {})
 end
+
+
+verif_box=box({width: 333, height: 333, id: :the_contraint_box, color: :orange})
 
 b = box
 
-b.drag({ remove: :remove }) do |position|
+b.drag({ remove: true}) do |position|
   # below here is the callback :
   puts "1 - callback drag position: #{position}"
   puts "1 - callback id is: #{id}"
-
 end
 
-bb = box({left: 120, color: :green})
+wait 4 do
+  b.drag({ max: { left: 333 ,right: 90, top: 333, bottom: 30}})
+end
+
+bb = box({ left: 120, color: :green })
 bb.touch(true) do
   alert left
 end
@@ -224,8 +285,8 @@ bb.drag({ lock: :x }) do |position|
 end
 #TODO: when we add a color we must change the code : do we create a new color with it's id or do we replace the old one?
 #
-bbb = box({left: 120, top: 120})
-bbb.drag({ }) do |position|
+bbb = box({ left: 120, top: 120 })
+bbb.drag({}) do |position|
   # below here is the callback :
   puts "bbb drag position: #{position}"
   puts "bbb id is: #{id}"
@@ -234,5 +295,10 @@ bbb.color(:red)
 
 bbb.remove(:drag)
 wait 3 do
-  bbb.drag({})
+  bbb.drag({fixed: true}) do |position|
+    puts position
+  end
 end
+
+circle({drag: {inside: :the_contraint_box}, color: :red})
+
