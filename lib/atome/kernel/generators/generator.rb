@@ -213,17 +213,17 @@ Genesis.generate_html_renderer(:parent) do |values, atome, proc|
 
     case  @html_type
     when :style
-      # wGenesis.atome_creator(:drag)e remove previous class if the are of the same type of the type
+      # remove previous class if the are of the same type of the type
       # ex if there's a color already assign we remove it to allow the new one to be visible
 
       # uncomment below if we need to remove class
-      # #html_parent = grab(value).instance_variable_get("@html_object")
-      # html_parent.class_names.each do |class_name|
-      #   if $document[class_name] && $document[class_name].attributes[:atome]
-      #     class_to_remove = $document[class_name].attributes[:id]
-      #     html_parent.remove_class(class_to_remove)
-      #   end
-      # end
+      html_parent = grab(value).instance_variable_get("@html_object")
+      html_parent.class_names.each do |class_name|
+        if $document[class_name] && $document[class_name].attributes[:atome]
+          class_to_remove = $document[class_name].attributes[:id]
+          html_parent.remove_class(class_to_remove)
+        end
+      end
       $document[value].add_class(id)
 
     when :unset
@@ -370,7 +370,7 @@ Genesis.atome_creator_option(:particles_getter_pre_proc) do |params|
   particles_hash = {}
   atome_found.instance_variables.each do |particle_found|
     particle_content = atome_found.instance_variable_get(particle_found)
-    particles_hash[particle_found] = particle_content
+    particles_hash[particle_found.sub('@','')] = particle_content
   end
   particles_hash
 end
@@ -382,7 +382,7 @@ Genesis.atome_creator_option(:link_pre_render_proc) do |params|
   atome_found = params[:atome]
   atome_to_link = grab(params[:value])
   particles_found = atome_to_link.particles
-  atome_type = particles_found.delete('@type')
+  atome_type = particles_found.delete(:type)
   sanitized_particles = {}
   particles_found.each do |particle_name, value|
     particle_name = particle_name.gsub('@', '')
@@ -475,6 +475,25 @@ Genesis.generate_html_renderer(:drag) do |value, atome, proc|
 end
 
 Genesis.particle_creator(:lock)
+
+Genesis.atome_creator_option(:lock_pre_render_proc) do |params|
+  current_atome= params[:atome]
+  drag_id = current_atome.id
+  options={}
+  current_atome.particles.each do |particle, value|
+    options[particle]=value if (particle != :id && particle != :render && particle != :child && particle != :html_type && particle != :type && particle != :html_object && particle != :target)
+  end
+
+  options=options.merge({ lock: params[:value] })
+  current_atome.target.each do |value|
+    atome_found = grab(value)
+    # we get the id of the drag and ad add it as a html class to all children so they become draggable
+    atome_found.html_object.remove_class(current_atome.id)
+    atome_found.html_object.add_class(current_atome.id)
+  end
+  `#{current_atome.html_object}.drag(#{drag_id},#{options.to_n})`
+end
+
 Genesis.particle_creator(:target)
 
 Genesis.atome_creator(:drag) do |params|
@@ -496,11 +515,10 @@ Genesis.generate_html_renderer(:target) do |targets, atome, proc|
   targets.each do |value|
     atome_found = grab(value)
     # we get the id of the drag and ad add it as a html class to all children so they become draggable
+    # atome_found.html_object.remove_class(id)
     atome_found.html_object.add_class(id)
   end
   drag_id = atome.id
-  `
-let atomeDrag = new AtomeDrag();
-atomeDrag.drag(#{drag_id});
-`
+  atome.html_object( `new AtomeDrag()`)
+  `#{atome.html_object}.drag(#{drag_id},'')`
 end
