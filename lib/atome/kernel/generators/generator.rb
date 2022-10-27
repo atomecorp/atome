@@ -473,29 +473,8 @@ Genesis.generate_html_renderer(:drag) do |value, atome, proc|
   @html_type = :style
   $document.head << DOM("<style atome='#{type}' id='#{id}'></style>")
 end
-
 Genesis.particle_creator(:lock)
-
-Genesis.atome_creator_option(:lock_pre_render_proc) do |params|
-  current_atome= params[:atome]
-  drag_id = current_atome.id
-  options={}
-  current_atome.particles.each do |particle, value|
-    options[particle]=value if (particle != :id && particle != :render && particle != :child && particle != :html_type && particle != :type && particle != :html_object && particle != :target)
-  end
-
-  options=options.merge({ lock: params[:value] })
-  current_atome.target.each do |value|
-    atome_found = grab(value)
-    # we get the id of the drag and ad add it as a html class to all children so they become draggable
-    atome_found.html_object.remove_class(current_atome.id)
-    atome_found.html_object.add_class(current_atome.id)
-  end
-  `#{current_atome.html_object}.drag(#{drag_id},#{options.to_n})`
-end
-
 Genesis.particle_creator(:target)
-
 Genesis.atome_creator(:drag) do |params|
   # TODO: factorise code below
   if params
@@ -510,15 +489,39 @@ Genesis.atome_creator(:drag) do |params|
   end
   params
 end
-
+Genesis.particle_creator(:remove)
+Genesis.particle_creator(:fixed)
+Genesis.particle_creator(:max)
+Genesis.particle_creator(:inside)
+Genesis.atome_creator_option(:remove_pre_render_proc) do |params|
+  type_found = params[:atome].type
+  current_atome = params[:atome]
+  particle_to_remove = params[:value]
+  current_atome.send("#{type_found}_remove_#{particle_to_remove}", current_atome)
+end
+Genesis.atome_creator_option(:max_pre_render_proc) do |params|
+  current_atome = params[:atome]
+  current_atome.constraint_helper(params,current_atome,:max)
+end
+Genesis.atome_creator_option(:inside_pre_render_proc) do |params|
+  current_atome = params[:atome]
+  params[:value]=grab(params[:value]).html_object
+  current_atome.constraint_helper(params,current_atome,:max)
+end
+Genesis.atome_creator_option(:lock_pre_render_proc) do |params|
+  current_atome = params[:atome]
+  current_atome.constraint_helper(params,current_atome,:lock)
+end
+Genesis.atome_creator_option(:fixed_pre_render_proc) do |params|
+  current_atome = params[:atome]
+  current_atome.constraint_helper(params,current_atome,:fixed)
+end
 Genesis.generate_html_renderer(:target) do |targets, atome, proc|
   targets.each do |value|
     atome_found = grab(value)
     # we get the id of the drag and ad add it as a html class to all children so they become draggable
-    # atome_found.html_object.remove_class(id)
     atome_found.html_object.add_class(id)
   end
-  drag_id = atome.id
-  atome.html_object( `new AtomeDrag()`)
-  `#{atome.html_object}.drag(#{drag_id},'')`
+  html_drag_helper(atome, {})
 end
+

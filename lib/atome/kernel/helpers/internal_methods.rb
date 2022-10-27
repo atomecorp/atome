@@ -28,12 +28,128 @@ fetch('medias/rubies/'+#{file})
     #dummy method to handle atome with no type
   end
 
-  def dragCallback(page_x, page_y, x, y, current_object,target, proc=nil)
-    # puts "dragCallback is called #{current_object.id}"
-    # Note this method is call from atome.js  :  AtomeDrag methods
-    # target.instance_variable_set('@left', x)
-    # target.instance_variable_set('@top', y)
+  def html_drag_helper(atome, options, parent = nil)
+    drag_id = atome.id
+    options[:max]=options[:max].to_n
+    `current_obj = Opal.Utilities.$grab(#{drag_id})`
+
+
+    `interact('.'+#{drag_id})
+            .draggable({
+                // enable inertial throwing
+               // startAxis: 'y',
+               // lockAxis: 'x',
+               lockAxis: #{options[:lock]},
+                inertia: true,
+                // keep the element within the area of it's parent
+                modifiers: [
+                    interact.modifiers.restrictRect({
+                        //restriction: 'parent',
+                        //restriction: { left: 333 ,right: 90, top: 333, bottom: 30},
+                        restriction: #{options[:max]},
+
+//elementRect: { left: , right: 0, top: 1, bottom: 1 }
+                        // endOnly: true,
+                    }),
+
+                ],
+                // enable autoScroll
+                autoScroll: true,
+
+                listeners: {
+                    // call this function on every dragmove event
+
+                    // move: dragMoveListener,
+                    move: dragMoveListener,
+                    // move(event){
+                    //     console.log('current atome is: '+self.current_obj)
+                    // },
+                    start(event) {
+                    bloc=#{atome.bloc}
+//TODO:  optimise this passing the proc to the drag callback
+                        // lets get the current atome Object
+                        // self.current_obj = Opal.Utilities.$grab(atome_drag_id)
+                        // now get the grab proc
+                        //self.proc_meth = current_obj.bloc
+                    },
+                    // call this function on every dragend event
+                    end(event) {
+
+                    }
+                }
+            })
+`
+
+    if options[:fixed]
+      `
+ function allow_drag(target,x,y){
+
+  }
+  `
+    else
+      `
+ function allow_drag(target,x,y){
+       target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+    // update the position attributes
+    target.setAttribute('data-x', x)
+    target.setAttribute('data-y', y)
+  }
+  `
+    end
+
+
+
+    `
+function dragMoveListener(event) {
+    const target = event.target
+    // the code below can be conditioned to receive the drag event without moving the object
+    // keep the dragged position in the data-x/data-y attributes
+    const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+    const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+    // translate the element
+      allow_drag(target,x,y)
+    // CallBack here
+    var object_dragged_id=Opal.Utilities.$grab(target.id)
+    #{atome}.$dragCallback(event.pageX, event.pageY, event.rect.left, event.rect.top, #{atome},object_dragged_id, bloc);
+}
+`
+  end
+
+  def drag_remove_true(current_atome)
+    current_atome.target.each do |value|
+      atome_found = grab(value)
+      # we get the id of the drag and ad add it as a html class to all children so they become draggable
+      # atome_found.html_object.remove_class(id)
+      atome_found.html_object.remove_class(current_atome.id)
+    end
+  end
+
+  def shape_remove_drag(atome)
+    class_to_remove = atome.drag.id
+    atome.html_object.remove_class(class_to_remove)
+  end
+
+  def dragCallback(page_x, page_y, x, y, current_object, object_dragged_id, proc = nil)
+    dragged_atome=grab(object_dragged_id.id)
+    dragged_atome.instance_variable_set('@left', x)
+    dragged_atome.instance_variable_set('@top', y)
     current_object.instance_exec({ x: page_x, y: page_y }, &proc) if proc.is_a?(Proc)
+  end
+
+  def constraint_helper(params,current_atome,option)
+    options = {}
+    current_atome.particles.each do |particle, value|
+      options[particle] = value if (particle != :id && particle != :render && particle != :child && particle != :html_type && particle != :type && particle != :html_object && particle != :target)
+    end
+    options = options.merge({option => params[:value] })
+    current_atome.target.each do |value|
+      atome_found = grab(value)
+      # we get the id of the drag and ad add it as a html class to all children so they become draggable
+      atome_found.html_object.remove_class(current_atome.id)
+      atome_found.html_object.add_class(current_atome.id)
+      html_drag_helper(current_atome, options)
+    end
+
   end
 
 end
