@@ -28,11 +28,11 @@ fetch('medias/rubies/'+#{file})
     #dummy method to handle atome with no type
   end
 
-  def dragCallback(page_x, page_y, x, y, current_object, proc=nil)
+  def dragCallback(page_x, page_y, x, y, current_object,target, proc=nil)
     # puts "dragCallback is called #{current_object.id}"
     # Note this method is call from atome.js  :  AtomeDrag methods
-    current_object.instance_variable_set('@left', x)
-    current_object.instance_variable_set('@top', y)
+    # target.instance_variable_set('@left', x)
+    # target.instance_variable_set('@top', y)
     current_object.instance_exec({ x: page_x, y: page_y }, &proc) if proc.is_a?(Proc)
   end
 
