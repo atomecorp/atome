@@ -131,10 +131,11 @@ Genesis.particle_creator(:parent) do |parents|
 end
 
 Genesis.atome_creator_option(:parent_pre_render_proc) do |params|
+  current_atome=params[:atome]
   unless params[:value].instance_of? Array
     params[:value] = [params[:value]]
   end
-  params[:value]
+  current_atome.instance_variable_set("@parent",params[:value])
 end
 
 Genesis.particle_creator(:date)

@@ -30,11 +30,7 @@ module Utilities
   end
 
   def self.grab(params)
-    atome_found = nil
-    Universe.atomes.each do |atome|
-      atome_found = atome if atome.id == params
-    end
-    atome_found
+    Universe.atomes[params]
   end
 
 

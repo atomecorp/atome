@@ -35,7 +35,8 @@ class Atome
   end
 
   def delete(params)
-    puts "replace : #{params}"
+    alert params
+    # grab(child_found).html_object&.remove
   end
 
   def [](params)

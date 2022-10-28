@@ -35,14 +35,14 @@ module GenesisKernel
     return false unless validation(particle)
 
     particle_instance_variable = "@#{particle}"
-    value_getted = instance_variable_get(particle_instance_variable)
-    Genesis.run_optional_methods_helper("#{particle}_getter_pre_proc".to_sym, { value: value_getted, atome: self })
+    value_get = instance_variable_get(particle_instance_variable)
+    Genesis.run_optional_methods_helper("#{particle}_getter_pre_proc".to_sym, { value: value_get, atome: self })
   end
 
-  def new_particle(particle, params, proc, &methodproc)
+  def new_particle(particle, params, proc, &method_proc)
     if params
-      if methodproc.is_a?(Proc)
-        params = instance_exec(params, &methodproc)
+      if method_proc.is_a?(Proc)
+        params = instance_exec(params, &method_proc)
       end
       set_new_particle(particle, params, &proc)
     else
@@ -52,21 +52,19 @@ module GenesisKernel
 
   # atome's methods
 
-
-
   def get_new_atome(atome)
     return false unless validation(atome)
 
     atome_instance_variable = "@#{atome}"
-    value_getted = instance_variable_get(atome_instance_variable)
-    Genesis.run_optional_methods_helper("#{atome}_getter_pre_proc".to_sym, { value: value_getted })
+    value_get = instance_variable_get(atome_instance_variable)
+    Genesis.run_optional_methods_helper("#{atome}_getter_pre_proc".to_sym, { value: value_get })
 
   end
 
-  def new_atome(atome, params, userproc, &methodproc)
+  def new_atome(atome, params, userproc, &method_proc)
     if params
       # the line below execute the proc associated to the method, ex Genesis.atome_creator(:color) do ...(proc)
-      params = instance_exec(params, &methodproc) if methodproc.is_a?(Proc)
+      params = instance_exec(params, &method_proc) if method_proc.is_a?(Proc)
       params = add_essential_properties(atome, params)
       params = sanitizer(params)
       set_new_atome(atome, params, userproc)
@@ -92,7 +90,7 @@ module GenesisKernel
 
   def create_new_atomes(params, instance_var, new_atome, &userproc)
     # new_atome = Atome.new({}, &userproc)
-    Universe.atomes_add(new_atome)
+    Universe.atomes_add(new_atome,params[:id])
     instance_variable_set(instance_var, new_atome)
     # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
     params.each do |param, value|
@@ -205,13 +203,13 @@ module Genesis
   end
 
   # we create the easy methods here : ¬
-  def self.atome_creator(method_name, &methodproc)
+  def self.atome_creator(method_name, &method_proc)
 
     # we add the new method to the atome's collection of methods
     Utilities.atome_list(method_name)
     # we define many methods : easy, method=,pluralised and the fasts one, here is the easy
     Atome.define_method method_name do |params = nil, &user_proc|
-      new_atome(method_name, params, user_proc, &methodproc)
+      new_atome(method_name, params, user_proc, &method_proc)
     end
     # no we also add the method= for easy setting
     Atome.define_method("#{method_name}=") do |params, &user_proc|
@@ -260,11 +258,11 @@ module Genesis
     optional_particle_methods(method_name)
   end
 
-  def self.particle_creator(method_name, &methodproc)
+  def self.particle_creator(method_name, &method_proc)
     # we add the new method to the particle's collection of methods
     Utilities.particle_list(method_name)
     Atome.define_method method_name do |params = nil, &user_proc|
-      new_particle(method_name, params, user_proc, &methodproc)
+      new_particle(method_name, params, user_proc, &method_proc)
     end
     # no we also add the method= for easy setting
     Atome.define_method("#{method_name}=") do |params, &user_proc|
