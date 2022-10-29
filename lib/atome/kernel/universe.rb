@@ -15,7 +15,16 @@ class Universe
   end
 
   def self.atomes_add(new_atome,atome_id)
+    new_atome.instance_variable_set('@id', atome_id)
     @atomes[atome_id] = new_atome
+  end
+
+  def self.change_atome_id(prev_id, new_id)
+    @atomes[new_id] = @atomes.delete(prev_id)
+  end
+
+  def self.delete(id)
+    @atomes.delete(id)
   end
 
   class << self

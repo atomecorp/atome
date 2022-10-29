@@ -217,7 +217,9 @@ wait 2 do
   b.refresh
 end
 
-
+wait 5 do
+  b.delete
+end
 
 $window.on :resize do |e|
   puts $window.view.height
@@ -284,3 +286,4 @@ end
 #   s.color({ render: [:html], id: :view_test_color, type: :color,
 #             red: 1, green: 0.15, blue: 0.15, alpha: 1 })
 # end
+

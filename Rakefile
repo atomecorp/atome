@@ -13,6 +13,7 @@
 # task default: :test
 
 task :test do
+  FileUtils.copy_entry('vendor/assets/build/js/atome/', 'test/test_app/build/js/atome/')
   `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;gem install atome`
   `cd test/test_app;atome update;atome run guard`
 end
