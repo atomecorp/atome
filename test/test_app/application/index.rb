@@ -146,111 +146,98 @@ class Universe
 
 end
 
-module Genesis
-  def create_new_atomes(params, instance_var, new_atome, &userproc)
-    atome_id = params.delete(:id)
-    return false unless Universe.atomes_add(new_atome, atome_id)
-    instance_variable_set(instance_var, new_atome)
-    params.each do |param, value|
-      new_atome.send(param, value)
-    end
-    new_atome
+class Atome
+  def delete(params)
+    self.html_object&.remove
+    Universe.delete(id)
   end
+
+
+
+  def refresh
+    # delete the object in the view
+    self.html_object&.remove
+    particles_found = particles
+    particles_found.delete(:html_type)
+    particles_found.delete(:html_object)
+    particles_found.delete(:id)
+    particles_found.delete(:dna)
+    atomes_to_re_attach = {}
+    Utilities.atome_list.each do |atome_to_refresh|
+      atome_found = particles_found.delete(atome_to_refresh)
+      if atome_found
+        particles_found.delete(atome_to_refresh)
+        atomes_to_re_attach[atome_found.type] = atome_found
+      end
+    end
+    particles_found.each do |particle_to_refresh, value|
+      send(particle_to_refresh, value)
+    end
+    atomes_to_re_attach.each do |atome_to_attatch, content|
+      instance_variable_set("@#{atome_to_attatch}", content)
+      html_decision(content.html_type, id, content.id)
+    end
+  end
+
 end
 
-module Utilities
-  def self.grab(params)
-    Universe.atomes[params]
-  end
-
+Genesis.generate_html_renderer(:color) do |value, atome, proc|
+  instance_exec(&proc) if proc.is_a?(Proc)
+  @html_type = :style
+   # we remove previous unused style tag
+     $document[id].remove if $document[id]
+  $document.head << DOM("<style atome='#{type}'  id='#{id}'></style>")
 end
 
 Genesis.atome_creator_option(:id_pre_render_proc) do |params|
-  # prev_id = params[:atome].id
   new_id = params[:value]
   current_atome = params[:atome]
-  # Universe.change_atome_id(prev_id, new_id)
-  particles_found = current_atome.particles
-  current_atome.delete(true)
-  particles_found[:id] = new_id
-  particles_found.delete(:html_type)
-  particles_found.delete(:html_object)
-  ##################### trying to reconnect atomes
-  atomes_to_re_attach= {}
-   Utilities.atome_list.each do |atome_found|
+  old_id = current_atome.id
+  current_atome.instance_variable_set('@id', new_id)
+  # we change id id the atomes hash
+  Universe.change_atome_id(old_id, new_id)
+    current_atome.html_object.id = new_id if current_atome.html_object
 
-     # unless particles_found.delete(atome_found).nil?
-     atome_found= particles_found.delete(atome_found)
-     # alert atome_found
-     if atome_found
-         # atome_found_particles=atome_found
-         atomes_to_re_attach[atome_found.type]=atome_found
-     end
-
-   end
-
-  # atomes_to_re_attach.each do |particle|
-  #   type_found= particle[:type]
-  #   particle.delete(:html_type)
-  #   particle.delete(:html_object)
-  #
-  #   renamed_atome.send(type_found,particle)
-  # end
-  ##################### trying to reconnect atomes
-
-  dna_found=particles_found.delete(:dna)
-  type_found=  particles_found[:type]
-  renamed_atome=Atome.new({type_found => particles_found })
-  renamed_atome.instance_variable_set("@dna",dna_found)
-  ##################### trying to reconnect atomes
-  atomes_to_re_attach.each do |atome_to_attatch, content|
-    renamed_atome.instance_variable_set("@#{atome_to_attatch}", content)
-  end
-  ##################### trying to reconnect atomes
-  alert renamed_atome
-  renamed_atome
 end
 
-class Atome
-  def delete(params)
-
-    self.html_object&.remove
-    Universe.delete(id)
-    # grab(child_found).html_object&.remove
-  end
-end
-
-
-# alert Universe.atomes
-
-############# for test only
-#
-# Genesis.generate_html_renderer(:type) do |value, atome, proc|
-#   send("#{value}_html", value, atome, proc)
-#   value
-# end
-#
-# Genesis.generate_html_renderer(:shape) do |value, atome, proc|
-#   id_found = id
-#   instance_exec(&proc) if proc.is_a?(Proc)
-#   DOM do
-#     div(id: id_found).atome
-#   end.append_to($document[:user_view])
-#   @html_object = $document[id_found]
-#   @html_type = :div
-# end
 ############# verif
-
-
 b = box({ id: :kool })
+b.color(:orange)
+b.color(:red)
+b.color(:green)
+
+#TODO : clean the style tags accumaulated
+
+b.id(:the_new_id)
+# c = b.id
+grab(:the_new_id).color(:cyan)
+wait 2 do
+  b.color(:blue)
+  b.instance_variable_set('@left', 300)
+  b.refresh
+end
+
+
+
+$window.on :resize do |e|
+  puts $window.view.height
+end
+# alert b.id
 # alert b.parent
 # b.delete(true)
-# alert b.color
-b.color(:orange)
-# alert b.color
-b.id(:okpp)
-grab(:okpp).color(:cyan)
-# b.color(:orange)
+# ###########################
+
+# puts "pre :#{b}"
+
+#*********
+# alert b.class
+#*********
+# puts "post: #{b}"
+# puts "g_pre #{grab(:kool)}"
+# puts "g_post#{grab(:okpp)}"
+
+# ###########################
+
 # Atome.new({ "shape": {render: [:html], id: :view_test, type: :shape, parent: [:view], "width" => 99, "height" => 99, "left" => 9, "top" => 9 } })
 # Atome.new({"shape"=>{"render"=>["html"], "id"=>"okpp", "parent"=>["view"], "width"=>99, "height"=>99, "left"=>9, "top"=>9}})
 # { shape: { render: [:html], id: :view_test, type: :shape, parent: [:view],

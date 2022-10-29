@@ -28,6 +28,7 @@ module GenesisKernel
                                                 { method: particle, value: value, proc: proc })
     broadcaster(particle, value)
     history(particle, value)
+
     self
   end
 
@@ -90,7 +91,7 @@ module GenesisKernel
 
   def create_new_atomes(params, instance_var, new_atome, &userproc)
     # new_atome = Atome.new({}, &userproc)
-    Universe.atomes_add(new_atome,params[:id])
+    Universe.atomes_add(new_atome, params[:id])
     instance_variable_set(instance_var, new_atome)
     # FIXME : move this to sanitizer and ensure that no reorder happen for "id" and "render" when
     params.each do |param, value|
@@ -129,14 +130,17 @@ module Genesis
     # bloc_render_proc
     # render_getter_pre_proc
     # bloc_post_render_proc
-    instance_exec(params, atome, &proc) if proc.is_a?(Proc)
+
+    params[:atome].instance_exec(params, atome, &proc) if proc.is_a?(Proc)
+
+
   end
 
   def self.generate_html_renderer(method_name, &methods_proc)
     current_renderer = :html
     generated_method_name = "#{method_name}_#{current_renderer}".to_sym
     Atome.define_method generated_method_name do |value, atome, &user_proc|
-      instance_exec(value, atome, user_proc, &methods_proc) if methods_proc.is_a?(Proc)
+      params[:atome].instance_exec(value, atome, user_proc, &methods_proc) if methods_proc.is_a?(Proc)
     end
   end
 

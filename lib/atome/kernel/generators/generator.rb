@@ -56,7 +56,6 @@ Genesis.atome_creator(:video) do |params, &proc|
   params
 end
 
-
 # Example below
 
 # Genesis.atome_creator(:color) do |params|
@@ -117,7 +116,6 @@ Genesis.particle_creator(:time)
 Genesis.particle_creator(:render)
 Genesis.particle_creator(:drm)
 
-
 Genesis.particle_creator(:child)
 
 Genesis.particle_creator(:parent) do |parents|
@@ -131,11 +129,11 @@ Genesis.particle_creator(:parent) do |parents|
 end
 
 Genesis.atome_creator_option(:parent_pre_render_proc) do |params|
-  current_atome=params[:atome]
+  current_atome = params[:atome]
   unless params[:value].instance_of? Array
     params[:value] = [params[:value]]
   end
-  current_atome.instance_variable_set("@parent",params[:value])
+  current_atome.instance_variable_set("@parent", params[:value])
 end
 
 Genesis.particle_creator(:date)
@@ -211,29 +209,7 @@ Genesis.generate_html_renderer(:drm)
 Genesis.generate_html_renderer(:parent) do |values, atome, proc|
   instance_exec(&proc) if proc.is_a?(Proc)
   values.each do |value|
-
-    case  @html_type
-    when :style
-      # remove previous class if the are of the same type of the type
-      # ex if there's a color already assign we remove it to allow the new one to be visible
-
-      # uncomment below if we need to remove class
-      html_parent = grab(value).instance_variable_get("@html_object")
-      html_parent.class_names.each do |class_name|
-        if $document[class_name] && $document[class_name].attributes[:atome]
-          class_to_remove = $document[class_name].attributes[:id]
-          html_parent.remove_class(class_to_remove)
-        end
-      end
-      $document[value].add_class(id)
-
-    when :unset
-    else
-          @html_object.append_to($document[value])
-
-
-    end
-
+    atome.html_decision(@html_type, value, id)
   end
 end
 Genesis.generate_html_renderer(:id) do |value, atome, proc|
@@ -302,7 +278,6 @@ Genesis.generate_html_renderer(:video) do |value, atome, proc|
   @html_type = :video
 end
 
-
 # overflow
 Genesis.particle_creator(:overflow)
 Genesis.generate_html_renderer(:overflow) do |value, atome, proc|
@@ -347,7 +322,6 @@ Genesis.atome_creator(:text) do |params|
 end
 Genesis.particle_creator(:string)
 
-
 Genesis.particle_creator(:visual)
 Genesis.generate_html_renderer(:visual) do |value, atome, proc|
   @html_object.style['font-size'] = "#{value[:size]}px"
@@ -363,7 +337,6 @@ Genesis.generate_html_renderer(:text) do |value, atome, proc|
   @html_type = :text
 end
 
-
 # particles method below to allow to retrieve all particles for an atome
 Genesis.particle_creator(:particles)
 Genesis.atome_creator_option(:particles_getter_pre_proc) do |params|
@@ -371,11 +344,10 @@ Genesis.atome_creator_option(:particles_getter_pre_proc) do |params|
   particles_hash = {}
   atome_found.instance_variables.each do |particle_found|
     particle_content = atome_found.instance_variable_get(particle_found)
-    particles_hash[particle_found.sub('@','')] = particle_content
+    particles_hash[particle_found.sub('@', '')] = particle_content
   end
   particles_hash
 end
-
 
 # link
 Genesis.particle_creator(:link)
@@ -389,7 +361,7 @@ Genesis.atome_creator_option(:link_pre_render_proc) do |params|
     particle_name = particle_name.gsub('@', '')
     sanitized_particles[particle_name] = value
   end
-  sanitized_particles[:parent]=[atome_found.id]
+  sanitized_particles[:parent] = [atome_found.id]
   atome_found.send(atome_type, sanitized_particles)
   params[:value]
 end
@@ -406,11 +378,10 @@ Genesis.generate_html_renderer(:web) do |value, atome, proc|
     iframe({ id: id_found }).atome
   end.append_to($document[:user_view])
   @html_object = $document[id_found]
-  @html_object.attributes[:allow]='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
-  @html_object.attributes[:allowfullscreen]=true
+  @html_object.attributes[:allow] = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
+  @html_object.attributes[:allowfullscreen] = true
   @html_type = :web
 end
-
 
 Genesis.particle_creator(:data)
 
@@ -424,6 +395,7 @@ Genesis.atome_creator_option(:code_pre_render_proc) do |params|
   def get_binding
     binding
   end
+
   str = params[:value][:code]
   eval str, get_binding, __FILE__, __LINE__
   params[:value]
@@ -467,9 +439,9 @@ Genesis.generate_html_renderer(:time) do |value, atome, proc|
   @html_object.currentTime = value
 end
 
-
 #drag
 Genesis.generate_html_renderer(:drag) do |value, atome, proc|
+  alert ("this is very strange that I had a style tag please check")
   instance_exec(&proc) if proc.is_a?(Proc)
   @html_type = :style
   $document.head << DOM("<style atome='#{type}' id='#{id}'></style>")
@@ -502,20 +474,20 @@ Genesis.atome_creator_option(:remove_pre_render_proc) do |params|
 end
 Genesis.atome_creator_option(:max_pre_render_proc) do |params|
   current_atome = params[:atome]
-  current_atome.constraint_helper(params,current_atome,:max)
+  current_atome.constraint_helper(params, current_atome, :max)
 end
 Genesis.atome_creator_option(:inside_pre_render_proc) do |params|
   current_atome = params[:atome]
-  params[:value]=grab(params[:value]).html_object
-  current_atome.constraint_helper(params,current_atome,:max)
+  params[:value] = grab(params[:value]).html_object
+  current_atome.constraint_helper(params, current_atome, :max)
 end
 Genesis.atome_creator_option(:lock_pre_render_proc) do |params|
   current_atome = params[:atome]
-  current_atome.constraint_helper(params,current_atome,:lock)
+  current_atome.constraint_helper(params, current_atome, :lock)
 end
 Genesis.atome_creator_option(:fixed_pre_render_proc) do |params|
   current_atome = params[:atome]
-  current_atome.constraint_helper(params,current_atome,:fixed)
+  current_atome.constraint_helper(params, current_atome, :fixed)
 end
 Genesis.generate_html_renderer(:target) do |targets, atome, proc|
   targets.each do |value|

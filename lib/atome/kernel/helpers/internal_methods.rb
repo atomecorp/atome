@@ -8,7 +8,7 @@ fetch('medias/rubies/'+#{file})
 `
   end
 
-  def  self.read_text(file)
+  def self.read_text(file)
     `
 fetch('medias/rubies/'+#{file})
   .then(response => response.text())
@@ -30,9 +30,8 @@ fetch('medias/rubies/'+#{file})
 
   def html_drag_helper(atome, options, parent = nil)
     drag_id = atome.id
-    options[:max]=options[:max].to_n
+    options[:max] = options[:max].to_n
     `current_obj = Opal.Utilities.$grab(#{drag_id})`
-
 
     `interact('.'+#{drag_id})
             .draggable({
@@ -97,8 +96,6 @@ fetch('medias/rubies/'+#{file})
   `
     end
 
-
-
     `
 function dragMoveListener(event) {
     const target = event.target
@@ -130,24 +127,45 @@ function dragMoveListener(event) {
   end
 
   def dragCallback(page_x, page_y, x, y, current_object, object_dragged_id, proc = nil)
-    dragged_atome=grab(object_dragged_id.id)
+    dragged_atome = grab(object_dragged_id.id)
     dragged_atome.instance_variable_set('@left', x)
     dragged_atome.instance_variable_set('@top', y)
     current_object.instance_exec({ x: page_x, y: page_y }, &proc) if proc.is_a?(Proc)
   end
 
-  def constraint_helper(params,current_atome,option)
+  def constraint_helper(params, current_atome, option)
     options = {}
     current_atome.particles.each do |particle, value|
       options[particle] = value if (particle != :id && particle != :render && particle != :child && particle != :html_type && particle != :type && particle != :html_object && particle != :target)
     end
-    options = options.merge({option => params[:value] })
+    options = options.merge({ option => params[:value] })
     current_atome.target.each do |value|
       atome_found = grab(value)
       # we get the id of the drag and ad add it as a html class to all children so they become draggable
       atome_found.html_object.remove_class(current_atome.id)
       atome_found.html_object.add_class(current_atome.id)
       html_drag_helper(current_atome, options)
+    end
+
+  end
+
+  def html_decision(html_type, value, id)
+    case html_type
+    when :style
+      # remove previous class if the are of the same type of the type, example:
+      # if there's a color already assign we remove it to allow the new one to be visible
+      # comment / uncomment below if we need to remove class or not
+      html_parent = grab(value).instance_variable_get("@html_object")
+      html_parent.class_names.each do |class_name|
+        if $document[class_name] && $document[class_name].attributes[:atome]
+          class_to_remove = $document[class_name].attributes[:id]
+          html_parent.remove_class(class_to_remove)
+        end
+      end
+      $document[value].add_class(id)
+    when :unset
+    else
+      @html_object.append_to($document[value])
     end
 
   end
