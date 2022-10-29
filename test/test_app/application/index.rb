@@ -84,7 +84,6 @@ $window.on :resize do |e|
 end
 
 
-
 # TODO: when we add a color we must change the code : do we create a new color with it's id or do we replace the old one?
 # TODO: gem install webrick  ; ruby -run -e httpd . -p 8080
 # TODO: new id Scheme base on id, with verification if already exist
