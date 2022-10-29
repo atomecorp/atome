@@ -12,6 +12,4 @@
 *.idea
 /vendor/assets/build/js
 /vendor/assets/build/js/css/
-/vendor/assets/build/js/media/
-/vendor/assets/build/js/third_parties/
 /test/test_app/build/js/third_parties/
