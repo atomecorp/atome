@@ -139,6 +139,18 @@ end
 Genesis.particle_creator(:date)
 Genesis.particle_creator(:location)
 
+Genesis.atome_creator_option(:id_pre_render_proc) do |params|
+  new_id = params[:value]
+  current_atome = params[:atome]
+  old_id = current_atome.id
+  current_atome.instance_variable_set('@id', new_id)
+  # we change id id the atomes hash
+  Universe.change_atome_id(old_id, new_id)
+  current_atome.html_object.id = new_id if current_atome.html_object
+
+end
+
+
 # generate renderers
 
 Genesis.generate_html_renderer(:type) do |value, atome, proc|
@@ -159,7 +171,9 @@ end
 Genesis.generate_html_renderer(:color) do |value, atome, proc|
   instance_exec(&proc) if proc.is_a?(Proc)
   @html_type = :style
-  $document.head << DOM("<style atome='#{type}' id='#{id}'></style>")
+  # we remove previous unused style tag
+  $document[id].remove if $document[id]
+  $document.head << DOM("<style atome='#{type}'  id='#{id}'></style>")
 end
 
 Genesis.generate_html_renderer(:red) do |value, atome, proc|
@@ -212,6 +226,9 @@ Genesis.generate_html_renderer(:parent) do |values, atome, proc|
     atome.html_decision(@html_type, value, id)
   end
 end
+
+
+
 Genesis.generate_html_renderer(:id) do |value, atome, proc|
   # send("#{value}_html", value, atome, proc)
 end

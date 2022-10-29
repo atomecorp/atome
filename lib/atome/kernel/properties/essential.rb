@@ -23,6 +23,32 @@ class Atome
     puts "update : #{params}"
   end
 
+  def refresh
+    # delete the object in the view
+    self.html_object&.remove
+    particles_found = particles
+    particles_found.delete(:html_type)
+    particles_found.delete(:html_object)
+    particles_found.delete(:id)
+    particles_found.delete(:dna)
+    atomes_to_re_attach = {}
+    Utilities.atome_list.each do |atome_to_refresh|
+      atome_found = particles_found.delete(atome_to_refresh)
+      if atome_found
+        particles_found.delete(atome_to_refresh)
+        atomes_to_re_attach[atome_found.type] = atome_found
+      end
+    end
+    particles_found.each do |particle_to_refresh, value|
+      send(particle_to_refresh, value)
+    end
+    atomes_to_re_attach.each do |atome_to_attatch, content|
+      instance_variable_set("@#{atome_to_attatch}", content)
+      html_decision(content.html_type, id, content.id)
+    end
+  end
+
+
   def replace(params)
     puts "replace : #{params}"
   end
@@ -35,8 +61,8 @@ class Atome
   end
 
   def delete(params)
-    alert params
-    # grab(child_found).html_object&.remove
+    self.html_object&.remove
+    Universe.delete(id)
   end
 
   def [](params)
