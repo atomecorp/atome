@@ -10,6 +10,5 @@
 /Gemfile.lock
 *.ds_store
 *.idea
-/vendor/assets/build/js
-/vendor/assets/build/js/css/
+/vendor/assets/build
 /test/test_app/build/js/third_parties/
