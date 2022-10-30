@@ -205,7 +205,6 @@ Genesis.generate_html_renderer(:blue) do |value, atome, proc|
   alpha_found = alpha
   alpha_found ||= 0
   $document[id].inner_html = "\n.#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{value * 255},#{alpha_found})}\n"
-
 end
 
 Genesis.generate_html_renderer(:alpha) do |value, atome, proc|
@@ -289,7 +288,7 @@ Genesis.generate_html_renderer(:video) do |value, atome, proc|
   id_found = id
   instance_exec(&proc) if proc.is_a?(Proc)
   DOM do
-    video({ id: id_found, autoplay: false }).atome
+    video({ id: id_found, autoplay: true ,loop: false, muted: true }).atome
   end.append_to($document[:user_view])
   @html_object = $document[id_found]
   @html_type = :video

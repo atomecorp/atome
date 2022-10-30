@@ -78,11 +78,14 @@
 # # end
 # ############# Drag ###########
 
+my_video=video({ path: "./medias/videos/madmax.mp4", left: 6, top: 120, width: 666, height: 666})
+my_video.touch(true) do
+  my_video.play(true)
+end
 
 $window.on :resize do |e|
   puts $window.view.height
 end
-
 
 # TODO: when we add a color we must change the code : do we create a new color with it's id or do we replace the old one?
 # TODO: gem install webrick  ; ruby -run -e httpd . -p 8080
