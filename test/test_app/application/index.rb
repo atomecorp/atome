@@ -94,3 +94,6 @@ end
 # TODO : maybe add Shape, text, Image, etc.. Classes to simplify type exeption methods
 # TODO : maybe add Genesis as an atome module to be in the context of the atome to simplify and accelerate methods treatment
 
+box()
+
+image({path: "./medias/images/moto.png", left: 33, bottom: 33})

@@ -50,7 +50,7 @@ Genesis.atome_creator(:video) do |params, &proc|
     generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
     generated_parent = params[:parent] || id
     default_params = { render: [generated_render], id: generated_id, type: :video, parent: [generated_parent],
-                       path: './medias/videos/video_missing.mp4', left: 139, top: 333, width: 199, height: 199 }
+                       path: './medias/videos/video_missing.mp4',  width: 199, height: 199 }
     params = default_params.merge(params)
   end
   params
@@ -304,7 +304,19 @@ Genesis.particle_creator(:bloc)
 
 # image
 
-Genesis.atome_creator(:image)
+Genesis.atome_creator(:image) do |params, &proc|
+  # todo:  factorise code below
+  if params
+    default_renderer = Sanitizer.default_params[:render]
+    generated_id = params[:id] || "image_#{Universe.atomes.length}"
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+    generated_parent = params[:parent] || id
+    default_params = { render: [generated_render], id: generated_id, type: :image, parent: [generated_parent],
+                       path: './medias/images/atome.svg',  width: 199, height: 199 }
+    params = default_params.merge(params)
+  end
+  params
+end
 
 Genesis.generate_html_renderer(:image) do |value, atome, proc|
   id_found = id
@@ -327,9 +339,9 @@ Genesis.atome_creator(:text) do |params|
     generated_parent = params[:parent] || id
 
     default_params = { render: [generated_render], id: generated_id, type: :text, parent: [generated_parent],
-                       visual: { size: 33 }, data: "hello world", left: 39, top: 33,
+                       visual: { size: 33 }, data: "hello world",
                        color: { render: [generated_render], id: "color_#{generated_id}", type: :color,
-                                red: 0.09, green: 1, blue: 0.12, alpha: 1 }
+                                red: 0.3, green: 0.3, blue: 0.3, alpha: 1 }
     }
     params = default_params.merge(params)
     params
