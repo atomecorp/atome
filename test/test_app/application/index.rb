@@ -1,5 +1,9 @@
 # # TODO: when using Rake the atomejs and others are rebuild iun test application
-# # TODO : maybe revert default renderer to headless istead of html
+# # TODO : maybe revert default renderer to headless instead of html
+# # TODO : over
+# # TODO :shadow
+# #TODO : text align
+# #TODO : audio objct
 # # ###################### animation tests
 # #
 # # Genesis.atome_creator(:animator)
@@ -78,11 +82,6 @@
 # # end
 # ############# Drag ###########
 
-my_video=video({ path: "./medias/videos/madmax.mp4", left: 6, top: 120, width: 666, height: 666})
-my_video.touch(true) do
-  my_video.play(true)
-end
-
 $window.on :resize do |e|
   puts $window.view.height
 end
@@ -94,6 +93,77 @@ end
 # TODO : maybe add Shape, text, Image, etc.. Classes to simplify type exeption methods
 # TODO : maybe add Genesis as an atome module to be in the context of the atome to simplify and accelerate methods treatment
 
-box()
+#
+# my_video=video({ path: "./medias/videos/madmax.mp4", left: 6, top: 120, width: 666, height: 666})
+# my_video.touch(true) do
+#   my_video.play(true)
+# end
 
-image({path: "./medias/images/moto.png", left: 33, bottom: 33})
+class Atome
+  def color_sanitizer(params)
+    if params.instance_of? Hash and color.nil?
+      default_color = { red: 0, green: 0, blue: 0, alpha: 1 }
+      params.merge!(default_color)
+      params
+    elsif params.instance_of? Hash
+      params.each do |particle, value|
+        send(:color, particle, value)
+      end
+    else
+      if RUBY_ENGINE.downcase == 'opal'
+        rgb_color = `d = document.createElement("div");
+	                   d.style.color = #{params};
+	                   document.body.appendChild(d)
+                     rgb_color=(window.getComputedStyle(d).color);
+                     d.remove();
+                     `
+        color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+        rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
+          color_converted[color_converted.keys[index]] = component.to_i / 255
+        end
+      else
+        rgb_color = Color::CSS["red"].css_rgb
+        color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+        rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
+          component = component.to_i / 100
+          color_converted[color_converted.keys[index]] = component
+        end
+      end
+      params = { render: [:html], id: "color_#{id}", type: :color }.merge(color_converted)
+    end
+    params
+  end
+
+end
+
+Genesis.atome_creator_option(:color_sanitizer_proc) do |params, atome|
+  params = atome.send(:color_sanitizer, params)
+  params
+end
+
+c = circle
+
+
+# the most performant way :
+wait 1 do
+  c.color(
+    { render: [:html], id: :c319, type: :color,
+      red: 1, green: 1, blue: 0.15, alpha: 0.6 }
+  )
+end
+
+wait 2 do
+  # now we overload the color
+  c.color({ red: 1 })
+end
+
+wait 4 do
+  # now the easy way
+  c.color(:yellow)
+end
+# please note that render , id and type params must place in order
+
+# box({left: 99, top: 99, shadow:{blur: 9, left: 3, top: 3, color: :black}})
+# box({left: 99, top: 99, shadow: :black})
+image({ path: "./medias/images/moto.png", left: 33, bottom: 33 })
+

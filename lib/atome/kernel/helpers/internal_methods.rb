@@ -146,7 +146,6 @@ function dragMoveListener(event) {
       atome_found.html_object.add_class(current_atome.id)
       html_drag_helper(current_atome, options)
     end
-
   end
 
   def html_decision(html_type, value, id)
@@ -168,6 +167,33 @@ function dragMoveListener(event) {
       @html_object.append_to($document[value])
     end
 
+  end
+
+  def color_sanitizer(params, atome)
+    unless params.instance_of? Hash
+      if RUBY_ENGINE.downcase == 'opal'
+        rgb_color = `d = document.createElement("div");
+	d.style.color = #{params};
+	document.body.appendChild(d)
+   rgb_color=(window.getComputedStyle(d).color);
+d.remove();
+`
+        color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+        rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
+          color_converted[color_converted.keys[index]] = component.to_i / 255
+        end
+      else
+        rgb_color = Color::CSS["red"].css_rgb
+        color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
+        rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
+          component = component.to_i / 100
+          color_converted[color_converted.keys[index]] = component
+        end
+      end
+      params = { render: [:html], id: "color_#{atome.id}", type: :color }.merge(color_converted)
+    end
+
+    params
   end
 
 end

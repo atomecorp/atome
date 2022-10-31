@@ -8,40 +8,17 @@ Genesis.particle_creator(:html_object)
 
 Genesis.atome_creator(:shape)
 
-Genesis.atome_creator(:shadow)
 # Genesis.atome_creator(:additional)
 Genesis.atome_creator(:content)
 
 Genesis.atome_creator(:color)
 
 Genesis.atome_creator_option(:color_sanitizer_proc) do |params, atome|
-  unless params.instance_of? Hash
-    if RUBY_ENGINE.downcase == 'opal'
-      rgb_color = `d = document.createElement("div");
-	d.style.color = #{params};
-	document.body.appendChild(d)
-   rgb_color=(window.getComputedStyle(d).color);
-d.remove();
-`
-      color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
-      rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
-        color_converted[color_converted.keys[index]] = component.to_i / 255
-      end
-    else
-      rgb_color = Color::CSS["red"].css_rgb
-      color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
-      rgb_color.gsub("rgb(", "").gsub(")", "").gsub("%", "").split(",").each_with_index do |component, index|
-        component = component.to_i / 100
-        color_converted[color_converted.keys[index]] = component
-      end
-    end
-    params = { render: [:html], id: "color_#{atome.id}", type: :color }.merge(color_converted)
-  end
+  params = atome.send(:color_sanitizer, params, atome)
   params
 end
 
 Genesis.atome_creator(:shadow)
-
 Genesis.atome_creator(:video) do |params, &proc|
   # todo:  factorise code below
   if params
@@ -175,7 +152,6 @@ Genesis.generate_html_renderer(:color) do |value, atome, proc|
   $document[id].remove if $document[id]
   $document.head << DOM("<style atome='#{type}'  id='#{id}'></style>")
 end
-
 Genesis.generate_html_renderer(:red) do |value, atome, proc|
   green_found = green
   green_found ||= 0
@@ -196,7 +172,6 @@ Genesis.generate_html_renderer(:green) do |value, atome, proc|
   $document[id].inner_html = "\n.#{id}{background-color: rgba(#{red_found * 255},#{value * 255},#{blue_found * 255},#{alpha_found})}\n"
 
 end
-
 Genesis.generate_html_renderer(:blue) do |value, atome, proc|
   red_found = red
   red_found ||= 0
@@ -206,7 +181,6 @@ Genesis.generate_html_renderer(:blue) do |value, atome, proc|
   alpha_found ||= 0
   $document[id].inner_html = "\n.#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{value * 255},#{alpha_found})}\n"
 end
-
 Genesis.generate_html_renderer(:alpha) do |value, atome, proc|
   red_found = red
   red_found ||= 0
@@ -216,6 +190,7 @@ Genesis.generate_html_renderer(:alpha) do |value, atome, proc|
   blue_found ||= 0
   $document[id].inner_html = "\n.#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{value})}\n"
 end
+
 
 Genesis.generate_html_renderer(:drm)
 
