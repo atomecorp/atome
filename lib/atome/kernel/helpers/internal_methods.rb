@@ -169,15 +169,25 @@ function dragMoveListener(event) {
 
   end
 
-  def color_sanitizer(params, atome)
-    unless params.instance_of? Hash
+  def color_sanitizer(params)
+    if params.instance_of? Hash and color.nil?
+      # alert params
+      # TODO Get default color from presets when presets will be available
+      default_color = { red: 0.6, green: 0.6, blue: 0.6, alpha: 1 }
+      default_color=params.merge(default_color).merge(params)
+      params =default_color
+    elsif params.instance_of? Hash
+      params.each do |particle, value|
+        send(:color, particle, value)
+      end
+    else
       if RUBY_ENGINE.downcase == 'opal'
         rgb_color = `d = document.createElement("div");
-	d.style.color = #{params};
-	document.body.appendChild(d)
-   rgb_color=(window.getComputedStyle(d).color);
-d.remove();
-`
+	                   d.style.color = #{params};
+	                   document.body.appendChild(d)
+                     rgb_color=(window.getComputedStyle(d).color);
+                     d.remove();
+                     `
         color_converted = { red: 0, green: 0, blue: 0, alpha: 1 }
         rgb_color.gsub("rgb(", "").gsub(")", "").split(",").each_with_index do |component, index|
           color_converted[color_converted.keys[index]] = component.to_i / 255
@@ -190,9 +200,8 @@ d.remove();
           color_converted[color_converted.keys[index]] = component
         end
       end
-      params = { render: [:html], id: "color_#{atome.id}", type: :color }.merge(color_converted)
+      params = { render: [:html], id: "color_#{id}", type: :color }.merge(color_converted)
     end
-
     params
   end
 
