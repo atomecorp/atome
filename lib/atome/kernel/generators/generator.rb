@@ -19,6 +19,12 @@ Genesis.atome_creator_option(:color_sanitizer_proc) do |params, atome|
 end
 
 Genesis.atome_creator(:shadow)
+
+
+Genesis.atome_creator_option(:shadow_sanitizer_proc) do |params, atome|
+  # params = atome.send(:color_sanitizer, params, atome)
+  params
+end
 Genesis.atome_creator(:video) do |params, &proc|
   # todo:  factorise code below
   if params
@@ -191,6 +197,15 @@ Genesis.generate_html_renderer(:alpha) do |value, atome, proc|
   $document[id].inner_html = "\n.#{id}{background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{value})}\n"
 end
 
+
+Genesis.generate_html_renderer(:shadow) do |value, atome, proc|
+  alert " now treat this: #{value}, #{atome}"
+  # instance_exec(&proc) if proc.is_a?(Proc)
+  # @html_type = :style
+  # # we remove previous unused style tag
+  # $document[id].remove if $document[id]
+  # $document.head << DOM("<style atome='#{type}'  id='#{id}'></style>")
+end
 
 Genesis.generate_html_renderer(:drm)
 

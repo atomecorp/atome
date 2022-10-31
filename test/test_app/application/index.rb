@@ -109,10 +109,10 @@ end
 #                         red: 1 } } }
 # )
 
-
-
+b=box
+alert b
 # please note that render , id and type params must place in order
 
-box({left: 99, top: 99, shadow:{blur: 9, left: 3, top: 3, color: :black}})
+# box({left: 99, top: 99, shadow:{blur: 9, left: 3, top: 3, color: :black}})
 image({ path: "./medias/images/moto.png", left: 33, bottom: 33 })
 
