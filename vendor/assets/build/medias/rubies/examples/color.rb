@@ -1,5 +1,12 @@
 c = circle()
-
+# FIXME: bug we creating an object like this c = circle({ red: 1 })
+# FIXME: bug we using a color twice or more only the first is colored: c = { red: 1 }; a.color(c),b.color(c)
+# Example:
+# c={ red: 1 }
+# a=circle
+# b=box({ left: 300 })
+# a.color(c)
+# b.color(c)
 wait 1 do
   # the most performant way :
   # please note that in this case:  render , id and type params must place in order

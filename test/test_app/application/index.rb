@@ -92,7 +92,7 @@ end
 # FIXME : if we change the id, changing the color crash
 # TODO : maybe add Shape, text, Image, etc.. Classes to simplify type exeption methods
 # TODO : maybe add Genesis as an atome module to be in the context of the atome to simplify and accelerate methods treatment
-
+# TODO :  image.width return O instead of the real size
 #
 # my_video=video({ path: "./medias/videos/madmax.mp4", left: 6, top: 120, width: 666, height: 666})
 # my_video.touch(true) do
@@ -109,10 +109,62 @@ end
 #                         red: 1 } } }
 # )
 
-b=box
-alert b
+# b=box
+# alert b
 # please note that render , id and type params must place in order
 
 # box({left: 99, top: 99, shadow:{blur: 9, left: 3, top: 3, color: :black}})
-image({ path: "./medias/images/moto.png", left: 33, bottom: 33 })
 
+
+Genesis.atome_creator(:shadow)
+#
+#
+Genesis.atome_creator_option(:shadow_sanitizer_proc) do |params, atome|
+
+  # alert params
+  # params = atome.send(:color_sanitizer, params, atome)
+  params
+end
+#
+Genesis.generate_html_renderer(:shadow) do |value, atome, proc|
+  alert " now treat this: #{value}, #{atome}"
+  # instance_exec(&proc) if proc.is_a?(Proc)
+  # @html_type = :style
+  # # we remove previous unused style tag
+  # $document[id].remove if $document[id]
+  # $document.head << DOM("<style atome='#{type}'  id='#{id}'></style>")
+end
+
+b=box
+b.shadow({left: 3})
+
+# # TODO : make it work beleow
+# Genesis.particle_creator(:parent) do |parents|
+#   # if parents.length==0
+#     parents=[:view]
+#
+#   # end
+#   # alert parents.length
+#   parents.each do |parent|
+#     #TODO : create a root atome instead of using the condition below
+#     if parent != :user_view
+#       grab(parent).child << id
+#     end
+#   end
+#   parents
+# end
+# def color(params = {}, &bloc)
+#   new_element=Atome.new({render: [:headless], parent: [:view]})
+#
+#   new_element.color(params, &bloc)
+#     # Utilities.grab(:view).color(params, &bloc)
+# end
+# c=color(:orange)
+#
+# b=box
+# b.shadow({left: 3})
+# image({ path: "./medias/images/moto.png", left: 33, bottom: 33 })
+#
+# #methods below
+# b.color(c)
+# b.attach((c))

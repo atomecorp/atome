@@ -67,3 +67,55 @@ html, body {
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
 }
+
+.vertical-center {
+    /*font-size: 18px;*/
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    /*transform: translateY(calc(50% - 200px));*/
+}
+
+.center {
+    /*font-size: 18px;*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translateY(-50%);
+    /* #calc is width -border*2 */
+    /*transform: translateX(calc(50% - 200px)) translateY(calc(50% - 200px));*/
+}
+
+.horizontal-center {
+    position: absolute;
+    left: 50%;
+    -ms-transform: translateY(-50%);
+    /*transform: translateX(calc(50% - 200px));*/
+}
+
+.e_align_h_left {
+    text-align: left;
+}
+
+.e_align_h_right {
+    text-align: right;
+}
+
+.e_align_h_center {
+    text-align: center;
+}
+
+.el_align_h {
+    text-align: justify;
+}
+
+.el_align_v {
+    display: flex;
+    align-items: center;
+}
+
+
+.el_align_v_bottom {
+    display: flex;
+    align-items: flex-end;
+}

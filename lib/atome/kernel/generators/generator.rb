@@ -18,13 +18,14 @@ Genesis.atome_creator_option(:color_sanitizer_proc) do |params, atome|
   params
 end
 
-Genesis.atome_creator(:shadow)
+# Genesis.atome_creator(:shadow)
+#
+#
+# Genesis.atome_creator_option(:shadow_sanitizer_proc) do |params, atome|
+#   # params = atome.send(:color_sanitizer, params, atome)
+#   params
+# end
 
-
-Genesis.atome_creator_option(:shadow_sanitizer_proc) do |params, atome|
-  # params = atome.send(:color_sanitizer, params, atome)
-  params
-end
 Genesis.atome_creator(:video) do |params, &proc|
   # todo:  factorise code below
   if params
@@ -137,6 +138,7 @@ end
 # generate renderers
 
 Genesis.generate_html_renderer(:type) do |value, atome, proc|
+  # alert "here maybe: #{value}"
   send("#{value}_html", value, atome, proc)
   value
 end
@@ -198,14 +200,14 @@ Genesis.generate_html_renderer(:alpha) do |value, atome, proc|
 end
 
 
-Genesis.generate_html_renderer(:shadow) do |value, atome, proc|
-  alert " now treat this: #{value}, #{atome}"
-  # instance_exec(&proc) if proc.is_a?(Proc)
-  # @html_type = :style
-  # # we remove previous unused style tag
-  # $document[id].remove if $document[id]
-  # $document.head << DOM("<style atome='#{type}'  id='#{id}'></style>")
-end
+# Genesis.generate_html_renderer(:shadow) do |value, atome, proc|
+#   alert " now treat this: #{value}, #{atome}"
+#   # instance_exec(&proc) if proc.is_a?(Proc)
+#   # @html_type = :style
+#   # # we remove previous unused style tag
+#   # $document[id].remove if $document[id]
+#   # $document.head << DOM("<style atome='#{type}'  id='#{id}'></style>")
+# end
 
 Genesis.generate_html_renderer(:drm)
 
