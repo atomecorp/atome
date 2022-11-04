@@ -93,9 +93,10 @@ end
 # TODO : maybe add Shape, text, Image, etc.. Classes to simplify type exeption methods
 # TODO : maybe add Genesis as an atome module to be in the context of the atome to simplify and accelerate methods treatment
 # TODO :  image.width return O instead of the real size
+# TODO : try to find a solution (if posssible) to allow new particle without creating an object just pass the value to the atome
 # TODO (DONE):   catch data for every atome type cf : (image_1.data(:kool))
 # TODO: on resize
-# TOD0 : \n not respected in text atome
+# TODO : \n not respected in text atome
 
 # my_video=video({ path: "./medias/videos/madmax.mp4", left: 6, top: 120, width: 666, height: 666})
 # my_video.touch(true) do
@@ -119,6 +120,8 @@ end
 
 Genesis.atome_creator(:shadow) do |params|
   # TODO: factorise code below
+
+  # color_sanitizer(params)
   if params
     default_renderer = Sanitizer.default_params[:render]
     generated_id = params[:id] || "shadow_#{Universe.atomes.length}"
@@ -194,26 +197,47 @@ end
 #     # Utilities.grab(:view).color(params, &bloc)
 # end
 # c=color(:orange)
-def shape_left(val)
-
+def html_shape_position(value, atome, proc)
+  @html_object.style[:left] = "#{value}px" unless @html_type == :style
 end
 
-def shadow_left(val)
+def html_text_position(value, atome, proc)
+  @html_object.style[:left] = "#{value}px" unless @html_type == :style
+end
 
+def html_shadow_position(value, atome, proc)
+  left_found = left
+  left_found ||= 0
+  top_found = top
+  top_found ||= 0
+  blur_found = blur
+  blur_found ||= 6
+  color_found = color
+  color_found ||= :black
+  invert_found = invert
+  invert_found ||= nil
+  $document[id].inner_html = "\n.#{id}{box-shadow: #{left_found}px #{top_found}px #{blur_found}px #{color_found}  #{invert_found}}\n"
 end
-# Genesis.atome_creator_option(:left_pre_render_proc) do |params|
-#   alert "#{params[:method]}, #{params[:atome].type}"
-#   params[:atome].send("#{params[:atome].type}_#{params[:method]}")
-#
-# end
-Genesis.atome_creator_option(:left_render_proc) do |params|
-  alert params
+
+Genesis.generate_html_renderer(:left) do |value, atome, proc|
+  send("html_#{atome.type}_position",value, atome, proc)
 end
+Genesis.generate_html_renderer(:blur) do |value, atome, proc|
+  send("html_#{atome.type}_position",value, atome, proc)
+end
+
+Genesis.generate_html_renderer(:top) do |value, atome, proc|
+  send("html_#{atome.type}_position",value, atome, proc)
+end
+Genesis.particle_creator(:invert)
 
 b=box({left: 99})
 wait 1 do
-  b.shadow({left: 1})
+  b.shadow({left: 18, blur: 33, top: 120, color: :yellow})
 end
+alert b
+text({data: :hello, left: 120})
+
 
 # image({ path: "./medias/images/moto.png", left: 33, bottom: 33 })
 #
