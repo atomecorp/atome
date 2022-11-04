@@ -6,8 +6,4 @@ time_to_run= Time.now+6
 puts 'event schedule'
 schedule(time_to_run) do
   puts 'event executed'
-  # i=image({ content: :boat , drag: :true, x: 99, y:99 })
-  # wait 2 do
-  #   i.delete(true)
-  # end
 end

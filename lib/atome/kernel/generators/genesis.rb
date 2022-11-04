@@ -203,6 +203,9 @@ module Genesis
     Atome.define_method "get_#{method_name}" do
       get_new_atome(method_name)
     end
+    # Atome.define_method "#{method_name}_data" do |params = nil, &proc|
+    #   # get_new_atome(method_name)
+    # end
     generate_renderers_methods(method_name)
   end
 

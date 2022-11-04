@@ -9,7 +9,7 @@ Genesis.particle_creator(:html_object)
 Genesis.atome_creator(:shape)
 
 # Genesis.atome_creator(:additional)
-Genesis.atome_creator(:content)
+# Genesis.atome_creator(:content)
 
 Genesis.atome_creator(:color)
 
@@ -17,14 +17,6 @@ Genesis.atome_creator_option(:color_sanitizer_proc) do |params, atome|
   params = atome.send(:color_sanitizer, params, atome)
   params
 end
-
-# Genesis.atome_creator(:shadow)
-#
-#
-# Genesis.atome_creator_option(:shadow_sanitizer_proc) do |params, atome|
-#   # params = atome.send(:color_sanitizer, params, atome)
-#   params
-# end
 
 Genesis.atome_creator(:video) do |params, &proc|
   # todo:  factorise code below
@@ -99,9 +91,7 @@ Genesis.particle_creator(:time)
 
 Genesis.particle_creator(:render)
 Genesis.particle_creator(:drm)
-
 Genesis.particle_creator(:child)
-
 Genesis.particle_creator(:parent) do |parents|
   parents.each do |parent|
     #TODO : create a root atome instead of using the condition below
@@ -119,7 +109,6 @@ Genesis.atome_creator_option(:parent_pre_render_proc) do |params|
   end
   current_atome.instance_variable_set("@parent", params[:value])
 end
-
 Genesis.particle_creator(:date)
 Genesis.particle_creator(:location)
 
@@ -133,7 +122,6 @@ Genesis.atome_creator_option(:id_pre_render_proc) do |params|
   current_atome.html_object.id = new_id if current_atome.html_object
 
 end
-
 
 # generate renderers
 
@@ -218,8 +206,6 @@ Genesis.generate_html_renderer(:parent) do |values, atome, proc|
   end
 end
 
-
-
 Genesis.generate_html_renderer(:id) do |value, atome, proc|
   # send("#{value}_html", value, atome, proc)
 end
@@ -288,6 +274,7 @@ end
 
 # overflow
 Genesis.particle_creator(:overflow)
+
 Genesis.generate_html_renderer(:overflow) do |value, atome, proc|
   @html_object.style[:overflow] = value unless @html_type == :style
 end
@@ -332,7 +319,7 @@ Genesis.atome_creator(:text) do |params|
 
     default_params = { render: [generated_render], id: generated_id, type: :text, parent: [generated_parent],
                        visual: { size: 33 }, data: "hello world",
-                       color: { render: [generated_render], id: "color_#{generated_id}", type: :color,
+                       color: { render: [generated_render], id: "color_#{generated_id}", type: :text,
                                 red: 0.3, green: 0.3, blue: 0.3, alpha: 1 }
     }
     params = default_params.merge(params)

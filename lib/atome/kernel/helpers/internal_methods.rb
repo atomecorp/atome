@@ -148,7 +148,27 @@ function dragMoveListener(event) {
     end
   end
 
+  def render_html_div(value, id)
+
+
+  end
+  def render_html_style(value, id)
+
+
+  end
+
+  def render_html_shadow(value, id)
+
+
+  end
+
+  def render_html_unset(value, id)
+
+
+  end
   def html_decision(html_type, value, id)
+    puts "html_decision : send : #{html_type}"
+    send("render_html_#{html_type}", value, id)
     case html_type
     when :style
       # remove previous class if the are of the same type of the type, example:
@@ -159,6 +179,19 @@ function dragMoveListener(event) {
         if $document[class_name] && $document[class_name].attributes[:atome]
           class_to_remove = $document[class_name].attributes[:id]
           html_parent.remove_class(class_to_remove)
+        end
+      end
+      $document[value].add_class(id)
+    when :shadow
+      # alert :poi
+      # remove previous class if the are of the same type of the type, example:
+      # if there's a color already assign we remove it to allow the new one to be visible
+      # comment / uncomment below if we need to remove class or not
+      html_parent = grab(value).instance_variable_get("@html_object")
+      html_parent.class_names.each do |class_name|
+        if $document[class_name] && $document[class_name].attributes[:atome]
+          # class_to_remove = $document[class_name].attributes[:id]
+          # html_parent.remove_class(class_to_remove)
         end
       end
       $document[value].add_class(id)

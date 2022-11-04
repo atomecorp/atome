@@ -93,14 +93,14 @@ end
 # TODO : maybe add Shape, text, Image, etc.. Classes to simplify type exeption methods
 # TODO : maybe add Genesis as an atome module to be in the context of the atome to simplify and accelerate methods treatment
 # TODO :  image.width return O instead of the real size
-#
+# TODO (DONE):   catch data for every atome type cf : (image_1.data(:kool))
+# TODO: on resize
+# TOD0 : \n not respected in text atome
+
 # my_video=video({ path: "./medias/videos/madmax.mp4", left: 6, top: 120, width: 666, height: 666})
 # my_video.touch(true) do
 #   my_video.play(true)
 # end
-
-
-
 
 # Atome.new(
 #   { shape: { render: [:html], id: :my_test, type: :shape, parent: [:user_view],
@@ -115,30 +115,64 @@ end
 
 # box({left: 99, top: 99, shadow:{blur: 9, left: 3, top: 3, color: :black}})
 
+# b = circle({ id: :my_box })
 
-Genesis.atome_creator(:shadow)
-#
-#
-Genesis.atome_creator_option(:shadow_sanitizer_proc) do |params, atome|
+Genesis.atome_creator(:shadow) do |params|
+  # TODO: factorise code below
+  if params
+    default_renderer = Sanitizer.default_params[:render]
+    generated_id = params[:id] || "shadow_#{Universe.atomes.length}"
+    generated_render = params[:render] || default_renderer unless params[:render].instance_of? Hash
+    generated_parent = params[:parent] || id
+    default_params = { render: [generated_render], id: generated_id, type: :shadow, parent: [generated_parent] }
+    params = default_params.merge(params)
+    params
+  end
+end
 
-  # alert params
-  # params = atome.send(:color_sanitizer, params, atome)
+Genesis.generate_html_renderer(:shadow) do |value, atome, proc|
+  instance_exec(&proc) if proc.is_a?(Proc)
+  @html_type = :shadow
+  # we remove previous unused style tag
+  $document[id].remove if $document[id]
+  $document.head << DOM("<style atome='#{type}'  id='#{id}'></style>")
+end
+
+Genesis.atome_creator_option(:shadow_post_save_proc) do |params|
+  # alert :ok
+  # current_atome = params[:atome]
+  # #FIXME: look why we have to look in [:value][:value] this looks suspect
+  # bloc_found = params[:value][:value][:bloc]
+  # current_atome.instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
   params
 end
+
+# Genesis.atome_creator_option(:left_render_proc) do |params|
 #
-Genesis.generate_html_renderer(:shadow) do |value, atome, proc|
-  alert " now treat this: #{value}, #{atome}"
-  # instance_exec(&proc) if proc.is_a?(Proc)
-  # @html_type = :style
-  # # we remove previous unused style tag
-  # $document[id].remove if $document[id]
-  # $document.head << DOM("<style atome='#{type}'  id='#{id}'></style>")
-end
+# end
 
-b=box
-b.shadow({left: 3})
+# alert shadow
+# b.shadow({left: 3}) do
+#   alert :jhg
+# end
 
-# # TODO : make it work beleow
+# # TODO : Make it work
+# wait 2 do
+#   grab(:view).clear
+#   # FIXME :  this cause add_class for nil error
+#   b.color(:red)
+# end
+#
+# wait 3 do
+#   # b.delete
+#   d=  grab(:my_box )
+#   # alert b
+#   # FIXME :  this cause an @ is not an instance variable name error
+#   d.refresh
+# end
+
+#
+# # TODO : make it work too
 # Genesis.particle_creator(:parent) do |parents|
 #   # if parents.length==0
 #     parents=[:view]
@@ -160,11 +194,48 @@ b.shadow({left: 3})
 #     # Utilities.grab(:view).color(params, &bloc)
 # end
 # c=color(:orange)
+def shape_left(val)
+
+end
+
+def shadow_left(val)
+
+end
+# Genesis.atome_creator_option(:left_pre_render_proc) do |params|
+#   alert "#{params[:method]}, #{params[:atome].type}"
+#   params[:atome].send("#{params[:atome].type}_#{params[:method]}")
 #
-# b=box
-# b.shadow({left: 3})
+# end
+Genesis.atome_creator_option(:left_render_proc) do |params|
+  alert params
+end
+
+b=box({left: 99})
+wait 1 do
+  b.shadow({left: 1})
+end
+
 # image({ path: "./medias/images/moto.png", left: 33, bottom: 33 })
 #
 # #methods below
 # b.color(c)
 # b.attach((c))
+
+# ################ add new class for atome type
+# def new_class(class_name)
+#   new_class = Class.new(Atome) do
+#   end
+#   Object.const_set(class_name, new_class)
+# end
+#
+# new_class('Shadow')
+#
+# class Shadow
+#   def left val
+#     alert "left val is #{val}"
+#   end
+# end
+#
+# c = Shadow.new({})
+# c.left(999)
+# # shadow = b.shadow({ left: 33, blur: 33 })
