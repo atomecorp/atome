@@ -1,45 +1,78 @@
+# frozen_string_literal: true
+
+# main atome class
 class Atome
 
-  def set_shape(params)
+  def initialize(params = {}, &bloc)
+    params[:bloc] = bloc if bloc
+    params[:child] = [] unless params[:child]
+    params[:render] = [] unless params[:child]
+    params[:html_type] = :unset unless params[:child]
+    send("#{params[:type]}_setter", params)
+  end
+
+  def atome_setter(params)
     @atome = params
   end
 
-  def initialize(params = {}, &bloc)
-    params[:bloc] = bloc
-    send("set_#{params[:type]}", params)
-  end
-
-  def set_particle val, &bloc
-    val[:bloc]=bloc
+  def particle_setter(val, &bloc)
+    val[:bloc] = bloc if bloc
     @particle = val
   end
 
-  def left value = nil, &bloc
+  # def shape_setter(params)
+  #   @atome = params
+  # end
+
+  ###################### to meta-programming ######################
+
+  def left(value = nil, &bloc)
     if value
       # TODO :  sanitize the particle
-      # FIXME : for now we impose value
-      @atome[:left] =   {value:  value, bloc: bloc }
+      # FIXME : for now we impose value waiting for the sanitizer to be finished
+      @atome[:left] = { red: value, bloc: bloc }.compact
     else
-      get_left
+      left_getter
     end
   end
 
-  def get_left
+  def left_getter
     Atome.new({ type: :particle, particle: :left, value: @atome[:left] })
   end
 
-  def color value = nil, &bloc
+  ######
+
+  def color(value = nil, &bloc)
     if value
       # TODO :  sanitize the particle
-      @atome[:color] ={red:  value, bloc: bloc }
+      # FIXME : for now we impose value waiting for the sanitizer to be finished
+      @atome[:color] = { red: value, bloc: bloc }.compact
     else
-      get_color
+      color_getter
     end
   end
 
-  def get_color
+  def color_getter
     Atome.new({ type: :particle, particle: :color, value: @atome[:color] })
   end
+
+  ######
+
+  def model(value = nil, &bloc)
+    if value
+      # TODO :  sanitize the particle
+      # FIXME : for now we impose value waiting for the sanitizer to be finished
+      @atome[:model] = { value: value, bloc: bloc }.compact
+    else
+      color_getter
+    end
+  end
+
+  def model_getter
+    Atome.new({ type: :particle, particle: :model, value: @atome[:color] })
+  end
+
+  ###################### Outputs ######################
 
   def value
     { id: @particle[:value].keys[0] }.merge(@particle[:value].values[0])
@@ -58,18 +91,23 @@ class Atome
   end
 end
 
-a = Atome.new({ type: :shape, left: { a_00: { value: 33 }, a_01: { value: 66 } }, color: { a1: { red: 1, green: 0 }, a2: { red: 0.3, green: 0 } } }) do
+a = Atome.new({ type: :atome, model: :shape, left: { a00: { value: 33 }, a01: { value: 66 } },
+                color: { a1: { red: 1, green: 0 }, a2: { red: 0.3, green: 0 } } }) do
   puts 'So coll!!'
 end
+
 a.color(:red) do
-  puts "Super!!!"
+  puts 'hello world'
 end
 
-puts '---------'
-puts a
-puts '---------'
+# a.left(999)
 
-puts a.color
+# puts a
+# puts a.left
+puts a.left.value
+puts a.model.value
+
+# puts a.color
 # puts "a.color : #{a.color}"
 # puts "a.color.class : #{a.color.class}"
 # puts "a.color.values : #{a.color.values}"
@@ -79,10 +117,9 @@ puts a.color
 # puts a.left.values
 # puts a.get_color
 # a.left(666)
-a.left(999) do
-  puts 'it works!!'
-end
-puts a.left
-
-puts '------'
-puts a
+# a.left(999) do
+#   puts 'it works!!'
+# end
+# puts a.left
+#
+# puts a
