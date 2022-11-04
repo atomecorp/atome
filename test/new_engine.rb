@@ -12,12 +12,14 @@ class Atome
   end
 
   def atome_setter(params)
+    puts "rendering atome : #{params[:model]} with id : #{params[:id]}"
     @atome = params
   end
 
-  def particle_setter(val, &bloc)
-    val[:bloc] = bloc if bloc
-    @particle = val
+  def particle_setter(params, &bloc)
+    puts "rendering particle : #{params[:particle]}, #{params[:value]}"
+    params[:bloc] = bloc if bloc
+    @atome = params
   end
 
   # def shape_setter(params)
@@ -75,12 +77,15 @@ class Atome
   ###################### Outputs ######################
 
   def value
-    { id: @particle[:value].keys[0] }.merge(@particle[:value].values[0])
+    { id: @atome[:value].keys[0] }.merge(@atome[:value].values[0])
+    # @atome[:value]
+    # @atome
+
   end
 
   def values
     values = {}
-    @particle[:value].each do |k, v|
+    @atome[:value].each do |k, v|
       values[k] = v
     end
     values
@@ -91,14 +96,13 @@ class Atome
   end
 end
 
-a = Atome.new({ type: :atome, model: :shape, left: { a00: { value: 33 }, a01: { value: 66 } },
+a = Atome.new({ type: :atome, model: :shape, id: :a000, left: { a00: { value: 33 }, a01: { value: 66 } },
                 color: { a1: { red: 1, green: 0 }, a2: { red: 0.3, green: 0 } } }) do
   puts 'So coll!!'
 end
 
-a.color(:red) do
-  puts 'hello world'
-end
+# attention the code below work but crash .value because of it's corrupt format
+
 
 # a.left(999)
 
@@ -121,5 +125,7 @@ puts a.model.value
 #   puts 'it works!!'
 # end
 # puts a.left
-#
-# puts a
+a.color(:red) do
+  puts 'hello world'
+end
+puts a
