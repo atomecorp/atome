@@ -4,8 +4,7 @@ Atome
 <img src="./documentation/images/3.png" width="666" />
 
 
-Atome is powserfull engine dedicated to the creation of cross-platform applications, web application and digital medias, 
-
+Atome is powerful engine dedicated to the creation of cross-platform applications, web application and digital medias. 
 
 Cross platform ecosystem
 -
