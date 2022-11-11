@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'fileutils'
-require 'atome/version'
 @atome_client_ready = false
 
 def eval_protection
@@ -16,35 +14,18 @@ if RUBY_ENGINE.downcase != 'opal'
   eval "require 'color'", eval_protection, __FILE__, __LINE__
 end
 
-require 'atome/kernel/universe'
-require 'atome/kernel/generators/genesis'
-require 'atome/kernel/helpers/internal_methods'
-require 'atome/kernel/helpers/utilities'
-require 'atome/renderers/renderer'
-require 'atome/kernel/generators/sanitizer'
-require 'atome/kernel/generators/generator'
-require 'atome/renderers/opal/properties/generator'
-require 'atome/renderers/server/properties/generator'
-require 'atome/renderers/headless/properties/generator'
-require 'atome/kernel/generators/shapes'
-require 'atome/kernel/atome'
-require 'atome/kernel/properties/essential'
-require 'atome/extensions/helper'
-
-Universe.send(:initialize)
-# puts "@atome_client_ready is : #{@atome_client_ready}"
-
-# puts "app_identity is : #{Universe.app_identity}"
-
-Atome.current_user = :jeezs
-
+require 'fileutils'
+require 'atome/version'
+require 'atome/genesis'
+require 'atome/essentials'
+require 'atome/universe'
+require 'atome/sanitizer'
+require 'atome/atome_meta_engine'
+require 'atome/utilities'
+require 'atome/generators'
+require 'atome/renderers/opal/opal_renderers/geometry'
+require 'atome/renderers/opal/opal_renderers/positioning'
+require 'atome/renderers/opal/opal_renderers/type'
+require 'atome/renderers/opal/opal_renderers/utility'
+require 'atome/object_extensions'
 require 'atome/kernel/sparkle'
-
-# TODO: create a system to secure and validate generated renderer methods , optional methods and atome's methods
-# TODO: int8! : language
-# TODO: record user actions
-# TODO: separate the audio in the video
-# TODO: add mute to video
-
-
-

@@ -46,29 +46,4 @@ module Sanitizer
                      essential_drm
                    end
   end
-
-  def check_parent(params)
-    parent = [id]|| [:user_view]
-    params[:parent] = parent unless params[:parent]
-    params
-  end
-
-  def add_missing_id(atome_type, params)
-    type = params[:type] || atome_type
-    "#{type}_#{Universe.atomes.length}"
-  end
-
-  def add_essential_properties(atome_type, params)
-    # params_to_sanitize={atome: self, params: params}
-    params=Genesis.run_optional_methods_helper("#{atome_type}_sanitizer_proc".to_sym, params, self)
-      # TODO remove the condition below once the line above works
-      params[:id] = add_missing_id(atome_type, params) unless params[:id]
-      # FIXME : inject this in async mode to avoid big lag!
-      params[:drm] = add_essential_drm(params) unless params[:drm]
-      # forcing default render can causes problems and crashes
-      # render= Sanitizer.default_params[:render]
-      params[:render] = render unless params[:render]
-      check_parent(params)
-
-  end
 end

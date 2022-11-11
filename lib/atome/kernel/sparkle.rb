@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# FIXME : try avoid type property duplication (it's the key of the hash and also specified in the hash itself)
-
 # let's create the view port
 default_render = if RUBY_ENGINE.downcase == 'opal'
                    :html
@@ -9,15 +7,20 @@ default_render = if RUBY_ENGINE.downcase == 'opal'
                    :headless
                  end
 
+Universe.current_user = :jeezs
+puts "client ready: #{@atome_client_ready}"
+puts "app identity: #{Universe.app_identity}"
+puts "atome version: #{Atome::VERSION}"
+puts "current host: #{Universe.current_machine}"
+puts "current user: #{Universe.current_user}"
 
-Sanitizer.default_params[:render] = default_render
+# Sanitizer.default_params[:render] = default_render
 Atome.new(
   { shape: { render: [default_render], id: :view, type: :shape, parent: [:user_view],
-             left: 0, right: 0, top: 0, bottom: 0,overflow: :auto,
+             left: 0, right: 0, top: 0, bottom: 0, overflow: :auto,
              color: { render: [default_render], id: :view_color, type: :color,
                       red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } }
 )
-
 
 # init basic object for atome environment
 
@@ -33,6 +36,5 @@ Atome.new(
 
 # WARNING: when using Atome.new syntax , you must get your object using the .atome
 # example  to get the atome above : use a.shape.left and not a.left it wont access the physical object
-
-puts "current machine id: #{Atome.current_machine}"
+# initialize Universe
 
