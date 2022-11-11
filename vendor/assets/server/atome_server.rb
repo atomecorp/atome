@@ -1,10 +1,9 @@
 # frozen_string_literal: true
+#
 # atome server
-if RUBY_PLATFORM == 'x64-mingw32'
-  require 'em/pure_ruby'
-end
+require 'em/pure_ruby' if RUBY_PLATFORM == 'x64-mingw32'
 require  'atome'
-require '../aui.rb'
+require '../aui'
 require 'digest/sha2'
 require 'faye/websocket'
 require 'geocoder'

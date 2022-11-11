@@ -10,7 +10,7 @@ def found_path(arg_name)
   project_name = ARGV[ARGV.find_index(arg_name) + 1]
   path = `pwd`.chomp
   if project_name != 'run' && project_name != 'guard' && !project_name.nil? &&
-    project_name != 'port:' && project_name != 'server' && project_name != 'build'
+     project_name != 'port:' && project_name != 'server' && project_name != 'build'
     path = "#{path}/#{project_name}"
   end
   path
@@ -73,14 +73,14 @@ def create_application(project_name, force, production)
   end
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
   `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
-  if new_app_creation
-    # now adding name to the app
-    index_html = "#{current_path}/#{project_name}/build/index.html"
-    index_html_content = File.open(index_html).read
-    index_html_content = index_html_content.gsub('<title>atome</title>', "<title>#{project_name}</title>")
-    File.open(index_html, 'w') do |f|
-      f.puts index_html_content
-    end
+  return unless new_app_creation
+
+  # now adding name to the app
+  index_html = "#{current_path}/#{project_name}/build/index.html"
+  index_html_content = File.open(index_html).read
+  index_html_content = index_html_content.gsub('<title>atome</title>', "<title>#{project_name}</title>")
+  File.open(index_html, 'w') do |f|
+    f.puts index_html_content
   end
 end
 

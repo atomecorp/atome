@@ -172,3 +172,7 @@ end
 a.left do
   puts "so cool it's incredible!!"
 end
+
+puts "hello world"
+
+require 'application/required_example'
