@@ -2,7 +2,9 @@ Atome
 -
 
 <img src="./documentation/images/3.png" width="666" />
--
+
+
+Atome is powserfull engine dedicated to the creation of cross-platform applications, web application and digital medias, 
 
 
 Cross platform ecosystem
@@ -47,7 +49,7 @@ Open source technology included
 
 [comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/freebsd.png" width="100" />)
 
-- Tauri : Build smaller, faster, and more secure desktop applications with a web frontend.(https://github.com/tauri-apps/tauri)
+[//]: # (- Tauri : Build smaller, faster, and more secure desktop applications with a web frontend.&#40;https://github.com/tauri-apps/tauri&#41;)
 
 [comment]: <> (<img src="https://avatars.githubusercontent.com/u/54536011?s=200&v=4" width="100" />)
 
@@ -58,7 +60,8 @@ Open source technology included
 <img src="./documentation/images/logos/roda.svg" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="./documentation/images/logos/freebsd.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="./documentation/images/logos/puma.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./documentation/images/logos/tauri.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+[//]: # (<img src="./documentation/images/logos/tauri.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
 
 ## Installation
 
@@ -78,7 +81,8 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`.
+To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
