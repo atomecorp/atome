@@ -176,3 +176,4 @@ end
 puts "hello world"
 
 require 'application/required_example'
+

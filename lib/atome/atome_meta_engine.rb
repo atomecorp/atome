@@ -81,11 +81,16 @@ class Atome
     @real_atome[@property] = value
   end
 
+  def broadcast(element, value)
+    broadcaster(element, value)
+    @atome[element] = value
+  end
+
   def create_particle(element, value, &user_proc)
     return false unless security_pass(element, value)
 
     run_optional_proc("pre_save_#{element}".to_sym)
-    @atome[element] = value
+    broadcast(element, value)
     run_optional_proc("post_save_#{element}".to_sym)
     rendering(element, value, &user_proc)
     run_optional_proc("post_render_#{element}".to_sym)

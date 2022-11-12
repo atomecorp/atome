@@ -11,14 +11,6 @@ class Universe
   class << self
     attr_reader :atomes, :renderer_list, :atome_list
 
-    def broadcaster(property, value)
-      "broadcast : #{property} #{value}"
-    end
-
-    def history(property, value)
-      "historize : #{property} #{value}"
-    end
-
     def add_to_particle_list(particle = nil)
       instance_variable_get('@particle_list').push(particle)
     end
@@ -90,6 +82,5 @@ class Universe
     def connected
       true
     end
-
   end
 end
