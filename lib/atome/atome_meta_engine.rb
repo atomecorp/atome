@@ -11,8 +11,9 @@ class Atome
 
   def initialize(atomes = {}, &atomes_proc)
     atomes.each_value do |elements|
-      Universe.add_to_atomes({ elements[:id] => elements })
+      Universe.add_to_atomes({ elements[:id] => self })
       elements[:bloc] = atomes_proc if atomes_proc
+      @broadcast = {}
       @atome = elements
       collapse
     end
@@ -82,8 +83,13 @@ class Atome
   end
 
   def broadcast(element, value)
-    broadcaster(element, value)
+    # this method save the value of the particle and broadcast to the atomes listed in broadcast
+    broadcasting(element, value)
     @atome[element] = value
+  end
+
+  def broadcast=(params)
+    @broadcast.merge! params
   end
 
   def create_particle(element, value, &user_proc)

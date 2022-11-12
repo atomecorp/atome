@@ -177,3 +177,17 @@ puts "hello world"
 
 require 'application/required_example'
 
+class Atome
+
+  def monitor(params, &proc_monitoring)
+    params[:atomes].each do |atome_id|
+      grab(atome_id).broadcast = ({ id => { atome: self, particles: params[:particles], action: proc_monitoring } })
+    end
+  end
+
+end
+
+# puts grab(:a000)
+a.monitor({ atomes: [:a000], particles: [:left] }) do |element, value|
+  puts "hello from"
+end

@@ -4,12 +4,13 @@
 class Atome
 
   private
+
   def identity_generator
     { date: Time.now, location: geolocation }
   end
 
-  def broadcaster(property, value)
-    puts  "===> broadcasting : #{property} #{value}"
+  def broadcasting(property, value)
+    puts "===> #{@broadcast} : #{property} #{value}"
   end
 
   def history(property, value)
