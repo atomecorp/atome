@@ -1,18 +1,17 @@
 # frozen_string_literal: true
 
-# old code below
-# require "bundler/gem_tasks"
-# require "rake/testtask"
-#
-# Rake::TestTask.new(:test) do |t|
-#   t.libs << "test"
-#   t.libs << "lib"
-#   t.test_files = FileList["test/**/test_*.rb"]
-# end
-#
-# task default: :test
+require "bundler/gem_tasks"
+require "rake/testtask"
 
-task :test do
+Rake::TestTask.new(:test) do |t|
+  t.libs << "test"
+  t.libs << "lib"
+  t.test_files = FileList["test/**/test_*.rb"]
+end
+
+task default: :test
+
+task :test_browser do
   FileUtils.copy_entry('vendor/assets/build/js/', 'test/test_app/build/js/')
   FileUtils.copy_entry('vendor/assets/build/css/', 'test/test_app/build/css/')
   FileUtils.copy_entry('vendor/assets/build/css/', 'test/test_app/build/medias/')
