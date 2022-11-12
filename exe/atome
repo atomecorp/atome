@@ -16,7 +16,7 @@ def found_path(arg_name)
   path
 end
 
-def delete_all(dir, user_application = false)
+def delete_all(dir, user_application = nil)
   Dir.foreach(dir) do |e|
     next if %w[. ..].include? e
 
