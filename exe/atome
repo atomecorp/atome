@@ -9,6 +9,11 @@ require 'digest/sha2'
 def found_path(arg_name)
   project_name = ARGV[ARGV.find_index(arg_name) + 1]
   path = `pwd`.chomp
+  if ARGV[ARGV.find_index(arg_name) + 1] == 'production'
+    app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
+    `cd #{app_builder_helpers};rake minimizer[#{path}]`
+  end
+  path = `pwd`.chomp
   if project_name != 'run' && project_name != 'guard' && !project_name.nil? &&
     project_name != 'port:' && project_name != 'server' && project_name != 'build'
     # the line below remove the optional parameters from the project name
@@ -93,12 +98,13 @@ end
 
 def guard_check
   loop do
-    sleep 9
+    sleep 3
   end
   nil unless ARGV.include?('guard')
 end
 
 def run_application(build_target, location, port = 9292)
+  build_app(location, nil)
   case build_target
   when :server
     threads = []

@@ -3,21 +3,24 @@
 <head>
     <meta name='viewport' content='initial-scale=1, width=device-width, viewport-fit=cover'>
     <meta charset='UTF-8'/>
-    <meta Cross-Origin-Opener-Policy= "same-origin"/>
-    <meta Cross-Origin-Embedder-Policy= "require-corp"/>
+    <meta Cross-Origin-Opener-Policy="same-origin"/>
+    <meta Cross-Origin-Embedder-Policy="require-corp"/>
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
     <link type="text/css" rel="stylesheet" href="css/style.css">
-    <script type="text/javascript" src="js/third_parties/fabric.min.js"></script>
-    <script type="text/javascript" src="js/third_parties/three.min.js"></script>
+    <!--    TODO: we line below will be uncomment when using stand alone app
+    and loaded on the fly when using server mode-->
+    <!--    <script type="text/javascript" src="js/third_parties/fabric.min.js"></script>-->
+    <!--    <script type="text/javascript" src="js/third_parties/three.min.js"></script>-->
+    <!--    <script src='js/opal/opal_parser.js'></script>-->
     <script type="text/javascript" src="js/third_parties/interact.min.js"></script>
     <script type="text/javascript" src="js/third_parties/popmotion.min.js"></script>
     <script type="text/javascript" src="js/third_parties/sha256.min.js"></script>
     <script type="text/javascript" src="js/third_parties/ping.min.js"></script>
     <script src='js/third_parties/w3color.js'></script>
     <script src='js/opal/opal_browser.js'></script>
-    <script src='js/opal/opal_parser.js'></script>
+
     <script src='js/aui.js'></script>
     <script src='js/atome/atome.js' defer></script>
     <script src='js/atome/kernel.js' defer></script>
@@ -25,7 +28,7 @@
     <title>atome</title>
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
 </head>
-<body id='user_view' class='atome' oncontextmenu="return false;" >
+<body id='user_view' class='atome' oncontextmenu="return false;">
 </body>
 <script src='js/application.js' defer></script>
 </html>

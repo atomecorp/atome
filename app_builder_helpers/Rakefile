@@ -128,14 +128,14 @@ def minimize_atome_lib(user_project_path)
   end
 end
 
-def minimize_sparkle(user_project_path)
-  opal_sparkle_js = "#{user_project_path}/build/js/opal/opal_sparkle.js"
-  opal_sparkle_content = File.open(opal_sparkle_js).read
-  opal_sparkle_content = Uglifier.new.compile(opal_sparkle_content)
-  File.open(opal_sparkle_js, 'w') do |f|
-    f.puts opal_sparkle_content
-  end
-end
+# def minimize_sparkle(user_project_path)
+#   opal_sparkle_js = "#{user_project_path}/build/js/opal/opal_sparkle.js"
+#   opal_sparkle_content = File.open(opal_sparkle_js).read
+#   opal_sparkle_content = Uglifier.new.compile(opal_sparkle_content)
+#   File.open(opal_sparkle_js, 'w') do |f|
+#     f.puts opal_sparkle_content
+#   end
+# end
 
 def minimize_opal_extensions(user_project_path)
   atome_opal_extensions_js = "#{user_project_path}/build/js/opal/atome_opal_extensions.js"
@@ -156,7 +156,7 @@ def minimize_libraries(user_project_path)
   # minimizing atome_lib
   minimize_atome_lib(user_project_path)
   # minimizing atome_lib
-  minimize_sparkle(user_project_path)
+  # minimize_sparkle(user_project_path)
   # minimizing atome_lib
   minimize_opal_extensions(user_project_path)
 end
@@ -196,6 +196,12 @@ task :system_updater, :user_project_path, :production do |_t, args|
   build_libraries(user_project_path, gem_location)
   build_common_libraries(user_project_path, production)
 end
+
+task :minimizer, :user_project_path do |_t, args|
+  user_project_path = args[:user_project_path]
+  minimize(user_project_path)
+end
+
 
 task default: :run
 
