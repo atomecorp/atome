@@ -29,9 +29,6 @@ def build_opal_browser(user_project_path)
 end
 
 def build_aui(user_project_path)
-  # FIXME: for now production can't be change when updating or force create, we should add a production method that
-  # uglified all libs on demand
-
   #  now we add an uniq aui to the app
   aui_js = "#{user_project_path}/build/js/aui.js"
   File.new aui_js, 'w'

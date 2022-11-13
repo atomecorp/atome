@@ -10,7 +10,9 @@ def found_path(arg_name)
   project_name = ARGV[ARGV.find_index(arg_name) + 1]
   path = `pwd`.chomp
   if project_name != 'run' && project_name != 'guard' && !project_name.nil? &&
-     project_name != 'port:' && project_name != 'server' && project_name != 'build'
+    project_name != 'port:' && project_name != 'server' && project_name != 'build'
+    # the line below remove the optional parameters from the project name
+    project_name = project_name.sub(ARGV[ARGV.find_index(arg_name) + 1], '')
     path = "#{path}/#{project_name}"
   end
   path

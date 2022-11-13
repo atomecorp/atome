@@ -89,6 +89,7 @@ class Atome
   end
 
   def broadcast=(params)
+    puts "the id is : #{self}"
     @broadcast.merge! params
   end
 

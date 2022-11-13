@@ -10,7 +10,10 @@ class Atome
   end
 
   def broadcasting(property, value)
-    puts "===> #{@broadcast} : #{property} #{value}"
+    puts "::>#{@broadcast}"
+    # @broadcast.each do |k,v|
+    #   puts "===> (#{k}, #{v})"
+    # end
   end
 
   def history(property, value)

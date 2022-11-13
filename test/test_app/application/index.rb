@@ -173,7 +173,7 @@ a.left do
   puts "so cool it's incredible!!"
 end
 
-puts "hello world"
+puts 'hello world'
 
 require 'application/required_example'
 
@@ -189,5 +189,7 @@ end
 
 # puts grab(:a000)
 a.monitor({ atomes: [:a000], particles: [:left] }) do |element, value|
-  puts "hello from"
+  puts 'hello from'
 end
+puts "---id---> #{a.id.class}"
+puts "--left----> #{a.left.value}"
