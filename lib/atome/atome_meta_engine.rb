@@ -11,16 +11,12 @@ class Atome
 
   private
 
-  # @atome = {poi: :poil}
-
   def initialize(atomes = {}, &atomes_proc)
     atomes.each_value do |elements|
       @broadcast = {}
-
       Universe.add_to_atomes({ elements[:id] => self })
       elements[:bloc] = atomes_proc if atomes_proc
-      @atome = {parent: [], children: []}.merge(elements)
-
+      @atome = elements
       collapse
     end
   end
@@ -47,6 +43,9 @@ class Atome
   def new_atome(element, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
       if params
+        # we the parent
+        # parent_found = { parent: [@atome[:id]] }
+        # parent_found.merge!(params) unless params[:parent]
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = atome_sanitizer(element, params)
         Atome.new({ element => params })
