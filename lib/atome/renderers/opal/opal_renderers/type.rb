@@ -8,13 +8,11 @@ generator.build_render_method(:html_shape) do
   DOM do
     div(id: id_found).atome
   end.append_to($document[:user_view])
-  # @html_object = $document[id_found]
   @html_object = id_found
   @html_type = :div
 end
-generator.build_render_method(:html_color) do
-  puts '=> color creation here'
-end
+generator.build_render_method(:html_color)
+
 generator.build_render_method(:html_image) do |_user_prc|
   current_atome = @atome
   id_found = current_atome[:id]

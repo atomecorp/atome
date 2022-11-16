@@ -17,18 +17,12 @@ puts "current user: #{Universe.current_user}"
 # Sanitizer.default_params[:render] = default_render
 Atome.new(
   { element: { render: [], id: :eDen, type: :element,
-               parent: [], children: []
-
-  }
-  }
+               parent: [], children: [] } }
 )
 
 Atome.new(
   { element: { render: [], id: :user_view, type: :element,
-               parent: [:eden], children: []
-
-  }
-  }
+               parent: [:eden], children: [] } }
 )
 Atome.new(
   { shape: { render: [default_render], id: :view, type: :shape, parent: [:user_view], children: [],
@@ -52,4 +46,3 @@ Atome.new(
 # WARNING: when using Atome.new syntax , you must get your object using the .atome
 # example  to get the atome above : use a.shape.left and not a.left it wont access the physical object
 # initialize Universe
-

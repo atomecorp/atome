@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# TODO : remove monitoring
+# TODO : remove child
+# TODO : remove parent
+
 # main entry here
 class Atome
   # TODO : clean or delete @private_atome
