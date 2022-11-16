@@ -11,30 +11,12 @@ class Atome
 
   def initialize(atomes = {}, &atomes_proc)
     atomes.each_value do |elements|
+      @broadcast = {}
       Universe.add_to_atomes({ elements[:id] => self })
       elements[:bloc] = atomes_proc if atomes_proc
-      @broadcast = {}
       @atome = elements
       collapse
     end
-  end
-
-  def collapse
-    @atome.each do |element, value|
-      send(element, value)
-    end
-  end
-
-  def security_pass(_element, _value)
-    true
-  end
-
-  def particle_sanitizer(_element, params)
-    params
-  end
-
-  def atome_sanitizer(_element, params)
-    params
   end
 
   def new_particle(element, &method_proc)
@@ -42,11 +24,17 @@ class Atome
       if params
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        params = particle_sanitizer(element, params)
-        create_particle(element, params, &user_proc)
+        sanitize_particle(element, params, &user_proc)
       else
         get_particle(element, &user_proc)
       end
+    end
+  end
+
+  def additional_particle_methods(element, &method_proc)
+    Atome.define_method "#{element}=" do |params = nil, &user_proc|
+      instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+      sanitize_particle(element, params, &user_proc)
     end
   end
 
@@ -68,9 +56,19 @@ class Atome
     end
   end
 
-  def run_optional_proc(proc_name, atome = self)
+  def run_optional_proc(proc_name, atome = self, value = nil)
     option_found = Universe.get_optionals_methods(proc_name)
-    atome.instance_exec(&option_found) if option_found.is_a?(Proc)
+    atome.instance_exec(value, &option_found) if option_found.is_a?(Proc)
+  end
+
+  def inject_value(element, value)
+    @atome[element] = value
+  end
+
+  def store_value(element, value)
+    # this method save the value of the particle and broadcast to the atomes listed in broadcast
+    broadcasting(element, value)
+    inject_value(element, value)
   end
 
   public
@@ -82,25 +80,19 @@ class Atome
     @real_atome[@property] = value
   end
 
-  def broadcast(element, value)
-    # this method save the value of the particle and broadcast to the atomes listed in broadcast
-    broadcasting(element, value)
-    @atome[element] = value
-  end
-
-  def broadcast=(params)
-    puts "the id is : #{self}"
-    @broadcast.merge! params
-  end
-
   def create_particle(element, value, &user_proc)
     return false unless security_pass(element, value)
 
-    run_optional_proc("pre_save_#{element}".to_sym)
-    broadcast(element, value)
-    run_optional_proc("post_save_#{element}".to_sym)
+    run_optional_proc("pre_save_#{element}".to_sym, self, value)
+    store_value(element, value)
+    run_optional_proc("post_save_#{element}".to_sym, self, value)
     rendering(element, value, &user_proc)
-    run_optional_proc("post_render_#{element}".to_sym)
+    run_optional_proc("post_render_#{element}".to_sym, self, value)
+    self
+  end
+
+  def get(element)
+    @atome[element]
   end
 
   def get_particle(element, &user_proc)

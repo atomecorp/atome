@@ -27,9 +27,11 @@ generator.build_particle(:overflow)
 
 generator.build_particle(:type)
 generator.build_particle(:parent)
+generator.build_particle(:children)
 generator.build_particle(:id)
 generator.build_particle(:render)
 generator.build_particle(:bloc)
+generator.build_particle(:broadcast)
 generator.build_particle(:additional)
 
 # create atomes
@@ -46,3 +48,20 @@ generator.build_atome(:text)
 generator.build_atome(:image)
 
 # optional methods
+generator.build_optional_methods(:pre_save_broadcast) do |params|
+  params[:particles].each do |particle|
+    target = params[:target]
+    target_id = target.get(:id)
+    bloc = params[:bloc]
+    @broadcast[particle] ||= {}
+    @broadcast[particle][target_id] = { atome: target, bloc: }
+  end
+end
+# generator.build_optional_methods(:pre_save_broadcast) do |value|
+#   # puts "broadcast is #{@broadcast}"
+#   # alert "id is #{id}"
+#   # puts "params are #{value}"
+#   alert "value is: #{value[:particles]}"
+#   # @broadcast.merge! value
+#   # alert @broadcast
+# end

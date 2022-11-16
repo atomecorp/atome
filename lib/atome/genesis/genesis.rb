@@ -16,6 +16,7 @@ class Atome
     Universe.add_to_particle_list(particle_name)
     auto_render_generator(particle_name)
     new_particle(particle_name, &particle_proc)
+    additional_particle_methods(particle_name, &particle_proc)
   end
 
   def build_atome(atome_name, &atome_proc)

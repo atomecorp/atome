@@ -1,25 +1,37 @@
 # frozen_string_literal: true
 
 # Verification
-a = Atome.new(shape: { type: :image, id: :a000, parent: :view, render: [:html],
+a = Atome.new(shape: { type: :shape, id: :the_sender, parent: :view, render: [:html],
                        left: 33, right: 7,
-                       video: { type: :video, id: :xxx, render: [] },
-
-                       image: { type: :image, id: :im02, render: [:html], red: 1, green: 0, blue: 0.7, alpha: 1,
-                                additional: [
-                                  { id: :c01, red: 0, green: 0, blue: 0.7, alpha: 1 },
-                                  { id: :c02, red: 1, green: 1, blue: 0.7, alpha: 1 }
-                                ] },
-
-                       color: { type: :color, id: :c09, render: [:html], red: 1, green: 0, blue: 0.7, alpha: 1,
-                                additional: [
-                                  { id: :c01, red: 0, green: 0, blue: 0.7, alpha: 1 },
-                                  { id: :c02, red: 1, green: 1, blue: 0.7, alpha: 1 }
-                                ] },
-                       shape: { id: :a111, left: 96, render: [:html], type: :shape } }) do
+                       # video: { type: :video, id: :xxx, render: [] },
+                       #
+                       # image: { type: :image, id: :im02, render: [:html], red: 1, green: 0, blue: 0.7, alpha: 1,
+                       #          additional: [
+                       #            { id: :c01, red: 0, green: 0, blue: 0.7, alpha: 1 },
+                       #            { id: :c02, red: 1, green: 1, blue: 0.7, alpha: 1 }
+                       #          ] },
+                       #
+                       # color: { type: :color, id: :c09, render: [:html], red: 1, green: 0, blue: 0.7, alpha: 1,
+                       #          additional: [
+                       #            { id: :c01, red: 0, green: 0, blue: 0.7, alpha: 1 },
+                       #            { id: :c02, red: 1, green: 1, blue: 0.7, alpha: 1 }
+                       #          ] },
+                       # shape: { id: :a111, left: 96, render: [:html], type: :shape }
+}) do
   puts 'So coolly!!'
 end
+a.right(44).left(66)
 
+b = Atome.new(shape: { type: :shape, id: :my_shape, parent: :view, render: [:html],
+                       left: 5, right: 75,
+})
+
+c = Atome.new(shape: { type: :image, id: :my_pix, parent: :view, render: [:html],
+                       left: 5, right: 75,
+})
+
+# alert a.right
+# alert a.right.class
 a.type(:image) do
   puts :image_callback_passed
 end
@@ -177,19 +189,56 @@ puts 'hello world'
 
 require 'application/required_example'
 
-class Atome
+generator = Genesis.generator
 
-  def monitor(params, &proc_monitoring)
-    params[:atomes].each do |atome_id|
-      grab(atome_id).broadcast = ({ id => { atome: self, particles: params[:particles], action: proc_monitoring } })
-    end
-  end
-
-end
 
 # puts grab(:a000)
-a.monitor({ atomes: [:a000], particles: [:left] }) do |element, value|
-  puts 'hello from'
+a.monitor({ atomes: [:my_shape], particles: [:left, :right] }) do |atome, element, value|
+  alert "hello from: #{atome.id}, #{element}, #{value}"
+
 end
-puts "---id---> #{a.id.class}"
-puts "--left----> #{a.left.value}"
+
+a.monitor({ atomes: [:my_pix], particles: [:red] }) do |atome,element, value|
+  alert "kool from: #{atome.id}, #{element}, #{value}"
+end
+
+# a.monitor({ atomes: [:the_sender], particles: [:bottom] }) do |element, value|
+#   puts 'hello from bottom'
+# end
+b.left(936)
+
+c.red(777)
+alert grab(:view).children
+# a.create_particle(:left, 88)
+
+# c.left(:red)
+
+# alert grab(:my_pix)
+# alert a
+# alert a.right(44)
+# grab(:my_shape).broadcast({ my_shape: { atome: "self", "params[:particles]" => :proc_monitoring } })
+
+# puts "---id---> #{a.id.class}"
+# puts "--left----> #{a.left.value}
+
+# alert  "broadcast is : #{grab(:my_shape).broadcast}"
+# alert  "broadcast2 is : #{a.broadcast}"
+
+# b = Atome.new(shape: { type: :shape, id: :the_shape, parent: :view, render: [:html],
+#                        left: 66, right: 3
+#                        # video: { type: :video, id: :xxx, render: [] },
+#                        #
+#                        # image: { type: :image, id: :im02, render: [:html], red: 1, green: 0, blue: 0.7, alpha: 1,
+#                        #          additional: [
+#                        #            { id: :c01, red: 0, green: 0, blue: 0.7, alpha: 1 },
+#                        #            { id: :c02, red: 1, green: 1, blue: 0.7, alpha: 1 }
+#                        #          ] },
+#                        #
+#                        # color: { type: :color, id: :c09, render: [:html], red: 1, green: 0, blue: 0.7, alpha: 1,
+#                        #          additional: [
+#                        #            { id: :c01, red: 0, green: 0, blue: 0.7, alpha: 1 },
+#                        #            { id: :c02, red: 1, green: 1, blue: 0.7, alpha: 1 }
+#                        #          ] },
+#                        # shape: { id: :a111, left: 96, render: [:html], type: :shape }
+# })
+# alert "broadcast3 is : #{b.broadcast}"

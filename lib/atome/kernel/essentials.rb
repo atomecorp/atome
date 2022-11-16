@@ -20,6 +20,11 @@ class Atome
   end
 
   def to_s
-    @atome.to_s
+    if @value
+      @result = @value.to_s
+    elsif @atome
+      @result = @atome.to_s
+    end
+    @result.to_s
   end
 end
