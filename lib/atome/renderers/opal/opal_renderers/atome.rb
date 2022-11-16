@@ -7,19 +7,19 @@ generator.build_render_method(:html_shape) do
   id_found = current_atome[:id]
   DOM do
     div(id: id_found).atome
-  end.append_to($document[:user_view])
-  @html_object = $document[id_found]
+  end.append_to(opal_document[:user_view])
+  @html_object = opal_document[id_found]
 end
 
 generator.build_render_method(:html_color) do |_value|
   # we remove previous unused style tag
-  $document[id]&.remove
+  opal_document[id]&.remove
   red_found = @atome[:red]
   blue_found = @atome[:blue]
   green_found = @atome[:green]
   alpha_found = @atome[:alpha]
 
-  $document.head << DOM("<style atome='#{type}'  id='#{id}'>.#{id}{background-color: rgba(#{red_found * 255},
+  opal_document.head << DOM("<style atome='#{type}'  id='#{id}'>.#{id}{background-color: rgba(#{red_found * 255},
   #{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
 end
 
@@ -28,8 +28,8 @@ generator.build_render_method(:html_image) do |_user_prc|
   id_found = current_atome[:id]
   DOM do
     div(id: id_found).atome
-  end.append_to($document[:user_view])
-  @html_object = $document[id_found]
+  end.append_to(opal_document[:user_view])
+  @html_object = opal_document[id_found]
 end
 
 generator.build_render_method(:html_shadow) do

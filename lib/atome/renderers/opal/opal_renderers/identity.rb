@@ -1,18 +1,5 @@
 # frozen_string_literal: true
 
-# for opal rendering
-class Atome
-  private
-
-  def opal_attach_shape(parent)
-    @html_object.append_to($document[parent])
-  end
-
-  def opal_attach_color(parent)
-    $document[parent].add_class(@atome[:id])
-  end
-end
-
 generator = Genesis.generator
 
 generator.build_render_method(:html_type) do |params|
