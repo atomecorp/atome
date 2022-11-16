@@ -191,24 +191,29 @@ require 'application/required_example'
 
 generator = Genesis.generator
 
-
 # puts grab(:a000)
-a.monitor({ atomes: [:my_shape], particles: [:left, :right] }) do |atome, element, value|
-  alert "monitoring: #{atome.id}, #{element}, #{value}"
+# a.monitor({ atomes: [:my_shape], particles: [:left, :right] }) do |atome, element, value|
+#   alert "monitoring: #{atome.id}, #{element}, #{value}"
+#
+# end
 
-end
+# a.monitor({ atomes: [:my_pix], particles: [:red] }) do |atome, element, value|
+#   alert "monitoring: #{atome.id}, #{element}, #{value}"
+# end
 
-a.monitor({ atomes: [:my_pix], particles: [:red] }) do |atome,element, value|
-  alert "monitoring: #{atome.id}, #{element}, #{value}"
-end
-
-#TODO : remove monitoring
-#TODO : remove child
-#TODO : remove parent
+# TODO : remove monitoring
+# TODO : remove child
+# TODO : remove parent
 # a.monitor({ atomes: [:the_sender], particles: [:bottom] }) do |element, value|
 #   puts 'hello from bottom'
 # end
-# b.left(936)
+a.monitor({ atomes: grab(:view).children.value, particles: [:left] }) do |atome,element, value|
+  alert "monitoring: #{atome.id}, #{element}, #{value}"
+end
+
+
+b.left(936)
+c.left(888)
 # b.right(888)
 # b.red(:red)
 # c.blue(:red)
@@ -218,12 +223,11 @@ end
 # alert grab(:view).children
 # a.create_particle(:l eft, 88)
 
-
 # c.left(:red)
 
 # alert grab(:my_pix)
-alert a
-# alert grab(:view)
+# alert a
+# alert grab(:view).children
 # alert a.right(44)
 # grab(:my_shape).broadcast({ my_shape: { atome: "self", "params[:particles]" => :proc_monitoring } })
 
@@ -251,3 +255,9 @@ alert a
 #                        # shape: { id: :a111, left: 96, render: [:html], type: :shape }
 # })
 # alert "broadcast3 is : #{b.broadcast}"
+
+
+
+
+
+

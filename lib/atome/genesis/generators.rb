@@ -49,19 +49,15 @@ generator.build_atome(:image)
 
 # optional methods
 # generator.build_optional_methods(:pre_save_broadcast) do |params|
-  # params[:particles].each do |particle|
-  #   target = params[:target]
-  #   target_id = target.get(:id)
-  #   bloc = params[:bloc]
-  #   # @broadcast[particle] ||= {}
-  #   @broadcast[particle][target_id] = { atome: target, bloc: }
-  # end
+# params[:particles].each do |particle|
+#   target = params[:target]
+#   target_id = target.get(:id)
+#   bloc = params[:bloc]
+#   # @broadcast[particle] ||= {}
+#   @broadcast[particle][target_id] = { atome: target, bloc: }
 # end
-generator.build_optional_methods(:pre_save_parent) do |parent_found|
-  # alert "self is : #{id} parent is #{params}"
-  # alert "#{params} : #{grab(params)}"
-  # alert parent_found
-  grab(parent_found).children << id
-  # alert "params are : #{params}"
+# end
+generator.build_optional_methods(:pre_save_parent) do |parent_id_found|
+  parent_found = grab(parent_id_found)
+  parent_found.children << id if parent_found
 end
-
