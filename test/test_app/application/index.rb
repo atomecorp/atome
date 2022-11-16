@@ -194,27 +194,36 @@ generator = Genesis.generator
 
 # puts grab(:a000)
 a.monitor({ atomes: [:my_shape], particles: [:left, :right] }) do |atome, element, value|
-  alert "hello from: #{atome.id}, #{element}, #{value}"
+  alert "monitoring: #{atome.id}, #{element}, #{value}"
 
 end
 
 a.monitor({ atomes: [:my_pix], particles: [:red] }) do |atome,element, value|
-  alert "kool from: #{atome.id}, #{element}, #{value}"
+  alert "monitoring: #{atome.id}, #{element}, #{value}"
 end
 
+#TODO : remove monitoring
+#TODO : remove child
+#TODO : remove parent
 # a.monitor({ atomes: [:the_sender], particles: [:bottom] }) do |element, value|
 #   puts 'hello from bottom'
 # end
-b.left(936)
+# b.left(936)
+# b.right(888)
+# b.red(:red)
+# c.blue(:red)
+# c.red(:red)
+# c.red(777)
 
-c.red(777)
-alert grab(:view).children
-# a.create_particle(:left, 88)
+# alert grab(:view).children
+# a.create_particle(:l eft, 88)
+
 
 # c.left(:red)
 
 # alert grab(:my_pix)
-# alert a
+alert a
+# alert grab(:view)
 # alert a.right(44)
 # grab(:my_shape).broadcast({ my_shape: { atome: "self", "params[:particles]" => :proc_monitoring } })
 

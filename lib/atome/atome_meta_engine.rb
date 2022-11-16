@@ -7,14 +7,16 @@ class Atome
 
   private
 
-  @atome = {}
+  # @atome = {poi: :poil}
 
   def initialize(atomes = {}, &atomes_proc)
     atomes.each_value do |elements|
       @broadcast = {}
+
       Universe.add_to_atomes({ elements[:id] => self })
       elements[:bloc] = atomes_proc if atomes_proc
-      @atome = elements
+      @atome = {parent: [], children: []}.merge(elements)
+
       collapse
     end
   end

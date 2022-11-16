@@ -47,4 +47,11 @@ class Atome
   def history(property, value)
     "historize : #{property} #{value}"
   end
+
+  public
+
+  def <<(particle)
+    value = particle.value
+    real_atome[property] << value
+  end
 end
