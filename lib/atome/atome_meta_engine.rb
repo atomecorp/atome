@@ -79,7 +79,7 @@ class Atome
   public
 
   # the line below is used for ephemera atomes
-  attr_accessor :property, :value, :real_atome, :user_proc
+  attr_accessor :property, :value, :real_atome, :user_proc, :html_object
 
   def set(value)
     @real_atome[@property] = value

@@ -48,6 +48,14 @@ class Atome
     "historize : #{property} #{value}"
   end
 
+  def clear
+    # TODO : look why get_particle(:children) return an atome not the value
+    @atome[:children].each do |child_found|
+      grab(child_found).html_object&.remove
+    end
+    children([])
+  end
+
   public
 
   def <<(particle)

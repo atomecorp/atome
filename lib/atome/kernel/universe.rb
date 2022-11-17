@@ -9,7 +9,7 @@ class Universe
   @optionals_methods = {}
 
   class << self
-    attr_reader :atomes, :renderer_list, :atome_list
+    attr_reader :atomes, :renderer_list, :atome_list, :particle_list
 
     def add_to_particle_list(particle = nil)
       instance_variable_get('@particle_list').push(particle)

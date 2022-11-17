@@ -22,7 +22,7 @@ Atome.new(
 
 Atome.new(
   { element: { render: [], id: :user_view, type: :element,
-               parent: [:eden], children: [] } }
+               parent: [:eDen], children: [] } }
 )
 Atome.new(
   { shape: { render: [default_render], id: :view, type: :shape, parent: [:user_view], children: [],
