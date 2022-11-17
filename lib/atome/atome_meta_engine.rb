@@ -2,7 +2,7 @@
 
 # TODO : remove monitoring
 # TODO : remove child
-# TODO : remove parent
+# TODO : remove parents
 
 # main entry here
 class Atome
@@ -43,9 +43,9 @@ class Atome
   def new_atome(element, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
       if params
-        # we the parent
-        # parent_found = { parent: [@atome[:id]] }
-        # parent_found.merge!(params) unless params[:parent]
+        # we the parents
+        # parents_found = { parents: [@atome[:id]] }
+        # parents_found.merge!(params) unless params[:parents]
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = atome_sanitizer(element, params)
         Atome.new({ element => params })

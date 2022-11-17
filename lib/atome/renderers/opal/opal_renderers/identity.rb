@@ -6,9 +6,9 @@ generator.build_render_method(:html_type) do |params|
   send("html_#{params}", user_proc)
 end
 
-generator.build_render_method(:html_parent) do |parents_found|
+generator.build_render_method(:html_parents) do |parents_found|
   type_found = @atome[:type]
-  parents_found.each do |parent_found|
-    send("opal_attach_#{type_found}", parent_found)
+  parents_found.each do |parents_found|
+    send("opal_attach_#{type_found}", parents_found)
   end
 end

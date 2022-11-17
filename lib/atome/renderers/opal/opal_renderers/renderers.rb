@@ -8,11 +8,11 @@ class Atome
     $document
   end
 
-  def opal_attach_shape(parent)
-    @html_object.append_to(opal_document[parent])
+  def opal_attach_shape(parents)
+    @html_object.append_to(opal_document[parents])
   end
 
-  def opal_attach_color(parent)
-    opal_document[parent].add_class(@atome[:id])
+  def opal_attach_color(parents)
+    opal_document[parents].add_class(@atome[:id])
   end
 end

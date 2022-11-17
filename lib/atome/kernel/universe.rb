@@ -36,8 +36,8 @@ class Universe
     def app_identity
       # each app hav its own identity, this allow to generate new user identities from th
       @app_identity = 3
-      # the identity is define as follow : parentCreatorID_softwareInstanceID_objetID
-      # in this case parent is eve so 0, Software instance number is main eVe server which is also 0,
+      # the identity is define as follow : parentsCreatorID_softwareInstanceID_objetID
+      # in this case parents is eve so 0, Software instance number is main eVe server which is also 0,
       # and finally the object is 3 as this the third object created by the main server
     end
 

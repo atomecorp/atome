@@ -17,17 +17,17 @@ puts "current user: #{Universe.current_user}"
 # Sanitizer.default_params[:render] = default_render
 Atome.new(
   { element: { render: [], id: :eDen, type: :element,
-               parent: [], children: [] } }
+               parents: [], children: [] } }
 )
 
 Atome.new(
   { element: { render: [], id: :user_view, type: :element,
-               parent: [:eDen], children: [] } }
+               parents: [:eDen], children: [] } }
 )
 Atome.new(
-  { shape: { render: [default_render], id: :view, type: :shape, parent: [:user_view], children: [],
+  { shape: { render: [default_render], id: :view, type: :shape, parents: [:user_view], children: [],
              left: 0, right: 0, top: 0, bottom: 0, overflow: :auto,
-             color: { render: [default_render], id: :view_color, type: :color,parent: [:view],
+             color: { render: [default_render], id: :view_color, type: :color,parents: [:view],
                       red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } }
 )
 
