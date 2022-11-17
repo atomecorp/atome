@@ -20,6 +20,7 @@ generator.build_render_method(:html_color) do |_value|
   alpha_found = @atome[:alpha]
   opal_document.head << DOM("<style atome='#{type}'  id='#{id}'>.#{id}{background-color: rgba(#{red_found * 255},
   #{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
+  # TODO/ use the code below to modify the style tag
   # `document.getElementById(#{id}).sheet.cssRules[0].style.backgroundColor = 'red'`
 end
 
