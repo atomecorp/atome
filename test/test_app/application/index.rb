@@ -29,13 +29,19 @@
 #
 # end
 a=box({ id: :the_box })
+wait 1 do
+  alert 'make it workd'
+  a.color({ render: [:html], id: "color_the_me", type: :color, parent: :the_box, red: 0.69, green: 0.69, blue: 0.69, alpha: 1 })
+  a.color.red(0)
+  alert a.color.id
+end
 puts "----------"
 #
 circle(left: 333)
 
-wait 0.5 do
-  grab(:view).clear
-end
+# wait 0.5 do
+#   grab(:view).clear
+# end
 # alert   grab(:view)
 # alert Universe.atomes.keys
 # alert Universe.renderer_list
@@ -55,3 +61,10 @@ end
 # alert grab(:the_box).parent
 # vv.children << a.id
 # alert vv
+# `
+# document.getElementById('color_the_box').sheet.cssRules[0].style.backgroundColor = 'red'
+# alert(document.getElementById('color_the_box').sheet.cssRules[0].style.backgroundColor)
+#
+# //cssRules
+#
+# `

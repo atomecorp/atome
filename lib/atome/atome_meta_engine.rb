@@ -61,7 +61,7 @@ class Atome
     end
   end
 
-  def run_optional_proc(proc_name, atome = self, value = nil)
+  def run_optional_proc(proc_name, atome = self, value = '')
     option_found = Universe.get_optionals_methods(proc_name)
     atome.instance_exec(value, &option_found) if option_found.is_a?(Proc)
   end

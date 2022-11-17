@@ -32,7 +32,7 @@ class Atome
   end
 
   def broadcasting(element, value)
-    return unless @broadcast[:particles]&.include?(element)
+    return unless @broadcast[:particles].include?(element)
 
     bloc_found = @broadcast[:bloc]
     instance_exec(self, element, value, &bloc_found) if bloc_found.is_a?(Proc)
