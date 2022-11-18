@@ -1,4 +1,6 @@
-c = circle()
+# frozen_string_literal: true
+
+c = circle
 # FIXME: bug we creating an object like this c = circle({ red: 1 })
 # FIXME: bug we using a color twice or more only the first is colored: c = { red: 1 }; a.color(c),b.color(c)
 # Example:
@@ -24,5 +26,7 @@ end
 wait 4 do
   # now the easy way
   c.color(:yellow)
+  wait 1 do
+    c.color({ green: 1, blue: 0.69, alpha: 1 })
+  end
 end
-
