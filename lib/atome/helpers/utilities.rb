@@ -18,8 +18,8 @@ class Atome
     params
   end
 
-  def atome_sanitizer(_element, params)
-    params
+  def atome_sanitizer(element, params)
+    send("sanitize_#{element}", params)
   end
 
   def sanitize_particle(element, value, &user_proc)

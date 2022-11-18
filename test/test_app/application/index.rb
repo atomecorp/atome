@@ -28,19 +28,35 @@
 #
 #
 # end
-a = box({ id: :the_box })
 
+
+
+a = box({ id: :the_box })
 wait 1 do
+  # a = grab(:view).shape({ id: :the_box })
+
   a.left(333)
-  # grab(:the_box).circle({ left: -320 })
-  # a.circle({ left: -320 })
-  # a.color({ render: [:html], id: "color_the_me", type: :color, parent: :the_box, red: 0.69, green: 0.69, blue: 0.69, alpha: 1 })
+  c = a.circle({ left: 99 })
+  wait 1 do
+    c.left(33)
+  end
+  grab(:the_box).circle({ left: 320 })
+  cc = a.color({ render: [:html], id: "color_the_me", type: :color, parents: [:the_box], red: 1, green: 0.69,
+                 blue: 0.69, alpha: 1 })
+  puts "----- #{cc.id} ------"
+  wait 1 do
+    # a.color({ red: 1, green: 0, blue: 0, alpha: 1 })
+    a.color({ render: [:html], id: "color_the_me",  red: 0.2, green: 1, blue: 0.69, alpha: 1 })
+    wait 1 do
+      a.color(:red)
+    end
+  end
   # a.color.red(0)
   # alert a.color.id
 end
-puts "----------"
+
 #
-circle(left: 333)
+# circle(left: 333)
 
 # wait 0.5 do
 #   grab(:view).clear

@@ -23,9 +23,13 @@ class Atome
     # we add the new method to the atome's collection of methods
     Universe.add_to_atome_list(atome_name)
     auto_render_generator(atome_name)
+    auto_sanitizer_generator(atome_name)
     new_atome(atome_name, &atome_proc)
   end
 
+  def auto_sanitizer_generator(element)
+    build_sanitizer_method("sanitize_#{element}")
+  end
   def auto_render_generator(element)
     Universe.renderer_list.each do |render_engine|
       build_render_method("#{render_engine}_#{element}")
@@ -35,6 +39,11 @@ class Atome
   def build_render_method(renderer_name, &method_proc)
     new_render_engine(renderer_name, &method_proc)
   end
+
+  def build_sanitizer_method(sanitizer_name)
+    new_atome_sanitizer(sanitizer_name)
+  end
+
 
   def build_optional_methods(method_name, &method_proc)
     Universe.add_optionals_methods(method_name.to_sym, &method_proc)

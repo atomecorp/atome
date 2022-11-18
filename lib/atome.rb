@@ -10,7 +10,6 @@ if RUBY_ENGINE.downcase != 'opal'
   eval "require 'atome/extensions/geolocation'", eval_protection, __FILE__, __LINE__
   eval "require 'atome/extensions/ping'", eval_protection, __FILE__, __LINE__
   eval "require 'atome/extensions/sha'", eval_protection, __FILE__, __LINE__
-  eval "require 'color'", eval_protection, __FILE__, __LINE__
 end
 
 require 'fileutils'
@@ -18,7 +17,8 @@ require 'atome/version'
 require 'atome/genesis/genesis'
 require 'atome/kernel/essentials'
 require 'atome/kernel/universe'
-require 'atome/helpers/sanitizer'
+require 'atome/helpers/essentials'
+require 'atome/helpers/color_helper/color'
 require 'atome/atome_meta_engine'
 require 'atome/helpers/utilities'
 require 'atome/genesis/generators/atome'
@@ -40,3 +40,6 @@ require 'atome/renderers/opal/opal_renderers/atome'
 require 'atome/renderers/opal/opal_renderers/utility'
 require 'atome/extensions/atome'
 require 'atome/genesis/sparkle'
+require 'atome/helpers/sanitizer'
+
+

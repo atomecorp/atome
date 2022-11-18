@@ -7,7 +7,7 @@
 # main entry here
 class Atome
   # TODO : clean or delete @private_atome
-  include Sanitizer
+  include Essentials
 
   private
 
@@ -43,7 +43,6 @@ class Atome
   def new_atome(element, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
       if params
-        # we the parents
         # parents_found = { parents: [@atome[:id]] }
         # parents_found.merge!(params) unless params[:parents]
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
@@ -58,6 +57,12 @@ class Atome
   def new_render_engine(renderer_name, &method_proc)
     Atome.define_method renderer_name do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+    end
+  end
+
+  def new_atome_sanitizer(sanitizer_name)
+    Atome.define_method sanitizer_name do |params = {}|
+      params
     end
   end
 
