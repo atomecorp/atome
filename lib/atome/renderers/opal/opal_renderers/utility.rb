@@ -4,3 +4,6 @@ generator = Genesis.generator
 generator.build_render_method(:html_bloc)
 generator.build_render_method(:html_id)
 generator.build_render_method(:html_render)
+generator.build_render_method(:html_delete) do
+  html_object&.remove
+end

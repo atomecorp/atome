@@ -1,5 +1,7 @@
-b = box()
+# frozen_string_literal: true
+
+b = box
 
 wait 1 do
-  b.delete
+  b.delete(true)
 end
