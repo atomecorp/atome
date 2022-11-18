@@ -28,12 +28,15 @@
 #
 #
 # end
-a=box({ id: :the_box })
+a = box({ id: :the_box })
+
 wait 1 do
-  alert 'make it workd'
-  a.color({ render: [:html], id: "color_the_me", type: :color, parent: :the_box, red: 0.69, green: 0.69, blue: 0.69, alpha: 1 })
-  a.color.red(0)
-  alert a.color.id
+  a.left(333)
+  # grab(:the_box).circle({ left: -320 })
+  # a.circle({ left: -320 })
+  # a.color({ render: [:html], id: "color_the_me", type: :color, parent: :the_box, red: 0.69, green: 0.69, blue: 0.69, alpha: 1 })
+  # a.color.red(0)
+  # alert a.color.id
 end
 puts "----------"
 #
