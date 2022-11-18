@@ -27,3 +27,7 @@ end
 def drag(params = {}, &bloc)
   grab(:view).drag(params, &bloc)
 end
+
+def code(params = {}, &bloc)
+  grab(:view).code(params, &bloc)
+end

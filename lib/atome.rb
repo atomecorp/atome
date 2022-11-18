@@ -20,6 +20,7 @@ require 'atome/kernel/universe'
 require 'atome/helpers/essentials'
 require 'atome/helpers/color_helper/color'
 require 'atome/atome_meta_engine'
+require 'atome/processors/utilities'
 require 'atome/helpers/utilities'
 require 'atome/genesis/generators/atome'
 require 'atome/presets/atome'
@@ -41,5 +42,3 @@ require 'atome/renderers/opal/opal_renderers/utility'
 require 'atome/extensions/atome'
 require 'atome/genesis/sparkle'
 require 'atome/helpers/sanitizer'
-
-
