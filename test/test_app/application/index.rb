@@ -6,7 +6,7 @@
 # TODO : add a global sanitizer
 # TODO : look why get_particle(:children) return an atome not the value
 
-generator = Genesis.generator
+# generator = Genesis.generator
 
 # generator.build_particle(:clear)
 
@@ -17,10 +17,10 @@ generator = Genesis.generator
 #   children([])
 # end
 
-# box(id: :my_box)
-#
-# circle(left: 333)
-#
-# wait 2 do
-#   grab(:view).clear(true)
-# end
+box(id: :my_box)
+
+circle(left: 333)
+
+wait 2 do
+  grab(:view).clear(true)
+end
