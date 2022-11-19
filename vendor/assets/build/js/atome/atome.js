@@ -35,7 +35,6 @@ class AtomeDrag {
                     },
                     // call this function on every dragend event
                     end(event) {
-
                     }
                 }
             })

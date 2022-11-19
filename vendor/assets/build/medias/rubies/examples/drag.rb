@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 box({width: 333, height: 333, id: :the_constraint_box, color: :orange})
 

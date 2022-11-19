@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 b = box({ width: 333, left: 666})
 
 b.touch(true) do
