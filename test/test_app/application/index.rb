@@ -5,7 +5,7 @@
 
 # TODO : add a global sanitizer
 # TODO : look why get_particle(:children) return an atome not the value
-
+# TODO : create color JS for Opal?
 generator = Genesis.generator
 
 generator.build_particle(:drag)
@@ -23,9 +23,11 @@ end
 # box({width: 333, height: 333, id: :the_constraint_box, color: :orange})
 
 b = box do
-  puts "kito"
+  alert  "kito"
 end
 
+# cc=box.bloc.value
+# alert cc
 b.drag({ remove: true }) do |position|
   # below here is the callback :
   puts "1 - callback drag position: #{position}"
@@ -64,3 +66,15 @@ end
 # end
 #
 # circle({drag: {inside: :the_constraint_box}, color: :red})
+
+
+
+
+# Atome.new(
+#   shape: { render: [:html], id: :the_shape2, type: :shape, parent: [:view],children: [],
+#            left: 99, right: 99, width: 99, height: 99,
+#            color: { render: [:html], id: :c31, type: :color, parent: [:the_shape2],children: [],
+#                     red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
+# ) do
+#   alert :kool
+# end

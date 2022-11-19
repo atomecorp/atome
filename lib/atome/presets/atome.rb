@@ -7,6 +7,7 @@
 # shaper creation
 class Atome
   def box(params = {}, &bloc)
+
     default_renderer = Essentials.default_params[:render]
 
     generated_id = params[:id] || "box_#{Universe.atomes.length}"
