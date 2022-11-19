@@ -9,6 +9,7 @@
 # # TODO : box callback doesnt work
 # # TODO : Application is minimized all the time, we must try to condition it
 # # TODO : A anew atome is created each time Genesis.generator is call, we better always use the same atome
+# # TODO : Decide with Regis if we create a new css, an inline style on object or alter the css as describe above
 # generator = Genesis.generator
 #
 # generator.build_particle(:drag)
