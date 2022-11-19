@@ -1,5 +1,5 @@
 my_video = Atome.new(
-  video: { render: [:html], data: :dummy, id: :video1, type: :video, parent: [:view], path: './medias/videos/avengers.mp4', left: 333, top: 333, width: 199, height: 99,
+  video: { render: [:html], data: :dummy, id: :video1, type: :video, parents: [:view], path: './medias/videos/avengers.mp4', left: 333, top: 333, width: 199, height: 99,
   }
 ) do |params|
   puts "video callback here #{params}"

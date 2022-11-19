@@ -1,5 +1,5 @@
 my_video = Atome.new(
-  video: { render: [:html], id: :video1, type: :video,  parent: [:view], path: './medias/videos/superman.mp4', left: 333, top: 333, width: 199, height: 99,
+  video: { render: [:html], id: :video1, type: :video,  parents: [:view], path: './medias/videos/superman.mp4', left: 333, top: 333, width: 199, height: 99,
   }
 ) do |params|
   puts "video callback time is  #{params}, id is : #{id}"
@@ -14,7 +14,7 @@ my_video.video.touch(true) do
 end
 
 my_video2 = Atome.new(
-  video: { render: [:html], id: :video9, type: :video,  parent: [:view], path: './medias/videos/madmax.mp4', left: 666, top: 333, width: 199, height: 99,
+  video: { render: [:html], id: :video9, type: :video,  parents: [:view], path: './medias/videos/madmax.mp4', left: 666, top: 333, width: 199, height: 99,
   }
 #FIXME : positioning doesnt work
 

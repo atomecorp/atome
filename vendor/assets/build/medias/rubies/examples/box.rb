@@ -8,9 +8,9 @@ a = box({ id: :my_box, left: 333 }) do |p|
 end
 
 b = Atome.new(
-  { shape: { render: [:html], id: :view_test, type: :shape, parent: [:view],
+  { shape: { render: [:html], id: :view_test, type: :shape, parents: [:view],
              left: 0, width: 90, top: 0, height: 90, overflow: :auto,
-             color: { render: [:html], id: :view_test_color, type: :color, parent: [:view_test],
+             color: { render: [:html], id: :view_test_color, type: :color, parents: [:view_test],
                       red: 1, green: 0.15, blue: 0.15, alpha: 1 } } }
 ) do |p|
   puts "the param pass to the atome is: #{p}"

@@ -3,7 +3,7 @@ text({ id: :my_text, color: :lightgray }) do |p|
 end
 
 text = Atome.new(
-  text: { render: [:html], id: :text1, type: :text, parent: [:view], visual: { size: 33 }, data: "My text!", left: 300, top: 33, width: 199, height: 33, }
+  text: { render: [:html], id: :text1, type: :text, parents: [:view], visual: { size: 33 }, data: "My text!", left: 300, top: 33, width: 199, height: 33, }
 ) do |p|
   puts "ok Atome.new(text) id is : #{id}"
 end

@@ -12,7 +12,6 @@ class Atome
   private
 
   def initialize(atomes = {}, &atomes_proc)
-    puts "#{atomes_proc} : : #{atomes}"
     atomes.each_value do |elements|
       @broadcast = {}
       Universe.add_to_atomes({ elements[:id] => self })
