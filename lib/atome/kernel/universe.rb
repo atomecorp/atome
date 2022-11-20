@@ -5,7 +5,7 @@ class Universe
   @atomes = {}
   @atome_list = []
   @particle_list = []
-  @renderer_list = %i[html headless server]
+  @renderer_list = %i[html browser headless server]
   @optionals_methods = {}
 
   class << self

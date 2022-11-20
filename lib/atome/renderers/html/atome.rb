@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
+
 generator = Genesis.generator
 
 generator.build_render_method(:html_shape) do
   current_atome = @atome
   id_found = current_atome[:id]
-  DOM do
-    div(id: id_found).atome
-  end.append_to(opal_document[:user_view])
-  @html_object = opal_document[id_found]
+  @html_object = Html.new
+  @html_object.add_class('atome')
+  @html_object.attr('id', id_found)
 end
 
 generator.build_render_method(:html_color) do |_value|

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 # let's create the view port
-default_render = if RUBY_ENGINE.downcase == 'opal'
-                   :html
-                 else
-                   :headless
-                 end
+# default_render = if RUBY_ENGINE.downcase == 'opal'
+#                    :html
+#                  else
+#                    :headless
+#                  end
+default_render = Essentials.default_params[:render]
 
 Universe.current_user = :jeezs
 puts "client ready: #{@atome_client_ready}"
@@ -24,10 +25,11 @@ Atome.new(
   { element: { render: [], id: :user_view, type: :element,
                parents: [:eDen], children: [] } }
 )
+
 Atome.new(
-  { shape: { render: [default_render], id: :view, type: :shape, parents: [:user_view], children: [],
+  { shape: { render: default_render, id: :view, type: :shape, parents: [:user_view], children: [],
              left: 0, right: 0, top: 0, bottom: 0, overflow: :auto,
-             color: { render: [default_render], id: :view_color, type: :color,parents: [:view],
+             color: { render: default_render, id: :view_color, type: :color, parents: [:view],
                       red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } }
 )
 
