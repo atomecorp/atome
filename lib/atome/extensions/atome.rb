@@ -24,8 +24,12 @@ def video(params = {}, &bloc)
   grab(:view).video(params, &bloc)
 end
 
-def drag(params = {}, &bloc)
-  grab(:view).drag(params, &bloc)
+# def drag(params = {}, &bloc)
+#   grab(:view).drag(params, &bloc)
+# end
+
+def shadow(params = {}, &bloc)
+  grab(:view).shadow(params, &bloc)
 end
 
 def code(params = {}, &bloc)

@@ -71,9 +71,19 @@
 # #
 # # circle({drag: {inside: :the_constraint_box}, color: :red})
 
-Atome.new(
-  shape: { type: :shape, render: [:browser], id: :the_shape, parents: [:view], children: [],
-           left: 99, right: 99, width: 399, height: 99,
-           color: { render: [:browser], id: :c315, type: :color, parents: [:the_shape],children: [],
-                    red: 0.3, green: 1, blue: 0.6, alpha: 1 } }
-)
+b=box({ id: :the_box })
+b.color(:red)
+b.shadow({ render: [:browser], id: :shadow2, type: :shadow, parents: [:the_box],children: [],
+           left: 3, top: 9, blur: 9,direction: :inset,
+           red: 0, green: 0, blue: 0, alpha: 1
+         })
+b.smooth(5)
+# b.shadow({ left: 33 })
+# shadow({ left: 33 })
+
+# s=Atome.new(
+#   shadow: { render: [:browser], id: :shadow2, type: :shadow, parents: [:view],children: [],
+#            left: 3, top: 9, blur: 9,
+#                     red: 1, green: 0.15, blue: 0.15, alpha: 0.6
+#   }
+# )

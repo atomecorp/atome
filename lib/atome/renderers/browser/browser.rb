@@ -21,4 +21,8 @@ class BrowserHelper
   def self.browser_attach_color(parents, _html_object, atome)
     browser_document[parents].add_class(atome[:id])
   end
+
+  def self.browser_attach_shadow(parents, _html_object, atome)
+    browser_document[parents].add_class(atome[:id])
+  end
 end
