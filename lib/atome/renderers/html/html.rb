@@ -25,5 +25,18 @@ class Html
     `#{@html}.setAttribute(#{attribute}, #{value})`
   end
 
-  def append_to(_node) end
+  def style
+    # `#{@html}.style`
+  end
+  def append_shape(parent)
+    parent_found = `document.getElementById(#{parent})`
+    parent_found
+    `#{parent_found}.appendChild(#{@html})`
+  end
+  def append_color(parent)
+    alert "color : #{parent.class}"
+  end
+  def append_to(_node)
+
+  end
 end

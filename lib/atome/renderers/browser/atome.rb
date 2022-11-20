@@ -4,14 +4,18 @@ generator = Genesis.generator
 
 generator.build_render_method(:browser_shape) do
   current_atome = @atome
+  @browser_type = :div
   id_found = current_atome[:id]
   DOM do
     div(id: id_found).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
+
 end
 
 generator.build_render_method(:browser_color) do |_value|
+  @browser_type = :style
+
   # we remove previous unused style tag
   BrowserHelper.browser_document[id]&.remove
   red_found = @atome[:red]
@@ -25,6 +29,7 @@ generator.build_render_method(:browser_color) do |_value|
 end
 
 generator.build_render_method(:browser_image) do |_user_prc|
+  @browser_type = :image
   current_atome = @atome
   id_found = current_atome[:id]
   DOM do
@@ -34,9 +39,11 @@ generator.build_render_method(:browser_image) do |_user_prc|
 end
 
 generator.build_render_method(:browser_shadow) do
+  @browser_type = :shadow
 end
 
 generator.build_render_method(:browser_video) do |_value, _user_proc|
+  @browser_type = :video
   # id_found = id
   # # instance_exec(&proc) if proc.is_a?(Proc)
   # DOM do
