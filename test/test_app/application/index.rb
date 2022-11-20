@@ -71,8 +71,4 @@
 # #
 # # circle({drag: {inside: :the_constraint_box}, color: :red})
 
-
-
-
-
-
+box

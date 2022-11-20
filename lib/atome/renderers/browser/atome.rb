@@ -8,7 +8,7 @@ generator.build_render_method(:browser_shape) do
   DOM do
     div(id: id_found).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
-  @html_object = BrowserHelper.browser_document[id_found]
+  @browser_object = BrowserHelper.browser_document[id_found]
 end
 
 generator.build_render_method(:browser_color) do |_value|
@@ -30,7 +30,7 @@ generator.build_render_method(:browser_image) do |_user_prc|
   DOM do
     div(id: id_found).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
-  @html_object = BrowserHelper.browser_document[id_found]
+  @browser_object = BrowserHelper.browser_document[id_found]
 end
 
 generator.build_render_method(:browser_shadow) do
@@ -42,5 +42,5 @@ generator.build_render_method(:browser_video) do |_value, _user_proc|
   # DOM do
   #   video({ id: id_found, autoplay: true ,loop: false, muted: true }).atome
   # end.append_to($document[:user_view])
-  # @html_object = $document[id_found]
+  # @browser_object = $document[id_found]
 end

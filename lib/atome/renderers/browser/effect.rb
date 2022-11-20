@@ -15,5 +15,5 @@ generator.build_render_method(:browser_smooth) do |value|
                     else
                       value
                     end
-  @html_object.style['border-radius'] = formated_params unless @html_type == :style
+  @browser_object.style['border-radius'] = formated_params unless @browser_type == :style
 end

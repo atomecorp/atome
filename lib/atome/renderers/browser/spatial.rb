@@ -12,17 +12,17 @@ generator = Genesis.generator
 # end
 
 generator.build_render_method(:browser_left) do |value, _user_proc|
-  @html_object.style[:left] = "#{value}px" unless @html_type == :style
+  @browser_object.style[:left] = "#{value}px" unless @browser_type == :style
 end
 
 generator.build_render_method(:browser_right) do |value, _user_proc|
-  @html_object.style[:right] = "#{value}px" unless @html_type == :style
+  @browser_object.style[:right] = "#{value}px" unless @browser_type == :style
 end
 
 generator.build_render_method(:browser_top) do |value, _user_proc|
-  @html_object.style[:top] = "#{value}px" unless @html_type == :style
+  @browser_object.style[:top] = "#{value}px" unless @browser_type == :style
 end
 
 generator.build_render_method(:browser_bottom) do |value, _user_proc|
-  @html_object.style[:bottom] = "#{value}px" unless @html_type == :style
+  @browser_object.style[:bottom] = "#{value}px" unless @browser_type == :style
 end

@@ -9,6 +9,6 @@ end
 generator.build_render_method(:browser_parents) do |parents_found|
   type_found = @atome[:type]
   parents_found.each do |parent_found|
-    BrowserHelper.send("browser_attach_#{type_found}", parent_found, @html_object, @atome)
+    BrowserHelper.send("browser_attach_#{type_found}", parent_found, @browser_object, @atome)
   end
 end
