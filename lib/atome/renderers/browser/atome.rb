@@ -10,6 +10,8 @@ generator.build_render_method(:browser_shape) do
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
   @structure.merge!({ browser_object: @browser_object, browser_type: @browser_type })
+  # Render particles below
+  a_render
 end
 
 generator.build_render_method(:browser_color) do |_value|
@@ -22,12 +24,16 @@ generator.build_render_method(:browser_color) do |_value|
   blue_found = @atome[:blue]
   green_found = @atome[:green]
   alpha_found = @atome[:alpha]
-  BrowserHelper.browser_document.head << DOM("<style atome='#{type_found}'  id='#{id_found}'>.#{id_found}{background-color: rgba(#{red_found * 255},
+  BrowserHelper.browser_document.head << DOM("<style atome='#{type_found}'
+id='#{id_found}'>.#{id_found}{background-color: rgba(#{red_found * 255},
   #{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
   # TODO/ use the code below to modify the style tag
   # `document.getElementById(#{id}).sheet.cssRules[0].style.backgroundColor = 'red'`
   @browser_object = BrowserHelper.browser_document[id_found]
   @structure.merge!({ browser_object: @browser_object, browser_type: @browser_type })
+  # now we just have to attach the color atome
+  parents(@atome[:parents])
+  children(@atome[:children])
 end
 
 generator.build_render_method(:browser_shadow) do |_value|
@@ -71,8 +77,7 @@ generator.build_render_method(:browser_video) do |_value, _user_proc|
   id_found = id
   DOM do
     video({ id: id_found, autoplay: true, loop: false, muted: true }).atome
-  end.append_to($document[:user_view])
-  @browser_object = $document[id_found]
+  end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
   @structure.merge!({ browser_object: @browser_object, browser_type: @browser_type })
 end

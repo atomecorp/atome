@@ -73,23 +73,24 @@
 # # circle({drag: {inside: :the_constraint_box}, color: :red})
 
 b = box({ id: :the_box, left: 99, top: 99 })
-b.color(:red)
+c=b.color(:red)
 # TODO: when applying atome.atome ( box.color), color should be aded to the list of box's children
-s = b.shadow({ render: [:browser], id: :shadow2, type: :shadow, parents: [], children: [],
+s = b.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [], children: [],
                left: 3, top: 9, blur: 9, direction: :inset,
                red: 0, green: 0, blue: 0, alpha: 1
              })
 
 b.smooth(5)
 
+# alert b
 
 b.children([:shadow2])
+
 s.parents([:the_box])
-# s.blur(39)
+s.blur(39)
+c.red(0.1)
 
-b.blur(33)
-
-# alert b
+b.blur(7)
 # b.shadow({ left: 33 })
 # shadow({ left: 33 })
 

@@ -4,7 +4,7 @@
 module Essentials
   @default_params = {
     # TODO : use this as soon as possible
-    render: [:browser],
+    render_engines: [:browser],
     color: { x: 0, y: 0, z: 0, red: 0.6, green: 0.6, blue: 0.6, alpha: 1, diffusion: :linear },
     box: { width: 100, height: 100, x: 100, y: 100,
            color: { x: 0, y: 0, z: 0, red: 0.9, green: 0.9, blue: 0.9, alpha: 1, diffusion: :linear },

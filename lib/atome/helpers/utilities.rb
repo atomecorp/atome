@@ -5,9 +5,17 @@ class Atome
   private
 
   def collapse
+    type(@atome[:type])
+  end
+
+  def a_render
+    # we delete the :type because it is already processed and will cause an infinite loop
+    type_found = @atome.delete(:type)
     @atome.each do |element, value|
       send(element, value)
     end
+    # we re-introduce the :type
+    @atome[:type] = type_found
   end
 
   def security_pass(_element, _value)
