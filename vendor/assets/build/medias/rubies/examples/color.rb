@@ -30,3 +30,15 @@ wait 4 do
     c.color({ green: 1, blue: 0.69, alpha: 1 })
   end
 end
+
+wait 5 do
+  d=c.color(:red)
+  wait 1 do
+    d.blue(0)
+  end
+
+  wait 2 do
+    d.red(1)
+  end
+end
+
