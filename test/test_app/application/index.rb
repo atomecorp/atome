@@ -3,6 +3,7 @@
 # # document.getElementById('color_the_box').sheet.cssRules[0].style.backgroundColor = 'red'
 # # alert(document.getElementById('color_the_box').sheet.cssRules[0].style.backgroundColor)
 #
+# # TODO : when sanitizing property must respect the order else no browser object will be created, try to make it more flexible allowing any order
 # # TODO : add a global sanitizer
 # # TODO : look why get_particle(:children) return an atome not the value
 # # TODO : create color JS for Opal?
@@ -71,13 +72,24 @@
 # #
 # # circle({drag: {inside: :the_constraint_box}, color: :red})
 
-b=box({ id: :the_box })
+b = box({ id: :the_box, left: 99, top: 99 })
 b.color(:red)
-b.shadow({ render: [:browser], id: :shadow2, type: :shadow, parents: [:the_box],children: [],
-           left: 3, top: 9, blur: 9,direction: :inset,
-           red: 0, green: 0, blue: 0, alpha: 1
-         })
+# TODO: when applying atome.atome ( box.color), color should be aded to the list of box's children
+s = b.shadow({ render: [:browser], id: :shadow2, type: :shadow, parents: [], children: [],
+               left: 3, top: 9, blur: 9, direction: :inset,
+               red: 0, green: 0, blue: 0, alpha: 1
+             })
+
 b.smooth(5)
+
+
+b.children([:shadow2])
+s.parents([:the_box])
+# s.blur(39)
+
+b.blur(33)
+
+# alert b
 # b.shadow({ left: 33 })
 # shadow({ left: 33 })
 

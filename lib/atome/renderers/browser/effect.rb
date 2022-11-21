@@ -15,9 +15,9 @@ generator.build_render_method(:browser_smooth) do |value|
                     else
                       value
                     end
-  @browser_object.style['border-radius'] = formated_params unless @browser_type == :style
+  @browser_object.style['border-radius'] = formated_params
 end
 
 generator.build_render_method(:browser_blur) do |value|
-  @browser_object.style['blur'] = value unless @browser_type == :style
+  BrowserHelper.send("browser_blur_#{@browser_type}", @browser_object,value)
 end

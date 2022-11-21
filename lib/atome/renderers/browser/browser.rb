@@ -14,15 +14,21 @@ class BrowserHelper
     $document
   end
 
-  def self.browser_attach_shape(parents, html_object, _atome)
+  def self.browser_attach_div(parents, html_object, _atome)
     html_object.append_to(browser_document[parents])
   end
 
-  def self.browser_attach_color(parents, _html_object, atome)
+  def self.browser_attach_style(parents, _html_object, atome)
     browser_document[parents].add_class(atome[:id])
   end
 
-  def self.browser_attach_shadow(parents, _html_object, atome)
-    browser_document[parents].add_class(atome[:id])
+  def self.browser_blur_style(browser_object,value)
+    puts 'now decide how to alter the tag!!'
+    # browser_document[parents].add_class(atome[:id])
   end
+
+  def self.browser_blur_div(browser_object,value)
+    browser_object.style[:filter] =  "blur(#{value}px)"
+  end
+
 end

@@ -17,6 +17,7 @@ class Atome
       Universe.add_to_atomes({ elements[:id] => self })
       elements[:bloc] = atomes_proc if atomes_proc
       @atome = elements
+      @structure={atome: @atome}
       collapse
     end
   end
@@ -85,6 +86,7 @@ class Atome
 
   # the line below is used for ephemera atomes
   attr_accessor :property, :value, :real_atome, :user_proc, :html_object
+  attr_reader :atome, :structure
 
   def set(value)
     @real_atome[@property] = value

@@ -22,10 +22,11 @@ class Atome
   def sanitize_color(params)
     parent_found = found_parent_and_render[:parent]
     render_found = found_parent_and_render[:render]
-    default_params = { parents: parent_found, type: :color, render: render_found,
-                       id: "color_#{Universe.atomes.length}", red: 0, green: 0, blue: 0, alpha: 1 }
+    default_params = { render: render_found,id: "color_#{Universe.atomes.length}",type: :color,
+                       parents: parent_found,
+                       red: 0, green: 0, blue: 0, alpha: 1 }
     params = create_color_hash(params) unless params.instance_of? Hash
-    default_params.merge(params)
+    default_params.merge!(params)
   end
 
   def sanitize_code(params)
