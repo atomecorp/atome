@@ -46,17 +46,17 @@ class Atome
     instance_exec(self, element, value, &bloc_found) if bloc_found.is_a?(Proc)
   end
 
-  def monitor(params, &proc_monitoring)
-    params[:atomes].each do |atome_id|
-      grab(atome_id).instance_variable_set('@broadcast', { particles: params[:particles], bloc: proc_monitoring })
-    end
-  end
-
   def history(property, value)
     "historize : #{property} #{value}"
   end
 
   public
+
+  def monitor(params, &proc_monitoring)
+    params[:atomes].each do |atome_id|
+      grab(atome_id).instance_variable_set('@broadcast', { particles: params[:particles], bloc: proc_monitoring })
+    end
+  end
 
   def <<(particle)
     value = particle.value

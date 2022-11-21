@@ -1,1 +1,3 @@
-puts Utilities.renderer_list
+# frozen_string_literal: true
+
+puts Universe.renderer_list

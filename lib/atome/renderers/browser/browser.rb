@@ -9,6 +9,10 @@ require 'atome/renderers/browser/spatial'
 require 'atome/renderers/browser/atome'
 require 'atome/renderers/browser/utility'
 
+class Atome
+  attr_accessor :browser_object
+end
+
 # for opal rendering
 class BrowserHelper
   def self.browser_document

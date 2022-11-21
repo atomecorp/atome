@@ -5,7 +5,7 @@ mycode = <<Struct
 alert :it_works
 Struct
 
-Atome.new(code: { type: :code, data: mycode, render: [:html] })
+Atome.new(code: { type: :code, data: mycode, renderers: [:browser], parents: [], children: [] })
 cc = Atome.new
 cc.code("alert 'it works too'")
 
