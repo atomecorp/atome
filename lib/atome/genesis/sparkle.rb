@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
 # let's create the view port
-# default_render = if RUBY_ENGINE.downcase == 'opal'
-#                    :html
-#                  else
-#                    :headless
-#                  end
-default_render =  Essentials.default_params[:render_engines]
+
+default_render = Essentials.default_params[:render_engines]
 
 Universe.current_user = :jeezs
-puts "client ready: #{@atome_client_ready}"
 puts "app identity: #{Universe.app_identity}"
 puts "atome version: #{Atome::VERSION}"
 puts "current host: #{Universe.current_machine}"

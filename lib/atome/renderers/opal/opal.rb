@@ -2,4 +2,3 @@
 
 # render methods
 require 'opal'
-@atome_client_ready = true

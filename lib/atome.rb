@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-@atome_client_ready = false
-
 def eval_protection
   binding
 end
