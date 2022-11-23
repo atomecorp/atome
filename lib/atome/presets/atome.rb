@@ -7,8 +7,7 @@
 # shaper creation
 class Atome
   def box(params = {}, &bloc)
-
-    default_renderer =  Essentials.default_params[:render_engines]
+    default_renderer = Essentials.default_params[:render_engines]
 
     generated_id = params[:id] || "box_#{Universe.atomes.length}"
     generated_render = params[:renderers] || default_renderer
@@ -23,7 +22,7 @@ class Atome
   end
 
   def circle(params = {}, &bloc)
-    default_renderer =  Essentials.default_params[:render_engines]
+    default_renderer = Essentials.default_params[:render_engines]
     generated_id = params[:id] || "circle_#{Universe.atomes.length}"
     generated_render = params[:renderers] || default_renderer
     generated_parents = params[:parents] || id.value

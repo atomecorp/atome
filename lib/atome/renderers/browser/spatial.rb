@@ -2,27 +2,21 @@
 
 generator = Genesis.generator
 
-# generator.build_render_method(:browser_left) do |_value, user_proc|
-#   instance_exec(&user_proc) if user_proc.is_a?(Proc)
-# end
-#
-# generator.build_optional_methods(:pre_get_left) do
-#   user_proc = @user_proc
-#   instance_exec(&user_proc) if user_proc.is_a?(Proc)
-# end
-
 generator.build_render_method(:browser_left) do |value, _user_proc|
-  @browser_object.style[:left] = "#{value}px"
+  BrowserHelper.send("browser_left_#{@atome[:type]}", value, @browser_object, @atome)
 end
 
 generator.build_render_method(:browser_right) do |value, _user_proc|
-  @browser_object.style[:right] = "#{value}px"
+  BrowserHelper.send("browser_right_#{@atome[:type]}", value, @browser_object, @atome)
+  # @browser_object.style[:right] = "#{value}px"
 end
 
 generator.build_render_method(:browser_top) do |value, _user_proc|
-  @browser_object.style[:top] = "#{value}px"
+  BrowserHelper.send("browser_top_#{@atome[:type]}", value, @browser_object, @atome)
+  # @browser_object.style[:top] = "#{value}px"
 end
 
 generator.build_render_method(:browser_bottom) do |value, _user_proc|
-  @browser_object.style[:bottom] = "#{value}px"
+  BrowserHelper.send("browser_bottom_#{@atome[:type]}", value, @browser_object, @atome)
+  # @browser_object.style[:bottom] = "#{value}px"
 end

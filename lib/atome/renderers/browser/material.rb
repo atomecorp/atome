@@ -3,13 +3,12 @@
 generator = Genesis.generator
 
 generator.build_render_method(:red) do |value|
-
-  red = (@atome[:red] = value) * 255
+  red = ((@atome[:red] = value) * 255)
   green = @atome[:green] * 255
   blue = @atome[:blue] * 255
   alpha = @atome[:alpha]
   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  `document.getElementById(#{@atome[:id]}).sheet.cssRules[0].style.backgroundColor = #{color_updated}`
+  BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
 end
 
 generator.build_render_method(:green) do |value|
@@ -18,7 +17,7 @@ generator.build_render_method(:green) do |value|
   blue = @atome[:blue] * 255
   alpha = @atome[:alpha]
   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  `document.getElementById(#{@atome[:id]}).sheet.cssRules[0].style.backgroundColor = #{color_updated}`
+  BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
 end
 
 generator.build_render_method(:blue) do |value|
@@ -27,7 +26,7 @@ generator.build_render_method(:blue) do |value|
   blue = (@atome[:blue] = value) * 255
   alpha = @atome[:alpha]
   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  `document.getElementById(#{@atome[:id]}).sheet.cssRules[0].style.backgroundColor = #{color_updated}`
+  BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
 end
 
 generator.build_render_method(:alpha) do |value|
@@ -36,5 +35,5 @@ generator.build_render_method(:alpha) do |value|
   blue = @atome[:blue] * 255
   alpha = (@atome[:alpha] = value)
   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  `document.getElementById(#{@atome[:id]}).sheet.cssRules[0].style.backgroundColor = #{color_updated}`
+  BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
 end

@@ -9,13 +9,9 @@ class Atome
   end
 
   def a_render
-    # we delete the :type because it is already processed and will cause an infinite loop
-    type_found = @atome.delete(:type)
     @atome.each do |element, value|
-      send(element, value)
+      send(element, value) unless element == :type
     end
-    # we re-introduce the :type
-    @atome[:type] = type_found
   end
 
   def security_pass(_element, _value)

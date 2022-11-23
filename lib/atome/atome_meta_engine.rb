@@ -17,7 +17,7 @@ class Atome
       Universe.add_to_atomes({ elements[:id] => self })
       elements[:bloc] = atomes_proc if atomes_proc
       @atome = elements
-      @structure={atome: @atome}
+      @structure = { atome: @atome }
       collapse
     end
   end
