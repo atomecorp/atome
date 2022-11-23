@@ -5,6 +5,15 @@ require 'fileutils'
 require 'securerandom'
 require 'digest/sha2'
 # below are the methods needed for atome creation and run
+def test_path(project_name, arg_name, path)
+  if project_name != 'run' && project_name != 'guard' && !project_name.nil? &&
+    project_name != 'port:' && project_name != 'server' && project_name != 'build'
+    # the line below remove the optional parameters from the project name
+    project_name = project_name.sub(ARGV[ARGV.find_index(arg_name) + 1], '')
+    "#{path}/#{project_name}"
+  end
+  path
+end
 
 def found_path(arg_name)
   project_name = ARGV[ARGV.find_index(arg_name) + 1]
@@ -14,13 +23,7 @@ def found_path(arg_name)
     `cd #{app_builder_helpers};rake minimizer[#{path}]`
   end
   path = `pwd`.chomp
-  if project_name != 'run' && project_name != 'guard' && !project_name.nil? &&
-    project_name != 'port:' && project_name != 'server' && project_name != 'build'
-    # the line below remove the optional parameters from the project name
-    project_name = project_name.sub(ARGV[ARGV.find_index(arg_name) + 1], '')
-    path = "#{path}/#{project_name}"
-  end
-  path
+  test_path(project_name, arg_name, path)
 end
 
 def delete_all(dir, user_application = nil)
@@ -44,10 +47,27 @@ def build_app(path, production)
   `cd #{app_builder_helpers};rake build_user_code[#{path},#{production}]`
 end
 
-def create_application(project_name, force, production)
-  # print "directory already exist, use force to overwrite"
+def content_to_add(coded_id)
+  <<~STR
+    class Atome
+      def self.aui
+        "#{coded_id}"
+      end
+    end
+  STR
+end
+
+def app_creation(content_to_add, current_path, project_name)
+  added_content = content_to_add
+  file_location = "#{current_path}/#{project_name}/aui.rb"
+  File.new file_location, 'w'
+  File.open(file_location, 'w') do |f|
+    f.puts added_content
+  end
+end
+
+def test_app_creation(project_name, current_path, force)
   new_app_creation = false
-  current_path = `pwd`.chomp
   unless force && File.directory?(project_name)
     new_app_creation = true
     Dir.mkdir project_name
@@ -55,20 +75,12 @@ def create_application(project_name, force, production)
     uuid = SecureRandom.uuid
     sha = Digest::SHA256.hexdigest(uuid)
     coded_id = sha.gsub('-', '_')
-    added_content = <<~STR
-      class Atome
-        def self.aui
-          "#{coded_id}"
-        end
-      end
-    STR
-    file_location = "#{current_path}/#{project_name}/aui.rb"
-    File.new file_location, 'w'
-    File.open(file_location, 'w') do |f|
-      f.puts added_content
-    end
+    app_creation(content_to_add(coded_id), current_path, project_name)
   end
+  new_app_creation
+end
 
+def build_atome_resources(current_path, project_name, production)
   gem_assets_location = File.join(File.dirname(__FILE__), '../vendor/assets/')
   app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
   target_template_location = "#{current_path}/#{project_name}"
@@ -80,6 +92,13 @@ def create_application(project_name, force, production)
   end
   # now run the rake task to build the needed libraries (atome, renderers, etc...)
   `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
+end
+
+def create_application(project_name, force, production)
+  # print "directory already exist, use force to overwrite"
+  current_path = `pwd`.chomp
+  new_app_creation = test_app_creation(project_name, current_path, force)
+  build_atome_resources(current_path, project_name, production)
   return unless new_app_creation
 
   # now adding name to the app
@@ -103,31 +122,50 @@ def guard_check
   nil unless ARGV.include?('guard')
 end
 
-def run_application(build_target, location, port = 9292)
-  build_app(location, nil)
+def browser_case(location)
+  `cd #{location}/build;open index.html`
+  guard_check
+end
+
+def server_case(port, location)
+  threads = []
+  threads << Thread.new do
+    sleep 1.5
+    `open http://localhost:9292/index`
+  end
+  `cd #{location}/server;rackup --server puma --port #{port}  --env production`
+end
+
+def test_native(build_target)
   case build_target
-  when :server
-    threads = []
-    threads << Thread.new do
-      sleep 1.5
-      `open http://localhost:9292/index`
-    end
-    `cd #{location}/server;rackup --server puma --port #{port}  --env production`
-  when :browser
-    `cd #{location}/build;open index.html`
-    guard_check
-  when :native
-    # freebsd
-  when :linux
+  when :freebsd
     # freebsd
   when :osx
     # osx
   when :windows
     # windows
   else
-    `cd #{location}/build;open index.html`
-    guard_check
+    puts :freebsd
   end
+end
+
+def run_case(build_target, location, port)
+  case build_target
+  when :server
+    server_case(port, location)
+  when :browser
+    browser_case(location)
+  when :native
+    test_native(build_target)
+    # freebsd
+  else
+    browser_case(location)
+  end
+end
+
+def run_application(build_target, location, port = 9292)
+  build_app(location, nil)
+  run_case(build_target, location, port)
 end
 
 # below we analyse the ARGV

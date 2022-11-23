@@ -213,11 +213,9 @@ end
 
 task :build_user_code, :user_project_path, :production do |_t, args|
   user_project_path = args[:user_project_path]
-  production = args[:production]
   source_code = "#{user_project_path}/application/index.rb"
   build_user_code(user_project_path, source_code)
   minimize_application(user_project_path)
-  # minimize_application(user_project_path) if production == 'production'
 end
 
 task :system_builder, :user_project_path, :production do |_t, args|
@@ -242,7 +240,6 @@ task :minimizer, :user_project_path do |_t, args|
   user_project_path = args[:user_project_path]
   minimize(user_project_path)
 end
-
 
 task default: :run
 
