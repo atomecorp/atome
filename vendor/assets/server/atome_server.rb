@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-#
+
 # atome server
 require 'em/pure_ruby' if RUBY_PLATFORM == 'x64-mingw32'
 require  'atome'
@@ -14,7 +14,6 @@ require 'roda'
 require 'rufus-scheduler'
 require 'securerandom'
 require 'sequel'
-
 
 
 class String

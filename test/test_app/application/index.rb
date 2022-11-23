@@ -11,6 +11,8 @@
 # # TODO : Application is minimized all the time, we must try to condition it
 # # TODO : A anew atome is created each time Genesis.generator is call, we better always use the same atome
 # # TODO : Decide with Regis if we create a new css, an inline style on object or alter the css as describe above
+# # TODO : server buf it try to use opal_browser_method
+
 # generator = Genesis.generator
 #
 # generator.build_particle(:drag)
@@ -156,3 +158,10 @@ ccc.left(99)
 # # alert BrowserHelper.get(:user_view)
 # # BrowserHelper.get(:user_view) << "Hello world!"
 # BrowserHelper.get(:user_view).append("Hello world!iii")
+
+alert Essentials.default_params[:render_engines]
+
+Essentials.new_default_params({ render_engines: [:headless] })
+
+# alert Essentials.default_params
+alert Essentials.default_params[:render_engines]

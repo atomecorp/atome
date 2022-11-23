@@ -1,16 +1,29 @@
 # frozen_string_literal: true
 
-# let's create the view port
+# let's create the Universe
+def eval_protection
+  binding
+end
 
+# Let's set the default's parameters according to ruby interpreter
+if RUBY_ENGINE.downcase == 'opal'
+  Essentials.new_default_params({ render_engines: [:browser] })
+else
+  Essentials.new_default_params({ render_engines: [:headless] })
+  eval "require 'atome/extensions/geolocation'", eval_protection, __FILE__, __LINE__
+  eval "require 'atome/extensions/ping'", eval_protection, __FILE__, __LINE__
+  eval "require 'atome/extensions/sha'", eval_protection, __FILE__, __LINE__
+end
+
+# now let's get the default render engine
 default_render = Essentials.default_params[:render_engines]
 
 Universe.current_user = :jeezs
-puts "app identity: #{Universe.app_identity}"
+puts "application identity: #{Universe.app_identity}"
 puts "atome version: #{Atome::VERSION}"
 puts "current host: #{Universe.current_machine}"
 puts "current user: #{Universe.current_user}"
 
-# Sanitizer.default_params[:render] = default_render
 Atome.new(
   { element: { renderers: [], id: :eDen, type: :element,
                parents: [], children: [] } }

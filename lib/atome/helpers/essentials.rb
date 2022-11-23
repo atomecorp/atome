@@ -3,7 +3,6 @@
 # use to sanitize and secure user input
 module Essentials
   @default_params = {
-    # TODO : use this as soon as possible
     render_engines: [:browser],
     color: { x: 0, y: 0, z: 0, red: 0.6, green: 0.6, blue: 0.6, alpha: 1, diffusion: :linear },
     box: { width: 100, height: 100, x: 100, y: 100,
@@ -18,6 +17,10 @@ module Essentials
 
   def self.default_params
     @default_params
+  end
+
+  def self.new_default_params(new_default)
+    @default_params.merge!(new_default)
   end
 
   def validation(atome_instance_var)
