@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-a = Atome.new(shape: { type: :shape, id: :the_sender, children: [],parents: [:view], renderers: [:browser],
-                       left: 33, right: 7
-})
+a = text({data: "open the console!"})
 a.right(44).left(66)
 
 b = Atome.new(shape: { type: :shape, id: :my_shape, children: [],parents: [:view], renderers: [:browser],

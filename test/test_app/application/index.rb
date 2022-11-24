@@ -1,6 +1,5 @@
 # # # frozen_string_literal: true
 
-
 # # # Done : when sanitizing property must respect the order else no browser object will be created, try to make it more flexible allowing any order
 # # # TODO : add a global sanitizer
 # # # TODO : look why get_particle(:children) return an atome not the value
@@ -11,7 +10,6 @@
 # # # TODO : Decide with Regis if we create a new css, an inline style on object or alter the css as describe above
 # # # DOME: when applying atome.atome ( box.color), color should be aded to the list of box's children
 # # # DONE : server crash, it try to use opal_browser_method
-
 
 # ########## Drag to implement
 # generator = Genesis.generator
@@ -83,9 +81,6 @@
 #   my_text.color(:red)
 # end
 
-
-
-
 # ########## sampler
 # sampler = {
 #   note1: { velocity1: {
@@ -101,51 +96,10 @@
 #     sample2: {}
 #   }
 #   } }
-# sampler
 
-# ########## text
-# text({ id: :my_text, color: :lightgray }) do |p|
-#   puts "ok text id is : #{id}"
-# end
-#
-# text = Atome.new(
-#   text: { renderers: [:browser], id: :text1, type: :text, parents: [:view],child: [], visual: { size: 33 },
-#           data: "My text!", left: 300, top: 33, width: 199, height: 33, }
-# ) do |p|,
-#   puts "ok Atome.new(text) id is : #{id}"
-# end
+# frozen_string_literal: true
 
-#################
-my_text = Atome.new(
-  text: { renderers: [:browser], id: :text1, type: :text, parents: [:view],children: [], visual: { size: 33 },
-          data: 'My text!', left: 300, top: 33, width: 199, height: 33,
-          color: { renderers: [:browser], id: :c31, type: :color, parents: [:text1],children: [],
-                   red: 0.6, green: 0.6, blue: 0.6, alpha: 1 }
-  }
-)
-
-wait 1.2 do
-  my_text.data(:kool)
+b = box({left: 333 })
+wait 1 do
+  b.width(33)
 end
-
-text({id: :the_text, left: 0})
-
-text = Atome.new(
-  text: { renderers: [:browser], id: :text1, type: :text, parents: [:view],children: [], visual: { size: 33 }, data: "My text!", left: 300, top: 33, width: 199, height: 33, }
-) do |p|
-  puts "ok Atome.new(text) id is : #{id}"
-end
-wait 1.2 do
-  text.text.data(:kool)
-end
-
-b = box({left: 66, top: 66 })
-my_text = b.text({ data: 'drag the bloc behind me', width: 333, left: 55 })
-wait 2 do
-  my_text.color(:red)
-end
-
-
-
-
-

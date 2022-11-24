@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 my_video = Atome.new(
   video: { render: [:html], id: :video1, type: :video,  parents: [:view], path: './medias/videos/superman.mp4', left: 333, top: 333, width: 199, height: 99,
   }

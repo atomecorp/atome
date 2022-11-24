@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 b = box({ id: :my_box })
 b.color(:orange)
 
