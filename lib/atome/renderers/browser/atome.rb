@@ -3,7 +3,9 @@
 # TODO : remove the DOM const and the parents methods there's just there to satisfy Rubocop
 # start dummy code
 DOM = :nil
+
 def parents(_val) end
+
 # end dummy code
 
 generator = Genesis.generator
@@ -68,16 +70,26 @@ generator.build_render_method(:browser_image) do |_user_prc|
     img({ id: id_found }).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
-  @html_type = :image
   # Render particles below
   a_render
 end
 
 generator.build_render_method(:browser_video) do |_value, _user_proc|
-  @browser_type = :div
+  # @browser_type = :div
+  # id_found = id
+  # DOM do
+  #   video({ id: id_found, autoplay: true, loop: false, muted: true }).atome
+  # end.append_to(BrowserHelper.browser_document[:user_view])
+  # @browser_object = BrowserHelper.browser_document[id_found]
+end
+
+generator.build_render_method(:browser_text) do |_value, _user_proc|
   id_found = id
-  Browser.DOM do
-    video({ id: id_found, autoplay: true, loop: false, muted: true }).atome
+  DOM do
+    div(id: id_found).atome.text
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
+  @browser_type = :div
+  # Render particles below
+  a_render
 end

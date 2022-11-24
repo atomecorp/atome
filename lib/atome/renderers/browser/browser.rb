@@ -135,3 +135,24 @@ end
 def browser_bottom_color(_value, _browser_object, _atome)
   puts 'code to write when implementing gradient'
 end
+
+# text
+def browser_left_text(value, browser_object, _atome)
+  browser_object.style[:left] = "#{value}px"
+end
+
+def browser_right_text(value, browser_object, _atome)
+  browser_object.style[:right] = "#{value}px"
+end
+
+def browser_top_text(value, browser_object, _atome)
+  browser_object.style[:top] = "#{value}px"
+end
+
+def browser_bottom_text(value, browser_object, _atome)
+  browser_object.style[:bottom] = "#{value}px"
+end
+
+def browser_data_text(value)
+  browser_object.text = value
+end

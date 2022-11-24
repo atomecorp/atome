@@ -37,3 +37,7 @@ generator.build_render_method(:alpha) do |value|
   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
 end
+
+generator.build_render_method(:visual) do |value|
+  browser_object.style['font-size'] = "#{value[:size]}px"
+end

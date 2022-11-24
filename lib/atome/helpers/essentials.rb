@@ -11,6 +11,8 @@ module Essentials
     shape: { renderers: '', id: '', width: 100, type: :shape, height: 100, left: 100, top: 100,
              color: { left: 0, top: 0, z: 0, red: 0.1, green: 0.9, blue: 0.9, alpha: 1, diffusion: :linear },
              generator: :manual },
+    text: { type: :text, parents: [:view], children: [], visual: { size: 25 },
+            data: 'this is a text sample', left: 300, top: 33, width: 199, height: 33 },
     drm: { type: :drm },
     shadow: {}
   }

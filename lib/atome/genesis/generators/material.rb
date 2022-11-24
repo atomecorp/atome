@@ -6,5 +6,5 @@ generator.build_particle(:red)
 generator.build_particle(:green)
 generator.build_particle(:blue)
 generator.build_particle(:alpha)
-
+generator.build_particle(:visual)
 generator.build_particle(:overflow)

@@ -3,6 +3,7 @@
 # TODO: params shouldn't be merge but they must respect the order
 # TODO: Add default value for each methods below
 # TODO: Factorise codes below
+# TODO we must clarified/unified the usage of presets and sanitizer it is not clear
 
 # shaper creation
 class Atome
@@ -48,23 +49,18 @@ class Atome
     temp_default = { renderers: generated_render, id: generated_id, type: :image, parents: [generated_parents],
                      children: [], width: 99, height: 99, path: './medias/images/atome.svg' }
     params = temp_default.merge(params)
-    Atome.new({ shape: params }, &bloc)
+    Atome.new({ image: params }, &bloc)
   end
 
-  # def text(params = {}, &bloc)
-  #   default_renderer = Essentials.default_params[:render_engines]
-  #
-  #   generated_id = params[:id] || "text_#{Universe.atomes.length}"
-  #   generated_render = params[:renderers] || default_renderer
-  #   generated_parents = params[:parents] || id.value
-  #
-  #   temp_default = { renderers: generated_render, id: generated_id, type: :text, parents: [generated_parents],
-  #                    children: [], width: 99, height: 99, visual: { size: 33 }, data: 'hello world',
-  #                    color: { renderers: generated_render, id: "color_#{generated_id}", type: :color, children: [],
-  #                             parents: [generated_id], red: 0.3, green: 0.3, blue: 0.3, alpha: 1 }
-  #
-  #   }
-  #   params = temp_default.merge(params)
-  #   Atome.new({ shape: params }, &bloc)
-  # end
+  def text(params = {}, &bloc)
+    default_renderer = Essentials.default_params[:render_engines]
+    atome_type = :text
+    generated_render = params[:renderers] || default_renderer
+    generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+    generated_parents = params[:parents] || [id.value]
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    color_generated = sanitize_color({ parents: [generated_id], red: 0.9, green: 0.9, blue: 0.9 })
+    params[:color] = color_generated
+    Atome.new({ atome_type => params }, &bloc)
+  end
 end

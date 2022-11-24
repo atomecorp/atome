@@ -6,11 +6,7 @@ generator.build_particle(:renderers)
 generator.build_particle(:bloc)
 generator.build_particle(:broadcast)
 generator.build_particle(:additional)
-generator.build_particle(:data) do |data|
-  # according to the type we send the data to different operator
-  type_found = @atome[:type]
-  send("data_#{type_found}_processor", data)
-end
+generator.build_particle(:data)
 generator.build_particle(:delete) do
   Universe.delete(@atome[:id])
 end

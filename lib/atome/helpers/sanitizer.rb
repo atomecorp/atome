@@ -39,11 +39,4 @@ class Atome
     default_params.merge!(params)
   end
 
-  def sanitize_code(params)
-    parent_found = found_parent_and_render[:parent]
-    default_params = { id: "code_#{Universe.atomes.length}", type: :code,
-                       parents: parent_found, children: [], renderers: [:headless] }
-    params = { data: params } unless params.instance_of? Hash
-    default_params.merge(params)
-  end
 end

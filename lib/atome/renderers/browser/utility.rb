@@ -18,3 +18,9 @@ end
 generator.build_render_method(:path) do |value|
   @browser_object[:src] = value
 end
+
+generator.build_render_method(:data) do |data|
+  # according to the type we send the data to different operator
+  type_found = @atome[:type]
+  send("browser_data_#{type_found}", data)
+end
