@@ -81,25 +81,7 @@
 #   my_text.color(:red)
 # end
 
-# ########## sampler
-# sampler = {
-#   note1: { velocity1: {
-#     sample1: {
-#       start: 0,
-#       end: 123_765,
-#       loop_start: 34,
-#       loop_end: 678,
-#       repeat: 3,
-#       loop_fade: 34 },
-#     reverse: true,
-#     adsr: :adsr_id,
-#     sample2: {}
-#   }
-#   } }
-
 # frozen_string_literal: true
 
-b = box({left: 333 })
-wait 1 do
-  b.width(33)
-end
+b = box({ width: 333, left: 333 })
+b.rotate(999)

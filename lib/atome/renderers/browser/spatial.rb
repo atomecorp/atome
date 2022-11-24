@@ -20,3 +20,7 @@ generator.build_render_method(:browser_bottom) do |value, _user_proc|
   BrowserHelper.send("browser_bottom_#{@atome[:type]}", value, @browser_object, @atome)
   # @browser_object.style[:bottom] = "#{value}px"
 end
+
+generator.build_render_method(:browser_rotate) do |value, _user_proc|
+  @browser_object.style[:transform] = "rotate(#{value}deg)" unless @browser_type == :style
+end
