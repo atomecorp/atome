@@ -15,3 +15,4 @@ generator.build_particle(:delete) do
   Universe.delete(@atome[:id])
 end
 generator.build_particle(:clear)
+generator.build_particle(:path)

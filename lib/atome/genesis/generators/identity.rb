@@ -2,7 +2,6 @@
 
 generator = Genesis.generator
 
-generator.build_particle(:render_type)
 generator.build_particle(:type)
 generator.build_particle(:parents)
 generator.build_particle(:children)

@@ -16,7 +16,6 @@ generator.build_render_method(:browser_shape) do
     div(id: id_found).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
-  @structure.merge!({ browser_object: @browser_object, browser_type: @browser_type })
   # Render particles below
   a_render
 end
@@ -37,7 +36,6 @@ id='#{id_found}'>.#{id_found}{background-color: rgba(#{red_found * 255},
   # TODO/ use the code below to modify the style tag
   # `document.getElementById(#{id}).sheet.cssRules[0].style.backgroundColor = 'red'`
   @browser_object = BrowserHelper.browser_document[id_found]
-  @structure.merge!({ browser_object: @browser_object, browser_type: @browser_type })
   # now we just have to attach the color atome
   parents(@atome[:parents])
   children(@atome[:children])
@@ -65,18 +63,18 @@ id='#{id_found}'>.#{id_found}{box-shadow: #{left}px #{top}px #{blur}px #{inset} 
   # TODO/ use the code below to modify the style tag
   # `document.getElementById(#{id}).sheet.cssRules[0].style.backgroundColor = 'red'`
   @browser_object = BrowserHelper.browser_document[id_found]
-  @structure.merge!({ browser_object: @browser_object, browser_type: @browser_type })
 end
 
 generator.build_render_method(:browser_image) do |_user_prc|
   @browser_type = :div
-  id_found = @atome[:id]
-  Browser.DOM do
-    div(id: id_found).atome
+  id_found = id
+  DOM do
+    img({ id: id_found }).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
-  @browser_object = BrowserHelper.browser_document[id_found]
-  @structure.merge!({ browser_object: @browser_object, browser_type: @browser_type })
+  @html_type = :image
+  # Render particles below
+  a_render
 end
 
 generator.build_render_method(:browser_video) do |_value, _user_proc|
@@ -86,5 +84,4 @@ generator.build_render_method(:browser_video) do |_value, _user_proc|
     video({ id: id_found, autoplay: true, loop: false, muted: true }).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
-  @structure.merge!({ browser_object: @browser_object, browser_type: @browser_type })
 end

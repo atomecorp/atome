@@ -14,3 +14,8 @@ generator.build_render_method(:browser_clear) do
   end
   children([])
 end
+
+generator.build_render_method(:path) do |value|
+  @browser_object[:src] = value
+end
+

@@ -25,12 +25,13 @@ generator.build_render_method(:html_color) do |_value|
 end
 
 generator.build_render_method(:html_image) do |_user_prc|
-  current_atome = @atome
-  id_found = current_atome[:id]
-  DOM do
-    div(id: id_found).atome
-  end.append_to(opal_document[:user_view])
-  @html_object = opal_document[id_found]
+  # id_found = id
+  # instance_exec(&proc) if proc.is_a?(Proc)
+  # DOM do
+  #   img({ id: id_found }).atome
+  # end.append_to($document[:user_view])
+  # @html_object = $document[id_found]
+  # @html_type = :image
 end
 
 generator.build_render_method(:html_shadow) do

@@ -42,3 +42,11 @@ wait 5 do
   end
 end
 
+circle({id: :the_circle})
+
+
+wait 2 do
+  the_col=Atome.new({ color: { renderers: [:browser], id: :c31, type: :color, parents: [], children: [],
+                               left: 33, top: 66, red: 0, green: 0.15, blue: 0.7, alpha: 0.6 } })
+  the_col.parents([:the_circle])
+end

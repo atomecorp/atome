@@ -4,10 +4,6 @@
 class Atome
   private
 
-  def collapse
-    type(@atome[:type])
-  end
-
   def a_render
     @atome.each do |element, value|
       send(element, value) unless element == :type

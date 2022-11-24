@@ -34,4 +34,17 @@ class Atome
     params = temp_default.merge(params)
     Atome.new({ shape: params }, &bloc)
   end
+
+  def image(params = {}, &bloc)
+    default_renderer = Essentials.default_params[:render_engines]
+
+    generated_id = params[:id] || "image_#{Universe.atomes.length}"
+    generated_render = params[:renderers] || default_renderer
+    generated_parents = params[:parents] || id.value
+
+    temp_default = { renderers: generated_render, id: generated_id, type: :image, parents: [generated_parents],
+                     children: [], width: 99, height: 99, path: './medias/images/atome.svg' }
+    params = temp_default.merge(params)
+    Atome.new({ shape: params }, &bloc)
+  end
 end

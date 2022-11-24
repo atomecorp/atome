@@ -76,6 +76,22 @@ def browser_bottom_shape(value, browser_object, _atome)
   browser_object.style[:bottom] = "#{value}px"
 end
 
+def browser_left_image(value, browser_object, _atome)
+  browser_object.style[:left] = "#{value}px"
+end
+
+def browser_right_image(value, browser_object, _atome)
+  browser_object.style[:right] = "#{value}px"
+end
+
+def browser_top_image(value, browser_object, _atome)
+  browser_object.style[:top] = "#{value}px"
+end
+
+def browser_bottom_image(value, browser_object, _atome)
+  browser_object.style[:bottom] = "#{value}px"
+end
+
 def browser_left_shadow(value, _browser_object, atome)
   ls_left = "#{atome[:left] = value}px"
   ls_top = "#{atome[:top]}px"

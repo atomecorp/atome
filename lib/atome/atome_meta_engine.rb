@@ -17,8 +17,8 @@ class Atome
       Universe.add_to_atomes({ elements[:id] => self })
       elements[:bloc] = atomes_proc if atomes_proc
       @atome = elements
-      @structure = { atome: @atome }
-      collapse
+      # now we initiate the rendering eg for for browser will call :browser_type generated method in identity.rb file
+      type(@atome[:type])
     end
   end
 
@@ -44,8 +44,6 @@ class Atome
   def new_atome(element, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
       if params
-        # parents_found = { parents: [@atome[:id]] }
-        # parents_found.merge!(params) unless params[:parents]
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = atome_sanitizer(element, params)
         Atome.new({ element => params })
