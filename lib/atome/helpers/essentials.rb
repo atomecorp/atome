@@ -28,7 +28,6 @@ module Essentials
     true if atome_instance_var
   end
 
-
   def add_essential_drm(params)
     essential_drm = { authorisation: { read: [Atome.current_user], write: [Atome.current_user] },
                       atome: { read: [:all], write: [:me] } }

@@ -201,12 +201,6 @@
 #   my_text.color(:red)
 # end
 
-# Atome.new(container: {id: :atome_presets, type: :element ,data: :hello, renderers: []})
-
-element(data: :hello_world)
-alert Universe.atomes.keys
 
 
-box
-circle
 
