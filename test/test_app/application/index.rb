@@ -181,12 +181,32 @@
 #   } }
 # sampler
 
-########## image
-# Atome.new(
-#   image: { renderers: [:browser], id: :image1, type: :image, parents: [:view],children: [], path: "./medias/images/boat.png", left: 99, top: 120, width: 199, height: 199,
-#   }
-# )
+# ########## text
+# text({ id: :my_text, color: :lightgray }) do |p|
+#   puts "ok text id is : #{id}"
+# end
 #
-image({path: "./medias/images/moto.png", left: 33, top: 33})
+# text = Atome.new(
+#   text: { render: [:html], id: :text1, type: :text, parents: [:view], visual: { size: 33 }, data: "My text!", left: 300, top: 33, width: 199, height: 33, }
+# ) do |p|
+#   puts "ok Atome.new(text) id is : #{id}"
+# end
+# wait 1.2 do
+#   text.text.data(:kool)
+# end
+#
+# b = box({ drag: true, left: 66, top: 66 })
+# my_text = b.text({ data: 'drag the bloc behind me', width: 333 })
+# wait 2 do
+#   my_text.color(:red)
+# end
 
-########## video
+# Atome.new(container: {id: :atome_presets, type: :element ,data: :hello, renderers: []})
+
+element(data: :hello_world)
+alert Universe.atomes.keys
+
+
+box
+circle
+

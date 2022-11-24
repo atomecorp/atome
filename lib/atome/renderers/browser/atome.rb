@@ -3,10 +3,9 @@
 # TODO : remove the DOM const and the parents methods there's just there to satisfy Rubocop
 # start dummy code
 DOM = :nil
-
 def parents(_val) end
-
 # end dummy code
+
 generator = Genesis.generator
 
 generator.build_render_method(:browser_shape) do
@@ -31,10 +30,9 @@ generator.build_render_method(:browser_color) do |_value|
   green_found = @atome[:green]
   alpha_found = @atome[:alpha]
   BrowserHelper.browser_document.head << Browser.DOM("<style atome='#{type_found}'
-id='#{id_found}'>.#{id_found}{background-color: rgba(#{red_found * 255},
+  id='#{id_found}'>.#{id_found}{background-color: rgba(#{red_found * 255},
   #{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
   # TODO/ use the code below to modify the style tag
-  # `document.getElementById(#{id}).sheet.cssRules[0].style.backgroundColor = 'red'`
   @browser_object = BrowserHelper.browser_document[id_found]
   # now we just have to attach the color atome
   parents(@atome[:parents])
@@ -56,12 +54,10 @@ generator.build_render_method(:browser_shadow) do |_value|
   top = @atome[:top]
   inset = @atome[:direction]
 
-  # box-shadow: 10px 5px 5px red;
   BrowserHelper.browser_document.head << Browser.DOM("<style atome='#{type_found}'
-id='#{id_found}'>.#{id_found}{box-shadow: #{left}px #{top}px #{blur}px #{inset} rgba(#{red_found * 255},
+  id='#{id_found}'>.#{id_found}{box-shadow: #{left}px #{top}px #{blur}px #{inset} rgba(#{red_found * 255},
   #{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
   # TODO/ use the code below to modify the style tag
-  # `document.getElementById(#{id}).sheet.cssRules[0].style.backgroundColor = 'red'`
   @browser_object = BrowserHelper.browser_document[id_found]
 end
 

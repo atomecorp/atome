@@ -21,6 +21,14 @@ class Atome
     { parent: parent_found, renderers: render_found }
   end
 
+  def sanitize_element(params)
+    parent_found = found_parent_and_render[:parent]
+    render_found = found_parent_and_render[:renderers]
+    default_params = { renderers: render_found, id: "element_#{Universe.atomes.length}", type: :element,
+                       parents: parent_found }
+    default_params.merge!(params)
+  end
+
   def sanitize_color(params)
     parent_found = found_parent_and_render[:parent]
     render_found = found_parent_and_render[:renderers]

@@ -106,7 +106,7 @@ def browser_left_shadow(value, _browser_object, atome)
   `document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.boxShadow = #{shadow_updated}`
 end
 
-def browser_right_shadow(value, _browser_object, atome)
+def browser_top_shadow(value, _browser_object, atome)
   rs_left = "#{atome[:left]}px"
   rs_top = "#{atome[:top] = value}px"
   rs_blur = "#{atome[:blur]}px"
