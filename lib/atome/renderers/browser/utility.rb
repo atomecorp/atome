@@ -18,4 +18,3 @@ end
 generator.build_render_method(:path) do |value|
   @browser_object[:src] = value
 end
-
