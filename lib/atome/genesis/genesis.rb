@@ -30,6 +30,7 @@ class Atome
   def auto_sanitizer_generator(element)
     build_sanitizer_method("sanitize_#{element}")
   end
+
   def auto_render_generator(element)
     Universe.renderer_list.each do |render_engine|
       build_render_method("#{render_engine}_#{element}")
@@ -43,7 +44,6 @@ class Atome
   def build_sanitizer_method(sanitizer_name)
     new_atome_sanitizer(sanitizer_name)
   end
-
 
   def build_optional_methods(method_name, &method_proc)
     Universe.add_optionals_methods(method_name.to_sym, &method_proc)
