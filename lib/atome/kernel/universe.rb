@@ -6,7 +6,8 @@ class Universe
   @atome_list = []
   @particle_list = []
   @renderer_list = %i[html browser headless server]
-  @optionals_methods = {}
+  @options = {}
+  @sanitizers = {}
 
   class << self
     attr_reader :atomes, :renderer_list, :atome_list, :particle_list
@@ -15,22 +16,38 @@ class Universe
       instance_variable_get('@particle_list').push(particle)
     end
 
-    def add_optionals_methods(method_name, &method_proc)
+    def add_optional_method(method_name, &method_proc)
       # this method is used to add optional methods
-      instance_variable_get('@optionals_methods').merge!({ method_name => method_proc })
+      instance_variable_get('@options').merge!({ method_name => method_proc })
     end
 
-    def get_optionals_methods(method_name)
+    def get_optional_method(method_name)
       # this method is used to add optional methods
-      instance_variable_get('@optionals_methods')[method_name]
+      instance_variable_get('@options')[method_name]
+    end
+
+    def add_sanitizer_method(method_name, &method_proc)
+      # this method is used to add sanitizer methods
+      instance_variable_get('@sanitizers').merge!({ method_name => method_proc })
+    end
+
+    def get_sanitizer_method(method_name)
+      # this method is used to add optional methods
+      instance_variable_get('@sanitizers')[method_name]
     end
 
     def add_to_atome_list(atome)
       instance_variable_get('@atome_list').push(atome)
     end
 
-    def add_to_atomes(atome)
-      instance_variable_get('@atomes').merge!(atome)
+    def add_to_atomes(id, atome)
+      # instance_variable_get('@atomes').merge!(atome)
+      @atomes[id] = atome
+    end
+
+    def update_atome_id(id, atome, prev_id)
+      @atomes[id] = atome
+      @atomes.delete(prev_id)
     end
 
     def app_identity
@@ -41,9 +58,9 @@ class Universe
       # and finally the object is 3 as this the third object created by the main server
     end
 
-    def change_atome_id(prev_id, new_id)
-      @atomes[new_id] = @atomes.delete(prev_id)
-    end
+    # def change_atome_id(prev_id, new_id)
+    #   @atomes[new_id] = @atomes.delete(prev_id)
+    # end
 
     def delete(id)
       @atomes.delete(id)

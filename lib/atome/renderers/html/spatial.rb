@@ -6,7 +6,7 @@ generator = Genesis.generator
 #   instance_exec(&user_proc) if user_proc.is_a?(Proc)
 # end
 #
-# generator.build_optional_methods(:pre_get_left) do
+# generator.build_option(:pre_get_left) do
 #   user_proc = @user_proc
 #   instance_exec(&user_proc) if user_proc.is_a?(Proc)
 # end

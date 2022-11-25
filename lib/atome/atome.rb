@@ -13,12 +13,15 @@ class Atome
 
   def initialize(atomes = {}, &atomes_proc)
     atomes.each_value do |elements|
+      # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
-      Universe.add_to_atomes({ elements[:id] => self })
+      # we add the newly created atom to the Universe.atomes
+      # now we store the proc in a an atome's property called :bloc
       elements[:bloc] = atomes_proc if atomes_proc
       @atome = elements
-      # now we initiate the rendering eg for for browser will call :browser_type generated method in identity.rb file
-      type(@atome[:type])
+      # we initiate the rendering, eg for for browser we will call :browser_type generate method in identity.rb file
+      create_particle(:type, @atome[:type])
+      collapse
     end
   end
 
@@ -27,7 +30,8 @@ class Atome
       if params
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        sanitize_particle(element, params, &user_proc)
+        params = sanitize(element, params)
+        create_particle(element, params, &user_proc)
       else
         get_particle(element, &user_proc)
       end
@@ -37,7 +41,8 @@ class Atome
   def additional_particle_methods(element, &method_proc)
     Atome.define_method "#{element}=" do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-      sanitize_particle(element, params, &user_proc)
+      params = sanitize(element, params)
+      create_particle(element, params, &user_proc)
     end
   end
 
@@ -45,7 +50,7 @@ class Atome
     Atome.define_method element do |params = nil, &user_proc|
       if params
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        params = atome_sanitizer(element, params)
+        params = sanitize(element, params)
         Atome.new({ element => params })
       else
         get_atome(element, &user_proc)
@@ -59,14 +64,8 @@ class Atome
     end
   end
 
-  def new_atome_sanitizer(sanitizer_name)
-    Atome.define_method sanitizer_name do |params = {}|
-      params
-    end
-  end
-
   def run_optional_proc(proc_name, atome = self, value = '')
-    option_found = Universe.get_optionals_methods(proc_name)
+    option_found = Universe.get_optional_method(proc_name)
     atome.instance_exec(value, &option_found) if option_found.is_a?(Proc)
   end
 

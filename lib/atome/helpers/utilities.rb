@@ -4,7 +4,7 @@
 class Atome
   private
 
-  def a_render
+  def collapse
     @atome.each do |element, value|
       send(element, value) unless element == :type
     end
@@ -14,17 +14,10 @@ class Atome
     true
   end
 
-  def particle_sanitizer(_element, params)
+  def sanitize(element, params)
+    bloc_found = Universe.get_sanitizer_method(element)
+    params = instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
     params
-  end
-
-  def atome_sanitizer(element, params)
-    send("sanitize_#{element}", params)
-  end
-
-  def sanitize_particle(element, value, &user_proc)
-    value = particle_sanitizer(element, value)
-    create_particle(element, value, &user_proc)
   end
 
   def identity_generator

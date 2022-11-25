@@ -83,30 +83,53 @@
 
 # frozen_string_literal: true
 
-
 generator = Genesis.generator
 
-generator.build_optional_methods(:post_save_id) do |params|
-  new_id = params[:value]
-  current_atome = params[:atome]
-  old_id = id.value
-  instance_variable_set('@id', new_id)
-  # we change id id the atomes hash
-  Universe.change_atome_id(old_id, new_id)
-  # current_atome.html_object.id = new_id if current_atome.html_object
+# generator.build_optional_methods(:post_save_id) do |params|
+#   new_id = params[:value]
+#   instance_variable_set('@id', new_id)
+#   # alert id
+#   # current_atome = params[:atome]
+#   old_id = id.value
+#   # we change id id the atomes hash
+#   # Universe.change_atome_id(old_id, new_id)
+#   # current_atome.html_object.id = new_id if current_atome.html_object
+#
+# end
 
-end
-
-b = box({ id: :my_box })
-b.color(:orange)
-alert Universe.atomes.keys
-b.id(:the_new_id)
-alert b
-alert Universe.atomes.keys
+#
+# #####################
+# # alert Universe.atomes.keys
+# # Atome.new(container: {id: :element14, type: :element ,data: :hello, renderers: []})
+# #
+# # element({ data: :hello_world })
+# b = box({ id: :my_box })
+# b.color(:orange)
+# b.left(333)
+# alert  "atomes : #{Universe.atomes.keys}"
+# b.id(:the_new_id)
+# alert b
+# alert "atomes : #{Universe.atomes.keys}"
 # wait 1 do
 #   b.color(:blue)
 # end
 #
-# wait 2 do
-#   grab(:the_new_id).color(:cyan)
-# end
+# # wait 2 do
+# #   grab(:the_new_id).color(:cyan)
+# # end
+# #####################
+#
+# a=Atome.new(
+#   shape: { renderers: [:browser], id: :the_shape2, type: :shape, parents: [:view],children: [],
+#            left: 99, right: 99, width: 99, height: 99,
+#            color: { renderers: [:browser], id: :c31, type: :color, parents: [:the_shape2],children: [],
+#                     red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
+# )
+# # c=a.color(:red)
+# # # alert c.id
+# b=box
+# alert b.renderers
+
+# puts "atomes are: #
+
+
