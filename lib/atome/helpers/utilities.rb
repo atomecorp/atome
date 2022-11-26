@@ -47,4 +47,8 @@ class Atome
     value = particle.value
     real_atome[property] << value
   end
+
+  def refresh
+    collapse
+  end
 end

@@ -83,7 +83,7 @@
 
 # frozen_string_literal: true
 
-generator = Genesis.generator
+# generator = Genesis.generator
 
 # generator.build_optional_methods(:post_save_id) do |params|
 #   new_id = params[:value]
@@ -96,4 +96,10 @@ generator = Genesis.generator
 #   # current_atome.html_object.id = new_id if current_atome.html_object
 #
 # end
+b = box()
+# TODO : repair the security flow below
+b.atome[:left] = 300
+wait 1 do
+  b.refresh
+end
 
