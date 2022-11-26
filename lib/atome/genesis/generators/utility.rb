@@ -3,7 +3,11 @@
 generator = Genesis.generator
 
 generator.build_particle(:renderers)
-generator.build_particle(:bloc)
+generator.build_particle(:code)
+generator.build_particle(:run) do |params|
+  code_found=@atome[:code]
+  instance_exec(params, &code_found) if code_found.is_a?(Proc)
+end
 generator.build_particle(:broadcast)
 generator.build_particle(:additional)
 generator.build_particle(:data)

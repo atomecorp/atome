@@ -16,7 +16,7 @@ class Atome
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
       # now we store the proc in a an atome's property called :bloc
-      elements[:bloc] = atomes_proc if atomes_proc
+      elements[:code] = atomes_proc if atomes_proc
       @atome = elements
       # we initiate the rendering, eg for for browser we will call :browser_type generate method in identity.rb file
       create_particle(:type, @atome[:type])

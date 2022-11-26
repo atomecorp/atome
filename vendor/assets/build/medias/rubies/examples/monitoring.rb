@@ -18,3 +18,16 @@ end
 b.left(936)
 b.left(777)
 c.left(888)
+
+#test 2
+a = text({data: 'touch me and open the console'})
+
+a.touch(true) do
+  a.color(:red)
+  a.left(333)
+end
+
+a.monitor({ atomes: grab(:view).children.value, particles: [:left] }) do |_atome,_element, value|
+  puts  "the left value was change to : #{value}"
+
+end

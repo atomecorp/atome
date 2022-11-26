@@ -36,6 +36,6 @@ def shadow(params = {}, &bloc)
   grab(:view).shadow(params, &bloc)
 end
 
-def code(params = {}, &bloc)
-  grab(:view).code(params, &bloc)
-end
+# def code(params = {}, &bloc)
+#   grab(:view).code(params, bloc)
+# end

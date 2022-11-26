@@ -5,6 +5,11 @@ generator = Genesis.generator
 generator.build_particle(:type)
 generator.build_particle(:parents)
 generator.build_particle(:children)
+generator.build_particle(:link) do |child_id|
+  child_found = grab(child_id)
+  child_found.atome[:parents] << @atome[:id]
+  child_found.refresh
+end
 
 generator.build_particle(:id)
 generator.build_sanitizer(:id) do |params|

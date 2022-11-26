@@ -63,4 +63,13 @@ class Atome
     params[:color] = color_generated
     Atome.new({ atome_type => params }, &bloc)
   end
+
+  def element(params = {}, &bloc)
+    atome_type = :element
+    generated_render = params[:renderers] || []
+    generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+    generated_parents = params[:parents] || [id.value]
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    Atome.new({ atome_type => params }, &bloc)
+  end
 end
