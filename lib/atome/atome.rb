@@ -15,7 +15,6 @@ class Atome
     atomes.each_value do |elements|
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
-      # we add the newly created atom to the Universe.atomes
       # now we store the proc in a an atome's property called :bloc
       elements[:bloc] = atomes_proc if atomes_proc
       @atome = elements
@@ -92,11 +91,10 @@ class Atome
   def create_particle(element, value, &user_proc)
     return false unless security_pass(element, value)
 
-    run_optional_proc("pre_save_#{element}".to_sym, self, value)
-    store_value(element, value)
-    run_optional_proc("post_save_#{element}".to_sym, self, value)
+    run_optional_proc("pre_render_#{element}".to_sym, self, value)
     rendering(element, value, &user_proc)
     run_optional_proc("post_render_#{element}".to_sym, self, value)
+    store_value(element, value)
     self
   end
 

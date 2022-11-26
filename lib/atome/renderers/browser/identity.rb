@@ -3,8 +3,7 @@
 generator = Genesis.generator
 
 generator.build_render_method(:browser_id) do |params|
-  alert "setting the id here : #{params}"
-  # current_atome.html_object.id = new_id if current_atome.html_object
+  browser_object.id=params if @atome[:id] != params
 end
 
 generator.build_render_method(:browser_type) do |params|
@@ -17,7 +16,7 @@ generator.build_render_method(:browser_parents) do |parents_found|
   end
 end
 
-generator.build_option(:pre_save_children) do |children_pass|
+generator.build_option(:pre_render_children) do |children_pass|
   children_pass.each do |child_found|
     atome_found = grab(child_found)
     atome_found.parents([@atome[:id]])

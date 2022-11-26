@@ -16,7 +16,7 @@ end
 # for opal rendering
 class BrowserHelper
   def self.browser_document
-    # Work because of the patched versioo of opal-browser(0.39)
+    # Work because of the patched version of opal-browser(0.39)
     Browser.window
   end
 

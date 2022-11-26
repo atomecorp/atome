@@ -5,9 +5,18 @@ generator = Genesis.generator
 generator.build_particle(:type)
 generator.build_particle(:parents)
 generator.build_particle(:children)
-generator.build_particle(:id)
 
-generator.build_option(:pre_save_parents) do |parents_id_found|
+generator.build_particle(:id)
+generator.build_sanitizer(:id) do |params|
+  if @atome[:id] != params
+    Universe.update_atome_id(params, self, @atome[:id])
+  else
+    Universe.add_to_atomes(params, self)
+  end
+  params
+end
+
+generator.build_option(:pre_render_parents) do |parents_id_found|
   parents_id_found.each do |parents_id|
     parents_found = grab(parents_id)
     parents_found.children << id if parents_found

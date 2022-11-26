@@ -97,39 +97,3 @@ generator = Genesis.generator
 #
 # end
 
-#
-# #####################
-# # alert Universe.atomes.keys
-# # Atome.new(container: {id: :element14, type: :element ,data: :hello, renderers: []})
-# #
-# # element({ data: :hello_world })
-# b = box({ id: :my_box })
-# b.color(:orange)
-# b.left(333)
-# alert  "atomes : #{Universe.atomes.keys}"
-# b.id(:the_new_id)
-# alert b
-# alert "atomes : #{Universe.atomes.keys}"
-# wait 1 do
-#   b.color(:blue)
-# end
-#
-# # wait 2 do
-# #   grab(:the_new_id).color(:cyan)
-# # end
-# #####################
-#
-# a=Atome.new(
-#   shape: { renderers: [:browser], id: :the_shape2, type: :shape, parents: [:view],children: [],
-#            left: 99, right: 99, width: 99, height: 99,
-#            color: { renderers: [:browser], id: :c31, type: :color, parents: [:the_shape2],children: [],
-#                     red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
-# )
-# # c=a.color(:red)
-# # # alert c.id
-# b=box
-# alert b.renderers
-
-# puts "atomes are: #
-
-

@@ -20,33 +20,4 @@ class Atome
     end
     { parent: parent_found, renderers: render_found }
   end
-
-  generator = Genesis.generator
-
-  generator.build_sanitizer(:color) do |params|
-    parent_found = found_parents_and_renderers[:parent]
-    render_found = found_parents_and_renderers[:renderers]
-    default_params = { renderers: render_found, id: "color_#{Universe.atomes.length}", type: :color,
-                       parents: parent_found,
-                       red: 0, green: 0, blue: 0, alpha: 1 }
-    params = create_color_hash(params) unless params.instance_of? Hash
-    default_params.merge!(params)
-  end
-
-  generator.build_sanitizer(:element) do |params|
-    parent_found = found_parents_and_renderers[:parent]
-    render_found = []
-    default_params = { renderers: render_found, id: "element_#{Universe.atomes.length}", type: :element,
-                       parents: parent_found }
-    default_params.merge!(params)
-  end
-
-  generator.build_sanitizer(:id) do |params|
-    if @atome[:id] != params
-      Universe.update_atome_id(params, self, @atome[:id])
-    else
-      Universe.add_to_atomes(params, self)
-    end
-    params
-  end
 end
