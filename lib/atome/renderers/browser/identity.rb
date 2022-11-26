@@ -3,7 +3,7 @@
 generator = Genesis.generator
 
 generator.build_render_method(:browser_id) do |params|
-  browser_object.id=params if @atome[:id] != params
+  browser_object.id = params if @atome[:id] != params
 end
 
 generator.build_render_method(:browser_type) do |params|
