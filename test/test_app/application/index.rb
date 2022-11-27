@@ -222,13 +222,10 @@ my_video = Atome.new(
 end
 my_video.play(true)
 
-#
-# verif video
-grab(:video1).time(5)
-wait 4 do
-  grab(:video1).pause(5)
+
+my_video.touch(true) do
+  my_video.fullscreen
 end
-grab(:video1).on(:pause) do |event|
-  puts :stopped
-end
+
+
 

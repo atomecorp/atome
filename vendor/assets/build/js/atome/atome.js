@@ -62,7 +62,10 @@
 // atomeDrag.drag('atome_id', 'options');
 const Atomeanimation = {}
 
+
+
 // TODO: put in a class
+
 
 const atome = {
     jsSchedule: function (years, months, days, hours, minutes, seconds, atome, proc) {
@@ -77,6 +80,17 @@ const atome = {
         fetch('medias/' + file)
             .then(response => response.text())
             .then(text => atome.$read_callback(text, proc))
+    },
+    js_Fullscreen: function (atome_id){
+        let elem = document.getElementById(atome_id)
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitEnterFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+        }
+
     }
 
 }

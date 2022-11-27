@@ -30,3 +30,8 @@ generator.build_render_method(:on) do |value, proc|
     instance_exec(e, &proc) if proc.is_a?(Proc)
   end
 end
+
+generator.build_render_method(:fullscreen) do |value, proc|
+  atome_id=atome[:id]
+  `atome.js_Fullscreen(#{atome_id})`
+end
