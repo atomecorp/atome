@@ -16,3 +16,11 @@ generator.build_particle(:delete) do
 end
 generator.build_particle(:clear)
 generator.build_particle(:path)
+generator.build_particle(:schedule) do |date, proc|
+  date = date.to_s
+  delimiters = [',', ' ', ':', '-']
+  format_date = date.split(Regexp.union(delimiters))
+  Universe.renderer_list.each do |renderer|
+    send("#{renderer}_schedule",format_date,&proc)
+  end
+end

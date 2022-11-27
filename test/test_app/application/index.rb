@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 # # # frozen_string_literal: true
 
-# # # Done : when sanitizing property must respect the order else no browser object will be created, try to make it more flexible allowing any order
+# # # Done : when sanitizing property must respect the order else no browser
+# object will be created, try to make it more flexible allowing any order
 # # # TODO : add a global sanitizer
 # # # TODO : look why get_particle(:children) return an atome not the value
 # # # Done : create color JS for Opal?
@@ -8,7 +11,7 @@
 # # # TODO : Application is minimized all the time, we must try to condition it
 # # # TODO : A anew atome is created each time Genesis.generator is call, we better always use the same atome
 # # # TODO : Decide with Regis if we create a new css, an inline style on object or alter the css as describe above
-# # # DOME: when applying atome.atome ( box.color), color should be aded to the list of box's children
+# # # DOME: when applying atome.atome ( box.color), color should be added to the list of box's children
 # # # DONE : server crash, it try to use opal_browser_method
 
 # ########## Drag to implement
@@ -20,7 +23,6 @@
 # # generator.build_render_method(:html_drag) do |options, proc|
 # #   puts "options are #{options}"
 # #   @html_object[:draggable]=true
-# #   # @html_object.poil("toto")
 # #   @html_object.on :drag do |e|
 # #     instance_exec(&proc) if proc.is_a?(Proc)
 # #   end
@@ -29,7 +31,7 @@
 # box({width: 333, height: 333, id: :the_constraint_box, color: :orange})
 
 # # b = box do
-# #   alert  "kito"
+# #   alert  "hello"
 # # end
 # #
 # # # cc=box.bloc.value
@@ -54,7 +56,8 @@
 # # #   puts "2 - drag position: #{position}"
 # # #   puts "2 - id is: #{id}"
 # # # end
-# # # #TODO: when we add a color we must change the code : do we create a new color with it's id or do we replace the old one?
+# # # #TODO: when we add a color we must change the code : do we create a new color
+# # # #with it's id or do we replace the old one?
 # # #
 # # # bbb = box({ left: 120, top: 120 })
 # # # bbb.drag({}) do |position|
@@ -81,18 +84,84 @@
 #   my_text.color(:red)
 # end
 
-# frozen_string_literal: true
 # ############################
+# def self.read_ruby(file)
+#   # TODO write a ruby script that'll list and sort all files so they can be read
+#   `
+# fetch('medias/rubies/'+#{file})
+#   .then(response => response.text())
+#   .then(text => Opal.eval(text))
+# `
+# end
+#
+# def self.read_text(file)
+#   `
+# fetch('medias/rubies/'+#{file})
+#   .then(response => response.text())
+#   .then(text => console.log(text))
+# `
+# end
+#
+# def read(file, action=:text)
+#   Internal.send("read_#{action}", file)
+# end
+#
+#
+# puts "Attention this method only work with a server due to security restriction "
+# read('examples/image.rb')
+# read('examples/image.rb')
+# puts "----"
+############# schedule
+# generator = Genesis.generator
 
 
-Atome.new(
-  image: { renderers: [:browser], id: :image1, type: :image, parents: [:view], path: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg", left: 99, top: 320, width: 199, height: 199,
-  }
-)
+# generator.build_particle(:schedule) do |date, proc|
+#   date = date.to_s
+#   delimiters = [',', ' ', ':', '-']
+#   format_date = date.split(Regexp.union(delimiters))
+#   Universe.renderer_list.each do |renderer|
+#     send("#{renderer}_schedule",format_date,&proc)
+#   end
+# end
 
-Atome.new(
-  web: { renderers: [:browser], id: :youtube1, type: :web, parents: [:view], path: "https://www.youtube.com/embed/usQDazZKWAk", left: 33, top: 33, width: 199, height: 199,
-  }
-)
+# generator.build_render_method(:browser_schedule) do |format_date, proc|
+#   years = format_date[0]
+#   months = format_date[1]
+#   days = format_date[2]
+#   hours = format_date[3]
+#   minutes = format_date[4]
+#   seconds = format_date[5]
+#   `atome.jsSchedule(#{years},#{months},#{days},#{hours},#{minutes},#{seconds},#{self},#{proc})`
+# end
 
-web({path: 'https://www.youtube.com/embed/usQDazZKWAk'})
+
+# class Atome
+  # def schedule(date, &proc)
+  #   date = date.to_s
+  #   delimiters = [',', ' ', ':', '-']
+  #   format_date = date.split(Regexp.union(delimiters))
+  #   years = format_date[0]
+  #   months = format_date[1]
+  #   days = format_date[2]
+  #   hours = format_date[3]
+  #   minutes = format_date[4]
+  #   seconds = format_date[5]
+  #   `atome.jsSchedule(#{years},#{months},#{days},#{hours},#{minutes},#{seconds},#{self},#{proc})`
+  # end
+
+  # def schedule_callback(proc)
+  #   instance_exec(&proc) if proc.is_a?(Proc)
+  # end
+# end
+
+# date can be entered in  several ways , 2 digit it'll be the next time the seconds match ,
+# if 2 digits the minutes and seconds and so on, you can also enter Time.now+3 (not a,string) for schedule in 3 sec
+
+_alarm_format = '2022,11,27,12,06,0'
+time_to_run = Time.now + 2
+puts 'event schedule'
+a = element
+
+a.schedule(time_to_run) do
+  alert 'event executed'
+end

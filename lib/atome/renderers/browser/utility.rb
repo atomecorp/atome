@@ -24,3 +24,12 @@ generator.build_render_method(:browser_data) do |data|
   send("browser_data_#{type_found}", data)
 end
 
+generator.build_render_method(:browser_schedule) do |format_date, proc|
+  years = format_date[0]
+  months = format_date[1]
+  days = format_date[2]
+  hours = format_date[3]
+  minutes = format_date[4]
+  seconds = format_date[5]
+  `atome.jsSchedule(#{years},#{months},#{days},#{hours},#{minutes},#{seconds},#{self},#{proc})`
+end

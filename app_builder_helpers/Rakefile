@@ -107,6 +107,7 @@ def build_user_code(user_project_path, source_code)
   File.open(application_js, 'w') do |f|
     f.puts application_content
   end
+  # minimize_application(user_project_path)
 end
 
 def minimize_aui(user_project_path)
@@ -215,7 +216,6 @@ task :build_user_code, :user_project_path, :production do |_t, args|
   user_project_path = args[:user_project_path]
   source_code = "#{user_project_path}/application/index.rb"
   build_user_code(user_project_path, source_code)
-  minimize_application(user_project_path)
 end
 
 task :system_builder, :user_project_path, :production do |_t, args|
