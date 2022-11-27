@@ -20,6 +20,7 @@ generator.build_atome(:video)
 generator.build_atome(:code)
 generator.build_atome(:audio)
 generator.build_atome(:element)
+generator.build_atome(:web)
 generator.build_sanitizer(:element) do |params|
   parent_found = found_parents_and_renderers[:parent]
   render_found = []

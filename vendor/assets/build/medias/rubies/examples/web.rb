@@ -5,8 +5,9 @@ Atome.new(
   }
 )
 
-
 Atome.new(
   web: { renderers: [:browser], id: :youtube1, type: :web, parents: [:view], path: "https://www.youtube.com/embed/usQDazZKWAk", left: 33, top: 33, width: 199, height: 199,
   }
 )
+
+web({path: 'https://www.youtube.com/embed/usQDazZKWAk'})

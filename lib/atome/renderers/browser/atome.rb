@@ -94,3 +94,16 @@ generator.build_render_method(:browser_text) do |_value, _user_proc|
   # Render particles below
   # collapse
 end
+
+generator.build_render_method(:browser_web) do
+  @browser_type = :web
+  id_found = @atome[:id]
+
+  DOM do
+    iframe({ id: id_found }).atome
+  end.append_to(BrowserHelper.browser_document[:user_view])
+  @browser_object = BrowserHelper.browser_document[id_found]
+  @browser_object.attributes[:allow] = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
+  @browser_object.attributes[:allowfullscreen] = true
+  @html_type = :web
+end

@@ -24,6 +24,10 @@ class BrowserHelper
     html_object.append_to(browser_document[parents])
   end
 
+  def self.browser_attach_web(parents, html_object, _atome)
+    html_object.append_to(browser_document[parents])
+  end
+
   def self.browser_attach_style(parents, _html_object, atome)
     browser_document[parents].add_class(atome[:id])
   end
@@ -76,6 +80,7 @@ def browser_bottom_shape(value, browser_object, _atome)
   browser_object.style[:bottom] = "#{value}px"
 end
 
+# image
 def browser_left_image(value, browser_object, _atome)
   browser_object.style[:left] = "#{value}px"
 end
@@ -92,6 +97,11 @@ def browser_bottom_image(value, browser_object, _atome)
   browser_object.style[:bottom] = "#{value}px"
 end
 
+def browser_path_image(value, browser_object, _atome)
+  browser_object[:src] = value
+end
+
+# shadow
 def browser_left_shadow(value, _browser_object, atome)
   ls_left = "#{atome[:left] = value}px"
   ls_top = "#{atome[:top]}px"
@@ -155,4 +165,25 @@ end
 
 def browser_data_text(value)
   browser_object.text = value
+end
+
+# web
+def browser_left_web(value, browser_object, _atome)
+  browser_object.style[:left] = "#{value}px"
+end
+
+def browser_right_web(value, browser_object, _atome)
+  browser_object.style[:right] = "#{value}px"
+end
+
+def browser_top_web(value, browser_object, _atome)
+  browser_object.style[:top] = "#{value}px"
+end
+
+def browser_bottom_web(value, browser_object, _atome)
+  browser_object.style[:bottom] = "#{value}px"
+end
+
+def browser_path_web(value, browser_object, _atome)
+  browser_object[:src] = value
 end

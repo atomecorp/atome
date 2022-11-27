@@ -82,40 +82,17 @@
 # end
 
 # frozen_string_literal: true
-
-# generator = Genesis.generator
-
-# generator.build_optional_methods(:post_save_id) do |params|
-#   new_id = params[:value]
-#   instance_variable_set('@id', new_id)
-#   # alert id
-#   # current_atome = params[:atome]
-#   old_id = id.value
-#   # we change id id the atomes hash
-#   # Universe.change_atome_id(old_id, new_id)
-#   # current_atome.html_object.id = new_id if current_atome.html_object
-#
-# end
-
 # ############################
 
 
-text = Atome.new(
-  text: { renderers: [:browser], id: :my_text, type: :text, parents: [:view], children: [], visual: { size: 18 },
-          data: 'My first text!', left: 300, top: 33, width: 199, height: 33,
-          color: { renderers: [:browser], id: :c31, type: :color, parents: [:my_text], children: [],
-                   red: 0.6, green: 0.6, blue: 0.6, alpha: 1 }
+Atome.new(
+  image: { renderers: [:browser], id: :image1, type: :image, parents: [:view], path: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg", left: 99, top: 320, width: 199, height: 199,
   }
 )
 
-Atome.new({ color: { renderers: [:browser], id: :new_col, type: :color, parents: [], children: [],
-                             left: 33, top: 66, red: 0, green: 0.15, blue: 0.7, alpha: 0.6 } })
+Atome.new(
+  web: { renderers: [:browser], id: :youtube1, type: :web, parents: [:view], path: "https://www.youtube.com/embed/usQDazZKWAk", left: 33, top: 33, width: 199, height: 199,
+  }
+)
 
-# now we change the color all the object that share the care modified
-wait 1 do
-  text.link(:new_col)
-end
-wait 2 do
-  grab(:new_col).red(1)
-end
-
+web({path: 'https://www.youtube.com/embed/usQDazZKWAk'})

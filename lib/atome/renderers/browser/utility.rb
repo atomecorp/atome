@@ -15,7 +15,7 @@ generator.build_render_method(:browser_clear) do
 end
 
 generator.build_render_method(:browser_path) do |value|
-  @browser_object[:src] = value
+  BrowserHelper.send("browser_path_#{@atome[:type]}", value, @browser_object, @atome)
 end
 
 generator.build_render_method(:browser_data) do |data|
@@ -23,3 +23,4 @@ generator.build_render_method(:browser_data) do |data|
   type_found = @atome[:type]
   send("browser_data_#{type_found}", data)
 end
+
