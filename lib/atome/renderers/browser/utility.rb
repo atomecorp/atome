@@ -33,3 +33,7 @@ generator.build_render_method(:browser_schedule) do |format_date, proc|
   seconds = format_date[5]
   `atome.jsSchedule(#{years},#{months},#{days},#{hours},#{minutes},#{seconds},#{self},#{proc})`
 end
+
+generator.build_render_method(:browser_reader) do |file, proc|
+  `atome.jsReader(#{file},#{self},#{proc})`
+end

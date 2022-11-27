@@ -145,7 +145,7 @@ def test_native(build_target)
   when :windows
     # windows
   else
-    puts :freebsd
+    # freebsd
   end
 end
 

@@ -21,6 +21,11 @@ generator.build_particle(:schedule) do |date, proc|
   delimiters = [',', ' ', ':', '-']
   format_date = date.split(Regexp.union(delimiters))
   Universe.renderer_list.each do |renderer|
-    send("#{renderer}_schedule",format_date,&proc)
+    send("#{renderer}_schedule", format_date, &proc)
+  end
+end
+generator.build_particle(:read) do |file, proc|
+  Universe.renderer_list.each do |renderer|
+    send("#{renderer}_reader", file, &proc)
   end
 end

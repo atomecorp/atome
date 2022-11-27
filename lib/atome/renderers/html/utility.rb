@@ -13,3 +13,5 @@ generator.build_render_method(:html_clear) do
   end
   children([])
 end
+generator.build_render_method(:html_schedule)
+generator.build_render_method(:html_reader)

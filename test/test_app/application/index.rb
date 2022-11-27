@@ -84,7 +84,7 @@
 #   my_text.color(:red)
 # end
 
-# ############################
+############################
 # def self.read_ruby(file)
 #   # TODO write a ruby script that'll list and sort all files so they can be read
 #   `
@@ -101,67 +101,66 @@
 #   .then(text => console.log(text))
 # `
 # end
-#
+
 # def read(file, action=:text)
 #   Internal.send("read_#{action}", file)
 # end
-#
-#
-# puts "Attention this method only work with a server due to security restriction "
-# read('examples/image.rb')
-# read('examples/image.rb')
-# puts "----"
-############# schedule
+
 # generator = Genesis.generator
 
-
-# generator.build_particle(:schedule) do |date, proc|
-#   date = date.to_s
-#   delimiters = [',', ' ', ':', '-']
-#   format_date = date.split(Regexp.union(delimiters))
+# generator.build_particle(:read) do |file, proc|
 #   Universe.renderer_list.each do |renderer|
-#     send("#{renderer}_schedule",format_date,&proc)
+#     send("#{renderer}_reader", file, &proc)
 #   end
 # end
 
-# generator.build_render_method(:browser_schedule) do |format_date, proc|
-#   years = format_date[0]
-#   months = format_date[1]
-#   days = format_date[2]
-#   hours = format_date[3]
-#   minutes = format_date[4]
-#   seconds = format_date[5]
-#   `atome.jsSchedule(#{years},#{months},#{days},#{hours},#{minutes},#{seconds},#{self},#{proc})`
+# generator.build_render_method(:html_reader)
+# generator.build_render_method(:headless_reader)
+# generator.build_render_method(:server_reader)
+#
+# # generator.build_render_method(:browser_reader) do |file, proc|
+# #   `atome.jsReader(#{file},#{self},#{proc})`
+# # end
+#
+# puts 'Attention this method only work with a server due to security restriction '
+# generator.build_render_method(:browser_reader) do |file, proc|
+#
+#   # alert AtomicJS
+#   # alert JS
+#   # JS.atome.jsReader(file, self, proc)
+#   AtomicJS=`atome`
+#
+#   AtomicJS.jsReader(file, self, proc)
+#   # `atome.jsReader(#{file},#{self},#{proc})`
 # end
+#
 
-
-# class Atome
-  # def schedule(date, &proc)
-  #   date = date.to_s
-  #   delimiters = [',', ' ', ':', '-']
-  #   format_date = date.split(Regexp.union(delimiters))
-  #   years = format_date[0]
-  #   months = format_date[1]
-  #   days = format_date[2]
-  #   hours = format_date[3]
-  #   minutes = format_date[4]
-  #   seconds = format_date[5]
-  #   `atome.jsSchedule(#{years},#{months},#{days},#{hours},#{minutes},#{seconds},#{self},#{proc})`
-  # end
-
-  # def schedule_callback(proc)
-  #   instance_exec(&proc) if proc.is_a?(Proc)
-  # end
-# end
-
-# date can be entered in  several ways , 2 digit it'll be the next time the seconds match ,
-# if 2 digits the minutes and seconds and so on, you can also enter Time.now+3 (not a,string) for schedule in 3 sec
-
-_alarm_format = '2022,11,27,12,06,0'
-time_to_run = Time.now + 2
-puts 'event schedule'
 a = element
-
-a.schedule(time_to_run) do
-  alert 'event executed'
+a.read('rubies/examples/image.rb') do |params|
+  alert(params)
 end
+
+# TODO : Check server mode there's a problem with color
+# read('examples/image.rb')
+# read('examples/image.rb')
+# puts '----'
+#
+# def fetch(path)
+#   # alert path
+#   promise = Promise.new
+#   fetcher=`fetch(#{path})`
+#   fetcher do |  |
+#
+# end
+#   alert :kkooo
+#   # 	if response.ok?
+#   # 	  promise.resolve response.json
+#   # 	else
+#   # 	  promise.reject response
+#   # 	end
+# # end
+#
+# #
+# #   promise
+# end
+#
