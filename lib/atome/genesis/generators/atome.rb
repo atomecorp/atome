@@ -12,6 +12,14 @@ generator.build_sanitizer(:color) do |params|
   params = create_color_hash(params) unless params.instance_of? Hash
   default_params.merge!(params)
 end
+
+generator.build_sanitizer(:video) do |params|
+  parent_found = found_parents_and_renderers[:parent]
+  render_found = found_parents_and_renderers[:renderers]
+  default_params = { renderers: render_found, id: "video_#{Universe.atomes.length}", type: :video,
+                     parents: parent_found }
+  default_params.merge!(params)
+end
 generator.build_atome(:shadow)
 generator.build_atome(:shape)
 generator.build_atome(:text)

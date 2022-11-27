@@ -66,7 +66,7 @@ end
 
 generator.build_render_method(:browser_image) do |_user_prc|
   @browser_type = :div
-  id_found = id
+  id_found = @atome[:id]
   DOM do
     img({ id: id_found }).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
@@ -75,17 +75,8 @@ generator.build_render_method(:browser_image) do |_user_prc|
   # collapse
 end
 
-generator.build_render_method(:browser_video) do |_value, _user_proc|
-  # @browser_type = :div
-  # id_found = id
-  # DOM do
-  #   video({ id: id_found, autoplay: true, loop: false, muted: true }).atome
-  # end.append_to(BrowserHelper.browser_document[:user_view])
-  # @browser_object = BrowserHelper.browser_document[id_found]
-end
-
 generator.build_render_method(:browser_text) do |_value, _user_proc|
-  id_found = id
+  id_found = @atome[:id]
   DOM do
     div(id: id_found).atome.text
   end.append_to(BrowserHelper.browser_document[:user_view])
@@ -98,7 +89,6 @@ end
 generator.build_render_method(:browser_web) do
   @browser_type = :web
   id_found = @atome[:id]
-
   DOM do
     iframe({ id: id_found }).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
@@ -106,4 +96,13 @@ generator.build_render_method(:browser_web) do
   @browser_object.attributes[:allow] = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
   @browser_object.attributes[:allowfullscreen] = true
   @html_type = :web
+end
+
+generator.build_render_method(:browser_video) do |_value, _user_proc|
+  @browser_type = :div
+  id_found = @atome[:id]
+  DOM do
+    video({ id: id_found, autoplay: false, loop: false, muted: true }).atome
+  end.append_to(BrowserHelper.browser_document[:user_view])
+  @browser_object = BrowserHelper.browser_document[id_found]
 end

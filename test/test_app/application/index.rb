@@ -4,6 +4,7 @@
 
 # # # Done : when sanitizing property must respect the order else no browser
 # object will be created, try to make it more flexible allowing any order
+# # # TODO int8! : language
 # # # TODO : add a global sanitizer
 # # # TODO : look why get_particle(:children) return an atome not the value
 # # # Done : create color JS for Opal?
@@ -84,83 +85,150 @@
 #   my_text.color(:red)
 # end
 
-############################
-# def self.read_ruby(file)
-#   # TODO write a ruby script that'll list and sort all files so they can be read
-#   `
-# fetch('medias/rubies/'+#{file})
-#   .then(response => response.text())
-#   .then(text => Opal.eval(text))
-# `
-# end
-#
-# def self.read_text(file)
-#   `
-# fetch('medias/rubies/'+#{file})
-#   .then(response => response.text())
-#   .then(text => console.log(text))
-# `
+# TODO : Check server mode there's a problem with color
+# TODO : the function "jsReader" in atome.js cause an error in uglifier when using production mode
+
+generator = Genesis.generator
+
+######### Video
+# generator.build_render_method(:browser_video) do |_value, _user_proc|
+#   @browser_type = :div
+#   id_found = @atome[:id]
+#   DOM do
+#     video({ id: id_found, autoplay: false, loop: false, muted: true }).atome
+#   end.append_to(BrowserHelper.browser_document[:user_view])
+#   @browser_object = BrowserHelper.browser_document[id_found]
 # end
 
-# def read(file, action=:text)
-#   Internal.send("read_#{action}", file)
+######### PLay
+# generator.build_particle(:play)
+
+# generator.build_render_method(:browser_play) do |value, proc|
+#   BrowserHelper.send("browser_play_#{@atome[:type]}", value, @browser_object, @atome, self, proc)
 # end
 
-# generator = Genesis.generator
-
-# generator.build_particle(:read) do |file, proc|
-#   Universe.renderer_list.each do |renderer|
-#     send("#{renderer}_reader", file, &proc)
+# def browser_play_video(value, browser_object_found, atome_found, atome_object, proc)
+#   browser_object_found.play
+#   # # TODO : change timeupdate for when possible requestVideoFrameCallback (opal-browser/opal/browser/event.rb line 36)
+#   video_callback = atome_found[:code] # this is the video callback not the play callback
+#   play_callback = proc # this is the video callback not the play callback
+#   browser_object_found.on(:timeupdate) do |e|
+#     e.prevent # Prevent the default action (eg. form submission)
+#     # You can also use `e.stop` to stop propagating the event to other handlers.
+#     current_time = browser_object_found.currentTime
+#     atome_object.instance_exec(current_time, &video_callback) if video_callback.is_a?(Proc)
+#     atome_object.instance_exec(current_time, &play_callback) if play_callback.is_a?(Proc)
 #   end
 # end
 
-# generator.build_render_method(:html_reader)
-# generator.build_render_method(:headless_reader)
-# generator.build_render_method(:server_reader)
+# time
+# generator.build_particle(:time)
+
+# generator.build_render_method(:browser_time) do |value=nil, proc|
+#   if value
+#     @browser_object.currentTime = value
+#   else
+#     @browser_object.currentTime
+#   end
+# end
+
+# pause
+# generator.build_particle(:pause)
+
+# generator.build_render_method(:browser_pause) do |value, proc|
+#   instance_exec(@browser_object.currentTime, &proc) if proc.is_a?(Proc)
+#   @browser_object.pause
+# end
+
+#on 
+
+# generator.build_particle(:on)
+
+# generator.build_render_method(:on) do |value, proc|
+#   @browser_object.on(value) do |e|
+#     instance_exec(e, &proc) if proc.is_a?(Proc)
+#   end
+# end
+
+# frozen_string_literal: true
+###############@
+# my_video = Atome.new(
+#   video: { renderers: [:browser], id: :video1, type: :video, parents: [:view], path: './medias/videos/superman.mp4',
+#            left: 333, top: 112, width: 199, height: 99
+#   }
+# ) do |params|
+#   # puts "video callback time is  #{params}, id is : #{id}"
+#   puts "video callback time is  #{params}, id is : #{id}"
+# end
+# wait 2 do
+#   my_video.left(33)
+#   my_video.width(444)
+#   my_video.height(444)
 #
-# # generator.build_render_method(:browser_reader) do |file, proc|
-# #   `atome.jsReader(#{file},#{self},#{proc})`
-# # end
-#
-# puts 'Attention this method only work with a server due to security restriction '
-# generator.build_render_method(:browser_reader) do |file, proc|
-#
-#   # alert AtomicJS
-#   # alert JS
-#   # JS.atome.jsReader(file, self, proc)
-#   AtomicJS=`atome`
-#
-#   AtomicJS.jsReader(file, self, proc)
-#   # `atome.jsReader(#{file},#{self},#{proc})`
 # end
 #
+# my_video.touch(true) do
+#   my_video.play(true) do |currentTime|
+#     puts "play callback time is : #{currentTime}"
+#   end
+# end
+# #############
+# my_video2 = Atome.new(
+#   video: { renderers: [:browser], id: :video9, type: :video,  parents: [:view], path: './medias/videos/madmax.mp4',
+#            left: 666, top: 333, width: 199, height: 99,
+#   }) do |params|
+#   puts "2- video callback time is  #{params}, id is : #{id}"
+# end
+# my_video2.top(33)
+# my_video2.left(333)
+#
+# my_video2.touch(true) do
+#   my_video2.play(true) do |currentTime|
+#     puts "2 - play callback time is : #{currentTime}, id is : #{id}"
+#   end
+# end
+#
+# #############
+# my_video3 = video({ path: './medias/videos/avengers.mp4', id: :video16 }) do |params|
+#   puts "3 - video callback here #{params}, id is : #{id}"
+# end
+# my_video3.width=my_video3.height=333
+#   my_video3.left(555)
+# grab(:video16).on(:pause) do |event|
+#   puts ":supercool, id is : #{id}"
+# end
+# my_video3.touch(true) do
+#   grab(:video16).time(15)
+#   my_video3.play(true) do |currentTime|
+#     puts "3- play callback time is : #{currentTime}, id is : #{id}"
+#   end
+#   wait 3 do
+#     puts "time is :#{my_video3.time}"
+#   end
+#   wait 6 do
+#     grab(:video16).pause(true) do |time|
+#       puts "paused at #{time} id is : #{id}"
+#     end
+#   end
+# end
 
-a = element
-a.read('rubies/examples/image.rb') do |params|
-  alert(params)
+##############@ on
+my_video = Atome.new(
+  video: { renderers: [:browser],  id: :video1, type: :video, parents: [:view],
+           path: './medias/videos/avengers.mp4', left: 333, top: 33, width: 777
+  }
+) do |params|
+  puts "video callback here #{params}"
+end
+my_video.play(true)
+
+#
+# verif video
+grab(:video1).time(5)
+wait 4 do
+  grab(:video1).pause(5)
+end
+grab(:video1).on(:pause) do |event|
+  puts :stopped
 end
 
-# TODO : Check server mode there's a problem with color
-# read('examples/image.rb')
-# read('examples/image.rb')
-# puts '----'
-#
-# def fetch(path)
-#   # alert path
-#   promise = Promise.new
-#   fetcher=`fetch(#{path})`
-#   fetcher do |  |
-#
-# end
-#   alert :kkooo
-#   # 	if response.ok?
-#   # 	  promise.resolve response.json
-#   # 	else
-#   # 	  promise.reject response
-#   # 	end
-# # end
-#
-# #
-# #   promise
-# end
-#
