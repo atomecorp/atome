@@ -102,7 +102,7 @@ generator.build_render_method(:browser_video) do |_value, _user_proc|
   @browser_type = :div
   id_found = @atome[:id]
   DOM do
-    video({ id: id_found, autoplay: false, loop: false, muted: true }).atome
+    video({ id: id_found, autoplay: false, loop: false, muted: false }).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
 end

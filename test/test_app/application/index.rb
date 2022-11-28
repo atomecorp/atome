@@ -88,143 +88,27 @@
 # TODO : Check server mode there's a problem with color
 # TODO : the function "jsReader" in atome.js cause an error in uglifier when using production mode
 
-generator = Genesis.generator
-
-######### Video
-# generator.build_render_method(:browser_video) do |_value, _user_proc|
-#   @browser_type = :div
-#   id_found = @atome[:id]
-#   DOM do
-#     video({ id: id_found, autoplay: false, loop: false, muted: true }).atome
-#   end.append_to(BrowserHelper.browser_document[:user_view])
-#   @browser_object = BrowserHelper.browser_document[id_found]
-# end
-
-######### PLay
-# generator.build_particle(:play)
-
-# generator.build_render_method(:browser_play) do |value, proc|
-#   BrowserHelper.send("browser_play_#{@atome[:type]}", value, @browser_object, @atome, self, proc)
-# end
-
-# def browser_play_video(value, browser_object_found, atome_found, atome_object, proc)
-#   browser_object_found.play
-#   # # TODO : change timeupdate for when possible requestVideoFrameCallback (opal-browser/opal/browser/event.rb line 36)
-#   video_callback = atome_found[:code] # this is the video callback not the play callback
-#   play_callback = proc # this is the video callback not the play callback
-#   browser_object_found.on(:timeupdate) do |e|
-#     e.prevent # Prevent the default action (eg. form submission)
-#     # You can also use `e.stop` to stop propagating the event to other handlers.
-#     current_time = browser_object_found.currentTime
-#     atome_object.instance_exec(current_time, &video_callback) if video_callback.is_a?(Proc)
-#     atome_object.instance_exec(current_time, &play_callback) if play_callback.is_a?(Proc)
-#   end
-# end
-
-# time
-# generator.build_particle(:time)
-
-# generator.build_render_method(:browser_time) do |value=nil, proc|
-#   if value
-#     @browser_object.currentTime = value
-#   else
-#     @browser_object.currentTime
-#   end
-# end
-
-# pause
-# generator.build_particle(:pause)
-
-# generator.build_render_method(:browser_pause) do |value, proc|
-#   instance_exec(@browser_object.currentTime, &proc) if proc.is_a?(Proc)
-#   @browser_object.pause
-# end
-
-#on 
-
-# generator.build_particle(:on)
-
-# generator.build_render_method(:on) do |value, proc|
-#   @browser_object.on(value) do |e|
-#     instance_exec(e, &proc) if proc.is_a?(Proc)
-#   end
-# end
-
 # frozen_string_literal: true
-###############@
-# my_video = Atome.new(
-#   video: { renderers: [:browser], id: :video1, type: :video, parents: [:view], path: './medias/videos/superman.mp4',
-#            left: 333, top: 112, width: 199, height: 99
-#   }
-# ) do |params|
-#   # puts "video callback time is  #{params}, id is : #{id}"
-#   puts "video callback time is  #{params}, id is : #{id}"
-# end
-# wait 2 do
-#   my_video.left(33)
-#   my_video.width(444)
-#   my_video.height(444)
-#
-# end
-#
-# my_video.touch(true) do
-#   my_video.play(true) do |currentTime|
-#     puts "play callback time is : #{currentTime}"
-#   end
-# end
-# #############
-# my_video2 = Atome.new(
-#   video: { renderers: [:browser], id: :video9, type: :video,  parents: [:view], path: './medias/videos/madmax.mp4',
-#            left: 666, top: 333, width: 199, height: 99,
-#   }) do |params|
-#   puts "2- video callback time is  #{params}, id is : #{id}"
-# end
-# my_video2.top(33)
-# my_video2.left(333)
-#
-# my_video2.touch(true) do
-#   my_video2.play(true) do |currentTime|
-#     puts "2 - play callback time is : #{currentTime}, id is : #{id}"
-#   end
-# end
-#
-# #############
-# my_video3 = video({ path: './medias/videos/avengers.mp4', id: :video16 }) do |params|
-#   puts "3 - video callback here #{params}, id is : #{id}"
-# end
-# my_video3.width=my_video3.height=333
-#   my_video3.left(555)
-# grab(:video16).on(:pause) do |event|
-#   puts ":supercool, id is : #{id}"
-# end
-# my_video3.touch(true) do
-#   grab(:video16).time(15)
-#   my_video3.play(true) do |currentTime|
-#     puts "3- play callback time is : #{currentTime}, id is : #{id}"
-#   end
-#   wait 3 do
-#     puts "time is :#{my_video3.time}"
-#   end
-#   wait 6 do
-#     grab(:video16).pause(true) do |time|
-#       puts "paused at #{time} id is : #{id}"
-#     end
-#   end
-# end
 
-##############@ on
-my_video = Atome.new(
-  video: { renderers: [:browser],  id: :video1, type: :video, parents: [:view],
-           path: './medias/videos/avengers.mp4', left: 333, top: 33, width: 777
-  }
-) do |params|
-  puts "video callback here #{params}"
+my_video2 = Atome.new(
+  video: { renderers: [:browser], id: :video9, type: :video, parents: [:view], path: './medias/videos/madmax.mp4',
+           left: 666, top: 333, width: 199, height: 99,
+  }) do |params|
+  puts "2- video callback time is  #{params}, id is : #{id}"
 end
-my_video.play(true)
+my_video2.top(33)
+my_video2.left(333)
 
-
-my_video.touch(true) do
-  my_video.fullscreen
+my_video2.touch(true) do
+  my_video2.play(true) do |currentTime|
+    puts "2 - play callback time is : #{currentTime}, id is : #{id}"
+  end
+  wait 2 do
+    my_video2.mute(true)
+    wait 3 do
+      my_video2.mute
+    end
+  end
 end
 
 

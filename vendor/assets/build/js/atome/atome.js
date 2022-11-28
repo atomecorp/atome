@@ -60,7 +60,7 @@
 // Usage:
 // let atomeDrag = new AtomeDrag();
 // atomeDrag.drag('atome_id', 'options');
-const Atomeanimation = {}
+// const Atomeanimation = {}
 
 
 

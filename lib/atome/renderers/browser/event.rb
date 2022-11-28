@@ -35,3 +35,11 @@ generator.build_render_method(:fullscreen) do |value, proc|
   atome_id=atome[:id]
   `atome.js_Fullscreen(#{atome_id})`
 end
+
+generator.build_render_method(:mute) do |value, proc|
+  if value
+    browser_object.muted
+  else
+    browser_object.unmuted
+  end
+end
