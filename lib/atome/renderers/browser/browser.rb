@@ -208,16 +208,20 @@ module BrowserHelper
     browser_object[:src] = value
   end
 
-  def self.browser_play_video(_value, browser_object_found, atome_found, atome_object, proc)
+  def self.browser_play_video(_value, browser_object_found, atome_hash, atome_object, proc)
     browser_object_found.play
     # TODO : change timeupdate for when possible requestVideoFrameCallback
     # (opal-browser/opal/browser/event.rb line 36)
-    video_callback = atome_found[:code] # this is the video callback not the play callback
+    video_callback = atome_hash[:code] # this is the video callback not the play callback
     play_callback = proc # this is the video callback not the play callback
     browser_object_found.on(:timeupdate) do |e|
+      current_time = browser_object_found.currentTime
+      # we update the time particle
+      # atome_object.atome[:time]=current_time
+      atome_object.time_callback(current_time)
       e.prevent # Prevent the default action (eg. form submission)
       # You can also use `e.stop` to stop propagating the event to other handlers.
-      current_time = browser_object_found.currentTime
+
       atome_object.instance_exec(current_time, &video_callback) if video_callback.is_a?(Proc)
       atome_object.instance_exec(current_time, &play_callback) if play_callback.is_a?(Proc)
     end

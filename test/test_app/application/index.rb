@@ -14,29 +14,114 @@
 # # # TODO : Decide with Regis if we create a new css, an inline style on object or alter the css as describe above
 # # # DOME: when applying atome.atome ( box.color), color should be added to the list of box's children
 # # # DONE : server crash, it try to use opal_browser_method
+# TODO : Check server mode there's a problem with color
+# TODO : the function "jsReader" in atome.js cause an error in uglifier when using production mode
 
 # ########## Drag to implement
-# generator = Genesis.generator
-# #
-# # generator.build_particle(:drag)
-# # generator.build_particle(:remove)
-# #
-# # generator.build_render_method(:html_drag) do |options, proc|
-# #   puts "options are #{options}"
-# #   @html_object[:draggable]=true
-# #   @html_object.on :drag do |e|
-# #     instance_exec(&proc) if proc.is_a?(Proc)
-# #   end
-# # end
-# #
-# box({width: 333, height: 333, id: :the_constraint_box, color: :orange})
 
-# # b = box do
-# #   alert  "hello"
-# # end
+# class Atome
+#   def browser_drag_helper(options, parent = nil)
+#     drag_id =@atome[:id]
+#     atome_found=self
+#     options[:max] = options[:max].to_n
+# #     `current_obj = Opal.Utilities.$grab(#{drag_id})`
 # #
-# # # cc=box.bloc.value
-# # # alert cc
+# #     `interact('.'+#{drag_id})
+# #             .draggable({
+# #                 // enable inertial throwing
+# #                // startAxis: 'y',
+# #                // lockAxis: 'x',
+# #                lockAxis: #{options[:lock]},
+# #                 inertia: true,
+# #                 // keep the element within the area of it's parent
+# #                 modifiers: [
+# #                     interact.modifiers.restrictRect({
+# #                         //restriction: 'parent',
+# #                         //restriction: { left: 333 ,right: 90, top: 333, bottom: 30},
+# #                         restriction: #{options[:max]},
+# #
+# # //elementRect: { left: , right: 0, top: 1, bottom: 1 }
+# #                         // endOnly: true,
+# #                     }),
+# #
+# #                 ],
+# #                 // enable autoScroll
+# #                 autoScroll: true,
+# #
+# #                 listeners: {
+# #                     // call this function on every dragmove event
+# #
+# #                     // move: dragMoveListener,
+# #                     move: dragMoveListener,
+# #                     // move(event){
+# #                     //     console.log('current atome is: '+self.current_obj)
+# #                     // },
+# #                     start(event) {
+# #                     bloc=#{code}
+# # //TODO:  optimise this passing the proc to the drag callback
+# #                         // lets get the current atome Object
+# #                         // self.current_obj = Opal.Utilities.$grab(atome_drag_id)
+# #                         // now get the grab proc
+# #                         //self.proc_meth = current_obj.bloc
+# #                     },
+# #                     // call this function on every dragend event
+# #                     end(event) {
+# #
+# #                     }
+# #                 }
+# #             })
+# # `
+# #
+# #     if options[:fixed]
+# #       `
+# #  function allow_drag(target,x,y){
+# #
+# #   }
+# #   `
+# #     else
+# #       `
+# #  function allow_drag(target,x,y){
+# #        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+# #     // update the position attributes
+# #     target.setAttribute('data-x', x)
+# #     target.setAttribute('data-y', y)
+# #   }
+# #   `
+# #     end
+# #
+# #     `
+# # function dragMoveListener(event) {
+# #     const target = event.target
+# #     // the code below can be conditioned to receive the drag event without moving the object
+# #     // keep the dragged position in the data-x/data-y attributes
+# #     const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+# #     const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+# #     // translate the element
+# #       allow_drag(target,x,y)
+# #     // CallBack here
+# #     var object_dragged_id=Opal.Utilities.$grab(target.id)
+# #     #{atome_found}.$dragCallback(event.pageX, event.pageY, event.rect.left, event.rect.top, #{atome_found},object_dragged_id, bloc);
+# # }
+# # `
+#   end
+#
+# end
+#
+# generator = Genesis.generator
+#
+# generator.build_particle(:drag)
+# # generator.build_particle(:remove)
+#
+# generator.build_render_method(:browser_drag) do |options, proc|
+#   # puts "options are #{options}"
+#   @browser_object[:draggable]=true
+#   @browser_object.on :drag do |e|
+#     instance_exec(&proc) if proc.is_a?(Proc)
+#   end
+# end
+# b= box({width: 333, height: 333, id: :the_constraint_box, color: :orange, drag: true})
+#
+
 # # b.drag({ remove: true }) do |position|
 # #   # below here is the callback :
 # #   puts "1 - callback drag position: #{position}"
@@ -85,31 +170,26 @@
 #   my_text.color(:red)
 # end
 
-# TODO : Check server mode there's a problem with color
-# TODO : the function "jsReader" in atome.js cause an error in uglifier when using production mode
+####### at
 
 # frozen_string_literal: true
 
-my_video2 = Atome.new(
-  video: { renderers: [:browser], id: :video9, type: :video, parents: [:view], path: './medias/videos/madmax.mp4',
-           left: 666, top: 333, width: 199, height: 99,
-  }) do |params|
-  puts "2- video callback time is  #{params}, id is : #{id}"
+my_video = Atome.new(
+  video: { renderers: [:browser], id: :video1, type: :video, parents: [:view],
+           path: './medias/videos/avengers.mp4', left: 333, top: 33, width: 777
+  }
+) do |params|
+  puts "video callback here #{params}"
 end
-my_video2.top(33)
-my_video2.left(333)
 
-my_video2.touch(true) do
-  my_video2.play(true) do |currentTime|
-    puts "2 - play callback time is : #{currentTime}, id is : #{id}"
-  end
-  wait 2 do
-    my_video2.mute(true)
-    wait 3 do
-      my_video2.mute
-    end
-  end
+my_video.touch(true) do
+  my_video.play(1)
 end
+
+my_video.at({ time: 2.6 }) do |value|
+  my_video.pause(true)
+end
+
 
 
 
