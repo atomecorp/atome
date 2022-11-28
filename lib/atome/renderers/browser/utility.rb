@@ -21,7 +21,7 @@ end
 generator.build_render_method(:browser_data) do |data|
   # according to the type we send the data to different operator
   type_found = @atome[:type]
-  send("browser_data_#{type_found}", data)
+  BrowserHelper.send("browser_data_#{type_found}", data, self)
 end
 
 generator.build_render_method(:browser_schedule) do |format_date, proc|
