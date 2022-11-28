@@ -36,5 +36,4 @@ end
 
 generator.build_render_method(:browser_reader) do |file, proc|
   AtomeJS.JS.reader(file, self, proc)
-
 end

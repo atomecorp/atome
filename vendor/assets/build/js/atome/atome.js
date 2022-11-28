@@ -1,5 +1,4 @@
-
-const atomeJS = Object.assign(atomeVideo, atomeTime, atomeFile);
+const atomeJS = Object.assign(atomeDrag,atomeFile, atomeTime, atomeVideo);
 
 // // class AtomeDrag {
 // //     constructor() {
