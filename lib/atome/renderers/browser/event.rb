@@ -36,7 +36,7 @@ end
 
 generator.build_render_method(:fullscreen) do |value, proc|
   atome_id=atome[:id]
-  `atome.js_Fullscreen(#{atome_id})`
+  AtomeJS.fullscreen(atome_id)
 end
 
 generator.build_render_method(:mute) do |value, proc|

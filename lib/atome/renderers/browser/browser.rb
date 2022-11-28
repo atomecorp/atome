@@ -22,3 +22,5 @@ require 'atome/renderers/browser/helpers/web_helper'
 class Atome
   attr_accessor :browser_object
 end
+
+AtomeJS=`atomeJS`
