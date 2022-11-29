@@ -19,7 +19,8 @@ class Atome
     end
   end
 
-  def drag_callback(pageX,pageY, left, top,  proc)
-    instance_exec({ pageX: pageX,pageY: pageY,left: left, top: top }, &proc) if proc.is_a?(Proc)
+  def drag_move_callback(pageX,pageY, left, top)
+    # proc=@drag_move_proc
+    # instance_exec({ pageX: pageX,pageY: pageY,left: left, top: top }, &proc) if proc.is_a?(Proc)
   end
 end

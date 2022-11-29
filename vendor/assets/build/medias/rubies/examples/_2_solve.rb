@@ -11,3 +11,10 @@ c=element do |params_found|
 end
 
 c.run('it works')
+
+# object in object
+
+a = box({ width: 333, height: 333, id: :the_boxy })
+a.color(:red)
+b = a.box({ width: 33, height: 33, id: :the_box, drag: true })
+b.color(:black)
