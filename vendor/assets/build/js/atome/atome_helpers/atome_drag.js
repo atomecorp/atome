@@ -17,5 +17,18 @@ const atomeDrag = {
                 },
             }
         })
+    },lock_drag: function (atome_id, proc){
+        interact('#' + atome_id).draggable({
+            startAxis: 'xy',
+            lockAxis: 'start'
+        });
     }
+    ,stop_drag: function (atome_id, proc){
+        interact('#' + atome_id).draggable({
+            inertia: false
+        });
+
+        // interact('#' + atome_id).draggable(false)
+    }
+
 }

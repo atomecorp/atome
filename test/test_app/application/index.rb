@@ -196,34 +196,49 @@ generator = Genesis.generator
 
 module BrowserHelper
   def self.browser_drag(options, atome_id, atome, proc)
-    # atome_id=atome[:id]
-    # code=atome[:code]
     AtomeJS.JS.drag(options, atome_id, atome, proc)
   end
 end
+
 generator.build_particle(:drag)
-# generator.build_particle(:remove)
+
+generator.build_sanitizer(:drag) do |params|
+  if (params = true)
+    params = {drag: true}
+  end
+  params
+end
 
 generator.build_render_method(:browser_drag) do |options, proc|
-  BrowserHelper.browser_drag(options, @atome[:id], self, proc)
-  # puts "options are #{options}"
-  # @browser_object[:draggable]=true
-  # @browser_object.on :drag do |e|
-  #   instance_exec(&proc) if proc.is_a?(Proc)
+   # options.each_values do |,v|
+   #   BrowserHelper.send()
+   # end
+  # BrowserHelper.browser_drag(options, @atome[:id], self, proc)
+  # AtomeJS.JS.drag(options, @atome[:id], self, proc)
+  #
+  # wait 3 do
+  #   AtomeJS.JS.lock_drag(@atome[:id],  proc)
+  # end
+  #
+  # wait 7 do
+  #   AtomeJS.JS.stop_drag(@atome[:id],  proc)
   # end
 end
-b = box({ width: 333, height: 333, id: :the_box, color: :orange })
 
-b.drag(true) do |e|
-  puts e
-end
-#
-#
-# # b.drag({ remove: true }) do |position|
-# #   # below here is the callback :
-# #   puts "1 - callback drag position: #{position}"
-# #   puts "1 - callback id is: #{id}"
-# # end
+b = box({ width: 333, height: 333, id: :the_box, color: :orange, drag: true })
+
+# b.drag(true) do |e|
+#   puts e
+# end
+
+# wait 2 do
+#   b.drag({ remove: true }) do |position|
+#     # below here is the callback :
+#     puts "1 - callback drag position: #{position}"
+#     puts "1 - callback id is: #{id}"
+#   end
+# end
+
 # #
 # # # wait 4 do
 # # #   b.drag({ max: { left: 333 ,right: 90, top: 333, bottom: 30}})
@@ -272,16 +287,4 @@ end
 # wait 2 do
 #   my_text.color(:red)
 # end
-
-_alarm_format = '2022,11,27,12,06,0'
-time_to_run = Time.now + 3
-puts 'event schedule'
-a = element
-
-a.schedule(time_to_run) do
-  alert 'event executed'
-end
-
-
-
 
