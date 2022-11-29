@@ -95,7 +95,6 @@ generator.build_render_method(:browser_web) do
   @browser_object = BrowserHelper.browser_document[id_found]
   @browser_object.attributes[:allow] = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'
   @browser_object.attributes[:allowfullscreen] = true
-  @html_type = :web
 end
 
 generator.build_render_method(:browser_video) do |_value, _user_proc|

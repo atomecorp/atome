@@ -4,15 +4,17 @@
 module Essentials
   @default_params = {
     render_engines: [:browser],
+    animation: { type: :animation },
     element: { type: :element, renderers: [] },
-    box: { renderers: '', id: '', type: :shape, parents: [], children: [], width: 99, height: 99 },
+    box: { renderers: '', id: '', type: :shape, parents: [], children: [], width: 99, height: 99,
+           left: 100, top: 100 },
     circle: { renderers: '', id: '', type: :shape, parents: [], children: [], width: 99, height: 99,
-              smooth: '100%' },
+              left: 100, top: 100, smooth: '100%' },
     shape: { renderers: '', id: '', width: 100, type: :shape, height: 100, left: 100, top: 100,
              color: { left: 0, top: 0, z: 0, red: 0.1, green: 0.9, blue: 0.9, alpha: 1, diffusion: :linear },
              generator: :manual },
     text: { type: :text, parents: [:view], children: [], visual: { size: 25 },
-            data: 'this is a text sample',  width: 199, height: 33 },
+            data: 'this is a text sample', width: 199, height: 33 },
     drm: { type: :drm },
     shadow: {}
   }

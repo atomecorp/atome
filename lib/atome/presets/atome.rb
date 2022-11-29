@@ -8,7 +8,7 @@
 # shaper creation
 class Atome
   def atome_common(atome_type, generated_id, generated_render, generated_parents, params)
-    temp_default = Essentials.default_params[atome_type]
+    temp_default = Essentials.default_params[atome_type] || {}
     temp_default[:id] = generated_id
     temp_default[:parents] = generated_parents
     temp_default[:renderers] = generated_render
