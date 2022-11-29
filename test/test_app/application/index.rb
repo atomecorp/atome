@@ -193,98 +193,91 @@ generator = Genesis.generator
 # `
 # end
 # generator.build_atome(:drag)
-class Atome
-  private
+# class Atome
+#   private
+#
+#   attr_accessor :drag_start_proc, :drag_move_proc, :drag_end_proc
+#
+#   public
+#
+#   def drag_start_callback(pageX, pageY, left, top)
+#     proc = @drag_start_proc
+#     instance_exec({ pageX: pageX, pageY: pageY, left: left, top: top }, &proc) if proc.is_a?(Proc)
+#   end
+#
+#   def drag_move_callback(pageX, pageY, left, top)
+#     proc = @drag_move_proc
+#     instance_exec({ pageX: pageX, pageY: pageY, left: left, top: top }, &proc) if proc.is_a?(Proc)
+#   end
+#
+#   def drag_end_callback(pageX, pageY, left, top)
+#     proc = @drag_end_proc
+#     instance_exec({ pageX: pageX, pageY: pageY, left: left, top: top }, &proc) if proc.is_a?(Proc)
+#   end
+# end
 
-  attr_accessor :drag_start_proc, :drag_move_proc, :drag_end_proc
+# module BrowserHelper
+#   def self.browser_drag_move(params, atome_id, atome, proc)
+#     atome.drag_move_proc = proc
+#     AtomeJS.JS.drag(params, atome_id, atome)
+#   end
+#
+#   def self.browser_drag_lock(params, atome_id, atome, _proc)
+#     AtomeJS.JS.lock(params, atome_id, atome)
+#   end
+#
+#   def self.browser_drag_remove(params, atome_id, atome, _proc)
+#     if params == true
+#       params = false
+#     else
+#       params = true
+#     end
+#     AtomeJS.JS.remove(params, atome_id, atome)
+#   end
+#
+#   def self.browser_drag_snap(params, atome_id, atome, _proc)
+#     AtomeJS.JS.snap(params.to_n, atome_id, atome)
+#   end
+#
+#   def self.browser_drag_inertia(params, atome_id, atome, _proc)
+#     AtomeJS.JS.inertia(params, atome_id, atome)
+#   end
+#
+#   def self.browser_drag_constraint(params, atome_id, atome, _proc)
+#     AtomeJS.JS.constraint(params.to_n, atome_id, atome)
+#   end
+#
+#   def self.browser_drag_start(_params, _atome_id, atome, proc)
+#     atome.drag_start_proc = proc
+#   end
+#
+#   def self.browser_drag_end(_params, _atome_id, atome, proc)
+#     atome.drag_end_proc = proc
+#   end
+#
+# end
 
-  public
+# generator.build_particle(:drag)
 
-  def drag_start_callback(pageX, pageY, left, top)
-    proc = @drag_start_proc
-    instance_exec({ pageX: pageX, pageY: pageY, left: left, top: top }, &proc) if proc.is_a?(Proc)
-  end
+# generator.build_sanitizer(:drag) do |params|
+#   if params == true
+#     params = { move: true }
+#   end
+#   params
+# end
 
-  def drag_move_callback(pageX, pageY, left, top)
-    proc = @drag_move_proc
-    instance_exec({ pageX: pageX, pageY: pageY, left: left, top: top }, &proc) if proc.is_a?(Proc)
-  end
+# generator.build_render_method(:browser_drag) do |options, proc|
+#   options.each do |method, params|
+#     atome_id = @atome[:id]
+#     BrowserHelper.send("browser_drag_#{method}", params, atome_id, self, proc)
+#   end
+# end
 
-  def drag_end_callback(pageX, pageY, left, top)
-    proc = @drag_end_proc
-    instance_exec({ pageX: pageX, pageY: pageY, left: left, top: top }, &proc) if proc.is_a?(Proc)
-  end
-end
 
-module BrowserHelper
-  def self.browser_drag_move(params, atome_id, atome, proc)
-    atome.drag_move_proc = proc
-    AtomeJS.JS.drag(params, atome_id, atome)
-  end
 
-  def self.browser_drag_lock(params, atome_id, atome, _proc)
-    AtomeJS.JS.lock(params, atome_id, atome)
-  end
-
-  def self.browser_drag_remove(params, atome_id, atome, _proc)
-    if params == true
-      params = false
-    else
-      params = true
-    end
-    AtomeJS.JS.remove(params, atome_id, atome)
-  end
-
-  def self.browser_drag_snap(params, atome_id, atome, _proc)
-    AtomeJS.JS.snap(params.to_n, atome_id, atome)
-  end
-
-  def self.browser_drag_inertia(params, atome_id, atome, _proc)
-    AtomeJS.JS.inertia(params, atome_id, atome)
-  end
-
-  def self.browser_drag_constraint(params, atome_id, atome, _proc)
-
-    # case  params
-    # when :parent
-    #   options={restriction: 'element.parentNode'}.to_n
-    # when Hash
-    #   options=params.to_n
-    # options={ top: 330, left: 30, bottom: 30, right: 1 }
-    # else
-    # # options=params
-    # end
-    AtomeJS.JS.constraint(params.to_n, atome_id, atome)
-  end
-
-  def self.browser_drag_start(_params, _atome_id, atome, proc)
-    atome.drag_start_proc = proc
-  end
-
-  def self.browser_drag_end(_params, _atome_id, atome, proc)
-    atome.drag_end_proc = proc
-  end
-
-end
-
-generator.build_particle(:drag)
-
-generator.build_sanitizer(:drag) do |params|
-  if params == true
-    params = { move: true }
-  end
-  params
-end
-
-generator.build_render_method(:browser_drag) do |options, proc|
-  options.each do |method, params|
-    atome_id = @atome[:id]
-    BrowserHelper.send("browser_drag_#{method}", params, atome_id, self, proc)
-  end
-end
 a = box({ width: 333, height: 333, id: :the_boxy })
 a.color(:red)
-b =box({ width: 33, height: 33, id: :the_box, drag: true })
+b = box({ width: 33, height: 33, id: :the_box, drag: true })
 b.color(:black)
 # b.parents([:the_boxy ])
 b.drag({ move: true }) do |e|
@@ -294,16 +287,15 @@ end
 # b.drag({ move: false}) do |e|
 #   puts e
 # end
-#
-
-# b.drag({ start: true}) do |e|
-#   b.color(:yellow)
-# end
 
 
-# b.drag({ end: true}) do |e|
-#   b.color(:red)
-# end
+b.drag({ start: true}) do |e|
+  b.color(:yellow)
+end
+
+b.drag({ end: true}) do |e|
+  b.color(:orange)
+end
 
 # b.drag({ inertia: true })
 
@@ -312,67 +304,12 @@ end
 # b.drag({ lock: :x })
 
 # b.drag({ remove: true })
-
 # b.drag({ remove: false })
 
 # b.drag({ snap: { x: 100, y: 190 } })
 
-b.drag({ constraint: { top: 330, left: 30, bottom: 30, right: 1 } })
-b.drag({ constraint: :parent })
-b.drag({ constraint: :the_boxy })
+# b.drag({ constraint: { top: 330, left: 30, bottom: 30, right: 1 } })
+# b.drag({ constraint: :parent })
+# b.drag({ constraint: :the_boxy })
 
 
-###### to make it works
-# b.drag({ constraint: true })
-
-# wait 2 do
-#   b.drag({ remove: true }) do |position|
-#     # below here is the callback :
-#     puts "1 - callback drag position: #{position}"
-#     puts "1 - callback id is: #{id}"
-#   end
-# end
-# #
-# # # wait 4 do
-# # #   b.drag({ max: { left: 333 ,right: 90, top: 333, bottom: 30}})
-# # # end
-# #
-# # # bb = box({ left: 120, color: :green })
-
-# # # bb.touch(true) do
-# # #   puts left
-# # # end
-# # #
-# # # bb.drag({ lock: :x }) do |position|
-# # #   # below here is the callback :
-# # #   puts "2 - drag position: #{position}"
-# # #   puts "2 - id is: #{id}"
-# # # end
-# # # #TODO: when we add a color we must change the code : do we create a new color
-# # # #with it's id or do we replace the old one?
-# # #
-# # # bbb = box({ left: 120, top: 120 })
-# # # bbb.drag({}) do |position|
-# # #   # below here is the callback :
-# # #   puts "bbb drag position: #{position}"
-# # #   puts "bbb id is: #{id}"
-# # # end
-# # # bbb.color(:black)
-# # #
-# # # bbb.remove(:drag)
-# # # wait 3 do
-# # #   bbb.drag({fixed: true}) do |position|
-# # #     puts position
-# # #   end
-# # # end
-# # #
-# # # circle({drag: {inside: :the_constraint_box}, color: :red})
-
-# b = box({ id: :the_box, left: 99, top: 99 })
-
-# b = box({ drag: true, left: 66, top: 66 })
-# my_text = b.text({ data: 'drag the bloc behind me', width: 333 })
-# wait 2 do
-#   my_text.color(:red)
-# end
-# grab(:view).width=666

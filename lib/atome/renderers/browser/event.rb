@@ -10,7 +10,7 @@ end
 
 generator.build_render_method(:browser_play) do |value, proc|
   # first we reinit the 'at' event so the condition will be met again
-  @at_time[:used]=nil
+  @at_time[:used] = nil
   @browser_object.currentTime = value if value != true
   BrowserHelper.send("browser_play_#{@atome[:type]}", value, @browser_object, @atome, self, proc)
 end
@@ -34,12 +34,12 @@ generator.build_render_method(:on) do |value, proc|
   end
 end
 
-generator.build_render_method(:fullscreen) do |value, proc|
-  atome_id=atome[:id]
+generator.build_render_method(:fullscreen) do |_value, _proc|
+  atome_id = atome[:id]
   AtomeJS.JS.fullscreen(atome_id)
 end
 
-generator.build_render_method(:mute) do |value, proc|
+generator.build_render_method(:mute) do |value, _proc|
   if value
     browser_object.muted
   else
@@ -51,4 +51,9 @@ generator.build_render_method(:browser_at) do |at, proc|
   @at_time = { code: proc }.merge(at)
 end
 
-
+generator.build_render_method(:browser_drag) do |options, proc|
+  options.each do |method, params|
+    atome_id = @atome[:id]
+    BrowserHelper.send("browser_drag_#{method}", params, atome_id, self, proc)
+  end
+end

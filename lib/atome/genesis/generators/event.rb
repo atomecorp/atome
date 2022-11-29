@@ -11,4 +11,8 @@ generator.build_particle(:fullscreen)
 generator.build_particle(:mute)
 # TODO : add the at event to ny particle : (width, left, ...) maybe use monitor particle
 generator.build_particle(:at)
-
+generator.build_particle(:drag)
+generator.build_sanitizer(:drag) do |params|
+  params = { move: true } if params == true
+  params
+end

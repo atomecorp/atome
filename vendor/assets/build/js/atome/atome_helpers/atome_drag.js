@@ -1,26 +1,28 @@
 const atomeDrag = {
-    drag: function (options,atome_id,atome) {
+
+    drag: function (options, atome_id, atome) {
         let element = document.getElementById(atome_id)
         const position = {x: 0, y: 0}
         interact(element).draggable({
             listeners: {
                 start(event) {
-
+                    atome.$drag_start_callback(event.pageX, event.pageY, event.rect.left, event.rect.top);
                 },
                 move(event) {
                     position.x += event.dx
                     position.y += event.dy
                     //  we feed the callback method below
-                    atome.drag_move_callback(event.pageX, event.pageY, event.rect.left, event.rect.top);
+                    atome.$drag_move_callback(event.pageX, event.pageY, event.rect.left, event.rect.top);
 
-                    if (options == true){
+                    if (options === true) {
                         event.target.style.transform =
                             event.target.style.transform = 'translate(' + position.x + 'px, ' + position.y + 'px)'
                     }
 
                 },
                 end(event) {
-                    alert('end')
+                    atome.$drag_end_callback(event.pageX, event.pageY, event.rect.left, event.rect.top);
+
 
                 },
             }
@@ -28,72 +30,56 @@ const atomeDrag = {
 
     },
 
-    start: function (options,atome_id,atome) {
-        let element = document.getElementById(atome_id)
-        const position = {x: 0, y: 0}
-        interact(element).draggable({
-            listeners: {
-                start(event) {
-                    console.log("kool");
-                },
-
-            }
-        })
-
-    },
-
-    inertia: function  (options,atome_id,atome){
+    inertia: function (options, atome_id, _atome) {
         let element = document.getElementById(atome_id)
         interact(element).draggable({
-            inertia: true
+            inertia: options
         })
     },
 
-    lock: function  (options,atome_id,atome){
+    lock: function (options, atome_id, _atome) {
         let element = document.getElementById(atome_id)
         interact(element).draggable({
             startAxis: 'xy',
-            // lockAxis: 'start',
-            lockAxis: 'x'
+            lockAxis: options
         });
     },
 
-    remove: function  (options,atome_id,atome){
+    remove: function (options, atome_id, _atome) {
         let element = document.getElementById(atome_id)
-        interact(element).draggable(false) ;
+        interact(element).draggable(options);
     },
 
-    snap: function (options,atome_id,atome) {
+    snap: function (options, atome_id, _atome) {
         let element = document.getElementById(atome_id)
-        let x = 0; let y = 0
         interact(element)
             .draggable({
                 modifiers: [
                     interact.modifiers.snap({
                         targets: [
-                            interact.snappers.grid({ x: 130, y: 30 })
+                            interact.snappers.grid(options),
                         ],
                         range: Infinity,
-                        relativePoints: [ { x: 0, y: 0 } ]
+                        relativePoints: [{x: 0, y: 0}]
                     }),
                 ],
             })
     },
 
-    constraint: function (options,atome_id,atome) {
+    constraint: function (params, atome_id, _atome) {
         let element = document.getElementById(atome_id)
-        let x = 0; let y = 0
+        if ((typeof params) != 'object' && params !== 'parent') {
+            params = document.getElementById(params);
+        }
         interact(element)
             .draggable({
                 modifiers: [
                     interact.modifiers.restrict({
-                        restriction: { top: 330, left: 30, bottom: 30, right: 1 },
-                        // restriction: element.parentNode,
-                        elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
+                        restriction: params,
+                        elementRect: {top: 0, left: 0, bottom: 1, right: 1},
                         // endOnly: false
                     })
                 ],
             })
     }
-
 }
