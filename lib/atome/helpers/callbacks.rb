@@ -4,7 +4,9 @@
 class Atome
   private
 
-  attr_accessor :drag_start_proc, :drag_move_proc, :drag_end_proc
+  attr_accessor :drag_start_proc, :drag_move_proc, :drag_end_proc,
+                :play_start_proc, :play_active_proc, :play_end_proc,
+                :animation_start_proc, :animation_active_proc, :animation_end_proc
 
   public
 
@@ -45,4 +47,28 @@ class Atome
     proc = @drag_end_proc
     instance_exec({ pageX: page_x, pageY: page_y, left: left_val, top: top_val }, &proc) if proc.is_a?(Proc)
   end
+
+  # def play_start_callback(particle_found, value)
+  #   @atome[particle_found] = value
+  #   play_proc = play_start_proc
+  #   anim_proc = animation_start_proc
+  #   instance_exec({ @atome[particle_found] => value }, &play_proc) if play_proc.is_a?(Proc)
+  #   instance_exec({ @atome[particle_found] => value }, &anim_proc) if anim_proc.is_a?(Proc)
+  # end
+  #
+  # def play_active_callback(particle_found, value)
+  #   @atome[particle_found] = value
+  #   play_proc = play_active_proc
+  #   anim_proc = animation_active_proc
+  #   instance_exec({ @atome[particle_found] => value }, &play_proc) if play_proc.is_a?(Proc)
+  #   instance_exec({ @atome[particle_found] => value }, &anim_proc) if anim_proc.is_a?(Proc)
+  # end
+  #
+  # def play_stop_callback(particle_found, value)
+  #   @atome[particle_found] = value
+  #   play_proc = play_end_proc
+  #   anim_proc = animation_end_proc
+  #   instance_exec({ @atome[particle_found] => value }, &play_proc) if play_proc.is_a?(Proc)
+  #   instance_exec({ @atome[particle_found] => value }, &anim_proc) if anim_proc.is_a?(Proc)
+  # end
 end
