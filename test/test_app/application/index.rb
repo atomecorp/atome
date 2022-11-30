@@ -130,11 +130,13 @@ aa = animation({
                  targets: [:my_box, :the_circle],
                  start: {
                    left: 0,
+                   top: 0,
                    # smooth: 0
 
                  },
                  end: {
                    left: 400,
+                   top: 400,
                    # smooth: 100
 
                  },
@@ -152,5 +154,3 @@ s = c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [:th
                red: 0, green: 0, blue: 0, alpha: 1
              })
 # alert aa
-
-
