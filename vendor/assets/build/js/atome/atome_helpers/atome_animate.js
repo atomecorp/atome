@@ -8,10 +8,10 @@ const atomeAnimate = {
 
         const target_div = document.querySelector('#'+atome_id);
 
-        var myHash = Opal.hash({postion: target_div.style.transform});
+        // var myHash = Opal.hash({postion: target_div.style.transform});
 
-        let particle_to_process=  myHash.$fetch('postion','');
-        console.log(typeof (target_div.style.transform))
+        // let particle_to_process=  myHash.$fetch('postion','');
+
         animate({
             type: ease,
             from: start_value,
@@ -22,14 +22,14 @@ const atomeAnimate = {
             dampingRatio: damping_ratio,
             stiffness: stiffness,
             repeat: repeat,
-            onPlay: latest => console.log("Starting"+latest),
+            onPlay: latest => console.log("Starting"),
             onUpdate: (v) => {
-                atome_found.$play_active_callback(particle_found, v);
-
-                particle_to_process = `translateX(${v}px) translateY(${v/4}px)`;
-                // console.log(v);
+                atome_found.$Browser_animate_callback(particle_found, v)
+                // atome_found.$play_active_callback(particle_found, v);
+                // target_div.style.transform = `translateX(${v}px) translateY(${v/4}px)`;
+                // target_div.style.left = `${v}px`;
             },
-            onComplete: latest => console.log("finished"+latest)
+            onComplete: latest => console.log("finished")
         });
 
 
