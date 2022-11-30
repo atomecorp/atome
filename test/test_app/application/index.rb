@@ -62,7 +62,6 @@ generator.build_option(:pre_render_children) do |children_pass|
 end
 
 module BrowserHelper
-
   def self.browser_play_animation(options, browser_object_found, atome_hash, atome_object, proc)
     atome_hash[:targets].each do |target|
       atome_targeted=grab(target)
