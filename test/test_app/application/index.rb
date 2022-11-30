@@ -20,7 +20,9 @@
 # TODO : add add method to add children /parents/colors
 # TODO : when drag update the atome's position of all children
 # TODO : analysis on Bidirectional code and drag callback
-# TODO : create a shadow preset
+# TODO : create shadow presets
+# TODO : analysis on presets santitizer confusion
+# TODO : optimize the use of 'generator = Genesis.generator'
 
 ##### animation #####
 
@@ -61,9 +63,12 @@ end
 
 module BrowserHelper
 
-
-  def self.browser_play_animation(_value, browser_object_found, atome_hash, atome_object, proc)
-    puts  atome_hash[:targets]
+  def self.browser_play_animation(options, browser_object_found, atome_hash, atome_object, proc)
+    atome_hash[:targets].each do |target|
+      atome_targeted=grab(target)
+      atome_targeted_id=atome_targeted.atome[:id]
+      AtomeJS.JS.animate(options,atome_targeted_id, atome_targeted)
+    end
   end
 
 end
@@ -92,37 +97,14 @@ aa = animation({
                })
 # alert aa.targets
 aa.play(true)
-# b.parents([:the_animation1])
 
-# frozen_string_literal: true
 
-# b = box({ id: :the_box, left: 299, top: 99 })
+
 
 s = c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [:the_circle], children: [],
                left: 3, top: 9, blur: 19,
                red: 0, green: 0, blue: 0, alpha: 1
              })
-# s.parents([:the_box])
-# s.blur(9)
-# wait 1 do
-#   s.parents([:the_box])
-#   # or
-#   # b.children([:shadow2])
-#   wait 1 do
-#     s.blur(9)
-#     wait 1 do
-#       wait 2 do
-#         s.direction('')
-#         s.green(0)
-#         s.left(14)
-#         wait 1 do
-#           s.delete(true)
-#         end
-#       end
-#       s.left(44)
-#       s.green(0.7)
-#     end
-#   end
-# end
+
 
 
