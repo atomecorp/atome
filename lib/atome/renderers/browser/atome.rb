@@ -17,8 +17,6 @@ generator.build_render_method(:browser_shape) do
     div(id: id_found).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
-  # Render particles below
-  # collapse
 end
 
 generator.build_render_method(:browser_color) do |_value|
@@ -36,10 +34,6 @@ generator.build_render_method(:browser_color) do |_value|
   #{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
   # TODO/ use the code below to modify the style tag
   @browser_object = BrowserHelper.browser_document[id_found]
-  # now we just have to attach the color atome
-  # parents(@atome[:parents])
-  # children(@atome[:children])
-  # collapse
 end
 
 generator.build_render_method(:browser_shadow) do |_value|
@@ -71,8 +65,6 @@ generator.build_render_method(:browser_image) do |_user_prc|
     img({ id: id_found }).atome
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
-  # Render particles below
-  # collapse
 end
 
 generator.build_render_method(:browser_text) do |_value, _user_proc|
@@ -82,8 +74,6 @@ generator.build_render_method(:browser_text) do |_value, _user_proc|
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
   @browser_type = :div
-  # Render particles below
-  # collapse
 end
 
 generator.build_render_method(:browser_web) do

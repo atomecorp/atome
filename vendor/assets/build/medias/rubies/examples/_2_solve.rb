@@ -18,3 +18,19 @@ a = box({ width: 333, height: 333, id: :the_boxy })
 a.color(:red)
 b = a.box({ width: 33, height: 33, id: :the_box, drag: true })
 b.color(:black)
+
+# color doesn't work
+circle({ id: :circle_123, color: :cyan, left: 233 })
+
+
+# big perfomrance problem plus params as left is not interpreted
+
+i = 0
+while i < 16
+  b = box({ width: 33, height: 33 })
+  b.parents([:the_grid])
+  b.color(:red)
+  b.left((33 + 10) * i)
+  i += 1
+  # b.drag(true)
+end

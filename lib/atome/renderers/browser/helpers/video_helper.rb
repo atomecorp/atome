@@ -32,7 +32,6 @@ module BrowserHelper
     browser_object_found.on(:timeupdate) do |e|
       current_time = browser_object_found.currentTime
       # we update the time particle
-      # atome_object.atome[:time]=current_time
       atome_object.time_callback(current_time)
       e.prevent # Prevent the default action (eg. form submission)
       # You can also use `e.stop` to stop propagating the event to other handlers.

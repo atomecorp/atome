@@ -43,6 +43,7 @@ html, body {
 
 .selected {
     outline: 2px dashed white;
+    background-color: #00bb00;
 }
 
 .atome {

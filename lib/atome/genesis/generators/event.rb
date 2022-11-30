@@ -16,3 +16,4 @@ generator.build_sanitizer(:drag) do |params|
   params = { move: true } if params == true
   params
 end
+generator.build_particle(:sort)
