@@ -1,7 +1,7 @@
 const atomeAnimate = {
 
     animate: function(particle_found, duration,damping_ratio,ease, mass,  repeat,stiffness, velocity,
-                      start_value, end_value, atome_id, atome_found) {
+                      start_value, end_value, atome_id, atome_found,atome_hash,original_particle) {
         // console.log(start_value)
 
         const {easing,  styler, animate} = window.popmotion;
@@ -17,14 +17,14 @@ const atomeAnimate = {
             from: start_value,
             to: end_value,
             duration: duration,
-            mass: mass,
-            velocity: velocity,
-            dampingRatio: damping_ratio,
-            stiffness: stiffness,
-            repeat: repeat,
-            onPlay: latest => console.log("Starting"),
-            onUpdate: (v) => {
-                atome_found.$Browser_animate_callback(particle_found, v)
+            // mass: mass,
+            // velocity: velocity,
+            // dampingRatio: damping_ratio,
+            // stiffness: stiffness,
+            // repeat: repeat,
+            onPlay: latest => console.log("Starting : "+start_value),
+            onUpdate: (value) => {
+                atome_found.$browser_animate_callback(particle_found, value,atome_hash,original_particle)
                 // atome_found.$play_active_callback(particle_found, v);
                 // target_div.style.transform = `translateX(${v}px) translateY(${v/4}px)`;
                 // target_div.style.left = `${v}px`;

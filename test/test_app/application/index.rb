@@ -25,7 +25,6 @@
 # TODO : optimize the use of 'generator = Genesis.generator'
 # TODO : Create a demo test of all apis
 
-
 ##### animation #####
 
 generator = Genesis.generator
@@ -38,8 +37,16 @@ end
 
 generator.build_particle(:targets)
 generator.build_particle(:start)
+generator.build_particle(:stop)
+generator.build_particle(:begin)
 generator.build_particle(:end)
 generator.build_particle(:duration)
+generator.build_particle(:mass)
+generator.build_particle(:damping)
+generator.build_particle(:stiffness)
+generator.build_particle(:velocity)
+generator.build_particle(:repeat)
+generator.build_particle(:ease)
 
 class Atome
   ################### Generator atome
@@ -55,11 +62,14 @@ class Atome
 
   ################### callbacks
 
-  def Browser_animate_callback(particle_found, value)
-    # puts particle_found,  value
-    # atome_found.$play_active_callback(particle_found, v);
-    @atome[particle_found]=value
-     browser_object.style[particle_found] = "#{value}px"
+  def browser_animate_callback(particle_found, value,animation_atome,original_particle)
+    anim_proc=animation_atome[:code]
+    #  we exec  the code bloc
+    instance_exec({ original_particle => value }, &anim_proc) if anim_proc.is_a?(Proc)
+    # we animate:
+    browser_object.style[particle_found] = value
+    # we update the atome property
+    @atome[original_particle] = value
   end
 
   def play_start_callback(particle_found, value)
@@ -92,65 +102,159 @@ def animation(params = {}, &proc)
   grab(:view).animation(params, &proc)
 end
 
-generator.build_option(:pre_render_children) do |children_pass|
-  children_pass.each do |child_found|
-    atome_found = grab(child_found)
-    atome_found.parents([])
-    atome_found.parents([@atome[:id]])
-  end
-end
+# generator.build_option(:pre_render_children) do |children_pass|
+#   children_pass.each do |child_found|
+#     atome_found = grab(child_found)
+#     atome_found.parents([])
+#     atome_found.parents([@atome[:id]])
+#   end
+# end
 
 module BrowserHelper
+
+  def self.anim_convertor(value)
+    { left: [:left, "#{value}px"], right: [:right, "#{value}px"], top: [:top, "#{value}px"],
+      bottom: [:bottom, "#{value}px"], smooth: ['border-radius', "#{value}px"],
+      left_add: ['transform', "translateX(#{value}px)"],
+      right_add: ['transform', "translateY(#{value}px)"],
+      width: [:width, "#{value}px"], heigh: [:heigh, "#{value}px"]
+    }
+  end
+
+  def self.anim_value_analysis(value, particle_found, atome_found)
+    case value
+    when :self
+      # this case mean the user use the current atome so we get the particle value of the atome
+      value = atome_found.atome[particle_found]
+    when Integer
+      value
+    else
+      # this case mean the user try to pass an id so we get the particle value of the atome
+      value = grab(value).atome[particle_found]
+      value
+    end
+    value
+  end
+
+  def self.send_anim_to_js(animation, atome_hash, atome_found, atome_id)
+    animated_particle = animation[0]
+    start_value = animation[1]
+    end_value = animation[2]
+    original_particle=animation[3]
+    AtomeJS.JS.animate(animated_particle, atome_hash[:duration], atome_hash[:damping], atome_hash[:ease],
+                       atome_hash[:mass], atome_hash[:repeat], atome_hash[:stiffness], atome_hash[:velocity],
+                       start_value, end_value, atome_id, atome_found,atome_hash,original_particle)
+  end
+
+  def self.sanitize_anim_params(value, particle_found, atome_hash, atome_found, atome_id)
+    start_value = anim_value_analysis(value, particle_found, atome_found)
+    start_value = BrowserHelper.anim_convertor(start_value)[particle_found][1]
+    end_value = anim_value_analysis(atome_hash[:end][particle_found], particle_found, atome_found)
+    end_value = BrowserHelper.anim_convertor(end_value)[particle_found][1]
+    animated_particle = BrowserHelper.anim_convertor(value)[particle_found][0]
+    # animation is a stupid array to satisfy rubocop stupidity
+    animation = [animated_particle, start_value, end_value,particle_found]
+    send_anim_to_js(animation, atome_hash, atome_found, atome_id)
+  end
+
+  def self.anim_pop_motion_converter(atome_hash, atome_found, atome_id)
+    atome_hash[:dampingRatio] = atome_hash.delete(:damping)
+    atome_hash[:begin].each do |particle_found, value|
+      sanitize_anim_params(value, particle_found, atome_hash, atome_found, atome_id)
+    end
+  end
+
+  def self.begin_animation(atome_hash, atome_found, atome_id)
+    anim_pop_motion_converter(atome_hash, atome_found, atome_id)
+  end
 
   def self.browser_play_animation(options, browser_object_found, atome_hash, atome_object, proc)
     atome_hash[:targets].each do |target|
       atome_found = grab(target)
       atome_id = atome_found.atome[:id]
-      mass = 1
-      damping_ratio = 1
-      stiffness = 1000
-      velocity = 1
-      repeat= 1
-      ease= 'spring'
-      duration = atome_hash[:duration]
-      atome_hash[:start].each do |particle_found, start_value|
-        end_value = atome_hash[:end][particle_found]
-        AtomeJS.JS.animate(particle_found, duration,damping_ratio,ease, mass,  repeat,stiffness, velocity,
-                           start_value, end_value, atome_id, atome_found)
-      end
+      begin_animation(atome_hash, atome_found, atome_id)
     end
   end
 end
 
-box({ id: :my_box, drag: true })
-c = circle({ id: :the_circle, drag: { move: true, inertia: true, lock: :start } })
 
+
+# verif
+
+bb = box({ id: :the_ref, width: 369 })
+bb.color(:red)
+box({ id: :my_box, drag: true })
+c = circle({ id: :the_circle, left: 222, drag: { move: true, inertia: true, lock: :start } })
 Atome.new(animation: { renderers: [:browser], id: :the_animation1, type: :animation, children: [] })
 aa = animation({
-                 targets: [:my_box, :the_circle],
-                 start: {
-                   left: 0,
-                   top: 0,
-                   # smooth: 0
-
+                 targets: %i[my_box the_circle],
+                 begin: {
+                   left_add: 0,
+                   top: :self,
+                   smooth: 0,
+                   width: 3
                  },
                  end: {
-                   left: 400,
-                   top: 400,
-                   # smooth: 100
-
+                   left_add: 333,
+                   top: 299,
+                   smooth: 33,
+                   width: :the_ref
                  },
-                 duration: 2000
-               }) do  |pa|
-  puts  "animation say#{pa}"
+                 duration: 8800,
+                 mass: 1,
+                 damping: 1,
+                 stiffness: 1000,
+                 velocity: 1,
+                 repeat: 1,
+                 ease: 'spring'
+               }) do |pa|
+  puts "animation say#{pa}"
+end
+
+animation({
+            targets: %i[:none],
+            begin: {
+              left_add: 0,
+              top: :self,
+              smooth: 0,
+              width: 3
+            },
+            end: {
+              left_add: 333,
+              top: :self,
+              smooth: 33,
+              width: :the_ref
+            },
+            duration: 8800,
+            mass: 1,
+            damping: 1,
+            stiffness: 1000,
+            velocity: 1,
+            repeat: 1,
+            ease: 'spring'
+          }) do |pa|
+  puts "get params to do anything say#{pa}"
+end
+
+aa.stop do
+
+end
+
+aa.start do
+
 end
 # alert aa.targets
-aa.play(true) do |po|
-  puts "play say #{po}"
+wait 1 do
+  aa.play(true) do |po|
+    puts "play say #{po}"
+  end
 end
+# TODO : animate from actual position to another given position
+# TODO : keep complex property when animating (cf shadows)
 
-s = c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [:the_circle], children: [],
-               left: 3, top: 9, blur: 19,
-               red: 0, green: 0, blue: 0, alpha: 1
-             })
+c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,
+           parents: [:the_circle], children: [],
+           left: 3, top: 9, blur: 19,
+           red: 0, green: 0, blue: 0, alpha: 1
+         })
 # alert aa
