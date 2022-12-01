@@ -24,6 +24,8 @@
 # TODO : analysis on presets santitizer confusion
 # TODO : optimize the use of 'generator = Genesis.generator'
 # TODO : Create a demo test of all apis
+# TODO : animate from actual position to another given position
+# TODO : keep complex property when animating (cf shadows)
 
 ##### animation #####
 
@@ -31,9 +33,9 @@ generator = Genesis.generator
 
 generator.build_atome(:animation)
 
-generator.build_render_method(:browser_animation) do |_value, _user_proc|
-  @browser_type = :web
-end
+# generator.build_render_method(:browser_animation) do |_value, _user_proc|
+#   @browser_type = :web
+# end
 
 generator.build_particle(:targets)
 generator.build_particle(:start)
@@ -61,13 +63,12 @@ class Atome
   end
 
   ################### callbacks
-
   def browser_animate_callback(particle_found, value,animation_atome,original_particle)
     anim_proc=animation_atome[:code]
     #  we exec  the code bloc
     instance_exec({ original_particle => value }, &anim_proc) if anim_proc.is_a?(Proc)
     # we animate:
-    browser_object.style[particle_found] = value
+    browser_object.style[particle_found] = value if browser_object
     # we update the atome property
     @atome[original_particle] = value
   end
@@ -169,11 +170,23 @@ module BrowserHelper
   end
 
   def self.browser_play_animation(options, browser_object_found, atome_hash, atome_object, proc)
-    atome_hash[:targets].each do |target|
-      atome_found = grab(target)
-      atome_id = atome_found.atome[:id]
-      begin_animation(atome_hash, atome_found, atome_id)
+
+    unless atome_hash[:targets]
+      atome_hash[:targets]=[:eDen]
     end
+    # if atome_hash[:targets]
+      atome_hash[:targets].each do |target|
+        atome_found = grab(target)
+        atome_id = atome_found.atome[:id]
+        begin_animation(atome_hash, atome_found, atome_id)
+      end
+    # else
+    #   alert :advanced_anim_here
+    #   # user doesn't want to anim any specific target but get the value for t's own use
+    #    begin_animation(atome_hash, atome_found, atome_id)
+    # end
+
+  
   end
 end
 
@@ -185,6 +198,14 @@ bb = box({ id: :the_ref, width: 369 })
 bb.color(:red)
 box({ id: :my_box, drag: true })
 c = circle({ id: :the_circle, left: 222, drag: { move: true, inertia: true, lock: :start } })
+c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,
+           parents: [:the_circle], children: [],
+           left: 3, top: 9, blur: 19,
+           red: 0, green: 0, blue: 0, alpha: 1
+         })
+# alert aa
+
+
 Atome.new(animation: { renderers: [:browser], id: :the_animation1, type: :animation, children: [] })
 aa = animation({
                  targets: %i[my_box the_circle],
@@ -210,9 +231,23 @@ aa = animation({
                }) do |pa|
   puts "animation say#{pa}"
 end
+aa.stop do
 
-animation({
-            targets: %i[:none],
+end
+
+aa.start do
+
+end
+
+
+bb.touch(true) do
+  aa.play(true) do |po|
+    puts "play say #{po}"
+  end
+end
+
+aaa=animation({
+            # targets: %i[],
             begin: {
               left_add: 0,
               top: :self,
@@ -235,26 +270,14 @@ animation({
           }) do |pa|
   puts "get params to do anything say#{pa}"
 end
-
-aa.stop do
-
-end
-
-aa.start do
-
-end
-# alert aa.targets
-wait 1 do
-  aa.play(true) do |po|
-    puts "play say #{po}"
+wait 3 do
+  aaa.play(true) do |po|
+    puts "play aaa say #{po}"
   end
+# alert Universe.atomes.keys
 end
-# TODO : animate from actual position to another given position
-# TODO : keep complex property when animating (cf shadows)
 
-c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,
-           parents: [:the_circle], children: [],
-           left: 3, top: 9, blur: 19,
-           red: 0, green: 0, blue: 0, alpha: 1
-         })
-# alert aa
+# alert aa.targets
+
+
+
