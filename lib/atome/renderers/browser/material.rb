@@ -41,3 +41,22 @@ end
 generator.build_render_method(:visual) do |value|
   browser_object.style['font-size'] = "#{value[:size]}px"
 end
+
+generator.build_render_method(:browser_edit) do |value|
+  if value == true
+    caret_color = 'white'
+    user_select = 'text'
+    selection_color= 'blue'
+  else
+    caret_color = 'transparent'
+    user_select = 'none'
+    selection_color= 'transparent'
+  end
+
+  @browser_object.attributes[:contenteditable] = value
+  @browser_object.style['caret-color'] = caret_color
+  @browser_object.style['webkit-user-select'] = user_select
+  @browser_object.style['-moz-user-select'] = user_select
+  @browser_object.style['user-select'] = user_select
+end
+

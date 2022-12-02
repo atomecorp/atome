@@ -120,3 +120,13 @@ html, body {
     display: flex;
     align-items: flex-end;
 }
+
+/*::selection {*/
+/*    color: transparent;*/
+/*    background: none;*/
+/*}*/
+/*!* For Mozilla Firefox *!*/
+/*::-moz-selection {*/
+/*    color: transparent;*/
+/*    background: none;*/
+/*}*/

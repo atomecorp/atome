@@ -27,7 +27,7 @@ class Atome
 
   def new_particle(element, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
-      if params
+      if params || params==false
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = sanitize(element, params)

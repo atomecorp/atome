@@ -27,5 +27,6 @@
 # TODO : animate from actual position to another given position
 # TODO : keep complex property when animating (cf shadows)
 
-##### animation #####
+# generator = Genesis.generator
+
 
