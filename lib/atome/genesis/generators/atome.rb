@@ -2,6 +2,7 @@
 
 generator = Genesis.generator
 
+generator.build_atome(:animation)
 generator.build_atome(:color)
 generator.build_sanitizer(:color) do |params|
   parent_found = found_parents_and_renderers[:parent]

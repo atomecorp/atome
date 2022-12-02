@@ -2,6 +2,10 @@
 
 # for browser rendering
 module BrowserHelper
+  def self.common_shadow_helper
+    alert :zgeg
+  end
+
   def self.browser_blur_style(_browser_object, value, atome)
     b_left = "#{atome[:left]}px"
     b_top = "#{atome[:top]}px"

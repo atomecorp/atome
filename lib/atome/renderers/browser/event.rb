@@ -36,7 +36,7 @@ end
 
 generator.build_render_method(:fullscreen) do |_value, _proc|
   atome_id = atome[:id]
-  AtomeJS.JS.fullscreen(atome_id)
+  ATOME_JS.JS.fullscreen(atome_id)
 end
 
 generator.build_render_method(:mute) do |value, _proc|
@@ -59,6 +59,6 @@ generator.build_render_method(:browser_drag) do |options, proc|
 end
 
 generator.build_render_method(:browser_sort) do |options, _proc|
-  AtomeJS.JS.sort(options, @atome[:id], self)
+  ATOME_JS.JS.sort(options, @atome[:id], self)
 end
 

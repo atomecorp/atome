@@ -14,5 +14,4 @@ module BrowserHelper
   def self.browser_attach_style(parents, _html_object, atome)
     browser_document[parents].add_class(atome[:id])
   end
-  
 end

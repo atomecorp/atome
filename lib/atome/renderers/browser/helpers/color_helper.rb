@@ -2,7 +2,6 @@
 
 # for browser rendering
 module BrowserHelper
-
   def self.browser_colorize_color(color_updated, atome)
     `document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.backgroundColor = #{color_updated}`
   end
@@ -31,5 +30,4 @@ module BrowserHelper
   def self.browser_bottom_color(_value, _browser_object, _atome)
     puts 'code to write when implementing gradient'
   end
-
 end

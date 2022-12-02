@@ -11,4 +11,3 @@ class Atome
     results.first.coordinates
   end
 end
-

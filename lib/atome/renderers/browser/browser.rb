@@ -24,4 +24,4 @@ class Atome
   attr_accessor :browser_object
 end
 
-AtomeJS=`atomeJS`
+ATOME_JS=`atomeJS`

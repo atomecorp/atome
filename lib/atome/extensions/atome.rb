@@ -39,3 +39,7 @@ end
 def web(params = {}, &bloc)
   grab(:view).web(params, bloc)
 end
+
+def animation(params = {}, &proc)
+  grab(:view).animation(params, &proc)
+end

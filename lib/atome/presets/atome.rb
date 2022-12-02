@@ -85,4 +85,14 @@ class Atome
     params = temp_default.merge(params)
     Atome.new({ image: params }, &bloc)
   end
+
+  def animation(params = {}, &bloc)
+    default_renderer = Essentials.default_params[:render_engines]
+    atome_type = :animation
+    generated_render = params[:renderers] || default_renderer
+    generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+    generated_parents = params[:parents] || []
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    Atome.new({ atome_type => params }, &bloc)
+  end
 end
