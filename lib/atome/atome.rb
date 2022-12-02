@@ -64,9 +64,9 @@ class Atome
     end
   end
 
-  def run_optional_proc(proc_name, atome = self, value = '')
+  def run_optional_proc(proc_name, atome = self, value = '', &user_proc)
     option_found = Universe.get_optional_method(proc_name)
-    atome.instance_exec(value, &option_found) if option_found.is_a?(Proc)
+    atome.instance_exec(value,user_proc, &option_found) if option_found.is_a?(Proc)
   end
 
   def inject_value(element, value)
@@ -92,9 +92,9 @@ class Atome
   def create_particle(element, value, &user_proc)
     return false unless security_pass(element, value)
 
-    run_optional_proc("pre_render_#{element}".to_sym, self, value)
+    run_optional_proc("pre_render_#{element}".to_sym, self, value, &user_proc)
     rendering(element, value, &user_proc)
-    run_optional_proc("post_render_#{element}".to_sym, self, value)
+    run_optional_proc("post_render_#{element}".to_sym, self, value, &user_proc)
     store_value(element, value)
     self
   end
@@ -109,7 +109,7 @@ class Atome
     virtual_atome.real_atome = @atome
     virtual_atome.property = element
     virtual_atome.user_proc = user_proc
-    run_optional_proc("pre_get_#{element}".to_sym, virtual_atome)
+    run_optional_proc("pre_get_#{element}".to_sym, virtual_atome, &user_proc)
     virtual_atome
   end
 

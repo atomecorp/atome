@@ -6,7 +6,7 @@ class Atome
 
   attr_accessor :drag_start_proc, :drag_move_proc, :drag_end_proc,
                 :play_start_proc, :play_active_proc, :play_end_proc,
-                :animation_start_proc, :animation_active_proc, :animation_end_proc
+                :animation_start_proc, :animation_active_proc, :animation_stop_proc
 
   public
 
@@ -46,6 +46,12 @@ class Atome
     @atome[:top] = top_val
     proc = @drag_end_proc
     instance_exec({ pageX: page_x, pageY: page_y, left: left_val, top: top_val }, &proc) if proc.is_a?(Proc)
+  end
+
+  # sort callbacks
+  def sort_callback(atome)
+    sort_proc = @sort_proc
+    instance_exec(atome, &sort_proc) if sort_proc.is_a?(Proc)
   end
 
   # def play_start_callback(particle_found, value)

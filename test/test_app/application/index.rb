@@ -32,14 +32,15 @@
 generator = Genesis.generator
 
 generator.build_atome(:animation)
-
-# generator.build_render_method(:browser_animation) do |_value, _user_proc|
-#   @browser_type = :web
-# end
-
 generator.build_particle(:targets)
 generator.build_particle(:start)
+generator.build_option(:pre_render_start) do |_value, user_proc|
+  @animation_start_proc = user_proc
+end
 generator.build_particle(:stop)
+generator.build_option(:pre_render_stop) do |_value, user_proc|
+  @animation_stop_proc = user_proc
+end
 generator.build_particle(:begin)
 generator.build_particle(:end)
 generator.build_particle(:duration)
@@ -63,38 +64,32 @@ class Atome
   end
 
   ################### callbacks
-  def browser_animate_callback(particle_found, value,animation_atome,original_particle)
-    anim_proc=animation_atome[:code]
-    #  we exec  the code bloc
+  def browser_animate_callback(particle_found, value, animation_hash, original_particle, animation_atome)
+    anim_proc = animation_hash[:code]
+    #  we exec the callback bloc from :animate
     instance_exec({ original_particle => value }, &anim_proc) if anim_proc.is_a?(Proc)
+    # we exec the callback bloc from :play
+    play_proc = animation_atome.play_active_proc
+    instance_exec({ @atome[particle_found] => value }, &play_proc) if play_proc.is_a?(Proc)
     # we animate:
     browser_object.style[particle_found] = value if browser_object
     # we update the atome property
     @atome[original_particle] = value
   end
 
-  def play_start_callback(particle_found, value)
-    @atome[particle_found] = value
-    play_proc = play_start_proc
-    anim_proc = animation_start_proc
-    instance_exec({ @atome[particle_found] => value }, &play_proc) if play_proc.is_a?(Proc)
-    instance_exec({ @atome[particle_found] => value }, &anim_proc) if anim_proc.is_a?(Proc)
+  def play_start_callback(particle_found, startvalue, animation_hash, original_particle, atome_found)
+    value = animation_hash[:begin][original_particle]
+    value = atome_found.atome[original_particle] if value == :self
+    start_proc = @animation_start_proc
+    @atome[original_particle] = value
+    instance_exec({ original_particle => value }, &start_proc) if start_proc.is_a?(Proc)
   end
 
-  def play_active_callback(particle_found, value)
-    @atome[particle_found] = value
-    play_proc = play_active_proc
-    anim_proc = animation_active_proc
-    instance_exec({ @atome[particle_found] => value }, &play_proc) if play_proc.is_a?(Proc)
-    instance_exec({ @atome[particle_found] => value }, &anim_proc) if anim_proc.is_a?(Proc)
-  end
-
-  def play_stop_callback(particle_found, value)
-    @atome[particle_found] = value
-    play_proc = play_end_proc
-    anim_proc = animation_end_proc
-    instance_exec({ @atome[particle_found] => value }, &play_proc) if play_proc.is_a?(Proc)
-    instance_exec({ @atome[particle_found] => value }, &anim_proc) if anim_proc.is_a?(Proc)
+  def play_stop_callback(particle_found, end_value, animation_hash, original_particle, atome_found)
+    value = animation_hash[:end][original_particle]
+    end_proc = @animation_stop_proc
+    @atome[original_particle] = value
+    instance_exec({ original_particle => value }, &end_proc) if end_proc.is_a?(Proc)
   end
 
 end
@@ -102,14 +97,6 @@ end
 def animation(params = {}, &proc)
   grab(:view).animation(params, &proc)
 end
-
-# generator.build_option(:pre_render_children) do |children_pass|
-#   children_pass.each do |child_found|
-#     atome_found = grab(child_found)
-#     atome_found.parents([])
-#     atome_found.parents([@atome[:id]])
-#   end
-# end
 
 module BrowserHelper
 
@@ -137,60 +124,49 @@ module BrowserHelper
     value
   end
 
-  def self.send_anim_to_js(animation, atome_hash, atome_found, atome_id)
+  def self.send_anim_to_js(animation, atome_hash, atome_found, atome_id, animation_atome)
     animated_particle = animation[0]
     start_value = animation[1]
     end_value = animation[2]
-    original_particle=animation[3]
+    original_particle = animation[3]
     AtomeJS.JS.animate(animated_particle, atome_hash[:duration], atome_hash[:damping], atome_hash[:ease],
                        atome_hash[:mass], atome_hash[:repeat], atome_hash[:stiffness], atome_hash[:velocity],
-                       start_value, end_value, atome_id, atome_found,atome_hash,original_particle)
+                       start_value, end_value, atome_id, atome_found, atome_hash, original_particle, animation_atome)
   end
 
-  def self.sanitize_anim_params(value, particle_found, atome_hash, atome_found, atome_id)
+  def self.sanitize_anim_params(value, particle_found, atome_hash, atome_found, atome_id, animation_atome)
     start_value = anim_value_analysis(value, particle_found, atome_found)
     start_value = BrowserHelper.anim_convertor(start_value)[particle_found][1]
     end_value = anim_value_analysis(atome_hash[:end][particle_found], particle_found, atome_found)
     end_value = BrowserHelper.anim_convertor(end_value)[particle_found][1]
     animated_particle = BrowserHelper.anim_convertor(value)[particle_found][0]
     # animation is a stupid array to satisfy rubocop stupidity
-    animation = [animated_particle, start_value, end_value,particle_found]
-    send_anim_to_js(animation, atome_hash, atome_found, atome_id)
+    animation = [animated_particle, start_value, end_value, particle_found]
+    send_anim_to_js(animation, atome_hash, atome_found, atome_id, animation_atome)
   end
 
-  def self.anim_pop_motion_converter(atome_hash, atome_found, atome_id)
+  def self.anim_pop_motion_converter(atome_hash, atome_found, atome_id, animation_atome)
     atome_hash[:dampingRatio] = atome_hash.delete(:damping)
     atome_hash[:begin].each do |particle_found, value|
-      sanitize_anim_params(value, particle_found, atome_hash, atome_found, atome_id)
+      sanitize_anim_params(value, particle_found, atome_hash, atome_found, atome_id, animation_atome)
     end
   end
 
-  def self.begin_animation(atome_hash, atome_found, atome_id)
-    anim_pop_motion_converter(atome_hash, atome_found, atome_id)
+  def self.begin_animation(atome_hash, atome_found, atome_id, animation_atome)
+    anim_pop_motion_converter(atome_hash, atome_found, atome_id, animation_atome)
   end
 
-  def self.browser_play_animation(options, browser_object_found, atome_hash, atome_object, proc)
-
-    unless atome_hash[:targets]
-      atome_hash[:targets]=[:eDen]
+  def self.browser_play_animation(options, browser_object_found, atome_hash, animation_atome, proc)
+    atome_hash[:targets] = [:eDen] unless atome_hash[:targets]
+    animation_atome.play_active_proc = proc
+    atome_hash[:targets].each do |target|
+      atome_found = grab(target)
+      atome_id = atome_found.atome[:id]
+      begin_animation(atome_hash, atome_found, atome_id, animation_atome)
     end
-    # if atome_hash[:targets]
-      atome_hash[:targets].each do |target|
-        atome_found = grab(target)
-        atome_id = atome_found.atome[:id]
-        begin_animation(atome_hash, atome_found, atome_id)
-      end
-    # else
-    #   alert :advanced_anim_here
-    #   # user doesn't want to anim any specific target but get the value for t's own use
-    #    begin_animation(atome_hash, atome_found, atome_id)
-    # end
 
-  
   end
 end
-
-
 
 # verif
 
@@ -204,7 +180,6 @@ c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,
            red: 0, green: 0, blue: 0, alpha: 1
          })
 # alert aa
-
 
 Atome.new(animation: { renderers: [:browser], id: :the_animation1, type: :animation, children: [] })
 aa = animation({
@@ -221,7 +196,7 @@ aa = animation({
                    smooth: 33,
                    width: :the_ref
                  },
-                 duration: 8800,
+                 duration: 800,
                  mass: 1,
                  damping: 1,
                  stiffness: 1000,
@@ -231,53 +206,67 @@ aa = animation({
                }) do |pa|
   puts "animation say#{pa}"
 end
-aa.stop do
-
+aa.stop(true) do |val|
+  puts " stop : #{val}"
 end
 
-aa.start do
-
+aa.start(true) do |val|
+  puts " start : #{val}"
 end
-
 
 bb.touch(true) do
   aa.play(true) do |po|
-    puts "play say #{po}"
+    # puts "play say #{po}"
   end
 end
 
-aaa=animation({
-            # targets: %i[],
-            begin: {
-              left_add: 0,
-              top: :self,
-              smooth: 0,
-              width: 3
-            },
-            end: {
-              left_add: 333,
-              top: :self,
-              smooth: 33,
-              width: :the_ref
-            },
-            duration: 8800,
-            mass: 1,
-            damping: 1,
-            stiffness: 1000,
-            velocity: 1,
-            repeat: 1,
-            ease: 'spring'
-          }) do |pa|
+aaa = animation({
+                  # targets: %i[],
+                  begin: {
+                    left_add: 0,
+                    top: :self,
+                    smooth: 0,
+                    width: 3
+                  },
+                  end: {
+                    left_add: 333,
+                    top: :self,
+                    smooth: 33,
+                    width: :the_ref
+                  },
+                  duration: 8800,
+                  mass: 1,
+                  damping: 1,
+                  stiffness: 1000,
+                  velocity: 1,
+                  repeat: 1,
+                  ease: 'spring'
+                }) do |pa|
   puts "get params to do anything say#{pa}"
 end
-wait 3 do
-  aaa.play(true) do |po|
-    puts "play aaa say #{po}"
-  end
-# alert Universe.atomes.keys
+wait 1 do
+  # aaa.play(true) do |po|
+  #   puts "play aaa say #{po}"
+  # end
+  # alert Universe.atomes.keys
 end
 
 # alert aa.targets
 
+generator = Genesis.generator
+generator.build_particle(:sort) do |_value, sort_proc|
+  @sort_proc=sort_proc
+end
+
+generator.build_render_method(:browser_sort) do |options, _proc|
+  AtomeJS.JS.sort(options, @atome[:id], self)
+end
 
 
+class Atome
+  def sort_callback(atome)
+    sort_proc = @sort_proc
+    instance_exec(atome, &sort_proc) if sort_proc.is_a?(Proc)
+  end
+
+end

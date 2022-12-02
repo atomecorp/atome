@@ -58,7 +58,7 @@ generator.build_render_method(:browser_drag) do |options, proc|
   end
 end
 
-generator.build_render_method(:sort) do |options, _proc|
+generator.build_render_method(:browser_sort) do |options, _proc|
   AtomeJS.JS.sort(options, @atome[:id], self)
 end
 
