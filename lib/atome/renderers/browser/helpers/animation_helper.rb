@@ -30,7 +30,7 @@ module BrowserHelper
     start_value = animation[1]
     end_value = animation[2]
     original_particle = animation[3]
-    ATOME_JS.JS.animate(animated_particle, atome_hash[:duration], atome_hash[:damping], atome_hash[:ease],
+    atome_js.JS.animate(animated_particle, atome_hash[:duration], atome_hash[:damping], atome_hash[:ease],
                        atome_hash[:mass], atome_hash[:repeat], atome_hash[:stiffness], atome_hash[:velocity],
                        start_value, end_value, atome_id, atome_found, atome_hash, original_particle, animation_atome)
   end

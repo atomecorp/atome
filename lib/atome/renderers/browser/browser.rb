@@ -13,6 +13,7 @@ require 'atome/renderers/browser/helpers/animation_helper'
 require 'atome/renderers/browser/helpers/color_helper'
 require 'atome/renderers/browser/helpers/drag_helper'
 require 'atome/renderers/browser/helpers/effect_helper'
+require 'atome/renderers/browser/helpers/event_helper'
 require 'atome/renderers/browser/helpers/image_helper'
 require 'atome/renderers/browser/helpers/shadow_helper'
 require 'atome/renderers/browser/helpers/shape_helper'
@@ -21,7 +22,9 @@ require 'atome/renderers/browser/helpers/video_helper'
 require 'atome/renderers/browser/helpers/web_helper'
 
 class Atome
-  attr_accessor :browser_object
+  attr_accessor 'browser_object'
 end
 
-ATOME_JS=`atomeJS`
+def atome_js
+  `atomeJS`
+end

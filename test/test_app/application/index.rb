@@ -27,6 +27,122 @@
 # TODO : animate from actual position to another given position
 # TODO : keep complex property when animating (cf shadows)
 
+
 # generator = Genesis.generator
+separator=120
+b=box({ left: separator })
+c=box({ left: b.left.value+separator })
+d=box({ left: c.left.value+separator })
+e=box({ left: d.left.value+separator })
+
+b.touch(:down) do
+  b.color(:red)
+  c.color(:red)
+  d.color(:red)
+  e.color(:red)
+end
+b.text({data: :down})
+
+c.touch(:long) do
+  b.color(:blue)
+  c.color(:blue)
+  d.color(:blue)
+  e.color(:blue)
+end
+c.text({data: :long})
+
+d.touch(:up) do
+  b.color(:yellow)
+  c.color(:yellow)
+  d.color(:yellow)
+  e.color(:yellow)
+end
+d.text({data: :up})
+e.touch(:double) do
+  b.color(:black)
+  c.color(:black)
+  d.color(:black)
+  e.color(:black)
+end
+e.text({data: :double})
+# b.touch(:double) do
+#   # alert :kool
+#   #
+#   `
+#    let bell = new Audio('medias/audios/snare.wav');
+# bell.play();
+#   `
+#   b.color(:red)
+#
+# #   `
+# #   var audio = new Audio('medias/audios/snare.wav');
+# # //audio.play();
+# # //let bell = new Wad({sin : audio});
+# # let bell = audio
+# # //bell.play();
+# # //bell.stop();
+# #
+# # //////
+# #
+# # var helloWorld = new Wad({
+# #    // source: 'medias/audios/snare.wav',
+# #  var audio = new Audio('medias/audios/snare.wav'),
+# #    source: 'medias/audios/snare.wav',
+# #     // add a key for each sprite
+# #     sprite: {
+# #         hello : [0, .4], // the start and end time, in seconds
+# #         world : [.4,1]
+# #     }
+# # });
+# #
+# # // for each key on the sprite object in the constructor above, the wad that is created will have a key of the same name, with a play() method.
+# # helloWorld.hello.play();
+# # helloWorld.world.play();
+# #
+# # // you can still play the entire clip normally, if you want.
+# # helloWorld.play();
+# #
+# # // if you hear clicks or pops from starting and stopping playback in the middle of the clip, you can try adding some attack and release to the envelope.
+# # helloWorld.hello.play({env:{attack: .1, release:.02}})
+# # `
+# end
 
 
+
+# `
+# //let saw = new Wad({source : 'sawtooth'});
+# let saw = new Wad({
+#     source        : 'sawtooth',
+#     panning       : [0, 1, 10],
+#     panningModel  : 'HRTF',
+#     rolloffFactor : 3 // other properties of the panner node can be specified in the constructor, or on play()
+# })
+# saw.play();
+#`
+module OS
+  def OS.windows?
+    (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+  end
+
+  def OS.mac?
+    (/darwin/ =~ RUBY_PLATFORM) != nil
+  end
+
+  def OS.unix?
+    !OS.windows?
+  end
+
+  def OS.linux?
+    OS.unix? and !OS.mac? and !OS.opal?
+  end
+
+  def OS.jruby?
+    RUBY_ENGINE == 'jruby'
+  end
+
+  def OS.opal?
+    RUBY_ENGINE == 'opal'
+  end
+end
+
+# alert  OS.linux?

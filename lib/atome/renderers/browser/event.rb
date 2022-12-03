@@ -2,10 +2,10 @@
 
 generator = Genesis.generator
 
-generator.build_render_method(:browser_touch) do |_value, proc|
-  @browser_object.on :click do |e|
-    instance_exec(e, &proc) if proc.is_a?(Proc)
-  end
+generator.build_render_method(:browser_touch) do |value, proc|
+  atome_id= @browser_object.attribute(:id)
+  BrowserHelper.send("browser_touch_#{value}",atome_id, proc)
+  # end
 end
 
 generator.build_render_method(:browser_play) do |value, proc|
@@ -36,7 +36,7 @@ end
 
 generator.build_render_method(:fullscreen) do |_value, _proc|
   atome_id = atome[:id]
-  ATOME_JS.JS.fullscreen(atome_id)
+  atome_js.JS.fullscreen(atome_id)
 end
 
 generator.build_render_method(:mute) do |value, _proc|
@@ -59,6 +59,6 @@ generator.build_render_method(:browser_drag) do |options, proc|
 end
 
 generator.build_render_method(:browser_sort) do |options, _proc|
-  ATOME_JS.JS.sort(options, @atome[:id], self)
+  atome_js.JS.sort(options, @atome[:id], self)
 end
 
