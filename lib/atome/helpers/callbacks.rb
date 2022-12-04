@@ -19,12 +19,15 @@ class Atome
   end
 
   def time_callback(current_time)
+    # puts "time_callback = #{current_time.round(1)}\n#{current_time}"
     @atome[:time] = current_time
-    return unless @at_time[:time] && (current_time.round(1) > @at_time[:time] && @at_time[:used].nil?)
+    # the line below is used only to set up a one shot event
+    # return unless @at_time[:time] && (current_time > @at_time[:time] && @at_time[:used].nil?)
 
+    return unless @at_time[:time] && (current_time > @at_time[:time])
     proc = @at_time[:code]
     instance_exec(current_time, &proc) if proc.is_a?(Proc)
-    @at_time[:used] = true
+    # @at_time[:used] = true
   end
 
   def drag_start_callback(page_x, page_y, left_val, top_val)

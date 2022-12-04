@@ -10,7 +10,7 @@ end
 
 generator.build_render_method(:browser_play) do |value, proc|
   # first we reinit the 'at' event so the condition will be met again
-  @at_time[:used] = nil
+  # @at_time[:used] = nil
   @browser_object.currentTime = value if value != true
   BrowserHelper.send("browser_play_#{@atome[:type]}", value, @browser_object, @atome, self, proc)
 end
@@ -48,6 +48,7 @@ generator.build_render_method(:mute) do |value, _proc|
 end
 
 generator.build_render_method(:browser_at) do |at, proc|
+  # @atime is check at each toick of frame in 'time_callback'
   @at_time = { code: proc }.merge(at)
 end
 

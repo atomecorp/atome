@@ -16,6 +16,7 @@ class Atome
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
       @at_time = {}
+      @markers = {}
       # now we store the proc in a an atome's property called :bloc
       elements[:code] = atomes_proc if atomes_proc
       @atome = elements
@@ -27,7 +28,7 @@ class Atome
 
   def new_particle(element, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
-      if params || params==false
+      if params || params == false
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = sanitize(element, params)
@@ -66,7 +67,7 @@ class Atome
 
   def run_optional_proc(proc_name, atome = self, value = '', &user_proc)
     option_found = Universe.get_optional_method(proc_name)
-    atome.instance_exec(value,user_proc, &option_found) if option_found.is_a?(Proc)
+    atome.instance_exec(value, user_proc, &option_found) if option_found.is_a?(Proc)
   end
 
   def inject_value(element, value)
@@ -82,7 +83,7 @@ class Atome
   public
 
   # the line below is used for ephemera atomes
-  attr_accessor :property, :value, :real_atome, :user_proc
+  attr_accessor :property, :value, :real_atome, :user_proc, :markers
   attr_reader :atome, :structure, :at_time
 
   def set(value)
