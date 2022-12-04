@@ -29,3 +29,6 @@ generator.build_particle(:read) do |file, proc|
     send("#{renderer}_reader", file, &proc)
   end
 end
+
+generator.build_particle(:cursor)
+

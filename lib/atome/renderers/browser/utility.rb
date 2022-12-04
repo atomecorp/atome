@@ -37,3 +37,7 @@ end
 generator.build_render_method(:browser_reader) do |file, proc|
   atome_js.JS.reader(file, self, proc)
 end
+
+generator.build_render_method(:browser_cursor) do |value|
+  @browser_object.style[:cursor] = value
+end
