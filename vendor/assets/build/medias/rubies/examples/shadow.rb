@@ -2,6 +2,9 @@
 
 b = box({ id: :the_box, left: 99, top: 99 })
 
+
+
+
 s = b.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [], children: [],
                left: 3, top: 9, blur: 3, direction: :inset,
                red: 0, green: 0, blue: 0, alpha: 1
@@ -27,4 +30,8 @@ wait 1 do
       s.green(0.7)
     end
   end
+end
+
+wait 3 do
+  b.shadow({ blur: 33 })
 end

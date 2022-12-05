@@ -22,6 +22,15 @@ generator.build_sanitizer(:video) do |params|
   default_params.merge!(params)
 end
 generator.build_atome(:shadow)
+
+generator.build_sanitizer(:shadow) do |params|
+  parent_found = found_parents_and_renderers[:parent]
+  render_found = found_parents_and_renderers[:renderers]
+  default_params = { renderers: render_found, id: "shadow_#{Universe.atomes.length}", type: :shadow,
+                     parents: parent_found,
+                     red: 0, green: 0, blue: 0, alpha: 1 , blur: 3, left: 3, top: 3}
+  default_params.merge!(params)
+end
 generator.build_atome(:shape)
 generator.build_atome(:text)
 generator.build_atome(:image)

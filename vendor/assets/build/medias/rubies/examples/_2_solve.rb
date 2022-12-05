@@ -23,7 +23,7 @@ b.color(:black)
 circle({ id: :circle_123, color: :cyan, left: 233 })
 
 
-# big perfomrance problem plus params as left is not interpreted
+# big performance problem plus params as left is not interpreted
 
 i = 0
 while i < 16
@@ -34,3 +34,14 @@ while i < 16
   i += 1
   # b.drag(true)
 end
+
+
+# .color (return the color itself instead of the box ) and .red retrun itself too so it's impossible to set green and blue
+# another problem : when steeing .red it reset the whole color object and remove green an blue components
+box({id: :mybox})
+grab(:my_box).smooth(6).color(:black).red(0.6).green(0.6).blue(0.6)
+
+# color can't be changed easily
+
+b=box
+b.color.red(1)

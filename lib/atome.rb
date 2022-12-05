@@ -28,5 +28,6 @@ end
 require 'atome/renderers/headless/headless'
 require 'atome/renderers/server/server'
 require 'atome/extensions/atome'
+require 'atome/extensions/matrix'
 require 'atome/helpers/sanitizer'
 require 'atome/genesis/sparkle'

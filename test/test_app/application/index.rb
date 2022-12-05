@@ -1,6 +1,6 @@
 # # frozen_string_literal: true
-#
-# # # # frozen_string_literal: true
+
+
 #
 # # # # Done : when sanitizing property must respect the order else no browser
 # # object will be created, try to make it more flexible allowing any order
@@ -21,7 +21,7 @@
 # # TODO : when drag update the atome's position of all children
 # # TODO : analysis on Bidirectional code and drag callback
 # # TODO : create shadow presets
-# # TODO : analysis on presets santitizer confusion
+# # TODO : analysis on presets sanitizer confusion
 # # TODO : optimize the use of 'generator = Genesis.generator'
 # # TODO : Create a demo test of all apis
 # # TODO : animate from actual position to another given position
@@ -31,4 +31,3 @@
 # # TODO :  box().left(33).color(:red).smooth(8) doesn't work as atome try to smooth the color instead of the box
 
 require 'build/medias/rubies/examples/_matrix'
-

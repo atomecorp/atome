@@ -39,12 +39,12 @@ end
 
 task :run_example do
   FileUtils.copy_entry('vendor/assets/build/medias/rubies/examples/', 'test/test_app/build/medias/rubies/examples/')
-  `cd test/test_app;atome run guard`
+  `cd test/test_app;atome run `
 end
 
 task :run_example_server do
   FileUtils.copy_entry('vendor/assets/build/medias/rubies/examples/', 'test/test_app/build/medias/rubies/examples/')
-  `cd test/test_app;atome run server guard`
+  `cd test/test_app;atome run server `
 end
 
 

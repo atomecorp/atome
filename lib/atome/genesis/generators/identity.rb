@@ -25,3 +25,4 @@ generator.build_option(:pre_render_parents) do |parents_id_found|
     parents_found.children << id if parents_found
   end
 end
+generator.build_particle(:name)
