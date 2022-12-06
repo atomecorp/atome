@@ -30,4 +30,4 @@
 # # TODO : check the possibility of creation an instance variable for any particle proc eg : a.left do ... => @left_code
 # # TODO :  box().left(33).color(:red).smooth(8) doesn't work as atome try to smooth the color instead of the box
 
-require 'build/medias/rubies/examples/at'
+require 'build/medias/rubies/examples/matrix'

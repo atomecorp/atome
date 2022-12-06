@@ -12,6 +12,10 @@ my_video.touch(true) do
   my_video.play(1)
 end
 
-my_video.at({ time: 2.6 }) do |value|
+my_video.at({ time: 3.6 }) do |value|
+  puts "okok"
+end
+
+my_video.at({ time: 6.6 }) do |value|
   my_video.pause(true)
 end

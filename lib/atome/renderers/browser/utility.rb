@@ -41,3 +41,8 @@ end
 generator.build_render_method(:browser_cursor) do |value|
   @browser_object.style[:cursor] = value
 end
+
+generator.build_render_method(:browser_overflow) do |value|
+  @browser_object.style[:overflow] = value
+end
+
