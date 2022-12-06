@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-a = Matrix.new({ col: 2, row: 8, width: 120, height: 333, id: :vie_playground, name: :matrix_2, margin: 9,
+a = Matrix.new({ col: 1, row: 8, width: 120, height: 333, id: :vie_playground, name: :matrix_2, margin: 9,
                  matrix_style: { color: { red: 0.3, green: 0.3, blue: 0.6, alpha: 1 }, smooth: 20 },
-                 cell_style: { color: { red: 0.333, green: 0.333, blue: 0.6, alpha: 1 }, smooth: 20, shadow: { blur: 6 }
+                 cell_style: { color: { red: 0.333, green: 0.333, blue: 0.6, alpha: 1 }, smooth: 300, shadow: { blur: 6 }
                                #border: { color: :black, thickness: 0, pattern: :solid }
                  }
 
