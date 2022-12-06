@@ -57,6 +57,8 @@ class Atome
         get_atome(element, &user_proc)
       end
     end
+    # the method below generate Atome method creation at Object level
+    create_method_at_object_level(element)
   end
 
   def new_render_engine(renderer_name, &method_proc)

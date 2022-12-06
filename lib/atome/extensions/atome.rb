@@ -12,34 +12,9 @@ def circle(params = {}, &proc)
   grab(:view).circle(params, &proc)
 end
 
-def text(params = {}, &bloc)
-  grab(:view).text(params, &bloc)
-end
-
-def image(params = {}, &bloc)
-  grab(:view).image(params, &bloc)
-end
-
-def video(params = {}, &bloc)
-  grab(:view).video(params, &bloc)
-end
-
-def color(params = {}, &bloc)
-  grab(:view).color(params, &bloc)
-end
-
-def element(params = {}, &bloc)
-  grab(:view).element(params, &bloc)
-end
-
-def shadow(params = {}, &bloc)
-  grab(:view).shadow(params, &bloc)
-end
-
-def web(params = {}, &bloc)
-  grab(:view).web(params, bloc)
-end
-
-def animation(params = {}, &proc)
-  grab(:view).animation(params, &proc)
+# the method below generate Atome method creation at Object level
+def create_method_at_object_level(element)
+  Object.define_method element do |params = nil, &user_proc|
+    grab(:view).send(element, params, &user_proc)
+  end
 end
