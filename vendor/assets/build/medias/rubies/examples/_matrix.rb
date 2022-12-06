@@ -17,3 +17,15 @@ wait 2 do
     a.resize_matrix({ width: 666, height: 333 })
   end
 end
+
+class Matrix
+  def add(what)
+    alert @cols
+    # if what == :column
+    # alert @matrix
+    #   elsif what == :row
+    # end
+  end
+end
+
+a.add({column: 3})
