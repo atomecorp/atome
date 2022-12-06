@@ -3,8 +3,8 @@
 generator = Genesis.generator
 
 generator.build_render_method(:browser_touch) do |value, proc|
-  atome_id= @browser_object.attribute(:id)
-  BrowserHelper.send("browser_touch_#{value}",atome_id, proc)
+  atome_id = @browser_object.attribute(:id)
+  BrowserHelper.send("browser_touch_#{value}", atome_id, proc)
   # end
 end
 
@@ -62,4 +62,14 @@ end
 generator.build_render_method(:browser_sort) do |options, _proc|
   atome_js.JS.sort(options, @atome[:id], self)
 end
+
+# TODO: for now unbind remove all touch event we should remove only the targeted one (store proc and restore it)
+generator.build_render_method(:browser_unbind) do |options, _proc|
+  id_found = self.atome[:id]
+  `
+const el = document.getElementById(#{id_found});
+interact('#'+#{id_found}).unset(#{options});
+`
+end
+
 

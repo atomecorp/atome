@@ -26,3 +26,6 @@ generator.build_option(:pre_render_parents) do |parents_id_found|
   end
 end
 generator.build_particle(:name)
+
+generator.build_particle(:active)
+

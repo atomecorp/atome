@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 separator=120
-b=box({ left: separator })
+b=box({ left: separator, id: :test_box })
 c=box({ left: b.left.value+separator })
 d=box({ left: c.left.value+separator })
 e=box({ left: d.left.value+separator })
@@ -36,3 +36,21 @@ e.touch(:double) do
   e.color(:black)
 end
 e.text({data: :double})
+
+ccc=circle
+ccc.top(199)
+
+# def unbind(val=nil)
+#   id_found=self.atome[:id]
+# `
+# const el = document.getElementById(#{id_found});
+# interact('#'+#{id_found}).unset(#{val});
+# `
+# end
+b.touch(:long) do
+  b.color(:cyan)
+end
+
+ccc.touch(true) do
+  b.unbind(:tap)
+end
