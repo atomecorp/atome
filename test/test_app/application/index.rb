@@ -27,12 +27,17 @@
 # # TODO : animate from actual position to another given position
 # # TODO : keep complex property when animating (cf shadows)
 # # TODO : at method is bugged : my_video.at accumulate at each video play
-# # TODO : check the possibility of creation an instance variable for any particle proc eg : a.left do ... => @left_code
-# # TODO : color, shadow, ... must be add as componenst not children
+# # TODO : at method only accept one instance
+# # Done : check the possibility of creation an instance variable for any particle proc eg : a.left do ... => @left_code
+# # TODO : color, shadow, ... must be add as components not children
 # # TODO :  box().left(33).color(:red).smooth(8) doesn't work as atome try to smooth the color instead of the box
 # # TODO :  box().left(33).color(:red).smooth(8) doesn't work as atome try to smooth the color instead of the box
 
 # require 'build/medias/rubies/examples/matrix'
 # require 'build/medias/rubies/examples/touch'
 
-require 'build/medias/rubies/examples/_center'
+# require 'build/medias/rubies/examples/atome_new'
+
+a=box
+
+alert a.instance_variables

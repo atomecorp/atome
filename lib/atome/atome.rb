@@ -95,6 +95,7 @@ class Atome
   def create_particle(element, value, &user_proc)
     return false unless security_pass(element, value)
 
+    instance_variable_set("@#{element}",value)
     run_optional_proc("pre_render_#{element}".to_sym, self, value, &user_proc)
     rendering(element, value, &user_proc)
     run_optional_proc("post_render_#{element}".to_sym, self, value, &user_proc)
