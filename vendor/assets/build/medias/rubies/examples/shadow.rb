@@ -12,7 +12,7 @@ s = b.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [], 
 
 
 wait 1 do
-  s.parents([:the_box])
+  s.attach([:the_box])
   # or
   # b.children([:shadow2])
   wait 1 do

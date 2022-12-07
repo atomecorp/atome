@@ -21,7 +21,9 @@ class Atome
       elements[:code] = atomes_proc if atomes_proc
       @atome = elements
       # we initiate the rendering, eg for for browser we will call :browser_type generate method in identity.rb file
-      create_particle(:type, @atome[:type])
+      # create_particle(:type, @atome[:type])
+      create_particle(:type)
+      set_type(@atome[:type])
       collapse
     end
   end
@@ -32,7 +34,8 @@ class Atome
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = sanitize(element, params)
-        create_particle(element, params, &user_proc)
+        create_particle(element)
+        send("set_#{element}", params, &user_proc)
       else
         get_particle(element, &user_proc)
       end
@@ -43,7 +46,7 @@ class Atome
     Atome.define_method "#{element}=" do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
       params = sanitize(element, params)
-      create_particle(element, params, &user_proc)
+      particle_creation(element, params, &user_proc)
     end
   end
 
@@ -52,7 +55,8 @@ class Atome
       if params
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = sanitize(element, params)
-        Atome.new({ element => params })
+        create_atome(element)
+        send("set_#{element}", params, &user_proc)
       else
         get_atome(element, &user_proc)
       end
@@ -92,16 +96,22 @@ class Atome
     @real_atome[@property] = value
   end
 
-  def create_particle(element, value, &user_proc)
-    return false unless security_pass(element, value)
+  def particle_creation(element, params, &user_proc)
+    return false unless security_pass(element, params)
 
     # we create a proc holder of any new particle if user pass a bloc
     store_code_bloc(element, &user_proc) if user_proc
-    run_optional_proc("pre_render_#{element}".to_sym, self, value, &user_proc)
-    rendering(element, value, &user_proc)
-    run_optional_proc("post_render_#{element}".to_sym, self, value, &user_proc)
-    store_value(element, value)
+    run_optional_proc("pre_render_#{element}".to_sym, self, params, &user_proc)
+    rendering(element, params, &user_proc)
+    run_optional_proc("post_render_#{element}".to_sym, self, params, &user_proc)
+    store_value(element, params)
     self
+  end
+
+  def create_particle(element)
+    Atome.define_method "set_#{element}" do |params, &user_proc|
+      particle_creation(element, params, &user_proc)
+    end
   end
 
   def get(element)
@@ -128,7 +138,9 @@ class Atome
   end
 
   def create_atome(new_atome)
-    Atome.new(new_atome)
+    Atome.define_method "set_#{new_atome}" do |params, &user_proc|
+      Atome.new({ new_atome => params }, &user_proc)
+    end
   end
 
   Universe.connected

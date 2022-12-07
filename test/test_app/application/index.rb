@@ -32,7 +32,15 @@
 # # TODO : color, shadow, ... must be add as components not children
 # # TODO :  box().left(33).color(:red).smooth(8) doesn't work as atome try to smooth the color instead of the box
 # # TODO :  box().left(33).color(:red).smooth(8) doesn't work as atome try to smooth the color instead of the box
+# # TODO : atome have both 'set_particle' and 'particle' instance variable, eg 'set_color' and 'color' (make a choice)
+# require 'build/medias/rubies/examples/color'
+# require 'build/medias/rubies/examples/animation'
+# wait 10 do
+#   grab(:view).clear(true)
+  require 'build/medias/rubies/examples/shadow'
+# end
 
-# require 'build/medias/rubies/examples/matrix'
-# require 'build/medias/rubies/examples/touch'
+
+
+
 

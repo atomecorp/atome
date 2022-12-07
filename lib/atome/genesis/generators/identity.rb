@@ -29,3 +29,10 @@ generator.build_particle(:name)
 
 generator.build_particle(:active)
 
+generator.build_particle(:attach) do |parents|
+  parents.each do |parent|
+    grab(parent).attached(atome[:id])
+  end
+end
+generator.build_particle(:attached)
+

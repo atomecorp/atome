@@ -8,7 +8,7 @@ generator.build_sanitizer(:color) do |params|
   parent_found = found_parents_and_renderers[:parent]
   render_found = found_parents_and_renderers[:renderers]
   default_params = { renderers: render_found, id: "color_#{Universe.atomes.length}", type: :color,
-                     parents: parent_found,
+                     attach: parent_found,
                      red: 0, green: 0, blue: 0, alpha: 1 }
   params = create_color_hash(params) unless params.instance_of? Hash
   default_params.merge!(params)
@@ -27,7 +27,7 @@ generator.build_sanitizer(:shadow) do |params|
   parent_found = found_parents_and_renderers[:parent]
   render_found = found_parents_and_renderers[:renderers]
   default_params = { renderers: render_found, id: "shadow_#{Universe.atomes.length}", type: :shadow,
-                     parents: parent_found,
+                     attach: parent_found,
                      red: 0, green: 0, blue: 0, alpha: 1 , blur: 3, left: 3, top: 3}
   default_params.merge!(params)
 end

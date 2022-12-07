@@ -48,5 +48,46 @@ circle({id: :the_circle})
 wait 2 do
   the_col=Atome.new({ color: { renderers: [:browser], id: :c31, type: :color, parents: [], children: [],
                                left: 33, top: 66, red: 0, green: 0.15, blue: 0.7, alpha: 0.6 } })
-  the_col.parents([:the_circle])
+  the_col.attach([:the_circle])
 end
+
+
+
+
+
+
+
+
+
+
+
+
+#####################@
+# generator = Genesis.generator
+
+# generator.build_particle(:attach) do |parents|
+#   parents.each do |parent|
+#     grab(parent).attached(atome[:id])
+#   end
+# end
+# generator.build_particle(:attached)
+
+# generator.build_render_method(:browser_attach) do |parents_found|
+#   parents_found.each do |parent_found|
+#     BrowserHelper.send("browser_attach_#{@browser_type}", parent_found, @browser_object, @atome)
+#   end
+# end
+
+# a = Atome.new(
+#   { shape: { renderers: [:browser], id: :test, type: :shape, parents: [:user_view], children: [],
+#              set_left: 150, right: 150, top: 150, bottom: 150, overflow: :auto,
+#              set_color: { renderers: [:browser], id: :col_test, type: :color, left: [:test], attach: [:test],
+#                           red: 0.6, green: 1, blue: 0.33, alpha: 1 } } }
+# )
+#
+# a.set_left(800)
+
+# alert a.attached
+# a.set_color({ renderers:  [:browser], id: :col_test3, type: :color, left: [:test],
+#               red: 0, green: 0.1, blue: 1, alpha: 1 }  )
+# puts a.methods

@@ -22,7 +22,7 @@ class Atome
     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_parents = params[:parents] || [id.value]
     params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
-    color_generated = sanitize(:color, { parents: [generated_id], red: 0.3, green: 0.3, blue: 0.3 })
+    color_generated = sanitize(:color, { attach: [generated_id], red: 0.3, green: 0.3, blue: 0.3 })
     params[:color] = color_generated
     Atome.new({ atome_type => params }, &bloc)
   end
@@ -34,7 +34,7 @@ class Atome
     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_parents = params[:parents] || [id.value]
     params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
-    color_generated = sanitize(:color, { parents: [generated_id], red: 0.6, green: 0.6, blue: 0.6 })
+    color_generated = sanitize(:color, { attach: [generated_id], red: 0.6, green: 0.6, blue: 0.6 })
     params[:color] = color_generated
     Atome.new({ atome_type => params }, &bloc)
   end
@@ -59,7 +59,7 @@ class Atome
     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_parents = params[:parents] || [id.value]
     params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
-    color_generated = sanitize(:color, { parents: [generated_id], red: 0.9, green: 0.9, blue: 0.9 })
+    color_generated = sanitize(:color, { attach: [generated_id], red: 0.9, green: 0.9, blue: 0.9 })
     params[:color] = color_generated
     Atome.new({ atome_type => params }, &bloc)
   end
