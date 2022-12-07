@@ -43,6 +43,12 @@ class Atome
     end
   end
 
+  def store_code_bloc(element, &user_proc)
+    Object.attr_accessor "#{element}_code"
+
+    instance_variable_set("@#{element}_code", user_proc)
+  end
+
   def <<(particle)
     value = particle.value
     real_atome[property] << value

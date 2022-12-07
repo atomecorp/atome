@@ -95,7 +95,8 @@ class Atome
   def create_particle(element, value, &user_proc)
     return false unless security_pass(element, value)
 
-    instance_variable_set("@#{element}",value)
+    # we create a proc holder of any new particle if user pass a bloc
+    store_code_bloc(element, &user_proc) if user_proc
     run_optional_proc("pre_render_#{element}".to_sym, self, value, &user_proc)
     rendering(element, value, &user_proc)
     run_optional_proc("post_render_#{element}".to_sym, self, value, &user_proc)

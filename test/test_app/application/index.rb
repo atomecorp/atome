@@ -36,8 +36,3 @@
 # require 'build/medias/rubies/examples/matrix'
 # require 'build/medias/rubies/examples/touch'
 
-# require 'build/medias/rubies/examples/atome_new'
-
-a=box
-
-alert a.instance_variables
