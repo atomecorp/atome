@@ -21,3 +21,34 @@ end
 generator.build_render_method(:browser_rotate) do |value, _user_proc|
   @browser_object.style[:transform] = "rotate(#{value}deg)" unless @browser_type == :style
 end
+
+generator.build_render_method(:browser_center) do |value, _user_proc|
+  case value
+  when :horizontal
+    @browser_object.remove_class(:center)
+    @browser_object.remove_class(:center_vertical)
+    @browser_object.add_class(:center_horizontal)
+    @browser_object.style[:bottom] = :auto
+    @browser_object.style[:right] = :auto
+    @browser_object.style[:top] = '0px'
+    @browser_object.style[:left] = '50%'
+  when :vertical
+    @browser_object.remove_class(:center)
+    @browser_object.remove_class(:center_horizontal)
+    @browser_object.add_class(:center_vertical)
+    @browser_object.style[:bottom] = :auto
+    @browser_object.style[:right] = :auto
+    @browser_object.style[:left] = '0px'
+    @browser_object.style[:top] = '50%'
+  else
+    @browser_object.remove_class(:center_vertical)
+    @browser_object.remove_class(:center_horizontal)
+    @browser_object.add_class(:center)
+    @browser_object.style[:bottom] = :auto
+    @browser_object.style[:right] = :auto
+    @browser_object.style[:left] = '50%'
+    @browser_object.style[:top] = '50%'
+  end
+
+end
+

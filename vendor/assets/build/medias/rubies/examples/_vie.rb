@@ -173,15 +173,16 @@ def get_vie_module(list)
     module_position = properties[:position]
     module_input_slots = properties[:input_slots]
     module_output_slots = properties[:output_slots]
-    Atome.new(
+    a=Atome.new(
       shape: { type: :shape, renderers: [:browser], id: module_id, parents: [:view], children: [:c31],
                left: 99 + ((module_position[:x].to_i) * (66 + 33)), top: 99 + ((module_position[:y].to_i) * (66 + 33)),
                width: 66, height: 66
 
       }
     )
-
+    a.text({ data:  module_id, visual: {size:  9 }})
   end
+
   list[:links]
 
 end

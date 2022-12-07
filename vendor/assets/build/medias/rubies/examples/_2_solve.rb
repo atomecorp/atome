@@ -45,3 +45,8 @@ grab(:my_box).smooth(6).color(:black).red(0.6).green(0.6).blue(0.6)
 
 b=box
 b.color.red(1)
+
+# box in box doesn't work( incorrect node tree error)
+b=box({id: :mybox, width: 666, height: 555})
+
+b.box()

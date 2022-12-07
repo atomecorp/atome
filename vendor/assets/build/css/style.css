@@ -69,29 +69,26 @@ html, body {
     -webkit-background-clip: text;
 }
 
-.vertical-center {
-    /*font-size: 18px;*/
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    /*transform: translateY(calc(50% - 200px));*/
-}
-
 .center {
-    /*font-size: 18px;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translateY(-50%);
-    /* #calc is width -border*2 */
-    /*transform: translateX(calc(50% - 200px)) translateY(calc(50% - 200px));*/
+    transform: translate(-50%, -50%);
 }
 
-.horizontal-center {
+.center_vertical {
+    display: flex;
+    align-items: center;
     position: absolute;
-    left: 50%;
-    -ms-transform: translateY(-50%);
-    /*transform: translateX(calc(50% - 200px));*/
+    transform: translateY(-50%);
+}
+
+.center_horizontal{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    transform: translateX(-50%);
 }
 
 .e_align_h_left {
