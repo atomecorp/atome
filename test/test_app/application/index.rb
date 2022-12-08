@@ -35,6 +35,7 @@
 # TODO : Markers
 # TODO : matrix display mode
 # TODO : make inheritance to avoid redundancy in Essentials/@default_params
+# TODO : find a solution for the value unwanted complexity :  eg : for a.width = a.left.value
 
 
 # require 'build/medias/rubies/examples/color'
@@ -46,9 +47,8 @@
 # require 'build/medias/rubies/examples/matrix'
 # require 'build/medias/rubies/examples/color'
 require 'build/medias/rubies/examples/_vie'
+# require 'build/medias/rubies/examples/drag'
 # end
-
-
 
 
 

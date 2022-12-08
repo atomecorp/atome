@@ -3,6 +3,7 @@
 a = box({ width: 333, height: 333, id: :the_boxy })
 a.color(:red)
 b = box({ width: 33, height: 33, id: :the_box, drag: true })
+b.parents([a.id.value])
 b.color(:black)
 # b.parents([:the_boxy ])
 b.drag({ move: true }) do |e|
@@ -26,7 +27,7 @@ end
 
 # b.drag({ lock: :start })
 
-# b.drag({ lock: :x })
+b.drag({ lock: :x })
 
 # b.drag({ remove: true })
 # b.drag({ remove: false })
@@ -34,5 +35,5 @@ end
 # b.drag({ snap: { x: 100, y: 190 } })
 
 # b.drag({ constraint: { top: 330, left: 30, bottom: 30, right: 1 } })
-# b.drag({ constraint: :parent })
+b.drag({ constraint: :parent })
 # b.drag({ constraint: :the_boxy })

@@ -50,3 +50,9 @@ b.color.red(1)
 b=box({id: :mybox, width: 666, height: 555})
 
 b.box()
+
+# atome i, atome using preset doesn't work
+
+b=box
+c=b.box
+c.left(200)

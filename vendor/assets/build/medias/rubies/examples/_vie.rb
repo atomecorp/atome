@@ -173,16 +173,23 @@ def get_vie_module(list)
     module_position = properties[:position]
     module_input_slots = properties[:input_slots]
     module_output_slots = properties[:output_slots]
+    left_pos = 120 + ((module_position[:x].to_i) * (66 + 33+120))
+    top_pos=120 + ((module_position[:y].to_i) * (66 + 33))
     a=Atome.new(
       shape: { type: :shape, renderers: [:browser], id: module_id, parents: [:view],children: [], color: :orange,
-               left: 99 + ((module_position[:x].to_i) * (66 + 33)), top: 99 + ((module_position[:y].to_i) * (66 + 33)),
-               width: 66, height: 66
+               left: left_pos, top: top_pos,
+               width: 120, height: 120
 
       }
     )
-    a.text({ data:  module_id, visual: {size:  12 }, color: :black, center: true, width: 99, height: 99})
+    a.text({ data:  module_id, visual: {size:  12 }, color: :black, center: :horizontal, width: 120, height: 120})
     a.touch(true) do
       puts  a
+    end
+
+    slider=a.circle({width: 20, height: 20, top: 15, left: 15})
+    slider.drag( { move: true, inertia: true, lock: :x, constraint: :parent } ) do |pos|
+      puts  "module_id : #{module_id}, #{(pos[:left]-left_pos)/100}"
     end
   end
 
