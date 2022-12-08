@@ -11,7 +11,9 @@ generator.build_sanitizer(:color) do |params|
                      attach: parent_found,
                      red: 0, green: 0, blue: 0, alpha: 1 }
   params = create_color_hash(params) unless params.instance_of? Hash
-  default_params.merge!(params)
+  new_params = default_params.merge!(params)
+  atome[:color] = new_params
+  new_params
 end
 
 generator.build_sanitizer(:video) do |params|

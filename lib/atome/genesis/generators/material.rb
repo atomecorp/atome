@@ -16,3 +16,14 @@ generator.build_option(:pre_render_style) do |styles_send, _user_proc|
   end
 end
 generator.build_particle(:hide)
+
+generator.build_particle(:remove) do |particle_to_remove|
+  puts particle_to_remove
+  case particle_to_remove
+  when :color
+    self.send(particle_to_remove, :black)
+  when :shadow
+  else
+    self.send(particle_to_remove, 0)
+  end
+end
