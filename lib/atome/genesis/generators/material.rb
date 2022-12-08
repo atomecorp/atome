@@ -15,3 +15,4 @@ generator.build_option(:pre_render_style) do |styles_send, _user_proc|
     send(particle_send, value)
   end
 end
+generator.build_particle(:hide)

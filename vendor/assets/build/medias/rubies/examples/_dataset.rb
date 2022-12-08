@@ -50,5 +50,6 @@ a.assign(3) do
   color({ red: 0.6, green: 0.333, blue: 0.6, alpha: 1 })
   grab(:vie_playground_3).shadow({ blur: 12 })
 end
-alert a.assign
+puts  "assign : #{a.assign}"
+
 

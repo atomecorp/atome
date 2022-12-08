@@ -35,4 +35,3 @@ generator.build_particle(:attach) do |parents|
   end
 end
 generator.build_particle(:attached)
-

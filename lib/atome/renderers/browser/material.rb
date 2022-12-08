@@ -60,3 +60,7 @@ generator.build_render_method(:browser_edit) do |value|
   @browser_object.style['user-select'] = user_select
 end
 
+generator.build_render_method(:browser_hide) do |value|
+  @browser_object.style[:display] = "none"
+
+end
