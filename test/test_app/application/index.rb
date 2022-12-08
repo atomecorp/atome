@@ -34,13 +34,18 @@
 # TODO : atome have both 'set_particle' and 'particle' instance variable, eg 'set_color' and 'color' (make a choice)
 # TODO : Markers
 # TODO : matrix display mode
+# TODO : make inheritance to avoid redundancy in Essentials/@default_params
 
 
 # require 'build/medias/rubies/examples/color'
 # require 'build/medias/rubies/examples/animation'
 # wait 10 do
 #   grab(:view).clear(true)
-  require 'build/medias/rubies/examples/remove'
+
+# require 'build/medias/rubies/examples/_dataset'
+# require 'build/medias/rubies/examples/matrix'
+# require 'build/medias/rubies/examples/color'
+require 'build/medias/rubies/examples/_vie'
 # end
 
 

@@ -1,14 +1,9 @@
 # frozen_string_literal: true
 
-c = circle
-# FIXME: bug we creating an object like this c = circle({ red: 1 })
 # FIXME: bug we using a color twice or more only the first is colored: c = { red: 1 }; a.color(c),b.color(c)
-# Example:
-# c={ red: 1 }
-# a=circle
-# b=box({ left: 300 })
-# a.color(c)
-# b.color(c)
+
+c = circle
+
 wait 1 do
   # the most performant way :
   # please note that in this case:  render , id and type params must place in order
@@ -42,52 +37,21 @@ wait 5 do
   end
 end
 
-circle({id: :the_circle})
 
+wait 10  do
+  Atome.new({ color: { renderers: [:browser], id: :col1, type: :color, parents: [], children: [],
+                       left: 33, top: 66, red: 1, green: 0.15, blue: 0.7, alpha: 1 } })
 
-wait 2 do
-  the_col=Atome.new({ color: { renderers: [:browser], id: :c31, type: :color, parents: [], children: [],
-                               left: 33, top: 66, red: 0, green: 0.15, blue: 0.7, alpha: 0.6 } })
-  the_col.attach([:the_circle])
+  col_2 = Atome.new({ color: { renderers: [:browser], id: :col2, type: :color, parents: [], children: [],
+                               left: 33, top: 66, red: 0, green: 0.15, blue: 0.7, alpha: 1 } })
+
+  Atome.new(
+    shape: { type: :shape, renderers: [:browser], id: :shaped, parents: [:view], children: [], attached: [:col1],
+             left: 199, top: 99,
+             width: 66, height: 66
+    }
+  )
+  wait 2 do
+    col_2.attach([:shaped])
+  end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-#####################@
-# generator = Genesis.generator
-
-# generator.build_particle(:attach) do |parents|
-#   parents.each do |parent|
-#     grab(parent).attached(atome[:id])
-#   end
-# end
-# generator.build_particle(:attached)
-
-# generator.build_render(:browser_attach) do |parents_found|
-#   parents_found.each do |parent_found|
-#     BrowserHelper.send("browser_attach_#{@browser_type}", parent_found, @browser_object, @atome)
-#   end
-# end
-
-# a = Atome.new(
-#   { shape: { renderers: [:browser], id: :test, type: :shape, parents: [:user_view], children: [],
-#              set_left: 150, right: 150, top: 150, bottom: 150, overflow: :auto,
-#              set_color: { renderers: [:browser], id: :col_test, type: :color, left: [:test], attach: [:test],
-#                           red: 0.6, green: 1, blue: 0.33, alpha: 1 } } }
-# )
-#
-# a.set_left(800)
-
-# alert a.attached
-# a.set_color({ renderers:  [:browser], id: :col_test3, type: :color, left: [:test],
-#               red: 0, green: 0.1, blue: 1, alpha: 1 }  )
-# puts a.methods

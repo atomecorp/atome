@@ -151,7 +151,7 @@ a = {
   ]
 }
 
-the_col = Atome.new({ color: { renderers: [:browser], id: :c31, type: :color, parents: [], children: [],
+ Atome.new({ color: { renderers: [:browser], id: :orange_col, type: :color, parents: [], children: [],
                                left: 33, top: 66, red: 0, green: 0.15, blue: 0.7, alpha: 0.6 } })
 
 def get_vie_module(list)
@@ -174,13 +174,16 @@ def get_vie_module(list)
     module_input_slots = properties[:input_slots]
     module_output_slots = properties[:output_slots]
     a=Atome.new(
-      shape: { type: :shape, renderers: [:browser], id: module_id, parents: [:view], children: [:c31],
+      shape: { type: :shape, renderers: [:browser], id: module_id, parents: [:view],children: [], color: :orange,
                left: 99 + ((module_position[:x].to_i) * (66 + 33)), top: 99 + ((module_position[:y].to_i) * (66 + 33)),
                width: 66, height: 66
 
       }
     )
-    a.text({ data:  module_id, visual: {size:  9 }})
+    a.text({ data:  module_id, visual: {size:  12 }, color: :black, center: true, width: 99, height: 99})
+    a.touch(true) do
+      puts  a
+    end
   end
 
   list[:links]

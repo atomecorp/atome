@@ -6,6 +6,7 @@ generator.build_particle(:red)
 generator.build_particle(:green)
 generator.build_particle(:blue)
 generator.build_particle(:alpha)
+generator.build_particle(:diffusion)
 generator.build_particle(:visual)
 generator.build_particle(:overflow)
 generator.build_particle(:edit)
@@ -18,12 +19,13 @@ end
 generator.build_particle(:hide)
 
 generator.build_particle(:remove) do |particle_to_remove|
-  puts particle_to_remove
   case particle_to_remove
   when :color
-    self.send(particle_to_remove, :black)
+    send(particle_to_remove, :black)
   when :shadow
+    # TODO : code to write
+    puts 'code to write'
   else
-    self.send(particle_to_remove, 0)
+    send(particle_to_remove, 0)
   end
 end

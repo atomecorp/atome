@@ -50,13 +50,17 @@ class Atome
     end
   end
 
+  def atome_creation_pre_treatment(element, params, &user_proc)
+    params = sanitize(element, params)
+    create_atome(element)
+    send("set_#{element}", params, &user_proc)
+  end
+
   def new_atome(element, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
       if params
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        params = sanitize(element, params)
-        create_atome(element)
-        send("set_#{element}", params, &user_proc)
+        atome_creation_pre_treatment(element, params, &user_proc)
       else
         get_atome(element, &user_proc)
       end

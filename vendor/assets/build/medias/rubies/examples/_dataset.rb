@@ -45,14 +45,38 @@
 #   end
 # end
 #
-#
+#*
 # a.assign(3) do
 #   color({ red: 0.6, green: 0.333, blue: 0.6, alpha: 1 })
 #   grab(:vie_playground_3).shadow({ blur: 12 })
 # end
 # puts  "assign : #{a.assign}"
 #
-
+box
+circle
 generator = Genesis.generator
-# generator.build_atome(:data_set)
+
+generator.build_atome(:template)
+
+generator.build_sanitizer(:template) do |params|
+
+  default_params = { renderers: [], id: "template_#{Universe.atomes.length}", type: :template,
+  }
+  default_params.merge!(params)
+end
+
+generator.build_particle(:display) do |params|
+  template_needed = params[:template]
+  targeted_atomes = params[:list]
+  alert template_needed
+  alert targeted_atomes
+end
+
+template({ id: :child_in_table, code: [], cells: 16, columns: 4, rows: 4 })
+the_view = grab(:view)
+the_view.display(template: :child_in_table, list: [the_view.children.value], left: 33, top: 63, width: 333, height: 333)
+
+# alert the_view
+
+
 

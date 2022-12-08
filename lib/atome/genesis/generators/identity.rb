@@ -31,7 +31,12 @@ generator.build_particle(:active)
 
 generator.build_particle(:attach) do |parents|
   parents.each do |parent|
-    grab(parent).attached(atome[:id])
+    grab(parent).atome[:attached] = atome[:id]
   end
 end
-generator.build_particle(:attached)
+
+generator.build_particle(:attached) do |targets|
+  targets.each do |target|
+    grab(target).attach([atome[:id]])
+  end
+end
