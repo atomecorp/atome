@@ -2,7 +2,7 @@
 
 generator = Genesis.generator
 
-generator.build_render_method(:html_touch) do |_value, proc|
+generator.build_render(:html_touch) do |_value, proc|
   @html_object.on :click do |e|
     instance_exec(&proc) if proc.is_a?(Proc)
   end

@@ -2,7 +2,7 @@
 
 generator = Genesis.generator
 
-generator.build_render_method(:browser_smooth) do |value|
+generator.build_render(:browser_smooth) do |value|
   format_params = case value
                   when Array
                     properties = []
@@ -18,6 +18,6 @@ generator.build_render_method(:browser_smooth) do |value|
   @browser_object.style['border-radius'] = format_params
 end
 
-generator.build_render_method(:browser_blur) do |value|
+generator.build_render(:browser_blur) do |value|
   BrowserHelper.send("browser_blur_#{@browser_type}", @browser_object, value, @atome)
 end

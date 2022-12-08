@@ -40,7 +40,7 @@
 # require 'build/medias/rubies/examples/animation'
 # wait 10 do
 #   grab(:view).clear(true)
-  require 'build/medias/rubies/examples/_dataset'
+  require 'build/medias/rubies/examples/read'
 # end
 
 

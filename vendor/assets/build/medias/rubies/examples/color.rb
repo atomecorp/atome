@@ -72,7 +72,7 @@ end
 # end
 # generator.build_particle(:attached)
 
-# generator.build_render_method(:browser_attach) do |parents_found|
+# generator.build_render(:browser_attach) do |parents_found|
 #   parents_found.each do |parent_found|
 #     BrowserHelper.send("browser_attach_#{@browser_type}", parent_found, @browser_object, @atome)
 #   end

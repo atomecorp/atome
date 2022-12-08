@@ -2,7 +2,7 @@
 
 generator = Genesis.generator
 
-generator.build_render_method(:html_smooth) do |value|
+generator.build_render(:html_smooth) do |value|
   formated_params = case value
                     when Array
                       properties = []

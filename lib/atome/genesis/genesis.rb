@@ -28,11 +28,11 @@ class Atome
 
   def auto_render_generator(element)
     Universe.renderer_list.each do |render_engine|
-      build_render_method("#{render_engine}_#{element}")
+      build_render("#{render_engine}_#{element}")
     end
   end
 
-  def build_render_method(renderer_name, &method_proc)
+  def build_render(renderer_name, &method_proc)
     new_render_engine(renderer_name, &method_proc)
   end
 

@@ -3,7 +3,7 @@
 
 generator = Genesis.generator
 
-generator.build_render_method(:html_shape) do
+generator.build_render(:html_shape) do
   current_atome = @atome
   id_found = current_atome[:id]
   @html_object = Html.new
@@ -11,7 +11,7 @@ generator.build_render_method(:html_shape) do
   @html_object.attr('id', id_found)
 end
 
-generator.build_render_method(:html_color) do |_value|
+generator.build_render(:html_color) do |_value|
   # we remove previous unused style tag
   opal_document[id]&.remove
   red_found = @atome[:red]
@@ -24,7 +24,7 @@ generator.build_render_method(:html_color) do |_value|
   # `document.getElementById(#{id}).sheet.cssRules[0].style.backgroundColor = 'red'`
 end
 
-generator.build_render_method(:html_image) do |_user_prc|
+generator.build_render(:html_image) do |_user_prc|
   # id_found = id
   # instance_exec(&proc) if proc.is_a?(Proc)
   # DOM do
@@ -34,10 +34,10 @@ generator.build_render_method(:html_image) do |_user_prc|
   # @html_type = :image
 end
 
-generator.build_render_method(:html_shadow) do
+generator.build_render(:html_shadow) do
 end
 
-generator.build_render_method(:html_video) do |_value, _user_proc|
+generator.build_render(:html_video) do |_value, _user_proc|
   # id_found = id
   # # instance_exec(&proc) if proc.is_a?(Proc)
   # DOM do

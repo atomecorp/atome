@@ -10,7 +10,7 @@ def parents(_val) end
 
 generator = Genesis.generator
 
-generator.build_render_method(:browser_shape) do
+generator.build_render(:browser_shape) do
   @browser_type = :div
   id_found = @atome[:id]
   DOM do
@@ -19,7 +19,7 @@ generator.build_render_method(:browser_shape) do
   @browser_object = BrowserHelper.browser_document[id_found]
 end
 
-generator.build_render_method(:browser_color) do |_value|
+generator.build_render(:browser_color) do |_value|
   @browser_type = :style
   id_found = @atome[:id]
   type_found = @atome[:type]
@@ -36,7 +36,7 @@ generator.build_render_method(:browser_color) do |_value|
   @browser_object = BrowserHelper.browser_document[id_found]
 end
 
-generator.build_render_method(:browser_shadow) do |_value|
+generator.build_render(:browser_shadow) do |_value|
   @browser_type = :style
   id_found = @atome[:id]
   type_found = @atome[:type]
@@ -58,7 +58,7 @@ generator.build_render_method(:browser_shadow) do |_value|
   @browser_object = BrowserHelper.browser_document[id_found]
 end
 
-generator.build_render_method(:browser_image) do |_user_prc|
+generator.build_render(:browser_image) do |_user_prc|
   @browser_type = :div
   id_found = @atome[:id]
   DOM do
@@ -67,7 +67,7 @@ generator.build_render_method(:browser_image) do |_user_prc|
   @browser_object = BrowserHelper.browser_document[id_found]
 end
 
-generator.build_render_method(:browser_text) do |_value, _user_proc|
+generator.build_render(:browser_text) do |_value, _user_proc|
   id_found = @atome[:id]
   DOM do
     div(id: id_found).atome.text
@@ -76,7 +76,7 @@ generator.build_render_method(:browser_text) do |_value, _user_proc|
   @browser_type = :div
 end
 
-generator.build_render_method(:browser_web) do
+generator.build_render(:browser_web) do
   @browser_type = :web
   id_found = @atome[:id]
   DOM do
@@ -87,7 +87,7 @@ generator.build_render_method(:browser_web) do
   @browser_object.attributes[:allowfullscreen] = true
 end
 
-generator.build_render_method(:browser_video) do |_value, _user_proc|
+generator.build_render(:browser_video) do |_value, _user_proc|
   @browser_type = :div
   id_found = @atome[:id]
   DOM do

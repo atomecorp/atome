@@ -2,7 +2,7 @@
 
 generator = Genesis.generator
 
-generator.build_render_method(:red) do |value|
+generator.build_render(:red) do |value|
   red = ((@atome[:red] = value) * 255)
   green = @atome[:green] * 255
   blue = @atome[:blue] * 255
@@ -11,7 +11,7 @@ generator.build_render_method(:red) do |value|
   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
 end
 
-generator.build_render_method(:green) do |value|
+generator.build_render(:green) do |value|
   red = @atome[:red] * 255
   green = (@atome[:green] = value) * 255
   blue = @atome[:blue] * 255
@@ -20,7 +20,7 @@ generator.build_render_method(:green) do |value|
   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
 end
 
-generator.build_render_method(:blue) do |value|
+generator.build_render(:blue) do |value|
   red = @atome[:red] * 255
   green = @atome[:green] * 255
   blue = (@atome[:blue] = value) * 255
@@ -29,7 +29,7 @@ generator.build_render_method(:blue) do |value|
   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
 end
 
-generator.build_render_method(:alpha) do |value|
+generator.build_render(:alpha) do |value|
   red = @atome[:red] * 255
   green = @atome[:green] * 255
   blue = @atome[:blue] * 255
@@ -38,11 +38,11 @@ generator.build_render_method(:alpha) do |value|
   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
 end
 
-generator.build_render_method(:visual) do |value|
+generator.build_render(:visual) do |value|
   browser_object.style['font-size'] = "#{value[:size]}px"
 end
 
-generator.build_render_method(:browser_edit) do |value|
+generator.build_render(:browser_edit) do |value|
   if value == true
     caret_color = 'white'
     user_select = 'text'
@@ -60,7 +60,7 @@ generator.build_render_method(:browser_edit) do |value|
   @browser_object.style['user-select'] = user_select
 end
 
-generator.build_render_method(:browser_hide) do |value|
+generator.build_render(:browser_hide) do |value|
   @browser_object.style[:display] = "none"
 
 end

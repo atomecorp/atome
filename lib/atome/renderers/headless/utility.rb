@@ -2,5 +2,5 @@
 
 generator = Genesis.generator
 
-generator.build_render_method(:headless_schedule)
-generator.build_render_method(:headless_reader)
+generator.build_render(:headless_schedule)
+generator.build_render(:headless_reader)

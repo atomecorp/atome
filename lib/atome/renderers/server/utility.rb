@@ -2,5 +2,5 @@
 
 generator = Genesis.generator
 
-generator.build_render_method(:server_schedule)
-generator.build_render_method(:server_reader)
+generator.build_render(:server_schedule)
+generator.build_render(:server_reader)
