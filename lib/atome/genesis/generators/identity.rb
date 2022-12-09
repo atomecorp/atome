@@ -40,3 +40,16 @@ generator.build_particle(:attached) do |targets|
     grab(target).attach([atome[:id]])
   end
 end
+
+generator.build_particle(:clones) do |clones_found|
+  clones_found.each_with_index  do |clone_found, index|
+    clone_id="#{particles[:id]}_clone_#{index}"
+    original_id=atome[:id]
+    clone_found[:id] = clone_id
+    clone_found = particles.merge(clone_found)
+    cloned_atome=Atome.new({ shape: clone_found })
+    cloned_atome.monitor({ atomes: [original_id], particles: [:width, :attached,:height ]}) do |_atome, particle, value|
+      cloned_atome.send(particle,value)
+    end
+  end
+end

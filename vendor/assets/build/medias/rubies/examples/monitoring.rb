@@ -1,34 +1,4 @@
 # frozen_string_literal: true
-class Atome
-
-  # def broadcasting(modified_particle, value)
-  #   @broadcast.each_value do |particle_monitored|
-  #     if particle_monitored[modified_particle]
-  #       code_found = particle_monitored[modified_particle]
-  #       instance_exec(self, modified_particle, value, &code_found) if code_found.is_a?(Proc)
-  #     end
-  #   end
-  # end
-
-  # def monitor(params, &proc_monitoring)
-  #   atome[:monitor] ||= {}
-  #   params[:atomes].each do |atome_id|
-  #     target_broadcaster = grab(atome_id).instance_variable_get('@broadcast')
-  #     monitor_id = params[:id] || "monitor#{target_broadcaster.length}"
-  #     atome[:monitor] [monitor_id]=params.merge({code: proc_monitoring})
-  #     params[:particles].each do |targeted_particle|
-  #       target_broadcaster[monitor_id] = { targeted_particle => proc_monitoring }
-  #     end
-  #   end
-  # end
-
-  # def store_value(element, value)
-  #   # this method save the value of the particle and broadcast to the atomes listed in broadcast
-  #   broadcasting(element, value)
-  #   inject_value(element, value)
-  # end
-
-end
 
 a = text({ data: "open the console!" })
 a.right(44).left(66)
