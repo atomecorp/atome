@@ -3,8 +3,8 @@
 generator = Genesis.generator
 generator.build_render(:browser_bloc)
 generator.build_render(:browser_render)
-generator.build_render(:browser_delete) do
-  browser_object&.remove
+generator.build_render(:browser_delete) do |params|
+  browser_object&.remove if params == true
 end
 
 generator.build_render(:browser_clear) do
@@ -31,7 +31,7 @@ generator.build_render(:browser_schedule) do |format_date, proc|
   hours = format_date[3]
   minutes = format_date[4]
   seconds = format_date[5]
-  atome_js.JS.schedule(years, months, days, hours,minutes, seconds, self, proc)
+  atome_js.JS.schedule(years, months, days, hours, minutes, seconds, self, proc)
 end
 
 generator.build_render(:browser_reader) do |file, proc|

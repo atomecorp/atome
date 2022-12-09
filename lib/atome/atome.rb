@@ -77,7 +77,7 @@ class Atome
 
   def run_optional_proc(proc_name, atome = self, value = '', &user_proc)
     option_found = Universe.get_optional_method(proc_name)
-    atome.instance_exec(value, user_proc, &option_found) if option_found.is_a?(Proc)
+    atome.instance_exec(value, user_proc,atome, &option_found) if option_found.is_a?(Proc)
   end
 
   def inject_value(element, value)
@@ -128,7 +128,7 @@ class Atome
     virtual_atome.real_atome = @atome
     virtual_atome.property = element
     virtual_atome.user_proc = user_proc
-    run_optional_proc("pre_get_#{element}".to_sym, virtual_atome, &user_proc)
+    run_optional_proc("pre_get_#{element}".to_sym,self, "virtual_atome", &user_proc)
     virtual_atome
   end
 

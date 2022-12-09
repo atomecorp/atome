@@ -3,7 +3,7 @@
 ##########################
 # markers
 my_video = Atome.new(
-  video: { renderers: [:browser], id: :video1, type: :video, parents: [:view],
+  video: { renderers: [:browser], id: :video1, type: :video, parents: [:view],clones: [],
            path: './medias/videos/avengers.mp4', left: 333, top: 33, width: 777
   }
 ) do |params|

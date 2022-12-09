@@ -40,15 +40,19 @@
 
 # require 'build/medias/rubies/examples/color'
 # require 'build/medias/rubies/examples/animation'
-# wait 10 do
-#   grab(:view).clear(true)
+
+
 
 # require 'build/medias/rubies/examples/_dataset'
 # require 'build/medias/rubies/examples/matrix'
 # require 'build/medias/rubies/examples/color'
-require 'build/medias/rubies/examples/_vie'
+# require 'build/medias/rubies/examples/read'
 # require 'build/medias/rubies/examples/drag'
-# end
+require 'build/medias/rubies/examples/clone'
+# require 'build/medias/rubies/examples/monitoring'
+# require 'build/medias/rubies/examples/delete'
+# a={"monitor0"=>{"left"=>{"blocs"=>[:pro_1]}}, "monitor1"=>{"width"=>{"blocs"=>[:pro_2]}}, "my_monitorer"=>{"left"=>{"blocs"=>[:pro_2]}}}
+
 
 
 

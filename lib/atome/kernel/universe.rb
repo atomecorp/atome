@@ -58,10 +58,6 @@ class Universe
       # and finally the object is 3 as this the third object created by the main server
     end
 
-    # def change_atome_id(prev_id, new_id)
-    #   @atomes[new_id] = @atomes.delete(prev_id)
-    # end
-
     def delete(id)
       @atomes.delete(id)
     end

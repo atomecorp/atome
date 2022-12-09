@@ -189,7 +189,14 @@ def get_vie_module(list)
 
     slider=a.circle({width: 20, height: 20, top: 15, left: 15})
     slider.drag( { move: true, inertia: true, lock: :x, constraint: :parent } ) do |pos|
-      puts  "module_id : #{module_id}, #{(pos[:left]-left_pos)/100}"
+       "module_id : #{module_id}, #{(pos[:left]-left_pos)/100}"
+       msg_value=(pos[:left]-left_pos)/100
+      `
+function send_to_controller(module,value){
+console.log(module,value)
+}
+send_to_controller(#{module_id},#{msg_value});
+`
     end
   end
 

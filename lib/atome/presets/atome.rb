@@ -11,6 +11,7 @@ class Atome
     temp_default = Essentials.default_params[atome_type] || {}
     temp_default[:id] = generated_id
     temp_default[:parents] = generated_parents
+    temp_default[:clones] = []
     temp_default[:renderers] = generated_render
     temp_default.merge(params)
   end
@@ -37,7 +38,6 @@ class Atome
 
   def image(params = {}, &bloc)
     default_renderer = Essentials.default_params[:render_engines]
-
     generated_id = params[:id] || "image_#{Universe.atomes.length}"
     generated_render = params[:renderers] || default_renderer
     generated_parents = params[:parents] || id.value
