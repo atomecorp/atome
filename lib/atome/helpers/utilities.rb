@@ -77,6 +77,26 @@ class Atome
     real_atome[property] << value
   end
 
+  def add_to_hash(particle, values, &user_proc)
+    # we update  the holder of any new particle if user pass a bloc
+    store_code_bloc(particle, &user_proc) if user_proc
+    values.each do |value_id, value|
+      @atome[particle][value_id] = value
+    end
+  end
+
+  def add_to_array(particle, value, &_user_proc)
+    # we update  the holder of any new particle if user pass a bloc
+    @atome[particle] << value
+  end
+
+  def add(particles, &user_proc)
+    particles.each do |particle, value|
+      particle_type = Universe.particle_list[particle]
+      send("add_to_#{particle_type}", particle, value, &user_proc)
+    end
+  end
+
   def refresh
     collapse
   end

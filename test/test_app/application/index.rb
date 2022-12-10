@@ -37,7 +37,8 @@
 # TODO : make inheritance to avoid redundancy in Essentials/@default_params
 # TODO : find a solution for the value unwanted complexity :  eg : for a.width = a.left.value
 # FIXME : Monitor should be integrated as standard properties using 'generator' (eg : a.monitor doesn't return an atome)
-# TODO : clones must update their originl too when modified
+# TODO : clones must update their original too when modified
+# FIXME : try the add demo makers are totally fucked
 #
 # require 'build/medias/rubies/examples/color'
 # require 'build/medias/rubies/examples/animation'
@@ -45,7 +46,8 @@
 
 
 # require 'build/medias/rubies/examples/_dataset'
-require 'build/medias/rubies/examples/_markers'
+# require 'build/medias/rubies/examples/markers'
+require 'build/medias/rubies/examples/add'
 # require 'build/medias/rubies/examples/matrix'
 # require 'build/medias/rubies/examples/color'
 # require 'build/medias/rubies/examples/read'

@@ -47,11 +47,6 @@ generator.build_render(:mute) do |value, _proc|
   end
 end
 
-generator.build_render(:browser_at) do |at, proc|
-  # @atime is check at each toick of frame in 'time_callback'
-  @at_time = { code: proc }.merge(at)
-end
-
 generator.build_render(:browser_drag) do |options, proc|
   options.each do |method, params|
     atome_id = @atome[:id]

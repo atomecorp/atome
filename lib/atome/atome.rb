@@ -15,7 +15,7 @@ class Atome
     atomes.each_value do |elements|
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
-      @at_time = {}
+      # @at_time = {}
       # now we store the proc in a an atome's property called :bloc
       elements[:code] = atomes_proc if atomes_proc
       @atome = elements
@@ -93,7 +93,7 @@ class Atome
 
   # the line below is used for ephemera atomes
   attr_accessor :property, :value, :real_atome, :user_proc
-  attr_reader :atome, :structure, :at_time
+  attr_reader :atome, :structure#, :at_time
 
   def set(value)
     @real_atome[@property] = value

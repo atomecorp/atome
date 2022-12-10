@@ -18,16 +18,14 @@ class Atome
     instance_exec(file, &proc) if proc.is_a?(Proc)
   end
 
-  def time_callback(current_time)
-    # puts "time_callback = #{current_time.round(1)}\n#{current_time}"
+  def time_callback(current_time,sorted_markers)
     @atome[:time] = current_time
-    # the line below is used only to set up a one shot event
-    # return unless @at_time[:time] && (current_time > @at_time[:time] && @at_time[:used].nil?)
+    return unless sorted_markers.keys[0] && current_time >sorted_markers.keys[0]
 
-    return unless @at_time[:time] && (current_time > @at_time[:time])
-    proc = @at_time[:code]
-    instance_exec(current_time, &proc) if proc.is_a?(Proc)
-    # @at_time[:used] = true
+    code_found=sorted_markers[sorted_markers.keys[0]][:code]
+    instance_exec(current_time, &code_found) if code_found.is_a?(Proc)
+    sorted_markers.shift
+
   end
 
   def drag_start_callback(page_x, page_y, left_val, top_val)
