@@ -4,7 +4,7 @@
 class Universe
   @atomes = {}
   @atome_list = []
-  @particle_list = []
+  @particle_list = {}
   @renderer_list = %i[html browser headless server]
   @options = {}
   @sanitizers = {}
@@ -12,8 +12,8 @@ class Universe
   class << self
     attr_reader :atomes, :renderer_list, :atome_list, :particle_list
 
-    def add_to_particle_list(particle = nil)
-      instance_variable_get('@particle_list').push(particle)
+    def add_to_particle_list(particle = nil, type)
+      instance_variable_get('@particle_list')[particle]=type
     end
 
     def add_optional_method(method_name, &method_proc)

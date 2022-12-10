@@ -34,7 +34,7 @@ class Html
     `#{parent_found}.appendChild(#{@html})`
   end
   def append_color(parent)
-    aleputsrt "color : #{parent.class}"
+     "color : #{parent.class}"
   end
   def append_to(_node)
 

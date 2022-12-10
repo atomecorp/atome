@@ -41,14 +41,18 @@ generator.build_particle(:attached) do |targets|
   end
 end
 
+generator.build_particle(:intricate, :array)
+
+
 generator.build_particle(:clones) do |clones_found|
   clones_found.each_with_index  do |clone_found, index|
+    particles_intricated= clone_found[:intricate] ||= [:width]
     clone_id="#{particles[:id]}_clone_#{index}"
     original_id=atome[:id]
     clone_found[:id] = clone_id
     clone_found = particles.merge(clone_found)
-    cloned_atome=Atome.new({ shape: clone_found })
-    cloned_atome.monitor({ atomes: [original_id], particles: [:width, :attached,:height ]}) do |_atome, particle, value|
+    cloned_atome=Atome.new({ clone: clone_found })
+    cloned_atome.monitor({ atomes: [original_id], particles: particles_intricated}) do |_atome, particle, value|
       cloned_atome.send(particle,value)
     end
   end

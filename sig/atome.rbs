@@ -1,5 +1,11 @@
 module Atome
   VERSION: String
   # See the writing guide of rbs: https://github.com/ruby/rbs#guides
+  def add: -> untyped
+
+  def add_to_array: -> untyped
+
+  def add_to_hash: -> untyped
+
   def sort_callback: -> untyped
 end

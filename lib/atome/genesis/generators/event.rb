@@ -5,9 +5,13 @@ generator = Genesis.generator
 # touch
 generator.build_particle(:touch)
 # video
-generator.build_particle(:play)
+generator.build_particle(:play) do
+  @atome[:pause] = :false
+end
 generator.build_particle(:time)
-generator.build_particle(:pause)
+generator.build_particle(:pause) do
+  @atome[:play] = :false
+end
 generator.build_particle(:on)
 generator.build_particle(:fullscreen)
 generator.build_particle(:mute)

@@ -36,22 +36,27 @@
 # TODO : matrix display mode
 # TODO : make inheritance to avoid redundancy in Essentials/@default_params
 # TODO : find a solution for the value unwanted complexity :  eg : for a.width = a.left.value
-
-
+# FIXME : Monitor should be integrated as standard properties using 'generator' (eg : a.monitor doesn't return an atome)
+# TODO : clones must update their originl too when modified
+#
 # require 'build/medias/rubies/examples/color'
 # require 'build/medias/rubies/examples/animation'
 
 
 
 # require 'build/medias/rubies/examples/_dataset'
+require 'build/medias/rubies/examples/_markers'
 # require 'build/medias/rubies/examples/matrix'
 # require 'build/medias/rubies/examples/color'
 # require 'build/medias/rubies/examples/read'
 # require 'build/medias/rubies/examples/drag'
-require 'build/medias/rubies/examples/clone'
+# require 'build/medias/rubies/examples/clone'
 # require 'build/medias/rubies/examples/monitoring'
 # require 'build/medias/rubies/examples/delete'
 # a={"monitor0"=>{"left"=>{"blocs"=>[:pro_1]}}, "monitor1"=>{"width"=>{"blocs"=>[:pro_2]}}, "my_monitorer"=>{"left"=>{"blocs"=>[:pro_2]}}}
+
+
+# alert Universe.particle_list
 
 
 

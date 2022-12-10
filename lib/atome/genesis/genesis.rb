@@ -11,9 +11,9 @@ end
 
 # Genesis method here
 class Atome
-  def build_particle(particle_name, &particle_proc)
+  def build_particle(particle_name,type=:string, &particle_proc)
     # we add the new method to the particle's collection of methods
-    Universe.add_to_particle_list(particle_name)
+    Universe.add_to_particle_list(particle_name, type)
     auto_render_generator(particle_name)
     new_particle(particle_name, &particle_proc)
     additional_particle_methods(particle_name, &particle_proc)

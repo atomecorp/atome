@@ -16,12 +16,10 @@ class Atome
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
       @at_time = {}
-      @markers = {}
       # now we store the proc in a an atome's property called :bloc
       elements[:code] = atomes_proc if atomes_proc
       @atome = elements
       # we initiate the rendering, eg for for browser we will call :browser_type generate method in identity.rb file
-      # create_particle(:type, @atome[:type])
       create_particle(:type)
       set_type(@atome[:type])
       collapse
@@ -77,23 +75,24 @@ class Atome
 
   def run_optional_proc(proc_name, atome = self, value = '', &user_proc)
     option_found = Universe.get_optional_method(proc_name)
-    atome.instance_exec(value, user_proc,atome, &option_found) if option_found.is_a?(Proc)
+    atome.instance_exec(value, user_proc, atome, &option_found) if option_found.is_a?(Proc)
   end
 
   def inject_value(element, value)
+    # attention :  please keep the method 'inject_value' available as it is sometimes needed to access it directly
     @atome[element] = value
   end
 
-  def store_value(element, value)
+  def store_value(element)
     # this method save the value of the particle and broadcast to the atomes listed in broadcast
-    broadcasting(element, value)
-    inject_value(element, value)
+    broadcasting(element, @atome[element])
+    inject_value(element, @atome[element])
   end
 
   public
 
   # the line below is used for ephemera atomes
-  attr_accessor :property, :value, :real_atome, :user_proc, :markers
+  attr_accessor :property, :value, :real_atome, :user_proc
   attr_reader :atome, :structure, :at_time
 
   def set(value)
@@ -105,10 +104,14 @@ class Atome
 
     # we create a proc holder of any new particle if user pass a bloc
     store_code_bloc(element, &user_proc) if user_proc
-    run_optional_proc("pre_render_#{element}".to_sym, self, params, &user_proc)
-    rendering(element, params, &user_proc)
-    run_optional_proc("post_render_#{element}".to_sym, self, params, &user_proc)
-    store_value(element, params)
+    # we store the params immediately into the atome so optionals methods can access and modify it
+    @atome[element] = params
+    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, @atome[element], &user_proc)
+    run_optional_proc("pre_render_#{element}".to_sym, self, @atome[element], &user_proc)
+    rendering(element, @atome[element], &user_proc)
+    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, @atome[element], &user_proc)
+    run_optional_proc("post_render_#{element}".to_sym, self, @atome[element], &user_proc)
+    store_value(element)
     self
   end
 
@@ -128,7 +131,8 @@ class Atome
     virtual_atome.real_atome = @atome
     virtual_atome.property = element
     virtual_atome.user_proc = user_proc
-    run_optional_proc("pre_get_#{element}".to_sym,self, "virtual_atome", &user_proc)
+    run_optional_proc("pre_get_#{@atome[:type]}".to_sym, "virtual_atome", &user_proc)
+    run_optional_proc("pre_get_#{element}".to_sym, self, "virtual_atome", &user_proc)
     virtual_atome
   end
 
