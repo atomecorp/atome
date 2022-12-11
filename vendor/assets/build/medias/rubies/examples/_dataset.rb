@@ -89,13 +89,17 @@ end
 generator.build_particle(:display) do |params|
   template_needed = params[:template]
   targeted_atomes = params[:list]
-  puts "add this to cells #{targeted_atomes}"
-  matrix_back_color=create_matrix_colors('matrix_color_back',0,1,0,1)
-  cell_back_color=create_matrix_colors('cell_color_back',1,0.15,0.7,1)
-  matrix_back_id="#{template_needed}_display_nb"
+  # alert "template to get #{template_needed}"
+  # alert "add this to cells #{targeted_atomes}"
+  template_grab=grab(template_needed)
+  alert template_grab
+  matrix_back_color=create_matrix_colors('matrix_color_back',0.3,0.3,0.6,1)
+  cell_back_color=create_matrix_colors('cell_color_back',0.333,0.333,0.7,1)
+  matrix_back_id="matrix_back_display_nb"
   matrix_back=create_matrix_back( matrix_back_id, { width: 33, smooth: 9 })
   matrix_back_color.attach([matrix_back_id])
-  cells=create_matrix_cells(matrix_back_id,cell_back_color,33,{width: 33, height: 33, smooth: 9})
+  cells=create_matrix_cells(matrix_back_id,cell_back_color,33,{width: 33, height: 33,
+                                                               smooth: 9,shadow: { blur: 6 }})
   resize_matrix({matrix: matrix_back, width: 333, height: 333, cells: cells, columns: 2, rows: 8, margin: 9 })
 end
 
@@ -107,7 +111,7 @@ end
 def create_matrix_back( id, style)
   matrix = Atome.new(
     shape: { type: :shape, renderers: [:browser], id: id, parents: [:view],width: 333, height: 333,left: 333,
-             overflow: :auto,children: [] }
+             overflow: :hidden,children: [] }
   )
   matrix.style(style)
   matrix
@@ -120,7 +124,7 @@ def create_matrix_cells(id,cell_back_color, number_of_cells, style)
   while counter < number_of_cells
     id_generated=id + "_#{counter}"
     cells << a = Atome.new(
-      shape: { type: :shape, renderers: [:browser], id: id_generated, parents: ['child_in_table_display_nb'],
+      shape: { type: :shape, renderers: [:browser], id: id_generated, parents: [id],
                children: [:cell_color]
 
                }
@@ -132,8 +136,10 @@ def create_matrix_cells(id,cell_back_color, number_of_cells, style)
   cells
 end
 
+
+
 template({ id: :child_in_table, code: [], cells: 16, columns: 4, rows: 4 })
 the_view = grab(:view)
-the_view.display(template: :child_in_table, list: [the_view.children.value], left: 33, top: 63, width: 333, height: 333)
+the_view.display(template: :child_in_table,sort: :id, list: [the_view.children.value], left: 33, top: 63, width: 333, height: 333)
 
 
