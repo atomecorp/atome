@@ -51,7 +51,7 @@
 # puts  "assign : #{a.assign}"
 
 box({id: :the_box})
-circle({top: 300})
+circle({top: 300, id: :circle098})
 generator = Genesis.generator
 
 generator.build_atome(:template)
@@ -110,16 +110,22 @@ generator.build_particle(:display) do |params|
   sorted={}
   targeted_atomes.each_with_index  do |atome_id, index|
     atome_found=grab(atome_id)
-    clone= atome_found.clones([{}])
+    clone= atome_found.clones([{left: 33}])
     selected_id="#{matrix_back_id}_#{index}"
-    # clone.parents[selected_id]
+    clone.parents([selected_id])
+    cell_height=grab(selected_id).height.value-9
+
+    clone.left=3
+    clone.top=3
+    clone.width(cell_height)
+    clone.height(cell_height)
     sorted[atome_id]=atome_found.atome[sort_by]
 
 
   end
-  alert "==> not sorted #{sorted}"
+  # alert "==> not sorted #{sorted}"
   sorted=sorted.sort_by {|_key, value| value}.to_h
-  alert "**> sorted #{sorted}"
+  # alert "**> sorted #{sorted}"
 
   selected=params[:select] ||= []
   selected.each do |select|
@@ -165,7 +171,7 @@ end
 
 template({ id: :child_in_table, code: [], cells: 16, columns: 4, rows: 4 })
 the_view = grab(:view)
-the_view.display(template: :child_in_table,sort: :id, list: the_view.children.value, left: 33, top: 63, width: 333, height: 333)
+the_view.display(template: :child_in_table,sort: :id, list: [:the_box,:circle098], left: 33, top: 63, width: 333, height: 333)
 
   the_view.display({ select: [1, 3, 7], id: :child_in_table })
 

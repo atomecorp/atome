@@ -46,7 +46,7 @@
 
 
 require 'build/medias/rubies/examples/_dataset'
-# require 'build/medias/rubies/examples/attach'
+# require 'build/medias /rubies/examples/attach'
 # require 'build/medias/rubies/examples/parents'
 # require 'build/medias/rubies/examples/markers'
 # require 'build/medias/rubies/examples/add'
@@ -60,10 +60,6 @@ require 'build/medias/rubies/examples/_dataset'
 # a={"monitor0"=>{"left"=>{"blocs"=>[:pro_1]}}, "monitor1"=>{"width"=>{"blocs"=>[:pro_2]}}, "my_monitorer"=>{"left"=>{"blocs"=>[:pro_2]}}}
 
 # require 'build/medias/rubies/examples/_test'
-
-
-# alert Universe.particle_list
-
 
 
 
