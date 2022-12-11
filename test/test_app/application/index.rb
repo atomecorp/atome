@@ -45,8 +45,10 @@
 
 
 
-# require 'build/medias/rubies/examples/_dataset'
-require 'build/medias/rubies/examples/markers'
+require 'build/medias/rubies/examples/_dataset'
+# require 'build/medias/rubies/examples/attach'
+# require 'build/medias/rubies/examples/parents'
+# require 'build/medias/rubies/examples/markers'
 # require 'build/medias/rubies/examples/add'
 # require 'build/medias/rubies/examples/matrix'
 # require 'build/medias/rubies/examples/color'
