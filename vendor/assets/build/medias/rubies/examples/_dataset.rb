@@ -91,13 +91,8 @@ generator.build_particle(:display) do |params|
   template_needed = params[:template]
   targeted_atomes = params[:list] ||= []
   sort_by=params[:sort]
-  sorted={}
-  targeted_atomes.each do |atome_id|
-    sorted[atome_id]=grab(atome_id).atome[sort_by]
-  end
-  alert "==> not sorted #{sorted}"
-  sorted=sorted.sort_by {|_key, value| value}.to_h
-  alert "**> sorted #{sorted}"
+
+
   # alert "template to get #{template_needed}"
   # alert "add this to cells #{targeted_atomes}"
   template_grab=grab(template_needed)
@@ -107,9 +102,25 @@ generator.build_particle(:display) do |params|
   matrix_back_id="matrix_back_display_nb"
   matrix_back=create_matrix_back( matrix_back_id, { width: 33, smooth: 9 })
   matrix_back_color.attach([matrix_back_id])
+
   cells=create_matrix_cells(matrix_back_id,cell_back_color,33,{width: 33, height: 33,
                                                                smooth: 9,shadow: { blur: 6 }})
   resize_matrix({matrix: matrix_back, width: 333, height: 333, cells: cells, columns: 2, rows: 8, margin: 9 })
+  # We sort, clone and put the target in the matrix
+  sorted={}
+  targeted_atomes.each_with_index  do |atome_id, index|
+    atome_found=grab(atome_id)
+    clone= atome_found.clones([{}])
+    selected_id="#{matrix_back_id}_#{index}"
+    # clone.parents[selected_id]
+    sorted[atome_id]=atome_found.atome[sort_by]
+
+
+  end
+  alert "==> not sorted #{sorted}"
+  sorted=sorted.sort_by {|_key, value| value}.to_h
+  alert "**> sorted #{sorted}"
+
   selected=params[:select] ||= []
   selected.each do |select|
     selected_id="#{matrix_back_id}_#{select}"
