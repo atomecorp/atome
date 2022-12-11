@@ -20,6 +20,6 @@ jumper=lambda do
   my_video.play(12)
 end
 
-my_video.markers({ markers: { time: 6, code: jumper } })
+my_video.markers({ markers: { begin: 6, code: jumper } })
 
-my_video.add({ markers: { my_stop: { time: 16, code: stoper } } })
+my_video.add({ markers: { my_stop: { begin: 16, code: stoper } } })

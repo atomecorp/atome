@@ -27,22 +27,22 @@ stoper = lambda do
 end
 
 looper=lambda do
-  my_video.add({ markers: { my_stop: { time: 12, code: stoper } } })
+  my_video.add({ markers: { my_stop: { begin: 6, code: stoper } } })
   my_video.play(4)
 end
 
 
 # the marker below wont be executed because m2 will override it
-my_video.markers({ m1: { time: 18, code: m_code1 } }) do |_params|
+my_video.markers({ m1: { begin: 13, code: m_code1 } }) do |_params|
   puts 'stop'
 end
 # the marker will replace marker m1
-my_video.markers({ m2: { time: 12.87576, code: m_code1 } }) do |_params|
+my_video.markers({ m2: { begin: 12.876, code: m_code2 } }) do |_params|
   puts'good'
 end
 
 # The markers below will be executed because they're added
 
-my_video.add({ markers: { my_marker: { time: 18.87576, code: looper } } })
-my_video.add({ markers: { m3: { time: 16.87576, code: m_code2 } } })
-my_video.add({ markers: { m4: { time: 14.87576, code: m_code22 } } })
+my_video.add({ markers: { my_marker: { begin: 22.87576, code: looper } } })
+my_video.add({ markers: { m3: { begin: 16.87576, code: m_code2 } } })
+my_video.add({ markers: { m4: { begin: 14.87576,end: 16, code: m_code22 } } })

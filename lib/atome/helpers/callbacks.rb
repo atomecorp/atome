@@ -18,14 +18,15 @@ class Atome
     instance_exec(file, &proc) if proc.is_a?(Proc)
   end
 
-  def time_callback(current_time,sorted_markers)
+  def time_callback(current_time, markers)
     @atome[:time] = current_time
-    return unless sorted_markers.keys[0] && current_time >sorted_markers.keys[0]
-
-    code_found=sorted_markers[sorted_markers.keys[0]][:code]
-    instance_exec(current_time, &code_found) if code_found.is_a?(Proc)
-    sorted_markers.shift
-
+    markers.each_value do |marker|
+      # check if the current time matches the time of the marker, thanks to chat GPT for the example
+      if current_time >= marker[:begin] && current_time < marker[:end]
+        code_found = marker[:code]
+        instance_exec(current_time, &code_found) if code_found.is_a?(Proc)
+      end
+    end
   end
 
   def drag_start_callback(page_x, page_y, left_val, top_val)
