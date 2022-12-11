@@ -50,7 +50,7 @@
 # end
 # puts  "assign : #{a.assign}"
 
-box
+box({id: :the_box})
 circle({top: 300})
 generator = Genesis.generator
 
@@ -87,12 +87,21 @@ def resize_matrix(params)
 end
 
 generator.build_particle(:display) do |params|
+
   template_needed = params[:template]
-  targeted_atomes = params[:list]
+  targeted_atomes = params[:list] ||= []
+  sort_by=params[:sort]
+  sorted={}
+  targeted_atomes.each do |atome_id|
+    sorted[atome_id]=grab(atome_id).atome[sort_by]
+  end
+  alert "==> not sorted #{sorted}"
+  sorted=sorted.sort_by {|_key, value| value}.to_h
+  alert "**> sorted #{sorted}"
   # alert "template to get #{template_needed}"
   # alert "add this to cells #{targeted_atomes}"
   template_grab=grab(template_needed)
-  alert template_grab
+  # alert template_grab
   matrix_back_color=create_matrix_colors('matrix_color_back',0.3,0.3,0.6,1)
   cell_back_color=create_matrix_colors('cell_color_back',0.333,0.333,0.7,1)
   matrix_back_id="matrix_back_display_nb"
@@ -101,6 +110,11 @@ generator.build_particle(:display) do |params|
   cells=create_matrix_cells(matrix_back_id,cell_back_color,33,{width: 33, height: 33,
                                                                smooth: 9,shadow: { blur: 6 }})
   resize_matrix({matrix: matrix_back, width: 333, height: 333, cells: cells, columns: 2, rows: 8, margin: 9 })
+  selected=params[:select] ||= []
+  selected.each do |select|
+    selected_id="#{matrix_back_id}_#{select}"
+    grab(selected_id).color(:red)
+  end
 end
 
 def create_matrix_colors(name,red,green,blue,alpha)
@@ -140,6 +154,7 @@ end
 
 template({ id: :child_in_table, code: [], cells: 16, columns: 4, rows: 4 })
 the_view = grab(:view)
-the_view.display(template: :child_in_table,sort: :id, list: [the_view.children.value], left: 33, top: 63, width: 333, height: 333)
+the_view.display(template: :child_in_table,sort: :id, list: the_view.children.value, left: 33, top: 63, width: 333, height: 333)
 
+  the_view.display({ select: [1, 3, 7], id: :child_in_table })
 
