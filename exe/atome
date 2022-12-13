@@ -102,7 +102,7 @@ def create_application(project_name, force, production)
   return unless new_app_creation
 
   # now adding name to the app
-  index_html = "#{current_path}/#{project_name}/build/index.html"
+  index_html = "#{current_path}/#{project_name}/src/index.html"
   index_html_content = File.open(index_html).read
   index_html_content = index_html_content.gsub('<title>atome</title>', "<title>#{project_name}</title>")
   File.open(index_html, 'w') do |f|
@@ -123,9 +123,15 @@ def guard_check
 end
 
 def browser_case(location)
-  `cd #{location}/build;open index.html`
+  `cd #{location}/src;open index.html`
   guard_check
 end
+
+def compile_case(location)
+  `cd #{location}/src`
+  guard_check
+end
+
 
 def server_case(port, location)
   threads = []
@@ -155,6 +161,8 @@ def run_case(build_target, location, port)
     server_case(port, location)
   when :browser
     browser_case(location)
+  when :compile
+    compile_case(location)
   when :native
     test_native(build_target)
     # freebsd
