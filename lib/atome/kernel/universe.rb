@@ -87,7 +87,7 @@ class Universe
     end
 
     def current_server
-      `window.location.href`
+      `window.location.href` if RUBY_ENGINE.downcase == 'opal'
     end
 
     def current_user=(user)

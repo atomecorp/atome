@@ -45,10 +45,10 @@
 
 
 
-# require 'src/medias/rubies/examples/_dataset'
+require 'src/medias/rubies/examples/_dataset'
 # require 'src/medias/rubies/examples/attach'
 # require 'src/medias/rubies/examples/parents'
-require 'src/medias/rubies/examples/markers'
+# require 'src/medias/rubies/examples/markers'
 # require 'src/medias/rubies/examples/add'
 # require 'src/medias/rubies/examples/matrix'
 # require 'src/medias/rubies/examples/color'

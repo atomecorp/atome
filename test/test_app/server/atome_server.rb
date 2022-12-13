@@ -2,7 +2,7 @@
 
 # atome server
 require 'em/pure_ruby' if RUBY_PLATFORM == 'x64-mingw32'
-require  'atome'
+# require  'atome'
 require '../aui'
 require 'digest/sha2'
 require 'faye/websocket'
@@ -80,11 +80,11 @@ class App < Roda
   puts "The average price is: #{items.avg(:width)}"
 
 
-  index_content = File.read("../build/index.html")
+  index_content = File.read("../src/index.html")
 
 
-  opts[:root] = '../build'
-  plugin :static, %w[/css /js /medias], root: '../build'
+  opts[:root] = '../src'
+  plugin :static, %w[/css /js /medias], root: '../src'
   route do |r|
     if Faye::WebSocket.websocket?(env)
       websocket = Faye::WebSocket.new(env)
