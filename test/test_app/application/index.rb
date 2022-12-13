@@ -40,26 +40,51 @@
 # TODO : clones must update their original too when modified
 # FIXME : try the add demo makers are totally fucked
 #
-# require 'build/medias/rubies/examples/color'
-# require 'build/medias/rubies/examples/animation'
+# require 'src/medias/rubies/examples/color'
+# require 'src/medias/rubies/examples/animation'
 
 
 
-require 'build/medias/rubies/examples/_dataset'
-# require 'build/medias /rubies/examples/attach'
-# require 'build/medias/rubies/examples/parents'
-# require 'build/medias/rubies/examples/markers'
-# require 'build/medias/rubies/examples/add'
-# require 'build/medias/rubies/examples/matrix'
-# require 'build/medias/rubies/examples/color'
-# require 'build/medias/rubies/examples/read'
-# require 'build/medias/rubies/examples/drag'
-# require 'build/medias/rubies/examples/clone'
-# require 'build/medias/rubies/examples/monitoring'
-# require 'build/medias/rubies/examples/delete'
+require 'src/medias/rubies/examples/_dataset'
+# require 'src/medias/rubies/examples/attach'
+# require 'src/medias/rubies/examples/parents'
+# require 'src/medias/rubies/examples/markers'
+# require 'src/medias/rubies/examples/add'
+# require 'src/medias/rubies/examples/matrix'
+# require 'src/medias/rubies/examples/color'
+# require 'src/medias/rubies/examples/read'
+# require 'src/medias/rubies/examples/drag'
+# require 'src/medias/rubies/examples/clone'
+# require 'src/medias/rubies/examples/monitoring'
+# require 'src/medias/rubies/examples/delete'
 # a={"monitor0"=>{"left"=>{"blocs"=>[:pro_1]}}, "monitor1"=>{"width"=>{"blocs"=>[:pro_2]}}, "my_monitorer"=>{"left"=>{"blocs"=>[:pro_2]}}}
 
-# require 'build/medias/rubies/examples/_test'
+# require 'src/medias/rubies/examples/_test'
+# image(date: :boat)
 
+
+# `
+# var helloWorld = new Wad({
+#     source: './medias/audios/Binrpilot.mp3',
+#
+#     // add a key for each sprite
+#     sprite: {
+#         hello : [0, .4], // the start and end time, in seconds
+#         world : [.4,1]
+#     }
+# });
+#
+# // for each key on the sprite object in the constructor above, the wad that is created will have a key of the same name, with a play() method.
+# //helloWorld.hello.play();
+# //helloWorld.world.play();
+#
+# // you can still play the entire clip normally, if you want.
+# helloWorld.play();
+#
+# // if you hear clicks or pops from starting and stopping playback in the middle of the clip, you can try adding some attack and release to the envelope.
+# //helloWorld.hello.play({env:{attack: .1, release:.02}})
+#
+#
+# `
 
 

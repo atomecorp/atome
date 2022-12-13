@@ -86,6 +86,10 @@ class Universe
       @user
     end
 
+    def current_server
+      `window.location.href`
+    end
+
     def current_user=(user)
       # TODO: create or load an existing user
       # if user needs to be create the current_user will be eVe

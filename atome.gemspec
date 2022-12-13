@@ -44,7 +44,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'opal-browser', '~> 0.3.6'
   spec.add_runtime_dependency 'opal-jquery', '~> 0.4'
   spec.add_runtime_dependency 'parser', '~> 3.1'
-  spec.add_runtime_dependency 'puma', '~> 5.6'
+  spec.add_runtime_dependency 'puma', '~> 6.0'
   spec.add_runtime_dependency 'rack', '~> 2.2'
   spec.add_runtime_dependency 'rack-unreloader', '~> 1.8'
   spec.add_runtime_dependency 'rake', '~> 13.0'
@@ -55,6 +55,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sequel', '~> 5.5'
   spec.add_runtime_dependency 'sqlite3', '~> 1.4'
   spec.add_runtime_dependency 'uglifier', '~> 0.1'
+  spec.add_runtime_dependency 'webrick', '~> 1.7.0'
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"

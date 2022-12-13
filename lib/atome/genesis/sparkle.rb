@@ -23,6 +23,7 @@ puts "application identity: #{Universe.app_identity}"
 puts "atome version: #{Atome::VERSION}"
 puts "current host: #{Universe.current_machine}"
 puts "current user: #{Universe.current_user}"
+puts "current server: #{Universe.current_server}"
 
 Atome.new(
   { element: { renderers: [], id: :eDen, type: :element,
