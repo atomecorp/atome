@@ -11,7 +11,7 @@ end
 
 task default: :test
 
-task :test_browser do
+task :Build do
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
@@ -39,15 +39,16 @@ task :run_server do
   `cd test/test_app;atome run server guard`
 end
 
-task :run_example do
+task :refresh do
   FileUtils.copy_entry('vendor/assets/src/medias/rubies/examples/', 'test/test_app/src/medias/rubies/examples/')
   `cd test/test_app;atome build`
+  puts "refreshed!"
   # `cd test/ `
 
   # `cd test/; open http://127.0.0.1:8000/test_app/src/;ruby -run -ehttpd . -p8000`
 end
 
-task :run_browser do
+task :open_browser do
     `open http://127.0.0.1:1430/`
 end
 
