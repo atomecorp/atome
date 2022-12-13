@@ -7,14 +7,16 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "atome",
+    "productName": "app",
     "version": "0.0.0"
   },
   "tauri": {
     "allowlist": {
-      "all": false,
+      "all": true,
       "shell": {
-        "all": false,
+        "all": true,
+        "execute": true,
+        "sidecar": true,
         "open": true
       }
     },
@@ -33,7 +35,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.atome.one",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -62,7 +64,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "atome",
+        "title": "app",
         "width": 800
       }
     ]
