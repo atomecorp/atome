@@ -17,10 +17,7 @@ class Atome
     background.set(params[:background])
     number_of_cells=params[:num_rows]*params[:num_columns]
     (0..number_of_cells).each_with_index  do |cell, index|
-      if index== 0
-        grab(matrix_id).circle({id: "#{params[:background][:id]}_#{index}"})
-      end
-      puts params[:matrix_content][index]
+      grab(matrix_id).box({id: "#{params[:background][:id]}_#{index}"})
     end
     # puts params
     # cell_width = (params[:table_width] - params[:margin] * (params[:num_columns] + 1)) / params[:num_columns]

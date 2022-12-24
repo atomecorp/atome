@@ -9,15 +9,21 @@ generator.build_render(:red) do |value|
   alpha = @atome[:alpha]
   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
 end
 
 generator.build_render(:green) do |value|
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
   red = @atome[:red] * 255
   green = (@atome[:green] = value) * 255
   blue = @atome[:blue] * 255
   alpha = @atome[:alpha]
   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
 end
 
 generator.build_render(:blue) do |value|
@@ -27,6 +33,8 @@ generator.build_render(:blue) do |value|
   alpha = @atome[:alpha]
   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
 end
 
 generator.build_render(:alpha) do |value|
@@ -36,6 +44,8 @@ generator.build_render(:alpha) do |value|
   alpha = (@atome[:alpha] = value)
   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
 end
 
 generator.build_render(:visual) do |value|

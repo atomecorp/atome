@@ -2,11 +2,26 @@
 
 generator = Genesis.generator
 
-generator.build_particle(:red)
-generator.build_particle(:green)
-generator.build_particle(:blue)
-generator.build_particle(:alpha)
-generator.build_particle(:diffusion)
+generator.build_particle(:red) do
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
+end
+generator.build_particle(:green) do
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
+end
+generator.build_particle(:blue) do
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
+end
+generator.build_particle(:alpha) do
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
+end
+generator.build_particle(:diffusion) do
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
+end
 generator.build_particle(:visual)
 generator.build_particle(:overflow)
 generator.build_particle(:edit)

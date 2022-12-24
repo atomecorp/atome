@@ -83,11 +83,24 @@
 # // if you hear clicks or pops from starting and stopping playback in the middle of the clip, you can try adding some attack and release to the envelope.
 # //helloWorld.hello.play({env:{attack: .1, release:.02}})
 #
+
+
+
+# generator = Genesis.generator
 #
-# `
-c= circle
-c.circle
-
-
-
+# generator.build_particle(:red) do
+#   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+#   self
+# end
+#
+# generator.build_render(:red) do |value|
+#   red = ((@atome[:red] = value) * 255)
+#   green = @atome[:green] * 255
+#   blue = @atome[:blue] * 255
+#   alpha = @atome[:alpha]
+#   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+#   BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
+#   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+#   self
+# end
 
