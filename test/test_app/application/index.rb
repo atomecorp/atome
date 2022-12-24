@@ -1,7 +1,5 @@
 # # frozen_string_literal: true
 
-
-
 # # # Done : when sanitizing property must respect the order else no browser
 # object will be created, try to make it more flexible allowing any order
 # TODO int8! : language
@@ -39,13 +37,14 @@
 # FIXME : Monitor should be integrated as standard properties using 'generator' (eg : a.monitor doesn't return an atome)
 # TODO : clones must update their original too when modified
 # FIXME : try the add demo makers are totally fucked
-#
 # require 'src/medias/rubies/examples/color'
 # require 'src/medias/rubies/examples/animation'
+# require 'src/medias/rubies/examples/drag'
+#
+# require 'src/medias/rubies/examples/_dataset'
+# require 'src/medias/rubies/examples/table'
 
-
-
-require 'src/medias/rubies/examples/_dataset'
+# require 'src/medias/rubies/examples/bottom'
 # require 'src/medias/rubies/examples/attach'
 # require 'src/medias/rubies/examples/parents'
 # require 'src/medias/rubies/examples/markers'
@@ -57,11 +56,11 @@ require 'src/medias/rubies/examples/_dataset'
 # require 'src/medias/rubies/examples/clone'
 # require 'src/medias/rubies/examples/monitoring'
 # require 'src/medias/rubies/examples/delete'
+# require 'src/medias/rubies/examples/_audio'
 # a={"monitor0"=>{"left"=>{"blocs"=>[:pro_1]}}, "monitor1"=>{"width"=>{"blocs"=>[:pro_2]}}, "my_monitorer"=>{"left"=>{"blocs"=>[:pro_2]}}}
 
 # require 'src/medias/rubies/examples/_test'
 # image(date: :boat)
-
 
 # `
 # var helloWorld = new Wad({
@@ -86,5 +85,9 @@ require 'src/medias/rubies/examples/_dataset'
 #
 #
 # `
+c= circle
+c.circle
+
+
 
 

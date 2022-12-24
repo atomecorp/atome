@@ -32,8 +32,9 @@ b.drag({ lock: :x })
 # b.drag({ remove: true })
 # b.drag({ remove: false })
 
-# b.drag({ snap: { x: 100, y: 190 } })
 
 # b.drag({ constraint: { top: 330, left: 30, bottom: 30, right: 1 } })
 b.drag({ constraint: :parent })
+b.drag({ snap: { x: 100, y: 190 } })
+
 # b.drag({ constraint: :the_boxy })

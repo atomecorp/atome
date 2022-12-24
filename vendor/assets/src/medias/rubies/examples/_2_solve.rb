@@ -56,3 +56,17 @@ b.box()
 b=box
 c=b.box
 c.left(200)
+
+
+# Children doesn't work
+box({ id: :the_box })
+circle({ top: 300, id: :circle098 })
+
+t = text({ data: :hello })
+t.children[:the_box, :circle098]
+
+
+# if id change then we can't add color
+b=box
+b.id(:new_id)
+b.color(:blue)

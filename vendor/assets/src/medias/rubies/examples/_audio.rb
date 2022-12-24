@@ -1,6 +1,61 @@
 # frozen_string_literal: true
 
-box({id: :mybox})
+generator = Genesis.generator
+
+generator.build_atome(:audio) do |p|
+  puts p
+
+end
+
+generator.build_render(:browser_audio) do |_value, _user_proc|
+  @browser_type = :div
+  id_found = @atome[:id]
+  DOM do
+    audio({ id: id_found, autoplay: false, loop: false, muted: false }).atome
+  end.append_to(BrowserHelper.browser_document[:user_view])
+  @browser_object = BrowserHelper.browser_document[id_found]
+
+
+  # `
+  # var helloWorld = new Wad({
+  #     source: './medias/audios/Binrpilot.mp3',
+  #
+  #     // add a key for each sprite
+  #     sprite: {
+  #         hello : [0, .4], // the start and end time, in seconds
+  #         world : [.4,1]
+  #     }
+  # });
+  # `
+
+
+
+end
+
+generator.build_sanitizer(:audio) do |params|
+  parent_found = found_parents_and_renderers[:parent]
+  render_found = found_parents_and_renderers[:renderers]
+  default_params = { renderers: render_found, id: "audio_#{Universe.atomes.length}", type: :audio,
+                     parents: parent_found }
+  default_params.merge!(params)
+end
+
+module BrowserHelper
+  def self.browser_path_audio(value, browser_object, _atome)
+    browser_object[:src] = value
+  end
+
+
+end
+
+box({ id: :mybox })
+
+my_audio = audio({ path: 'medias/audios/Binrpilot.mp3', id: :audio3 }) do |params|
+  puts "3 - audio callback here #{params}, id is : #{id}"
+end
+
+# my_audio.clips[{begin: 4, end: 6}]
+alert Universe.atome_list
 
 
 # `
@@ -86,33 +141,33 @@ box({id: :mybox})
 # `
 #
 #
-#
-`
-const el = document.getElementById("mybox")
-function modifyText(){
- var audio = new Audio('medias/audios/snare.wav');
-audio.play(2);
-}
-el.addEventListener("mousedown", modifyText, false);
-`
-b=box({left: 160})
-b2=box({left: 333})
-b.touch(:down) do
-  `
-var audio = new Audio('medias/audios/Binrpilot.mp3');
-audio.currentTime=12
-audio.play(2);
-console.log('ok')
-`
-end
-
-
-b2.touch(:down) do
-#   `
-#   let bell= new Audio('medias/audios/snare.wav');
-#
+#########################################
 # `
-end
+# const el = document.getElementById("mybox")
+# function modifyText(){
+#  var audio = new Audio('medias/audios/snare.wav');
+# audio.play(2);
+# }
+# el.addEventListener("mousedown", modifyText, false);
+# `
+# b=box({left: 160})
+# b2=box({left: 333})
+# b.touch(:down) do
+#   `
+# var audio = new Audio('medias/audios/Binrpilot.mp3');
+# audio.currentTime=12
+# audio.play(2);
+# console.log('ok')
+# `
+# end
+#########################################
+
+# b2.touch(:down) do
+# #   `
+# #   let bell= new Audio('medias/audios/snare.wav');
+# #
+# # `
+# end
 # generator = Genesis.generator
 
 # b.touch(:double) do
@@ -163,8 +218,6 @@ end
 # Wad.audioContext
 # `
 # end
-
-
 
 # `
 # //let saw = new Wad({source : 'sawtooth'});

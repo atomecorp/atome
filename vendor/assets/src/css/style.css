@@ -19,14 +19,14 @@ html, body {
 
 
 #view {
-    left: 0;
+    left: 0px;
     font-size: 25px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 100%;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: auto;
     display: block;
-    height: 100%;
+    height: auto;
     overflow: hidden;
     position: absolute;
     -webkit-overflow-scrolling: touch;

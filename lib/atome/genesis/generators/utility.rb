@@ -47,3 +47,4 @@ end
 
 generator.build_particle(:cursor)
 
+generator.build_particle(:preset)

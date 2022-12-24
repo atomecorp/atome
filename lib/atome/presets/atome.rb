@@ -7,12 +7,14 @@
 
 # shaper creation
 class Atome
-  def atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+  def atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
     temp_default = Essentials.default_params[atome_type] || {}
     temp_default[:id] = generated_id
     temp_default[:parents] = generated_parents
     temp_default[:clones] = []
     temp_default[:renderers] = generated_render
+    temp_default[:children] = generated_children
+
     temp_default.merge(params)
   end
 
@@ -22,7 +24,17 @@ class Atome
     generated_render = params[:renderers] || default_renderer
     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_parents = params[:parents] || [id.value]
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    generated_children = params[:children] || []
+
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents,generated_children, params)
+
+    params2 =  { renderers: [:browser], id: generated_id, type: :shape, parents: [generated_parents], children: [],
+                 width: 99, height: 99,
+                 color: { renderers: [:browser], id: "#{params[:id]}_color", type: :color, attach: [params[:id]],
+                          red: 0.15, green: 0.30, blue: 0.6, alpha: 1 },
+                 left: 100, top: 100, clones: [], preset: :box
+    }
+    # params[:children]=[]
     Atome.new({ atome_type => params }, &bloc)
   end
 
@@ -32,7 +44,8 @@ class Atome
     generated_render = params[:renderers] || default_renderer
     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_parents = params[:parents] || [id.value]
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    generated_children = params[:children] || []
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
     Atome.new({ atome_type => params }, &bloc)
   end
 
@@ -54,7 +67,8 @@ class Atome
     generated_render = params[:renderers] || default_renderer
     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_parents = params[:parents] || [id.value]
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    generated_children = params[:children] || []
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
     Atome.new({ atome_type => params }, &bloc)
   end
 
@@ -63,7 +77,8 @@ class Atome
     generated_render = params[:renderers] || []
     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_parents = params[:parents] || [id.value]
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    generated_children = params[:children] || []
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
     Atome.new({ atome_type => params }, &bloc)
   end
 
@@ -86,7 +101,8 @@ class Atome
     generated_render = params[:renderers] || default_renderer
     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_parents = params[:parents] || []
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    generated_children = params[:children] || []
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
     Atome.new({ atome_type => params }, &bloc)
   end
 end

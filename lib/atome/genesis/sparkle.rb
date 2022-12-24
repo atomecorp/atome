@@ -37,7 +37,7 @@ Atome.new(
 
 Atome.new(
   { shape: { renderers: default_render, id: :view, type: :shape, parents: [:user_view], children: [],
-             left: 0, right: 0, top: 0, bottom: 0, overflow: :auto,
+             left: 0, right: 0, top: 0, bottom: 0,width: :auto,height: :auto, overflow: :auto,
              color: { renderers: default_render, id: :view_color, type: :color, attach: [:view],
                       red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } }
 )

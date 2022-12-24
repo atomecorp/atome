@@ -7,7 +7,7 @@ require 'digest/sha2'
 # below are the methods needed for atome creation and run
 def test_path(project_name, arg_name, path)
   if project_name != 'run' && project_name != 'guard' && !project_name.nil? &&
-    project_name != 'port:' && project_name != 'server' && project_name != 'build'
+     project_name != 'port:' && project_name != 'server' && project_name != 'build'
     # the line below remove the optional parameters from the project name
     project_name = project_name.sub(ARGV[ARGV.find_index(arg_name) + 1], '')
     "#{path}/#{project_name}"

@@ -23,8 +23,4 @@ module BrowserHelper
     browser_object[:src] = value
   end
 
-  def self.browser_attach_web(parents, html_object, _atome)
-    html_object.append_to(browser_document[parents])
-  end
-
 end

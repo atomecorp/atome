@@ -77,7 +77,7 @@ generator.build_render(:browser_text) do |_value, _user_proc|
 end
 
 generator.build_render(:browser_web) do
-  @browser_type = :web
+  @browser_type = :div
   id_found = @atome[:id]
   DOM do
     iframe({ id: id_found }).atome
