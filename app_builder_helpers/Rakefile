@@ -3,10 +3,10 @@
 # FIXME: check when creating gem version the new gem is not always fully updated we have to type gem uninstall first
 
 require 'opal'
-require 'opal-jquery'
+# require 'opal-jquery'
 require 'opal-browser'
 require 'parser'
-require 'ruby2js'
+# require 'ruby2js'
 require 'uglifier'
 
 Opal.append_path 'app'

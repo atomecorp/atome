@@ -42,7 +42,7 @@
 # require 'src/medias/rubies/examples/drag'
 #
 # require 'src/medias/rubies/examples/_dataset'
-# require 'src/medias/rubies/examples/table'
+require 'src/medias/rubies/examples/table'
 
 # require 'src/medias/rubies/examples/bottom'
 # require 'src/medias/rubies/examples/attach'

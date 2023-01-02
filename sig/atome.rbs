@@ -7,5 +7,19 @@ module Atome
 
   def add_to_hash: -> untyped
 
+  def apply_style: -> untyped
+
+  def format_matrix: -> untyped
+
+  def get_column: -> untyped
+
+  def get_column_or_row: -> untyped
+
+  def get_row: -> untyped
+
+  def matrix: -> untyped
+
+  def set: -> untyped
+
   def sort_callback: -> untyped
 end
