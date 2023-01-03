@@ -3,19 +3,66 @@
 # Define a method to retrieve the cells in a specified row
 generator = Genesis.generator
 
-generator.build_atome(:collection)
+generator.build_atome(:collector)
+generator.build_atome(:fg)
+
+class Batch
+  def id(val=nil)
+    if val
+      @id=val
+    else
+      @id
+    end
+  end
+  def initialize(params)
+    @id = params[:id] || "batch_#{Universe.atomes.length}"
+    Universe.add_to_atomes(@id, self)
+  end
+
+  def dispatch (method, *args, &block)
+    @data.each do |atome_found|
+      atome_found.send(method, *args, &block)
+    end
+  end
+  # TODO:  automatise collector methods creation when creato,g a new atome type
+  def color( args, &block)
+    dispatch(:color, args, &block)
+  end
+
+  def shadow( args, &block)
+    dispatch(:color, args, &block)
+  end
+  def method_missing(method, *args, &block)
+    dispatch(method, args, &block)
+  end
+
+  def data(collection)
+    @data = collection
+  end
+
+
+end
 
 # generator.build_particle(:proto)
 class Atome
+  def collector(params = {}, &bloc)
+    atome_type = :collector
+    generated_render = params[:renderers] || []
+    generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+    generated_parents = params[:parents] || [id.value]
+    generated_children = params[:children] || []
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
+    Batch.new({ atome_type => params }, &bloc)
+  end
 
   def each(&proc)
-      value.each do |val|
-        instance_exec(val, &proc) if proc.is_a?(Proc)
-      end
+    value.each do |val|
+      instance_exec(val, &proc) if proc.is_a?(Proc)
+    end
   end
 
   def [](range)
-     value[range]
+    value[range]
   end
 
   def set(params)
@@ -25,35 +72,43 @@ class Atome
   end
 
   def cells(cell_nb)
-    
+    collector_object = collector({})
+    collected_atomes = []
     cell_nb.each do |cell_found|
-
+      atome_found = grab ("#{id}_#{cell_found}")
+      collected_atomes << atome_found
     end
+    collector_object.data(collected_atomes)
+    collector_object
+  end
 
+  def cell(cell_nb)
+    cell_found = grab ("#{id}_#{cell_nb}")
+    cell_found
   end
 
   def columns(column_requested, &proc)
-    number_of_cells=@columns*@rows
-    column_content=get_column_or_row(number_of_cells, @columns, column_requested, true)
-    cells_found=[]
-     column_content.each do |cell_nb|
-       atome_found=grab("#{id}_#{cell_nb}")
-       instance_exec(atome_found, &proc) if proc.is_a?(Proc)
-       cells_found <<  grab("#{id}_#{cell_nb}")
-     end
-    element({data: cells_found})
+    number_of_cells = @columns * @rows
+    column_content = get_column_or_row(number_of_cells, @columns, column_requested, true)
+    cells_found = []
+    column_content.each do |cell_nb|
+      atome_found = grab("#{id}_#{cell_nb}")
+      instance_exec(atome_found, &proc) if proc.is_a?(Proc)
+      cells_found << grab("#{id}_#{cell_nb}")
+    end
+    element({ data: cells_found })
   end
 
   def rows(row_requested, &proc)
-    number_of_cells=@columns*@rows
-    column_content=get_column_or_row(number_of_cells, @columns, row_requested, false)
-    cells_found=[]
+    number_of_cells = @columns * @rows
+    column_content = get_column_or_row(number_of_cells, @columns, row_requested, false)
+    cells_found = []
     column_content.each do |cell_nb|
-      atome_found=grab("#{id}_#{cell_nb}")
+      atome_found = grab("#{id}_#{cell_nb}")
       instance_exec(atome_found, &proc) if proc.is_a?(Proc)
-      cells_found <<  grab("#{id}_#{cell_nb}")
+      cells_found << grab("#{id}_#{cell_nb}")
     end
-    element({data: cells_found})
+    element({ data: cells_found })
   end
 
   def format_matrix(matrix_id, matrix_width, matrix_height, nb_of_rows, nb_of_cols, margin, exceptions = {})
@@ -133,7 +188,7 @@ class Atome
       cells_in_row.each_with_index do |cell_nb, index|
         current_cell = grab("#{matrix_id}_#{cell_nb}")
         if cells_to_alter.include?(cell_nb)
-          current_cell.width(matrix_width /  value-margin-(margin/value) )
+          current_cell.width(matrix_width / value - margin - (margin / value))
           current_cell.left(current_cell.width.value * index + margin * (index + 1))
         else
           current_cell.hide(true)
@@ -288,9 +343,8 @@ params = {
 }
 m = element({})
 m.matrix(params)
-alert m.columns(5)[2]
-found=m.columns(5) do |el|
-    el.color(:yellow)
+found = m.columns(5) do |el|
+  el.color(:yellow)
 end
 
 m.rows(3) do |el|
@@ -301,19 +355,25 @@ m.rows(1) do |el|
 end
 
 # puts found.data.each
- found.data.each do |el|
-   el.color(:red)
- end
- found.data[0..2].each do |el|
-   puts el.id
-   el.color(:cyan)
- end
-
-
-grab(:my_table_23).color(:purple)
+found.data.each do |el|
+  el.color(:red)
+end
+found.data[0..2].each do |el|
+  puts el.id
+  el.color(:cyan)
+end
+# fg({ data: :a_354654  })
+grab(:my_table_21).color(:pink)
 grab(:my_table_26).color(:purple)
- m.cells[23, 26].color(:blue)
+m.cells([20, 5]).rotate(15)
+m.cell(9).color(:black)
+test= m.cells([23, 26])
 
+
+test.color(:blue)
+
+
+# alert m.columns(5)[2]
 
 # cc =element(data: [:poi, :sdfre, :jhfg])
 #  cc.data.each do |p|
