@@ -13,6 +13,7 @@ class Batch
       instance_exec(val, &proc) if proc.is_a?(Proc)
     end
   end
+
   def id(val = nil)
     if val
       @id = val
@@ -71,9 +72,6 @@ class Atome
   end
 
   def [](range)
-    # alert value[range].class
-    # collector_object = collector({id: :titi})
-    # Object.collector({})
     if value[range].class == Atome
       return value[range]
     elsif value[range].class == Array
@@ -146,7 +144,6 @@ class Atome
         # Calculate the x and y position of the cell
         x = (col_index + 1) * margin + col_index * cell_width
         y = (row_index + 1) * margin + row_index * cell_height
-
         current_cell = grab("#{matrix_id}_#{i}")
         current_cell.width = cell_width
         current_cell.height = cell_height
@@ -163,7 +160,6 @@ class Atome
     exceptions[:columns_fusion].each do |column_to_alter, value|
       cells_in_column = get_column_or_row(number_of_cells, nb_of_cols, column_to_alter, true)
       cells_to_alter = cells_in_column[value[0]..value[1]]
-
       cells_to_alter.each_with_index do |cell_nb, index|
         current_cell = grab("#{matrix_id}_#{cell_nb}")
         if index == 0
@@ -227,14 +223,17 @@ class Atome
   end
 
   def matrix(params)
+    # TODO:  use the standard atome creation method (generator.build_atome(:collector)),
+    # TODO suite => For now its impossible to make it draggable because it return the created box not the matrix
     # get necessary params
     matrix_id = params[:matrix][:particles][:id]
     self.id = matrix_id
     @rows = params[:rows][:count]
     @columns = params[:columns][:count]
-    margin = params[:cells][:particles].delete(:margin)
-    matrix_width = params[:matrix][:particles][:width]
-    matrix_height = params[:matrix][:particles][:height]
+    @margin = params[:cells][:particles].delete(:margin)
+    @cell_style = params[:cells][:particles]
+    @matrix_width = params[:matrix][:particles][:width]
+    @matrix_height = params[:matrix][:particles][:height]
 
     # exceptions reorganisation
     if params[:exceptions]
@@ -244,7 +243,7 @@ class Atome
       rows_exceptions = params[:exceptions][:rows]
       rows_fusion_exceptions = rows_exceptions[:fusion] if rows_exceptions
       rows_divided_exceptions = rows_exceptions[:divided] if rows_exceptions
-      exceptions = {
+      @exceptions = {
         columns_fusion: columns_fusion_exceptions,
         columns_divided: columns_divided_exceptions,
         rows_fusion: rows_fusion_exceptions,
@@ -260,58 +259,59 @@ class Atome
     number_of_cells = @rows * @columns
     number_of_cells.times do |index|
       current_cell = grab(matrix_id).box({ id: "#{matrix_id}_#{index}" })
-      apply_style(current_cell, params[:cells][:particles])
+      apply_style(current_cell, @cell_style = params[:cells][:particles])
     end
     # lets create the columns and rows
-    format_matrix(matrix_id, matrix_width, matrix_height, @rows, @columns, margin, exceptions)
+    format_matrix(matrix_id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
+  end
+
+  def add_columns(nb)
+    nb_of_cells_to_adds = nb * @rows
+    prev_nb_of_cells = @columns * @rows
+    nb_of_cells_to_adds.times do |index|
+      current_cell = self.box({ id: "#{id}_#{prev_nb_of_cells + index}" })
+      apply_style(current_cell, @cell_style)
+    end
+    @columns = @columns + nb
+    format_matrix(id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
+  end
+
+  def add_rows(nb)
+    nb_of_cells_to_adds = nb * @columns
+    prev_nb_of_cells = @columns * @rows
+    nb_of_cells_to_adds.times do |index|
+      current_cell = self.box({ id: "#{id}_#{prev_nb_of_cells + index}" })
+      apply_style(current_cell, @cell_style)
+    end
+    @rows = @rows + nb
+    format_matrix(id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
+  end
+
+  def resize(width, height)
+    @matrix_width = width
+    @matrix_height = height
+    grab(id.value).width(width)
+    grab(id.value).height(height)
+    format_matrix(id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
+
   end
 
   def get_column_or_row(length, num_columns, index, is_column)
-    # Calculer le nombre de lignes du tableau
+    # Compute the number of line
     num_rows = length / num_columns
-
     if is_column
-      # Vérifier que l'index de colonne est valide
-      if index < 0 || index >= num_columns
-        puts "L'index de colonne spécifié est hors limites"
-        return
-      end
-
-      # Renvoyer le contenu de la colonne d'index 'index'
       result = []
       (0...num_rows).each do |row|
         result << (index + row * num_columns)
       end
       return result
     else
-      # Vérifier que l'index de ligne est valide
-      if index < 0 || index >= num_rows
-        puts "L'index de ligne spécifié est hors limites"
-        return
-      end
-
-      # Renvoyer le contenu du ligne d'index 'index'
       start_index = index * num_columns
       end_index = start_index + num_columns - 1
       return (start_index..end_index).to_a
     end
   end
 
-  # def get_column_or_row(array, total_num_columns, index, is_column)
-  #   if is_column
-  #     result = []
-  #     array.each_with_index do |elem, i|
-  #       if i % total_num_columns == index
-  #         result << elem
-  #       end
-  #     end
-  #     result
-  #   else
-  #     start_index = index * total_num_columns
-  #     end_index = start_index + total_num_columns - 1
-  #     array[start_index..end_index]
-  #   end
-  # end
 end
 
 ######################
@@ -368,12 +368,10 @@ params = {
 m = element({})
 m.matrix(params)
 
-
 # m.columns(5).data[0..6].color(:red)
 # m.columns(5).data[0..6].class
 # collector({})
 # m.columns(5).data[0..9].color(:red)
-
 
 # ################################# Start table tests
 found = m.columns(5) do |el|
@@ -392,19 +390,51 @@ found.data.each do |el|
   el.color(:red)
 end
 
- found.data[0..2].each do |el|
-     el.color(:cyan)
+found.data[0..2].each do |el|
+  el.color(:cyan)
 end
 
 grab(:my_table_21).color(:pink)
 grab(:my_table_26).color(:purple)
 m.cells([20, 5]).rotate(15)
 m.cell(9).color(:black)
-test= m.cells([23, 26])
-
+test = m.cells([23, 26])
 
 test.color(:blue)
 m.columns(6).data[0..3].color(:white)
+
+grab(m.id.value).drag({ move: true }) do |e|
+  puts e
+end
+wait 1 do
+  m.add_columns(3)
+  wait 1 do
+    m.add_rows(4)
+    wait 1 do
+      m.resize(330, 300)
+    end
+  end
+end
+$window.on :resize do |e|
+  m.top(0)
+  m.left(0)
+  m.resize($window.view.width, $window.view.height)
+  # c.height = $window.view.height
+  # c.width = $window.view.width
+end
+
+# `
+# window.addEventListener('resize', function() {
+#   // Mise à jour de la largeur et de la hauteur de la div
+#   //div.style.width = 'window.innerWidth' + 'px';
+#  /// div.style.height = 'window.innerHeight' + 'px';
+# #{}
+# console.log(window.innerWidth)
+# })
+# `
+
+
+
 # ############################## end table tests #############
 
 # cc =element(data: [:poi, :sdfre, :jhfg])
@@ -447,6 +477,4 @@ m.columns(6).data[0..3].color(:white)
 #             }
 #
 #           })
-
-
 
