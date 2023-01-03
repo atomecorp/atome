@@ -288,7 +288,7 @@ params = {
 }
 m = element({})
 m.matrix(params)
-
+alert m.columns(5)[2]
 found=m.columns(5) do |el|
     el.color(:yellow)
 end
