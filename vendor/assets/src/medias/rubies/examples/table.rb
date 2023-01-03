@@ -8,15 +8,52 @@ generator.build_atome(:collection)
 # generator.build_particle(:proto)
 class Atome
 
+  def each(&proc)
+      value.each do |val|
+        instance_exec(val, &proc) if proc.is_a?(Proc)
+      end
+  end
+
+  def [](range)
+     value[range]
+  end
+
   def set(params)
     params.each do |particle, value|
       send(particle, value)
     end
   end
 
-  def columns(nb)
-    "nb : #{nb}"
-    # get_column_or_row(length, num_columns, nb, is_column)
+  def cells(cell_nb)
+    
+    cell_nb.each do |cell_found|
+
+    end
+
+  end
+
+  def columns(column_requested, &proc)
+    number_of_cells=@columns*@rows
+    column_content=get_column_or_row(number_of_cells, @columns, column_requested, true)
+    cells_found=[]
+     column_content.each do |cell_nb|
+       atome_found=grab("#{id}_#{cell_nb}")
+       instance_exec(atome_found, &proc) if proc.is_a?(Proc)
+       cells_found <<  grab("#{id}_#{cell_nb}")
+     end
+    element({data: cells_found})
+  end
+
+  def rows(row_requested, &proc)
+    number_of_cells=@columns*@rows
+    column_content=get_column_or_row(number_of_cells, @columns, row_requested, false)
+    cells_found=[]
+    column_content.each do |cell_nb|
+      atome_found=grab("#{id}_#{cell_nb}")
+      instance_exec(atome_found, &proc) if proc.is_a?(Proc)
+      cells_found <<  grab("#{id}_#{cell_nb}")
+    end
+    element({data: cells_found})
   end
 
   def format_matrix(matrix_id, matrix_width, matrix_height, nb_of_rows, nb_of_cols, margin, exceptions = {})
@@ -96,7 +133,7 @@ class Atome
       cells_in_row.each_with_index do |cell_nb, index|
         current_cell = grab("#{matrix_id}_#{cell_nb}")
         if cells_to_alter.include?(cell_nb)
-          current_cell.width(matrix_width / value - (margin + value * 2))
+          current_cell.width(matrix_width /  value-margin-(margin/value) )
           current_cell.left(current_cell.width.value * index + margin * (index + 1))
         else
           current_cell.hide(true)
@@ -113,11 +150,13 @@ class Atome
   def matrix(params)
     # get necessary params
     matrix_id = params[:matrix][:particles][:id]
-    nb_of_rows = params[:rows][:count]
-    nb_of_cols = params[:columns][:count]
+    self.id = matrix_id
+    @rows = params[:rows][:count]
+    @columns = params[:columns][:count]
     margin = params[:cells][:particles].delete(:margin)
     matrix_width = params[:matrix][:particles][:width]
     matrix_height = params[:matrix][:particles][:height]
+
     # exceptions reorganisation
     if params[:exceptions]
       columns_exceptions = params[:exceptions][:columns]
@@ -139,16 +178,13 @@ class Atome
     # let's create the matrix background
     current_matrix = grab(:view).box({ id: matrix_id })
     current_matrix.set(params[:matrix][:particles])
-    number_of_cells = nb_of_rows * nb_of_cols
+    number_of_cells = @rows * @columns
     number_of_cells.times do |index|
       current_cell = grab(matrix_id).box({ id: "#{matrix_id}_#{index}" })
       apply_style(current_cell, params[:cells][:particles])
     end
-    # data = [:hello, 1, :so_good, 3, :super, 5, 6, 7, "ok", 9, 10, 11, 12, 13, 14, "my_data", 16, 17, 18, 19]
-
     # lets create the columns and rows
-    # alert get_column_or_row(20, 4, 3, true)
-    format_matrix(matrix_id, matrix_width, matrix_height, nb_of_rows, nb_of_cols, margin, exceptions)
+    format_matrix(matrix_id, matrix_width, matrix_height, @rows, @columns, margin, exceptions)
   end
 
   def get_column_or_row(length, num_columns, index, is_column)
@@ -245,17 +281,44 @@ params = {
       fusion: { 1 => [3, 5], 7 => [2, 5] }
     },
     rows: {
-      divided: { 1 => 2 },
+      divided: { 1 => 3 },
       fusion: { 2 => [0, 3], 3 => [2, 5] }
     }
   }
 }
-m = Atome.new
+m = element({})
 m.matrix(params)
-alert m.columns(3)
-cc = collection
-# cc.proto("kjhkjhk")
-alert cc.class
+
+found=m.columns(5) do |el|
+    el.color(:yellow)
+end
+
+m.rows(3) do |el|
+  el.color(:orange)
+end
+m.rows(1) do |el|
+  el.color(:lightgray)
+end
+
+# puts found.data.each
+ found.data.each do |el|
+   el.color(:red)
+ end
+ found.data[0..2].each do |el|
+   puts el.id
+   el.color(:cyan)
+ end
+
+
+grab(:my_table_23).color(:purple)
+grab(:my_table_26).color(:purple)
+ m.cells[23, 26].color(:blue)
+
+
+# cc =element(data: [:poi, :sdfre, :jhfg])
+#  cc.data.each do |p|
+#    puts p
+#  end
 # m.apply_template(demo_template)
 # alert m.get_row()
 

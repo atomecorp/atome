@@ -26,7 +26,7 @@ task :run_browser do
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
   `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;gem install atome`
-  `cd test/test_app;atome update;atome run guard`
+  `cd test/test_app;atome update;atome run`
 end
 
 

@@ -28,12 +28,12 @@ class Atome
 
     params = atome_common(atome_type, generated_id, generated_render, generated_parents,generated_children, params)
 
-    params2 =  { renderers: [:browser], id: generated_id, type: :shape, parents: [generated_parents], children: [],
-                 width: 99, height: 99,
-                 color: { renderers: [:browser], id: "#{params[:id]}_color", type: :color, attach: [params[:id]],
-                          red: 0.15, green: 0.30, blue: 0.6, alpha: 1 },
-                 left: 100, top: 100, clones: [], preset: :box
-    }
+    # params2 =  { renderers: [:browser], id: generated_id, type: :shape, parents: [generated_parents], children: [],
+    #              width: 99, height: 99,
+    #              color: { renderers: [:browser], id: "#{params[:id]}_color", type: :color, attach: [params[:id]],
+    #                       red: 0.15, green: 0.30, blue: 0.6, alpha: 1 },
+    #              left: 100, top: 100, clones: [], preset: :box
+    # }
     # params[:children]=[]
     Atome.new({ atome_type => params }, &bloc)
   end
