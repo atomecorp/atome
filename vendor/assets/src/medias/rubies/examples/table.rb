@@ -7,13 +7,20 @@ generator.build_atome(:collector)
 generator.build_atome(:fg)
 
 class Batch
-  def id(val=nil)
+
+  def each(&proc)
+    value.each do |val|
+      instance_exec(val, &proc) if proc.is_a?(Proc)
+    end
+  end
+  def id(val = nil)
     if val
-      @id=val
+      @id = val
     else
       @id
     end
   end
+
   def initialize(params)
     @id = params[:id] || "batch_#{Universe.atomes.length}"
     Universe.add_to_atomes(@id, self)
@@ -24,14 +31,17 @@ class Batch
       atome_found.send(method, *args, &block)
     end
   end
+
   # TODO:  automatise collector methods creation when creato,g a new atome type
-  def color( args, &block)
+  def color(args, &block)
+
     dispatch(:color, args, &block)
   end
 
-  def shadow( args, &block)
+  def shadow(args, &block)
     dispatch(:color, args, &block)
   end
+
   def method_missing(method, *args, &block)
     dispatch(method, args, &block)
   end
@@ -39,7 +49,6 @@ class Batch
   def data(collection)
     @data = collection
   end
-
 
 end
 
@@ -62,7 +71,22 @@ class Atome
   end
 
   def [](range)
-    value[range]
+    # alert value[range].class
+    # collector_object = collector({id: :titi})
+    # Object.collector({})
+    if value[range].class == Atome
+      return value[range]
+    elsif value[range].class == Array
+      collector_object = Object.collector({})
+      collected_atomes = []
+      value[range].each do |atome_found|
+        collected_atomes << atome_found
+      end
+      collector_object.data(collected_atomes)
+
+      return collector_object
+    end
+
   end
 
   def set(params)
@@ -343,6 +367,15 @@ params = {
 }
 m = element({})
 m.matrix(params)
+
+
+# m.columns(5).data[0..6].color(:red)
+# m.columns(5).data[0..6].class
+# collector({})
+# m.columns(5).data[0..9].color(:red)
+
+
+# ################################# Start table tests
 found = m.columns(5) do |el|
   el.color(:yellow)
 end
@@ -353,16 +386,16 @@ end
 m.rows(1) do |el|
   el.color(:lightgray)
 end
-
-# puts found.data.each
+#
+# # puts found.data.each
 found.data.each do |el|
   el.color(:red)
 end
-found.data[0..2].each do |el|
-  puts el.id
-  el.color(:cyan)
+
+ found.data[0..2].each do |el|
+     el.color(:cyan)
 end
-# fg({ data: :a_354654  })
+
 grab(:my_table_21).color(:pink)
 grab(:my_table_26).color(:purple)
 m.cells([20, 5]).rotate(15)
@@ -371,9 +404,8 @@ test= m.cells([23, 26])
 
 
 test.color(:blue)
-
-
-# alert m.columns(5)[2]
+m.columns(6).data[0..3].color(:white)
+# ############################## end table tests #############
 
 # cc =element(data: [:poi, :sdfre, :jhfg])
 #  cc.data.each do |p|
