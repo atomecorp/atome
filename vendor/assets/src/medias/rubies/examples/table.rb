@@ -1,7 +1,11 @@
 # Define the table as an array
 
 # Define a method to retrieve the cells in a specified row
+generator = Genesis.generator
 
+generator.build_atome(:collection)
+
+# generator.build_particle(:proto)
 class Atome
 
   def set(params)
@@ -10,17 +14,10 @@ class Atome
     end
   end
 
-  # def get_range(params)
-  #   table = params[:table]
-  #   start_element = params[:start_element]
-  #   end_element = params[:end_element]
-  #   return table[start_element..end_element]
-  # end
-  # def get_range(table, start_element, end_element)
-  #   # table = params[:table]
-  #
-  #   return table[start_element..end_element]
-  # end
+  def columns(nb)
+    "nb : #{nb}"
+    # get_column_or_row(length, num_columns, nb, is_column)
+  end
 
   def format_matrix(matrix_id, matrix_width, matrix_height, nb_of_rows, nb_of_cols, margin, exceptions = {})
     cell_width = (matrix_width - margin * (nb_of_cols + 1)) / nb_of_cols
@@ -54,22 +51,22 @@ class Atome
       cells_to_alter.each_with_index do |cell_nb, index|
         current_cell = grab("#{matrix_id}_#{cell_nb}")
         if index == 0
-          current_cell.height(cell_height*cells_to_alter.length+margin*(cells_to_alter.length-1))
+          current_cell.height(cell_height * cells_to_alter.length + margin * (cells_to_alter.length - 1))
         else
           current_cell.hide(true)
         end
       end
     end if exceptions[:columns_fusion]
 
-    exceptions[:columns_divided].each do|column_to_alter, value|
+    exceptions[:columns_divided].each do |column_to_alter, value|
       cells_in_column = get_column_or_row(number_of_cells, nb_of_cols, column_to_alter, true)
       #  we get the nth first element
-      cells_to_alter=cells_in_column.take(value)
+      cells_to_alter = cells_in_column.take(value)
       cells_in_column.each_with_index do |cell_nb, index|
         current_cell = grab("#{matrix_id}_#{cell_nb}")
         if cells_to_alter.include?(cell_nb)
-          current_cell.height(matrix_height/value-(margin+value))
-          current_cell.top(current_cell.height.value*index+margin*(index+1))
+          current_cell.height(matrix_height / value - (margin + value))
+          current_cell.top(current_cell.height.value * index + margin * (index + 1))
         else
           current_cell.hide(true)
         end
@@ -85,7 +82,7 @@ class Atome
       cells_to_alter.each_with_index do |cell_nb, index|
         current_cell = grab("#{matrix_id}_#{cell_nb}")
         if index == 0
-          current_cell.width(cell_width*cells_to_alter.length+margin*(cells_to_alter.length-1))
+          current_cell.width(cell_width * cells_to_alter.length + margin * (cells_to_alter.length - 1))
         else
           current_cell.hide(true)
         end
@@ -95,12 +92,12 @@ class Atome
     exceptions[:rows_divided].each do |row_to_alter, value|
       cells_in_row = get_column_or_row(number_of_cells, nb_of_cols, row_to_alter, false)
       #  we get the nth first element
-      cells_to_alter=cells_in_row.take(value)
+      cells_to_alter = cells_in_row.take(value)
       cells_in_row.each_with_index do |cell_nb, index|
         current_cell = grab("#{matrix_id}_#{cell_nb}")
         if cells_to_alter.include?(cell_nb)
-          current_cell.width(matrix_width/value-(margin+value*2))
-          current_cell.left(current_cell.width.value*index+margin*(index+1))
+          current_cell.width(matrix_width / value - (margin + value * 2))
+          current_cell.left(current_cell.width.value * index + margin * (index + 1))
         else
           current_cell.hide(true)
         end
@@ -245,17 +242,20 @@ params = {
   exceptions: {
     columns: {
       # divided: { 2 => 3 },
-      fusion: { 1 => [ 3,5], 7 => [ 2, 5 ] }
+      fusion: { 1 => [3, 5], 7 => [2, 5] }
     },
     rows: {
       divided: { 1 => 2 },
-      fusion: { 2 => [ 0 , 3 ], 3=> [2,5] }
+      fusion: { 2 => [0, 3], 3 => [2, 5] }
     }
   }
 }
 m = Atome.new
-
 m.matrix(params)
+alert m.columns(3)
+cc = collection
+# cc.proto("kjhkjhk")
+alert cc.class
 # m.apply_template(demo_template)
 # alert m.get_row()
 
