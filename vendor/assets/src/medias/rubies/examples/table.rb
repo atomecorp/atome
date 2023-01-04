@@ -120,6 +120,26 @@ class Atome
 
   end
 
+  def overide(params)
+    puts "should overide #{params}"
+  end
+
+  def first(item,&proc)
+    if item[:columns]
+      columns(0,&proc)
+    else
+      rows(0,&proc)
+    end
+  end
+
+  def last(item,&proc)
+    if item[:columns]
+      columns(@columns-1,&proc)
+    else
+      rows(@rows-1,&proc)
+    end
+  end
+
   def format_matrix(matrix_id, matrix_width, matrix_height, nb_of_rows, nb_of_cols, margin, exceptions = {})
     cell_width = (matrix_width - margin * (nb_of_cols + 1)) / nb_of_cols
     cell_height = (matrix_height - margin * (nb_of_rows + 1)) / nb_of_rows
@@ -295,7 +315,7 @@ class Atome
     format_matrix(id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
   end
 
-  def resize_matrix(width, height)
+  def resize(width, height)
     @matrix_width = width
     @matrix_height = height
     grab(id.value).width(width)
@@ -394,35 +414,42 @@ m.columns(6).data[0..3].color(:white)
 grab(m.id.value).drag({ move: true }) do |e|
   puts e
 end
-wait 1 do
-  m.add_columns(3)
-  m.rows(3) do |el|
-    el.color(:orange)
-  end
-    wait 1 do
-      m.add_rows(4)
-      m.rows(1) do |el|
-        el.color(:lightgray)
-      end
-      wait 1 do
-        found.data.each do |el|
-          el.color(:red)
-        end
-        m.resize_matrix(330, 300)
-        m.fusion(rows: { 2 => [0, 3], 3 => [2, 5] })
-      end
-    end
-end
+# wait 1 do
+#   m.add_columns(3)
+#   m.rows(3) do |el|
+#     el.color(:orange)
+#   end
+#     wait 1 do
+#       m.add_rows(4)
+#       m.rows(1) do |el|
+#         el.color(:lightgray)
+#       end
+#       wait 1 do
+#         found.data.each do |el|
+#           el.color(:red)
+#         end
+#         m.resize(330, 300)
+#
+#         m.fusion(rows: { 2 => [0, 3], 3 => [2, 5] })
+#       end
+#     end
+# end
+
 $window.on :resize do |e|
   m.top(0)
   m.left(0)
-  m.resize_matrix($window.view.width, $window.view.height)
+  m.resize($window.view.width, $window.view.height)
 end
 
 m.fusion(columns: { 3=>  [3, 5], 4 => [2, 5] })
 m.fusion(rows: { 0 => [0, 3], 3 => [5, 9] })
+m.overide(width: {columns: [0,3], value:330})
+m.last(:rows) do |el|
+  el.color(:violet)
+end
+
 
 m.divide(columns: { 2 => 3 }, rows: {1 => 3})
-
+puts "try matrix in matrix's cell"
 # ############################## end table tests #############
 # TODO : alteration data persistence
