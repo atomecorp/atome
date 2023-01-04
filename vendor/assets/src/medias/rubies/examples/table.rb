@@ -1,97 +1,6 @@
-# Define the table as an array
+# frozen_string_literal: true
 
-# Define a method to retrieve the cells in a specified row
-generator = Genesis.generator
-
-generator.build_atome(:collector)
-generator.build_atome(:fg)
-
-class Batch
-
-  def each(&proc)
-    value.each do |val|
-      instance_exec(val, &proc) if proc.is_a?(Proc)
-    end
-  end
-
-  def id(val = nil)
-    if val
-      @id = val
-    else
-      @id
-    end
-  end
-
-  def initialize(params)
-    @id = params[:id] || "batch_#{Universe.atomes.length}"
-    Universe.add_to_atomes(@id, self)
-  end
-
-  def dispatch (method, *args, &block)
-    @data.each do |atome_found|
-      atome_found.send(method, *args, &block)
-    end
-  end
-
-  # TODO:  automatise collector methods creation when creato,g a new atome type
-  def color(args, &block)
-
-    dispatch(:color, args, &block)
-  end
-
-  def shadow(args, &block)
-    dispatch(:color, args, &block)
-  end
-
-  def method_missing(method, *args, &block)
-    dispatch(method, args, &block)
-  end
-
-  def data(collection)
-    @data = collection
-  end
-
-end
-
-# generator.build_particle(:proto)
 class Atome
-  def collector(params = {}, &bloc)
-    atome_type = :collector
-    generated_render = params[:renderers] || []
-    generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
-    generated_parents = params[:parents] || [id.value]
-    generated_children = params[:children] || []
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
-    Batch.new({ atome_type => params }, &bloc)
-  end
-
-  def each(&proc)
-    value.each do |val|
-      instance_exec(val, &proc) if proc.is_a?(Proc)
-    end
-  end
-
-  def [](range)
-    if value[range].class == Atome
-      return value[range]
-    elsif value[range].class == Array
-      collector_object = Object.collector({})
-      collected_atomes = []
-      value[range].each do |atome_found|
-        collected_atomes << atome_found
-      end
-      collector_object.data(collected_atomes)
-
-      return collector_object
-    end
-
-  end
-
-  def set(params)
-    params.each do |particle, value|
-      send(particle, value)
-    end
-  end
 
   def cells(cell_nb)
     collector_object = collector({})
@@ -133,12 +42,83 @@ class Atome
     element({ data: cells_found })
   end
 
+  def fusion(params)
+    number_of_cells = @columns * @rows
+    if params[:columns]
+      @exceptions[:columns_fusion] = params[:columns].merge(@exceptions[:columns_fusion])
+      params[:columns].each do |column_to_alter, value|
+        cell_height = (@matrix_height - @margin * (@rows + 1)) / @rows
+        cells_in_column = get_column_or_row(number_of_cells, @columns, column_to_alter, true)
+        cells_to_alter = cells_in_column[value[0]..value[1]]
+        cells_to_alter.each_with_index do |cell_nb, index|
+          current_cell = grab("#{id.value}_#{cell_nb}")
+          if index == 0
+            current_cell.height(cell_height * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
+          else
+            current_cell.hide(true)
+          end
+        end
+      end
+    else
+      @exceptions[:rows_fusion] = params[:rows].merge(@exceptions[:rows_fusion])
+      params[:rows].each do |row_to_alter, value|
+        cell_width = (@matrix_width - @margin * (@columns + 1)) / @columns
+        cells_in_column = get_column_or_row(number_of_cells, @columns, row_to_alter, false)
+        cells_to_alter = cells_in_column[value[0]..value[1]]
+
+        cells_to_alter.each_with_index do |cell_nb, index|
+          current_cell = grab("#{id.value}_#{cell_nb}")
+          if index == 0
+            current_cell.width(cell_width * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
+          else
+            current_cell.hide(true)
+          end
+        end
+      end
+    end
+
+  end
+
+  def divide(params)
+    number_of_cells = @columns * @rows
+    if params[:columns]
+      params[:columns].each do |column_to_alter, value|
+        cells_in_column = get_column_or_row(number_of_cells, @columns, column_to_alter, true)
+        #  we get the nth first element
+        cells_to_alter = cells_in_column.take(value)
+        cells_in_column.each_with_index do |cell_nb, index|
+          current_cell = grab("#{id.value}_#{cell_nb}")
+          if cells_to_alter.include?(cell_nb)
+            current_cell.height(@matrix_height / value - (@margin + value))
+            current_cell.top(current_cell.height.value * index + @margin * (index + 1))
+          else
+            current_cell.hide(true)
+          end
+        end
+      end
+    else
+      params[:rows].each do |row_to_alter, value|
+        cells_in_row = get_column_or_row(number_of_cells, @columns, row_to_alter, false)
+        #  we get the nth first element
+        cells_to_alter = cells_in_row.take(value)
+        cells_in_row.each_with_index do |cell_nb, index|
+          current_cell = grab("#{id.value}_#{cell_nb}")
+          if cells_to_alter.include?(cell_nb)
+            current_cell.width(@matrix_width / value - @margin - (@margin / value))
+            current_cell.left(current_cell.width.value * index + @margin * (index + 1))
+          else
+            current_cell.hide(true)
+          end
+        end
+      end
+    end
+
+  end
+
   def format_matrix(matrix_id, matrix_width, matrix_height, nb_of_rows, nb_of_cols, margin, exceptions = {})
     cell_width = (matrix_width - margin * (nb_of_cols + 1)) / nb_of_cols
     cell_height = (matrix_height - margin * (nb_of_rows + 1)) / nb_of_rows
     i = 0
-    # rows = []
-    # cols = []
     nb_of_rows.times do |row_index|
       nb_of_cols.times do |col_index|
         # Calculate the x and y position of the cell
@@ -157,64 +137,12 @@ class Atome
 
     number_of_cells = nb_of_rows * nb_of_cols
     # columns exceptions
-    exceptions[:columns_fusion].each do |column_to_alter, value|
-      cells_in_column = get_column_or_row(number_of_cells, nb_of_cols, column_to_alter, true)
-      cells_to_alter = cells_in_column[value[0]..value[1]]
-      cells_to_alter.each_with_index do |cell_nb, index|
-        current_cell = grab("#{matrix_id}_#{cell_nb}")
-        if index == 0
-          current_cell.height(cell_height * cells_to_alter.length + margin * (cells_to_alter.length - 1))
-        else
-          current_cell.hide(true)
-        end
-      end
-    end if exceptions[:columns_fusion]
-
-    exceptions[:columns_divided].each do |column_to_alter, value|
-      cells_in_column = get_column_or_row(number_of_cells, nb_of_cols, column_to_alter, true)
-      #  we get the nth first element
-      cells_to_alter = cells_in_column.take(value)
-      cells_in_column.each_with_index do |cell_nb, index|
-        current_cell = grab("#{matrix_id}_#{cell_nb}")
-        if cells_to_alter.include?(cell_nb)
-          current_cell.height(matrix_height / value - (margin + value))
-          current_cell.top(current_cell.height.value * index + margin * (index + 1))
-        else
-          current_cell.hide(true)
-        end
-      end
-    end if exceptions[:columns_divided]
-
-    ###### rows exceptions
-
-    exceptions[:rows_fusion].each do |row_to_alter, value|
-      cells_in_column = get_column_or_row(number_of_cells, nb_of_cols, row_to_alter, false)
-      cells_to_alter = cells_in_column[value[0]..value[1]]
-
-      cells_to_alter.each_with_index do |cell_nb, index|
-        current_cell = grab("#{matrix_id}_#{cell_nb}")
-        if index == 0
-          current_cell.width(cell_width * cells_to_alter.length + margin * (cells_to_alter.length - 1))
-        else
-          current_cell.hide(true)
-        end
-      end
-    end if exceptions[:rows_fusion]
-
-    exceptions[:rows_divided].each do |row_to_alter, value|
-      cells_in_row = get_column_or_row(number_of_cells, nb_of_cols, row_to_alter, false)
-      #  we get the nth first element
-      cells_to_alter = cells_in_row.take(value)
-      cells_in_row.each_with_index do |cell_nb, index|
-        current_cell = grab("#{matrix_id}_#{cell_nb}")
-        if cells_to_alter.include?(cell_nb)
-          current_cell.width(matrix_width / value - margin - (margin / value))
-          current_cell.left(current_cell.width.value * index + margin * (index + 1))
-        else
-          current_cell.hide(true)
-        end
-      end
-    end if exceptions[:rows_divided]
+    if exceptions
+      fusion({ columns: exceptions[:columns_fusion] }) if exceptions[:columns_fusion]
+      fusion({ rows: exceptions[:rows_fusion] }) if exceptions[:rows_fusion]
+      divide({ columns: exceptions[:columns_divided] }) if exceptions[:columns_divided]
+      divide({ rows: exceptions[:rows_divided] }) if exceptions[:rows_divided]
+    end
 
   end
 
@@ -237,12 +165,12 @@ class Atome
 
     # exceptions reorganisation
     if params[:exceptions]
-      columns_exceptions = params[:exceptions][:columns]
-      columns_fusion_exceptions = columns_exceptions[:fusion] if columns_exceptions
-      columns_divided_exceptions = columns_exceptions[:divided] if columns_exceptions
-      rows_exceptions = params[:exceptions][:rows]
-      rows_fusion_exceptions = rows_exceptions[:fusion] if rows_exceptions
-      rows_divided_exceptions = rows_exceptions[:divided] if rows_exceptions
+      columns_exceptions = params[:exceptions][:columns] ||= {}
+      columns_fusion_exceptions = columns_exceptions[:fusion] ||= {}
+      columns_divided_exceptions = columns_exceptions[:divided] ||= {}
+      rows_exceptions = params[:exceptions][:rows] ||= {}
+      rows_fusion_exceptions = rows_exceptions[:fusion] ||= {}
+      rows_divided_exceptions = rows_exceptions[:divided] ||= {}
       @exceptions = {
         columns_fusion: columns_fusion_exceptions,
         columns_divided: columns_divided_exceptions,
@@ -250,7 +178,12 @@ class Atome
         rows_divided: rows_divided_exceptions,
       }
     else
-      exceptions = {}
+      @exceptions = {
+        columns_fusion: {},
+        columns_divided: {},
+        rows_fusion: {},
+        rows_divided: {},
+      }
     end
 
     # let's create the matrix background
@@ -266,28 +199,56 @@ class Atome
   end
 
   def add_columns(nb)
-    nb_of_cells_to_adds = nb * @rows
     prev_nb_of_cells = @columns * @rows
-    nb_of_cells_to_adds.times do |index|
-      current_cell = self.box({ id: "#{id}_#{prev_nb_of_cells + index}" })
+    nb_of_cells_to_adds = nb * @rows
+    new_nb_of_cells = prev_nb_of_cells + nb_of_cells_to_adds
+    new_nb_of_cells.times do |index|
+      if index < prev_nb_of_cells
+        grab("#{id.value}_#{index}").delete(true)
+        puts index
+        #
+      end
+      current_cell = self.box({ id: "#{id}_#{index}" })
       apply_style(current_cell, @cell_style)
     end
     @columns = @columns + nb
+    ########## old algo
+    # nb_of_cells_to_adds = nb * @rows
+    # prev_nb_of_cells = @columns * @rows
+    # nb_of_cells_to_adds.times do |index|
+    #   current_cell = self.box({ id: "#{id}_#{prev_nb_of_cells + index}" })
+    #   apply_style(current_cell, @cell_style)
+    # end
+    # @columns = @columns + nb
     format_matrix(id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
   end
 
   def add_rows(nb)
-    nb_of_cells_to_adds = nb * @columns
     prev_nb_of_cells = @columns * @rows
-    nb_of_cells_to_adds.times do |index|
-      current_cell = self.box({ id: "#{id}_#{prev_nb_of_cells + index}" })
+    nb_of_cells_to_adds = nb * @columns
+    new_nb_of_cells = prev_nb_of_cells + nb_of_cells_to_adds
+    new_nb_of_cells.times do |index|
+      if index < prev_nb_of_cells
+        grab("#{id.value}_#{index}").delete(true)
+        puts index
+        #
+      end
+      current_cell = self.box({ id: "#{id}_#{index}" })
       apply_style(current_cell, @cell_style)
     end
     @rows = @rows + nb
+    ########## old algo
+    # nb_of_cells_to_adds = nb * @columns
+    # prev_nb_of_cells = @columns * @rows
+    # nb_of_cells_to_adds.times do |index|
+    #   current_cell = self.box({ id: "#{id}_#{prev_nb_of_cells + index}" })
+    #   apply_style(current_cell, @cell_style)
+    # end
+    # @rows = @rows + nb
     format_matrix(id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
   end
 
-  def resize(width, height)
+  def resize_matrix(width, height)
     @matrix_width = width
     @matrix_height = height
     grab(id.value).width(width)
@@ -297,6 +258,7 @@ class Atome
   end
 
   def get_column_or_row(length, num_columns, index, is_column)
+    puts "length: #{length}, #{num_columns} : #{num_columns}, index : #{index}, is_column : #{is_column}"
     # Compute the number of line
     num_rows = length / num_columns
     if is_column
@@ -314,28 +276,11 @@ class Atome
 
 end
 
-######################
-# data = [:hello, 1, 2, 3, super, 5, 6, 7, "ok", 9, 10, 11, 12, 13, 14, "my_data", 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34]
-#
-# # Define the number of rows and columns in the table
-# params = { num_rows: 8,
-#            num_columns: 7,
-#            background: {width: 700, height: 800,  id: :my_table, smooth: 8, color: :yellow },
-#            item: {margin: 9, padding: 3, color: :green, smooth: 6},
-#            matrix_content: data,
-#           }
-#
-# demo_template= {
-#   columns: 6,
-#   rows: 4,
-#   cell_fusion: [[3,4], [12, 13], [9,23]],
-#   column_equisize: [3,5],
-#   row_equisize: [1,6],
-# }
+###########################
 
 params = {
   matrix: {
-    particles: { id: :my_table, left: 33, top: 33, width: 500, height: 399, smooth: 8, color: :yellowgreen }
+    particles: { id: :my_table, left: 0, top: 0, width: 500, height: 399, smooth: 8, color: :yellowgreen }
   },
   columns: { count: 8,
              titles: { 1 => :col1, 3 => :mycol },
@@ -356,22 +301,17 @@ params = {
   },
   exceptions: {
     columns: {
-      # divided: { 2 => 3 },
+      divided: { 2 => 3 },
       fusion: { 1 => [3, 5], 7 => [2, 5] }
     },
     rows: {
       divided: { 1 => 3 },
-      fusion: { 2 => [0, 3], 3 => [2, 5] }
+      fusion: { 2 => [0, 3], 5 => [2, 5] }
     }
   }
 }
 m = element({})
 m.matrix(params)
-
-# m.columns(5).data[0..6].color(:red)
-# m.columns(5).data[0..6].class
-# collector({})
-# m.columns(5).data[0..9].color(:red)
 
 # ################################# Start table tests
 found = m.columns(5) do |el|
@@ -384,8 +324,7 @@ end
 m.rows(1) do |el|
   el.color(:lightgray)
 end
-#
-# # puts found.data.each
+
 found.data.each do |el|
   el.color(:red)
 end
@@ -408,73 +347,24 @@ grab(m.id.value).drag({ move: true }) do |e|
 end
 wait 1 do
   m.add_columns(3)
-  wait 1 do
-    m.add_rows(4)
     wait 1 do
-      m.resize(330, 300)
+      m.add_rows(4)
+      wait 1 do
+        m.resize_matrix(330, 300)
+        m.fusion(rows: { 2 => [0, 3], 3 => [2, 5] })
+      end
     end
-  end
 end
 $window.on :resize do |e|
   m.top(0)
   m.left(0)
-  m.resize($window.view.width, $window.view.height)
-  # c.height = $window.view.height
-  # c.width = $window.view.width
+  m.resize_matrix($window.view.width, $window.view.height)
 end
 
-# `
-# window.addEventListener('resize', function() {
-#   // Mise à jour de la largeur et de la hauteur de la div
-#   //div.style.width = 'window.innerWidth' + 'px';
-#  /// div.style.height = 'window.innerHeight' + 'px';
-# #{}
-# console.log(window.innerWidth)
-# })
-# `
+m.fusion(columns: { 3=>  [3, 5], 4 => [2, 5] })
+m.fusion(rows: { 0 => [0, 3], 3 => [5, 9] })
 
-
+m.divide(columns: { 2 => 3 }, rows: {1 => 3})
 
 # ############################## end table tests #############
-
-# cc =element(data: [:poi, :sdfre, :jhfg])
-#  cc.data.each do |p|
-#    puts p
-#  end
-# m.apply_template(demo_template)
-# alert m.get_row()
-
-# Test the methods
-
-# puts "first row:"
-# puts get_row(table_content, num_columns, 0)
-#
-# puts "Second row:"
-# puts get_row(table_content, num_columns, 1)
-#
-# puts "Third row:"
-# get_row(table_content, num_columns, 2)
-#
-# puts "\nSecond column:"
-# puts get_column(table_content, num_rows, num_columns, 1)
-
-# Table.new({
-#             table_width: 700,
-# table_height: 600,
-# num_rows: 8,
-# num_columns: 8,
-# margin: 9,
-#             exeptions: {columns: {
-#               column3: {nb_of_cells: 3},
-#                         column5: {fusion: [{cell3: :cell4, cell6: :cell7}]}
-#             },
-#             rows: {
-#
-#               row2: {nb_of_cells: 4},
-#               row6: {fusion: [{cell1: :cell2, cell4: :cell5,cell6: :cel75}]}
-#             }
-#
-#             }
-#
-#           })
 

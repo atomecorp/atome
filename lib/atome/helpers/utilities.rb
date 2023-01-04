@@ -31,7 +31,7 @@ class Atome
   def broadcasting(altered_particle, value)
     @broadcast.each_value do |particle_monitored|
       if particle_monitored[:particles].include?(altered_particle)
-        code_found=particle_monitored[:code]
+        code_found = particle_monitored[:code]
         instance_exec(self, altered_particle, value, &code_found) if code_found.is_a?(Proc)
       end
     end
@@ -39,14 +39,14 @@ class Atome
 
   public
 
-  def monitor(params=nil, &proc_monitoring)
+  def monitor(params = nil, &proc_monitoring)
     if params
       atome[:monitor] ||= {}
       params[:atomes].each do |atome_id|
         target_broadcaster = grab(atome_id).instance_variable_get('@broadcast')
         monitor_id = params[:id] || "monitor#{target_broadcaster.length}"
-        atome[:monitor] [monitor_id]=params.merge({code: proc_monitoring})
-        target_broadcaster[monitor_id] = { particles: params[:particles], code:  proc_monitoring }
+        atome[:monitor] [monitor_id] = params.merge({ code: proc_monitoring })
+        target_broadcaster[monitor_id] = { particles: params[:particles], code: proc_monitoring }
       end
     else
       atome[:monitor]
@@ -60,7 +60,6 @@ class Atome
 
     instance_variable_set("@#{element}_code", user_proc)
   end
-
 
   def particles(particles_found = nil)
     if particles_found
@@ -99,5 +98,43 @@ class Atome
 
   def refresh
     collapse
+  end
+
+  def collector(params = {}, &bloc)
+    atome_type = :collector
+    generated_render = params[:renderers] || []
+    generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+    generated_parents = params[:parents] || [id.value]
+    generated_children = params[:children] || []
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
+    Batch.new({ atome_type => params }, &bloc)
+  end
+
+  def each(&proc)
+    value.each do |val|
+      instance_exec(val, &proc) if proc.is_a?(Proc)
+    end
+  end
+
+  def [](range)
+    if value[range].class == Atome
+      return value[range]
+    elsif value[range].class == Array
+      collector_object = Object.collector({})
+      collected_atomes = []
+      value[range].each do |atome_found|
+        collected_atomes << atome_found
+      end
+      collector_object.data(collected_atomes)
+
+      return collector_object
+    end
+
+  end
+
+  def set(params)
+    params.each do |particle, value|
+      send(particle, value)
+    end
   end
 end

@@ -48,3 +48,4 @@ generator.build_sanitizer(:element) do |params|
                      parents: parent_found }
   default_params.merge!(params)
 end
+generator.build_atome(:collector)
