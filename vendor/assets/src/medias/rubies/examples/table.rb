@@ -1,4 +1,9 @@
 # frozen_string_literal: true
+generator = Genesis.generator
+
+def matrix(params = {}, &proc)
+  grab(:view).matrix(params, &proc)
+end
 
 class Atome
 
@@ -47,17 +52,17 @@ class Atome
     if params[:columns]
       @exceptions[:columns_fusion] = params[:columns].merge(@exceptions[:columns_fusion])
       params[:columns].each do |column_to_alter, value|
-        cell_height = (@matrix_height - @margin * (@rows + 1)) / @rows
-        cells_in_column = get_column_or_row(number_of_cells, @columns, column_to_alter, true)
-        cells_to_alter = cells_in_column[value[0]..value[1]]
-        cells_to_alter.each_with_index do |cell_nb, index|
-          current_cell = grab("#{id.value}_#{cell_nb}")
-          if index == 0
-            current_cell.height(cell_height * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
-          else
-            current_cell.hide(true)
+          cell_height = (@matrix_height - @margin * (@rows + 1)) / @rows
+          cells_in_column = get_column_or_row(number_of_cells, @columns, column_to_alter, true)
+          cells_to_alter = cells_in_column[value[0]..value[1]]
+          cells_to_alter.each_with_index do |cell_nb, index|
+            current_cell = grab("#{id.value}_#{cell_nb}")
+            if index == 0
+              current_cell.height(cell_height * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
+            else
+              current_cell.hide(true)
+            end
           end
-        end
       end
     else
       @exceptions[:rows_fusion] = params[:rows].merge(@exceptions[:rows_fusion])
@@ -150,52 +155,94 @@ class Atome
     current_cell.set(style)
   end
 
-  def matrix(params)
+  def matrix(params = {}, &bloc)
+    columns_data = params.delete(:columns)
+    rows_data = params.delete(:rows)
+    cells_data = params.delete(:cells)
+    exceptions_data = params.delete(:exceptions)
+
+    default_renderer = Essentials.default_params[:render_engines]
+    atome_type = :matrix
+    generated_render = params[:renderers] || default_renderer
+    generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+    generated_parents = params[:parents] || [id.value]
+    generated_children = params[:children] || []
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
+    the_matrix = Atome.new({ atome_type => params }, &bloc)
+    ############
+
     # TODO:  use the standard atome creation method (generator.build_atome(:collector)),
     # TODO suite => For now its impossible to make it draggable because it return the created box not the matrix
     # get necessary params
-    matrix_id = params[:matrix][:particles][:id]
-    self.id = matrix_id
-    @rows = params[:rows][:count]
-    @columns = params[:columns][:count]
-    @margin = params[:cells][:particles].delete(:margin)
-    @cell_style = params[:cells][:particles]
-    @matrix_width = params[:matrix][:particles][:width]
-    @matrix_height = params[:matrix][:particles][:height]
+    matrix_id = params[:id]
+    matrix_width = params[:width]
+    matrix_height = params[:height]
+    columns = columns_data[:count]
+    rows = rows_data[:count]
+    margin = cells_data[:particles].delete(:margin)
+    the_matrix.instance_variable_set("@columns", columns)
+    the_matrix.instance_variable_set("@rows", rows)
+    the_matrix.instance_variable_set("@margin", margin)
+    the_matrix.instance_variable_set("@cell_style", cells_data[:particles])
+    the_matrix.instance_variable_set("@matrix_width", matrix_width)
+    the_matrix.instance_variable_set("@matrix_height", matrix_height)
+
+    rows = rows_data[:count]
+    columns = columns_data[:count]
+    # @rows = rows_data[:count]
+    # @columns = columns_data[:count]
+    # @margin = cells_data[:particles].delete(:margin)
+    # @cell_style = cells_data[:particles]
+    # @matrix_width = params[:width]
+    # @matrix_height = params[:height]
 
     # exceptions reorganisation
-    if params[:exceptions]
-      columns_exceptions = params[:exceptions][:columns] ||= {}
+    if exceptions_data
+      columns_exceptions = exceptions_data[:columns] ||= {}
       columns_fusion_exceptions = columns_exceptions[:fusion] ||= {}
       columns_divided_exceptions = columns_exceptions[:divided] ||= {}
-      rows_exceptions = params[:exceptions][:rows] ||= {}
+      rows_exceptions = exceptions_data[:rows] ||= {}
       rows_fusion_exceptions = rows_exceptions[:fusion] ||= {}
       rows_divided_exceptions = rows_exceptions[:divided] ||= {}
-      @exceptions = {
-        columns_fusion: columns_fusion_exceptions,
-        columns_divided: columns_divided_exceptions,
-        rows_fusion: rows_fusion_exceptions,
-        rows_divided: rows_divided_exceptions,
-      }
+      exceptions = { columns_fusion: columns_fusion_exceptions,
+                      columns_divided: columns_divided_exceptions,
+                      rows_fusion: rows_fusion_exceptions,
+                      rows_divided: rows_divided_exceptions }
+        the_matrix.instance_variable_set("@exceptions", exceptions)
+      # @exceptions = {
+      #   columns_fusion: columns_fusion_exceptions,
+      #   columns_divided: columns_divided_exceptions,
+      #   rows_fusion: rows_fusion_exceptions,
+      #   rows_divided: rows_divided_exceptions,
+      # }
     else
-      @exceptions = {
+      exceptions = {
         columns_fusion: {},
         columns_divided: {},
         rows_fusion: {},
         rows_divided: {},
       }
+      the_matrix.instance_variable_set("@exceptions", exceptions)
+      # @exceptions = {
+      #   columns_fusion: {},
+      #   columns_divided: {},
+      #   rows_fusion: {},
+      #   rows_divided: {},
+      # }
     end
 
     # let's create the matrix background
-    current_matrix = grab(:view).box({ id: matrix_id })
-    current_matrix.set(params[:matrix][:particles])
-    number_of_cells = @rows * @columns
+    # current_matrix = grab(:view).box({ id: matrix_id })
+    # current_matrix.set(params[:matrix][:particles])
+    number_of_cells = rows * columns
     number_of_cells.times do |index|
       current_cell = grab(matrix_id).box({ id: "#{matrix_id}_#{index}" })
-      apply_style(current_cell, @cell_style = params[:cells][:particles])
+      the_matrix.instance_variable_set("@cell_style", cells_data[:particles])
+      apply_style(current_cell, cells_data[:particles])
     end
     # lets create the columns and rows
-    format_matrix(matrix_id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
+    the_matrix.format_matrix(matrix_id, matrix_width, matrix_height, rows, columns, margin, exceptions)
+    the_matrix
   end
 
   def add_columns(nb)
@@ -279,9 +326,10 @@ end
 ###########################
 
 params = {
-  matrix: {
-    particles: { id: :my_table, left: 0, top: 0, width: 500, height: 399, smooth: 8, color: :yellowgreen }
-  },
+  # matrix: {
+  #   particles: { id: :my_table, left: 0, top: 0, width: 500, height: 399, smooth: 8, color: :yellowgreen }
+  # },
+  id: :my_table, left: 0, top: 0, width: 500, height: 399, smooth: 8, color: :yellowgreen,
   columns: { count: 8,
              titles: { 1 => :col1, 3 => :mycol },
              data: { 3 => :col_content },
@@ -301,7 +349,7 @@ params = {
   },
   exceptions: {
     columns: {
-      divided: { 2 => 3 },
+      # divided: { 2 => 3 },
       fusion: { 1 => [3, 5], 7 => [2, 5] }
     },
     rows: {
@@ -310,10 +358,10 @@ params = {
     }
   }
 }
-m = element({})
-m.matrix(params)
+m=matrix(params)
 
-# ################################# Start table tests
+# # ################################# Start table tests
+
 found = m.columns(5) do |el|
   el.color(:yellow)
 end
@@ -321,6 +369,7 @@ end
 m.rows(3) do |el|
   el.color(:orange)
 end
+
 m.rows(1) do |el|
   el.color(:lightgray)
 end
@@ -347,9 +396,18 @@ grab(m.id.value).drag({ move: true }) do |e|
 end
 wait 1 do
   m.add_columns(3)
+  m.rows(3) do |el|
+    el.color(:orange)
+  end
     wait 1 do
       m.add_rows(4)
+      m.rows(1) do |el|
+        el.color(:lightgray)
+      end
       wait 1 do
+        found.data.each do |el|
+          el.color(:red)
+        end
         m.resize_matrix(330, 300)
         m.fusion(rows: { 2 => [0, 3], 3 => [2, 5] })
       end
@@ -367,4 +425,4 @@ m.fusion(rows: { 0 => [0, 3], 3 => [5, 9] })
 m.divide(columns: { 2 => 3 }, rows: {1 => 3})
 
 # ############################## end table tests #############
-
+# TODO : alteration data persistence
