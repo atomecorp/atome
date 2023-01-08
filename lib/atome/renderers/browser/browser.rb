@@ -23,7 +23,7 @@ require 'atome/renderers/browser/helpers/video_helper'
 require 'atome/renderers/browser/helpers/web_helper'
 
 class Atome
-  attr_accessor 'browser_object'
+  attr_accessor :browser_object
 
   def to_px
     id_found = real_atome[:id]

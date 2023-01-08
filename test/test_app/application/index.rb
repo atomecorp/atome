@@ -37,13 +37,17 @@
 # FIXME : Monitor should be integrated as standard properties using 'generator' (eg : a.monitor doesn't return an atome)
 # TODO : clones must update their original too when modified
 # FIXME : try the add demo makers are totally fucked
+
+require 'src/medias/rubies/examples/table'
+# require 'src/medias/rubies/examples/web'
+# require 'src/medias/rubies/examples/fullscreen'
+# require 'src/medias/rubies/examples/video'
+# require 'src/medias/rubies/examples/touch'
+# require 'src/medias/rubies/examples/create_atome_in_atome'
 # require 'src/medias/rubies/examples/color'
 # require 'src/medias/rubies/examples/animation'
 # require 'src/medias/rubies/examples/drag'
-#
 # require 'src/medias/rubies/examples/_dataset'
-require 'src/medias/rubies/examples/table'
-
 # require 'src/medias/rubies/examples/bottom'
 # require 'src/medias/rubies/examples/attach'
 # require 'src/medias/rubies/examples/parents'
@@ -84,8 +88,6 @@ require 'src/medias/rubies/examples/table'
 # //helloWorld.hello.play({env:{attack: .1, release:.02}})
 #
 
-
-
 # generator = Genesis.generator
 #
 # generator.build_particle(:red) do
@@ -103,4 +105,140 @@ require 'src/medias/rubies/examples/table'
 #   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
 #   self
 # end
+
+# Anime repair
+
+#
+# bb = box({ id: :the_ref, width: 369 })
+# bb.color(:red)
+# box({ id: :my_box, drag: true })
+# c = circle({ id: :the_circle, left: 222, drag: { move: true, inertia: true, lock: :start } })
+# c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,
+#            parents: [:the_circle], children: [],
+#            left: 3, top: 9, blur: 19,
+#            red: 0, green: 0, blue: 0, alpha: 1
+#          })
+#
+# Atome.new(animation: { renderers: [:browser], id: :the_animation1, type: :animation, children: [] })
+# class Atome
+#
+#   def atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
+#     temp_default = Essentials.default_params[atome_type] || {}
+#     temp_default[:id] = generated_id
+#     temp_default[:parents] = generated_parents
+#     temp_default[:clones] = []
+#     temp_default[:renderers] = generated_render
+#     temp_default[:children] = generated_children.concat(temp_default[:children])
+#     temp_default.merge(params)
+#   end
+#   def animation(params = {}, &bloc)
+#     default_renderer = Essentials.default_params[:render_engines]
+#     atome_type = :animation
+#     generated_render = params[:renderers] || default_renderer
+#     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+#     generated_parents = params[:parents] || []
+#     generated_children = params[:children] || []
+#     params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
+#     Atome.new({ atome_type => params }, &bloc)
+#   end
+# end
+# aa = animation(
+#   {
+#                  targets: %i[my_box the_circle],
+#                  begin: {
+#                    left_add: 0,
+#                    top: :self,
+#                    smooth: 0,
+#                    width: 3
+#                  },
+#                  end: {
+#                    left_add: 333,
+#                    top: 299,
+#                    smooth: 33,
+#                    width: :the_ref
+#                  },
+#                  duration: 800,
+#                  mass: 1,
+#                  damping: 1,
+#                  stiffness: 1000,
+#                  velocity: 1,
+#                  repeat: 1,
+#                  ease: 'spring'
+#                }
+# ) do |pa|
+#   puts "animation say#{pa}"
+# end
+
+# # video repair
+#
+# # frozen_string_literal: true
+#
+# my_video = Atome.new(
+#   video: { renderers: [:browser], id: :video1, type: :video, parents: [:view], path: './medias/videos/superman.mp4',
+#            left: 333, top: 112, width: 199, height: 99
+#   }
+# ) do |params|
+#   # puts "video callback time is  #{params}, id is : #{id}"
+#   puts "video callback time is  #{params}, id is : #{id}"
+# end
+# wait 2 do
+#   my_video.left(33)
+#   my_video.width(444)
+#   my_video.height(444)
+#
+# end
+#
+# my_video.touch(true) do
+#   my_video.play(true) do |currentTime|
+#     puts "play callback time is : #{currentTime}"
+#   end
+# end
+# # #############
+# # my_video2 = Atome.new(
+# #   video: { renderers: [:browser], id: :video9, type: :video, parents: [:view], path: './medias/videos/madmax.mp4',
+# #            left: 666, top: 333, width: 199, height: 99,
+# #   }) do |params|
+# #   puts "2- video callback time is  #{params}, id is : #{id}"
+# # end
+# # my_video2.top(33)
+# # my_video2.left(333)
+# #
+# # my_video2.touch(true) do
+# #   my_video2.play(true) do |currentTime|
+# #     puts "2 - play callback time is : #{currentTime}, id is : #{id}"
+# #   end
+# # end
+# #
+# # #############
+# # my_video3 = video({ path: './medias/videos/avengers.mp4', id: :video16 }) do |params|
+# #   puts "3 - video callback here #{params}, id is : #{id}"
+# # end
+# # my_video3.width = my_video3.height = 333
+# # my_video3.left(555)
+# # grab(:video16).on(:pause) do |_event|
+# #   puts "id is : #{id}"
+# # end
+# # my_video3.touch(true) do
+# #   grab(:video16).time(15)
+# #   my_video3.play(true) do |currentTime|
+# #     puts "3- play callback time is : #{currentTime}, id is : #{id}"
+# #   end
+# #   wait 3 do
+# #     puts "time is :#{my_video3.time}"
+# #   end
+# #   wait 6 do
+# #     grab(:video16).pause(true) do |time|
+# #       puts "paused at #{time} id is : #{id}"
+# #     end
+# #   end
+# # end
+
+# generator=Genesis.generator
+# generator.build_particle(:hook) do |targets|
+#   targets.each do |target|
+#     grab(target).attach([atome[:id]])
+#   end
+# end
+
+# ###########################
 

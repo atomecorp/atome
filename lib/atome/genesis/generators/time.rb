@@ -2,4 +2,4 @@
 
 generator = Genesis.generator
 # create particles
-generator.build_particle(:markers, :hash)
+generator.build_particle(:markers, { type: :hash })

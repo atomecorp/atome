@@ -28,25 +28,26 @@ class Atome
     "historize : #{property} #{value}"
   end
 
-  def broadcasting(altered_particle, value)
+  def broadcasting(element)
+    params=instance_variable_get("@#{element}")
     @broadcast.each_value do |particle_monitored|
-      if particle_monitored[:particles].include?(altered_particle)
-        code_found = particle_monitored[:code]
-        instance_exec(self, altered_particle, value, &code_found) if code_found.is_a?(Proc)
+      if particle_monitored[:particles].include?(element)
+        code_found=particle_monitored[:code]
+        instance_exec(self, element, params, &code_found) if code_found.is_a?(Proc)
       end
     end
   end
 
   public
 
-  def monitor(params = nil, &proc_monitoring)
+  def monitor(params=nil, &proc_monitoring)
     if params
       atome[:monitor] ||= {}
       params[:atomes].each do |atome_id|
         target_broadcaster = grab(atome_id).instance_variable_get('@broadcast')
         monitor_id = params[:id] || "monitor#{target_broadcaster.length}"
-        atome[:monitor] [monitor_id] = params.merge({ code: proc_monitoring })
-        target_broadcaster[monitor_id] = { particles: params[:particles], code: proc_monitoring }
+        atome[:monitor] [monitor_id]=params.merge({code: proc_monitoring})
+        target_broadcaster[monitor_id] = { particles: params[:particles], code:  proc_monitoring }
       end
     else
       atome[:monitor]
@@ -60,6 +61,7 @@ class Atome
 
     instance_variable_set("@#{element}_code", user_proc)
   end
+
 
   def particles(particles_found = nil)
     if particles_found

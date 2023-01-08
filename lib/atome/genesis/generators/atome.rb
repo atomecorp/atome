@@ -6,6 +6,7 @@ generator.build_atome(:animation)
 generator.build_atome(:color)
 generator.build_sanitizer(:color) do |params|
   parent_found = found_parents_and_renderers[:parent]
+  parent_found = [:user_view] if parent_found == [:view]
   render_found = found_parents_and_renderers[:renderers]
   default_params = { renderers: render_found, id: "color_#{Universe.atomes.length}", type: :color,
                      attach: parent_found,
@@ -27,10 +28,11 @@ generator.build_atome(:shadow)
 
 generator.build_sanitizer(:shadow) do |params|
   parent_found = found_parents_and_renderers[:parent]
+  parent_found = [:user_view] if parent_found == [:view]
   render_found = found_parents_and_renderers[:renderers]
   default_params = { renderers: render_found, id: "shadow_#{Universe.atomes.length}", type: :shadow,
                      attach: parent_found,
-                     red: 0, green: 0, blue: 0, alpha: 1 , blur: 3, left: 3, top: 3}
+                     red: 0, green: 0, blue: 0, alpha: 1, blur: 3, left: 3, top: 3 }
   default_params.merge!(params)
 end
 generator.build_atome(:shape)
@@ -48,4 +50,5 @@ generator.build_sanitizer(:element) do |params|
                      parents: parent_found }
   default_params.merge!(params)
 end
+
 generator.build_atome(:collector)

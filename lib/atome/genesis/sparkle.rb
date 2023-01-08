@@ -35,11 +35,43 @@ Atome.new(
                parents: [:eDen], children: [] } }
 )
 
+# color creation
+Atome.new(
+  { color: { renderers: default_render, id: :view_color, type: :color,
+             red:  0.15, green: 0.15, blue: 0.15, alpha: 1 } }
+)
+
+Atome.new(
+  { color: { renderers: default_render, id: :shape_color, type: :color,
+             red: 0.4, green: 0.4, blue: 0.4, alpha: 1 } }
+)
+
+Atome.new(
+  { color: { renderers: default_render, id: :box_color, type: :color,
+             red: 0.5, green: 0.5, blue: 0.5, alpha: 1 } }
+)
+
+Atome.new(
+  { color: { renderers: default_render, id: :text_color, type: :color,
+             red: 0.3, green: 0.3, blue: 0.3, alpha: 1 } }
+)
+
+Atome.new(
+  { color: { renderers: default_render, id: :circle_color, type: :color,
+             red: 0.6, green: 0.6, blue: 0.6, alpha: 1 } }
+)
+
+Atome.new(
+  { color: { renderers: default_render, id: :matrix_color, type: :color,
+             left: 0, top: 0, red: 0.7, green: 0.7, blue: 0.7, alpha: 1, diffusion: :linear } }
+)
+
+# view creation
 Atome.new(
   { shape: { renderers: default_render, id: :view, type: :shape, parents: [:user_view], children: [],
-             left: 0, right: 0, top: 0, bottom: 0,width: :auto,height: :auto, overflow: :auto,
-             color: { renderers: default_render, id: :view_color, type: :color, attach: [:view],
-                      red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } }
+             attached: [:view_color], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto
+  }
+  }
 )
 
 # init basic object for atome environment

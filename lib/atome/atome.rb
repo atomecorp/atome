@@ -20,19 +20,20 @@ class Atome
       elements[:code] = atomes_proc if atomes_proc
       @atome = elements
       # we initiate the rendering, eg for for browser we will call :browser_type generate method in identity.rb file
-      create_particle(:type)
+      create_particle(:type, true, true)
+      # set type is a particle method it's dynamically generated at : generator/identity.rb
       set_type(@atome[:type])
       collapse
     end
   end
 
-  def new_particle(element, &method_proc)
+  def new_particle(element,store,render, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
       if params || params == false
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = sanitize(element, params)
-        create_particle(element)
+        create_particle(element,store,render)
         send("set_#{element}", params, &user_proc)
       else
         get_particle(element, &user_proc)
@@ -40,13 +41,14 @@ class Atome
     end
   end
 
+
+
   def additional_particle_methods(element, &method_proc)
     Atome.define_method "#{element}=" do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-      params = sanitize(element, params)
-      particle_creation(element, params, &user_proc)
     end
   end
+
 
   def atome_creation_pre_treatment(element, params, &user_proc)
     params = sanitize(element, params)
@@ -73,20 +75,16 @@ class Atome
     end
   end
 
-  def run_optional_proc(proc_name, atome = self, value = '', &user_proc)
+  def run_optional_proc(proc_name, atome = self, element, &user_proc)
+    params=instance_variable_get("@#{element}")
     option_found = Universe.get_optional_method(proc_name)
-    atome.instance_exec(value, user_proc, atome, &option_found) if option_found.is_a?(Proc)
+    atome.instance_exec(params, user_proc, atome, &option_found) if option_found.is_a?(Proc)
   end
 
-  def inject_value(element, value)
-    # attention :  please keep the method 'inject_value' available as it is sometimes needed to access it directly
-    @atome[element] = value
-  end
 
   def store_value(element)
-    # this method save the value of the particle and broadcast to the atomes listed in broadcast
-    broadcasting(element, @atome[element])
-    inject_value(element, @atome[element])
+    params=instance_variable_get("@#{element}")
+    @atome[element] = params
   end
 
   public
@@ -99,27 +97,29 @@ class Atome
     @real_atome[@property] = value
   end
 
-  def particle_creation(element, params, &user_proc)
+  def particle_creation(element, params,store,render, &user_proc)
     return false unless security_pass(element, params)
-
     # we create a proc holder of any new particle if user pass a bloc
     store_code_bloc(element, &user_proc) if user_proc
-    # we store the params immediately into the atome so optionals methods can access and modify it
-    @atome[element] = params
-    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, @atome[element], &user_proc)
-    run_optional_proc("pre_render_#{element}".to_sym, self, @atome[element], &user_proc)
-    rendering(element, @atome[element], &user_proc)
-    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, @atome[element], &user_proc)
-    run_optional_proc("post_render_#{element}".to_sym, self, @atome[element], &user_proc)
-    store_value(element)
+    # Params is now an instance variable so it should be passed thru different methods
+    instance_variable_set("@#{element}", params)
+    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, element, &user_proc)
+    run_optional_proc("pre_render_#{element}".to_sym, self, element, &user_proc)
+    rendering(element, &user_proc) if render
+    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, element, &user_proc)
+    run_optional_proc("post_render_#{element}".to_sym, self, element, &user_proc)
+    broadcasting(element)
+    store_value(element) if store
     self
   end
 
-  def create_particle(element)
+
+  def create_particle(element,store,render)
     Atome.define_method "set_#{element}" do |params, &user_proc|
-      particle_creation(element, params, &user_proc)
+      particle_creation(element, params, store,render,&user_proc)
     end
   end
+
 
   def get(element)
     @atome[element]

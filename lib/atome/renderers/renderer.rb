@@ -4,10 +4,11 @@
 class Atome
   private
 
-  def rendering(element_to_render, content, &user_proc)
+  def rendering(element, &user_proc)
+    params=instance_variable_get("@#{element}")
     render_engines = @atome[:renderers]
     render_engines.each do |render_engine|
-      send("#{render_engine}_#{element_to_render}", content, &user_proc)
+      send("#{render_engine}_#{element}", params, &user_proc)
     end
   end
 end

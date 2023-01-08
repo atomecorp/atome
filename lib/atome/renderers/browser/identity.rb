@@ -3,6 +3,12 @@
 generator = Genesis.generator
 
 generator.build_render(:browser_id) do |params|
+  if @browser_type == :style
+    prev_content = @browser_object.inner_html
+    new_content = prev_content.sub(@browser_object.id, params)
+    @browser_object.inner_html = new_content
+    puts @browser_object.inner_html
+  end
   browser_object.id = params if @atome[:id] != params
 end
 
@@ -10,17 +16,8 @@ generator.build_render(:browser_type) do |params|
   send("browser_#{params}", user_proc)
 end
 
-generator.build_render(:browser_parents) do |parents_found|
-  parents_found.each do |parent_found|
-    BrowserHelper.send("browser_attach_#{@browser_type}", parent_found, @browser_object, @atome)
-  end
-end
-
-generator.build_option(:pre_render_children) do |children_pass|
-  children_pass.each do |child_found|
-    atome_found = grab(child_found)
-    atome_found.parents([@atome[:id]])
-  end
+generator.build_render(:browser_family) do |parents_found|
+  BrowserHelper.send("browser_attach_#{@browser_type}", parents_found, @browser_object, @atome)
 end
 
 generator.build_render(:browser_attach) do |parents_found|

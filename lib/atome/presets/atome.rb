@@ -13,10 +13,10 @@ class Atome
     temp_default[:parents] = generated_parents
     temp_default[:clones] = []
     temp_default[:renderers] = generated_render
-    temp_default[:children] = generated_children
-
+    temp_default[:children] = generated_children.concat(temp_default[:children])
     temp_default.merge(params)
   end
+
 
   def box(params = {}, &bloc)
     default_renderer = Essentials.default_params[:render_engines]
@@ -26,7 +26,7 @@ class Atome
     generated_parents = params[:parents] || [id.value]
     generated_children = params[:children] || []
 
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents,generated_children, params)
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
 
     # params2 =  { renderers: [:browser], id: generated_id, type: :shape, parents: [generated_parents], children: [],
     #              width: 99, height: 99,

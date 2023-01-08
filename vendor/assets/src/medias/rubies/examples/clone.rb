@@ -5,7 +5,7 @@
 # 2 - this pre_render_clones option, will catch alterations and throw it the the original atome
 # 3 - we also add a new particle call mirror that holds the particle's list that will reverse intrication
 
-b = box({ color: :red, smooth: 6 })
+b = box({ color: :red, smooth: 6, id: :the_box })
 
 b.clones([{ left: 300, top: 300, color: :blue, intricate: [:width, :attached,:height ] },
           {left: 600, top: 366, color: :green , intricate: [:left, :height ]}])
@@ -22,9 +22,9 @@ wait 3 do
   b.left(180)
 end
 
-grab(:box_4_clone_1).smooth(33)
-
-grab(:box_4_clone_1).rotate(33)
+grab(:the_box_clone_0).smooth(33)
+#
+grab(:the_box_clone_1).rotate(33)
 
 
 wait 5 do

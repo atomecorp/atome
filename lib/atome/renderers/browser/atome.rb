@@ -6,8 +6,6 @@ DOM = :nil
 
 def parents(_val) end
 
-# end dummy code
-
 generator = Genesis.generator
 
 generator.build_render(:browser_shape) do

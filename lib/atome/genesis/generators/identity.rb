@@ -5,11 +5,38 @@ generator = Genesis.generator
 generator.build_particle(:type)
 generator.build_particle(:parents)
 generator.build_particle(:children)
+generator.build_option(:pre_render_parents) do |parents_ids|
+  parents_ids.each do |parents_id|
+    if parents_id.instance_of? Atome
+      parents_id = parents_id.value
+    end
+    parents_found = grab(parents_id)
+    family(parents_id)
+    parents_found.atome[:children] << atome[:id]
+  end
+end
+
+generator.build_option(:pre_render_children) do |children_ids|
+  children_ids.each do |child_id|
+    if child_id.instance_of? Atome
+      child_id = child_id.value
+    end
+    child_found = grab(child_id)
+    parents_found=@atome[:id]
+    child_found.family(parents_found)
+    child_found.atome[:parents] = [parents_found]
+  end
+end
+
+generator.build_particle(:family,{render: true,store: false})
+
+
 generator.build_particle(:link) do |child_id|
   child_found = grab(child_id)
   child_found.atome[:parents] << @atome[:id]
   child_found.refresh
 end
+
 generator.build_particle(:id)
 generator.build_sanitizer(:id) do |params|
   if @atome[:id] != params
@@ -19,29 +46,36 @@ generator.build_sanitizer(:id) do |params|
   end
   params
 end
-generator.build_option(:pre_render_parents) do |parents_id_found|
-  parents_id_found.each do |parents_id|
-    parents_found = grab(parents_id)
-    parents_found.children << id if parents_found
-  end
-end
+
 generator.build_particle(:name)
 
 generator.build_particle(:active)
 
-generator.build_particle(:attach) do |parents|
-  parents.each do |parent|
-    grab(parent).atome[:attached] = [atome[:id]]
+generator.build_particle(:attach)
+generator.build_particle(:attached)
+
+generator.build_option(:pre_render_attach) do |parents_ids|
+  parents_ids.each do |parents_id|
+    parents_id = parents_id.value if parents_id.instance_of? Atome
+    parents_found = grab(parents_id)
+    family(parents_id)
+    parents_found.atome[:attached] = [] unless parents_found.atome[:attached]
+    parents_found.atome[:attached] << atome[:id]
   end
 end
 
-generator.build_particle(:attached) do |targets|
-  targets.each do |target|
-    grab(target).attach([atome[:id]])
+generator.build_option(:pre_render_attached) do |children_ids|
+  children_ids.each do |child_id|
+    child_id = child_id.value if child_id.instance_of? Atome
+    child_found = grab(child_id)
+    parents_found=@atome[:id]
+    child_found.family(parents_found)
+    # parents_found.atome[:attach] = [] unless parents_found.atome[:attach]
+    child_found.atome[:attach] = [parents_found]
   end
 end
 
-generator.build_particle(:intricate, :array)
+generator.build_particle(:intricate, {type: :array })
 
 
 generator.build_particle(:clones) do |clones_found|
