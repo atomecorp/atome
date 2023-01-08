@@ -24,7 +24,7 @@ module BrowserHelper
   end
 
   def self.browser_play_video(_value, browser_object_found, atome_hash, atome_object, proc)
-    markers = atome_hash[:markers]
+    markers = atome_hash[:markers] ||= {}
     markers.each_value do |value|
       value[:end] = value[:begin] + 0.25 unless value[:end]
       value[:label] = "label_#{atome_hash[:markers].length}" unless value[:label]
