@@ -7,7 +7,6 @@ generator.build_render(:browser_id) do |params|
     prev_content = @browser_object.inner_html
     new_content = prev_content.sub(@browser_object.id, params)
     @browser_object.inner_html = new_content
-    puts @browser_object.inner_html
   end
   browser_object.id = params if @atome[:id] != params
 end

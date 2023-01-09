@@ -7,9 +7,7 @@ generator.build_particle(:parents)
 generator.build_particle(:children)
 generator.build_option(:pre_render_parents) do |parents_ids|
   parents_ids.each do |parents_id|
-    if parents_id.instance_of? Atome
-      parents_id = parents_id.value
-    end
+    parents_id = parents_id.value if parents_id.instance_of? Atome
     parents_found = grab(parents_id)
     family(parents_id)
     parents_found.atome[:children] << atome[:id]
@@ -18,9 +16,7 @@ end
 
 generator.build_option(:pre_render_children) do |children_ids|
   children_ids.each do |child_id|
-    if child_id.instance_of? Atome
-      child_id = child_id.value
-    end
+    child_id = child_id.value if child_id.instance_of? Atome
     child_found = grab(child_id)
     parents_found=@atome[:id]
     child_found.family(parents_found)

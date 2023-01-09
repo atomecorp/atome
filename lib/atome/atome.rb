@@ -43,9 +43,11 @@ class Atome
 
 
 
-  def additional_particle_methods(element, &method_proc)
+  def additional_particle_methods(element,store,render , &method_proc)
     Atome.define_method "#{element}=" do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+      params = sanitize(element, params)
+      particle_creation(element, params, store,render,&user_proc)
     end
   end
 

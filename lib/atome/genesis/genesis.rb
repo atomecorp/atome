@@ -23,7 +23,7 @@ class Atome
     Universe.add_to_particle_list(particle_name, type)
     auto_render_generator(particle_name) if render #  automatise the creation of an empty render method for current particle
     new_particle(particle_name,store,render , &particle_proc)
-    additional_particle_methods(particle_name, &particle_proc) # create alternative methods such as create 'method='
+    additional_particle_methods(particle_name, store,render ,&particle_proc) # create alternative methods such as create 'method='
   end
 
 
