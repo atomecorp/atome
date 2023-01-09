@@ -37,8 +37,13 @@
 # FIXME : Monitor should be integrated as standard properties using 'generator' (eg : a.monitor doesn't return an atome)
 # TODO : clones must update their original too when modified
 # FIXME : try the add demo makers are totally fucked
+# FIXME : URGENT  fix : 'element' tha crash but 'element({})' works beacuse the params is nil at 'def element(params = {}, &bloc)' in 'atome/preset.rb'
 
-require 'src/medias/rubies/examples/table'
+require 'src/medias/rubies/examples/schedule'
+# require 'src/medias/rubies/examples/time'
+# require 'src/medias/rubies/examples/code'
+# require 'src/medias/rubies/examples/text'
+# require 'src/medias/rubies/examples/table'
 # require 'src/medias/rubies/examples/web'
 # require 'src/medias/rubies/examples/fullscreen'
 # require 'src/medias/rubies/examples/video'
@@ -233,6 +238,8 @@ require 'src/medias/rubies/examples/table'
 # #   end
 # # end
 
+
+
 # generator=Genesis.generator
 # generator.build_particle(:hook) do |targets|
 #   targets.each do |target|
@@ -241,4 +248,3 @@ require 'src/medias/rubies/examples/table'
 # end
 
 # ###########################
-

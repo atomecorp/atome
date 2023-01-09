@@ -4,7 +4,7 @@ a=Atome.new(code: { type: :code, renderers: [:headless], parents: [], children: 
   puts "the param is #{params_found}"
 end
 a.run(:super)
-c=element do |params_found|
+c=element({}) do |params_found|
   puts "you want me to print:  #{params_found}"
 end
 

@@ -11,6 +11,8 @@ generator.build_render(:html_shape) do
   @html_object.attr('id', id_found)
 end
 
+generator.build_render(:html_element)
+
 generator.build_render(:html_color) do |_value|
   # we remove previous unused style tag
   opal_document[id]&.remove
