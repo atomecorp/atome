@@ -2,7 +2,7 @@
 
 class Atome
   def content(items = nil)
-    if  items.instance_of?(Array)
+    if items.instance_of?(Array)
       items.each do |item|
         content(item)
       end
@@ -19,18 +19,17 @@ class Atome
       @cell_content ||= {}
       @cell_content[i_found] = { width_ratio: 1, height_ratio: 1, top_ratio: 1, left_ratio: 1 }
       # alert @cell_content
-      items.parents([self.id])
+      items.parents([id])
     else
       @cell_content
     end
-
   end
 
   def cells(cell_nb)
     collector_object = collector({})
     collected_atomes = []
     cell_nb.each do |cell_found|
-      atome_found = grab ("#{id}_#{cell_found}")
+      atome_found = grab("#{id}_#{cell_found}")
       collected_atomes << atome_found
     end
     collector_object.data(collected_atomes)
@@ -38,8 +37,7 @@ class Atome
   end
 
   def cell(cell_nb)
-    cell_found = grab ("#{id}_#{cell_nb}")
-    cell_found
+    grab("#{id}_#{cell_nb}")
   end
 
   def columns(column_requested, &proc)
@@ -81,7 +79,7 @@ class Atome
         cells_to_alter = cells_in_column[value[0]..value[1]]
         cells_to_alter.each_with_index do |cell_nb, index|
           current_cell = grab("#{id.value}_#{cell_nb}")
-          if index == 0
+          if index.zero?
             current_cell.height(cell_height * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
           else
             current_cell.hide(true)
@@ -97,7 +95,7 @@ class Atome
 
         cells_to_alter.each_with_index do |cell_nb, index|
           current_cell = grab("#{id.value}_#{cell_nb}")
-          if index == 0
+          if index.zero?
             current_cell.width(cell_width * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
           else
             current_cell.hide(true)
@@ -105,7 +103,6 @@ class Atome
         end
       end
     end
-
   end
 
   def divide(params)
@@ -141,7 +138,6 @@ class Atome
         end
       end
     end
-
   end
 
   # def override(params)
@@ -168,7 +164,7 @@ class Atome
   def format_matrix(matrix_id, matrix_width, matrix_height, nb_of_rows, nb_of_cols, margin, exceptions = {})
     cell_width = (matrix_width - margin * (nb_of_cols + 1)) / nb_of_cols
     cell_height = (matrix_height - margin * (nb_of_rows + 1)) / nb_of_rows
-    ratio=cell_height/cell_width
+    ratio = cell_height / cell_width
     i = 0
     nb_of_rows.times do |row_index|
       nb_of_cols.times do |col_index|
@@ -182,8 +178,8 @@ class Atome
           grab(child).width(cell_width)
           grab(child).height(cell_width)
         end
-        current_cell.width= cell_width
-        current_cell.height= cell_height
+        current_cell.width = cell_width
+        current_cell.height = cell_height
         current_cell.left(x)
         current_cell.top(y)
         i += 1
@@ -194,43 +190,52 @@ class Atome
 
     number_of_cells = nb_of_rows * nb_of_cols
     # columns exceptions
-    if exceptions
-      fusion({ columns: exceptions[:columns_fusion] }) if exceptions[:columns_fusion]
-      fusion({ rows: exceptions[:rows_fusion] }) if exceptions[:rows_fusion]
-      divide({ columns: exceptions[:columns_divided] }) if exceptions[:columns_divided]
-      divide({ rows: exceptions[:rows_divided] }) if exceptions[:rows_divided]
-    end
+    return unless exceptions
 
+    fusion({ columns: exceptions[:columns_fusion] }) if exceptions[:columns_fusion]
+    fusion({ rows: exceptions[:rows_fusion] }) if exceptions[:rows_fusion]
+    divide({ columns: exceptions[:columns_divided] }) if exceptions[:columns_divided]
+    divide({ rows: exceptions[:rows_divided] }) if exceptions[:rows_divided]
   end
 
   def apply_style(current_cell, style)
     current_cell.set(style)
   end
+  def matrix_sanitizer(params)
+    default_params = {
 
+      id: :my_table, left: 33, top: 33, width: 369, height: 369, smooth: 8, color: :gray,
+      columns: { count: 4 },
+      rows: { count: 4 },
+      cells: { particles: { margin: 9, color: :lightgray, smooth: 9, shadow: { blur: 9, left: 3, top: 3 } }
+      }
+    }
+    default_params.merge(params)
+  end
   def matrix(params = {}, &bloc)
+    params= matrix_sanitizer(params)
+    columns_data = if params[:columns]
+                     params.delete(:columns)
+                   else
+                     { count: 4 }
+                   end
 
-    if  params[:columns]
-      columns_data = params.delete(:columns)
-    else
-      columns_data= {  count: 4 }
-    end
+    rows_data = if params[:rows]
+                  params.delete(:rows)
+                else
+                  { count: 4 }
+                end
 
-    if  params[:rows]
-      rows_data = params.delete(:rows)
-    else
-      rows_data= {  count: 4 }
-    end
+    cells_data = if params[:cells]
+                   params.delete(:cells)
+                 else
+                   { particles: { margin: 9, color: :lightgray } }
+                 end
+    cells_color = cells_data[:particles].delete(:color)
+    cells_color_id = color(cells_color).id.value
 
-    if  params[:cells]
-      cells_data = params.delete(:cells)
-    else
-      cells_data= { particles: { margin: 9, color: :lightgray } }
-    end
-    cells_color=cells_data[:particles].delete(:color)
-    cells_color_id= color(cells_color).id.value
-
-    cells_shadow=cells_data[:particles].delete(:shadow)
-    cells_shadow_id= shadow(cells_shadow).id.value
+    cells_shadow = cells_data[:particles].delete(:shadow)
+    cells_shadow_id = shadow(cells_shadow).id.value
 
     exceptions_data = params.delete(:exceptions)
     default_renderer = Essentials.default_params[:render_engines]
@@ -251,12 +256,12 @@ class Atome
     columns = columns_data[:count]
     rows = rows_data[:count]
     margin = cells_data[:particles].delete(:margin)
-    the_matrix.instance_variable_set("@columns", columns)
-    the_matrix.instance_variable_set("@rows", rows)
-    the_matrix.instance_variable_set("@margin", margin)
-    the_matrix.instance_variable_set("@cell_style", cells_data[:particles])
-    the_matrix.instance_variable_set("@matrix_width", matrix_width)
-    the_matrix.instance_variable_set("@matrix_height", matrix_height)
+    the_matrix.instance_variable_set('@columns', columns)
+    the_matrix.instance_variable_set('@rows', rows)
+    the_matrix.instance_variable_set('@margin', margin)
+    the_matrix.instance_variable_set('@cell_style', cells_data[:particles])
+    the_matrix.instance_variable_set('@matrix_width', matrix_width)
+    the_matrix.instance_variable_set('@matrix_height', matrix_height)
 
     rows = rows_data[:count]
     columns = columns_data[:count]
@@ -279,7 +284,6 @@ class Atome
                      columns_divided: columns_divided_exceptions,
                      rows_fusion: rows_fusion_exceptions,
                      rows_divided: rows_divided_exceptions }
-      the_matrix.instance_variable_set("@exceptions", exceptions)
       # @exceptions = {
       #   columns_fusion: columns_fusion_exceptions,
       #   columns_divided: columns_divided_exceptions,
@@ -291,9 +295,8 @@ class Atome
         columns_fusion: {},
         columns_divided: {},
         rows_fusion: {},
-        rows_divided: {},
+        rows_divided: {}
       }
-      the_matrix.instance_variable_set("@exceptions", exceptions)
       # @exceptions = {
       #   columns_fusion: {},
       #   columns_divided: {},
@@ -301,6 +304,7 @@ class Atome
       #   rows_divided: {},
       # }
     end
+    the_matrix.instance_variable_set('@exceptions', exceptions)
 
     # let's create the matrix background
     # current_matrix = grab(:view).box({ id: matrix_id })
@@ -310,7 +314,7 @@ class Atome
     number_of_cells = rows * columns
     number_of_cells.times do |index|
       current_cell = grab(matrix_id).box({ id: "#{matrix_id}_#{index}" })
-      the_matrix.instance_variable_set("@cell_style", cells_data[:particles])
+      the_matrix.instance_variable_set('@cell_style', cells_data[:particles])
       current_cell.attached([cells_shadow_id])
       current_cell.attached([cells_color_id])
       apply_style(current_cell, cells_data[:particles])
@@ -330,10 +334,10 @@ class Atome
         # puts index
         #
       end
-      current_cell = self.box({ id: "#{id}_#{index}" })
+      current_cell = box({ id: "#{id}_#{index}" })
       apply_style(current_cell, @cell_style)
     end
-    @columns = @columns + nb
+    @columns += nb
     ########## old algo
     # nb_of_cells_to_adds = nb * @rows
     # prev_nb_of_cells = @columns * @rows
@@ -355,10 +359,10 @@ class Atome
         # puts index
         #
       end
-      current_cell = self.box({ id: "#{id}_#{index}" })
+      current_cell = box({ id: "#{id}_#{index}" })
       apply_style(current_cell, @cell_style)
     end
-    @rows = @rows + nb
+    @rows += nb
     ########## old algo
     # nb_of_cells_to_adds = nb * @columns
     # prev_nb_of_cells = @columns * @rows
@@ -387,12 +391,11 @@ class Atome
       (0...num_rows).each do |row|
         result << (index + row * num_columns)
       end
-      return result
+      result
     else
       start_index = index * num_columns
       end_index = start_index + num_columns - 1
-      return (start_index..end_index).to_a
+      (start_index..end_index).to_a
     end
   end
-
 end

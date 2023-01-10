@@ -127,6 +127,10 @@ def browser_case(location)
   guard_check
 end
 
+def osx_case(location)
+  `cd #{location};cargo tauri dev  `
+end
+
 def compile_case(location)
   `cd #{location}/src`
   guard_check
@@ -161,6 +165,8 @@ def run_case(build_target, location, port)
     server_case(port, location)
   when :browser
     browser_case(location)
+  when :osx
+    osx_case(location)
   when :compile
     compile_case(location)
   when :native
