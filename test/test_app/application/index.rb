@@ -38,8 +38,29 @@
 # TODO : clones must update their original too when modified
 # FIXME : try the add demo makers are totally fucked
 # FIXME : URGENT  fix : 'element' tha crash but 'element({})' works beacuse the params is nil at 'def element(params = {}, &bloc)' in 'atome/preset.rb'
-# TODO : create a build and guard for tauri
-require 'src/medias/rubies/examples/_table2'
+# DONE : create a build and guard for tauri
+# TODO : 'add' particle  crash : modules=center.matrix({id: :modules,top: 0, left: 0,smooth: 0, columns: {count: 8}, rows: {count: 8}, color: {alpha: 0}})
+# center.add(attach: [c.id])
+# TODO : attach remove previously attached object : modules=center.matrix({id: :modules,top: 0, left: 0,smooth: 0, columns: {count: 8}, rows: {count: 8}, color: {alpha: 0}})
+# center.attach([c.id,s.id])
+#  TODO : when adding a children the parent get the child color: it may be related to : attach remove previously attached object
+# FIXME : if in matrix particles shadow or other particles are not define it crash : { margin: 9, color: :blue } in table
+#  TODO : self is the not the atome but BrowserHelper so the code below doesn't work :b=box
+# b.touch(true) do
+#   puts self
+#   self.color(:red)
+# end
+# TODO : visual size define in % doesn't work  cell_1.text({data: :réalisation, center: :horizontal, top: 3, color: :lightgray, visual: {size: '10%'}})
+# TODO : text position at the bottom in matrix cell, botytom position is lost when resizing the table
+# TODO : size of image in matrix cell is reset when resizing
+# TODO : add .columns and .rows to matrix
+# TODO : grab(child).delete(true)  delete children from view but doesn't remove children from parent
+# TODO : b.hide(true) can't be revealed , must add : @browser_object.style[:display] = "none"
+# TODO : create a colorise method that attach a color to an object
+# TODO : add the facility to create any css property and attach it to an object using css id ex left: :toto
+# TODO : opacity to add
+# TODO : URGENT thes a confusion in the framework between variables and id if the name is the same
+# require 'src/medias/rubies/examples/_table2'
 # require 'src/medias/rubies/examples/schedule'
 # require 'src/medias/rubies/examples/time'
 # require 'src/medias/rubies/examples/code'
@@ -62,7 +83,7 @@ require 'src/medias/rubies/examples/_table2'
 # require 'src/medias/rubies/examples/matrix'
 # require 'src/medias/rubies/examples/color'
 # require 'src/medias/rubies/examples/read'
-# require 'src/medias/rubies/examples/drag'
+require 'src/medias/rubies/examples/drag'
 # require 'src/medias/rubies/examples/clone'
 # require 'src/medias/rubies/examples/monitoring'
 # require 'src/medias/rubies/examples/delete'
@@ -245,5 +266,28 @@ require 'src/medias/rubies/examples/_table2'
 #     grab(target).attach([atome[:id]])
 #   end
 # end
+# #########################
+# e=element(data: :hello_world)
 
 # ###########################
+# box
+# circle
+# generator=Genesis.generator
+# generator.build_atome(:poil)
+# generator.build_particle(:opacity, {render: false})
+# # p=box({opacity: 55})
+# #TODO: if poil has no render it crash!!
+# # pp=poil({renderers: []})
+# pp=poil
+# # alert pp.renderers
+# # pp.opacity(22)
+# #TODO: if element has no data particle it crash!!
+# # element
+# ########################
+# # alert :good
+# # b=box
+# # c=b.box({color: :red, left: 99})
+# # d=c.box({color: :cyan, left: 99})
+# # d.box({color: :green, left: 99})
+# # d.text({data: "Comme <br>une image développe la production de documentaires en privilégiant la maîtrise technique au service de la sensibilité et de l’humilité. En quête d’ouverture d’esprit sur le monde et d’une vision singulière , nos créations concernent aujourd’hui autant la télévision que le cinéma.
+# # " })

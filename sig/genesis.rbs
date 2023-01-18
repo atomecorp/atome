@@ -1,0 +1,3 @@
+class Genesis
+  def self.generator: -> Atome
+end

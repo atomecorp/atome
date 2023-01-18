@@ -128,7 +128,7 @@ def browser_case(location)
 end
 
 def osx_case(location)
-  `cd #{location};cargo tauri dev  `
+  `cd #{location};cargo tauri dev`
 end
 
 def compile_case(location)

@@ -4,6 +4,7 @@
 module Essentials
   @default_params = {
     render_engines: [:browser],
+    collector: { type: :element, renderers: [], children: [] },
     animation: { type: :animation, children: [] },
     element: { type: :element, renderers: [], children: [] },
     matrix: { renderers: [], id: '', type: :shape, parents: [], width: 99, height: 99,

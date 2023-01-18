@@ -47,7 +47,7 @@ generator.build_sanitizer(:element) do |params|
   parent_found = found_parents_and_renderers[:parent]
   render_found = []
   default_params = { renderers: render_found, id: "element_#{Universe.atomes.length}", type: :element,
-                     parents: parent_found }
+                     parents: parent_found, data: '' }
   default_params.merge!(params)
 end
 

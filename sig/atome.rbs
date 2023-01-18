@@ -9,6 +9,18 @@ module Atome
 
   def apply_style: -> untyped
 
+  def auto_render_generator: -> untyped
+
+  def build_atome: -> Atome
+
+  def build_option: -> untyped
+
+  def build_particle: -> untyped
+
+  def build_render: -> untyped
+
+  def build_sanitizer: -> untyped
+
   def format_matrix: -> untyped
 
   def get_column: -> untyped

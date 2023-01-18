@@ -49,7 +49,12 @@ generator.build_render(:alpha) do |value|
 end
 
 generator.build_render(:visual) do |value|
-  browser_object.style['font-size'] = "#{value[:size]}px"
+  value = if value[:size].instance_of?(String)
+            value[:size]
+          else
+            "#{value[:size]}px"
+          end
+  browser_object.style['font-size'] = value
 end
 
 generator.build_render(:browser_edit) do |value|

@@ -11,7 +11,7 @@ end
 
 # Genesis method here
 class Atome
-  def build_particle(particle_name,options={},&particle_proc)
+  def build_particle(particle_name, options = {}, &particle_proc)
     type = options[:type]
     type = :string if options[:type].nil?
     store = options[:store]
@@ -21,15 +21,17 @@ class Atome
 
     # we add the new method to the particle's collection of methods
     Universe.add_to_particle_list(particle_name, type)
-    auto_render_generator(particle_name) if render #  automatise the creation of an empty render method for current particle
-    new_particle(particle_name,store,render , &particle_proc)
-    additional_particle_methods(particle_name, store,render ,&particle_proc) # create alternative methods such as create 'method='
+    # the line below create an empty particle method for each renderer, eg: browser_left, headless_left, ...
+    auto_render_generator(particle_name) if render
+    new_particle(particle_name, store, render, &particle_proc)
+    # the line below create all alternatives methods such as create 'method='
+    additional_particle_methods(particle_name, store, render, &particle_proc)
   end
-
 
   def build_atome(atome_name, &atome_proc)
     # we add the new method to the atome's collection of methods
     Universe.add_to_atome_list(atome_name)
+    # the line below create an empty atome method for each renderer, eg: browser_left, headless_left, ...
     auto_render_generator(atome_name)
     new_atome(atome_name, &atome_proc)
   end
