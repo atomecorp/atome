@@ -117,15 +117,17 @@ end
 
 def guard_check
   loop do
-    sleep 3
+    sleep 1
   end
   nil unless ARGV.include?('guard')
 end
 
 def browser_case(location)
-  `cd #{location}/src;open index.html`
+  # `cd #{location}/src;open index.html`
   guard_check
 end
+
+#
 
 def osx_case(location)
   `cd #{location};cargo tauri dev`
@@ -136,7 +138,6 @@ def compile_case(location)
   guard_check
 end
 
-
 def server_case(port, location)
   threads = []
   threads << Thread.new do
@@ -144,19 +145,6 @@ def server_case(port, location)
     `open http://localhost:9292/index`
   end
   `cd #{location}/server;rackup --server puma --port #{port}  --env production`
-end
-
-def test_native(build_target)
-  case build_target
-  when :freebsd
-    # freebsd
-  when :osx
-    # osx
-  when :windows
-    # windows
-  else
-    # freebsd
-  end
 end
 
 def run_case(build_target, location, port)
@@ -170,10 +158,9 @@ def run_case(build_target, location, port)
   when :compile
     compile_case(location)
   when :native
-    test_native(build_target)
     # freebsd
   else
-    browser_case(location)
+    guard_check
   end
 end
 

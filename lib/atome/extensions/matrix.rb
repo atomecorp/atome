@@ -172,9 +172,9 @@ class Atome
         x = (col_index + 1) * margin + col_index * cell_width
         y = (row_index + 1) * margin + row_index * cell_height
         current_cell = grab("#{matrix_id}_#{i}")
-        puts "===> #{current_cell}"
+        # puts "===> #{current_cell}"
         current_cell.children.each do |child|
-          puts "=>#{cell_width}"
+          # puts "=>#{cell_width}"
           grab(child).width(cell_width)
           grab(child).height(cell_width)
         end

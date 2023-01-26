@@ -62,7 +62,7 @@ end
 generator.build_render(:browser_unbind) do |options, _proc|
   id_found = self.atome[:id]
   `
-const el = document.getElementById(#{id_found});
+//const el = document.getElementById(#{id_found});
 interact('#'+#{id_found}).unset(#{options});
 `
 end

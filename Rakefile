@@ -26,7 +26,8 @@ task :run_browser do
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
   `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;gem install atome`
-  `cd test/test_app;atome update;atome run`
+  `cd test/test_app;atome update;atome run compile`
+  puts 'atome browser is running'
 end
 
 
@@ -60,7 +61,11 @@ end
 
 
 task :taurification do
-  `cd test/test_app;cargo tauri dev  `
+  `cd test/test_app;cargo tauri dev`
+end
+
+task :osx do
+  `cd test/test_app;atome run osx guard`
 end
 
 

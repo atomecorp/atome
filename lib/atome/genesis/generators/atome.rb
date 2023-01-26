@@ -52,3 +52,54 @@ generator.build_sanitizer(:element) do |params|
 end
 
 generator.build_atome(:collector)
+
+generator.build_sanitizer(:web) do |params|
+  default_renderer = Essentials.default_params[:render_engines]
+
+  generated_id = params[:id] || "web_#{Universe.atomes.length}"
+  generated_render = params[:renderers] || default_renderer
+  generated_parents = params[:parents] || id.value
+  # TODO : the line below should get the value from default params Essentials
+  temp_default = { renderers: generated_render, id: generated_id, type: :web, parents: [generated_parents],
+                   children: [], width: 120, height: 120, path: 'https://www.youtube.com/embed/usQDazZKWAk' }
+  params = temp_default.merge(params)
+  params
+end
+
+generator.build_sanitizer(:animation) do |params|
+  default_renderer = Essentials.default_params[:render_engines]
+  atome_type = :animation
+  generated_render = params[:renderers] || default_renderer
+  generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+  generated_parents = params[:parents] || []
+  generated_children = params[:children] || []
+  params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
+  params
+end
+
+generator.build_sanitizer(:image) do |params|
+  unless params.instance_of? Hash
+    # TODO : we have to convert all image to png or maintain a database with extension
+    params = { path: "./medias/images/#{params}" }
+  end
+  default_renderer = Essentials.default_params[:render_engines]
+  generated_id = params[:id] || "image_#{Universe.atomes.length}"
+  generated_render = params[:renderers] || default_renderer
+  generated_parents = params[:parents] || id.value
+  # TODO : the line below should get the value from default params Essentials
+  temp_default = { renderers: generated_render, id: generated_id, type: :image, parents: [generated_parents],
+                   children: [], width: 99, height: 99, path: './medias/images/atome.svg' }
+  params = temp_default.merge(params)
+  params
+end
+generator.build_sanitizer(:text) do |params|
+  params = { data: params } unless params.instance_of? Hash
+  default_renderer = Essentials.default_params[:render_engines]
+  atome_type = :text
+  generated_render = params[:renderers] || default_renderer
+  generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+  generated_parents = params[:parents] || [id.value]
+  generated_children = params[:children] || []
+  params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
+  params
+end

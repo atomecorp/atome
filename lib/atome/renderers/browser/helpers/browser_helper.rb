@@ -14,4 +14,13 @@ module BrowserHelper
   def self.browser_attach_style(parents, _html_object, atome)
     browser_document[parents].add_class(atome[:id])
   end
+
+  def self.value_parse(value)
+    if value.instance_of?(String)
+      value
+    else
+      "#{value}px"
+    end
+
+  end
 end

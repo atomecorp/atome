@@ -14,7 +14,7 @@ a.assign(2) do
   curent_cell.image({ path: "./medias/images/moto.png", width: 33, height: 33})
   curent_cell.active(:inactive)
   touch(:long) do
-    if curent_cell.active.value ==:inactive
+    if curent_cell.active.value == :inactive
       curent_cell.color(:yellow)
       curent_cell.active(:active)
     else

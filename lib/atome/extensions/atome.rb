@@ -17,11 +17,10 @@ def matrix(params = {}, &proc)
 end
 
 # the method below generate Atome method creation at Object level
-def create_method_at_object_level(element, default_params)
+def create_method_at_object_level(element)
 
-  Object.define_method element do |params = {}, &user_proc|
-    params=default_params.merge(params)
-    puts "params are : #{params}"
+  Object.define_method element do |params, &user_proc|
     grab(:view).send(element, params, &user_proc)
   end
+
 end

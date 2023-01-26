@@ -7,7 +7,7 @@ module BrowserHelper
     browser_object.style[:left] = "#{value}px"
   end
 
-  def self.browser_right_videob(value, browser_object, _atome)
+  def self.browser_right_video(value, browser_object, _atome)
     browser_object.style[:right] = "#{value}px"
   end
 

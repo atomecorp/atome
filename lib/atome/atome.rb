@@ -71,10 +71,8 @@ class Atome
 
   def new_atome(element, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
-      # we set the basic essential params now
 
       if params
-        puts "params : #{params} #{params.class}??"
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         atome_creation_pre_treatment(element, params, &user_proc)
       else
@@ -82,9 +80,7 @@ class Atome
       end
     end
     # the method below generate Atome method creation at Object level
-    puts "why"
-    # params = atome_initializer(element, params)
-    create_method_at_object_level(element, {})
+    create_method_at_object_level(element)
   end
 
   def new_render_engine(renderer_name, &method_proc)
@@ -159,6 +155,7 @@ class Atome
     virtual_atome.user_proc = user_proc
     virtual_atome.value = @atome[element]
     virtual_atome
+    "it should contain the atome not : #{element}"
   end
 
   def create_atome(new_atome)

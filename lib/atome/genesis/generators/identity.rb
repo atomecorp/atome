@@ -19,13 +19,14 @@ generator.build_option(:pre_render_children) do |children_ids|
     child_id = child_id.value if child_id.instance_of? Atome
     child_found = grab(child_id)
     parents_found=@atome[:id]
-    child_found.family(parents_found)
+    # FIXME : broadcast may malfunction because of the commented line below,
+    # FIXME suite : if uncomment object hierreachy is broken (cf Vie Project)
+    # child_found.family(parents_found)
     child_found.atome[:parents] = [parents_found]
   end
 end
 
 generator.build_particle(:family,{render: true,store: false})
-
 
 generator.build_particle(:link) do |child_id|
   child_found = grab(child_id)
