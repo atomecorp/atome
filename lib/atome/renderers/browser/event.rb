@@ -4,8 +4,7 @@ generator = Genesis.generator
 
 generator.build_render(:browser_touch) do |value, proc|
   atome_id = @browser_object.attribute(:id)
-  BrowserHelper.send("browser_touch_#{value}", atome_id, proc)
-  # end
+  BrowserHelper.send("browser_touch_#{value}", atome_id,self, proc)
 end
 
 generator.build_render(:browser_play) do |value, proc|

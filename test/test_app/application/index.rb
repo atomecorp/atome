@@ -511,4 +511,8 @@
 # # alert p.class
 
 
-require 'src/medias/rubies/examples/vie'
+# require 'src/medias/rubies/examples/vie'
+b=circle
+b.touch(true) do
+  self.color(:blue)
+end
