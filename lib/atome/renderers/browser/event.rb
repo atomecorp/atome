@@ -7,6 +7,10 @@ generator.build_render(:browser_touch) do |value, proc|
   BrowserHelper.send("browser_touch_#{value}", atome_id,self, proc)
 end
 
+generator.build_render(:browser_over) do |value, proc|
+  BrowserHelper.send("browser_over_#{value}", @browser_object,self, proc)
+end
+
 generator.build_render(:browser_play) do |value, proc|
   # first we reinit the 'at' event so the condition will be met again
   # @at_time[:used] = nil

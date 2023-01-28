@@ -54,6 +54,18 @@ Opal.BrowserHelper.$touch_helper_callback(event,#{atome},#{proc});
 `
   end
 
+  def self.browser_over_enter(browser_object,atome, proc)
+    browser_object.on :mouseover do |event|
+      atome.instance_exec(event, &proc) if proc.is_a?(Proc)
+    end
+  end
+
+  def self.browser_over_leave(browser_object, atome,proc)
+    browser_object.on :mouseout do |event|
+      atome.instance_exec(event, &proc) if proc.is_a?(Proc)
+    end
+  end
+
 end
 
 
