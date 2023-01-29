@@ -81,11 +81,11 @@ generator.build_render(:browser_hide) do |value|
 
 end
 
-generator.build_render(:browser_class) do |value, _user_proc|
+generator.build_render(:browser_classes) do |value, _user_proc|
   @browser_object.add_class(value)
   # TODO : don't forget to remove class
 end
 
-generator.build_render(:browser_remove_class) do |value, _user_proc|
+generator.build_render(:browser_remove_classes) do |value, _user_proc|
   @browser_object.remove_class(value)
 end

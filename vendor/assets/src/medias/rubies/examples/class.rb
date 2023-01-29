@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 b=box
-b.class(:new_class)
+b.classes(:new_class)
 
 c=circle
-c.class(:new_class)
+c.classes(:new_class)
 
 puts Universe.classes
-b.remove({class: :new_class})
+b.remove({classes: :new_class})
 
 
 puts Universe.classes

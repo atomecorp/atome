@@ -45,12 +45,12 @@ generator.build_particle(:remove) do |particle_to_remove|
   end
 end
 
-generator.build_particle(:class) do |value|
+generator.build_particle(:classes) do |value|
   Universe.classes[value] ||= []
   Universe.classes[value] << self.id.value
 end
 
-generator.build_particle(:remove_class) do |value|
+generator.build_particle(:remove_classes) do |value|
   # Universe.classes.delete(value)
   Universe.classes[value].delete(id.value)
 end
