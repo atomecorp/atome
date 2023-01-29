@@ -5,9 +5,12 @@ color( { red: 0.3, green:  0.3, blue: 0.3, id: :inactive_color } )
 
 b=box
 wait 1 do
-b.attached([:inactive_color])
+  b.attached([:inactive_color])
+
 puts b.attached
 end
 puts b.attached
+c=circle
+c.attached(:inactive_color)
 
 

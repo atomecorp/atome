@@ -18,7 +18,7 @@ generator.build_option(:pre_render_children) do |children_ids|
   children_ids.each do |child_id|
     child_id = child_id.value if child_id.instance_of? Atome
     child_found = grab(child_id)
-    parents_found=@atome[:id]
+    parents_found = @atome[:id]
     # FIXME : broadcast may malfunction because of the commented line below,
     # FIXME suite : if uncomment object hierreachy is broken (cf Vie Project)
     # child_found.family(parents_found)
@@ -26,7 +26,7 @@ generator.build_option(:pre_render_children) do |children_ids|
   end
 end
 
-generator.build_particle(:family,{render: true,store: false})
+generator.build_particle(:family, { render: true, store: false })
 
 generator.build_particle(:link) do |child_id|
   child_found = grab(child_id)
@@ -50,6 +50,12 @@ generator.build_particle(:active)
 
 generator.build_particle(:attach)
 generator.build_particle(:attached)
+generator.build_sanitizer(:attached) do |params|
+  unless params.instance_of? Array
+    params = [params]
+  end
+  params
+end
 generator.build_particle(:detached) do |attach_to_remove|
   attached.value.delete(attach_to_remove)
 end
@@ -68,26 +74,25 @@ generator.build_option(:pre_render_attached) do |children_ids|
   children_ids.each do |child_id|
     child_id = child_id.value if child_id.instance_of? Atome
     child_found = grab(child_id)
-    parents_found=@atome[:id]
+    parents_found = @atome[:id]
     child_found.family(parents_found)
     # parents_found.atome[:attach] = [] unless parents_found.atome[:attach]
     child_found.atome[:attach] = [parents_found]
   end
 end
 
-generator.build_particle(:intricate, {type: :array })
-
+generator.build_particle(:intricate, { type: :array })
 
 generator.build_particle(:clones) do |clones_found|
-  clones_found.each_with_index  do |clone_found, index|
-    particles_intricated= clone_found[:intricate] ||= []
-    clone_id="#{particles[:id]}_clone_#{index}"
-    original_id=atome[:id]
+  clones_found.each_with_index do |clone_found, index|
+    particles_intricated = clone_found[:intricate] ||= []
+    clone_id = "#{particles[:id]}_clone_#{index}"
+    original_id = atome[:id]
     clone_found[:id] = clone_id
     clone_found = particles.merge(clone_found)
-    cloned_atome=Atome.new({ clone: clone_found })
-    cloned_atome.monitor({ atomes: [original_id], particles: particles_intricated}) do |_atome, particle, value|
-      cloned_atome.send(particle,value)
+    cloned_atome = Atome.new({ clone: clone_found })
+    cloned_atome.monitor({ atomes: [original_id], particles: particles_intricated }) do |_atome, particle, value|
+      cloned_atome.send(particle, value)
     end
   end
 end
