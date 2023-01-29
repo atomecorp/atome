@@ -19,7 +19,7 @@ class Atome
 
   def box(params = {}, &bloc)
     default_renderer = Essentials.default_params[:render_engines]
-    atome_type = :shape
+    atome_type = :box
     generated_render = params[:renderers] || default_renderer
     generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_parents = params[:parents] || [id.value]

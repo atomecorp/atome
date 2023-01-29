@@ -16,18 +16,18 @@ module BrowserHelper
   end
 
   def self.browser_left_color(_value, _browser_object, _atome)
-    puts 'code to write when implementing gradient'
+    # puts 'code to write when implementing gradient'
   end
 
   def self.browser_right_color(_value, _browser_object, _atome)
-    puts 'code to write when implementing gradient'
+    # puts 'code to write when implementing gradient'
   end
 
   def self.browser_top_color(_value, _browser_object, _atome)
-    puts 'code to write when implementing gradient'
+    # puts 'code to write when implementing gradient'
   end
 
   def self.browser_bottom_color(_value, _browser_object, _atome)
-    puts 'code to write when implementing gradient'
+    # puts 'code to write when implementing gradient'
   end
 end
