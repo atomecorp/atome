@@ -25,3 +25,7 @@ generator.build_render(:browser_attach) do |parents_found|
   end
 end
 
+generator.build_render(:browser_detached) do |value, _user_proc|
+  @browser_object.remove_class(value)
+end
+

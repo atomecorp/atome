@@ -50,6 +50,9 @@ generator.build_particle(:active)
 
 generator.build_particle(:attach)
 generator.build_particle(:attached)
+generator.build_particle(:detached) do |attach_to_remove|
+  attached.value.delete(attach_to_remove)
+end
 
 generator.build_option(:pre_render_attach) do |parents_ids|
   parents_ids.each do |parents_id|

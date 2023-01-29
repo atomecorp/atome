@@ -513,4 +513,19 @@
 
 # require 'src/medias/rubies/examples/vie'
 
+# TODO: classes must be an array or we wont be able to add multiple classes to the atome ex:
+b=box
+b.classes([:new_class])
+b.classes << :other_class
 
+c=circle
+c.classes([:new_class])
+c.classes([:new_class])
+c.classes([:new_class])
+# must accept once
+
+puts Universe.classes
+b.remove({classes: :new_class})
+
+
+puts Universe.classes

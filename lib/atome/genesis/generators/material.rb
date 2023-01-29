@@ -47,7 +47,7 @@ end
 
 generator.build_particle(:classes) do |value|
   Universe.classes[value] ||= []
-  Universe.classes[value] << self.id.value
+  Universe.classes[value] |= [id.value]
 end
 
 generator.build_particle(:remove_classes) do |value|
