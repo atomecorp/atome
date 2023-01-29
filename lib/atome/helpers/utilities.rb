@@ -133,10 +133,25 @@ class Atome
     end
 
   end
+  def []=(params, value)
+    # TODO : it may miss some code, see above
+    self.value[params] = value
+  end
 
   def set(params)
     params.each do |particle, value|
       send(particle, value)
     end
   end
+
+  def particle_to_remove_decision(particle_to_remove)
+    if particle_to_remove.instance_of? Hash
+      particle_to_remove.each do |particle_found, value|
+        send("remove_#{particle_found}", value)
+      end
+    else
+      send(particle_to_remove, 0)
+    end
+  end
+
 end

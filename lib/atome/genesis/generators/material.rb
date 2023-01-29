@@ -41,6 +41,16 @@ generator.build_particle(:remove) do |particle_to_remove|
     # TODO : code to write
     puts 'code to write'
   else
-    send(particle_to_remove, 0)
+    particle_to_remove_decision(particle_to_remove)
   end
+end
+
+generator.build_particle(:class) do |value|
+  Universe.classes[value] ||= []
+  Universe.classes[value] << self.id.value
+end
+
+generator.build_particle(:remove_class) do |value|
+  # Universe.classes.delete(value)
+  Universe.classes[value].delete(id.value)
 end
