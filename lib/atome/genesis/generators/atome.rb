@@ -6,7 +6,7 @@ generator.build_atome(:animation)
 generator.build_atome(:color)
 generator.build_sanitizer(:color) do |params|
   parent_found = found_parents_and_renderers[:parent]
-  parent_found = [:user_view] if parent_found == [:view]
+  parent_found = [:black_matter] if parent_found == [:view]
   render_found = found_parents_and_renderers[:renderers]
   default_params = { renderers: render_found, id: "color_#{Universe.atomes.length}", type: :color,
                      attach: parent_found,

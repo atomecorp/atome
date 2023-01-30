@@ -38,7 +38,7 @@ Atome.new(
 # color creation
 Atome.new(
   { color: { renderers: default_render, id: :view_color, type: :color,
-             red:  0.15, green: 0.15, blue: 0.15, alpha: 1 } }
+             red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } }
 )
 
 Atome.new(
@@ -66,7 +66,13 @@ Atome.new(
              left: 0, top: 0, red: 0.7, green: 0.7, blue: 0.7, alpha: 1, diffusion: :linear } }
 )
 
-# view creation
+# system object creation
+# the black_matter is used to store un materialized atomes
+Atome.new(
+  { shape: { renderers: default_render, id: :black_matter, type: :shape, parents: [:user_view], children: [],
+             left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden
+  } })
+# view port
 Atome.new(
   { shape: { renderers: default_render, id: :view, type: :shape, parents: [:user_view], children: [],
              attached: [:view_color], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto
