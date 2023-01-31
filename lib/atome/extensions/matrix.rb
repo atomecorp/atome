@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+#
 
-class Atome
+module Matrix
   def content(items = nil)
     if items.instance_of?(Array)
       items.each do |item|
@@ -398,4 +399,8 @@ class Atome
       (start_index..end_index).to_a
     end
   end
+end
+
+class Atome
+  include Matrix
 end

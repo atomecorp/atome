@@ -8,7 +8,11 @@ my_video = Atome.new(
   puts "video callback here #{params}"
 end
 my_video.touch(true) do
-  grab(:video1).time(5)
+  grab(:video1).time(3)
   my_video.pause(true)
+  wait 3 do
+    play(15)
+  end
+
 end
 my_video.play(true)
