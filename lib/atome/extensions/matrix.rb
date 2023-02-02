@@ -176,8 +176,8 @@ module Matrix
         # puts "===> #{current_cell}"
         current_cell.children.each do |child|
           # puts "=>#{cell_width}"
-          grab(child).width(cell_width)
-          grab(child).height(cell_width)
+          grab(child).width(cell_width) if grab(child)
+          grab(child).height(cell_width) if grab(child)
         end
         current_cell.width = cell_width
         current_cell.height = cell_height

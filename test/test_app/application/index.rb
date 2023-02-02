@@ -530,41 +530,10 @@
 #
 # puts Universe.classes
 
+#####################
 
-############
-#
-# require 'src/medias/rubies/examples/_table2'
-# require 'src/medias/rubies/examples/schedule'
-# require 'src/medias/rubies/examples/time'
-# require 'src/medias/rubies/examples/code'
-# require 'src/medias/rubies/examples/text'
-# require 'src/medias/rubies/examples/table'
-# require 'src/medias/rubies/examples/web'
-# require 'src/medias/rubies/examples/fullscreen'
-# require 'src/medias/rubies/examples/video'
-# require 'src/medias/rubies/examples/touch'
-# require 'src/medias/rubies/examples/create_atome_in_atome'
-# require 'src/medias/rubies/examples/color'
-# require 'src/medias/rubies/examples/animation'
-# require 'src/medias/rubies/examples/drag'
-# require 'src/medias/rubies/examples/_dataset'
-# require 'src/medias/rubies/examples/bottom'
-# require 'src/medias/rubies/examples/attach'
-# require 'src/medias/rubies/examples/parents'
-# require 'src/medias/rubies/examples/markers'
-# require 'src/medias/rubies/examples/add' #to test it crash
-# require 'src/medias/rubies/examples/matrix' # crash bu make a module
-# require 'src/medias/rubies/examples/color'
-require 'src/medias/rubies/examples/read'
-# require 'src/medias/rubies/examples/drag'
-# require 'src/medias/rubies/examples/clone'
-# require 'src/medias/rubies/examples/monitoring'
-# require 'src/medias/rubies/examples/delete'
-# require 'src/medias/rubies/examples/_audio'
-# require 'src/medias/rubies/examples/image'
-
-
-# b=box
-# b.drag(true)
-# c=circle({left: 230})
-# b.attached(c.id)
+b=box
+bb=b.browser_object
+alert bb.poilu
+alert bb.style.width
+alert bb.width

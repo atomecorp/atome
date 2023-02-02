@@ -8,7 +8,6 @@
 class Atome
   # TODO : clean or delete @private_atome
   include Essentials
-
   private
 
   def initialize(atomes = {}, &atomes_proc)
@@ -143,8 +142,8 @@ class Atome
     virtual_atome.real_atome = @atome
     virtual_atome.property = element
     virtual_atome.user_proc = user_proc
-    run_optional_proc("pre_get_#{@atome[:type]}".to_sym, 'virtual_atome', &user_proc)
-    run_optional_proc("pre_get_#{element}".to_sym, self, 'virtual_atome', &user_proc)
+    # run_optional_proc("pre_get_#{@atome[:type]}".to_sym, 'virtual_atome', &user_proc)
+    # run_optional_proc("pre_get_#{element}".to_sym, self, 'virtual_atome', &user_proc)
     virtual_atome
   end
 

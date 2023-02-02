@@ -89,3 +89,7 @@ end
 generator.build_render(:browser_remove_classes) do |value, _user_proc|
   @browser_object.remove_class(value)
 end
+
+new ({browser: :opacity}) do |value|
+  @browser_object.style['opacity'] = value
+end

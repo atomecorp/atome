@@ -9,3 +9,5 @@ new({ particle: :bottom })
 new({ particle: :rotate })
 new({ particle: :direction })
 new({ particle: :center })
+new ({particle: :depth})
+

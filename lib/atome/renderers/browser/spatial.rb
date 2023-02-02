@@ -52,3 +52,7 @@ generator.build_render(:browser_center) do |value, _user_proc|
 
 end
 
+new ({browser: :depth}) do |value|
+  @browser_object.style['z-index'] = value
+end
+

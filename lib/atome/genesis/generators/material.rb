@@ -49,6 +49,7 @@ new({ particle: :remove_classes }) do |value|
   # Universe.classes.delete(value)
   Universe.classes[value].delete(id.value)
 end
+new ({particle: :opacity})
 
 # generator = Genesis.generator
 #

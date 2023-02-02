@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-generator = Genesis.generator
-
-generator.build_particle(:width)
-generator.build_particle(:height)
-generator.build_particle(:size) do |params|
+new({particle: :width })
+new({particle: :height })
+new({particle: :size }) do |params|
   atome_width = atome[:width]
   atome_height = atome[:height]
   aspect_ratio = atome_width / atome_height
@@ -16,3 +14,21 @@ generator.build_particle(:size) do |params|
     height(params)
   end
 end
+
+
+# generator = Genesis.generator
+#
+# generator.build_particle(:width)
+# generator.build_particle(:height)
+# generator.build_particle(:size) do |params|
+#   atome_width = atome[:width]
+#   atome_height = atome[:height]
+#   aspect_ratio = atome_width / atome_height
+#   if atome_width > atome_height
+#     width(params)
+#     height(params / aspect_ratio)
+#   else
+#     width(params * aspect_ratio)
+#     height(params)
+#   end
+# end

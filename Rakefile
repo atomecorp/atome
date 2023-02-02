@@ -56,7 +56,7 @@ end
 
 task :run_example_server do
   FileUtils.copy_entry('vendor/assets/src/medias/rubies/examples/', 'test/test_app/src/medias/rubies/examples/')
-  `cd test/test_app;atome run server `
+  `cd test/test_app;atome run server`
 end
 
 
