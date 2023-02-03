@@ -4,7 +4,7 @@
 
 require 'opal'
 # require 'opal-jquery'
-require 'atome-opal-browser'
+require 'opal-browser'
 require 'parser'
 # require 'ruby2js'
 require 'uglifier'
