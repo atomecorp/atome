@@ -530,10 +530,85 @@
 #
 # puts Universe.classes
 
-#####################
+# #####################
+#
+#
+# new({ sanitizer: :color }) do |params|
+#   parent_found = found_parents_and_renderers[:parent]
+#   parent_found = [:black_matter] if parent_found == [:view]
+#   render_found = found_parents_and_renderers[:renderers]
+#   # we delete any previous color if there's one
+#   if parent_found[0] == :black_matter
+#     alert :hool
+#   end
+#   default_params = { renderers: render_found, id: "color_#{Universe.atomes.length}", type: :color,
+#                      attach: parent_found,
+#                      red: 0, green: 0, blue: 0, alpha: 1 }
+#   params = create_color_hash(params) unless params.instance_of? Hash
+#   new_params = default_params.merge!(params)
+#   atome[:color] = new_params
+#   new_params
+# end
+#
+# b=box
+# # alert b
+# color(:red)
+# # bb=b.browser_object
+# # alert b
 
-b=box
-bb=b.browser_object
-alert bb.poilu
-alert bb.style.width
-alert bb.width
+# #####################
+#
+class Atome
+  def new_particle(element, store, render, &method_proc)
+
+    Atome.define_method element do |params = nil, &user_proc|
+
+
+      if params || params == false
+        puts  (:ok)
+        if params.instance_of? Atome
+          params=params.value
+        end
+        # the line below execute the proc created when using the build_particle method
+        instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+        params = sanitize(element, params)
+        create_particle(element, store, render)
+        send("set_#{element}", params, &user_proc)
+      else
+        get_particle(element, &user_proc)
+      end
+    end
+  end
+
+end
+
+b=box({id: :toto, top: 100})
+
+
+# math add on
+
+
+# circle({id: :titi, top: box.top/2})
+circle({id: :titi, top: box.top/2, left: box.left-100})
+
+
+ # e.data.each do |dt|
+ #   alert dt
+ # end
+# def insert_module(module_id)
+#   grab(:selected).data.each do |module_id_found|
+#     module_found = grab(module_id_found)
+#     # alert module_id_found.class
+#
+#     # module_found.children.each do |child_found|
+#     #   grab(child_found).delete(true) if grab(child_found)
+#     # end
+#     # tool_found = tool_list[module_id][:icon]
+#     # tool_color= :orange
+#     # module_found.box({id: "#{module_found.id.value}_svg_support", width: module_found.width.value/2, height: module_found.height.value/2, center: true, attached: :invisible_color})
+#     # svg_fetch(tool_found, tool_color, "#{module_found.id.value}_svg_support")
+#   end
+#
+# end
+#
+# insert_module(:toto)

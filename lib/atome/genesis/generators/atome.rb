@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 new({ atome: :color })
+
 new({ sanitizer: :color }) do |params|
   parent_found = found_parents_and_renderers[:parent]
   parent_found = [:black_matter] if parent_found == [:view]
   render_found = found_parents_and_renderers[:renderers]
+  # we delete any previous color if there's one
+  # alert
   default_params = { renderers: render_found, id: "color_#{Universe.atomes.length}", type: :color,
                      attach: parent_found,
                      red: 0, green: 0, blue: 0, alpha: 1 }
@@ -13,6 +16,7 @@ new({ sanitizer: :color }) do |params|
   atome[:color] = new_params
   new_params
 end
+
 new({ atome: :image })
 new({ sanitizer: :image }) do |params|
   unless params.instance_of? Hash
