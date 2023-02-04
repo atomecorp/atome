@@ -21,6 +21,7 @@ def new(params, &bloc)
 end
 
 def grab(atome_to_get)
+  atome_to_get = atome_to_get.value if atome_to_get.instance_of? Atome
   Universe.atomes[atome_to_get]
 end
 

@@ -11,7 +11,7 @@ c = Atome.new(shape: { type: :shape, id: :my_pix, children: [], parents: [:view]
                        left: 50, right: 78
 })
 
-a.monitor({ atomes: grab(:view).children.value, particles: [:left] }) do |atome, element, value|
+a.monitor({ atomes: grab(:view).children, particles: [:left] }) do |atome, element, value|
   puts "monitoring: #{atome.id}, #{element}, #{value}"
 end
 
@@ -31,14 +31,14 @@ end
 
 aa.box({ id: :theboxy })
 
-aa.monitor({ atomes: grab(:view).children.value, particles: [:left] }) do |_atome, _element, value|
+aa.monitor({ atomes: grab(:view).children, particles: [:left] }) do |_atome, _element, value|
   puts "the left value was change to : #{value}"
 end
 
-aa.monitor({ atomes: grab(:view).children.value, particles: [:width] }) do |_atome, _element, value|
+aa.monitor({ atomes: grab(:view).children, particles: [:width] }) do |_atome, _element, value|
   puts "the width's value was change to : #{value}"
 end
 
-aa.monitor({ atomes: grab(:view).children.value, particles: [:left], id: :my_monitorer }) do |_atome, _element, value|
+aa.monitor({ atomes: grab(:view).children, particles: [:left], id: :my_monitorer }) do |_atome, _element, value|
   puts "the second monitor left value was log to : #{value}"
 end

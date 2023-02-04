@@ -558,38 +558,6 @@
 
 # #####################
 #
-class Atome
-  def new_particle(element, store, render, &method_proc)
-
-    Atome.define_method element do |params = nil, &user_proc|
-
-
-      if params || params == false
-        puts  (:ok)
-        if params.instance_of? Atome
-          params=params.value
-        end
-        # the line below execute the proc created when using the build_particle method
-        instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        params = sanitize(element, params)
-        create_particle(element, store, render)
-        send("set_#{element}", params, &user_proc)
-      else
-        get_particle(element, &user_proc)
-      end
-    end
-  end
-
-end
-
-b=box({id: :toto, top: 100})
-
-
-# math add on
-
-
-# circle({id: :titi, top: box.top/2})
-circle({id: :titi, top: box.top/2, left: box.left-100})
 
 
  # e.data.each do |dt|
@@ -612,3 +580,5 @@ circle({id: :titi, top: box.top/2, left: box.left-100})
 # end
 #
 # insert_module(:toto)
+
+require 'src/medias/rubies/examples/table'

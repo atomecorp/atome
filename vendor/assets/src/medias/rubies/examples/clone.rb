@@ -28,7 +28,7 @@ grab(:the_box_clone_1).rotate(33)
 
 
 wait 5 do
-  b.clones.value.each do |clone_found|
+  b.clones.each do |clone_found|
     grab(clone_found[:id]).delete(true)
   end
 end

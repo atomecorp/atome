@@ -2,9 +2,9 @@
 
 separator=120
 b=box({ left: separator, id: :test_box })
-c=box({ left: b.left.value+separator })
-d=box({ left: c.left.value+separator })
-e=box({ left: d.left.value+separator })
+c=box({ left: b.left+separator })
+d=box({ left: c.left+separator })
+e=box({ left: d.left+separator })
 
 b.touch(:down) do
   b.color(:red)

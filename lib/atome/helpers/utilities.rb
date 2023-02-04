@@ -42,11 +42,11 @@ class Atome
 
   def monitor(params=nil, &proc_monitoring)
     if params
-      atome[:monitor] ||= {}
+      monitoring=atome[:monitor] ||= {}
       params[:atomes].each do |atome_id|
         target_broadcaster = grab(atome_id).instance_variable_get('@broadcast')
         monitor_id = params[:id] || "monitor#{target_broadcaster.length}"
-        atome[:monitor] [monitor_id]=params.merge({code: proc_monitoring})
+        monitoring[monitor_id]=params.merge({code: proc_monitoring})
         target_broadcaster[monitor_id] = { particles: params[:particles], code:  proc_monitoring }
       end
     else

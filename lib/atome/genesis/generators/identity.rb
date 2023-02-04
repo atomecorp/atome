@@ -2,9 +2,7 @@
 
 new({ particle: :attached })
 new({ sanitizer: :attached }) do |params|
-  unless params.instance_of? Array
-    params = [params]
-  end
+  params = [params] unless params.instance_of? Array
   params
 end
 new({ pre: :attached }) do |children_ids|
@@ -19,25 +17,44 @@ new({ pre: :attached }) do |children_ids|
 end
 new({ particle: :type })
 new({ particle: :children })
-new({ pre: :children }) do |children_ids|
-  children_ids.each do |child_id|
+
+new ({ sanitizer: :children }) do |params|
+  # TODO factorise the line below and 'sanitized_params' for all particle type of Array
+  params = [params] unless params.instance_of? Array
+  sanitized_params = []
+  params.each do |child_id|
     child_id = child_id.value if child_id.instance_of? Atome
+    sanitized_params << child_id
     child_found = grab(child_id)
     parents_found = @atome[:id]
     # FIXME : broadcast may malfunction because of the commented line below,
-    # FIXME suite : if uncomment object hierreachy is broken (cf Vie Project)
+    # FIXME suite : if uncomment object hierarchy is broken (cf Vie Project)
     # child_found.family(parents_found)
     child_found.atome[:parents] = [parents_found]
   end
+  sanitized_params
 end
+
 new({ particle: :parents })
-new({ pre: :parents }) do |parents_ids|
-  parents_ids.each do |parents_id|
+new({ sanitizer: :parents }) do |params|
+  params = [params] unless params.instance_of? Array
+  sanitized_params = []
+  params.each do |parents_id|
     parents_id = parents_id.value if parents_id.instance_of? Atome
+    sanitized_params << parents_id
     parents_found = grab(parents_id)
     family(parents_id)
     parents_found.atome[:children] << atome[:id]
   end
+  sanitized_params
+end
+new({ pre: :parents }) do |parents_ids|
+  # parents_ids.each do |parents_id|
+  #   parents_id = parents_id.value if parents_id.instance_of? Atome
+  #   parents_found = grab(parents_id)
+  #   family(parents_id)
+  #   parents_found.atome[:children] << atome[:id]
+  # end
 end
 new({ particle: :family })
 new({ particle: :link })
@@ -63,7 +80,7 @@ new({ pre: :attach }) do |parents_ids|
   end
 end
 new({ particle: :detached })
-new({ particle: :intricate, type: :array  })
+new({ particle: :intricate, type: :array })
 new({ particle: :clones }) do |clones_found|
   clones_found.each_with_index do |clone_found, index|
     particles_intricated = clone_found[:intricate] ||= []

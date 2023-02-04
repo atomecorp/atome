@@ -61,7 +61,7 @@ grab(:my_table_26).color(:purple)
 # test.color(:blue)
 # m.columns(6).data[0..3].color(:white)
 
-grab(m.id.value).drag({ move: true }) do |e|
+grab(m.id).drag({ move: true }) do |e|
   puts e
 end
 wait 1 do
@@ -127,7 +127,7 @@ m.delete({ relations: :rel_2 })
 # grab("my_table_9").children .each do |child|
 #   grab(child).color(:white)
 # end
-matrix_ratio=m.height.value/m.width.value
+matrix_ratio=m.height/m.width
 # alert prev_size
 $window.on :resize do |e|
   # m.top(0)

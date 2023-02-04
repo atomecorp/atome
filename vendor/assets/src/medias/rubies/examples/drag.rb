@@ -2,8 +2,8 @@
 
 a = box({ width: 333, height: 333, id: :the_boxy })
 a.color(:red)
-b = box({ width: 33, height: 33, id: :the_box, drag: true })
-b.parents([a.id.value])
+b = circle({ width: 33, height: 33, id: :the_box, drag: true })
+b.parents([a.id])
 b.color(:black)
 # b.parents([:the_boxy ])
 b.drag({ move: true }) do |e|
@@ -38,3 +38,10 @@ b.drag({ constraint: :parent })
 b.drag({ snap: { x: 100, y: 190 } })
 
 # b.drag({ constraint: :the_boxy })
+
+cc=circle(drag: true)
+bb=box
+
+bb.parents(cc.id)
+
+alert"#{b.parents.class} :  #{b.parents}"

@@ -9,7 +9,7 @@ wait 4 do
 end
 
 wait 3 do
-  b.children.value.each do |attached_atome_id|
+  b.children.each do |attached_atome_id|
     b.delete({id: attached_atome_id})
     b.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [], children: [],
                 left: 3, top: 9, blur: 3, direction: '',
@@ -24,6 +24,3 @@ wait 2 do
 end
 
 
-wait 1 do
-  b.delete({id: :the_circle})
-end
