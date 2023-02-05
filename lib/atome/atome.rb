@@ -154,7 +154,6 @@ class Atome
     virtual_atome.user_proc = user_proc
     virtual_atome.value = @atome[element]
     virtual_atome
-    "it should contain the atome not : #{element}"
   end
 
   def create_atome(new_atome)

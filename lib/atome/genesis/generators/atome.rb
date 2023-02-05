@@ -3,11 +3,11 @@
 new({ atome: :color })
 
 new({ sanitizer: :color }) do |params|
+  # we delete any previous color if there's one
+  grab(color.value[:id]).delete(true) if color.value
   parent_found = found_parents_and_renderers[:parent]
   parent_found = [:black_matter] if parent_found == [:view]
   render_found = found_parents_and_renderers[:renderers]
-  # we delete any previous color if there's one
-  # alert
   default_params = { renderers: render_found, id: "color_#{Universe.atomes.length}", type: :color,
                      attach: parent_found,
                      red: 0, green: 0, blue: 0, alpha: 1 }
@@ -43,13 +43,21 @@ new({ sanitizer: :video }) do |params|
 end
 new({ atome: :shadow })
 new({ sanitizer: :shadow }) do |params|
+  # we delete any previous shadow if there's one
+
+  grab(shadow.value[:id]).delete(true) if shadow.value
   parent_found = found_parents_and_renderers[:parent]
   parent_found = [:user_view] if parent_found == [:view]
   render_found = found_parents_and_renderers[:renderers]
   default_params = { renderers: render_found, id: "shadow_#{Universe.atomes.length}", type: :shadow,
                      attach: parent_found,
                      red: 0, green: 0, blue: 0, alpha: 1, blur: 3, left: 3, top: 3 }
-  default_params.merge!(params)
+  # default_params.merge!(params)
+  params = create_shadow_hash(params) unless params.instance_of? Hash
+  new_params = default_params.merge!(params)
+  atome[:shadow] = new_params
+  new_params
+
 end
 new({ atome: :shape })
 new({ atome: :code })

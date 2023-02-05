@@ -580,5 +580,58 @@
 # end
 #
 # insert_module(:toto)
+#
 
-require 'src/medias/rubies/examples/table'
+# require 'src/medias/rubies/examples/table'
+
+
+# new({ sanitizer: :color }) do |params|
+#   if  color.value
+#     grab(color.value[:id]).delete(true)
+#   end
+#   parent_found = found_parents_and_renderers[:parent]
+#   parent_found = [:black_matter] if parent_found == [:view]
+#   render_found = found_parents_and_renderers[:renderers]
+#   # we delete any previous color if there's one
+#   # alert
+#   default_params = { renderers: render_found, id: "color_#{Universe.atomes.length}", type: :color,
+#                      attach: parent_found,
+#                      red: 0, green: 0, blue: 0, alpha: 1 }
+#   params = create_color_hash(params) unless params.instance_of? Hash
+#   new_params = default_params.merge!(params)
+#   atome[:color] = new_params
+#   new_params
+# end
+#
+#
+# new({ sanitizer: :shadow }) do |params|
+#   # we delete any previous shadow if there's one
+#
+#   grab(shadow.value[:id]).delete(true) if shadow.value
+#   parent_found = found_parents_and_renderers[:parent]
+#   parent_found = [:user_view] if parent_found == [:view]
+#   render_found = found_parents_and_renderers[:renderers]
+#   default_params = { renderers: render_found, id: "shadow_#{Universe.atomes.length}", type: :shadow,
+#                      attach: parent_found,
+#                      red: 0, green: 0, blue: 0, alpha: 1, blur: 3, left: 3, top: 3 }
+#   # default_params.merge!(params)
+#     params = create_shadow_hash(params) unless params.instance_of? Hash
+#     new_params = default_params.merge!(params)
+#     atome[:shadow] = new_params
+#     new_params
+#
+# end
+
+
+b=box()
+# alert b.color.value.class
+b.color(:blue)
+b.shadow({ blur: 33 })
+
+b.shadow({ blur: 44 })
+# alert b.color.value.class
+b.color(:orange)
+b.color(:violet)
+# c=color(:green)
+# b.attached(c.id)
+# alert b.color

@@ -118,6 +118,21 @@ class Atome
     end
   end
 
+  def include?(value)
+    self.value.include?(value)
+  end
+
+
+
+  def each_with_index(*args)
+    self.value.each_with_index do |val, index|
+      yield(val, index)
+    end
+    # value.each do |val|
+    #   instance_exec(val, &proc) if proc.is_a?(Proc)
+    # end
+  end
+
   def [](range)
     if value[range].class == Atome
       return value[range]
