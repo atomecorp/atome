@@ -643,26 +643,38 @@
 # end
 
 b = box()
-# alert b.color.value.class
-b.color(:blue)
-b.shadow({ blur: 33 })
+b.color(:red)
+b.color(:black)
+b.color(:yellow)
+c=b.circle
 
-b.shadow({ blur: 44 })
-# alert b.color.value.class
-b.color(:orange)
-b.color(:violet)
-# c=color(:green)
-# b.attached(c.id)
-# alert b.color
-b.touch(:up) do
-  color(:blue)
-end
+c.color(:blue)
 
-b.touch(:long) do
-  color(:yellow)
-end
+# alert b.attached
+b.detached("box_color")
 
-# alert :goodyob
-puts "=> #{b.touch}"
-
-# alert b.color
+# alert b.attached
+# alert c
+# # alert b.color.value.class
+# b.color(:blue)
+# b.shadow({ blur: 33 })
+#
+# b.shadow({ blur: 44 })
+# # alert b.color.value.class
+# b.color(:orange)
+# b.color(:violet)
+# # c=color(:green)
+# # b.attached(c.id)
+# # alert b.color
+# b.touch(:up) do
+#   color(:blue)
+# end
+#
+# b.touch(:long) do
+#   color(:yellow)
+# end
+#
+# # alert :goodyob
+# puts "=> #{b.touch}"
+#
+# # alert b.color

@@ -29,7 +29,8 @@ new ({ sanitizer: :children }) do |params|
     parents_found = @atome[:id]
     # FIXME : broadcast may malfunction because of the commented line below,
     # FIXME suite : if uncomment object hierarchy is broken (cf Vie Project)
-    # child_found.family(parents_found)
+    # FIXME : parent child problem may be caused by th eline below
+    child_found.family(parents_found)
     child_found.atome[:parents] = [parents_found]
   end
   sanitized_params
@@ -79,7 +80,9 @@ new({ pre: :attach }) do |parents_ids|
     parents_found.atome[:attached] << atome[:id]
   end
 end
-new({ particle: :detached })
+new({ particle: :detached }) do |value|
+  attached.value.delete(value)
+end
 new({ particle: :intricate, type: :array })
 new({ particle: :clones }) do |clones_found|
   clones_found.each_with_index do |clone_found, index|

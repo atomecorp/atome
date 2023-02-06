@@ -4,7 +4,10 @@ new({ atome: :color })
 
 new({ sanitizer: :color }) do |params|
   # we delete any previous color if there's one
-  grab(color.value[:id]).delete(true) if color.value
+  if color.value
+    attached.value.delete(color.value[:id])
+    grab(color.value[:id]).delete(true)
+  end
   parent_found = found_parents_and_renderers[:parent]
   parent_found = [:black_matter] if parent_found == [:view]
   render_found = found_parents_and_renderers[:renderers]
@@ -44,8 +47,11 @@ end
 new({ atome: :shadow })
 new({ sanitizer: :shadow }) do |params|
   # we delete any previous shadow if there's one
-
-  grab(shadow.value[:id]).delete(true) if shadow.value
+  if color.value
+    attached.value.delete(shadow.value[:id])
+    grab(shadow.value[:id]).delete(true)
+  end
+  # grab(shadow.value[:id]).delete(true) if shadow.value
   parent_found = found_parents_and_renderers[:parent]
   parent_found = [:user_view] if parent_found == [:view]
   render_found = found_parents_and_renderers[:renderers]
