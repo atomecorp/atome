@@ -14,9 +14,9 @@ class Atome
     true
   end
 
-  def sanitize(element, params)
+  def sanitize(element, params,&user_proc)
     bloc_found = Universe.get_sanitizer_method(element)
-    params = instance_exec(params, &bloc_found) if bloc_found.is_a?(Proc)
+    params = instance_exec(params,user_proc, &bloc_found) if bloc_found.is_a?(Proc)
     params
   end
 

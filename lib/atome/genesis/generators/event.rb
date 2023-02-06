@@ -2,7 +2,14 @@
 
 
 
-new({particle: :touch })
+new({particle: :touch , type: :hash, store: false })
+new({ post: :touch }) do |params, user_bloc|
+  @touch = {} if @touch == nil
+  @touch[params] = user_bloc
+  # as store for touch is set to false we have to manually save the instance variable
+  store_value(:touch)
+end
+
 new({particle: :play }) do
   @atome[:pause] = :false
 end

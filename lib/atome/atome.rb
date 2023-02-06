@@ -31,7 +31,7 @@ class Atome
       if params || params == false
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        params = sanitize(element, params)
+        params = sanitize(element, params,&user_proc)
         create_particle(element, store, render)
         send("set_#{element}", params, &user_proc)
       else
@@ -88,8 +88,8 @@ class Atome
     end
   end
 
-  def run_optional_proc(proc_name, atome = self, element, &user_proc)
-    params = instance_variable_get("@#{element}")
+  def run_optional_proc(proc_name, atome = self, params, &user_proc)
+    # params = instance_variable_get("@#{element}")
     option_found = Universe.get_optional_method(proc_name)
     atome.instance_exec(params, user_proc, atome, &option_found) if option_found.is_a?(Proc)
   end
@@ -115,14 +115,14 @@ class Atome
     # we create a proc holder of any new particle if user pass a bloc
     store_code_bloc(element, &user_proc) if user_proc
     # Params is now an instance variable so it should be passed thru different methods
-    instance_variable_set("@#{element}", params)
-    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, element, &user_proc)
-    run_optional_proc("pre_render_#{element}".to_sym, self, element, &user_proc)
-    rendering(element, &user_proc) if render
-    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, element, &user_proc)
-    run_optional_proc("post_render_#{element}".to_sym, self, element, &user_proc)
+    instance_variable_set("@#{element}", params) if store
+    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
+    run_optional_proc("pre_render_#{element}".to_sym, self, params, &user_proc)
+    rendering(element,params, &user_proc) if render
+    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
+    run_optional_proc("post_render_#{element}".to_sym, self, params, &user_proc)
     broadcasting(element)
-    store_value(element) if store
+    store_value(element)  if store
     self
   end
 

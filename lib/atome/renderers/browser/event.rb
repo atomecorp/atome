@@ -4,6 +4,11 @@ generator = Genesis.generator
 
 generator.build_render(:browser_touch) do |value, proc|
   atome_id = @browser_object.attribute(:id)
+   # value.each do |tap_mode, user_proc|
+   #   alert "#{tap_mode} : #{user_proc}\n #{tap_mode.class} : #{user_proc.class}"
+   #   BrowserHelper.send("browser_touch_#{tap_mode}", atome_id,self, user_proc)
+   # end
+  # alert "#{value} : #{proc}\n #{value.class} : #{proc.class}"
   BrowserHelper.send("browser_touch_#{value}", atome_id,self, proc)
 end
 

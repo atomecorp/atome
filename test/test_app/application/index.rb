@@ -510,7 +510,6 @@
 # # p=pol({poil: 33})
 # # alert p.class
 
-
 # require 'src/medias/rubies/examples/vie'
 
 # TODO: classes must be an array or we wont be able to add multiple classes to the atome ex:
@@ -559,10 +558,9 @@
 # #####################
 #
 
-
- # e.data.each do |dt|
- #   alert dt
- # end
+# e.data.each do |dt|
+#   alert dt
+# end
 # def insert_module(module_id)
 #   grab(:selected).data.each do |module_id_found|
 #     module_found = grab(module_id_found)
@@ -583,7 +581,6 @@
 #
 
 # require 'src/medias/rubies/examples/table'
-
 
 # new({ sanitizer: :color }) do |params|
 #   if  color.value
@@ -622,8 +619,30 @@
 #
 # end
 
+# new({particle: :touch , store: true })
+# new({sanitizer: :touch  }) do |params, bloc|
+#   # alert bloc
+#   # @touch='lkjl'
+#   # alert bloc
+#   # if params.instance_of? Hash
+#   #   sanitized_params=params
+#   # else
+#   sanitized_params={}
+#     sanitized_params[params]=bloc
+#     # sanitized_params=params
+#   # end
+#   # alert sanitized_params
+#   sanitized_params
+# end
+#
+# new({ post: :touch }) do |params, user_bloc|
+#   @touch = {} if @touch == nil
+#   @touch[params] = user_bloc
+#   # as store for touch is set to false we have to manually save the instance variable
+#   store_value(:touch)
+# end
 
-b=box()
+b = box()
 # alert b.color.value.class
 b.color(:blue)
 b.shadow({ blur: 33 })
@@ -634,4 +653,16 @@ b.color(:orange)
 b.color(:violet)
 # c=color(:green)
 # b.attached(c.id)
+# alert b.color
+b.touch(:up) do
+  color(:blue)
+end
+
+b.touch(:long) do
+  color(:yellow)
+end
+
+# alert :goodyob
+puts "=> #{b.touch}"
+
 # alert b.color
