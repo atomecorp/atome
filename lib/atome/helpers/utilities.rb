@@ -20,9 +20,11 @@ class Atome
     params
   end
 
-  def identity_generator
-    { date: Time.now, location: geolocation }
-  end
+  # def identity_generator
+  #   { date: Time.now, location: geolocation }
+  # end
+  #
+
 
   def history(property, value)
     "historize : #{property} #{value}"

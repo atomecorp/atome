@@ -641,7 +641,7 @@
 #   # as store for touch is set to false we have to manually save the instance variable
 #   store_value(:touch)
 # end
-
+######################### works below
 b = box()
 b.color(:red)
 b.color(:black)
@@ -649,9 +649,54 @@ b.color(:yellow)
 c=b.circle
 
 c.color(:blue)
+c.color(:pink)
 
 # alert b.attached
 b.detached("box_color")
+
+# require 'src/medias/rubies/examples/_table2'
+# require 'src/medias/rubies/examples/schedule'
+# require 'src/medias/rubies/examples/time'
+# require 'src/medias/rubies/examples/code'
+# require 'src/medias/rubies/examples/text'
+# require 'src/medias/rubies/examples/table'
+# require 'src/medias/rubies/examples/web'
+# require 'src/medias/rubies/examples/fullscreen'
+# require 'src/medias/rubies/examples/video'
+#  require 'src/medias/rubies/examples/touch'
+# require 'src/medias/rubies/examples/create_atome_in_atome'
+# require 'src/medias/rubies/examples/color'
+# require 'src/medias/rubies/examples/animation'
+# require 'src/medias/rubies/examples/drag'
+# require 'src/medias/rubies/examples/_dataset'
+# require 'src/medias/rubies/examples/bottom'
+# require 'src/medias/rubies/examples/attach'
+# require 'src/medias/rubies/examples/parents'
+# require 'src/medias/rubies/examples/markers'
+# require 'src/medias/rubies/examples/add'
+# require 'src/medias/rubies/examples/matrix'
+# require 'src/medias/rubies/examples/color'
+# require 'src/medias/rubies/examples/read'
+# require 'src/medias/rubies/examples/drag'
+# require 'src/medias/rubies/examples/clone'
+# require 'src/medias/rubies/examples/monitoring'
+# require 'src/medias/rubies/examples/delete'
+# require 'src/medias/rubies/examples/_audio'
+
+# frozen_string_literal: true
+
+############################# problems here ###########################################################################################################################################################################################################
+# b=box({color: :blue })
+# b.color(:red)
+# alert "col is : #{b.color.value}"
+# grab(b.color.value[:id]).delete(true)
+############################# problems here ###########################################################################################################################################################################################################
+
+
+
+#############################*********************######################################@
+
+
 
 # alert b.attached
 # alert c

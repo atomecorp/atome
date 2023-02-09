@@ -20,6 +20,11 @@ def new(params, &bloc)
   end
 end
 
+def identity_generator(type=:element)
+  "#{type}_#{Universe.counter}"
+  # { date: Time.now, location: geolocation }
+end
+
 def grab(atome_to_get)
   atome_to_get = atome_to_get.value if atome_to_get.instance_of? Atome
   Universe.atomes[atome_to_get]

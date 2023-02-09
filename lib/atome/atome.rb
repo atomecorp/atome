@@ -50,7 +50,9 @@ class Atome
 
   def atome_creation_pre_treatment(element, params, &user_proc)
     params = sanitize(element, params)
+    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     create_atome(element)
+    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     send("set_#{element}", params, &user_proc)
   end
 
@@ -116,10 +118,8 @@ class Atome
     store_code_bloc(element, &user_proc) if user_proc
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
-    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     run_optional_proc("pre_render_#{element}".to_sym, self, params, &user_proc)
     rendering(element,params, &user_proc) if render
-    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     run_optional_proc("post_render_#{element}".to_sym, self, params, &user_proc)
     broadcasting(element)
     store_value(element)  if store

@@ -2,6 +2,7 @@
 
 # universe method here
 class Universe
+  @counter=0
   @atomes = {}
   @classes = {}
   @atome_list = []
@@ -10,7 +11,7 @@ class Universe
   @options = {}
   @sanitizers = {}
   class << self
-    attr_reader :atomes, :renderer_list, :atome_list, :particle_list, :classes
+    attr_reader :atomes, :renderer_list, :atome_list, :particle_list, :classes, :counter
 
     def add_to_particle_list(particle = nil, type)
       instance_variable_get('@particle_list')[particle]=type
@@ -43,6 +44,7 @@ class Universe
     def add_to_atomes(id, atome)
       # instance_variable_get('@atomes').merge!(atome)
       @atomes[id] = atome
+      @counter=@counter+1
     end
 
     def update_atome_id(id, atome, prev_id)

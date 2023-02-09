@@ -17,7 +17,9 @@ class Batch
   end
 
   def initialize(params)
-    @id = params[:id] || "batch_#{Universe.atomes.length}"
+    # @id = params[:id] || "batch_#{Universe.atomes.length}"
+    @id = params[:id] || identity_generator(:batch)
+    Universe.add_to_atomes(@id, self)
     Universe.add_to_atomes(@id, self)
   end
 
