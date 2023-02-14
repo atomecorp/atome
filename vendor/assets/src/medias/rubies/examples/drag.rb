@@ -40,8 +40,8 @@ b.drag({ snap: { x: 100, y: 190 } })
 # b.drag({ constraint: :the_boxy })
 
 cc=circle(drag: true)
-bb=box
+bb=box({drag: true, color: :yellow})
 
 bb.parents(cc.id)
 
-alert"#{b.parents.class} :  #{b.parents}"
+# alert"#{b.parents.class} :  #{b.parents}"

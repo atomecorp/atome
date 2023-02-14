@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-bb = box({ id: :the_ref, width: 369 })
-bb.color(:red)
+bb = text({ id: :the_ref, width: 369, data: "touch me!" })
+bb.color(:orange)
 box({ id: :my_box, drag: true })
 c = circle({ id: :the_circle, left: 222, drag: { move: true, inertia: true, lock: :start } })
 c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,

@@ -60,6 +60,8 @@
 # # # TODO : add the facility to create any css property and attach it to an object using css id ex left: :toto
 # # # TODO : opacity to add
 # # # TODO : URGENT thes a confusion in the framework between variables and id if the name is the same
+# # # FIXME: touch is unreliable try touch demo some object are not affected
+
 # # # require 'src/medias/rubies/examples/_table2'
 # # # require 'src/medias/rubies/examples/schedule'
 # # # require 'src/medias/rubies/examples/time'
@@ -642,17 +644,17 @@
 #   store_value(:touch)
 # end
 ######################### works below
-b = box()
-b.color(:red)
-b.color(:black)
-b.color(:yellow)
-c=b.circle
-
-c.color(:blue)
-c.color(:pink)
-
-# alert b.attached
-b.detached("box_color")
+# b = box()
+# b.color(:red)
+# b.color(:black)
+# b.color(:yellow)
+# c=b.circle
+#
+# c.color(:blue)
+# c.color(:pink)
+#
+# # alert b.attached
+# b.detached("box_color")
 
 # require 'src/medias/rubies/examples/_table2'
 # require 'src/medias/rubies/examples/schedule'
@@ -663,14 +665,14 @@ b.detached("box_color")
 # require 'src/medias/rubies/examples/web'
 # require 'src/medias/rubies/examples/fullscreen'
 # require 'src/medias/rubies/examples/video'
-#  require 'src/medias/rubies/examples/touch'
+ require 'src/medias/rubies/examples/touch'
 # require 'src/medias/rubies/examples/create_atome_in_atome'
 # require 'src/medias/rubies/examples/color'
 # require 'src/medias/rubies/examples/animation'
 # require 'src/medias/rubies/examples/drag'
 # require 'src/medias/rubies/examples/_dataset'
 # require 'src/medias/rubies/examples/bottom'
-# require 'src/medias/rubies/examples/attach'
+# require 'src/medias/rubies/examples/attached'
 # require 'src/medias/rubies/examples/parents'
 # require 'src/medias/rubies/examples/markers'
 # require 'src/medias/rubies/examples/add'
@@ -723,3 +725,18 @@ b.detached("box_color")
 # puts "=> #{b.touch}"
 #
 # # alert b.color
+
+# t=text({ data: "hello guys!!", color: :orange })
+# # t=text({ data: :hello_you_all, id: :the_text})
+# wait 1 do
+#   t.color(:red)
+#   wait 1 do
+#     t.color(:green)
+#     wait 1 do
+#       t.color(:yellow)
+#     end
+#   end
+# end
+
+# frozen_string_literal: true
+

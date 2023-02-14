@@ -6,6 +6,7 @@ class Atome
 
   def collapse
     @atome.each do |element, value|
+      # puts "=============> #{element}"
       send(element, value) unless element == :type
     end
   end
@@ -19,11 +20,6 @@ class Atome
     params = instance_exec(params,user_proc, &bloc_found) if bloc_found.is_a?(Proc)
     params
   end
-
-  # def identity_generator
-  #   { date: Time.now, location: geolocation }
-  # end
-  #
 
 
   def history(property, value)
@@ -130,9 +126,6 @@ class Atome
     self.value.each_with_index do |val, index|
       yield(val, index)
     end
-    # value.each do |val|
-    #   instance_exec(val, &proc) if proc.is_a?(Proc)
-    # end
   end
 
   def [](range)
