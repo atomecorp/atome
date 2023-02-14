@@ -103,7 +103,8 @@ class Atome
   def collector(params = {}, &bloc)
     atome_type = :collector
     generated_render = params[:renderers] || []
-    generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
+    generated_id = params[:id] || identity_generator(atome_type)
+
     generated_parents = params[:parents] || [id.value]
     generated_children = params[:children] || []
     params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)

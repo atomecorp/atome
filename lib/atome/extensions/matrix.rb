@@ -242,7 +242,6 @@ module Matrix
     default_renderer = Essentials.default_params[:render_engines]
     atome_type = :matrix
     generated_render = params[:renderers] || default_renderer
-    # generated_id = params[:id] || "#{atome_type}_#{Universe.atomes.length}"
     generated_id = params[:id] || identity_generator(:matrix)
 
     generated_parents = params[:parents] || [id.value]

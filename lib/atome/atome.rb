@@ -58,7 +58,8 @@ class Atome
   def atome_initializer(element, params = {})
     temp_default = Essentials.default_params[element] || {}
     generated_render = params[:renderers] || []
-    generated_id = params[:id] || "#{element}_#{Universe.atomes.length}"
+    generated_id = params[:id] || identity_generator(:element)
+
     generated_parents = params[:parents] || [id.value]
     generated_children = params[:children] || []
     temp_default[:id] = generated_id
