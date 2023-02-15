@@ -3,14 +3,16 @@
 new({ atome: :color })
 
 new({ sanitizer: :color }) do |params|
-  # we delete any previous color if there's one
-  if color.value
-    attached.value.delete(color.value)
-    grab(color.value)&.delete(true) # we had the condition because the color may exist but 
-    # so it is not sanitized so it has no id
-  end
   parent_found = found_parents_and_renderers[:parent]
   parent_found = [:black_matter] if parent_found == [:view]
+
+  # we delete any previous color if there's one
+  if color.value && @atome[:id] != :view
+    detached(color.value)
+    grab(color.value).delete(true) if  grab(color.value)# we had the condition because the color may exist but
+    # so it is not sanitized so it has no id
+  end
+
   render_found = found_parents_and_renderers[:renderers]
   generated_id = params[:id] || identity_generator(:color)
 

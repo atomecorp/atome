@@ -675,7 +675,7 @@
 # require 'src/medias/rubies/examples/attached'
 # require 'src/medias/rubies/examples/parents'
 # require 'src/medias/rubies/examples/markers'
-require 'src/medias/rubies/examples/add'
+# require 'src/medias/rubies/examples/add'
 # require 'src/medias/rubies/examples/matrix'
 # require 'src/medias/rubies/examples/color'
 # require 'src/medias/rubies/examples/read'
@@ -721,7 +721,7 @@ require 'src/medias/rubies/examples/add'
 # puts "=> #{b.touch}"
 #
 # # alert b.color
-
+# b=box({id: :toto})
 # t=text({ data: "hello guys!!", color: :orange })
 # # t=text({ data: :hello_you_all, id: :the_text})
 # wait 1 do
@@ -730,11 +730,21 @@ require 'src/medias/rubies/examples/add'
 #     t.color(:green)
 #     wait 1 do
 #       t.color(:yellow)
+#
+#
 #     end
 #   end
 # end
-
-# frozen_string_literal: true
-
-#################
-# frozen_string_literal: true
+#
+# # frozen_string_literal: true
+#
+# #################
+# # frozen_string_literal: true
+#
+#
+# color({id: :toto, red: 1})
+#
+# b=box
+# color({id: :tii, red: 1})
+#
+# alert grab(:toto)
