@@ -4,12 +4,12 @@ new({ atome: :color })
 
 new({ sanitizer: :color }) do |params|
   parent_found = found_parents_and_renderers[:parent]
-  parent_found = [:black_matter] if parent_found == [:view]
-
-  # we delete any previous color if there's one
-  if color.value && @atome[:id] != :view
+  if parent_found == [:view]
+    parent_found = [:black_matter] if parent_found == [:view]
+  elsif color.value
+    # we delete any previous color if there's one
     detached(color.value)
-    grab(color.value).delete(true) if  grab(color.value)# we had the condition because the color may exist but
+    grab(color.value)&.delete(true)# we had the condition because the color may exist but
     # so it is not sanitized so it has no id
   end
 
@@ -54,14 +54,24 @@ new({ sanitizer: :video }) do |params|
 end
 new({ atome: :shadow })
 new({ sanitizer: :shadow }) do |params|
-  # we delete any previous shadow if there's one
-  if shadow.value
-    attached.value.delete(shadow.value)
-    grab(shadow.value)&.delete(true) # we had the condition because the color may exist but 
+
+  parent_found = found_parents_and_renderers[:parent]
+  if parent_found == [:view]
+    parent_found = [:black_matter] if parent_found == [:view]
+  elsif shadow.value
+    # we delete any previous color if there's one
+    detached(shadow.value)
+    grab(shadow.value)&.delete(true)# we had the condition because the shadow may exist but
     # so it is not sanitized so it has no id
   end
-  parent_found = found_parents_and_renderers[:parent]
-  parent_found = [:user_view] if parent_found == [:view]
+  ## we delete any previous shadow if there's one
+  # if shadow.value
+  #   attached.value.delete(shadow.value)
+  #   grab(shadow.value)&.delete(true) # we had the condition because the color may exist but 
+  #   # so it is not sanitized so it has no id
+  # end
+  # parent_found = found_parents_and_renderers[:parent]
+  # parent_found = [:user_view] if parent_found == [:view]
   render_found = found_parents_and_renderers[:renderers]
   generated_id = params[:id] || identity_generator(:shadow)
 

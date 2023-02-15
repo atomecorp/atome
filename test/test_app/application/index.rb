@@ -721,20 +721,20 @@
 # puts "=> #{b.touch}"
 #
 # # alert b.color
-# b=box({id: :toto})
-# t=text({ data: "hello guys!!", color: :orange })
-# # t=text({ data: :hello_you_all, id: :the_text})
-# wait 1 do
-#   t.color(:red)
-#   wait 1 do
-#     t.color(:green)
-#     wait 1 do
-#       t.color(:yellow)
-#
-#
-#     end
-#   end
-# end
+b=box({id: :toto})
+t=text({ data: "hello guys!!", color: :orange })
+# t=text({ data: :hello_you_all, id: :the_text})
+wait 1 do
+  t.color(:red)
+  wait 1 do
+    t.color(:green)
+    wait 1 do
+      t.color(:yellow)
+
+
+    end
+  end
+end
 #
 # # frozen_string_literal: true
 #
@@ -742,9 +742,8 @@
 # # frozen_string_literal: true
 #
 #
-# color({id: :toto, red: 1})
-#
-# b=box
-# color({id: :tii, red: 1})
-#
+color({id: :toto, red: 1})
+
+b=box
+color({id: :tii, red: 1})
 # alert grab(:toto)

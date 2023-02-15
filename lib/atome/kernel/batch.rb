@@ -28,7 +28,7 @@ class Batch
     end
   end
 
-  # TODO:  automatise collector methods creation when creato,g a new atome type
+  # TODO:  automatise collector methods creation when creating a new atome type
   def color(args, &block)
 
     dispatch(:color, args, &block)
