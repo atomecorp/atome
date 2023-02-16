@@ -124,10 +124,9 @@ end
 
 def browser_case(location)
   # `cd #{location}/src;open index.html`
-  guard_check
+  # `echo jello`
+  # guard_check
 end
-
-#
 
 def osx_case(location)
   `cd #{location};cargo tauri dev`

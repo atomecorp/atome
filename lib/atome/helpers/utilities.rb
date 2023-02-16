@@ -6,7 +6,6 @@ class Atome
 
   def collapse
     @atome.each do |element, value|
-      # puts "=============> #{element}"
       send(element, value) unless element == :type
     end
   end
@@ -89,9 +88,14 @@ class Atome
     @atome[particle] << value
   end
 
+  def add_to_atome(atome_found, particle_found, &user_proc)
+    puts "we add : #{particle_found} to #{send(atome_found)} "
+    send(atome_found,particle_found,:adder, &user_proc)
+  end
+
   def add(particles, &user_proc)
     particles.each do |particle, value|
-      particle_type = Universe.particle_list[particle]
+      particle_type = Universe.particle_list[particle] || 'atome'
       send("add_to_#{particle_type}", particle, value, &user_proc)
     end
   end

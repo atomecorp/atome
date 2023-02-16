@@ -31,6 +31,12 @@ class Atome
   def build_atome(atome_name, &atome_proc)
     # we add the new method to the atome's collection of methods
     Universe.add_to_atome_list(atome_name)
+    unless Essentials.default_params[atome_name]
+      # if it doesn't exist
+      # we create default params for the new created atome, adding the hash to : module essential ,  @default_params
+      Essentials.new_default_params(atome_name => { type: atome_name, children: [], parents: [:view] })
+    end
+
     # the line below create an empty atome method for each renderer, eg: browser_left, headless_left, ...
     auto_render_generator(atome_name)
     new_atome(atome_name, &atome_proc)

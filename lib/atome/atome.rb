@@ -3,26 +3,42 @@
 # TODO : remove monitoring
 # TODO : remove child
 # TODO : remove parents
-
+# new({ particle: :type })
+# create_particle(:type, true, true)
 # main entry here
 class Atome
   # TODO : clean or delete @private_atome
   include Essentials
+
   private
 
   def initialize(atomes = {}, &atomes_proc)
+    # puts "atome are #{atomes}"
     atomes.each_value do |elements|
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
       # now we store the proc in a an atome's property called :bloc
       elements[:code] = atomes_proc if atomes_proc
       @atome = elements
-      # we initiate the rendering, eg for for browser we will call :browser_type generate method in identity.rb file
-      create_particle(:type, true, true)
-      # set type is a particle method it's dynamically generated at : generator/identity.rb
-      set_type(@atome[:type])
+      # we initiate the rendering suing set_type method,
+      # eg for for browser we will call :browser_type generate method in identity.rb file
+      set_type(@atome[:type], &atomes_proc)
       collapse
+
     end
+  end
+
+  def set_type(params, &atomes_proc)
+    # @atome[params]
+    # puts "params is : #{@atome[:children]}"
+    # @atome[:children]={shapes: [params]}
+    # @atome[:shape]=:poil
+    # puts "type is : #{@atome[params].class}"
+    # unless @atome[params]
+    #   @atome[params] = []
+    # end
+    # @atome[params] << params
+    rendering(:type, params, &atomes_proc)
   end
 
   def new_particle(element, store, render, &method_proc)
@@ -30,7 +46,7 @@ class Atome
       if params || params == false
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        params = sanitize(element, params,&user_proc)
+        params = sanitize(element, params, &user_proc)
         create_particle(element, store, render)
         send("set_#{element}", params, &user_proc)
       else
@@ -55,20 +71,20 @@ class Atome
     send("set_#{element}", params, &user_proc)
   end
 
-  def atome_initializer(element, params = {})
-    temp_default = Essentials.default_params[element] || {}
-    generated_render = params[:renderers] || []
-    generated_id = params[:id] || identity_generator(:element)
-
-    generated_parents = params[:parents] || [id.value]
-    generated_children = params[:children] || []
-    temp_default[:id] = generated_id
-    temp_default[:parents] = generated_parents
-    temp_default[:clones] = []
-    temp_default[:renderers] = generated_render
-    temp_default[:children] = generated_children
-    temp_default.merge(params)
-  end
+  # def atome_initializer(element, params = {})
+  #   temp_default = Essentials.default_params[element] || {}
+  #   generated_render = params[:renderers] || []
+  #   generated_id = params[:id] || identity_generator(:element)
+  #   alert "generated_parents: #{id.value}"
+  #   generated_parents = params[:parents] || [id.value]
+  #   generated_children = params[:children] || []
+  #   temp_default[:id] = generated_id
+  #   temp_default[:parents] = generated_parents
+  #   temp_default[:clones] = []
+  #   temp_default[:renderers] = generated_render
+  #   temp_default[:children] = generated_children
+  #   temp_default.merge(params)
+  # end
 
   def new_atome(element, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
@@ -119,10 +135,10 @@ class Atome
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
     run_optional_proc("pre_render_#{element}".to_sym, self, params, &user_proc)
-    rendering(element,params, &user_proc) if render
+    rendering(element, params, &user_proc) if render
     run_optional_proc("post_render_#{element}".to_sym, self, params, &user_proc)
     broadcasting(element)
-    store_value(element)  if store
+    store_value(element) if store
     self
   end
 

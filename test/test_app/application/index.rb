@@ -721,29 +721,70 @@
 # puts "=> #{b.touch}"
 #
 # # alert b.color
-b=box({id: :toto})
+# b=box({id: :toto})
+# #################################################@ jen suis la
 t=text({ data: "hello guys!!", color: :orange })
 # t=text({ data: :hello_you_all, id: :the_text})
-wait 1 do
+wait 0.5 do
   t.color(:red)
-  wait 1 do
+  wait 0.5 do
     t.color(:green)
-    wait 1 do
+    wait 0.5 do
       t.color(:yellow)
 
 
     end
   end
 end
+
+
+def add_to_atome(atome_type, particles_found, &user_proc)
+  # alert particles_found
+  send(atome_type,particles_found)
+  # we update  the holder of any new particle if user pass a bloc
+  # store_code_bloc(particle, &user_proc) if user_proc
+  # values.each do |value_id, value|
+  #   @atome[particle][value_id] = value
+  # end
+end
+
+
+
+
+wait 2 do
+  t.add({color: :blue})
+  # alert t
+end
+
+###############
+b=circle
+c=b.box({left: 100, id: :a1})
+b.box({left: 200, id: :a12})
+b.box({left: 300, id: :a14})
+b.color(:red)
+
+# puts "b shape is : #{b.shape}"
+# puts "b color is : #{b.color}"
+# puts "b is : #{b}"
+# puts "c is : #{c}"
+# solution for attached, children or box => list box childen , color: list color children
+
 #
 # # frozen_string_literal: true
 #
 # #################
 # # frozen_string_literal: true
 #
-#
-color({id: :toto, red: 1})
 
-b=box
-color({id: :tii, red: 1})
+############# last important test
+# color({id: :toto, red: 1})
+#
+# b=box
+# color({id: :tii, red: 1})
 # alert grab(:toto)
+# alert grab(:view)
+
+# image('boat.png')
+image({ id: :logo, height: 39,  path: './medias/images/logos/atome.svg',  width: '9%',top: 19, left: 19 })
+
+

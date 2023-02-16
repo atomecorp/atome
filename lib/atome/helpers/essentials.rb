@@ -4,27 +4,27 @@
 module Essentials
   @default_params = {
     render_engines: [:browser],
-    collector: { type: :element, renderers: [], children: [] },
-    animation: { type: :animation, children: [] },
-    element: { type: :element, renderers: [], children: [] },
-    matrix: { renderers: [], id: '', type: :shape, parents: [], width: 99, height: 99,
+    collector: { type: :element, renderers: [], children: [], parents: [:black_matter] },
+    animation: { type: :animation, children: [] , parents: [:black_matter]},
+    element: { type: :element, renderers: [], children: [] , parents: [:black_matter]},
+    matrix: { renderers: [], id: '', type: :shape, width: 99, height: 99,
               attached: [:matrix_color], children: [],
-              left: 100, top: 100, clones: [], preset: :matrix },
-    box: { renderers: [], id: '', type: :shape, parents: [], width: 99, height: 99,
-           attached: [:box_color], children: [],
+              left: 100, top: 100, clones: [], preset: :matrix, parents: [:view] },
+    box: { renderers: [], id: '', type: :shape,  width: 99, height: 99,
+           attached: [:box_color], children: [], parents: [:view],
            left: 100, top: 100, clones: [], preset: :box },
-    circle: { renderers: [], id: '', type: :shape, parents: [], width: 99, height: 99, smooth: '100%',
-              attached: [:circle_color], children: [],
+    circle: { renderers: [], id: '', type: :shape,  width: 99, height: 99, smooth: '100%',
+              attached: [:circle_color], children: [], parents: [:view],
               left: 100, top: 100, clones: [], preset: :circle },
-    shape: { renderers: [], id: '', type: :shape, parents: [], width: 99, height: 99,
-             attached: [:shape_color], children: [],
+    shape: { renderers: [], id: '', type: :shape,  width: 99, height: 99,
+             attached: [:shape_color], children: [], parents: [:view],
              left: 100, top: 100, clones: [] },
-    text: { renderers: [], id: '', type: :text, parents: [:view], visual: { size: 25 },
-            attached: [:text_color], children: [],
+    text: { renderers: [], id: '', type: :text, visual: { size: 25 },
+            attached: [:text_color], children: [], parents: [:view],
             data: 'this is a text sample', width: 199, height: 33, clones: [] },
-    drm: { type: :drm },
-    shadow: {},
-    color: {}
+    drm: { type: :drm,parents: [:black_matter] },
+    shadow: {parents: [:black_matter]},
+    color: {parents: [:black_matter]}
   }
 
   def self.default_params
@@ -32,6 +32,7 @@ module Essentials
   end
 
   def self.new_default_params(new_default)
+    # puts "=====+====> #{new_default}, #{new_default.class}"
     @default_params.merge!(new_default)
   end
 

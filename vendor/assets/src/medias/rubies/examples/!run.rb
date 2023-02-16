@@ -8,7 +8,7 @@ top touch video wait web width]
     wait 1 * index do
       puts toto
       read("examples/#{toto}.rb", :ruby)
-      `console.clear()`
+      # `console.clear()`
     end
   end
 end

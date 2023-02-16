@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
 task :build do
-  `atome build;open src/index.html`
+  `atome build;`
 end
+
+

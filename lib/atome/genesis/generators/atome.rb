@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-new({ atome: :color })
+new({ atome: :color, type: :hash })
 
 new({ sanitizer: :color }) do |params|
   parent_found = found_parents_and_renderers[:parent]
-  if parent_found == [:view]
-    parent_found = [:black_matter] if parent_found == [:view]
+  if parent_found == [:black_matter]
+
   elsif color.value
     # we delete any previous color if there's one
     detached(color.value)
-    grab(color.value)&.delete(true)# we had the condition because the color may exist but
+    grab(color.value)&.delete(true) # we had the condition because the color may exist but
     # so it is not sanitized so it has no id
   end
 
@@ -61,7 +61,7 @@ new({ sanitizer: :shadow }) do |params|
   elsif shadow.value
     # we delete any previous color if there's one
     detached(shadow.value)
-    grab(shadow.value)&.delete(true)# we had the condition because the shadow may exist but
+    grab(shadow.value)&.delete(true) # we had the condition because the shadow may exist but
     # so it is not sanitized so it has no id
   end
   ## we delete any previous shadow if there's one
@@ -123,7 +123,7 @@ new({ sanitizer: :animation }) do |params|
   params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
   params
 end
-new({ atome: :text })
+new({ atome: :text, type: :hash })
 new({ sanitizer: :text }) do |params|
   params = { data: params } unless params.instance_of? Hash
   default_renderer = Essentials.default_params[:render_engines]
