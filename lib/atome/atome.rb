@@ -13,7 +13,7 @@ class Atome
   private
 
   def initialize(atomes = {}, &atomes_proc)
-    # puts "atome are #{atomes}"
+    # puts "=> initialising new atome : #{atomes}"
     atomes.each_value do |elements|
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
@@ -22,9 +22,8 @@ class Atome
       @atome = elements
       # we initiate the rendering suing set_type method,
       # eg for for browser we will call :browser_type generate method in identity.rb file
-      set_type(@atome[:type], &atomes_proc)
+      # set_type(@atome[:type], &atomes_proc)
       collapse
-
     end
   end
 
@@ -66,27 +65,14 @@ class Atome
   def atome_creation_pre_treatment(element, params, &user_proc)
     params = sanitize(element, params)
     run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
-    create_atome(element)
+    # create_atome(element)
     run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     send("set_#{element}", params, &user_proc)
+
   end
 
-  # def atome_initializer(element, params = {})
-  #   temp_default = Essentials.default_params[element] || {}
-  #   generated_render = params[:renderers] || []
-  #   generated_id = params[:id] || identity_generator(:element)
-  #   alert "generated_parents: #{id.value}"
-  #   generated_parents = params[:parents] || [id.value]
-  #   generated_children = params[:children] || []
-  #   temp_default[:id] = generated_id
-  #   temp_default[:parents] = generated_parents
-  #   temp_default[:clones] = []
-  #   temp_default[:renderers] = generated_render
-  #   temp_default[:children] = generated_children
-  #   temp_default.merge(params)
-  # end
-
   def new_atome(element, &method_proc)
+    # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
 
       if params
@@ -95,6 +81,18 @@ class Atome
       else
         get_atome(element, &user_proc)
       end
+    end
+
+    # the method define below is the fastest params are passed directly
+    Atome.define_method "set_#{element}" do |params, &user_proc|
+      # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
+      # to the shape particles list : @atome[:shape] << params[:id]
+      # puts "the problem is below, self: #{id},\n #{new_atome},\nwe need to be sto store new atome's id : #{params}"
+      puts "=> we now create anew atome\nthe problem is below : #{element[:color]}"
+      # @atome[:color] ||= []
+      # @atome[:color] << params[:id]
+      # self.send(new_atome, params, &user_proc)
+      Atome.new({ element => params }, &user_proc)
     end
     # the method below generate Atome method creation at Object level
     create_method_at_object_level(element)
@@ -172,11 +170,19 @@ class Atome
     virtual_atome
   end
 
-  def create_atome(new_atome)
-    Atome.define_method "set_#{new_atome}" do |params, &user_proc|
-      Atome.new({ new_atome => params }, &user_proc)
-    end
-  end
+  # def create_atome(new_atome)
+  #   puts "=> new_atome is : #{new_atome}"
+  #   Atome.define_method "set_#{new_atome}" do |params, &user_proc|
+  #     # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
+  #     # to the shape particles list : @atome[:shape] << params[:id]
+  #     # puts "the problem is below, self: #{id},\n #{new_atome},\nwe need to be sto store new atome's id : #{params}"
+  #     puts "we now create anew atome\nthe problem is below : #{atome[:color]}"
+  #     # @atome[:color] ||= []
+  #     # @atome[:color] << params[:id]
+  #     # self.send(new_atome, params, &user_proc)
+  #     Atome.new({ new_atome => params }, &user_proc)
+  #   end
+  # end
 
   Universe.connected
 end

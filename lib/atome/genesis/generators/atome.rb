@@ -3,6 +3,7 @@
 new({ atome: :color, type: :hash })
 
 new({ sanitizer: :color }) do |params|
+
   parent_found = found_parents_and_renderers[:parent]
   if parent_found == [:black_matter]
 
@@ -21,8 +22,10 @@ new({ sanitizer: :color }) do |params|
                      red: 0, green: 0, blue: 0, alpha: 1 }
   params = create_color_hash(params) unless params.instance_of? Hash
   new_params = default_params.merge!(params)
-  atome[:color] = new_params[:id]
+  # atome[:color] = new_params[:id]
+  # puts  "new color params are : #{new_params}"
   new_params
+  # 654
 end
 
 new({ atome: :image })

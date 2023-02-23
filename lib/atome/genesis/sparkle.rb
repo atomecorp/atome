@@ -62,6 +62,7 @@ Atome.new(
 )
 
 Atome.new(
+
   { color: { renderers: default_render, id: :matrix_color, type: :color,
              left: 0, top: 0, red: 0.7, green: 0.7, blue: 0.7, alpha: 1, diffusion: :linear } }
 )

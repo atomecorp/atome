@@ -5,8 +5,10 @@ class Atome
   private
 
   def collapse
+    # temp_atome = @atome.clone
+    # temp_atome.delete(:type)
     @atome.each do |element, value|
-      send(element, value) unless element == :type
+      send(element, value)
     end
   end
 
@@ -14,22 +16,21 @@ class Atome
     true
   end
 
-  def sanitize(element, params,&user_proc)
+  def sanitize(element, params, &user_proc)
     bloc_found = Universe.get_sanitizer_method(element)
-    params = instance_exec(params,user_proc, &bloc_found) if bloc_found.is_a?(Proc)
+    params = instance_exec(params, user_proc, &bloc_found) if bloc_found.is_a?(Proc)
     params
   end
-
 
   def history(property, value)
     "historize : #{property} #{value}"
   end
 
   def broadcasting(element)
-    params=instance_variable_get("@#{element}")
+    params = instance_variable_get("@#{element}")
     @broadcast.each_value do |particle_monitored|
       if particle_monitored[:particles].include?(element)
-        code_found=particle_monitored[:code]
+        code_found = particle_monitored[:code]
         instance_exec(self, element, params, &code_found) if code_found.is_a?(Proc)
       end
     end
@@ -37,14 +38,14 @@ class Atome
 
   public
 
-  def monitor(params=nil, &proc_monitoring)
+  def monitor(params = nil, &proc_monitoring)
     if params
-      monitoring=atome[:monitor] ||= {}
+      monitoring = atome[:monitor] ||= {}
       params[:atomes].each do |atome_id|
         target_broadcaster = grab(atome_id).instance_variable_get('@broadcast')
         monitor_id = params[:id] || "monitor#{target_broadcaster.length}"
-        monitoring[monitor_id]=params.merge({code: proc_monitoring})
-        target_broadcaster[monitor_id] = { particles: params[:particles], code:  proc_monitoring }
+        monitoring[monitor_id] = params.merge({ code: proc_monitoring })
+        target_broadcaster[monitor_id] = { particles: params[:particles], code: proc_monitoring }
       end
     else
       atome[:monitor]
@@ -58,7 +59,6 @@ class Atome
 
     instance_variable_set("@#{element}_code", user_proc)
   end
-
 
   def particles(particles_found = nil)
     if particles_found
@@ -90,7 +90,7 @@ class Atome
 
   def add_to_atome(atome_found, particle_found, &user_proc)
     puts "we add : #{particle_found} to #{send(atome_found)} "
-    send(atome_found,particle_found,:adder, &user_proc)
+    send(atome_found, particle_found, :adder, &user_proc)
   end
 
   def add(particles, &user_proc)
@@ -125,8 +125,6 @@ class Atome
     self.value.include?(value)
   end
 
-
-
   def each_with_index(*args)
     self.value.each_with_index do |val, index|
       yield(val, index)
@@ -148,6 +146,7 @@ class Atome
     end
 
   end
+
   def []=(params, value)
     # TODO : it may miss some code, see above
     self.value[params] = value

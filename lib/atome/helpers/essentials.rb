@@ -16,7 +16,7 @@ module Essentials
     circle: { renderers: [], id: '', type: :shape,  width: 99, height: 99, smooth: '100%',
               attached: [:circle_color], children: [], parents: [:view],
               left: 100, top: 100, clones: [], preset: :circle },
-    shape: { renderers: [], id: '', type: :shape,  width: 99, height: 99,
+    shape: { renderers: [], id: '', type: :shape,  width: 99, height: 99,poil: :poilu,
              attached: [:shape_color], children: [], parents: [:view],
              left: 100, top: 100, clones: [] },
     text: { renderers: [], id: '', type: :text, visual: { size: 25 },
@@ -32,7 +32,6 @@ module Essentials
   end
 
   def self.new_default_params(new_default)
-    # puts "=====+====> #{new_default}, #{new_default.class}"
     @default_params.merge!(new_default)
   end
 

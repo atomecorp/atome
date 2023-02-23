@@ -26,9 +26,7 @@ new ({ sanitizer: :children }) do |params|
     sanitized_params << child_id
     child_found = grab(child_id)
     parents_found = @atome[:id]
-    # FIXME : broadcast may malfunction because of the commented line below,
-    # FIXME suite : if uncomment object hierarchy is broken (cf Vie Project)
-    # FIXME : parent child problem may be caused by th eline below
+    # FIXME : parent child problem may be caused by the line below
     child_found.family(parents_found)
     child_found.atome[:parents] = [parents_found]
   end

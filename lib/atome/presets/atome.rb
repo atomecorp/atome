@@ -24,9 +24,9 @@ class Atome
     generated_id = params[:id] || identity_generator(:box)
     generated_parents = params[:parents] || [id.value]
     generated_children = params[:children] || []
-
     params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
-
+    # @atome[:shape] ||= []
+    # @atome[:shape] << params[:id]
     Atome.new({ atome_type => params }, &bloc)
   end
 
