@@ -28,27 +28,13 @@ class Atome
     additional_particle_methods(particle_name, store, render, &particle_proc)
   end
 
-  # def create_atome(new_atome)
-  #   puts "=> new_atome is : #{new_atome}"
-  #   Atome.define_method "set_#{new_atome}" do |params, &user_proc|
-  #     # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
-  #     # to the shape particles list : @atome[:shape] << params[:id]
-  #     # puts "the problem is below, self: #{id},\n #{new_atome},\nwe need to be sto store new atome's id : #{params}"
-  #     puts "we now create anew atome\nthe problem is below : #{atome[:color]}"
-  #     # @atome[:color] ||= []
-  #     # @atome[:color] << params[:id]
-  #     # self.send(new_atome, params, &user_proc)
-  #     Atome.new({ new_atome => params }, &user_proc)
-  #   end
-  # end
-
   def build_atome(atome_name, &atome_proc)
     # we add the new method to the atome's collection of methods
     Universe.add_to_atome_list(atome_name)
     unless Essentials.default_params[atome_name]
       # if it doesn't exist
       # we create default params for the new created atome, adding the hash to : module essential, @default_params
-      Essentials.new_default_params(atome_name => { type: atome_name, children: [], parents: [:view] })
+      Essentials.new_default_params(atome_name => { type: atome_name, parents: [:view] })
     end
 
     # the line below create an empty atome method for each renderer, eg: browser_shape, headless_color, ...

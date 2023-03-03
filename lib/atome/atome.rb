@@ -3,8 +3,7 @@
 # TODO : remove monitoring
 # TODO : remove child
 # TODO : remove parents
-# new({ particle: :type })
-# create_particle(:type, true, true)
+
 # main entry here
 class Atome
   # TODO : clean or delete @private_atome
@@ -13,7 +12,7 @@ class Atome
   private
 
   def initialize(atomes = {}, &atomes_proc)
-    # puts "=> initialising new atome : #{atomes}"
+
     atomes.each_value do |elements|
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
@@ -22,22 +21,8 @@ class Atome
       @atome = elements
       # we initiate the rendering suing set_type method,
       # eg for for browser we will call :browser_type generate method in identity.rb file
-      # set_type(@atome[:type], &atomes_proc)
       collapse
     end
-  end
-
-  def set_type(params, &atomes_proc)
-    # @atome[params]
-    # puts "params is : #{@atome[:children]}"
-    # @atome[:children]={shapes: [params]}
-    # @atome[:shape]=:poil
-    # puts "type is : #{@atome[params].class}"
-    # unless @atome[params]
-    #   @atome[params] = []
-    # end
-    # @atome[params] << params
-    rendering(:type, params, &atomes_proc)
   end
 
   def new_particle(element, store, render, &method_proc)
@@ -62,22 +47,20 @@ class Atome
     end
   end
 
-  def atome_creation_pre_treatment(element, params, &user_proc)
+  def atome_parsing(element, params, &user_proc)
     params = sanitize(element, params)
-    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
-    # create_atome(element)
-    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
-    send("set_#{element}", params, &user_proc)
 
+    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
+    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
+    send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
   end
 
   def new_atome(element, &method_proc)
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
-
       if params
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        atome_creation_pre_treatment(element, params, &user_proc)
+        atome_parsing(element, params, &user_proc)
       else
         get_atome(element, &user_proc)
       end
@@ -87,15 +70,14 @@ class Atome
     Atome.define_method "set_#{element}" do |params, &user_proc|
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]
-      # puts "the problem is below, self: #{id},\n #{new_atome},\nwe need to be sto store new atome's id : #{params}"
-      puts "=> we now create anew atome\nthe problem is below : #{element[:color]}"
-      # @atome[:color] ||= []
-      # @atome[:color] << params[:id]
-      # self.send(new_atome, params, &user_proc)
-      Atome.new({ element => params }, &user_proc)
+      new_atome = Atome.new({ element => params }, &user_proc)
+      # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
+      # c must return the circle not the parent box
+      new_atome
     end
     # the method below generate Atome method creation at Object level
     create_method_at_object_level(element)
+
   end
 
   def new_render_engine(renderer_name, &method_proc)
@@ -156,8 +138,6 @@ class Atome
     virtual_atome.real_atome = @atome
     virtual_atome.property = element
     virtual_atome.user_proc = user_proc
-    # run_optional_proc("pre_get_#{@atome[:type]}".to_sym, 'virtual_atome', &user_proc)
-    # run_optional_proc("pre_get_#{element}".to_sym, self, 'virtual_atome', &user_proc)
     virtual_atome
   end
 
@@ -169,20 +149,6 @@ class Atome
     virtual_atome.value = @atome[element]
     virtual_atome
   end
-
-  # def create_atome(new_atome)
-  #   puts "=> new_atome is : #{new_atome}"
-  #   Atome.define_method "set_#{new_atome}" do |params, &user_proc|
-  #     # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
-  #     # to the shape particles list : @atome[:shape] << params[:id]
-  #     # puts "the problem is below, self: #{id},\n #{new_atome},\nwe need to be sto store new atome's id : #{params}"
-  #     puts "we now create anew atome\nthe problem is below : #{atome[:color]}"
-  #     # @atome[:color] ||= []
-  #     # @atome[:color] << params[:id]
-  #     # self.send(new_atome, params, &user_proc)
-  #     Atome.new({ new_atome => params }, &user_proc)
-  #   end
-  # end
 
   Universe.connected
 end

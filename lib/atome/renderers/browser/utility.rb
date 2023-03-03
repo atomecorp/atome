@@ -8,10 +8,11 @@ generator.build_render(:browser_delete) do |params|
 end
 
 generator.build_render(:browser_clear) do
-  @atome[:children].each do |child_found|
-    grab(child_found).browser_object&.remove
-  end
-  children([])
+  alert "rewrite code below"
+  # @atome[:children].each do |child_found|
+  #   grab(child_found).browser_object&.remove
+  # end
+  # children([])
 end
 
 generator.build_render(:browser_path) do |value|

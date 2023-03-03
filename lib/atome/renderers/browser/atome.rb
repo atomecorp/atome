@@ -30,7 +30,7 @@ generator.build_render(:browser_color) do |_value|
   BrowserHelper.browser_document.head << Browser.DOM("<style atome='#{type_found}'
   id='#{id_found}'>.#{id_found}{background-color: rgba(#{red_found * 255},
   #{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
-  # TODO/ use the code below to modify the style tag
+  # # TODO/ use the code below to modify the style tag
   @browser_object = BrowserHelper.browser_document[id_found]
 end
 

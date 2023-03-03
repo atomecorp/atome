@@ -2,7 +2,10 @@
 # # #
 # # # # # # Done : when sanitizing property must respect the order else no browser
 # # # # object will be created, try to make it more flexible allowing any order
-# # # # TODO int8! : language
+# # # # TODO : history
+# # # # TODO : local and distant storage
+# # # # TODO : user account
+# # # # TODO : int8! : language
 # # # # TODO : add a global sanitizer
 # # # # TODO : look why get_particle(:children) return an atome not the value
 # # # # Done : create color JS for Opal?
@@ -730,15 +733,15 @@
 #
 #
 # ######## start tests #######
-box
-wait 1 do
-  c=circle({id: :titi, color: :yellow })
-  ## c=circle({id: :titi })
-  # c.box({left: 100, id: :a1})
-  # c.box({left: 200, id: :a12})
-  # c.box({left: 300, id: :a14})
-  # c.color(:red)
-end
+# box
+# wait 1 do
+#   c=circle({id: :titi, color: :yellow })
+#   ## c=circle({id: :titi })
+#   # c.box({left: 100, id: :a1})
+#   # c.box({left: 200, id: :a12})
+#   # c.box({left: 300, id: :a14})
+#   # c.color(:red)
+# end
 #
 #
 #
@@ -773,7 +776,7 @@ end
 # puts  "i => #{i}"
 # b.include(c.id)
 
-alert(grab(:view).parents)
+# alert(grab(:view).parents)
 
 
 
@@ -800,4 +803,141 @@ alert(grab(:view).parents)
 # require 'src/medias/rubies/examples/monitoring'
 # require 'src/medias/rubies/examples/delete'
 # require 'src/medias/rubies/examples/_audio'
+###############
+# b=box({id: :the_box})
+# b.color(:red)
+# # c=circle({id: :the_circle, color: [{ renderers: [:browser], id: :shaper_color, type: :color,
+# #                                   red: 0.4, green: 0.4, blue: 1, alpha: 1 }]})
+# x=circle({color: :purple, id: :cici})
+# # c.color(:red)
+# # c.color(:orange)
+# # cc=circle()
+# # # e=text(:hello)
+# # # b.children([c.id])
+# # # b.children([cc.id])
+# # # b.children([e.id])
+# b.set_color({ renderers: [:browser], id: :shaper_color, type: :color,
+#               red: 0.4, green: 0.4, blue: 1, alpha: 1 })
+# b.left(33)
+# # # puts b
+# # b.attached(c.id)
+# #
+# #
+# # puts b
+############### new tests ################
 
+# puts 'xxxx :'
+# `console.clear()`
+
+# wait 1 do
+#
+# c=circle({ id: :cici0, shadow: { renderers: [:browser], id: :shadow2, type: :shadow, parents: [], children: [],
+#                                  left: 3, top: 9, blur: 3, direction: :inset,
+#                                  red: 0, green: 0, blue: 0, alpha: 1
+# }})
+# c=circle({ colour: 'red'})
+#  `console.clear()`
+
+
+
+
+wait 0.1 do
+ # c=circle({color: { renderers: [:browser], id: :dor_color, type: :color,
+ #                     red: 0, green: 0.5, blue: 0.5, alpha: 1 } })
+ # c=circle({color: :orange})
+ # c=circle({ id: :cici0, shadow: { renderers: [:browser], id: :shadow2, type: :shadow, parents: [],
+ #                                  left: 3, top: 9, blur: 3, direction: :inset,
+ #                                  red: 0, green: 0, blue: 0, alpha: 1
+ # }})
+  c=circle()
+
+ b=box
+ c.attached(b.id)
+
+ # c.color(:red)
+ puts c.browser_object
+ puts "color : #{c.color}"
+ c.color(:orange)
+ c.shadow(true)
+ c.add({shadow: true})
+ c.add({color: {red: 1, id: :poip}})
+ c.add({color: {red: 0.1,green: 1, id: :yyy}})
+ puts "c is #{c}"
+ puts "circle color : #{c.color}"
+ puts "circle shadow : #{c.shadow}"
+ puts "Shadow : #{grab(c.shadow.value[0])}"
+
+ puts "c.color is #{c.color.value}"
+ puts "c.shadow is #{c.shadow.value}"
+ # c.color(:red)
+ c.shadow({red: 0, green: 1, blue: 0, alpha: 1, blur: 3, left: 3, top: 3})
+ c.box({left: 60, id: :the_boite})
+ t=c.text({left: 60, id: :the_text, data: :hello})
+ t.color(:yellow)
+ c.box({top: 60, id: :the_second_box})
+ # color_found=c.color.value
+ # puts "color found : #{color_found}, #{color_found.class}"
+ shadow_found=c.shadow.value
+ puts "shadow found : #{shadow_found}, #{shadow_found.class}"
+ puts "shadow_found.last is : #{grab(shadow_found.last).class}: #{grab(shadow_found.last)}"
+ puts c.color
+ puts c.shadow
+ puts c.shape
+ puts c.text
+end
+
+# c=circle
+# c.color({ renderers: [:browser], id: :dor_color, type: :color,
+#                                            red: 1, green: 0.5, blue: 0.5, alpha: 1 })
+# c=circle({ colors: 'cyan' , shadow: { smooth: 20 }})
+
+# b= :red
+# b.colors(:poil)
+# c=circle({ id: :cici0, colors: { renderers: [:browser], id: :dor_color, type: :color,
+#                                  red: 0.5, green: 0.5, blue: 0.5, alpha: 1 } })
+# c=circle({ id: :cici1})
+#   # puts '-------- sep 1 -------'
+#   c.colors('green')
+# c.send(:set_color, :red)
+# circle({ id: :cercledor, color: { color: { renderers: :browser, id: :dor_color, type: :color,
+#                                            red: 0.5, green: 0.5, blue: 0.5, alpha: 1 } }})
+  # wait 1 do
+    # puts '-------- sep 2 -------'
+    # circle({shadow: true, id: :cici1})
+# circle({shadow: { renderers: [:browser], id: :shadow2, type: :shadow, parents: [], children: [],
+#                   left: 3, top: 9, blur: 3, direction: :inset,
+#                   red: 0, green: 0, blue: 0, alpha: 1
+# }, id: :cici1})
+# circle({color:    { renderers: [:browser], id: :c319, type: :color,
+#                     red: 1, green: 1, blue: 0.15, alpha: 0.6 }, id: :cici1})
+
+  # end
+
+# end
+
+
+
+# my_video = Atome.new(
+#   video: { renderers: [:browser],  id: :video1, type: :video, parents: [:view],
+#            path: './medias/videos/avengers.mp4', left: 333, top: 33, width: 777
+#   }
+# )
+#
+# my_video.touch(true) do
+#  my_video.play(3)
+#  puts "play : #{my_video.play}, pause : #{my_video.pause}"
+# end
+#
+# stoper = lambda do
+#  my_video.pause(true)
+# end
+#
+# jumper=lambda do
+#  my_video.play(12)
+#  my_video.play(12)
+# end
+#
+# my_video.markers({ markers: { begin: 6, code: jumper } })
+#
+# my_video.add({ markers: { my_stop: { begin: 16, code: stoper }, shadow: { blur: 20 }}})
+# alert my_video

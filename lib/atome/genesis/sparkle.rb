@@ -27,12 +27,12 @@ puts "current server: #{Universe.current_server}"
 
 Atome.new(
   { element: { renderers: [], id: :eDen, type: :element,
-               parents: [], children: [] } }
+               parents: [] } }
 )
 
 Atome.new(
   { element: { renderers: [], id: :user_view, type: :element,
-               parents: [:eDen], children: [] } }
+               attach: [:eDen] } }
 )
 
 # color creation
@@ -70,13 +70,13 @@ Atome.new(
 # system object creation
 # the black_matter is used to store un materialized atomes
 Atome.new(
-  { shape: { renderers: default_render, id: :black_matter, type: :shape, parents: [:user_view], children: [],
+  { shape: { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
              left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden
   } })
 # view port
 Atome.new(
-  { shape: { renderers: default_render, id: :view, type: :shape, parents: [:user_view], children: [],
-             attached: [:view_color], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto
+  { shape: { renderers: default_render, id: :view, type: :shape, attach: [:user_view],
+             attached: :view_color, left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
   }
   }
 )

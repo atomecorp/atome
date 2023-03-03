@@ -19,7 +19,6 @@ class Batch
   def initialize(params)
     @id = params[:id] || identity_generator(:batch)
     Universe.add_to_atomes(@id, self)
-    Universe.add_to_atomes(@id, self)
   end
 
   def dispatch (method, *args, &block)

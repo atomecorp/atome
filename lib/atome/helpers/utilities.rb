@@ -5,8 +5,6 @@ class Atome
   private
 
   def collapse
-    # temp_atome = @atome.clone
-    # temp_atome.delete(:type)
     @atome.each do |element, value|
       send(element, value)
     end
@@ -75,6 +73,22 @@ class Atome
     real_atome[property] << value
   end
 
+  def add_to_integer(_atome_found, _particle_found, &_user_proc)
+    puts "there's no interest to add anything to an integer!"
+  end
+
+  def add_to_float(_atome_found, _particle_found, &_user_proc)
+    puts "there's no interest to add anything to an integer!"
+  end
+
+  def add_to_bignum(_atome_found, _particle_found, &_user_proc)
+    puts "there's no interest to add anything to an integer!"
+  end
+
+  def add_to_string(_atome_found, _particle_found, &_user_proc)
+    puts "there's no interest to add anything to an string!"
+  end
+
   def add_to_hash(particle, values, &user_proc)
     # we update  the holder of any new particle if user pass a bloc
     store_code_bloc(particle, &user_proc) if user_proc
@@ -88,16 +102,29 @@ class Atome
     @atome[particle] << value
   end
 
-  def add_to_atome(atome_found, particle_found, &user_proc)
-    puts "we add : #{particle_found} to #{send(atome_found)} "
-    send(atome_found, particle_found, :adder, &user_proc)
+  def add_to_atome(atome_type, particle_found, &user_proc)
+    puts "=> we add : #{particle_found} to #{send(atome_type)}"
+    send(atome_type, particle_found, :adder, &user_proc)
   end
 
   def add(particles, &user_proc)
+    @atome[:add] = [] unless @atome[:add]
+    @atome[:add] << particles
     particles.each do |particle, value|
       particle_type = Universe.particle_list[particle] || 'atome'
       send("add_to_#{particle_type}", particle, value, &user_proc)
     end
+  end
+
+  def substract(particles, &user_proc)
+    # TODO : write code here to remove add elements"
+    puts "write code here to remove add elements"
+    # @atome[:add]=:poi
+    # particles.each do |particle, value|
+    #   particle_type = Universe.particle_list[particle] || 'atome'
+    #   puts "<<<<<< this the place to b ....>>>>>>#{particles} #{particle_type}"
+    #   send("add_to_#{particle_type}", particle, value, &user_proc)
+    # end
   end
 
   def refresh
@@ -110,8 +137,7 @@ class Atome
     generated_id = params[:id] || identity_generator(atome_type)
 
     generated_parents = params[:parents] || [id.value]
-    generated_children = params[:children] || []
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents, generated_children, params)
+    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
     Batch.new({ atome_type => params }, &bloc)
   end
 
@@ -125,16 +151,14 @@ class Atome
     self.value.include?(value)
   end
 
-  def each_with_index(*args)
-    self.value.each_with_index do |val, index|
-      yield(val, index)
-    end
+  def each_with_index(*args, &block)
+    self.value.each_with_index(&block)
   end
 
   def [](range)
-    if value[range].class == Atome
+    if value[range].instance_of?(Atome)
       return value[range]
-    elsif value[range].class == Array
+    elsif value[range].instance_of?(Array)
       collector_object = Object.collector({})
       collected_atomes = []
       value[range].each do |atome_found|

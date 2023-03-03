@@ -15,6 +15,19 @@ module BrowserHelper
     browser_document[parents].add_class(atome[:id])
   end
 
+  def self.browser_attached_div(children, _html_object, atome)
+    children.each do |child_found|
+      # atome_child.browser_attach_div
+      html_child=grab(child_found).browser_object
+      html_child.append_to(browser_document[atome[:id]])
+    end
+  end
+
+  def self.browser_attached_style(children, _html_object, atome)
+
+    browser_document[atome[:id]].add_class(children)
+  end
+
   def self.value_parse(value)
     if value.instance_of?(String)
       value

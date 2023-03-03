@@ -21,6 +21,8 @@ module Atome
 
   def build_sanitizer: -> untyped
 
+  def each_with_index: -> untyped
+
   def format_matrix: -> untyped
 
   def get_column: -> untyped
@@ -34,4 +36,8 @@ module Atome
   def set: -> untyped
 
   def sort_callback: -> untyped
+
+  private
+
+  def new_render_engine: -> untyped
 end

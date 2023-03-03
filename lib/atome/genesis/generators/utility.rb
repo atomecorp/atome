@@ -9,7 +9,7 @@ new({particle: :run }) do |params|
 end
 new({particle: :broadcast })
 new({particle: :data })
-new({particle: :additional })
+# new({particle: :additional })
 new({particle: :delete }) do |params|
   if params == true
     # the machine delete the current atome
