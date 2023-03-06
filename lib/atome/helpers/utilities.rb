@@ -90,6 +90,7 @@ class Atome
   end
 
   def add_to_hash(particle, values, &user_proc)
+    @atome[:add][particle] = true
     # we update  the holder of any new particle if user pass a bloc
     store_code_bloc(particle, &user_proc) if user_proc
     values.each do |value_id, value|
@@ -98,18 +99,21 @@ class Atome
   end
 
   def add_to_array(particle, value, &_user_proc)
+    @atome[:add][particle] = true
     # we update  the holder of any new particle if user pass a bloc
     @atome[particle] << value
   end
 
   def add_to_atome(atome_type, particle_found, &user_proc)
-    puts "=> we add : #{particle_found} to #{send(atome_type)}"
-    send(atome_type, particle_found, :adder, &user_proc)
+    # @atome[:add] = [] unless @atome[:add]
+    @atome[:add][atome_type] = true
+    send(atome_type, particle_found, &user_proc)
   end
 
   def add(particles, &user_proc)
-    @atome[:add] = [] unless @atome[:add]
-    @atome[:add] << particles
+    # alert particles
+    @atome[:add] = {} unless @atome[:add]
+    # @atome[:add] << particles
     particles.each do |particle, value|
       particle_type = Universe.particle_list[particle] || 'atome'
       send("add_to_#{particle_type}", particle, value, &user_proc)

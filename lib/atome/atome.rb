@@ -49,7 +49,60 @@ class Atome
 
   def atome_parsing(element, params, &user_proc)
     params = sanitize(element, params)
+    parent_found = found_parents_and_renderers[:parent]
+    render_found = found_parents_and_renderers[:renderers]
+    current_atome=send(element).value
+    # if parent_found == [:view]
+    #   parent_found = [:black_matter] if parent_found == [:view]
+    # elsif current_atome
+    #   # we delete any previous color if there's one
+    #   #  puts "========= #{@atome[:color]}>We should delete the color now except : #{@atome[:add]} "
+    #   unless @atome[:add] && @atome[:add][element]
+    #     detached(current_atome)
+    #     @atome[element] = [] # we had the condition because the shadow may exist but
+    #   end
+    # end
 
+    if current_atome
+       # we delete any previous color if there's one
+       #  puts "========= #{@atome[:color]}>We should delete the color now except : #{@atome[:add]} "
+       unless @atome[:add] && @atome[:add][element]
+         detached(current_atome)
+         @atome[element] = [] # we had the condition because the shadow may exist but
+       end
+     end
+
+
+
+    default_params = Essentials.default_params[element] || {}
+
+    # puts "::::> #{temp_default}"
+    generated_id = params[:id] || identity_generator(element)
+
+    #   default_params = default_params.merge({ renderers: [], id: generated_id, type: element,
+    #                                           attach: parent_found  })
+    #   puts "#{params} : : #{default_params}"
+    #   else
+    #     default_params = default_params.merge({ renderers: render_found, id: generated_id, type: element,
+    #                                             attach: parent_found })
+    # end
+    default_params = { renderers: render_found, id: generated_id, type: element,
+                       attach: parent_found }.merge(default_params)
+    # end
+    # puts "====>#{default_params}"
+    # default_renderer = Essentials.default_params[:render_engines]
+    # atome_type = element
+    # generated_render = params[:renderers] || default_renderer
+    # generated_id = params[:id] || identity_generator(atome_type)
+    # generated_parents = params[:attach] || [id.value]
+    # default_params = atome_common(element, generated_id, render_found, parent_found, params)
+    # params
+    #####
+    # alert default_params
+    params = default_params.merge(params)
+    if element == :animation
+      puts "====> #{render_found}: #{default_params}"
+    end
     run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method

@@ -2,7 +2,7 @@
 
 new({ particle: :attach })
 new({ sanitizer: :attach }) do |parents_ids|
-  puts "====== parents_ids : #{parents_ids} #{parents_ids.class}======"
+  # puts "====== parents_ids : #{parents_ids} #{parents_ids.class}======"
   parents_ids = parents_ids.value if parents_ids.instance_of? Atome
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   parents_ids.each do |parents_id|
@@ -20,7 +20,7 @@ new({ sanitizer: :attach }) do |parents_ids|
                               [parents_found.atome[current_type][:id]]
                             end
     # here we add the child into it's parents type container
-    puts "IIIIIIIIIIIIIII ==> it happen here #{parents_ids} << #{atome[:id]}"
+    # puts "IIIIIIIIIIIIIII ==> it happen here #{parents_ids} << #{atome[:id]}"
     parent_type_container << atome[:id]
     # TODO : factorise the code above
     # family(parents_id)
@@ -53,15 +53,22 @@ new({ sanitizer: :attached }) do |children_ids|
     # TODO : factorise the code above
 
     # child_found.family(parents_found)
-    puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#{children_ids}"
+    # puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#{children_ids}"
     child_found.atome[:attach] = [parents_found]
   end
 end
-new({ particle: :detached }) do |value|
-  attached.value.delete(value)
+new({ particle: :detached }) do |values|
+
+  if values.instance_of? Array
+    values.each do |value|
+      attached.value.delete(value)
+    end
+  else
+    attached.value.delete(values)
+  end
+
 end
 new({ particle: :type })
-
 
 # new({ particle: :parents })
 # new({ sanitizer: :parents }) do |params|

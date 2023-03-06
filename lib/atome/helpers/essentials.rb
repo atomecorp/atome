@@ -4,27 +4,27 @@
 module Essentials
   @default_params = {
     render_engines: [:browser],
-    collector: { type: :element, renderers: [], parents: [:black_matter] },
-    animation: { type: :animation,  parents: [:black_matter] },
-    element: { type: :element, renderers: [],  parents: [:black_matter] },
-    matrix: { renderers: [], id: '', type: :shape, width: 99, height: 99,
+    collector: { type: :element, parents: [:black_matter] },
+    animation: { type: :animation, parents: [:black_matter], attach: [] },
+    element: { type: :element, renderers: [], parents: [:black_matter], attach: [:black_matter] },
+    matrix: { type: :shape, width: 99, height: 99,
               attached: :matrix_color,
               left: 100, top: 100, clones: [], preset: :matrix, parents: [:view] },
-    box: { renderers: [], id: '', type: :shape, width: 99, height: 99,
+    box: { type: :shape, width: 99, height: 99,
            attached: :box_color, parents: [:view],
            left: 100, top: 100, clones: [], preset: :box },
-    circle: { renderers: [], id: '', type: :shape, width: 99, height: 99, smooth: '100%',
+    circle: { type: :shape, width: 99, height: 99, smooth: '100%',
               attached: :circle_color, parents: [:view],
               left: 100, top: 100, clones: [], preset: :circle },
-    shape: { renderers: [], id: '', type: :shape, width: 99, height: 99,
+    shape: { type: :shape, width: 99, height: 99,
              attached: :shape_color, parents: [:view],
              left: 100, top: 100, clones: [] },
-    text: { renderers: [], id: '', type: :text, visual: { size: 25 },
+    text: { type: :text, visual: { size: 25 },
             attached: :text_color, parents: [:view],
             data: 'this is a text sample', width: 199, height: 33, clones: [] },
     drm: { type: :drm, parents: [:black_matter] },
     shadow: { parents: [:black_matter] },
-    color: { parents: [:black_matter] }
+    color: { parents: [:black_matter], red: 0, green: 0, blue: 0, alpha: 1  }
   }
 
   def self.default_params

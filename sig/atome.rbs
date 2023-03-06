@@ -39,5 +39,7 @@ module Atome
 
   private
 
+  def found_parents_and_renderers: -> untyped
+
   def new_render_engine: -> untyped
 end

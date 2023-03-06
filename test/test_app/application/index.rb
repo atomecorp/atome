@@ -840,51 +840,54 @@
 
 
 
-
-wait 0.1 do
- # c=circle({color: { renderers: [:browser], id: :dor_color, type: :color,
- #                     red: 0, green: 0.5, blue: 0.5, alpha: 1 } })
- # c=circle({color: :orange})
- # c=circle({ id: :cici0, shadow: { renderers: [:browser], id: :shadow2, type: :shadow, parents: [],
- #                                  left: 3, top: 9, blur: 3, direction: :inset,
- #                                  red: 0, green: 0, blue: 0, alpha: 1
- # }})
-  c=circle()
-
- b=box
- c.attached(b.id)
-
- # c.color(:red)
- puts c.browser_object
- puts "color : #{c.color}"
- c.color(:orange)
- c.shadow(true)
- c.add({shadow: true})
- c.add({color: {red: 1, id: :poip}})
- c.add({color: {red: 0.1,green: 1, id: :yyy}})
- puts "c is #{c}"
- puts "circle color : #{c.color}"
- puts "circle shadow : #{c.shadow}"
- puts "Shadow : #{grab(c.shadow.value[0])}"
-
- puts "c.color is #{c.color.value}"
- puts "c.shadow is #{c.shadow.value}"
- # c.color(:red)
- c.shadow({red: 0, green: 1, blue: 0, alpha: 1, blur: 3, left: 3, top: 3})
- c.box({left: 60, id: :the_boite})
- t=c.text({left: 60, id: :the_text, data: :hello})
- t.color(:yellow)
- c.box({top: 60, id: :the_second_box})
- # color_found=c.color.value
- # puts "color found : #{color_found}, #{color_found.class}"
- shadow_found=c.shadow.value
- puts "shadow found : #{shadow_found}, #{shadow_found.class}"
- puts "shadow_found.last is : #{grab(shadow_found.last).class}: #{grab(shadow_found.last)}"
- puts c.color
- puts c.shadow
- puts c.shape
- puts c.text
-end
+# ##################### important to test ########################
+# wait 0.1 do
+#  # c=circle({color: { renderers: [:browser], id: :dor_color, type: :color,
+#  #                     red: 0, green: 0.5, blue: 0.5, alpha: 1 } })
+#  # c=circle({color: :orange})
+#  # c=circle({ id: :cici0, shadow: { renderers: [:browser], id: :shadow2, type: :shadow, parents: [],
+#  #                                  left: 3, top: 9, blur: 3, direction: :inset,
+#  #                                  red: 0, green: 0, blue: 0, alpha: 1
+#  # }})
+#   c=circle()
+#
+#  b=box
+#  c.attached(b.id)
+#
+#  # c.color(:red)
+#  puts c.browser_object
+#  puts "color : #{c.color}"
+#  c.color(:orange)
+#  c.shadow(true)
+#  c.add({shadow: true})
+#  c.add({color: {red: 1, id: :poip}})
+#  c.add({color: {red: 0.1,green: 1, id: :yyy}})
+#  c.add({color: :blue})
+#  # puts "c is #{c}"
+#  puts "circle color : #{c.color}"
+#  puts "circle shadow : #{c.shadow}"
+#  puts "Shadow : #{grab(c.shadow.value[0])}"
+#
+#  puts "c.color is #{c.color.value}"
+#  puts "c.shadow is #{c.shadow.value}"
+#  # c.color(:red)
+#  c.shadow({red: 0, green: 1, blue: 0, alpha: 1, blur: 3, left: 3, top: 3})
+#  c.box({left: 60, id: :the_boite})
+#  t=c.text({left: 60, id: :the_text, data: :hello})
+#  t2=c.text({top: 60, id: :the_second_text, data: :hi})
+#  t.color(:yellow)
+#  c.box({top: 60, id: :the_second_box})
+#  # color_found=c.color.value
+#  # puts "color found : #{color_found}, #{color_found.class}"
+#  shadow_found=c.shadow.value
+#  puts "shadow found : #{shadow_found}, #{shadow_found.class}"
+#  puts "shadow_found.last is : #{grab(shadow_found.last).class}: #{grab(shadow_found.last)}"
+#  puts c.color
+#  puts c.shadow
+#  puts c.shape
+#  puts c.text
+# end
+# #############################################
 
 # c=circle
 # c.color({ renderers: [:browser], id: :dor_color, type: :color,
@@ -941,3 +944,133 @@ end
 #
 # my_video.add({ markers: { my_stop: { begin: 16, code: stoper }, shadow: { blur: 20 }}})
 # alert my_video
+b=box
+b.color(:red)
+b.color(:green)
+# b.color(:blue)
+# b.color(:violet)
+# b.color(:cyan)
+# b.add(color: :red)
+puts b.color
+puts b.attached
+
+# a=[1,2,3,4,5,6]
+# puts a
+# a.delete(3)
+# puts a
+i=image('green_planet.png')
+i.shadow(true)
+text(:hello)
+puts b
+
+my_video3 = video({ path: './medias/videos/avengers.mp4', id: :video16 }) do |params|
+  puts "3 - video callback here #{params}, id is : #{id}"
+end
+my_video3.width = my_video3.height = 333
+my_video3.left(555)
+grab(:video16).on(:pause) do |_event|
+  puts "id is : #{id}"
+end
+my_video3.touch(true) do
+  grab(:video16).time(15)
+  my_video3.play(true) do |currentTime|
+    puts "3- play callback time is : #{currentTime}, id is : #{id}"
+  end
+  wait 3 do
+    puts "time is :#{my_video3.time}"
+  end
+  wait 6 do
+    grab(:video16).pause(true) do |time|
+      puts "paused at #{time} id is : #{id}"
+    end
+  end
+end
+
+# e=element(data: :hello_world)
+# # puts e
+# web({path: 'https://www.youtube.com/embed/usQDazZKWAk', top: 160})
+#
+#
+# # frozen_string_literal: true
+# # alert "le texte plante"
+# bb = text({ id: :the_ref, width: 369, data: "touch me!" })
+# bb.color(:orange)
+# box({ id: :my_box, drag: true })
+# c = circle({ id: :the_circle, left: 222, drag: { move: true, inertia: true, lock: :start } })
+# c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,
+#            parents: [:the_circle],
+#            left: 3, top: 9, blur: 19,
+#            red: 0, green: 0, blue: 0, alpha: 1
+#          })
+#
+# Atome.new(animation: { renderers: [:browser], id: :the_animation1, type: :animation })
+# aa = animation({
+#                  targets: %i[my_box the_circle],
+#                  begin: {
+#                    left_add: 0,
+#                    top: :self,
+#                    smooth: 0,
+#                    width: 3
+#                  },
+#                  end: {
+#                    left_add: 333,
+#                    top: 299,
+#                    smooth: 33,
+#                    width: :the_ref
+#                  },
+#                  duration: 800,
+#                  mass: 1,
+#                  damping: 1,
+#                  stiffness: 1000,
+#                  velocity: 1,
+#                  repeat: 1,
+#                  ease: 'spring'
+#                }) do |pa|
+#   puts "animation say#{pa}"
+# end
+# aa.stop(true) do |val|
+#   puts " stop : #{val}"
+# end
+#
+# aa.start(true) do |val|
+#   puts " start : #{val}"
+# end
+#
+# bb.touch(true) do
+#   aa.play(true) do |po|
+#     puts "play say #{po}"
+#   end
+# end
+#
+# aaa = animation({
+#                   # no target for advanced animations control on callback
+#                   begin: {
+#                     left_add: 0,
+#                     top: :self,
+#                     smooth: 0,
+#                     width: 3
+#                   },
+#                   end: {
+#                     left_add: 333,
+#                     top: :self,
+#                     smooth: 33,
+#                     width: :the_ref
+#                   },
+#                   duration: 1800,
+#                   mass: 1,
+#                   damping: 1,
+#                   stiffness: 1000,
+#                   velocity: 1,
+#                   repeat: 1,
+#                   ease: 'spring'
+#                 }) do |pa|
+#   puts "get params to do anything say#{pa}"
+# end
+# wait 7 do
+#   aaa.play(true) do |po|
+#     puts "play aaa say #{po}"
+#   end
+# end
+
+
+

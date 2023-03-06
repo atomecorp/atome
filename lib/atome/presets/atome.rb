@@ -9,10 +9,15 @@
 class Atome
   def atome_common(atome_type, generated_id, generated_render, generated_parents,  params)
     temp_default = Essentials.default_params[atome_type] || {}
+    temp_default[:renderers] = generated_render
     temp_default[:id] = generated_id
     temp_default[:attach] = generated_parents
+    puts "----- A VIRER --+++---> #{atome_type}"
+    unless temp_default[:type]
+      temp_default[:type]=atome_type
+    end
     temp_default[:clones] = []
-    temp_default[:renderers] = generated_render
+
     temp_default.merge(params)
   end
 

@@ -41,6 +41,8 @@ class Atome
     auto_render_generator(atome_name)
     # create_atome(atome_name)
     new_atome(atome_name, &atome_proc)
+
+
   end
 
   def auto_render_generator(element)
