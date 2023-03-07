@@ -42,6 +42,6 @@ b.drag({ snap: { x: 100, y: 190 } })
 cc=circle(drag: true)
 bb=box({drag: true, color: :yellow})
 
-bb.parents(cc.id)
+bb.attach(cc.id)
 
 # alert"#{b.parents.class} :  #{b.parents}"

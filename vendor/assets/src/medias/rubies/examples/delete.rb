@@ -9,9 +9,9 @@ wait 4 do
 end
 
 wait 3 do
-  b.children.each do |attached_atome_id|
+  b.shape.each do |attached_atome_id|
     b.delete({id: attached_atome_id})
-    b.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [], children: [],
+    b.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [],
                 left: 3, top: 9, blur: 3, direction: '',
                 red: 0, green: 0, blue: 0, alpha: 1
               })

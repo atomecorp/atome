@@ -9,7 +9,7 @@ module Essentials
     element: { type: :element, renderers: [], parents: [:black_matter], attach: [:black_matter] },
     matrix: { type: :shape, width: 99, height: 99,
               attached: :matrix_color,
-              left: 100, top: 100, clones: [], preset: :matrix, parents: [:view] },
+              left: 100, top: 100, clones: [], preset: :matrix, parents: [:view], attach: [:view] },
     box: { type: :shape, width: 99, height: 99,
            attached: :box_color, parents: [:view],
            left: 100, top: 100, clones: [], preset: :box },
@@ -23,8 +23,8 @@ module Essentials
             attached: :text_color, parents: [:view],
             data: 'this is a text sample', width: 199, height: 33, clones: [] },
     drm: { type: :drm, parents: [:black_matter] },
-    shadow: { parents: [:black_matter] },
-    color: { parents: [:black_matter], red: 0, green: 0, blue: 0, alpha: 1  }
+    shadow: { parents: [:black_matter],type: :shadow },
+    color: { parents: [:black_matter], type: :color, red: 0, green: 0, blue: 0, alpha: 1  }
   }
 
   def self.default_params

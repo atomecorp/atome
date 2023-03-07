@@ -9,7 +9,11 @@ module Atome
 
   def apply_style: -> untyped
 
+  def atome_common: -> untyped
+
   def auto_render_generator: -> untyped
+
+  def box: -> untyped
 
   def build_atome: -> Atome
 
@@ -20,6 +24,8 @@ module Atome
   def build_render: -> untyped
 
   def build_sanitizer: -> untyped
+
+  def circle: -> untyped
 
   def each_with_index: -> untyped
 
@@ -38,6 +44,8 @@ module Atome
   def sort_callback: -> untyped
 
   private
+
+  def atome_parsing: -> untyped
 
   def found_parents_and_renderers: -> untyped
 

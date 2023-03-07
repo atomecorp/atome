@@ -5,39 +5,40 @@
 # TODO: Factorise codes below
 # TODO we must clarified/unified the usage of presets and sanitizer it is not clear
 
-
 class Atome
-  def atome_common(atome_type, generated_id, generated_render, generated_parents,  params)
-    temp_default = Essentials.default_params[atome_type] || {}
-    temp_default[:renderers] = generated_render
-    temp_default[:id] = generated_id
-    temp_default[:attach] = generated_parents
-    puts "----- A VIRER --+++---> #{atome_type}"
-    unless temp_default[:type]
-      temp_default[:type]=atome_type
+  def atome_common(atome_type, params)
+    essential_params = Essentials.default_params[atome_type] || {}
+    if @atome
+      essential_params[:parents] = params[:attach] || [@atome[:id]]
+      essential_params[:renderers] = essential_params[:renderers] || @atome[:renderers]
+    else
+      essential_params[:parents] = []
+      essential_params[:renderers] = Essentials.default_params[:render_engines]
     end
-    temp_default[:clones] = []
-
-    temp_default.merge(params)
+    essential_params[:attach] = essential_params[:parents]
+    essential_params[:id] = params[:id] || identity_generator(atome_type)
+    essential_params[:type] = essential_params[:type] || :element
+    essential_params[:clones] = []
+    essential_params.merge(params)
   end
 
   def box(params = {}, &bloc)
-    default_renderer = Essentials.default_params[:render_engines]
+    # default_renderer = Essentials.default_params[:render_engines]
     atome_type = :box
-    generated_render = params[:renderers] || default_renderer
-    generated_id = params[:id] || identity_generator(:box)
-    generated_parents = params[:attach] || [id.value]
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    # generated_render = params[:renderers] || default_renderer
+    # generated_id = params[:id] || identity_generator(:box)
+    # generated_parents = params[:attach] || [id.value]
+    params = atome_common(atome_type, params)
     Atome.new({ atome_type => params }, &bloc)
   end
 
   def circle(params = {}, &bloc)
-    default_renderer = Essentials.default_params[:render_engines]
+    # default_renderer = Essentials.default_params[:render_engines]
     atome_type = :circle
-    generated_render = params[:renderers] || default_renderer
-    generated_id = params[:id] || identity_generator(:circle)
-    generated_parents = params[:attach] || [id.value]
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents,  params)
+    # generated_render = params[:renderers] || default_renderer
+    # generated_id = params[:id] || identity_generator(:circle)
+    # generated_parents = params[:attach] || [id.value]
+    params = atome_common(atome_type, params)
     Atome.new({ atome_type => params }, &bloc)
   end
 

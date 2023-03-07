@@ -105,8 +105,9 @@ class Atome
   end
 
   def add_to_atome(atome_type, particle_found, &user_proc)
+    # puts "-----> atome_type : #{atome_type}, particle_found : #{particle_found}"
     # @atome[:add] = [] unless @atome[:add]
-    @atome[:add][atome_type] = true
+    @atome[:add][atome_type] = particle_found
     send(atome_type, particle_found, &user_proc)
   end
 
@@ -156,12 +157,14 @@ class Atome
   end
 
   def each_with_index(*args, &block)
-    self.value.each_with_index(&block)
+    value.each_with_index(&block)
   end
 
   def [](range)
-    if value[range].instance_of?(Atome)
-      return value[range]
+    if instance_of?(Atome)
+      value[range]
+      # elsif value[range].instance_of?(Atome)
+      #   return value[range]
     elsif value[range].instance_of?(Array)
       collector_object = Object.collector({})
       collected_atomes = []

@@ -17,7 +17,6 @@ end
 
 jumper=lambda do
   my_video.play(12)
-  my_video.play(12)
 end
 
 my_video.markers({ markers: { begin: 6, code: jumper } })

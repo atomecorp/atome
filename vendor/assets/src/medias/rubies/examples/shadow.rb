@@ -5,7 +5,7 @@ b = box({ id: :the_box, left: 99, top: 99 })
 
 
 
-s = b.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [], children: [],
+s = b.shadow({ renderers: [:browser], id: :shadow2, type: :shadow, parents: [],
                left: 3, top: 9, blur: 3, direction: :inset,
                red: 0, green: 0, blue: 0, alpha: 1
              })

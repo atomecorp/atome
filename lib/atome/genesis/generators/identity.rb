@@ -90,7 +90,6 @@ new({ particle: :type })
 # end
 
 # new({ particle: :family })
-new({ particle: :link })
 new({ particle: :id })
 new({ sanitizer: :id }) do |params|
   if @atome[:id] != params

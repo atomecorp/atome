@@ -1,0 +1,11 @@
+module Essentials
+  @default_params: untyped
+
+  def self.default_params: -> untyped
+
+  def self.new_default_params: -> untyped
+
+  def add_essential_drm: -> untyped
+
+  def validation: -> untyped
+end

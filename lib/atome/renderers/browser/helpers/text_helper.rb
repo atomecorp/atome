@@ -24,4 +24,11 @@ module BrowserHelper
     atome_send.browser_object.inner_html = value
   end
 
+  def self.browser_data_shape(_value,_atome_send)
+
+  end
+  def self.browser_data_scolor(_value,_atome_send)
+
+  end
+
 end

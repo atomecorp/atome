@@ -26,8 +26,7 @@ puts "current user: #{Universe.current_user}"
 puts "current server: #{Universe.current_server}"
 
 Atome.new(
-  { element: { renderers: [], id: :eDen, type: :element,
-               parents: [] } }
+  { element: { renderers: [], id: :eDen, type: :element} }
 )
 
 Atome.new(
