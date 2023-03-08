@@ -5,7 +5,7 @@ module Essentials
   @default_params = {
     render_engines: [:browser],
     collector: { type: :element, parents: [:black_matter] },
-    animation: { type: :animation, parents: [:black_matter], attach: [] },
+    animation: { type: :animation, parents: [:black_matter], attach: [:black_matter] },
     element: { type: :element, renderers: [], parents: [:black_matter], attach: [:black_matter] },
     matrix: { type: :shape, width: 99, height: 99,
               attached: :matrix_color,

@@ -58,19 +58,24 @@ class Atome
     end
 
     # TODO :replace with the line below but need extensive testing as it crash some demos ex: animation
-    # params = atome_common(element, params)
-    ############ code to remove below
-    parent_found = found_parents_and_renderers[:parent]
-    render_found = found_parents_and_renderers[:renderers]
-    default_params = Essentials.default_params[element] || {}
-    generated_id = params[:id] || identity_generator(element)
-
-    default_params = { renderers: render_found, id: generated_id, type: element,
-                       attach: parent_found }.merge(default_params)
-    params = default_params.merge(params).merge({ clones: [] })
-    ############ code to remove above
-
-
+    # puts "-----> Passed!"
+    params = atome_common(element, params)
+    # ############ code to remove below
+    # parent_found = found_parents_and_renderers[:parent]
+    # render_found = found_parents_and_renderers[:renderers]
+    # default_params = Essentials.default_params[element] || {}
+    # generated_id = params[:id] || identity_generator(element)
+    #
+    # default_params = { renderers: render_found, id: generated_id, type: element,
+    #                    attach: parent_found }.merge(default_params)
+    # params = default_params.merge(params).merge({ clones: [] })
+    # ############ code to remove above
+    # puts params[:renderers]
+    # puts params[:id]
+    # new_params= {renderers: params[:renderers], id:  params[:id]}.merge(params)
+    #
+    # params=new_params
+    # puts "new_params : #{params}"
     ###
     ###
     # params2= :poil

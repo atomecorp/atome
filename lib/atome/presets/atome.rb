@@ -8,14 +8,9 @@
 class Atome
   def atome_common(atome_type, params)
     essential_params = Essentials.default_params[atome_type] || {}
-    if @atome
-      essential_params[:parents] = params[:attach] || [@atome[:id]]
-      essential_params[:renderers] = essential_params[:renderers] || @atome[:renderers]
-    else
-      essential_params[:parents] = []
-      essential_params[:renderers] = Essentials.default_params[:render_engines]
-    end
+    essential_params[:parents] = params[:attach] || [@atome[:id]]
     essential_params[:attach] = essential_params[:parents]
+    essential_params[:renderers] = essential_params[:renderers] || @atome[:renderers]
     essential_params[:id] = params[:id] || identity_generator(atome_type)
     essential_params[:type] = essential_params[:type] || :element
     essential_params[:clones] = []

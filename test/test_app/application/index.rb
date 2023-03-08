@@ -779,7 +779,7 @@
 # # alert(grab(:view).parents)
 #
 #
-#
+# box({color: :red})
 # require 'src/medias/rubies/examples/schedule'
 # require 'src/medias/rubies/examples/time'
 # require 'src/medias/rubies/examples/code'
@@ -803,7 +803,7 @@
 # require 'src/medias/rubies/examples/clone'
 # require 'src/medias/rubies/examples/atome_new'
 # require 'src/medias/rubies/examples/link'
-require 'src/medias/rubies/examples/monitoring'
+# require 'src/medias/rubies/examples/monitoring'
 
 
 

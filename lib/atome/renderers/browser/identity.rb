@@ -22,7 +22,7 @@ end
 generator.build_render(:browser_attach) do |parents_found|
   # puts "parents_found : #{parents_found}, #{parents_found.class}"
   parents_found.each do |parent_found|
-    puts ">>>>> model:  browser_type #{@browser_type} parents_found #{parents_found} , @browser_object, #{@browser_object}, self : #{self.id}"
+    # puts ">>>>> model:  browser_type #{@browser_type} parents_found #{parents_found} , @browser_object, #{@browser_object}, self : #{self.id}"
     BrowserHelper.send("browser_attach_#{@browser_type}", parent_found, @browser_object, @atome)
   end
 end
