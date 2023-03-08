@@ -18,6 +18,7 @@ class Atome
       @broadcast = {}
       # now we store the proc in a an atome's property called :bloc
       elements[:code] = atomes_proc if atomes_proc
+
       @atome = elements
       # we initiate the rendering suing set_type method,
       # eg for for browser we will call :browser_type generate method in identity.rb file
@@ -78,7 +79,6 @@ class Atome
     # puts "new_params : #{params}"
     ###
     ###
-    # params2= :poil
     # puts "params :\n #{params}\n\n, params2 :\n #{params2}"
     run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)

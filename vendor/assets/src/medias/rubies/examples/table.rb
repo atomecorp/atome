@@ -96,8 +96,8 @@ m.last(:rows) do |el|
   el.color(:violet)
 end
 m.divide( rows: {1 => 3})
-m.cell(9).box({left: 0, top: 0, id: :poireau, width: 66, height: 66})
-m.cell(9).content([box({ left: 0, top: 0, id: :poireau, width: 66, height: 66 })])
+m.cell(9).box({left: 0, top: 0, id: :the_big_one, width: 66, height: 66})
+m.cell(9).content([box({ left: 0, top: 0, id: :another_one, width: 66, height: 66 })])
 # puts  m.cell(9).content
 m.relations({ relation_1: {
   # start: {cell_id => out_nb},

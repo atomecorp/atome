@@ -199,4 +199,14 @@ class Atome
     end
   end
 
+  def materials
+    # TODO: the code below need a rewrite, we must find a new algorythm to avoid all those conditions
+    images_found = atome[:image] || []
+    videos_found = atome[:video] || []
+    shapes_found = atome[:shape] || []
+    web_found = atome[:web] || []
+    texts_found = atome[:text] || []
+    images_found.concat(videos_found).concat(shapes_found).concat(web_found).concat(texts_found)
+  end
+
 end

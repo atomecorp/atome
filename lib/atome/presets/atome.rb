@@ -7,13 +7,21 @@
 
 class Atome
   def atome_common(atome_type, params)
+    # TODO : optimise the whole code below and make it rubocop friendly
+    # # patch
+    # atome_list = {}
+    # Universe.atome_list.each do |possible_atome|
+    #   atome_list[possible_atome] = []
+    # end
+    # params = atome_list.merge(params)
+    # # end patch
     essential_params = Essentials.default_params[atome_type] || {}
     essential_params[:parents] = params[:attach] || [@atome[:id]]
     essential_params[:attach] = essential_params[:parents]
     essential_params[:renderers] = essential_params[:renderers] || @atome[:renderers]
     essential_params[:id] = params[:id] || identity_generator(atome_type)
     essential_params[:type] = essential_params[:type] || :element
-    essential_params[:clones] = []
+
     essential_params.merge(params)
   end
 

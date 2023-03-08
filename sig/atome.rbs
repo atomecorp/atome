@@ -43,6 +43,8 @@ module Atome
 
   def sort_callback: -> untyped
 
+  def visuals: -> untyped
+
   private
 
   def atome_parsing: -> untyped
