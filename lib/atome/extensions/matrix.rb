@@ -79,7 +79,7 @@ module Matrix
         cells_to_alter = cells_in_column[value[0]..value[1]]
         cells_to_alter.each_with_index do |cell_nb, index|
           current_cell = grab("#{id.value}_#{cell_nb}")
-          puts "==> current cell is #{id}"
+          # puts "==> current cell is #{id}"
           if index.zero?
             current_cell.height(cell_height * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
           else

@@ -50,16 +50,16 @@ class Atome
 
   def atome_parsing(element, params, &user_proc)
     params = sanitize(element, params)
-
     current_atome = send(element).value
+
     # The condition below check if we need to add or replace the newly created atome
     if current_atome && !(@atome[:add] && @atome[:add][element])
       detached(current_atome)
-      @atome[element] = [] # we had the condition because the shadow may exist but
+      @atome[element] = []
     end
 
+
     # TODO :replace with the line below but need extensive testing as it crash some demos ex: animation
-    # puts "-----> Passed!"
     params = atome_common(element, params)
     # ############ code to remove below
     # parent_found = found_parents_and_renderers[:parent]
@@ -86,6 +86,7 @@ class Atome
   end
 
   def new_atome(element, &method_proc)
+
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
       if params

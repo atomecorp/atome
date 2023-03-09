@@ -8,6 +8,7 @@ class Atome
     # params=instance_variable_get("@#{element}")
     render_engines = @atome[:renderers]
     render_engines.each do |render_engine|
+      # puts  "rendering : send('#{render_engine}_#{element}', #{params},   &user_proc)"
       send("#{render_engine}_#{element}", params, &user_proc)
     end
   end

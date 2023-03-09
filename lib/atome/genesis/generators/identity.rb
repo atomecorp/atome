@@ -2,7 +2,6 @@
 
 new({ particle: :attach })
 new({ sanitizer: :attach }) do |parents_ids|
-  # puts "====== parents_ids : #{parents_ids} #{parents_ids.class}======"
   parents_ids = parents_ids.value if parents_ids.instance_of? Atome
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   parents_ids.each do |parents_id|
@@ -13,24 +12,25 @@ new({ sanitizer: :attach }) do |parents_ids|
     parents_found.atome[current_type] = [] unless parents_found.atome[current_type]
 
     # the condition below is needed when user passed a hash instead of the id of the child cf :
-    # circle(color: {red: 0, green: 1}) instead of color({id: :the_col}); circle(color: [:the_col])
     parent_type_container = if parents_found.atome[current_type].instance_of? Array
                               parents_found.atome[current_type]
                             else
                               [parents_found.atome[current_type][:id]]
                             end
     # here we add the child into it's parents type container
-    # puts "IIIIIIIIIIIIIII ==> it happen here #{parents_ids} << #{atome[:id]}"
     parent_type_container << atome[:id]
     # TODO : factorise the code above
-    # family(parents_id)
     parents_found.atome[:attached] = [] unless parents_found.atome[:attached]
     parents_found.atome[:attached] << atome[:id]
   end
+  # atome[:parents]=atome[:parents] | parents_ids
+  # atome[:parents].concat(parents_ids).uni
+  # puts "==> #{id} : #{self}"
+  # puts "====> id : #{id}, #{parents_ids} #{atome[:parents]}, #{atome[:parents].class} : #{atome[:parents].class}"
   parents_ids
 end
-new({ particle: :attached })
 
+new({ particle: :attached })
 new({ sanitizer: :attached }) do |children_ids|
   children_ids = children_ids.value if children_ids.instance_of? Atome
   children_ids = [children_ids] unless children_ids.instance_of?(Array)
@@ -53,21 +53,25 @@ new({ sanitizer: :attached }) do |children_ids|
     # TODO : factorise the code above
 
     # child_found.family(parents_found)
-    # puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>#{children_ids}"
     child_found.atome[:attach] = [parents_found]
   end
 end
-new({ particle: :detached }) do |values|
 
+new({ particle: :detached, store: false })
+
+new({ sanitizer: :detached }) do |values|
   if values.instance_of? Array
     values.each do |value|
-      attached.value.delete(value)
+      detach_atome(value)
     end
   else
-    attached.value.delete(values)
+    detach_atome(values)
+    # we sanitize the values so it always return an array to the renderer
+    values=[values]
   end
-
+  values
 end
+
 new({ particle: :type })
 
 # new({ particle: :parents })

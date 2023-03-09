@@ -3,28 +3,32 @@
 # use to sanitize and secure user input
 module Essentials
   @default_params = {
+    # Warning :  type must be define first
     render_engines: [:browser],
-    collector: { type: :element, parents: [:black_matter] },
-    animation: { type: :animation, parents: [:black_matter], attach: [:black_matter] },
-    element: { type: :element, renderers: [], parents: [:black_matter], attach: [:black_matter] },
+    collector: { type: :element, attach: [:black_matter] },
+    image: { type: :image, attach: [:view] },
+    web: { type: :web, attach: [:view] },
+    video: { type: :video, attach: [:view] },
+    animation: { type: :animation,  attach: [:black_matter] },
+    element: { type: :element, renderers: [], attach: [:black_matter] },
     matrix: { type: :shape, width: 99, height: 99,
               attached: :matrix_color,
-              left: 100, top: 100, clones: [], preset: :matrix, parents: [:view], attach: [:view] },
+              left: 100, top: 100, clones: [], preset: :matrix, attach: [:view] },
     box: { type: :shape, width: 99, height: 99,
-           attached: :box_color, parents: [:view],
+           attached: :box_color, attach: [:view],
            left: 100, top: 100, clones: [], preset: :box },
     circle: { type: :shape, width: 99, height: 99, smooth: '100%',
-              attached: :circle_color, parents: [:view],
+              attached: :circle_color, attach: [:view],
               left: 100, top: 100, clones: [], preset: :circle },
     shape: { type: :shape, width: 99, height: 99,
-             attached: :shape_color, parents: [:view],
+             attached: :shape_color, attach: [:view],
              left: 100, top: 100, clones: [] },
     text: { type: :text, visual: { size: 25 },
-            attached: :text_color, parents: [:view],
+            attached: :text_color, attach: [:view],
             data: 'this is a text sample', width: 199, height: 33, clones: [] },
-    drm: { type: :drm, parents: [:black_matter] },
-    shadow: { parents: [:black_matter],type: :shadow },
-    color: { parents: [:black_matter], type: :color, red: 0, green: 0, blue: 0, alpha: 1  }
+    drm: { type: :drm, attach: [:black_matter] },
+    shadow: { type: :shadow, attach: [:black_matter] },
+    color: {  type: :color,attach: [:black_matter], red: 0, green: 0, blue: 0, alpha: 1  }
   }
 
   def self.default_params

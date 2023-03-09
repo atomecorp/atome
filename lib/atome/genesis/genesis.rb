@@ -29,19 +29,19 @@ class Atome
   end
 
   def build_atome(atome_name, &atome_proc)
+    # TODO : atomes should tell the Universe if they're parts of materials category or else
     # we add the new method to the atome's collection of methods
     Universe.add_to_atome_list(atome_name)
     unless Essentials.default_params[atome_name]
       # if it doesn't exist
       # we create default params for the new created atome, adding the hash to : module essential, @default_params
-      Essentials.new_default_params(atome_name => { type: atome_name, parents: [:view] })
+      Essentials.new_default_params(atome_name => { type: atome_name, attach: [:view] })
     end
 
     # the line below create an empty atome method for each renderer, eg: browser_shape, headless_color, ...
     auto_render_generator(atome_name)
     # create_atome(atome_name)
     new_atome(atome_name, &atome_proc)
-
 
   end
 

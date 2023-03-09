@@ -46,7 +46,7 @@ end
 def create_method_at_object_level(element)
 
   Object.define_method element do |params, &user_proc|
-    default_parent=Essentials.default_params[element][:parents][0] # we get the first parents
+    default_parent=Essentials.default_params[element][:attach][0] # we get the first parents
     grab(default_parent).send(element, params, &user_proc)
   end
 

@@ -27,6 +27,8 @@ module Atome
 
   def circle: -> untyped
 
+  def detach_atome: -> untyped
+
   def each_with_index: -> untyped
 
   def format_matrix: -> untyped

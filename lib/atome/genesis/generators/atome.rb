@@ -41,9 +41,9 @@ new({ sanitizer: :color }) do |params|
   # puts "==> #{color.value}"
   # test above
   # new_params
-
   # atome[:color] << :poil
   # params={}
+  #
   params
 end
 

@@ -15,7 +15,7 @@ task :re_build do
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
-  `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;gem install atome`
+  `gem cleanup atome;yes | gem uninstall atome;gem build atome.gemspec;gem install atome --local`
   `cd test/test_app;atome update`
   puts 'solution re-build!'
   # `cd test/test_app;atome update;atome run`
@@ -25,7 +25,7 @@ task :run_browser do
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
-  `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;gem install atome`
+  `gem cleanup atome;yes | gem uninstall atome;gem build atome.gemspec;gem install atome --local`
   `cd test/test_app;atome update;atome run compile`
   puts 'atome browser is running'
 end
@@ -35,7 +35,7 @@ task :test_server do
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
-  `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;gem install atome`
+  `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;gem install atome --local`
   `cd test/test_app;atome update;atome run server`
 end
 

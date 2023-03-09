@@ -112,16 +112,17 @@ class Atome
   end
 
   def add(particles, &user_proc)
-    # alert particles
+
     @atome[:add] = {} unless @atome[:add]
-    # @atome[:add] << particles
     particles.each do |particle, value|
       particle_type = Universe.particle_list[particle] || 'atome'
       send("add_to_#{particle_type}", particle, value, &user_proc)
+      # now we remove systematically the added hash so next particle won't be automatically added
+      @atome[:add].delete(particle)
     end
   end
 
-  def substract(particles, &user_proc)
+  def substract(_particles, &_user_proc)
     # TODO : write code here to remove add elements"
     puts "write code here to remove add elements"
     # @atome[:add]=:poi
@@ -138,11 +139,11 @@ class Atome
 
   def collector(params = {}, &bloc)
     atome_type = :collector
-    generated_render = params[:renderers] || []
-    generated_id = params[:id] || identity_generator(atome_type)
-
-    generated_parents = params[:parents] || [id.value]
-    params = atome_common(atome_type, generated_id, generated_render, generated_parents, params)
+    # generated_render = params[:renderers] || []
+    # generated_id = params[:id] || identity_generator(atome_type)
+    #
+    # generated_parents = params[:parents] || [id.value]
+    params = atome_common(atome_type, params)
     Batch.new({ atome_type => params }, &bloc)
   end
 
@@ -207,6 +208,17 @@ class Atome
     web_found = atome[:web] || []
     texts_found = atome[:text] || []
     images_found.concat(videos_found).concat(shapes_found).concat(web_found).concat(texts_found)
+  end
+
+  def detach_atome(atome_id_to_detach)
+    atome_to_detach = grab(atome_id_to_detach)
+    # TODO: remove the condition below and find why it try to detach an atome that doesn't exist
+    if atome_to_detach
+      atome_type_found = atome_to_detach.atome[:type]
+      atome_id_found = atome_to_detach.atome[:id]
+      @atome[atome_type_found].delete(atome_id_found)
+      @atome[:attached].delete(atome_id_to_detach)
+    end
   end
 
 end
