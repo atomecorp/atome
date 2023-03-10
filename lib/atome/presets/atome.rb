@@ -7,35 +7,23 @@
 
 class Atome
   def atome_common(atome_type, params)
-
-
     # TODO : optimise the whole code below and make it rubocop friendly
     essential_params = Essentials.default_params[atome_type] || {}
-    # puts  "==== > #{essential_params.merge(params)}"
     essential_params[:type] = essential_params[:type] || :element
     essential_params[:renderers] = essential_params[:renderers] || @atome[:renderers]
     essential_params[:id] = params[:id] || identity_generator(atome_type)
     essential_params[:attach] = params[:attach] || [@atome[:id]] || [:view]
-    # puts  "==== > #{essential_params.merge(params)}"
     essential_params.merge(params)
   end
 
   def box(params = {}, &bloc)
-    # default_renderer = Essentials.default_params[:render_engines]
     atome_type = :box
-    # generated_render = params[:renderers] || default_renderer
-    # generated_id = params[:id] || identity_generator(:box)
-    # generated_parents = params[:attach] || [id.value]
     params = atome_common(atome_type, params)
     Atome.new({ atome_type => params }, &bloc)
   end
 
   def circle(params = {}, &bloc)
-    # default_renderer = Essentials.default_params[:render_engines]
     atome_type = :circle
-    # generated_render = params[:renderers] || default_renderer
-    # generated_id = params[:id] || identity_generator(:circle)
-    # generated_parents = params[:attach] || [id.value]
     params = atome_common(atome_type, params)
     Atome.new({ atome_type => params }, &bloc)
   end

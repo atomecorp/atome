@@ -1,0 +1,7 @@
+module BrowserHelper
+  def self.anim_convertor: -> untyped
+
+  def self.anim_value_analysis: -> untyped
+
+  def self.send_anim_to_js: -> untyped
+end

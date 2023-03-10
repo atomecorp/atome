@@ -1,6 +1,14 @@
 module Atome
   VERSION: String
   # See the writing guide of rbs: https://github.com/ruby/rbs#guides
+  def *: -> untyped
+
+  def +: -> untyped
+
+  def -: -> untyped
+
+  def /: -> untyped
+
   def add: -> untyped
 
   def add_to_array: -> untyped
@@ -25,6 +33,8 @@ module Atome
 
   def build_sanitizer: -> untyped
 
+  def calculate_sha: -> untyped
+
   def circle: -> untyped
 
   def detach_atome: -> untyped
@@ -32,6 +42,8 @@ module Atome
   def each_with_index: -> untyped
 
   def format_matrix: -> untyped
+
+  def geolocation: -> untyped
 
   def get_column: -> untyped
 
@@ -41,9 +53,13 @@ module Atome
 
   def matrix: -> untyped
 
+  def ping: -> untyped
+
   def set: -> untyped
 
   def sort_callback: -> untyped
+
+  def up?: -> untyped
 
   def visuals: -> untyped
 

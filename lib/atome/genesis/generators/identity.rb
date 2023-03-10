@@ -23,10 +23,6 @@ new({ sanitizer: :attach }) do |parents_ids|
     parents_found.atome[:attached] = [] unless parents_found.atome[:attached]
     parents_found.atome[:attached] << atome[:id]
   end
-  # atome[:parents]=atome[:parents] | parents_ids
-  # atome[:parents].concat(parents_ids).uni
-  # puts "==> #{id} : #{self}"
-  # puts "====> id : #{id}, #{parents_ids} #{atome[:parents]}, #{atome[:parents].class} : #{atome[:parents].class}"
   parents_ids
 end
 
@@ -51,8 +47,6 @@ new({ sanitizer: :attached }) do |children_ids|
                            end
     child_type_container << child_id
     # TODO : factorise the code above
-
-    # child_found.family(parents_found)
     child_found.atome[:attach] = [parents_found]
   end
 end
@@ -67,33 +61,12 @@ new({ sanitizer: :detached }) do |values|
   else
     detach_atome(values)
     # we sanitize the values so it always return an array to the renderer
-    values=[values]
+    values = [values]
   end
   values
 end
 
 new({ particle: :type })
-
-# new({ particle: :parents })
-# new({ sanitizer: :parents }) do |params|
-#   params = [params] unless params.instance_of? Array
-#   sanitized_params = []
-#   params.each do |parents_id|
-#     parents_id = parents_id.value if parents_id.instance_of? Atome
-#     sanitized_params << parents_id
-#     parents_found = grab(parents_id)
-#     # TODO : factorise the code below
-#     current_type = atome[:type]
-#     parents_found.atome[current_type] = [] unless parents_found.atome[current_type]
-#     parents_found.atome[current_type] << atome[:id]
-#     # TODO : factorise the code above
-#     # TODO : check if we can remove the family
-#     family(parents_id)
-#   end
-#   sanitized_params
-# end
-
-# new({ particle: :family })
 new({ particle: :id })
 new({ sanitizer: :id }) do |params|
   if @atome[:id] != params

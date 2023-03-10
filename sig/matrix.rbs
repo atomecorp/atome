@@ -1,0 +1,5 @@
+module Matrix
+  def cell: -> untyped
+
+  def content: -> untyped
+end
