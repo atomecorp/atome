@@ -60,7 +60,6 @@
 # TODO : URGENT thes a confusion in the framework between variables and id if the name is the same
 # FIXME: touch is unreliable try touch demo some object are not affected
 
-
 # require 'src/medias/rubies/examples/schedule'
 # require 'src/medias/rubies/examples/time'
 # require 'src/medias/rubies/examples/code'
@@ -86,8 +85,5 @@
 # require 'src/medias/rubies/examples/atome_new'
 # require 'src/medias/rubies/examples/link'
 # require 'src/medias/rubies/examples/monitoring'
-require 'src/medias/rubies/examples/materials'
+# require 'src/medias/rubies/examples/materials'
 # require 'src/medias/rubies/examples/_audio'
-
-
-

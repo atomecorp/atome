@@ -15,19 +15,24 @@ task :re_build do
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
-  `gem cleanup atome;yes | gem uninstall atome;gem build atome.gemspec;gem install atome --local`
-  `cd test/test_app;atome update`
+  `cd test/test_app;atome update;atome run compile`
+  `rake build`
+  `cd pkg; gem install atome --local`
   puts 'solution re-build!'
   # `cd test/test_app;atome update;atome run`
 end
 
 task :run_browser do
-  FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
-  FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
-  FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
-  `gem cleanup atome;yes | gem uninstall atome;gem build atome.gemspec;gem install atome --local`
-  `cd test/test_app;atome update;atome run compile`
+  # FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
+  # FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
+  # FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
+  # `cd test/test_app;atome update;atome run compile`
+  `open test/test_app/src/index.html`
   puts 'atome browser is running'
+end
+
+task :cleanup do
+  `gem cleanup atome;yes | gem uninstall atome;cd pkg`
 end
 
 
@@ -35,7 +40,7 @@ task :test_server do
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
-  `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;gem install atome --local`
+  `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;cd pkg; gem install atome --local`
   `cd test/test_app;atome update;atome run server`
 end
 
@@ -50,7 +55,7 @@ task :refresh do
   puts "refreshed!"
 end
 
-task :open_browser do
+task :open_server do
 `open http://127.0.0.1:1430/`
 end
 
@@ -60,9 +65,9 @@ task :run_example_server do
 end
 
 
-task :taurification do
-  `cd test/test_app;cargo tauri dev`
-end
+# task :taurification do
+#   `cd test/test_app;cargo tauri dev`
+# end
 
 task :osx do
   `cd test/test_app;atome run osx guard`
