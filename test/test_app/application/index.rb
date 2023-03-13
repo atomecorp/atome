@@ -87,3 +87,16 @@
 # require 'src/medias/rubies/examples/monitoring'
 # require 'src/medias/rubies/examples/materials'
 # require 'src/medias/rubies/examples/_audio'
+
+
+
+b=box
+b.drop(true) do |e|
+  puts "e is : #{e}"
+end
+
+c=circle({ drag: true, left: 333, id: :the_c_1 })
+c=circle({ drag: true,color: :red, top: 333, id: :the_c_2 })
+alert b.drop
+
+

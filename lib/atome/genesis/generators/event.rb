@@ -21,10 +21,20 @@ new({particle: :on })
 new({particle: :fullscreen })
 new({particle: :mute })
 new({particle: :drag })
+
 new({ sanitizer: :drag }) do |params|
   params = { move: true } if params == true
   params
 end
+
+new ({particle: :drop})
+
+new ({sanitizer: :drop}) do |params|
+  params = { action: true } if params == true
+  params
+end
+
+
 new({particle: :sort }) do |_value, sort_proc|
   @sort_proc = sort_proc
 end

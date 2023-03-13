@@ -3,6 +3,8 @@
 # for browser rendering
 
 module BrowserHelper
+
+  # drag helper
   def self.browser_drag_move(params, atome_id, atome, proc)
     atome.drag_move_proc = proc
     atome_js.JS.drag(params, atome_id, atome)
@@ -36,4 +38,5 @@ module BrowserHelper
   def self.browser_drag_end(_params, _atome_id, atome, proc)
     atome.drag_end_proc = proc
   end
+
 end

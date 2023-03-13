@@ -62,6 +62,14 @@ generator.build_render(:browser_drag) do |options, proc|
   end
 end
 
+generator.build_render(:browser_drop) do |options, proc|
+  # puts "method : #{options}, params : #{options}"
+  options.each do |method, params|
+    atome_id = @atome[:id]
+    BrowserHelper.send("browser_drop_#{method}", params, atome_id, self, proc)
+  end
+end
+
 generator.build_render(:browser_sort) do |options, _proc|
   atome_js.JS.sort(options, @atome[:id], self)
 end
