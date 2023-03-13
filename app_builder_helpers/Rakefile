@@ -108,12 +108,27 @@ def build_user_code(user_project_path, source_code)
   application_js = "#{user_project_path}/src/js/application.js"
   builder = Opal::Builder.new
   builder.append_paths("#{user_project_path}/")
-  application_content = builder.build(source_code).to_s
 
+  system_infos = builder.build("#{source_code}/src/utilities/mode.rb").to_s
+
+  # aui = builder.build("#{source_code}/aui.rb").to_s
+  application_content = builder.build("#{source_code}/application/index.rb").to_s
+
+  # full_app=aui+"\n"+system_infos+"\n"+application_content
   File.open(application_js, 'w') do |f|
     f.puts application_content
   end
   # minimize_application(user_project_path)
+end
+
+def build_system_infos(user_project_path, source_code)
+  system_infos_js = "#{user_project_path}/src/js/infos.js"
+      builder = Opal::Builder.new
+  builder.append_paths("#{user_project_path}/")
+  system_infos = builder.build("#{source_code}/src/utilities/mode.rb").to_s
+  File.open(system_infos_js, 'w') do |f|
+    f.puts system_infos
+  end
 end
 
 def minimize_aui(user_project_path)
@@ -220,15 +235,17 @@ end
 
 task :build_user_code, :user_project_path, :production do |_t, args|
   user_project_path = args[:user_project_path]
-  source_code = "#{user_project_path}/application/index.rb"
+  source_code = "#{user_project_path}"
+  build_system_infos(user_project_path, source_code)
   build_user_code(user_project_path, source_code)
 end
 
 task :system_builder, :user_project_path, :production do |_t, args|
   user_project_path = args[:user_project_path]
   production = args[:production]
-  source_code = '../vendor/assets/application/index.rb'
+  source_code = '../vendor/assets'
   build_common_libraries(user_project_path, production)
+  build_system_infos(user_project_path, source_code)
   build_user_code(user_project_path, source_code)
 
   # TODO: catch and message to user when when there's no force and folder already exist

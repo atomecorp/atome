@@ -215,6 +215,21 @@ if ARGV.include?('guard')
   end
 end
 
+def set_atome_mode(location, mode)
+  mode_file = "#{location}/src/utilities/mode.rb"
+  file_found = File.open(mode_file)
+  atome_mode=<<STR
+    class Atome
+      def self.mode
+        :#{mode}
+      end
+    end
+STR
+  File.open(file_found, 'w') do |f|
+    f.puts atome_mode
+  end
+end
+
 if ARGV.include?('run')
   path = if location != '/'
            "#{`pwd`.chomp}/#{location}"
@@ -224,18 +239,24 @@ if ARGV.include?('run')
 
   case build_target
   when 'android'
+    set_atome_mode(path,'tauri')
     # TODO: write code here
   when 'browser'
+    set_atome_mode(path,'browser')
     run_application(:browser, path)
   when 'freebsd'
+    set_atome_mode(path,'native')
     # TODO: write code here
   when 'ios'
+    set_atome_mode(path,'tauri')
     # TODO: write code here
   when 'linux'
     # TODO: write code here
   when 'osx'
+    set_atome_mode(path,'tauri')
     run_application(:osx, path)
   when 'server'
+    set_atome_mode(path,'server')
     config_location = "#{path}/server/config.ru"
     file = File.open(config_location)
     text = file.read

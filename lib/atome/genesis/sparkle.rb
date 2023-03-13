@@ -19,8 +19,10 @@ end
 default_render = Essentials.default_params[:render_engines]
 
 Universe.current_user = :jeezs
-puts "application identity: #{Universe.app_identity}"
 puts "atome version: #{Atome::VERSION}"
+# puts "application identity: #{Universe.app_identity}"
+puts "application identity:  #{Atome::aui}"
+puts "application mode:  #{Atome.mode}"
 puts "current host: #{Universe.current_machine}"
 puts "current user: #{Universe.current_user}"
 puts "current server: #{Universe.current_server}"

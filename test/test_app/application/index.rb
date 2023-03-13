@@ -92,11 +92,61 @@
 
 b=box
 b.drop(true) do |e|
+  alert :poi
   puts "e is : #{e}"
 end
 
 c=circle({ drag: true, left: 333, id: :the_c_1 })
 c=circle({ drag: true,color: :red, top: 333, id: :the_c_2 })
-alert b.drop
+# alert b.drop
+baby=box({id: :dropzone, color: :red, left: 300, top: 300})
+baby.drop(true) do |e|
+  alert :kool
 
+end
+`
+  let dropzone = document.getElementById('dropzone');
+    dropzone.addEventListener('dragover', handleDragOver);
+    dropzone.addEventListener('drop', handleDroppped_file);
+
+    function handleDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+        dropzone.style.backgroundColor = '#eee';
+ console.log("ok")
+
+///////
+
+  let files = event.dataTransfer.files;
+        for (let i = 0; i < files.length; i++) {
+            console.log(files[i].name);
+            // ici vous pouvez traiter chaque fichier récupéré, par exemple :
+            let reader = new FileReader();
+            reader.readAsDataURL(files[i]);
+            reader.onload = function() {
+                console.log(reader.result);
+            };
+        }
+///////
+
+
+
+    }
+
+    function handleDroppped_file(event) {
+        event.preventDefault();
+alert('ok');
+        dropzone.style.backgroundColor = '#fff';
+        let files = event.dataTransfer.files;
+        for (let i = 0; i < files.length; i++) {
+            console.log(files[i].name);
+            // ici vous pouvez traiter chaque fichier récupéré, par exemple :
+            let reader = new FileReader();
+            reader.readAsDataURL(files[i]);
+            reader.onload = function() {
+                console.log(reader.result);
+            };
+        }
+    }
+`
 

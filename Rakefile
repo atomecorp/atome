@@ -15,7 +15,7 @@ task :re_build do
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
-  `cd test/test_app;atome update;atome run compile`
+  `cd test/test_app;atome update`
   `rake build`
   `cd pkg; gem install atome --local`
   puts 'solution re-build!'
