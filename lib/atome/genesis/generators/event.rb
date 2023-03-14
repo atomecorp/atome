@@ -35,6 +35,13 @@ new ({sanitizer: :drop}) do |params|
 end
 
 
+new ({particle: :over})
+
+new ({sanitizer: :over}) do |params|
+  params = { action: true } if params == true
+  params
+end
+
 new({particle: :sort }) do |_value, sort_proc|
   @sort_proc = sort_proc
 end

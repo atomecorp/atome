@@ -11,10 +11,11 @@
     "version": "0.0.0"
   },
   "tauri": {
+    "fileDropEnabled": true,
     "allowlist": {
-      "all": false,
+      "all": true,
       "shell": {
-        "all": false,
+        "all": true,
         "open": true
       }
     },
