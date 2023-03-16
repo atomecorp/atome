@@ -53,9 +53,9 @@ class Atome
   end
 
   # drop callbacks
-  def drop_action_callback( id_found, full_event)
+  def drop_action_callback( data_found, _full_event)
     proc = @drop_action_proc
-    instance_exec({ id: id_found }, &proc) if proc.is_a?(Proc)
+    instance_exec(data_found, &proc) if proc.is_a?(Proc)
   end
 
   # drop callbacks

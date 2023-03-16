@@ -16,7 +16,7 @@ class Atome
     atomes.each_value do |elements|
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
-      # now we store the proc in a an atome's property called :bloc
+      # # now we store the proc in a an atome's property called :bloc
       elements[:code] = atomes_proc if atomes_proc
 
       @atome = elements

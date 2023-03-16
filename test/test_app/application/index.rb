@@ -88,73 +88,48 @@
 # require 'src/medias/rubies/examples/materials'
 # require 'src/medias/rubies/examples/_audio'
 
-
-
-b=box
-b.drop(true) do |e|
-  # alert :poi
-  puts "e is : #{e}"
-end
-
-
-b.over(true) do |e|
-  puts "object over is : #{e}"
-end
-c=circle({ drag: true, left: 333, id: :the_c_1 })
-circle({ drag: true,color: :orange, top: 333, id: :the_c_2 })
-# alert b.drop
+# baby=box({id: :dragoverZone, color: :cyan, left: 300, top: 300})
+# baby.drop(true) do |e|
+#   puts :kool
+#
+# end
+#
+# b=box
+# b.drop(true) do |e|
+#   puts "e is : #{e}"
+# end
+# b.drag(true) do |e|
+#   # puts :koooooll
+# end
+#
+# b.over(true) do |e|
+#   puts "object over is : #{e}"
+# end
+# c=circle({  left: 333, id: :the_c_1 })
+# c2=circle({ color: :orange, top: 333, id: :the_c_2 })
+# c.drag(true) do |e|
+#   # puts "ok it's ok!"
+# end
+#
+# c2.drag(true) do |e|
+#   # puts "ok always ok!"
+# end
+#
+#
 # baby=box({id: :dropzone, color: :red, left: 300, top: 300})
 # baby.drop(true) do |e|
 #   puts :kool
 #
 # end
+b=box({id: :droper})
+b.drop(true) do |event, er|
+  puts "reveived : #{event}, #{er}"
+end
 
-
-
-# `
-#    let dropzone = document.getElementById('dropzone');
-#     dropzone.addEventListener('dragover', handleDragOver);
-#     dropzone.addEventListener('drop', handleDroppped_file);
-#
-#     function handleDragOver(event) {
-#         event.preventDefault();
-#         event.dataTransfer.dropEffect = 'copy';
-#         dropzone.style.backgroundColor = '#eee';
-#         console.log(event)
-#
-# ///////
-#
-#         // let files = event.dataTransfer.files;
-#         // for (let i = 0; i < files.length; i++) {
-#         //     console.log(files[i].name);
-#         //     // ici vous pouvez traiter chaque fichier récupéré, par exemple :
-#         //     let reader = new FileReader();
-#         //     reader.readAsDataURL(files[i]);
-#         //     reader.onload = function() {
-#         //         console.log(reader.result);
-#         //     };
-#         // }
-# ///////
-#
-#
-#
-#     }
-#
-#     function handleDroppped_file(event) {
-#         event.preventDefault();
-#         alert('ok');
-#         dropzone.style.backgroundColor = '#fff';
-#         let files = event.dataTransfer.files;
-#         for (let i = 0; i < files.length; i++) {
-#             console.log(files[i].name);
-#             // ici vous pouvez traiter chaque fichier récupéré, par exemple :
-#             let reader = new FileReader();
-#             reader.readAsDataURL(files[i]);
-#             reader.onload = function() {
-#                 console.log(reader.result);
-#             };
-#         }
-#     }
-# `
-
-
+b.over(true) do
+  puts 'so overlooked'
+end
+c=circle({ color: :orange, top: 333, id: :the_c_2 })
+c.drag(true) do |e|
+  # puts "ok it's ok!"
+end
