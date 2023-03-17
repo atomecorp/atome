@@ -66,29 +66,8 @@ function file_drop(atome_id, atome){
             reader.readAsDataURL(file);
             reader.onloadend = function () {
                 const base64data = reader.result;
-                // var decoded_content = atob(base64data.split(',')[1]);
-                // console.log(JSON.stringify(decoded_content));
-                // console.log(`File: ${file.filepath}`);
-                // console.log(`full type: ${file.type}`);
-                // console.log(`size: ${file.size}`);
-                var  type_found = file.type.split('/')[0]
-                // console.log(`type_found: ${type_found}`);
-                /// get image PNG for now
-                // create image element and set source to base64 encoded content
-                // const encodedText = btoa(decoded_content);
+                let  type_found = file.type.split('/')[0]
                 atome.$drop_action_callback(Opal.hash({path: file.filepath,type: type_found,size: file.size,data: base64data}));
-                // if (type_found == 'image'){
-                //     const img = document.createElement('img');
-                //     img.src=base64data
-                //     // img.src = 'data:'+file.type+ ';base64,'+ encodedText;
-                //     document.body.appendChild(img);
-                // }
-                // else if (type_found== 'text') {
-                //
-                // }
-                // else {
-                //     console.log('type_found is => '+type_found)
-                // }
             }
         }
     })

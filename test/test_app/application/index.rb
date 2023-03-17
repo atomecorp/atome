@@ -121,19 +121,42 @@
 #   puts :kool
 #
 # end
-
+###############@
 b=box({id: :droper})
-b.drop(true) do |event, er|
-  puts "reveived : #{event}, #{er}"
+b.drop(true) do |event_content|
+  puts "reveived : #{event_content}"
+  if event_content[:type]==:image
+    image({ path: event_content[:data] , drag: true,  width: 120})
+  end
+
+
 end
 
-b.over(true) do
-  puts 'so overlooked'
-end
+# b.over(true) do
+#   puts 'so overlooked'
+# end
 c=circle({ color: :orange, top: 333, id: :the_c_2 })
-c.drag(true) do |e|
-  # puts "ok it's ok!"
+c.drag(true)
+# #############
+b=circle({left: 333, id: :the_c})
+b.touch(true) do
+  self.color(:blue)
 end
-# require 'securerandom'
-SecureRandom.uuid
+
+b.touch(:long) do
+  self.color(:red)
+
+end
+
+b.over(:enter) do
+  c.color(:red)
+  self.color(:black)
+
+end
+
+b.over(:leave) do
+
+  self.color(:blue)
+end
+
 

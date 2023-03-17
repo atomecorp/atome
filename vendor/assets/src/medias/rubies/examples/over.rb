@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-b=circle
+b=circle({left: 333, id: :the_c})
 b.touch(true) do
   self.color(:blue)
 end
@@ -11,9 +11,12 @@ b.touch(:long) do
 end
 
 b.over(:enter) do
-  self.color(:red)
+  c.color(:red)
+  self.color(:black)
+
 end
 
 b.over(:leave) do
+
   self.color(:blue)
 end

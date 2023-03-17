@@ -16,6 +16,15 @@ generator.build_render(:browser_over) do |value, proc|
   BrowserHelper.send("browser_over_#{value}", @browser_object,self, proc)
 end
 
+# generator.build_render(:browser_over) do |options, proc|
+#   # puts "method : #{options}, params : #{options}"
+#   options.each do |method, params|
+#     atome_id = @atome[:id]
+#     BrowserHelper.send("browser_over_#{method}", params, atome_id, self, proc)
+#   end
+# end
+
+
 generator.build_render(:browser_play) do |value, proc|
   # first we reinit the 'at' event so the condition will be met again
   # @at_time[:used] = nil
@@ -70,14 +79,6 @@ generator.build_render(:browser_drop) do |options, proc|
   end
 end
 
-
-generator.build_render(:browser_over) do |options, proc|
-  # puts "method : #{options}, params : #{options}"
-  options.each do |method, params|
-    atome_id = @atome[:id]
-    BrowserHelper.send("browser_over_#{method}", params, atome_id, self, proc)
-  end
-end
 
 generator.build_render(:browser_sort) do |options, _proc|
   atome_js.JS.sort(options, @atome[:id], self)

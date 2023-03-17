@@ -59,9 +59,12 @@ class Atome
   end
 
   # drop callbacks
-  def over_action_callback( id_found, full_event)
-    proc = @over_action_proc
-    instance_exec({ id: id_found }, &proc) if proc.is_a?(Proc)
+  def enter_action_callback(proc)
+    instance_exec( &proc) if proc.is_a?(Proc)
+  end
+
+  def leave_action_callback(proc)
+    instance_exec( &proc) if proc.is_a?(Proc)
   end
 
 

@@ -64,5 +64,5 @@ new({particle: :velocity })
 new({particle: :repeat })
 new({particle: :ease })
 new({particle: :unbind })
-new({particle: :over })
+# new({particle: :over })
 
