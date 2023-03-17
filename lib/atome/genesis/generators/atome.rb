@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 new({ atome: :color, type: :hash })
 
 new({ sanitizer: :color }) do |params|

@@ -114,13 +114,14 @@
 # c2.drag(true) do |e|
 #   # puts "ok always ok!"
 # end
-#
+
 #
 # baby=box({id: :dropzone, color: :red, left: 300, top: 300})
 # baby.drop(true) do |e|
 #   puts :kool
 #
 # end
+
 b=box({id: :droper})
 b.drop(true) do |event, er|
   puts "reveived : #{event}, #{er}"
