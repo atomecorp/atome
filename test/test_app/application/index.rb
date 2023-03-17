@@ -151,12 +151,16 @@ end
 b.over(:enter) do
   c.color(:red)
   self.color(:black)
-
+  puts 'entering'
+  # c.left(c.left+1)
+  # puts c.left
 end
 
 b.over(:leave) do
 
   self.color(:blue)
+  puts 'leaving'
+
 end
 
 
