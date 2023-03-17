@@ -134,3 +134,6 @@ c=circle({ color: :orange, top: 333, id: :the_c_2 })
 c.drag(true) do |e|
   # puts "ok it's ok!"
 end
+# require 'securerandom'
+SecureRandom.uuid
+

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'fileutils'
+require 'securerandom'
 require 'atome/version'
 require 'atome/genesis/genesis'
 require 'atome/kernel/essentials'
