@@ -28,12 +28,12 @@ puts "current user: #{Universe.current_user}"
 puts "current server: #{Universe.current_server}"
 
 Atome.new(
-  { element: { renderers: [], id: :eDen, type: :element } }
+  { element: { renderers: [], id: :eDen, type: :element , tag: {system: true}} }
 )
 
 Atome.new(
-  { element: { renderers: [], id: :user_view, type: :element,
-               attach: [:eDen] } }
+  { element: { renderers: [], id: :user_view, type: :element, tag: {system: true},
+attach: [:eDen] } }
 )
 
 # color creation
@@ -72,11 +72,11 @@ Atome.new(
 # the black_matter is used to store un materialized atomes
 Atome.new(
   { shape: { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
-             left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden
+             left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: {system: true}
   } })
 # view port
 Atome.new(
-  { shape: { renderers: default_render, id: :view, type: :shape, attach: [:user_view],
+  { shape: { renderers: default_render, id: :view, type: :shape, attach: [:user_view], tag: {system: true},
              attached: :view_color, left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
   }
   }

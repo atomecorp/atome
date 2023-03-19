@@ -32,7 +32,7 @@ wait 0.5 do
   end
 end
 
-puts a.monitor
+puts "bb monitor is #{bb.monitor}"
 
 # test 2
 aa = text({ data: 'touch me and look in the console', top: 99, width: 399, left: 120 })

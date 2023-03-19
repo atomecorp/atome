@@ -60,6 +60,7 @@ class Atome
   end
 
   def build_option(method_name, &method_proc)
+    #puts "2 => #{method_name}"
     Universe.add_optional_method(method_name.to_sym, &method_proc)
   end
 end

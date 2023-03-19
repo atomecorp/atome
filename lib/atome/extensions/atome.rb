@@ -26,7 +26,9 @@ def identity_generator(type = :element)
 end
 
 def grab(atome_to_get)
+  # puts "======+> #{atome_to_get} : #{atome_to_get.class}"
   atome_to_get = atome_to_get.value if atome_to_get.instance_of? Atome
+
   Universe.atomes[atome_to_get]
 end
 
@@ -43,11 +45,11 @@ def matrix(params = {}, &proc)
 end
 
 # the method below generate Atome method creation at Object level
-def create_method_at_object_level(element)
-
-  Object.define_method element do |params, &user_proc|
-    default_parent=Essentials.default_params[element][:attach][0] # we get the first parents
-    grab(default_parent).send(element, params, &user_proc)
-  end
-
-end
+# def create_method_at_object_level(element)
+#
+#   Object.define_method element do |params, &user_proc|
+#     default_parent=Essentials.default_params[element][:attach][0] # we get the first parents
+#     grab(default_parent).send(element, params, &user_proc)
+#   end
+#
+# end

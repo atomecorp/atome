@@ -30,6 +30,7 @@ new({ pre: :style }) do |styles_send, _user_proc|
   end
 end
 new({ particle: :hide })
+
 new({ particle: :remove }) do |particle_to_remove|
   case particle_to_remove
   when :color

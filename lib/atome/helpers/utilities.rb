@@ -137,15 +137,15 @@ class Atome
     collapse
   end
 
-  def collector(params = {}, &bloc)
-    atome_type = :collector
-    # generated_render = params[:renderers] || []
-    # generated_id = params[:id] || identity_generator(atome_type)
-    #
-    # generated_parents = params[:parents] || [id.value]
-    params = atome_common(atome_type, params)
-    Batch.new({ atome_type => params }, &bloc)
-  end
+  # def collector(params = {}, &bloc)
+  #   atome_type = :collector
+  #   # generated_render = params[:renderers] || []
+  #   # generated_id = params[:id] || identity_generator(atome_type)
+  #   #
+  #   # generated_parents = params[:parents] || [id.value]
+  #   params = atome_common(atome_type, params)
+  #   Batch.new({ atome_type => params }, &bloc)
+  # end
 
   def each(&proc)
     value.each do |val|
@@ -167,14 +167,14 @@ class Atome
       # elsif value[range].instance_of?(Atome)
       #   return value[range]
     elsif value[range].instance_of?(Array)
-      collector_object = Object.collector({})
-      collected_atomes = []
-      value[range].each do |atome_found|
-        collected_atomes << atome_found
-      end
-      collector_object.data(collected_atomes)
-
-      return collector_object
+      # collector_object = Object.collector({})
+      # collected_atomes = []
+      # value[range].each do |atome_found|
+      #   collected_atomes << atome_found
+      # end
+      # collector_object.data(collected_atomes)
+      Batch.new(value[range])
+      # return collector_object
     end
 
   end

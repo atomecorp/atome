@@ -19,7 +19,9 @@ class Universe
 
     def add_optional_method(method_name, &method_proc)
       # this method is used to add optional methods
+      # puts "3 => #{method_name}"
       instance_variable_get('@options').merge!({ method_name => method_proc })
+      # puts "====> #{instance_variable_get('@options')[method_name]}"
     end
 
     def get_optional_method(method_name)

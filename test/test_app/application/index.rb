@@ -60,7 +60,36 @@
 # TODO : URGENT thes a confusion in the framework between variables and id if the name is the same
 # FIXME: touch is unreliable try touch demo some object are not affected
 
-# require 'src/medias/rubies/examples/schedule'
+class Object
+  # the method missing below is used to create some atome at Object level, EG : text(:hello)
+  # We made an exception for the color atome that shouldn't be attach to the view unless specified
+  def method_missing(method, *args, &block)
+    args.each do |atome_found|
+      args.each do |arg|
+        # puts "====> the method missing is : #{method}"
+        default_parent = Essentials.default_params[method][:attach][0] # we get the first parents
+        # puts  "+++++++> #{default_parent}"
+
+        # grab(default_parent).send(element, params, &user_proc)
+        # grab(default_parent).send(method, arg, &block)
+
+        # create_method_at_object_level(element)
+        atome_found = grab(default_parent).send(method, arg, &block)
+        ##### works below
+        # if method != :color
+        #   atome_found=   grab(:view).send(method, arg, &block)
+        # else
+        #   atome_found=    grab(:black_matter).send(method, arg, &block)
+        # end
+        ##### works above
+        # we force then return of atome found else its return an hash # TODO : we may find a cleaner solution
+        return atome_found
+      end
+    end
+  end
+end
+
+# require 'src/medias/rubies/examples/schedule'#
 # require 'src/medias/rubies/examples/time'
 # require 'src/medias/rubies/examples/code'
 # require 'src/medias/rubies/examples/text'
@@ -85,82 +114,66 @@
 # require 'src/medias/rubies/examples/atome_new'
 # require 'src/medias/rubies/examples/link'
 # require 'src/medias/rubies/examples/monitoring'
+# require 'src/medias/rubies/examples/detached'
 # require 'src/medias/rubies/examples/materials'
 # require 'src/medias/rubies/examples/_audio'
 
-# baby=box({id: :dragoverZone, color: :cyan, left: 300, top: 300})
-# baby.drop(true) do |e|
-#   puts :kool
-#
-# end
-#
-# b=box
-# b.drop(true) do |e|
-#   puts "e is : #{e}"
-# end
-# b.drag(true) do |e|
-#   # puts :koooooll
-# end
-#
-# b.over(true) do |e|
-#   puts "object over is : #{e}"
-# end
-# c=circle({  left: 333, id: :the_c_1 })
-# c2=circle({ color: :orange, top: 333, id: :the_c_2 })
-# c.drag(true) do |e|
-#   # puts "ok it's ok!"
-# end
-#
-# c2.drag(true) do |e|
-#   # puts "ok always ok!"
-# end
+############################# # find  test
 
-#
-# baby=box({id: :dropzone, color: :red, left: 300, top: 300})
-# baby.drop(true) do |e|
-#   puts :kool
-#
-# end
-###############@
-b=box({id: :droper})
-b.drop(true) do |event_content|
-  puts "reveived : #{event_content}"
-  if event_content[:type]==:image
-    image({ path: event_content[:data] , drag: true,  width: 120})
-  end
+box({ id: :b1 })
+box({ id: :b2, left: 220 })
+box({ id: :b3, left: 340 })
 
+new({ atome: :find })
+new({ particle: :query, render: false })
+new({ particle: :result, render: false })
+new({ pre: :query }) do |params|
+  result("we must treat : #{params}")
+end
+new({ particle: :batch, render: false })
+new({ sanitizer: :batch }) do |params|
+  Batch.new(params)
+  # puts "index msg : we must treat the batch : #{params}"
 
 end
 
-# b.over(true) do
-#   puts 'so overlooked'
-# end
-c=circle({ color: :orange, top: 333, id: :the_c_2 })
-c.drag(true)
-# #############
-b=circle({left: 333, id: :the_c})
-b.touch(true) do
-  self.color(:blue)
+# new({ particle: :tag , render: false, type: :hash})
+
+a = grab(:view).find({ query: [:item1, :item2] })
+puts "index msg : #{a.query.value}"
+puts "index msg : #{a.result.value}"
+# TODO : we may remove the collector
+# a.collector({id: :batch1, data: [:b1, :b2]})
+
+# puts a.collector.color(:red)
+# puts a.collector.poil(:red)
+
+# tag
+a.tag({ color: :red })
+a.tag({ star: 4 })
+a.add({ tag: { value: 4 } })
+# puts "index msg : a tag : #{a.tag}"
+# puts " index msg : view tag : #{grab(:view).tag}"
+
+# batch
+
+a.batch([:b1, :b2])
+puts "----- batch ------"
+puts "=> the batch found is #{a}"
+# p a.batch.value
+a.batch.color(:red).top(0).rotate(33)
+
+a.batch.each do |el|
+  el.height(77).blur(9)
 end
 
-b.touch(:long) do
-  self.color(:red)
-
-end
-
-b.over(:enter) do
-  c.color(:red)
-  self.color(:black)
-  puts 'entering'
-  # c.left(c.left+1)
-  # puts c.left
-end
-
-b.over(:leave) do
-
-  self.color(:blue)
-  puts 'leaving'
-
-end
-
-
+# find(include: ({color: [:red, :blue], left: 333}))
+#
+# { equal: { color: [:red, :blue], left: [333] },
+#   superior: {top: [333, 22]}
+#
+# }
+# include
+# inferior
+# different
+# imposed

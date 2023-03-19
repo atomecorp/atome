@@ -9,5 +9,5 @@ puts b.attached
 b.touch(true) do
   b.detached(:inactive_color)
   b.attached(:active_color)
-  puts b.attached
+  puts "detached objects are : #{b.attached}"
 end

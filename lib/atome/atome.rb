@@ -34,6 +34,8 @@ class Atome
         params = sanitize(element, params, &user_proc)
         create_particle(element, store, render)
         send("set_#{element}", params, &user_proc)
+      elsif element == :batch # TODO : find a better solution than a condition if possible
+        @atome[:batch]
       else
         get_particle(element, &user_proc)
       end
@@ -57,36 +59,14 @@ class Atome
       detached(current_atome)
       @atome[element] = []
     end
-
-
     # TODO :replace with the line below but need extensive testing as it crash some demos ex: animation
     params = atome_common(element, params)
-    # ############ code to remove below
-    # parent_found = found_parents_and_renderers[:parent]
-    # render_found = found_parents_and_renderers[:renderers]
-    # default_params = Essentials.default_params[element] || {}
-    # generated_id = params[:id] || identity_generator(element)
-    #
-    # default_params = { renderers: render_found, id: generated_id, type: element,
-    #                    attach: parent_found }.merge(default_params)
-    # params = default_params.merge(params).merge({ clones: [] })
-    # ############ code to remove above
-    # puts params[:renderers]
-    # puts params[:id]
-    # new_params= {renderers: params[:renderers], id:  params[:id]}.merge(params)
-    #
-    # params=new_params
-    # puts "new_params : #{params}"
-    ###
-    ###
-    # puts "params :\n #{params}\n\n, params2 :\n #{params2}"
     run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
   end
 
   def new_atome(element, &method_proc)
-
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
       if params
@@ -95,6 +75,7 @@ class Atome
       else
         get_atome(element, &user_proc)
       end
+
     end
 
     # the method define below is the fastest params are passed directly
@@ -107,8 +88,7 @@ class Atome
       new_atome
     end
     # the method below generate Atome method creation at Object level
-    create_method_at_object_level(element)
-
+    # create_method_at_object_level(element)
   end
 
   def new_render_engine(renderer_name, &method_proc)
@@ -120,6 +100,12 @@ class Atome
   def run_optional_proc(proc_name, atome = self, params, &user_proc)
     # params = instance_variable_get("@#{element}")
     option_found = Universe.get_optional_method(proc_name)
+
+    # if option_found.is_a?(Proc)
+    #   # alert  "#{proc_name} : #{params} "
+    # else
+    #   puts "proc_name : #{proc_name}, \noption_found : (#{option_found})"
+    # end
     atome.instance_exec(params, user_proc, atome, &option_found) if option_found.is_a?(Proc)
   end
 
@@ -145,9 +131,9 @@ class Atome
     store_code_bloc(element, &user_proc) if user_proc
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
-    run_optional_proc("pre_render_#{element}".to_sym, self, params, &user_proc)
+    run_optional_proc("pre_render_#{element}", self, params, &user_proc)
     rendering(element, params, &user_proc) if render
-    run_optional_proc("post_render_#{element}".to_sym, self, params, &user_proc)
+    run_optional_proc("post_render_#{element}", self, params, &user_proc)
     broadcasting(element)
     store_value(element) if store
     self
