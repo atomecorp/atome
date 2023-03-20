@@ -57,5 +57,10 @@ new({ particle: :cursor })
 new({ particle: :preset })
 new({ particle: :relations, type: :hash })
 new({ particle: :tag , render: false, type: :hash})
+new({ particle: :batch, render: false })
+new({ sanitizer: :batch }) do |params|
+  Batch.new(params)
+  # puts "index msg : we must treat the batch : #{params}"
 
+end
 

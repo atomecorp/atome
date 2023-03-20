@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+
+class Object
 def new(params, &bloc)
   generator = Genesis.generator
   if params.key?(:particle)
@@ -44,6 +46,20 @@ def matrix(params = {}, &proc)
   grab(:view).matrix(params, &proc)
 end
 
+
+def method_missing(method, *args, &block)
+  args.each do |atome_found|
+    args.each do |arg|
+      default_parent = Essentials.default_params[method][:attach][0] # we get the first parents
+      # create_method_at_object_level(element)
+      atome_found = grab(default_parent).send(method, arg, &block)
+      # we force then return of atome found else its return an hash # TODO : we may find a cleaner solution
+      return atome_found
+    end
+  end
+end
+
+
 # the method below generate Atome method creation at Object level
 # def create_method_at_object_level(element)
 #
@@ -53,3 +69,4 @@ end
 #   end
 #
 # end
+end
