@@ -37,7 +37,9 @@ class Atome
       elsif element == :batch # TODO : find a better solution than a condition if possible
         @atome[:batch]
       else
-        get_particle(element, &user_proc)
+        # alert :ok
+        @atome[element]
+        # get_particle(element, &user_proc)
       end
     end
   end
@@ -52,7 +54,7 @@ class Atome
 
   def atome_parsing(element, params, &user_proc)
     params = sanitize(element, params)
-    current_atome = send(element).value
+    current_atome = send(element)
 
     # The condition below check if we need to add or replace the newly created atome
     if current_atome && !(@atome[:add] && @atome[:add][element])
@@ -73,7 +75,7 @@ class Atome
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         atome_parsing(element, params, &user_proc)
       else
-        get_atome(element, &user_proc)
+        @atome[element]
       end
 
     end
@@ -149,23 +151,7 @@ class Atome
     @atome[element]
   end
 
-  def get_particle(element, &user_proc)
-    virtual_atome = Atome.new({})
-    virtual_atome.value = (@atome[element])
-    virtual_atome.real_atome = @atome
-    virtual_atome.property = element
-    virtual_atome.user_proc = user_proc
-    virtual_atome
-  end
 
-  def get_atome(element, &user_proc)
-    virtual_atome = Atome.new({})
-    virtual_atome.real_atome = @atome
-    virtual_atome.property = element
-    virtual_atome.user_proc = user_proc
-    virtual_atome.value = @atome[element]
-    virtual_atome
-  end
 
   Universe.connected
 end

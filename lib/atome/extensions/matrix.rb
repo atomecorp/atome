@@ -78,7 +78,7 @@ module Matrix
         cells_in_column = get_column_or_row(number_of_cells, @columns, column_to_alter, true)
         cells_to_alter = cells_in_column[value[0]..value[1]]
         cells_to_alter.each_with_index do |cell_nb, index|
-          current_cell = grab("#{id.value}_#{cell_nb}")
+          current_cell = grab("#{id}_#{cell_nb}")
           # puts "==> current cell is #{id}"
           if index.zero?
             current_cell.height(cell_height * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
@@ -95,7 +95,7 @@ module Matrix
         cells_to_alter = cells_in_column[value[0]..value[1]]
 
         cells_to_alter.each_with_index do |cell_nb, index|
-          current_cell = grab("#{id.value}_#{cell_nb}")
+          current_cell = grab("#{id}_#{cell_nb}")
           if index.zero?
             current_cell.width(cell_width * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
           else
@@ -114,10 +114,10 @@ module Matrix
         #  we get the nth first element
         cells_to_alter = cells_in_column.take(value)
         cells_in_column.each_with_index do |cell_nb, index|
-          current_cell = grab("#{id.value}_#{cell_nb}")
+          current_cell = grab("#{id}_#{cell_nb}")
           if cells_to_alter.include?(cell_nb)
             current_cell.height(@matrix_height / value - (@margin + value))
-            current_cell.top(current_cell.height.value * index + @margin * (index + 1))
+            current_cell.top(current_cell.height * index + @margin * (index + 1))
           else
             current_cell.hide(true)
           end
@@ -129,10 +129,10 @@ module Matrix
         #  we get the nth first element
         cells_to_alter = cells_in_row.take(value)
         cells_in_row.each_with_index do |cell_nb, index|
-          current_cell = grab("#{id.value}_#{cell_nb}")
+          current_cell = grab("#{id}_#{cell_nb}")
           if cells_to_alter.include?(cell_nb)
             current_cell.width(@matrix_width / value - @margin - (@margin / value))
-            current_cell.left(current_cell.width.value * index + @margin * (index + 1))
+            current_cell.left(current_cell.width * index + @margin * (index + 1))
           else
             current_cell.hide(true)
           end
@@ -236,10 +236,10 @@ module Matrix
                    { particles: { margin: 9, color: :lightgray } }
                  end
     cells_color = cells_data[:particles].delete(:color)
-    cells_color_id = color(cells_color).id.value
+    cells_color_id = color(cells_color).id
 
     cells_shadow = cells_data[:particles].delete(:shadow)
-    cells_shadow_id = shadow(cells_shadow).id.value
+    cells_shadow_id = shadow(cells_shadow).id
 
     exceptions_data = params.delete(:exceptions)
     default_renderer = Essentials.default_params[:render_engines]
@@ -247,7 +247,7 @@ module Matrix
     # generated_render = params[:renderers] || default_renderer
     generated_id = params[:id] || identity_generator(:matrix)
     #
-    # generated_parents = params[:parents] || [id.value]
+    # generated_parents = params[:parents] || [id]
     # generated_children = params[:shape] || []
     # params = atome_common(atome_type,  params)
     params = atome_common(:matrix, params)
@@ -341,7 +341,7 @@ module Matrix
     new_nb_of_cells = prev_nb_of_cells + nb_of_cells_to_adds
     new_nb_of_cells.times do |index|
       if index < prev_nb_of_cells
-        grab("#{id.value}_#{index}").delete(true)
+        grab("#{id}_#{index}").delete(true)
         # puts index
         #
       end
@@ -366,7 +366,7 @@ module Matrix
     new_nb_of_cells = prev_nb_of_cells + nb_of_cells_to_adds
     new_nb_of_cells.times do |index|
       if index < prev_nb_of_cells
-        grab("#{id.value}_#{index}").delete(true)
+        grab("#{id}_#{index}").delete(true)
         # puts index
         #
       end
@@ -388,8 +388,8 @@ module Matrix
   def resize(width, height)
     @matrix_width = width
     @matrix_height = height
-    grab(id.value).width(width)
-    grab(id.value).height(height)
+    grab(id).width(width)
+    grab(id).height(height)
     format_matrix(id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
   end
 

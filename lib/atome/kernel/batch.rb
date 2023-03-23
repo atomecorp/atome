@@ -20,9 +20,9 @@ class Batch
   def initialize(params)
     # @id = params[:id] || identity_generator(:batch)
     # @data=params[:data]
-
     @data= params
     # Universe.add_to_atomes(@id, self)
+    # self
   end
 
   def dispatch (method, args, &block)
@@ -46,10 +46,12 @@ class Batch
   #   dispatch(:color, args, &block)
   # end
 
-  def method_missing(method, *args, &block)
-    dispatch(method, args, &block)
-  end
-
+  # def method_missing(method, *args, &block)
+  #   dispatch(method, args, &block)
+  # end
+  # def color(args)
+  #   dispatch(:color, [args], &block)
+  # end
   # def data(collection)
   #   @data = collection
   # end

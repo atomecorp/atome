@@ -22,6 +22,8 @@ class Atome
     # we add the new method to the particle's collection of methods
     Universe.add_to_particle_list(particle_name, type)
     # the line below create an empty particle method for each renderer, eg: browser_left, headless_width, ...
+    # the line below create the corresponding particle method for Batch class
+    particle_method_for_batch(particle_name)
     auto_render_generator(particle_name) if render
     new_particle(particle_name, store, render, &particle_proc)
     # the line below create all alternatives methods such as create 'method='
@@ -32,6 +34,11 @@ class Atome
     # TODO : atomes should tell the Universe if they're parts of materials category or else
     # we add the new method to the atome's collection of methods
     Universe.add_to_atome_list(atome_name)
+    # the method below generate Atome method creation at Object level,
+    # so a syntax like : 'text(:hello)' is possible instead of the mandatory : grab(:view).text(:hello)
+    atome_method_for_object(atome_name)
+    # the line below create the corresponding atome method for Batch class
+    atome_method_for_batch(atome_name)
     unless Essentials.default_params[atome_name]
       # if it doesn't exist
       # we create default params for the new created atome, adding the hash to : module essential, @default_params

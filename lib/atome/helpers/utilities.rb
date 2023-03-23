@@ -69,8 +69,8 @@ class Atome
   end
 
   def <<(particle)
-    value = particle.value
-    real_atome[property] << value
+
+    real_atome[property] << particle
   end
 
   def add_to_integer(_atome_found, _particle_found, &_user_proc)
@@ -142,7 +142,7 @@ class Atome
   #   # generated_render = params[:renderers] || []
   #   # generated_id = params[:id] || identity_generator(atome_type)
   #   #
-  #   # generated_parents = params[:parents] || [id.value]
+  #   # generated_parents = params[:parents] || [id]
   #   params = atome_common(atome_type, params)
   #   Batch.new({ atome_type => params }, &bloc)
   # end
@@ -154,7 +154,7 @@ class Atome
   end
 
   def include?(value)
-    self.value.include?(value)
+    self.include?(value)
   end
 
   def each_with_index(*args, &block)
@@ -181,7 +181,7 @@ class Atome
 
   def []=(params, value)
     # TODO : it may miss some code, see above
-    self.value[params] = value
+    self[params] = value
   end
 
   def set(params)

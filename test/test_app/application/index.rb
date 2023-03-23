@@ -1,5 +1,7 @@
 # # # # # # frozen_string_literal: true
-
+`window.addEventListener('error', function(e) {
+  console.log("***>Now we can log error in a file if needed" + e.message+"<***");
+});`
 # Done : when sanitizing property must respect the order else no browser
 # object will be created, try to make it more flexible allowing any order
 # TODO : allow automatic multiple addition of image, text, video, shape, etc.. except color , shadow...
@@ -94,7 +96,7 @@
 # require 'src/medias/rubies/examples/attached'
 # require 'src/medias/rubies/examples/attach'
 # require 'src/medias/rubies/examples/batch'
-require 'src/medias/rubies/examples/tags'
+# require 'src/medias/rubies/examples/tags'
 # require 'src/medias/rubies/examples/markers'
 # require 'src/medias/rubies/examples/add'
 # require 'src/medias/rubies/examples/read'
@@ -106,57 +108,175 @@ require 'src/medias/rubies/examples/tags'
 # require 'src/medias/rubies/examples/materials'
 # require 'src/medias/rubies/examples/_audio'
 
-# ############################# # find  test
-# # frozen_string_literal: true
-# box({ id: :b1 })
-# box({ id: :b2, left: 220 })
-# box({ id: :b3, left: 340 })
-#
-# new({ atome: :find })
-# new({ particle: :query, render: false })
+# ############################# # spot  test
+# frozen_string_literal: true
+b = box({ id: :b1 })
+box({ id: :b2, left: 220 })
+box({ id: :b3, left: 340 })
+
+new({ atome: :spot, type: :hash, return: :query })
+new ({ sanitizer: :spot }) do |params|
+  if params.instance_of?(Array)
+    params = { query: params }
+  end
+  params
+end
+
+class Atome
+
+  def atome_finder(query)
+
+  end
+  def query_analysis(condition, operator, type, scope, values, target)
+    pretenders_atomes=[]
+
+    all_attached_atome= grab(scope).attached
+    # we must exclude itself from the atomes found
+    atome_found= all_attached_atome.reject { |element| element == id }
+
+
+    atome_queries_in_parent=grab(scope).query
+    # now we add atome found in the query particle in case of find filtering
+    atome_found=atome_found.concat(atome_queries_in_parent) if atome_queries_in_parent
+    puts "atome found => #{atome_found}"
+    puts "scope query : #{atome_queries_in_parent}"
+    puts "------"
+
+    case condition
+    when :force
+      if target ==:id
+        # puts "values : #{values}"
+        atome_requested=values
+      else
+        atome_finder(query)
+      end
+      @atome_forced << atome_requested
+    when :add
+
+    when :subtract
+
+    else
+
+    end
+
+    # TODO : scope should get all atomes attached to it and all atomes found in the query particle
+    if !@atome_requested.include?(@atome_forced)
+      @atome_requested << @atome_forced
+    end
+  end
+end
+
+new({ particle: :query, render: false })
 # new({ particle: :result, render: false })
-# new({ pre: :query }) do |params|
-#   result("we must treat : #{params}")
+new({ sanitizer: :query }) do |params|
+  unless @atome_requested
+    @atome_requested = []
+    @atome_forced = []
+  end
+  params.each do |param|
+    condition = param.keys[0]
+    operator = param[condition][:operator] || :equal
+    type = param[condition][:type] || :static
+    scope = param[condition][:scope] || attach[0]
+    values = param[condition][:values]
+    target = param[condition][:target]
+
+    # cleanup_query = { condition => { operator: operator, type: type, scope: scope, values: values, target: target } }
+    cleanup_query = query_analysis(condition, operator, type, scope, values, target)
+    # puts cleanup_query
+    # @atome_requested << cleanup_query
+  end
+  # puts "atome_requested: #{@atome_requested}"
+  @atome_requested
+end
+
+# query particle is optional but when specified it must be an array, each queries are added to the results not excluded
+# # 2 possible syntax
+# # a = spot([{target: [:b1, :b3]} ])
+# # a = spot({ query: [target: [:b5, :b9]]})
+# # a = grab(:view).spot({ query: {target: [:b5, :b9]}})
+# parameters are :
+# - target (particle targeted), target type is Symbol
+# - operator (:equal, not, force, superior, inferior), operator type is Symbol
+# - values(particle value that must match the operator), values is an array, each can be string, symbol, int, ...
+# optional parameters are :
+# - scope (parent if not specified), scope type is Symbol
+# - type (dynamic, static), type type is Symbol (dynamic means that each neww atomes that meets the criteria is added to the list)
+# spot atomes must be chained to to filter results
+
+# Example
+# a = spot([{target: :id, values: [:b1, :b3], operator: :equal} ])
+ a = grab(:view).spot({ query:
+  [
+    { add: {
+      operator: :equal,
+      target: :id,
+      values: [:b1, :b2],
+      type: :static,
+    } },
+    { force: {
+
+      target: :id,
+      values: [:b1],
+      type: :static,
+    } },
+    { add: {
+      operator: :superior,
+      target: :left,
+      values: 30, # non sense!! as only value is possible
+      type: :static,
+      method: :filter
+    } },
+    { subtract: {
+      operator: :equal,
+      target: :left,
+      values: 30, # non sense!! as only value is possible
+      type: :static,
+      method: :filter
+    } },
+
+    { subtract: {
+      operator: :equal,
+      scope: :b2,
+      target: :color,
+      values: [:red],
+      type: :dynamic,
+      method: :filter
+    } }
+
+  ], id: :first_find}
+)
+puts '----+++++++++----'
+# puts "a content : #{a}"
+b=a.spot({ query:[{ force: {
+
+  target: :id,
+  values: [:b2],
+  type: :static,
+} }], id: :second_find})
+
+
+# alert b.attached
+# alert a
+# puts "a find is : #{a.spot}"
+# puts "query msg : #{a.query}"
+# puts "result msg : #{a.result}"
+# TODO : we may remove the collector
+# a.collector({id: :batch1, data: [:b1, :b2]})
+# puts '-----'
+#  grab(:b1).color(:red)
+
+c=circle(left: 333)
+c.top(c.left)
+# alert c.left.class
+wait 2 do
+  c.top(333)
+end
+
+# TODO : finish atome must return a particular particle instead of itself
+# add batch and monitoring
+# alert 123.color(:red)
+# def text(params)
+#   grab(:view).text(params)
 # end
-# # new({ particle: :batch, render: false })
-# # new({ sanitizer: :batch }) do |params|
-# #   Batch.new(params)
-# #   # puts "index msg : we must treat the batch : #{params}"
-# #
-# # end
-#
-# # new({ particle: :tag , render: false, type: :hash})
-#
-# a = grab(:view).find({ query: [:item1, :item2] })
-# puts "index msg : #{a.query.value}"
-# puts "index msg : #{a.result.value}"
-# # TODO : we may remove the collector
-# # a.collector({id: :batch1, data: [:b1, :b2]})
-#
-# # puts a.collector.color(:red)
-# # puts a.collector.poil(:red)
-#
-# # frozen_string_literal: true
-# # tag
-# a.tag({ color: :red })
-# a.tag({ star: 4 })
-# a.add({ tag: { value: 4 } })
-# # puts "index msg : a tag : #{a.tag}"
-# # puts " index msg : view tag : #{grab(:view).tag}"
-#
-#
-# # frozen_string_literal: true
-# # find
-# # find(include: ({color: [:red, :blue], left: 333}))
-# #
-# # { equal: { color: [:red, :blue], left: [333] },
-# #   superior: {top: [333, 22]}
-# #
-# # }
-# # include
-# # inferior
-# # different
-# # imposed
-
-
-
+text(:hello)

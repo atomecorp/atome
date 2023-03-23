@@ -1,0 +1,3 @@
+class Object
+  def create_method_at_object_level: -> untyped
+end
