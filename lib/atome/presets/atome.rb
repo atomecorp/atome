@@ -24,7 +24,11 @@ class Atome
 
   def circle(params = {}, &bloc)
     atome_type = :circle
+    # puts "counter#{Universe.counter}"
+
     params = atome_common(atome_type, params)
+    # puts "params ==> #{params} : #{Universe.counter}"
+
     Atome.new({ atome_type => params }, &bloc)
   end
 

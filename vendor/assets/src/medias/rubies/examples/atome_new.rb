@@ -9,7 +9,7 @@ Atome.new(
 )
 
 Atome.new(
-  shape: { type: :color, renderers: [:browser], id: :c315, type: :color, attach: [:the_shape],
+  shape: { type: :color, renderers: [:browser], id: :c315, attach: [:the_shape],
            red: 0.3, green: 1, blue: 0.6, alpha: 1 }
 
 )

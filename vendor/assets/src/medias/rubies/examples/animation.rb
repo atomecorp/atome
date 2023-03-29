@@ -5,7 +5,7 @@ bb.color(:orange)
 box({ id: :my_box, drag: true })
 c = circle({ id: :the_circle, left: 222, drag: { move: true, inertia: true, lock: :start } })
 c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,
-           parents: [:the_circle],
+           attach: [:the_circle],
            left: 3, top: 9, blur: 19,
            red: 0, green: 0, blue: 0, alpha: 1
          })

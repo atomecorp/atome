@@ -187,7 +187,7 @@ end
 #   parent_found = found_parents_and_renderers[:parent]
 #   render_found = found_parents_and_renderers[:renderers]
 #   default_params = { renderers: render_found, id: "color_#{Universe.atomes.length}", type: :color,
-#                      parents: parent_found,children: [],
+#                      attach: parent_found,children: [],
 #                      red: 0, green: 0, blue: 0, alpha: 1 }
 #   params = create_color_hash(params) unless params.instance_of? Hash
 #   new_params = default_params.merge!(params)
@@ -342,7 +342,7 @@ end
 #     parents_found = grab(parents_id)
 #     parents_found.atome[:children]<< id if parents_found
 #   end
-#   family({parents: parents_ids, children: [] })
+#   family({attach: parents_ids, children: [] })
 # end
 #
 #
@@ -352,7 +352,7 @@ end
 #     atome_found = grab(child_found)
 #     atome_found.atome[:parents]=[@atome[:id]]
 #   end
-#   # family({children: children_ids, parents: [] })
+#   # family({children: children_ids, attach: [] })
 # end
 #
 #

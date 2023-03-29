@@ -42,7 +42,7 @@ task :test_build_browser do
   `cd pkg; gem install atome --local`
   `cd test/test_app;atome update`
   `cd test/test_app;atome refresh`
-  `cd test/test_app;atome update;atome run compile`
+  `cd test/test_app;atome update;atome run browser guard `
   # `open test/test_app/src/index.html`
   puts 'atome browser is running'
 end

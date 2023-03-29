@@ -9,16 +9,35 @@ end
 new({ particle: :broadcast })
 new({ particle: :data })
 # new({particle: :additional })
-new({ particle: :delete }) do |params|
+new({ particle: :delete, render: false }) do |params, &user_proc|
   if params == true
-    # now we detach the atome from it's parent
-    parents_found = @atome[:attach]
-    parents_found.each do |parent_found|
-      grab(parent_found).detached(@atome[:id])
+    # puts "**all** parent: #{@atome[:attach]}, id_found : #{id}"
+    # We use the tag persistent to exclude color of system oobaject and other default colors
+    unless tag && tag[:persistent]
+      # now we detach the atome from it's parent
+
+      #now we init rendering
+      rendering(:delete,params, &user_proc)
+      # the machine delete the current atome from the universe
+      id_found=@atome[:id]
+      Universe.delete(id_found)
+      parents_found = @atome[:attach]
+
+      parents_found.each do |parent_id_found|
+        parent_found = grab(parent_id_found)
+        if parent_found
+          parent_found.atome[type].delete(id_found)
+          # puts "**before** parent: #{parent_id_found},attached : #{parent_found.attached} id_found : #{id_found}"
+          parent_found.atome[:attached].delete(id_found)
+          # puts "**after** parent: #{parent_id_found},attached : #{parent_found.attached} id_found : #{id_found}"
+
+          # parent_found.detached(@atome[:id])
+        end
+
+      end
+
     end
 
-    # the machine delete the current atome from the universe
-    Universe.delete(@atome[:id])
   elsif params == :materials
     # this will delete any child with a visual type cf : images, shapes, videos, ...
     materials.each do |atome_id_found|
@@ -38,7 +57,25 @@ new({ particle: :delete }) do |params|
     send(params, 0)
   end
 end
+
 new({ particle: :clear })
+new({ post: :clear }) do
+
+  attached_found=[]
+ @atome[:attached].each do |attached_id_found|
+   attached_found << attached_id_found
+ end
+  attached_found.each do |child_id_found|
+    puts "===>> should be deleted : #{child_id_found}"
+    child_found = grab(child_id_found)
+
+    child_found.delete(true) if child_found
+
+    # Universe.delete(child_id_found)
+  end
+  # attached([])
+  # puts "params are => #{id}"
+end
 new({ particle: :path })
 new({ particle: :schedule }) do |date, proc|
   date = date.to_s
@@ -56,7 +93,7 @@ end
 new({ particle: :cursor })
 new({ particle: :preset })
 new({ particle: :relations, type: :hash })
-new({ particle: :tag , render: false, type: :hash})
+new({ particle: :tag, render: false, type: :hash })
 new({ particle: :batch, render: false })
 new({ sanitizer: :batch }) do |params|
   Batch.new(params)

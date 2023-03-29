@@ -7,7 +7,7 @@ class Atome
 
   #
   def cells(cells_number)
-    # collector({id: :toto, renderers: [], children: [], parents: []})
+    # collector({id: :toto, renderers: [], children: [], attach: []})
     # collector_object = collector({})
     collector_object = collector
     collected_atomes = []
@@ -93,7 +93,7 @@ generator.build_atome(:barnabe)
 #
 # # matrix({ id: :totot,columns: { count: 24 } })
 # m = matrix
-# # m.collector({id: :toto, renderers: [], children: [], parents: []})
+# # m.collector({id: :toto, renderers: [], children: [], attach: []})
 # m.cells([20, 5])
 # # m.cells([20, 5]).color(:red)
 # # m.columns(≈6).data[0..3].color(:green)

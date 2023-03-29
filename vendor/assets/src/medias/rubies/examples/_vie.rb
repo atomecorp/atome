@@ -151,7 +151,7 @@ a = {
   ]
 }
 
- Atome.new({ color: { renderers: [:browser], id: :orange_col, type: :color, parents: [], children: [],
+ Atome.new({ color: { renderers: [:browser], id: :orange_col, type: :color, attach: [], children: [],
                                left: 33, top: 66, red: 0, green: 0.15, blue: 0.7, alpha: 0.6 } })
 
 def get_vie_module(list)
@@ -176,7 +176,7 @@ def get_vie_module(list)
     left_pos = 120 + ((module_position[:x].to_i) * (66 + 33+120))
     top_pos=120 + ((module_position[:y].to_i) * (66 + 33))
     a=Atome.new(
-      shape: { type: :shape, renderers: [:browser], id: module_id, parents: [:view],children: [], color: :orange,
+      shape: { type: :shape, renderers: [:browser], id: module_id, attach: [:view],children: [], color: :orange,
                left: left_pos, top: top_pos,
                width: 120, height: 120
 

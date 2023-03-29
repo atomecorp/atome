@@ -24,8 +24,7 @@ class Object
   end
 
   def identity_generator(type = :element)
-    "#{type}_#{Universe.counter}"
-    # { date: Time.now, location: geolocation }
+    "#{attach[0]}_#{type}_#{Universe.counter}"
   end
 
   def grab(atome_to_get)
@@ -33,17 +32,17 @@ class Object
     Universe.atomes[atome_to_get]
   end
 
-  def box(params = {}, &proc)
-    grab(:view).box(params, &proc)
-  end
-
-  def circle(params = {}, &proc)
-    grab(:view).circle(params, &proc)
-  end
-
-  def matrix(params = {}, &proc)
-    grab(:view).matrix(params, &proc)
-  end
+  # def box(params = {}, &proc)
+  #   grab(:view).box(params, &proc)
+  # end
+  #
+  # def circle(params = {}, &proc)
+  #   grab(:view).circle(params, &proc)
+  # end
+  #
+  # def matrix(params = {}, &proc)
+  #   grab(:view).matrix(params, &proc)
+  # end
 
   # def method_missing(method, *args, &block)
   #   args.each do |atome_found|

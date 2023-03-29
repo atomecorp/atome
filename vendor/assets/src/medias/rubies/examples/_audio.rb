@@ -36,7 +36,7 @@ generator.build_sanitizer(:audio) do |params|
   parent_found = found_parents_and_renderers[:parent]
   render_found = found_parents_and_renderers[:renderers]
   default_params = { renderers: render_found, id: "audio_#{Universe.atomes.length}", type: :audio,
-                     parents: parent_found }
+                     attach: parent_found }
   default_params.merge!(params)
 end
 

@@ -14,7 +14,7 @@ class Atome
     parent_found = found_parents_and_renderers[:parent]
     render_found = found_parents_and_renderers[:renderers]
     default_params = { renderers: render_found, id: "matrix_#{Universe.atomes.length}", type: :matrix,
-                       parents: parent_found }
+                       attach: parent_found }
 
     params[:renderer] = []
     params[:children] = []
@@ -141,13 +141,13 @@ generator.build_particle(:display) do |params|
 end
 
 def create_matrix_colors(name, red, green, blue, alpha)
-  Atome.new({ color: { renderers: [:browser], id: name, type: :color, parents: [], children: [],
+  Atome.new({ color: { renderers: [:browser], id: name, type: :color, attach: [], children: [],
                        red: red, green: green, blue: blue, alpha: alpha } })
 end
 
 def create_matrix( style)
   matrix = Atome.new(
-    shape: { type: :shape, renderers: [:browser], id: style[:id], parents: [:view], width: 333, height: 333, left: 33,top: 33,
+    shape: { type: :shape, renderers: [:browser], id: style[:id], attach: [:view], width: 333, height: 333, left: 33,top: 33,
              overflow: :hidden, children: [] }
   )
   matrix.style(style)
@@ -160,7 +160,7 @@ def create_matrix_cells(id, cell_back_color, number_of_cells, style)
   while counter < number_of_cells
     id_generated = id + "_#{counter}"
     cells << a = Atome.new(
-      shape: { type: :shape, renderers: [:browser], id: id_generated, parents: [id],
+      shape: { type: :shape, renderers: [:browser], id: id_generated, attach: [id],
                children: [:cell_color]
 
       }

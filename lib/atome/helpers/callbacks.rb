@@ -16,7 +16,8 @@ class Atome
   end
 
   def read_callback(file, proc)
-    instance_exec(file, &proc) if proc.is_a?(Proc)
+    file_content=file.split('</head><body>')[1].split('</body></html>')[0]
+    instance_exec(file_content, &proc) if proc.is_a?(Proc)
   end
 
   def time_callback(current_time, markers)

@@ -14,15 +14,21 @@ class Atome
   def initialize(atomes = {}, &atomes_proc)
 
     atomes.each_value do |elements|
-      # the instance variable below contain the id all any atomes that need to be informed when changes occurs
-      @broadcast = {}
-      # # now we store the proc in a an atome's property called :bloc
-      elements[:code] = atomes_proc if atomes_proc
 
-      @atome = elements
-      # we initiate the rendering suing set_type method,
-      # eg for for browser we will call :browser_type generate method in identity.rb file
-      collapse
+      if  Universe.atomes.key?(elements[:id])
+        puts "The id #{elements[:id]} is already taken, you must change it"
+        # `throw new Error("this id is already exist, you must change it");`
+      else
+        # the instance variable below contain the id all any atomes that need to be informed when changes occurs
+        @broadcast = {}
+        # # now we store the proc in a an atome's property called :bloc
+        elements[:code] = atomes_proc if atomes_proc
+
+        @atome = elements
+        # we initiate the rendering suing set_type method,
+        # eg for for browser we will call :browser_type generate method in identity.rb file
+        collapse
+      end
     end
   end
 
@@ -68,6 +74,11 @@ class Atome
     send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
   end
 
+  def atome_catcher(atome_catch)
+    # puts "atome_catch is : #{atome_catch.class}"
+    atome_catch
+  end
+
   def new_atome(element, &method_proc)
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
@@ -75,7 +86,9 @@ class Atome
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         atome_parsing(element, params, &user_proc)
       else
-        @atome[element]
+        # puts "******> we are searching for the atome return(noobs) #{element} : #{id}"
+
+        atome_catcher(@atome[element])
       end
 
     end
@@ -87,7 +100,9 @@ class Atome
       new_atome = Atome.new({ element => params }, &user_proc)
       # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
       # c must return the circle not the parent box
-      new_atome
+      # puts "******> we are searching for the atome return(set) #{element} : #{id}"
+      atome_catcher(new_atome)
+
     end
     # the method below generate Atome method creation at Object level
     # create_method_at_object_level(element)
@@ -150,8 +165,6 @@ class Atome
   def get(element)
     @atome[element]
   end
-
-
 
   Universe.connected
 end

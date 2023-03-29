@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Text in object
-a=Atome.new(code: { type: :code, renderers: [:headless], parents: [], children: [] }) do  |params_found|
+a=Atome.new(code: { type: :code, renderers: [:headless], attach: [], children: [] }) do  |params_found|
   puts "the param is #{params_found}"
 end
 a.run(:super)

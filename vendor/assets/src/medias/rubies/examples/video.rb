@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 my_video = Atome.new(
-  video: { renderers: [:browser], id: :video1, type: :video, parents: [:view], path: './medias/videos/superman.mp4',
+  video: { renderers: [:browser], id: :video1, type: :video, attach: [:view], path: './medias/videos/superman.mp4',
            left: 333, top: 112, width: 199, height: 99
   }
 ) do |params|
@@ -22,7 +22,7 @@ my_video.touch(true) do
 end
 #############
 my_video2 = Atome.new(
-  video: { renderers: [:browser], id: :video9, type: :video, parents: [:view], path: './medias/videos/madmax.mp4',
+  video: { renderers: [:browser], id: :video9, type: :video, attach: [:view], path: './medias/videos/madmax.mp4',
            left: 666, top: 333, width: 199, height: 99,
   }) do |params|
   puts "2- video callback time is  #{params}, id is : #{id}"

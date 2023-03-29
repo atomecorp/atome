@@ -236,6 +236,21 @@ if ARGV.include?('run')
          else
            found_path('run')
          end
+  demo_location = "#{path}/src/medias/rubies"
+
+  filenames = Dir.glob(demo_location+'/examples/*.rb')
+  demos_list_content=[]
+  filenames.each do |path|
+    filename= File.basename(path)
+    demos_list_content << filename
+  end
+  demos_list_file = "#{demo_location}/demos_list.rb"
+  File.open(demos_list_file, 'w') do |f|
+    # f.puts "class Atome_demo\n  def demos_list\n    #{demos_list_content}\n  end\nend"
+    f.puts "def demos_list\n  #{demos_list_content}\nend"
+  end
+
+
 
   case build_target
   when 'android'

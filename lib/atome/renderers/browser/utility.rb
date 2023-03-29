@@ -7,13 +7,13 @@ generator.build_render(:browser_delete) do |params|
   browser_object&.remove if params == true
 end
 
-generator.build_render(:browser_clear) do
-  alert "rewrite code below"
-  # @atome[:children].each do |child_found|
-  #   grab(child_found).browser_object&.remove
-  # end
-  # children([])
-end
+# do not use browser_clear
+# #
+# # generator.build_render(:browser_clear) do
+# #   @atome[:attached].each do |child_found|
+# #     grab(child_found).browser_object&.remove
+# #   end
+# # end
 
 generator.build_render(:browser_path) do |value|
   BrowserHelper.send("browser_path_#{@atome[:type]}", value, @browser_object, @atome)
