@@ -1,7 +1,5 @@
 # # # # # # frozen_string_literal: true
-`window.addEventListener('error', function(e) {
-  console.log("---> Now we can log error in a file if needed : " + e.message);
-});`
+
 # Done : when sanitizing property must respect the order else no browser
 # object will be created, try to make it more flexible allowing any order
 # TODO : allow automatic multiple addition of image, text, video, shape, etc.. except color , shadow...
@@ -62,51 +60,31 @@
 # TODO : URGENT thes a confusion in the framework between variables and id if the name is the same
 # FIXME: touch is unreliable try touch demo some object are not affected
 
-# class Object
-#   # the method missing below is used to create some atome at Object level, EG : text(:hello)
-#   def method_missing(method, *args, &block)
-#     args.each do |atome_found|
-#       args.each do |arg|
-#         default_parent = Essentials.default_params[method][:attach][0] # we get the first parents
-#         # create_method_at_object_level(element)
-#         atome_found = grab(default_parent).send(method, arg, &block)
-#         # we force then return of atome found else its return an hash # TODO : we may find a cleaner solution
-#         return atome_found
-#       end
-#     end
-#   end
-# end
+################################# 'to add' error capture  ##################
+`window.addEventListener('error', function(e) {
+  console.log("---> Now we can log error in a file if needed : " + e.message);
+});`
+################################# Demos ##################
+require 'src/medias/rubies/demos.rb'
+# require 'src/medias/rubies/examples/table.rb'
+#problem :
+# - repeat
+# - refresh.rb
+################################# to add 'base64' ##################
+# ### base 64 test
+# # require 'base64'
+# #
+# # encoded_string = "SGVsbG8gV29ybGQh"
+# # decoded_string = Base64.decode64(encoded_string)
+# #
+# # puts decoded_string
+# #
+# # string_to_encode = "Hello World!"
+# # encoded_string = Base64.encode64(string_to_encode)
+# #
+# # puts encoded_string
 
-# require 'src/medias/rubies/examples/schedule'#
-# require 'src/medias/rubies/examples/time'
-# require 'src/medias/rubies/examples/code'
-# require 'src/medias/rubies/examples/text'
-# require 'src/medias/rubies/examples/delete'
-# require 'src/medias/rubies/examples/table'
-# require 'src/medias/rubies/examples/image'
-# require 'src/medias/rubies/examples/video'
-# require 'src/medias/rubies/examples/web'
-# require 'src/medias/rubies/examples/fullscreen'
-# require 'src/medias/rubies/examples/touch'
-# require 'src/medias/rubies/examples/create_atome_in_atome'
-# require 'src/medias/rubies/examples/color'
-# require 'src/medias/rubies/examples/animation'
-# require 'src/medias/rubies/examples/drag'
-# require 'src/medias/rubies/examples/bottom'
-# require 'src/medias/rubies/examples/attached'
-# require 'src/medias/rubies/examples/attach'
-# require 'src/medias/rubies/examples/batch'
-# require 'src/medias/rubies/examples/tags'
-# require 'src/medias/rubies/examples/markers'
-# require 'src/medias/rubies/examples/add'
-# require 'src/medias/rubies/examples/read'
-# require 'src/medias/rubies/examples/clone'
-# require 'src/medias/rubies/examples/atome_new'
-# require 'src/medias/rubies/examples/link'
-# require 'src/medias/rubies/examples/monitoring'
-# require 'src/medias/rubies/examples/detached'
-# require 'src/medias/rubies/examples/materials'
-# require 'src/medias/rubies/examples/_audio'
+################ end encoding
 
 # # ############################# # spot  test
 # # frozen_string_literal: true
@@ -249,7 +227,6 @@
 # # puts '----+++++++++----'
 # # puts "a content : #{a}"
 # b=a.spot({ query:[{ force: {
-#
 #   target: :id,
 #   values: [:b2],
 #   type: :static,
@@ -274,85 +251,7 @@
 #
 # # TODO : finish atome must return a particular particle instead of itself
 # # add batch and monitoring
-# # alert 123.color(:red)
-# # def text(params)
-# #   grab(:view).text(params)
-# # end
-# # text(:hello)
-# #
-# ### base 64 test
-# # require 'base64'
-# #
-# # encoded_string = "SGVsbG8gV29ybGQh"
-# # decoded_string = Base64.decode64(encoded_string)
-# #
-# # puts decoded_string
-# #
-# # string_to_encode = "Hello World!"
-# # encoded_string = Base64.encode64(string_to_encode)
-# #
-# # puts encoded_string
-
-# temp
-# frozen_string_literal: true
-
-######### demos
-puts "Attention this method only work with a server due to security restriction "
-demo_container = grab('heaven').box({id: :demo_container,left: 0, overflow: :scroll, height: 567})
-debug = grab('heaven').circle({top: 3, left: 3, width: 39, height: 39, color: :orange, id: :debugger})
-clearer = grab('heaven').circle({top: 3, left: 99, width: 39, height: 39, color: :red, id: :clearer})
-view=grab(:view)
-clearer.touch(true) do
-  view.clear(true)
-end
-
-debug.touch(true) do
-  atomes_found=[]
-  Universe.atomes.each do |atome_id_found, _atome_content_found|
-    atomes_found << atome_id_found
-  end
-  puts ":> attached to view:  #{view.attached}\n\n attached length : #{view.attached.length}\n\natomes : #{atomes_found}\n\n#{view}"
-end
-context=grab(:view)
-demo_container.read('rubies/demos_list.rb') do |demos_found|
-  # we eval the demo list
-  eval demos_found
-  demos_list.each_with_index  do |demo, index|
-    current_demo=demo_container.text ({ data: demo, top: 16*index, left: 12, visual: {size: 12} })
-    current_demo.touch(true) do
-      context.clear(true)
-      atomes_attached=context.attached
-      users_atomes=[]
-      Universe.atomes.each do |k, _v|
-        users_atomes << k
-      end
-
-      puts "=> before > atomes attached : #{atomes_attached}"
-      puts "==-> before > users_atomes : #{users_atomes}"
-
-      # we delete/clear the prev scene
-      # atomes_attached.each do |atome_id_found|
-      #   unless atome_id_found == :view_color
-      #     atome_found=grab(atome_id_found)
-      #     atome_found.delete(true) if atome_found
-      #   end
-      # end
-      # we eval the demo content
-      demo_container.read('rubies/examples/'+demo) do |demo_requested|
-        grab(:view).eval demo_requested
-
-      end
-      puts "=> after >atomes attached : #{atomes_attached}"
-      puts "==-> after > users_atomes : #{users_atomes}"
 
 
-    end
-  end
-end
 
-puts "selecting atome.new then attach crash, find a solution when user force the same id for different atome type"
-puts " when deleting also delete shape and other atomes container..."
-
-# alert "browser delete and clear works even if commented"
-# alert "Find a solution for system object color"
 

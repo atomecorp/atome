@@ -66,7 +66,7 @@ new({ post: :clear }) do
    attached_found << attached_id_found
  end
   attached_found.each do |child_id_found|
-    puts "===>> should be deleted : #{child_id_found}"
+    # puts "===>> should be deleted : #{child_id_found}"
     child_found = grab(child_id_found)
 
     child_found.delete(true) if child_found
