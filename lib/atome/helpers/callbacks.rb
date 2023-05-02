@@ -17,6 +17,8 @@ class Atome
 
   def read_callback(file, proc)
     file_content=file.split('</head><body>')[1].split('</body></html>')[0]
+    # FIXME : found why '> is converted to &gt;'
+    file_content=file_content.gsub("&gt;", ">")
     instance_exec(file_content, &proc) if proc.is_a?(Proc)
   end
 
@@ -47,8 +49,11 @@ class Atome
   end
 
   def drag_end_callback(page_x, page_y, left_val, top_val)
-    @atome[:left] = left_val
-    @atome[:top] = top_val
+    # @atome[:left] = left_val
+    # @atome[:top] = top_val
+    # alert :loo
+    self.left(left_val)
+    self.top(top_val)
     proc = @drag_end_proc
     instance_exec({ pageX: page_x, pageY: page_y, left: left_val, top: top_val }, &proc) if proc.is_a?(Proc)
   end

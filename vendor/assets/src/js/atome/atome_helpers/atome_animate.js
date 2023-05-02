@@ -1,6 +1,6 @@
 const atomeAnimate = {
 
-    animate: function(particle_found, duration,damping_ratio,ease, mass,  repeat,stiffness, velocity,
+    animate: function(particle_found, duration,damping_ratio,ease, mass, repeat,stiffness, velocity,
                       start_value, end_value, atome_id, atome_found,atome_hash,original_particle,animation_atome) {
         // console.log(start_value)
 

@@ -1,0 +1,7 @@
+class Batch
+  @data: untyped
+
+  def dispatch: -> untyped
+
+  def each: -> untyped
+end

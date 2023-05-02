@@ -1,39 +1,139 @@
 # frozen_string_literal: true
 
 module Matrix
-  def content(items = nil)
-    if items.instance_of?(Array)
-      items.each do |item|
-        content(item)
-      end
-    elsif items.instance_of?(Atome)
-      w_found = items.particles[:width]
-      h_found = items.particles[:height]
-      l_found = items.particles[:left]
-      t_found = items.particles[:top]
-      i_found = items.particles[:id]
-      current_w_found = width
-      current_h_found = height
-      current_l_found = left
-      current_t_found = top
-      @cell_content ||= {}
-      @cell_content[i_found] = { width_ratio: 1, height_ratio: 1, top_ratio: 1, left_ratio: 1 }
-      # alert @cell_content
-      items.parents([id])
+
+  def matrix(params = {}, &bloc)
+
+    params = matrix_sanitizer(params)
+
+    columns_data = if params[:columns]
+                     params.delete(:columns)
+                   else
+                     { count: 4 }
+                   end
+
+    rows_data = if params[:rows]
+                  params.delete(:rows)
+                else
+                  { count: 4 }
+                end
+
+    cells_data = if params[:cells]
+                   params.delete(:cells)
+                 else
+                   { particles: { margin: 9, color: :lightgray } }
+                 end
+    cells_color = cells_data[:particles].delete(:color)
+    # we grab Black matter to avoid coloring the view
+    cells_color_id = grab(:black_matter).color(cells_color).id
+    cells_shadow = cells_data[:particles].delete(:shadow)
+    cells_shadow_id = shadow(cells_shadow).id
+
+    exceptions_data = params.delete(:exceptions)
+    default_renderer = Essentials.default_params[:render_engines]
+    atome_type = :matrix
+    # generated_render = params[:renderers] || default_renderer
+    # TODO:  maybe change the code below and don't use identity_generator directly!!!
+    generated_id = params[:id] || identity_generator(:matrix)
+    params = atome_common(:matrix, params)
+    the_matrix = Atome.new(atome_type => params, &bloc)
+
+    # the_matrix = Atome.new(matrix: { type: :shape, id: :my_table, renderers: [:browser], parents: [] }, &bloc)
+    # example = Atome.new(code: { type: :code, renderers: [:headless], parents: [], children: [] })
+    # TODO:  use the standard atome creation method (generator.build_atome(:collector)),
+    # TODO suite => For now its impossible to make it draggable because it return the created box not the matrix
+    # get necessary params
+    matrix_id = params[:id]
+    matrix_width = params[:width]
+    matrix_height = params[:height]
+    columns = columns_data[:count]
+    rows = rows_data[:count]
+    margin = cells_data[:particles].delete(:margin)
+    the_matrix.instance_variable_set('@columns', columns)
+    the_matrix.instance_variable_set('@rows', rows)
+    the_matrix.instance_variable_set('@margin', margin)
+    the_matrix.instance_variable_set('@cell_style', cells_data[:particles])
+    the_matrix.instance_variable_set('@matrix_width', matrix_width)
+    the_matrix.instance_variable_set('@matrix_height', matrix_height)
+    the_matrix.instance_variable_set('@cells', [])
+    rows = rows_data[:count]
+    columns = columns_data[:count]
+
+    # exceptions reorganisation
+    if exceptions_data
+      columns_exceptions = exceptions_data[:columns] ||= {}
+      columns_fusion_exceptions = columns_exceptions[:fusion] ||= {}
+      columns_divided_exceptions = columns_exceptions[:divided] ||= {}
+      rows_exceptions = exceptions_data[:rows] ||= {}
+      rows_fusion_exceptions = rows_exceptions[:fusion] ||= {}
+      rows_divided_exceptions = rows_exceptions[:divided] ||= {}
+      exceptions = { columns_fusion: columns_fusion_exceptions,
+                     columns_divided: columns_divided_exceptions,
+                     rows_fusion: rows_fusion_exceptions,
+                     rows_divided: rows_divided_exceptions }
+
     else
-      @cell_content
+      exceptions = {
+        columns_fusion: {},
+        columns_divided: {},
+        rows_fusion: {},
+        rows_divided: {}
+      }
+
     end
+    the_matrix.instance_variable_set('@exceptions', exceptions)
+
+    # let's create the matrix background
+    # cells creation below
+    number_of_cells = rows * columns
+    number_of_cells.times do |index|
+      current_matrix = grab(matrix_id)
+      current_cell_id = "#{matrix_id}_#{index}"
+      current_cell = current_matrix.box({ id: current_cell_id })
+      the_matrix.instance_variable_set('@cell_style', cells_data[:particles])
+      current_matrix.instance_variable_get('@cells') << current_cell_id
+
+        current_cell.attached([cells_shadow_id])
+        current_cell.attached([cells_color_id])
+        apply_style(current_cell, cells_data[:particles])
+
+    end
+    # lets create the columns and rows
+    the_matrix.format_matrix(matrix_id, matrix_width, matrix_height, rows, columns, margin, exceptions)
+
+    the_matrix
   end
 
-  def cells(cell_nb)
-    collector_object = collector({})
-    collected_atomes = []
-    cell_nb.each do |cell_found|
-      atome_found = grab("#{id}_#{cell_found}")
-      collected_atomes << atome_found
+  def matrix_sanitizer(params)
+
+    default_params = {
+
+      left: 33, top: 33, width: 369, height: 369, smooth: 8, color: :gray,
+      columns: { count: 4 },
+      rows: { count: 4 },
+      cells: { particles: { margin: 9, color: :lightgray, smooth: 9, shadow: { blur: 9, left: 3, top: 3 } }
+      }
+    }
+    default_params.merge(params)
+  end
+
+  def cells(cell_nb, &proc)
+    if cell_nb
+      collected_atomes = []
+      cell_nb.each do |cell_found|
+        if cell_found.instance_of?(Integer)
+          cell_found = cells[cell_found]
+          collected_atomes << cell_found
+        else
+          collected_atomes << cell_found
+        end
+      end
+      instance_exec(collected_atomes, &proc) if proc.is_a?(Proc)
+    else
+      instance_exec(@cells, &proc) if proc.is_a?(Proc)
+      @cells
     end
-    collector_object.data(collected_atomes)
-    collector_object
+
   end
 
   def cell(cell_nb)
@@ -64,11 +164,6 @@ module Matrix
     element({ data: cells_found })
   end
 
-  # def ratio(val)
-  #   puts "ratio must be : #{val}"
-  #
-  # end
-
   def fusion(params)
     number_of_cells = @columns * @rows
     if params[:columns]
@@ -79,7 +174,6 @@ module Matrix
         cells_to_alter = cells_in_column[value[0]..value[1]]
         cells_to_alter.each_with_index do |cell_nb, index|
           current_cell = grab("#{id}_#{cell_nb}")
-          # puts "==> current cell is #{id}"
           if index.zero?
             current_cell.height(cell_height * cells_to_alter.length + @margin * (cells_to_alter.length - 1))
           else
@@ -141,11 +235,6 @@ module Matrix
     end
   end
 
-  # def override(params)
-  #   # TODO : allow fixed height ond fixed width when resizing
-  #   puts "should override to allow fixed height or fixed width when resizing #{params}"
-  # end
-
   def first(item, &proc)
     if item[:columns]
       columns(0, &proc)
@@ -173,7 +262,6 @@ module Matrix
         x = (col_index + 1) * margin + col_index * cell_width
         y = (row_index + 1) * margin + row_index * cell_height
         current_cell = grab("#{matrix_id}_#{i}")
-        # puts current_cell
         current_cell.materials.each do |child|
           grab(child).width(cell_width) if grab(child)
           grab(child).height(cell_width) if grab(child)
@@ -187,153 +275,14 @@ module Matrix
     end
 
     # exceptions management
-
-    # number_of_cells = nb_of_rows * nb_of_cols
-    # columns exceptions
-    # return
     return unless exceptions
 
     fusion({ columns: exceptions[:columns_fusion] }) if exceptions[:columns_fusion]
-    # fusion({ rows: exceptions[:rows_fusion] }) if exceptions[:rows_fusion]
-    # divide({ columns: exceptions[:columns_divided] }) if exceptions[:columns_divided]
-    # divide({ rows: exceptions[:rows_divided] }) if exceptions[:rows_divided]
+
   end
 
   def apply_style(current_cell, style)
     current_cell.set(style)
-  end
-
-  def matrix_sanitizer(params)
-    default_params = {
-
-      id: :my_table, left: 33, top: 33, width: 369, height: 369, smooth: 8, color: :gray,
-      columns: { count: 4 },
-      rows: { count: 4 },
-      cells: { particles: { margin: 9, color: :lightgray, smooth: 9, shadow: { blur: 9, left: 3, top: 3 } }
-      }
-    }
-    default_params.merge(params)
-  end
-
-  def matrix(params = {}, &bloc)
-    params = matrix_sanitizer(params)
-
-    columns_data = if params[:columns]
-                     params.delete(:columns)
-                   else
-                     { count: 4 }
-                   end
-
-    rows_data = if params[:rows]
-                  params.delete(:rows)
-                else
-                  { count: 4 }
-                end
-
-    cells_data = if params[:cells]
-                   params.delete(:cells)
-                 else
-                   { particles: { margin: 9, color: :lightgray } }
-                 end
-    cells_color = cells_data[:particles].delete(:color)
-    cells_color_id = color(cells_color).id
-
-    cells_shadow = cells_data[:particles].delete(:shadow)
-    cells_shadow_id = shadow(cells_shadow).id
-
-    exceptions_data = params.delete(:exceptions)
-    default_renderer = Essentials.default_params[:render_engines]
-    atome_type = :matrix
-    # generated_render = params[:renderers] || default_renderer
-    puts  "maybe change the code below and don't use identity_generator directly!!!"
-    generated_id = params[:id] || identity_generator(:matrix)
-    #
-    # generated_parents = params[:parents] || [id]
-    # generated_children = params[:shape] || []
-    # params = atome_common(atome_type,  params)
-    params = atome_common(:matrix, params)
-    # puts "====>#{params} #{params.class}"
-    the_matrix = Atome.new( atome_type => params , &bloc)
-    # the_matrix = Atome.new(matrix: { type: :shape, id: :my_table, renderers: [:browser], parents: [] }, &bloc)
-    # example = Atome.new(code: { type: :code, renderers: [:headless], parents: [], children: [] })
-    # TODO:  use the standard atome creation method (generator.build_atome(:collector)),
-    # TODO suite => For now its impossible to make it draggable because it return the created box not the matrix
-    # get necessary params
-    matrix_id = params[:id]
-    matrix_width = params[:width]
-    matrix_height = params[:height]
-    columns = columns_data[:count]
-    rows = rows_data[:count]
-    margin = cells_data[:particles].delete(:margin)
-    the_matrix.instance_variable_set('@columns', columns)
-    the_matrix.instance_variable_set('@rows', rows)
-    the_matrix.instance_variable_set('@margin', margin)
-    the_matrix.instance_variable_set('@cell_style', cells_data[:particles])
-    the_matrix.instance_variable_set('@matrix_width', matrix_width)
-    the_matrix.instance_variable_set('@matrix_height', matrix_height)
-
-    rows = rows_data[:count]
-    columns = columns_data[:count]
-    # @rows = rows_data[:count]
-    # @columns = columns_data[:count]
-    # @margin = cells_data[:particles].delete(:margin)
-    # @cell_style = cells_data[:particles]
-    # @matrix_width = params[:width]
-    # @matrix_height = params[:height]
-
-    # exceptions reorganisation
-    if exceptions_data
-      columns_exceptions = exceptions_data[:columns] ||= {}
-      columns_fusion_exceptions = columns_exceptions[:fusion] ||= {}
-      columns_divided_exceptions = columns_exceptions[:divided] ||= {}
-      rows_exceptions = exceptions_data[:rows] ||= {}
-      rows_fusion_exceptions = rows_exceptions[:fusion] ||= {}
-      rows_divided_exceptions = rows_exceptions[:divided] ||= {}
-      exceptions = { columns_fusion: columns_fusion_exceptions,
-                     columns_divided: columns_divided_exceptions,
-                     rows_fusion: rows_fusion_exceptions,
-                     rows_divided: rows_divided_exceptions }
-      # @exceptions = {
-      #   columns_fusion: columns_fusion_exceptions,
-      #   columns_divided: columns_divided_exceptions,
-      #   rows_fusion: rows_fusion_exceptions,
-      #   rows_divided: rows_divided_exceptions,
-      # }
-    else
-      exceptions = {
-        columns_fusion: {},
-        columns_divided: {},
-        rows_fusion: {},
-        rows_divided: {}
-      }
-      # @exceptions = {
-      #   columns_fusion: {},
-      #   columns_divided: {},
-      #   rows_fusion: {},
-      #   rows_divided: {},
-      # }
-    end
-    the_matrix.instance_variable_set('@exceptions', exceptions)
-
-    # let's create the matrix background
-    # current_matrix = grab(:view).box({ id: matrix_id })
-    # current_matrix.set(params[:matrix][:particles])
-
-    # cells creation below
-    number_of_cells = rows * columns
-    number_of_cells.times do |index|
-      current_cell = grab(matrix_id).box({ id: "#{matrix_id}_#{index}" })
-      the_matrix.instance_variable_set('@cell_style', cells_data[:particles])
-      current_cell.attached([cells_shadow_id])
-      current_cell.attached([cells_color_id])
-      apply_style(current_cell, cells_data[:particles])
-    end
-    # lets create the columns and rows
-
-    # puts "(#{matrix_id}, #{matrix_width}, #{matrix_height}, #{rows}, #{columns}, #{margin}, #{exceptions})"
-    the_matrix.format_matrix(matrix_id, matrix_width, matrix_height, rows, columns, margin, exceptions)
-
-    the_matrix
   end
 
   def add_columns(nb)
@@ -343,21 +292,11 @@ module Matrix
     new_nb_of_cells.times do |index|
       if index < prev_nb_of_cells
         grab("#{id}_#{index}").delete(true)
-        # puts index
-        #
       end
       current_cell = box({ id: "#{id}_#{index}" })
       apply_style(current_cell, @cell_style)
     end
     @columns += nb
-    ########## old algo
-    # nb_of_cells_to_adds = nb * @rows
-    # prev_nb_of_cells = @columns * @rows
-    # nb_of_cells_to_adds.times do |index|
-    #   current_cell = self.box({ id: "#{id}_#{prev_nb_of_cells + index}" })
-    #   apply_style(current_cell, @cell_style)
-    # end
-    # @columns = @columns + nb
     format_matrix(id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
   end
 
@@ -368,21 +307,11 @@ module Matrix
     new_nb_of_cells.times do |index|
       if index < prev_nb_of_cells
         grab("#{id}_#{index}").delete(true)
-        # puts index
-        #
       end
       current_cell = box({ id: "#{id}_#{index}" })
       apply_style(current_cell, @cell_style)
     end
     @rows += nb
-    ########## old algo
-    # nb_of_cells_to_adds = nb * @columns
-    # prev_nb_of_cells = @columns * @rows
-    # nb_of_cells_to_adds.times do |index|
-    #   current_cell = self.box({ id: "#{id}_#{prev_nb_of_cells + index}" })
-    #   apply_style(current_cell, @cell_style)
-    # end
-    # @rows = @rows + nb
     format_matrix(id, @matrix_width, @matrix_height, @rows, @columns, @margin, @exceptions)
   end
 
@@ -395,7 +324,6 @@ module Matrix
   end
 
   def get_column_or_row(length, num_columns, index, is_column)
-    # puts "length: #{length}, #{num_columns} : #{num_columns}, index : #{index}, is_column : #{is_column}"
     # Compute the number of line
     num_rows = length / num_columns
     if is_column

@@ -18,14 +18,22 @@ end
 # now let's get the default render engine
 default_render = Essentials.default_params[:render_engines]
 
+
+def atome_infos
+  puts "atome version: #{Atome::VERSION}"
+  # puts "application identity: #{Universe.app_identity}"
+  puts "application identity:  #{Atome::aui}"
+  # puts "application mode:  #{Atome.mode}"
+  puts "host framework:  #{$host}"
+  puts "script mode: #{Universe.current_machine}"
+  puts "user: #{Universe.current_user}"
+  puts "server: #{Universe.current_server}"
+end
+
 Universe.current_user = :jeezs
-puts "atome version: #{Atome::VERSION}"
-# puts "application identity: #{Universe.app_identity}"
-puts "application identity:  #{Atome::aui}"
-puts "application mode:  #{Atome.mode}"
-puts "current host: #{Universe.current_machine}"
-puts "current user: #{Universe.current_user}"
-puts "current server: #{Universe.current_server}"
+
+
+atome_infos
 
 Atome.new(
   { element: { renderers: [], id: :eDen, type: :element , tag: {system: true}} }
@@ -85,7 +93,7 @@ Atome.new(
 
 #unreal port
 Atome.new(
-  { shape: { renderers: default_render, id: :heaven, type: :shape, attach: [:user_view], tag: {system: true},
+  { shape: { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: {system: true},
              left: 0,  top: 0, width: 0, height: 0, overflow: :visible,
   }
   }

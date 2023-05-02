@@ -2,7 +2,8 @@
 
 generator = Genesis.generator
 
-generator.build_render(:browser_left) do |value, _user_proc|
+
+new({ browser: :left, type: :integer }) do |value, _user_proc|
   BrowserHelper.send("browser_left_#{@atome[:type]}", value, @browser_object, @atome)
 end
 
@@ -52,7 +53,7 @@ generator.build_render(:browser_center) do |value, _user_proc|
 
 end
 
-new ({browser: :depth}) do |value|
+new ({ browser: :depth }) do |value|
   @browser_object.style['z-index'] = value
 end
 

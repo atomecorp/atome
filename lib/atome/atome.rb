@@ -43,7 +43,7 @@ class Atome
       elsif element == :batch # TODO : find a better solution than a condition if possible
         @atome[:batch]
       else
-        # alert :ok
+
         @atome[element]
         # get_particle(element, &user_proc)
       end
@@ -87,7 +87,7 @@ class Atome
         atome_parsing(element, params, &user_proc)
       else
         # puts "******> we are searching for the atome return(noobs) #{element} : #{id}"
-
+        # puts  "no atome params"
         atome_catcher(@atome[element])
       end
 
@@ -101,6 +101,7 @@ class Atome
       # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
       # c must return the circle not the parent box
       # puts "******> we are searching for the atome return(set) #{element} : #{id}"
+      #   puts  "no set  atome params"
       atome_catcher(new_atome)
 
     end

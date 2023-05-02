@@ -2,6 +2,7 @@
 
 # Done : when sanitizing property must respect the order else no browser
 # object will be created, try to make it more flexible allowing any order
+# TODO : Machine builder : new({machine: tool}) => grab(:intuition).tool; def tool .....
 # TODO : allow automatic multiple addition of image, text, video, shape, etc.. except color , shadow...
 # TODO : history
 # TODO : local and distant storage
@@ -57,7 +58,7 @@
 # TODO : create a colorise method that attach a color to an object
 # TODO : add the facility to create any css property and attach it to an object using css id ex left: :toto
 # TODO : opacity to add
-# TODO : URGENT thes a confusion in the framework between variables and id if the name is the same
+# TODO : URGENT there's a confusion in the framework between variables and id if the name is the same
 # FIXME: touch is unreliable try touch demo some object are not affected
 
 ################################# 'to add' error capture  ##################
@@ -65,11 +66,16 @@
   console.log("---> Now we can log error in a file if needed : " + e.message);
 });`
 ################################# Demos ##################
-require 'src/medias/rubies/demos.rb'
-# require 'src/medias/rubies/examples/table.rb'
-#problem :
+# require 'src/medias/rubies/demos.rb'
+#
+require 'src/medias/rubies/examples/ma
+trix_simple.rb'
+
+# problem :
+#  - empty atome
 # - repeat
 # - refresh.rb
+# # template
 ################################# to add 'base64' ##################
 # ### base 64 test
 # # require 'base64'
@@ -88,7 +94,7 @@ require 'src/medias/rubies/demos.rb'
 
 # # ############################# # spot  test
 # # frozen_string_literal: true
-# b = box({ id: :b1 })
+# box({ id: :b1 })
 # box({ id: :b2, left: 220 })
 # box({ id: :b3, left: 340 })
 #
@@ -102,33 +108,28 @@ require 'src/medias/rubies/demos.rb'
 #
 # class Atome
 #
-#   def atome_finder(query)
-#
-#   end
 #   def query_analysis(condition, operator, type, scope, values, target)
-#     pretenders_atomes=[]
-#
-#     all_attached_atome= grab(scope).attached
-#     # we must exclude itself from the atomes found
-#     atome_found= all_attached_atome.reject { |element| element == id }
-#
-#
-#     atome_queries_in_parent=grab(scope).query
-#     # now we add atome found in the query particle in case of find filtering
-#     atome_found=atome_found.concat(atome_queries_in_parent) if atome_queries_in_parent
-#     # puts "atome found => #{atome_found}"
-#     # puts "scope query : #{atome_queries_in_parent}"
-#     # puts "------"
+#     # pretenders_atomes = []
+#     # all_attached_atome = grab(scope).attached
+#     # # we must exclude itself from the atomes found
+#     # atome_found = all_attached_atome.reject { |element| element == id }
+#     #
+#     # atome_queries_in_parent = grab(scope).query
+#     # # now we add atome found in the query particle in case of find filtering
+#     # atome_found = atome_found.concat(atome_queries_in_parent) if atome_queries_in_parent
+#     # # puts "atome found => #{atome_found}"
+#     # # puts "scope query : #{atome_queries_in_parent}"
+#     # # puts "------"
 #
 #     case condition
 #     when :force
-#       if target ==:id
-#         # puts "values : #{values}"
-#         atome_requested=values
+#       case target
+#       when :id
+#         atome_requested = values
 #       else
-#         atome_finder(query)
 #       end
-#       @atome_forced << atome_requested
+#       puts "#{atome_requested} : forced"
+#       @atome_forced = @atome_forced | atome_requested
 #     when :add
 #
 #     when :subtract
@@ -139,7 +140,7 @@ require 'src/medias/rubies/demos.rb'
 #
 #     # TODO : scope should get all atomes attached to it and all atomes found in the query particle
 #     if !@atome_requested.include?(@atome_forced)
-#       @atome_requested << @atome_forced
+#       @atome_requested = @atome_requested | @atome_forced
 #     end
 #   end
 # end
@@ -166,6 +167,7 @@ require 'src/medias/rubies/demos.rb'
 #   end
 #   # puts "atome_requested: #{@atome_requested}"
 #   @atome_requested
+#
 # end
 #
 # # query particle is optional but when specified it must be an array, each queries are added to the results not excluded
@@ -184,57 +186,58 @@ require 'src/medias/rubies/demos.rb'
 #
 # # Example
 # # a = spot([{target: :id, values: [:b1, :b3], operator: :equal} ])
-#  a = grab(:view).spot({ query:
-#   [
-#     { add: {
-#       operator: :equal,
-#       target: :id,
-#       values: [:b1, :b2],
-#       type: :static,
-#     } },
-#     { force: {
+# a = grab(:view).spot({ query:
+#                          [
+#                            { add: {
+#                              operator: :equal,
+#                              part: :id,
+#                              values: [:b1, :b2],
+#                              type: :static,
+#                            } },
+#                            { force: {
+#                              target: :id,
+#                              values: [:b1],
+#                              type: :static,
+#                            } },
+#                            { add: {
+#                              operator: :superior,
+#                              target: :left,
+#                              values: 30, # non sense!! as only value is possible
+#                              type: :static,
+#                              method: :filter
+#                            } },
+#                            { subtract: {
+#                              operator: :equal,
+#                              target: :left,
+#                              values: 30, # non sense!! as only value is possible
+#                              type: :static,
+#                              method: :filter
+#                            } },
 #
-#       target: :id,
-#       values: [:b1],
-#       type: :static,
-#     } },
-#     { add: {
-#       operator: :superior,
-#       target: :left,
-#       values: 30, # non sense!! as only value is possible
-#       type: :static,
-#       method: :filter
-#     } },
-#     { subtract: {
-#       operator: :equal,
-#       target: :left,
-#       values: 30, # non sense!! as only value is possible
-#       type: :static,
-#       method: :filter
-#     } },
+#                            { subtract: {
+#                              operator: :equal,
+#                              scope: :b2,
+#                              target: :color,
+#                              values: [:red],
+#                              type: :dynamic,
+#                              method: :filter
+#                            } }
 #
-#     { subtract: {
-#       operator: :equal,
-#       scope: :b2,
-#       target: :color,
-#       values: [:red],
-#       type: :dynamic,
-#       method: :filter
-#     } }
-#
-#   ], id: :first_find}
+#                          ], id: :first_find }
 # )
 # # puts '----+++++++++----'
 # # puts "a content : #{a}"
-# b=a.spot({ query:[{ force: {
+# b = a.spot({ query: [{ force: {
 #   target: :id,
 #   values: [:b2],
 #   type: :static,
-# } }], id: :second_find})
-#
+# } }], id: :second_find })
 #
 # # alert b.attached
-# puts  "spot content fo rb is : #{b}"
+#
+# puts "spot content for a is : #{a}"
+# puts "spot content for b is : #{b}"
+#
 # # puts "a find is : #{a.spot}"
 # # puts "query msg : #{a.query}"
 # # puts "result msg : #{a.result}"
@@ -254,4 +257,28 @@ require 'src/medias/rubies/demos.rb'
 
 
 
+# # ### batch tests ####
+# def batch(atomes)
+#   grab(:black_matter).batch(atomes)
+#   grab(:black_matter).batch
+# end
+#
+# b=box({ id: :b0, color: :black , drag: true})
+# b.box({ id: :b2, left: 220 })
+# b.box({ id: :b1, left: 340 })
+# batch([:b1, :b2]).color(:white).rotate(33)
+
+
+
+
+
+##### group experiment
+new({atome: :group})
+
+new({sanitizer: :group}) do |params|
+  # params= {data: params}
+  {}
+end
+
+g=group([:b1,:b2])
 

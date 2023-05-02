@@ -4,6 +4,39 @@
 class Atome
   private
 
+  # local server messaging
+  def self.controller_sender(params)
+    return if $host == :browser
+
+      json_msg = params.to_json
+      atome_js.JS.controller_sender(json_msg)
+
+  end
+
+  def response_listener(hashed_msg)
+    js_action = hashed_msg.JS[:action]
+    js_body = hashed_msg.JS[:body]
+    send(js_action, js_body)
+  end
+
+  def self.controller_listener
+
+    return if $host == :browser
+
+      atome_js.JS.controller_listener()
+
+
+  end
+
+
+  # def self.mode=(val)
+  #   @atome_mode=val
+  # end
+  #
+  # def self.mode
+  #   "@atome_mode"
+  # end
+
   def collapse
     @atome.each do |element, value|
       send(element, value)
@@ -213,12 +246,16 @@ class Atome
   def detach_atome(atome_id_to_detach)
     atome_to_detach = grab(atome_id_to_detach)
     # TODO: remove the condition below and find why it try to detach an atome that doesn't exist
-    if atome_to_detach
+    return unless atome_to_detach
+
       atome_type_found = atome_to_detach.atome[:type]
       atome_id_found = atome_to_detach.atome[:id]
       @atome[atome_type_found].delete(atome_id_found)
       @atome[:attached].delete(atome_id_to_detach)
-    end
+
   end
+
+
+
 
 end

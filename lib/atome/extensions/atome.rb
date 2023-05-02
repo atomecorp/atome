@@ -23,6 +23,10 @@ class Object
     end
   end
 
+  def batch (atomes)
+    grab(:black_matter).batch(atomes)
+  end
+
   def identity_generator(type = :element)
     "#{attach[0]}_#{type}_#{Universe.counter}"
   end

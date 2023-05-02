@@ -109,7 +109,7 @@ def build_user_code(user_project_path, source_code)
   builder = Opal::Builder.new
   builder.append_paths("#{user_project_path}/")
 
-  system_infos = builder.build("#{source_code}/src/utilities/mode.rb").to_s
+ builder.build("#{source_code}/src/utilities/mode.rb").to_s
 
   # aui = builder.build("#{source_code}/aui.rb").to_s
   application_content = builder.build("#{source_code}/application/index.rb").to_s

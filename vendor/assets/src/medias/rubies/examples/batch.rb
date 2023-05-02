@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 # batch
 b=box({ id: :b1 })
-box({ id: :b2, left: 220 })
-box({ id: :b3, left: 340 })
-b.batch([:b1, :b2])
+b.box({ id: :b2, left: 220 })
+b.box({ id: :b3, left: 340 })
+b.batch([:b2, :b3])
 # puts "----- batch ------"
 # puts "=> the batch found is #{a}"
 # p a.batch.value

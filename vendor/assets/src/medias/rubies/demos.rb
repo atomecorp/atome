@@ -2,9 +2,9 @@
 # we create a code container
 element({id: :code_container, data: :empty})
 puts "Attention this method only work with a server due to security restriction "
-demo_container = grab('heaven').box({id: :demo_container,left: 0, overflow: :scroll, height: 567})
-clearer = grab('heaven').circle({top: 3, left: 3, width: 39, height: 39, color: :orange, id: :debugger})
-view_code = grab('heaven').circle({top: 3, left: 99, width: 39, height: 39, color: :red, id: :clearer})
+demo_container = grab('intuition').box({id: :demo_container,left: 0, overflow: :scroll, height: 567})
+clearer = grab('intuition').circle({top: 3, left: 3, width: 39, height: 39, color: :orange, id: :debugger})
+view_code = grab('intuition').circle({top: 3, left: 99, width: 39, height: 39, color: :red, id: :clearer})
 # view=grab(:view)
 view_code.touch(true) do
   code=grab(:code_container).data
@@ -28,6 +28,10 @@ demo_container.read('rubies/demos_list.rb') do |demos_found|
   demos_list.each_with_index  do |demo, index|
     current_demo=demo_container.text ({ data: demo, top: 16*index, left: 12, visual: {size: 12} })
     current_demo.touch(true) do
+      #TODO : create a ruby method for console clear
+      `console.clear()`
+      puts atome_infos
+      puts  "current demo: #{demo}"
       context.clear(true)
       # atomes_attached=context.attached
       users_atomes=[]

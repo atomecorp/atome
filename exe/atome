@@ -218,13 +218,9 @@ end
 def set_atome_mode(location, mode)
   mode_file = "#{location}/src/utilities/mode.rb"
   file_found = File.open(mode_file)
-  atome_mode=<<STR
-    class Atome
-      def self.mode
-        :#{mode}
-      end
-    end
-STR
+  atome_mode=<<~STR 
+    $host = :#{mode}
+  STR
   File.open(file_found, 'w') do |f|
     f.puts atome_mode
   end

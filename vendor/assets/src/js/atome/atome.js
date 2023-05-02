@@ -1,4 +1,4 @@
-const atomeJS = Object.assign(atomeAnimate,atomeDrag,atomeDrop,atomeOver,atomeFile,atomeSort, atomeTime, atomeVideo);
+const atomeJS = Object.assign(atomeAnimate,atomeCommunication,atomeDrag,atomeDrop,atomeOver,atomeFile,atomeSort, atomeTime, atomeVideo);
 // This const is used to store and get all atome created canvas by id
 const Atome_canvas={}
 // // class AtomeDrag {
