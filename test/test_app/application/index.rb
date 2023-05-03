@@ -2,6 +2,8 @@
 
 # Done : when sanitizing property must respect the order else no browser
 # object will be created, try to make it more flexible allowing any order
+# todo : IMPORTANT : when assigning a color using   b.color(:red) then   b.color(:blue)then  b.color(:red),
+# the third "color(:red)" should be the same otome as the first red not generate a new atome
 # TODO : Machine builder : new({machine: tool}) => grab(:intuition).tool; def tool .....
 # TODO : allow automatic multiple addition of image, text, video, shape, etc.. except color , shadow...
 # TODO : history
@@ -68,7 +70,7 @@
 ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
 # require 'src/medias/rubies/examples/matrix_simple.rb'
-# require 'src/medias/rubies/examples/drop.rb'
+require 'src/medias/rubies/examples/over.rb'
 
 
 # problem :
@@ -268,30 +270,6 @@
 # b.box({ id: :b1, left: 340 })
 # batch([:b1, :b2]).color(:white).rotate(33)
 
-# Drop
-b=box({id: :droper})
-b.drop(true) do |event_content|
-  puts "reveived : #{event_content}"
-  if event_content[:type]==:image
-    image({ path: event_content[:data] , drag: true,  width: 120})
-  end
-
-end
-
-i=image({path: "./medias/images/green_planet.png", left: 33, top: 33, drag: true})
-
-#
-b.over(:enter) do |event|
-  puts "so overlooked, object type is : #{event}"
-end
-
-b.over(:leave) do |event|
-  puts "do overlooked!!!, object type : #{event}"
-end
-
-
-c=circle({ color: :orange, top: 333, id: :the_c_2 })
-c.drag(true)
 
 
 
