@@ -37,8 +37,16 @@ end
 
 new ({particle: :over})
 
-new ({sanitizer: :over}) do |params|
-  params = { action: true } if params == true
+
+new ({sanitizer: :over}) do |params,user_proc|
+
+  params = :enter if params == true
+  case params
+  when :enter
+    @enter_action_proc = user_proc
+  when :leave
+    @leave_action_proc = user_proc
+  end
   params
 end
 
@@ -64,5 +72,4 @@ new({particle: :velocity })
 new({particle: :repeat })
 new({particle: :ease })
 new({particle: :unbind })
-# new({particle: :over })
 

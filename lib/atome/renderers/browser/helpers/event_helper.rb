@@ -54,17 +54,19 @@ Opal.BrowserHelper.$touch_helper_callback(event,#{atome},#{proc});
 `
   end
 
-  def self.browser_over_enter(browser_object, atome, proc)
+  def self.browser_over_enter(browser_object, atome)
     browser_object.on :mouseenter do |event|
-      atome.instance_exec(event, &proc) if proc.is_a?(Proc)
-      atome_id = atome.id
-      atome_js.JS.over_enter(atome_id, atome, proc, :enter)
+      atome.enter_action_callback( event)
+      # atome.instance_exec(event, &proc) if proc.is_a?(Proc)
+      # atome_id = atome.id
+      # atome_js.JS.over_enter(atome_id, atome, proc, :enter)
     end
   end
 
-  def self.browser_over_leave(browser_object, atome, proc)
+  def self.browser_over_leave(browser_object, atome)
     browser_object.on :mouseout do |event|
-      atome.instance_exec(event, &proc) if proc.is_a?(Proc)
+      atome.leave_action_callback(event)
+      # atome.instance_exec(event, &proc) if proc.is_a?(Proc)
       # atome_js.JS.over_leave(atome_id, atome,proc,:leave)
     end
   end

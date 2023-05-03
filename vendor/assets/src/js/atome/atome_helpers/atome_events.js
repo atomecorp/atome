@@ -3,8 +3,13 @@ function mouse_interaction(element, atome){
     interact(element).dropzone({
         listeners: {
             dragenter(event) {
-                console.log(event)
-                atome.$over_action_callback(Opal.hash({id: event.relatedTarget.id}));
+
+                atome.$enter_action_callback(Opal.hash({id: event.relatedTarget.id}));
+                // console.log(event)
+                // event.relatedTarget.textContent = 'Dropped'
+            },
+            dragleave(event) {
+                atome.$leave_action_callback(Opal.hash({id: event.relatedTarget.id}));
                 // event.relatedTarget.textContent = 'Dropped'
             },
             dropactivate: function (event) {

@@ -67,9 +67,9 @@
 });`
 ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
-#
-require 'src/medias/rubies/examples/ma
-trix_simple.rb'
+# require 'src/medias/rubies/examples/matrix_simple.rb'
+# require 'src/medias/rubies/examples/drop.rb'
+
 
 # problem :
 #  - empty atome
@@ -268,6 +268,30 @@ trix_simple.rb'
 # b.box({ id: :b1, left: 340 })
 # batch([:b1, :b2]).color(:white).rotate(33)
 
+# Drop
+b=box({id: :droper})
+b.drop(true) do |event_content|
+  puts "reveived : #{event_content}"
+  if event_content[:type]==:image
+    image({ path: event_content[:data] , drag: true,  width: 120})
+  end
+
+end
+
+i=image({path: "./medias/images/green_planet.png", left: 33, top: 33, drag: true})
+
+#
+b.over(:enter) do |event|
+  puts "so overlooked, object type is : #{event}"
+end
+
+b.over(:leave) do |event|
+  puts "do overlooked!!!, object type : #{event}"
+end
+
+
+c=circle({ color: :orange, top: 333, id: :the_c_2 })
+c.drag(true)
 
 
 

@@ -64,13 +64,20 @@ class Atome
     instance_exec(data_found, &proc) if proc.is_a?(Proc)
   end
 
+  # def over_action_callback( data_found, _full_event)
+  #   proc = @enter_action_proc
+  #   instance_exec(data_found, &proc) if proc.is_a?(Proc)
+  # end
+
   # drop callbacks
-  def enter_action_callback(proc)
-    instance_exec( &proc) if proc.is_a?(Proc)
+  def enter_action_callback( data_found, _full_event)
+    proc = @enter_action_proc
+    instance_exec( data_found,&proc) if proc.is_a?(Proc)
   end
 
-  def leave_action_callback(proc)
-    instance_exec( &proc) if proc.is_a?(Proc)
+  def leave_action_callback(data_found)
+    proc = @leave_action_proc
+    instance_exec( data_found,&proc) if proc.is_a?(Proc)
   end
 
 
