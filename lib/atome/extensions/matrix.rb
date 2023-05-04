@@ -27,8 +27,7 @@ module Matrix
     # we grab Black matter to avoid coloring the view
     cells_color_id = grab(:black_matter).color(cells_color).id
     cells_shadow = cells_data[:particles].delete(:shadow)
-    cells_shadow_id = shadow(cells_shadow).id
-
+    cells_shadow_id = grab(:black_matter).shadow(cells_shadow).id
     exceptions_data = params.delete(:exceptions)
     default_renderer = Essentials.default_params[:render_engines]
     atome_type = :matrix

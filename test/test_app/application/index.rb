@@ -69,8 +69,8 @@
 });`
 ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
-# require 'src/medias/rubies/examples/matrix_simple.rb'
-require 'src/medias/rubies/examples/over.rb'
+require 'src/medias/rubies/examples/matrix_simple.rb'
+# require 'src/medias/rubies/examples/over.rb'
 
 
 # problem :
@@ -283,4 +283,5 @@ new({sanitizer: :group}) do |params|
 end
 
 g=group([:b1,:b2])
+
 
