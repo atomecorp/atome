@@ -69,7 +69,7 @@
 });`
 ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
-require 'src/medias/rubies/examples/matrix_simple.rb'
+# require 'src/medias/rubies/examples/matrix_simple.rb'
 # require 'src/medias/rubies/examples/over.rb'
 
 
@@ -283,5 +283,33 @@ new({sanitizer: :group}) do |params|
 end
 
 g=group([:b1,:b2])
+
+
+# delete check
+
+
+b = box({left: 333, id: :the_one_box})
+
+b.circle({top: 66, id: :the_circle, color: :green})
+b.box({left: 166,top: 166, id: :the_box, color: :green})
+b.text({left: 166, id: :the_text, data: :green})
+`console.clear()`
+wait 2 do
+
+  # b.delete({id: :the_box})
+  # b.delete({id: :the_circle})
+  b.shape.each do |attached_atome_id|
+    # alert attached_atome_id
+
+    # alert b
+    b.delete({id: attached_atome_id})
+    # alert "b: #{b}"
+  end
+  alert "b: #{b}"
+end
+
+
+
+
 
 

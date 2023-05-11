@@ -10,61 +10,74 @@ new({ particle: :broadcast })
 new({ particle: :data })
 # new({particle: :additional })
 new({ particle: :delete, render: false }) do |params, &user_proc|
+  puts "=== >1 #{params}"
+  puts "=== >1.1 #{params}"
   if params == true
-    # puts "**all** parent: #{@atome[:attach]}, id_found : #{id}"
-    # We use the tag persistent to exclude color of system oobaject and other default colors
+    puts "=== >1.2 #{params}"
+
+    # We use the tag persistent to exclude color of system object and other default colors
     unless tag && tag[:persistent]
       # now we detach the atome from it's parent
-
-      #now we init rendering
-      rendering(:delete,params, &user_proc)
+      # now we init rendering
+      rendering(:delete, params, &user_proc)
       # the machine delete the current atome from the universe
-      id_found=@atome[:id]
+      id_found = @atome[:id]
       Universe.delete(id_found)
       parents_found = @atome[:attach]
-
       parents_found.each do |parent_id_found|
         parent_found = grab(parent_id_found)
-        if parent_found
-          parent_found.atome[type].delete(id_found)
-          # puts "**before** parent: #{parent_id_found},attached : #{parent_found.attached} id_found : #{id_found}"
-          parent_found.atome[:attached].delete(id_found)
-          # puts "**after** parent: #{parent_id_found},attached : #{parent_found.attached} id_found : #{id_found}"
+        next unless parent_found
 
-          # parent_found.detached(@atome[:id])
+        previous_parent_type_child = parent_found.atome[type]
+        previous_parent_attached_child = parent_found.atome[:attached]
+        # FIXME : find why we can't use delete on the array nut must use an iterator
+        new_type_container = []
+        previous_parent_type_child.each do |atome_found|
+          new_type_container << atome_found unless atome_found == id_found
         end
+        parent_found.atome[type] = new_type_container
+        # FIXME : find why we can't use delete on the array nut must use an iterator
+        new_attached_container = []
+        previous_parent_attached_child.each do |atome_found|
+          new_attached_container << atome_found unless atome_found == id_found
+        end
+        parent_found.atome[:attached] = new_attached_container
 
       end
 
     end
 
   elsif params == :materials
+    puts "=== >1.3 #{params}"
     # this will delete any child with a visual type cf : images, shapes, videos, ...
     materials.each do |atome_id_found|
       grab(atome_id_found).delete(true)
     end
   elsif params[:id]
+    puts "=== >1.4 #{params}"
     # the machine try to an atome by it's ID and delete it
     grab(params[:id]).delete(true)
   elsif params.instance_of? Hash
+    puts "=== >1.5 #{params}"
     # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
     # with id my_monitor
     params.each do |param, value|
       atome[param][value] = nil
     end
   else
-    # the machine try to reset the current particle(params), eg a.delete(:left) => left: 0
+    puts "=== >2 #{params}"
     send(params, 0)
   end
+  puts "=== >3 #{params}"
 end
 
 new({ particle: :clear })
 new({ post: :clear }) do
 
-  attached_found=[]
- @atome[:attached].each do |attached_id_found|
-   attached_found << attached_id_found
- end
+  attached_found = []
+  @atome[:attached].each do |attached_id_found|
+    attached_found << attached_id_found
+  end
   attached_found.each do |child_id_found|
     # puts "===>> should be deleted : #{child_id_found}"
     child_found = grab(child_id_found)
