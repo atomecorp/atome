@@ -241,6 +241,21 @@ class Atome
     images_found.concat(videos_found).concat(shapes_found).concat(web_found).concat(texts_found)
   end
 
+
+  def physical
+    types=[:text, :image, :video, :shape, :web]
+    atomes_found=[]
+    types.each do |type|
+      ids_found = self.send(type)
+      next unless ids_found
+
+      ids_found.each do |id_found|
+        atomes_found << id_found
+      end
+    end
+    atomes_found
+  end
+
   def detach_atome(atome_id_to_detach)
     atome_to_detach = grab(atome_id_to_detach)
     # TODO: remove the condition below and find why it try to detach an atome that doesn't exist

@@ -11,6 +11,11 @@ new({ atome: :image })
 new({ sanitizer: :image }) do |params|
   unless params.instance_of? Hash
     # TODO : we have to convert all image to png or maintain a database with extension
+    # FIXME : temporary patch that add .png to the string if no extension is found
+    if params.split('.').length == 1
+      params = "#{params}.png"
+    end
+
     params = { path: "./medias/images/#{params}" }
   end
   # TODO : the line below should get the value from default params Essentials

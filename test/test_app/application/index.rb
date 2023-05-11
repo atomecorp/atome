@@ -1,4 +1,4 @@
-# # # # # # frozen_string_literal: true
+# frozen_string_literal: true
 
 # Done : when sanitizing property must respect the order else no browser
 # object will be created, try to make it more flexible allowing any order
@@ -71,6 +71,7 @@
 # require 'src/medias/rubies/demos.rb'
 # require 'src/medias/rubies/examples/matrix_simple.rb'
 # require 'src/medias/rubies/examples/over.rb'
+# require 'src/medias/rubies/examples/physical.rb'
 
 
 # problem :
@@ -162,7 +163,8 @@
 #     values = param[condition][:values]
 #     target = param[condition][:target]
 #
-#     # cleanup_query = { condition => { operator: operator, type: type, scope: scope, values: values, target: target } }
+#     # cleanup_query = { condition => { operator: operator, type: type, scope: scope,
+# values: values, target: target } }
 #     cleanup_query = query_analysis(condition, operator, type, scope, values, target)
 #     # puts cleanup_query
 #     # @atome_requested << cleanup_query
@@ -172,7 +174,8 @@
 #
 # end
 #
-# # query particle is optional but when specified it must be an array, each queries are added to the results not excluded
+# # query particle is optional but when specified it must be an array, each queries are added to the results
+# # not excluded
 # # # 2 possible syntax
 # # # a = spot([{target: [:b1, :b3]} ])
 # # # a = spot({ query: [target: [:b5, :b9]]})
@@ -183,7 +186,8 @@
 # # - values(particle value that must match the operator), values is an array, each can be string, symbol, int, ...
 # # optional parameters are :
 # # - scope (parent if not specified), scope type is Symbol
-# # - type (dynamic, static), type type is Symbol (dynamic means that each neww atomes that meets the criteria is added to the list)
+# # - type (dynamic, static), type type is Symbol (dynamic means that each neww atomes that meets the criteria is
+# # added to the list)
 # # spot atomes must be chained to to filter results
 #
 # # Example
@@ -285,28 +289,9 @@ end
 g=group([:b1,:b2])
 
 
-# delete check
+image('red_planet')
 
 
-b = box({left: 333, id: :the_one_box})
-
-b.circle({top: 66, id: :the_circle, color: :green})
-b.box({left: 166,top: 166, id: :the_box, color: :green})
-b.text({left: 166, id: :the_text, data: :green})
-`console.clear()`
-wait 2 do
-
-  # b.delete({id: :the_box})
-  # b.delete({id: :the_circle})
-  b.shape.each do |attached_atome_id|
-    # alert attached_atome_id
-
-    # alert b
-    b.delete({id: attached_atome_id})
-    # alert "b: #{b}"
-  end
-  alert "b: #{b}"
-end
 
 
 

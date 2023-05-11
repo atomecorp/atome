@@ -10,10 +10,7 @@ new({ particle: :broadcast })
 new({ particle: :data })
 # new({particle: :additional })
 new({ particle: :delete, render: false }) do |params, &user_proc|
-  puts "=== >1 #{params}"
-  puts "=== >1.1 #{params}"
   if params == true
-    puts "=== >1.2 #{params}"
 
     # We use the tag persistent to exclude color of system object and other default colors
     unless tag && tag[:persistent]
@@ -48,27 +45,22 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     end
 
   elsif params == :materials
-    puts "=== >1.3 #{params}"
     # this will delete any child with a visual type cf : images, shapes, videos, ...
     materials.each do |atome_id_found|
       grab(atome_id_found).delete(true)
     end
   elsif params[:id]
-    puts "=== >1.4 #{params}"
     # the machine try to an atome by it's ID and delete it
     grab(params[:id]).delete(true)
   elsif params.instance_of? Hash
-    puts "=== >1.5 #{params}"
     # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
     # with id my_monitor
     params.each do |param, value|
       atome[param][value] = nil
     end
   else
-    puts "=== >2 #{params}"
     send(params, 0)
   end
-  puts "=== >3 #{params}"
 end
 
 new({ particle: :clear })
