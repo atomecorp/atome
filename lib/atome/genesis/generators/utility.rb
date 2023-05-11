@@ -11,7 +11,6 @@ new({ particle: :data })
 # new({particle: :additional })
 new({ particle: :delete, render: false }) do |params, &user_proc|
   if params == true
-
     # We use the tag persistent to exclude color of system object and other default colors
     unless tag && tag[:persistent]
       # now we detach the atome from it's parent
@@ -51,6 +50,13 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     end
   elsif params[:id]
     # the machine try to an atome by it's ID and delete it
+    # We check for recursive, if found we delete attached atomes too
+    if params[:recursive] == true
+      materials_found = grab(params[:id]).materials
+      materials_found.each do |atome_id_found|
+        grab(atome_id_found).delete(true)
+      end
+    end
     grab(params[:id]).delete(true)
   elsif params.instance_of? Hash
     # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor

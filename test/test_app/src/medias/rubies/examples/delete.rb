@@ -23,4 +23,20 @@ wait 2 do
   b.delete(:left)
 end
 
+# recursive example
+bb=box
+bb.text('click me!')
+col=color(:red)
+bb.touch(true) do
+  bb.box({attached: col.id})
+  c=bb.circle
+  c.text(:hello)
+
+  wait 2 do
+    bb.physical.each do |attached_atome_id|
+      bb.delete({id: attached_atome_id, recursive: true})
+    end
+  end
+  puts  Universe.atomes.length
+end
 

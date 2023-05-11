@@ -53,10 +53,10 @@ end
 grab(:my_table_21).color(:pink)
 grab(:my_table_26).color(:purple)
 # m.cells([20, 5]).rotate(15)
-# m.cell(9).color(:black)
+m.cell(3).color(:black)
 # test = m.cells([23, 26])
-# test.color(:blue)
-# m.columns(6).data[0..3].color(:white)
+# test.color(:black)
+# m.columns(6).data[0..3].color(:green)
 
 grab(m.id).drag({ move: true }) do |e|
   puts e

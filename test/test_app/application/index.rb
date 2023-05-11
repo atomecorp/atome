@@ -70,8 +70,10 @@
 ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
 # require 'src/medias/rubies/examples/matrix_simple.rb'
+# require 'src/medias/rubies/examples/matrix.rb'
 # require 'src/medias/rubies/examples/over.rb'
 # require 'src/medias/rubies/examples/physical.rb'
+# require 'src/medias/rubies/examples/delete.rb'
 
 
 # problem :
@@ -289,7 +291,28 @@ end
 g=group([:b1,:b2])
 
 
-image('red_planet')
+# # recursive example
+# b=box
+#
+# col=color(:red)
+# b.touch(true) do
+#   b.box({attached: col.id})
+#   c=b.circle
+#   c.text(:hello)
+#
+#   wait 2 do
+#   b.physical.each do |attached_atome_id|
+#     b.delete({id: attached_atome_id, recursive: true})
+#   end
+#   end
+#   puts  Universe.atomes.length
+# end
+
+
+
+
+
+
 
 
 
