@@ -10,11 +10,11 @@ module BrowserHelper
     atome_js.JS.drag(params, atome_id, atome)
   end
 
-  def self.browser_drag_end(params, atome_id, atome, proc)
-    alert :kool
-    # atome.drag_move_proc = proc
-    # atome_js.JS.drag(params, atome_id, atome)
-  end
+  # def self.browser_drag_end(params, atome_id, atome, proc)
+  #   # alert :kool
+  #   # atome.drag_move_proc = proc
+  #   # atome_js.JS.drag(params, atome_id, atome)
+  # end
 
   def self.browser_drag_lock(params, atome_id, atome, _proc)
     atome_js.JS.lock(params, atome_id, atome)

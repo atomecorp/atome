@@ -16,7 +16,6 @@ const atomeDrag = {
                     atome.$drag_move_callback(event.pageX, event.pageY, event.rect.left, event.rect.top);
 
                     if (options === true) {
-
                         target = event.target
                         var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
                         var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
@@ -35,10 +34,20 @@ const atomeDrag = {
                 end(event) {
 
                     // We remove the translate and update the position of the atome
+
+                    // var transformValue = window.getComputedStyle(element).getPropertyValue('transform');
+                    // var matrix = transformValue.match(/^matrix\(([^\(]*)\)$/);
+                    // var transformData = matrix ? matrix[1].split(', ') : null;
+                    // var matrix = transformValue.match(/^matrix\(([^\(]*)\)$/);
+                    // var transformData = matrix ? matrix[1].split(', ') : null;
+                    // var translateX = transformData ? parseFloat(transformData[4]) : 0;
+                    // var translateY = transformData ? parseFloat(transformData[5]) : 0;
+                    // var positionTop = element.offsetTop - translateY;
+                    // var positionLeft = element.offsetLeft - translateX;
+                    // element.style.top = element.style.top + positionTop + 'px';
+                    // element.style.left = element.style.left + positionLeft + 'px';
+
                     atome.$drag_end_callback(event.pageX, event.pageY, event.rect.left, event.rect.top);
-                    element.style.transform = 'translate(0px, 0px)'
-                    element.setAttribute('data-x', 0)
-                    element.setAttribute('data-y', 0)
 
                 },
             }

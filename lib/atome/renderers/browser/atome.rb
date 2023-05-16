@@ -19,7 +19,7 @@ end
 
 generator.build_render(:browser_color) do |_value|
   @browser_type = :style
-  # puts "1 - for the id  : #{id} the browserrtype is  ::::> #{@browser_type}"
+  # puts "1 - for the id  : #{id} the browser type is  ::::> #{@browser_type}"
   id_found = @atome[:id]
   type_found = @atome[:type]
   # we remove previous unused style tag
