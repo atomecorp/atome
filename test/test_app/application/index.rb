@@ -315,22 +315,8 @@ g=group([:b1,:b2])
 
 
 
-# require 'src/medias/rubies/examples/drag.rb'
-b=box
-b.drag(move: false) do
-  puts 'jh'
-end
-b.drag(:begibn) do
-  puts 'poilu'
-end
+require 'src/medias/rubies/examples/drag.rb'
 
-b.drag(:end) do
-  puts 'poilu'
-end
-b.touch(:up ) do
-  # puts 'jh'
-end
-alert b
 
 
 

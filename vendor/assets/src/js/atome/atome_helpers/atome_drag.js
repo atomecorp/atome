@@ -35,19 +35,22 @@ const atomeDrag = {
 
                     // We remove the translate and update the position of the atome
 
-                    // var transformValue = window.getComputedStyle(element).getPropertyValue('transform');
-                    // var matrix = transformValue.match(/^matrix\(([^\(]*)\)$/);
-                    // var transformData = matrix ? matrix[1].split(', ') : null;
-                    // var matrix = transformValue.match(/^matrix\(([^\(]*)\)$/);
-                    // var transformData = matrix ? matrix[1].split(', ') : null;
-                    // var translateX = transformData ? parseFloat(transformData[4]) : 0;
-                    // var translateY = transformData ? parseFloat(transformData[5]) : 0;
-                    // var positionTop = element.offsetTop - translateY;
-                    // var positionLeft = element.offsetLeft - translateX;
-                    // element.style.top = element.style.top + positionTop + 'px';
-                    // element.style.left = element.style.left + positionLeft + 'px';
+                    const transformValue = window.getComputedStyle(element).getPropertyValue('transform');
+                    const matrix = transformValue.match(/^matrix\(([^\(]*)\)$/);
+                    const transformData = matrix ? matrix[1].split(', ') : null;
+                    const translateX = transformData ? parseFloat(transformData[4]) : 0;
+                    const translateY = transformData ? parseFloat(transformData[5]) : 0;
+                    const positionLeft = element.offsetLeft + translateX;
+                    const positionTop = element.offsetTop + translateY;
 
-                    atome.$drag_end_callback(event.pageX, event.pageY, event.rect.left, event.rect.top);
+                    element.style.left = positionLeft+ 'px';
+                    element.style.top = positionTop + 'px';
+                    // we remove the transform tag
+                    element.style.transform = '';
+                    // now we reset the interactJS
+                    element.setAttribute('data-x', 0)
+                    element.setAttribute('data-y', 0)
+                    atome.$drag_end_callback(event.pageX, event.pageY, positionLeft, positionTop);
 
                 },
             }

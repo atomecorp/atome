@@ -45,4 +45,8 @@ module BrowserHelper
     atome.drag_end_proc = proc
   end
 
+  def self.browser_drag_start(_params, _atome_id, atome, proc)
+    atome.drag_start_proc = proc
+  end
+
 end

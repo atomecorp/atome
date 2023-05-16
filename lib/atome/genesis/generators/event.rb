@@ -23,7 +23,7 @@ new({ particle: :drag, store: false })
 new({ sanitizer: :drag }) do |params, proc|
   params = { move: true } if params == true
   params = { end: proc } if params == :end
-  params = { begin: proc } if params == :begin
+  params = { start: proc } if params == :start
   params
 end
 

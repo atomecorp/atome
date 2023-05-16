@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 a = box({ width: 333, height: 333, id: :the_boxy })
+
+a.drag(move: false) do |event|
+  puts "the pointer is at : #{event}"
+
+end
 a.color(:red)
 b = circle({ width: 33, height: 33, id: :the_box, drag: true })
 
@@ -43,14 +48,19 @@ b.drag({ snap: { x: 100, y: 190 } })
 
 cc=circle(drag: true)
 cc.drag(true) do |ee|
-  puts "ee is : >#{cc.left} : #{ee}"
+  puts "the circle  is : >#{cc.left} : #{ee}"
 
 end
 
-# cc.drag(:end) do |ee|
-#   puts "ee is now ::: : >#{cc.left} : #{ee}"
-#
-# end
+cc.drag(:end) do |ee|
+  puts "the circle  is ending drag : >#{cc.left} : #{ee}"
+end
+
+
+cc.drag(:start) do |ee|
+  puts "==> the circle is starting drag : >#{cc.left} : #{ee}"
+end
+
 
 
 
@@ -66,4 +76,23 @@ bb.attach(cc.id)
 # alert"#{b.parents.class} :  #{b.parents}"
 a.touch(true) do
   puts cc.left
+end
+
+
+# Sticky box
+sticky_box=box({left: 633})
+sticky_box.text("my position will be reverted")
+start_x_pos=sticky_box.left
+start_y_pos=sticky_box.top
+sticky_box.drag(move: true) do
+  puts sticky_box.left
+end
+sticky_box.drag(:start) do
+  puts "start => #{sticky_box.left} : #{sticky_box.top}"
+end
+
+sticky_box.drag(:end) do
+  puts "end => #{sticky_box.left} : #{sticky_box.top}"
+  sticky_box.left(start_x_pos)
+  sticky_box.top(start_y_pos)
 end

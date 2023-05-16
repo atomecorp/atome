@@ -52,6 +52,7 @@ class Atome
     @atome[:left] = left_val
     @atome[:top] = top_val
     # alert :loo
+    # #now we rest the position
     # self.left(left_val)
     # self.top(top_val)
     proc = @drag_end_proc
