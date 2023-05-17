@@ -3,6 +3,7 @@
 generator = Genesis.generator
 
 generator.build_render(:red) do |value|
+  alert "the value of red is : #{value}"
   red = ((@atome[:red] = value) * 255)
   green = @atome[:green] * 255
   blue = @atome[:blue] * 255
@@ -62,11 +63,11 @@ generator.build_render(:browser_edit) do |value|
   if value == true
     caret_color = 'white'
     user_select = 'text'
-    selection_color= 'blue'
+    selection_color = 'blue'
   else
     caret_color = 'transparent'
     user_select = 'none'
-    selection_color= 'transparent'
+    selection_color = 'transparent'
   end
 
   @browser_object.attributes[:contenteditable] = value
@@ -90,6 +91,35 @@ generator.build_render(:browser_remove_classes) do |value, _user_proc|
   @browser_object.remove_class(value)
 end
 
-new ({browser: :opacity}) do |value|
+new ({ browser: :opacity }) do |value|
   @browser_object.style['opacity'] = value
+end
+
+new ({ browser: :definition }) do |value|
+  target=id
+  `
+
+var divElement =  document.querySelector('#'+#{target});;
+
+// select the first svg tag inside the div
+var svgElement = divElement.querySelector('svg');
+
+// delete the first svg tag inside the div if it exist
+if (svgElement) {
+  divElement.removeChild(svgElement);
+}
+
+
+  let svg_content='<svg style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">'+#{value}+'</svg>'
+       let svgContainer = document.getElementById(#{target});
+        let parser = new DOMParser();
+        let svgDoc = parser.parseFromString(svg_content, "image/svg+xml");
+        let importedSVG = svgDoc.getElementsByTagName("svg")[0];
+        importedSVG.style.width =  "100%";
+        importedSVG.style.height =  "100%";
+        let elements = importedSVG.getElementsByTagName("path");
+
+        svgContainer.appendChild(importedSVG);
+
+`
 end

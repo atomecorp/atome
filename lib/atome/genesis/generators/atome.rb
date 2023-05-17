@@ -2,6 +2,7 @@
 new({ atome: :color, type: :hash })
 
 new({ sanitizer: :color }) do |params|
+  alert params
   # TODO : when attaching color to a shadow it should colorized it , cf : c.shadow({color: :blue}) should work
   params = create_color_hash(params) unless params.instance_of? Hash
   params
