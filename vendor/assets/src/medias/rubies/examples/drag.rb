@@ -66,7 +66,7 @@ end
 
 cc.touch(true) do
   # alert cc.left
-  puts "===>ee is : >#{cc.left}"
+  puts "===>cc is : >#{cc}"
 end
 
 bb=box({drag: true, color: :yellow})

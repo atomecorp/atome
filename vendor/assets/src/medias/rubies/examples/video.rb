@@ -16,8 +16,12 @@ wait 2 do
 end
 
 my_video.touch(true) do
-  my_video.play(true) do |currentTime|
-    puts "play callback time is : #{currentTime}"
+  if my_video.play == true
+    my_video.pause(true)
+  else
+    my_video.play(true) do |currentTime|
+      puts "play callback time is : #{currentTime}"
+    end
   end
 end
 #############

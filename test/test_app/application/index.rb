@@ -74,7 +74,7 @@
 # require 'src/medias/rubies/examples/over.rb'
 # require 'src/medias/rubies/examples/physical.rb'
 # require 'src/medias/rubies/examples/delete.rb'
-
+require 'src/medias/rubies/examples/vector.rb'
 
 # problem :
 #  - empty atome
@@ -263,8 +263,6 @@
 # # TODO : finish atome must return a particular particle instead of itself
 # # add batch and monitoring
 
-
-
 # # ### batch tests ####
 # def batch(atomes)
 #   grab(:black_matter).batch(atomes)
@@ -276,20 +274,15 @@
 # b.box({ id: :b1, left: 340 })
 # batch([:b1, :b2]).color(:white).rotate(33)
 
-
-
-
-
 ##### group experiment
-new({atome: :group})
+new({ atome: :group })
 
-new({sanitizer: :group}) do |params|
+new({ sanitizer: :group }) do |params|
   # params= {data: params}
   {}
 end
 
-g=group([:b1,:b2])
-
+g = group([:b1, :b2])
 
 # # recursive example
 # b=box
@@ -315,7 +308,9 @@ g=group([:b1,:b2])
 
 
 
-require 'src/medias/rubies/examples/drag.rb'
+
+
+
 
 
 
