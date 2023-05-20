@@ -4,10 +4,10 @@ new({ particle: :attach })
 new({ sanitizer: :attach }) do |parents_ids|
   puts "=> attach it! : #{parents_ids} <="
 
-  parents_ids = parents_ids if parents_ids.instance_of? Atome
+  # parents_ids = parents_ids if parents_ids.instance_of? Atome
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   parents_ids.each do |parents_id|
-    parents_id = parents_id if parents_id.instance_of? Atome
+    # parents_id = parents_id if parents_id.instance_of? Atome
     parents_found = grab(parents_id)
     # TODO : factorise the code below
     current_type = atome[:type]
@@ -31,10 +31,10 @@ end
 new({ particle: :attached })
 new({ sanitizer: :attached }) do |children_ids|
   puts "=> attached now! : #{children_ids}<="
-  children_ids = children_ids if children_ids.instance_of? Atome
+  # children_ids = children_ids if children_ids.instance_of? Atome
   children_ids = [children_ids] unless children_ids.instance_of?(Array)
   children_ids.each do |child_id|
-    child_id = child_id if child_id.instance_of? Atome
+    # child_id = child_id if child_id.instance_of? Atome
     child_found = grab(child_id)
     parents_found = @atome[:id]
     # TODO : factorise the code below

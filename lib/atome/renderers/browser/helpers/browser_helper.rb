@@ -15,25 +15,32 @@ module BrowserHelper
     html_object.append_to(browser_document[parents])
   end
 
+  def self.colorize_vector(vector_id, tag_style)
+    # get the content the <style> tag
+    content_style = tag_style.inner_html
+    color_value = content_style[/background-color:\s*([^;}]+)/, 1]
+    `
+            let parser = new DOMParser();
+    var divElement = document.querySelector('#'+#{vector_id});
+    // select the first svg tag inside the div
+    let foundSVG  = divElement.querySelector('svg');
+     let elements = foundSVG.getElementsByTagName("path");
+    Array.from(elements).forEach(el => {
+                el.setAttribute("fill", #{color_value});
+                el.setAttribute("stroke", #{color_value});
+            });
+    `
+  end
+
   def self.browser_attach_style(parents, _html_object, atome)
     # we test if the atome has a deinition ( it means hold some vectors infomations)
     if grab(parents).atome[:definition]
       tag_style = $document[atome[:id]]
-      # get the content the <style> tag
-      content_style = tag_style.inner_html
+      # # get the content the <style> tag
+      # content_style = tag_style.inner_html
       #  extract the color value
-      color_value = content_style[/background-color:\s*([^;}]+)/, 1]
-      `
-        let parser = new DOMParser();
-var divElement = document.querySelector('#'+#{parents});
-// select the first svg tag inside the div
-let foundSVG  = divElement.querySelector('svg');
- let elements = foundSVG.getElementsByTagName("path");
-Array.from(elements).forEach(el => {
-            el.setAttribute("fill", #{color_value});
-            el.setAttribute("stroke", #{color_value});
-        });
-`
+      colorize_vector(parents, tag_style)
+
     else
       browser_document[parents].add_class(atome[:id])
 
@@ -50,8 +57,35 @@ Array.from(elements).forEach(el => {
   end
 
   def self.browser_attached_style(children, _html_object, atome)
+    if atome[:definition]
+      children.each do |child|
+        tag_style = $document[child]
 
-    browser_document[atome[:id]].add_class(children)
+        colorize_vector(atome[:id], tag_style)
+        # get the content the <style> tag
+#            content_style = tag_style.inner_html
+#            #  extract the color value
+#            color_value = content_style[/background-color:\s*([^;}]+)/, 1]
+#            `
+#         let parser = new DOMParser();
+# var divElement = document.querySelector('#'+#{atome[:id]});
+# // select the first svg tag inside the div
+# let foundSVG  = divElement.querySelector('svg');
+#  let elements = foundSVG.getElementsByTagName("path");
+# Array.from(elements).forEach(el => {
+#             el.setAttribute("fill", #{color_value});
+#             el.setAttribute("stroke", #{color_value});
+#         });
+# `
+      end
+
+    else
+      # alert atome.class
+      browser_document[atome[:id]].add_class(children)
+    end
+    # browser_document[atome[:id]].add_class(children)
+
+
   end
 
   def self.value_parse(value)
