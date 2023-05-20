@@ -1,1 +1,1 @@
-$host = :tauri
+$host = :browser

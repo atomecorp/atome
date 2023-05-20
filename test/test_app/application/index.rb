@@ -75,7 +75,7 @@
 # require 'src/medias/rubies/examples/physical.rb'
 # require 'src/medias/rubies/examples/delete.rb'
 # box({left: 0,top: 12, color: :orange})
-# require 'src/medias/rubies/examples/vector.rb'
+require 'src/medias/rubies/examples/vector.rb'
 #
 # problem :
 #  - empty atome

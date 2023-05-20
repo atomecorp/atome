@@ -50,10 +50,15 @@ new({ particle: :remove_classes }) do |value|
   # Universe.classes.delete(value)
   Universe.classes[value].delete(id)
 end
-new ({particle: :opacity})
-
+new ({ particle: :opacity })
 
 # vector shape
-new({particle: :definition})
+new({ particle: :definition })
 
 new({ browser: :definition, type: :string })
+
+new({ sanitizer: :definition }) do |params|
+  # we remove the unwanted svg tags
+  params = params.gsub(/<svg[^>]*>|<\/svg>/, '')
+  params
+end
