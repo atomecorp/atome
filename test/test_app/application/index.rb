@@ -306,23 +306,30 @@ g = group([:b1, :b2])
 
 
 
-# gradient
-
+# # gradient
+#
 # b=box
 # c=color(:red)
-# c2=color(:blue)
-#
-# b.attached(c.id)
+# c2=color({ blue: 1, alpha: 1, left: 33, id: :tutut })
+# # `console.clear()`
+# # b.attached(c.id)
+# puts '----+++---'
+# c.attach(b.id)
+# puts '-------'
 # b.attached(c2.id)
 #
-# # alert b
-# c=circle
+# wait 2 do
+#   c2.red(1)
+# end
+# #
+# # # alert b
+# # c=circle
 # # new({ particle: :red }) do
 # #   alert 'so cool!'
 # #   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
 # #   self
 # # end
-# c.red("lkjh")
+# # c.red("lkjh")
 
 
 

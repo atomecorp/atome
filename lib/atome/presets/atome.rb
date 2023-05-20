@@ -22,6 +22,12 @@ class Atome
     Atome.new({ atome_type => params }, &bloc)
   end
 
+  def vector(params = {}, &bloc)
+    atome_type = :vector
+    params = atome_common(atome_type, params)
+    Atome.new({ atome_type => params }, &bloc)
+  end
+
   def circle(params = {}, &bloc)
     atome_type = :circle
     # puts "counter#{Universe.counter}"

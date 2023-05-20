@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'atome/renderers/browser/opal_add_on'
 require 'atome/renderers/browser/effect'
 require 'atome/renderers/browser/event'
 require 'atome/renderers/browser/geometry'

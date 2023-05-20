@@ -40,6 +40,10 @@ class Object
     grab(:view).box(params, &proc)
   end
 
+  def vector(params = {}, &proc)
+    grab(:view).vector(params, &proc)
+  end
+
   def circle(params = {}, &proc)
     grab(:view).circle(params, &proc)
   end

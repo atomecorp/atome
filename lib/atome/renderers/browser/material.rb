@@ -3,7 +3,6 @@
 generator = Genesis.generator
 
 generator.build_render(:red) do |value|
-  alert "the value of red is : #{value}"
   red = ((@atome[:red] = value) * 255)
   green = @atome[:green] * 255
   blue = @atome[:blue] * 255
