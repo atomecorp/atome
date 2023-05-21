@@ -61,6 +61,11 @@ Atome.new(
 )
 
 Atome.new(
+  { color: { renderers: default_render, id: :invisible_color, type: :color,tag: ({persistent: true}),
+             red: 0, green: 0, blue: 0, alpha: 1 } }
+)
+
+Atome.new(
   { color: { renderers: default_render, id: :text_color, type: :color,tag: ({persistent: true}),
              red: 0.3, green: 0.3, blue: 0.3, alpha: 1 } }
 )

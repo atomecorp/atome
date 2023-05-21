@@ -3,7 +3,11 @@
 # for browser rendering
 module BrowserHelper
   def self.browser_colorize_color(color_updated, atome)
-    `document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.backgroundColor = #{color_updated}`
+    `
+  document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.backgroundColor = #{color_updated}
+document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.fill = #{color_updated}
+document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.stroke = #{color_updated}
+`
   end
 
   def self.browser_colorize_shadow(color_updated, atome)

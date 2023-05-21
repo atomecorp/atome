@@ -16,18 +16,22 @@ module BrowserHelper
   end
 
   def self.colorize_vector(vector_id, tag_style)
+    # TODO : Create a class instead of modidfying the vector
     # get the content the <style> tag
-    content_style = tag_style.inner_html
-    color_value = content_style[/background-color:\s*([^;}]+)/, 1]
+    color_class=self.color.last
+    # alert color_class.class
+    # content_style = tag_style.inner_html
+    # color_value = content_style[/background-color:\s*([^;}]+)/, 1]
     `
             let parser = new DOMParser();
     var divElement = document.querySelector('#'+#{vector_id});
+divElement.style.removeProperty('background-color');
+divElement.style.backgroundColor = 'transparent';
     // select the first svg tag inside the div
     let foundSVG  = divElement.querySelector('svg');
      let elements = foundSVG.getElementsByTagName("path");
     Array.from(elements).forEach(el => {
-                el.setAttribute("fill", #{color_value});
-                el.setAttribute("stroke", #{color_value});
+                el.classList.add(#{color_class});
             });
     `
   end
@@ -63,20 +67,20 @@ module BrowserHelper
 
         colorize_vector(atome[:id], tag_style)
         # get the content the <style> tag
-#            content_style = tag_style.inner_html
-#            #  extract the color value
-#            color_value = content_style[/background-color:\s*([^;}]+)/, 1]
-#            `
-#         let parser = new DOMParser();
-# var divElement = document.querySelector('#'+#{atome[:id]});
-# // select the first svg tag inside the div
-# let foundSVG  = divElement.querySelector('svg');
-#  let elements = foundSVG.getElementsByTagName("path");
-# Array.from(elements).forEach(el => {
-#             el.setAttribute("fill", #{color_value});
-#             el.setAttribute("stroke", #{color_value});
-#         });
-# `
+        #            content_style = tag_style.inner_html
+        #            #  extract the color value
+        #            color_value = content_style[/background-color:\s*([^;}]+)/, 1]
+        #            `
+        #         let parser = new DOMParser();
+        # var divElement = document.querySelector('#'+#{atome[:id]});
+        # // select the first svg tag inside the div
+        # let foundSVG  = divElement.querySelector('svg');
+        #  let elements = foundSVG.getElementsByTagName("path");
+        # Array.from(elements).forEach(el => {
+        #             el.setAttribute("fill", #{color_value});
+        #             el.setAttribute("stroke", #{color_value});
+        #         });
+        # `
       end
 
     else
@@ -84,7 +88,6 @@ module BrowserHelper
       browser_document[atome[:id]].add_class(children)
     end
     # browser_document[atome[:id]].add_class(children)
-
 
   end
 

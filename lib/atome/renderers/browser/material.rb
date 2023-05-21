@@ -15,7 +15,6 @@ end
 
 generator.build_render(:green) do |value|
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
-  self
   red = @atome[:red] * 255
   green = (@atome[:green] = value) * 255
   blue = @atome[:blue] * 255
@@ -49,11 +48,6 @@ generator.build_render(:alpha) do |value|
 end
 
 generator.build_render(:visual) do |value|
-  # value = if value[:size].instance_of?(String)
-  #           value[:size]
-  #         else
-  #           "#{value[:size]}px"
-  #         end
   value = BrowserHelper.value_parse(value[:size])
   browser_object.style['font-size'] = value
 end
@@ -99,7 +93,8 @@ new ({ browser: :definition }) do |value|
   `
 
 var divElement =  document.querySelector('#'+#{target});;
-
+divElement.style.removeProperty('background-color');
+divElement.style.backgroundColor = 'transparent';
 // select the first svg tag inside the div
 var svgElement = divElement.querySelector('svg');
 
