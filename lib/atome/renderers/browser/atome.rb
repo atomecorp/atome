@@ -12,42 +12,69 @@ generator.build_render(:browser_shape) do
   # if @definition
   #   alert "why we never pass here??????"
   # else
-    @browser_type = :div
-    id_found = @atome[:id]
-    DOM do
-      div(id: id_found).atome
-    end.append_to(BrowserHelper.browser_document[:user_view])
-    @browser_object = BrowserHelper.browser_document[id_found]
+  @browser_type = :div
+  id_found = @atome[:id]
+  DOM do
+    div(id: id_found).atome
+  end.append_to(BrowserHelper.browser_document[:user_view])
+  @browser_object = BrowserHelper.browser_document[id_found]
   # end
 
 end
 
 generator.build_render(:browser_color) do |_value|
+  puts  " @atome[:id] : #{@atome[:id]}"
   @browser_type = :style
   # puts "1 - for the id  : #{id} the browser type is  ::::> #{@browser_type}"
   id_found = @atome[:id]
-  type_found = @atome[:type]
+  # type_found = @atome[:type]
   # we remove previous unused style tag
   BrowserHelper.browser_document[id]&.remove
   red_found = @atome[:red]
   blue_found = @atome[:blue]
   green_found = @atome[:green]
   alpha_found = @atome[:alpha]
-  BrowserHelper.browser_document.head << Browser.DOM("<style atome='#{type_found}'
-  id='#{id_found}'>.#{id_found}{
-background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found});
-fill: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found}),
-stroke: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
-  # document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.fill = #{color_updated}
-  #   document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.stroke = #{color_updated}
-  # # TODO:  use the code below to modify the style tag
+  ########################### old code ###########################
+  #   BrowserHelper.browser_document.head << Browser.DOM("<style atome='#{type_found}'
+  #   id='#{id_found}'>.#{id_found}{
+  # poil
+  # //background-color: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found});
+  # //fill: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found}),
+  # //stroke: rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},#{alpha_found})
+  #
+  # }</style>")
+
+  ########################### new code ###########################
+  atomic_style = BrowserHelper.browser_document['#atomic_style']
+
+  class_content = <<STR
+.#{id_found} {
+  background-color: rgba(#{red_found * 255}, #{green_found * 255}, #{blue_found * 255}, #{alpha_found});
+  fill: rgba(#{red_found * 255}, #{green_found * 255}, #{blue_found * 255}, #{alpha_found});
+  stroke: rgba(#{red_found * 255}, #{green_found * 255}, #{blue_found * 255}, #{alpha_found});
+}
+STR
+
+  if atomic_style
+    if atomic_style.text.include?(".#{id_found}")
+      # if the class exist , update it's content with the new class
+      regex = /(\.#{id_found}\s*{)([\s\S]*?)(})/m
+      atomic_style.text = atomic_style.text.gsub(regex, class_content)
+    else
+      # if the class doesn't exist, add it to the end of the tag <style>
+      atomic_style.text += class_content
+    end
+  end
+  ########################### new code end ###########################
+
+  # TODO:  use the code below to modify the style tag
   @browser_object = BrowserHelper.browser_document[id_found]
 end
 
 generator.build_render(:browser_shadow) do |_value|
   @browser_type = :style
   id_found = @atome[:id]
-  type_found = @atome[:type]
+  # type_found = @atome[:type]
   # we remove previous unused style tag
   BrowserHelper.browser_document[id]&.remove
   red_found = @atome[:red]
@@ -58,12 +85,38 @@ generator.build_render(:browser_shadow) do |_value|
   left = @atome[:left]
   top = @atome[:top]
   inset = @atome[:direction]
+  ############ old code
+  # BrowserHelper.browser_document.head << Browser.DOM("<style atome='#{type_found}'
+  # id='#{id_found}'>.#{id_found}{box-shadow: #{left}px #{top}px #{blur}px #{inset} rgba(#{red_found * 255},
+  # #{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
+  # # TODO/ use the code below to modify the style tag
+  # @browser_object = BrowserHelper.browser_document[id_found]
 
-  BrowserHelper.browser_document.head << Browser.DOM("<style atome='#{type_found}'
-  id='#{id_found}'>.#{id_found}{box-shadow: #{left}px #{top}px #{blur}px #{inset} rgba(#{red_found * 255},
-  #{green_found * 255},#{blue_found * 255},#{alpha_found})}</style>")
-  # TODO/ use the code below to modify the style tag
-  @browser_object = BrowserHelper.browser_document[id_found]
+  ########## new code
+  atomic_style = BrowserHelper.browser_document['#atomic_style']
+
+  class_content = <<STR
+.#{id_found} {
+box-shadow: #{left}px #{top}px #{blur}px #{inset} rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},
+#{alpha_found});
+filter: drop-shadow(#{left}px #{top}px #{blur}px rgba(#{red_found * 255},#{green_found * 255},#{blue_found * 255},
+#{alpha_found}));
+}
+STR
+
+  if atomic_style
+    if atomic_style.text.include?(".#{id_found}")
+      # if the class exist , update it's content with the new class
+      regex = /(\.#{id_found}\s*{)([\s\S]*?)(})/m
+      atomic_style.text = atomic_style.text.gsub(regex, class_content)
+    else
+      # if the class doesn't exist, add it to the end of the tag <style>
+      atomic_style.text += class_content
+    end
+  end
+#
+#   @browser_object = BrowserHelper.browser_document[id_found]
+
 end
 
 generator.build_render(:browser_image) do |_user_prc|

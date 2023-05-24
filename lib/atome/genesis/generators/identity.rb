@@ -27,7 +27,7 @@ new({ sanitizer: :attach }) do |parents_ids|
   end
   parents_ids
 end
-
+new({ particle: :real })
 new({ particle: :attached })
 new({ sanitizer: :attached }) do |children_ids|
   puts "=> attached now! : #{children_ids}<="

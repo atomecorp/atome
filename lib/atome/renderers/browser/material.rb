@@ -106,6 +106,8 @@ if (svgElement) {
 
   let svg_content='<svg style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">'+#{value}+'</svg>'
        let svgContainer = document.getElementById(#{target});
+        svgContainer.style.removeProperty('background-color');
+        svgContainer.style.backgroundColor = 'transparent';
         let parser = new DOMParser();
         let svgDoc = parser.parseFromString(svg_content, "image/svg+xml");
         let importedSVG = svgDoc.getElementsByTagName("svg")[0];

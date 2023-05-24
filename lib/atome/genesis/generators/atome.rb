@@ -32,6 +32,15 @@ new({ sanitizer: :shadow }) do |params|
   new_params
 end
 new({ atome: :shape })
+new({ pre: :shape }) do |params|
+  if params[:definition]
+    # if it is a vector we reorder tha params
+    attached = params.delete(:attached)
+    params = params.merge({ attached: attached })
+  end
+
+  params
+end
 new({ atome: :code })
 new({ atome: :audio })
 new({ atome: :element })

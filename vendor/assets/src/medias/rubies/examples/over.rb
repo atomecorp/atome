@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-c=circle
+
 b=circle({left: 333, id: :the_c})
 b.touch(true) do
   self.color(:blue)

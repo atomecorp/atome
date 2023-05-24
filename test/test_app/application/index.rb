@@ -2,7 +2,9 @@
 
 # Done : when sanitizing property must respect the order else no browser
 # object will be created, try to make it more flexible allowing any order
-# todo : IMPORTANT : when assigning a color using   b.color(:red) then   b.color(:blue)then  b.color(:red),
+# TODO : add pluralize ro atome methods (the method will retrieve all atome eg: grab(:view).shapes will retrieve all
+# attached shapes to the view) then we can allow a=shape to create a shape ( for now it must be : a=shape({}))
+# TODO : IMPORTANT : when assigning a color using   b.color(:red) then   b.color(:blue)then  b.color(:red),
 # the third "color(:red)" should be the same otome as the first red not generate a new atome
 # TODO : Machine builder : new({machine: tool}) => grab(:intuition).tool; def tool .....
 # TODO : allow automatic multiple addition of image, text, video, shape, etc.. except color , shadow...
@@ -74,8 +76,8 @@
 # require 'src/medias/rubies/examples/over.rb'
 # require 'src/medias/rubies/examples/physical.rb'
 # require 'src/medias/rubies/examples/delete.rb'
-# box({left: 0,top: 12, color: :orange})
 # require 'src/medias/rubies/examples/vector.rb'
+require 'src/medias/rubies/examples/shadow.rb'
 #
 # problem :
 #  - empty atome
@@ -331,57 +333,118 @@ g = group([:b1, :b2])
 # # end
 # # c.red("lkjh")
 
-
-undo = <<~STR
-  <svg xmlns="http://www.w3.org/2000/svg"
-       viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) -->
-    <path d="M 514.58,7 C 380.84,7.24 259.41,59.94 169.76,145.62 L 97.69,73.54 C 67.17,43.03 15,64.64 15,107.79 L 15,378.34 C 15,405.09 36.68,426.77 63.44,426.77 L 333.99,426.77 C 377.14,426.77 398.75,374.6 368.24,344.09 L 283.98,259.83 C 346.27,201.51 426.87,169.2 512.49,168.46 698.97,166.85 856.15,317.76 854.54,510.42 853.01,693.19 704.83,846.55 515.5,846.55 432.5,846.55 354.05,816.93 292.23,762.68 282.66,754.28 268.2,754.8 259.2,763.8 L 179.16,843.84 C 169.32,853.67 169.81,869.7 180.13,879.02 268.88,959.19 386.49,1008 515.5,1008 791.92,1008 1016,783.92 1016,507.5 1016,231.4 790.68,6.51 514.58,7 Z M 514.58,7" />
-  </svg>
-STR
-
-
-
-
+# ##########################################################
+# undo = <<~STR
+#   <svg xmlns="http://www.w3.org/2000/svg"
+#        viewBox="0 0 512 512"><!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) -->
+#     <path d="M 514.58,7 C 380.84,7.24 259.41,59.94 169.76,145.62 L 97.69,73.54 C 67.17,43.03 15,64.64 15,107.79 L 15,378.34 C 15,405.09 36.68,426.77 63.44,426.77 L 333.99,426.77 C 377.14,426.77 398.75,374.6 368.24,344.09 L 283.98,259.83 C 346.27,201.51 426.87,169.2 512.49,168.46 698.97,166.85 856.15,317.76 854.54,510.42 853.01,693.19 704.83,846.55 515.5,846.55 432.5,846.55 354.05,816.93 292.23,762.68 282.66,754.28 268.2,754.8 259.2,763.8 L 179.16,843.84 C 169.32,853.67 169.81,869.7 180.13,879.02 268.88,959.19 386.49,1008 515.5,1008 791.92,1008 1016,783.92 1016,507.5 1016,231.4 790.68,6.51 514.58,7 Z M 514.58,7" />
+#   </svg>
+# STR
+#
+#
+#
+#
+################################# 24 05 2023 ########################
 
 edition = <<~STR
   <path id="p1" d="M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.9c3.9-3.9 3.9-10.2 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2c-1.9 11.1 1.5 21.9 9.4 29.8 6.6 6.4 14.9 9.9 23.8 9.9z m67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"/>
 STR
 
 
-a=box
-a.definition(edition)
-a.color(:orange)
-a.color(:orange)
-#
-# b=box({color: :red})
-# wait 1 do
-#   a.color(:blue)
+# c1=color({id: :c1, red: 1})
+# c2=color({id: :c2, green: 1})
+# c3=color({id: :c3, blue: 1})
+# c4=color({id: :c4, alpha: 0.3})
+# # b=box
+# # v=box({definition: edition, id: :titi})
+# # v=box({definition: edition})
+# # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "attached"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
+# # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "attached"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
+# # v=shape({})
+# # alert grab(:view).shape
+# # v.definition(edition)
+# v=vector({definition: edition,id: :v1})
+# wait 0.3 do
+#   # v.attached(:c1)
+#   c1.attach(:v1)
+#   wait 1 do
+#     v.attached(c2.id)
+#     # v.detached(c.id)
+#     #  wait 1 do
+#     #    v.color(:yellow)
+#     #  end
+#     wait 1 do
+#       v.attached(c3.id)
+#       # v.color(:violet)
+#       wait 1 do
+#         v.attached(c2.id)
+#         wait 1 do
+#           v.attached(c4.id)
+#         end
+#       end
+#     end
+#   end
 # end
 
-# a.color(:blue)
-# alert a.color
-# c=color(:orange)
-# b=box
-# v=b.vector({left: 0, top: 0, definition: undo})
-# c=color(:pink)
-# # color(:white)
-# color({ id: :toto, red: 1 })
-# # v.attached(c.id)
-# wait 1 do
-#   wait 1 do
-# #     # alert :shoud_be_now
-#     v.attached(c.id)
+
+# a=box
+# a.definition(edition)
+# wait 3 do
+#   ccc=a.color({id: :theBigColor, red: 1})
+#
+#   wait 2 do
+#     ccc.red(0.2)
+#     # ccc.red
+#     # alert "#{ccc.red}, #{ccc.red.class}"
+#     grab(:theBigColor).green(0.3)
 #   end
 # end
 #
 #
-# logo_color ={ red: 0.38, green: 1, blue: 0}
-# logo = <<~STR
-#   <path id="vieCanvas-bezier" stroke="rgb(0, 0, 0)" stroke-width="1" stroke-miterlimit="10" fill="rgb(255, 0, 0)" d="M 73.04,26.41 C 50.57,12.14 15.77,53.39 15.81,85.33 15.83,107.68 23.49,124.45 35.37,139.38 97.06,203.55 73.1,232.52 109.61,231.71 134.09,231.16 181.15,134.57 220.5,138.31 232.63,123.3 240.52,106.7 240.5,85.07 240.5,84.51 240.49,83.95 240.47,83.4 211.52,29.92 146.74,182.8 114.45,179.38 69.64,174.65 90.68,37.61 73.04,26.41 Z M 172.32,76.13 C 172.32,94.63 157.34,109.64 138.85,109.64 120.36,109.64 105.37,94.63 105.37,76.13 105.37,57.62 120.36,42.62 138.85,42.62 157.34,42.62 172.32,57.62 172.32,76.13 Z M 172.32,76.13" />
-# STR
+# #
+# # a.color(:green)
+# # # alert grab(:violet)
+# # c2=color(:brown)
+# # c2.id(:brown)
+# # c=color(:violet)
+# # c.id(:violet)
+# #   wait 1 do
+# #     a.attached(:brown)
+# #     wait 1 do
+# #       a.attached(:violet)
+# #     end
+# #   end
 #
-# vector({ width: 133, height: 133, left: :auto, top: 7, right: 15,id: :logo, definition: logo, color: logo_color})
 #
+#
+# # alert a.color
+# # c=color(:orange)
+# # b=box
+# # v=b.vector({left: 0, top: 0, definition: undo})
+# # c=color(:pink)
+# # # color(:white)
+# # color({ id: :toto, red: 1 })
+# # # v.attached(c.id)
+# # wait 1 do
+# #   wait 1 do
+# # #     # alert :shoud_be_now
+# #     v.attached(c.id)
+# #   end
+# # end
+# #
+# #
+# # logo_color ={ red: 0.38, green: 1, blue: 0}
+# # logo = <<~STR
+# #   <path id="vieCanvas-bezier" stroke="rgb(0, 0, 0)" stroke-width="1" stroke-miterlimit="10" fill="rgb(255, 0, 0)" d="M 73.04,26.41 C 50.57,12.14 15.77,53.39 15.81,85.33 15.83,107.68 23.49,124.45 35.37,139.38 97.06,203.55 73.1,232.52 109.61,231.71 134.09,231.16 181.15,134.57 220.5,138.31 232.63,123.3 240.52,106.7 240.5,85.07 240.5,84.51 240.49,83.95 240.47,83.4 211.52,29.92 146.74,182.8 114.45,179.38 69.64,174.65 90.68,37.61 73.04,26.41 Z M 172.32,76.13 C 172.32,94.63 157.34,109.64 138.85,109.64 120.36,109.64 105.37,94.63 105.37,76.13 105.37,57.62 120.36,42.62 138.85,42.62 157.34,42.62 172.32,57.62 172.32,76.13 Z M 172.32,76.13" />
+# # STR
+# #
+# # vector({ width: 133, height: 133, left: :auto, top: 7, right: 15,id: :logo, definition: logo, color: logo_color})
+# #
+#
+
+
+
+
 
 
 
