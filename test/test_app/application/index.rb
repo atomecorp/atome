@@ -356,7 +356,7 @@ c2=color({id: :c2, green: 1})
 c3=color({id: :c3, blue: 1})
 c4=color({id: :c4, alpha: 0.3})
 # # b=box
-v=box({definition: edition, id: :v1})
+v=box({ id: :v1})
 # # v=box({definition: edition})
 # # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "attached"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
 # # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "attached"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
@@ -368,8 +368,8 @@ wait 0.3 do
   v.attached(:c1)
   # c1.attach(:v1)
   wait 2 do
-    # v.detached(:c1)
-    c1.detach(:v1)
+    v.detached(:c1)
+    # c1.detach(:v1)
 #     v.attached(c2.id)
 #     # v.detached(c.id)
 #     #  wait 1 do

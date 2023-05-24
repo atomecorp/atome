@@ -15,7 +15,6 @@ generator.build_render(:browser_type) do |params|
   send("browser_#{params}", user_proc)
 end
 
-
 generator.build_render(:browser_attach) do |parents_found|
   # puts "parents_found : #{parents_found}, #{parents_found.class}"
   parents_found.each do |parent_found|
@@ -33,14 +32,14 @@ generator.build_render(:browser_attached) do |children_found|
   end
 end
 
-
 generator.build_render(:browser_detached) do |values, _user_proc|
   values.each do |value|
     # FIXME: ugly patch to check if the value passed is an atome must create a more robust global solution for .value
     value = value.value if value.instance_of? Atome
     if grab(value).instance_variable_get('@browser_type') == :style
       @browser_object.remove_class(value)
-      `
+      if definition
+        `
             let parser = new DOMParser();
     var divElement = document.querySelector('#'+#{self.id});
 // divElement.style.removeProperty('background-color');
@@ -52,6 +51,7 @@ generator.build_render(:browser_detached) do |values, _user_proc|
                  el.classList.remove(#{value});
                });
     `
+      end
 
     else
       BrowserHelper.browser_document[value]&.remove
