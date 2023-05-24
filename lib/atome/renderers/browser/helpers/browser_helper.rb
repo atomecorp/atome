@@ -23,7 +23,6 @@ module BrowserHelper
     # alert color_class.class
     # content_style = tag_style.inner_html
     # color_value = content_style[/background-color:\s*([^;}]+)/, 1]
-
     `
             let parser = new DOMParser();
     var divElement = document.querySelector('#'+#{vector_id});
