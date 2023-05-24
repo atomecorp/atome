@@ -33,12 +33,26 @@ generator.build_render(:browser_attached) do |children_found|
   end
 end
 
+
 generator.build_render(:browser_detached) do |values, _user_proc|
   values.each do |value|
     # FIXME: ugly patch to check if the value passed is an atome must create a more robust global solution for .value
     value = value.value if value.instance_of? Atome
     if grab(value).instance_variable_get('@browser_type') == :style
       @browser_object.remove_class(value)
+      `
+            let parser = new DOMParser();
+    var divElement = document.querySelector('#'+#{self.id});
+// divElement.style.removeProperty('background-color');
+//divElement.style.backgroundColor = 'transparent';
+    // select the first svg tag inside the div
+    let foundSVG  = divElement.querySelector('svg');
+     let elements = foundSVG.getElementsByTagName("path");
+    Array.from(elements).forEach(el => {
+                 el.classList.remove(#{value});
+               });
+    `
+
     else
       BrowserHelper.browser_document[value]&.remove
     end

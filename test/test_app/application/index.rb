@@ -77,7 +77,7 @@
 # require 'src/medias/rubies/examples/physical.rb'
 # require 'src/medias/rubies/examples/delete.rb'
 # require 'src/medias/rubies/examples/vector.rb'
-require 'src/medias/rubies/examples/shadow.rb'
+# require 'src/medias/rubies/examples/shadow.rb'
 #
 # problem :
 #  - empty atome
@@ -351,12 +351,12 @@ edition = <<~STR
 STR
 
 
-# c1=color({id: :c1, red: 1})
-# c2=color({id: :c2, green: 1})
-# c3=color({id: :c3, blue: 1})
-# c4=color({id: :c4, alpha: 0.3})
+c1=color({id: :c1, red: 1})
+c2=color({id: :c2, green: 1})
+c3=color({id: :c3, blue: 1})
+c4=color({id: :c4, alpha: 0.3})
 # # b=box
-# # v=box({definition: edition, id: :titi})
+v=box({definition: edition, id: :v1})
 # # v=box({definition: edition})
 # # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "attached"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
 # # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "attached"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
@@ -364,27 +364,29 @@ STR
 # # alert grab(:view).shape
 # # v.definition(edition)
 # v=vector({definition: edition,id: :v1})
-# wait 0.3 do
-#   # v.attached(:c1)
-#   c1.attach(:v1)
-#   wait 1 do
+wait 0.3 do
+  v.attached(:c1)
+  # c1.attach(:v1)
+  wait 2 do
+    # v.detached(:c1)
+    c1.detach(:v1)
 #     v.attached(c2.id)
 #     # v.detached(c.id)
 #     #  wait 1 do
 #     #    v.color(:yellow)
 #     #  end
-#     wait 1 do
-#       v.attached(c3.id)
-#       # v.color(:violet)
-#       wait 1 do
-#         v.attached(c2.id)
-#         wait 1 do
-#           v.attached(c4.id)
-#         end
-#       end
-#     end
-#   end
-# end
+#     # wait 1 do
+#     #   v.attached(c3.id)
+#     #   # v.color(:violet)
+#     #   wait 1 do
+#     #     v.attached(c2.id)
+#     #     wait 1 do
+#     #       v.attached(c4.id)
+#     #     end
+#     #   end
+#     # end
+  end
+end
 
 
 # a=box
