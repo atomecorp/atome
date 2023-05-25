@@ -27,7 +27,7 @@ new({ sanitizer: :attach }) do |parents_ids|
   end
   parents_ids
 end
-new({ particle: :real })
+
 new({ particle: :attached })
 new({ sanitizer: :attached }) do |children_ids|
   # puts "=> attached now! : #{children_ids}<="
@@ -55,7 +55,6 @@ new({ sanitizer: :attached }) do |children_ids|
 end
 
 new({ particle: :detached, store: false })
-
 new({ sanitizer: :detached }) do |values|
   if values.instance_of? Array
     values.each do |value|
@@ -69,6 +68,9 @@ new({ sanitizer: :detached }) do |values|
   values
 end
 
+
+
+new({ particle: :real })
 new({ particle: :type })
 new({ particle: :id })
 new({ sanitizer: :id }) do |params|
