@@ -38,13 +38,16 @@ STR
 
   end
 
-  def self.browser_colorize_shadow(color_updated, atome)
-    "new shadow color is : #{color_updated}"
-    puts "=====> #{color_updated} : #{atome}"
+  def self.browser_colorize_shadow(red, green, blue, alpha, atome)
+    # "new shadow color is : #{color_updated}"
+    # puts "=====> #{color_updated} : #{atome}"
+    # TODO: check if we need to use variable for the color or let it like it is!
     left = atome[:left]
     top = atome[:top]
     blur = atome[:blur]
     direction = atome[:direction]
+
+
     # shadow_updated = "#{left}px #{top}px #{blur}px #{color_updated} #{direction}"
     # `document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.boxShadow = #{shadow_updated}`
 
@@ -52,7 +55,13 @@ STR
     id_found= atome[:id]
     class_content = <<STR
 .#{id_found} {
-  box-shadow: #{left}px #{top}px #{blur}px #{color_updated} #{direction};
+  --#{id_found}_r : #{red * 255};
+  --#{id_found}_g : #{green * 255};
+  --#{id_found}_b : #{blue * 255};
+  --#{id_found}_a : #{alpha};
+  --#{id_found}_col : rgba(var(--#{id_found}_r ),var(--#{id_found}_g ),var(--#{id_found}_b ),var(--#{id_found}_a ));
+
+  box-shadow: #{left}px #{top}px #{blur}px var(--#{id_found}_col) #{direction};
 }
 STR
 
