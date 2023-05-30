@@ -10,3 +10,12 @@
 -version updated to  '0.5.4.1.3'
 vector now remove background-color if it exist
 vector now use class instead of a local style
+
+
+## [0.5.4.1.7] - 2023-05-25
+
+remove "shape :pre" and move the condition when using :definition to atome_common , because of a bug that remove all 
+attached atome  
+
+## [0.5.4.1.8] - 2023-05-25
+Ready to add gradient color now systematically use a variable for each component( Red, green , blue , alpha)  

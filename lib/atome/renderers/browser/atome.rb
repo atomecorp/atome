@@ -23,17 +23,17 @@ generator.build_render(:browser_shape) do
 end
 
 generator.build_render(:browser_color) do |_value|
-  puts  " @atome[:id] : #{@atome[:id]}"
+  puts " @atome[:id] : #{@atome[:id]}"
   @browser_type = :style
   # puts "1 - for the id  : #{id} the browser type is  ::::> #{@browser_type}"
   id_found = @atome[:id]
   # type_found = @atome[:type]
   # we remove previous unused style tag
   BrowserHelper.browser_document[id]&.remove
-  red_found = @atome[:red]
-  blue_found = @atome[:blue]
-  green_found = @atome[:green]
-  alpha_found = @atome[:alpha]
+  red = @atome[:red]
+  green = @atome[:green]
+  blue = @atome[:blue]
+  alpha = @atome[:alpha]
   ########################### old code ###########################
   #   BrowserHelper.browser_document.head << Browser.DOM("<style atome='#{type_found}'
   #   id='#{id_found}'>.#{id_found}{
@@ -47,11 +47,30 @@ generator.build_render(:browser_color) do |_value|
   ########################### new code ###########################
   atomic_style = BrowserHelper.browser_document['#atomic_style']
 
+  #   class_content = <<STR
+  # .#{id_found} {
+  #   --#{id_found}_r : #{red * 255}
+  #   --#{id_found}_g : #{green * 255}
+  #   --#{id_found}_b : #{blue * 255}
+  #   --#{id_found}_a : #{alpha}
+  #   --#{id_found}_col : rgba(var(--#{id_found}_r ),var(--#{id_found}_g ),var(--#{id_found}_b ),var(--#{id_found}_a ))
+  #
+  #   background-color: rgba(#{red * 255}, #{green * 255}, #{blue * 255}, #{alpha});
+  #   fill: rgba(#{red * 255}, #{green * 255}, #{blue * 255}, #{alpha});
+  #   stroke: rgba(#{red * 255}, #{green * 255}, #{blue * 255}, #{alpha});
+  # }
+  # STR
+
   class_content = <<STR
 .#{id_found} {
-  background-color: rgba(#{red_found * 255}, #{green_found * 255}, #{blue_found * 255}, #{alpha_found});
-  fill: rgba(#{red_found * 255}, #{green_found * 255}, #{blue_found * 255}, #{alpha_found});
-  stroke: rgba(#{red_found * 255}, #{green_found * 255}, #{blue_found * 255}, #{alpha_found});
+  --#{id_found}_r : #{red * 255};
+  --#{id_found}_g : #{green * 255};
+  --#{id_found}_b : #{blue * 255};
+  --#{id_found}_a : #{alpha};
+  --#{id_found}_col : rgba(var(--#{id_found}_r ),var(--#{id_found}_g ),var(--#{id_found}_b ),var(--#{id_found}_a ));
+  background-color: var(--#{id_found}_col);
+  fill:  var(--#{id_found}_col);
+  stroke:  var(--#{id_found}_col);
 }
 STR
 
@@ -114,8 +133,8 @@ STR
       atomic_style.text += class_content
     end
   end
-#
-#   @browser_object = BrowserHelper.browser_document[id_found]
+  #
+  #   @browser_object = BrowserHelper.browser_document[id_found]
 
 end
 

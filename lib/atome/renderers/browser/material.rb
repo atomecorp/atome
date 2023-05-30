@@ -3,46 +3,46 @@
 generator = Genesis.generator
 
 generator.build_render(:red) do |value|
-  red = ((@atome[:red] = value) * 255)
-  green = @atome[:green] * 255
-  blue = @atome[:blue] * 255
+  red = (@atome[:red] = value)
+  green = @atome[:green]
+  blue = @atome[:blue]
   alpha = @atome[:alpha]
-  color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
+  # color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+  BrowserHelper.send("browser_colorize_#{@atome[:type]}", red, green, blue, alpha, @atome)
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
 
 generator.build_render(:green) do |value|
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
-  red = @atome[:red] * 255
-  green = (@atome[:green] = value) * 255
-  blue = @atome[:blue] * 255
+  red = @atome[:red]
+  green = (@atome[:green] = value)
+  blue = @atome[:blue]
   alpha = @atome[:alpha]
-  color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
+  # color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+  BrowserHelper.send("browser_colorize_#{@atome[:type]}", red, green, blue, alpha, @atome)
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
 
 generator.build_render(:blue) do |value|
-  red = @atome[:red] * 255
-  green = @atome[:green] * 255
-  blue = (@atome[:blue] = value) * 255
+  red = @atome[:red]
+  green = @atome[:green]
+  blue = (@atome[:blue] = value)
   alpha = @atome[:alpha]
-  color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
+  # color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+  BrowserHelper.send("browser_colorize_#{@atome[:type]}", red, green, blue, alpha, @atome)
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
 
 generator.build_render(:alpha) do |value|
-  red = @atome[:red] * 255
-  green = @atome[:green] * 255
-  blue = @atome[:blue] * 255
+  red = @atome[:red]
+  green = @atome[:green]
+  blue = @atome[:blue]
   alpha = (@atome[:alpha] = value)
-  color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  BrowserHelper.send("browser_colorize_#{@atome[:type]}", color_updated, @atome)
+  # color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+  BrowserHelper.send("browser_colorize_#{@atome[:type]}", red, green, blue, alpha, @atome)
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
@@ -89,7 +89,7 @@ new ({ browser: :opacity }) do |value|
 end
 
 new ({ browser: :definition }) do |value|
-  target=id
+  target = id
   `
 
 var divElement =  document.querySelector('#'+#{target});;

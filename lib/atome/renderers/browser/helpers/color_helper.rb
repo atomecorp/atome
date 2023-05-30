@@ -2,14 +2,20 @@
 
 # for browser rendering
 module BrowserHelper
-  def self.browser_colorize_color(color_updated, atome)
+  def self.browser_colorize_color(red, green, blue, alpha, atome)
     ########################### new code ###########################
     id_found=atome[:id]
+    # color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
     new_class_content = <<STR
 .#{id_found} {
-  background-color: #{color_updated};
-  fill: #{color_updated};
-  stroke: #{color_updated};
+  --#{id_found}_r : #{red * 255};
+  --#{id_found}_g : #{green * 255};
+  --#{id_found}_b : #{blue * 255};
+  --#{id_found}_a : #{alpha};
+  --#{id_found}_col : rgba(var(--#{id_found}_r ),var(--#{id_found}_g ),var(--#{id_found}_b ),var(--#{id_found}_a ));
+  background-color: var(--#{id_found}_col);
+  fill:  var(--#{id_found}_col);
+  stroke:  var(--#{id_found}_col);
 }
 STR
 
