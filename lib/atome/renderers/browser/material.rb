@@ -14,6 +14,7 @@ generator.build_render(:red) do |value|
 end
 
 generator.build_render(:green) do |value|
+  # puts "self: #{self} : value : #{value}"
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   red = @atome[:red]
   green = (@atome[:green] = value)

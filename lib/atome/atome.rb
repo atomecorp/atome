@@ -15,7 +15,7 @@ class Atome
 
     atomes.each_value do |elements|
 
-      if  Universe.atomes.key?(elements[:id])
+      if Universe.atomes.key?(elements[:id])
         puts "The id #{elements[:id]} is already taken, you must change it"
         # `throw new Error("this id is already exist, you must change it");`
       else
@@ -67,7 +67,7 @@ class Atome
       detached(current_atome)
       @atome[element] = []
     end
-    # TODO :replace with the line below but need extensive testing as it crash some demos ex: animation
+    # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
     params = atome_common(element, params)
     run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
     run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
@@ -75,8 +75,14 @@ class Atome
   end
 
   def atome_catcher(atome_catch)
-    # puts "atome_catch is : #{atome_catch.class}"
-    atome_catch
+    if atome_catch.instance_of?(Array)
+      new_atome=Atome.new(container: {type: :element ,data: atome_catch, renderers: []})
+      batch_found=  new_atome.batch(atome_catch)
+      batch_found.batch
+    else
+      atome_catch
+    end
+
   end
 
   def new_atome(element, &method_proc)
@@ -86,9 +92,21 @@ class Atome
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         atome_parsing(element, params, &user_proc)
       else
+
         # puts "******> we are searching for the atome return(noobs) #{element} : #{id}"
-        # puts  "no atome params"
-        atome_catcher(@atome[element])
+        # puts:  "no atome params"
+        # puts "===> @atome[element] is : #{@atome[element]}, element is : #{element}"
+        # alert @atome
+        element_found = @atome["#{element}s"]
+        # puts "#{element} ,#{element_found}, ,#{element_found.class},\n#{@atome}"
+        # atome_catcher(@atome[element_found])
+        # if element_found.instance_of?(Array)
+        #   atome_catcher(element_found)
+        # else
+          atome_catcher(element_found)
+        # end
+
+        # @atome[element]
       end
 
     end
@@ -99,11 +117,10 @@ class Atome
       # to the shape particles list : @atome[:shape] << params[:id]
       new_atome = Atome.new({ element => params }, &user_proc)
       # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
-      # c must return the circle not the parent box
-      # puts "******> we are searching for the atome return(set) #{element} : #{id}"
-      #   puts  "no set  atome params"
       atome_catcher(new_atome)
 
+      # puts
+      # new_atome
     end
     # the method below generate Atome method creation at Object level
     # create_method_at_object_level(element)

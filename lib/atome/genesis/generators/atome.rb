@@ -2,8 +2,23 @@
 new({ atome: :color, type: :hash })
 
 new({ sanitizer: :color }) do |params|
-  # TODO : when attaching color to a shadow it should colorized it , cf : c.shadow({color: :blue}) should work
+
+  # if params.instance_of?(Array)
+  #   #   alert alert "++++#{self}"
+  #   params.each do |param|
+  #     self.send(:color, param)
+  #   end
+  # else
+  #   # TODO : when attaching color to a shadow it should colorized it , cf : c.shadow({color: :blue}) should work
+  #   params = create_color_hash(params) unless params.instance_of? Hash
+  #   params
+  # end
   params = create_color_hash(params) unless params.instance_of? Hash
+  # the condition below is  to prevent the creation of multiple unwanted colors with same property and no ID specified
+  unless params[:id]
+    uniq_value= "#{params[:red]}_#{params[:green]}_#{params[:blue]}_#{params[:alpha]}_#{params[:left]}_#{params[:top]}_#{params[:diffusion]}"
+    params[:id]="#{@atome[:id]}_color_#{uniq_value}"
+  end
   params
 end
 
@@ -25,7 +40,7 @@ new({ atome: :video })
 
 new({ atome: :shadow, type: :hash })
 new({ sanitizer: :shadow }) do |params|
-  # TODO : when attaching color to a shadow it should colorised it , cf : c.shadow({color: :blue}) should work
+  # TODO : when attaching color to a shadow it should colorized it , cf : c.shadow({color: :blue}) should work
   params = {} unless params.instance_of? Hash
   default_params = { red: 0, green: 0, blue: 0, alpha: 1, blur: 3, left: 3, top: 3 }
   new_params = default_params.merge!(params)
@@ -59,6 +74,10 @@ new({ atome: :collector })
 new({ atome: :animation })
 new({ atome: :text, type: :hash })
 new({ sanitizer: :text }) do |params|
-  params = { data: params } unless params.instance_of? Hash
+  # unless @text
+  #   @text=[]
+  # end
+  params={ data: params } unless params.instance_of? Hash
+  # @text << params
   params
 end

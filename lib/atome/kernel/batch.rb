@@ -23,4 +23,8 @@ class Batch
     # we return self to allow method chaining
     self
   end
+
+  def to_s
+    self.instance_variable_get("@data").to_s
+  end
 end

@@ -23,7 +23,7 @@ generator.build_render(:browser_shape) do
 end
 
 generator.build_render(:browser_color) do |_value|
-  puts " @atome[:id] : #{@atome[:id]}"
+  # puts " @atome[:id] : #{@atome[:id]}"
   @browser_type = :style
   # puts "1 - for the id  : #{id} the browser type is  ::::> #{@browser_type}"
   id_found = @atome[:id]
