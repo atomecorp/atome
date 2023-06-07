@@ -4,6 +4,53 @@ generator = Genesis.generator
 generator.build_render(:browser_bloc)
 generator.build_render(:browser_render)
 generator.build_render(:browser_delete) do |params|
+  if self.instance_variable_get('@browser_type') == :style
+    # alert "we have to remove the style and the attached class :\n #{attach.class},\n params : #{params}"
+    class_to_remove = self.id
+    attach.each do |parent|
+      grab(parent).browser_object.remove_class(class_to_remove)
+    end
+    `
+function remove_class(class_name) {
+  var styleElement = document.querySelector('style');
+
+  // Vérifiez si l'élément <style> existe
+  if (styleElement) {
+	// Récupérez le contenu de l'élément <style>
+	var styleContent = styleElement.innerHTML;
+
+	// Créez une expression régulière pour supprimer la classe spécifiée avec son contenu
+	var regex = new RegExp("\\." + class_name + "\\s*{[^}]+}", "g");
+	styleContent = styleContent.replace(regex, '');
+
+	// Mettez à jour le contenu de l'élément <style>
+	styleElement.innerHTML = styleContent;
+  }
+}
+
+remove_class(#{class_to_remove})
+`
+
+    # #TODO : factorise code with the one found in identity.rb generator.build_render(:browser_detached)
+    #     if definition
+    #       `
+    #             let parser = new DOMParser();
+    #     var divElement = document.querySelector('#'+#{self.id});
+    # // divElement.style.removeProperty('background-color');
+    # //divElement.style.backgroundColor = 'transparent';
+    #     // select the first svg tag inside the div
+    #     let foundSVG  = divElement.querySelector('svg');
+    #      let elements = foundSVG.getElementsByTagName("path");
+    #     Array.from(elements).forEach(el => {
+    #                  el.classList.remove(#{self.id});
+    #                });
+    #     `
+    #     end
+    # remove_class from parent instead of @browser_object
+    # @browser_object.remove_class(self.id)
+    #
+  end
+
   browser_object&.remove if params == true
 end
 

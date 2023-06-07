@@ -92,21 +92,9 @@ class Atome
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         atome_parsing(element, params, &user_proc)
       else
-
-        # puts "******> we are searching for the atome return(noobs) #{element} : #{id}"
-        # puts:  "no atome params"
-        # puts "===> @atome[element] is : #{@atome[element]}, element is : #{element}"
-        # alert @atome
         element_found = @atome["#{element}s"]
-        # puts "#{element} ,#{element_found}, ,#{element_found.class},\n#{@atome}"
-        # atome_catcher(@atome[element_found])
-        # if element_found.instance_of?(Array)
-        #   atome_catcher(element_found)
-        # else
-          atome_catcher(element_found)
-        # end
-
-        # @atome[element]
+        atome_catcher(element_found)
+        # atome_catcher(@atome[element])
       end
 
     end

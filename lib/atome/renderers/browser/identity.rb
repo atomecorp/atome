@@ -38,6 +38,7 @@ generator.build_render(:browser_detached) do |values, _user_proc|
     value = value.value if value.instance_of? Atome
     if grab(value).instance_variable_get('@browser_type') == :style
       @browser_object.remove_class(value)
+      ##TODO : factorise code with the one found in borwser/utility/browser_delete
       if definition
         `
             let parser = new DOMParser();

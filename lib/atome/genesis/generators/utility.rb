@@ -10,6 +10,7 @@ new({ particle: :broadcast })
 new({ particle: :data })
 # new({particle: :additional })
 new({ particle: :delete, render: false }) do |params, &user_proc|
+
   if params == true
     # We use the tag persistent to exclude color of system object and other default colors
     unless tag && tag[:persistent]
@@ -23,8 +24,8 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
       parents_found.each do |parent_id_found|
         parent_found = grab(parent_id_found)
         next unless parent_found
-
-        previous_parent_type_child = parent_found.atome[type]
+        # we get the corresponding type list found in the parent
+        previous_parent_type_child = parent_found.atome["#{type}s"]
         previous_parent_attached_child = parent_found.atome[:attached]
         # FIXME : find why we can't use delete on the array nut must use an iterator
         new_type_container = []
@@ -32,7 +33,7 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
           new_type_container << atome_found unless atome_found == id_found
         end
         parent_found.atome[type] = new_type_container
-        # FIXME : find why we can't use delete on the array nut must use an iterator
+        # FIXME : find why we can't use delete on the array  must use an iterator
         new_attached_container = []
         previous_parent_attached_child.each do |atome_found|
           new_attached_container << atome_found unless atome_found == id_found
@@ -40,7 +41,6 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
         parent_found.atome[:attached] = new_attached_container
 
       end
-
     end
 
   elsif params == :materials
@@ -65,7 +65,17 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
       atome[param][value] = nil
     end
   else
-    send(params, 0)
+
+    # we check if the params passed is an atome to treat it in a different way
+    if Universe.atome_list.include?(params)
+      @atome["#{params}s"].each do |item_to_del|
+        # puts "===>#{item_to_del}"
+        delete({id: item_to_del})
+      end
+      # delete({id: @atome["#{params}s"]})
+    else
+      send(params, 0)
+    end
   end
 end
 

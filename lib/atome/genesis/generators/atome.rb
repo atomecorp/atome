@@ -14,9 +14,10 @@ new({ sanitizer: :color }) do |params|
   #   params
   # end
   params = create_color_hash(params) unless params.instance_of? Hash
+
   # the condition below is  to prevent the creation of multiple unwanted colors with same property and no ID specified
   unless params[:id]
-    uniq_value= "#{params[:red]}_#{params[:green]}_#{params[:blue]}_#{params[:alpha]}_#{params[:left]}_#{params[:top]}_#{params[:diffusion]}"
+    uniq_value= "#{params[:red].to_s.sub('.','_')}_#{params[:green].to_s.sub('.','_')}_#{params[:blue].to_s.sub('.','_')}_#{params[:alpha].to_s.sub('.','_')}_#{params[:left].to_s.sub('.','_')}_#{params[:top].to_s.sub('.','_')}_#{params[:diffusion].to_s.sub('.','_')}"
     params[:id]="#{@atome[:id]}_color_#{uniq_value}"
   end
   params

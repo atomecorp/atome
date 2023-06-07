@@ -70,15 +70,17 @@
 #   console.log("---> Now we can log error in a file if needed : " + e.message);
 # });`
 # ################################# Demos ##################
-# # require 'src/medias/rubies/demos.rb'
-# # require 'src/medias/rubies/examples/matrix_simple.rb'
+# require 'src/medias/rubies/demos.rb'
+# require 'src/medias/rubies/examples/matrix_simple.rb'
 # # require 'src/medias/rubies/examples/matrix.rb'
-# # require 'src/medias/rubies/examples/over.rb'
-# # require 'src/medias/rubies/examples/physical.rb'
-# # require 'src/medias/rubies/examples/delete.rb'
-# # require 'src/medias/rubies/examples/vector.rb'
-# # require 'src/medias/rubies/examples/shadow.rb'
-# # require 'src/medias/rubies/examples/drag.rb'
+# require 'src/medias/rubies/examples/over.rb'
+# require 'src/medias/rubies/examples/add.rb'
+# require 'src/medias/rubies/examples/atome_new.rb'
+# require 'src/medias/rubies/examples/physical.rb'
+require 'src/medias/rubies/examples/delete.rb'
+# require 'src/medias/rubies/examples/vector.rb'
+# require 'src/medias/rubies/examples/shadow.rb'
+# require 'src/medias/rubies/examples/drag.rb'
 # #
 # # problem :
 # #  - empty atome
@@ -454,36 +456,39 @@
 #
 
 
-
-# TODO : Find solution 1: color is attached to the wrong object
-b=box({ id: :the_box, drag: true })
-b.image('red_planet.png')
-b.image('green_planet.png')
-b.color(({id: :c1, red: 1}))
-b.color(({id: :c2, blue: 1}))
-b.text({ id: :the_text1, drag: true })
-b.text({ id: :the_text_2, drag: true })
-b.circle
-b.circle
-# color(:green)
-# alert "here is the good result: #{b}"
+# ######### # ############ # ### ######### # ###
+# # TODO : Find solution 1: color is attached to the wrong object
+# b=box({ id: :the_box, drag: true })
 # b.color(:red)
-# wait 1 do
-#   # alert "=> b was : #{b}"
-#   b.color(({id: :c2, blue: 1, attach: [:the_box]}))
+# color(:green)
+# b.image('red_planet.png')
+# b.image('green_planet.png')
+# b.color(({id: :c1, red: 1}))
+# b.color(({id: :c2, blue: 1}))
+# b.text({ id: :the_text1, drag: true , data: :hello})
+# b.text({ id: :the_text_2, drag: true ,data: :kool, left: 333})
+# b.circle
+# b.circle
+# # color(:green)
+# # alert "here is the good result: #{b}"
+# # b.color(:red)
+# # wait 1 do
+# #   # alert "=> b was : #{b}"
+# #   b.color(({id: :c2, blue: 1, attach: [:the_box]}))
+# # #
 # #
+# #   b.color(({id: :c3, green: 1}))
+# #   alert grab(:view)
+# #   alert "=> b is : #{b}"
+# wait 1 do
+#   b.text.left(333)
+#   # alert "b.text : #{b.text}, #{b.text.class}"
+#   b.text.each do |text_found|
+#     puts text_found.id
+#   end
 #
-#   b.color(({id: :c3, green: 1}))
-#   alert grab(:view)
-#   alert "=> b is : #{b}"
-wait 1 do
-  b.text.left(333)
-  # alert "b.text : #{b.text}, #{b.text.class}"
-  b.text.each do |text_found|
-    puts text_found.id
-  end
-
-end
+# end
+# ######### # ############ # ### ######### # ###
 
 
 
@@ -518,7 +523,7 @@ end
 #
 #
 # Find solution 3 : above the color is not rendered because of the order
-# # m=matrix
+# m=matrix
 # 'DONE :  find a way to avoid color accumulation'
 # puts 'create a cell type'
 # # alert m.type
@@ -547,4 +552,4 @@ end
 # b.attached(:the_green)
 # b.attached(:the_blue)
 # alert b.attached
-require 'src/medias/rubies/examples/batch.rb'
+# require 'src/medias/rubies/examples/batch.rb'

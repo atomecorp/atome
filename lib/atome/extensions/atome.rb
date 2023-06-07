@@ -27,6 +27,10 @@ class Object
     grab(:black_matter).batch(atomes)
   end
 
+  def delete (atomes)
+    grab(:view).delete(atomes)
+  end
+
   def identity_generator(type = :element)
     "#{attach[0]}_#{type}_#{Universe.counter}"
   end
