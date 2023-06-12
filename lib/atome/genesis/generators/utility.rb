@@ -41,10 +41,13 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
         end
         # now we remove the the current atome from it's parent subtype :
         # eg if it's a shape we remove from parent's shapes particles
-        parent_found.atome["#{type}s"].delete(id)
-        parent_found.atome[:attached] = new_attached_container
-
+        # Fixme : create a callback to remove the arbitrary and unsafe wait!!
+        wait 0.3 do
+          parent_found.atome["#{type}s"].delete(id)
+          parent_found.atome[:attached] = new_attached_container
+        end
       end
+
     end
 
   elsif params == :physical

@@ -73,13 +73,15 @@
 # });`
 # ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
+# require 'src/medias/rubies/examples/universe.rb'
+# require 'src/medias/rubies/examples/repeat.rb'
+require 'src/medias/rubies/examples/delete.rb'
 # require 'src/medias/rubies/examples/clone.rb'
 # require 'src/medias/rubies/examples/detached.rb'
 # require 'src/medias/rubies/examples/edit.rb'
 # require 'src/medias/rubies/examples/empty_atome.rb'
 # require 'src/medias/rubies/examples/physical.rb'
-# require 'src/medias/rubies/examples/delete.rb'
-require 'src/medias/rubies/examples/vector.rb'
+# require 'src/medias/rubies/examples/vector.rb'
 # require 'src/medias/rubies/examples/attached.rb'
 # require 'src/medias/rubies/examples/attach.rb'
 # require 'src/medias/rubies/examples/matrix_simple.rb'

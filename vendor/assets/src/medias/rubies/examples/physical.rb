@@ -15,16 +15,16 @@ wait 1 do
   end
 end
 
-# wait 2 do
-#   b.physical.each do |attached_atome_id|
-#     grab(attached_atome_id).delete(true)
-#   end
-# end
-
 wait 2 do
-  b.delete(:physical)
-  puts "b is : #{b}"
+  b.physical.each do |attached_atome_id|
+    grab(attached_atome_id).delete(true)
+  end
 end
+
+# wait 2 do
+#   b.delete(:physical)
+#   puts "b is : #{b}"
+# end
 
 # # the physical method is used to retrieve or delete all children with a visual rendering
 # # but leave alone other atome such as color

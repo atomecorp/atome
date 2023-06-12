@@ -21,7 +21,7 @@ class Atome
       attached = params.delete(:attached)
       params = params.merge({ attached: attached })
     end
-
+    puts "=> params too : #{essential_params.merge(params)}"
     # alert essential_params.merge(params)
     essential_params.merge(params)
   end

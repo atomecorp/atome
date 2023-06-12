@@ -62,13 +62,13 @@ class Atome
 
   def atome_parsing(element, params, &user_proc)
     params = sanitize(element, params)
-    current_atome = send(element)
+    # current_atome = send(element)
 
     # The condition below check if we need to add or replace the newly created atome
-    if current_atome && !(@atome[:add] && @atome[:add][element])
-      detached(current_atome)
-      @atome[element] = []
-    end
+    # if current_atome && !(@atome[:add] && @atome[:add][element])
+    #   detached(current_atome)
+    #   # @atome["#{element}s"] = []
+    # end
     # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
     params = atome_common(element, params)
     run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
@@ -77,13 +77,21 @@ class Atome
   end
 
   def atome_catcher(atome_catch)
-    if atome_catch.instance_of?(Array)
-      new_atome=Atome.new(container: {type: :element ,data: atome_catch, renderers: []})
-      batch_found=  new_atome.batch(atome_catch)
-      batch_found.batch
-    else
-      atome_catch
-    end
+    # if atome_catch.nil?
+    #   alert "=======> #{self.id} is nil!!!"
+    # end
+    new_atome = Atome.new(container: { type: :element, data: atome_catch, renderers: [] })
+    batch_found = new_atome.batch(atome_catch)
+    batch_found.batch
+    atome_catch
+    # end
+    # if atome_catch.instance_of?(Array)
+    #   puts "case 1 : #{atome_catch}, #{atome_catch.class}"
+
+    # else
+    #   puts "case 2 : #{atome_catch}, #{atome_catch.class}"
+    #   atome_catch
+    # end
 
   end
 
@@ -94,9 +102,10 @@ class Atome
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         atome_parsing(element, params, &user_proc)
       else
-        element_found = @atome["#{element}s"]
-        atome_catcher(element_found)
-        # atome_catcher(@atome[element])
+        # element_found = @atome["#{element}s"]
+        # atome_catcher(element_found)
+        # alert  element
+        atome_catcher(@atome["#{element}s"])
       end
 
     end
@@ -105,11 +114,10 @@ class Atome
     Atome.define_method "set_#{element}" do |params, &user_proc|
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]
+      # puts "=> params : #{params}"
       new_atome = Atome.new({ element => params }, &user_proc)
       # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
-      atome_catcher(new_atome)
-
-      # puts
+      atome_catcher([new_atome.id])
       # new_atome
     end
     # the method below generate Atome method creation at Object level

@@ -3,17 +3,30 @@
 b = box({left: 333, id: :the_box_1})
 b.color({id: :the_orange_col, red: 1, blue: 0.5})
 b.circle({top: 66, id: :the_circle_1, color: :yellow})
-b.box
+
+b.shape({id: :tutu})
+b.shape({id: :toto}) #######
+b.circle({id: :invisible}) ######
+# alert b
+#
+# a=b.shape
+#   a.each do |aaa|
+#     alert  "#{aaa}, #{aaa.class}"
+#   end
 
 wait 2 do
   b.delete(:left)
 end
-
+#
 wait 3 do
+  # alert "shapes in b are : #{b.shape}"
+  # a=b.shape
+  # a.each do |aaa|
+  #   alert  "#{aaa}, #{aaa.class}"
+  # end
+  # grab(:the_circle_1).delete(true)
   b.shape.each do |attached_atome_id|
-    alert attached_atome_id.id
-    # b.delete({id: attached_atome_id.id})
-   attached_atome_id.delete(true)
+      b.delete({id: attached_atome_id})
   end
 
 end
