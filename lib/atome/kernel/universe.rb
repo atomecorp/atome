@@ -2,7 +2,7 @@
 
 # universe method here
 class Universe
-  @counter=0
+  @counter = 0
   @atomes = {}
   @classes = {}
   @atome_list = []
@@ -10,11 +10,12 @@ class Universe
   @renderer_list = %i[html browser headless server]
   @options = {}
   @sanitizers = {}
+
   class << self
     attr_reader :atomes, :renderer_list, :atome_list, :particle_list, :classes, :counter
 
     def add_to_particle_list(particle = nil, type)
-      instance_variable_get('@particle_list')[particle]=type
+      instance_variable_get('@particle_list')[particle] = type
     end
 
     def add_optional_method(method_name, &method_proc)
@@ -46,12 +47,32 @@ class Universe
     def add_to_atomes(id, atome)
       # instance_variable_get('@atomes').merge!(atome)
       @atomes[id] = atome
-      @counter=@counter+1
+      @counter = @counter + 1
     end
 
     def update_atome_id(id, atome, prev_id)
       @atomes[id] = atome
       @atomes.delete(prev_id)
+    end
+
+    def user_atomes
+      collected_id = []
+      @atomes.each do |id_found, atome_found|
+        unless atome_found.tag && atome_found.tag[:system]
+          collected_id << id_found
+        end
+      end
+      collected_id
+    end
+
+    def system_atomes
+      collected_id = []
+      @atomes.each do |id_found, atome_found|
+        if atome_found.tag && atome_found.tag[:system]
+          collected_id << id_found
+        end
+      end
+      collected_id
     end
 
     def app_identity

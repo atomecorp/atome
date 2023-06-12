@@ -31,7 +31,7 @@ class Atome
   end
 
   def build_atome(atome_name, &atome_proc)
-    # TODO : atomes should tell the Universe if they're parts of materials category or else
+    # TODO : atomes should tell the Universe if they're parts of physical category or else
     # we add the new method to the atome's collection of methods
     Universe.add_to_atome_list(atome_name)
     # the method below generate Atome method creation at Object level,

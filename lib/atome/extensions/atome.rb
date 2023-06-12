@@ -10,7 +10,7 @@ class Object
       generator.build_particle(params[:particle], { render: params[:render], return: params[:return],
                                                     store: params[:store], type: params[:type] }, &bloc)
     elsif params.key?(:atome)
-      atome_return = params[:return] || params[:atome]
+      # atome_return = params[:return] || params[:atome]
       generator.build_atome(params[:atome], &bloc)
     elsif params.key?(:sanitizer)
       generator.build_sanitizer(params[:sanitizer], &bloc)
@@ -32,7 +32,9 @@ class Object
   end
 
   def identity_generator(type = :element)
-    "#{attach[0]}_#{type}_#{Universe.counter}"
+    # "#{attach[0]}_#{type}_#{Universe.counter}"
+    # "#{id}_#{type}_#{Universe.counter}"
+    "#{type}_#{Universe.counter}"
   end
 
   def grab(atome_to_get)

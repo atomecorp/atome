@@ -4,7 +4,7 @@ t = text({ data: "hit the box to make me editable" })
 
 b = box({ left: 333 })
 b.touch(true) do
-  if t.edit.value == true
+  if t.edit == true
     t.edit(false)
   else
     t.edit(true)

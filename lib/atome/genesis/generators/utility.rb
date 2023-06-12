@@ -37,24 +37,32 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
         new_attached_container = []
         previous_parent_attached_child.each do |atome_found|
           new_attached_container << atome_found unless atome_found == id_found
+
         end
+        # now we remove the the current atome from it's parent subtype :
+        # eg if it's a shape we remove from parent's shapes particles
+        parent_found.atome["#{type}s"].delete(id)
         parent_found.atome[:attached] = new_attached_container
 
       end
     end
 
-  elsif params == :materials
+  elsif params == :physical
     # this will delete any child with a visual type cf : images, shapes, videos, ...
-    materials.each do |atome_id_found|
+    physical.each do |atome_id_found|
+      # atome_id_found.delete(true)
       grab(atome_id_found).delete(true)
     end
   elsif params[:id]
     # the machine try to an atome by it's ID and delete it
     # We check for recursive, if found we delete attached atomes too
     if params[:recursive] == true
-      materials_found = grab(params[:id]).materials
-      materials_found.each do |atome_id_found|
-        grab(atome_id_found).delete(true)
+      puts "item that'll be deleted:  #{params[:id]}"
+      physical_found = grab(params[:id]).physical
+      # alert physical_found
+      physical_found.each do |atome_id_found|
+        # atome_id_found.delete(true)
+         grab(atome_id_found).delete(true)
       end
     end
     grab(params[:id]).delete(true)

@@ -261,9 +261,11 @@ module Matrix
         x = (col_index + 1) * margin + col_index * cell_width
         y = (row_index + 1) * margin + row_index * cell_height
         current_cell = grab("#{matrix_id}_#{i}")
-        current_cell.materials.each do |child|
+        current_cell.physical.each do |child|
+          # child.width(cell_width) if grab(child)
+          # child.height(cell_height) if grab(child)
           grab(child).width(cell_width) if grab(child)
-          grab(child).height(cell_width) if grab(child)
+          grab(child).height(cell_height) if grab(child)
         end
         current_cell.width = cell_width
         current_cell.height = cell_height

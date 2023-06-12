@@ -53,6 +53,8 @@ module Atome
 
   def matrix: -> untyped
 
+  def physical: -> untyped
+
   def ping: -> untyped
 
   def set: -> untyped

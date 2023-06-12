@@ -28,7 +28,9 @@ generator.build_render(:browser_attached) do |children_found|
     # puts ">>>>> modeled:  browser_type #{@browser_type} parents_fo
     # und #{children_found} , @browser_object, #{@browser_object}, self : #{self.id}"
     children_browser_type = grab(child_found).instance_variable_get('@browser_type')
-    BrowserHelper.send("browser_attached_#{children_browser_type}", children_found, @browser_object, @atome)
+    # alert "#{child_found} : #{children_browser_type}"
+    # alert "#{grab(child_found).instance_variable_get('@browser_type')}\n #{grab(child_found)}"
+    BrowserHelper.send("browser_attached_#{children_browser_type}", child_found, @browser_object, @atome)
   end
 end
 

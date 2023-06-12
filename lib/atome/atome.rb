@@ -16,6 +16,8 @@ class Atome
     atomes.each_value do |elements|
 
       if Universe.atomes.key?(elements[:id])
+        # alert "id : #{self.id}, element: #{elements[:id]}"
+        # alert "id : #{elements[:id]}"
         puts "The id #{elements[:id]} is already taken, you must change it"
         # `throw new Error("this id is already exist, you must change it");`
       else

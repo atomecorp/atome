@@ -231,22 +231,22 @@ class Atome
     end
   end
 
-  def materials
-    # TODO: the code below need a rewrite, we must find a new algorithm to avoid all those conditions
-    images_found = atome[:image] || []
-    videos_found = atome[:video] || []
-    shapes_found = atome[:shape] || []
-    web_found = atome[:web] || []
-    texts_found = atome[:text] || []
-    images_found.concat(videos_found).concat(shapes_found).concat(web_found).concat(texts_found)
-  end
-
+  # def materials
+  #   # TODO: the code below need a rewrite, we must find a new algorithm to avoid all those conditions
+  #   images_found = atome[:image] || []
+  #   videos_found = atome[:video] || []
+  #   shapes_found = atome[:shape] || []
+  #   web_found = atome[:web] || []
+  #   texts_found = atome[:text] || []
+  #   images_found.concat(videos_found).concat(shapes_found).concat(web_found).concat(texts_found)
+  # end
 
   def physical
-    types=[:text, :image, :video, :shape, :web]
+    # TODO :  automatise materials type list when creating a new atome it should be specified if material or not
+    types=%i[texts images videos shapes webs]
     atomes_found=[]
     types.each do |type|
-      ids_found = self.send(type)
+      ids_found = atome[type]
       next unless ids_found
 
       ids_found.each do |id_found|

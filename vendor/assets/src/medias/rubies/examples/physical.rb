@@ -11,12 +11,31 @@ b.image('red_planet.png')
 wait 1 do
   b.physical.each do |attached_atome_id|
     puts attached_atome_id
-    attached_atome_id.width(55)
+    grab(attached_atome_id).width(55)
   end
 end
 
+# wait 2 do
+#   b.physical.each do |attached_atome_id|
+#     grab(attached_atome_id).delete(true)
+#   end
+# end
+
 wait 2 do
-  b.physical.each do |attached_atome_id|
-    attached_atome_id.delete(true)
-  end
+  b.delete(:physical)
+  puts "b is : #{b}"
 end
+
+# # the physical method is used to retrieve or delete all children with a visual rendering
+# # but leave alone other atome such as color
+# b = box
+# cc2 = color(:yellow)
+# b.color(:red)
+# c = b.circle
+# c.attached(cc2.id)
+# b.text(:hello)
+# b.add(text: { data: :ok, left: 133 })
+# wait 2 do
+#   b.delete(:physical)
+#   puts "b is : #{b}"
+# end

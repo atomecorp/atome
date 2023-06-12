@@ -1,3 +1,5 @@
 class Object
+  def atome_method_for_object: -> untyped
+
   def create_method_at_object_level: -> untyped
 end

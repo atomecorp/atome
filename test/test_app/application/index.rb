@@ -2,6 +2,8 @@
 #
 # # Done : when sanitizing property must respect the order else no browser
 # # object will be created, try to make it more flexible allowing any order
+# # FIXME Urgent : delete method doesnt work properly
+# # DONE : attached method doesnt work properly,
 # # TODO : add pluralize ro atome methods (the method will retrieve all atome eg: grab(:view).shapes will retrieve all
 # # attached shapes to the view) then we can allow a=shape to create a shape ( for now it must be : a=shape({}))
 # # TODO : IMPORTANT : when assigning a color using   b.color(:red) then   b.color(:blue)then  b.color(:red),
@@ -54,7 +56,7 @@
 # # FIXME : if in matrix particles shadow or other particles are not define it crash : { margin: 9, color: :blue } in table
 # #  TODO : self is the not the atome but BrowserHelper so the code below doesn't work :b=box
 # # TODO : visual size define in % doesn't work  cell_1.text({data: :réalisation, center: :horizontal, top: 3, color: :lightgray, visual: {size: '10%'}})
-# # TODO : text position at the bottom in matrix cell, botytom position is lost when resizing the table
+# # TODO : text position at the bottom in matrix cell, bottom position is lost when resizing the table
 # # TODO : size of image in matrix cell is reset when resizing
 # # TODO : add .columns and .rows to matrix
 # # TODO : grab(child).delete(true)  delete children from view but doesn't remove children from parent
@@ -71,13 +73,21 @@
 # });`
 # ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
+# require 'src/medias/rubies/examples/clone.rb'
+# require 'src/medias/rubies/examples/detached.rb'
+# require 'src/medias/rubies/examples/edit.rb'
+# require 'src/medias/rubies/examples/empty_atome.rb'
+# require 'src/medias/rubies/examples/physical.rb'
+# require 'src/medias/rubies/examples/delete.rb'
+require 'src/medias/rubies/examples/vector.rb'
+# require 'src/medias/rubies/examples/attached.rb'
+# require 'src/medias/rubies/examples/attach.rb'
 # require 'src/medias/rubies/examples/matrix_simple.rb'
 # # require 'src/medias/rubies/examples/matrix.rb'
 # require 'src/medias/rubies/examples/over.rb'
 # require 'src/medias/rubies/examples/add.rb'
 # require 'src/medias/rubies/examples/atome_new.rb'
 # require 'src/medias/rubies/examples/physical.rb'
-require 'src/medias/rubies/examples/delete.rb'
 # require 'src/medias/rubies/examples/vector.rb'
 # require 'src/medias/rubies/examples/shadow.rb'
 # require 'src/medias/rubies/examples/drag.rb'
