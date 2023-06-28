@@ -25,8 +25,15 @@ wait 3 do
   #   alert  "#{aaa}, #{aaa.class}"
   # end
   # grab(:the_circle_1).delete(true)
+  # alert "b shape is : #{b.shape},#{b.shape.class}"
   b.shape.each do |attached_atome_id|
-      b.delete({id: attached_atome_id})
+    # alert "attached_atome_id is : #{attached_atome_id}, #{attached_atome_id.class}"
+      # b.delete({id: attached_atome_id})
+    attached_atome_id.left(333)
+    wait 2 do
+      attached_atome_id.delete(true)
+    end
+      # b.left(333)
   end
 
 end

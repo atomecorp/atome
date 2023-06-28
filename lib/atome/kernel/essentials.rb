@@ -20,6 +20,16 @@ class Atome
     #   @result = @atome.to_s
     # end
     # @result.to_s
-    @atome.to_s
+    if type == :group
+      # if the atome is a group we need to collect the atomes of the group
+      atomes_found=[]
+      @atome[:grouped].each do |atome_found|
+        atomes_found <<  grab(atome_found).atome
+      end
+      atomes_found.to_s
+    else
+      @atome.to_s
+    end
+
   end
 end

@@ -260,11 +260,11 @@ class Atome
     atome_to_detach = grab(atome_id_to_detach)
     # TODO: remove the condition below and find why it try to detach an atome that doesn't exist
     return unless atome_to_detach
-
+    #
     atome_type_found = atome_to_detach.atome[:type]
     atome_id_found = atome_to_detach.atome[:id]
-    @atome[atome_type_found].delete(atome_id_found)
-    @atome[:attached].delete(atome_id_to_detach)
+    # @atome[atome_type_found].delete(atome_id_found)
+    # @atome[:attached].delete(atome_id_to_detach)
 
   end
 

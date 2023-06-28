@@ -14,14 +14,20 @@ class Atome
     essential_params[:id] = params[:id] || identity_generator(atome_preset)
 #     alert "self: #{self.id}
 # attach => #{params[:id]}"
-    essential_params[:attach] = params[:attach] || [@atome[:id]] || [:view]
+#     if  essential_params[:type] ==:group
+#
+#     else
+      essential_params[:attach] = params[:attach] || [@atome[:id]] || [:view]
+    # end
+
+    # essential_params[:attach] = params[:attach] || [@atome[:id]] || [:view]
 
     if params[:definition]
       # if it is a vector we reorder the params
       attached = params.delete(:attached)
       params = params.merge({ attached: attached })
     end
-    puts "=> params too : #{essential_params.merge(params)}"
+    # puts "=> params too : #{essential_params.merge(params)}"
     # alert essential_params.merge(params)
     essential_params.merge(params)
   end
@@ -41,6 +47,11 @@ class Atome
     params = atome_common(atome_preset, params)
     # send(params[:type],params , &bloc)
     Atome.new({ atome_preset => params }, &bloc)
+    # new_atome=Atome.new({ atome_preset => params }, &bloc)
+    # alert self
+    # self.attached(new_atome.id)
+    # new_atome
+    # # new_atome.attach(self.id)
   end
 
 

@@ -17,7 +17,7 @@ new({ sanitizer: :attach }) do |parents_ids|
     end
     parents_found.atome["#{type_found}s"] << atome[:id]
   end
-
+  puts "MSG from identity  => #{id} passed!"
   parents_ids
 end
 

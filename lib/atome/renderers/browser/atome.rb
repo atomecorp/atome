@@ -75,6 +75,7 @@ generator.build_render(:browser_color) do |_value|
 STR
 
   if atomic_style
+    # alert class_content.gsub(/[\n\r]{2,}/, "\n")
     if atomic_style.text.include?(".#{id_found}")
       # if the class exist , update it's content with the new class
       regex = /(\.#{id_found}\s*{)([\s\S]*?)(})/m
@@ -83,6 +84,9 @@ STR
       # if the class doesn't exist, add it to the end of the tag <style>
       atomic_style.text += class_content
     end
+    sanitized_text = atomic_style.text.gsub(/[\n\r]{2,}/, "\n")
+    atomic_style.text = sanitized_text
+
   end
   ########################### new code end ###########################
 

@@ -23,9 +23,7 @@ class Object
     end
   end
 
-  def batch (atomes)
-    grab(:black_matter).batch(atomes)
-  end
+
 
   def delete (atomes)
     grab(:view).delete(atomes)
@@ -70,7 +68,14 @@ class Object
   #   end
   # end
 
-  # the method below generate Atome method creation at Object level
+
+
+  # #############commented batch methods
+  # def batch (atomes)
+  #   grab(:black_matter).batch(atomes)
+  # end
+  #
+  # # the method below generate Atome method creation at Object level
   def atome_method_for_object(element)
 
     Object.define_method element do |params, &user_proc|
@@ -78,16 +83,16 @@ class Object
       grab(default_parent).send(element, params, &user_proc)
     end
   end
-
-  def atome_method_for_batch(element)
-    Batch.define_method element do |params, &user_proc|
-      dispatch(element, [params], &user_proc)
-    end
-  end
-  def particle_method_for_batch(element)
-    Batch.define_method element do |params, &user_proc|
-      dispatch(element, [params], &user_proc)
-    end
-  end
+  #
+  # def atome_method_for_batch(element)
+  #   Batch.define_method element do |params, &user_proc|
+  #     dispatch(element, [params], &user_proc)
+  #   end
+  # end
+  # def particle_method_for_batch(element)
+  #   Batch.define_method element do |params, &user_proc|
+  #     dispatch(element, [params], &user_proc)
+  #   end
+  # end
 
 end

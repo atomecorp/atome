@@ -15,23 +15,25 @@ class Atome
 
     atomes.each_value do |elements|
 
-      if Universe.atomes.key?(elements[:id])
-        # alert "id : #{self.id}, element: #{elements[:id]}"
-        # alert "id : #{elements[:id]}"
-        puts "The id #{elements[:id]} is already taken, you must change it"
-        # `throw new Error("this id is already exist, you must change it");`
-      else
-        # the instance variable below contain the id all any atomes that need to be informed when changes occurs
-        @broadcast = {}
-        # # now we store the proc in a an atome's property called :bloc
-        elements[:code] = atomes_proc if atomes_proc
+      # if Universe.atomes.key?(elements[:id])
+      #   # alert "id : #{self.id}, element: #{elements[:id]}"
+      #   # alert "id : #{elements[:id]}"
+      #   puts "The id #{elements[:id]} is already taken, you must change it"
+      #
+      #   # `throw new Error("this id is already exist, you must change it");`
+      # else
+      # the instance variable below contain the id all any atomes that need to be informed when changes occurs
+      @broadcast = {}
+      # now we store the proc in a an atome's property called :bloc
+      elements[:code] = atomes_proc if atomes_proc
 
-        @atome = elements
-        # we initiate the rendering suing set_type method,
-        # eg for for browser we will call :browser_type generate method in identity.rb file
-        collapse
-      end
+      @atome = elements
+      # we initiate the rendering suing set_type method,
+      # eg for for browser we will call :browser_type generate method in identity.rb file
+      collapse
+      # end
     end
+
   end
 
   def new_particle(element, store, render, &method_proc)
@@ -42,8 +44,8 @@ class Atome
         params = sanitize(element, params, &user_proc)
         create_particle(element, store, render)
         send("set_#{element}", params, &user_proc)
-      elsif element == :batch # TODO : find a better solution than a condition if possible
-        @atome[:batch]
+        # elsif element == :batch # TODO : find a better solution than a condition if possible
+        #   @atome[:batch]
       else
 
         @atome[element]
@@ -61,52 +63,100 @@ class Atome
   end
 
   def atome_parsing(element, params, &user_proc)
-    params = sanitize(element, params)
-    # current_atome = send(element)
 
-    # The condition below check if we need to add or replace the newly created atome
-    # if current_atome && !(@atome[:add] && @atome[:add][element])
-    #   detached(current_atome)
-    #   # @atome["#{element}s"] = []
-    # end
-    # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
-    params = atome_common(element, params)
-    run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
-    run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
-    send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+    if params
+
+      params = sanitize(element, params)
+      # current_atome = send(element)
+
+      # The condition below check if we need to add or replace the newly created atome
+      # if current_atome && !(@atome[:add] && @atome[:add][element])
+      #   detached(current_atome)
+      #   # @atome["#{element}s"] = []
+      # end
+      # alert "self found is => #{self}"
+
+      # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
+      params = atome_common(element, params)
+      run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
+      run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
+      if type == :group
+
+        # if !atome_found.type==:group && atome_found.renderers.
+        params[:attach]=grouped
+        grouped.each do |atome_found|
+          params[:renderers].each do |renderer_found|
+            # As atome applied to group inherit from their renderers we have to remove it and replace it
+            next unless renderer_found == :group && params[:type] != :group
+
+            # so get get the renderers of the mast used parents
+            renderer_found=grab(params[:attach].last).renderers
+            params[:renderers]=renderer_found
+          end
+          # we have to attach to the atome found instead of the group
+          #           alert "we have to change the renderers params whe applying atome onto a group!!"
+          # alert "grab(#{atome_found}).send(#{element}, #{params}, &user_proc)"
+          grab(atome_found).send(element, params, &user_proc)
+          # grab(atome_found).send("set_#{element}", params, &user_proc)
+        end
+      else
+        send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+
+      end
+
+    else
+      # alert "element : #{element} : #{self}"
+      # atome_catcher(@atome["#{element}s"])
+      # alert "now create a group so the elements found #{@atome["#{element}s"]}can be treated"
+      # @atome["#{element}s"]
+      group(@atome["#{element}s"])
+    end
+
   end
 
-  def atome_catcher(atome_catch)
-    # if atome_catch.nil?
-    #   alert "=======> #{self.id} is nil!!!"
-    # end
-    new_atome = Atome.new(container: { type: :element, data: atome_catch, renderers: [] })
-    batch_found = new_atome.batch(atome_catch)
-    batch_found.batch
-    atome_catch
-    # end
-    # if atome_catch.instance_of?(Array)
-    #   puts "case 1 : #{atome_catch}, #{atome_catch.class}"
-
-    # else
-    #   puts "case 2 : #{atome_catch}, #{atome_catch.class}"
-    #   atome_catch
-    # end
-
-  end
+  # def atome_catcher(atome_catch)
+  #   # if atome_catch.nil?
+  #   #   alert "=======> #{self.id} is nil!!!"
+  #   # end
+  #   self
+  #    # Atome.new(container: { type: :element, data: atome_catch, renderers: [] })
+  #   # batch_found = self.batch(atome_catch)
+  #   #   batch_found.batch
+  #
+  #
+  #   # alert batch_found.class
+  #   # if  batch_found.batch.length > 1
+  #   # new_atome
+  #
+  #   # else
+  #   #   alert atome_catch
+  #   #   grab(atome_catch)
+  #   # end
+  #   # "ljkhkjhkj"
+  #   #
+  #
+  #   # end
+  #   # if atome_catch.instance_of?(Array)
+  #   #   puts "case 1 : #{atome_catch}, #{atome_catch.class}"
+  #
+  #   # else
+  #   #   puts "case 2 : #{atome_catch}, #{atome_catch.class}"
+  #   #   atome_catch
+  #   # end
+  #
+  # end
 
   def new_atome(element, &method_proc)
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
-      if params
-        instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        atome_parsing(element, params, &user_proc)
-      else
-        # element_found = @atome["#{element}s"]
-        # atome_catcher(element_found)
-        # alert  element
-        atome_catcher(@atome["#{element}s"])
-      end
+      # if params
+      instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+      atome_parsing(element, params, &user_proc)
+      # else
+      #   # element_found = @atome["#{element}s"]
+      #   # atome_catcher(element_found)
+      #   atome_catcher(@atome["#{element}s"])
+      # end
 
     end
 
@@ -115,9 +165,12 @@ class Atome
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]
       # puts "=> params : #{params}"
-      new_atome = Atome.new({ element => params }, &user_proc)
+
+      Atome.new({ element => params }, &user_proc)
+      # new_atome = Atome.new({ element => params }, &user_proc)
       # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
-      atome_catcher([new_atome.id])
+      # alert new_atome
+      # atome_catcher([new_atome.id])
       # new_atome
     end
     # the method below generate Atome method creation at Object level

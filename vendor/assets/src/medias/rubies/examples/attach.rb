@@ -10,7 +10,8 @@ grab(:b_1).attach([:c_123])
 
 wait 2 do
   circle_123_color= grab(:c_123).color
-  circle_123_color.attach([:b_1])
+  # alert(circle_123_color)
+  # circle_123_color.attach([:b_1])
 end
 
 

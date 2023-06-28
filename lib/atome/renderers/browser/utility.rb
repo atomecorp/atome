@@ -14,17 +14,17 @@ generator.build_render(:browser_delete) do |params|
 function remove_class(class_name) {
   var styleElement = document.querySelector('style');
 
-  // Vérifiez si l'élément <style> existe
+  // check if <style> exist
   if (styleElement) {
-	// Récupérez le contenu de l'élément <style>
-	var styleContent = styleElement.innerHTML;
+  // get content of <style>
+  var styleContent = styleElement.innerHTML;
 
-	// Créez une expression régulière pour supprimer la classe spécifiée avec son contenu
-	var regex = new RegExp("\\." + class_name + "\\s*{[^}]+}", "g");
-	styleContent = styleContent.replace(regex, '');
+  // Create a regex to delete the class and it's content
+  var regex = new RegExp("\\." + class_name + "\\s*{[^}]+}", "g");
+  styleContent = styleContent.replace(regex, '');
 
-	// Mettez à jour le contenu de l'élément <style>
-	styleElement.innerHTML = styleContent;
+  // update <style>
+  styleElement.innerHTML = styleContent;
   }
 }
 

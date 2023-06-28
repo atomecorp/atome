@@ -65,7 +65,7 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
       # alert physical_found
       physical_found.each do |atome_id_found|
         # atome_id_found.delete(true)
-         grab(atome_id_found).delete(true)
+        grab(atome_id_found).delete(true)
       end
     end
     grab(params[:id]).delete(true)
@@ -81,7 +81,7 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     if Universe.atome_list.include?(params)
       @atome["#{params}s"].each do |item_to_del|
         # puts "===>#{item_to_del}"
-        delete({id: item_to_del})
+        delete({ id: item_to_del })
       end
       # delete({id: @atome["#{params}s"]})
     else
@@ -126,10 +126,28 @@ new({ particle: :cursor })
 new({ particle: :preset })
 new({ particle: :relations, type: :hash })
 new({ particle: :tag, render: false, type: :hash })
-new({ particle: :batch, render: false })
-new({ sanitizer: :batch }) do |params|
-  Batch.new(params)
-  # puts "index msg : we must treat the batch : #{params}"
-
+# new({ particle: :batch, render: false })
+# new({ sanitizer: :batch }) do |params|
+#   Batch.new(params)
+#   # puts "index msg : we must treat the batch : #{params}"
+#
+# end
+new({ atome: :group, type: :array })
+new({ particle: :grouped, render: false, type: :array })
+# new({ sanitizer: :grouped }) do |params|
+#   alert "grouped params is #{params}"
+#   params
+# end
+new({ sanitizer: :group }) do |params|
+  # alert params
+  sanitized_params = if params.instance_of? Array
+                       # the group renderers is found in : Genesis/group/group.rb
+                       { grouped: params, renderers: [:group], attach: [:nil] }
+                     elsif params.instance_of? Hash
+                       params
+                     else
+                       [params]
+                     end
+  sanitized_params
 end
 
