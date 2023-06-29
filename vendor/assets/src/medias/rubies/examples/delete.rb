@@ -7,38 +7,23 @@ b.circle({top: 66, id: :the_circle_1, color: :yellow})
 b.shape({id: :tutu})
 b.shape({id: :toto}) #######
 b.circle({id: :invisible}) ######
-# alert b
-#
-# a=b.shape
-#   a.each do |aaa|
-#     alert  "#{aaa}, #{aaa.class}"
-#   end
 
 wait 2 do
   b.delete(:left)
 end
 #
 wait 3 do
-  # alert "shapes in b are : #{b.shape}"
-  # a=b.shape
-  # a.each do |aaa|
-  #   alert  "#{aaa}, #{aaa.class}"
-  # end
-  # grab(:the_circle_1).delete(true)
-  # alert "b shape is : #{b.shape},#{b.shape.class}"
+
   b.shape.each do |attached_atome_id|
-    # alert "attached_atome_id is : #{attached_atome_id}, #{attached_atome_id.class}"
-      # b.delete({id: attached_atome_id})
     attached_atome_id.left(333)
     wait 2 do
       attached_atome_id.delete(true)
     end
-      # b.left(333)
   end
 
 end
-
-
+#
+#
 wait 4 do
   b.delete(:color)
 end

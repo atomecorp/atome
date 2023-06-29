@@ -23,7 +23,7 @@ class Atome
     if type == :group
       # if the atome is a group we need to collect the atomes of the group
       atomes_found=[]
-      @atome[:grouped].each do |atome_found|
+      @atome[:data].each do |atome_found|
         atomes_found <<  grab(atome_found).atome
       end
       atomes_found.to_s

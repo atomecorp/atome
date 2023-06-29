@@ -7,21 +7,21 @@ m=matrix({  id: :my_table, left: 330, top: 0, width: 500, height: 399, smooth: 8
          })
 
 m.cells do |el|
-  batch(el)
-  batch.color(:white).rotate(22).text(:hello)
+  group(el)
+  group.color(:white).rotate(22).text(:hello)
 end
 
 m.cells(["my_table_2", 9, "my_table_5"]) do |el|
-  batch(el)
-  batch.color(:red).rotate(33)
+  group(el)
+  group.color(:red).rotate(33)
 end
 
 
 mm=matrix
 #
 mm.cells do |el|
-  batch(el)
-  batch.color(:yellowgreen).rotate(33)
+  group(el)
+  group.color(:yellowgreen).rotate(33)
 end
 
 

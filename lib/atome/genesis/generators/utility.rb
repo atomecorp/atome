@@ -132,8 +132,12 @@ new({ particle: :tag, render: false, type: :hash })
 #   # puts "index msg : we must treat the batch : #{params}"
 #
 # end
+
+# new({ particle: :each, render: false, type: :array }) do |params, &bloc|
+#   alert params
+# end
 new({ atome: :group, type: :array })
-new({ particle: :grouped, render: false, type: :array })
+# new({ particle: :grouped, render: false, type: :array })
 # new({ sanitizer: :grouped }) do |params|
 #   alert "grouped params is #{params}"
 #   params
@@ -142,7 +146,7 @@ new({ sanitizer: :group }) do |params|
   # alert params
   sanitized_params = if params.instance_of? Array
                        # the group renderers is found in : Genesis/group/group.rb
-                       { grouped: params, renderers: [:group], attach: [:nil] }
+                       { data: params, renderers: [:group], attach: [:nil] }
                      elsif params.instance_of? Hash
                        params
                      else

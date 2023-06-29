@@ -73,13 +73,14 @@
 # });`
 
 ##### to test :
-# require 'src/medias/rubies/examples/batch.rb'
+require 'src/medias/rubies/examples/batch.rb'
 # require 'src/medias/rubies/examples/detached.rb'
 # require 'src/medias/rubies/examples/group.rb'
 # ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
 # require 'src/medias/rubies/examples/universe.rb'
-require 'src/medias/rubies/examples/batch.rb'
+# require 'src/medias/rubies/examples/batch.rb'
+# require 'src/medias/rubies/examples/vector.rb'
 # require 'src/medias/rubies/examples/group.rb'
 # require 'src/medias/rubies/examples/repeat.rb'
 # require 'src/medias/rubies/examples/edit.rb'
