@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'atome/renderers/html/effect'
-require 'atome/renderers/html/event'
-require 'atome/renderers/html/geometry'
-require 'atome/renderers/html/identity'
-require 'atome/renderers/html/spatial'
-require 'atome/renderers/html/atome'
-require 'atome/renderers/html/utility'
+require 'renderers/html/effect'
+require 'renderers/html/event'
+require 'renderers/html/geometry'
+require 'renderers/html/identity'
+require 'renderers/html/spatial'
+require 'renderers/html/atome'
+require 'renderers/html/utility'
 
 # #html object
 class Html

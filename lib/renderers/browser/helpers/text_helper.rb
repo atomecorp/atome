@@ -27,6 +27,10 @@ module BrowserHelper
   def self.browser_data_shape(_value,_atome_send)
 
   end
+
+  def self.browser_data_group(_value,_atome_send)
+
+  end
   def self.browser_data_color(_value,_atome_send)
 
   end

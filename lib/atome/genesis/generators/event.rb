@@ -28,7 +28,7 @@ new({ sanitizer: :drag }) do |params, proc|
 end
 
 new({ post: :drag }) do |params|
-  # puts  "params is : > #{params}"
+
   @drag = {} if @drag == nil
   # @drag[params] = user_bloc
   params.each do |k, v|

@@ -80,10 +80,10 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     # we check if the params passed is an atome to treat it in a different way
     if Universe.atome_list.include?(params)
       @atome["#{params}s"].each do |item_to_del|
-        # puts "===>#{item_to_del}"
+
         delete({ id: item_to_del })
       end
-      # delete({id: @atome["#{params}s"]})
+
     else
       send(params, 0)
     end
@@ -98,7 +98,7 @@ new({ post: :clear }) do
     attached_found << attached_id_found
   end
   attached_found.each do |child_id_found|
-    # puts "===>> should be deleted : #{child_id_found}"
+
     child_found = grab(child_id_found)
 
     child_found.delete(true) if child_found
@@ -106,7 +106,7 @@ new({ post: :clear }) do
     # Universe.delete(child_id_found)
   end
   # attached([])
-  # puts "params are => #{id}"
+
 end
 new({ particle: :path })
 new({ particle: :schedule }) do |date, proc|
@@ -126,32 +126,36 @@ new({ particle: :cursor })
 new({ particle: :preset })
 new({ particle: :relations, type: :hash })
 new({ particle: :tag, render: false, type: :hash })
+
+new({ atome: :group, type: :array, render: false })
+new({ sanitizer: :group }) do |params|
+
+  sanitized_params = if params.instance_of? Array
+                       # the group renderers is found in : Genesis/group/group.rb
+                       { data: params, attach: [:nil] }
+                     elsif params.instance_of? Hash
+                       params
+                     else
+                       { data: [params], attach: [:nil]}
+                     end
+  sanitized_params
+end
+
 # new({ particle: :batch, render: false })
 # new({ sanitizer: :batch }) do |params|
 #   Batch.new(params)
-#   # puts "index msg : we must treat the batch : #{params}"
+#
 #
 # end
 
 # new({ particle: :each, render: false, type: :array }) do |params, &bloc|
 #   alert params
 # end
-new({ atome: :group, type: :array })
+
 # new({ particle: :grouped, render: false, type: :array })
 # new({ sanitizer: :grouped }) do |params|
 #   alert "grouped params is #{params}"
 #   params
 # end
-new({ sanitizer: :group }) do |params|
-  # alert params
-  sanitized_params = if params.instance_of? Array
-                       # the group renderers is found in : Genesis/group/group.rb
-                       { data: params, renderers: [:group], attach: [:nil] }
-                     elsif params.instance_of? Hash
-                       params
-                     else
-                       [params]
-                     end
-  sanitized_params
-end
+
 

@@ -158,3 +158,13 @@ const Atome_canvas={}
 // });
 
 
+// const opalStyle = {
+//
+//
+//     style: function(file, atome, proc) {
+//         alert ('so good!!')
+//     }
+//
+// }
+// const opalJS = Object.assign(opalStyle);
+

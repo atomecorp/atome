@@ -4,8 +4,6 @@
 # start dummy code
 DOM = :nil
 
-def parents(_val) end
-
 generator = Genesis.generator
 
 generator.build_render(:browser_shape) do
@@ -21,6 +19,7 @@ generator.build_render(:browser_shape) do
   # end
 
 end
+
 
 generator.build_render(:browser_color) do |_value|
   # puts " @atome[:id] : #{@atome[:id]}"
@@ -151,7 +150,7 @@ generator.build_render(:browser_image) do |_user_prc|
   @browser_object = BrowserHelper.browser_document[id_found]
 end
 
-generator.build_render(:browser_text) do |_value, _user_proc|
+new({ browser: :text, type: :string }) do |_value, _user_proc|
   id_found = @atome[:id]
   DOM do
     div(id: id_found).atome.text

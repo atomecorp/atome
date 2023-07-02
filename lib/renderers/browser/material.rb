@@ -48,10 +48,15 @@ generator.build_render(:alpha) do |value|
   self
 end
 
-generator.build_render(:visual) do |value|
+# generator.build_render(:visual) do |value|
+#   value = BrowserHelper.value_parse(value[:size])
+#   browser_object.style['font-size'] = value
+# end
+new({ browser: :visual, type: :hash }) do |value, _user_proc|
   value = BrowserHelper.value_parse(value[:size])
   browser_object.style['font-size'] = value
 end
+
 
 generator.build_render(:browser_edit) do |value|
   if value == true

@@ -14,25 +14,18 @@ wait 2 do
   g.top(0)
   wait 2 do
     g.attach([:b0])
-    g.blur(33)
+    g.blur(33).rotate(44)
 
   end
 end
 
 
-
-
-# b=box({ id: :b1 })
-# b.box({ id: :b2, left: 220 })
-# b.box({ id: :b3, left: 340 })
-# grouped_object=group([:b2, :b3])
-# # alert grouped_object.type
+# b=box
+#
+# # b.text(:red)
+# b.drag(true)
 # wait 2 do
-#   grouped_object.color({id: :the_col, renderers: [:browser], blue: 1})
-# end
-# wait 3 do
-#   grouped_object.width(33)
-#   # grouped_object.left(3)
-#   # grouped_object.text(:hello)
-#   grouped_object.color(:violet)
+#   b.color
+#   # grab(:text_14).color(:red)
+#   b.image
 # end

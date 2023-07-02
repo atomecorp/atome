@@ -65,7 +65,7 @@ atome framework is looking for the rendering  method named "glow_html" we explai
 
 Finally we have to manually create the rendering method in our renderer by default the HTML render is used
 
-so we have to go to "atome/lib/atome/renderers/html/properties/" the  open "effect.rb" as we want to create an effect renderer 
+so we have to go to "atome/lib/renderers/html/properties/" the  open "effect.rb" as we want to create an effect renderer 
 
 So in the "effect.rb" file we had the method name "glow_html" (the newly atome name suffixed with "_html" for html rendering)
 

@@ -17,7 +17,15 @@ module BrowserHelper
     # `document.getElementById(#{atome[:id]}).sheet.cssRules[0].style.boxShadow = #{shadow_updated}`
   end
 
-  def self.browser_blur_div(browser_object, value, _atome)
-    browser_object.style[:filter] = "blur(#{value}px)"
+  def self.browser_blur_div(_browser_object, value, _atome)
+    # alert _browser_object
+    # browser_object.style[:filter] = "blur(#{value}px)"
+    `
+var  element= document.getElementById(#{_atome[:id]});
+alert(element);
+// Patch to correct safari bug below
+element.style.willChange = 'filter';
+element.style.filter = 'blur('+#{value}+'px)';
+`
   end
 end

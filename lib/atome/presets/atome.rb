@@ -19,11 +19,14 @@ class Atome
       attached = params.delete(:attached)
       params = params.merge({ attached: attached })
     end
-    essential_params[:renderers] = essential_params[:renderers] || @atome[:renderers]
+    essential_params[:renderers] = @atome[:renderers] || essential_params[:renderers]
+    # puts "essential_params[:renderers]  : => #{essential_params[:renderers]}\n@atome[:renderers] : #{@atome[:renderers]}"
+
+    # puts "params  : => #{params}\nessential_params : #{essential_params}"
     # now we replace the renderers in case this is not a group
-    unless essential_params[:type] == :group && essential_params[:renderers] == :group
-      essential_params[:renderers] = @atome[:renderers]
-    end
+    # unless essential_params[:type] == :group && essential_params[:renderers] == :group
+    #   essential_params[:renderers] = @atome[:renderers]
+    # end
 
     essential_params.merge(params)
   end
@@ -40,10 +43,13 @@ class Atome
           params[:id] = "#{params[:id]}_#{index}"
           grab(group_item).shape(params)
         end
+        alert "group params are #{params}"
+        return Atome.new({ :element => params }, &bloc)
       else
-        Atome.new({ :element => params }, &bloc)
+        # alert "generic params are #{params}"
+        return Atome.new({ :element => params }, &bloc)
       end
-
+      return Atome.new({ :element => params }, &bloc)
     end
   end
 

@@ -70,8 +70,8 @@ new({ sanitizer: :web }) do |params|
   params = temp_default.merge(params)
   params
 end
-new({ atome: :collector })
-new({ atome: :collection })
+# new({ atome: :collector })
+# new({ atome: :collection })
 new({ atome: :animation })
 new({ atome: :text, type: :hash })
 new({ sanitizer: :text }) do |params|

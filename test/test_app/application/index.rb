@@ -55,7 +55,7 @@
 # #  TODO : when adding a children the parent get the child color: it may be related to : attach remove previously attached object
 # # FIXME : if in matrix particles shadow or other particles are not define it crash : { margin: 9, color: :blue } in table
 # #  TODO : self is the not the atome but BrowserHelper so the code below doesn't work :b=box
-# # TODO : visual size define in % doesn't work  cell_1.text({data: :réalisation, center: :horizontal, top: 3, color: :lightgray, visual: {size: '10%'}})
+# # TODO : visual size define in % doesn't work  cell_1.text({data: :realisation, center: :horizontal, top: 3, color: :lightgray, visual: {size: '10%'}})
 # # TODO : text position at the bottom in matrix cell, bottom position is lost when resizing the table
 # # TODO : size of image in matrix cell is reset when resizing
 # # TODO : add .columns and .rows to matrix
@@ -76,6 +76,7 @@
 require 'src/medias/rubies/examples/batch.rb'
 # require 'src/medias/rubies/examples/detached.rb'
 # require 'src/medias/rubies/examples/group.rb'
+# require 'src/medias/rubies/examples/blur.rb'
 # ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
 # require 'src/medias/rubies/examples/universe.rb'
@@ -475,7 +476,6 @@ require 'src/medias/rubies/examples/batch.rb'
 # # Color gradients
 #
 
-
 # ######### # ############ # ### ######### # ###
 # # TODO : Find solution 1: color is attached to the wrong object
 # b=box({ id: :the_box, drag: true })
@@ -509,8 +509,6 @@ require 'src/medias/rubies/examples/batch.rb'
 #
 # end
 # ######### # ############ # ### ######### # ###
-
-
 
 # end
 # circle({ id: :the_circle, drag: true })
@@ -549,8 +547,7 @@ require 'src/medias/rubies/examples/batch.rb'
 # # alert m.type
 
 ##### Done correct green bug
- # circle({ top: 66, id: :the_circle, color: :green })
-
+# circle({ top: 66, id: :the_circle, color: :green })
 
 # Find solution for text not added to the array
 # b=box
@@ -573,3 +570,169 @@ require 'src/medias/rubies/examples/batch.rb'
 # b.attached(:the_blue)
 # alert b.attached
 # require 'src/medias/rubies/examples/batch.rb'
+# win = Native(`window`)
+# alert win
+
+
+
+#
+########### browser_less rendering############
+
+class Atome
+  particle_list_found = Universe.particle_list.keys
+  particle_list_found.each do |the_particle|
+    define_method("inspect_#{the_particle}") do |params, &bloc|
+      # puts "=> inspect element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
+    end
+  end
+
+  # particle_list_found = Universe.particle_list.keys
+  # particle_list_found.each do |the_particle|
+  #   define_method("group_#{the_particle}") do |params, &bloc|
+  #     # puts ":::> group, element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
+  #   end
+  # end
+end
+
+`
+const opalStyle = {
+
+
+    style: function(file) {
+        alert ('so good!!')
+    }
+
+}
+const opalJS = Object.assign(opalStyle);
+
+`
+
+class HTML
+
+  def initialize(id)
+    @html_object = `document.getElementById(#{id})`
+  end
+
+  # def opal_js
+  #   `opalJS`
+  # end
+
+  def style
+    # `#{@html_object}`
+    # alert "style : #{property}, #{value}, @html_object : #{@html_object}"
+    self
+  end
+
+  def filter= values
+    property = values[0]
+    value = values[1]
+
+    # opal_js.JS.style("backgroundColor", 'red')
+    `
+const config = {
+  action: 'changeBackgroundColor',
+  params: { color: 'red' }
+};
+
+function changeBackgroundColor(params) {
+  const myDiv = document.getElementById('box_13');
+  myDiv.style.backgroundColor = params.color; // Modifier la couleur de fond de la div
+}
+
+function performAction(config) {
+  const { action, params } = config;
+  if (typeof window[action] === 'function') {
+    window[action](params); // Appeler la fonction dynamiquement
+  }
+}
+
+performAction(config);
+`
+
+    #      `
+    # // var  element= #{@html_object};
+    #  //element.style.willChange = 'filter';
+    #  #{@html_object}.style.filter = #{filter_content};
+    #  `
+  end
+
+  def []= type, value
+    # alert type
+  end
+
+  #     # alert "#{property},#{value[0]} :: #{value[1]}"
+  #     # `#{@html_object}.style.#{property} = #{value[0]}('+#{value[1]}+'px')`
+  #     property=value[0]
+  #     value=value[1]
+  #     fct="element.style.filter = 'blur(33px)';"
+  #     `
+  # var  element= #{@html_object};
+  # element.style.willChange = 'filter';
+  # document[potato].style.color = 'red';
+  # eval(#{fct})
+  # `
+  # #     `
+  # # var  element= #{@html_object};
+  # # element.style.willChange = 'filter';
+  # # element.style.filter = 'blur('+#{value}+')';
+  # # `
+  #
+  #   end
+
+end
+
+# def  html
+#
+# end
+
+class Atome
+  # attr_accessor :html_object
+  def html
+    @html_accessor = HTML.new(id)
+  end
+
+end
+
+def html_test(val)
+  # html.style.filter = "blur","#{val}px"
+  html.style.filter = "blur", "#{val}px"
+  html.style[:top] = "blur", "#{val}px"
+  # html.style[ = "blur(#{_val}px)"
+  #   `var fullDOM = document.documentElement;
+  # console.log(fullDOM);`
+end
+
+
+### group check
+# box(width: 33, height: 66, color: :cyan, top: 0,left: 555, id: :cyan_box)
+# box({id: :titi, drag: true})
+# c = circle({ id: :toto, renderers: [:inspect, :browser] })
+# # puts '----------'
+# c.color({ blue: 1 })
+# # puts '++++++++++'
+# # # text(:data)
+# # # `console.clear()`
+# c.text({ data: :hello, left: 120 })
+
+# g = group([:toto, :cyan_box])
+# # alert g
+# g.rotate(33)
+# g.attach(:titi)
+# g.color(:red)
+# g.shape({id: :the_shape, left: 333, color: :green})
+# g.text(:hi)
+# # c.atome.delete(:shapes)
+# # alert c
+# # alert Universe.user_atomes
+# # g.type(:image)
+#
+# # g.box
+#
+# # b=box({renderers: [:browser], id: :titi})
+# # t=text({data: :hello , id: :tutu})
+# # g=group([:toto,:titi])
+
+
+
+
+

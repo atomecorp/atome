@@ -12,8 +12,6 @@ class Atome
   private
 
   def initialize(atomes = {}, &atomes_proc)
-    # puts "initialize params => #{atomes}"
-
     atomes.each_value do |elements|
 
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
@@ -32,14 +30,30 @@ class Atome
 
   def new_particle(element, store, render, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
-      if params || params == false
+      if @atome[:type] == :group
+        Universe.add_to_atomes(@atome[:id], self)
+        instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+        # params = sanitize(element, params, &user_proc)
+        # create_particle(element, store, render)
+        # params.delete(:data)
+        # params.delete(:data)
+
+        # send("set_#{element}", params, &user_proc) if params
+        group_particle_analysis(element,params,&user_proc)
+
+        # alert  @atome[element]
+        # @atome[element]
+        # send("set_#{element}", params, &user_proc)
+      elsif params || params == false
+        # puts "****#{element}****#{params}"
+
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = sanitize(element, params, &user_proc)
         create_particle(element, store, render)
         send("set_#{element}", params, &user_proc)
-      else
 
+      else
         @atome[element]
       end
     end
@@ -55,6 +69,8 @@ class Atome
 
   def atome_parsing(element, params, &user_proc)
 
+
+
     if params
 
       params = sanitize(element, params)
@@ -62,40 +78,43 @@ class Atome
       params = atome_common(element, params)
       run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
-      if type == :group
-        params[:attach] = data
-        data.each do |atome_found|
-          params[:renderers].each_with_index do |renderer_found, index|
-            # As atome applied to group inherit from their renderers we have to remove it and replace it
-            if renderer_found == :group && params[:type] != :group
-              # so get get the renderers of the mast used parents
-              renderer_found = grab(params[:attach].last).renderers
-              params[:renderers] = renderer_found
-            end
-            params[:id] = "#{params[:id]}_#{index}"
-            # FIXME : when multiple  attach, it should be able to be displayed in every attached atome
-            params[:attach] = [atome_found]
-            grab(atome_found).send(element, params, &user_proc)
-          end
-        end
-      else
-        send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
-      end
+      send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+
+      # if type == :group
+      #   params[:attach] = data
+      #   data.each do |atome_found|
+      #     params[:renderers].each_with_index do |renderer_found, index|
+      #       # As atome applied to group inherit from their renderers we have to remove it and replace it
+      #       if renderer_found == :group && params[:type] != :group
+      #         # so get get the renderers of the mast used parents
+      #         renderer_found = grab(params[:attach].last).renderers
+      #         params[:renderers] = renderer_found
+      #       end
+      #       params[:id] = "#{params[:id]}_#{index}"
+      #       # FIXME : when multiple  attach, it should be able to be displayed in every attached atome
+      #       params[:attach] = [atome_found]
+      #
+      #       grab(atome_found).send(element, params, &user_proc)
+      #     end
+      #   end
+      #
+      # else
+      #
+      #
+      #   send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+      # end
     else
+
       group(@atome["#{element}s"])
     end
 
   end
 
-
   def new_atome(element, &method_proc)
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
-      # if params
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-
       atome_parsing(element, params, &user_proc)
-
     end
 
     # the method define below is the fastest params are passed directly

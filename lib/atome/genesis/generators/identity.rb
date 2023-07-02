@@ -7,17 +7,24 @@ new({ sanitizer: :attach }) do |parents_ids|
 
   parents_ids.each do |parents_id|
     parents_found = grab(parents_id)
-    # TODO : factorise the code below
-    type_found = atome[:type]
-    # TODO : factorise the code above
-    parents_found.atome[:attached] = [] unless parents_found.atome[:attached]
-    parents_found.atome[:attached] << atome[:id]
-    unless parents_found.atome["#{type_found}s"]
-      parents_found.atome["#{type_found}s"] = [parents_found.atome["#{type_found}s"]].compact!
+      # TODO : factorise the code below
+      type_found = atome[:type]
+      # TODO : factorise the code above
+      parents_found.atome[:attached] = [] unless parents_found.atome[:attached]
+      parents_found.atome[:attached] << atome[:id]
+      unless parents_found.atome["#{type_found}s"]
+        parents_found.atome["#{type_found}s"] = [parents_found.atome["#{type_found}s"]].compact!
+      end
+      parents_found.atome["#{type_found}s"] << atome[:id]
+    if parents_found.atome[:type]== :group
+      # alert "====> #{parents_found}"
+      group_atome_analysis(parents_found)
+      parents_ids=[]
     end
-    parents_found.atome["#{type_found}s"] << atome[:id]
+
+
   end
-  # puts "MSG from identity  => #{id} passed!"
+
   parents_ids
 end
 
@@ -42,7 +49,7 @@ new({ sanitizer: :attached }) do |children_ids|
   @atome[:attached]
 end
 # new({ post: :attached }) do |params|
-#   puts "======++> #{params}"
+
 # end
 new({ particle: :detached, store: false })
 new({ sanitizer: :detached }) do |values|
@@ -61,6 +68,7 @@ end
 
 new({ particle: :real })
 new({ particle: :type })
+
 new({ particle: :id })
 new({ sanitizer: :id }) do |params|
   if @atome[:id] != params
