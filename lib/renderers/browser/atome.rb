@@ -20,6 +20,21 @@ generator.build_render(:browser_shape) do
 
 end
 
+generator.build_render(:browser_group) do
+
+  # if @definition
+  #   alert "why we never pass here??????"
+  # else
+  @browser_type = :div
+  id_found = @atome[:id]
+  DOM do
+    div(id: id_found).atome
+  end.append_to(BrowserHelper.browser_document[:user_view])
+  @browser_object = BrowserHelper.browser_document[id_found]
+  # end
+
+end
+
 
 generator.build_render(:browser_color) do |_value|
   # puts " @atome[:id] : #{@atome[:id]}"

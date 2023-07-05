@@ -22,7 +22,7 @@ module BrowserHelper
     # browser_object.style[:filter] = "blur(#{value}px)"
     `
 var  element= document.getElementById(#{_atome[:id]});
-alert(element);
+
 // Patch to correct safari bug below
 element.style.willChange = 'filter';
 element.style.filter = 'blur('+#{value}+'px)';

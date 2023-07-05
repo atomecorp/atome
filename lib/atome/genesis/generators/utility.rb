@@ -127,19 +127,7 @@ new({ particle: :preset })
 new({ particle: :relations, type: :hash })
 new({ particle: :tag, render: false, type: :hash })
 
-new({ atome: :group, type: :array, render: false })
-new({ sanitizer: :group }) do |params|
 
-  sanitized_params = if params.instance_of? Array
-                       # the group renderers is found in : Genesis/group/group.rb
-                       { data: params, attach: [:nil] }
-                     elsif params.instance_of? Hash
-                       params
-                     else
-                       { data: [params], attach: [:nil]}
-                     end
-  sanitized_params
-end
 
 # new({ particle: :batch, render: false })
 # new({ sanitizer: :batch }) do |params|

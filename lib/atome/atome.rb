@@ -30,29 +30,15 @@ class Atome
 
   def new_particle(element, store, render, &method_proc)
     Atome.define_method element do |params = nil, &user_proc|
-      if @atome[:type] == :group
-        Universe.add_to_atomes(@atome[:id], self)
-        instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        # params = sanitize(element, params, &user_proc)
-        # create_particle(element, store, render)
-        # params.delete(:data)
-        # params.delete(:data)
-
-        # send("set_#{element}", params, &user_proc) if params
-        group_particle_analysis(element,params,&user_proc)
-
-        # alert  @atome[element]
-        # @atome[element]
-        # send("set_#{element}", params, &user_proc)
-      elsif params || params == false
-        # puts "****#{element}****#{params}"
-
+      if params || params == false
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = sanitize(element, params, &user_proc)
         create_particle(element, store, render)
+        if @atome[:type] == :group
+          group_particle_analysis(element, params, &user_proc)
+        end
         send("set_#{element}", params, &user_proc)
-
       else
         @atome[element]
       end
@@ -68,8 +54,6 @@ class Atome
   end
 
   def atome_parsing(element, params, &user_proc)
-
-
 
     if params
 

@@ -6,6 +6,17 @@ module BrowserHelper
   def self.browser_left_group(_value, _browser_object, _atome)
     # browser_object.style[:left] = BrowserHelper.value_parse(value)
   end
+  def self.browser_top_group(_value, _browser_object, _atome)
+    # browser_object.style[:left] = BrowserHelper.value_parse(value)
+  end
+
+  def self.browser_bottom_group(_value, _browser_object, _atome)
+    # browser_object.style[:left] = BrowserHelper.value_parse(value)
+  end
+
+  def self.browser_right_group(_value, _browser_object, _atome)
+    # browser_object.style[:left] = BrowserHelper.value_parse(value)
+  end
 
   def self.browser_left_shape(value, browser_object, _atome)
     browser_object.style[:left] = BrowserHelper.value_parse(value)

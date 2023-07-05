@@ -73,9 +73,9 @@
 # });`
 
 ##### to test :
-require 'src/medias/rubies/examples/batch.rb'
-# require 'src/medias/rubies/examples/detached.rb'
+# require 'src/medias/rubies/examples/batch.rb'
 # require 'src/medias/rubies/examples/group.rb'
+# require 'src/medias/rubies/examples/detached.rb'
 # require 'src/medias/rubies/examples/blur.rb'
 # ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
@@ -573,8 +573,6 @@ require 'src/medias/rubies/examples/batch.rb'
 # win = Native(`window`)
 # alert win
 
-
-
 #
 ########### browser_less rendering############
 
@@ -582,111 +580,29 @@ class Atome
   particle_list_found = Universe.particle_list.keys
   particle_list_found.each do |the_particle|
     define_method("inspect_#{the_particle}") do |params, &bloc|
-      # puts "=> inspect element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
+      puts "=> inspect element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
     end
   end
-
-  # particle_list_found = Universe.particle_list.keys
-  # particle_list_found.each do |the_particle|
-  #   define_method("group_#{the_particle}") do |params, &bloc|
-  #     # puts ":::> group, element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
-  #   end
-  # end
 end
 
-`
-const opalStyle = {
-
-
-    style: function(file) {
-        alert ('so good!!')
-    }
-
-}
-const opalJS = Object.assign(opalStyle);
-
-`
-
 class HTML
-
   def initialize(id)
     @html_object = `document.getElementById(#{id})`
   end
 
-  # def opal_js
-  #   `opalJS`
-  # end
-
-  def style
-    # `#{@html_object}`
-    # alert "style : #{property}, #{value}, @html_object : #{@html_object}"
+  def style(property, value)
+    `#{@html_object}.style[#{property}] = #{value}` if property
     self
   end
 
   def filter= values
     property = values[0]
     value = values[1]
-
-    # opal_js.JS.style("backgroundColor", 'red')
-    `
-const config = {
-  action: 'changeBackgroundColor',
-  params: { color: 'red' }
-};
-
-function changeBackgroundColor(params) {
-  const myDiv = document.getElementById('box_13');
-  myDiv.style.backgroundColor = params.color; // Modifier la couleur de fond de la div
-}
-
-function performAction(config) {
-  const { action, params } = config;
-  if (typeof window[action] === 'function') {
-    window[action](params); // Appeler la fonction dynamiquement
-  }
-}
-
-performAction(config);
-`
-
-    #      `
-    # // var  element= #{@html_object};
-    #  //element.style.willChange = 'filter';
-    #  #{@html_object}.style.filter = #{filter_content};
-    #  `
+    `#{@html_object}.style.filter = #{property}+'('+#{value}+')'`
   end
-
-  def []= type, value
-    # alert type
-  end
-
-  #     # alert "#{property},#{value[0]} :: #{value[1]}"
-  #     # `#{@html_object}.style.#{property} = #{value[0]}('+#{value[1]}+'px')`
-  #     property=value[0]
-  #     value=value[1]
-  #     fct="element.style.filter = 'blur(33px)';"
-  #     `
-  # var  element= #{@html_object};
-  # element.style.willChange = 'filter';
-  # document[potato].style.color = 'red';
-  # eval(#{fct})
-  # `
-  # #     `
-  # # var  element= #{@html_object};
-  # # element.style.willChange = 'filter';
-  # # element.style.filter = 'blur('+#{value}+')';
-  # # `
-  #
-  #   end
-
 end
 
-# def  html
-#
-# end
-
 class Atome
-  # attr_accessor :html_object
   def html
     @html_accessor = HTML.new(id)
   end
@@ -694,16 +610,14 @@ class Atome
 end
 
 def html_test(val)
-  # html.style.filter = "blur","#{val}px"
-  html.style.filter = "blur", "#{val}px"
-  html.style[:top] = "blur", "#{val}px"
-  # html.style[ = "blur(#{_val}px)"
-  #   `var fullDOM = document.documentElement;
-  # console.log(fullDOM);`
+  html.style.filter = "blur", "#{val / 10}px"
+  html.style(:left, "#{val}px")
 end
 
+a = box
+a.html_test(300)
 
-### group check
+## group check
 # box(width: 33, height: 66, color: :cyan, top: 0,left: 555, id: :cyan_box)
 # box({id: :titi, drag: true})
 # c = circle({ id: :toto, renderers: [:inspect, :browser] })
@@ -713,7 +627,7 @@ end
 # # # text(:data)
 # # # `console.clear()`
 # c.text({ data: :hello, left: 120 })
-
+#
 # g = group([:toto, :cyan_box])
 # # alert g
 # g.rotate(33)

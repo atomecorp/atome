@@ -1,33 +1,10 @@
 # frozen_string_literal: true
 
-# class Atome
-#
-#   # here we create the group renderers
-#   particle_list_found = Universe.particle_list.keys
-#   # atome_list_found = Universe.atome_list
-#   # full_list = particle_list_found.concat(atome_list_found)
-#
-#   def each(_params, &proc)
-#     data.each do |atome_id_found|
-#       atome_found=grab(atome_id_found)
-#       atome.instance_exec(atome_found, &proc) if proc.is_a?(Proc)
-#     end
-#
-#   end
-#
-#
-#   particle_list_found.each do |the_particle|
-#     define_method("group_#{the_particle}") do |params, &bloc|
-#       if !(the_particle == :type && params == :group || the_particle == :id) && !(the_particle == :attach && params[0] == :nil) && !(the_particle == :renderers && params[0] == :group)
-#         data.each do |atome_found|
-#           grab(atome_found).send(the_particle, params, &bloc)
-#         end
-#       end
-#     end
-#   end
-# end
 
 # we create dummy methods for pluralised atome
+def group(params)
+  grab(:view).group(params)
+end
 
 Universe.atome_list.each do |atome_name|
   pluralised_atome_name = "#{atome_name}s"
@@ -39,18 +16,22 @@ end
 
 class Atome
 
-
   def group_particle_analysis(particle, params, &bloc)
     # if params
-      @atome[:data].each do |atome_id_found|
-        if !(particle == :type && params == :group || particle == :id) && !(particle == :attach && params[0] == :nil) && !(particle == :renderers && params[0] == :group)
-          atome_found = grab(atome_id_found)
-          atome_found.send(particle, params, &bloc)
-        end
+    # alert @atome
+    @atome[:data].each do |atome_id_found|
+      if !(particle == :type && params == :group || particle == :id) && !(particle == :renderers && params[0] == :group)
+        atome_found = grab(atome_id_found)
+        puts "clue here @group_initiated: [#{@group_initiated}] #{self.type},  #{particle} : #{params}"
+        atome_found.send(particle, params, &bloc)
+
       end
+      #
+    end
+
     # alert  @atome[:data]
     #
-    @atome[:data]
+    # @atome[:data]
     # else
     #   alert "zebulon"
     #   end
@@ -93,5 +74,19 @@ class Atome
       # puts "grab(#{atome_id_found}).send(#{type}, #{atome})"
       grab(atome_id_found).send(type, atome)
     end
+  end
+
+  def group(params)
+    essential_params = { type: :group, data: [], attach: [:view], width: 0, height: 0, top: 0, left:0 }
+    data_found = if params.instance_of? Array
+                   # the group renderers is found in : Genesis/group/group.rb
+                   params
+                 elsif params.instance_of? Hash
+                   params[:data]
+                 else
+                   [params]
+                 end
+    grouped = shape(essential_params)
+    grouped.data(data_found)
   end
 end

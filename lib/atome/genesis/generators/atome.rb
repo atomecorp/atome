@@ -83,4 +83,20 @@ new({ sanitizer: :text }) do |params|
   params
 end
 
+# new({ atome: :group, type: :array, render: false })
+#
+#
+# new({ sanitizer: :group }) do |params|
+#
+#   sanitized_params = if params.instance_of? Array
+#                        # the group renderers is found in : Genesis/group/group.rb
+#                        { data: params, attach: [:view] }
+#                      elsif params.instance_of? Hash
+#                        params
+#                      else
+#                        { data: [params], attach: [:view]}
+#                      end
+#   sanitized_params
+# end
+
 

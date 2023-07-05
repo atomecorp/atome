@@ -21,6 +21,17 @@ end
 
 generator.build_render(:browser_rotate) do |value, _user_proc|
   @browser_object.style[:transform] = "rotate(#{value}deg)" unless @browser_type == :style
+  # puts self.id
+  # browser_object.style[:left] = BrowserHelper.value_parse(value)
+  # BrowserHelper.send("browser_left_#{@atome[:type]}", value, @browser_object, @atome)
+  # new({ browser: :left, type: :integer }) do |value, _user_proc|
+  #   puts self.id
+  #   BrowserHelper.send("browser_left_#{@atome[:type]}", value, @browser_object, @atome)
+  # end
+  # def self.browser_left_shape(value, browser_object, _atome)
+  #   browser_object.style[:left] = BrowserHelper.value_parse(value)
+  # end
+
 end
 
 generator.build_render(:browser_center) do |value, _user_proc|

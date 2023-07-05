@@ -1,25 +1,43 @@
 # frozen_string_literal: true
 # group
-b = box({ id: :b1, drag: true })
+b = box({ id: :b1, drag: true, color: :pink })
 b.box({ id: :b2, left: 220, drag: true })
 b.box({ id: :b3, left: 340, drag: true })
+# circle({left: 333, id: :ccc, drag: true})
+# wait 5 do
+
 
 grouped_object = group([:b2, :b3, :b1])
-b.text({ data: :hello, left: 99 , color: :red})
+# grouped_object.attach([:ccc])
+# grouped_object.data()
+b.text({ data: :hello, left: 99, color: :red })
 grouped_object.text(:blue)
-
-grouped_object.color(:orange)
-# `console.clear()`
-wait 1 do
-  # alert "1 : #{b.smooth(10).rotate(44)}"
-  # alert "2 : #{grouped_object.smooth(33)}"
-  # alert "3 : #{b.smooth(1)}"
-  # grouped_object.smooth(33).width(9).color(:red)
-  # puts "passed 1"
-  wait 2 do
-    b.left(77)
-  end
+grouped_object.color(:blue)
+wait 3 do
+  # `console.clear()`
+  # grouped_object.rotate(333)
+  # puts  '------'
+  # grouped_object.left(33)
+  grouped_object.smooth(90).rotate(33)
 end
+# end
+
+# wait 2 do
+#
+# end
+
+# alert grouped_object.left(33).id
+# `console.clear()`
+# wait 1 do
+#   alert "1 : #{b.smooth(10).rotate(44)}"
+#   # alert "2 : #{grouped_object.smooth(33)}"
+#   # alert "3 : #{b.smooth(1)}"
+#   # grouped_object.smooth(33).width(9).color(:red)
+#   # puts "passed 1"
+#   wait 2 do
+#     b.left(77)
+#   end
+# end
 
 # wait 2 do
 #   grouped_object.rotate(33)

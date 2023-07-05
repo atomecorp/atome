@@ -105,9 +105,13 @@ Atome.new(
 )
 
 # We have to create a nil object so groups will be attach here
-Atome.new(
-  { element: { renderers: [:browser], id: :nil, type: :element ,attach: [:view], tag: { system: true } } }
-)
+# Atome.new(
+#   { element: { renderers: [:browser], id: :nil, type: :element ,attach: [:black_matter], tag: { system: true } } }
+# )
+#
+# Atome.new(
+#   { element: { renderers: [:browser], id: :groupon, type: :element ,attach: [:view], tag: { system: true } } }
+# )
 
 # init basic object for atome environment
 
