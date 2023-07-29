@@ -59,7 +59,16 @@ class Atome
   end
 
   def build_render(renderer_name, &method_proc)
-    new_render_engine(renderer_name, &method_proc)
+    # puts "==== >#{renderer_name}"
+
+    # if renderer_name.start_with?(:html)
+    #   puts "second condition to remove with finish : #{renderer_name}"
+    #
+    #   puts Universe.atome_list
+    # else
+      new_render_engine(renderer_name, &method_proc)
+    # end
+
   end
 
   def build_sanitizer(method_name, &method_proc)

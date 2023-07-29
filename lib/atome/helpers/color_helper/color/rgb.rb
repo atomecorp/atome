@@ -712,4 +712,4 @@ class << Color::RGB
     end
   end
 end
-require 'atome/helpers/color_helper/color/rgb/colors'
+require_relative  'rgb/colors'

@@ -1,0 +1,1 @@
+puts "hello from wasm_test file"

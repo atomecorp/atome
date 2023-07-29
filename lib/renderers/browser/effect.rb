@@ -18,6 +18,7 @@ generator.build_render(:browser_smooth) do |value|
   @browser_object.style['border-radius'] = format_params
 end
 
-generator.build_render(:browser_blur) do |value|
-  BrowserHelper.send("browser_blur_#{@browser_type}", @browser_object, value, @atome)
-end
+# generator.build_render(:browser_blur) do |value|
+#   # alert  "rendering : send('blur', #{value}\n#{self})"
+#   # BrowserHelper.send("browser_blur_#{@browser_type}", @browser_object, value, @atome)
+# end

@@ -140,13 +140,18 @@ class << Color
 
   alias normalize_16bit normalize_word
 end
-
-require 'atome/helpers/color_helper/color/rgb'
-require 'atome/helpers/color_helper/color/cmyk'
-require 'atome/helpers/color_helper/color/grayscale'
-require 'atome/helpers/color_helper/color/hsl'
-require 'atome/helpers/color_helper/color/yiq'
-require 'atome/helpers/color_helper/color/css'
+require_relative 'color/rgb'
+require_relative 'color/cmyk'
+require_relative 'color/grayscale'
+require_relative 'color/hsl'
+require_relative 'color/yiq'
+require_relative 'color/css'
+# require 'atome/helpers/color_helper/color/rgb'
+# require 'atome/helpers/color_helper/color/cmyk'
+# require 'atome/helpers/color_helper/color/grayscale'
+# require 'atome/helpers/color_helper/color/hsl'
+# require 'atome/helpers/color_helper/color/yiq'
+# require 'atome/helpers/color_helper/color/css'
 
 class << Color
   def const_missing(name)

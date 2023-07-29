@@ -33,18 +33,42 @@ task :test_browser do
   puts 'atome browser is running'
 end
 
+
 task :test_build_browser do
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
-
+  `cp ./vendor/source_files/opal/index.html ./vendor/assets/src/index.html`
   `rake build`
   `cd pkg; gem install atome --local`
   `cd test/test_app;atome update`
   `cd test/test_app;atome refresh`
   `cd test/test_app;atome update;atome run browser guard `
   # `open test/test_app/src/index.html`
-  puts 'atome browser is running'
+  puts 'atome browser is build and running'
+end
+
+task :test_build_wasm do
+  FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
+  FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
+  FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
+  `cp ./vendor/source_files/wasm/index.html ./vendor/assets/src/index.html`
+  `cp ./vendor/source_files/wasm/index.html ./test/test_app/src/index.html`
+
+  `curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `rm -f ./vendor/assets/src/wasm/ruby/ruby_browser.wasm`
+  `rm -f ./system_ruby_browser.wasm`
+  `mv 3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby system_ruby_browser.wasm`
+  `wasi-vfs pack system_ruby_browser.wasm --mapdir /lib::./lib/ --mapdir /src::./vendor/assets/src/medias/rubies --mapdir /usr::./3_2-wasm32-unknown-wasi-full-js/usr -o vendor/assets/src/wasm/ruby/ruby_browser.wasm`
+  `cp ./vendor/assets/src/wasm/ruby/ruby_browser.wasm ./test/test_app/src/wasm/ruby/ruby_browser.wasm`
+
+
+  `cd pkg; gem install atome --local`
+  # `cd test/test_app;atome update`
+  `cd test/test_app;atome refresh`
+  `cd test/test_app;atome run browser guard `
+  puts 'atome wasm is build and running'
 end
 
 task :test_build_osx do

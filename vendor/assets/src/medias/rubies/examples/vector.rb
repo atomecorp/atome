@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-# b=Atome.new(
-#   { shape: { renderers: [:browser], id: :the_shape, type: :shape, attach: [:view],
-#              left: 0, right: 0, top: 0, bottom: 0, width: 30, height: 30, overflow: :hidden, tag: {system: false}
-#   } })
-
 b=box({left: 300})
 b.drag(true)
 edition = <<~STR

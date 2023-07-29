@@ -6,7 +6,7 @@ class Atome
 
   # local server messaging
   def self.controller_sender(message)
-    return if $host == :browser
+    return if $host == :html
 
     json_msg = message.to_json
     atome_js.JS.controller_sender(json_msg)

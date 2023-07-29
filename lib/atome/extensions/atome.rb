@@ -18,6 +18,20 @@ class Object
       generator.build_option("post_render_#{params[:post]}", &bloc)
     elsif params.key?(:browser)
       generator.build_render("browser_#{params[:browser]}", &bloc)
+    elsif params.key?(:html)
+      if params[:exclusive]
+        render_method="html_#{params[:exclusive]}_#{params[:html]}"
+      # puts "=====> exclusive : #{render_method}"
+        generator.build_render(render_method, &bloc)
+        else
+          Universe.atome_list.each do |atome_type|
+            render_method="html_#{atome_type}_#{params[:html]}"
+            # puts "======> auto generated  : #{render_method}"
+            generator.build_render(render_method, &bloc)
+          end
+      end
+
+
     end
 
 
@@ -56,25 +70,8 @@ class Object
     grab(:view).matrix(params, &proc)
   end
 
-  # def method_missing(method, *args, &block)
-  #   args.each do |atome_found|
-  #     args.each do |arg|
-  #       default_parent = Essentials.default_params[method][:attach][0] # we get the first parents
-  #       # create_method_at_object_level(element)
-  #       atome_found = grab(default_parent).send(method, arg, &block)
-  #       # we force then return of atome found else its return an hash # TODO : we may find a cleaner solution
-  #       return atome_found
-  #     end
-  #   end
-  # end
-
-
 
   # #############commented batch methods
-  # def batch (atomes)
-  #   grab(:black_matter).batch(atomes)
-  # end
-  #
   # # the method below generate Atome method creation at Object level
   def atome_method_for_object(element)
 
@@ -83,16 +80,6 @@ class Object
       grab(default_parent).send(element, params, &user_proc)
     end
   end
-  #
-  # def atome_method_for_batch(element)
-  #   Batch.define_method element do |params, &user_proc|
-  #     dispatch(element, [params], &user_proc)
-  #   end
-  # end
-  # def particle_method_for_batch(element)
-  #   Batch.define_method element do |params, &user_proc|
-  #     dispatch(element, [params], &user_proc)
-  #   end
-  # end
+
 
 end

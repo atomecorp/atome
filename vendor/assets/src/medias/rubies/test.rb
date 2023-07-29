@@ -1,1 +1,1 @@
-box(center: true, color: :orange, smooth: 6)
+puts "hi from ruby wasm"

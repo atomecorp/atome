@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 my_video = Atome.new(
-  video: { renderers: [:browser], id: :video1, type: :video, attach: [:view],clones: [],
+  video: { renderers: [:browser], id: :video1, type: :video, attach: [:view],attached: [] ,clones: [],
            time: 33,  path: './medias/videos/superman.mp4', left: 333, top: 33, width: 777
   }
 ) do |params|
@@ -13,3 +13,5 @@ my_video.play(true)
 my_video.touch(true) do
   my_video.play(44)
 end
+
+

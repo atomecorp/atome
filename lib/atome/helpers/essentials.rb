@@ -14,21 +14,21 @@ module Essentials
 STR
   @default_params = {
     # Warning :  type must be define first
-    render_engines: [:browser],
+    render_engines: [:html, :browser, :inspect,:headless],
     # collector: { type: :element, attach: [:black_matter] },
-    image: { type: :image, attach: [:view] },
-    web: { type: :web, attach: [:view] },
-    video: { type: :video, attach: [:view] },
-    animation: { type: :animation,  attach: [:black_matter] },
-    element: { type: :element, renderers: [], attach: [:black_matter] },
+    image: { type: :image, attach: [:view], attached: [] },
+    web: { type: :web, attach: [:view], attached: []  },
+    video: { type: :video, attach: [:view], attached: []  },
+    animation: { type: :animation,  attach: [:black_matter], attached: []  },
+    element: { type: :element, renderers: [], attach: [:black_matter], attached: []  },
     matrix: { type: :shape, width: 99, height: 99,
-              attached: :matrix_color,
+              attached: [:matrix_color],
               left: 100, top: 100, clones: [], preset: :matrix, attach: [:view] },
     box: { type: :shape, width: 99, height: 99,
            attached: :box_color, attach: [:view],
            left: 100, top: 100, clones: [], preset: :box },
     vector: { type: :shape, width: 99, height: 99,
-           attach: [:view],
+           attach: [:view], attached: [] ,
            left: 100, top: 100, clones: [], preset: :vector , definition: corp},
     circle: { type: :shape, width: 99, height: 99, smooth: '100%',
               attached: :circle_color, attach: [:view],
@@ -39,9 +39,9 @@ STR
     text: { type: :text, visual: { size: 25 },
             attached: :text_color, attach: [:view],
             data: 'this is a text sample', width: 199, height: 33, clones: [] },
-    drm: { type: :drm, attach: [:black_matter] },
-    shadow: { type: :shadow, attach: [:black_matter] },
-    color: {  type: :color,attach: [:black_matter], red: 0, green: 0, blue: 0, alpha: 1  }
+    drm: { type: :drm, attach: [:black_matter], attached: []  },
+    shadow: { type: :shadow, attach: [:black_matter], attached: []  },
+    color: {  type: :color,attach: [:black_matter], red: 0, green: 0, blue: 0, alpha: 1, attached: []   }
   }
 
   def self.default_params

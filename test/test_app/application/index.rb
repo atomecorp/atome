@@ -77,6 +77,7 @@
 # require 'src/medias/rubies/examples/group.rb'
 # require 'src/medias/rubies/examples/detached.rb'
 # require 'src/medias/rubies/examples/blur.rb'
+require 'src/medias/rubies/new_html_renderer.rb'
 # ################################# Demos ##################
 # require 'src/medias/rubies/demos.rb'
 # require 'src/medias/rubies/examples/universe.rb'
@@ -576,77 +577,79 @@
 #
 ########### browser_less rendering############
 
-class Atome
-  particle_list_found = Universe.particle_list.keys
-  particle_list_found.each do |the_particle|
-    define_method("inspect_#{the_particle}") do |params, &bloc|
-      puts "=> inspect element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
-    end
-  end
-end
-
-class HTML
-  def initialize(id)
-    @html_object = `document.getElementById(#{id})`
-  end
-
-  def style(property, value)
-    `#{@html_object}.style[#{property}] = #{value}` if property
-    self
-  end
-
-  def filter= values
-    property = values[0]
-    value = values[1]
-    `#{@html_object}.style.filter = #{property}+'('+#{value}+')'`
-  end
-end
-
-class Atome
-  def html
-    @html_accessor = HTML.new(id)
-  end
-
-end
-
-def html_test(val)
-  html.style.filter = "blur", "#{val / 10}px"
-  html.style(:left, "#{val}px")
-end
-
-a = box
-a.html_test(300)
-
-## group check
-# box(width: 33, height: 66, color: :cyan, top: 0,left: 555, id: :cyan_box)
-# box({id: :titi, drag: true})
-# c = circle({ id: :toto, renderers: [:inspect, :browser] })
-# # puts '----------'
-# c.color({ blue: 1 })
-# # puts '++++++++++'
-# # # text(:data)
-# # # `console.clear()`
-# c.text({ data: :hello, left: 120 })
+# class Atome
+#   particle_list_found = Universe.particle_list.keys
+#   particle_list_found.each do |the_particle|
+#     define_method("inspect_#{the_particle}") do |params, &bloc|
+#       puts "=> inspect element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
+#     end
+#   end
+# end
 #
-# g = group([:toto, :cyan_box])
-# # alert g
-# g.rotate(33)
-# g.attach(:titi)
-# g.color(:red)
-# g.shape({id: :the_shape, left: 333, color: :green})
-# g.text(:hi)
-# # c.atome.delete(:shapes)
-# # alert c
-# # alert Universe.user_atomes
-# # g.type(:image)
+# class HTML
+#   def initialize(id)
+#     @html_object = `document.getElementById(#{id})`
+#   end
 #
-# # g.box
+#   def style(property, value)
+#     `#{@html_object}.style[#{property}] = #{value}` if property
+#     self
+#   end
 #
-# # b=box({renderers: [:browser], id: :titi})
-# # t=text({data: :hello , id: :tutu})
-# # g=group([:toto,:titi])
-
-
+#   def filter= values
+#     property = values[0]
+#     value = values[1]
+#     `#{@html_object}.style.filter = #{property}+'('+#{value}+')'`
+#   end
+# end
+#
+# class Atome
+#   def html
+#     @html_accessor = HTML.new(id)
+#   end
+#
+# end
+#
+# def html_test(val)
+#   html.style.filter = "blur", "#{val / 10}px"
+#   html.style(:left, "#{val}px")
+# end
+#
+# a = box
+# # a.blur(6)
+#
+# # wait 5 do
+#   a.html_test(300)
+# # end
+#
+# ## group check
+# # box(width: 33, height: 66, color: :cyan, top: 0,left: 555, id: :cyan_box)
+# # box({id: :titi, drag: true})
+# # c = circle({ id: :toto, renderers: [:inspect, :browser] })
+# # # puts '----------'
+# # c.color({ blue: 1 })
+# # # puts '++++++++++'
+# # # # text(:data)
+# # # # `console.clear()`
+# # c.text({ data: :hello, left: 120 })
+# #
+# # g = group([:toto, :cyan_box])
+# # # alert g
+# # g.rotate(33)
+# # g.attach(:titi)
+# # g.color(:red)
+# # g.shape({id: :the_shape, left: 333, color: :green})
+# # g.text(:hi)
+# # # c.atome.delete(:shapes)
+# # # alert c
+# # # alert Universe.user_atomes
+# # # g.type(:image)
+# #
+# # # g.box
+# #
+# # # b=box({renderers: [:browser], id: :titi})
+# # # t=text({data: :hello , id: :tutu})
+# # # g=group([:toto,:titi])
 
 
 

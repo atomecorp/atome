@@ -25,26 +25,45 @@ require 'renderers/browser/helpers/text_helper'
 require 'renderers/browser/helpers/video_helper'
 require 'renderers/browser/helpers/web_helper'
 
-
-
-
-class Atome
-  attr_accessor :browser_object
-
-  def to_px
-    id_found = real_atome[:id]
-    property_found=property
-    value_get = ''
-    `
-      div = document.getElementById(#{id_found});
-      var style = window.getComputedStyle(div);
-      var original_value = style.getPropertyValue(#{property_found});
-      #{value_get}= parseInt(original_value);
-    `
-    value_get
-  end
-end
-
-def atome_js
-  `atomeJS`
-end
+# class HTML
+#   def initialize(id)
+#     @html_object = `document.getElementById(#{id})`
+#   end
+#
+#   def style(property, value)
+#     `#{@html_object}.style[#{property}] = #{value}` if property
+#     self
+#   end
+#
+#   def filter= values
+#     property = values[0]
+#     value = values[1]
+#     `#{@html_object}.style.filter = #{property}+'('+#{value}+')'`
+#   end
+# end
+#
+#
+# class Atome
+#   attr_accessor :browser_object
+#
+#   def html
+#     @html_accessor = HTML.new(id)
+#   end
+#
+#   def to_px
+#     id_found = real_atome[:id]
+#     property_found=property
+#     value_get = ''
+#     `
+#       div = document.getElementById(#{id_found});
+#       var style = window.getComputedStyle(div);
+#       var original_value = style.getPropertyValue(#{property_found});
+#       #{value_get}= parseInt(original_value);
+#     `
+#     value_get
+#   end
+# end
+#
+# def atome_js
+#   `atomeJS`
+# end

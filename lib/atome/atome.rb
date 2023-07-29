@@ -12,18 +12,29 @@ class Atome
   private
 
   def initialize(atomes = {}, &atomes_proc)
+
+    # @default_elements = {attach: [], attached: []} # now attach and attached can push into the array without testing
+
+    # if an array exist
     atomes.each_value do |elements|
 
       # the instance variable below contain the id all any atomes that need to be informed when changes occurs
       @broadcast = {}
+
       # now we store the proc in a an atome's property called :bloc
       elements[:code] = atomes_proc if atomes_proc
-
+      # puts "1 : #{elements}"
+      # @atome = @default_elements.merge(elements)
+      # @atome.merge(elements)
+      # puts "2 : #{@atome}"
       @atome = elements
+
+      # @atome[:attach]= [] unless @atome[:attach]
+      # @atome[:attached]= [] unless @atome[:attached]
       # we initiate the rendering suing set_type method,
       # eg : for for browser we will call :browser_type generate method in identity.rb file
       collapse
-      # end
+
     end
 
   end
@@ -64,29 +75,6 @@ class Atome
       run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
 
-      # if type == :group
-      #   params[:attach] = data
-      #   data.each do |atome_found|
-      #     params[:renderers].each_with_index do |renderer_found, index|
-      #       # As atome applied to group inherit from their renderers we have to remove it and replace it
-      #       if renderer_found == :group && params[:type] != :group
-      #         # so get get the renderers of the mast used parents
-      #         renderer_found = grab(params[:attach].last).renderers
-      #         params[:renderers] = renderer_found
-      #       end
-      #       params[:id] = "#{params[:id]}_#{index}"
-      #       # FIXME : when multiple  attach, it should be able to be displayed in every attached atome
-      #       params[:attach] = [atome_found]
-      #
-      #       grab(atome_found).send(element, params, &user_proc)
-      #     end
-      #   end
-      #
-      # else
-      #
-      #
-      #   send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
-      # end
     else
 
       group(@atome["#{element}s"])
@@ -119,7 +107,6 @@ class Atome
 
   def run_optional_proc(proc_name, atome = self, params, &user_proc)
     option_found = Universe.get_optional_method(proc_name)
-
     atome.instance_exec(params, user_proc, atome, &option_found) if option_found.is_a?(Proc)
   end
 
@@ -146,7 +133,7 @@ class Atome
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
     run_optional_proc("pre_render_#{element}", self, params, &user_proc)
-    rendering(element, params, &user_proc) if render
+    render(element, params, &user_proc) if render
     run_optional_proc("post_render_#{element}", self, params, &user_proc)
     broadcasting(element)
     store_value(element) if store

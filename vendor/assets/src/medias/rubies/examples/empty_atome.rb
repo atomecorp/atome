@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-a= Atome.new()
+a= Atome.new({ attach: [], attached: [] })
 t=template()
 t2=template({})
 

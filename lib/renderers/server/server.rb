@@ -7,4 +7,4 @@
 # require 'renderers/server/material'
 # require 'renderers/server/spatial'
 # require 'renderers/server/atome'
-require 'renderers/server/utility'
+require_relative 'utility'

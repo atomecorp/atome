@@ -2,13 +2,13 @@
 
 my_text = Atome.new(
   text: { renderers: [:browser], id: :text1, type: :text, attach: [:view], visual: { size: 33 },
-          data: 'My first text!', left: 120, top: 33, width: 199, height: 33,
+          data: 'My first text!', left: 120, top: 33, width: 199, height: 33,attached: [],
 
   }
 )
 
 Atome.new(color: { renderers: [:browser], id: :c31, type: :color, attach: [:text1],
-                   red: 0.6, green: 0.6, blue: 0.6, alpha: 1 })
+                   red: 0.6, green: 0.6, blue: 0.6, alpha: 1 ,attached: []})
 
 wait 1 do
   my_text.data(:kool)
@@ -18,14 +18,14 @@ text({ id: :the_text, left: 0 })
 
 text2=Atome.new(
   text: { renderers: [:browser], id: :text2, type: :text, attach: [:view], visual: { size: 33 },
-          data: 'My second text!', left: 333, top: 33, width: 199, height: 33,
+          data: 'My second text!', left: 333, top: 33, width: 199, height: 33,attached: [],
 
   }
 )
 
 
 
-Atome.new(color: { renderers: [:browser], id: :c33, type: :color, attach: [:text2],
+Atome.new(color: { renderers: [:browser], id: :c33, type: :color, attach: [:text2],attached: [],
                    red: 0.6, green: 0.6, blue: 0.1, alpha: 1 })
 wait 2 do
   text2.data(:ok)

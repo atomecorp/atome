@@ -13,7 +13,7 @@ class Html
   def initialize
     html = `document.createElement("div")`
     `document.body.appendChild(#{html})`
-    `document.body.appendChild(#{html})`
+    # `document.body.appendChild(#{html})`
     @html = html
   end
 
@@ -30,7 +30,7 @@ class Html
   end
   def append_shape(parent)
     parent_found = `document.getElementById(#{parent})`
-    parent_found
+    # parent_found
     `#{parent_found}.appendChild(#{@html})`
   end
   def append_color(parent)

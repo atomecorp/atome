@@ -18,14 +18,18 @@ module BrowserHelper
   end
 
   def self.browser_blur_div(_browser_object, value, _atome)
-    # alert _browser_object
+    alert _"we have to pass an atome instead of : #{_browser_object.class}"
     # browser_object.style[:filter] = "blur(#{value}px)"
-    `
-var  element= document.getElementById(#{_atome[:id]});
+#     `
+# var  element= document.getElementById(#{_atome[:id]});
+#
+# // Patch to correct safari bug below
+# element.style.willChange = 'filter';
+# element.style.filter = 'blur('+#{value}+'px)';
+# `
+    html.style(:willChange, :filter)
+    html.style.filter = :blur, value
 
-// Patch to correct safari bug below
-element.style.willChange = 'filter';
-element.style.filter = 'blur('+#{value}+'px)';
-`
+
   end
 end

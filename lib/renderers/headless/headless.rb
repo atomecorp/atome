@@ -7,4 +7,4 @@
 # require 'renderers/headless/material'
 # require 'renderers/headless/spatial'
 # require 'renderers/headless/atome'
-require 'renderers/headless/utility'
+require_relative 'utility'

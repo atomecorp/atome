@@ -16,7 +16,7 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     unless tag && tag[:persistent]
       # now we detach the atome from it's parent
       # now we init rendering
-      rendering(:delete, params, &user_proc)
+      render(:delete, params, &user_proc)
       # the machine delete the current atome from the universe
       id_found = @atome[:id]
       Universe.delete(id_found)

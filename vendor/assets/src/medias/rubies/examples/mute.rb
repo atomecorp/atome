@@ -2,7 +2,7 @@
 
 my_video2 = Atome.new(
   video: { renderers: [:browser], id: :video9, type: :video, attach: [:view], path: './medias/videos/superman.mp4',
-           left: 666, top: 333, width: 199, height: 99,
+           left: 666, top: 333, width: 199, height: 99,attached: []
   }) do |params|
   puts "2- video callback time is  #{params}, id is : #{id}"
 end

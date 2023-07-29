@@ -1,0 +1,12 @@
+rm ./vendor/assets/src/wasm/ruby/ruby_browser.wasm
+
+curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz
+tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz
+
+mv 3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby system_ruby_browser.wasm
+
+wasi-vfs pack system_ruby_browser.wasm --mapdir /lib::./lib/ --mapdir /src::./vendor/assets/src/medias/rubies --mapdir /usr::./3_2-wasm32-unknown-wasi-full-js/usr -o vendor/assets/src/wasm/ruby/ruby_browser.wasm
+
+
+
+cp ./vendor/assets/src/wasm/ruby/ruby_browser.wasm ./test/test_app/src/wasm/ruby/ruby_browser.wasm
