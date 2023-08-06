@@ -2,7 +2,7 @@
 
 # Rendering method here
 class Atome
-  private
+  #private
 
   # def method_missing(name, *args)
   #   puts "atome method missing : #{name},params are #{args}"
@@ -11,15 +11,15 @@ class Atome
   def render(element, params, &user_proc)
     render_engines = @atome[:renderers]
     render_engines.each do |render_engine|
-      # puts  "rendering : send('#{render_engine}_#{self.type}_#{element}', #{params}\n#{self})"
+      # puts  "rendering : #{render_engine}_#{self.type}_#{element} :  #{params}"
       # send("#{render_engine}_#{self.type}_#{element}", params, &user_proc)
-      if render_engine == :html
-        puts "Temporary condition : #{render_engine}_#{self.type}_#{element}, #{params}"
+      # if render_engine == :html
+      #   puts "RENDER Temporary condition : #{render_engine}_#{self.type}_#{element}, #{params}"
         send("#{render_engine}_#{self.type}_#{element}", params, &user_proc)
-      else
-        puts "element : #{element}"
-        send("#{render_engine}_#{element}", params, &user_proc)
-      end
+      # else
+        # puts "element : #{element}"
+        # send("#{render_engine}_#{element}", params, &user_proc)
+      # end
     end
   end
 end

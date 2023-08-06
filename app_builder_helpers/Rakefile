@@ -9,6 +9,7 @@ require 'parser'
 # require 'ruby2js'
 require 'uglifier'
 
+
 Opal.append_path 'app'
 
 def build_browser_content
@@ -103,16 +104,82 @@ def build_opal_parser(user_project_path)
     f.puts parser_content
   end
 end
+################### treatment
 
+def modify_and_copy_file(source_path, destination_path,source_code)
+  # ##################
+  file_content = File.read(source_path)
+  # cleaned_bytes = file_content.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+  # cleaned_string = cleaned_bytes.force_encoding('UTF-8')
+  # cleaned_lines = cleaned_string.lines.map { |line| line.gsub(/\s+/, ' ') }
+  # modified_content=cleaned_lines.join("\n")
+  # modified_content=modified_content.gsub("require './", "require 'temp/opal/").gsub('require "./', 'require "temp/opal/')
+  # FileUtils.mkdir(File.dirname(destination_path))
+  modified_content=file_content.gsub('     ',' ').gsub('    ',' ').gsub('   ',' ').gsub('  ',' ').gsub("require './", "require 'temp/opal/").gsub('require "./', 'require "temp/opal/')
+  File.write(destination_path, modified_content)
+  ##################
+
+
+  # File.open(source_path, "r") do |f|
+  #   lignes = []
+  #
+  #   f.each_line do |ligne|
+  #
+  #     remove_duplicated_spaces(ligne)
+  #     # while  ligne.include?(" ")
+  #     #  ligne.gsub('  ',' ')
+  #     # end
+  #     lignes << ligne
+  #   end
+  #   lignes=lignes.join("\n")
+  #   modified_content=lignes.gsub("require './", "require 'temp/opal/").gsub('require "./', 'require "temp/opal/')
+  #
+  #   # puts lignes.inspect
+  #   File.write(destination_path, modified_content)
+  # end
+
+
+end
+def process_directory(source_dir, destination_dir, source_code)
+  Dir.entries(source_dir).each do |entry|
+    next if entry == '.' || entry == '..'
+
+    source_path = File.join(source_dir, entry)
+    destination_path = File.join(destination_dir, entry)
+
+    if File.directory?(source_path)
+      Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
+      process_directory(source_path, destination_path,source_code)
+    elsif File.file?(source_path)
+      modify_and_copy_file(source_path, destination_path,source_code)
+    end
+  end
+end
 def build_user_code(user_project_path, source_code)
+
+  ######### tests
+  # test_file="users/jeezs/albercombrie.rb"
+  # File.open(test_file, 'w') do |f|
+  #   f.puts "puts '<<<<<<albercombrication!!!>>>>>>'"
+  # end
+
+  ####### tests
   application_js = "#{user_project_path}/src/js/application.js"
   builder = Opal::Builder.new
   builder.append_paths("#{user_project_path}/")
 
  builder.build("#{source_code}/src/utilities/mode.rb").to_s
 
+  source_directory = "#{source_code}/application"
+
+  destination_directory = "#{source_code}/temp/opal"
+
+  process_directory(source_directory, destination_directory, source_code)
+
+
+
   # aui = builder.build("#{source_code}/aui.rb").to_s
-  application_content = builder.build("#{source_code}/application/index.rb").to_s
+  application_content = builder.build("#{source_code}/temp/opal/index.rb").to_s
 
   # full_app=aui+"\n"+system_infos+"\n"+application_content
   File.open(application_js, 'w') do |f|

@@ -73,7 +73,7 @@ def attachment_common(children_ids,parents_ids, &user_proc)
   parents_ids.each do |parent_id|
     # parent=grab(parent_id)
     children_ids.each do |child_id|
-      puts "=====> child to add #{@atome[:attached]}"
+      puts "=====> parent : #{parent_id}, I am : #{self.id}, child to add #{child_id}, attached : #{@atome[:attached]}"
       child=grab(child_id)
       child.render(:attach, parent_id, &user_proc) if child
     end

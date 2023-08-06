@@ -100,9 +100,32 @@ class Universe
       platform
     end
 
+    def platform_type
+      case RUBY_PLATFORM
+      when /win/i
+        "Windows"
+      when /darwin/i
+        "macOS"
+      when /linux/i
+        "Linux"
+      when /unix/i
+        "Unix"
+      else
+        "Plate-forme inconnue"
+      end
+    end
+
     def current_machine
       platform = RUBY_PLATFORM.downcase
-      output = `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
+      if platform == :opal
+        output = `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
+      elsif platform == 'wasm32-wasi'
+        output = 'ifconfig'
+      elsif platform_type == :windows
+        output = 'ipconfig'
+      else
+        output = 'ifconfig'
+      end
       current_machine_decision(platform, output)
       # TODO: check the code above and create a sensible identity
     end

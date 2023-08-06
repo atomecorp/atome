@@ -1,1 +1,1 @@
-puts "required file is run"
+puts "required test file is run"

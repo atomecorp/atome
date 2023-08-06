@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="En">
 <head>
-    <!--    <link rel="icon" type="image/x-icon" href="./favicon.ico">-->
     <link rel="icon" type="image/x-icon"
           href="https://github.com/atomecorp/atome/blob/master/vendor/assets/src/favicon.ico">
 
@@ -12,24 +11,24 @@
     <meta name="msapplication-tap-highlight" content="no">
     <link type="text/css" rel="stylesheet" href="css/style.css">
     <style id="atomic_style"></style>
-    <script src="js/third_parties/browser.script.iife.min.js"></script>
-    <script src="js/third_parties/browser.umd.js"></script>
-    <script type="text/javascript" src="js/third_parties/interact.min.js"></script>
-    <script type="text/javascript" src="js/third_parties/popmotion.min.js"></script>
-    <script type="text/javascript" src="js/third_parties/sortable.min.js"></script>
-    <script type="text/javascript" src="js/third_parties/wad.min.js"></script>
+<!--    <script src="js/third_parties/browser.script.iife.min.js"></script>-->
+<!--    <script src="js/third_parties/browser.umd.js"></script>-->
+    <script type="text/javascript" src="js/third_parties/interact.min.js" defer></script>
+    <script type="text/javascript" src="js/third_parties/popmotion.min.js" defer></script>
+    <script type="text/javascript" src="js/third_parties/sortable.min.js" defer></script>
+    <script type="text/javascript" src="js/third_parties/wad.min.js" defer></script>
     <!--    <script type="text/javascript" src="js/third_parties/tone.min.js"></script>-->
     <!--    <script type="text/javascript" src="js/third_parties/xsound.min.js"></script>-->
-    <script type="text/javascript" src="js/third_parties/sha256.min.js"></script>
-    <script type="text/javascript" src="js/third_parties/ping.min.js"></script>
+    <script type="text/javascript" src="js/third_parties/sha256.min.js" defer></script>
+    <script type="text/javascript" src="js/third_parties/ping.min.js" defer></script>
     <!--    <script src='js/third_parties/w3color.js'></script>-->
-<!--    <script src='js/opal/opal.js'></script>-->
-<!--    <script src='js/opal/opal_browser.js'></script>-->
+    <script src='js/opal/opal.js' defer></script>
+    <script src='js/opal/opal_browser.js' defer></script>
     <!--    TODO: we line below is commented when using stand alone mode and loaded on demand when using server mode-->
-    <script type="text/javascript" src="js/third_parties/fabric.min.js"></script>
+    <script type="text/javascript" src="js/third_parties/fabric.min.js" defer></script>
     <!--    <script type="text/javascript" src="js/third_parties/three.min.js"></script>-->
-<!--    <script src='js/opal/opal_parser.js'></script>-->
-<!--    <script src='js/aui.js'></script>-->
+    <script src='js/opal/opal_parser.js' defer></script>
+    <script src='js/aui.js' defer></script>
 
     <script src='js/atome/atome_helpers/atome_animate.js' defer></script>
     <script src='js/atome/atome_helpers/atome_communication.js' defer></script>
@@ -41,85 +40,16 @@
     <script src='js/atome/atome_helpers/atome_sort.js' defer></script>
     <script src='js/atome/atome_helpers/atome_time.js' defer></script>
     <script src='js/atome/atome_helpers/atome_video.js' defer></script>
-<!--    <script src='js/atome/atome.js' defer></script>-->
-<!--    <script src='js/atome/kernel.js' defer></script>-->
-<!--    <script src='js/infos.js'></script>-->
-<!--    <script src='js/opal/atome_opal_extensions.js'></script>-->
+    <script src='js/atome/atome.js' defer></script>
+    <script src='js/atome/kernel.js' defer></script>
+    <script src='js/infos.js' defer></script>
+    <script src='js/opal/atome_opal_extensions.js' defer></script>
     <title>atome</title>
 
 </head>
 <body id='user_view' class='atome' oncontextmenu="return false;">
+©atome 2023
 </body>
-<!--<script src='js/application.js' defer></script>-->
-<script>
-    function diamond(val) {
-        msg_buildr=`super ${val} works !!!`;
-        var full_msg=`puts ' js string inter-operation is now possible ${msg_buildr}'`;
-        rubyVM.eval(full_msg);
-        var ruby_method_call=`hello_ruby ' js method calling is now possible ${msg_buildr}'`;
-        rubyVM.eval(ruby_method_call);
-    }
-</script>
+<script src='js/application.js' defer></script>
 
-<!--<script type="text/ruby" src="src/test.rb"></script>-->
-<script type="text/ruby">
-	  require 'js'
-
-
-	  JS.eval("return 1 + 2") # => 3
-	  JS.global[:document].write("Hello, world!")
-	  div = JS.global[:document].createElement("div")
-	  div[:innerText] = "click me"
-	  JS.global[:document][:body].appendChild(div)
-	  div[:style][:backgroundColor] = "orange"
-	  div[:style][:color] = "white"
-	  div.addEventListener("click") do |event|
-		puts event          # => # [object MouseEvent]
-		puts event[:detail] # => 1
-		div[:innerText] = "clicked!#{event[:detail]}"
-	  end
-	  ######################
-	  def hello_ruby(val=:poil)
-		  puts "message from hello_ruby method: #{val} !!"
-	  end
-	  var2=JS.eval("var toto= 'big jeezs'; return toto" )
-	  JS.eval("var toto= 'big jeezs';rubyVM.eval('hello_ruby(\"#{var2}\")')");
-	  JS.eval("var toto= 'big jeezs';rubyVM.eval('hello_ruby(\"jeezs\")')");
-	  JS.eval("var result='hello_ruby(\"Gigantic jeezs\")';rubyVM.eval(result)");
-	  JS.eval("diamond('ruby method call')");
-	</script>
-<script>
-    const { DefaultRubyVM } = window["ruby-wasm-wasi"];
-    const main = async () => {
-        // Fetch and instantiate WebAssembly binary
-        const response = await fetch(
-            //      Tips: Replace the binary with debug info if you want symbolicated stack trace.
-            //      (only nightly release for now)
-            //      "https://cdn.jsdelivr.net/npm/ruby-3_2-wasm-wasi@next/dist/ruby.debug+stdlib.wasm"
-            "./wasm/ruby/ruby_browser.wasm"
-        );
-        const buffer = await response.arrayBuffer();
-        const module = await WebAssembly.compile(buffer);
-        const { vm } = await DefaultRubyVM(module);
-
-        vm.printVersion();
-        vm.eval(`
-
-				puts '.........'
-					#puts Dir.entries("./lib")
-					#puts Dir.entries("./lib/atome_relative")
-					 #puts File.read("/lib/the_poil.rb")
-
-require_relative "/lib/atome_relative"
-					#require './src/test'
-			#puts Dir.entries("./lib/atome_relative")
-#puts File.read("./src/test.rb")
-		# puts File.read("/lib/atome.rb")
-		  puts '.........'
-		  # require './src/medias/rubies/test'
-			  `);
-    };
-
-    main();
-</script>
 </html>

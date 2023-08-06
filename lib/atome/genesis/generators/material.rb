@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-# new({ particle: :red }) do
-#   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
-#   self
-# end
-# new({ particle: :green }) do
-#   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
-#   self
-# end
-# new({ particle: :blue }) do
-#   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
-#   self
-# end
-# new({ particle: :alpha }) do
-#   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
-#   self
-# end
+new({ particle: :red }) do
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
+end
+new({ particle: :green }) do
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
+end
+new({ particle: :blue }) do
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
+end
+new({ particle: :alpha }) do
+  # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
+  self
+end
 new({ particle: :diffusion }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
