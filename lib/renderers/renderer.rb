@@ -10,6 +10,7 @@ class Atome
 
   def render(element, params, &user_proc)
     render_engines = @atome[:renderers]
+    puts "render_engines: #{render_engines}"
     render_engines.each do |render_engine|
       # puts  "rendering : #{render_engine}_#{self.type}_#{element} :  #{params}"
       # send("#{render_engine}_#{self.type}_#{element}", params, &user_proc)

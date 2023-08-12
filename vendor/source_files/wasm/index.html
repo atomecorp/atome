@@ -68,6 +68,7 @@
             vm.printVersion();
             vm.eval(`
 require 'js'
+require   "/lib/platform_specific/wasm/atome_wasm_extensions"
 require "/lib/atome_relative"
 require "./index"
 			  `);
@@ -80,5 +81,15 @@ require "./index"
    setTimeout(myStartFunction, 10);
 
 </script>
+<script  type="text/ruby" src="client/index.rb" ></script>
 
+
+
+<script>
+
+    // const { RubyVM2 } = window["ruby-wasm-wasi"];
+    // var result='hello_ruby(\"Gigantic jeezs\")';
+    // DefaultRubyVM.eval(result)
+
+</script>
 </html>

@@ -12,26 +12,26 @@ require 'uglifier'
 
 Opal.append_path 'app'
 
-def build_browser_content
-  Opal::Builder.build('../lib/renderers/browser/opal_browser.rb').to_s
-end
+# def build_browser_content
+#   Opal::Builder.build('../lib/platform_specific/browser/opal_browser.rb').to_s
+# end
 
 def build_opal_content
-  Opal::Builder.build('../lib/renderers/opal/opal.rb').to_s
+  Opal::Builder.build('../lib/platform_specific/opal/opal.rb').to_s
 end
 
-def build_opal_browser(user_project_path)
-  opal_directory = "#{user_project_path}/src/js/opal"
-  browser_js = "#{opal_directory}/opal_browser.js"
-  Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
-
-  File.new browser_js, 'w'
-  browser_content = build_browser_content
-
-  File.open(browser_js, 'w') do |f|
-    f.puts browser_content
-  end
-end
+# def build_opal_browser(user_project_path)
+#   opal_directory = "#{user_project_path}/src/js/opal"
+#   browser_js = "#{opal_directory}/opal_browser.js"
+#   Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
+#
+#   File.new browser_js, 'w'
+#   browser_content = build_browser_content
+#
+#   File.open(browser_js, 'w') do |f|
+#     f.puts browser_content
+#   end
+# end
 
 def build_opal(user_project_path)
   opal_directory = "#{user_project_path}/src/js/opal"
@@ -89,8 +89,8 @@ def build_opal_extensions(user_project_path, gem_location)
   extensions_js = "#{opal_directory}/atome_opal_extensions.js"
   File.new extensions_js, 'w'
   builder = Opal::Builder.new
-  builder.append_paths("#{gem_location}/../lib/renderers/opal/")
-  extensions_content = builder.build("#{gem_location}/../lib/renderers/opal/atome_opal_extensions.rb").to_s
+  builder.append_paths("#{gem_location}/../lib/platform_specific/opal/")
+  extensions_content = builder.build("#{gem_location}/../lib/platform_specific/opal/atome_opal_extensions.rb").to_s
   File.open(extensions_js, 'w') do |f|
     f.puts extensions_content
   end
@@ -99,7 +99,7 @@ end
 def build_opal_parser(user_project_path)
   parser_js = "#{user_project_path}/src/js/opal/opal_parser.js"
   File.new parser_js, 'w'
-  parser_content = Opal::Builder.build('../lib/renderers/opal/opal_parser.rb').to_s
+  parser_content = Opal::Builder.build('../lib/platform_specific/opal/opal_parser.rb').to_s
   File.open(parser_js, 'w') do |f|
     f.puts parser_content
   end
@@ -337,7 +337,7 @@ def build_libraries(user_project_path, gem_location)
   build_aui(user_project_path)
   build_atome_kernel(user_project_path, gem_location)
   build_opal(user_project_path)
-  build_opal_browser(user_project_path)
+  # build_opal_browser(user_project_path)
   build_opal_parser(user_project_path)
   build_opal_extensions(user_project_path, gem_location)
 end

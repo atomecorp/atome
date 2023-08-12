@@ -77,7 +77,7 @@ task :test_build_wasm do
   # - 3_2-wasm32-unknown-wasi-full-js
   # and finally UNCOMMENT the lines  below
 
-  `curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  # `curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv 3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby system_ruby_browser.wasm`
 
