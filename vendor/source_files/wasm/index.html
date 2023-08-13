@@ -13,7 +13,7 @@
     <link type="text/css" rel="stylesheet" href="css/style.css">
     <style id="atomic_style"></style>
     <script src="js/third_parties/browser.script.iife.min.js" defer></script>
-    <script src="js/third_parties/browser.umd.js" defer></script>
+    <!--    <script src="js/third_parties/browser.umd.js" defer></script>-->
     <script type="text/javascript" src="js/third_parties/interact.min.js" defer></script>
     <script type="text/javascript" src="js/third_parties/popmotion.min.js" defer></script>
     <script type="text/javascript" src="js/third_parties/sortable.min.js" defer></script>
@@ -44,52 +44,59 @@
 ©atome 2023
 </body>
 
-<script defer>
+<!--<script defer>-->
 
-    function myStartFunction() {
-        ///////////
-        const { DefaultRubyVM } = window["ruby-wasm-wasi"];
-        function diamond(val) {
-            msg_buildr=`super ${val} works !!!`;
-            var full_msg=`puts ' js string inter-operation is now possible ${msg_buildr}'`;
-            rubyVM.eval(full_msg);
-            var ruby_method_call=`hello_ruby' js method calling is now possible ${msg_buildr}'`;
-            rubyVM.eval(ruby_method_call);
-        }
+<!--    function myStartFunction() {-->
+<!--        ///////////-->
+<!--        const { DefaultRubyVM } = window["ruby-wasm-wasi"];-->
+<!--        function diamond(val) {-->
+<!--            msg_buildr=`super ${val} works !!!`;-->
+<!--            var full_msg=`puts ' js string inter-operation is now possible ${msg_buildr}'`;-->
+<!--            rubyVM.eval(full_msg);-->
+<!--            var ruby_method_call=`hello_ruby' js method calling is now possible ${msg_buildr}'`;-->
+<!--            rubyVM.eval(ruby_method_call);-->
+<!--        }-->
 
-        const main = async () => {
-            const response = await fetch(
-                "./wasm/ruby/ruby_browser.wasm"
-            );
-            const buffer = await response.arrayBuffer();
-            const module = await WebAssembly.compile(buffer);
-            const { vm } = await DefaultRubyVM(module);
+<!--        const main = async () => {-->
+<!--            const response = await fetch(-->
+<!--                "./wasm/ruby/ruby_browser.wasm"-->
+<!--            );-->
+<!--            const buffer = await response.arrayBuffer();-->
+<!--            const module = await WebAssembly.compile(buffer);-->
+<!--            const { vm } = await DefaultRubyVM(module);-->
 
-            vm.printVersion();
-            vm.eval(`
-require 'js'
-require   "/lib/platform_specific/wasm/atome_wasm_extensions"
-require "/lib/atome_relative"
-require "./index"
-			  `);
+<!--            vm.printVersion();-->
+<!--            vm.eval(`-->
+<!--require 'js'-->
+<!--require   "/lib/platform_specific/wasm/atome_wasm_extensions"-->
+<!--require "/lib/atome_relative"-->
+<!--require "./index"-->
+<!--			  `);-->
 
-        };
+<!--        };-->
 
-        main();
-        ///////////
-    }
-   setTimeout(myStartFunction, 10);
+<!--        main();-->
+<!--        ///////////-->
+<!--    }-->
+<!--   setTimeout(myStartFunction, 10);-->
 
-</script>
-<script  type="text/ruby" src="client/index.rb" ></script>
+<!--</script>-->
+<!--&lt;!&ndash;<script  type="text/ruby" src="client/index.rb" ></script>&ndash;&gt;-->
 
 
+<!--<script>-->
 
-<script>
+<!--    // const { RubyVM2 } = window["ruby-wasm-wasi"];-->
+<!--    // var result='hello_ruby(\"Gigantic jeezs\")';-->
+<!--    // DefaultRubyVM.eval(result)-->
 
-    // const { RubyVM2 } = window["ruby-wasm-wasi"];
-    // var result='hello_ruby(\"Gigantic jeezs\")';
-    // DefaultRubyVM.eval(result)
+<!--</script>-->
 
+
+<script type="text/ruby">
+    require 'js'
+  require   '/lib/platform_specific/wasm/atome_wasm_extensions'
+require '/lib/atome_relative'
+require './index'
 </script>
 </html>
