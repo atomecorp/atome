@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 generator = Genesis.generator
 
 generator.build_render(:html_shape) do

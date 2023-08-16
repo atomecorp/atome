@@ -1,15 +1,21 @@
-function atome_js_eval(val){
-    // eval(val);
+// function atome_js_eval(val){
+//     // eval(val);
+//
+//     var base = "alert('kool')";
+//    // var cleanSstr= val.toString()
+//
+//
+//
+//     if (base === val) {
+//         console.log("Les chaînes sont égales.");
+//     } else {
+//         console.log("Les chaînes ne sont pas égales.");
+//     }
+//      eval(val);
+// }
+//
+// alert('opal ready');
 
-    var base = "alert('kool')";
-   // var cleanSstr= val.toString()
-
-
-
-    if (base === val) {
-        console.log("Les chaînes sont égales.");
-    } else {
-        console.log("Les chaînes ne sont pas égales.");
-    }
-     eval(val);
+function call_ruby_method(string_to_eval){
+    setTimeout(function(){ Opal.eval(string_to_eval); }, 3000);
 }

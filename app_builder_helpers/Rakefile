@@ -4,7 +4,7 @@
 
 require 'opal'
 # require 'opal-jquery'
-require 'opal-browser'
+# require 'opal-browser'
 require 'parser'
 # require 'ruby2js'
 require 'uglifier'
@@ -39,10 +39,10 @@ def build_opal(user_project_path)
   Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
 
   File.new opal_js, 'w'
-  browser_content = build_opal_content
+  opal_content = build_opal_content
 
   File.open(opal_js, 'w') do |f|
-    f.puts browser_content
+    f.puts opal_content
   end
 end
 
@@ -207,14 +207,14 @@ def minimize_aui(user_project_path)
   end
 end
 
-def minimize_browser(user_project_path)
-  browser_js = "#{user_project_path}/src/js/opal/opal_browser.js"
-  browser_content = File.open(browser_js).read
-  browser_content = Uglifier.new.compile(browser_content)
-  File.open(browser_js, 'w') do |f|
-    f.puts browser_content
-  end
-end
+# def minimize_browser(user_project_path)
+#   browser_js = "#{user_project_path}/src/js/opal/opal_browser.js"
+#   browser_content = File.open(browser_js).read
+#   browser_content = Uglifier.new.compile(browser_content)
+#   File.open(browser_js, 'w') do |f|
+#     f.puts browser_content
+#   end
+# end
 
 def minimize_opal(user_project_path)
   opal_js = "#{user_project_path}/src/js/opal/opal.js"
@@ -275,8 +275,8 @@ def minimize_libraries(user_project_path)
   minimize_aui(user_project_path)
   # minimizing opal
   minimize_opal(user_project_path)
-  # minimizing opal_browser
-  minimize_browser(user_project_path)
+  # # minimizing opal_browser
+  # minimize_browser(user_project_path)
   # minimizing opal_parser
   minimize_parser(user_project_path)
   # minimizing atome_lib

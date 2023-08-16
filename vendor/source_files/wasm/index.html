@@ -37,6 +37,7 @@
     <script src='js/atome/atome_helpers/atome_sort.js' defer></script>
     <script src='js/atome/atome_helpers/atome_time.js' defer></script>
     <script src='js/atome/atome_helpers/atome_video.js' defer></script>
+    <script src='js/atome/platform_specific/wasm/extension.js' defer></script>
     <title>atome</title>
 
 </head>
@@ -98,5 +99,9 @@
   require   '/lib/platform_specific/wasm/atome_wasm_extensions'
 require '/lib/atome_relative'
 require './index'
+</script>
+<script defer>
+    //example how to call a ruby methods from js
+    setTimeout(function(){ call_ruby_method("puts 'from js/atome/platform_specific/wasm/extension.js': Wasm yes!!!!!!'"); }, 3000);
 </script>
 </html>
