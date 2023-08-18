@@ -12,10 +12,10 @@
     <meta name="msapplication-tap-highlight" content="no">
     <link type="text/css" rel="stylesheet" href="css/style.css">
     <style id="atomic_style"></style>
-    <script src="js/third_parties/browser.script.iife.min.js" defer></script>
-<!--    <script src="https://cdn.jsdelivr.net/npm/ruby-3_2-wasm-wasi@2.1.0/dist/browser.script.iife.js"></script>-->
+    <script type="text/javascript" src="js/third_parties/browser.script.iife.min.js" defer></script>
+<!--    <script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/ruby-3_2-wasm-wasi@2.1.0/dist/browser.script.iife.js"></script>-->
 
-    <!--        <script src="js/third_parties/browser.umd.js" defer></script>-->
+    <!--        <script type="text/javascript" src="js/third_parties/browser.umd.js" defer></script>-->
     <script type="text/javascript" src="js/third_parties/interact.min.js" defer></script>
     <script type="text/javascript" src="js/third_parties/popmotion.min.js" defer></script>
     <script type="text/javascript" src="js/third_parties/sortable.min.js" defer></script>
@@ -29,17 +29,17 @@
     <script type="text/javascript" src="js/third_parties/fabric.min.js" defer></script>
     <!--    <script type="text/javascript" src="js/third_parties/three.min.js"></script>-->
 
-    <script src='js/atome/atome_helpers/atome_animate.js' defer></script>
-    <script src='js/atome/atome_helpers/atome_communication.js' defer></script>
-    <script src='js/atome/atome_helpers/atome_drag.js' defer></script>
-    <script src='js/atome/atome_helpers/atome_drop.js' defer></script>
-    <script src='js/atome/atome_helpers/atome_over.js' defer></script>
-    <script src='js/atome/atome_helpers/atome_events.js' defer></script>
-    <script src='js/atome/atome_helpers/atome_file.js' defer></script>
-    <script src='js/atome/atome_helpers/atome_sort.js' defer></script>
-    <script src='js/atome/atome_helpers/atome_time.js' defer></script>
-    <script src='js/atome/atome_helpers/atome_video.js' defer></script>
-    <script src='js/atome/platform_specific/wasm/extension.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_animate.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_communication.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_drag.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_drop.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_over.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_events.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_file.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_sort.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_time.js' defer></script>
+    <script type="text/javascript" src='js/atome/atome_helpers/atome_video.js' defer></script>
+    <script type="text/javascript" src='js/atome/platform_specific/wasm/extension.js' defer></script>
     <title>atome</title>
 
 </head>
@@ -47,95 +47,29 @@
 ©atome 2023
 </body>
 
-<!--<script defer>-->
-
-<!--    function myStartFunction() {-->
-<!--        ///////////-->
-<!--        const { DefaultRubyVM } = window["ruby-wasm-wasi"];-->
-<!--        function diamond(val) {-->
-<!--            msg_buildr=`super ${val} works !!!`;-->
-<!--            var full_msg=`puts ' js string inter-operation is now possible ${msg_buildr}'`;-->
-<!--            rubyVM.eval(full_msg);-->
-<!--            var ruby_method_call=`hello_ruby' js method calling is now possible ${msg_buildr}'`;-->
-<!--            rubyVM.eval(ruby_method_call);-->
-<!--        }-->
-
-<!--        const main = async () => {-->
-<!--            const response = await fetch(-->
-<!--                "./wasm/ruby/ruby_browser.wasm"-->
-<!--            );-->
-<!--            const buffer = await response.arrayBuffer();-->
-<!--            const module = await WebAssembly.compile(buffer);-->
-<!--            const { vm } = await DefaultRubyVM(module);-->
-
-<!--            vm.printVersion();-->
-<!--            vm.eval(`-->
-<!--require 'js'-->
-<!--require   "/lib/platform_specific/wasm/atome_wasm_extensions"-->
-<!--require "/lib/atome_relative"-->
-<!--require "./index"-->
-<!--			  `);-->
-
-<!--        };-->
-
-<!--        main();-->
-<!--        ///////////-->
-<!--    }-->
-<!--   setTimeout(myStartFunction, 10);-->
-
-<!--</script>-->
-<!--&lt;!&ndash;<script  type="text/ruby" src="client/index.rb" ></script>&ndash;&gt;-->
 
 
-<!--<script>-->
-
-<!--    // const { RubyVM2 } = window["ruby-wasm-wasi"];-->
-<!--    // var result='hello_ruby(\"Gigantic jeezs\")';-->
-<!--    // DefaultRubyVM.eval(result)-->
-
-<!--</script>-->
-<script>
-    function js_method_that_call_ruby_method(val){
-        console.log("yes it works!! for val : "+val)
-var hh='ok ok ok '
-        rubyVM.eval(`send 'my_rb_method2', 'my cool params too!', '${val}'`)
-    }
-</script>
 
 
 <script type="text/ruby">
-    require 'js'
-  require   '/lib/platform_specific/wasm/atome_wasm_extensions'
+require 'js'
+require '/lib/platform_specific/wasm/atome_wasm_extensions'
 require '/lib/atome_relative'
 require './index'
 </script>
 
+<!--demo below-->
 
-
-
-<script defer>
-    //example how to call a ruby methods from js
-    // setTimeout(function(){ call_ruby_method("puts 'from js/atome/platform_specific/wasm/extension.js: Wasm yes!!!!!!'"); }, 3000);
-    // Call a method on the exposed object (assuming 'someRubyMethod' is a method of SomeRubyClass)
-
-    setTimeout(function(){
-        // setTimeout(function(){rubyVM("send" 'my_fct', 'hi')}, 4000);
-
-        // const greeting = greetFunction("John");
-        // console.log(greeting); // Affiche "Hello, John!"
-        // console.log(window.myExposedObject);
-        // if (rubyVM && window.myExposedObject) {
-        //     const rubyCode = `my_fct("test")`;
-        //     const result = rubyVM.eval(rubyCode);
-        //     console.log(result);
-        // } else {
-        //     console.error("Ruby object or method not accessible");
-        // }
-    }, 3000);
-    // setTimeout(function(){rubyVM.global["document"]  }, 3000);
-    setTimeout(function(){rubyVM.eval(`send 'my_rb_method', 'my cool params!'`) }, 1000);
-
-    //
-
+<script type="text/javascript" defer>
+    function js_method_that_call_ruby_method(params, proc){
+        rubyVM.eval(`send 'my_rb_method2', '${params}', '${proc}'`)
+    }
 </script>
+
+<script type="text/javascript"  defer>
+    //example how to call a ruby methods from js
+    setTimeout(function(){rubyVM.eval(`send 'my_rb_method', 'I am the cool params!'`) }, 3000);
+</script>
+
+
 </html>
