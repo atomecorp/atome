@@ -44,12 +44,9 @@
 
 </head>
 <body id='user_view' class='atome' oncontextmenu="return false;">
-©atome 2023
+<div id='copyright'>©atome 2023</div>
+
 </body>
-
-
-
-
 
 <script type="text/ruby">
 require 'js'
@@ -60,16 +57,17 @@ require './index'
 
 <!--demo below-->
 
-<script type="text/javascript" defer>
-    function js_method_that_call_ruby_method(params, proc){
-        rubyVM.eval(`send 'my_rb_method2', '${params}', '${proc}'`)
-    }
-</script>
+<!--<script type="text/javascript" defer>-->
+<!--    function js_method_that_call_ruby_method(params, proc){-->
+<!--        rubyVM.eval(`send 'my_rb_method2', '${params}', '${proc}'`)-->
+<!--    }-->
+<!--</script>-->
 
-<script type="text/javascript"  defer>
-    //example how to call a ruby methods from js
-    setTimeout(function(){rubyVM.eval(`send 'my_rb_method', 'I am the cool params!'`) }, 3000);
-</script>
+<!--<script type="text/javascript">-->
+<!--    // rubyVM.eval(`send 'my_rb_method', 'I am the cool params!'`);-->
+<!--    //example how to call a ruby methods from js-->
+<!--    setTimeout(function(){rubyVM.eval(`send 'my_rb_method', 'I am the cool params!'`) }, 3000);-->
+<!--</script>-->
 
 
 </html>

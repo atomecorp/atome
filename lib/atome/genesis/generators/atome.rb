@@ -75,11 +75,26 @@ end
 new({ atome: :animation })
 new({ atome: :text, type: :hash })
 new({ sanitizer: :text }) do |params|
-  # unless @text
-  #   @text=[]
-  # end
-  params={ data: params } unless params.instance_of? Hash
-  # @text << params
+  if params[:data].instance_of? Array
+    params
+    additional_data = params.reject { |cle| cle == :data }
+    data_found = params[:data]
+    parent_text = ''
+    data_found.each_with_index do |atome_to_create, index|
+      unless atome_to_create.instance_of? Hash
+        atome_to_create = { data: atome_to_create, width: :auto }
+      end
+      if index == 0
+        parent_text = text(atome_to_create)
+        parent_text.set(additional_data)
+      else
+        parent_text.text(atome_to_create)
+      end
+    end
+    params = { data: '' }
+  else
+    params = { data: params } unless params.instance_of? Hash
+  end
   params
 end
 
