@@ -84,19 +84,19 @@ end
 
 # new attachment method
 
-new({ particle: :attach, render: false }) do |parents_ids, &user_proc|
-  # we ensure it's an array
-  parents_ids = attachment_sanitiser(parents_ids)
-  attachment_common([id],parents_ids, &user_proc)
-
-end
-
-new({ particle: :attached, render: false }) do |children_ids, &user_proc| # fastened
-  # we ensure it's an array
-  children_ids = attachment_sanitiser(children_ids)
-  attachment_common(children_ids,[id], &user_proc)
-
-end
+# new({ particle: :attach, render: false }) do |parents_ids, &user_proc|
+#   # we ensure it's an array
+#   parents_ids = attachment_sanitiser(parents_ids)
+#   attachment_common([id],parents_ids, &user_proc)
+#
+# end
+#
+# new({ particle: :attached, render: false }) do |children_ids, &user_proc| # fastened
+#   # we ensure it's an array
+#   children_ids = attachment_sanitiser(children_ids)
+#   attachment_common(children_ids,[id], &user_proc)
+#
+# end
 
 # end
 new({ particle: :detached, store: false }) # unfastened

@@ -2,6 +2,10 @@
 
 def attachment_common(children_ids, parents_ids, &user_proc)
   @atome[:attach].concat(parents_ids).uniq!
+
+  if parents_ids.instance_of? Array
+    parents_ids=[]
+  end
   parents_ids.each do |parent_id|
     grab(parent_id).atome[:attached].concat(children_ids).uniq!
     children_ids.each do |child_id|

@@ -318,3 +318,31 @@
 /test/test_app/src/medias/images/logos/Orange/youtube.svg
 /test/test_app/src/medias/images/logos/gray/youtube2.svg
 /test/test_app/src/js/third_parties/zim.min.js
+/test/test_app/src/medias/rubies/examples/!new_html_renderer.rb
+/test/test_app/src/js/atome/atome_helpers/add_font.js
+/test/test_app/src/medias/fonts/Roboto/LICENSE.txt
+/test/test_app/application/new_html_renderer_bck.rb
+/test/test_app/temp/opal/new_html_renderer_bck.rb
+/test/test_app/src/medias/fonts/Roboto/Roboto-Black.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-BlackItalic.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-Bold.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-BoldItalic.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-Italic.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-Light.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-LightItalic.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-Medium.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-MediumItalic.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-Regular.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-Thin.ttf
+/test/test_app/src/medias/fonts/Roboto/Roboto-ThinItalic.ttf
+/vendor/assets/src/wasm/ruby/ruby_browser 11.wasm
+/vendor/assets/src/wasm/ruby/ruby_browser 12.wasm
+/test/test_app/src/wasm/ruby/ruby_browser 13.wasm
+/vendor/assets/src/wasm/ruby/ruby_browser 13.wasm
+/test/test_app/src/wasm/ruby/ruby_browser 14.wasm
+/vendor/assets/src/wasm/ruby/ruby_browser 14.wasm
+/test/test_app/src/wasm/ruby/ruby_browser 15.wasm
+/vendor/assets/src/wasm/ruby/ruby_browser 15.wasm
+/test/test_app/src/wasm/ruby/ruby_browser 16.wasm
+/test/test_app/src/wasm/ruby/ruby_browser 17.wasm
+/test/test_app/src/medias/rubies/examples/www.rb
