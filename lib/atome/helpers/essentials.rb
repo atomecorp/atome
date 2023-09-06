@@ -17,7 +17,7 @@ STR
     render_engines: [:html, :browser, :inspect,:headless],
     # collector: { type: :element, attach: [:black_matter] },
     image: { type: :image, attach: [:view], attached: [] },
-    web: { type: :web, attach: [:view], attached: []  },
+    www: { type: :www, attach: [:view], attached: []  },
     video: { type: :video, attach: [:view], attached: []  },
     animation: { type: :animation,  attach: [:black_matter], attached: []  },
     element: { type: :element, renderers: [], attach: [:black_matter], attached: []  },

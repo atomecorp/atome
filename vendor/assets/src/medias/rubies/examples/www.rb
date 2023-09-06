@@ -6,7 +6,7 @@ Atome.new(
 )
 
 Atome.new(
-  web: { renderers: [:browser], id: :youtube1, type: :web, attach: [:view], path: "https://www.youtube.com/embed/usQDazZKWAk", left: 33, top: 33, width: 199, height: 199,attached: []}
+  www: { renderers: [:browser], id: :youtube1, type: :www, attach: [:view], path: "https://www.youtube.com/embed/usQDazZKWAk", left: 33, top: 33, width: 199, height: 199,attached: []}
 )
 
-web({path: 'https://www.youtube.com/embed/usQDazZKWAk'})
+www({path: 'https://www.youtube.com/embed/usQDazZKWAk'})

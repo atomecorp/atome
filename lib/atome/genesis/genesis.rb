@@ -31,6 +31,7 @@ class Atome
   end
 
   def build_atome(atome_name, &atome_proc)
+    # puts  "--------> atome_name is : #{atome_name}"
     # TODO : atomes should tell the Universe if they're parts of physical category or else
     # we add the new method to the atome's collection of methods
     Universe.add_to_atome_list(atome_name)
@@ -48,7 +49,9 @@ class Atome
     # the line below create an empty atome method for each renderer, eg: browser_shape, headless_color, ...
     auto_render_generator(atome_name)
     # create_atome(atome_name)
+    # Object.const_set("poil", Module.new)
     new_atome(atome_name, &atome_proc)
+
 
   end
 

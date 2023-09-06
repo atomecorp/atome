@@ -264,8 +264,20 @@ module Matrix
         current_cell.physical.each do |child|
           # child.width(cell_width) if grab(child)
           # child.height(cell_height) if grab(child)
-          grab(child).width(cell_width) if grab(child)
-          grab(child).height(cell_height) if grab(child)
+          if grab(child).width.instance_of? String
+            if grab(child).width.include?('%')
+              # do nothing
+            end
+          else
+            grab(child).width(cell_width * ratio) if grab(child)
+          end
+          if grab(child).height.instance_of? String
+            if grab(child).height.include?('%')
+              # do nothing
+            end
+          else
+            grab(child).height(cell_height * ratio) if grab(child)
+          end
         end
         current_cell.width = cell_width
         current_cell.height = cell_height

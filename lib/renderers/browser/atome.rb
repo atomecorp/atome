@@ -172,7 +172,7 @@ new({ browser: :text, type: :string }) do |_value, _user_proc|
   end.append_to(BrowserHelper.browser_document[:user_view])
   @browser_object = BrowserHelper.browser_document[id_found]
   @browser_object.style[:position] = 'relative'
-  @browser_object.style['white-space'] = 'pre'
+  @browser_object.style['white-space'] = 'pre-wrap'
 
 
   @browser_type = :div

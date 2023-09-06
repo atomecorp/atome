@@ -63,8 +63,8 @@ new({ sanitizer: :element }) do |params|
   default_params = { data: '' }
   default_params.merge!(params)
 end
-new({ atome: :web })
-new({ sanitizer: :web }) do |params|
+new({ atome: :www })
+new({ sanitizer: :www }) do |params|
   # TODO : the line below should get the value from default params Essentials
   temp_default = { path: 'https://www.youtube.com/embed/usQDazZKWAk' }
   params = temp_default.merge(params)

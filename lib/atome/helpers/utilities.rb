@@ -236,14 +236,14 @@ class Atome
   #   images_found = atome[:image] || []
   #   videos_found = atome[:video] || []
   #   shapes_found = atome[:shape] || []
-  #   web_found = atome[:web] || []
+  #   web_found = atome[:www] || []
   #   texts_found = atome[:text] || []
-  #   images_found.concat(videos_found).concat(shapes_found).concat(web_found).concat(texts_found)
+  #   images_found.concat(videos_found).concat(shapes_found).concat(www_found).concat(texts_found)
   # end
 
   def physical
     # TODO :  automatise materials type list when creating a new atome it should be specified if material or not
-    types=%i[texts images videos shapes webs]
+    types=%i[texts images videos shapes wwws]
     atomes_found=[]
     types.each do |type|
       ids_found = atome[type]
