@@ -48,7 +48,9 @@ class Object
         generator.build_render(render_method, &bloc)
       else
         Universe.atome_list.each do |atome_type|
+          # alert atome_type
           render_method = "html_#{atome_type}_#{params[:html]}"
+          # render_method = "html_#{params[:html]}"
           # puts "======> auto generated  : #{render_method}"
           generator.build_render(render_method, &bloc)
         end

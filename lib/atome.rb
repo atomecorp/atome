@@ -28,7 +28,7 @@ require 'atome/genesis/generators/time'
 require 'atome/genesis/generators/utility'
 require 'atome/helpers/utilities'
 if RUBY_ENGINE.downcase == 'opal'
-  require 'renderers/browser/browser'
+  # require 'renderers/browser/browser'
   require 'renderers/html/html'
 end
 require 'renderers/headless/headless'

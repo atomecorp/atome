@@ -347,3 +347,6 @@
 /test/test_app/src/wasm/ruby/ruby_browser 17.wasm
 /test/test_app/src/medias/rubies/examples/www.rb
 /test/test_app/src/medias/rubies/new_html_renderer_1.rb
+/test/test_app/src/medias/rubies/Research&development/add_remove_module.rb
+/vendor/assets/src/wasm/ruby/ruby_browser 16.wasm
+/test/test_app/src/wasm/ruby/ruby_browser 18.wasm

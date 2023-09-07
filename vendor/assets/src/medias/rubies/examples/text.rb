@@ -23,8 +23,6 @@ text2=Atome.new(
   }
 )
 
-
-
 Atome.new(color: { renderers: [:browser], id: :c33, type: :color, attach: [:text2],attached: [],
                    red: 0.6, green: 0.6, blue: 0.1, alpha: 1 })
 wait 2 do
