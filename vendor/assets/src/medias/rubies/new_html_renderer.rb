@@ -8,12 +8,12 @@ def attachment_common(children_ids, parents_ids, &user_proc)
   # FIXME : it seems we sometime iterate when for nothing
   parents_ids.each do |parent_id|
 
-    puts "parent_id : #{parent_id}"
-  #   #FIXME : find a more optimised way to prevent atome to attach to itself
-   puts "infernal loop here below: now attached or attach may not be saved"
-    puts "=> #{@atome[:attach]}"
-  #   @atome[:attach] << parent_id if parent_id != id
-    puts "infernal loop here above"
+    # puts "parent_id : #{parent_id}"
+    #   #FIXME : find a more optimised way to prevent atome to attach to itself
+    #  puts "infernal loop here below: now attached or attach may not be saved"
+    #   puts "=> #{@atome[:attach]}"
+    #   @atome[:attach] << parent_id if parent_id != id
+    #   puts "infernal loop here above"
     parent_found = grab(parent_id)
     parent_found.atome[:attached].concat(children_ids).uniq!
     if parent_found.type == :color
@@ -27,7 +27,7 @@ def attachment_common(children_ids, parents_ids, &user_proc)
 
 
       children_ids.each do |child_id|
-  #       # puts "shape child is #{child_id}"
+        #       # puts "shape child is #{child_id}"
         child_found = grab(child_id)
         child_found.render(:attach, parent_id, &user_proc) if child_found
       end
@@ -75,6 +75,33 @@ new({ html: :web}) do |params, &user_proc|
   # attachment_common(children_ids, parents_ids, &user_proc)
   params
 end
+def extract_rgb_alpha(color_string)
+  match_data = color_string.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)/)
+  if match_data
+    red = match_data[1].to_i
+    green = match_data[2].to_i
+    blue = match_data[3].to_i
+    alpha = match_data[4] ? match_data[4].to_f : nil
+    return { red: red, green: green, blue: blue, alpha: alpha }
+  else
+    puts "Format de couleur non valide"
+    return nil
+  end
+end
+
+new({ particle: :red, render: true }) do |params, &user_proc|
+  attached.each do |attached_atome_found|
+    targeted_atome=grab(attached_atome_found)
+    color_found= targeted_atome.html.style(:backgroundColor).to_s
+    rgba_data=  extract_rgb_alpha(color_found)
+    html_params=params*255
+    unless rgba_data[:alpha]
+      rgba_data[:alpha]=1
+    end
+    targeted_atome.html.style(:backgroundColor, "rgba(#{html_params}, #{rgba_data[:green]}, #{rgba_data[:blue]}, #{rgba_data[:alpha]})")
+  end
+  self
+end
 
 ######
 # alert :good
@@ -108,15 +135,19 @@ class HTML
     @html_object = JS.global[:document].createElement("div")
     JS.global[:document][:body].appendChild(@html_object)
     add_class("atome")
-
     id(id)
     self
   end
 
-  def style(property, value)
+  def style(property, value=nil)
     element_found = JS.global[:document].getElementById(@id.to_s)
-    element_found[:style][property] = value.to_s
-    self
+    if value
+      element_found[:style][property] = value.to_s
+    else
+      element_found[:style][property]
+    end
+    # self
+    element_found[:style][property]
   end
 
   def filter= values
@@ -247,6 +278,8 @@ end
 # end
 new({ html: :left, type: :integer, exclusive: :color })
 new({ html: :red, type: :integer, exclusive: :color }) do |value, _user_proc|
+  puts "#{id} is becoming red with html"
+
   # alert value
   # puts "==> red only for color: #{value} - take a look at : browser/helper/color_helper : browser_colorize_color"
   red = (@atome[:red] = value)
@@ -508,7 +541,7 @@ Atome.new(
 
 # a.color(:red)
 s_c= grab(:shape_color)
-s_c.red(1)
+
 
 
 a = Atome.new(
@@ -517,12 +550,11 @@ a = Atome.new(
   }
   }
 )
+
+s_c.red(2)
 a.top(99)
 a.web(120)
-alert ".red must refresh all attached atomes : #{s_c.inspect}"
 # alert ".red must refresh all attached atomes : #{a.inspect}"
-
-
 
 
 
