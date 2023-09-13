@@ -71,6 +71,8 @@ task :test_build_browser do
 end
 
 task :test_build_wasm do
+  `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
+
   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION,  delete:
   # - ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz,
   # - system_ruby_browser.wasm

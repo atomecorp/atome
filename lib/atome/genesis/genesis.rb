@@ -62,7 +62,7 @@ class Atome
   end
 
   def build_render(renderer_name, &method_proc)
-    # puts "==== >#{renderer_name}, send by : #{come_from}"
+    puts "==== >#{renderer_name}"
 
     # if renderer_name.start_with?(:html)
     #   puts "second condition to remove with finish : #{renderer_name}"
