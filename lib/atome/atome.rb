@@ -103,11 +103,12 @@ class Atome
     end
   end
 
-  def new_render_engine(renderer_name, &method_proc)
-    Atome.define_method renderer_name do |params = nil, &user_proc|
-      instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-    end
-  end
+  # def new_render_engine(renderer_name, &method_proc)
+  #   # puts "renderer_name : #{renderer_name}"
+  #   Atome.define_method renderer_name do |params = nil, &user_proc|
+  #     instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+  #   end
+  # end
 
   def run_optional_proc(proc_name, atome = self, params, &user_proc)
     option_found = Universe.get_optional_method(proc_name)

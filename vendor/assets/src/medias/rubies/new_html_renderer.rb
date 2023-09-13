@@ -1,5 +1,5 @@
 ######## tests
-
+alert :good
 def attachment_common(children_ids, parents_ids, &user_proc)
   # alert "problem here ===>#{self.inspect}"
   # puts "id is : #{id}"
@@ -25,7 +25,6 @@ def attachment_common(children_ids, parents_ids, &user_proc)
       end
     else
 
-
       children_ids.each do |child_id|
         #       # puts "shape child is #{child_id}"
         child_found = grab(child_id)
@@ -34,7 +33,7 @@ def attachment_common(children_ids, parents_ids, &user_proc)
     end
   end
 end
-
+# new({html: :attach})
 new({ particle: :attach, render: false }) do |parents_ids, &user_proc|
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   children_ids = [id]
@@ -50,55 +49,83 @@ new({ particle: :attached, render: false }) do |children_ids, &user_proc|
   attachment_common(children_ids, parents_ids, &user_proc)
   # children_ids
 end
+new(particle: :web)
+# new({ particle: :web, render: true }) do |params, &user_proc|
+#
+#   # alert 'tag creation here, cf : div, span , h1, h2, pre , etc...'
+#   # fastened
+#   # alert "#{self.id} : children_ids : #{children_ids}"
+#   # children_ids = [children_ids] unless children_ids.instance_of?(Array)
+#   # parents_ids = [id]
+#   # # alert "#{children_ids}, #{parents_ids}"
+#   # attachment_common(children_ids, parents_ids, &user_proc)
+#   params
+# end
+#
 
 
-new({ particle: :web, render: true }) do |params, &user_proc|
-
-  # alert 'tag creation here, cf : div, span , h1, h2, pre , etc...'
-  # fastened
-  # alert "#{self.id} : children_ids : #{children_ids}"
-  # children_ids = [children_ids] unless children_ids.instance_of?(Array)
-  # parents_ids = [id]
-  # # alert "#{children_ids}, #{parents_ids}"
-  # attachment_common(children_ids, parents_ids, &user_proc)
-  params
-end
-
-new({ html: :web}) do |params, &user_proc|
-
-  alert 'tag creation here, cf : div, span , h1, h2, pre , etc...'
-  # fastened
-  # alert "#{self.id} : children_ids : #{children_ids}"
-  # children_ids = [children_ids] unless children_ids.instance_of?(Array)
-  # parents_ids = [id]
-  # # alert "#{children_ids}, #{parents_ids}"
-  # attachment_common(children_ids, parents_ids, &user_proc)
-  params
-end
 def extract_rgb_alpha(color_string)
   match_data = color_string.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)/)
-  if match_data
-    red = match_data[1].to_i
-    green = match_data[2].to_i
-    blue = match_data[3].to_i
-    alpha = match_data[4] ? match_data[4].to_f : nil
-    return { red: red, green: green, blue: blue, alpha: alpha }
-  else
-    puts "Format de couleur non valide"
-    return nil
-  end
+  # if match_data
+  red = match_data[1].to_i
+  green = match_data[2].to_i
+  blue = match_data[3].to_i
+  alpha = match_data[4] ? match_data[4].to_f : nil
+  return { red: red, green: green, blue: blue, alpha: alpha }
+  # else
+  #   puts "Color format not valid"
+  #   return nil
+  # end
 end
 
 new({ particle: :red, render: true }) do |params, &user_proc|
   attached.each do |attached_atome_found|
-    targeted_atome=grab(attached_atome_found)
-    color_found= targeted_atome.html.style(:backgroundColor).to_s
-    rgba_data=  extract_rgb_alpha(color_found)
-    html_params=params*255
+    targeted_atome = grab(attached_atome_found)
+    color_found = targeted_atome.html.style(:backgroundColor).to_s
+    rgba_data = extract_rgb_alpha(color_found)
+    html_params = params * 255
     unless rgba_data[:alpha]
-      rgba_data[:alpha]=1
+      rgba_data[:alpha] = 1
     end
     targeted_atome.html.style(:backgroundColor, "rgba(#{html_params}, #{rgba_data[:green]}, #{rgba_data[:blue]}, #{rgba_data[:alpha]})")
+  end
+  self
+end
+
+new({ particle: :green, render: true }) do |params, &user_proc|
+  attached.each do |attached_atome_found|
+    targeted_atome = grab(attached_atome_found)
+    color_found = targeted_atome.html.style(:backgroundColor).to_s
+    rgba_data = extract_rgb_alpha(color_found)
+    html_params = params * 255
+    unless rgba_data[:alpha]
+      rgba_data[:alpha] = 1
+    end
+    targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{html_params}, #{rgba_data[:blue]}, #{rgba_data[:alpha]})")
+  end
+  self
+end
+
+new({ particle: :blue, render: true }) do |params, &user_proc|
+  attached.each do |attached_atome_found|
+    targeted_atome = grab(attached_atome_found)
+    color_found = targeted_atome.html.style(:backgroundColor).to_s
+    rgba_data = extract_rgb_alpha(color_found)
+    html_params = params * 255
+    unless rgba_data[:alpha]
+      rgba_data[:alpha] = 1
+    end
+    targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{rgba_data[:green]}, #{html_params}, #{rgba_data[:alpha]})")
+  end
+  self
+end
+
+new({ particle: :alpha, render: true }) do |params, &user_proc|
+  attached.each do |attached_atome_found|
+    targeted_atome = grab(attached_atome_found)
+    color_found = targeted_atome.html.style(:backgroundColor).to_s
+    rgba_data = extract_rgb_alpha(color_found)
+    targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{rgba_data[:green]}, #{rgba_data[:blue]}, #{params})")
   end
   self
 end
@@ -107,9 +134,7 @@ end
 # alert :good
 class HTML
   def initialize(id_found)
-
     @html_object ||= JS.global[:document].getElementById(id_found.to_s)
-
     @id = id_found
     self
   end
@@ -120,7 +145,6 @@ class HTML
   end
 
   def add_class(class_to_add)
-
     @html_object[:classList].add(class_to_add)
     self
   end
@@ -139,7 +163,7 @@ class HTML
     self
   end
 
-  def style(property, value=nil)
+  def style(property, value = nil)
     element_found = JS.global[:document].getElementById(@id.to_s)
     if value
       element_found[:style][property] = value.to_s
@@ -213,18 +237,18 @@ class Atome
   end
 end
 
-class Atome
-  particle_list_found = Universe.particle_list.keys
-  particle_list_found.each do |the_particle|
-    define_method("inspect_#{the_particle}") do |params, &bloc|
-      puts "=> inspect element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
-    end
-  end
-
-  def browser_color_renderers(val)
-    puts "=> browser_color_renderers: #{val}"
-  end
-end
+# class Atome
+#   particle_list_found = Universe.particle_list.keys
+#   particle_list_found.each do |the_particle|
+#     define_method("inspect_#{the_particle}") do |params, &bloc|
+#       puts "=> inspect element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
+#     end
+#   end
+#
+#   # def browser_color_renderers(val)
+#   #   puts "=> browser_color_renderers: #{val}"
+#   # end
+# end
 
 # def html_colorize_color(red, green, blue, alpha, atome)
 #   ########################### new code ###########################
@@ -252,33 +276,181 @@ end
 #   # atomic_style.text = atomic_style.text.gsub(regex, new_class_content)
 # end
 
-new({ html: :type, type: :string }) do |_value, _user_proc|
+
+
+
+
+
+new({ renderer: :html, method: :web }) do |params, &user_proc|
+
+  # puts 'tag creation here, cf : div, span , h1, h2, pre , etc...'
+  # fastened
+  # alert "#{self.id} : children_ids : #{children_ids}"
+  # children_ids = [children_ids] unless children_ids.instance_of?(Array)
+  # parents_ids = [id]
+  # # alert "#{children_ids}, #{parents_ids}"
+  # attachment_common(children_ids, parents_ids, &user_proc)
+  params
+end
+
+new({ renderer: :html, method: :type, type: :string }) do |_value, _user_proc|
   # html.shape(@atome[:id])
 end
 
-new({ html: :type, type: :string, exclusive: :shape }) do |_value, _user_proc|
+new({ renderer: :html, method: :height, type: :string }) do |value, _user_proc|
+  html.style(:height, "#{value}px")
+end
+
+new({ renderer: :html, method: :smooth, type: :string }) do |value, _user_proc|
+  # html.style(:height, "#{value}px")
+  format_params = case value
+                  when Array
+                    properties = []
+                    value.each do |param|
+                      properties << "#{param}px"
+                    end
+                    properties.join(' ').to_s
+                  when Integer
+                    "#{value}px"
+                  else
+                    value
+                  end
+  html.style('border-radius', format_params)
+end
+
+new({ renderer: :html, method: :attach, type: :string }) do |parent_found, _user_proc|
+  html.append_to(parent_found)
+end
+
+new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
+  red = parent_found.red * 255
+  green = parent_found.green * 255
+  blue = parent_found.blue * 255
+  alpha = parent_found.alpha
+  html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+end
+
+
+
+new({ renderer: :html, method: :top, type: :string }) do |_value, _user_proc|
+
+end
+
+new({ renderer: :html, method: :bottom, type: :string }) do |_value, _user_proc|
+
+end
+
+new({ renderer: :html, method: :clones, type: :string }) do |_value, _user_proc|
+
+end
+
+new({ renderer: :html, method: :overflow, type: :string })
+
+new({ renderer: :html, method: :preset, type: :string })
+
+new({ renderer: :html, method: :id, type: :string })
+
+new({ renderer: :html, method: :renderers, type: :string })
+
+new({ renderer: :html, method: :diffusion, type: :string })
+
+
+
+# alert :pass_0
+
+# new({ renderer: :html, method: :color, type: :string }) do
+# puts "====> yeah"
+# end
+
+######### data tests
+# frozen_string_literal: true
+
+# let's create the Universe
+# def eval_protection
+#   binding
+# end
+
+# Let's set the default's parameters according to ruby interpreter
+# Essentials.new_default_params({ render_engines: [:html] })
+# if RUBY_ENGINE.downcase == 'opal'
+#
+# else
+#   puts "------- **pas opal** ------"
+#   Essentials.new_default_params({ render_engines: [:html] })
+#   # alert "RUBY_ENGINE is : #{RUBY_ENGINE.downcase}"
+#   # Essentials.new_default_params({ render_engines: [:headless] })
+#   # eval "require 'atome/extensions/geolocation'", eval_protection, __FILE__, __LINE__
+#   # eval "require 'atome/extensions/ping'", eval_protection, __FILE__, __LINE__
+#   # eval "require 'atome/extensions/sha'", eval_protection, __FILE__, __LINE__
+# end
+
+# now let's get the default render engine
+default_render = Essentials.default_params[:render_engines]
+
+def atome_infos
+  puts "atome version: #{Atome::VERSION}"
+  puts "device identity: #{Universe.app_identity}"
+  # puts "application identity: #{Atome::aui}"
+  # puts "application mode: #{Atome.mode}"
+  puts "host framework: #{$host}"
+  puts "script mode: #{Universe.current_machine}"
+  puts "user: #{Universe.current_user}"
+  puts "server: #{Universe.current_server}"
+end
+
+Universe.current_user = :jeezs
+
+atome_infos
+new({ specific: :color, method: :poil }) do |_value, _user_proc|
+  # html.shape(@atome[:id])
+  alert "i am here"
+end
+
+new({ specific: :color, method: :poilu, renderer: :html }) do |_value, _user_proc|
+  # html.shape(@atome[:id])
+  alert "i am here too!!"
+end
+
+new({ method: :type, type: :string, specific: :shape, renderer: :html }) do |_value, _user_proc|
   html.shape(@atome[:id])
 end
 
-new({ html: :width, type: :integer, exclusive: :shape }) do |value, _user_proc|
+# new({ renderer: :html, method: :type, type: :string, exclusive: :shape }) do |_value, _user_proc|
+#   html.shape(@atome[:id])
+# end
+
+new({ method: :width, type: :integer, specific: :shape, renderer: :html }) do |value, _user_proc|
   html.style(:width, "#{value}px")
 end
 
-# new({ html: :colorize_color, type: :integer, exclusive: :color }) do |red, green, blue, alpha, _user_proc|
-# # puts "left only for color: #{value}"
-# end
+new({ method: :left, type: :string, exclusive: :shape , renderer: :html}) do |value, _user_proc|
+  html.style(:left, "#{value}px")
+end
 
-# def html_colorize_color(red, green, blue, alpha)
-#   puts "--------- ok it works now!!! ----------"
-# end
+new({ method: :right, type: :string, specific: :shape , renderer: :html}) do |value, _user_proc|
+  html.style(:right, "#{value}px")
+end
 
-#############
-# def colorize_color(red, green, blue, alpha)
-# puts "======> temp solution"
-# end
-new({ html: :left, type: :integer, exclusive: :color })
-new({ html: :red, type: :integer, exclusive: :color }) do |value, _user_proc|
-  puts "#{id} is becoming red with html"
+new({ method: :top, type: :integer, specific: :shape , renderer: :html}) do |params, &bloc|
+  html.style(:top, "#{params}px")
+end
+
+new({ method: :bottom, type: :integer, specific: :shape , renderer: :html}) do |params, &bloc|
+  html.style(:bottom, "#{params}px")
+end
+
+new({ method: :right, type: :integer, specific: :shape }) do |params, &bloc|
+  html.style(:right, "#{params}px")
+end
+
+new({ method: :left, type: :integer, specific: :shape , renderer: :html}) do |params, &bloc|
+  html.style(:left, "#{params}px")
+end
+
+new({ method: :left, type: :integer, specific: :color, renderer: :html })
+#
+new({ method: :red, type: :integer, specific: :color , renderer: :html}) do |value, _user_proc|
+  # puts "#{id} is becoming red with html"
 
   # alert value
   # puts "==> red only for color: #{value} - take a look at : browser/helper/color_helper : browser_colorize_color"
@@ -298,167 +470,26 @@ new({ html: :red, type: :integer, exclusive: :color }) do |value, _user_proc|
   self
 end
 
-new({ html: :green, type: :integer, exclusive: :color }) do |value, _user_proc|
-  puts "==> green only for color: #{value}"
+new({ method: :green, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
+  # puts "==> green only for color: #{value}"
 end
 
-new({ html: :blue, type: :integer, exclusive: :color }) do |value, _user_proc|
-  puts "==> blue only for color: #{value}"
+new({ method: :blue, type: :integer, specific: :color , renderer: :html}) do |value, _user_proc|
+  # puts "==> blue only for color: #{value}"
 end
 
-new({ html: :alpha, type: :integer, exclusive: :color }) do |value, _user_proc|
-  puts "==> alpha only for color: #{value}"
+new({ method: :alpha, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
+  # puts "==> alpha only for color: #{value}"
 end
 
-# new({ html: :color, type: :integer, exclusive: :color }) do |value, _user_proc|
+
+
+
+# new({ renderer: :html, method: :color, type: :integer, exclusive: :color }) do |value, _user_proc|
 # alert 'so kool'
 # end
 
-new({ html: :height, type: :string }) do |value, _user_proc|
-  html.style(:height, "#{value}px")
-end
 
-new({ html: :smooth, type: :string }) do |value, _user_proc|
-  # html.style(:height, "#{value}px")
-  format_params = case value
-                  when Array
-                    properties = []
-                    value.each do |param|
-                      properties << "#{param}px"
-                    end
-                    properties.join(' ').to_s
-                  when Integer
-                    "#{value}px"
-                  else
-                    value
-                  end
-  html.style('border-radius', format_params)
-end
-
-# new({ html: :attached, type: :string, exclusive: :color }) do |parent_found, _user_proc|
-#   # alert "find how and where  html_shape_attach is created, and write documentation !!!"
-#   # JS.global[:document][:body].appendChild('user_view')
-#   # html.append_to(parent_found)
-#   alert :good
-# end
-
-new({ html: :attach, type: :string }) do |parent_found, _user_proc|
-  # alert "find how and where  html_shape_attach is created, and write documentation !!!"
-  # JS.global[:document][:body].appendChild('user_view')
-  html.append_to(parent_found)
-end
-
-new({ html: :apply, type: :string }) do |parent_found, _user_proc|
-  # alert "find how and where  html_shape_attach is created, and write documentation !!!"
-  # JS.global[:document][:body].appendChild('user_view')
-
-  red = parent_found.red * 255
-  green = parent_found.green * 255
-  blue = parent_found.blue * 255
-  alpha = parent_found.alpha
-  # alert "Moi : #{id} et autre : #{parent_found.inspect}, blue: #{blue}"
-  html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
-end
-# new({ html: :attached, type: :string }) do |parent_found, _user_proc|
-#   # JS.global[:document][:body].appendChild('user_view')
-#   # html.append_to(parent_found)
-#   alert :loop
-# end
-
-new({ html: :left, type: :string, exclusive: :shape }) do |value, _user_proc|
-  # html.style(:left, "#{value}px")
-end
-
-new({ html: :right, type: :string, exclusive: :shape }) do |value, _user_proc|
-  # html.style(:left, "#{value}px")
-end
-
-new({ html: :top, type: :string }) do |_value, _user_proc|
-
-end
-
-new({ html: :bottom, type: :string }) do |_value, _user_proc|
-
-end
-
-new({ html: :clones, type: :string }) do |_value, _user_proc|
-
-end
-
-new({ html: :overflow, type: :string })
-
-new({ html: :preset, type: :string })
-
-new({ html: :id, type: :string })
-
-new({ html: :renderers, type: :string })
-
-new({ html: :diffusion, type: :string })
-
-new({ html: :top, type: :integer, exclusive: :shape }) do |params, &bloc|
-  html.style(:top, "#{params}px")
-end
-
-new({ html: :bottom, type: :integer, exclusive: :shape }) do |params, &bloc|
-  html.style(:bottom, "#{params}px")
-end
-
-new({ html: :right, type: :integer, exclusive: :shape }) do |params, &bloc|
-  html.style(:right, "#{params}px")
-end
-
-new({ html: :left, type: :integer, exclusive: :shape }) do |params, &bloc|
-  html.style(:left, "#{params}px")
-end
-
-# alert :pass_0
-
-# new({ html: :color, type: :string }) do
-# puts "====> yeah"
-# end
-
-######### data tests
-# frozen_string_literal: true
-
-# let's create the Universe
-def eval_protection
-  binding
-end
-
-# Let's set the default's parameters according to ruby interpreter
-if RUBY_ENGINE.downcase == 'opal'
-  Essentials.new_default_params({ render_engines: [:html] })
-else
-  puts "------- **pas opal** ------"
-  Essentials.new_default_params({ render_engines: [:html] })
-  # alert "RUBY_ENGINE is : #{RUBY_ENGINE.downcase}"
-  # Essentials.new_default_params({ render_engines: [:headless] })
-  # eval "require 'atome/extensions/geolocation'", eval_protection, __FILE__, __LINE__
-  # eval "require 'atome/extensions/ping'", eval_protection, __FILE__, __LINE__
-  # eval "require 'atome/extensions/sha'", eval_protection, __FILE__, __LINE__
-end
-
-# now let's get the default render engine
-default_render = Essentials.default_params[:render_engines]
-
-def atome_infos
-  puts "atome version: #{Atome::VERSION}"
-  # puts "application identity: #{Universe.app_identity}"
-  # puts "application identity: #{Atome::aui}"
-  # puts "application mode: #{Atome.mode}"
-  puts "host framework: #{$host}"
-  puts "script mode: #{Universe.current_machine}"
-  puts "user: #{Universe.current_user}"
-  puts "server: #{Universe.current_server}"
-end
-
-Universe.current_user = :jeezs
-
-atome_infos
-new({ specific: :color, method: :top }) do |_value, _user_proc|
-  # html.shape(@atome[:id])
-  "i am here"
-end
 ############### Lets create the U.I.
 Atome.new(
   { element: { renderers: [], id: :eDen, type: :element, tag: { system: true }, attach: [], attached: [] } }
@@ -467,7 +498,6 @@ Atome.new(
   { element: { renderers: [], id: :user_view, type: :element, tag: { system: true },
                attach: [:eDen], attached: [] } }
 )
-
 
 # # color creation
 Atome.new(
@@ -479,8 +509,6 @@ Atome.new(
   { color: { renderers: default_render, id: :shape_color, type: :color, tag: ({ system: true, persistent: true }),
              red: 0.4, green: 0.4, blue: 0.4, alpha: 1, attach: [], attached: [] } }
 )
-
-
 
 ########################################
 Atome.new(
@@ -540,9 +568,7 @@ Atome.new(
 # )
 
 # a.color(:red)
-s_c= grab(:shape_color)
-
-
+s_c = grab(:shape_color)
 
 a = Atome.new(
   { shape: { renderers: default_render, id: :my_shape, type: :shape, attach: [:view, :shape_color],
@@ -551,10 +577,102 @@ a = Atome.new(
   }
 )
 
-s_c.red(2)
+s_c.red(0.2)
+s_c.blue(0)
+s_c.green(0)
 a.top(99)
-a.web(120)
-# alert ".red must refresh all attached atomes : #{a.inspect}"
+a.smooth(33)
+a.web({ tag: :span })
+
+##########
+# new({ renderer: :html, method: :text }) do
+#   alert :kool
+# end
+# new({ atome: :text, type: :hash })
+# new({ sanitizer: :text }) do |params|
+#   if params[:data].instance_of? Array
+#     alert :ok
+#     #   additional_data = params.reject { |cle| cle == :data }
+#     #   data_found = params[:data]
+#     #   parent_text = ''
+#     #   data_found.each_with_index do |atome_to_create, index|
+#     #     unless atome_to_create.instance_of? Hash
+#     #       atome_to_create = { data: atome_to_create, width: :auto }
+#     #     end
+#     #     if index == 0
+#     #       parent_text = text(atome_to_create)
+#     #       parent_text.set(additional_data)
+#     #     else
+#     #       parent_text.text(atome_to_create)
+#     #     end
+#     #   end
+#     #   params = { data: '' }
+#     # else
+#     #   params = { data: params } unless params.instance_of? Hash
+#   end
+#   params
+# end
+class Atome
+  # def html_text_renderers(params=nil)
+  #   puts :what
+  # end
+  # def  method_missing(name, args=nil)
+  #   puts "missing : #{name}"
+  # end
+  # def html_text_type(params=nil)
+  #   puts :whatou
+  # end
+  # def html_text_attach(params=nil)
+  #   puts :whatoku
+  # end
+
+
+  # def html_text_id(params=nil)
+  #   puts :whatif
+  # end
+end
+# new({ atome: :text, render: false }) do
+#   alert "we should pass here !"
+# end
+
+# new({html: :renderers}) do
+#   puts "ok for renderer!"
+# end
+
+# new({ renderer: :html, method: :text }) do
+#   alert :kooly
+# end
+
+# ee=Atome.new(
+#   text: { renderers: [:html], id: :text2, type: :text
+#
+#   }
+# )
+# alert ee.methods
+
+
+################# EXPLANATION BELOW ###############
+# # FIXME:  new particle, should generate method for each existing rendering engine
+#
+# new({particle: :my_article})
+# # FIXME: for now we have to manually create the html method
+# new({ renderer: :html, method: :my_article, type: :string })
+################# EXPLANATION ABOVE ###############
+
+ee=Atome.new(
+  text: { renderers: [:html], id: :text2, type: :text,
+          # left: 333, top: 33, width: 199, height: 33, attached: [],
+          my_article: :ok_with_it
+
+  }
+)
+
+# ee=Atome.new(
+#   text: { renderers: [:html], id: :text2, type: :shape, attach: [:view], visual: { size: 33 },
+#           data: 'My second text!', left: 333, top: 33, width: 199, height: 33, attached: [],
+#
+#   }
+# )
 
 
 
@@ -744,10 +862,10 @@ a.web(120)
 # JS.global.call('js_method_that_call_ruby_method','I am the great params for the proc', "@my_proc")
 # JS.global.send('my_test_fct')
 
-new({ specific: :color, method: :top }) do |_value, _user_proc|
-  # html.shape(@atome[:id])
-  "i am here"
-end
+# new({ specific: :color, method: :top }) do |_value, _user_proc|
+#   # html.shape(@atome[:id])
+#   "i am here"
+# end
 
 # bb=Atome.new({ color: { left: 77 } })
 # bb.color({top: 66})
@@ -791,4 +909,4 @@ end
 #
 # obj1.hello
 # obj1.top
-
+# box

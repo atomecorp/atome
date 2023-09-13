@@ -10,12 +10,25 @@ class Universe
   @renderer_list = %i[html browser headless server group log]
   @options = {}
   @sanitizers = {}
+  @specificities = {}
 
   class << self
-    attr_reader :atomes, :renderer_list, :atome_list, :particle_list, :classes, :counter
+    attr_reader :atomes, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
 
     def add_to_particle_list(particle = nil, type)
       instance_variable_get('@particle_list')[particle] = type
+    end
+
+    def add_atomes_specificities atome_type_to_add
+      @specificities[atome_type_to_add] = {}
+    end
+
+    def set_atomes_specificities params
+      @specificities[params[:specific]] = { params[:method] => "#{params[:specific]}_" }
+    end
+
+    def get_atomes_specificities
+      @specificities
     end
 
     def add_optional_method(method_name, &method_proc)

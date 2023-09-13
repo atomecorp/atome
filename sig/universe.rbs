@@ -1,0 +1,3 @@
+class Universe
+  @specificities: untyped
+end
