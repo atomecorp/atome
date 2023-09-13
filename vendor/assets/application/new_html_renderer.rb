@@ -49,7 +49,9 @@ new({ particle: :attached, render: false }) do |children_ids, &user_proc|
   attachment_common(children_ids, parents_ids, &user_proc)
   # children_ids
 end
+
 new(particle: :web)
+
 # new({ particle: :web, render: true }) do |params, &user_proc|
 #
 #   # alert 'tag creation here, cf : div, span , h1, h2, pre , etc...'
@@ -181,10 +183,8 @@ class HTML
   end
 
   def append_to(parent_id_found)
-
     parent_found = JS.global[:document].getElementById(parent_id_found.to_s)
     parent_found.appendChild(@html_object)
-
     self
   end
 
@@ -237,45 +237,6 @@ class Atome
   end
 end
 
-# class Atome
-#   particle_list_found = Universe.particle_list.keys
-#   particle_list_found.each do |the_particle|
-#     define_method("inspect_#{the_particle}") do |params, &bloc|
-#       puts "=> inspect element: #{the_particle}\nparams : #{params}\nbloc: #{bloc}\n"
-#     end
-#   end
-#
-#   # def browser_color_renderers(val)
-#   #   puts "=> browser_color_renderers: #{val}"
-#   # end
-# end
-
-# def html_colorize_color(red, green, blue, alpha, atome)
-#   ########################### new code ###########################
-#   alert self.inspect
-#   # id_found = atome[:id]
-#   # color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-#   # new_class_content = <<~STR
-#   #   .#{id_found} {
-#   #   --#{id_found}_r : #{red * 255};
-#   #   --#{id_found}_g : #{green * 255};
-#   #   --#{id_found}_b : #{blue * 255};
-#   #   --#{id_found}_a : #{alpha};
-#   #   --#{id_found}_col : rgba(var(--#{id_found}_r ),var(--#{id_found}_g ),var(--#{id_found}_b ),var(--#{id_found}_a ));
-#   #   background-color: var(--#{id_found}_col);
-#   #   fill: var(--#{id_found}_col);
-#   #   stroke: var(--#{id_found}_col);
-#   #   }
-#   # STR
-#   #
-#   # puts "====> new_class_content #{new_class_content}"
-#   # atomic_style = BrowserHelper.browser_document['#atomic_style']
-#   # # atomic_style.text = atomic_style.text.gsub(/\.#{id_found}\s*{.*?}/m, new_class_content)
-#   #
-#   # regex = /(\.#{id_found}\s*{)([\s\S]*?)(})/m
-#   # atomic_style.text = atomic_style.text.gsub(regex, new_class_content)
-# end
-
 
 
 
@@ -294,7 +255,7 @@ new({ renderer: :html, method: :web }) do |params, &user_proc|
 end
 
 new({ renderer: :html, method: :type, type: :string }) do |_value, _user_proc|
-  # html.shape(@atome[:id])
+  html.shape(@atome[:id])
 end
 
 new({ renderer: :html, method: :height, type: :string }) do |value, _user_proc|
@@ -319,6 +280,7 @@ new({ renderer: :html, method: :smooth, type: :string }) do |value, _user_proc|
 end
 
 new({ renderer: :html, method: :attach, type: :string }) do |parent_found, _user_proc|
+
   html.append_to(parent_found)
 end
 
@@ -501,6 +463,14 @@ Atome.new(
                attach: [:eDen], attached: [] } }
 )
 
+# ######################### test to erase #############################
+# puts '---------------------------------------------------------------'
+# Atome.new(
+#   { shape: { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
+#              left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, attached: []
+#   } })
+# ######################### test to erase #############################
+
 # # color creation
 Atome.new(
   { color: { renderers: default_render, id: :view_color, type: :color, tag: ({ system: true, persistent: true }),
@@ -512,7 +482,6 @@ Atome.new(
              red: 0.4, green: 0.4, blue: 0.4, alpha: 1, attach: [], attached: [] } }
 )
 
-########################################
 Atome.new(
   { color: { renderers: default_render, id: :box_color, type: :color, tag: ({ system: true, persistent: true }),
              red: 0.5, green: 0.5, blue: 0.5, alpha: 1, attach: [], attached: [] } }
@@ -582,311 +551,6 @@ a.top(99)
 a.smooth(33)
 a.web({ tag: :span })
 
-##########
-# new({ renderer: :html, method: :text }) do
-#   alert :kool
-# end
-# new({ atome: :text, type: :hash })
-# new({ sanitizer: :text }) do |params|
-#   if params[:data].instance_of? Array
-#     alert :ok
-#     #   additional_data = params.reject { |cle| cle == :data }
-#     #   data_found = params[:data]
-#     #   parent_text = ''
-#     #   data_found.each_with_index do |atome_to_create, index|
-#     #     unless atome_to_create.instance_of? Hash
-#     #       atome_to_create = { data: atome_to_create, width: :auto }
-#     #     end
-#     #     if index == 0
-#     #       parent_text = text(atome_to_create)
-#     #       parent_text.set(additional_data)
-#     #     else
-#     #       parent_text.text(atome_to_create)
-#     #     end
-#     #   end
-#     #   params = { data: '' }
-#     # else
-#     #   params = { data: params } unless params.instance_of? Hash
-#   end
-#   params
-# end
-
-# new({ atome: :text, render: false }) do
-#   alert "we should pass here !"
-# end
-
-# new({html: :renderers}) do
-#   puts "ok for renderer!"
-# end
-
-# new({ renderer: :html, method: :text }) do
-#   alert :kooly
-# end
-
-# ee=Atome.new(
-#   text: { renderers: [:html], id: :text2, type: :text
-#
-#   }
-# )
-# alert ee.methods
-
-
-################# EXPLANATION BELOW ###############
-# # FIXME:  new particle, should generate method for each existing rendering engine
-#
-# new({particle: :my_article})
-# # FIXME: for now we have to manually create the html method
-# new({ renderer: :html, method: :my_article, type: :string })
-################# EXPLANATION ABOVE ###############
-
-ee=Atome.new(
-  text: { renderers: [:html], id: :text2, type: :text,
-        # left: 333, top: 33, width: 199, height: 33, attached: [],
-          my_article: :ok_with_it
-
-  }
-)
-
-# ee=Atome.new(
-#   text: { renderers: [:html], id: :text2, type: :shape, attach: [:view], visual: { size: 33 },
-#           data: 'My second text!', left: 333, top: 33, width: 199, height: 33, attached: [],
-#
-#   }
-# )
 
 
 
-# alert "test a.html for tag compatibility, maybe change html renderer to www"
-##### new color model now we attach the color to the object
-
-# a=Atome.new(
-#   { shape: { renderers: default_render, id: :my_shape, type: :shape, attach: [:view,:shape_color],
-#              left: 0, top: 0, width: 100, height: 100, overflow: :visible, attached: []
-#   }
-#   }
-# )
-# # ############
-# collected_id = []
-# Universe.atomes.each do |id_found, atome_found|
-#   # puts "1 => #{atome_found.inspect}"
-#   # puts "2 => #{atome_found.tag}"
-#   unless atome_found.tag && atome_found.tag[:system]
-#     collected_id << id_found
-#   end
-# end
-# alert collected_id
-#
-# # #########
-# end
-# a= grab(:shape_color)
-# alert a.inspect
-
-# Universe.user_atomes.each do |atome|
-#
-# end
-
-# class Atome
-#   def html_color_width(var=nil)
-#     puts "var is #{var}"
-#     self
-#   end
-# end
-#
-#
-#
-#
-# b=Atome.new(
-#   { shape: { renderers: default_render, id: :my_colorised, type: :color, attach: [:view],
-#              left: 0, top: 0, width: 100, height: 100, overflow: :visible, attached: []
-#   }
-#   }
-# )
-
-# a.color(:red)
-# ###################  broken tests below
-#
-#
-#
-# # init basic object for atome environment
-#
-# # Atome.new is used to create a new atome using best performances but params must be formatted and ordered correctly
-#
-# # use atome.atome to create a new atome using a more permissive syntax less performances but params must be formatted
-# # and ordered correctly
-#
-# # Atome.atome ids the easiest way to create a new atome
-# Atome.new({
-# shape: { left: 0, right: 0, top: 0, bottom: 0, id: :view, color: { id: :c1, render: [:headless],
-# red: 0.15, green: 0.15, blue: 0.15, alpha: 1 } } })
-#
-# # WARNING: when using Atome.new syntax , you must get your object using the .atome
-# # example to get the atome above : use a.shape.left and not a.left it wont access the physical object
-# initialize Universe
-#
-#
-# # ####### code below oesn't work !!!  ######
-# b=box({id: :big_box, renderers: [:headless, :inspect]})
-# # alert "====> #{b.id}"
-# # alert :pass_1
-# c = circle({ id: :the_circle, left: 333, renderers: [:html] })
-# # alert :pass_2
-# wait 3 do
-# c.attached(b.id)
-# end
-#
-# alert c.respond_to?(:browser_shape_left)
-# alert c.respond_to?(:html_shape_left)
-# alert Universe.particle_list.keys.length+Universe.atome_list.length
-#
-#
-# ################################################# examples for wasm and opal compatibility #################################################
-# #
-# JS.eval("console.log('kool')")
-# puts JS.eval("return 1 + 2;") # => 3
-# # JS.global[:document].write("Hello, world!")
-# div = JS.global[:document].createElement("div")
-# div[:innerText] = "clické2 me"
-# JS.global[:document][:body].appendChild(div)
-# element = JS.global[:document].createElement("div")
-# element.setAttribute("id", "my-div")
-# element[:style][:color] = "red"
-# element[:innerText] = "cheked"
-# JS.global[:document][:body].appendChild(element)
-#
-# div[:style][:backgroundColor] = "orange"
-# div[:style][:color] = "white"
-# div.addEventListener("click") do |e|
-# alert e
-# puts "hello"
-# div[:style][:backgroundColor] = "blue"
-# div[:innerText] = "clicked!"
-# end
-# element_to_move = JS.global[:document].getElementById("my-div")
-# element_to_move[:style][:left] = "333px"
-# element_to_move[:style][:position] = "absolute"
-# # ############################
-# #
-# def hello_ruby(val)
-# puts val
-# end
-# JS.global[:rubyVM].eval("puts 'eval ruby from JS works!'")
-# JS.global[:rubyVM].eval("hello_ruby 'method call from js inside ruby works!!!'")
-#
-#
-# div = JS.global[:document].createElement("div")
-# JS.global[:document][:body].appendChild(div)
-# div.setAttribute("id", "the_box")
-# # // let's add the style
-#
-# the_boxStyle = "width: 120px;height: 320px;top: 120px;position: absolute,left: 90px;background-color: yellow";
-# # JS : var obj = { width: "120px", height: "320px",position: "absolute", top: "120px",left: "90px", backgroundColor: "yellow" };
-# children_found = ["the_box"];
-# children_found.each do |child|
-# el_found = JS.global[:document].getElementById(child)
-# el_found[:style][:cssText]=the_boxStyle
-# end
-#
-#
-# # # //let's create the color now
-# my_colorStyle = "red";
-# parents_found = ["the_box"];
-# parents_found.each do |parent_found|
-# el_found = JS.global[:document].getElementById(parent_found)
-# el_found[:style][:backgroundColor]=my_colorStyle
-# end
-#
-#
-#
-# # ############## resize example ##############
-# window = JS.global
-#
-# # # Fonction appelée lorsque la fenêtre est redimensionnée
-# def on_window_resize
-#  width = JS.global[:window][:innerWidth]
-#  height = JS.global[:window][:innerHeight]
-#
-#  # Afficher la taille dans la console Ruby-Wasm
-#  puts "Taille de la fenêtre: #{width} x #{height}"
-# end
-# #
-# # # Attacher la fonction au gestionnaire d'événements de redimensionnement
-# window.addEventListener("resize") do |_|
-#  on_window_resize
-# end
-# # #############
-#
-# # # demo below uncomemnt corresponding code in wasm/index.html
-# def my_rb_method(val)
-#  puts "val is #{val}"
-# end
-#
-#
-# def my_rb_method2(val, val2)
-#  my_proc= instance_variable_get(val2)
-#  my_proc.call(val) if my_proc.is_a? Proc
-# end
-#
-# def  my_fct(val, &proc)
-#  puts "----- > ok for all #{val}"
-#  proc.call("Hello from proc!") if proc.is_a? Proc
-# end
-#
-# def  my_test_fct
-#  puts "----- > ok for my_test_fct"
-# end
-# JS.global[:rubyVM].eval('my_test_fct') # => works
-#
-# @my_proc = Proc.new { |x| puts x } # => works
-# JS.global[:rubyVM].send(:my_fct, 'js can call ruby method!!',&@my_proc) # => works
-# JS.global[:document][:js_method_that_call_ruby_method]
-# JS.global.call('js_method_that_call_ruby_method','I am the great params for the proc', "@my_proc")
-# JS.global.send('my_test_fct')
-
-# new({ specific: :color, method: :top }) do |_value, _user_proc|
-#   # html.shape(@atome[:id])
-#   "i am here"
-# end
-
-# bb=Atome.new({ color: { left: 77 } })
-# bb.color({top: 66})
-
-# ############ color and other atome's type solution
-# module Color;end
-#
-# Color.define_method :top do |params = nil, &user_proc|
-#   puts "top Color"
-# end
-#
-# Color.define_method :hello do |params = nil, &user_proc|
-#   puts "Hello from Color"
-# end
-#
-# class Atome
-#   def hello
-#     puts "generic hello"
-#   end
-#
-#   def top
-#     puts 'generic top'
-#   end
-# end
-#
-# obj1 = Atome.new
-# obj1.extend(Color)
-#
-# obj1.hello
-# obj1.top
-#
-# # Redefine the methods in the singleton class
-#
-# class << obj1
-#   methods = Atome.instance_methods
-#   methods.each do |module_method|
-#     original_method = Atome.instance_method(module_method)
-#     define_method(module_method, original_method)
-#   end
-# end
-#
-# obj1.hello
-# obj1.top
-# box
