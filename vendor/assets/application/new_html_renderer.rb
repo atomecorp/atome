@@ -365,15 +365,15 @@ Universe.current_user = :jeezs
 atome_infos
 
 
-new({ specific: :color, method: :poil }) do |_value, _user_proc|
-  # html.shape(@atome[:id])
-  alert "i am here"
-end
-
-new({ specific: :color, method: :poilu, renderer: :html }) do |_value, _user_proc|
-  # html.shape(@atome[:id])
-  alert "i am here too!!"
-end
+# new({ specific: :color, method: :poil }) do |_value, _user_proc|
+#   # html.shape(@atome[:id])
+#   alert "i am here"
+# end
+#
+# new({ specific: :color, method: :poilu, renderer: :html }) do |_value, _user_proc|
+#   # html.shape(@atome[:id])
+#   alert "i am here too!!"
+# end
 
 new({ method: :type, type: :string, specific: :shape, renderer: :html }) do |_value, _user_proc|
   html.shape(@atome[:id])
@@ -383,12 +383,9 @@ end
 #   html.shape(@atome[:id])
 # end
 
-new({ method: :width, type: :integer, specific: :shape, renderer: :html }) do |value, _user_proc|
-  html.style(:width, "#{value}px")
-end
+new({ method: :width, type: :integer,  renderer: :html }) do |value, _user_proc|
 
-new({ method: :left, type: :string, exclusive: :shape , renderer: :html}) do |value, _user_proc|
-  html.style(:left, "#{value}px")
+  html.style(:width, "#{value}px")
 end
 
 new({ method: :right, type: :string, specific: :shape , renderer: :html}) do |value, _user_proc|
@@ -408,10 +405,12 @@ new({ method: :right, type: :integer, specific: :shape }) do |params, &bloc|
 end
 
 new({ method: :left, type: :integer, specific: :shape , renderer: :html}) do |params, &bloc|
+
   html.style(:left, "#{params}px")
 end
 
 new({ method: :left, type: :integer, specific: :color, renderer: :html })
+
 #
 new({ method: :red, type: :integer, specific: :color , renderer: :html}) do |value, _user_proc|
   # puts "#{id} is becoming red with html"
@@ -474,7 +473,7 @@ Atome.new(
 # # color creation
 Atome.new(
   { color: { renderers: default_render, id: :view_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.15, green: 0.15, blue: 0.15, alpha: 1, top: 12, left: 0, diffusion: :linear, attach: [], attached: [] } }
+             red: 0.15, green: 0.15, blue: 0.15, alpha: 1, top: 12, left: 12, diffusion: :linear, attach: [], attached: [] } }
 )
 
 Atome.new(
@@ -535,6 +534,7 @@ Atome.new(
 # )
 
 # a.color(:red)
+# JS.eval("console.clear()")
 s_c = grab(:shape_color)
 
 a = Atome.new(
@@ -550,7 +550,7 @@ s_c.green(0)
 a.top(99)
 a.smooth(33)
 a.web({ tag: :span })
-
+puts  Universe.get_atomes_specificities
 
 
 

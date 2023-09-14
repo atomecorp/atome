@@ -24,7 +24,9 @@ class Universe
     end
 
     def set_atomes_specificities params
-      @specificities[params[:specific]] = { params[:method] => "#{params[:specific]}_" }
+      particle_found = params[:method].to_sym
+      specificity = "#{params[:specific]}_".to_sym
+         @specificities[params[:specific]][particle_found] = specificity
     end
 
     def get_atomes_specificities

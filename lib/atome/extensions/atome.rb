@@ -42,7 +42,10 @@ class Object
     #   #########################################################################################
     elsif params[:renderer]
       renderer_found= params[:renderer]
-      params[:specific]= "#{params[:specific]}_"if params[:specific]
+      if params[:specific]
+        Universe.set_atomes_specificities(params)
+        params[:specific]= "#{params[:specific]}_"
+      end
 
       # else
         render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"

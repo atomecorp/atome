@@ -35,7 +35,7 @@ end
 
 
 task :test_build_browser do
-
+  `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
   # def require_sanitizer(file)
   #   file= file.gsub('  ',' ')
   #   file= file.gsub(' require','require')
