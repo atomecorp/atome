@@ -254,7 +254,7 @@ new({ renderer: :html, method: :web }) do |params, &user_proc|
   params
 end
 
-new({ renderer: :html, method: :type, type: :string }) do |_value, _user_proc|
+new({ renderer: :html, method: :type, type: :string, specific: :shape }) do |_value, _user_proc|
   html.shape(@atome[:id])
 end
 
