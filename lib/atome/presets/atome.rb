@@ -43,7 +43,6 @@ class Atome
   def box(params = {}, &bloc)
     atome_preset = :box
     params = atome_common(atome_preset, params)
-    puts params
     preset_common(params, &bloc)
   end
 

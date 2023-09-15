@@ -557,6 +557,7 @@ a.web({ tag: :span })
 aa.smooth(9)
 # FIXME:  add apply to targeted shape, ad affect to color applied
 box
-# circle
+circle
+# text(:hello)
 # Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view], :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
 
