@@ -4,7 +4,6 @@ def attachment_common(children_ids, parents_ids, &user_proc)
   # alert "problem here ===>#{self.inspect}"
   # puts "id is : #{id}"
   # alert "After ===>#{self.inspect}"
-  # FIXME: found why we have to use '.each_with_index' when using wasm '.each' crash for some reasons
   # FIXME : it seems we sometime iterate when for nothing
   parents_ids.each do |parent_id|
     # FIXME : find a more optimised way to prevent atome to attach to itself
@@ -16,14 +15,12 @@ def attachment_common(children_ids, parents_ids, &user_proc)
     #     child_found.render(:apply, parent_found, &user_proc) if child_found
     #   end
     # else
-      children_ids.each do |child_id|
-        child_found = grab(child_id)
-        child_found.render(:attach, parent_id, &user_proc) if child_found
-      end
+    children_ids.each do |child_id|
+      child_found = grab(child_id)
+      child_found.render(:attach, parent_id, &user_proc) if child_found
+    end
     # end
   end
-  # FIXME: we have to retunn : puts '', prevent ruby wasm to crash, why???
-  puts ''
 end
 
 # new({html: :attach})
@@ -47,6 +44,14 @@ new({ particle: :apply, render: false }) do |parents_ids, &user_proc|
   parents_ids
 end
 
+new({ particle: :affect, render: false }) do |children_ids, &user_proc|
+  children_ids.each do |child_id|
+    child_found = grab(child_id)
+    child_found.render(:apply, self, &user_proc) if child_found
+  end
+  children_ids
+end
+
 # new({ particle: :affect, render: false }) do |children_ids, &user_proc|
 #   # # fastened
 #   # children_ids = [children_ids] unless children_ids.instance_of?(Array)
@@ -62,9 +67,6 @@ new({ particle: :attached, render: false }) do |children_ids, &user_proc|
   attachment_common(children_ids, parents_ids, &user_proc)
   children_ids
 end
-
-
-
 
 # new({ particle: :affect, render: false }) do |children_ids, &user_proc|
 #   # fastened
@@ -465,103 +467,84 @@ new({ method: :alpha, type: :integer, specific: :color, renderer: :html }) do |v
   # puts "==> alpha only for color: #{value}"
 end
 
-# new({ renderer: :html, method: :color, type: :integer, exclusive: :color }) do |value, _user_proc|
-# alert 'so kool'
-# end
-
 ############### Lets create the U.I.
 Atome.new(
-  { element: { renderers: [], id: :eDen, type: :element, tag: { system: true }, attach: [], attached: [] } }
+  { renderers: [], id: :eDen, type: :element, tag: { system: true }, attach: [], attached: [] }
 )
 Atome.new(
-  { element: { renderers: [], id: :user_view, type: :element, tag: { system: true },
-               attach: [:eDen], attached: [] } }
+  { renderers: [], id: :user_view, type: :element, tag: { system: true },
+    attach: [:eDen], attached: [] }
 )
-
-# ######################### test to erase #############################
-# puts '---------------------------------------------------------------'
-# Atome.new(
-#   { shape: { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
-#              left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, attached: []
-#   } })
-######################### test to erase #############################
 
 # color creation
 Atome.new(
-  { color: { renderers: default_render, id: :view_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.15, green: 0.15, blue: 0.15, alpha: 1, top: 12, left: 12, diffusion: :linear, attach: [], attached: [] } }
+  { renderers: default_render, id: :view_color, type: :color, tag: ({ system: true, persistent: true }),
+    red: 0.15, green: 0.15, blue: 0.15, alpha: 1, top: 12, left: 12, diffusion: :linear, attach: [], attached: [] }
 )
 
 Atome.new(
-  { color: { renderers: default_render, id: :shape_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.4, green: 0.4, blue: 0.4, alpha: 1, attach: [], attached: [] } }
+  { renderers: default_render, id: :shape_color, type: :color, tag: ({ system: true, persistent: true }),
+    red: 0.4, green: 0.4, blue: 0.4, alpha: 1, attach: [], attached: [] }
 )
 
 Atome.new(
-  { color: { renderers: default_render, id: :box_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.5, green: 0.5, blue: 0.5, alpha: 1, attach: [], attached: [] } }
+  { renderers: default_render, id: :box_color, type: :color, tag: ({ system: true, persistent: true }),
+    red: 0.5, green: 0.5, blue: 0.5, alpha: 1, attach: [], attached: [] }
 )
 
 Atome.new(
-  { color: { renderers: default_render, id: :invisible_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0, green: 0, blue: 0, alpha: 1, attach: [], attached: [] } }
+  { renderers: default_render, id: :invisible_color, type: :color, tag: ({ system: true, persistent: true }),
+    red: 0, green: 0, blue: 0, alpha: 1, attach: [], attached: [] }
 )
 
 Atome.new(
-  { color: { renderers: default_render, id: :text_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.3, green: 0.3, blue: 0.3, alpha: 1, attach: [], attached: [] } }
+  { renderers: default_render, id: :text_color, type: :color, tag: ({ system: true, persistent: true }),
+    red: 0.3, green: 0.3, blue: 0.3, alpha: 1, attach: [], attached: [] }
 )
 
 Atome.new(
-  { color: { renderers: default_render, id: :circle_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.6, green: 0.6, blue: 0.6, alpha: 1, attach: [], attached: [] } }
+  { renderers: default_render, id: :circle_color, type: :color, tag: ({ system: true, persistent: true }),
+    red: 0.6, green: 0.6, blue: 0.6, alpha: 1, attach: [], attached: [] }
 )
 
-# # system object creation
-# # the black_matter is used to store un materialized atomes
+# system object creation
+# the black_matter is used to store un materialized atomes
 Atome.new(
-  { shape: { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
-             left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, attached: []
-  } })
+  { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
+    left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, attached: []
+  })
 
 # view port
 Atome.new(
-  { shape: { renderers: default_render, id: :view, type: :shape, attach: [:user_view],apply: [:view_color], tag: { system: true },
-             attached: [], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
+  { renderers: default_render, id: :view, type: :shape, attach: [:user_view], apply: [:view_color], tag: { system: true },
+    attached: [], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
   }
-  }
+
 )
 
 # unreal port
 Atome.new(
-  { shape: { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: { system: true },
-             left: 0, top: 0, width: 0, height: 0, overflow: :visible, attached: []
-  }
+  { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: { system: true },
+    left: 0, top: 0, width: 0, height: 0, overflow: :visible, attached: []
+
   }
 )
 
 ############ user objects ######
 
-# Atome.new(
-# { color: { renderers: default_render, id: [:base_color], type: :color,tag: ({ system: true,persistent: true }),
-# red: 1, green: 0.15, blue: 0.15, alpha: 1 , attach: [], attached: []} }
-# )
-
-# a.color(:red)
-# JS.eval("console.clear()")
 s_c = grab(:shape_color)
 
 a = Atome.new(
-  { shape: { renderers: default_render, id: :my_shape, type: :shape, attach: [:view],apply: [:shape_color],
-             left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+  { renderers: default_render, id: :my_shape, type: :shape, attach: [:view], apply: [:shape_color],
+    left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
   }
-  }
+
 )
 
 aa = Atome.new(
-  { shape: { renderers: default_render, id: :my_shape2, type: :shape, attach: [:view],apply:  [:box_color],
-             left: 120, top: 30, width: 100, height: 100, overflow: :visible, attached: [:my_shape]
-  }
+  { renderers: default_render, id: :my_shape2, type: :shape, attach: [:view], apply: [:box_color],
+    left: 120, top: 30, width: 100, height: 100, overflow: :visible, attached: [:my_shape]
+
   }
 )
 
@@ -572,32 +555,8 @@ a.top(99)
 a.smooth(33)
 a.web({ tag: :span })
 aa.smooth(9)
+# FIXME:  add apply to targeted shape, ad affect to color applied
+box
+# circle
+# Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view], :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
 
-
-
-new({ particle: :affect, render: false }) do |children_ids, &user_proc|
-
-
-    children_ids.each do |child_id|
-      child_found = grab(child_id)
-      child_found.render(:apply, self, &user_proc) if child_found
-    end
-
-  children_ids
-end
-# new({ renderer: :html, method: :id })
-
-
-
-# alert "the codes below maybe crash because of  :attached=>:box_color, certainly  because attached method has problem"
-
-# b=box
-# Atome.new({shape: {:type=>:shape, :width=>99, :height=>99, :attached=>:box_color, :attach=>[:view], :left=>100, :top=>100, :clones=>[], :preset=>:box, :id=>"box_12", :renderers=>[:html]} })
-
-ccc=Atome.new(
-  { color: { renderers: default_render,affect: [:my_shape, :my_shape2], id: :my_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.3, green: 0.3, blue: 1, alpha: 1, attach: [], attached: [] } }
-)
-alert "add apply to targeted shape, ad affect to color applied"
-alert ccc.inspect
-alert aa.inspect

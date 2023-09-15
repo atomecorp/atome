@@ -11,31 +11,17 @@ class Atome
 
   private
 
-  def initialize(atomes = {}, &atomes_proc)
+  def initialize(new_atome = nil, &atomes_proc)
 
-    # @default_elements = {attach: [], attached: []} # now attach and attached can push into the array without testing
-
-    # if an array exist
-    atomes.each_value do |elements|
-
-      # the instance variable below contain the id all any atomes that need to be informed when changes occurs
-      @broadcast = {}
-
-      # now we store the proc in a an atome's property called :bloc
-      elements[:code] = atomes_proc if atomes_proc
-      # puts "1 : #{elements}"
-      # @atome = @default_elements.merge(elements)
-      # @atome.merge(elements)
-      # puts "2 : #{@atome}"
-      @atome = elements
-
-      # @atome[:attach]= [] unless @atome[:attach]
-      # @atome[:attached]= [] unless @atome[:attached]
-      # we initiate the rendering suing set_type method,
-      # eg : for for browser we will call :browser_type generate method in identity.rb file
-      collapse
-
-    end
+    # the keys :renderers, :type and :id should be placed in the first position in the hash
+    @broadcast = {}
+    # now we store the proc in a an atome's property called :bloc
+    new_atome[:code] = atomes_proc if atomes_proc
+    @atome = new_atome
+    # we initiate the rendering using set_type method,
+    # eg : for for browser we will call :browser_type generate method in identity.rb file
+    # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
+    collapse if new_atome
 
   end
 
@@ -95,7 +81,7 @@ class Atome
       Object.const_set(element, Module.new)
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]
-      new_atome=Atome.new({ element => params }, &user_proc)
+      new_atome = Atome.new({ element => params }, &user_proc)
       module_to_extend = Object.const_get(element)
       new_atome.extend(module_to_extend)
       new_atome

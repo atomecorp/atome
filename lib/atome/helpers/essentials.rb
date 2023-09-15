@@ -25,7 +25,7 @@ STR
               attached: [:matrix_color],
               left: 100, top: 100, clones: [], preset: :matrix, attach: [:view] },
     box: { type: :shape, width: 99, height: 99,
-           attached: :box_color, attach: [:view],
+           apply: [:box_color], attach: [:view],
            left: 100, top: 100, clones: [], preset: :box },
     vector: { type: :shape, width: 99, height: 99,
            attach: [:view], attached: [] ,

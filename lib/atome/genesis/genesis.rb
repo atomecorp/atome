@@ -4,7 +4,7 @@
 class Genesis
   class << self
     def generator
-      Atome.new
+      Atome.new()
     end
   end
 end

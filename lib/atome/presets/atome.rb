@@ -9,25 +9,12 @@ class Atome
   def atome_common(atome_preset, params)
     # TODO : optimise the whole code below and make it rubocop friendly
     essential_params = Essentials.default_params[atome_preset] || {}
-    essential_params[:type] = essential_params[:type] || :element
-
-    essential_params[:id] = params[:id] || identity_generator(atome_preset)
-
-    essential_params[:attach] = params[:attach] || [@atome[:id]] || [:view]
-    if params[:definition]
-      # if it is a vector we reorder the params
-      attached = params.delete(:attached)
-      params = params.merge({ attached: attached })
-    end
-    essential_params[:renderers] = @atome[:renderers] || essential_params[:renderers]
-    # puts "essential_params[:renderers]  : => #{essential_params[:renderers]}\n@atome[:renderers] : #{@atome[:renderers]}"
-
-    # puts "params  : => #{params}\nessential_params : #{essential_params}"
-    # now we replace the renderers in case this is not a group
-    # unless essential_params[:type] == :group && essential_params[:renderers] == :group
-    #   essential_params[:renderers] = @atome[:renderers]
-    # end
-
+    basic_params={}
+    basic_params[:type] = essential_params[:type] || :element
+    basic_params[:id] = params[:id] || identity_generator(atome_preset)
+    basic_params[:attach] = params[:attach] || [@atome[:id]] || [:view]
+    basic_params[:renderers] = @atome[:renderers] || essential_params[:renderers]
+    essential_params=basic_params.merge(essential_params)
     essential_params.merge(params)
   end
 
@@ -44,18 +31,19 @@ class Atome
           grab(group_item).shape(params)
         end
         alert "group params are #{params}"
-        return Atome.new({ :element => params }, &bloc)
+        return Atome.new( params , &bloc)
       else
         # alert "generic params are #{params}"
-        return Atome.new({ :element => params }, &bloc)
+        return Atome.new( params , &bloc)
       end
-      return Atome.new({ :element => params }, &bloc)
+      return Atome.new( params , &bloc)
     end
   end
 
   def box(params = {}, &bloc)
     atome_preset = :box
     params = atome_common(atome_preset, params)
+    puts params
     preset_common(params, &bloc)
   end
 

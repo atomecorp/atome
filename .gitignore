@@ -350,3 +350,8 @@
 /test/test_app/src/medias/rubies/Research&development/add_remove_module.rb
 /vendor/assets/src/wasm/ruby/ruby_browser 16.wasm
 /test/test_app/src/wasm/ruby/ruby_browser 18.wasm
+/vendor/assets/src/wasm/ruby/ruby_browser 17.wasm
+/vendor/assets/src/wasm/ruby/ruby_browser 18.wasm
+/test/test_app/src/wasm/ruby/ruby_browser 19.wasm
+/test/test_app/src/wasm/ruby/ruby_browser 20.wasm
+/system_ruby_browser 2.wasm
