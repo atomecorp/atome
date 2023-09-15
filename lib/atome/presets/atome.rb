@@ -63,7 +63,6 @@ class Atome
     atome_preset = :circle
     params = atome_common(atome_preset, params)
     preset_common(params, &bloc)
-
   end
 
   def vector(params = {}, &bloc)

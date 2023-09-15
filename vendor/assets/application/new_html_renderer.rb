@@ -7,48 +7,79 @@ def attachment_common(children_ids, parents_ids, &user_proc)
   # FIXME: found why we have to use '.each_with_index' when using wasm '.each' crash for some reasons
   # FIXME : it seems we sometime iterate when for nothing
   parents_ids.each do |parent_id|
-
-    # puts "parent_id : #{parent_id}"
-    #   #FIXME : find a more optimised way to prevent atome to attach to itself
-    #  puts "infernal loop here below: now attached or attach may not be saved"
-    #   puts "=> #{@atome[:attach]}"
-    #   @atome[:attach] << parent_id if parent_id != id
-    #   puts "infernal loop here above"
+    # FIXME : find a more optimised way to prevent atome to attach to itself
     parent_found = grab(parent_id)
     parent_found.atome[:attached].concat(children_ids).uniq!
-    if parent_found.type == :color
-
+    # if parent_found.type == :color
+    #   children_ids.each do |child_id|
+    #     child_found = grab(child_id)
+    #     child_found.render(:apply, parent_found, &user_proc) if child_found
+    #   end
+    # else
       children_ids.each do |child_id|
-        # puts "color child is #{child_id}"
-        child_found = grab(child_id)
-        child_found.render(:apply, parent_found, &user_proc) if child_found
-      end
-    else
-
-      children_ids.each do |child_id|
-        #       # puts "shape child is #{child_id}"
         child_found = grab(child_id)
         child_found.render(:attach, parent_id, &user_proc) if child_found
       end
-    end
+    # end
   end
+  # FIXME: we have to retunn : puts '', prevent ruby wasm to crash, why???
+  puts ''
 end
+
 # new({html: :attach})
 new({ particle: :attach, render: false }) do |parents_ids, &user_proc|
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   children_ids = [id]
   attachment_common(children_ids, parents_ids, &user_proc)
-  # parents_ids
+  parents_ids
 end
+
+new({ particle: :apply, render: false }) do |parents_ids, &user_proc|
+  parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
+  children_ids = [id]
+  parents_ids.each do |parent_id|
+    parent_found = grab(parent_id)
+    children_ids.each do |child_id|
+      child_found = grab(child_id)
+      child_found.render(:apply, parent_found, &user_proc) if child_found
+    end
+  end
+  parents_ids
+end
+
+# new({ particle: :affect, render: false }) do |children_ids, &user_proc|
+#   # # fastened
+#   # children_ids = [children_ids] unless children_ids.instance_of?(Array)
+#   # parents_ids = [id]
+#   # attachment_common(children_ids, parents_ids, &user_proc)
+#   children_ids
+# end
 
 new({ particle: :attached, render: false }) do |children_ids, &user_proc|
   # fastened
-  # alert "#{self.id} : children_ids : #{children_ids}"
   children_ids = [children_ids] unless children_ids.instance_of?(Array)
   parents_ids = [id]
   attachment_common(children_ids, parents_ids, &user_proc)
-  # children_ids
+  children_ids
 end
+
+
+
+
+# new({ particle: :affect, render: false }) do |children_ids, &user_proc|
+#   # fastened
+#   children_ids = [children_ids] unless children_ids.instance_of?(Array)
+#   parents_ids = [id]
+#   # parents_ids.each do |parent_id|
+#   #   parent_found = grab(parent_id)
+#   #   parent_found.atome[:attached].concat(children_ids).uniq!
+#   #   children_ids.each do |child_id|
+#   #     child_found = grab(child_id)
+#   #     child_found.render(:apply, parent_found, &user_proc) if child_found
+#   #   end
+#   # end
+#   # children_ids
+# end
 
 new(particle: :web)
 
@@ -65,15 +96,14 @@ new(particle: :web)
 # end
 #
 
-
 def extract_rgb_alpha(color_string)
   match_data = color_string.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)/)
   # if match_data
-    red = match_data[1].to_i
-    green = match_data[2].to_i
-    blue = match_data[3].to_i
-    alpha = match_data[4] ? match_data[4].to_f : nil
-    return { red: red, green: green, blue: blue, alpha: alpha }
+  red = match_data[1].to_i
+  green = match_data[2].to_i
+  blue = match_data[3].to_i
+  alpha = match_data[4] ? match_data[4].to_f : nil
+  return { red: red, green: green, blue: blue, alpha: alpha }
   # else
   #   puts "Color format not valid"
   #   return nil
@@ -237,11 +267,6 @@ class Atome
   end
 end
 
-
-
-
-
-
 new({ renderer: :html, method: :web }) do |params, &user_proc|
 
   # puts 'tag creation here, cf : div, span , h1, h2, pre , etc...'
@@ -292,8 +317,6 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
   html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
 end
 
-
-
 new({ renderer: :html, method: :top, type: :string }) do |_value, _user_proc|
 
 end
@@ -315,8 +338,6 @@ new({ renderer: :html, method: :id, type: :string })
 new({ renderer: :html, method: :renderers, type: :string })
 
 new({ renderer: :html, method: :diffusion, type: :string })
-
-
 
 # alert :pass_0
 
@@ -364,7 +385,6 @@ Universe.current_user = :jeezs
 
 atome_infos
 
-
 # new({ specific: :color, method: :poil }) do |_value, _user_proc|
 #   # html.shape(@atome[:id])
 #   alert "i am here"
@@ -383,20 +403,20 @@ end
 #   html.shape(@atome[:id])
 # end
 
-new({ method: :width, type: :integer,  renderer: :html }) do |value, _user_proc|
+new({ method: :width, type: :integer, renderer: :html }) do |value, _user_proc|
 
   html.style(:width, "#{value}px")
 end
 
-new({ method: :right, type: :string, specific: :shape , renderer: :html}) do |value, _user_proc|
+new({ method: :right, type: :string, specific: :shape, renderer: :html }) do |value, _user_proc|
   html.style(:right, "#{value}px")
 end
 
-new({ method: :top, type: :integer, specific: :shape , renderer: :html}) do |params, &bloc|
+new({ method: :top, type: :integer, specific: :shape, renderer: :html }) do |params, &bloc|
   html.style(:top, "#{params}px")
 end
 
-new({ method: :bottom, type: :integer, specific: :shape , renderer: :html}) do |params, &bloc|
+new({ method: :bottom, type: :integer, specific: :shape, renderer: :html }) do |params, &bloc|
   html.style(:bottom, "#{params}px")
 end
 
@@ -404,7 +424,7 @@ new({ method: :right, type: :integer, specific: :shape }) do |params, &bloc|
   html.style(:right, "#{params}px")
 end
 
-new({ method: :left, type: :integer, specific: :shape , renderer: :html}) do |params, &bloc|
+new({ method: :left, type: :integer, specific: :shape, renderer: :html }) do |params, &bloc|
 
   html.style(:left, "#{params}px")
 end
@@ -412,7 +432,7 @@ end
 new({ method: :left, type: :integer, specific: :color, renderer: :html })
 
 #
-new({ method: :red, type: :integer, specific: :color , renderer: :html}) do |value, _user_proc|
+new({ method: :red, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
   # puts "#{id} is becoming red with html"
 
   # alert value
@@ -437,7 +457,7 @@ new({ method: :green, type: :integer, specific: :color, renderer: :html }) do |v
   # puts "==> green only for color: #{value}"
 end
 
-new({ method: :blue, type: :integer, specific: :color , renderer: :html}) do |value, _user_proc|
+new({ method: :blue, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
   # puts "==> blue only for color: #{value}"
 end
 
@@ -445,13 +465,9 @@ new({ method: :alpha, type: :integer, specific: :color, renderer: :html }) do |v
   # puts "==> alpha only for color: #{value}"
 end
 
-
-
-
 # new({ renderer: :html, method: :color, type: :integer, exclusive: :color }) do |value, _user_proc|
 # alert 'so kool'
 # end
-
 
 ############### Lets create the U.I.
 Atome.new(
@@ -468,9 +484,9 @@ Atome.new(
 #   { shape: { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
 #              left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, attached: []
 #   } })
-# ######################### test to erase #############################
+######################### test to erase #############################
 
-# # color creation
+# color creation
 Atome.new(
   { color: { renderers: default_render, id: :view_color, type: :color, tag: ({ system: true, persistent: true }),
              red: 0.15, green: 0.15, blue: 0.15, alpha: 1, top: 12, left: 12, diffusion: :linear, attach: [], attached: [] } }
@@ -501,8 +517,6 @@ Atome.new(
              red: 0.6, green: 0.6, blue: 0.6, alpha: 1, attach: [], attached: [] } }
 )
 
-
-
 # # system object creation
 # # the black_matter is used to store un materialized atomes
 Atome.new(
@@ -512,13 +526,13 @@ Atome.new(
 
 # view port
 Atome.new(
-  { shape: { renderers: default_render, id: :view, type: :shape, attach: [:user_view, :view_color], tag: { system: true },
+  { shape: { renderers: default_render, id: :view, type: :shape, attach: [:user_view],apply: [:view_color], tag: { system: true },
              attached: [], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
   }
   }
 )
 
-# #unreal port
+# unreal port
 Atome.new(
   { shape: { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: { system: true },
              left: 0, top: 0, width: 0, height: 0, overflow: :visible, attached: []
@@ -538,8 +552,15 @@ Atome.new(
 s_c = grab(:shape_color)
 
 a = Atome.new(
-  { shape: { renderers: default_render, id: :my_shape, type: :shape, attach: [:view, :shape_color],
+  { shape: { renderers: default_render, id: :my_shape, type: :shape, attach: [:view],apply: [:shape_color],
              left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+  }
+  }
+)
+
+aa = Atome.new(
+  { shape: { renderers: default_render, id: :my_shape2, type: :shape, attach: [:view],apply:  [:box_color],
+             left: 120, top: 30, width: 100, height: 100, overflow: :visible, attached: [:my_shape]
   }
   }
 )
@@ -550,7 +571,33 @@ s_c.green(0)
 a.top(99)
 a.smooth(33)
 a.web({ tag: :span })
-puts  Universe.get_atomes_specificities
+aa.smooth(9)
 
 
 
+new({ particle: :affect, render: false }) do |children_ids, &user_proc|
+
+
+    children_ids.each do |child_id|
+      child_found = grab(child_id)
+      child_found.render(:apply, self, &user_proc) if child_found
+    end
+
+  children_ids
+end
+# new({ renderer: :html, method: :id })
+
+
+
+# alert "the codes below maybe crash because of  :attached=>:box_color, certainly  because attached method has problem"
+
+# b=box
+# Atome.new({shape: {:type=>:shape, :width=>99, :height=>99, :attached=>:box_color, :attach=>[:view], :left=>100, :top=>100, :clones=>[], :preset=>:box, :id=>"box_12", :renderers=>[:html]} })
+
+ccc=Atome.new(
+  { color: { renderers: default_render,affect: [:my_shape, :my_shape2], id: :my_color, type: :color, tag: ({ system: true, persistent: true }),
+             red: 0.3, green: 0.3, blue: 1, alpha: 1, attach: [], attached: [] } }
+)
+alert "add apply to targeted shape, ad affect to color applied"
+alert ccc.inspect
+alert aa.inspect
