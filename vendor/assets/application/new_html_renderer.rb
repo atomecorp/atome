@@ -83,7 +83,13 @@ end
 #   # children_ids
 # end
 
-new(particle: :web)
+new({ particle: :web })
+new({ particle: :unit, type: :hash })
+# new({ sanitizer: :unit }) do |params|
+#   unless params.instance_of? Hash
+#     params={}
+#   end
+# end
 
 # new({ particle: :web, render: true }) do |params, &user_proc|
 #
@@ -319,13 +325,13 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
   html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
 end
 
-new({ renderer: :html, method: :top, type: :string }) do |_value, _user_proc|
-
-end
-
-new({ renderer: :html, method: :bottom, type: :string }) do |_value, _user_proc|
-
-end
+# new({ renderer: :html, method: :top, type: :string }) do |_value, _user_proc|
+#
+# end
+#
+# new({ renderer: :html, method: :bottom, type: :string }) do |_value, _user_proc|
+#
+# end
 
 new({ renderer: :html, method: :clones, type: :string }) do |_value, _user_proc|
 
@@ -406,8 +412,13 @@ end
 # end
 
 new({ method: :width, type: :integer, renderer: :html }) do |value, _user_proc|
+  unit_found= unit[:width]
+  if unit_found
+    html.style(:width, "#{value}#{unit_found}")
+  else
+    html.style(:width, "#{value}px")
 
-  html.style(:width, "#{value}px")
+  end
 end
 
 new({ method: :right, type: :string, specific: :shape, renderer: :html }) do |value, _user_proc|
@@ -466,6 +477,10 @@ end
 new({ method: :alpha, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
   # puts "==> alpha only for color: #{value}"
 end
+
+
+new({initialize: :unit,value: {}})
+
 
 ############### Lets create the U.I.
 Atome.new(
@@ -552,6 +567,8 @@ s_c.red(0.2)
 s_c.blue(0)
 s_c.green(0)
 a.top(99)
+aa.unit[:width]="%"
+aa.width(88)
 a.smooth(33)
 a.web({ tag: :span })
 aa.smooth(9)
@@ -560,4 +577,10 @@ box
 circle
 # text(:hello)
 # Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view], :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
-
+aa.unit[:left]= :inch
+aa.unit({ top: :px })
+aa.unit({ bottom: '%' })
+aa.unit[:bottom]=:cm
+aa.unit[:right]= :inch
+aa.unit[:top]= :px
+puts " unit for aa is : #{aa.unit}"

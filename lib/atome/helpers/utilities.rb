@@ -36,6 +36,9 @@ class Atome
   # end
 
   def collapse
+    unless @atome[:unit]
+      @atome[:unit] = {}
+    end
     @atome.each do |element, value|
       send(element, value)
     end
@@ -243,8 +246,8 @@ class Atome
 
   def physical
     # TODO :  automatise materials type list when creating a new atome it should be specified if material or not
-    types=%i[texts images videos shapes wwws]
-    atomes_found=[]
+    types = %i[texts images videos shapes wwws]
+    atomes_found = []
     types.each do |type|
       ids_found = atome[type]
       next unless ids_found

@@ -14,15 +14,19 @@ class Object
       # type help the system what type of type the particle will receive and store
       # puts "specific : #{params}"
       generator.build_particle(params[:particle], { render: params[:render], return: params[:return], store: params[:store], type: params[:type] }, &bloc)
-
-
-
     elsif params.key?(:sanitizer)
       generator.build_sanitizer(params[:sanitizer], &bloc)
     elsif params.key?(:pre)
       generator.build_option("pre_render_#{params[:pre]}", &bloc)
     elsif params.key?(:post)
       generator.build_option("post_render_#{params[:post]}", &bloc)
+    # elsif params.key?(:initialize)
+    #   # alert params
+    #   # alert @atome
+    #   unless @atome[:unit]
+    #     @atome[:unit] = {}
+    #   end
+
     # elsif params.key?(:browser)
     #   generator.build_render("browser_#{params[:browser]}", &bloc)
     # elsif params.key?(:specificity)
