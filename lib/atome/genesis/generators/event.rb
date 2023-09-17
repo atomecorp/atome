@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 new({ particle: :touch, type: :hash, store: false })
+
 new({ post: :touch }) do |params, user_bloc|
   @touch = {} if @touch == nil
+  # alert user_bloc
   @touch[params] = user_bloc
+  alert "it now return the current atome !!!! : #{self}, #{self.class}"
   # as store for touch is set to false we have to manually save the instance variable
   store_value(:touch)
 end

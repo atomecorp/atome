@@ -86,9 +86,8 @@ class Atome
   end
 
   def store_code_bloc(element, &user_proc)
-    # TODO : maybe we have to change tis code if we need multiple proc for an particle
+    # TODO : we may have to change this code if we need multiple proc for an particle
     Object.attr_accessor "#{element}_code"
-
     instance_variable_set("@#{element}_code", user_proc)
   end
 

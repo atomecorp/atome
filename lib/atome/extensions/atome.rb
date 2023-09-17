@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+class Atome
+  def add_instance_varaible(instance_name, value)
+
+  end
+
+end
+
 class Object
   def new(params, &bloc)
     generator = Genesis.generator
@@ -17,33 +24,11 @@ class Object
     elsif params.key?(:sanitizer)
       generator.build_sanitizer(params[:sanitizer], &bloc)
     elsif params.key?(:pre)
-      generator.build_option("pre_render_#{params[:pre]}", &bloc)
+      Atome.instance_variable_set("@pre_#{params[:pre]}", bloc)
+      # generator.build_option("pre_render_#{params[:pre]}", &bloc)
     elsif params.key?(:post)
-      generator.build_option("post_render_#{params[:post]}", &bloc)
-    # elsif params.key?(:initialize)
-    #   # alert params
-    #   # alert @atome
-    #   unless @atome[:unit]
-    #     @atome[:unit] = {}
-    #   end
-
-    # elsif params.key?(:browser)
-    #   generator.build_render("browser_#{params[:browser]}", &bloc)
-    # elsif params.key?(:specificity)
-    #   #########################################################################################
-    #   Universe.set_atomes_specificities(params)                                               #
-    #   if params[ :renderer]                                                                   #
-    #     render_method = "#{params[:renderer]}_#{params[:specific]}_#{params[:method]}"        #
-    #     # puts "specific : #{params} maybe specify render engine?"                            #
-    #     generator.build_render(render_method, &bloc)                                          #
-    #   else                                                                                    #
-    #     Universe.renderer_list.each do |render_engine|                                        #
-    #       # puts "render_method : #{render_engine}"                                           #
-    #       render_method = "#{render_engine}_#{params[:specific]}#{params[:method]}"          #
-    #       generator.build_render(render_method, &bloc)                                        #
-    #     end                                                                                   #
-    #   end                                                                                     #
-    #   #########################################################################################
+      Atome.instance_variable_set("@post_#{params[:post]}", bloc)
+      # generator.build_option("post_render_#{params[:post]}", bloc)
     elsif params[:renderer]
       renderer_found= params[:renderer]
       if params[:specific]

@@ -1,6 +1,5 @@
 ######## tests
 
-
 def attachment_common(children_ids, parents_ids, &user_proc)
   # alert "problem here ===>#{self.inspect}"
   # puts "id is : #{id}"
@@ -214,7 +213,7 @@ class HTML
   end
 
   def innerText(data)
-      @html_object[:innerText] = data.to_s
+    @html_object[:innerText] = data.to_s
   end
 
   def textContent(data)
@@ -437,10 +436,8 @@ new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_val
   html.text(@atome[:id])
 end
 
-
-
 new({ method: :width, type: :integer, renderer: :html }) do |value, _user_proc|
-  unit_found= unit[:width]
+  unit_found = unit[:width]
   if unit_found
     html.style(:width, "#{value}#{unit_found}")
   else
@@ -514,9 +511,7 @@ end
 #   alert "==> value found is #{value}"
 # end
 
-
-new({initialize: :unit,value: {}})
-
+new({ initialize: :unit, value: {} })
 
 ############### Lets create the U.I.
 Atome.new(
@@ -550,7 +545,7 @@ Atome.new(
 
 Atome.new(
   { renderers: default_render, id: :text_color, type: :color, tag: ({ system: true, persistent: true }),
-    red: 0.3, green: 0.3, blue: 0.3, alpha: 1, attach: [], attached: [] }
+    red: 0.9, green: 0.9, blue: 0.9, alpha: 1, attach: [], attached: [] }
 )
 
 Atome.new(
@@ -603,7 +598,7 @@ s_c.red(0.2)
 s_c.blue(0)
 s_c.green(0)
 a.top(99)
-aa.unit[:width]="%"
+aa.unit[:width] = "%"
 aa.width(88)
 a.smooth(33)
 a.web({ tag: :span })
@@ -613,12 +608,12 @@ box
 circle
 # text(:hello)
 # Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view], :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
-aa.unit[:left]= :inch
+aa.unit[:left] = :inch
 aa.unit({ top: :px })
 aa.unit({ bottom: '%' })
-aa.unit[:bottom]=:cm
-aa.unit[:right]= :inch
-aa.unit[:top]= :px
+aa.unit[:bottom] = :cm
+aa.unit[:right] = :inch
+aa.unit[:top] = :px
 puts " unit for aa is : #{aa.unit}"
 
 # new({ atome: :poil })
@@ -631,10 +626,23 @@ puts " unit for aa is : #{aa.unit}"
 # end
 
 tt = Atome.new(
-  { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100,attach: [:my_shape], data: "too much cool for me", apply: [:text_color]
+  { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100, attach: [:my_shape], data: "too much cool for me", apply: [:text_color]
   }
 )
 
-
+# new({ method: :touch, type: :integer, renderer: :html }) do |params, user_bloc|
+#   @touchy = {} if @touchy == nil
+#   @touchy[params] = user_bloc
+#   @touchy[params].call
+# end
+# Atome.class_variable_set(:@@variable_de_classe_externe, "ma valeur")
+aa.touch(true) do
+  alert "cool!"
+end
+# puts Atome.class_variable_get(:@@post_touch)
+# alert Atome.class_variable_get(:@@variable_de_classe_externe)
+# aa.touch(:kool)
 # text(:hello)
+
+
 

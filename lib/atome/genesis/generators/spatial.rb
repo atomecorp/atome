@@ -5,6 +5,8 @@ new({ particle: :left, type: :integer }) do |_params, user_proc|
 end
 new({ particle: :right, type: :integer })
 new({ particle: :top, type: :integer })
+
+
 new({ particle: :bottom, type: :integer })
 new({ particle: :rotate, type: :integer })
 new({ particle: :direction, type: :string })

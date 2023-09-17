@@ -42,11 +42,11 @@ class Atome
     end
   end
 
-  def additional_particle_methods(element, store, render, &method_proc)
+  def additional_particle_methods(element, store, rendering, &method_proc)
     Atome.define_method "#{element}=" do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
       params = sanitize(element, params)
-      particle_creation(element, params, store, render, &user_proc)
+      particle_creation(element, params, store, rendering, &user_proc)
     end
   end
 
@@ -55,8 +55,10 @@ class Atome
       params = sanitize(element, params)
       # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
       params = atome_common(element, params)
-      run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
-      run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
+      # run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
+      # run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
+      self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}")) if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
+      self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}")) if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
       send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
     else
       group(@atome["#{element}s"])
@@ -73,11 +75,13 @@ class Atome
 
     # the method define below is the fastest params are passed directly
     Atome.define_method "set_#{element}" do |params, &user_proc|
+      capitalized_element=element.to_s.capitalize
       # we generate the corresponding module here:
-      alert "ca crash ici"
-      Object.const_set(element, Module.new)
+      puts "#{element} : #{params}"
+      Object.const_set(capitalized_element, Module.new)
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]
+      alert 'the lone below create an infinite loop'
       new_atome = Atome.new({ element => params }, &user_proc)
       module_to_extend = Object.const_get(element)
       new_atome.extend(module_to_extend)
@@ -93,10 +97,17 @@ class Atome
   #   end
   # end
 
-  def run_optional_proc(proc_name, atome = self, params, &user_proc)
-    option_found = Universe.get_optional_method(proc_name)
-    atome.instance_exec(params, user_proc, atome, &option_found) if option_found.is_a?(Proc)
-  end
+  # def run_optional_proc(proc_name, atome = self, params, &user_proc)
+  #   option_found = Universe.get_optional_method(proc_name)
+  #   # puts "=> #{Universe.optional_get_optional_method[:post_render_touch].class}"
+  #   # optional_found = Universe.optional_get_optional_method[:post_render_touch]
+  #   # atome.instance_exec( &optional_found) if optional_found.is_a?(Proc)
+  #
+  #   # if option_found
+  #   #   alert option_found.class
+  #   # end
+  #   atome.instance_exec(params, user_proc, atome, &option_found) if option_found.is_a?(Proc)
+  # end
 
   def store_value(element)
     params = instance_variable_get("@#{element}")
@@ -113,16 +124,18 @@ class Atome
     @real_atome[@property] = value
   end
 
-  def particle_creation(element, params, store, render, &user_proc)
+  def particle_creation(element, params, store, rendering, &user_proc)
     return false unless security_pass(element, params)
 
     # we create a proc holder of any new particle if user pass a bloc
     store_code_bloc(element, &user_proc) if user_proc
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
-    run_optional_proc("pre_render_#{element}", self, params, &user_proc)
-    render(element, params, &user_proc) if render
-    run_optional_proc("post_render_#{element}", self, params, &user_proc)
+    # run_optional_proc("pre_render_#{element}", self, params, &user_proc)
+    self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}")) if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
+    render(element, params, &user_proc) if rendering
+    self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}")) if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
+    # run_optional_proc("post_render_#{element}", self, params, &user_proc)
     broadcasting(element)
     store_value(element) if store
     self

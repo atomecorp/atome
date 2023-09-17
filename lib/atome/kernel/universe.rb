@@ -33,7 +33,7 @@ class Universe
       @specificities
     end
 
-    def add_optional_method(method_name, &method_proc)
+    def add_optional_method(method_name, method_proc)
       # this method is used to add optional methods
       # puts "3 => #{method_name}"
       instance_variable_get('@options').merge!({ method_name => method_proc })
@@ -44,6 +44,10 @@ class Universe
       # this method is used to add optional methods
       instance_variable_get('@options')[method_name]
     end
+    # def optional_get_optional_method
+    #   # this method is used to add optional methods
+    #   instance_variable_get('@options')
+    # end
 
     def add_sanitizer_method(method_name, &method_proc)
       # this method is used to add sanitizer methods

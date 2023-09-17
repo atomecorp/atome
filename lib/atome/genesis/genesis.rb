@@ -88,7 +88,7 @@ class Atome
     Universe.add_sanitizer_method(method_name.to_sym, &method_proc)
   end
 
-  def build_option(method_name, &method_proc)
-    Universe.add_optional_method(method_name.to_sym, &method_proc)
+  def build_option(method_name, method_proc)
+    Universe.add_optional_method(method_name.to_sym, method_proc)
   end
 end
