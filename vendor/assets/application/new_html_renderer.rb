@@ -1,5 +1,6 @@
 ######## tests
 
+
 def attachment_common(children_ids, parents_ids, &user_proc)
   # alert "problem here ===>#{self.inspect}"
   # puts "id is : #{id}"
@@ -203,6 +204,23 @@ class HTML
     self
   end
 
+  def text(id)
+    @html_type = :div
+    @html_object = JS.global[:document].createElement("pre")
+    JS.global[:document][:body].appendChild(@html_object)
+    add_class("atome")
+    id(id)
+    self
+  end
+
+  def innerText(data)
+      @html_object[:innerText] = data.to_s
+  end
+
+  def textContent(data)
+    @html_object[:textContent] = data
+  end
+
   def style(property, value = nil)
     element_found = JS.global[:document].getElementById(@id.to_s)
     if value
@@ -287,9 +305,9 @@ new({ renderer: :html, method: :web }) do |params, &user_proc|
   params
 end
 
-new({ renderer: :html, method: :type, type: :string, specific: :shape }) do |_value, _user_proc|
-  html.shape(@atome[:id])
-end
+# new({ renderer: :html,  type: :string, specific: :shape }) do |_value, _user_proc|
+#   html.shape(@atome[:id])
+# end
 
 new({ renderer: :html, method: :height, type: :string }) do |value, _user_proc|
   html.style(:height, "#{value}px")
@@ -407,9 +425,11 @@ new({ method: :type, type: :string, specific: :shape, renderer: :html }) do |_va
   html.shape(@atome[:id])
 end
 
-# new({ renderer: :html, method: :type, type: :string, exclusive: :shape }) do |_value, _user_proc|
-#   html.shape(@atome[:id])
-# end
+new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_value, _user_proc|
+  html.text(@atome[:id])
+end
+
+
 
 new({ method: :width, type: :integer, renderer: :html }) do |value, _user_proc|
   unit_found= unit[:width]
@@ -478,6 +498,14 @@ new({ method: :alpha, type: :integer, specific: :color, renderer: :html }) do |v
   # puts "==> alpha only for color: #{value}"
 end
 
+new({ method: :data, type: :string, specific: :text, renderer: :html }) do |value, _user_proc|
+  html.innerText(value)
+end
+
+# new({ method: :text, type: :string, renderer: :html }) do |value, _user_proc|
+#   alert "==> value found is #{value}"
+# end
+
 
 new({initialize: :unit,value: {}})
 
@@ -514,7 +542,7 @@ Atome.new(
 
 Atome.new(
   { renderers: default_render, id: :text_color, type: :color, tag: ({ system: true, persistent: true }),
-    red: 0.3, green: 0.3, blue: 0.3, alpha: 1, attach: [], attached: [] }
+    red: 0.3, green: 0.3, blue: 0.1, alpha: 1, attach: [], attached: [] }
 )
 
 Atome.new(
@@ -584,3 +612,21 @@ aa.unit[:bottom]=:cm
 aa.unit[:right]= :inch
 aa.unit[:top]= :px
 puts " unit for aa is : #{aa.unit}"
+
+# new({ atome: :poil })
+# new({ atome: :poil })
+# poil(:data)
+# piol
+
+# new({ renderer: :html, method: :text, type: :hash }) do |value, _user_proc|
+#   alert value
+# end
+
+tt = Atome.new(
+  { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100,attach: [:my_shape], data: "jhgjhg jhsgdfj qsjdhfg sd"
+  }
+)
+
+
+# text(:hello)
+

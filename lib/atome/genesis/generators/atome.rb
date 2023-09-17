@@ -16,20 +16,17 @@ new({ sanitizer: :color }) do |params|
   params = create_color_hash(params) unless params.instance_of? Hash
   # the condition below is  to prevent the creation of multiple unwanted colors with same property and no ID specified
   unless params[:id]
-    uniq_value= "#{params[:red].to_s.sub('.','_')}_#{params[:green].to_s.sub('.','_')}_#{params[:blue].to_s.sub('.','_')}_#{params[:alpha].to_s.sub('.','_')}_#{params[:left].to_s.sub('.','_')}_#{params[:top].to_s.sub('.','_')}_#{params[:diffusion].to_s.sub('.','_')}"
-    params[:id]="#{@atome[:id]}_color_#{uniq_value}"
+    uniq_value = "#{params[:red].to_s.sub('.', '_')}_#{params[:green].to_s.sub('.', '_')}_#{params[:blue].to_s.sub('.', '_')}_#{params[:alpha].to_s.sub('.', '_')}_#{params[:left].to_s.sub('.', '_')}_#{params[:top].to_s.sub('.', '_')}_#{params[:diffusion].to_s.sub('.', '_')}"
+    params[:id] = "#{@atome[:id]}_color_#{uniq_value}"
   end
   params
 end
-
 new({ atome: :image })
 new({ sanitizer: :image }) do |params|
   unless params.instance_of? Hash
     # TODO : we have to convert all image to png or maintain a database with extension
     # FIXME : temporary patch that add .png to the string if no extension is found
-    if params.split('.').length == 1
-      params = "#{params}.png"
-    end
+    params = "#{params}.png" if params.split('.').length == 1
 
     params = { path: "./medias/images/#{params}" }
   end
@@ -75,16 +72,15 @@ end
 new({ atome: :animation })
 new({ atome: :text, type: :hash })
 new({ sanitizer: :text }) do |params|
+  params = { data: params } unless params.instance_of? Hash
+
   if params[:data].instance_of? Array
-    params
     additional_data = params.reject { |cle| cle == :data }
     data_found = params[:data]
     parent_text = ''
     data_found.each_with_index do |atome_to_create, index|
-      unless atome_to_create.instance_of? Hash
-        atome_to_create = { data: atome_to_create, width: :auto }
-      end
-      if index == 0
+      atome_to_create = { data: atome_to_create, width: :auto } unless atome_to_create.instance_of? Hash
+      if index.zero?
         parent_text = text(atome_to_create)
         parent_text.set(additional_data)
       else
@@ -92,9 +88,9 @@ new({ sanitizer: :text }) do |params|
       end
     end
     params = { data: '' }
-  else
-    params = { data: params } unless params.instance_of? Hash
+
   end
+  # puts params
   params
 end
 

@@ -51,18 +51,14 @@ class Atome
   end
 
   def atome_parsing(element, params, &user_proc)
-
     if params
-
       params = sanitize(element, params)
       # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
       params = atome_common(element, params)
       run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
-
     else
-
       group(@atome["#{element}s"])
     end
 
@@ -78,6 +74,7 @@ class Atome
     # the method define below is the fastest params are passed directly
     Atome.define_method "set_#{element}" do |params, &user_proc|
       # we generate the corresponding module here:
+      alert "ca crash ici"
       Object.const_set(element, Module.new)
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]

@@ -10,7 +10,6 @@ new({ particle: :broadcast })
 new({ particle: :data })
 # new({particle: :additional })
 new({ particle: :delete, render: false }) do |params, &user_proc|
-
   if params == true
     # We use the tag persistent to exclude color of system object and other default colors
     unless tag && tag[:persistent]
