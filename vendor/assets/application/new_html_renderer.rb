@@ -343,6 +343,14 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
   html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
 end
 
+new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |parent_found, _user_proc|
+  red = parent_found.red * 255
+  green = parent_found.green * 255
+  blue = parent_found.blue * 255
+  alpha = parent_found.alpha
+  html.style(:color, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+end
+
 # new({ renderer: :html, method: :top, type: :string }) do |_value, _user_proc|
 #
 # end
@@ -542,7 +550,7 @@ Atome.new(
 
 Atome.new(
   { renderers: default_render, id: :text_color, type: :color, tag: ({ system: true, persistent: true }),
-    red: 0.3, green: 0.3, blue: 0.1, alpha: 1, attach: [], attached: [] }
+    red: 0.3, green: 0.3, blue: 0.3, alpha: 1, attach: [], attached: [] }
 )
 
 Atome.new(
@@ -623,7 +631,7 @@ puts " unit for aa is : #{aa.unit}"
 # end
 
 tt = Atome.new(
-  { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100,attach: [:my_shape], data: "jhgjhg jhsgdfj qsjdhfg sd"
+  { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100,attach: [:my_shape], data: "too much cool for me", apply: [:text_color]
   }
 )
 
