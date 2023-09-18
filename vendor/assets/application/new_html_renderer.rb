@@ -127,7 +127,8 @@ new({ particle: :red, render: true }) do |params, &user_proc|
     unless rgba_data[:alpha]
       rgba_data[:alpha] = 1
     end
-    targeted_atome.html.style(:backgroundColor, "rgba(#{html_params}, #{rgba_data[:green]}, #{rgba_data[:blue]}, #{rgba_data[:alpha]})")
+    targeted_atome.html.style(:backgroundColor, "rgba(#{html_params}, #{rgba_data[:green]}, #{rgba_data[:blue]},
+#{rgba_data[:alpha]})")
   end
   self
 end
@@ -141,7 +142,8 @@ new({ particle: :green, render: true }) do |params, &user_proc|
     unless rgba_data[:alpha]
       rgba_data[:alpha] = 1
     end
-    targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{html_params}, #{rgba_data[:blue]}, #{rgba_data[:alpha]})")
+    targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{html_params}, #{rgba_data[:blue]},
+#{rgba_data[:alpha]})")
   end
   self
 end
@@ -155,7 +157,8 @@ new({ particle: :blue, render: true }) do |params, &user_proc|
     unless rgba_data[:alpha]
       rgba_data[:alpha] = 1
     end
-    targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{rgba_data[:green]}, #{html_params}, #{rgba_data[:alpha]})")
+    targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{rgba_data[:green]}, #{html_params},
+#{rgba_data[:alpha]})")
   end
   self
 end
@@ -165,7 +168,8 @@ new({ particle: :alpha, render: true }) do |params, &user_proc|
     targeted_atome = grab(attached_atome_found)
     color_found = targeted_atome.html.style(:backgroundColor).to_s
     rgba_data = extract_rgb_alpha(color_found)
-    targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{rgba_data[:green]}, #{rgba_data[:blue]}, #{params})")
+    targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{rgba_data[:green]}, #{rgba_data[:blue]},
+ #{params})")
   end
   self
 end
@@ -219,7 +223,53 @@ class HTML
   def textContent(data)
     @html_object[:textContent] = data
   end
+  ###### event handler ######
+  def event(params, bloc)
+    send("touch_#{params}", bloc)
+  end
 
+
+
+  # def touch_true(bloc)
+  #   interact = JS.global[:interact].call("##{@id}")
+  #   interact.addEventListener("tap") do |event|
+  #     puts "Tapped!"
+  #     # Votre code ici
+  #   end
+  # end
+
+  def touch_true(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    # interact.call('on', 'tap') do |event|
+    #   puts "Tapped!"
+    # end
+
+    interact.on('tap') { puts "wasm Tapped!" }
+
+    # ########@
+    # interact = Native(JS.eval("return interact('##{@id}')"))
+    # interact.on('tap') { puts "Tapped!" }
+    # ########@
+
+  end
+
+#   def touch_true(bloc)
+#     interact = JS.call('interact', "##{@id}")
+#     interact.call('on', 'tap') do |event|
+#       puts :so_kool
+#       # JS.call('Opal.BrowserHelper.$touch_helper_callback', event, @atome, bloc)
+#     end
+#     # bloc.call
+# #     `
+# #     interact('#'+#{@id})
+# #   .on('tap', function (event) {
+# # Opal.BrowserHelper.$touch_helper_callback(event,#{atome},#{proc});
+# #   })
+# # `
+#   end
+
+
+  ###### event handler ######
   def style(property, value = nil)
     element_found = JS.global[:document].getElementById(@id.to_s)
     if value
@@ -254,7 +304,8 @@ class HTML
   #     --#{id_found}_g : #{green * 255};
   #     --#{id_found}_b : #{blue * 255};
   #     --#{id_found}_a : #{alpha};
-  #     --#{id_found}_col : rgba(var(--#{id_found}_r ),var(--#{id_found}_g ),var(--#{id_found}_b ),var(--#{id_found}_a ));
+  #     --#{id_found}_col : rgba(var(--#{id_found}_r ),var(--#{id_found}_g ),var(--#{id_found}_b ),
+  # var(--#{id_found}_a ));
   #
   #     background-color: var(--#{id_found}_col);
   #     fill: var(--#{id_found}_col);
@@ -562,7 +613,8 @@ Atome.new(
 
 # view port
 Atome.new(
-  { renderers: default_render, id: :view, type: :shape, attach: [:user_view], apply: [:view_color], tag: { system: true },
+  { renderers: default_render, id: :view, type: :shape, attach: [:user_view], apply: [:view_color],
+    tag: { system: true },
     attached: [], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
   }
 
@@ -607,7 +659,8 @@ aa.smooth(9)
 box
 circle
 # text(:hello)
-# Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view], :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
+# Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view],
+# :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
 aa.unit[:left] = :inch
 aa.unit({ top: :px })
 aa.unit({ bottom: '%' })
@@ -626,19 +679,25 @@ puts " unit for aa is : #{aa.unit}"
 # end
 
 tt = Atome.new(
-  { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100, attach: [:my_shape], data: "too much cool for me", apply: [:text_color]
+  { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100, attach: [:my_shape],
+    data: "too much cool for me", apply: [:text_color]
   }
 )
 
-# new({ method: :touch, type: :integer, renderer: :html }) do |params, user_bloc|
-#   @touchy = {} if @touchy == nil
-#   @touchy[params] = user_bloc
-#   @touchy[params].call
-# end
+new({ method: :touch, type: :integer, renderer: :html }) do |params, user_bloc|
+  # alert params
+  html.event(params, @touch_code)
+  # # alert "touchai"
+  # @touchy = {} if @touchy == nil
+  # @touchy[params] = user_bloc
+  # @touchy[params].call
+end
 # Atome.class_variable_set(:@@variable_de_classe_externe, "ma valeur")
 aa.touch(true) do
   alert "cool!"
 end
+
+# alert aa.touch
 # puts Atome.class_variable_get(:@@post_touch)
 # alert Atome.class_variable_get(:@@variable_de_classe_externe)
 # aa.touch(:kool)

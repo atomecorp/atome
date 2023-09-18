@@ -1,5 +1,4 @@
-
-function mouse_interaction(element, atome){
+function mouse_interaction(element, atome) {
     interact(element).dropzone({
         listeners: {
             dragenter(event) {
@@ -60,8 +59,8 @@ function mouse_interaction(element, atome){
 }
 
 
-function file_drop(atome_id, atome){
-    const dropzone = document.querySelector('#'+atome_id)
+function file_drop(atome_id, atome) {
+    const dropzone = document.querySelector('#' + atome_id)
     dropzone.addEventListener('dragover', evt => evt.preventDefault())
     dropzone.addEventListener('drop', async evt => {
         evt.preventDefault()
@@ -71,14 +70,19 @@ function file_drop(atome_id, atome){
             reader.readAsDataURL(file);
             reader.onloadend = function () {
                 const base64data = reader.result;
-                let  type_found = file.type.split('/')[0]
-                atome.$drop_action_callback(Opal.hash({path: file.filepath,type: type_found,size: file.size,data: base64data}));
+                let type_found = file.type.split('/')[0]
+                atome.$drop_action_callback(Opal.hash({
+                    path: file.filepath,
+                    type: type_found,
+                    size: file.size,
+                    data: base64data
+                }));
             }
         }
     })
 
 
-    async function getFilesFromDataTransferItems (dataTransferItems, options = { raw: false }) {
+    async function getFilesFromDataTransferItems(dataTransferItems, options = {raw: false}) {
         const checkErr = (err) => {
             if (getFilesFromDataTransferItems.didShowInfo) return
             if (err.name !== 'EncodingError') return
@@ -163,4 +167,21 @@ function file_drop(atome_id, atome){
     if (this.window && this === this.window) this.getFilesFromDataTransferItems = getFilesFromDataTransferItems
     else module.exports.getFilesFromDataTransferItems = getFilesFromDataTransferItems
 
+}
+
+
+// function atome_touch(val) {
+//   var  fct_found= val;
+//         // .on('tap', function (event) {
+//         //     console.log('yes!');
+//         //     // event.currentTarget.classList.toggle('switch-bg')
+//         //     // event.preventDefault()
+//         // })
+//     // interact(val)
+//     return fct_found
+// }
+
+function atome_touch() {
+    var fct_found = 'hello';
+    return fct_found;
 }
