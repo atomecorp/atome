@@ -1,13 +1,11 @@
 ######## tests
 
 def attachment_common(children_ids, parents_ids, &user_proc)
-  # alert "problem here ===>#{self.inspect}"
-  # puts "id is : #{id}"
-  # alert "After ===>#{self.inspect}"
   # FIXME : it seems we sometime iterate when for nothing
   parents_ids.each do |parent_id|
     # FIXME : find a more optimised way to prevent atome to attach to itself
     parent_found = grab(parent_id)
+    puts "parent_id is : #{parent_id}"
     parent_found.atome[:attached].concat(children_ids).uniq!
     # if parent_found.type == :color
     #   children_ids.each do |child_id|
@@ -223,51 +221,18 @@ class HTML
   def textContent(data)
     @html_object[:textContent] = data
   end
+
   ###### event handler ######
   def event(params, bloc)
     send("touch_#{params}", bloc)
   end
 
-
-
-  # def touch_true(bloc)
-  #   interact = JS.global[:interact].call("##{@id}")
-  #   interact.addEventListener("tap") do |event|
-  #     puts "Tapped!"
-  #     # Votre code ici
-  #   end
-  # end
-
   def touch_true(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    # interact.call('on', 'tap') do |event|
-    #   puts "Tapped!"
-    # end
-
-    interact.on('tap') { puts "wasm Tapped!" }
-
-    # ########@
-    # interact = Native(JS.eval("return interact('##{@id}')"))
-    # interact.on('tap') { puts "Tapped!" }
-    # ########@
-
+    interact.on('tap') do
+      bloc.call
+    end
   end
-
-#   def touch_true(bloc)
-#     interact = JS.call('interact', "##{@id}")
-#     interact.call('on', 'tap') do |event|
-#       puts :so_kool
-#       # JS.call('Opal.BrowserHelper.$touch_helper_callback', event, @atome, bloc)
-#     end
-#     # bloc.call
-# #     `
-# #     interact('#'+#{@id})
-# #   .on('tap', function (event) {
-# # Opal.BrowserHelper.$touch_helper_callback(event,#{atome},#{proc});
-# #   })
-# # `
-#   end
-
 
   ###### event handler ######
   def style(property, value = nil)
@@ -381,8 +346,11 @@ new({ renderer: :html, method: :smooth, type: :string }) do |value, _user_proc|
 end
 
 new({ renderer: :html, method: :attach, type: :string }) do |parent_found, _user_proc|
-
   html.append_to(parent_found)
+end
+
+new({ renderer: :html, method: :attach, type: :string, specific: :color }) do |parent_found, _user_proc|
+  grab(parent_found).apply(id)
 end
 
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
@@ -487,6 +455,10 @@ new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_val
   html.text(@atome[:id])
 end
 
+# new({ method: :type, type: :string, specific: :color, renderer: :html }) do |_value, _user_proc|
+#   alert :so_good
+# end
+
 new({ method: :width, type: :integer, renderer: :html }) do |value, _user_proc|
   unit_found = unit[:width]
   if unit_found
@@ -501,24 +473,25 @@ new({ method: :right, type: :string, specific: :shape, renderer: :html }) do |va
   html.style(:right, "#{value}px")
 end
 
-new({ method: :top, type: :integer, specific: :shape, renderer: :html }) do |params, &bloc|
+new({ method: :top, type: :integer, renderer: :html }) do |params, &bloc|
   html.style(:top, "#{params}px")
 end
 
-new({ method: :bottom, type: :integer, specific: :shape, renderer: :html }) do |params, &bloc|
+new({ method: :bottom, type: :integer, renderer: :html }) do |params, &bloc|
   html.style(:bottom, "#{params}px")
 end
 
-new({ method: :right, type: :integer, specific: :shape }) do |params, &bloc|
+new({ method: :right, type: :integer }) do |params, &bloc|
   html.style(:right, "#{params}px")
 end
 
-new({ method: :left, type: :integer, specific: :shape, renderer: :html }) do |params, &bloc|
+new({ method: :left, type: :integer, renderer: :html }) do |params, &bloc|
 
   html.style(:left, "#{params}px")
 end
 
 new({ method: :left, type: :integer, specific: :color, renderer: :html })
+new({ method: :top, type: :integer, specific: :color, renderer: :html })
 
 #
 new({ method: :red, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
@@ -632,6 +605,17 @@ Atome.new(
 
 s_c = grab(:shape_color)
 
+# Atome.new(
+#   { renderers: default_render, id: :my_test_box, type: :shape, width: 100, height: 100, attach: [:view],
+#     left: 120, top: 0, apply: [:shape_color],attached: []
+#   }
+# )
+# a = Atome.new(
+#   { renderers: default_render, id: :my_test_box, type: :shape, attach: [:view], apply: [:shape_color],
+#     left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+#   }
+#
+# )
 a = Atome.new(
   { renderers: default_render, id: :my_shape, type: :shape, attach: [:view], apply: [:shape_color],
     left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
@@ -656,8 +640,8 @@ a.smooth(33)
 a.web({ tag: :span })
 aa.smooth(9)
 # FIXME:  add apply to targeted shape, ad affect to color applied
-box
-circle
+# box
+# circle
 # text(:hello)
 # Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view],
 # :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
@@ -677,10 +661,10 @@ puts " unit for aa is : #{aa.unit}"
 # new({ renderer: :html, method: :text, type: :hash }) do |value, _user_proc|
 #   alert value
 # end
-
-tt = Atome.new(
+# ###################### uncomment below
+Atome.new(
   { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100, attach: [:my_shape],
-    data: "too much cool for me", apply: [:text_color]
+    data: "too much cool for me", apply: [:text_color], attached: []
   }
 )
 
@@ -697,11 +681,26 @@ aa.touch(true) do
   alert "cool!"
 end
 
+b = box({ id: :titi })
+t = b.text({ data: :orangered, id: :the_orange, attach: [:my_txt] })
+aa.text({ data: :hello, id: :the_text })
+b.color(:orange)
+# ###################### uncomment above
+
+# c = circle
+# c.color(:blue)
+
+tt = text({ data: :cool, id: :new_text })
+tt.left(333)
+# alert tt.left
+tt.color(:red)
+# c.left(333)
+
 # alert aa.touch
 # puts Atome.class_variable_get(:@@post_touch)
 # alert Atome.class_variable_get(:@@variable_de_classe_externe)
 # aa.touch(:kool)
-# text(:hello)
-
+# text(:hello_you)
+# TODO: implement complex concatenated texts
 
 

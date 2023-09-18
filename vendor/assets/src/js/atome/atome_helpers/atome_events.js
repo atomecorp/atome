@@ -169,19 +169,3 @@ function file_drop(atome_id, atome) {
 
 }
 
-
-// function atome_touch(val) {
-//   var  fct_found= val;
-//         // .on('tap', function (event) {
-//         //     console.log('yes!');
-//         //     // event.currentTarget.classList.toggle('switch-bg')
-//         //     // event.preventDefault()
-//         // })
-//     // interact(val)
-//     return fct_found
-// }
-
-function atome_touch() {
-    var fct_found = 'hello';
-    return fct_found;
-}

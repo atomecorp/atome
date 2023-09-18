@@ -50,10 +50,6 @@
 module JS
 
   def self.eval(string)
-    # ########@
-    # clean_str = string.gsub('return', '')
-    # `eval(#{clean_str})`
-    # ########@
     clean_str = string.gsub('return', '')
     result = `eval(#{clean_str})`
     native_result = Native(result)

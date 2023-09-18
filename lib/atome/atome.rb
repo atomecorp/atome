@@ -32,9 +32,7 @@ class Atome
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = sanitize(element, params, &user_proc)
         create_particle(element, store, render)
-        if @atome[:type] == :group
-          group_particle_analysis(element, params, &user_proc)
-        end
+        group_particle_analysis(element, params, &user_proc) if @atome[:type] == :group
         send("set_#{element}", params, &user_proc)
       else
         @atome[element]
@@ -50,15 +48,21 @@ class Atome
     end
   end
 
-  def atome_parsing(element, params, &user_proc)
+  def atome_sanitizer(element, params, &user_proc)
     if params
       params = sanitize(element, params)
+
       # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
       params = atome_common(element, params)
       # run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       # run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
-      self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}")) if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
-      self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}")) if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
+      if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
+        instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
+      end
+      if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
+        instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
+      end
+
       send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
     else
       group(@atome["#{element}s"])
@@ -67,24 +71,23 @@ class Atome
   end
 
   def new_atome(element, &method_proc)
+
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-      atome_parsing(element, params, &user_proc)
+      atome_sanitizer(element, params, &user_proc)
     end
 
     # the method define below is the fastest params are passed directly
     Atome.define_method "set_#{element}" do |params, &user_proc|
-      capitalized_element=element.to_s.capitalize
+      # capitalized_element=element.to_s.capitalize
       # we generate the corresponding module here:
-      puts "#{element} : #{params}"
-      Object.const_set(capitalized_element, Module.new)
+      # Object.const_set(capitalized_element, Module.new)
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]
-      alert 'the lone below create an infinite loop'
-      new_atome = Atome.new({ element => params }, &user_proc)
-      module_to_extend = Object.const_get(element)
-      new_atome.extend(module_to_extend)
+      new_atome = Atome.new(params, &user_proc)
+      # module_to_extend = Object.const_get(capitalized_element)
+      # new_atome.extend(module_to_extend)
       new_atome
       # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
     end
@@ -132,9 +135,13 @@ class Atome
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
     # run_optional_proc("pre_render_#{element}", self, params, &user_proc)
-    self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}")) if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
+    if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
+      self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
+    end
     render(element, params, &user_proc) if rendering
-    self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}")) if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
+    if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
+      self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
+    end
     # run_optional_proc("post_render_#{element}", self, params, &user_proc)
     broadcasting(element)
     store_value(element) if store

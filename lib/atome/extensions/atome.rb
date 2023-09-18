@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-class Atome
-  def add_instance_varaible(instance_name, value)
-
-  end
-
-end
-
 class Object
   def new(params, &bloc)
     generator = Genesis.generator
@@ -30,41 +23,36 @@ class Object
       Atome.instance_variable_set("@post_#{params[:post]}", bloc)
       # generator.build_option("post_render_#{params[:post]}", bloc)
     elsif params[:renderer]
-      renderer_found= params[:renderer]
+      renderer_found = params[:renderer]
       if params[:specific]
         Universe.set_atomes_specificities(params)
-        params[:specific]= "#{params[:specific]}_"
+        params[:specific] = "#{params[:specific]}_"
       end
 
       # else
-        render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
+      render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
       # puts "render_method : #{render_method}"
-        generator.build_render(render_method, &bloc)
+      generator.build_render(render_method, &bloc)
       # end
 
-
-
-
-
-
-        #########################################################################################
-    # else #params.key?(:html)
-    #
-    #   puts "=====> est ce qu'on passe ici ? :#{params}"
-    #   # if params[:exclusive]
-    #   #   render_method = "html_#{params[:exclusive]}_#{params[:html]}"
-    #   #   generator.build_render(render_method, &bloc)
-    #   # else
-    #     Universe.atome_list.each do |atome_type|
-    #       # exception_found = "#{Universe.get_atomes_specificities[self.type][atome_type]}"
-    #       # exception_found = "#{Universe.get_atomes_specificities[atome_type][params[params.keys[0]]]}"
-    #       # exception_found = "#{Universe.get_atomes_specificities[atome_type]}"
-    #
-    #       render_method = "#{params.keys[0]}_#{params[:html]}"
-    #       # render_method = "#{params.keys[0]}_#{atome_type}_#{params[:html]}"
-    #       generator.build_render(render_method, &bloc)
-    #     # end
-    #   end
+      #########################################################################################
+      # else #params.key?(:html)
+      #
+      #   puts "=====> est ce qu'on passe ici ? :#{params}"
+      #   # if params[:exclusive]
+      #   #   render_method = "html_#{params[:exclusive]}_#{params[:html]}"
+      #   #   generator.build_render(render_method, &bloc)
+      #   # else
+      #     Universe.atome_list.each do |atome_type|
+      #       # exception_found = "#{Universe.get_atomes_specificities[self.type][atome_type]}"
+      #       # exception_found = "#{Universe.get_atomes_specificities[atome_type][params[params.keys[0]]]}"
+      #       # exception_found = "#{Universe.get_atomes_specificities[atome_type]}"
+      #
+      #       render_method = "#{params.keys[0]}_#{params[:html]}"
+      #       # render_method = "#{params.keys[0]}_#{atome_type}_#{params[:html]}"
+      #       generator.build_render(render_method, &bloc)
+      #     # end
+      #   end
 
     end
 
@@ -106,7 +94,13 @@ class Object
   def atome_method_for_object(element)
 
     Object.define_method element do |params, &user_proc|
-      default_parent = Essentials.default_params[element][:attach][0] # we get the first parents
+      default_parent = if Essentials.default_params[element][:attach]
+                         # condition default attach value = [] , per example color to avoid colors to be attach to view by default
+                         Essentials.default_params[element][:attach][0] || :black_matter
+                       else
+                         :view
+                       end
+      # alert default_parent
       grab(default_parent).send(element, params, &user_proc)
     end
   end
