@@ -22,14 +22,14 @@ c.touch(:long) do
 end
 c.text({data: :long})
 
-d.touch(:up) do
+d.touch(:double) do
   b.color(:yellow)
   c.color(:yellow)
   d.color(:yellow)
   e.color(:yellow)
 end
 d.text({data: :up})
-e.touch(:double) do
+e.touch(:up) do
   b.color(:black)
   c.color(:black)
   d.color(:black)
@@ -54,3 +54,4 @@ end
 ccc.touch(true) do
   b.unbind(:tap)
 end
+

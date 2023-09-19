@@ -73,11 +73,12 @@ end
 task :test_build_wasm do
   `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
 
-  #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION,  delete:
+  #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
+  #   delete the following files at atome root :
   # - ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz,
   # - system_ruby_browser.wasm
   # - 3_2-wasm32-unknown-wasi-full-js
-  # and finally UNCOMMENT the lines  below
+  # and finally UNCOMMENT the first line  below ('curl -LO ....')
 
   # `curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`

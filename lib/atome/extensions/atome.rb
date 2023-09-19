@@ -105,4 +105,33 @@ class Object
     end
   end
 
+  def wait(time, id=nil, &proc)
+    id = :default_wait_time_out unless id
+    if time == :kill
+      JS.eval("clearTimeout(window.timeoutIds['#{id}']);")
+    else
+      time=time*1000
+      callback_id = "myRubyCallback_#{id}"
+      JS.global[callback_id.to_sym] = proc
+      JS.eval("if (!window.timeoutIds) { window.timeoutIds = {}; } window.timeoutIds['#{id}'] = setTimeout(function() { #{callback_id}(); }, #{time});")
+    end
+  end
+
+  def repeater(counter, proc)
+    instance_exec(counter, &proc) if proc.is_a?(Proc)
+  end
+
+  def repeat(delay = 1, repeat = 0, &proc)
+    # below we exec the call a first time
+    instance_exec(0, &proc) if proc.is_a?(Proc)
+    # as we exec one time above we subtract one below
+    `
+var  x = 1
+var intervalID = window.setInterval(function(){ Opal.Object.$repeater(x,#{proc})
+if (++x ===#{repeat} )  {
+       window.clearInterval(intervalID);
+   }}, #{delay * 1000})
+`
+  end
+
 end
