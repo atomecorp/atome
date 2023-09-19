@@ -784,7 +784,7 @@ tt.color(:red)
 # wait(:kill, 'timeout1')
 
 
-# TODO: implement touch options : long , down...
+
 # TODO: implement complex concatenated texts
 
 
