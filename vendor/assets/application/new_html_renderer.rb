@@ -233,6 +233,38 @@ class HTML
       bloc.call
     end
   end
+  def touch_double(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('doubletap') do
+      bloc.call
+    end
+  end
+  def touch_long(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('hold') do
+      bloc.call
+    end
+  end
+  def touch_down(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('down') do
+      bloc.call
+    end
+  end
+  def touch_up(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('up') do
+      bloc.call
+    end
+  end
+
+
+
+
+
+
+
+
 
   ###### event handler ######
   def style(property, value = nil)
@@ -677,7 +709,7 @@ new({ method: :touch, type: :integer, renderer: :html }) do |params, user_bloc|
   # @touchy[params].call
 end
 # Atome.class_variable_set(:@@variable_de_classe_externe, "ma valeur")
-aa.touch(true) do
+aa.touch(:long) do
   alert "cool!"
 end
 
@@ -724,32 +756,32 @@ tt.color(:red)
 # ################### works above
 
 
-##### wait usage
-# Simple usage
-wait 1 do
-  alert :good
-end
-
-# Advanced usage
-wait(4, 'timeout1') do
-  alert "Ceci saffichera après 5 secondes."
-end
-
-wait(5, 'timeout2') do
-  alert "Ceci saffichera après 6 secondes."
-end
-
-wait(3 ) do
-  alert "Ceci saffichera après 3 secondes."
-end
-
-
-wait(1000, ) do
-  wait(:kill)
-end
-
-sleep(2)
-wait(:kill, 'timeout1')
+# ##### wait usage
+# # Simple usage
+# wait 1 do
+#   alert :good
+# end
+#
+# # Advanced usage
+# wait(4, 'timeout1') do
+#   alert "Ceci saffichera après 5 secondes."
+# end
+#
+# wait(5, 'timeout2') do
+#   alert "Ceci saffichera après 6 secondes."
+# end
+#
+# wait(3 ) do
+#   alert "Ceci saffichera après 3 secondes."
+# end
+#
+#
+# wait(1000, ) do
+#   wait(:kill)
+# end
+#
+# sleep(2)
+# wait(:kill, 'timeout1')
 
 
 # TODO: implement touch options : long , down...
