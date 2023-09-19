@@ -701,6 +701,58 @@ tt.color(:red)
 # alert Atome.class_variable_get(:@@variable_de_classe_externe)
 # aa.touch(:kool)
 # text(:hello_you)
+#
+# ################### works below
+# def wait(time, &proc)
+#   if time == :kill
+#     # Annuler le setTimeout actuel
+#     JS.eval("clearTimeout(window.myTimeoutId);")
+#   else
+#     # Enregistrement de la fonction de rappel pour qu'elle soit accessible depuis JavaScript
+#     JS.global[:myRubyCallback] = proc
+#
+#     # Utilisation de JS.eval pour appeler setTimeout en JavaScript et stocker l'ID de timeout
+#     JS.eval("window.myTimeoutId = setTimeout(function() { myRubyCallback(); }, #{time});")
+#   end
+# end
+#
+# wait(2000) do
+#   alert "Temps écoulé !"
+# end
+#
+# # wait(:kill)
+# ################### works above
+
+
+##### wait usage
+# Simple usage
+wait 1 do
+  alert :good
+end
+
+# Advanced usage
+wait(4, 'timeout1') do
+  alert "Ceci saffichera après 5 secondes."
+end
+
+wait(5, 'timeout2') do
+  alert "Ceci saffichera après 6 secondes."
+end
+
+wait(3 ) do
+  alert "Ceci saffichera après 3 secondes."
+end
+
+
+wait(1000, ) do
+  wait(:kill)
+end
+
+sleep(2)
+wait(:kill, 'timeout1')
+
+
+# TODO: implement touch options : long , down...
 # TODO: implement complex concatenated texts
 
 
