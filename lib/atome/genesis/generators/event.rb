@@ -4,9 +4,7 @@ new({ particle: :touch, type: :hash, store: false })
 
 new({ post: :touch }) do |params, user_bloc|
   @touch = {} if @touch == nil
-  # alert user_bloc
   @touch[params] = user_bloc
-  # alert "it now return the current atome !!!! : #{self}, #{self.class}"
   # as store for touch is set to false we have to manually save the instance variable
   store_value(:touch)
 end
@@ -51,19 +49,28 @@ new ({ sanitizer: :drop }) do |params|
   params
 end
 
-new ({ particle: :over })
+new({ particle: :over, type: :hash, store: false })
 
-new ({ sanitizer: :over }) do |params, user_proc|
-
-  params = :enter if params == true
-  case params
-  when :enter
-    @enter_action_proc = user_proc
-  when :leave
-    @leave_action_proc = user_proc
-  end
-  params
+new({ post: :over }) do |params, user_bloc|
+  @over = {} if @over == nil
+  @over[params] = user_bloc
+  # as store for touch is set to false we have to manually save the instance variable
+  store_value(:over)
 end
+
+
+
+# new ({ sanitizer: :over }) do |params, user_proc|
+#
+#   params = :enter if params == true
+#   case params
+#   when :enter
+#     @enter_action_proc = user_proc
+#   when :leave
+#     @leave_action_proc = user_proc
+#   end
+#   params
+# end
 
 new({ particle: :sort }) do |_value, sort_proc|
   @sort_proc = sort_proc

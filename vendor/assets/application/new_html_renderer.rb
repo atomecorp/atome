@@ -5,7 +5,6 @@ def attachment_common(children_ids, parents_ids, &user_proc)
   parents_ids.each do |parent_id|
     # FIXME : find a more optimised way to prevent atome to attach to itself
     parent_found = grab(parent_id)
-    puts "parent_id is : #{parent_id}"
     parent_found.atome[:attached].concat(children_ids).uniq!
     # if parent_found.type == :color
     #   children_ids.each do |child_id|
@@ -223,8 +222,25 @@ class HTML
   end
 
   ###### event handler ######
-  def event(params, bloc)
-    send("touch_#{params}", bloc)
+  def event(action,options, bloc)
+    puts "bloc : #{bloc}"
+    send("#{action}_#{options}", bloc)
+  end
+
+  def over_true(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('mouseover') do
+      bloc.call
+    end
+  end
+  def over_enter(bloc)
+    JS.global[:myRubyMouseEnterCallback] = bloc
+    JS.eval("document.querySelector('##{@id}').addEventListener('mouseenter', function() { myRubyMouseEnterCallback(); });")
+
+  end
+  def over_leave(bloc)
+    JS.global[:myRubyMouseLeaveCallback] = bloc
+    JS.eval("document.querySelector('##{@id}').addEventListener('mouseleave', function() { myRubyMouseLeaveCallback(); });")
   end
 
   def touch_true(bloc)
@@ -700,17 +716,48 @@ Atome.new(
   }
 )
 
-new({ method: :touch, type: :integer, renderer: :html }) do |params, user_bloc|
-  # alert params
-  html.event(params, @touch_code)
-  # # alert "touchai"
-  # @touchy = {} if @touchy == nil
-  # @touchy[params] = user_bloc
-  # @touchy[params].call
+new({ method: :touch, type: :integer, renderer: :html }) do |options, user_bloc|
+  # puts user_bloc
+  # puts @touch_code
+  html.event(:touch, options, user_bloc)
 end
+
+
+new({ method: :over, type: :integer, renderer: :html }) do |options, user_bloc|
+  html.event(:over, options, user_bloc)
+end
+
+
 # Atome.class_variable_set(:@@variable_de_classe_externe, "ma valeur")
 aa.touch(:long) do
-  alert "cool!"
+  puts "cooly long touched!"
+end
+
+aa.touch(:double) do
+  puts "cooly double touched!"
+end
+
+aa.touch(:up) do
+  puts "cooly up touched!"
+end
+
+aa.touch(:down) do
+  puts "cooly down touched!"
+end
+# over
+aa.touch(true) do
+  puts "cooly touched!"
+end
+
+aa.over(:enter) do
+  puts  "cool enter"
+end
+
+aa.over(true) do
+  puts  "true over"
+end
+aa.over(:leave) do
+  puts  "cool leave"
 end
 
 b = box({ id: :titi })
@@ -782,7 +829,7 @@ tt.color(:red)
 #
 # sleep(2)
 # wait(:kill, 'timeout1')
-
+# alert aa.inspect
 
 
 # TODO: implement complex concatenated texts
