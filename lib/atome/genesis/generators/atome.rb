@@ -71,26 +71,30 @@ end
 # new({ atome: :collection })
 new({ atome: :animation })
 new({ atome: :text, type: :hash })
-new({ sanitizer: :text }) do |params|
-  params = { data: params } unless params.instance_of? Hash
 
-  if params[:data].instance_of? Array
-    additional_data = params.reject { |cle| cle == :data }
-    data_found = params[:data]
-    parent_text = ''
-    data_found.each_with_index do |atome_to_create, index|
-      atome_to_create = { data: atome_to_create, width: :auto } unless atome_to_create.instance_of? Hash
-      if index.zero?
-        parent_text = text(atome_to_create)
-        parent_text.set(additional_data)
+new({ post: :text }) do |params, current_atome|
+  if @data.instance_of? Array
+    @data.each_with_index do |data_found, index|
+      #we treat the first element
+      if index== 0
+        current_atome.send(:data, data_found)
       else
-        parent_text.text(atome_to_create)
+        # we create new text's atome attached to the main one (the first element above)
+        current_atome.text(data_found)
       end
-    end
-    params = { data: '' }
 
+    end
+  else
+    current_atome.send(:data, @data)
   end
-  # puts params
+  params
+end
+
+new({ sanitizer: :text }) do |params|
+  # to allow text api with the form text(:hello) instead of text({data: :hello})
+  params = { data: params } unless params.instance_of? Hash
+  # we delete and store the data for later analysis in:  "post: :text"
+  @data = params.delete(:data)
   params
 end
 

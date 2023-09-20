@@ -6,21 +6,13 @@ def attachment_common(children_ids, parents_ids, &user_proc)
     # FIXME : find a more optimised way to prevent atome to attach to itself
     parent_found = grab(parent_id)
     parent_found.atome[:attached].concat(children_ids).uniq!
-    # if parent_found.type == :color
-    #   children_ids.each do |child_id|
-    #     child_found = grab(child_id)
-    #     child_found.render(:apply, parent_found, &user_proc) if child_found
-    #   end
-    # else
     children_ids.each do |child_id|
       child_found = grab(child_id)
       child_found.render(:attach, parent_id, &user_proc) if child_found
     end
-    # end
   end
 end
 
-# new({html: :attach})
 new({ particle: :attach, render: false }) do |parents_ids, &user_proc|
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   children_ids = [id]
@@ -49,14 +41,6 @@ new({ particle: :affect, render: false }) do |children_ids, &user_proc|
   children_ids
 end
 
-# new({ particle: :affect, render: false }) do |children_ids, &user_proc|
-#   # # fastened
-#   # children_ids = [children_ids] unless children_ids.instance_of?(Array)
-#   # parents_ids = [id]
-#   # attachment_common(children_ids, parents_ids, &user_proc)
-#   children_ids
-# end
-
 new({ particle: :attached, render: false }) do |children_ids, &user_proc|
   # fastened
   children_ids = [children_ids] unless children_ids.instance_of?(Array)
@@ -65,41 +49,8 @@ new({ particle: :attached, render: false }) do |children_ids, &user_proc|
   children_ids
 end
 
-# new({ particle: :affect, render: false }) do |children_ids, &user_proc|
-#   # fastened
-#   children_ids = [children_ids] unless children_ids.instance_of?(Array)
-#   parents_ids = [id]
-#   # parents_ids.each do |parent_id|
-#   #   parent_found = grab(parent_id)
-#   #   parent_found.atome[:attached].concat(children_ids).uniq!
-#   #   children_ids.each do |child_id|
-#   #     child_found = grab(child_id)
-#   #     child_found.render(:apply, parent_found, &user_proc) if child_found
-#   #   end
-#   # end
-#   # children_ids
-# end
-
 new({ particle: :web })
 new({ particle: :unit, type: :hash })
-# new({ sanitizer: :unit }) do |params|
-#   unless params.instance_of? Hash
-#     params={}
-#   end
-# end
-
-# new({ particle: :web, render: true }) do |params, &user_proc|
-#
-#   # alert 'tag creation here, cf : div, span , h1, h2, pre , etc...'
-#   # fastened
-#   # alert "#{self.id} : children_ids : #{children_ids}"
-#   # children_ids = [children_ids] unless children_ids.instance_of?(Array)
-#   # parents_ids = [id]
-#   # # alert "#{children_ids}, #{parents_ids}"
-#   # attachment_common(children_ids, parents_ids, &user_proc)
-#   params
-# end
-#
 
 def extract_rgb_alpha(color_string)
   match_data = color_string.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)/)
@@ -108,11 +59,8 @@ def extract_rgb_alpha(color_string)
   green = match_data[2].to_i
   blue = match_data[3].to_i
   alpha = match_data[4] ? match_data[4].to_f : nil
-  return { red: red, green: green, blue: blue, alpha: alpha }
-  # else
-  #   puts "Color format not valid"
-  #   return nil
-  # end
+  { red: red, green: green, blue: blue, alpha: alpha }
+
 end
 
 new({ particle: :red, render: true }) do |params, &user_proc|
@@ -171,12 +119,11 @@ new({ particle: :alpha, render: true }) do |params, &user_proc|
   self
 end
 
-######
-# alert :good
 class HTML
-  def initialize(id_found)
+  def initialize(id_found,current_atome)
     @html_object ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
+    @atome=current_atome
     self
   end
 
@@ -186,7 +133,7 @@ class HTML
   end
 
   def add_class(class_to_add)
-    @html_object[:classList].add(class_to_add)
+    @html_object[:classList].add(class_to_add.to_s)
     self
   end
 
@@ -196,22 +143,37 @@ class HTML
   end
 
   def shape(id)
+    markup_found = @atome.markup || :div
+    @html_type = markup_found.to_s
+    @html_object = JS.global[:document].createElement(@html_type)
+    JS.global[:document][:body].appendChild(@html_object)
+    add_class("atome")
+    id(id)
+    self
+  end
+  # def shape(id)
+  #   @html_type = :div
+  #   @html_object = JS.global[:document].createElement("div")
+  #   JS.global[:document][:body].appendChild(@html_object)
+  #   add_class("atome")
+  #   id(id)
+  #   self
+  # end
+
+  def text(id, markup='pre')
     @html_type = :div
-    @html_object = JS.global[:document].createElement("div")
+    @html_object = JS.global[:document].createElement(markup.to_s)
     JS.global[:document][:body].appendChild(@html_object)
     add_class("atome")
     id(id)
     self
   end
 
-  def text(id)
-    @html_type = :div
-    @html_object = JS.global[:document].createElement("pre")
-    JS.global[:document][:body].appendChild(@html_object)
-    add_class("atome")
-    id(id)
-    self
-  end
+  # def changeMarkup(new_markup)
+  #   unless @atome.markup.to_s || new_markup.to_s
+  #     alert new_markup
+  #   end
+  # end
 
   def innerText(data)
     @html_object[:innerText] = data.to_s
@@ -221,70 +183,11 @@ class HTML
     @html_object[:textContent] = data
   end
 
-  ###### event handler ######
-  def event(action,options, bloc)
-    puts "bloc : #{bloc}"
-    send("#{action}_#{options}", bloc)
-  end
 
-  def over_true(bloc)
-    interact = JS.eval("return interact('##{@id}')")
-    interact.on('mouseover') do
-      bloc.call
-    end
-  end
-  def over_enter(bloc)
-    JS.global[:myRubyMouseEnterCallback] = bloc
-    JS.eval("document.querySelector('##{@id}').addEventListener('mouseenter', function() { myRubyMouseEnterCallback(); });")
-
-  end
-  def over_leave(bloc)
-    JS.global[:myRubyMouseLeaveCallback] = bloc
-    JS.eval("document.querySelector('##{@id}').addEventListener('mouseleave', function() { myRubyMouseLeaveCallback(); });")
-  end
-
-  def touch_true(bloc)
-    interact = JS.eval("return interact('##{@id}')")
-    interact.on('tap') do
-      bloc.call
-    end
-  end
-  def touch_double(bloc)
-    interact = JS.eval("return interact('##{@id}')")
-    interact.on('doubletap') do
-      bloc.call
-    end
-  end
-  def touch_long(bloc)
-    interact = JS.eval("return interact('##{@id}')")
-    interact.on('hold') do
-      bloc.call
-    end
-  end
-  def touch_down(bloc)
-    interact = JS.eval("return interact('##{@id}')")
-    interact.on('down') do
-      bloc.call
-    end
-  end
-  def touch_up(bloc)
-    interact = JS.eval("return interact('##{@id}')")
-    interact.on('up') do
-      bloc.call
-    end
-  end
-
-
-
-
-
-
-
-
-
-  ###### event handler ######
   def style(property, value = nil)
+
     element_found = JS.global[:document].getElementById(@id.to_s)
+
     if value
       element_found[:style][property] = value.to_s
     else
@@ -306,40 +209,79 @@ class HTML
     self
   end
 
-  # def html_colorize_color(red, green, blue, alpha, atome)
-  #   ########################### new code ###########################
-  #   # puts "@id in html_colorize_color is :  #{@id}"
-  #   id_found = @id
-  #   color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  #   new_class_content = <<~STR
-  #     .#{id_found} {
-  #     --#{id_found}_r : #{red * 255};
-  #     --#{id_found}_g : #{green * 255};
-  #     --#{id_found}_b : #{blue * 255};
-  #     --#{id_found}_a : #{alpha};
-  #     --#{id_found}_col : rgba(var(--#{id_found}_r ),var(--#{id_found}_g ),var(--#{id_found}_b ),
-  # var(--#{id_found}_a ));
-  #
-  #     background-color: var(--#{id_found}_col);
-  #     fill: var(--#{id_found}_col);
-  #     stroke: var(--#{id_found}_col);
-  #     }
-  #   STR
-  #   puts new_class_content
-  #   alert atome.inspect
-  #   # puts "====> new_class_content #{new_class_content}"
-  #   # atomic_style = BrowserHelper.browser_document['#atomic_style']
-  #   # # atomic_style.text = atomic_style.text.gsub(/\.#{id_found}\s*{.*?}/m, new_class_content)
-  #   #
-  #   # regex = /(\.#{id_found}\s*{)([\s\S]*?)(})/m
-  #   # atomic_style.text = atomic_style.text.gsub(regex, new_class_content)
-  # end
+  def append(child_id_found)
+    child_found = JS.global[:document].getElementById(child_id_found.to_s)
+    @html_object.appendChild(child_found)
+    self
+  end
+
+
+  ###### event handler ######
+  def event(action, options, bloc)
+    puts "bloc : #{bloc}"
+    send("#{action}_#{options}", bloc)
+  end
+
+  def over_true(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('mouseover') do
+      bloc.call
+    end
+  end
+
+  def over_enter(bloc)
+    JS.global[:myRubyMouseEnterCallback] = bloc
+    JS.eval("document.querySelector('##{@id}').addEventListener('mouseenter', function() { myRubyMouseEnterCallback(); });")
+
+  end
+
+  def over_leave(bloc)
+    JS.global[:myRubyMouseLeaveCallback] = bloc
+    JS.eval("document.querySelector('##{@id}').addEventListener('mouseleave', function() { myRubyMouseLeaveCallback(); });")
+  end
+
+  def touch_true(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('tap') do
+      bloc.call
+    end
+  end
+
+  def touch_double(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('doubletap') do
+      bloc.call
+    end
+  end
+
+  def touch_long(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('hold') do
+      bloc.call
+    end
+  end
+
+  def touch_down(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('down') do
+      bloc.call
+    end
+  end
+
+  def touch_up(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('up') do
+      bloc.call
+    end
+  end
+
+  ###### end event handler ######
 
 end
 
 class Atome
   def html
-    @html_object = HTML.new(id)
+    @html_object = HTML.new(id,self)
   end
 
   def to_px
@@ -357,27 +299,14 @@ class Atome
 end
 
 new({ renderer: :html, method: :web }) do |params, &user_proc|
-
-  # puts 'tag creation here, cf : div, span , h1, h2, pre , etc...'
-  # fastened
-  # alert "#{self.id} : children_ids : #{children_ids}"
-  # children_ids = [children_ids] unless children_ids.instance_of?(Array)
-  # parents_ids = [id]
-  # # alert "#{children_ids}, #{parents_ids}"
-  # attachment_common(children_ids, parents_ids, &user_proc)
   params
 end
-
-# new({ renderer: :html,  type: :string, specific: :shape }) do |_value, _user_proc|
-#   html.shape(@atome[:id])
-# end
 
 new({ renderer: :html, method: :height, type: :string }) do |value, _user_proc|
   html.style(:height, "#{value}px")
 end
 
 new({ renderer: :html, method: :smooth, type: :string }) do |value, _user_proc|
-  # html.style(:height, "#{value}px")
   format_params = case value
                   when Array
                     properties = []
@@ -410,20 +339,14 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
 end
 
 new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |parent_found, _user_proc|
+  # TODO:   we should treat objet when multiple : #{self.inspect}
+
   red = parent_found.red * 255
   green = parent_found.green * 255
   blue = parent_found.blue * 255
   alpha = parent_found.alpha
   html.style(:color, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
 end
-
-# new({ renderer: :html, method: :top, type: :string }) do |_value, _user_proc|
-#
-# end
-#
-# new({ renderer: :html, method: :bottom, type: :string }) do |_value, _user_proc|
-#
-# end
 
 new({ renderer: :html, method: :clones, type: :string }) do |_value, _user_proc|
 
@@ -438,34 +361,6 @@ new({ renderer: :html, method: :id, type: :string })
 new({ renderer: :html, method: :renderers, type: :string })
 
 new({ renderer: :html, method: :diffusion, type: :string })
-
-# alert :pass_0
-
-# new({ renderer: :html, method: :color, type: :string }) do
-# puts "====> yeah"
-# end
-
-######### data tests
-# frozen_string_literal: true
-
-# let's create the Universe
-# def eval_protection
-#   binding
-# end
-
-# Let's set the default's parameters according to ruby interpreter
-# Essentials.new_default_params({ render_engines: [:html] })
-# if RUBY_ENGINE.downcase == 'opal'
-#
-# else
-#   puts "------- **pas opal** ------"
-#   Essentials.new_default_params({ render_engines: [:html] })
-#   # alert "RUBY_ENGINE is : #{RUBY_ENGINE.downcase}"
-#   # Essentials.new_default_params({ render_engines: [:headless] })
-#   # eval "require 'atome/extensions/geolocation'", eval_protection, __FILE__, __LINE__
-#   # eval "require 'atome/extensions/ping'", eval_protection, __FILE__, __LINE__
-#   # eval "require 'atome/extensions/sha'", eval_protection, __FILE__, __LINE__
-# end
 
 # now let's get the default render engine
 default_render = Essentials.default_params[:render_engines]
@@ -485,27 +380,42 @@ Universe.current_user = :jeezs
 
 atome_infos
 
-# new({ specific: :color, method: :poil }) do |_value, _user_proc|
-#   # html.shape(@atome[:id])
-#   alert "i am here"
-# end
-#
-# new({ specific: :color, method: :poilu, renderer: :html }) do |_value, _user_proc|
-#   # html.shape(@atome[:id])
-#   alert "i am here too!!"
-# end
 
 new({ method: :type, type: :string, specific: :shape, renderer: :html }) do |_value, _user_proc|
   html.shape(@atome[:id])
 end
 
 new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_value, _user_proc|
-  html.text(@atome[:id])
+  html.text(@atome[:id], :pre)
+  html.add_class(:text)
+end
+new({ method: :size, type: :hash, renderer: :html}) do |value, _user_proc|
+  # html.style('fontSize',"#{value}px")
+  alert 'write method for size here'
+end
+#
+new({ method: :size, type: :int, renderer: :html, specific: :text }) do |value, _user_proc|
+  html.style('fontSize',"#{value}px")
 end
 
-# new({ method: :type, type: :string, specific: :color, renderer: :html }) do |_value, _user_proc|
-#   alert :so_good
-# end
+new({ method: :component, type: :hash, renderer: :html }) do |params, _user_proc|
+  params.each do |prop, value|
+    # puts "#{prop},#{value}"
+    self.send(prop,value)
+    # self.send('size',9)
+  end
+  # html.style('fontSize',"11px")
+  # html.style('top',"0px")
+  # html.style('color',"yellow")
+
+  # value.each do |particle_found, value_found|
+  #   puts "#{particle_found.class}, #{value_found.class}"
+  #   # html.style('fontSize',"#{value}px")
+  #   html.style('fontSize',"33px")
+  #   html.style('top',"0px")
+  #   # # send(particle_found,value_found)
+  # end
+end
 
 new({ method: :width, type: :integer, renderer: :html }) do |value, _user_proc|
   unit_found = unit[:width]
@@ -513,7 +423,6 @@ new({ method: :width, type: :integer, renderer: :html }) do |value, _user_proc|
     html.style(:width, "#{value}#{unit_found}")
   else
     html.style(:width, "#{value}px")
-
   end
 end
 
@@ -543,47 +452,60 @@ new({ method: :top, type: :integer, specific: :color, renderer: :html })
 
 #
 new({ method: :red, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
-  # puts "#{id} is becoming red with html"
-
-  # alert value
-  # puts "==> red only for color: #{value} - take a look at : browser/helper/color_helper : browser_colorize_color"
-  red = (@atome[:red] = value)
-  green = @atome[:green]
-  blue = @atome[:blue]
-  alpha = @atome[:alpha]
-  top = @atome[:top]
-  left = @atome[:left]
-  diffusion = @atome[:diffusion]
-
-  # html.send("html_colorize_#{@atome[:type]}", red, green, blue, alpha, self)
-
-  # # color_updated = "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  # Atome.send("html_colorize_#{@atome[:type]}", red, green, blue, alpha, @atome)
-  # # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
-  self
 end
 
 new({ method: :green, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
-  # puts "==> green only for color: #{value}"
 end
 
 new({ method: :blue, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
-  # puts "==> blue only for color: #{value}"
 end
 
 new({ method: :alpha, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
-  # puts "==> alpha only for color: #{value}"
 end
 
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |value, _user_proc|
+  # if value.instance_of? Array
+  #   value.each do |sub_object|
+  #     if sub_object.instance_of? Hash
+  #       # additional_data = sub_text.reject { |cle| cle == :data }
+  #       # additional_id = sub_text.reject { |cle| cle == :id }
+  #       # additional_visual = sub_text.reject { |cle| cle == :visual }
+  #       ne # alert sub_text
+  #       data_found=sub_object[:data]
+  #       id_found=sub_object[:id]
+  #       visual_found=sub_object[:visual]
+  #
+  #       sub_text=HTML.new(id_found)
+  #       sub_text.text(id_found, :span)
+  #       sub_text.innerText(data_found)
+  #       sub_text.append_to(id)
+  #       visual_found.each do |property, value|
+  #         if property.to_s=='size'
+  #           property= 'fontSize'
+  #           # value="#{value}px"
+  #         end
+  #         # alert "#{property}, #{value}"
+  #         sub_text.style(property, "#{value}px")
+  #         # alert "#{property}, #{value}"
+  #       end
+  #     else
+  #       html.innerText(sub_object)
+  #     end
+  #   end
+  #
+  # else
+  #   html.innerText(value)
+  # end
   html.innerText(value)
 end
 
-# new({ method: :text, type: :string, renderer: :html }) do |value, _user_proc|
-#   alert "==> value found is #{value}"
-# end
-
 new({ initialize: :unit, value: {} })
+
+new ({particle: :markup})
+# new ({renderer: :html, method: :markup, type: :symbol}) do |params|
+#   html.changeMarkup(params)
+# end
+new ({atome: :physical})
 
 ############### Lets create the U.I.
 Atome.new(
@@ -649,133 +571,132 @@ Atome.new(
   }
 )
 
+
 ############ user objects ######
 
-s_c = grab(:shape_color)
-
-# Atome.new(
-#   { renderers: default_render, id: :my_test_box, type: :shape, width: 100, height: 100, attach: [:view],
-#     left: 120, top: 0, apply: [:shape_color],attached: []
-#   }
-# )
+# s_c = grab(:shape_color)
+#
+# # Atome.new(
+# #   { renderers: default_render, id: :my_test_box, type: :shape, width: 100, height: 100, attach: [:view],
+# #     left: 120, top: 0, apply: [:shape_color],attached: []
+# #   }
+# # )
+# # a = Atome.new(
+# #   { renderers: default_render, id: :my_test_box, type: :shape, attach: [:view], apply: [:shape_color],
+# #     left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+# #   }
+# #
+# # )
 # a = Atome.new(
-#   { renderers: default_render, id: :my_test_box, type: :shape, attach: [:view], apply: [:shape_color],
+#   { renderers: default_render, id: :my_shape, type: :shape, attach: [:view], apply: [:shape_color],
 #     left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
 #   }
 #
 # )
-a = Atome.new(
-  { renderers: default_render, id: :my_shape, type: :shape, attach: [:view], apply: [:shape_color],
-    left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
-  }
-
-)
-
-aa = Atome.new(
-  { renderers: default_render, id: :my_shape2, type: :shape, attach: [:view], apply: [:box_color],
-    left: 120, top: 30, width: 100, height: 100, overflow: :visible, attached: [:my_shape]
-
-  }
-)
-
-s_c.red(0.2)
-s_c.blue(0)
-s_c.green(0)
-a.top(99)
-aa.unit[:width] = "%"
-aa.width(88)
-a.smooth(33)
-a.web({ tag: :span })
-aa.smooth(9)
-# FIXME:  add apply to targeted shape, ad affect to color applied
-# box
-# circle
-# text(:hello)
-# Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view],
-# :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
-aa.unit[:left] = :inch
-aa.unit({ top: :px })
-aa.unit({ bottom: '%' })
-aa.unit[:bottom] = :cm
-aa.unit[:right] = :inch
-aa.unit[:top] = :px
-puts " unit for aa is : #{aa.unit}"
-
-# new({ atome: :poil })
-# new({ atome: :poil })
-# poil(:data)
-# piol
-
-# new({ renderer: :html, method: :text, type: :hash }) do |value, _user_proc|
-#   alert value
+#
+# aa = Atome.new(
+#   { renderers: default_render, id: :my_shape2, type: :shape, attach: [:view], apply: [:box_color],
+#     left: 120, top: 30, width: 100, height: 100, overflow: :visible, attached: [:my_shape]
+#
+#   }
+# )
+#
+# s_c.red(0.2)
+# s_c.blue(0)
+# s_c.green(0)
+# a.top(99)
+# aa.unit[:width] = "%"
+# aa.width(88)
+# a.smooth(33)
+# a.web({ tag: :span })
+# aa.smooth(9)
+# # FIXME:  add apply to targeted shape, ad affect to color applied
+# # box
+# # circle
+# # text(:hello)
+# # Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view],
+# # :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
+# aa.unit[:left] = :inch
+# aa.unit({ top: :px })
+# aa.unit({ bottom: '%' })
+# aa.unit[:bottom] = :cm
+# aa.unit[:right] = :inch
+# aa.unit[:top] = :px
+# puts " unit for aa is : #{aa.unit}"
+#
+# # new({ atome: :poil })
+# # new({ atome: :poil })
+# # poil(:data)
+# # piol
+#
+# # new({ renderer: :html, method: :text, type: :hash }) do |value, _user_proc|
+# #   alert value
+# # end
+# # ###################### uncomment below
+# Atome.new(
+#   { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100, attach: [:my_shape],
+#     data: "too much cool for me", apply: [:text_color], attached: []
+#   }
+# )
+#
+# new({ method: :touch, type: :integer, renderer: :html }) do |options, user_bloc|
+#   # puts user_bloc
+#   # puts @touch_code
+#   html.event(:touch, options, user_bloc)
 # end
-# ###################### uncomment below
-Atome.new(
-  { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100, attach: [:my_shape],
-    data: "too much cool for me", apply: [:text_color], attached: []
-  }
-)
-
-new({ method: :touch, type: :integer, renderer: :html }) do |options, user_bloc|
-  # puts user_bloc
-  # puts @touch_code
-  html.event(:touch, options, user_bloc)
-end
-
-
-new({ method: :over, type: :integer, renderer: :html }) do |options, user_bloc|
-  html.event(:over, options, user_bloc)
-end
-
-
-# Atome.class_variable_set(:@@variable_de_classe_externe, "ma valeur")
-aa.touch(:long) do
-  puts "cooly long touched!"
-end
-
-aa.touch(:double) do
-  puts "cooly double touched!"
-end
-
-aa.touch(:up) do
-  puts "cooly up touched!"
-end
-
-aa.touch(:down) do
-  puts "cooly down touched!"
-end
-# over
-aa.touch(true) do
-  puts "cooly touched!"
-end
-
-aa.over(:enter) do
-  puts  "cool enter"
-end
-
-aa.over(true) do
-  puts  "true over"
-end
-aa.over(:leave) do
-  puts  "cool leave"
-end
-
-b = box({ id: :titi })
-t = b.text({ data: :orangered, id: :the_orange, attach: [:my_txt] })
-aa.text({ data: :hello, id: :the_text })
-b.color(:orange)
-# ###################### uncomment above
-
-# c = circle
-# c.color(:blue)
-
-tt = text({ data: :cool, id: :new_text })
-tt.left(333)
-# alert tt.left
-tt.color(:red)
-# c.left(333)
-
-# alert aa.touch
+#
+# new({ method: :over, type: :integer, renderer: :html }) do |options, user_bloc|
+#   html.event(:over, options, user_bloc)
+# end
+#
+# # Atome.class_variable_set(:@@variable_de_classe_externe, "ma valeur")
+# aa.touch(:long) do
+#   puts "cooly long touched!"
+# end
+#
+# aa.touch(:double) do
+#   puts "cooly double touched!"
+# end
+#
+# aa.touch(:up) do
+#   puts "cooly up touched!"
+# end
+#
+# aa.touch(:down) do
+#   puts "cooly down touched!"
+# end
+# # over
+# aa.touch(true) do
+#   puts "cooly touched!"
+# end
+#
+# aa.over(:enter) do
+#   puts "cool enter"
+# end
+#
+# aa.over(true) do
+#   puts "true over"
+# end
+# aa.over(:leave) do
+#   puts "cool leave"
+# end
+#
+# b = box({ id: :titi })
+# t = b.text({ data: :orangered, id: :the_orange, attach: [:my_txt] })
+# aa.text({ data: :hello, id: :the_text })
+# b.color(:orange)
+# # ###################### uncomment above
+#
+# # c = circle
+# # c.color(:blue)
+#
+# tt = text({ data: :cool, id: :new_text })
+# tt.left(333)
+# # alert tt.left
+# tt.color(:red)
+# # c.left(333)
+#
+#
 # puts Atome.class_variable_get(:@@post_touch)
 # alert Atome.class_variable_get(:@@variable_de_classe_externe)
 # aa.touch(:kool)
@@ -801,7 +722,6 @@ tt.color(:red)
 #
 # # wait(:kill)
 # ################### works above
-
 
 # ##### wait usage
 # # Simple usage
@@ -832,6 +752,34 @@ tt.color(:red)
 # alert aa.inspect
 
 
-# TODO: implement complex concatenated texts
 
+############# crash
+the_text = text({ data: [
+  '74 Bis Avenue des Thermes - Chamalieres, tel: ',
+  { data: '06 63 60 40 55',width: :auto,component: {size: 63,  top: 30},top: 0, color: :blue, id: :phone_nb },
+  { data: 'la suite',width: :auto}, :super, :cool,:great
+],center: true, top: 120,width: 955,id: :my_x_text, component: {size: 11} })
 
+# wait 2 do
+#   grab('phone_nb').color(:yellow)
+# end
+############# crash
+# # the_text=text({ data:[ ' text de verif',visual:{size: 37, top: 0, width: 555}, id: :my_new_text, width: 222] })
+# # the_text.visual({size: 88})
+# the_text.color(:green)
+# t=text(:kool)
+# t=text({ data: :hello })
+# alert t.class
+# wait 2 do
+#   t.data('hi')
+# end
+the_one=box(markup: :span)
+wait 3 do
+  the_one.markup(:div)
+end
+#
+#
+# # TODO: implement complex concatenated texts
+# # TODO: rename particle as property
+# # the_text.color(:yellow)
+#

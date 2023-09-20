@@ -62,13 +62,14 @@ html, body {
     -webkit-user-drag: none;
     caret-shape: bar;
     overflow: visible;
-    word-wrap: break-word;
-    white-space: pre-wrap;
 }
 
 .text {
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
+    /*-webkit-text-fill-color: transparent;*/
+    /*-webkit-background-clip: text;*/
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    position: relative;
 }
 
 .center {

@@ -36,9 +36,9 @@ STR
     shape: { type: :shape, width: 99, height: 99,
              apply: [:shape_color],
              left: 100, top: 100, clones: [] },
-    text: { type: :text, visual: { size: 25 },
+    text: { type: :text, component: { size: 15 },
             apply: [:text_color],
-            data: 'this is a text sample', width: 199, height: 33, clones: [] },
+            width: :auto, height: :auto, clones: [] },
     drm: { type: :drm, attach: [:black_matter], attached: []  },
     shadow: { type: :shadow, attach: [:black_matter], attached: []  },
     color: {  type: :color, attach: [], red: 0, green: 0, blue: 0, alpha: 1, attached: []   }

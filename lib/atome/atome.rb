@@ -57,13 +57,15 @@ class Atome
       # run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       # run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
-        instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
+        instance_exec(params, self,user_proc,  &Atome.instance_variable_get("@pre_#{element}"))
       end
+      new_atome=send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+      # TODO : check if we don't have a security issue allowing atome modification after creation
+      # if we have one find another solution the keep this facility
       if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
-        instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
+        instance_exec(params, new_atome,user_proc,  &Atome.instance_variable_get("@post_#{element}"))
       end
-
-      send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+      new_atome
     else
       group(@atome["#{element}s"])
     end
@@ -114,7 +116,11 @@ class Atome
 
   def store_value(element)
     params = instance_variable_get("@#{element}")
-    @atome[element] = params
+    #FIXME : we duplicate the hash because of o rash when using ruby Wasm, check if we don't lose data if orginal hash
+    # is changed during the copy
+    atome_copy = @atome.dup
+    atome_copy[element] = params
+    @atome=atome_copy
   end
 
   public
