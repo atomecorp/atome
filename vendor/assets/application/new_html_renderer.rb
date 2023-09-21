@@ -771,8 +771,10 @@ the_text = text({ data: [
 # grab('phone_nb').top(55)
 # alert grab('phone_nb')
 grab('phone_nb').color(:red)
+
 wait 3 do
   # alert grab('phone_nb')
+  grab('phone_nb').component({ size: 9})
   grab('phone_nb').color(:yellow)
 end
 # TODO : Important make it work below add uniq id to wait
