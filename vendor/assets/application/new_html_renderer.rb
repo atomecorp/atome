@@ -5,7 +5,6 @@ def attachment_common(children_ids, parents_ids, &user_proc)
   parents_ids.each do |parent_id|
     # FIXME : find a more optimised way to prevent atome to attach to itself
     parent_found = grab(parent_id)
-    puts "parent_found.class : #{parent_found.class}, parent id : #{parent_id} :#{parent_id.class}"
     parent_found.atome[:attached].concat(children_ids).uniq!
     children_ids.each do |child_id|
       child_found = grab(child_id)
