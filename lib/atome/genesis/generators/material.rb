@@ -21,6 +21,24 @@ new({ particle: :diffusion }) do
   self
 end
 new({ particle: :component })
+
+def wait_for_store_authorisation(params)
+  if @store_allow
+    params.each do |prop, value|
+      send(prop, value)
+    end
+  else
+    wait 0.1 do
+      wait_for_store_authorisation(params)
+    end
+  end
+end
+
+new({ post: :component }) do |params, _user_proc|
+  # TODO : maybe need to implement this functionality at lower level, for all save within atome framework
+  wait_for_store_authorisation(params)
+end
+
 new({ particle: :overflow })
 new({ particle: :edit })
 new({ particle: :style })

@@ -5,6 +5,7 @@ def attachment_common(children_ids, parents_ids, &user_proc)
   parents_ids.each do |parent_id|
     # FIXME : find a more optimised way to prevent atome to attach to itself
     parent_found = grab(parent_id)
+    puts "parent_found.class : #{parent_found.class}, parent id : #{parent_id} :#{parent_id.class}"
     parent_found.atome[:attached].concat(children_ids).uniq!
     children_ids.each do |child_id|
       child_found = grab(child_id)
@@ -398,24 +399,27 @@ new({ method: :size, type: :int, renderer: :html, specific: :text }) do |value, 
   html.style('fontSize',"#{value}px")
 end
 
-new({ method: :component, type: :hash, renderer: :html }) do |params, _user_proc|
-  params.each do |prop, value|
-    # puts "#{prop},#{value}"
-    self.send(prop,value)
-    # self.send('size',9)
-  end
-  # html.style('fontSize',"11px")
-  # html.style('top',"0px")
-  # html.style('color',"yellow")
-
-  # value.each do |particle_found, value_found|
-  #   puts "#{particle_found.class}, #{value_found.class}"
-  #   # html.style('fontSize',"#{value}px")
-  #   html.style('fontSize',"33px")
-  #   html.style('top',"0px")
-  #   # # send(particle_found,value_found)
-  # end
-end
+# new({ method: :component, type: :hash, renderer: :html }) do |params, _user_proc|
+#   params.each do |prop, value|
+#     alert  "prop&value : #{prop},#{value}, #{id}"
+#     wait 1 do
+#       self.send(prop,value)
+#     end
+#     # self.send(prop,value)
+#     # self.send('size',9)
+#   end
+#   # html.style('fontSize',"11px")
+#   # html.style('top',"0px")
+#   # html.style('color',"yellow")
+#
+#   # value.each do |particle_found, value_found|
+#   #   puts "#{particle_found.class}, #{value_found.class}"
+#   #   # html.style('fontSize',"#{value}px")
+#   #   html.style('fontSize',"33px")
+#   #   html.style('top',"0px")
+#   #   # # send(particle_found,value_found)
+#   # end
+# end
 
 new({ method: :width, type: :integer, renderer: :html }) do |value, _user_proc|
   unit_found = unit[:width]
@@ -730,39 +734,52 @@ Atome.new(
 # end
 #
 # # Advanced usage
-# wait(4, 'timeout1') do
-#   alert "Ceci saffichera après 5 secondes."
-# end
+wait_id=wait(4, 'timeout1') do
+  puts "Ceci est affiche  après 4 secondes."
+end
 #
-# wait(5, 'timeout2') do
-#   alert "Ceci saffichera après 6 secondes."
-# end
-#
-# wait(3 ) do
-#   alert "Ceci saffichera après 3 secondes."
-# end
-#
-#
-# wait(1000, ) do
-#   wait(:kill)
-# end
+wait(5, 'timeout2') do
+  puts "Ceci est affiche  après 5 secondes."
+end
+
+wait(3 ) do
+  puts "Ceci est affiche après 3 secondes."
+end
+
+
+wait(1) do
+  wait(:kill, wait_id)
+end
 #
 # sleep(2)
 # wait(:kill, 'timeout1')
 # alert aa.inspect
 
-
-
+# text({id: 'phone_nb', data: :hello,component: {left: 333}})
+#  grab(:phone_nb).color(:pink)
+# alert grab('phone_nb')
+# wait 2 do
+#   alert grab(:phone_nb)
+#   grab(:phone_nb).color(:green)
+# end
 ############# crash
 the_text = text({ data: [
   '74 Bis Avenue des Thermes - Chamalieres, tel: ',
-  { data: '06 63 60 40 55',width: :auto,component: {size: 63,  top: 30},top: 0, color: :blue, id: :phone_nb },
+  { data: '06 63 60 40 55!',width: :auto,component: {size: 63,  top: 30},top: 0, color: :blue, id: :phone_nb },
   { data: 'la suite',width: :auto}, :super, :cool,:great
 ],center: true, top: 120,width: 955,id: :my_x_text, component: {size: 11} })
+# grab('phone_nb').top(55)
+# alert grab('phone_nb')
+grab('phone_nb').color(:red)
+wait 3 do
+  # alert grab('phone_nb')
+  grab('phone_nb').color(:yellow)
+end
+# TODO : Important make it work below add uniq id to wait
+wait 3 do
+  puts 'check passed'
+end
 
-# wait 2 do
-#   grab('phone_nb').color(:yellow)
-# end
 ############# crash
 # # the_text=text({ data:[ ' text de verif',visual:{size: 37, top: 0, width: 555}, id: :my_new_text, width: 222] })
 # # the_text.visual({size: 88})
@@ -773,11 +790,11 @@ the_text = text({ data: [
 # wait 2 do
 #   t.data('hi')
 # end
-the_one=box(markup: :span)
-wait 3 do
-  the_one.markup(:div)
-end
-#
+# the_one=box(markup: :span)
+# wait 3 do
+#   the_one.markup(:div)
+# end
+
 #
 # # TODO: implement complex concatenated texts
 # # TODO: rename particle as property

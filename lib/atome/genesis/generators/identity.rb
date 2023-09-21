@@ -119,6 +119,8 @@ new({ particle: :type })
 
 new({ particle: :id })
 new({ sanitizer: :id }) do |params|
+  # first we sanitize the the id below
+  params=params.to_sym
   if @atome[:id] != params
     Universe.update_atome_id(params, self, @atome[:id])
   else

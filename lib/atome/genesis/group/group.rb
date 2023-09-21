@@ -17,8 +17,7 @@ end
 class Atome
 
   def group_particle_analysis(particle, params, &bloc)
-    # if params
-    # alert @atome
+
     @atome[:data].each do |atome_id_found|
       if !(particle == :type && params == :group || particle == :id) && !(particle == :renderers && params[0] == :group)
         atome_found = grab(atome_id_found)
@@ -26,24 +25,24 @@ class Atome
         atome_found.send(particle, params, &bloc)
 
       end
-      #
+
     end
 
-    # alert  @atome[:data]
+
     #
-    # @atome[:data]
+
     # else
     #   alert "zebulon"
     #   end
     #   grab(:b3).atome[:data]=[:b1]
     #   grab(:b3)
     #   end
-      # group(@atome[:data])[:data]
+
     # alert self
 
       # alert self.id
-      # @atome[:id]
-      # grab(@atome[:id])
+
+
     # else
     #   if group(@atome[:data])[:data]
     #     "group(@atome[:data])"

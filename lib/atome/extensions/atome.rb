@@ -6,13 +6,11 @@ class Object
     if params.key?(:atome)
       # alert  params
       Universe.add_atomes_specificities params[:atome]
-      # puts "we may add basic missing particle here for the atome : #{params[:atome]} "
       generator.build_atome(params[:atome], &bloc)
     elsif params.key?(:particle)
       # render indicate if the particle needs to be rendered
       # store tell the system if it need to store the particle value
       # type help the system what type of type the particle will receive and store
-      # puts "specific : #{params}"
       generator.build_particle(params[:particle], { render: params[:render], return: params[:return], store: params[:store], type: params[:type] }, &bloc)
     elsif params.key?(:sanitizer)
       generator.build_sanitizer(params[:sanitizer], &bloc)
@@ -22,23 +20,22 @@ class Object
     elsif params.key?(:post)
       Atome.instance_variable_set("@post_#{params[:post]}", bloc)
       # generator.build_option("post_render_#{params[:post]}", bloc)
+    elsif params.key?(:after)
+      Atome.instance_variable_set("@after_#{params[:after]}", bloc)
     elsif params[:renderer]
       renderer_found = params[:renderer]
       if params[:specific]
         Universe.set_atomes_specificities(params)
         params[:specific] = "#{params[:specific]}_"
       end
-
       # else
       render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
-      # puts "render_method : #{render_method}"
       generator.build_render(render_method, &bloc)
       # end
 
       #########################################################################################
       # else #params.key?(:html)
       #
-      #   puts "=====> est ce qu'on passe ici ? :#{params}"
       #   # if params[:exclusive]
       #   #   render_method = "html_#{params[:exclusive]}_#{params[:html]}"
       #   #   generator.build_render(render_method, &bloc)
@@ -68,9 +65,9 @@ class Object
     "#{type}_#{Universe.counter}"
   end
 
-  def grab(atome_to_get)
-
-    Universe.atomes[atome_to_get]
+  def grab(id_to_get)
+    id_to_get = id_to_get.to_sym
+    Universe.atomes[id_to_get]
   end
 
   def box(params = {}, &proc)
@@ -105,16 +102,21 @@ class Object
     end
   end
 
-  def wait(time, id=nil, &proc)
-    id = :default_wait_time_out unless id
-    if time == :kill
+  def wait(time, id = nil, &proc)
+    # we generate an uniq id
+    if time == :kill ||time == 'kill'
       JS.eval("clearTimeout(window.timeoutIds['#{id}']);")
     else
-      time=time*1000
+      obj = Object.new
+      unique_id = obj.object_id
+
+      id = unique_id unless id
+      time = time * 1000
       callback_id = "myRubyCallback_#{id}"
       JS.global[callback_id.to_sym] = proc
       JS.eval("if (!window.timeoutIds) { window.timeoutIds = {}; } window.timeoutIds['#{id}'] = setTimeout(function() { #{callback_id}(); }, #{time});")
     end
+    id
   end
 
   def repeater(counter, proc)

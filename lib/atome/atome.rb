@@ -15,6 +15,7 @@ class Atome
 
     # the keys :renderers, :type and :id should be placed in the first position in the hash
     @broadcast = {}
+    # @store_ready=true
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     @atome = new_atome
@@ -57,13 +58,13 @@ class Atome
       # run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       # run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
-        instance_exec(params, self,user_proc,  &Atome.instance_variable_get("@pre_#{element}"))
+        instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
       end
-      new_atome=send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+      new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
       # TODO : check if we don't have a security issue allowing atome modification after creation
       # if we have one find another solution the keep this facility
       if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
-        instance_exec(params, new_atome,user_proc,  &Atome.instance_variable_get("@post_#{element}"))
+        instance_exec(params, new_atome, user_proc, &Atome.instance_variable_get("@post_#{element}"))
       end
       new_atome
     else
@@ -115,12 +116,27 @@ class Atome
   # end
 
   def store_value(element)
+
     params = instance_variable_get("@#{element}")
-    #FIXME : we duplicate the hash because of o rash when using ruby Wasm, check if we don't lose data if orginal hash
-    # is changed during the copy
-    atome_copy = @atome.dup
-    atome_copy[element] = params
-    @atome=atome_copy
+      @atome[element] = params
+
+    # begin
+    #   @atome=atome_copy
+    #   # @atome.merge!(element => params)
+    #   # alert :done
+    # rescue RuntimeError => e
+    #   if e.message == "can't add a new key into hash during iteration"
+    #     # Attendez un moment ou utilisez une autre logique pour réessayer
+    #     sleep(0.1)
+    #     puts "no no no!!"
+    #     retry
+    #   else
+    #     puts'I dont know'
+    #     # Relancez l'exception si ce n'est pas celle que vous attendiez
+    #     raise
+    #   end
+    # end
+
   end
 
   public
@@ -136,21 +152,63 @@ class Atome
   def particle_creation(element, params, store, rendering, &user_proc)
     return false unless security_pass(element, params)
 
+    @store_allow=false
     # we create a proc holder of any new particle if user pass a bloc
     store_code_bloc(element, &user_proc) if user_proc
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
     # run_optional_proc("pre_render_#{element}", self, params, &user_proc)
     if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
-      self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
+      instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
     end
     render(element, params, &user_proc) if rendering
     if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
-      self.instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
+      instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
+
+      # store_value(element) if store
+    # else
+    #   store_value(element) if store
     end
     # run_optional_proc("post_render_#{element}", self, params, &user_proc)
     broadcasting(element)
-    store_value(element) if store
+    # if @store_ready==
+    #   puts "lllll"
+    # @store_ready=false
+      store_value(element) if store
+    # end
+    # @store_ready=true
+    @store_allow=true
+
+
+
+
+    #################################
+
+
+    # begin
+    #   store_value(element) if store
+    # rescue RuntimeError => e
+    #   if e.message == "can't add a new key into hash during iteration"
+    #     # Attendez un moment ou utilisez une autre logique pour réessayer
+    #     sleep 1
+    #       retry
+    #
+    #     # store_value(element) if store
+    #
+    #   else
+    #     puts'I dont know'
+    #     # Relancez l'exception si ce n'est pas celle que vous attendiez
+    #     raise
+    #   end
+    # end
+
+    ################################
+
+
+
+    if Atome.instance_variable_get("@after_#{element}").is_a?(Proc)
+      instance_exec(params, user_proc, self, &Atome.instance_variable_get("@after_#{element}"))
+    end
     self
   end
 
