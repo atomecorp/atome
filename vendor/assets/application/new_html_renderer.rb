@@ -219,7 +219,7 @@ class HTML
 
   ###### event handler ######
   def event(action, options, bloc)
-    puts "bloc : #{bloc}"
+    # puts "bloc : #{bloc}"
     send("#{action}_#{options}", bloc)
   end
 
@@ -598,13 +598,13 @@ Atome.new(
 #
 # )
 #
-# aa = Atome.new(
-#   { renderers: default_render, id: :my_shape2, type: :shape, attach: [:view], apply: [:box_color],
-#     left: 120, top: 30, width: 100, height: 100, overflow: :visible, attached: [:my_shape]
-#
-#   }
-# )
-#
+aa = Atome.new(
+  { renderers: default_render, id: :my_shape2, type: :shape, attach: [:view], apply: [:box_color],
+    left: 120, top: 30, width: 100, height: 100, overflow: :visible, attached: [:my_shape]
+
+  }
+)
+
 # s_c.red(0.2)
 # s_c.blue(0)
 # s_c.green(0)
@@ -643,47 +643,47 @@ Atome.new(
 #   }
 # )
 #
-# new({ method: :touch, type: :integer, renderer: :html }) do |options, user_bloc|
-#   # puts user_bloc
-#   # puts @touch_code
-#   html.event(:touch, options, user_bloc)
-# end
-#
-# new({ method: :over, type: :integer, renderer: :html }) do |options, user_bloc|
-#   html.event(:over, options, user_bloc)
-# end
+new({ method: :touch, type: :integer, renderer: :html }) do |options, user_bloc|
+  # puts user_bloc
+  # puts @touch_code
+  html.event(:touch, options, user_bloc)
+end
+
+new({ method: :over, type: :integer, renderer: :html }) do |options, user_bloc|
+  html.event(:over, options, user_bloc)
+end
 #
 # # Atome.class_variable_set(:@@variable_de_classe_externe, "ma valeur")
-# aa.touch(:long) do
-#   puts "cooly long touched!"
-# end
-#
-# aa.touch(:double) do
-#   puts "cooly double touched!"
-# end
-#
-# aa.touch(:up) do
-#   puts "cooly up touched!"
-# end
-#
-# aa.touch(:down) do
-#   puts "cooly down touched!"
-# end
-# # over
-# aa.touch(true) do
-#   puts "cooly touched!"
-# end
-#
-# aa.over(:enter) do
-#   puts "cool enter"
-# end
-#
-# aa.over(true) do
-#   puts "true over"
-# end
-# aa.over(:leave) do
-#   puts "cool leave"
-# end
+aa.touch(:long) do
+  puts "cooly long touched!"
+end
+
+aa.touch(:double) do
+  puts "cooly double touched!"
+end
+
+aa.touch(:up) do
+  puts "cooly up touched!"
+end
+
+aa.touch(:down) do
+  puts "cooly down touched!"
+end
+# over
+aa.touch(true) do
+  puts "cooly touched!"
+end
+
+aa.over(:enter) do
+  puts "cool enter"
+end
+
+aa.over(true) do
+  puts "true over"
+end
+aa.over(:leave) do
+  puts "cool leave"
+end
 #
 # b = box({ id: :titi })
 # t = b.text({ data: :orangered, id: :the_orange, attach: [:my_txt] })
@@ -771,7 +771,9 @@ the_text = text({ data: [
 # grab('phone_nb').top(55)
 # alert grab('phone_nb')
 grab('phone_nb').color(:red)
-
+grab('phone_nb').touch(true) do
+  grab('phone_nb').color(:green)
+end
 wait 3 do
   # alert grab('phone_nb')
   grab('phone_nb').component({ size: 9})
