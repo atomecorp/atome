@@ -251,11 +251,15 @@ class HTML
       # get obj id
       # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      bloc.call(event)
+      if bloc.instance_of? Proc
+        bloc.call(event)
+      end
+
       # target_id = event[:target][:id]
       # get  dx and dy value from the event
       dx = event[:dx]
       dy = event[:dy]
+
       # puts event[:target]== @html_object
       ##### soluce 1
         x = (@atome.left || 0) + dx.to_f
@@ -895,12 +899,17 @@ end
 # # the_text.color(:yellow)
 
 ############# drag
-
-cc = circle
+aa.drag(true)
+cc = aa.circle
 cc.drag(true) do |event|
+  puts event
   dx = event[:dx]
   dy = event[:dy]
-  puts dx
+  puts "#{dx}: #{dy}"
+  puts event.class
+  puts '----'
+  puts event[:clientX]
+  puts event[:pageX]
 end
 
 # TODO : drag and drop api
