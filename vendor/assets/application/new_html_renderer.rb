@@ -245,12 +245,14 @@ class HTML
     #   targetElement.setAttribute('data-y', y);
     # JS
     #   end)
-    ############### tests
+    ############### tests final works use this one but crash with Opal
 
-    interact.on('dragmove', lambda do |event|
+    interact.on('dragmove', lambda do |native_event|
       # get obj id
+      # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
+      event = Native(native_event)
       bloc.call(event)
-      target_id = event[:target][:id]
+      # target_id = event[:target][:id]
       # get  dx and dy value from the event
       dx = event[:dx]
       dy = event[:dy]
@@ -271,6 +273,15 @@ class HTML
       # JS
 
     end)
+    ###### Opal tests works
+
+    # interact.on('dragmove', lambda do |native_event|
+    #   puts "Event triggered!"
+    #   event = Native(native_event)
+    #   puts event[:type]
+    #   puts event[:dx]
+    #   # puts `JSON.stringify(#{event})`
+    # end)
 
     ############### simple but crash
     # interact.on('dragmove', lambda do |event|
