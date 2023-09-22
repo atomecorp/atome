@@ -120,10 +120,10 @@ new({ particle: :alpha, render: true }) do |params, &user_proc|
 end
 
 class HTML
-  def initialize(id_found,current_atome)
+  def initialize(id_found, current_atome)
     @html_object ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
-    @atome=current_atome
+    @atome = current_atome
     self
   end
 
@@ -151,6 +151,7 @@ class HTML
     id(id)
     self
   end
+
   # def shape(id)
   #   @html_type = :div
   #   @html_object = JS.global[:document].createElement("div")
@@ -160,7 +161,7 @@ class HTML
   #   self
   # end
 
-  def text(id, markup='pre')
+  def text(id, markup = 'pre')
     @html_type = :div
     @html_object = JS.global[:document].createElement(markup.to_s)
     JS.global[:document][:body].appendChild(@html_object)
@@ -182,7 +183,6 @@ class HTML
   def textContent(data)
     @html_object[:textContent] = data
   end
-
 
   def style(property, value = nil)
 
@@ -215,11 +215,76 @@ class HTML
     self
   end
 
-
   ###### event handler ######
+
   def event(action, options, bloc)
     # puts "bloc : #{bloc}"
     send("#{action}_#{options}", bloc)
+  end
+
+  def drag_move_true(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.draggable({ drag: true, move: true })
+
+    ############### works
+    #   interact.on('dragmove', lambda do |event|
+    #     # Obtenez l'ID de l'élément cible
+    #     target_id = event[:target][:id]
+    #
+    #     # Obtenez les valeurs dx et dy de l'événement
+    #     dx = event[:dx]
+    #     dy = event[:dy]
+    #
+    #     # Utilisez JS.eval pour mettre à jour l'élément cible en utilisant son ID
+    #     JS.eval(<<-JS)
+    #   var targetElement = document.getElementById("#{target_id}");
+    #   var x = (parseFloat(targetElement.getAttribute('data-x')) || 0) + #{dx};
+    #   var y = (parseFloat(targetElement.getAttribute('data-y')) || 0) + #{dy};
+    #   targetElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    #   targetElement.setAttribute('data-x', x);
+    #   targetElement.setAttribute('data-y', y);
+    # JS
+    #   end)
+    ############### tests
+
+    interact.on('dragmove', lambda do |event|
+      # get obj id
+      bloc.call(event)
+      target_id = event[:target][:id]
+      # get  dx and dy value from the event
+      dx = event[:dx]
+      dy = event[:dy]
+      # puts event[:target]== @html_object
+      ##### soluce 1
+        x = (@atome.left || 0) + dx.to_f
+      y = (@atome.top || 0) + dy.to_f
+      @atome.left(x)
+      @atome.top(y)
+      ##### soluce 2
+      #     JS.eval(<<-JS)
+      #   var targetElement = document.getElementById("#{target_id}");
+      #   var x = (parseFloat(targetElement.getAttribute('data-x')) || 0) + #{dx};
+      #   var y = (parseFloat(targetElement.getAttribute('data-y')) || 0) + #{dy};
+      #   targetElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+      #   targetElement.setAttribute('data-x', x);
+      #   targetElement.setAttribute('data-y', y);
+      # JS
+
+    end)
+
+    ############### simple but crash
+    # interact.on('dragmove', lambda do |event|
+    #   # puts event[:target]
+    #   # puts JS.eval("JSON.stringify(#{event})")
+    #   target = event[:target]
+    #   x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+    #   y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+    #
+    #   target.style.transform = "translate(#{x}px, #{y}px)"
+    #
+    #   target.setAttribute('data-x', x)
+    #   target.setAttribute('data-y', y)
+    # end)
   end
 
   def over_true(bloc)
@@ -281,7 +346,7 @@ end
 
 class Atome
   def html
-    @html_object = HTML.new(id,self)
+    @html_object = HTML.new(id, self)
   end
 
   def to_px
@@ -380,7 +445,6 @@ Universe.current_user = :jeezs
 
 atome_infos
 
-
 new({ method: :type, type: :string, specific: :shape, renderer: :html }) do |_value, _user_proc|
   html.shape(@atome[:id])
 end
@@ -389,13 +453,13 @@ new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_val
   html.text(@atome[:id], :pre)
   html.add_class(:text)
 end
-new({ method: :size, type: :hash, renderer: :html}) do |value, _user_proc|
+new({ method: :size, type: :hash, renderer: :html }) do |value, _user_proc|
   # html.style('fontSize',"#{value}px")
   alert 'write method for size here'
 end
 #
 new({ method: :size, type: :int, renderer: :html, specific: :text }) do |value, _user_proc|
-  html.style('fontSize',"#{value}px")
+  html.style('fontSize', "#{value}px")
 end
 
 # new({ method: :component, type: :hash, renderer: :html }) do |params, _user_proc|
@@ -504,11 +568,29 @@ end
 
 new({ initialize: :unit, value: {} })
 
-new ({particle: :markup})
+new ({ particle: :markup })
 # new ({renderer: :html, method: :markup, type: :symbol}) do |params|
 #   html.changeMarkup(params)
 # end
-new ({atome: :physical})
+
+# for later use ( physical is a css like style)
+new ({ atome: :physical })
+
+def browser_drag_move(params, atome_id, atome, proc)
+  atome.drag_move_proc = proc
+  atome_js.JS.drag(params, atome_id, atome)
+end
+
+new({ method: :drag, type: :symbol, renderer: :html }) do |options, proc|
+  options.each do |method, params|
+    # atome_id = @atome[:id]
+    # BrowserHelper.send("browser_drag_#{method}", params, atome_id, self, proc)
+    html.event("drag_#{method}", params, proc)
+  end
+
+  # atome.drag_move_proc = proc
+  # atome_js.JS.drag(params, atome_id, atome)
+end
 
 ############### Lets create the U.I.
 Atome.new(
@@ -573,7 +655,6 @@ Atome.new(
 
   }
 )
-
 
 ############ user objects ######
 
@@ -733,7 +814,7 @@ end
 # end
 #
 # # Advanced usage
-wait_id=wait(4, 'timeout1') do
+wait_id = wait(4, 'timeout1') do
   puts "Ceci est affiche  après 4 secondes."
 end
 #
@@ -741,10 +822,9 @@ wait(5, 'timeout2') do
   puts "Ceci est affiche  après 5 secondes."
 end
 
-wait(3 ) do
+wait(3) do
   puts "Ceci est affiche après 3 secondes."
 end
-
 
 wait(1) do
   wait(:kill, wait_id)
@@ -764,9 +844,9 @@ end
 ############# crash
 the_text = text({ data: [
   '74 Bis Avenue des Thermes - Chamalieres, tel: ',
-  { data: '06 63 60 40 55!',width: :auto,component: {size: 63,  top: 30},top: 0, color: :blue, id: :phone_nb },
-  { data: 'la suite',width: :auto}, :super, :cool,:great
-],center: true, top: 120,width: 955,id: :my_x_text, component: {size: 11} })
+  { data: '06 63 60 40 55!', width: :auto, component: { size: 63, top: 30 }, top: 0, color: :blue, id: :phone_nb },
+  { data: 'la suite', width: :auto }, :super, :cool, :great
+], center: true, top: 120, width: 955, id: :my_x_text, component: { size: 11 } })
 # grab('phone_nb').top(55)
 # alert grab('phone_nb')
 grab('phone_nb').color(:red)
@@ -775,7 +855,7 @@ grab('phone_nb').touch(true) do
 end
 wait 3 do
   # alert grab('phone_nb')
-  grab('phone_nb').component({ size: 9})
+  grab('phone_nb').component({ size: 9 })
   grab('phone_nb').color(:yellow)
 end
 # TODO : Important make it work below add uniq id to wait
@@ -799,7 +879,22 @@ end
 # end
 
 #
-# # TODO: implement complex concatenated texts
+# # Done: implement complex concatenated texts
 # # TODO: rename particle as property
 # # the_text.color(:yellow)
+
+############# drag
+
+cc = circle
+cc.drag(true) do |event|
+  dx = event[:dx]
+  dy = event[:dy]
+  puts dx
+end
+
+# TODO : drag and drop api
+# TODO : animation api
+# TODO : video api
+# TODO : shadow api
 #
+

@@ -1,5 +1,7 @@
 const atomeDrag = {
-
+    check: function (options, atome_id, _atome) {
+     alert('full_success')
+    },
     drag: function (options, atome_id, atome) {
 
         let element = document.getElementById(atome_id)

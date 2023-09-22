@@ -89,6 +89,7 @@ task :test_build_wasm do
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
   `cp ./vendor/source_files/wasm/index.html ./vendor/assets/src/index.html`
   `cp ./vendor/source_files/wasm/index.html ./test/test_app/src/index.html`
+  `cp ./vendor/source_files/wasm/index.html ./test/test_app/src/index.html`
   `rm -f ./vendor/assets/src/wasm/ruby/ruby_browser.wasm`
   `rm -f ./test/test_app/src/wasm/ruby/ruby_browser.wasm`
 
