@@ -251,9 +251,8 @@ class HTML
       # get obj id
       # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      if bloc.instance_of? Proc
-        bloc.call(event)
-      end
+
+        bloc.call(event) if bloc.instance_of? Proc
 
       # target_id = event[:target][:id]
       # get  dx and dy value from the event
