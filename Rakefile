@@ -74,15 +74,13 @@ task :test_build_wasm do
   `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
 
   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
-  #   delete the following files at atome root :
-  # - ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz,
-  # - system_ruby_browser.wasm
-  # - 3_2-wasm32-unknown-wasi-full-js
-  # and finally UNCOMMENT the first line  below ('curl -LO ....')
-
-  # `curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
-  `tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
-  `mv 3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby system_ruby_browser.wasm`
+  #   delete the tmp dir :
+  # and UNCOMMENT the line  below : ('curl -LO ....')
+  directory_name = "tmp"
+  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
+  `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `cd tmp; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `mv tmp/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby tmp/system_ruby_browser.wasm`
 
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
@@ -94,8 +92,8 @@ task :test_build_wasm do
   `rm -f ./test/test_app/src/wasm/ruby/ruby_browser.wasm`
 
   cmd=<<STRDELIm
-wasi-vfs pack system_ruby_browser.wasm 
---mapdir usr::./3_2-wasm32-unknown-wasi-full-js/usr 
+wasi-vfs pack tmp/system_ruby_browser.wasm 
+--mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
 --mapdir /::./test/test_app/application/ 
 -o vendor/assets/src/wasm/ruby/ruby_browser.wasm

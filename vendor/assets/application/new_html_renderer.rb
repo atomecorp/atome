@@ -221,10 +221,24 @@ class HTML
     # puts "bloc : #{bloc}"
     send("#{action}_#{options}", bloc)
   end
+  def drag_lock(options)
+    JS.eval(<<-JS)
+    var element = document.getElementById("#{@id}");
+    interact(element).draggable({
+        startAxis: 'xy',
+        lockAxis: "#{options}"
+    });
+  JS
+  end
+
+
 
   def drag_move_true(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    interact.draggable({ drag: true, move: true })
+
+    # interact.draggable({ inertia: true })
+    interact.draggable({  lock:( drag_lock(:x)) })
+    # interact.draggable({ drag: true })
 
     ############### works
     #   interact.on('dragmove', lambda do |event|
@@ -246,25 +260,31 @@ class HTML
     # JS
     #   end)
     ############### tests final works use this one but crash with Opal
+    interact.on('dragstart', lambda do |native_event|
+      @atome.width(33)
+      puts '++++++++++++++++++++++++ start ++++++++++++++++++++++++++++++++++++++++'
+    end)
+
+    interact.on('dragend', lambda do |native_event|
+      @atome.width(333)
+    end)
 
     interact.on('dragmove', lambda do |native_event|
-      # get obj id
       # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
 
-        bloc.call(event) if bloc.instance_of? Proc
-
-      # target_id = event[:target][:id]
+      bloc.call(event) if bloc.instance_of? Proc
       # get  dx and dy value from the event
       dx = event[:dx]
       dy = event[:dy]
 
-      # puts event[:target]== @html_object
       ##### soluce 1
-        x = (@atome.left || 0) + dx.to_f
+      x = (@atome.left || 0) + dx.to_f
       y = (@atome.top || 0) + dy.to_f
       @atome.left(x)
       @atome.top(y)
+
+
       ##### soluce 2
       #     JS.eval(<<-JS)
       #   var targetElement = document.getElementById("#{target_id}");
@@ -276,6 +296,8 @@ class HTML
       # JS
 
     end)
+
+
     ###### Opal tests works
 
     # interact.on('dragmove', lambda do |native_event|
@@ -901,7 +923,7 @@ end
 aa.drag(true)
 cc = aa.circle
 cc.drag(true) do |event|
-  puts event
+  puts event.to_s
   dx = event[:dx]
   dy = event[:dy]
   puts "#{dx}: #{dy}"
