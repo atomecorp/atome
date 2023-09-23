@@ -222,7 +222,6 @@ class HTML
     send("#{action}_#{options}", bloc)
   end
 
-
   # def drag_move_true(id=nil, bloc)
   #   id=@id
   #     interact = JS.eval("return interact('##{id}')")
@@ -257,16 +256,17 @@ class HTML
   #
   # end
 
-
   def drag_move_true(bloc)
     interact = JS.eval("return interact('##{@id}')")
 
     interact.draggable({
                          drag: true,
-                         inertia: true,
+                         inertia: { resistance: 12,
+                                    minSpeed: 200,
+                                    endSpeed: 100 },
                        })
 
-        JS.eval(<<-JS)
+    JS.eval(<<-JS)
       interact('##{@id}').draggable({
         drag: true,
         modifiers: [
@@ -277,7 +277,6 @@ class HTML
         ]
       });
     JS
-
 
     interact.on('dragmove', lambda do |native_event|
       # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
@@ -291,7 +290,6 @@ class HTML
       @atome.top(y)
     end)
     ####################
-
 
   end
 
