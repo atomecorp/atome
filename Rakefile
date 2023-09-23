@@ -78,7 +78,7 @@ task :test_build_wasm do
   # and UNCOMMENT the line  below : ('curl -LO ....')
   directory_name = "tmp"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
-  `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  # `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `cd tmp; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv tmp/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby tmp/system_ruby_browser.wasm`
 

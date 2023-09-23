@@ -221,106 +221,78 @@ class HTML
     # puts "bloc : #{bloc}"
     send("#{action}_#{options}", bloc)
   end
-  def drag_lock(options)
-    JS.eval(<<-JS)
-    var element = document.getElementById("#{@id}");
-    interact(element).draggable({
-        startAxis: 'xy',
-        lockAxis: "#{options}"
-    });
-  JS
-  end
 
+
+  # def drag_move_true(id=nil, bloc)
+  #   id=@id
+  #     interact = JS.eval("return interact('##{id}')")
+  #
+  #     # Utilisez la méthode restrict directement
+  #     JS.eval(<<-JS)
+  #   interact('##{id}').draggable({
+  #     drag: true,
+  #     inertia: true,
+  #     modifiers: [
+  #       interact.modifiers.restrict({
+  #         restriction: 'parent',
+  #         endOnly: true
+  #       })
+  #     ]
+  #   });
+  # JS
+  #
+  #     interact.on('dragmove', lambda do |event|
+  #       target_id = event[:target][:id]
+  #       dx = event[:dx]
+  #       dy = event[:dy]
+  #       JS.eval(<<-JS)
+  #     var targetElement = document.getElementById("#{target_id}");
+  #     var x = (parseFloat(targetElement.getAttribute('data-x')) || 0) + #{dx};
+  #     var y = (parseFloat(targetElement.getAttribute('data-y')) || 0) + #{dy};
+  #     targetElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+  #     targetElement.setAttribute('data-x', x);
+  #     targetElement.setAttribute('data-y', y);
+  #   JS
+  #     end)
+  #
+  # end
 
 
   def drag_move_true(bloc)
     interact = JS.eval("return interact('##{@id}')")
 
-    # interact.draggable({ inertia: true })
-    interact.draggable({  lock:( drag_lock(:x)) })
-    # interact.draggable({ drag: true })
+    interact.draggable({
+                         drag: true,
+                         inertia: true,
+                       })
 
-    ############### works
-    #   interact.on('dragmove', lambda do |event|
-    #     # Obtenez l'ID de l'élément cible
-    #     target_id = event[:target][:id]
-    #
-    #     # Obtenez les valeurs dx et dy de l'événement
-    #     dx = event[:dx]
-    #     dy = event[:dy]
-    #
-    #     # Utilisez JS.eval pour mettre à jour l'élément cible en utilisant son ID
-    #     JS.eval(<<-JS)
-    #   var targetElement = document.getElementById("#{target_id}");
-    #   var x = (parseFloat(targetElement.getAttribute('data-x')) || 0) + #{dx};
-    #   var y = (parseFloat(targetElement.getAttribute('data-y')) || 0) + #{dy};
-    #   targetElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-    #   targetElement.setAttribute('data-x', x);
-    #   targetElement.setAttribute('data-y', y);
-    # JS
-    #   end)
-    ############### tests final works use this one but crash with Opal
-    interact.on('dragstart', lambda do |native_event|
-      @atome.width(33)
-      puts '++++++++++++++++++++++++ start ++++++++++++++++++++++++++++++++++++++++'
-    end)
+        JS.eval(<<-JS)
+      interact('##{@id}').draggable({
+        drag: true,
+        modifiers: [
+          interact.modifiers.restrict({
+            restriction: 'parent',
+            endOnly: true
+          })
+        ]
+      });
+    JS
 
-    interact.on('dragend', lambda do |native_event|
-      @atome.width(333)
-    end)
 
     interact.on('dragmove', lambda do |native_event|
       # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-
       bloc.call(event) if bloc.instance_of? Proc
-      # get  dx and dy value from the event
       dx = event[:dx]
       dy = event[:dy]
-
-      ##### soluce 1
       x = (@atome.left || 0) + dx.to_f
       y = (@atome.top || 0) + dy.to_f
       @atome.left(x)
       @atome.top(y)
-
-
-      ##### soluce 2
-      #     JS.eval(<<-JS)
-      #   var targetElement = document.getElementById("#{target_id}");
-      #   var x = (parseFloat(targetElement.getAttribute('data-x')) || 0) + #{dx};
-      #   var y = (parseFloat(targetElement.getAttribute('data-y')) || 0) + #{dy};
-      #   targetElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-      #   targetElement.setAttribute('data-x', x);
-      #   targetElement.setAttribute('data-y', y);
-      # JS
-
     end)
+    ####################
 
 
-    ###### Opal tests works
-
-    # interact.on('dragmove', lambda do |native_event|
-    #   puts "Event triggered!"
-    #   event = Native(native_event)
-    #   puts event[:type]
-    #   puts event[:dx]
-    #   # puts `JSON.stringify(#{event})`
-    # end)
-
-    ############### simple but crash
-    # interact.on('dragmove', lambda do |event|
-    #   # puts event[:target]
-    #   # puts JS.eval("JSON.stringify(#{event})")
-    #   target = event[:target]
-    #   x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-    #   y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-    #
-    #   target.style.transform = "translate(#{x}px, #{y}px)"
-    #
-    #   target.setAttribute('data-x', x)
-    #   target.setAttribute('data-y', y)
-    # end)
   end
 
   def over_true(bloc)
