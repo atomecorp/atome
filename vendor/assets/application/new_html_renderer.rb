@@ -222,42 +222,25 @@ class HTML
     send("#{action}_#{options}", bloc)
   end
 
-  # def drag_move_true(id=nil, bloc)
-  #   id=@id
-  #     interact = JS.eval("return interact('##{id}')")
-  #
-  #     # Utilisez la méthode restrict directement
-  #     JS.eval(<<-JS)
-  #   interact('##{id}').draggable({
-  #     drag: true,
-  #     inertia: true,
-  #     modifiers: [
-  #       interact.modifiers.restrict({
-  #         restriction: 'parent',
-  #         endOnly: true
-  #       })
-  #     ]
-  #   });
-  # JS
-  #
-  #     interact.on('dragmove', lambda do |event|
-  #       target_id = event[:target][:id]
-  #       dx = event[:dx]
-  #       dy = event[:dy]
-  #       JS.eval(<<-JS)
-  #     var targetElement = document.getElementById("#{target_id}");
-  #     var x = (parseFloat(targetElement.getAttribute('data-x')) || 0) + #{dx};
-  #     var y = (parseFloat(targetElement.getAttribute('data-y')) || 0) + #{dy};
-  #     targetElement.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-  #     targetElement.setAttribute('data-x', x);
-  #     targetElement.setAttribute('data-y', y);
-  #   JS
-  #     end)
-  #
-  # end
 
   def drag_move_true(bloc)
     interact = JS.eval("return interact('##{@id}')")
+
+    interact.on('dragstart', lambda do |native_event|
+      @atome.width(33)
+      alert 'clone creation'
+      @atome= box({id: "#{@id}_cloned"})
+
+    end)
+
+    interact.on('dragend', lambda do |native_event|
+      @atome.width(333)
+      alert 'unset drag'
+
+      JS.eval(<<-JS)
+  interact('##{@id}').unset()
+      JS
+    end)
 
     interact.draggable({
                          drag: true,
@@ -292,6 +275,8 @@ class HTML
     ####################
 
   end
+
+
 
   def over_true(bloc)
     interact = JS.eval("return interact('##{@id}')")
@@ -588,6 +573,8 @@ def browser_drag_move(params, atome_id, atome, proc)
 end
 
 new({ method: :drag, type: :symbol, renderer: :html }) do |options, proc|
+  # alert options
+
   options.each do |method, params|
     # atome_id = @atome[:id]
     # BrowserHelper.send("browser_drag_#{method}", params, atome_id, self, proc)
@@ -891,6 +878,8 @@ end
 
 ############# drag
 aa.drag(true)
+# aa.drag(:end)
+
 cc = aa.circle
 cc.drag(true) do |event|
   puts event.to_s
@@ -909,3 +898,9 @@ end
 # TODO : shadow api
 #
 
+# b=box({id: :tutu})
+# b.top do
+#   puts 'ok'
+# end
+#
+# # alert b.inspect

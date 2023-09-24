@@ -45,6 +45,7 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
           parent_found.atome["#{type}s"].delete(id)
           parent_found.atome[:attached] = new_attached_container
         end
+
       end
 
     end

@@ -157,6 +157,9 @@ class Atome
     store_code_bloc(element, &user_proc) if user_proc
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
+    #####
+    # @atome[element] = params  if store
+    ######
     # run_optional_proc("pre_render_#{element}", self, params, &user_proc)
     if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
