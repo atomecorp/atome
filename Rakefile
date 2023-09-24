@@ -83,6 +83,12 @@ task :test_build_wasm do
   directory_name = "./vendor/assets/src/wasm/ruby"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
 
+  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
+  directory_name = "./test/test_app/src/wasm/"
+  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
+  directory_name = "./test/test_app/src/wasm/ruby"
+  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
+
   # `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `cd tmp; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv tmp/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby tmp/system_ruby_browser.wasm`
