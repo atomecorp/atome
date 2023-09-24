@@ -6,7 +6,7 @@
 /pkg/
 /spec/reports/
 /tmp/
-/test/
+/test/test_app
 /Gemfile.lock
 *.ds_store
 *.idea
