@@ -35,7 +35,6 @@ end
 
 task :test_opal do
   test_common
-
   `cp ./vendor/source_files/opal/index.html ./vendor/assets/src/index.html`
   `rake build`
   `cd pkg; gem install atome --local`
@@ -110,9 +109,8 @@ task :cleanup do
 end
 
 task :test_server do
-  FileUtils.copy_entry('vendor/assets/src/js/', 'tmp/test_app/src/js/')
-  FileUtils.copy_entry('vendor/assets/src/css/', 'tmp/test_app/src/css/')
-  FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
+  test_common
+  `cp ./vendor/source_files/opal/index.html ./vendor/assets/src/index.html`
   `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run server guard`
 end

@@ -124,8 +124,6 @@ end
 
 def browser_case(location)
   `cd #{location}/src;open index.html`
-  # `echo jello`
-  # guard_check
 end
 
 def osx_case(location)
