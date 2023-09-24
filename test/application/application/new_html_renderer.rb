@@ -7,69 +7,11 @@
 
 
 
-new({ renderer: :html, method: :web }) do |params, &user_proc|
-  params
-end
 
-new({ renderer: :html, method: :height, type: :string }) do |value, _user_proc|
-  html.style(:height, "#{value}px")
-end
 
-new({ renderer: :html, method: :smooth, type: :string }) do |value, _user_proc|
-  format_params = case value
-                  when Array
-                    properties = []
-                    value.each do |param|
-                      properties << "#{param}px"
-                    end
-                    properties.join(' ').to_s
-                  when Integer
-                    "#{value}px"
-                  else
-                    value
-                  end
-  html.style('border-radius', format_params)
-end
 
-new({ renderer: :html, method: :attach, type: :string }) do |parent_found, _user_proc|
-  html.append_to(parent_found)
-end
 
-new({ renderer: :html, method: :attach, type: :string, specific: :color }) do |parent_found, _user_proc|
-  grab(parent_found).apply(id)
-end
 
-new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
-  red = parent_found.red * 255
-  green = parent_found.green * 255
-  blue = parent_found.blue * 255
-  alpha = parent_found.alpha
-  html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
-end
-
-new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |parent_found, _user_proc|
-  # TODO:   we should treat objet when multiple : #{self.inspect}
-
-  red = parent_found.red * 255
-  green = parent_found.green * 255
-  blue = parent_found.blue * 255
-  alpha = parent_found.alpha
-  html.style(:color, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
-end
-
-new({ renderer: :html, method: :clones, type: :string }) do |_value, _user_proc|
-
-end
-
-new({ renderer: :html, method: :overflow, type: :string })
-
-new({ renderer: :html, method: :preset, type: :string })
-
-new({ renderer: :html, method: :id, type: :string })
-
-new({ renderer: :html, method: :renderers, type: :string })
-
-new({ renderer: :html, method: :diffusion, type: :string })
 
 # now let's get the default render engine
 default_render = Essentials.default_params[:render_engines]

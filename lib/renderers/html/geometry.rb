@@ -1,11 +1,7 @@
-# # frozen_string_literal: true
-#
-# generator = Genesis.generator
-#
-# generator.build_render(:html_width) do |value|
-#   @html_object.style[:width] = "#{value}px" unless @html_type == :style
-# end
-#
-# generator.build_render(:html_height) do |value|
-#   @html_object.style[:height] = "#{value}px" unless @html_type == :style
-# end
+# frozen_string_literal: true
+
+new({ renderer: :html, method: :height, type: :string }) do |value, _user_proc|
+  html.style(:height, "#{value}px")
+end
+
+new({ renderer: :html, method: :overflow, type: :string })
