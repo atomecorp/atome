@@ -11,26 +11,8 @@ end
 
 task default: :test
 
-task :test_build do
-  FileUtils.copy_entry('vendor/assets/src/js/', 'tmp/test_app/src/js/')
-  FileUtils.copy_entry('vendor/assets/src/css/', 'tmp/test_app/src/css/')
-  FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
+def task_comon
 
-  `rake build`
-  `cd pkg; gem install atome --local`
-  `cd tmp/test_app;atome update`
-  `cd tmp/test_app;atome refresh`
-  puts 'solution re-build!'
-
-end
-
-task :test_browser do
-  FileUtils.copy_entry('vendor/assets/src/js/', 'tmp/test_app/src/js/')
-  FileUtils.copy_entry('vendor/assets/src/css/', 'tmp/test_app/src/css/')
-  FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
-  `cd tmp/test_app;atome update;atome run compile`
-  `open tmp/test_app/src/index.html`
-  puts 'atome browser is running'
 end
 
 def test_common
@@ -48,6 +30,19 @@ def test_common
   FileUtils.copy_entry('vendor/assets/src/js/', 'tmp/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'tmp/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
+end
+
+
+task :test_opal do
+  test_common
+
+  `cp ./vendor/source_files/opal/index.html ./vendor/assets/src/index.html`
+  `rake build`
+  `cd pkg; gem install atome --local`
+  `cd tmp/test_app;atome update`
+  `cd tmp/test_app;atome refresh`
+  `cd tmp/test_app;atome update;atome run browser guard `
+  puts 'atome browser is build and running!'
 end
 def wasm_initialize
   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
@@ -67,19 +62,7 @@ def wasm_initialize
   `rm -f ./vendor/assets/src/wasm/ruby/ruby_browser.wasm`
 end
 
-task :test_build_opal do
-  test_common
-
-  `cp ./vendor/source_files/opal/index.html ./vendor/assets/src/index.html`
-  `rake build`
-  `cd pkg; gem install atome --local`
-  `cd tmp/test_app;atome update`
-  `cd tmp/test_app;atome refresh`
-  `cd tmp/test_app;atome update;atome run browser guard `
-  puts 'atome browser is build and running!'
-end
-
-task :test_build_wasm do
+task :test_wasm do
   test_common
 
   directory_name = "./tmp/test_app/src/wasm/"
@@ -111,17 +94,14 @@ STRDELIm
   puts 'atome wasm is build and running'
 end
 
-task :test_build_osx do
-  FileUtils.copy_entry('vendor/assets/src/js/', 'tmp/test_app/src/js/')
-  FileUtils.copy_entry('vendor/assets/src/css/', 'tmp/test_app/src/css/')
-  FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
-
+task :test_osx do
+  test_common
+  `cp ./vendor/source_files/opal/index.html ./vendor/assets/src/index.html`
   `rake build`
   `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update`
   `cd tmp/test_app;atome refresh`
   `cd tmp/test_app;atome update;atome run osx guard`
-  # `cd tmp/test_app;atome run osx guard`
   puts 'atome osx is running'
 end
 
@@ -148,8 +128,8 @@ task :run_example_server do
   `cd tmp/test_app;atome run server`
 end
 
-task :test_osx do
-  `cd tmp/test_app;atome run osx guard`
-end
+# task :test_osx do
+#   `cd tmp/test_app;atome run osx guard`
+# end
 
 task default: :test
