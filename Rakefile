@@ -37,13 +37,11 @@ def test_common
   directory_name = "./test/test_app"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
   `cp -r ./vendor/assets/ ./test/test_app/`
-  `cp -r ./test/test_application/ ./test/test_app`
-  `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
+  `cp -r ./test/application/ ./test/test_app`
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
-  `cp -r ./test/test_application/ ./test/test_app/application/`
-  `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
+  `cp -r ./test/application/ ./test/test_app/application/`
 
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
@@ -81,8 +79,6 @@ end
 
 task :test_build_wasm do
   test_common
-  # `cp -r ./test/test_application/ ./test/test_app/application/`
-  # `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
 
   directory_name = "./test/test_app/src/wasm/"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
