@@ -71,6 +71,8 @@ task :test_build_opal do
 end
 
 task :test_build_wasm do
+  `cp -r ./test/test_application/ ./test/test_app/application/`
+
   `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
 
   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
