@@ -33,31 +33,19 @@ task :test_browser do
   puts 'atome browser is running'
 end
 
+def test_common
+
+  directory_name = "./test/test_app"
+  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
+  `cp -r ./vendor/assets/ ./test/test_app/`
+
+  `cp -r ./test/test_application/ ./test/test_app`
+end
+
 
 task :test_build_opal do
+  test_common
   `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
-  # def require_sanitizer(file)
-  #   file= file.gsub('  ',' ')
-  #   file= file.gsub(' require','require')
-  #   file.gsub(/^require (['"])(?!\.\/)/, 'require \1./')
-  # end
-  # `cp -r ./application_tests/application ./test/test_app`
-  # ############@
-  # source_path = './application_tests/application/index.rb'
-  #
-  # File.open(source_path, 'r') do |file|
-  #   content = file.read
-  #   content=require_sanitizer(content)
-  #   dest_path = './test/test_app/application/index.rb'
-  #   File.write(dest_path, content)
-  # end
-  # #################
-  # source_path = './application_tests/application/index.rb'
-  # file_content = File.read(source_path)
-  # new_content = file_content.gsub(/(require\s+['"])\.\//, '\1')
-  # dest_path = './test/test_app/application/index.rb'
-  # File.write(dest_path, new_content)
-  # `cp -r ./application_tests/application ./test/test_app`
   FileUtils.copy_entry('vendor/assets/src/js/', 'test/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'test/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'test/test_app/src/medias/')
@@ -72,7 +60,6 @@ end
 
 task :test_build_wasm do
   `cp -r ./test/test_application/ ./test/test_app/application/`
-
   `cp ./vendor/assets/application/new_html_renderer.rb ./test/test_app/application/new_html_renderer.rb`
 
   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
@@ -91,7 +78,7 @@ task :test_build_wasm do
   directory_name = "./test/test_app/src/wasm/ruby"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
 
-  # `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `cd tmp; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv tmp/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby tmp/system_ruby_browser.wasm`
 
