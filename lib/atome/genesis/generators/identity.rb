@@ -94,3 +94,5 @@ new({ particle: :clones }) do |clones_found|
     end
   end
 end
+
+new ({ particle: :markup })

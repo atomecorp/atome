@@ -148,3 +148,4 @@ new({ particle: :tag, render: false, type: :hash })
 
 new({ particle: :web })
 new({ particle: :unit, type: :hash })
+new({ initialize: :unit, value: {} })

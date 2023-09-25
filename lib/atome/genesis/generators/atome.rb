@@ -114,4 +114,5 @@ end
 #   sanitized_params
 # end
 
-
+# for later use ( physical is a css like style)
+new ({ atome: :physical })

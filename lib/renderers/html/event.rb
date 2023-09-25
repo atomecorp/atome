@@ -1,9 +1,30 @@
-# # frozen_string_literal: true
-#
-# generator = Genesis.generator
-#
-# generator.build_render(:html_touch) do |_value, proc|
-#   @html_object.on :click do |e|
-#     instance_exec(&proc) if proc.is_a?(Proc)
-#   end
-# end
+# frozen_string_literal: true
+
+def browser_drag_move(params, atome_id, atome, proc)
+  atome.drag_move_proc = proc
+  atome_js.JS.drag(params, atome_id, atome)
+end
+
+new({ method: :drag, type: :symbol, renderer: :html }) do |options, proc|
+  # alert options
+
+  options.each do |method, params|
+    # atome_id = @atome[:id]
+    # BrowserHelper.send("browser_drag_#{method}", params, atome_id, self, proc)
+    html.event("drag_#{method}", params, proc)
+  end
+
+  # atome.drag_move_proc = proc
+  # atome_js.JS.drag(params, atome_id, atome)
+end
+
+
+new({ method: :touch, type: :integer, renderer: :html }) do |options, user_bloc|
+  # puts user_bloc
+  # puts @touch_code
+  html.event(:touch, options, user_bloc)
+end
+
+new({ method: :over, type: :integer, renderer: :html }) do |options, user_bloc|
+  html.event(:over, options, user_bloc)
+end
