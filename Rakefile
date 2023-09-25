@@ -73,9 +73,9 @@ task :test_wasm do
   `cp ./vendor/source_files/wasm/index.html ./tmp/test_app/src/index.html`
 
   `rm -f ./tmp/test_app/src/wasm/ruby/ruby_browser.wasm`
-
+  # FIXME: we have to emebed wasi-vfs because verison 0.4.0 doesn't work
   cmd = <<STRDELIm
-wasi-vfs pack tmp/system_ruby_browser.wasm 
+./vendor/source_files/wasm/wasi-vfs pack tmp/system_ruby_browser.wasm 
 --mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
 --mapdir /::./tmp/test_app/application/ 
@@ -83,7 +83,7 @@ wasi-vfs pack tmp/system_ruby_browser.wasm
 STRDELIm
 
   cleaned_cmd = cmd.lines.reject { |line| line.start_with?("#") }.join
-  command = cleaned_cmd.chomp.gsub("\n", "")
+  command = cleaned_cmd.chomp.gsub("\n", " ")
   system(command)
 
   `cp ./vendor/assets/src/wasm/ruby/ruby_browser.wasm ./tmp/test_app/src/wasm/ruby/ruby_browser.wasm`
