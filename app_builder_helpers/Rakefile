@@ -3,44 +3,23 @@
 # FIXME: check when creating gem version the new gem is not always fully updated we have to type gem uninstall first
 
 require 'opal'
-# require 'opal-jquery'
-# require 'opal-browser'
 require 'parser'
-# require 'ruby2js'
 require 'uglifier'
 
-
 Opal.append_path 'app'
-
-# def build_browser_content
-#   Opal::Builder.build('../lib/platform_specific/browser/opal_browser.rb').to_s
-# end
 
 def build_opal_content
   Opal::Builder.build('../lib/platform_specific/opal/opal.rb').to_s
 end
 
-# def build_opal_browser(user_project_path)
-#   opal_directory = "#{user_project_path}/src/js/opal"
-#   browser_js = "#{opal_directory}/opal_browser.js"
-#   Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
-#
-#   File.new browser_js, 'w'
-#   browser_content = build_browser_content
-#
-#   File.open(browser_js, 'w') do |f|
-#     f.puts browser_content
-#   end
-# end
-
 def build_opal(user_project_path)
+
   opal_directory = "#{user_project_path}/src/js/opal"
   opal_js = "#{opal_directory}/opal.js"
   Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
 
   File.new opal_js, 'w'
   opal_content = build_opal_content
-
   File.open(opal_js, 'w') do |f|
     f.puts opal_content
   end
@@ -104,7 +83,6 @@ def build_opal_parser(user_project_path)
     f.puts parser_content
   end
 end
-################### treatment
 
 def modify_and_copy_file(source_path, destination_path,source_code)
   # ##################
@@ -117,27 +95,6 @@ def modify_and_copy_file(source_path, destination_path,source_code)
   # FileUtils.mkdir(File.dirname(destination_path))
   modified_content=file_content.gsub('     ',' ').gsub('    ',' ').gsub('   ',' ').gsub('  ',' ').gsub("require './", "require 'temp/opal/").gsub('require "./', 'require "temp/opal/')
   File.write(destination_path, modified_content)
-  ##################
-
-
-  # File.open(source_path, "r") do |f|
-  #   lignes = []
-  #
-  #   f.each_line do |ligne|
-  #
-  #     remove_duplicated_spaces(ligne)
-  #     # while  ligne.include?(" ")
-  #     #  ligne.gsub('  ',' ')
-  #     # end
-  #     lignes << ligne
-  #   end
-  #   lignes=lignes.join("\n")
-  #   modified_content=lignes.gsub("require './", "require 'temp/opal/").gsub('require "./', 'require "temp/opal/')
-  #
-  #   # puts lignes.inspect
-  #   File.write(destination_path, modified_content)
-  # end
-
 
 end
 def process_directory(source_dir, destination_dir, source_code)
@@ -157,13 +114,8 @@ def process_directory(source_dir, destination_dir, source_code)
 end
 def build_user_code(user_project_path, source_code)
 
-  ######### tests
-  # test_file="users/jeezs/albercombrie.rb"
-  # File.open(test_file, 'w') do |f|
-  #   f.puts "puts '<<<<<<albercombrication!!!>>>>>>'"
-  # end
 
-  ####### tests
+
   application_js = "#{user_project_path}/src/js/application.js"
   builder = Opal::Builder.new
   builder.append_paths("#{user_project_path}/")
@@ -176,16 +128,11 @@ def build_user_code(user_project_path, source_code)
 
   process_directory(source_directory, destination_directory, source_code)
 
-
-
-  # aui = builder.build("#{source_code}/aui.rb").to_s
   application_content = builder.build("#{source_code}/temp/opal/index.rb").to_s
 
-  # full_app=aui+"\n"+system_infos+"\n"+application_content
   File.open(application_js, 'w') do |f|
     f.puts application_content
   end
-  # minimize_application(user_project_path)
 end
 
 def build_system_infos(user_project_path, source_code)
@@ -206,15 +153,6 @@ def minimize_aui(user_project_path)
     f.puts aui_content
   end
 end
-
-# def minimize_browser(user_project_path)
-#   browser_js = "#{user_project_path}/src/js/opal/opal_browser.js"
-#   browser_content = File.open(browser_js).read
-#   browser_content = Uglifier.new.compile(browser_content)
-#   File.open(browser_js, 'w') do |f|
-#     f.puts browser_content
-#   end
-# end
 
 def minimize_opal(user_project_path)
   opal_js = "#{user_project_path}/src/js/opal/opal.js"
@@ -251,15 +189,6 @@ def minimize_atome(user_project_path)
     f.puts atome_content
   end
 end
-
-# def minimize_sparkle(user_project_path)
-#   opal_sparkle_js = "#{user_project_path}/src/js/opal/opal_sparkle.js"
-#   opal_sparkle_content = File.open(opal_sparkle_js).read
-#   opal_sparkle_content = Uglifier.new.compile(opal_sparkle_content)
-#   File.open(opal_sparkle_js, 'w') do |f|
-#     f.puts opal_sparkle_content
-#   end
-# end
 
 def minimize_opal_extensions(user_project_path)
   atome_opal_extensions_js = "#{user_project_path}/src/js/opal/atome_opal_extensions.js"

@@ -1,5 +1,66 @@
 ######## tests
 
+############ user objects ######
+
+# s_c = grab(:shape_color)
+#
+# # Atome.new(
+# #   { renderers: default_render, id: :my_test_box, type: :shape, width: 100, height: 100, attach: [:view],
+# #     left: 120, top: 0, apply: [:shape_color],attached: []
+# #   }
+# # )
+# # a = Atome.new(
+# #   { renderers: default_render, id: :my_test_box, type: :shape, attach: [:view], apply: [:shape_color],
+# #     left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+# #   }
+# #
+# # )
+# a = Atome.new(
+#   { renderers: default_render, id: :my_shape, type: :shape, attach: [:view], apply: [:shape_color],
+#     left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+#   }
+#
+# )
+#
+
+# s_c.red(0.2)
+# s_c.blue(0)
+# s_c.green(0)
+# a.top(99)
+# aa.unit[:width] = "%"
+# aa.width(88)
+# a.smooth(33)
+# a.web({ tag: :span })
+# aa.smooth(9)
+# # FIXME:  add apply to targeted shape, ad affect to color applied
+# # box
+# # circle
+# # text(:hello)
+# # Atome.new({  :type => :shape, :width => 99, id: :my_id, :height => 99, :apply => [:box_color], :attach => [:view],
+# # :left => 300, :top => 100, :clones => [], :preset => :box, :id => "box_12", :renderers => [:html] })
+# aa.unit[:left] = :inch
+# aa.unit({ top: :px })
+# aa.unit({ bottom: '%' })
+# aa.unit[:bottom] = :cm
+# aa.unit[:right] = :inch
+# aa.unit[:top] = :px
+# puts " unit for aa is : #{aa.unit}"
+#
+# # new({ atome: :poil })
+# # new({ atome: :poil })
+# # poil(:data)
+# # piol
+#
+# # new({ renderer: :html, method: :text, type: :hash }) do |value, _user_proc|
+# #   alert value
+# # end
+# # ###################### uncomment below
+# Atome.new(
+#   { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100, attach: [:my_shape],
+#     data: "too much cool for me", apply: [:text_color], attached: []
+#   }
+# )
+#
 
 ############## tests
 aa = Atome.new(
@@ -188,5 +249,5 @@ b.color(:yellow)
 #   puts 'ok'
 # end
 #
-# alert b.inspect
+alert b.inspect
 

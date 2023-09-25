@@ -15,7 +15,6 @@ class Atome
 
     # the keys :renderers, :type and :id should be placed in the first position in the hash
     @broadcast = {}
-    # @store_ready=true
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     @atome = new_atome
@@ -55,8 +54,6 @@ class Atome
 
       # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
       params = atome_common(element, params)
-      # run_optional_proc("pre_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
-      # run_optional_proc("post_render_#{@atome[:type]}".to_sym, self, params, &user_proc)
       if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
         instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
       end
@@ -83,59 +80,21 @@ class Atome
 
     # the method define below is the fastest params are passed directly
     Atome.define_method "set_#{element}" do |params, &user_proc|
-      # capitalized_element=element.to_s.capitalize
       # we generate the corresponding module here:
       # Object.const_set(capitalized_element, Module.new)
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]
       new_atome = Atome.new(params, &user_proc)
-      # module_to_extend = Object.const_get(capitalized_element)
-      # new_atome.extend(module_to_extend)
       new_atome
       # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
     end
   end
 
-  # def new_render_engine(renderer_name, &method_proc)
-  #   # puts "renderer_name : #{renderer_name}"
-  #   Atome.define_method renderer_name do |params = nil, &user_proc|
-  #     instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-  #   end
-  # end
-
-  # def run_optional_proc(proc_name, atome = self, params, &user_proc)
-  #   option_found = Universe.get_optional_method(proc_name)
-  #   # puts "=> #{Universe.optional_get_optional_method[:post_render_touch].class}"
-  #   # optional_found = Universe.optional_get_optional_method[:post_render_touch]
-  #   # atome.instance_exec( &optional_found) if optional_found.is_a?(Proc)
-  #
-  #   # if option_found
-  #   #   alert option_found.class
-  #   # end
-  #   atome.instance_exec(params, user_proc, atome, &option_found) if option_found.is_a?(Proc)
-  # end
 
   def store_value(element)
 
     params = instance_variable_get("@#{element}")
       @atome[element] = params
-
-    # begin
-    #   @atome=atome_copy
-    #   # @atome.merge!(element => params)
-    #   # alert :done
-    # rescue RuntimeError => e
-    #   if e.message == "can't add a new key into hash during iteration"
-    #     # Attendez un moment ou utilisez une autre logique pour réessayer
-    #     sleep(0.1)
-    #     puts "no no no!!"
-    #     retry
-    #   else
-    #     puts'I dont know'
-    #     # Relancez l'exception si ce n'est pas celle que vous attendiez
-    #     raise
-    #   end
-    # end
 
   end
 
@@ -157,10 +116,6 @@ class Atome
     store_code_bloc(element, &user_proc) if user_proc
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
-    #####
-    # @atome[element] = params  if store
-    ######
-    # run_optional_proc("pre_render_#{element}", self, params, &user_proc)
     if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
     end
@@ -168,45 +123,12 @@ class Atome
     if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
 
-      # store_value(element) if store
-    # else
-    #   store_value(element) if store
     end
-    # run_optional_proc("post_render_#{element}", self, params, &user_proc)
     broadcasting(element)
-    # if @store_ready==
-    #   puts "lllll"
-    # @store_ready=false
+
       store_value(element) if store
-    # end
-    # @store_ready=true
+
     @store_allow=true
-
-
-
-
-    #################################
-
-
-    # begin
-    #   store_value(element) if store
-    # rescue RuntimeError => e
-    #   if e.message == "can't add a new key into hash during iteration"
-    #     # Attendez un moment ou utilisez une autre logique pour réessayer
-    #     sleep 1
-    #       retry
-    #
-    #     # store_value(element) if store
-    #
-    #   else
-    #     puts'I dont know'
-    #     # Relancez l'exception si ce n'est pas celle que vous attendiez
-    #     raise
-    #   end
-    # end
-
-    ################################
-
 
 
     if Atome.instance_variable_get("@after_#{element}").is_a?(Proc)

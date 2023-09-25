@@ -2,17 +2,6 @@
 new({ atome: :color, type: :hash })
 
 new({ sanitizer: :color }) do |params|
-
-  # if params.instance_of?(Array)
-  #   #   alert alert "++++#{self}"
-  #   params.each do |param|
-  #     self.send(:color, param)
-  #   end
-  # else
-  #   # TODO : when attaching color to a shadow it should colorized it , cf : c.shadow({color: :blue}) should work
-  #   params = create_color_hash(params) unless params.instance_of? Hash
-  #   params
-  # end
   params = create_color_hash(params) unless params.instance_of? Hash
   # the condition below is  to prevent the creation of multiple unwanted colors with same property and no ID specified
   unless params[:id]
@@ -44,15 +33,6 @@ new({ sanitizer: :shadow }) do |params|
   new_params
 end
 new({ atome: :shape })
-# new({ pre: :shape }) do |params|
-#   if params[:definition]
-#     # if it is a vector we reorder tha params
-#     attached = params.delete(:attached)
-#     params = params.merge({ attached: attached })
-#   end
-#
-#   params
-# end
 new({ atome: :code })
 new({ atome: :audio })
 new({ atome: :element })
@@ -67,16 +47,14 @@ new({ sanitizer: :www }) do |params|
   params = temp_default.merge(params)
   params
 end
-# new({ atome: :collector })
-# new({ atome: :collection })
 new({ atome: :animation })
 new({ atome: :text, type: :hash })
 
 new({ post: :text }) do |params, current_atome|
   if @data.instance_of? Array
     @data.each_with_index do |data_found, index|
-      #we treat the first element
-      if index== 0
+      # we treat the first element
+      if index == 0
         current_atome.send(:data, data_found)
       else
         # we create new text's atome attached to the main one (the first element above)
@@ -97,22 +75,6 @@ new({ sanitizer: :text }) do |params|
   @data = params.delete(:data)
   params
 end
-
-# new({ atome: :group, type: :array, render: false })
-#
-#
-# new({ sanitizer: :group }) do |params|
-#
-#   sanitized_params = if params.instance_of? Array
-#                        # the group renderers is found in : Genesis/group/group.rb
-#                        { data: params, attach: [:view] }
-#                      elsif params.instance_of? Hash
-#                        params
-#                      else
-#                        { data: [params], attach: [:view]}
-#                      end
-#   sanitized_params
-# end
 
 # for later use ( physical is a css like style)
 new ({ atome: :physical })

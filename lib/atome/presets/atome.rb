@@ -9,7 +9,6 @@ class Atome
   def atome_common(atome_preset, params)
     # TODO : optimise the whole code below and make it rubocop friendly
     essential_params = Essentials.default_params[atome_preset] || {}
-    # alert essential_params
     basic_params = {}
     basic_params[:type] = essential_params[:type] || :element
 
@@ -26,26 +25,6 @@ class Atome
   end
 
   def preset_common(params, &bloc)
-    # params[:attach].each do |attach_to_atome|
-    #   # FIXME : may be this is the place to fix :
-    #   #   when multiple  attach, it should be able to be displayed in every attached atome (atome.rb/atome_parsing)
-    #   atome_attach = grab(attach_to_atome)
-    #   if atome_attach.type == :group
-    #     params[:renderers].map! { |element| element == :group ? :browser : element }
-    #     atome_attach.data.each_with_index do |group_item, index|
-    #       params[:attach][params[:attach].length - 1] = group_item
-    #       params[:id] = "#{params[:id]}_#{index}"
-    #       grab(group_item).shape(params)
-    #     end
-    #     alert "group params are #{params}"
-    #     return Atome.new(params, &bloc)
-    #   else
-    #     # alert "generic params are #{params}"
-    #     return Atome.new(params, &bloc)
-    #   end
-    #   return Atome.new(params, &bloc)
-    # end
-
     result = params[:attach].detect do |attach_to_atome|
       atome_attach = grab(attach_to_atome)
       if atome_attach.type == :group

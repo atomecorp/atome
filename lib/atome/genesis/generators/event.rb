@@ -35,16 +35,13 @@ new({ post: :drag }) do |params|
   params.each do |k, v|
     @drag[k] = v
   end
-  # @drag=params
   # as store for touch is set to false we have to manually save the instance variable
   store_value(:drag)
 end
 
-# @touch[params] = user_bloc
+new({ particle: :drop })
 
-new ({ particle: :drop })
-
-new ({ sanitizer: :drop }) do |params|
+new({ sanitizer: :drop }) do |params|
   params = { action: true } if params == true
   params
 end
@@ -57,20 +54,6 @@ new({ post: :over }) do |params, user_bloc|
   # as store for touch is set to false we have to manually save the instance variable
   store_value(:over)
 end
-
-
-
-# new ({ sanitizer: :over }) do |params, user_proc|
-#
-#   params = :enter if params == true
-#   case params
-#   when :enter
-#     @enter_action_proc = user_proc
-#   when :leave
-#     @leave_action_proc = user_proc
-#   end
-#   params
-# end
 
 new({ particle: :sort }) do |_value, sort_proc|
   @sort_proc = sort_proc

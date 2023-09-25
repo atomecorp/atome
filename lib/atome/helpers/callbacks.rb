@@ -51,10 +51,6 @@ class Atome
   def drag_end_callback(page_x, page_y, left_val, top_val)
     @atome[:left] = left_val
     @atome[:top] = top_val
-    # alert :loo
-    # #now we rest the position
-    # self.left(left_val)
-    # self.top(top_val)
     proc = @drag_end_proc
     instance_exec({ pageX: page_x, pageY: page_y, left: left_val, top: top_val }, &proc) if proc.is_a?(Proc)
   end
@@ -64,11 +60,6 @@ class Atome
     proc = @drop_action_proc
     instance_exec(data_found, &proc) if proc.is_a?(Proc)
   end
-
-  # def over_action_callback( data_found, _full_event)
-  #   proc = @enter_action_proc
-  #   instance_exec(data_found, &proc) if proc.is_a?(Proc)
-  # end
 
   # drop callbacks
   def enter_action_callback( data_found, _full_event)
@@ -80,21 +71,6 @@ class Atome
     proc = @leave_action_proc
     instance_exec( data_found,&proc) if proc.is_a?(Proc)
   end
-
-
-  # def drag_move_callback(page_x, page_y, left_val, top_val)
-  #   proc = @drag_move_proc
-  #   @atome[:left] = left_val
-  #   @atome[:top] = top_val
-  #   instance_exec({ pageX: page_x, pageY: page_y, left: left_val, top: top_val }, &proc) if proc.is_a?(Proc)
-  # end
-  #
-  # def drag_end_callback(page_x, page_y, left_val, top_val)
-  #   @atome[:left] = left_val
-  #   @atome[:top] = top_val
-  #   proc = @drag_end_proc
-  #   instance_exec({ pageX: page_x, pageY: page_y, left: left_val, top: top_val }, &proc) if proc.is_a?(Proc)
-  # end
 
   # sort callbacks
   def sort_callback(atome)

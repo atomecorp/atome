@@ -35,7 +35,6 @@ class Universe
 
     def add_optional_method(method_name, method_proc)
       # this method is used to add optional methods
-      # puts "3 => #{method_name}"
       instance_variable_get('@options').merge!({ method_name => method_proc })
       # puts "====> #{instance_variable_get('@options')[method_name]}"
     end
@@ -44,10 +43,6 @@ class Universe
       # this method is used to add optional methods
       instance_variable_get('@options')[method_name]
     end
-    # def optional_get_optional_method
-    #   # this method is used to add optional methods
-    #   instance_variable_get('@options')
-    # end
 
     def add_sanitizer_method(method_name, &method_proc)
       # this method is used to add sanitizer methods
@@ -136,15 +131,15 @@ class Universe
 
     def current_machine
       platform = RUBY_PLATFORM.downcase
-      if platform == :opal
-        output = `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
+      output = if platform == :opal
+        `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
       elsif platform == 'wasm32-wasi'
-        output = 'ifconfig'
+        'ifconfig'
       elsif platform_type == :windows
-        output = 'ipconfig'
+        'ipconfig'
       else
-        output = 'ifconfig'
-      end
+        'ifconfig'
+               end
       current_machine_decision(platform, output)
       # TODO: check the code above and create a sensible identity
     end

@@ -7,7 +7,7 @@
 # require 'src/medias/rubies/new_html_renderer.rb'
 # require '../src/medias/rubies/new_html_renderer.rb'
 
-require 'temp/opal/new_html_renderer'
+# require 'temp/opal/new_html_renderer'
 # require 'test_app/test'
 # alert :strange
 # require 'src/new_html_renderer.rb'

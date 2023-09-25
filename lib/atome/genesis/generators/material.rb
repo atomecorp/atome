@@ -65,7 +65,6 @@ new({ particle: :classes }) do |value|
   Universe.classes[value] |= [id]
 end
 new({ particle: :remove_classes }) do |value|
-  # Universe.classes.delete(value)
   Universe.classes[value].delete(id)
 end
 new ({ particle: :opacity })

@@ -48,8 +48,6 @@ class Atome
 
     # the line below create an empty atome method for each renderer, eg: browser_shape, headless_color, ...
     auto_render_generator(atome_name)
-    # create_atome(atome_name)
-    # Object.const_set("poil", Module.new)
     new_atome(atome_name, &atome_proc)
 
 
@@ -62,27 +60,10 @@ class Atome
   end
 
   def build_render(renderer_name, &method_proc)
-    # puts "==== >#{renderer_name}"
-
-    # if renderer_name.start_with?(:html)
-    #   puts "second condition to remove with finish : #{renderer_name}"
-    #
-    #   puts Universe.atome_list
-    # else
     Atome.define_method renderer_name do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
     end
-    # end
-
   end
-
-  # def new_render_engine(renderer_name, &method_proc)
-  #   # puts "renderer_name : #{renderer_name}"
-  #   Atome.define_method renderer_name do |params = nil, &user_proc|
-  #     instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-  #   end
-  # end
-
 
   def build_sanitizer(method_name, &method_proc)
     Universe.add_sanitizer_method(method_name.to_sym, &method_proc)

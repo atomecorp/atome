@@ -8,7 +8,6 @@ require 'extensions/sha'
 require 'extensions/color'
 require 'native'
 def alert(val)
-  # JS.eval("alert('#{val}')")
-  `alert(#{val})`
+  JS.eval("alert('#{val}')")
 end
 

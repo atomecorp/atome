@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Atome
   def html
     @html_object = HTML.new(id, self)

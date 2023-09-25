@@ -4,7 +4,6 @@ class Object
   def new(params, &bloc)
     generator = Genesis.generator
     if params.key?(:atome)
-      # alert  params
       Universe.add_atomes_specificities params[:atome]
       generator.build_atome(params[:atome], &bloc)
     elsif params.key?(:particle)
@@ -28,29 +27,8 @@ class Object
         Universe.set_atomes_specificities(params)
         params[:specific] = "#{params[:specific]}_"
       end
-      # else
       render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
       generator.build_render(render_method, &bloc)
-      # end
-
-      #########################################################################################
-      # else #params.key?(:html)
-      #
-      #   # if params[:exclusive]
-      #   #   render_method = "html_#{params[:exclusive]}_#{params[:html]}"
-      #   #   generator.build_render(render_method, &bloc)
-      #   # else
-      #     Universe.atome_list.each do |atome_type|
-      #       # exception_found = "#{Universe.get_atomes_specificities[self.type][atome_type]}"
-      #       # exception_found = "#{Universe.get_atomes_specificities[atome_type][params[params.keys[0]]]}"
-      #       # exception_found = "#{Universe.get_atomes_specificities[atome_type]}"
-      #
-      #       render_method = "#{params.keys[0]}_#{params[:html]}"
-      #       # render_method = "#{params.keys[0]}_#{atome_type}_#{params[:html]}"
-      #       generator.build_render(render_method, &bloc)
-      #     # end
-      #   end
-
     end
 
   end
@@ -60,8 +38,6 @@ class Object
   end
 
   def identity_generator(type = :element)
-    # "#{attach[0]}_#{type}_#{Universe.counter}"
-    # "#{id}_#{type}_#{Universe.counter}"
     "#{type}_#{Universe.counter}"
   end
 
@@ -97,14 +73,13 @@ class Object
                        else
                          :view
                        end
-      # alert default_parent
       grab(default_parent).send(element, params, &user_proc)
     end
   end
 
   def wait(time, id = nil, &proc)
     # we generate an uniq id
-    if time == :kill ||time == 'kill'
+    if time == :kill || time == 'kill'
       JS.eval("clearTimeout(window.timeoutIds['#{id}']);")
     else
       obj = Object.new

@@ -6,22 +6,14 @@ def browser_drag_move(params, atome_id, atome, proc)
 end
 
 new({ method: :drag, type: :symbol, renderer: :html }) do |options, proc|
-  # alert options
 
   options.each do |method, params|
-    # atome_id = @atome[:id]
-    # BrowserHelper.send("browser_drag_#{method}", params, atome_id, self, proc)
     html.event("drag_#{method}", params, proc)
   end
 
-  # atome.drag_move_proc = proc
-  # atome_js.JS.drag(params, atome_id, atome)
 end
 
-
 new({ method: :touch, type: :integer, renderer: :html }) do |options, user_bloc|
-  # puts user_bloc
-  # puts @touch_code
   html.event(:touch, options, user_bloc)
 end
 

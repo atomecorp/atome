@@ -103,9 +103,7 @@ new({ post: :clear }) do
 
     child_found.delete(true) if child_found
 
-    # Universe.delete(child_id_found)
   end
-  # attached([])
 
 end
 new({ particle: :path })
@@ -126,25 +124,6 @@ new({ particle: :cursor })
 new({ particle: :preset })
 new({ particle: :relations, type: :hash })
 new({ particle: :tag, render: false, type: :hash })
-
-
-
-# new({ particle: :batch, render: false })
-# new({ sanitizer: :batch }) do |params|
-#   Batch.new(params)
-#
-#
-# end
-
-# new({ particle: :each, render: false, type: :array }) do |params, &bloc|
-#   alert params
-# end
-
-# new({ particle: :grouped, render: false, type: :array })
-# new({ sanitizer: :grouped }) do |params|
-#   alert "grouped params is #{params}"
-#   params
-# end
 
 new({ particle: :web })
 new({ particle: :unit, type: :hash })

@@ -95,7 +95,6 @@ def build_atome_resources(current_path, project_name, production)
 end
 
 def create_application(project_name, force, production)
-  # print "directory already exist, use force to overwrite"
   current_path = `pwd`.chomp
   new_app_creation = test_app_creation(project_name, current_path, force)
   build_atome_resources(current_path, project_name, production)
@@ -243,8 +242,6 @@ if ARGV.include?('run')
     # f.puts "class Atome_demo\n  def demos_list\n    #{demos_list_content}\n  end\nend"
     f.puts "def demos_list\n  #{demos_list_content}\nend"
   end
-
-
 
   case build_target
   when 'android'

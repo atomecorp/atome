@@ -9,24 +9,18 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/test_*.rb']
 end
 
-task default: :test
-
-def task_comon
-
-end
-
 def test_common
+
   directory_name = "./tmp"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
   directory_name = "./tmp/test_app"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
   `cp -r ./vendor/assets/ ./tmp/test_app/`
-  `cp -r ./test/application/ ./tmp/test_app`
+
   FileUtils.copy_entry('vendor/assets/src/js/', 'tmp/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'tmp/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
   `cp -r ./test/application/ ./tmp/test_app/application/`
-
   FileUtils.copy_entry('vendor/assets/src/js/', 'tmp/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'tmp/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
@@ -35,6 +29,11 @@ end
 
 task :test_opal do
   test_common
+  # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
+  directory_name = "tmp/test_app/temp"
+  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
+  directory_name = "tmp/test_app/temp/opal"
+  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
   `cp ./vendor/source_files/opal/index.html ./vendor/assets/src/index.html`
   `rake build`
   `cd pkg; gem install atome --local`
@@ -54,7 +53,7 @@ def wasm_initialize
   directory_name = "./vendor/assets/src/wasm/ruby"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
 
-  # `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `cd tmp; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv tmp/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby tmp/system_ruby_browser.wasm`
   `cp ./vendor/source_files/wasm/index.html ./vendor/assets/src/index.html`
@@ -126,8 +125,4 @@ task :run_example_server do
   `cd tmp/test_app;atome run server`
 end
 
-# task :test_osx do
-#   `cd tmp/test_app;atome run osx guard`
-# end
-
-task default: :test
+task default: :test_opal

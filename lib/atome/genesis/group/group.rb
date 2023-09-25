@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # we create dummy methods for pluralised atome
 def group(params)
   grab(:view).group(params)
@@ -27,38 +26,6 @@ class Atome
       end
 
     end
-
-
-    #
-
-    # else
-    #   alert "zebulon"
-    #   end
-    #   grab(:b3).atome[:data]=[:b1]
-    #   grab(:b3)
-    #   end
-
-    # alert self
-
-      # alert self.id
-
-
-    # else
-    #   if group(@atome[:data])[:data]
-    #     "group(@atome[:data])"
-    #   else
-    #     "self"
-    #   end
-    #
-    # #   # [:b1]
-    # #   # alert @atome[:id]
-    # #   # grab(@atome[:id])
-    # #   # group(@atome[particle])
-    # end
-
-    # instance_exec(params,  &bloc) if bloc.is_a?(Proc)
-    # params = sanitize(particle, params, &bloc)
-    # create_particle(particle, store, render)
 
   end
 

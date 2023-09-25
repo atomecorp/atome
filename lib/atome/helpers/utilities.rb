@@ -27,14 +27,6 @@ class Atome
 
   end
 
-  # def self.mode=(val)
-  #   @atome_mode=val
-  # end
-  #
-  # def self.mode
-  #   "@atome_mode"
-  # end
-
   def collapse
     unless @atome[:unit]
       @atome[:unit] = {}
@@ -158,27 +150,11 @@ class Atome
   def substract(_particles, &_user_proc)
     # TODO : write code here to remove add elements"
     puts "write code here to remove add elements"
-    # @atome[:add]=:poi
-    # particles.each do |particle, value|
-    #   particle_type = Universe.particle_list[particle] || 'atome'
-    #   puts "<<<<<< this the place to b ....>>>>>>#{particles} #{particle_type}"
-    #   send("add_to_#{particle_type}", particle, value, &user_proc)
-    # end
   end
 
   def refresh
     collapse
   end
-
-  # def collector(params = {}, &bloc)
-  #   atome_type = :collector
-  #   # generated_render = params[:renderers] || []
-  #   # generated_id = params[:id] || identity_generator(atome_type)
-  #   #
-  #   # generated_parents = params[:parents] || [id]
-  #   params = atome_common(atome_type, params)
-  #   Batch.new({ atome_type => params }, &bloc)
-  # end
 
   def each(&proc)
     value.each do |val|
@@ -197,15 +173,7 @@ class Atome
   def [](range)
     if instance_of?(Atome)
       value[range]
-      # elsif value[range].instance_of?(Atome)
-      #   return value[range]
     elsif value[range].instance_of?(Array)
-      # collector_object = Object.collector({})
-      # collected_atomes = []
-      # value[range].each do |atome_found|
-      #   collected_atomes << atome_found
-      # end
-      # collector_object.data(collected_atomes)
       Batch.new(value[range])
       # return collector_object
     end
@@ -233,16 +201,6 @@ class Atome
     end
   end
 
-  # def materials
-  #   # TODO: the code below need a rewrite, we must find a new algorithm to avoid all those conditions
-  #   images_found = atome[:image] || []
-  #   videos_found = atome[:video] || []
-  #   shapes_found = atome[:shape] || []
-  #   web_found = atome[:www] || []
-  #   texts_found = atome[:text] || []
-  #   images_found.concat(videos_found).concat(shapes_found).concat(www_found).concat(texts_found)
-  # end
-
   def physical
     # TODO :  automatise materials type list when creating a new atome it should be specified if material or not
     types = %i[texts images videos shapes wwws]
@@ -262,12 +220,6 @@ class Atome
     atome_to_detach = grab(atome_id_to_detach)
     # TODO: remove the condition below and find why it try to detach an atome that doesn't exist
     return unless atome_to_detach
-    #
-    atome_type_found = atome_to_detach.atome[:type]
-    atome_id_found = atome_to_detach.atome[:id]
-    # @atome[atome_type_found].delete(atome_id_found)
-    # @atome[:attached].delete(atome_id_to_detach)
-
   end
 
 end
