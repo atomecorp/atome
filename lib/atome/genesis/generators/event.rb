@@ -28,6 +28,7 @@ new({ sanitizer: :touch }) do |params, _user_bloc|
   end
 
   @touch[:option][params[:option]] = true
+  store_value(:touch)
   params
 end
 
@@ -67,6 +68,7 @@ new({ sanitizer: :drag }) do |params, _proc|
   end
 
   @drag[:option][params[:option]] = true
+  store_value(:drag)
   params
 end
 
@@ -102,6 +104,7 @@ new({ sanitizer: :over }) do |params, user_bloc|
   end
 
   @over[:option][params[:option]] = true
+  store_value(:over)
   params
 end
 

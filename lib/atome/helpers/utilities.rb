@@ -98,13 +98,6 @@ class Atome
 
   end
 
-  # def store_code_bloc(element, &user_proc)
-  #   # optional_name= "_#{instance_variable_get("@#{element}")}" if instance_variable_get("@#{element}")
-  #   # puts optional_name
-  #   # TODO : we may have to change this code if we need multiple proc for an particle
-  #   Object.attr_accessor "#{element}_code"
-  #   instance_variable_set("@#{element}_code", user_proc)
-  # end
   def store_proc(element, params = true, &user_proc)
     instance_variable_set("@#{element}_code", {}) unless instance_variable_get("@#{element}_code")
     # TODO : we may have to change this code if we need multiple proc for an particle

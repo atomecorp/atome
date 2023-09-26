@@ -50,12 +50,9 @@ b.over(:enter) do |e|
 end
 
 b.over(:leave) do |e|
-  # puts e
   puts "leave"
 end
 
-#
-# wait 3 do
   t = text(:deert)
   t.data(true) do |e|
     puts 'ok '
@@ -64,18 +61,22 @@ t.color(:red)
 t.data_code[:data].call
 # end
 
+puts '------ end -----'
+puts "inspect : #{b.inspect}"
+puts '------'
+wait 3 do
+  alert "drag : #{b.drag}"
+  alert "instance drag : #{b.instance_variable_get("@drag")}"
+  alert "===> drag_code : #{b.drag_code}"
+end
+# alert "b.inspect : #{b.inspect}"
 
-
-# puts '------ end -----'
-# puts "inspect : #{b.inspect}"
-# puts '------'
-# wait 3 do
-#   alert "drag : #{b.drag}"
-# alert "instance drag : #{b.instance_variable_get("@drag")}"
-# puts "===> drag_code : #{b.drag_code}"
-# end
-
-# alert b.touch
+alert "b.touch : #{b.touch}"
 # alert b.touch_code
 # alert t.data_code
+############## to check
+
+
+
+
 
