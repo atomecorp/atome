@@ -240,8 +240,8 @@ end
 # TODO : animation api
 # TODO : video api
 # TODO : shadow api
-# TODO : remove @atome as it store instance variable twice
-# TODO : unify proc usage using , for drag: drag_proc_option_start
+# TODO : remove @atome in atome/lib as it store instance variable twice
+# TODO : unify proc usage using, for drag: drag_proc_option_start
 
 b=box({id: :tutu})
 b.color(:yellow)
