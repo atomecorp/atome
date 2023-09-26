@@ -28,9 +28,7 @@ class Atome
   end
 
   def collapse
-    unless @atome[:unit]
-      @atome[:unit] = {}
-    end
+    @atome[:unit] = {} unless @atome[:unit]
     @atome.each do |element, value|
       send(element, value)
     end
@@ -40,10 +38,33 @@ class Atome
     true
   end
 
-  def sanitize(element, params, &user_proc)
+  def particle_sanitizer(element, params, &user_proc)
     bloc_found = Universe.get_sanitizer_method(element)
+    # sanitizer occurs before any treatment
     params = instance_exec(params, user_proc, &bloc_found) if bloc_found.is_a?(Proc)
     params
+  end
+
+  def atome_sanitizer(element, params, &user_proc)
+    if params
+      params = particle_sanitizer(element, params)
+
+      # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
+      params = atome_common(element, params)
+      if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
+        instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
+      end
+      new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+      # TODO : check if we don't have a security issue allowing atome modification after creation
+      # if we have one find another solution the keep this facility
+      if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
+        instance_exec(params, new_atome, user_proc, &Atome.instance_variable_get("@post_#{element}"))
+      end
+      new_atome
+    else
+      group(@atome["#{element}s"])
+    end
+
   end
 
   def history(property, value)
@@ -77,10 +98,27 @@ class Atome
 
   end
 
-  def store_code_bloc(element, &user_proc)
+  # def store_code_bloc(element, &user_proc)
+  #   # optional_name= "_#{instance_variable_get("@#{element}")}" if instance_variable_get("@#{element}")
+  #   # puts optional_name
+  #   # TODO : we may have to change this code if we need multiple proc for an particle
+  #   Object.attr_accessor "#{element}_code"
+  #   instance_variable_set("@#{element}_code", user_proc)
+  # end
+  def store_code_bloc(element, params = true, &user_proc)
+    instance_variable_set("@#{element}_code", {}) unless instance_variable_get("@#{element}_code")
     # TODO : we may have to change this code if we need multiple proc for an particle
+    # FIXME : find a better algorithm can be found to avoid test if option is a Hash
     Object.attr_accessor "#{element}_code"
-    instance_variable_set("@#{element}_code", user_proc)
+    elem_code = "@#{element}_code"
+    if params.instance_of? Hash
+      option_found = params.values[0]
+    else
+      params = element if params
+      option_found = params
+    end
+    instance_variable_get(elem_code)["#{option_found}_code"] = user_proc
+    # puts "elem_code : #{instance_variable_get(elem_code)}"
   end
 
   def particles(particles_found = nil)

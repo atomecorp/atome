@@ -30,7 +30,7 @@ class Atome
       if params || params == false
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        params = sanitize(element, params, &user_proc)
+        params = particle_sanitizer(element, params, &user_proc)
         create_particle(element, store, render)
         group_particle_analysis(element, params, &user_proc) if @atome[:type] == :group
         send("set_#{element}", params, &user_proc)
@@ -43,32 +43,12 @@ class Atome
   def additional_particle_methods(element, store, rendering, &method_proc)
     Atome.define_method "#{element}=" do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-      params = sanitize(element, params)
+      params = particle_sanitizer(element, params)
       particle_creation(element, params, store, rendering, &user_proc)
     end
   end
 
-  def atome_sanitizer(element, params, &user_proc)
-    if params
-      params = sanitize(element, params)
 
-      # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
-      params = atome_common(element, params)
-      if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
-        instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
-      end
-      new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
-      # TODO : check if we don't have a security issue allowing atome modification after creation
-      # if we have one find another solution the keep this facility
-      if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
-        instance_exec(params, new_atome, user_proc, &Atome.instance_variable_get("@post_#{element}"))
-      end
-      new_atome
-    else
-      group(@atome["#{element}s"])
-    end
-
-  end
 
   def new_atome(element, &method_proc)
 
@@ -90,11 +70,10 @@ class Atome
     end
   end
 
-
   def store_value(element)
 
     params = instance_variable_get("@#{element}")
-      @atome[element] = params
+    @atome[element] = params
 
   end
 
@@ -111,29 +90,29 @@ class Atome
   def particle_creation(element, params, store, rendering, &user_proc)
     return false unless security_pass(element, params)
 
-    @store_allow=false
-    # we create a proc holder of any new particle if user pass a bloc
-    store_code_bloc(element, &user_proc) if user_proc
+    @store_allow = false
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
-    if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
+    if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc) # post is before rendering and broadcasting
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
     end
     render(element, params, &user_proc) if rendering
-    if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
-      instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
-
-    end
     broadcasting(element)
+    if Atome.instance_variable_get("@post_#{element}").is_a?(Proc) # post is after rendering and broadcasting
+      instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
+    end
 
-      store_value(element) if store
+    store_value(element) if store
+    # we create a proc holder of any new particle if user pass a bloc
+    store_code_bloc(element, params, &user_proc) if user_proc
+    @store_allow = true
 
-    @store_allow=true
-
-
-    if Atome.instance_variable_get("@after_#{element}").is_a?(Proc)
+    if Atome.instance_variable_get("@after_#{element}").is_a?(Proc) # after is post saving
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@after_#{element}"))
     end
+
+    # # we create a proc holder of any new particle if user pass a bloc
+    # store_code_bloc(element,params, &user_proc) if user_proc
     self
   end
 

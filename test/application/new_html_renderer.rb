@@ -249,6 +249,6 @@ b.color(:yellow)
 #   puts 'ok'
 # end
 #
-alert b.inspect
+# alert b.inspect
 
 

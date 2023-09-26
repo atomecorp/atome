@@ -2,11 +2,33 @@
 
 new({ particle: :touch, type: :hash, store: false })
 
-new({ post: :touch }) do |params, user_bloc|
-  @touch = {} if @touch == nil
-  @touch[params] = user_bloc
-  # as store for touch is set to false we have to manually save the instance variable
-  store_value(:touch)
+new({ sanitizer: :touch }) do |params, _user_bloc|
+  # TODO: factorise code below
+  @touch = { option: {} } unless @touch
+  unless params.instance_of? Hash
+    options = {}
+    case params
+    when true
+      options[:option] = :touch
+    when :touch
+      options[:option] = :touch
+    when :down
+      options[:option] = :down
+    when :up
+      options[:option] = :up
+    when :long
+      options[:option] = :long
+    when :double
+      options[:option] = :double
+    else
+      @touch[:option] = :touch
+    end
+
+    params = options
+  end
+
+  @touch[:option][params[:option]] = true
+  params
 end
 
 new({ particle: :play }) do
@@ -21,23 +43,33 @@ new({ particle: :fullscreen })
 new({ particle: :mute })
 new({ particle: :drag, store: false })
 
-new({ sanitizer: :drag }) do |params, proc|
-  params = { move: true } if params == true
-  params = { end: proc } if params == :end
-  params = { start: proc } if params == :start
+new({ sanitizer: :drag }) do |params, _proc|
+  # TODO: factorise code below
+  @drag = { option: {} } unless @drag
+  unless params.instance_of? Hash
+    options = {}
+    case params
+    when true
+      options[:option] = :drag
+    when :move
+      options[:option] = :drag
+    when :drag
+      options[:option] = :drag
+    when :start
+      options[:option] = :start
+    when :end
+      options[:option] = :end
+    else
+      @drag[:option] = :drag
+    end
+
+    params = options
+  end
+
+  @drag[:option][params[:option]] = true
   params
 end
 
-new({ post: :drag }) do |params|
-
-  @drag = {} if @drag == nil
-  # @drag[params] = user_bloc
-  params.each do |k, v|
-    @drag[k] = v
-  end
-  # as store for touch is set to false we have to manually save the instance variable
-  store_value(:drag)
-end
 
 new({ particle: :drop })
 
@@ -48,11 +80,29 @@ end
 
 new({ particle: :over, type: :hash, store: false })
 
-new({ post: :over }) do |params, user_bloc|
-  @over = {} if @over == nil
-  @over[params] = user_bloc
-  # as store for touch is set to false we have to manually save the instance variable
-  store_value(:over)
+new({ sanitizer: :over }) do |params, user_bloc|
+  # TODO: factorise code below
+  @over = { option: {} } unless @over
+  unless params.instance_of? Hash
+    options = {}
+    case params
+    when true
+      options[:option] = :over
+    when :over
+      options[:option] = :over
+    when :enter
+      options[:option] = :enter
+    when :leave
+      options[:option] = :leave
+    else
+      @over[:option] = :over
+    end
+
+    params = options
+  end
+
+  @over[:option][params[:option]] = true
+  params
 end
 
 new({ particle: :sort }) do |_value, sort_proc|

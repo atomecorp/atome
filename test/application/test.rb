@@ -1,0 +1,77 @@
+b = box
+b.drag(true) do |e|
+  # puts e
+  puts "short"
+end
+#
+b.drag(:start) do |e|
+  # puts e
+  puts "short"
+end
+b.drag(:end) do |e|
+  # puts e
+  puts "short"
+end
+b.drag({ option: :start }) do |e|
+  # puts e
+  puts "short2"
+end
+b.drag({ option: :drag }) do |e|
+  # puts e
+  puts "drag2"
+end
+
+b.drag({ option: :end }) do |e|
+  # puts e
+  puts "end2"
+end
+
+b.touch(true) do |e|
+  # puts e
+  alert "long"
+end
+
+b.touch(:long) do |e|
+  # puts e
+  alert "long"
+end
+
+b.over(true) do |e|
+  # puts e
+  puts "true"
+end
+b.over({ option: :enter }) do |e|
+  # puts e
+  puts "enter"
+end
+b.over(:enter) do |e|
+  # puts e
+  puts "enter 2"
+end
+
+b.over(:leave) do |e|
+  # puts e
+  puts "leave"
+end
+
+#
+wait 3 do
+  t = text(:deert)
+  t.data(true) do |e|
+    puts 'llol'
+  end
+end
+
+# puts '------ end -----'
+# puts "inspect : #{b.inspect}"
+# puts '------'
+# wait 3 do
+#   alert "drag : #{b.drag}"
+# alert "instance drag : #{b.instance_variable_get("@drag")}"
+# puts "===> drag_code : #{b.drag_code}"
+# end
+
+# alert b.touch
+# alert b.touch_code
+# alert t.data_code
+

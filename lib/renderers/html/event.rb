@@ -5,18 +5,21 @@ def browser_drag_move(params, atome_id, atome, proc)
   atome_js.JS.drag(params, atome_id, atome)
 end
 
-new({ method: :drag, type: :symbol, renderer: :html }) do |options, proc|
-
-  options.each do |method, params|
-    html.event("drag_#{method}", params, proc)
+new({ method: :drag, type: :symbol, renderer: :html }) do |options, user_bloc|
+  options.each do |_option, params|
+    # puts "method : #{method}"
+    html.event(:drag, params, user_bloc)
   end
-
 end
 
 new({ method: :touch, type: :integer, renderer: :html }) do |options, user_bloc|
-  html.event(:touch, options, user_bloc)
+  options.each do |_option, params|
+    html.event(:touch, params, user_bloc)
+  end
 end
 
 new({ method: :over, type: :integer, renderer: :html }) do |options, user_bloc|
-  html.event(:over, options, user_bloc)
+  options.each do |_option, params|
+    html.event(:over, params, user_bloc)
+  end
 end
