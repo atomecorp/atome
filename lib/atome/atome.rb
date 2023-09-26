@@ -104,15 +104,13 @@ class Atome
 
     store_value(element) if store
     # we create a proc holder of any new particle if user pass a bloc
-    store_code_bloc(element, params, &user_proc) if user_proc
+    store_proc(element, params, &user_proc) if user_proc
     @store_allow = true
 
     if Atome.instance_variable_get("@after_#{element}").is_a?(Proc) # after is post saving
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@after_#{element}"))
     end
 
-    # # we create a proc holder of any new particle if user pass a bloc
-    # store_code_bloc(element,params, &user_proc) if user_proc
     self
   end
 

@@ -55,12 +55,16 @@ b.over(:leave) do |e|
 end
 
 #
-wait 3 do
+# wait 3 do
   t = text(:deert)
   t.data(true) do |e|
-    puts 'llol'
+    puts 'ok '
   end
-end
+t.color(:red)
+t.data_code[:data].call
+# end
+
+
 
 # puts '------ end -----'
 # puts "inspect : #{b.inspect}"

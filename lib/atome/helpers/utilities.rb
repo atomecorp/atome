@@ -105,7 +105,7 @@ class Atome
   #   Object.attr_accessor "#{element}_code"
   #   instance_variable_set("@#{element}_code", user_proc)
   # end
-  def store_code_bloc(element, params = true, &user_proc)
+  def store_proc(element, params = true, &user_proc)
     instance_variable_set("@#{element}_code", {}) unless instance_variable_get("@#{element}_code")
     # TODO : we may have to change this code if we need multiple proc for an particle
     # FIXME : find a better algorithm can be found to avoid test if option is a Hash
@@ -113,12 +113,10 @@ class Atome
     elem_code = "@#{element}_code"
     if params.instance_of? Hash
       option_found = params.values[0]
+      instance_variable_get(elem_code)["#{option_found}_code"] = user_proc
     else
-      params = element if params
-      option_found = params
+      instance_variable_get(elem_code)[element] = user_proc
     end
-    instance_variable_get(elem_code)["#{option_found}_code"] = user_proc
-    # puts "elem_code : #{instance_variable_get(elem_code)}"
   end
 
   def particles(particles_found = nil)
@@ -155,7 +153,7 @@ class Atome
   def add_to_hash(particle, values, &user_proc)
     @atome[:add][particle] = true
     # we update  the holder of any new particle if user pass a bloc
-    store_code_bloc(particle, &user_proc) if user_proc
+    store_proc(particle, &user_proc) if user_proc
     values.each do |value_id, value|
       @atome[particle][value_id] = value
     end
