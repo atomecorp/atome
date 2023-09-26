@@ -204,7 +204,7 @@ end
 # the_text=text({ data:[ ' text de verif',visual:{size: 37, top: 0, width: 555}, id: :my_new_text, width: 222] })
 # the_text.visual({size: 88})
 the_text.color(:green)
-t=text(:kool)
+text(:kool)
 t=text({ data: :hello })
 # alert t.class
 wait 2 do
@@ -229,7 +229,7 @@ cc.drag(true) do |event|
   puts event.to_s
   dx = event[:dx]
   dy = event[:dy]
-  puts "#{dx}: #{dy}"
+  puts "dx : #{dx}: dy: #{dy}"
   puts event.class
   puts '----'
   puts event[:clientX]
@@ -250,4 +250,5 @@ b.color(:yellow)
 # end
 #
 alert b.inspect
+
 
