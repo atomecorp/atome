@@ -59,7 +59,6 @@ class Universe
     end
 
     def add_to_atomes(id, atome)
-      # instance_variable_get('@atomes').merge!(atome)
       @atomes[id] = atome
       @counter = @counter + 1
     end
