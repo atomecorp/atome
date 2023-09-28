@@ -11,7 +11,7 @@ module Essentials
             <path d="M1679.33,410.731C1503.98,413.882 1402.52,565.418 1402.72,691.803C1402.91,818.107 1486.13,846.234 1498.35,1056.78C1501.76,1313.32 1173.12,1490.47 987.025,1492.89C257.861,1502.39 73.275,904.061 71.639,735.381C70.841,653.675 1.164,647.648 2.788,737.449C12.787,1291.4 456.109,1712.79 989.247,1706.24C1570.67,1699.09 1982.31,1234 1965.76,683.236C1961.3,534.95 1835.31,407.931 1679.33,410.731Z" style="fill:rgb(201,12,125);"/>
         </g>
     </g>
-STR
+  STR
   @default_params = {
     # Warning :  type must be define first
     render_engines: [:html],
@@ -36,7 +36,7 @@ STR
     shape: { type: :shape, width: 99, height: 99,
              apply: [:shape_color],
              left: 100, top: 100, clones: [] },
-    text: { type: :text, component: { size: 15 },
+    text: { type: :text, component: { size: 66 },
             apply: [:text_color],
             width: :auto, height: :auto, clones: [] },
     drm: { type: :drm, attach: [:black_matter], attached: []  },

@@ -43,7 +43,7 @@ class Atome
   end
 
   def group(params)
-    essential_params = { type: :group, data: [], attach: [:view], width: 0, height: 0, top: 0, left:0 }
+    essential_params = { type: :group, data: [], attach: [:view], attached: [], width: 0, height: 0, top: 0, left: 0 }
     data_found = if params.instance_of? Array
                    # the group renderers is found in : Genesis/group/group.rb
                    params

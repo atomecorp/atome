@@ -106,3 +106,68 @@ Contact:
 **[queries@atome.one](mailto:contact@atome.one)**
 
 <img src="./documentation/images//atome.svg" width="100" />
+
+
+
+---
+
+# Atome Framework: The Future of Multimedia Object Modeling
+
+## Technical Overview
+
+### The Unified Object Model
+
+Atome Framework introduces a revolutionary concept in multimedia object modeling: the Unified Object Model. This model
+allows for the seamless creation and manipulation of various multimedia elements like text, images, sound, colors,
+videos, vector shapes, and more, all under a single object model.
+
+### Polymorphism
+
+The framework leverages the power of polymorphism, allowing objects to take on multiple forms. This enables a high
+degree of flexibility and extensibility in how objects are used and manipulated.
+
+### Features
+
+- **Method Sharing**: All objects share common methods
+  like `top`, `left`, `width`, `height`, `red`, `green`, `blue`, `alpha`, `rotate`, and many more.
+- **Type Identification**: Easily identify the type of object you're dealing with through the `type` method.
+- **Parent-Child Relationships**: Any object can have another object as its child, allowing for complex nested
+  structures.
+- **Multiple Parenting**: Objects can have multiple parents, enabling versatile and dynamic object relationships.
+- **Multiple Rendering**: Objects can be rendered in multiple ways simultaneously, such as text description, audio
+  description, and on-screen rendering.
+- **Code Rendering**: The framework supports code rendering through technologies like Opal or WebAssembly, offering even
+  more versatility.
+
+### Meta-Programming
+
+The framework heavily utilizes meta-programming to avoid code redundancy and to keep the codebase small and efficient.
+
+## Commercial Overview
+
+### Easy to Learn, Powerful to Use
+
+Atome Framework is designed to be easy for novices while also offering an optimized, academic mode for seasoned
+developers.
+
+### Open Source and MIT Licensed
+
+The framework is entirely open-source and comes with an MIT license, inviting collaboration and innovation.
+
+### Extensible API
+
+Adding new features is made easy with an automated API system.
+
+## Why Collaborate on GitHub?
+
+- **Innovative Model**: Be part of a revolutionary approach to multimedia object modeling.
+- **Community Support**: Benefit from a community of developers for support and feature requests.
+- **Career Boost**: Enhance your portfolio by contributing to a cutting-edge project.
+
+## Call to Action
+
+Join us in making multimedia object modeling more efficient, flexible, and powerful than ever before. Star our GitHub
+repository, fork it, and send us your pull requests.
+
+---
+

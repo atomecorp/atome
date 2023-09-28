@@ -8,7 +8,15 @@ new({ method: :top, type: :integer, renderer: :html }) do |params, &bloc|
   html.style(:top, "#{params}px")
 end
 
+new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params, &bloc|
+  html.style(:top, "#{params}px")
+end
+
 new({ method: :bottom, type: :integer, renderer: :html }) do |params, &bloc|
+  html.style(:bottom, "#{params}px")
+end
+
+new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params, &bloc|
   html.style(:bottom, "#{params}px")
 end
 

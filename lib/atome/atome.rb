@@ -48,20 +48,19 @@ class Atome
     end
   end
 
-
-
   def new_atome(element, &method_proc)
-
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+
       atome_sanitizer(element, params, &user_proc)
+
     end
 
     # the method define below is the fastest params are passed directly
     Atome.define_method "set_#{element}" do |params, &user_proc|
       # we generate the corresponding module here:
-      # Object.const_set(capitalized_element, Module.new)
+      # Object.const_set(element, Module.new)
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]
       new_atome = Atome.new(params, &user_proc)

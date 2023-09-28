@@ -23,8 +23,11 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
       parents_found.each do |parent_id_found|
         parent_found = grab(parent_id_found)
         next unless parent_found
+        alert "parent_found : #{parent_found}, #{parent_found.atome}"
+        alert "type : #{type}, #{type.class}"
         # we get the corresponding type list found in the parent
         previous_parent_type_child = parent_found.atome["#{type}s"]
+        alert "previous_parent_type_child : #{previous_parent_type_child}"
         previous_parent_attached_child = parent_found.atome[:attached]
         # FIXME : find why we can't use delete on the array nut must use an iterator
         new_type_container = []

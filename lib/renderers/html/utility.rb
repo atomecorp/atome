@@ -8,4 +8,6 @@ new({ renderer: :html, method: :preset, type: :string })
 
 
 new({ renderer: :html, method: :renderers, type: :string })
+new({ renderer: :html, method: :delete, type: :string })
+
 

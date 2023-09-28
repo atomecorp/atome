@@ -41,6 +41,7 @@ class Atome
   def particle_sanitizer(element, params, &user_proc)
     bloc_found = Universe.get_sanitizer_method(element)
     # sanitizer occurs before any treatment
+    puts "aprams : #{params}"
     params = instance_exec(params, user_proc, &bloc_found) if bloc_found.is_a?(Proc)
     params
   end

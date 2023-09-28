@@ -190,10 +190,14 @@ grab('phone_nb').color(:red)
 grab('phone_nb').touch(true) do
   grab('phone_nb').color(:green)
 end
-wait 3 do
+wait 2 do
   # alert grab('phone_nb')
   grab('phone_nb').component({ size: 9 })
   grab('phone_nb').color(:yellow)
+end
+wait 4 do
+  # alert grab('phone_nb')
+  grab('my_x_text').component({ top: 229 })
 end
 # TODO : Important make it work below add uniq id to wait
 wait 3 do

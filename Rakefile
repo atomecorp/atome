@@ -26,6 +26,10 @@ def test_common
   FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
 end
 
+task :reset_cache do
+  `rm  -r -f ./tmp`
+  `rm  -r -f ./pkg`
+end
 
 task :test_opal do
   test_common

@@ -20,25 +20,8 @@ new({ particle: :diffusion }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
+
 new({ particle: :component })
-
-def wait_for_store_authorisation(params)
-  if @store_allow
-    params.each do |prop, value|
-      send(prop, value)
-    end
-  else
-    wait 0.1 do
-      wait_for_store_authorisation(params)
-    end
-  end
-end
-
-new({ post: :component }) do |params, _user_proc|
-  # TODO : maybe need to implement this functionality at lower level, for all save within atome framework
-  wait_for_store_authorisation(params)
-end
-
 new({ particle: :overflow })
 new({ particle: :edit })
 new({ particle: :style })
@@ -71,8 +54,6 @@ new ({ particle: :opacity })
 
 # vector shape
 new({ particle: :definition })
-
-new({ browser: :definition, type: :string })
 
 new({ sanitizer: :definition }) do |params|
   # we remove the unwanted svg tags
