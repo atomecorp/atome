@@ -1,5 +1,5 @@
-require './new_html_renderer'
-# require './test'
+# require './new_html_renderer'
+require './test'
 # text({ data: [:hello, :salut] , component: {size: 89}, center: true, top: 120, width: 955, id: :my_x_text})
 
 # the_text = text({ data: [
