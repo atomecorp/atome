@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 new({ renderer: :html, method: :diffusion, type: :string })
 
 new({ method: :red, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|

@@ -59,7 +59,6 @@ new({ sanitizer: :detached }) do |values| # unfastened
     # we sanitize the values so it always return an array to the renderer
     values = [values]
   end
-  # alert "==> #{@atome}"
   values
 end
 
@@ -95,4 +94,4 @@ new({ particle: :clones }) do |clones_found|
   end
 end
 
-new ({ particle: :markup })
+new({ particle: :markup })

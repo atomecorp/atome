@@ -85,14 +85,7 @@ def build_opal_parser(user_project_path)
 end
 
 def modify_and_copy_file(source_path, destination_path,source_code)
-  # ##################
   file_content = File.read(source_path)
-  # cleaned_bytes = file_content.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-  # cleaned_string = cleaned_bytes.force_encoding('UTF-8')
-  # cleaned_lines = cleaned_string.lines.map { |line| line.gsub(/\s+/, ' ') }
-  # modified_content=cleaned_lines.join("\n")
-  # modified_content=modified_content.gsub("require './", "require 'temp/opal/").gsub('require "./', 'require "temp/opal/')
-  # FileUtils.mkdir(File.dirname(destination_path))
   modified_content=file_content.gsub('     ',' ').gsub('    ',' ').gsub('   ',' ').gsub('  ',' ').gsub("require './", "require 'temp/opal/").gsub('require "./', 'require "temp/opal/')
   File.write(destination_path, modified_content)
 

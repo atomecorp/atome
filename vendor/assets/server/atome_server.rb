@@ -79,9 +79,7 @@ class App < Roda
 
   puts "The average price is: #{items.avg(:width)}"
 
-
-  index_content = File.read("../src/index.html")
-
+  index_content = File.read("../src/index_server.html")
 
   opts[:root] = '../src'
   plugin :static, %w[/css /js /medias], root: '../src'
@@ -107,7 +105,7 @@ class App < Roda
       websocket.rack_response
     end
     r.root do
-      r.redirect "/index"
+      r.redirect "/index_server"
     end
     r.on "index" do
       index_content

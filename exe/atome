@@ -94,14 +94,14 @@ def build_atome_resources(current_path, project_name, production)
   `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
 end
 
-def create_application(project_name, force, production)
+def create_application(project_name, force, production, atome_mode = 'index_opal')
   current_path = `pwd`.chomp
   new_app_creation = test_app_creation(project_name, current_path, force)
   build_atome_resources(current_path, project_name, production)
   return unless new_app_creation
 
   # now adding name to the app
-  index_html = "#{current_path}/#{project_name}/src/index.html"
+  index_html = "#{current_path}/#{project_name}/src/#{atome_mode}.html"
   index_html_content = File.open(index_html).read
   index_html_content = index_html_content.gsub('<title>atome</title>', "<title>#{project_name}</title>")
   File.open(index_html, 'w') do |f|
@@ -122,7 +122,8 @@ def guard_check
 end
 
 def browser_case(location)
-  `cd #{location}/src;open index.html`
+
+  # `cd #{location}/src;open index_opal.html`
 end
 
 def osx_case(location)
@@ -137,7 +138,7 @@ end
 def server_case(port, location)
   threads = []
   threads << Thread.new do
-    sleep 1.5
+    sleep 3
     `open http://localhost:9292/index`
   end
   `cd #{location}/server;rackup --server puma --port #{port}  --env production`
@@ -188,8 +189,9 @@ end
 
 if ARGV.include?('create')
   project_name = ARGV[1]
+  atome_mode = ARGV[2]
   location = "/#{project_name}"
-  create_application(project_name, force, production)
+  create_application(project_name, force, production, atome_mode)
 end
 
 if ARGV.include?('build')

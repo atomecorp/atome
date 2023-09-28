@@ -15,7 +15,6 @@ require 'atome/atome'
 require 'atome/helpers/callbacks'
 require 'atome/genesis/generators/atome'
 require 'atome/presets/atome'
-
 require 'atome/genesis/generators/communication'
 require 'atome/genesis/generators/effect'
 require 'atome/genesis/generators/event'

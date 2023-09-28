@@ -15,7 +15,6 @@ module Essentials
   @default_params = {
     # Warning :  type must be define first
     render_engines: [:html],
-    # collector: { type: :element, attach: [:black_matter] },
     image: { type: :image, attached: [] },
     www: { type: :www,  attached: []  },
     video: { type: :video, attach: [:view], attached: []  },
