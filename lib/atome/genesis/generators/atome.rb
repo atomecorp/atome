@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 new({ atome: :color, type: :hash })
-
 new({ sanitizer: :color }) do |params|
   params = create_color_hash(params) unless params.instance_of? Hash
   # the condition below is  to prevent the creation of multiple unwanted colors with same property and no ID specified
@@ -23,7 +22,6 @@ new({ sanitizer: :image }) do |params|
   params
 end
 new({ atome: :video })
-
 new({ atome: :shadow, type: :hash })
 new({ sanitizer: :shadow }) do |params|
   # TODO : when attaching color to a shadow it should colorized it , cf : c.shadow({color: :blue}) should work
@@ -48,8 +46,8 @@ new({ sanitizer: :www }) do |params|
   params
 end
 new({ atome: :animation })
+new({ atome: :group })
 new({ atome: :text, type: :hash })
-
 new({ post: :text }) do |params, current_atome|
   if @data.instance_of? Array
     @data.each_with_index do |data_found, index|
@@ -67,7 +65,6 @@ new({ post: :text }) do |params, current_atome|
   end
   params
 end
-
 new({ sanitizer: :text }) do |params|
   # to allow text api with the form text(:hello) instead of text({data: :hello})
   params = { data: params } unless params.instance_of? Hash
@@ -75,6 +72,5 @@ new({ sanitizer: :text }) do |params|
   @data = params.delete(:data)
   params
 end
-
 # for later use ( physical is a css like style)
 new ({ atome: :physical })

@@ -57,7 +57,6 @@ class HTML
     else
       element_found[:style][property]
     end
-    # self
     element_found[:style][property]
   end
 
@@ -71,6 +70,11 @@ class HTML
     parent_found = JS.global[:document].getElementById(parent_id_found.to_s)
     parent_found.appendChild(@html)
     self
+  end
+
+  def delete(id_to_delete)
+    element_to_delete = JS.global[:document].getElementById(id_to_delete.to_s)
+    element_to_delete.remove if element_to_delete
   end
 
   def append(child_id_found)

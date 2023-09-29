@@ -91,12 +91,20 @@
 # # # alert b.id
 # # b2=box
 # # # alert b2.id
-# #
-t = text({ data: 'hello for al the people in front of their machine jhgj  jg jgh jhg  iuuy res (', center: true, top: 120, width: 77, component: { size: 11 } })
+# ########################
+# Test temp below
+
+t = text({ data: 'hello for al the people in front of their machine jhgj  jg jgh jhg  iuuy res ', center: true, top: 120, width: 77, component: { size: 11 } })
 box
-puts '--------------------***--------------------'
-alert grab(:view).shape
-wait 2 do
+cc = circle({ id: :cc })
+
+element({ id: :jj })
+toto = grab(:view)
+puts "toto's shape are : #{toto.shape}"
+group({ data: toto.shape })
+
+wait 1 do
+  cc.left = 633
   t.delete(true)
 end
 # shape()

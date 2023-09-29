@@ -7,18 +7,19 @@
 
 class Atome
   def atome_common(atome_preset, params)
+    basic_params = { renderers: [] }
     # TODO : optimise the whole code below and make it rubocop friendly
     essential_params = Essentials.default_params[atome_preset] || {}
-    basic_params = {}
     basic_params[:type] = essential_params[:type] || :element
 
     # condition to handle color's atome that shouldn't be attach to view
-    params[:attach]= id if essential_params[:attach] && essential_params[:attach][0]==nil
-    params[:attached]=[] unless params[:attached]
+    params[:attach] = id if essential_params[:attach] && essential_params[:attach][0] == nil
+    params[:attached] = [] unless params[:attached]
     basic_params[:id] = params[:id] || identity_generator(atome_preset)
     basic_params[:attach] = params[:attach] || [@atome[:id]] || [:view]
 
     basic_params[:renderers] = @atome[:renderers] || essential_params[:renderers]
+
     essential_params = basic_params.merge(essential_params)
 
     essential_params.merge(params)
@@ -40,7 +41,7 @@ class Atome
       true
     end
     return unless result
-    params[:attached]=[] unless params[:attached]
+    params[:attached] = [] unless params[:attached]
     Atome.new(params, &bloc)
   end
 

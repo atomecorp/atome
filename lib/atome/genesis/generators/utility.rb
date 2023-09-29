@@ -17,39 +17,12 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
       # now we init rendering
       render(:delete, params, &user_proc)
       # the machine delete the current atome from the universe
-      id_found = @atome[:id]
-      Universe.delete(id_found)
+      id_found = @atome[:id].to_sym
       parents_found = @atome[:attach]
+      Universe.delete(id_found)
       parents_found.each do |parent_id_found|
         parent_found = grab(parent_id_found)
-        next unless parent_found
-        alert "parent_found : #{parent_found}, #{parent_found.atome}"
-        alert "type : #{type}, #{type.class}"
-        # we get the corresponding type list found in the parent
-        previous_parent_type_child = parent_found.atome["#{type}s"]
-        alert "previous_parent_type_child : #{previous_parent_type_child}"
-        previous_parent_attached_child = parent_found.atome[:attached]
-        # FIXME : find why we can't use delete on the array nut must use an iterator
-        new_type_container = []
-        previous_parent_type_child.each do |atome_found|
-          new_type_container << atome_found unless atome_found == id_found
-        end
-        parent_found.atome[type] = new_type_container
-        # FIXME : find why we can't use delete on the array  must use an iterator
-        new_attached_container = []
-        previous_parent_attached_child.each do |atome_found|
-          new_attached_container << atome_found unless atome_found == id_found
-
-        end
-        # now we remove the the current atome from it's parent subtype :
-        # eg if it's a shape we remove from parent's shapes particles
-        # Fixme : create a callback to remove the arbitrary and unsafe wait!!
-        # wait 0.3 do
-        puts "potential problem below remove if all tests pass"
-          parent_found.atome["#{type}s"].delete(id)
-          parent_found.atome[:attached] = new_attached_container
-        # end
-
+        parent_found.attached.delete(id_found)
       end
 
     end
@@ -64,11 +37,8 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     # the machine try to an atome by it's ID and delete it
     # We check for recursive, if found we delete attached atomes too
     if params[:recursive] == true
-      puts "item that'll be deleted:  #{params[:id]}"
       physical_found = grab(params[:id]).physical
-      # alert physical_found
       physical_found.each do |atome_id_found|
-        # atome_id_found.delete(true)
         grab(atome_id_found).delete(true)
       end
     end
@@ -128,7 +98,6 @@ new({ particle: :cursor })
 new({ particle: :preset })
 new({ particle: :relations, type: :hash })
 new({ particle: :tag, render: false, type: :hash })
-
 new({ particle: :web })
 new({ particle: :unit, type: :hash })
 new({ initialize: :unit, value: {} })

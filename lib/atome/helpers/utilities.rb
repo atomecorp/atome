@@ -41,31 +41,25 @@ class Atome
   def particle_sanitizer(element, params, &user_proc)
     bloc_found = Universe.get_sanitizer_method(element)
     # sanitizer occurs before any treatment
-    puts "aprams : #{params}"
     params = instance_exec(params, user_proc, &bloc_found) if bloc_found.is_a?(Proc)
     params
   end
 
-  def atome_sanitizer(element, params, &user_proc)
-    if params
-      params = particle_sanitizer(element, params)
+  def atome_pre_process(element, params, &user_proc)
+    params = particle_sanitizer(element, params)
 
-      # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
-      params = atome_common(element, params)
-      if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
-        instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
-      end
-      new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
-      # TODO : check if we don't have a security issue allowing atome modification after creation
-      # if we have one find another solution the keep this facility
-      if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
-        instance_exec(params, new_atome, user_proc, &Atome.instance_variable_get("@post_#{element}"))
-      end
-      new_atome
-    else
-      group(@atome["#{element}s"])
+    # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
+    params = atome_common(element, params)
+    if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
+      instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
     end
-
+    new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+    # TODO : check if we don't have a security issue allowing atome modification after creation
+    # if we have one find another solution the keep this facility
+    if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
+      instance_exec(params, new_atome, user_proc, &Atome.instance_variable_get("@post_#{element}"))
+    end
+    new_atome
   end
 
   def history(property, value)
@@ -128,22 +122,6 @@ class Atome
     real_atome[property] << particle
   end
 
-  def add_to_integer(_atome_found, _particle_found, &_user_proc)
-    puts "there's no interest to add anything to an integer!"
-  end
-
-  def add_to_float(_atome_found, _particle_found, &_user_proc)
-    puts "there's no interest to add anything to an integer!"
-  end
-
-  def add_to_bignum(_atome_found, _particle_found, &_user_proc)
-    puts "there's no interest to add anything to an integer!"
-  end
-
-  def add_to_string(_atome_found, _particle_found, &_user_proc)
-    puts "there's no interest to add anything to an string!"
-  end
-
   def add_to_hash(particle, values, &user_proc)
     @atome[:add][particle] = true
     # we update  the holder of any new particle if user pass a bloc
@@ -160,8 +138,6 @@ class Atome
   end
 
   def add_to_atome(atome_type, particle_found, &user_proc)
-    # puts "-----> atome_type : #{atome_type}, particle_found : #{particle_found}"
-    # @atome[:add] = [] unless @atome[:add]
     @atome[:add][atome_type] = particle_found
     send(atome_type, particle_found, &user_proc)
   end

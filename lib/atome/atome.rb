@@ -32,7 +32,7 @@ class Atome
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = particle_sanitizer(element, params, &user_proc)
         create_particle(element, store, render)
-        group_particle_analysis(element, params, &user_proc) if @atome[:type] == :group
+        # group_particle_analysis(element, params, &user_proc) if @atome[:type] == :group
         send("set_#{element}", params, &user_proc)
       else
         @atome[element]
@@ -41,6 +41,7 @@ class Atome
   end
 
   def additional_particle_methods(element, store, rendering, &method_proc)
+    # it allow the creation of method like top=, rotate=, ...
     Atome.define_method "#{element}=" do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
       params = particle_sanitizer(element, params)
@@ -52,8 +53,22 @@ class Atome
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-
-      atome_sanitizer(element, params, &user_proc)
+      if params
+        atome_pre_process(element, params, &user_proc)
+      else
+        # when no params passed whe assume teh user want a getter,
+        # as getter should give us all atome of a given within the atome
+        # ex : puts a.shape => return all atome with the type 'shape' in this atome
+        collected_atomes = []
+        attached.each do |attached_atome|
+          if grab(attached_atome).type.to_sym == element.to_sym
+            collected_atomes << attached_atome
+          end
+        end
+        # FIXME: chose if we return an atom or an array of id
+        # group({data: collected_atomes})
+        collected_atomes
+      end
 
     end
 

@@ -17,8 +17,7 @@ Universe.current_user = :jeezs
 
 atome_infos
 
-
-############## Lets create the U.I.
+# Lets create the U.I.
 
 default_render = Essentials.default_params[:render_engines]
 Atome.new(
