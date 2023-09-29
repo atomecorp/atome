@@ -7,8 +7,14 @@ new({ method: :type, type: :string, renderer: :html }) do |_value, _user_proc|
 end
 
 new({ method: :type, type: :string, renderer: :html, specific: :image }) do |_value, _user_proc|
-
   html.image(@atome[:id])
+end
+
+new({ method: :type, type: :string, renderer: :html, specific: :video }) do |_value, _user_proc|
+  html.video(@atome[:id])
+end
+new({ method: :type, type: :string, renderer: :html, specific: :www }) do |_value, _user_proc|
+  html.www(@atome[:id])
 end
 
 new({ method: :type, type: :string, renderer: :html, specific: :group }) do |_value, _user_proc|
@@ -27,7 +33,7 @@ new({ method: :type, type: :string, specific: :shape, renderer: :html }) do |_va
 end
 
 new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_value, _user_proc|
-  html.text(@atome[:id], :pre)
+  html.text(@atome[:id])
   html.add_class(:text)
 end
 new({ method: :type, type: :string, specific: :color, renderer: :html }) do |_value, _user_proc|
@@ -45,5 +51,13 @@ new({ method: :component, type: :hash, specific: :text, renderer: :html }) do |p
 end
 
 new({ method: :path, type: :string, renderer: :html }) do |value, _user_proc|
+  html.path(value)
+end
+
+new({ method: :path, type: :string, renderer: :html, specific: :image }) do |value, _user_proc|
+  html.video_path(value)
+end
+
+new({ method: :path, type: :string, renderer: :html, specific: :www }) do |value, _user_proc|
   html.path(value)
 end

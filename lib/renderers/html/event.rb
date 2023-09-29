@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-def browser_drag_move(params, atome_id, atome, proc)
-  atome.drag_move_proc = proc
-  atome_js.JS.drag(params, atome_id, atome)
-end
 
 new({ method: :drag, type: :symbol, renderer: :html }) do |options, user_bloc|
   options.each do |_option, params|

@@ -79,18 +79,18 @@ class Atome
   end
 
   # animation
-  def browser_animate_callback(particle_found, value, animation_hash, original_particle, animation_atome)
-    anim_proc = animation_hash[:code]
-    #  we exec the callback bloc from :animate
-    instance_exec({ original_particle => value }, &anim_proc) if anim_proc.is_a?(Proc)
-    # we exec the callback bloc from :play
-    play_proc = animation_atome.play_active_proc
-    instance_exec({ @atome[particle_found] => value }, &play_proc) if play_proc.is_a?(Proc)
-    # we animate:
-    browser_object.style[particle_found] = value if browser_object
-    # we update the atome property
-    @atome[original_particle] = value
-  end
+  # def browser_animate_callback(particle_found, value, animation_hash, original_particle, animation_atome)
+  #   anim_proc = animation_hash[:code]
+  #   #  we exec the callback bloc from :animate
+  #   instance_exec({ original_particle => value }, &anim_proc) if anim_proc.is_a?(Proc)
+  #   # we exec the callback bloc from :play
+  #   play_proc = animation_atome.play_active_proc
+  #   instance_exec({ @atome[particle_found] => value }, &play_proc) if play_proc.is_a?(Proc)
+  #   # we animate:
+  #   browser_object.style[particle_found] = value if browser_object
+  #   # we update the atome property
+  #   @atome[original_particle] = value
+  # end
 
   def play_start_callback(_particle_found, _start_value, animation_hash, original_particle, atome_found)
     value = animation_hash[:begin][original_particle]

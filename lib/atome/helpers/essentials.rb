@@ -16,10 +16,10 @@ module Essentials
     # Warning :  type must be define first
     render_engines: [:html],
     image: { type: :image, attached: [] },
-    www: { type: :www,  attached: []  },
-    video: { type: :video, attach: [:view], attached: []  },
-    animation: { type: :animation,  attach: [:black_matter], attached: []  },
-    element: { type: :element, renderers: [], attach: [:black_matter], attached: []  },
+    www: { type: :www, attach: [:view], attached: [] },
+    video: { type: :video, attach: [:view], attached: [] },
+    animation: { type: :animation, attach: [:black_matter], attached: [] },
+    element: { type: :element, renderers: [], attach: [:black_matter], attached: [] },
     matrix: { type: :shape, width: 99, height: 99,
               apply: [:matrix_color],
               left: 100, top: 100, clones: [], preset: :matrix },
@@ -27,8 +27,8 @@ module Essentials
            apply: [:box_color],
            left: 100, top: 100, clones: [], preset: :box },
     vector: { type: :shape, width: 99, height: 99,
-            attached: [] ,
-           left: 100, top: 100, clones: [], preset: :vector , definition: corp},
+              attached: [],
+              left: 100, top: 100, clones: [], preset: :vector, definition: corp },
     circle: { type: :shape, width: 99, height: 99, smooth: '100%',
               apply: [:circle_color],
               left: 100, top: 100, clones: [], preset: :circle },
@@ -38,9 +38,9 @@ module Essentials
     text: { type: :text, component: { size: 66 },
             apply: [:text_color],
             width: :auto, height: :auto, clones: [] },
-    drm: { type: :drm, attach: [:black_matter], attached: []  },
-    shadow: { type: :shadow, attach: [:black_matter], attached: []  },
-    color: {  type: :color, attach: [], red: 0, green: 0, blue: 0, alpha: 1, attached: []   }
+    drm: { type: :drm, attach: [:black_matter], attached: [] },
+    shadow: { type: :shadow, attach: [:black_matter], attached: [] },
+    color: { type: :color, attach: [], red: 0, green: 0, blue: 0, alpha: 1, attached: [] }
   }
 
   def self.default_params

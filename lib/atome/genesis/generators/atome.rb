@@ -22,6 +22,26 @@ new({ sanitizer: :image }) do |params|
   params
 end
 new({ atome: :video })
+new({ sanitizer: :video }) do |params|
+  unless params.instance_of? Hash
+    # TODO : we have to convert all image to png or maintain a database with extension
+    # FIXME : temporary patch that add .mp4 to the string if no extension is found
+    params = "#{params}.mp4" if params.to_s.split('.').length == 1
+
+    params = { path: "./medias/videos/#{params}" }
+  end
+  # TODO : the line below should get the value from default params Essentials
+  params
+end
+
+new({ atome: :www })
+# new({ sanitizer: :www }) do |params|
+#   alert params
+#   # TODO : the line below should get the value from default params Essentials
+#   temp_default = { path: 'https://www.youtube.com/embed/usQDazZKWAk' }
+#   params = temp_default.merge(params)
+#   params
+# end
 new({ atome: :shadow, type: :hash })
 new({ sanitizer: :shadow }) do |params|
   # TODO : when attaching color to a shadow it should colorized it , cf : c.shadow({color: :blue}) should work
@@ -38,13 +58,7 @@ new({ sanitizer: :element }) do |params|
   default_params = { data: '' }
   default_params.merge!(params)
 end
-new({ atome: :www })
-new({ sanitizer: :www }) do |params|
-  # TODO : the line below should get the value from default params Essentials
-  temp_default = { path: 'https://www.youtube.com/embed/usQDazZKWAk' }
-  params = temp_default.merge(params)
-  params
-end
+
 new({ atome: :animation })
 new({ atome: :group })
 new({ atome: :text, type: :hash })

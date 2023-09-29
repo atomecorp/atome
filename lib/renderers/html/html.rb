@@ -51,6 +51,39 @@ class HTML
     self
   end
 
+  def video(id)
+    markup_found = @atome.markup || :video
+    @html_type = markup_found.to_s
+    @html = JS.global[:document].createElement(@html_type)
+    JS.global[:document][:body].appendChild(@html)
+    add_class("atome")
+    self.id(id)
+    self
+  end
+
+  def www(id)
+    markup_found = @atome.markup || :iframe
+    @html_type = markup_found.to_s
+    @html = JS.global[:document].createElement(@html_type)
+    JS.global[:document][:body].appendChild(@html)
+    add_class("atome")
+
+    ####### set temppath t avoid error
+    @html.setAttribute('src', "https://www.youtube.com/embed/lLeQZ8Llkso?si=MMsGBEXELy9yBl9R")
+    # below we get image to feed width and height if needed
+    # image = JS.global[:Image].new
+
+    self.id(id)
+    self
+  end
+
+  def video_path(video_path, type = 'video/mp4')
+    source = JS.global[:document].createElement('source')
+    source.setAttribute('src', video_path)
+    source.setAttribute('type', type)
+    @html.appendChild(source)
+  end
+
   def innerText(data)
     @html[:innerText] = data.to_s
   end
@@ -69,7 +102,6 @@ class HTML
       height = @html[:height]
       puts "Width: #{width}, Height: #{height}"
     end
-
   end
 
   def style(property, value = nil)
