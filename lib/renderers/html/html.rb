@@ -31,12 +31,23 @@ class HTML
     self
   end
 
-  def text(id, markup = 'pre')
-    @html_type = :div
-    @html = JS.global[:document].createElement(markup.to_s)
+  def text(id)
+    markup_found = @atome.markup || :pre
+    @html_type = markup_found.to_s
+    @html = JS.global[:document].createElement(@html_type)
     JS.global[:document][:body].appendChild(@html)
     add_class("atome")
     id(id)
+    self
+  end
+
+  def image(id)
+    markup_found = @atome.markup || :img
+    @html_type = markup_found.to_s
+    @html = JS.global[:document].createElement(@html_type)
+    JS.global[:document][:body].appendChild(@html)
+    add_class("atome")
+    self.id(id)
     self
   end
 
@@ -46,6 +57,19 @@ class HTML
 
   def textContent(data)
     @html[:textContent] = data
+  end
+
+  def path(objet_path)
+    @html.setAttribute('src', objet_path)
+    # below we get image to feed width and height if needed
+    # image = JS.global[:Image].new
+    @html[:src] = objet_path
+    @html[:onload] = lambda do |_event|
+      width = @html[:width]
+      height = @html[:height]
+      puts "Width: #{width}, Height: #{height}"
+    end
+
   end
 
   def style(property, value = nil)

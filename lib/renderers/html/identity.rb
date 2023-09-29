@@ -6,6 +6,11 @@ new({ method: :type, type: :string, renderer: :html }) do |_value, _user_proc|
   html.shape(@atome[:id])
 end
 
+new({ method: :type, type: :string, renderer: :html, specific: :image }) do |_value, _user_proc|
+
+  html.image(@atome[:id])
+end
+
 new({ method: :type, type: :string, renderer: :html, specific: :group }) do |_value, _user_proc|
   html.shape(@atome[:id])
   data.each do |item|
@@ -37,4 +42,8 @@ new({ method: :component, type: :hash, specific: :text, renderer: :html }) do |p
     # we send component data directly to the text html renderer
     send("html_text_#{prop}", value)
   end
+end
+
+new({ method: :path, type: :string, renderer: :html }) do |value, _user_proc|
+  html.path(value)
 end

@@ -14,7 +14,7 @@ new({ sanitizer: :image }) do |params|
   unless params.instance_of? Hash
     # TODO : we have to convert all image to png or maintain a database with extension
     # FIXME : temporary patch that add .png to the string if no extension is found
-    params = "#{params}.png" if params.split('.').length == 1
+    params = "#{params}.png" if params.to_s.split('.').length == 1
 
     params = { path: "./medias/images/#{params}" }
   end
