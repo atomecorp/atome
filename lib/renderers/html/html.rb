@@ -77,6 +77,24 @@ class HTML
     self
   end
 
+  def raw(id)
+    @html = JS.global[:document].createElement('div')
+    add_class("atome")
+    self.id(id)
+    JS.global[:document][:body].appendChild(@html)
+    self
+  end
+
+  def raw_data(html_string)
+    # previous_last_child = JS.global[:document][:body][:lastChild]
+    @html[:innerHTML] = html_string
+    # if previous_last_child
+    #   @html = previous_last_child[:nextSibling]
+    # else
+    #   @html = JS.global[:document][:body][:firstChild]
+    # end
+  end
+
   def video_path(video_path, type = 'video/mp4')
     source = JS.global[:document].createElement('source')
     source.setAttribute('src', video_path)

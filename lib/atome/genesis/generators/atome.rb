@@ -50,6 +50,7 @@ new({ sanitizer: :shadow }) do |params|
   new_params = default_params.merge!(params)
   new_params
 end
+new({ atome: :raw })
 new({ atome: :shape })
 new({ atome: :code })
 new({ atome: :audio })

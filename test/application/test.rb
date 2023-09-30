@@ -108,7 +108,7 @@
 #   t.delete(true)
 # end
 # # shape()
-########
+######## WWW
 # video(:video_missing)
 #
 # image(:red_planet)
@@ -119,9 +119,24 @@
 # wait 3 do
 #   the_one.markup(:div)
 # end
+# c=circle
+# c.www({ path: "https://www.youtube.com/embed/usQDazZKWAk", left: 333 })
+# Atome.new(
+#   renderers: [:html], id: :youtube1, type: :www, attach: [:view], path: "https://www.youtube.com/embed/fjJOyfQCMvc?si=lPTz18xXqIfd_3Ql", left: 33, top: 33, width: 199, height: 199,
+#
+# )
 
-www({ path: "https://www.youtube.com/embed/usQDazZKWAk", left: 333 })
-Atome.new(
-  renderers: [:html], id: :youtube1, type: :www, attach: [:view], path: "https://www.youtube.com/embed/fjJOyfQCMvc?si=lPTz18xXqIfd_3Ql", left: 33, top: 33, width: 199, height: 199,
+###### raw
 
-)
+raw_data = <<STR
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8BT4Q3UtO6Q?si=WI8RlryV8HW9Y0nz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+STR
+b = box({ id: :boxy })
+b.raw({ id: :the_raw_stuff, data: raw_data })
+# b.www({ path: "https://www.youtube.com/embed/usQDazZKWAk", left: 333 })
+# b.circle({id: :circly})
+# a = b.shape(
+#   { renderers: [:html], id: :my_test_box, type: :shape,  apply: [:shape_color],
+#     left: 120, top: 0, width: 100,smooth: 333, height: 100, overflow: :visible, attached: [], color: :white
+#   })
+

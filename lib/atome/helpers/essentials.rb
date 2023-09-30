@@ -12,12 +12,15 @@ module Essentials
         </g>
     </g>
   STR
+
   @default_params = {
     # Warning :  type must be define first
     render_engines: [:html],
     image: { type: :image, attached: [] },
-    www: { type: :www, attach: [:view], attached: [] },
-    video: { type: :video, attach: [:view], attached: [] },
+    # FIXME : look at build_atome FIXME to resolve default parent attachment problem
+    www: { type: :www, attached: [] },
+    raw: { type: :www, attached: [] },
+    video: { type: :video, attached: [] },
     animation: { type: :animation, attach: [:black_matter], attached: [] },
     element: { type: :element, renderers: [], attach: [:black_matter], attached: [] },
     matrix: { type: :shape, width: 99, height: 99,

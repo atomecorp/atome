@@ -13,8 +13,13 @@ end
 new({ method: :type, type: :string, renderer: :html, specific: :video }) do |_value, _user_proc|
   html.video(@atome[:id])
 end
+
 new({ method: :type, type: :string, renderer: :html, specific: :www }) do |_value, _user_proc|
   html.www(@atome[:id])
+end
+
+new({ method: :type, type: :string, renderer: :html, specific: :raw }) do |_value, _user_proc|
+  html.raw(@atome[:id])
 end
 
 new({ method: :type, type: :string, renderer: :html, specific: :group }) do |_value, _user_proc|
@@ -60,4 +65,8 @@ end
 
 new({ method: :path, type: :string, renderer: :html, specific: :www }) do |value, _user_proc|
   html.path(value)
+end
+
+new({ method: :data, type: :string, renderer: :html, specific: :raw }) do |value, _user_proc|
+  html.raw_data(value)
 end

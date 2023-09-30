@@ -43,6 +43,8 @@ class Atome
     unless Essentials.default_params[atome_name]
       # if it doesn't exist
       # we create default params for the new created atome, adding the hash to : module essential, @default_params
+      # FIXME : the hash : attach: [:view] means that newly atome will systematically be attached to the wview instaed of the parent:
+      # ex : b.www will atrtach to view not b!
       Essentials.new_default_params(atome_name => { type: atome_name, attach: [:view] })
     end
 
