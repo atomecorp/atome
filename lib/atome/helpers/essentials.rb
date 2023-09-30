@@ -18,8 +18,6 @@ module Essentials
     render_engines: [:html],
     image: { type: :image, attached: [] },
     # FIXME : look at build_atome FIXME to resolve default parent attachment problem
-    www: { type: :www, attached: [] },
-    raw: { type: :www, attached: [] },
     video: { type: :video, attached: [] },
     animation: { type: :animation, attach: [:black_matter], attached: [] },
     element: { type: :element, renderers: [], attach: [:black_matter], attached: [] },

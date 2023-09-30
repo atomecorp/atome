@@ -41,11 +41,10 @@ class Atome
     # the line below create the corresponding atome method for Batch class
     # atome_method_for_batch(atome_name)
     unless Essentials.default_params[atome_name]
-      # if it doesn't exist
       # we create default params for the new created atome, adding the hash to : module essential, @default_params
       # FIXME : the hash : attach: [:view] means that newly atome will systematically be attached to the wview instaed of the parent:
-      # ex : b.www will atrtach to view not b!
-      Essentials.new_default_params(atome_name => { type: atome_name, attach: [:view] })
+      # ex : b.www will attach to view not b!
+      Essentials.new_default_params(atome_name => { type: atome_name })
     end
 
     # the line below create an empty atome method for each renderer, eg: browser_shape, headless_color, ...
