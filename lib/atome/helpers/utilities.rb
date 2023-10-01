@@ -35,7 +35,7 @@ class Atome
 
   def write_auth(element, params)
     if element == :data
-      puts "#{element} is protected, it can't be write without authorisation"
+      puts "#{element} is protected, #{params} can't be write without authorisation"
 
       false
     else
