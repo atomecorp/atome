@@ -92,7 +92,7 @@ class Atome
     @history
   end
 
-  def synchronise(element, params, pass) end
+
 
   def broadcasting(element)
     params = instance_variable_get("@#{element}")
@@ -254,4 +254,16 @@ class Atome
     return unless atome_to_detach
   end
 
+  def debug(msg)
+    # add id-f debug mode
+    puts msg
+  end
+
+  def set_current_user(id)
+    if Universe.users[id]
+      Universe.current_user = id
+    else
+      debug "#{id} not found"
+    end
+  end
 end

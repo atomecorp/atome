@@ -89,7 +89,9 @@ new({ sanitizer: :text }) do |params|
 end
 # for later use ( physical is a css like style)
 new ({ atome: :physical })
-new ({ atome: :human })
+new ({ atome: :human }) do |params|
+  Universe.add_user = params[:id]
+end
 new ({ atome: :machine })
 
 

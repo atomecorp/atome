@@ -24,14 +24,26 @@ new ({ particle: :protected })
 # end
 b = box
 b.data(:kool)
-alert b.history[:data]
+
 b.data
 b.touch(true) do
   b.data(:super)
   b.data
   alert b.history[:data]
 end
+# alert b.history[:data]
+# alert Universe.unsync
+# Universe.synchronised(23,:dbQKhb876HZggd87Hhsgf )
+# alert Universe.unsync
+# alert  Universe.current_machine
+# alert  Universe.current_user
+# alert grab(Universe.current_machine).inspect
 
-# puts "my machine : #{current_machine.name}"
-# puts "my machine : #{current_machine.id}"
+# human({id: :jeezs, login: true})
+
+alert "current user: #{Universe.current_user}"
+
+wait 2 do
+  set_current_user(:totot)
+end
 

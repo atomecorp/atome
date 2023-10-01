@@ -71,9 +71,9 @@ Atome.new(
   }
 )
 
-machine_id = :current_machine
-machine({ id: machine_id, name: :macAir, data: { users: [:anonymous], user: :anonymous, asynchronous: { anonymous: {} } } })
-human({ id: :unknown, data: { name: :anonymous, password: :unset } })
+machine_id = :dummy_machine
+machine({ id: machine_id, data: { name: :macAir, password: :unset } })
+human({ id: :anonymous, login: true, data: { name: :anonymous, password: :unset } })
 
 # atome infos
 def atome_infos
@@ -82,13 +82,14 @@ def atome_infos
   puts "application identity: #{Atome::aui}"
   # puts "application mode: #{Atome.mode}"
   puts "host framework: #{$host}"
-  puts "script mode: #{Universe.script_mode}"
-  puts "user: #{Universe.current_user}"
+  puts "engine: #{Universe.engine}"
+  puts "users: #{Universe.users}"
+  puts "current user: #{Universe.current_user}"
   puts "machine: #{Universe.current_machine}"
   puts "server: #{Universe.current_server}"
 end
 
-Universe.current_user = :anonymous
+# default_user.set_current_user(:anonymous)
 Universe.current_machine = machine_id
 
 atome_infos

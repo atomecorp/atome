@@ -16,6 +16,7 @@ class Atome
     # the keys :renderers, :type and :id should be placed in the first position in the hash
     @broadcast = {}
     @history = {}
+
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     @atome = new_atome
@@ -26,7 +27,6 @@ class Atome
     collapse if new_atome
 
   end
-
 
   def new_particle(element, store, render, &method_proc)
     # we initialise the history for the current particle
@@ -41,10 +41,10 @@ class Atome
         create_particle(element, store, render)
         send("set_#{element}", params, &user_proc) # sent to  :  Atome.define_method "set_#{element}" ..
         # we historize all write action below
-        # TODO: use openssl encryption to protect password and @history variable
+        # TODO: use openssl encryption to protect password,  @history variable and synchronise
         historise(element, params, :write, :dbQKhb876HZggd87Hhsgf)
         # we add the changes to the stack that must be synchronised
-        synchronise(element, params, :dbQKhb876HZggd87Hhsgf)
+        Universe.to_be_sync(element, params, :dbQKhb876HZggd87Hhsgf)
       elsif read_auth(element) # security pass here
         # we are on a getter here!!
         # TODO : create a fast method to get particle: eg:

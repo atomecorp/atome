@@ -11,6 +11,8 @@ class Universe
   @options = {}
   @sanitizers = {}
   @specificities = {}
+  @synchronise = {}
+  @users = {}
 
   class << self
     attr_reader :atomes, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
@@ -26,7 +28,7 @@ class Universe
     def set_atomes_specificities params
       particle_found = params[:method].to_sym
       specificity = "#{params[:specific]}_".to_sym
-         @specificities[params[:specific]][particle_found] = specificity
+      @specificities[params[:specific]][particle_found] = specificity
     end
 
     def get_atomes_specificities
@@ -128,16 +130,16 @@ class Universe
       end
     end
 
-    def script_mode
+    def engine
       platform = RUBY_PLATFORM.downcase
       output = if platform == :opal
-        `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
-      elsif platform == 'wasm32-wasi'
-        'ifconfig'
-      elsif platform_type == :windows
-        'ipconfig'
-      else
-        'ifconfig'
+                 `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
+               elsif platform == 'wasm32-wasi'
+                 'ifconfig'
+               elsif platform_type == :windows
+                 'ipconfig'
+               else
+                 'ifconfig'
                end
       current_machine_decision(platform, output)
       # TODO: check the code above and create a sensible identity
@@ -146,9 +148,19 @@ class Universe
     def current_server
       `window.location.href` if RUBY_ENGINE.downcase == 'opal'
     end
+
     def current_user
       @user
     end
+
+    def add_user=(id)
+      @users[id] = true
+    end
+
+    def users
+      @users
+    end
+
 
     def current_user=(user_id)
       # TODO: create or load an existing user
@@ -169,5 +181,21 @@ class Universe
     def connected
       true
     end
+
+    def to_be_sync(element, params, pass)
+      return unless pass == :dbQKhb876HZggd87Hhsgf
+      @synchronise[@synchronise.length] = [{ element => params }]
+
+    end
+
+    def unsync
+      @synchronise
+    end
+
+    def synchronised(action_nb, pass)
+      return unless pass == :dbQKhb876HZggd87Hhsgf
+      @synchronise.delete(action_nb)
+    end
+
   end
 end
