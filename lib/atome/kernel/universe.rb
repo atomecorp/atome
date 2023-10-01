@@ -128,7 +128,7 @@ class Universe
       end
     end
 
-    def current_machine
+    def script_mode
       platform = RUBY_PLATFORM.downcase
       output = if platform == :opal
         `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
@@ -143,18 +143,27 @@ class Universe
       # TODO: check the code above and create a sensible identity
     end
 
+    def current_server
+      `window.location.href` if RUBY_ENGINE.downcase == 'opal'
+    end
     def current_user
       @user
     end
 
-    def current_server
-      `window.location.href` if RUBY_ENGINE.downcase == 'opal'
-    end
-
-    def current_user=(user)
+    def current_user=(user_id)
       # TODO: create or load an existing user
       # if user needs to be create the current_user will be eVe
-      @user = user
+      @user = user_id
+    end
+
+    def current_machine
+      @machine
+    end
+
+    def current_machine=(machine_id)
+      # TODO: create or load an existing user
+      # if user needs to be create the current_user will be eVe
+      @machine = machine_id
     end
 
     def connected

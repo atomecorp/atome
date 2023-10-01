@@ -30,7 +30,7 @@ def build_aui(user_project_path)
   aui_js = "#{user_project_path}/src/js/aui.js"
   File.new aui_js, 'w'
   builder = Opal::Builder.new
-  aui_content = builder.build("#{user_project_path}/aui.rb").to_s
+  aui_content = builder.build("#{user_project_path}/src/utilities/aui.rb").to_s
   File.open(aui_js, 'w') do |f|
     f.puts aui_content
   end

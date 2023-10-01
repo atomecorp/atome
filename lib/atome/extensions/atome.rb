@@ -7,6 +7,8 @@ class Object
       Universe.add_atomes_specificities params[:atome]
       generator.build_atome(params[:atome], &bloc)
     elsif params.key?(:particle)
+      # alert params[:particle]
+
       # render indicate if the particle needs to be rendered
       # store tell the system if it need to store the particle value
       # type help the system what type of type the particle will receive and store

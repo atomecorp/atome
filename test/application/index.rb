@@ -1,11 +1,37 @@
-# require './new_html_renderer'
-require './test'
-# text({ data: [:hello, :salut] , component: {size: 89}, center: true, top: 120, width: 955, id: :my_x_text})
+# require './examples/attach'
+def Users
+  @user = []
+end
 
-# the_text = text({ data: [
-#   '74 Bis Avenue des Thermes - Chamalieres, tel: ',
-#   { data: '06 63 60 40 55!', width: :auto, component: { size: 25 }, top: 0, color: :blue, id: :phone_nb },
-#   { data: 'la suite', width: :auto }, :super, :cool, :great
-# ], center: true, top: 120, width: 955, id: :my_x_text, component: { size: 11 } })
+# new({particle: :validated, type: :boolean})
+new ({ particle: :protected })
+# current_machine=machine({id: :my_mac, name: :macAir, data: {users: []}})
+# current_user=human( {protected: :data,id: :me, name: :jeezs, data: {name: 'jeezs', password: '********'}})
+# current_user.id(:titi)
+# alert current_user.inspect
+# wait 2 do
+#   current_user.set({id: :tutu})
+#   current_user.set({name: :okoko})
+#   # alert current_user.inspect
+# end
+# current_machine.data(:hello)
+# wait 1 do
+#   current_machine.data(:salut)
+#   wait 1 do
+#     current_machine.data(:so_cool)
+#     alert current_machine.history
+#   end
+# end
+b = box
+b.data(:kool)
+alert b.history[:data]
+b.data
+b.touch(true) do
+  b.data(:super)
+  b.data
+  alert b.history[:data]
+end
 
-# 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
+# puts "my machine : #{current_machine.name}"
+# puts "my machine : #{current_machine.id}"
+

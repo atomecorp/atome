@@ -3,7 +3,7 @@
 # atome server
 require 'em/pure_ruby' if RUBY_PLATFORM == 'x64-mingw32'
 # require  'atome'
-require '../aui'
+require '../src/utilities/aui'
 require 'digest/sha2'
 require 'faye/websocket'
 require 'geocoder'

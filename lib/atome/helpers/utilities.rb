@@ -2,7 +2,6 @@
 
 # toolbox   method here
 class Atome
-  private
 
   # local server messaging
   def self.controller_sender(message)
@@ -34,8 +33,28 @@ class Atome
     end
   end
 
-  def security_pass(_element, _value)
+  def write_auth(element, params)
+    if element == :data
+      puts "#{element} is protected, it can't be write without authorisation"
+
+      false
+    else
+      true
+    end
+    # puts"1 - write security, secure this #{@atome[:protected]}', \n =>#{element} : #{params}"
     true
+  end
+
+  def read_auth(element)
+
+    if element == :name
+      puts "#{element} is protected, it can't be read without authorisation"
+      false
+    else
+      true
+    end
+    # puts"2 - read security, secure this #{@atome[:protected]}', \n => #{element}"
+
   end
 
   def particle_sanitizer(element, params, &user_proc)
@@ -62,9 +81,18 @@ class Atome
     new_atome
   end
 
-  def history(property, value)
-    "historize : #{property} #{value}"
+  def historise(element, params, operation, pass)
+    if pass == :dbQKhb876HZggd87Hhsgf
+      time = Time.now
+      @history[element] << { operation => params, time: time }
+    end
   end
+
+  def history
+    @history
+  end
+
+  def synchronise(element, params, pass) end
 
   def broadcasting(element)
     params = instance_variable_get("@#{element}")
@@ -75,8 +103,6 @@ class Atome
       end
     end
   end
-
-  public
 
   def monitor(params = nil, &proc_monitoring)
     if params

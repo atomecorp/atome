@@ -80,6 +80,7 @@ task :test_wasm do
 ./vendor/source_files/wasm/wasi-vfs-osx_arm pack tmp/system_ruby_browser.wasm 
 --mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
+--mapdir utilities::./vendor/assets/src/utilities/ 
 --mapdir /::./tmp/test_app/application/ 
 -o vendor/assets/src/wasm/ruby/ruby_browser.wasm
 STRDELIm
@@ -105,6 +106,7 @@ task :test_wasm_osx_x86 do
 ./vendor/source_files/wasm/wasi-vfs-osx_x86 pack tmp/system_ruby_browser.wasm 
 --mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
+--mapdir utilities::./vendor/assets/src/utilities/ 
 --mapdir /::./tmp/test_app/application/ 
 -o vendor/assets/src/wasm/ruby/ruby_browser.wasm
 STRDELIm
@@ -133,6 +135,7 @@ task :test_wasm_windows do
 ./vendor/source_files/wasm/wasi-vfs.exe pack tmp/system_ruby_browser.wasm 
 --mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
+--mapdir utilities::./vendor/assets/src/utilities/ 
 --mapdir /::./tmp/test_app/application/ 
 -o vendor/assets/src/wasm/ruby/ruby_browser.wasm
 STRDELIm
@@ -161,6 +164,7 @@ task :test_wasm_unix do
 ./vendor/source_files/wasm/wasi-vfs-unix pack tmp/system_ruby_browser.wasm 
 --mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
+--mapdir utilities::./vendor/assets/src/utilities/ 
 --mapdir /::./tmp/test_app/application/ 
 -o vendor/assets/src/wasm/ruby/ruby_browser.wasm
 STRDELIm
@@ -182,7 +186,8 @@ task :test_osx do
 end
 task :test_server do
   test_common
-  `gem cleanup atome;yes | gem uninstall atome ;gem build atome.gemspec;cd pkg; gem install atome --local`
+  `rake build`
+  `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run server guard`
 end
 

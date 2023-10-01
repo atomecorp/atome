@@ -15,9 +15,11 @@ class Atome
 
     # the keys :renderers, :type and :id should be placed in the first position in the hash
     @broadcast = {}
+    @history = {}
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     @atome = new_atome
+    # @atome[:forbidden]='you are not allow to read protected particle'
     # we initiate the rendering using set_type method,
     # eg : for for browser we will call :browser_type generate method in identity.rb file
     # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
@@ -25,17 +27,33 @@ class Atome
 
   end
 
+
   def new_particle(element, store, render, &method_proc)
+    # we initialise the history for the current particle
+    # Atome.instance_variable_set('@history',{element => []})
     Atome.define_method element do |params = nil, &user_proc|
-      if params || params == false
+      @history[element] ||= []
+      if (params || params == false) && write_auth(element, params)
+
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = particle_sanitizer(element, params, &user_proc)
         create_particle(element, store, render)
-        # group_particle_analysis(element, params, &user_proc) if @atome[:type] == :group
-        send("set_#{element}", params, &user_proc)
-      else
+        send("set_#{element}", params, &user_proc) # sent to  :  Atome.define_method "set_#{element}" ..
+        # we historize all write action below
+        # TODO: use openssl encryption to protect password and @history variable
+        historise(element, params, :write, :dbQKhb876HZggd87Hhsgf)
+        # we add the changes to the stack that must be synchronised
+        synchronise(element, params, :dbQKhb876HZggd87Hhsgf)
+      elsif read_auth(element) # security pass here
+        # we are on a getter here!!
+        # TODO : create a fast method to get particle: eg:
+        #  Atome.define_method "set_#{element}" ... =>  send("set_#{element}"
+        # we historize all read action below
+        historise(element, @atome[element], :read, :dbQKhb876HZggd87Hhsgf)
         @atome[element]
+      else
+        'protected particle'
       end
     end
   end
@@ -50,6 +68,7 @@ class Atome
   end
 
   def new_atome(element, &method_proc)
+
     # the method define below is the slowest but params are analysed and sanitized
     Atome.define_method element do |params = nil, &user_proc|
       instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
@@ -65,11 +84,8 @@ class Atome
             collected_atomes << attached_atome
           end
         end
-        # FIXME: chose if we return an atom or an array of id
-        # group({data: collected_atomes})
         collected_atomes
       end
-
     end
 
     # the method define below is the fastest params are passed directly
@@ -82,6 +98,7 @@ class Atome
       new_atome
       # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
     end
+
   end
 
   def store_value(element)
@@ -102,7 +119,6 @@ class Atome
   end
 
   def particle_creation(element, params, store, rendering, &user_proc)
-    return false unless security_pass(element, params)
 
     @store_allow = false
     # Params is now an instance variable so it should be passed thru different methods

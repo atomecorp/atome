@@ -2,20 +2,9 @@
 
 # now let's get the default render engine
 
-def atome_infos
-  puts "atome version: #{Atome::VERSION}"
-  puts "device identity: #{Universe.app_identity}"
-  # puts "application identity: #{Atome::aui}"
-  # puts "application mode: #{Atome.mode}"
-  puts "host framework: #{$host}"
-  puts "script mode: #{Universe.current_machine}"
-  puts "user: #{Universe.current_user}"
-  puts "server: #{Universe.current_server}"
-end
 
-Universe.current_user = :jeezs
 
-atome_infos
+
 
 # Lets create the U.I.
 
@@ -74,7 +63,7 @@ Atome.new(
 
 )
 
-# unreal port
+# unreal port, hold system object and tools
 Atome.new(
   { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: { system: true },
     left: 0, top: 0, width: 0, height: 0, overflow: :visible, attached: []
@@ -82,3 +71,24 @@ Atome.new(
   }
 )
 
+machine_id = :current_machine
+machine({ id: machine_id, name: :macAir, data: { users: [:anonymous], user: :anonymous, asynchronous: { anonymous: {} } } })
+human({ id: :unknown, data: { name: :anonymous, password: :unset } })
+
+# atome infos
+def atome_infos
+  puts "atome version: #{Atome::VERSION}"
+  puts "device identity: #{Universe.app_identity}"
+  puts "application identity: #{Atome::aui}"
+  # puts "application mode: #{Atome.mode}"
+  puts "host framework: #{$host}"
+  puts "script mode: #{Universe.script_mode}"
+  puts "user: #{Universe.current_user}"
+  puts "machine: #{Universe.current_machine}"
+  puts "server: #{Universe.current_server}"
+end
+
+Universe.current_user = :anonymous
+Universe.current_machine = machine_id
+
+atome_infos
