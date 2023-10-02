@@ -11,7 +11,7 @@ class Universe
   @options = {}
   @sanitizers = {}
   @specificities = {}
-  @synchronise = {}
+  @history = {}
   @users = {}
 
   class << self
@@ -161,7 +161,6 @@ class Universe
       @users
     end
 
-
     def current_user=(user_id)
       # TODO: create or load an existing user
       # if user needs to be create the current_user will be eVe
@@ -182,19 +181,33 @@ class Universe
       true
     end
 
-    def to_be_sync(element, params, pass)
+    def historise(id, operation, element, params, pass)
       return unless pass == :dbQKhb876HZggd87Hhsgf
-      @synchronise[@synchronise.length] = [{ element => params }]
 
+      @history[@history.length] = { id => { operation => { element => params } }, sync: false }
+      # puts "sync=> #{@history}"
     end
 
-    def unsync
-      @synchronise
+    def story(filter)
+
+      # temp algo awaiting db to be ready, just for POC and tests
+      return unless filter
+
+      operation = filter[:operation]
+      atome_id = filter[:id]
+      particle = filter[:particle]
+      filtered_history = []
+      @history.each do |operation_number, alteration|
+        if alteration[atome_id] && (alteration[atome_id][operation]) && (alteration[atome_id][operation][particle])
+          filtered_history << { operation: operation_number, filter[:particle] => alteration[atome_id][operation][particle], sync: alteration[:sync] }
+        end
+      end
+      filtered_history
     end
 
     def synchronised(action_nb, pass)
       return unless pass == :dbQKhb876HZggd87Hhsgf
-      @synchronise.delete(action_nb)
+      @history[action_nb][:sync] = true
     end
 
   end

@@ -81,15 +81,9 @@ class Atome
     new_atome
   end
 
-  def historise(element, params, operation, pass)
-    if pass == :dbQKhb876HZggd87Hhsgf
-      time = Time.now
-      @history[element] << { operation => params, time: time }
-    end
-  end
-
-  def history
-    @history
+  def history(filter = {})
+    filter[:id] = id
+    Universe.story(filter)
   end
 
 
