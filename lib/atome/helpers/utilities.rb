@@ -27,34 +27,46 @@ class Atome
   end
 
   def collapse
+
+    # TODO : try to optimise the two lines below to avoid conditions
     @atome[:unit] = {} unless @atome[:unit]
+    @atome[:security] = {} unless @atome[:security]
     @atome.each do |element, value|
       send(element, value)
     end
   end
 
-  def write_auth(element, params)
-    if element == :data
-      puts "#{element} is protected, #{params} can't be write without authorisation"
-
+  def write_auth(element, _params)
+    # puts "===+> #{security}"
+    if security[element]
+      password_found = @temps_authorisation[0]
+      authorisation = Black_matter.check_password(password_found, Black_matter.password)
+      password_destruction = @temps_authorisation[1]
+      @temps_authorisation = [nil, true] if password_destruction
+      return true if authorisation
       false
     else
       true
     end
-    # puts"1 - write security, secure this #{@atome[:protected]}', \n =>#{element} : #{params}"
-    true
+
+    # true
+    # if protected[element]
+    #   puts "stop get out we are the strong arm of the law"
+    # end
+    # if element
+    # if element == :data
+    #   puts "#{element} is protected, #{params} can't be write without authorisation"
+    #
+    #   false
+    # else
+    #   true
+    # end
+    # true
   end
 
-  def read_auth(element)
-
-    if element == :name
-      puts "#{element} is protected, it can't be read without authorisation"
-      false
-    else
-      true
-    end
-    # puts"2 - read security, secure this #{@atome[:protected]}', \n => #{element}"
-
+  def read_auth(element, password = nil)
+    Universe.historicize(@atome[:id], :read, element, @atome[element])
+    @atome[element]
   end
 
   def particle_sanitizer(element, params, &user_proc)
@@ -85,8 +97,6 @@ class Atome
     filter[:id] = id
     Universe.story(filter)
   end
-
-
 
   def broadcasting(element)
     params = instance_variable_get("@#{element}")

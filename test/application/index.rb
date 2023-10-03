@@ -1,9 +1,40 @@
 # require './examples/attach'
+# TODO: find and remove : dbQKhb876HZggd87Hhsgf
+# https://github.com/travist/jsencrypt
 
-new ({ particle: :protected }) do |params|
-  puts "will add protectuon for =#{type} conidtion: #{params}"
+###### ruby integration for encode
+# my_pass=Black_matter.encode('hello')
+# alert my_pass
+# checker=Black_matter.check_password('hello,', my_pass)
+# alert checker
+######## security particles and security
+
+b = box({ id: :the_box, left: 66,
+          security: {
+            smooth: {
+              write: { password: :other_pass },
+              read: { password: :read_pass }
+            }
+          }
+        })
+
+class Atome
+  def authorise(password, destroy = true)
+    @temps_authorisation = [password, destroy]
+  end
 end
 
+b.authorise(:star_wars, false)
+b.smooth(22)
+b.authorise(:star_war, true)
+b.smooth(66)
+puts '----'
+puts "b.security : #{b.security}"
+puts '----'
+puts "user hashed pass is : #{grab(Universe.current_user).password}"
+# alert b.instance_variable_get("@security")
+
+puts "b.smooth is : #{b.smooth}"
 # ###### history and server synchronisation
 # b = box({id: :the_box})
 # b.data(:canyouwritethis)
@@ -19,7 +50,7 @@ end
 #   alert b.history[:data]
 # end
 # alert b.history({operation: :write, id: :the_box, particle: :rotate})
-# Universe.synchronised(507,:dbQKhb876HZggd87Hhsgf )
+# Black_matter.synchronised(582,:star_wars)
 # alert b.history({operation: :write, id: :the_box, particle: :rotate})
 # alert  Universe.current_machine
 # alert  Universe.current_user

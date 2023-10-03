@@ -103,7 +103,5 @@ new({ particle: :unit, type: :hash })
 new({ initialize: :unit, value: {} })
 
 new({ particle: :login }) do |params|
-  if params
-    set_current_user(id)
-  end
+  set_current_user(id) if params
 end

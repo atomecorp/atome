@@ -40,22 +40,20 @@ class Atome
         params = particle_sanitizer(element, params, &user_proc)
         create_particle(element, store, render)
         send("set_#{element}", params, &user_proc) # sent to  :  Atome.define_method "set_#{element}" ..
-        # we historize all write action below
+        # we historicize all write action below
         # TODO: use openssl encryption to protect password,  @history variable and synchronise
-        # historise(element, params, :write, :dbQKhb876HZggd87Hhsgf)
+        # historicize(element, params, :write, :dbQKhb876HZggd87Hhsgf)
         # we add the changes to the stack that must be synchronised
-        Universe.historise(id, :write, element, params, :dbQKhb876HZggd87Hhsgf)
+        Universe.historicize(id, :write, element, params)
 
-      elsif read_auth(element) # security pass here
+      else
+        read_auth(element) # security pass here
         # we are on a getter here!!
         # TODO : create a fast method to get particle: eg:
         #  Atome.define_method "set_#{element}" ... =>  send("set_#{element}"
-        # we historize all read action below
-        # historise(element, @atome[element], :read, :dbQKhb876HZggd87Hhsgf)
-        Universe.historise(@atome[:id], :read, element, @atome[element], :dbQKhb876HZggd87Hhsgf)
-        @atome[element]
-      else
-        'protected particle'
+        # we historicize all read action below
+        # historicize(element, @atome[element], :read, :dbQKhb876HZggd87Hhsgf)
+
       end
     end
   end

@@ -67,13 +67,15 @@ Atome.new(
 Atome.new(
   { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: { system: true },
     left: 0, top: 0, width: 0, height: 0, overflow: :visible, attached: []
-
   }
 )
 
 machine_id = :dummy_machine
-machine({ id: machine_id, data: { name: :macAir, password: :unset } })
-human({ id: :anonymous, login: true, data: { name: :anonymous, password: :unset } })
+default_password = :star_wars
+
+machine({ id: machine_id, password: default_password, name: :macAir, data: { date: '10090717' } })
+
+human({ id: :anonymous, login: true, password: default_password, data: { birthday: '10/05/1996' } })
 
 # atome infos
 def atome_infos

@@ -181,8 +181,8 @@ class Universe
       true
     end
 
-    def historise(id, operation, element, params, pass)
-      return unless pass == :dbQKhb876HZggd87Hhsgf
+    def historicize(id, operation, element, params)
+      # return unless pass == :dbQKhb876HZggd87Hhsgf
 
       @history[@history.length] = { id => { operation => { element => params } }, sync: false }
       # puts "sync=> #{@history}"
@@ -203,11 +203,6 @@ class Universe
         end
       end
       filtered_history
-    end
-
-    def synchronised(action_nb, pass)
-      return unless pass == :dbQKhb876HZggd87Hhsgf
-      @history[action_nb][:sync] = true
     end
 
   end

@@ -1,0 +1,28 @@
+class Black_matter
+  class << self
+    def encode(string)
+      JS.global.sha256(string.to_s)
+    end
+
+    def check_password(input_password, stored_hash)
+      input_hash = encode(input_password.to_s)
+      input_hash == stored_hash
+    end
+
+    def set_password(hashed_pass)
+      @password = hashed_pass
+    end
+
+    def password
+      @password
+    end
+
+    def synchronised(action_nb, pass)
+      return unless Black_matter.check_password(pass, @password)
+
+      @history[action_nb][:sync] = true
+    end
+
+  end
+
+end
