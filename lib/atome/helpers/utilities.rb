@@ -36,7 +36,11 @@ class Atome
     end
   end
 
-  def write_auth(element, _params)
+  def authorise(password, destroy = true)
+    @temps_authorisation = [password, destroy]
+  end
+
+  def write_auth(element)
     # puts "===+> #{security}"
     if security[element]
       password_found = @temps_authorisation[0]
@@ -48,25 +52,18 @@ class Atome
     else
       true
     end
-
-    # true
-    # if protected[element]
-    #   puts "stop get out we are the strong arm of the law"
-    # end
-    # if element
-    # if element == :data
-    #   puts "#{element} is protected, #{params} can't be write without authorisation"
-    #
-    #   false
-    # else
-    #   true
-    # end
-    # true
   end
 
-  def read_auth(element, password = nil)
-    Universe.historicize(@atome[:id], :read, element, @atome[element])
-    @atome[element]
+  def read_auth(element)
+    if @security[element]
+      password_found = @temps_authorisation[0]
+      authorisation = Black_matter.check_password(password_found, Black_matter.password)
+      password_destruction = @temps_authorisation[1]
+      @temps_authorisation = [nil, true] if password_destruction
+      true if authorisation
+    else
+      true
+    end
   end
 
   def particle_sanitizer(element, params, &user_proc)
@@ -255,7 +252,7 @@ class Atome
   def detach_atome(atome_id_to_detach)
     atome_to_detach = grab(atome_id_to_detach)
     # TODO: remove the condition below and find why it try to detach an atome that doesn't exist
-    return unless atome_to_detach
+    nil unless atome_to_detach
   end
 
   def debug(msg)

@@ -181,6 +181,11 @@ class Universe
       true
     end
 
+    def synchronised(action_nb, pass)
+      return unless Black_matter.check_password(pass, Black_matter.password)
+      @history[action_nb][:sync] = true
+    end
+
     def historicize(id, operation, element, params)
       # return unless pass == :dbQKhb876HZggd87Hhsgf
 

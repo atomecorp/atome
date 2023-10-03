@@ -18,23 +18,24 @@ b = box({ id: :the_box, left: 66,
           }
         })
 
-class Atome
-  def authorise(password, destroy = true)
-    @temps_authorisation = [password, destroy]
-  end
-end
+# class Atome
+#   def authorise(password, destroy = true)
+#     @temps_authorisation = [password, destroy]
+#   end
+# end
 
 b.authorise(:star_wars, false)
 b.smooth(22)
 b.authorise(:star_war, true)
 b.smooth(66)
+puts b.history({ operation: :write, id: :the_box, particle: :smooth })
 puts '----'
 puts "b.security : #{b.security}"
 puts '----'
 puts "user hashed pass is : #{grab(Universe.current_user).password}"
 # alert b.instance_variable_get("@security")
-
-puts "b.smooth is : #{b.smooth}"
+b.authorise(:star_wars, false)
+alert "b.smooth is : #{b.smooth}"
 # ###### history and server synchronisation
 # b = box({id: :the_box})
 # b.data(:canyouwritethis)
@@ -50,7 +51,7 @@ puts "b.smooth is : #{b.smooth}"
 #   alert b.history[:data]
 # end
 # alert b.history({operation: :write, id: :the_box, particle: :rotate})
-# Black_matter.synchronised(582,:star_wars)
+# Universe.synchronised(742,:star_wars)
 # alert b.history({operation: :write, id: :the_box, particle: :rotate})
 # alert  Universe.current_machine
 # alert  Universe.current_user

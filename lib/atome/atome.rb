@@ -16,6 +16,7 @@ class Atome
     # the keys :renderers, :type and :id should be placed in the first position in the hash
     @broadcast = {}
     @history = {}
+    @security = {}
 
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
@@ -33,7 +34,7 @@ class Atome
     # Atome.instance_variable_set('@history',{element => []})
     Atome.define_method element do |params = nil, &user_proc|
       @history[element] ||= []
-      if (params || params == false) && write_auth(element, params)
+      if (params || params == false) && write_auth(element)
 
         # the line below execute the proc created when using the build_particle method
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
@@ -46,14 +47,14 @@ class Atome
         # we add the changes to the stack that must be synchronised
         Universe.historicize(id, :write, element, params)
 
-      else
-        read_auth(element) # security pass here
+      elsif read_auth(element)
         # we are on a getter here!!
+        Universe.historicize(@atome[:id], :read, element, @atome[element])
+        @atome[element] # security pass here
         # TODO : create a fast method to get particle: eg:
         #  Atome.define_method "set_#{element}" ... =>  send("set_#{element}"
-        # we historicize all read action below
-        # historicize(element, @atome[element], :read, :dbQKhb876HZggd87Hhsgf)
-
+      else
+        "#{element} particle read need a password"
       end
     end
   end

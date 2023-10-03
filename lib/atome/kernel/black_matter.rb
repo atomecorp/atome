@@ -17,11 +17,7 @@ class Black_matter
       @password
     end
 
-    def synchronised(action_nb, pass)
-      return unless Black_matter.check_password(pass, @password)
 
-      @history[action_nb][:sync] = true
-    end
 
   end
 
