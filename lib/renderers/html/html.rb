@@ -6,6 +6,39 @@ class HTML
     self
   end
 
+  # connection
+  def connect(params, &bloc)
+
+    @websocket = JS.eval("new WebSocket('#{params}')")
+    # alert params
+    @websocket.addEventListener('open', lambda do
+      puts "WebSocket ouvert avec succès."
+      @websocket.send('message')
+    end)
+
+    @websocket.addEventListener('message', lambda do |event|
+      puts "Message reçu : #{event.data}"
+    end)
+
+    @websocket.addEventListener('error', lambda do |error|
+      puts error
+      # Ne rien faire pour éviter des logs d'erreur dans la console
+    end)
+
+    @websocket.addEventListener('close', lambda do |event|
+      puts "WebSocket fermé."
+    end)
+  end
+
+  def send_message(message)
+    # json_message = JS.eval("JSON.stringify(#{message})")
+    @websocket.send(message)
+  end
+
+  def close_websocket
+    @websocket.close
+  end
+
   def attr(attribute, value)
     @html.setAttribute(attribute.to_s, value.to_s)
     self

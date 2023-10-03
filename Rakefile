@@ -184,11 +184,20 @@ task :test_osx do
   `cd tmp/test_app;atome update;atome run osx`
   puts 'atome osx is running'
 end
-task :test_server do
+task :test_server_guard do
   test_common
   `rake build`
   `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run server guard`
+end
+
+task :test_server do
+  test_common
+  `rake build`
+  `cd pkg; gem install atome --local`
+  `cd tmp/test_app;atome update`
+  `open http://localhost:9292/index`
+  `cd tmp/test_app/server;rackup --server puma --port 9292 --env production`
 end
 
 task default: :test_opal

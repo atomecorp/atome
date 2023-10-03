@@ -8,5 +8,6 @@ Unreloader.require './atome_server.rb'
 run Unreloader
 # uncomment to allow code reloading
 # uncomment below for prod or comment to allow code reloading
-#run App.freeze.app
+# require_relative './atome_server.rb'
+# run App.freeze.app
 

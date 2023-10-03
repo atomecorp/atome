@@ -8,33 +8,27 @@
 # alert checker
 ######## security particles and security
 
-b = box({ id: :the_box, left: 66,
-          security: {
-            smooth: {
-              write: { password: :other_pass },
-              read: { password: :read_pass }
-            }
-          }
-        })
-
-# class Atome
-#   def authorise(password, destroy = true)
-#     @temps_authorisation = [password, destroy]
-#   end
-# end
-
-b.authorise(:star_wars, false)
-b.smooth(22)
-b.authorise(:star_war, true)
-b.smooth(66)
-puts b.history({ operation: :write, id: :the_box, particle: :smooth })
-puts '----'
-puts "b.security : #{b.security}"
-puts '----'
-puts "user hashed pass is : #{grab(Universe.current_user).password}"
-# alert b.instance_variable_get("@security")
-b.authorise(:star_wars, false)
-alert "b.smooth is : #{b.smooth}"
+# b = box({ id: :the_box, left: 66,
+#           security: {
+#             smooth: {
+#               write: { password: :other_pass },
+#               read: { password: :read_pass }
+#             }
+#           }
+#         })
+#
+# b.authorise(:star_wars, false)
+# b.smooth(22)
+# b.authorise(:star_war, true)
+# b.smooth(66)
+# puts b.history({ operation: :write, id: :the_box, particle: :smooth })
+# puts '----'
+# puts "b.security : #{b.security}"
+# puts '----'
+# puts "user hashed pass is : #{grab(Universe.current_user).password}"
+# # alert b.instance_variable_get("@security")
+# b.authorise(:star_wars, false)
+# alert "b.smooth is : #{b.smooth}"
 # ###### history and server synchronisation
 # b = box({id: :the_box})
 # b.data(:canyouwritethis)
@@ -155,3 +149,24 @@ alert "b.smooth is : #{b.smooth}"
 # end)
 # b=box({id: :poilu})
 # b.left(7564)
+############## connection
+
+new({ particle: :connection }) do |params, bloc|
+
+  unless params.instance_of? Hash
+    params = { server: params }
+  end
+  html.connect(params[:sever], &bloc)
+end
+b = box
+
+# b.connection("109.897.786.1") do |params|
+#   alert "connection is : #{params}"
+# end
+
+b.touch(true) do
+  b.connection("http://localhost") do |params|
+    alert "connection is : #{params}"
+  end
+  alert :kool
+end
