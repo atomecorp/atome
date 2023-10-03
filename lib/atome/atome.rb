@@ -42,8 +42,6 @@ class Atome
         create_particle(element, store, render)
         send("set_#{element}", params, &user_proc) # sent to  :  Atome.define_method "set_#{element}" ..
         # we historicize all write action below
-        # TODO: use openssl encryption to protect password,  @history variable and synchronise
-        # historicize(element, params, :write, :dbQKhb876HZggd87Hhsgf)
         # we add the changes to the stack that must be synchronised
         Universe.historicize(id, :write, element, params)
 

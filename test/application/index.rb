@@ -1,5 +1,4 @@
 # require './examples/attach'
-# TODO: find and remove : dbQKhb876HZggd87Hhsgf
 # https://github.com/travist/jsencrypt
 
 ###### ruby integration for encode

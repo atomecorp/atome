@@ -45,7 +45,7 @@ def wasm_initialize
   #  run task : reset_cache or  delete the tmp dir :
   # and UNCOMMENT the line  below : ('curl -LO ....')
   #
-  # `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `cd tmp; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv tmp/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby tmp/system_ruby_browser.wasm`
   `rm -f ./vendor/assets/src/wasm/ruby/ruby_browser.wasm`

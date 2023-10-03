@@ -187,10 +187,7 @@ class Universe
     end
 
     def historicize(id, operation, element, params)
-      # return unless pass == :dbQKhb876HZggd87Hhsgf
-
       @history[@history.length] = { id => { operation => { element => params } }, sync: false }
-      # puts "sync=> #{@history}"
     end
 
     def story(filter)
