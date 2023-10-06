@@ -14,7 +14,6 @@
     <script type="text/javascript" src="js/third_parties/sortable.min.js" defer></script>
     <script type="text/javascript" src="js/third_parties/wad.min.js" defer></script>
     <script type="text/javascript" src="js/third_parties/sha256.min.js" defer></script>
-    <!--    <script type="text/javascript" src="js/third_parties/jsencrypt.min.js" defer></script>-->
     <script type="text/javascript" src="js/third_parties/ping.min.js" defer></script>
     <script src='js/opal/opal.js' defer></script>
     <script type="text/javascript" src="js/third_parties/fabric.min.js" defer></script>
@@ -23,11 +22,21 @@
     <script src='js/opal/atome_opal_extensions.js' defer></script>
     <script src='js/atome/kernel.js' defer></script>
     <script src='js/infos.js' defer></script>
-    <script src='js/atome/platform_specific/opal/extension.js' defer></script>
     <title>atome</title>
 </head>
 <body id='user_view' class='atome' oncontextmenu="return false;">
 <div id='copyright'>©atome 2027</div>
 </body>
+<script>
+    var globalEvent;
+
+    function setGlobalEvent(event) {
+        globalEvent = event;
+    }
+
+    function extractDataFromEvent() {
+        return globalEvent.data;
+    }
+</script>
 <script src='js/application.js' defer></script>
 </html>

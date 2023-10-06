@@ -45,7 +45,7 @@ def wasm_initialize
   #  run task : reset_cache or  delete the tmp dir :
   # and UNCOMMENT the line  below : ('curl -LO ....')
   #
-  `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  # `cd tmp;curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `cd tmp; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv tmp/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby tmp/system_ruby_browser.wasm`
   `rm -f ./vendor/assets/src/wasm/ruby/ruby_browser.wasm`
@@ -184,20 +184,18 @@ task :test_osx do
   `cd tmp/test_app;atome update;atome run osx`
   puts 'atome osx is running'
 end
-task :test_server_guard do
+task :test_server_production do
   test_common
   `rake build`
   `cd pkg; gem install atome --local`
-  `cd tmp/test_app;atome update;atome run server guard`
+  `cd tmp/test_app;atome update;atome run server guard production`
 end
 
 task :test_server do
   test_common
   `rake build`
   `cd pkg; gem install atome --local`
-  `cd tmp/test_app;atome update`
-  `open http://localhost:9292/index`
-  `cd tmp/test_app/server;rackup --server puma --port 9292 --env production`
+  `cd tmp/test_app;atome update;atome run server`
 end
 
 task default: :test_opal

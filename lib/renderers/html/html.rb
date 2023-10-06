@@ -3,25 +3,29 @@ class HTML
     @html ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
     @atome = current_atome
+
     self
   end
 
   # connection
   def connect(params, &bloc)
-
     @websocket = JS.eval("new WebSocket('#{params}')")
-    # alert params
+
     @websocket.addEventListener('open', lambda do
-      puts "WebSocket ouvert avec succès."
-      @websocket.send('message')
+      puts "connected"
     end)
 
     @websocket.addEventListener('message', lambda do |event|
-      puts "Message reçu : #{event.data}"
+      # Définissez la variable globale 'globalEvent' à l'objet 'event'
+      JS.eval("setGlobalEvent(event)")
+
+      # Maintenant, appelez la fonction pour extraire la propriété 'data'
+      data = JS.eval("extractDataFromEvent()")
+      puts "Message reçu : #{data}"
     end)
 
     @websocket.addEventListener('error', lambda do |error|
-      puts error
+      # puts error
       # Ne rien faire pour éviter des logs d'erreur dans la console
     end)
 
@@ -31,6 +35,7 @@ class HTML
   end
 
   def send_message(message)
+    # alert :po
     # json_message = JS.eval("JSON.stringify(#{message})")
     @websocket.send(message)
   end

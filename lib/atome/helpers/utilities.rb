@@ -22,7 +22,7 @@ class Atome
 
     return if $host == :browser
 
-    atome_js.JS.controller_listener()
+    atome_js.JS.controller_listener() # js folder atome/helipers/atome/communication
 
   end
 

@@ -135,19 +135,20 @@ def compile_case(location)
   guard_check
 end
 
-def server_case(port, location)
+def server_case(port, location, production)
   threads = []
   threads << Thread.new do
     sleep 3
-    `open http://localhost:9292/index`
+    `open http://localhost:9292`
   end
-  `cd #{location}/server;rackup --server puma --port #{port}  --env production`
+  prod = '--env production' if production
+  `cd #{location}/server;rackup --server puma --port #{port} #{prod}`
 end
 
-def run_case(build_target, location, port)
+def run_case(build_target, location, port, production)
   case build_target
   when :server
-    server_case(port, location)
+    server_case(port, location, production)
   when :browser
     browser_case(location)
   when :osx
@@ -161,9 +162,9 @@ def run_case(build_target, location, port)
   end
 end
 
-def run_application(build_target, location, port = 9292)
+def run_application(build_target, location, port = 9292, production = false)
   build_app(location, nil)
-  run_case(build_target, location, port)
+  run_case(build_target, location, port, production)
 end
 
 # below we analyse the ARGV
@@ -265,21 +266,7 @@ if ARGV.include?('run')
     run_application(:osx, path)
   when 'server'
     set_atome_mode(path,'server')
-    config_location = "#{path}/server/config.ru"
-    file = File.open(config_location)
-    text = file.read
-    text = text.gsub('run Unreloader', '')
-    text = text.gsub('run App.freeze.app', '')
-    text = text.gsub(/^$\n/, '')
-    text = if production == 'production'
-             "#{text}run App.freeze.app"
-           else
-             "#{text}run Unreloader"
-           end
-    File.open(config_location, 'w') do |f|
-      f.puts text
-    end
-    run_application(:server, path, port)
+    run_application(:server, path, port, production)
   when 'windows'
     # TODO: write code here
   else
