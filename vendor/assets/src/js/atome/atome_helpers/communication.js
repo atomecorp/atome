@@ -1,4 +1,4 @@
-const atomeCommunication = {
+const communication = {
     controller_sender: function (msg) {
         var json_msg = JSON.parse(msg);
 
@@ -37,4 +37,41 @@ const atomeCommunication = {
 
         }
     },
+}
+
+/////////////////////////// connection ws
+
+function sendWSMessage() {
+    if (ws) {
+        ws.send("Hello, WebSocket!");
+        // displayMessage("Sent: Hello, WebSocket!");
+    } else {
+        displayMessage("WebSocket is not connected.");
+    }
+}
+
+function dispatchMessage(message) {
+    rubyVMCallback("puts 'ruby callback : " + message + "' ")
+}
+
+let websocket;
+
+function connect(value) {
+
+
+    websocket = new WebSocket(value);
+
+    websocket.onopen = function (event) {
+        dispatchMessage("Connected to WebSocket.");
+    };
+
+    websocket.onmessage = function (event) {
+        dispatchMessage("Received: " + event.data);
+    };
+
+    websocket.onclose = function (event) {
+        dispatchMessage("WebSocket closed.");
+    };
+
+
 }

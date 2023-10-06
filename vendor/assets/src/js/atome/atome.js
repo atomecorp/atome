@@ -1,4 +1,4 @@
-const atomeJS = Object.assign(atomeAnimate,atomeCommunication,atomeDrag,atomeDrop,atomeFile,atomeSort, atomeTime, atomeVideo);
+// const atomeJS = Object.assign(atomeAnimate,atomeCommunication,atomeDrag,atomeDrop,atomeFile,atomeSort, atomeTime, atomeVideo);
 // This const is used to store and get all atome created canvas by id
 const Atome_canvas={}
 // // class AtomeDrag {
@@ -169,12 +169,7 @@ const Atome_canvas={}
 // const opalJS = Object.assign(opalStyle);
 
 
-var checkInterval = setInterval(function () {
-    if (typeof rubyVM !== "undefined") {
-        clearInterval(checkInterval); // Arrêtez la vérification une fois rubyVM trouvé
-        rubyVM.eval('text("rubyvm is ready")');
-    }
-}, 100);
+const atomeJS = Object.assign(communication);
 
 
 

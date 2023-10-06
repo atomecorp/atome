@@ -155,11 +155,9 @@
 #   alert :hello!
 # end
 new({ particle: :connection }) do |params, bloc|
-
   unless params.instance_of? Hash
     params = { server: params }
   end
-
   html.connect(params[:server], &bloc)
 end
 b = box({ color: :red })
@@ -173,22 +171,3 @@ b.touch(true) do
   end
 end
 
-c = circle({ id: :the_circle, left: 333 })
-
-c.touch(true) do
-  var = 'connected'
-  recup = JS.eval("return startWebSocket('#{var}')")
-
-  test = JS.eval("return hihi('#{var}')")
-  alert test
-  # var= 'connect'
-  # msg="startWebSocket('#{var}')"
-  # JS.eval(msg)
-end
-
-c2 = circle({ id: :the_circle2, left: 666 })
-
-c2.touch(true) do
-  msg = 'hello'
-  JS.eval("sendMessage(#{msg})")
-end
