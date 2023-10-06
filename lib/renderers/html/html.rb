@@ -34,37 +34,13 @@ class HTML
   #   end)
   # end
   def connect(params, &bloc)
-    # alert :ok
-    JS.eval("connect('#{params}')")
-    # @websocket = JS.eval("new WebSocket('#{params}')")
-    #
-    # @websocket.addEventListener('open', lambda do
-    #   puts "connected"
-    # end)
-    #
-    # @websocket.addEventListener('message', lambda do |event|
-    #   # Définissez la variable globale 'globalEvent' à l'objet 'event'
-    #   JS.eval("setGlobalEvent(event)")
-    #
-    #   # Maintenant, appelez la fonction pour extraire la propriété 'data'
-    #   data = JS.eval("extractDataFromEvent()")
-    #   puts "Message reçu : #{data}"
-    # end)
-    #
-    # @websocket.addEventListener('error', lambda do |error|
-    #   # puts error
-    #   # Ne rien faire pour éviter des logs d'erreur dans la console
-    # end)
-    #
-    # @websocket.addEventListener('close', lambda do |event|
-    #   puts "WebSocket fermé."
-    # end)
+    JS.eval("atomeJS.connect('ws://#{params}')")
+    # JS.eval("connect('ws://#{params}')")
   end
 
   def send_message(message)
-    # alert :po
-    # json_message = JS.eval("JSON.stringify(#{message})")
-    @websocket.send(message)
+    JS.eval("atomeJS.ws_sender('#{message}')")
+    # JS.eval("ws_sender('#{message}')")
   end
 
   def close_websocket

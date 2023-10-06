@@ -1,6 +1,6 @@
 const communication = {
     // websocket: new WebSocket('ws://localhost:9292'),
-    websocket: null,
+    websocket: 'poi',
     initialize: function () {
         // alert ('lll');
         this.websocket = new WebSocket('ws://localhost:9292')
@@ -63,6 +63,50 @@ const communication = {
 
         }
     },
+    connecting: function (address) {
+        this.websocket = new WebSocket(address);
+
+        this.websocket.onopen = function (event) {
+            rubyVMCallback("puts 'Connected to WebSocket.'")
+        };
+
+        this.websocket.onmessage = function (event) {
+            rubyVMCallback("puts 'ruby callback : " + event.data + "' ")
+        };
+
+        this.websocket.onclose = function (event) {
+            rubyVMCallback("puts 'WebSocket closed.'")
+        };
+
+        this.websocket.onerror = function (event) {
+            // to prevent error disturbing the console
+            event.preventDefault();
+            console.log('connection lost!')
+        };
+    },
+    ws_sendering: function (address) {
+        this.websocket = new WebSocket('ws://localhost:9292')
+
+
+        this.websocket.onopen = function (event) {
+            rubyVMCallback("puts 'Connected to WebSocket.'")
+        };
+
+        this.websocket.onmessage = function (event) {
+            rubyVMCallback("puts 'ruby callback : " + event.data + "' ")
+        };
+
+        this.websocket.onclose = function (event) {
+            rubyVMCallback("puts 'WebSocket closed.'")
+        };
+
+        this.websocket.onerror = function (event) {
+            // to prevent error disturbing the console
+            event.preventDefault();
+            console.log('connection lost!')
+        };
+        // this.websocket.send("Hello, WebSocket!");
+    },
     connect: function (address) {
         this.websocket = new WebSocket(address);
 
@@ -86,7 +130,27 @@ const communication = {
 
     },
     ws_sender: function (address) {
-        this.websocket.send("Hello, WebSocket!")
+        this.websocket = new WebSocket('ws://localhost:9292')
+
+
+        this.websocket.onopen = function (event) {
+            rubyVMCallback("puts 'Connected to WebSocket.'")
+        };
+
+        this.websocket.onmessage = function (event) {
+            rubyVMCallback("puts 'ruby callback : " + event.data + "' ")
+        };
+
+        this.websocket.onclose = function (event) {
+            rubyVMCallback("puts 'WebSocket closed.'")
+        };
+
+        this.websocket.onerror = function (event) {
+            // to prevent error disturbing the console
+            event.preventDefault();
+            console.log('connection lost!')
+        };
+        this.websocket.send("Hello, WebSocket!");
     },
 }
 

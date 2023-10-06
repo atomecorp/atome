@@ -160,14 +160,30 @@ new({ particle: :connection }) do |params, bloc|
   end
   html.connect(params[:server], &bloc)
 end
+
+new({ particle: :message }) do |params, bloc|
+  unless params.instance_of? Hash
+    params = { server: params }
+  end
+  html.send_message(params[:server], &bloc)
+end
+
+####### tests codes
 b = box({ color: :red })
-# b.connection("'ws://localhost:9292'") do |params|
-#   alert "connection is : #{params}"
-# end
+
 
 b.touch(true) do
-  b.connection('ws://localhost:9393') do |params|
+  b.connection('localhost:9292') do |params|
     alert "connection is : #{params}"
   end
 end
 
+c = circle({ color: :yellow, left: 333 })
+
+c.touch(true) do
+  b.message('hi there!!')
+end
+
+# WARNING <=> IMPORTANT : in sever mode to make the websocket work
+# go to vendor/assets/server then in bash type: puma
+# then test with opal or wasm here it is !!!

@@ -33,7 +33,7 @@ class App < Roda
         end
 
         ws.on(:message) do |event|
-          ws.send(event.data.reverse.to_json) # Envoie le message inversé au client
+          ws.send("event.data.reverse".to_json) # Envoie le message inversé au client
         end
 
         ws.on(:close) do |event|

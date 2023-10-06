@@ -1,4 +1,4 @@
-const atomeFile = {
+const file = {
 
 
     reader: function(file, atome, proc) {
