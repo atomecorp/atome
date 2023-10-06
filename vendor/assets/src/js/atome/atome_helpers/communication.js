@@ -71,7 +71,7 @@ const communication = {
         };
 
         this.websocket.onmessage = function (event) {
-            rubyVMCallback("puts 'ruby callback : " + event.data + "' ")
+            rubyVMCallback("puts 'object ruby callback : " + event.data + "' ")
         };
 
         this.websocket.onclose = function (event) {
@@ -86,7 +86,7 @@ const communication = {
 
     },
     ws_sender: function (address) {
-        this.websocket.send("Hello, WebSocket!")
+        this.websocket.send("Hello, WebSocket! !look look")
     },
 }
 
@@ -122,7 +122,7 @@ function connect(address) {
     };
 
     websocket.onmessage = function (event) {
-        rubyVMCallback("puts 'ruby callback : " + event.data + "' ")
+        rubyVMCallback("puts 'the ruby callback : " + event.data + "' ")
     };
 
     websocket.onclose = function (event) {
@@ -138,7 +138,7 @@ function connect(address) {
 }
 
 function ws_sender() {
-    websocket.send("Hello, WebSocket!")
+    websocket.send("the Hello, WebSocket!!!")
     // if (websocket) {
     //     websocket.send("Hello, WebSocket!");
     // } else {
