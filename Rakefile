@@ -53,14 +53,14 @@ task :test_opal do
   Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
   test_opal_dir = "tmp/test_app/temp/opal"
   Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
-  `rake build`
+  # `rake build`
   # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run browser guard `
   `open tmp/test_app/src/index_opal.html`
   puts 'atome browser is build and running!'
 end
-# wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
 task :test_wasm do
+  # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
   wasi_source = 'wasi-vfs-osx_arm'
   wasm_location = "./tmp/test_app/src/wasm/"
   dest_wasm_location = "./tmp/test_app/src/wasm/ruby"
@@ -86,6 +86,7 @@ STRDELIm
   puts 'atome wasm is build and running'
 end
 task :test_wasm_osx_x86 do
+  # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
   wasi_source = 'wasi-vfs-osx_x86'
   wasm_location = "./tmp/test_app/src/wasm/"
   dest_wasm_location = "./tmp/test_app/src/wasm/ruby"
@@ -111,6 +112,7 @@ STRDELIm
   puts 'atome wasm is build and running'
 end
 task :test_wasm_windows do
+  # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
   wasi_source = 'wasi-vfs.exe pack'
   wasm_location = "./tmp/test_app/src/wasm/"
   dest_wasm_location = "./tmp/test_app/src/wasm/ruby"
@@ -136,6 +138,7 @@ STRDELIm
   puts 'atome wasm is build and running'
 end
 task :test_wasm_unix do
+  # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
   wasi_source = 'wasi-vfs-unix pack tmp'
   wasm_location = "./tmp/test_app/src/wasm/"
   dest_wasm_location = "./tmp/test_app/src/wasm/ruby"
@@ -167,7 +170,7 @@ task :test_osx do
   Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
   test_opal_dir = "tmp/test_app/temp/opal"
   Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
-  `rake build`
+  # `rake build`
   # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run osx`
   puts 'atome osx is running'
@@ -185,12 +188,22 @@ task :test_server do
   Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
   test_opal_dir = "tmp/test_app/temp/opal"
   Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
-  `rake build`
+  # `rake build`
   # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run server`
 end
+task :build_gem do
+  # TODO we may have to use a new temp dir to build app for the gem deployment
+  # test_common
+  # # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
+  # test_temp_dir = "tmp/test_app/temp"
+  # Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
+  # test_opal_dir = "tmp/test_app/temp/opal"
+  # Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
+  `rake build`
+  `cd pkg; gem install atome --local`
+end
 task default: :test_opal
-
 
 
 
