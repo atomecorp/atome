@@ -142,7 +142,7 @@ def server_case(port, location, production)
     `open http://localhost:9292`
   end
   prod = '--env production' if production
-  `cd #{location}/server;rackup --server puma --port #{port} #{prod}`
+  `cd #{location}/server;puma --port #{port} #{prod}`
 end
 
 def run_case(build_target, location, port, production)
