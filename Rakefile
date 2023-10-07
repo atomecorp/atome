@@ -70,8 +70,8 @@ end
 task :test_wasm do
   test_common
 
-  directory_name = "./tmp/test_app/src/wasm/"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
+  wasm_location = "./tmp/test_app/src/wasm/"
+  Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
   directory_name = "./tmp/test_app/src/wasm/ruby"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
   wasm_initialize
@@ -199,4 +199,7 @@ task :test_server do
 end
 
 task default: :test_opal
+
+
+
 

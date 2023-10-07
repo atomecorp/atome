@@ -188,3 +188,7 @@ end
 # WARNING <=> IMPORTANT : in sever mode to make the websocket work
 # go to vendor/assets/server then in bash type: puma
 # then test with opal or wasm here it is !!!
+# TODO: modify all wasm test like test_wasm is modified
+# TODO: make server build all files in temp dir
+# TODO check that atome gem build correctly the solution
+# change atomic repository so that it install atome gem correctly
