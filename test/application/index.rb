@@ -183,7 +183,8 @@ c = circle({ color: :yellow, left: 333 })
 c.touch(true) do
   b.message('hi there!!')
 end
-
+# TODO : remove the unecessary and generated file vendor/assets/wasm/ruby/ruby_browser.wasm
+# FIXME :  wae have to build opal prior running the server, the server must generate all necssary files!
 # WARNING <=> IMPORTANT : in sever mode to make the websocket work
 # go to vendor/assets/server then in bash type: puma
 # then test with opal or wasm here it is !!!
