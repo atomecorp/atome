@@ -23,7 +23,6 @@ def test_common
   directory_name = "./tmp/test_app"
   Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
   `cp -r ./vendor/assets/ ./tmp/test_app/`
-
   FileUtils.copy_entry('vendor/assets/src/js/', 'tmp/test_app/src/js/')
   FileUtils.copy_entry('vendor/assets/src/css/', 'tmp/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
@@ -54,35 +53,34 @@ end
 task :test_opal do
   test_common
   # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
-  directory_name = "tmp/test_app/temp"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
-  directory_name = "tmp/test_app/temp/opal"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
+  test_temp_dir = "tmp/test_app/temp"
+  Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
+  test_opal_dir = "tmp/test_app/temp/opal"
+  Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
   `rake build`
-  `cd pkg; gem install atome --local`
-  `cd tmp/test_app;atome update`
+  # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run browser guard `
   `open tmp/test_app/src/index_opal.html`
   puts 'atome browser is build and running!'
 end
-# FIXME: we have to embed wasi-vfs because version 0.4.0 doesn't work
-# TODO: Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
+# wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
 task :test_wasm do
-  test_common
-
+  wasi_source = 'wasi-vfs-osx_arm'
   wasm_location = "./tmp/test_app/src/wasm/"
+  dest_wasm_location = "./tmp/test_app/src/wasm/ruby"
+  application_location = './tmp/test_app'
+  test_common
   Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
-  directory_name = "./tmp/test_app/src/wasm/ruby"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
+  Dir.mkdir(dest_wasm_location) unless Dir.exist?(dest_wasm_location)
   wasm_initialize
   `rm -f ./tmp/test_app/src/wasm/ruby/ruby_browser.wasm`
   cmd = <<STRDELIm
-./vendor/source_files/wasm/wasi-vfs-osx_arm pack tmp/system_ruby_browser.wasm 
+./vendor/source_files/wasm/#{wasi_source} pack tmp/system_ruby_browser.wasm 
 --mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
 --mapdir utilities::./vendor/assets/src/utilities/ 
---mapdir /::./tmp/test_app/application/ 
--o vendor/assets/src/wasm/ruby/ruby_browser.wasm
+--mapdir /::#{application_location}/application/
+-o #{application_location}/src/wasm/ruby/ruby_browser.wasm
 STRDELIm
   cleaned_cmd = cmd.lines.reject { |line| line.start_with?("#") }.join
   command = cleaned_cmd.chomp.gsub("\n", " ")
@@ -92,109 +90,108 @@ STRDELIm
   puts 'atome wasm is build and running'
 end
 task :test_wasm_osx_x86 do
+  wasi_source = 'wasi-vfs-osx_x86'
+  wasm_location = "./tmp/test_app/src/wasm/"
+  dest_wasm_location = "./tmp/test_app/src/wasm/ruby"
+  application_location = './tmp/test_app'
   test_common
-
-  directory_name = "./tmp/test_app/src/wasm/"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
-  directory_name = "./tmp/test_app/src/wasm/ruby"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
-
+  Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
+  Dir.mkdir(dest_wasm_location) unless Dir.exist?(dest_wasm_location)
   wasm_initialize
-
   `rm -f ./tmp/test_app/src/wasm/ruby/ruby_browser.wasm`
   cmd = <<STRDELIm
-./vendor/source_files/wasm/wasi-vfs-osx_x86 pack tmp/system_ruby_browser.wasm 
+./vendor/source_files/wasm/#{wasi_source} pack tmp/system_ruby_browser.wasm 
 --mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
 --mapdir utilities::./vendor/assets/src/utilities/ 
---mapdir /::./tmp/test_app/application/ 
--o vendor/assets/src/wasm/ruby/ruby_browser.wasm
+--mapdir /::#{application_location}/application/
+-o #{application_location}/src/wasm/ruby/ruby_browser.wasm
 STRDELIm
-
   cleaned_cmd = cmd.lines.reject { |line| line.start_with?("#") }.join
   command = cleaned_cmd.chomp.gsub("\n", " ")
   system(command)
-
   `cp ./vendor/assets/src/wasm/ruby/ruby_browser.wasm ./tmp/test_app/src/wasm/ruby/ruby_browser.wasm`
-
   `open tmp/test_app/src/index.html`
   puts 'atome wasm is build and running'
 end
 task :test_wasm_windows do
+  wasi_source = 'wasi-vfs.exe pack'
+  wasm_location = "./tmp/test_app/src/wasm/"
+  dest_wasm_location = "./tmp/test_app/src/wasm/ruby"
+  application_location = './tmp/test_app'
   test_common
-
-  directory_name = "./tmp/test_app/src/wasm/"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
-  directory_name = "./tmp/test_app/src/wasm/ruby"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
-
+  Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
+  Dir.mkdir(dest_wasm_location) unless Dir.exist?(dest_wasm_location)
   wasm_initialize
-
   `rm -f ./tmp/test_app/src/wasm/ruby/ruby_browser.wasm`
   cmd = <<STRDELIm
-./vendor/source_files/wasm/wasi-vfs.exe pack tmp/system_ruby_browser.wasm 
+./vendor/source_files/wasm/#{wasi_source} pack tmp/system_ruby_browser.wasm 
 --mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
 --mapdir utilities::./vendor/assets/src/utilities/ 
---mapdir /::./tmp/test_app/application/ 
--o vendor/assets/src/wasm/ruby/ruby_browser.wasm
+--mapdir /::#{application_location}/application/
+-o #{application_location}/src/wasm/ruby/ruby_browser.wasm
 STRDELIm
-
   cleaned_cmd = cmd.lines.reject { |line| line.start_with?("#") }.join
   command = cleaned_cmd.chomp.gsub("\n", " ")
   system(command)
-
   `cp ./vendor/assets/src/wasm/ruby/ruby_browser.wasm ./tmp/test_app/src/wasm/ruby/ruby_browser.wasm`
-
   `open tmp/test_app/src/index.html`
   puts 'atome wasm is build and running'
 end
 task :test_wasm_unix do
+  wasi_source = 'wasi-vfs-unix pack tmp'
+  wasm_location = "./tmp/test_app/src/wasm/"
+  dest_wasm_location = "./tmp/test_app/src/wasm/ruby"
+  application_location = './tmp/test_app'
   test_common
-
-  directory_name = "./tmp/test_app/src/wasm/"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
-  directory_name = "./tmp/test_app/src/wasm/ruby"
-  Dir.mkdir(directory_name) unless Dir.exist?(directory_name)
-
+  Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
+  Dir.mkdir(dest_wasm_location) unless Dir.exist?(dest_wasm_location)
   wasm_initialize
-
   `rm -f ./tmp/test_app/src/wasm/ruby/ruby_browser.wasm`
   cmd = <<STRDELIm
-./vendor/source_files/wasm/wasi-vfs-unix pack tmp/system_ruby_browser.wasm 
+./vendor/source_files/wasm/#{wasi_source} pack tmp/system_ruby_browser.wasm 
 --mapdir usr::./tmp/3_2-wasm32-unknown-wasi-full-js/usr 
 --mapdir lib::./lib/ 
 --mapdir utilities::./vendor/assets/src/utilities/ 
---mapdir /::./tmp/test_app/application/ 
--o vendor/assets/src/wasm/ruby/ruby_browser.wasm
+--mapdir /::#{application_location}/application/
+-o #{application_location}/src/wasm/ruby/ruby_browser.wasm
 STRDELIm
-
   cleaned_cmd = cmd.lines.reject { |line| line.start_with?("#") }.join
   command = cleaned_cmd.chomp.gsub("\n", " ")
   system(command)
-
   `cp ./vendor/assets/src/wasm/ruby/ruby_browser.wasm ./tmp/test_app/src/wasm/ruby/ruby_browser.wasm`
-
+  `open tmp/test_app/src/index.html`
   puts 'atome wasm is build and running'
 end
 task :test_osx do
   test_common
+  # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
+  test_temp_dir = "tmp/test_app/temp"
+  Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
+  test_opal_dir = "tmp/test_app/temp/opal"
+  Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
   `rake build`
-  `cd pkg; gem install atome --local`
+  # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run osx`
   puts 'atome osx is running'
 end
 task :test_server_production do
   test_common
   `rake build`
-  `cd pkg; gem install atome --local`
+  # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run server guard production`
 end
 
 task :test_server do
   test_common
+  # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
+  test_temp_dir = "tmp/test_app/temp"
+  Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
+  test_opal_dir = "tmp/test_app/temp/opal"
+  Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
   `rake build`
-  `cd pkg; gem install atome --local`
+  # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run server`
 end
 
