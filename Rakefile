@@ -2,13 +2,11 @@
 
 require 'bundler/gem_tasks'
 require 'rake/testtask'
-
 Rake::TestTask.new(:test) do |t|
   t.libs << 'test'
   t.libs << 'lib'
   t.test_files = FileList['test/**/test_*.rb']
 end
-
 task :cleanup do
   `gem cleanup atome;yes | gem uninstall atome;cd pkg`
 end
@@ -31,7 +29,6 @@ def test_common
   FileUtils.copy_entry('vendor/assets/src/css/', 'tmp/test_app/src/css/')
   FileUtils.copy_entry('vendor/assets/src/medias/', 'tmp/test_app/src/medias/')
 end
-
 def wasm_initialize
 
   directory_name = "tmp"
@@ -49,7 +46,6 @@ def wasm_initialize
   `mv tmp/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby tmp/system_ruby_browser.wasm`
   `rm -f ./vendor/assets/src/wasm/ruby/ruby_browser.wasm`
 end
-
 task :test_opal do
   test_common
   # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
@@ -182,7 +178,6 @@ task :test_server_production do
   # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run server guard production`
 end
-
 task :test_server do
   test_common
   # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
@@ -194,7 +189,6 @@ task :test_server do
   # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run server`
 end
-
 task default: :test_opal
 
 
