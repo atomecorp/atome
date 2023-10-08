@@ -240,22 +240,11 @@ task :test_server do
   # `cd pkg; gem install atome --local`
   `cd tmp/test_app;atome update;atome run server`
 end
-task :build_gem do
-  # TODO we may have to use a new temp dir to build app for the gem deployment
-  test_common
-  # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
-  test_temp_dir = "tmp/test_app/temp"
-  Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
-  test_opal_dir = "tmp/test_app/temp/opal"
-  Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
-  `rake build`
-  `cd pkg; gem install atome --local`
-  puts 'gem build'
-end
+
 
 task :build_test_app do
   source_file = "vendor/assets/application/index.rb"
-  source_file = "tmp/test_app/application/index.rb"
+  source_file = "test/application/index.rb"
   new_file_content = generate_resolved_file(source_file)
   index_html = File.read("vendor/assets/src/index.html")
   index_html = index_html.sub('</html>', "<script type='text/ruby' >#{new_file_content}</script>\n</html>")
@@ -263,21 +252,26 @@ task :build_test_app do
   `open tmp/test_app/src/index.html`
   puts index_html
   puts 'atome wasm user code executed'
-  ########### old code
-  # we run the script in the context of the folder
-  # Dir.chdir('vendor/assets/src/utilities') do
-  #   source_file = "../../application/index.rb"
-  #   new_file_content=generate_resolved_file(source_file)
-  #   index_html = File.read("../index.html")
-  #   index_html = index_html.sub('</html>', "<script type='text/ruby' >#{new_file_content}</script>\n</html>")
-  #   File.write('../../../../tmp/test_app/src/index.html', index_html)
-  #   `open ../../../../tmp/test_app/src/index.html`
-  #   puts 'atome wasm user code executed'
-  # end
-  #######################@
 end
 
-task default: :test_opal
+task :build_gem do
+  `rake build`
+  `cd pkg; gem install atome --local`
+end
+
+# task :build_gem do
+#   # TODO we may have to use a new temp dir to build app for the gem deployment
+#   test_common
+#   # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
+#   test_temp_dir = "tmp/test_app/temp"
+#   Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
+#   test_opal_dir = "tmp/test_app/temp/opal"
+#   Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
+#   `rake build`
+#   `cd pkg; gem install atome --local`
+#   puts 'gem build'
+# end
+
 
 
 
