@@ -37,10 +37,8 @@ def build_aui(user_project_path)
 end
 
 def copy_assets_files(user_project_path, gem_location)
-  # build_location = "#{gem_location}/../vendor/assets/src/"
   server_location = "#{gem_location}/../vendor/assets/server/"
   FileUtils.copy_entry server_location, "#{user_project_path}/server", preserve: nil
-  # FileUtils.copy_entry build_location, "#{user_project_path}/src", preserve: nil
   css_location ="#{gem_location}/../vendor/assets/src/css/"
   FileUtils.copy_entry css_location, "#{user_project_path}/src/css", preserve: nil
   js_location ="#{gem_location}/../vendor/assets/src/js/"
@@ -106,8 +104,6 @@ def process_directory(source_dir, destination_dir, source_code)
   end
 end
 def build_user_code(user_project_path, source_code)
-
-
 
   application_js = "#{user_project_path}/src/js/application.js"
   builder = Opal::Builder.new
