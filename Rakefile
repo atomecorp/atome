@@ -14,6 +14,39 @@ task :reset_cache do
   `rm  -r -f ./tmp`
   `rm  -r -f ./pkg`
 end
+
+def resolve_requires(file_path, root_path, processed_files = Set.new, depth = 0)
+  return "" unless File.exist?(file_path)
+  return "" if processed_files.include?(file_path) || depth > 10 # Vérifiez les dépendances circulaires et la profondeur
+
+  content = File.read(file_path)
+  processed_files.add(file_path)
+
+  current_dir = File.dirname(File.expand_path(file_path)) # Utilisez le chemin absolu
+
+  content.gsub!(/^(require|require_relative)\s+['"](.*?)['"]$/) do |match|
+    type = $1
+    required_file_name = $2
+    required_file = if type == "require_relative"
+                      File.join(current_dir, required_file_name + ".rb")
+                    else
+                      File.join(root_path, required_file_name + ".rb")
+                    end
+
+    if File.exist?(required_file)
+      resolve_requires(required_file, root_path, processed_files, depth + 1)
+    else
+      match
+    end
+  end
+
+  content
+end
+
+def generate_resolved_file(source_file_path)
+  root_path = File.dirname(File.expand_path(source_file_path))
+  resolve_requires(source_file_path, root_path)
+end
 def test_common
 
   directory_name = "./tmp"
@@ -221,17 +254,27 @@ task :build_gem do
 end
 
 task :build_test_app do
-  parser_file = File.read('vendor/assets/src/utilities/replace_require_files.rb')
+  source_file = "vendor/assets/application/index.rb"
+  source_file = "tmp/test_app/application/index.rb"
+  new_file_content = generate_resolved_file(source_file)
+  index_html = File.read("vendor/assets/src/index.html")
+  index_html = index_html.sub('</html>', "<script type='text/ruby' >#{new_file_content}</script>\n</html>")
+  File.write('tmp/test_app/src/index.html', index_html)
+  `open tmp/test_app/src/index.html`
+  puts index_html
+  puts 'atome wasm user code executed'
+  ########### old code
   # we run the script in the context of the folder
-  Dir.chdir('vendor/assets/src/utilities') do
-    new_file_content = eval(parser_file)
-    index_html = File.read('../index.html')
-    index_html = index_html.sub('</html>', "<script type='text/ruby' >#{new_file_content}</script>\n</html>")
-    File.write('../../../../tmp/test_app/src/index.html', index_html)
-    `open ../../../../tmp/test_app/src/index.html`
-    puts 'atome wasm user code executed'
-  end
-
+  # Dir.chdir('vendor/assets/src/utilities') do
+  #   source_file = "../../application/index.rb"
+  #   new_file_content=generate_resolved_file(source_file)
+  #   index_html = File.read("../index.html")
+  #   index_html = index_html.sub('</html>', "<script type='text/ruby' >#{new_file_content}</script>\n</html>")
+  #   File.write('../../../../tmp/test_app/src/index.html', index_html)
+  #   `open ../../../../tmp/test_app/src/index.html`
+  #   puts 'atome wasm user code executed'
+  # end
+  #######################@
 end
 
 task default: :test_opal
