@@ -257,7 +257,7 @@ class HTML
     JS.eval("document.querySelector('##{@id}').addEventListener('mouseleave', function() { myRubyMouseLeaveCallback(); });")
   end
 
-  def touch_touch(bloc)
+  def touch_tap(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('tap', bloc) do
       bloc.call

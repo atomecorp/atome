@@ -4,34 +4,33 @@ new({ particle: :touch, type: :hash, store: false })
 
 new({ sanitizer: :touch }) do |params, _user_bloc|
   # TODO: factorise code below
-  @touch = { option: {} } unless @touch
-  unless params.instance_of? Hash
-    options = {}
+  @touch ||= {}
+  params = if params.instance_of? Hash
+             params.keys[0]
+           else
     case params
     when true
-      options[:option] = :touch
+      :tap
     when :touch
-      options[:option] = :touch
+      :tap
     when :down
-      options[:option] = :down
+      :down
     when :up
-      options[:option] = :up
+      :up
     when :long
-      options[:option] = :long
+      :long
     when :double
-      options[:option] = :double
-    when false
-      options[:option] = false
+      :double
     else
-      @touch[:option] = :touch
+      :tap
     end
 
-    params = options
-  end
+           end
+  @touch[params] = true
 
-  @touch[:option][params[:option]] = true
   store_value(:touch)
   params
+
 end
 
 new({ particle: :play }) do
@@ -48,7 +47,7 @@ new({ particle: :drag, store: false })
 
 new({ sanitizer: :drag }) do |params, _proc|
   # TODO: factorise code below
-  @drag = { option: {} } unless @drag
+  @drag ||= { option: {} }
   unless params.instance_of? Hash
     options = {}
     case params
@@ -76,7 +75,6 @@ new({ sanitizer: :drag }) do |params, _proc|
   params
 end
 
-
 new({ particle: :drop })
 
 new({ sanitizer: :drop }) do |params|
@@ -88,7 +86,7 @@ new({ particle: :over, type: :hash, store: false })
 
 new({ sanitizer: :over }) do |params, user_bloc|
   # TODO: factorise code below
-  @over = { option: {} } unless @over
+  @over ||= { option: {} }
   unless params.instance_of? Hash
     options = {}
     case params
