@@ -1,18 +1,28 @@
 #  frozen_string_literal: true
 
-# require './examples/login'
+require './examples/touch'
 # https://github.com/travist/jsencrypt
 
 # TODO : debug code below:
 
-b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
-#
-b.touch(true) do |e|
-  puts 'ok'
-end
-b.touch({ :long => true }) do
-  puts 'ok kool'
-end
+# b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
+# #
+# # b.touch(true) do |e|
+# #   puts 'ok'
+# # end
+# # b.touch({ :long => true }) do
+# #   puts 'ok kool'
+# # end
+# b.over({:over=>true}) do
+#   puts 'ok'
+# end
+# b.over({ enter: true}) do
+#   b.color(:yellow)
+# end
+# b.over(:leave) do
+#   b.color(:red)
+# end
+# alert b.over
 
 # b.touch(:long) do
 #     b.color(:cyan)

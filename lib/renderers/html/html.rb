@@ -184,7 +184,7 @@ class HTML
     puts 'drag end ok!!'
   end
 
-  def drag_drag(bloc)
+  def drag_move(bloc)
     interact = JS.eval("return interact('##{@id}')")
 
     interact.on('dragstart', lambda do |native_event|
@@ -245,6 +245,7 @@ class HTML
   def over_false(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.unset()
+
   end
 
   def over_enter(bloc)
