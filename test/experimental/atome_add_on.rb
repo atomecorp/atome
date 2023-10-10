@@ -1,3 +1,4 @@
+#  frozen_string_literal: true
 require 'native'
 require 'js'
 
@@ -124,7 +125,6 @@ window.addEventListener("resize", handleResize);
   end
 end
 
-#################
 
 new(particle: :role)
 new(particle: :language)

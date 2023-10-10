@@ -35,13 +35,7 @@ new({ sanitizer: :video }) do |params|
 end
 
 new({ atome: :www })
-# new({ sanitizer: :www }) do |params|
-#   alert params
-#   # TODO : the line below should get the value from default params Essentials
-#   temp_default = { path: 'https://www.youtube.com/embed/usQDazZKWAk' }
-#   params = temp_default.merge(params)
-#   params
-# end
+
 new({ atome: :shadow, type: :hash })
 new({ sanitizer: :shadow }) do |params|
   # TODO : when attaching color to a shadow it should colorized it , cf : c.shadow({color: :blue}) should work
@@ -88,10 +82,10 @@ new({ sanitizer: :text }) do |params|
   params
 end
 # for later use ( physical is a css like style)
-new ({ atome: :physical })
-new ({ atome: :human }) do |params|
+new({ atome: :physical })
+new({ atome: :human }) do |params|
   Universe.add_user = params[:id]
 end
-new ({ atome: :machine })
+new({ atome: :machine })
 
 

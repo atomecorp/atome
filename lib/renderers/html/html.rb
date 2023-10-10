@@ -102,13 +102,7 @@ class HTML
   end
 
   def raw_data(html_string)
-    # previous_last_child = JS.global[:document][:body][:lastChild]
     @html[:innerHTML] = html_string
-    # if previous_last_child
-    #   @html = previous_last_child[:nextSibling]
-    # else
-    #   @html = JS.global[:document][:body][:firstChild]
-    # end
   end
 
   def video_path(video_path, type = 'video/mp4')
@@ -141,17 +135,12 @@ class HTML
   def style(property, value = nil)
     element_found = JS.global[:document].getElementById(@id.to_s)
       element_found[:style][property] = value.to_s
-    # puts grab(@id).inspect
-
     if value
       element_found[:style][property] = value.to_s
     else
       element_found[:style][property]
     end
     element_found[:style][property]
-    # find a way to remove puts for
-    # now without puts the following code :
-    # box({color: :red}); box({color: blue }) crashes ruby wasm
   end
 
   def filter= values
@@ -185,7 +174,6 @@ class HTML
 
   def drag_false(val)
     interact = JS.eval("return interact('##{@id}')")
-    # interact.unset()
     interact.unset()
   end
   def drag_start(val)
@@ -256,7 +244,6 @@ class HTML
 
   def over_false(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    # interact.unset()
     interact.unset()
   end
 
@@ -280,26 +267,6 @@ class HTML
   def touch_false(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.unset()
-    # interact.on('doubletap') do
-    #   # bloc.call
-    # end
-    # interact.on('hold') do
-    #   # bloc.call
-    # end
-    # interact.on('down') do
-    #   # bloc.call
-    # end
-    # interact.on('up') do
-    #   # bloc.call
-    # end
-    # interact.on('tap') do
-    #   # bloc.call
-    # end
-    # interact.off('double',bloc)
-    # interact.off('hold',bloc)
-    # interact.off('down',bloc)
-    # interact.off('up',bloc)
-    # interact.off('tap',bloc);
   end
 
   def touch_double(bloc)
