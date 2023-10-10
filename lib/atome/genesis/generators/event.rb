@@ -59,12 +59,16 @@ new({ sanitizer: :drag }) do |params, _proc|
                :move
              when :drag
                :move
+             when :clone
+               :clone
              when :start
                :start
              when :stop
                :end
              when :end
                :end
+             when :lock
+               :lock
              when false
                false
              else
@@ -139,5 +143,4 @@ new({ particle: :stiffness })
 new({ particle: :velocity })
 new({ particle: :repeat })
 new({ particle: :ease })
-new({ particle: :unbind })
 

@@ -3,19 +3,15 @@ class HTML
     @html ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
     @atome = current_atome
-
-    self
   end
 
 
   def connect(params, &bloc)
     JS.eval("atomeJS.connect('ws://#{params}')")
-    # JS.eval("connect('ws://#{params}')")
   end
 
   def send_message(message)
     JS.eval("atomeJS.ws_sender('#{message}')")
-    # JS.eval("ws_sender('#{message}')")
   end
 
   def close_websocket
@@ -84,7 +80,6 @@ class HTML
     JS.global[:document][:body].appendChild(@html)
     add_class("atome")
 
-    ####### set temppath t avoid error
     @html.setAttribute('src', "https://www.youtube.com/embed/lLeQZ8Llkso?si=MMsGBEXELy9yBl9R")
     # below we get image to feed width and height if needed
     # image = JS.global[:Image].new
@@ -174,35 +169,26 @@ class HTML
 
   def drag_false(val)
     interact = JS.eval("return interact('##{@id}')")
-    interact.unset()
-  end
-  def drag_start(val)
-    puts 'drag start ok!!'
+    interact.unset
   end
 
-  def drag_end(val)
-    puts 'drag end ok!!'
+  def drag_start(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('dragstart', lambda do |_native_event|
+      bloc.call
+    end)
   end
+
+  def drag_end(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.on('dragend', lambda do |_native_event|
+      bloc.call
+    end)
+  end
+
 
   def drag_move(bloc)
     interact = JS.eval("return interact('##{@id}')")
-
-    interact.on('dragstart', lambda do |native_event|
-      @atome.width(33)
-      alert 'clone creation'
-      @atome = box({ id: "#{@id}_cloned" })
-
-    end)
-
-    interact.on('dragend', lambda do |native_event|
-      @atome.width(333)
-      alert 'unset drag'
-
-      JS.eval(<<-JS)
-  interact('##{@id}').unset()
-      JS
-    end)
-
     interact.draggable({
                          drag: true,
                          inertia: { resistance: 12,
@@ -223,7 +209,7 @@ class HTML
     JS
 
     interact.on('dragmove', lambda do |native_event|
-      # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
+      # # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
       bloc.call(event) if bloc.instance_of? Proc
       dx = event[:dx]
@@ -235,6 +221,33 @@ class HTML
     end)
   end
 
+  def drag_lock(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.draggable({
+                         drag: true,
+                         inertia: { resistance: 12,
+                                    minSpeed: 200,
+                                    endSpeed: 100 },
+                       })
+
+    JS.eval(<<-JS)
+      interact('##{@id}').draggable({
+        drag: true,
+        modifiers: [
+          interact.modifiers.restrict({
+            restriction: 'parent',
+            endOnly: true
+          })
+        ]
+      });
+    JS
+
+    interact.on('dragmove', lambda do |native_event|
+      # # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
+      event = Native(native_event)
+      bloc.call(event) if bloc.instance_of? Proc
+    end)
+  end
   def over_over(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('mouseover') do
@@ -244,7 +257,7 @@ class HTML
 
   def over_false(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    interact.unset()
+    interact.unset
 
   end
 
@@ -267,7 +280,7 @@ class HTML
 
   def touch_false(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    interact.unset()
+    interact.unset
   end
 
   def touch_double(bloc)
