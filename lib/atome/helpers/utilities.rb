@@ -81,6 +81,14 @@ class Atome
     if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
       instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
     end
+    ################
+    # if params[:attach]==:titi
+    #   puts "-----> #{grab(:titi).inspect}"
+    #   # params[:attach]=[]
+    #   # params[:apply]=grab(:titi)
+    # end
+
+    ###############
     new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
     # TODO : check if we don't have a security issue allowing atome modification after creation
     # if we have one find another solution the keep this facility

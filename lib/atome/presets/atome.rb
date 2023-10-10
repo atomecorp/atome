@@ -13,9 +13,14 @@ class Atome
     essential_params = Essentials.default_params[atome_preset] || {}
     basic_params[:type] = essential_params[:type] || :element
     # condition to handle color's atome that shouldn't be attach to view
-    params[:attach] = id if essential_params[:attach] && essential_params[:attach][0] == nil
+    if params[:type] == :color || basic_params[:type] == :color
+      params[:affect] = [id]
+    else
+      params[:attach] = [id] # if essential_params[:attach] && essential_params[:attach][0] == nil
+    end
 
     params[:attached] = [] unless params[:attached]
+
     basic_params[:id] = params[:id] || identity_generator(atome_preset)
     basic_params[:attach] = params[:attach] || [@atome[:id]] || [:view]
 
@@ -42,6 +47,7 @@ class Atome
       true
     end
     return unless result
+
     params[:attached] = [] unless params[:attached]
     Atome.new(params, &bloc)
   end

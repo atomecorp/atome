@@ -13,3 +13,7 @@ end
 
 new({ method: :alpha, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
 end
+
+new({ renderer: :html, method: :edit }) do |params|
+  html.attr(:contenteditable, params)
+end

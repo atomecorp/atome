@@ -7,8 +7,8 @@
 
 b = box({ color: :red, smooth: 6, id: :the_box })
 
-b.clones([{ left: 300, top: 300, color: :blue, intricate: [:width, :attached,:height ] },
-          {left: 600, top: 366, color: :green , intricate: [:left, :height ]}])
+b.clones([{ left: 300, top: 300, color: :blue, entangled: [:width, :attached, :height] },
+          { left: 600, top: 366, color: :green, entangled: [:left, :height] }])
 
 wait 1 do
   b.width(190)

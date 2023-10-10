@@ -79,9 +79,7 @@ class Atome
         # ex : puts a.shape => return all atome with the type 'shape' in this atome
         collected_atomes = []
         attached.each do |attached_atome|
-          if grab(attached_atome).type.to_sym == element.to_sym
-            collected_atomes << attached_atome
-          end
+          collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
         end
         collected_atomes
       end
@@ -93,8 +91,8 @@ class Atome
       # Object.const_set(element, Module.new)
       # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
       # to the shape particles list : @atome[:shape] << params[:id]
-      new_atome = Atome.new(params, &user_proc)
-      new_atome
+      Atome.new(params, &user_proc)
+      # new_atome
       # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
     end
 

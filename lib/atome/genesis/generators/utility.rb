@@ -63,7 +63,6 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     end
   end
 end
-
 new({ particle: :clear })
 new({ post: :clear }) do
 
@@ -101,7 +100,6 @@ new({ particle: :tag, render: false, type: :hash })
 new({ particle: :web })
 new({ particle: :unit, type: :hash })
 new({ initialize: :unit, value: {} })
-
 new({ particle: :login }) do |params|
   set_current_user(id) if params
 end

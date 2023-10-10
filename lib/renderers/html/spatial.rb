@@ -25,7 +25,6 @@ new({ method: :right, type: :integer }) do |params, &bloc|
 end
 
 new({ method: :left, type: :integer, renderer: :html }) do |params, &bloc|
-
   html.style(:left, "#{params}px")
 end
 

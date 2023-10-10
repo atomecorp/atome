@@ -26,6 +26,3 @@ new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |par
   html.style(:color, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
 end
 
-new({ renderer: :html, method: :clones, type: :string }) do |_value, _user_proc|
-
-end

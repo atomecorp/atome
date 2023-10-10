@@ -233,7 +233,8 @@ end
 
 task :run_wasm_client_code do
   source_file = "vendor/assets/application/index.rb"
-  source_file = "test/application/index.rb"
+  # source_file = "test/application/index.rb"
+  source_file = "test/client/delices_de_vezelin/index.rb"
   new_file_content = generate_resolved_file(source_file)
   index_html = File.read("vendor/assets/src/index.html")
   index_html = index_html.sub('</html>', "<script type='text/ruby' >#{new_file_content}</script>\n</html>")
@@ -256,18 +257,7 @@ task :build_gem do
   puts 'atome opal production is build and running!'
 end
 
-# task :build_gem do
-#   # TODO we may have to use a new temp dir to build app for the gem deployment
-#    test_common('test_app')
-#   # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
-#   test_temp_dir = "tmp/test_app/temp"
-#   Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
-#   test_opal_dir = "tmp/test_app/temp/opal"
-#   Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
-#   `rake build`
-#   `cd pkg; gem install atome --local`
-#   puts 'gem build'
-# end
+
 
 
 

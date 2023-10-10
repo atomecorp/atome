@@ -29,3 +29,4 @@ new({ particle: :diffusion }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
+new({ particle: :edit })

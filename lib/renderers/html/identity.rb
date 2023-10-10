@@ -41,8 +41,9 @@ new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_val
   html.text(@atome[:id])
   html.add_class(:text)
 end
-new({ method: :type, type: :string, specific: :color, renderer: :html }) do |_value, _user_proc|
-end
+
+# new({ method: :type, type: :string, specific: :color, renderer: :html }) do |_value, _user_proc|
+# end
 
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |value, _user_proc|
   html.innerText(value)

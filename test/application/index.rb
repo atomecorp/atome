@@ -1,194 +1,258 @@
-# require './examples/attach'
-# https://github.com/travist/jsencrypt
-
-###### ruby integration for encode
-# my_pass=Black_matter.encode('hello')
-# alert my_pass
-# checker=Black_matter.check_password('hello,', my_pass)
-# alert checker
-######## security particles and security
-
-# b = box({ id: :the_box, left: 66,
-#           security: {
-#             smooth: {
-#               write: { password: :other_pass },
-#               read: { password: :read_pass }
-#             }
-#           }
-#         })
+# # require './examples/attach'
+# # https://github.com/travist/jsencrypt
 #
-# b.authorise(:star_wars, false)
-# b.smooth(22)
-# b.authorise(:star_war, true)
-# b.smooth(66)
-# puts b.history({ operation: :write, id: :the_box, particle: :smooth })
-# puts '----'
-# puts "b.security : #{b.security}"
-# puts '----'
-# puts "user hashed pass is : #{grab(Universe.current_user).password}"
-# # alert b.instance_variable_get("@security")
-# b.authorise(:star_wars, false)
-# alert "b.smooth is : #{b.smooth}"
-# ###### history and server synchronisation
-# b = box({id: :the_box})
-# b.data(:canyouwritethis)
-# b.rotate(33)
-# b.rotate(88)
-# b.rotate(99)
-# b.rotate(12)
-# b.rotate(6)
-# b.data
+# ###### ruby integration for encode
+# # my_pass=Black_matter.encode('hello')
+# # alert my_pass
+# # checker=Black_matter.check_password('hello,', my_pass)
+# # alert checker
+# ######## security particles and security
+#
+# # b = box({ id: :the_box, left: 66,
+# #           security: {
+# #             smooth: {
+# #               write: { password: :other_pass },
+# #               read: { password: :read_pass }
+# #             }
+# #           }
+# #         })
+# #
+# # b.authorise(:star_wars, false)
+# # b.smooth(22)
+# # b.authorise(:star_war, true)
+# # b.smooth(66)
+# # puts b.history({ operation: :write, id: :the_box, particle: :smooth })
+# # puts '----'
+# # puts "b.security : #{b.security}"
+# # puts '----'
+# # puts "user hashed pass is : #{grab(Universe.current_user).password}"
+# # # alert b.instance_variable_get("@security")
+# # b.authorise(:star_wars, false)
+# # alert "b.smooth is : #{b.smooth}"
+# # ###### history and server synchronisation
+# # b = box({id: :the_box})
+# # b.data(:canyouwritethis)
+# # b.rotate(33)
+# # b.rotate(88)
+# # b.rotate(99)
+# # b.rotate(12)
+# # b.rotate(6)
+# # b.data
+# # b.touch(true) do
+# #   b.data(:super)
+# #   b.data
+# #   alert b.history[:data]
+# # end
+# # alert b.history({operation: :write, id: :the_box, particle: :rotate})
+# # Universe.synchronised(742,:star_wars)
+# # alert b.history({operation: :write, id: :the_box, particle: :rotate})
+# # alert  Universe.current_machine
+# # alert  Universe.current_user
+# # alert grab(Universe.current_machine).inspect
+# #
+# # human({id: :jeezs, login: true})
+# #
+# # alert "current user: #{Universe.current_user}"
+# # wait 2 do
+# #   human({id: :toto, login: true})
+# #   alert "current user: #{Universe.current_user}"
+# #
+# # end
+# ######### local storage
+# # JS.global[:localStorage].setItem('maCle', 'maValeur')
+# #
+# # valeur = JS.global[:localStorage].getItem('maCle')
+# # alert "avant : #{valeur}"
+# # JS.global[:localStorage].removeItem('maCle')
+# #
+# # valeur = JS.global[:localStorage].getItem('maCle')
+# # alert "apres : #{valeur}"
+#
+# # ############### indexed db
+# #
+# # indexedDB = JS.global[:indexedDB] || JS.global[:mozIndexedDB] || JS.global[:webkitIndexedDB] || JS.global[:msIndexedDB] || JS.global[:shimIndexedDB]
+# #
+# # # Ouvrir (ou créer) la base de données
+# # open = indexedDB.open("MyDatabase", 1)
+# #
+# # # Créer le schéma
+# # open.addEventListener("upgradeneeded", proc do
+# #   db = open[:result]
+# #   store = db.createObjectStore("MyObjectStore", { keyPath: "id" })
+# #   index = store.createIndex("NameIndex", ["name.last", "name.first"])
+# # end)
+# #
+# # open.addEventListener("success", proc do
+# #   # Commencer une nouvelle transaction
+# #   db = open[:result]
+# #   tx = db.transaction("MyObjectStore", "readwrite")
+# #   store = tx.objectStore("MyObjectStore")
+# #   index = store.index("NameIndex")
+# #
+# #   # Ajouter des données
+# #   store.put({ id: 12345, name: { first: "John", last: "Doe" }, age: 42 })
+# #   store.put({ id: 67890, name: { first: "Bob", last: "Smith" }, age: 35 })
+# #
+# #   # Interroger les données
+# #   getJohn = store.get(12345)
+# #   getBob = index.get(["Smith", "Bob"])
+# #
+# #   getJohn.addEventListener("success", proc do
+# #     puts getJohn[:result][:name][:first] # => "John"
+# #   end)
+# #
+# #   getBob.addEventListener("success", proc do
+# #     puts getBob[:result][:name][:first] # => "Bob"
+# #   end)
+# #
+# #   # Fermer la base de données lorsque la transaction est terminée
+# #   tx.addEventListener("complete", proc do
+# #     db.close
+# #   end)
+# # end)
+# # ###################### uddate db
+# # # Ouvrir la base de données
+# # open_update = indexedDB.open("MyDatabase", 1)
+# #
+# # open_update.addEventListener("success", proc do
+# #   # Commencer une nouvelle transaction
+# #   db = open_update[:result]
+# #   tx = db.transaction("MyObjectStore", "readwrite")
+# #   store = tx.objectStore("MyObjectStore")
+# #   index = store.index("NameIndex")
+# #
+# #   # Obtenir l'objet Bob
+# #   getBob = index.get(["Smith", "Bob"])
+# #
+# #   getBob.addEventListener("success", proc do
+# #     bob = getBob[:result]
+# #
+# #     # Mettre à jour le prénom de Bob à Tim
+# #     bob[:name][:first] = "Tim"
+# #
+# #     # Remettre l'objet mis à jour dans le magasin d'objets
+# #     updateRequest = store.put(bob)
+# #
+# #     updateRequest.addEventListener("success", proc do
+# #       puts "Bob's first name has been updated to Tim!"
+# #     end)
+# #
+# #     updateRequest.addEventListener("error", proc do
+# #       puts "There was an error updating Bob's first name."
+# #     end)
+# #   end)
+# #
+# #   # Fermer la base de données lorsque la transaction est terminée
+# #   tx.addEventListener("complete", proc do
+# #     db.close
+# #   end)
+# # end)
+# # b=box({id: :poilu})
+# # b.left(7564)
+# ############## connection
+# # class
+# # def hello
+# #   alert :hello!
+# # end
+# new({ particle: :connection }) do |params, bloc|
+#   unless params.instance_of? Hash
+#     params = { server: params }
+#   end
+#   html.connect(params[:server], &bloc)
+# end
+#
+# new({ particle: :message }) do |params, bloc|
+#   unless params.instance_of? Hash
+#     params = { server: params }
+#   end
+#   html.send_message(params[:server], &bloc)
+# end
+#
+# ####### tests codes
+# b = box({ color: :red })
+#
+#
 # b.touch(true) do
-#   b.data(:super)
-#   b.data
-#   alert b.history[:data]
+#   b.connection('localhost:9292') do |params|
+#     alert "connection is : #{params}"
+#   end
 # end
-# alert b.history({operation: :write, id: :the_box, particle: :rotate})
-# Universe.synchronised(742,:star_wars)
-# alert b.history({operation: :write, id: :the_box, particle: :rotate})
-# alert  Universe.current_machine
-# alert  Universe.current_user
-# alert grab(Universe.current_machine).inspect
 #
-# human({id: :jeezs, login: true})
+# c = box({ color: :yellow, left: 333 })
 #
-# alert "current user: #{Universe.current_user}"
-# wait 2 do
-#   human({id: :toto, login: true})
-#   alert "current user: #{Universe.current_user}"
+# c.touch(true) do
+#   b.message('hi there!!')
+#   c.delete(true)
+#   c=circle({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
+#   # c.style({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
+#   # c.id(:ttt)
+#   # alert c.id
 #
 # end
-######### local storage
-# JS.global[:localStorage].setItem('maCle', 'maValeur')
 #
-# valeur = JS.global[:localStorage].getItem('maCle')
-# alert "avant : #{valeur}"
-# JS.global[:localStorage].removeItem('maCle')
 #
-# valeur = JS.global[:localStorage].getItem('maCle')
-# alert "apres : #{valeur}"
+#  # box({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
+# # b.touch({:option=>{:touch=>true}}) do
+# #   puts 'ok'
+# # end
+# # b.touch(true) do
+# #   alert :kool
+# # end
+# #
+# # wait 2 do
+# #   b.clones([ { left: 222 }])
+# # end
+#
+# # wait 2 do
+# #   b.clones([{ left: 333 }, { left: 222 }])
+# # end
+#
+# # b.clones([{ left: 300, top: 300, color: :blue, entangled: [:width, :attached,:height ] },
+# #           {left: 600, top: 366, color: :green , entangled: [:left, :height ]}])
+# # alert b.particles
+# # wait 1 do
+# #   b.width(190)
+# # end
+# #
+# # wait 2 do
+# #   b.height(180)
+# # end
+# #
+# # wait 3 do
+# #   b.left(180)
+# # end
+#
+#
+# # TODO : remove the un-necessary and generated file vendor/assets/wasm/ruby/ruby_browser.wasm
+# # FIXME :  wae have to build opal prior running the server, the server must generate all necssary files!
+# # WARNING <=> IMPORTANT : in sever mode to make the websocket work
+# # go to vendor/assets/server then in bash type: puma
+# # then test with opal or wasm here it is !!!
+# # TODO: modify all wasm test like test_wasm is modified
+# # TODO: make server build all files in temp dir
+# # TODO check that atome gem build correctly the solution
+# # change atomic repository so that it install atome gem correctly
+# # TODO : add onscroll event
+# # TODO : find a way to unbind a specific event
+# b=box({id: :titi, left: 666})
+# c=circle({id: :toto})
+# b.attached([c.id])
+# b.color(:yellow)
+# c=color(:red)
+# # b.apply( [c.id])
+# c.affect([b.id])
+# alert b.inspect
+# alert c.inspect
+# box
+# b.color(:red)
+# alert b.color
+box({ id: :the_box, color: { red: 0, green: 0, blue: 1, id: :the_col } })
+# c=color(:red)
+# alert c.inspect
 
-# ############### indexed db
+# alert grab(:eDen).attached
+# b=box(left: 0)
+# alert grab(:toto_color_0_0_0_0_1_0____).inspect
 #
-# indexedDB = JS.global[:indexedDB] || JS.global[:mozIndexedDB] || JS.global[:webkitIndexedDB] || JS.global[:msIndexedDB] || JS.global[:shimIndexedDB]
-#
-# # Ouvrir (ou créer) la base de données
-# open = indexedDB.open("MyDatabase", 1)
-#
-# # Créer le schéma
-# open.addEventListener("upgradeneeded", proc do
-#   db = open[:result]
-#   store = db.createObjectStore("MyObjectStore", { keyPath: "id" })
-#   index = store.createIndex("NameIndex", ["name.last", "name.first"])
-# end)
-#
-# open.addEventListener("success", proc do
-#   # Commencer une nouvelle transaction
-#   db = open[:result]
-#   tx = db.transaction("MyObjectStore", "readwrite")
-#   store = tx.objectStore("MyObjectStore")
-#   index = store.index("NameIndex")
-#
-#   # Ajouter des données
-#   store.put({ id: 12345, name: { first: "John", last: "Doe" }, age: 42 })
-#   store.put({ id: 67890, name: { first: "Bob", last: "Smith" }, age: 35 })
-#
-#   # Interroger les données
-#   getJohn = store.get(12345)
-#   getBob = index.get(["Smith", "Bob"])
-#
-#   getJohn.addEventListener("success", proc do
-#     puts getJohn[:result][:name][:first] # => "John"
-#   end)
-#
-#   getBob.addEventListener("success", proc do
-#     puts getBob[:result][:name][:first] # => "Bob"
-#   end)
-#
-#   # Fermer la base de données lorsque la transaction est terminée
-#   tx.addEventListener("complete", proc do
-#     db.close
-#   end)
-# end)
-# ###################### uddate db
-# # Ouvrir la base de données
-# open_update = indexedDB.open("MyDatabase", 1)
-#
-# open_update.addEventListener("success", proc do
-#   # Commencer une nouvelle transaction
-#   db = open_update[:result]
-#   tx = db.transaction("MyObjectStore", "readwrite")
-#   store = tx.objectStore("MyObjectStore")
-#   index = store.index("NameIndex")
-#
-#   # Obtenir l'objet Bob
-#   getBob = index.get(["Smith", "Bob"])
-#
-#   getBob.addEventListener("success", proc do
-#     bob = getBob[:result]
-#
-#     # Mettre à jour le prénom de Bob à Tim
-#     bob[:name][:first] = "Tim"
-#
-#     # Remettre l'objet mis à jour dans le magasin d'objets
-#     updateRequest = store.put(bob)
-#
-#     updateRequest.addEventListener("success", proc do
-#       puts "Bob's first name has been updated to Tim!"
-#     end)
-#
-#     updateRequest.addEventListener("error", proc do
-#       puts "There was an error updating Bob's first name."
-#     end)
-#   end)
-#
-#   # Fermer la base de données lorsque la transaction est terminée
-#   tx.addEventListener("complete", proc do
-#     db.close
-#   end)
-# end)
-# b=box({id: :poilu})
-# b.left(7564)
-############## connection
-# class
-# def hello
-#   alert :hello!
-# end
-new({ particle: :connection }) do |params, bloc|
-  unless params.instance_of? Hash
-    params = { server: params }
-  end
-  html.connect(params[:server], &bloc)
-end
-
-new({ particle: :message }) do |params, bloc|
-  unless params.instance_of? Hash
-    params = { server: params }
-  end
-  html.send_message(params[:server], &bloc)
-end
-
-####### tests codes
-b = box({ color: :red })
-
-
-b.touch(true) do
-  b.connection('localhost:9292') do |params|
-    alert "connection is : #{params}"
-  end
-end
-
-c = circle({ color: :yellow, left: 333 })
-
-c.touch(true) do
-  b.message('hi there!!')
-end
-# TODO : remove the un-necessary and generated file vendor/assets/wasm/ruby/ruby_browser.wasm
-# FIXME :  wae have to build opal prior running the server, the server must generate all necssary files!
-# WARNING <=> IMPORTANT : in sever mode to make the websocket work
-# go to vendor/assets/server then in bash type: puma
-# then test with opal or wasm here it is !!!
-# TODO: modify all wasm test like test_wasm is modified
-# TODO: make server build all files in temp dir
-# TODO check that atome gem build correctly the solution
-# change atomic repository so that it install atome gem correctly
+# c=circle
+# c.attached([b.id])

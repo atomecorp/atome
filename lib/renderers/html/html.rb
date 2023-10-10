@@ -7,32 +7,7 @@ class HTML
     self
   end
 
-  # connection
-  # def connect(params, &bloc)
-  #   @websocket = JS.eval("new WebSocket('#{params}')")
-  #
-  #   @websocket.addEventListener('open', lambda do
-  #     puts "connected"
-  #   end)
-  #
-  #   @websocket.addEventListener('message', lambda do |event|
-  #     # Définissez la variable globale 'globalEvent' à l'objet 'event'
-  #     JS.eval("setGlobalEvent(event)")
-  #
-  #     # Maintenant, appelez la fonction pour extraire la propriété 'data'
-  #     data = JS.eval("extractDataFromEvent()")
-  #     puts "Message reçu : #{data}"
-  #   end)
-  #
-  #   @websocket.addEventListener('error', lambda do |error|
-  #     # puts error
-  #     # Ne rien faire pour éviter des logs d'erreur dans la console
-  #   end)
-  #
-  #   @websocket.addEventListener('close', lambda do |event|
-  #     puts "WebSocket fermé."
-  #   end)
-  # end
+
   def connect(params, &bloc)
     JS.eval("atomeJS.connect('ws://#{params}')")
     # JS.eval("connect('ws://#{params}')")
@@ -164,8 +139,9 @@ class HTML
   end
 
   def style(property, value = nil)
-
     element_found = JS.global[:document].getElementById(@id.to_s)
+      element_found[:style][property] = value.to_s
+    # puts grab(@id).inspect
 
     if value
       element_found[:style][property] = value.to_s
@@ -173,6 +149,9 @@ class HTML
       element_found[:style][property]
     end
     element_found[:style][property]
+    # find a way to remove puts for
+    # now without puts the following code :
+    # box({color: :red}); box({color: blue }) crashes ruby wasm
   end
 
   def filter= values
@@ -204,6 +183,11 @@ class HTML
     send("#{action}_#{options}", bloc)
   end
 
+  def drag_false(val)
+    interact = JS.eval("return interact('##{@id}')")
+    # interact.unset()
+    interact.unset()
+  end
   def drag_start(val)
     puts 'drag start ok!!'
   end
@@ -270,10 +254,15 @@ class HTML
     end
   end
 
+  def over_false(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    # interact.unset()
+    interact.unset()
+  end
+
   def over_enter(bloc)
     JS.global[:myRubyMouseEnterCallback] = bloc
     JS.eval("document.querySelector('##{@id}').addEventListener('mouseenter', function() { myRubyMouseEnterCallback(); });")
-
   end
 
   def over_leave(bloc)
@@ -283,9 +272,34 @@ class HTML
 
   def touch_touch(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('tap') do
+    interact.on('tap', bloc) do
       bloc.call
     end
+  end
+
+  def touch_false(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.unset()
+    # interact.on('doubletap') do
+    #   # bloc.call
+    # end
+    # interact.on('hold') do
+    #   # bloc.call
+    # end
+    # interact.on('down') do
+    #   # bloc.call
+    # end
+    # interact.on('up') do
+    #   # bloc.call
+    # end
+    # interact.on('tap') do
+    #   # bloc.call
+    # end
+    # interact.off('double',bloc)
+    # interact.off('hold',bloc)
+    # interact.off('down',bloc)
+    # interact.off('up',bloc)
+    # interact.off('tap',bloc);
   end
 
   def touch_double(bloc)

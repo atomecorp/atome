@@ -48,7 +48,7 @@ html, body {
 .atome {
     cursor: default;
     pointer-events: auto;
-    caret-color: transparent;
+    caret-color: white;
     outline: none;
     -webkit-user-select: none;
     -moz-user-select: none;

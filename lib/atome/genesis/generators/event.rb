@@ -20,6 +20,8 @@ new({ sanitizer: :touch }) do |params, _user_bloc|
       options[:option] = :long
     when :double
       options[:option] = :double
+    when false
+      options[:option] = false
     else
       @touch[:option] = :touch
     end
@@ -60,6 +62,8 @@ new({ sanitizer: :drag }) do |params, _proc|
       options[:option] = :start
     when :end
       options[:option] = :end
+    when false
+      options[:option] = false
     else
       @drag[:option] = :drag
     end
@@ -96,6 +100,8 @@ new({ sanitizer: :over }) do |params, user_bloc|
       options[:option] = :enter
     when :leave
       options[:option] = :leave
+    when false
+      options[:option] = false
     else
       @over[:option] = :over
     end
