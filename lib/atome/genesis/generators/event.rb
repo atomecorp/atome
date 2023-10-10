@@ -92,7 +92,7 @@ end
 
 new({ particle: :over, type: :hash, store: false })
 
-new({ sanitizer: :over }) do |params, user_bloc|
+new({ sanitizer: :over }) do |params|
   # # TODO: factorise code below
 
   @over ||= {}
@@ -143,4 +143,39 @@ new({ particle: :stiffness })
 new({ particle: :velocity })
 new({ particle: :repeat })
 new({ particle: :ease })
+
+new(particle: :keyboard, type: :hash, store: false)
+
+new({ sanitizer: :keyboard }) do |params|
+  # # TODO: factorise code below
+  @keyboard ||= {}
+  params = if params.instance_of? Hash
+
+             params.keys[0]
+           else
+
+             case params
+             when true
+               :keypress
+             when :press
+               :keypress
+             when :down
+               :keydown
+             when :up
+               :keyup
+             when :input
+
+               :input
+             when :kill
+               :kill
+             else
+               :keypress
+             end
+
+           end
+  @keyboard[params] = true
+  store_value(:keyboard)
+  params
+
+end
 

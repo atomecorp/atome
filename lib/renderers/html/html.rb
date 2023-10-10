@@ -5,7 +5,6 @@ class HTML
     @atome = current_atome
   end
 
-
   def connect(params, &bloc)
     JS.eval("atomeJS.connect('ws://#{params}')")
   end
@@ -129,7 +128,7 @@ class HTML
 
   def style(property, value = nil)
     element_found = JS.global[:document].getElementById(@id.to_s)
-      element_found[:style][property] = value.to_s
+    element_found[:style][property] = value.to_s
     if value
       element_found[:style][property] = value.to_s
     else
@@ -163,6 +162,65 @@ class HTML
 
   ###### event handler ######
 
+  def keyboard_keypress(bloc)
+
+    element = JS.global[:document].getElementById(@id.to_s)
+    keypress_handler = ->(event) do
+      if grab(@id).keyboard[:kill] == true
+        event.preventDefault()
+      else
+        bloc.call(event) if bloc.is_a? Proc
+      end
+    end
+    element.addEventListener("keypress", keypress_handler)
+  end
+
+  def keyboard_keydown(bloc)
+
+    element = JS.global[:document].getElementById(@id.to_s)
+    keypress_handler = ->(event) do
+      if grab(@id).keyboard[:kill] == true
+        event.preventDefault()
+      else
+        bloc.call(event) if bloc.is_a? Proc
+      end
+    end
+    element.addEventListener("keydown", keypress_handler)
+  end
+
+  def keyboard_keyup(bloc)
+    element = JS.global[:document].getElementById(@id.to_s)
+    keypress_handler = ->(event) do
+      if grab(@id).keyboard[:kill] == true
+        event.preventDefault()
+      else
+        bloc.call(event) if bloc.is_a? Proc
+      end
+    end
+    element.addEventListener("keyup", keypress_handler)
+  end
+
+  def keyboard_kill(bloc)
+    bloc.call if bloc.is_a? Proc
+  end
+
+  def keyboard_input(bloc)
+    element = JS.global[:document].getElementById(@id.to_s)
+    input_handler = ->(event) do
+
+      if grab(@id).keyboard[:kill] == true
+        event.preventDefault()
+      else
+        if event[:target]
+          input_content = event[:target][:textContent] # Obtenez le contenu textuel de l'élément <pre>
+          bloc.call(input_content) if bloc.is_a? Proc
+        end
+      end
+
+    end
+    element.addEventListener("input", input_handler)
+  end
+
   def event(action, options, bloc)
     send("#{action}_#{options}", bloc)
   end
@@ -175,17 +233,16 @@ class HTML
   def drag_start(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('dragstart', lambda do |_native_event|
-      bloc.call
+      bloc.call if bloc.is_a? Proc
     end)
   end
 
   def drag_end(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('dragend', lambda do |_native_event|
-      bloc.call
+      bloc.call if bloc.is_a? Proc
     end)
   end
-
 
   def drag_move(bloc)
     interact = JS.eval("return interact('##{@id}')")
@@ -248,10 +305,11 @@ class HTML
       bloc.call(event) if bloc.instance_of? Proc
     end)
   end
+
   def over_over(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('mouseover') do
-      bloc.call
+      bloc.call if bloc.is_a? Proc
     end
   end
 
@@ -274,7 +332,7 @@ class HTML
   def touch_tap(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('tap', bloc) do
-      bloc.call
+      bloc.call if bloc.is_a? Proc
     end
   end
 
@@ -286,28 +344,28 @@ class HTML
   def touch_double(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('doubletap') do
-      bloc.call
+      bloc.call if bloc.is_a? Proc
     end
   end
 
   def touch_long(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('hold') do
-      bloc.call
+      bloc.call if bloc.is_a? Proc
     end
   end
 
   def touch_down(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('down') do
-      bloc.call
+      bloc.call if bloc.is_a? Proc
     end
   end
 
   def touch_up(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('up') do
-      bloc.call
+      bloc.call if bloc.is_a? Proc
     end
   end
 

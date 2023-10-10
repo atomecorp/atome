@@ -1,0 +1,50 @@
+#  frozen_string_literal: true
+
+t = text :hello
+t.left(99)
+
+t.edit(true)
+
+t.keyboard(:press) do |native_event|
+  event = Native(native_event)
+  puts "====> #{event}"
+end
+
+t.keyboard(:down) do |native_event|
+  event = Native(native_event)
+  if event[:keyCode].to_s == '13'
+    event.preventDefault()
+    t.color(:red)
+  end
+
+end
+
+t.keyboard(:up) do |native_event|
+  event = Native(native_event)
+  puts "up!!"
+end
+
+t.keyboard(true) do |native_event|
+  event = Native(native_event)
+  puts event[:keyCode]
+  puts event[:key]
+
+end
+t.keyboard(:input) do |native_event|
+  event = Native(native_event)
+  puts event
+end
+
+t.keyboard(:keydown) do |native_event|
+  event = Native(native_event)
+  puts event[:keyCode]
+end
+
+wait 6 do
+  t.edit(false)
+end
+
+wait 3 do
+  text(:stopped)
+  t.keyboard(:kill)
+end
