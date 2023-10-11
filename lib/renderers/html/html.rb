@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HTML
   def initialize(id_found, current_atome)
     @html ||= JS.global[:document].getElementById(id_found.to_s)
