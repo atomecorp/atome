@@ -15,3 +15,11 @@ end
 new({ method: :keyboard, renderer: :html }) do |params, user_bloc|
   html.event(:keyboard, params, user_bloc)
 end
+
+new({ method: :play, renderer: :html }) do |params = true, user_bloc|
+  # html.event(:keyboard, params, user_bloc)
+  if params != true
+    html.currentTime(params)
+  end
+  html.action(:play)
+end

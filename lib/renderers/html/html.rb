@@ -145,14 +145,18 @@ class HTML
   end
 
   def filter(property, value)
-
     filter_needed = "#{property}(#{value})"
-    alert "filter_needed : #{filter_needed}"
     @element[:style][:filter] = filter_needed
+  end
 
-    # filter_needed = "#{property}+'('+#{value}+')"
-    # @element[:style][:filter] = filter_needed
-    # # `#{@html}.style.filter = #{property}+'('+#{value}+')'`
+  def currentTime(time)
+    @element[:currentTime] = time
+  end
+
+  def action(_ction_call)
+    # line below doesn't work width opal
+    # @element.send("#{action_call}()")
+    JS.eval("document.getElementById('#{@id}').play();")
   end
 
   def append_to(parent_id_found)
@@ -380,5 +384,35 @@ class HTML
       bloc.call if bloc.is_a? Proc
     end
   end
+
+  def online?
+    JS.eval("return navigator.onLine")
+  end
+
+  def change_tag_type(new_type)
+
+    # alert @element[:attributes].to_s
+    element_id = @element[:id]
+
+    # Utilisez JS.eval pour exécuter une fonction JavaScript qui convertit NamedNodeMap en un tableau d'objets
+    attributes_array = JS.eval(<<-JS)
+    (function() {
+      var element = document.getElementById("#{element_id}");
+      var attrs = [];
+      for (var i = 0; i < element.attributes.length; i++) {
+        var attr = element.attributes[i];
+        attrs.push({name: attr.name, value: attr.value});
+      }
+      return attrs;
+    })()
+    JS
+
+    # Affichez le tableau d'attributs en Ruby
+    attributes_array.each do |attr|
+      puts "Name: #{attr["name"]}, Value: #{attr["value"]}"
+    end
+
+  end
+
 
 end

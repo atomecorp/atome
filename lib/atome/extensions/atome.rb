@@ -113,4 +113,10 @@ if (++x ===#{repeat} )  {
 `
   end
 
+  def online?
+    if RUBY_ENGINE.downcase == 'opal' || RUBY_ENGINE.downcase == 'wasm32-wasi'
+      grab(:view).html.online?
+    else
+    end
+  end
 end

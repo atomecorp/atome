@@ -5,7 +5,7 @@ new({ renderer: :html, method: :web }) do |params, &user_proc|
 end
 new({ renderer: :html, method: :preset, type: :string })
 new({ renderer: :html, method: :renderers, type: :string })
-new({ renderer: :html, method: :delete, type: :string }) do
+new({ renderer: :html, method: :delete, type: :string }) do |params|
   html.delete(id)
 end
 

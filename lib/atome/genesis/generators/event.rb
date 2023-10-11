@@ -35,13 +35,16 @@ new({ sanitizer: :touch }) do |params, _user_bloc|
 
 end
 
-new({ particle: :play }) do
-  @atome[:pause] = :false
-end
+new({ particle: :play })
+new({ particle: :pause })
+
+# new({ particle: :play }) do
+#   @atome[:pause] = :false
+# end
 new({ particle: :time })
-new({ particle: :pause }) do
-  @atome[:play] = :false
-end
+# new({ particle: :pause }) do
+#   @atome[:play] = :false
+# end
 new({ particle: :on })
 new({ particle: :fullscreen })
 new({ particle: :mute })

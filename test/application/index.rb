@@ -88,6 +88,11 @@
 #   el_found.rotate(22).text(:hello).color(:red)
 # end
 
-b = box
+# b = box
+#
+# b.style({ left: 33, width: 44, rotate: 23, color: :yellowgreen,  shadow: true })
 
-b.style({ left: 33, width: 44, rotate: 23, color: :yellowgreen, blur: 44, shadow: true })
+# text "hello you all girls and guys!"
+
+# component
+require './test'

@@ -1,4 +1,5 @@
 #  frozen_string_literal: true
+
 # shadow({ renderers: [:browser], id: :default_shadow, type: :shadow,
 #          left: 0, top: 0, blur: 18,
 #          red: 0, green: 0, blue: 0, alpha: 0

@@ -78,13 +78,12 @@
 # alert Universe.user_atomes.length
 # puts '----------'
 # t = text({ data: :hello1, component: { size: 66 }, left: 0 })
-# t = text({ data: :hello1, component: { size: 66 }, left: 0 })
 # alert Universe.atomes.length
 # t=text({ data: :hello1,component: { size: 66 },left: 0 })
 # alert Universe.user_atomes.length
 # # alert t.id
 # wait 1 do
-#   t2=text({ data: [:hello],component: { size: 66 },left: 120 })
+#   t2=text({ data: [:hello],component: { size: 33 },left: 120 })
 #   # alert t2.id
 # end
 # b=box
@@ -94,50 +93,30 @@
 # ########################
 # Test temp below
 
-# t = text({ data: 'hello for al the people in front of their machine jhgj  jg jgh jhg  iuuy res ', center: true, top: 120, width: 77, component: { size: 11 } })
-# box
-# cc = circle({ id: :cc })
+# the_text = text({ data: 'hello for al the people in front of their machine jhgj  jg jgh jhg  iuuy res ', center: true, top: 120, width: 77, component: { size: 11 } })
+# the_box=box({left: 12})
+# the_circle=circle({ id: :cc, color: :orange })
+# the_circle.image('red_planet')
+# the_circle.color('red')
+# alert the_circle.color
 #
-# element({ id: :jj })
-# toto = grab(:view)
-# puts "toto's shape are : #{toto.shape}"
-# group({ data: toto.shape })
-#
+# element({ id: :the_element })
+# the_view = grab(:view)
+# puts "views_shape's shape are : #{the_view.shape}"
+# puts "the_circle color is #{the_circle.color}"
+# puts "the_text data is #{the_text.data}"
+# puts "the_box left is #{the_box.left}"
+# puts "the_circle particles are #{the_circle.particles}"
+# the_group=group({ data: the_view.shape })
+# alert the_group.inspect
 # wait 1 do
-#   cc.left = 633
-#   t.delete(true)
+#   the_group.left = 633
+#   the_text.delete(true)
 # end
-# # shape()
-######## WWW
-# video(:video_missing)
-#
-# image(:red_planet)
-#
-# the_one = circle(markup: :h1)
-#
-# text(:hello)
-# wait 3 do
-#   the_one.markup(:div)
-# end
-# c=circle
-# c.www({ path: "https://www.youtube.com/embed/usQDazZKWAk", left: 333 })
-# Atome.new(
-#   renderers: [:html], id: :youtube1, type: :www, attach: [:view], path: "https://www.youtube.com/embed/fjJOyfQCMvc?si=lPTz18xXqIfd_3Ql", left: 33, top: 33, width: 199, height: 199,
-#
-# )
 
-###### raw
 
-raw_data = <<STR
-<iframe width="560" height="315" src="https://www.youtube.com/embed/8BT4Q3UtO6Q?si=WI8RlryV8HW9Y0nz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-STR
-b = box({ id: :boxy })
-c = circle
-c.raw({ id: :the_raw_stuff, data: raw_data })
-# b.www({ path: "https://www.youtube.com/embed/usQDazZKWAk", left: 333 })
-# b.circle({id: :circly})
-# a = b.shape(
-#   { renderers: [:html], id: :my_test_box, type: :shape,  apply: [:shape_color],
-#     left: 120, top: 0, width: 100,smooth: 333, height: 100, overflow: :visible, attached: [], color: :white
-#   })
+
+
+
+
 
