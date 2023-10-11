@@ -167,7 +167,7 @@ class HTML
     element = JS.global[:document].getElementById(@id.to_s)
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
-        event.preventDefault()
+        Native(event).preventDefault()
       else
         bloc.call(event) if bloc.is_a? Proc
       end
@@ -180,7 +180,7 @@ class HTML
     element = JS.global[:document].getElementById(@id.to_s)
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
-        event.preventDefault()
+        Native(event).preventDefault()
       else
         bloc.call(event) if bloc.is_a? Proc
       end
@@ -192,7 +192,7 @@ class HTML
     element = JS.global[:document].getElementById(@id.to_s)
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
-        event.preventDefault()
+        Native(event).preventDefault()
       else
         bloc.call(event) if bloc.is_a? Proc
       end
@@ -209,10 +209,10 @@ class HTML
     input_handler = ->(event) do
 
       if grab(@id).keyboard[:kill] == true
-        event.preventDefault()
+        Native(event).preventDefault()
       else
-        if event[:target]
-          input_content = event[:target][:textContent] # Obtenez le contenu textuel de l'élément <pre>
+        if Native(event)[:target]
+          input_content = Native(event)[:target][:textContent] # Obtenez le contenu textuel de l'élément <pre>
           bloc.call(input_content) if bloc.is_a? Proc
         end
       end

@@ -29,4 +29,4 @@ bb.attach([:b_1])
 
 box({ id: :my_test_box })
 
-alert grab(:b_1).inspect
+# alert grab(:b_1).inspect

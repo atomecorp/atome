@@ -7,7 +7,7 @@ t.edit(true)
 
 t.keyboard(:press) do |native_event|
   event = Native(native_event)
-  puts "====> #{event}"
+  puts "====>#{event[:key]} :  #{event[:keyCode]}"
 end
 
 t.keyboard(:down) do |native_event|
@@ -30,6 +30,7 @@ t.keyboard(true) do |native_event|
   puts event[:key]
 
 end
+
 t.keyboard(:input) do |native_event|
   event = Native(native_event)
   puts event
@@ -37,14 +38,15 @@ end
 
 t.keyboard(:keydown) do |native_event|
   event = Native(native_event)
-  puts event[:keyCode]
+  puts "down : #{event[:keyCode]}"
 end
 
-wait 6 do
+wait 4.5 do
+  puts '------ :not editable: ------'
   t.edit(false)
 end
-
+#
 wait 3 do
-  text(:stopped)
+  puts '------ :stopped: ------'
   t.keyboard(:kill)
 end
