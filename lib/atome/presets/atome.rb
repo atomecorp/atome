@@ -32,21 +32,21 @@ class Atome
   end
 
   def preset_common(params, &bloc)
-    result = params[:attach].detect do |attach_to_atome|
-      atome_attach = grab(attach_to_atome)
-      if atome_attach.type == :group
-        params[:renderers].map! { |element| element == :group ? :browser : element }
-        atome_attach.data.each_with_index do |group_item, index|
-          params[:attach][params[:attach].length - 1] = group_item
-
-          params[:id] = "#{params[:id]}_#{index}"
-          grab(group_item).shape(params)
-        end
-        alert "group params are #{params}"
-      end
-      true
-    end
-    return unless result
+    # result = params[:attach].detect do |attach_to_atome|
+    #   atome_attach = grab(attach_to_atome)
+    #   if atome_attach.type == :group
+    #     params[:renderers].map! { |element| element == :group ? :browser : element }
+    #     atome_attach.data.each_with_index do |group_item, index|
+    #       params[:attach][params[:attach].length - 1] = group_item
+    #
+    #       params[:id] = "#{params[:id]}_#{index}"
+    #       grab(group_item).shape(params)
+    #     end
+    #     alert "group params are #{params}"
+    #   end
+    #   true
+    # end
+    # return unless result
 
     params[:attached] = [] unless params[:attached]
     Atome.new(params, &bloc)

@@ -36,7 +36,14 @@ class Atome
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = particle_sanitizer(element, params, &user_proc)
         create_particle(element, store, render)
+        if (self.type == :group)
+          unless element == :type || element == :id
+            puts "#{element} , #{params}"
+          end
+        else
+        end
         send("set_#{element}", params, &user_proc) # sent to  :  Atome.define_method "set_#{element}" ..
+
         # we historicize all write action below
         # we add the changes to the stack that must be synchronised
         Universe.historicize(id, :write, element, params)
@@ -75,6 +82,10 @@ class Atome
         # ex : puts a.shape => return all atome with the type 'shape' in this atome
         collected_atomes = []
         attached.each do |attached_atome|
+          collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+        end
+        # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being attached
+        apply.each do |attached_atome|
           collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
         end
         collected_atomes

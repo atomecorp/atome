@@ -75,3 +75,4 @@ new({ sanitizer: :detached }) do |values|
   end
   values
 end
+
