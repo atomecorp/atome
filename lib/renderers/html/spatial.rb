@@ -31,3 +31,8 @@ end
 new({ method: :left, type: :integer, specific: :color, renderer: :html })
 
 new({ method: :top, type: :integer, specific: :color, renderer: :html })
+
+new({ method: :rotate, type: :integer, renderer: :html }) do |params, &bloc|
+
+  html.transform(:rotate, params)
+end

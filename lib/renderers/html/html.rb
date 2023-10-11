@@ -5,6 +5,7 @@ class HTML
     @html ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
     @atome = current_atome
+    @element = JS.global[:document].getElementById(@id.to_s)
   end
 
   def connect(params, &bloc)
@@ -128,21 +129,30 @@ class HTML
     end
   end
 
-  def style(property, value = nil)
-    element_found = JS.global[:document].getElementById(@id.to_s)
-    element_found[:style][property] = value.to_s
-    if value
-      element_found[:style][property] = value.to_s
-    else
-      element_found[:style][property]
-    end
-    element_found[:style][property]
+  def transform(property, value = nil)
+    transform_needed = "#{property}(#{value}deg)"
+    @element[:style][:transform] = transform_needed.to_s
   end
 
-  def filter= values
-    property = values[0]
-    value = values[1]
-    `#{@html}.style.filter = #{property}+'('+#{value}+')'`
+  def style(property, value = nil)
+    @element[:style][property] = value.to_s
+    if value
+      @element[:style][property] = value.to_s
+    else
+      @element[:style][property]
+    end
+    @element[:style][property]
+  end
+
+  def filter(property, value)
+
+    filter_needed = "#{property}(#{value})"
+    alert "filter_needed : #{filter_needed}"
+    @element[:style][:filter] = filter_needed
+
+    # filter_needed = "#{property}+'('+#{value}+')"
+    # @element[:style][:filter] = filter_needed
+    # # `#{@html}.style.filter = #{property}+'('+#{value}+')'`
   end
 
   def append_to(parent_id_found)
@@ -166,7 +176,7 @@ class HTML
 
   def keyboard_keypress(bloc)
 
-    element = JS.global[:document].getElementById(@id.to_s)
+    # element = JS.global[:document].getElementById(@id.to_s)
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
         Native(event).preventDefault()
@@ -174,12 +184,12 @@ class HTML
         bloc.call(event) if bloc.is_a? Proc
       end
     end
-    element.addEventListener("keypress", keypress_handler)
+    @element.addEventListener("keypress", keypress_handler)
   end
 
   def keyboard_keydown(bloc)
 
-    element = JS.global[:document].getElementById(@id.to_s)
+    # element = JS.global[:document].getElementById(@id.to_s)
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
         Native(event).preventDefault()
@@ -187,11 +197,11 @@ class HTML
         bloc.call(event) if bloc.is_a? Proc
       end
     end
-    element.addEventListener("keydown", keypress_handler)
+    @element.addEventListener("keydown", keypress_handler)
   end
 
   def keyboard_keyup(bloc)
-    element = JS.global[:document].getElementById(@id.to_s)
+    # element = JS.global[:document].getElementById(@id.to_s)
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
         Native(event).preventDefault()
@@ -199,7 +209,7 @@ class HTML
         bloc.call(event) if bloc.is_a? Proc
       end
     end
-    element.addEventListener("keyup", keypress_handler)
+    @element.addEventListener("keyup", keypress_handler)
   end
 
   def keyboard_kill(bloc)
@@ -207,7 +217,7 @@ class HTML
   end
 
   def keyboard_input(bloc)
-    element = JS.global[:document].getElementById(@id.to_s)
+    # element = JS.global[:document].getElementById(@id.to_s)
     input_handler = ->(event) do
 
       if grab(@id).keyboard[:kill] == true
@@ -220,7 +230,7 @@ class HTML
       end
 
     end
-    element.addEventListener("input", input_handler)
+    @element.addEventListener("input", input_handler)
   end
 
   def event(action, options, bloc)

@@ -15,3 +15,6 @@ new({ renderer: :html, method: :smooth, type: :string }) do |value, _user_proc|
                   end
   html.style('border-radius', format_params)
 end
+new({ renderer: :html, method: :blur, type: :integer }) do |value, _user_proc|
+  html.filter(:blur, "#{value}px")
+end
