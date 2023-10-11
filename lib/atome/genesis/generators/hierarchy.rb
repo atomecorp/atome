@@ -75,4 +75,5 @@ new({ sanitizer: :detached }) do |values|
   end
   values
 end
+new({ particle: :collected })
 

@@ -36,9 +36,11 @@ class Atome
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         params = particle_sanitizer(element, params, &user_proc)
         create_particle(element, store, render)
-        if (self.type == :group)
-          unless element == :type || element == :id
-            puts "#{element} , #{params}"
+        if self.type == :group
+          unless [:type, :id, :collected].include?(element)
+            collected.each do |collected_found|
+              grab(collected_found).send(element, params)
+            end
           end
         else
         end

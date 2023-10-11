@@ -7,7 +7,7 @@ class Universe
   @classes = {}
   @atome_list = []
   @particle_list = {}
-  @renderer_list = %i[html browser headless server group log]
+  @renderer_list = %i[html browser headless server log]
   @options = {}
   @sanitizers = {}
   @specificities = {}

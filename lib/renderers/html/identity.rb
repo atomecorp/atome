@@ -22,17 +22,6 @@ new({ method: :type, type: :string, renderer: :html, specific: :raw }) do |_valu
   html.raw(@atome[:id])
 end
 
-new({ method: :type, type: :string, renderer: :html, specific: :group }) do |_value, _user_proc|
-  html.shape(@atome[:id])
-  data.each do |item|
-    # TODO: check if we create a new id of re-attach existing objects
-    item_id = "#{@atome[:id]}_#{item}"
-    html.shape(item_id)
-    html.append(item_id)
-  end
-
-end
-
 new({ method: :type, type: :string, specific: :shape, renderer: :html }) do |_value, _user_proc|
   html.shape(@atome[:id])
 end
@@ -58,7 +47,7 @@ new({ method: :path, type: :string, renderer: :html }) do |value, _user_proc|
 end
 
 new({ method: :path, type: :string, renderer: :html, specific: :image }) do |value, _user_proc|
-  html.video_path(value)
+  html.path(value)
 end
 
 new({ method: :path, type: :string, renderer: :html, specific: :www }) do |value, _user_proc|
