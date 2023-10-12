@@ -47,24 +47,24 @@ def build_app(path, production)
   `cd #{app_builder_helpers};rake build_user_code[#{path},#{production}]`
 end
 
-def content_to_add(coded_id)
-  <<~STR
-    class Atome
-      def self.aui
-        "#{coded_id}"
-      end
-    end
-  STR
-end
+# def content_to_add(coded_id)
+#   <<~STR
+#     class Atome
+#       def self.aui
+#         "#{coded_id}"
+#       end
+#     end
+#   STR
+# end
 
-def app_creation(content_to_add, current_path, project_name)
-  added_content = content_to_add
-  file_location = "#{current_path}/#{project_name}/aui.rb"
-  File.new file_location, 'w'
-  File.open(file_location, 'w') do |f|
-    f.puts added_content
-  end
-end
+# def app_creation(content_to_add, current_path, project_name)
+#   added_content = content_to_add
+#   file_location = "#{current_path}/#{project_name}/aui.rb"
+#   File.new file_location, 'w'
+#   File.open(file_location, 'w') do |f|
+#     f.puts 'added_content'
+#   end
+# end
 
 def test_app_creation(project_name, current_path, force)
   new_app_creation = false
@@ -215,16 +215,21 @@ if ARGV.include?('guard')
   end
 end
 
-def set_atome_mode(location, mode)
-  mode_file = "#{location}/src/utilities/mode.rb"
-  file_found = File.open(mode_file)
-  atome_mode=<<~STR 
-    $host = :#{mode}
-  STR
-  File.open(file_found, 'w') do |f|
-    f.puts atome_mode
-  end
-end
+# def set_atome_mode(location, mode)
+#   mode_file = "#{location}/src/utilities/mode.rb"
+#   # File.new(mode_file, "w")
+#   file_found = File.open(mode_file)
+#   atome_mode=<<~STR
+# class Atome
+#   def self.host
+#       "#{mode}"
+#   end
+# end
+#   STR
+#   File.open(file_found, 'w') do |f|
+#     f.puts atome_mode
+#   end
+# end
 
 if ARGV.include?('run')
   path = if location != '/'
@@ -240,32 +245,27 @@ if ARGV.include?('run')
     filename= File.basename(path)
     demos_list_content << filename
   end
-  demos_list_file = "#{demo_location}/demos_list.rb"
-  File.open(demos_list_file, 'w') do |f|
-    # f.puts "class Atome_demo\n  def demos_list\n    #{demos_list_content}\n  end\nend"
-    f.puts "def demos_list\n  #{demos_list_content}\nend"
-  end
 
   case build_target
   when 'android'
-    set_atome_mode(path,'tauri')
+    # set_atome_mode(path,'tauri')
     # TODO: write code here
   when 'browser'
-    set_atome_mode(path,'browser')
+    # set_atome_mode(path,'browser')
     run_application(:browser, path)
   when 'freebsd'
-    set_atome_mode(path,'native')
+    # set_atome_mode(path,'native')
     # TODO: write code here
   when 'ios'
-    set_atome_mode(path,'tauri')
+    # set_atome_mode(path,'tauri')
     # TODO: write code here
   when 'linux'
     # TODO: write code here
   when 'osx'
-    set_atome_mode(path,'tauri')
+    # set_atome_mode(path,'tauri')
     run_application(:osx, path)
   when 'server'
-    set_atome_mode(path,'server')
+    # set_atome_mode(path,'server')
     run_application(:server, path, port, production)
   when 'windows'
     # TODO: write code here

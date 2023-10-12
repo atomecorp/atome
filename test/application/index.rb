@@ -1,7 +1,8 @@
 #  frozen_string_literal: true
 
-# require './examples/drag'
+require './examples/shadow'
 
+# alert "==> #{Atome.aui}"
 # require '../experimental/scroll'
 # https://github.com/travist/jsencrypt
 
@@ -10,6 +11,9 @@
 # TODO: change atomic repository so that it install atome gem correctly
 # TODO : find a way to unbind a specific event
 # TODO : animation
+# TODO : shadow
+# TODO : matrix
+# TODO : implement scroll
 # TODO : markup to allow after creation changes
 
 
@@ -67,28 +71,26 @@
 # end
 #
 
-new({ atome: :matrix })
-new({ particle: :cells })
-
-
+# new({ atome: :matrix })
+# new({ particle: :cells })
+#
+#
 # m=matrix({  id: :the_m, width: :auto, left: 130, top: 0, right: 100, height: 399, smooth: 8, color: :yellowgreen,
 #             cells: {
 #               particles: { margin: 9, color: :red, smooth: 9, shadow: { blur: 9, left: 3, top: 3,id: :cell_shadow } }
 #             }
 #          })
-m = matrix({ id: :the_m, width: 333, left: 130, top: 30, right: 100, height: 399, smooth: 8, color: :yellowgreen,
-             cells: {
-               particles: { margin: 9, color: :red, smooth: 9, shadow: { blur: 9, left: 3, top: 3, id: :cell_shadow } }
-             }
-           })
+
+#
+
 # m=text({data: :hello, edit: true})
-m.drag(true)
-m.on(:resize) do |event|
-  puts event[:dx]
-end
-m.resize(true) do |event|
-  puts event
-end
+# m.drag(true)
+# m.on(:resize) do |event|
+#   puts event[:dx]
+# end
+# m.resize(true) do |event|
+#   puts event
+# end
 
 # s=shape({})
 # m=matrix({})

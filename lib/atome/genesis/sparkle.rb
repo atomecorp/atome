@@ -82,7 +82,7 @@ def atome_infos
   puts "atome version: #{Atome::VERSION}"
   puts "device identity: #{Universe.app_identity}"
   puts "application identity: #{Atome::aui}"
-  puts "host framework: #{$host}"
+  puts "host framework: #{Atome::host}"
   puts "engine: #{Universe.engine}"
   puts "users: #{Universe.users}"
   puts "current user: #{Universe.current_user}"
@@ -94,5 +94,4 @@ end
 
 # default_user.set_current_user(:anonymous)
 Universe.current_machine = machine_id
-
 atome_infos

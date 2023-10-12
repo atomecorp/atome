@@ -84,7 +84,7 @@ end
 
 def modify_and_copy_file(source_path, destination_path,source_code)
   file_content = File.read(source_path)
-  modified_content=file_content.gsub('     ',' ').gsub('    ',' ').gsub('   ',' ').gsub('  ',' ').gsub("require './", "require 'temp/opal/").gsub('require "./', 'require "temp/opal/')
+  modified_content = file_content.gsub('     ', ' ').gsub('    ', ' ').gsub('   ', ' ').gsub('  ', ' ').gsub("require './", "require 'tmp/opal/").gsub('require "./', 'require "tmp/opal/')
   File.write(destination_path, modified_content)
 
 end
@@ -113,11 +113,11 @@ def build_user_code(user_project_path, source_code)
 
   source_directory = "#{source_code}/application"
 
-  destination_directory = "#{source_code}/temp/opal"
+  destination_directory = "#{source_code}/tmp/opal"
 
   process_directory(source_directory, destination_directory, source_code)
 
-  application_content = builder.build("#{source_code}/temp/opal/index.rb").to_s
+  application_content = builder.build("#{source_code}/tmp/opal/index.rb").to_s
 
   File.open(application_js, 'w') do |f|
     f.puts application_content
