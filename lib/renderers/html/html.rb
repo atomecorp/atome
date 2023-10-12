@@ -125,7 +125,7 @@ class HTML
     @html[:onload] = lambda do |_event|
       width = @html[:width]
       height = @html[:height]
-      puts "Width: #{width}, Height: #{height}"
+      # puts "Width: #{width}, Height: #{height}"
     end
   end
 

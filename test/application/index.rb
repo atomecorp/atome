@@ -1,6 +1,6 @@
 #  frozen_string_literal: true
 
-require './examples/drag'
+# require './examples/drag'
 
 # require '../experimental/scroll'
 # https://github.com/travist/jsencrypt
@@ -67,16 +67,24 @@ require './examples/drag'
 # end
 #
 # new({atome: :poilu})
-# new({ atome: :matrix })
-# new({ particle: :cells })
+new({ atome: :matrix })
+new({ particle: :cells })
 
 # m=matrix({  id: :the_m, width: :auto, left: 130, top: 0, right: 100, height: 399, smooth: 8, color: :yellowgreen,
 #             cells: {
 #               particles: { margin: 9, color: :red, smooth: 9, shadow: { blur: 9, left: 3, top: 3,id: :cell_shadow } }
 #             }
 #          })
+# s=shape({})
+# m=matrix({})
+# alert s.inspect
+# alert m.inspect
 # m.structure()
-# matrix({ width: :auto, left: 130, top: 0, right: 100, height: 399, smooth: 8, color: :green })
+m = matrix({ width: :auto, left: 130, top: 0, right: 100, height: 399, smooth: 8, color: :green })
+# wait 2 do
+#   m.width(123)
+#   # puts "final width is : #{m.width}"
+# end
 
 # mm.cells do |el|
 #   group(el)
