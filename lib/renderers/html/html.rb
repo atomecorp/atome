@@ -123,9 +123,8 @@ class HTML
     # image = JS.global[:Image].new
     @html[:src] = objet_path
     @html[:onload] = lambda do |_event|
-      width = @html[:width]
-      height = @html[:height]
-      # puts "Width: #{width}, Height: #{height}"
+      @html[:width]
+      @html[:height]
     end
   end
 
@@ -177,10 +176,24 @@ class HTML
   end
 
   ###### event handler ######
+  def on(property, bloc)
+    property = property.to_s
+    if property == 'resize'
+      event_handler = ->(event) do
+        width = JS.global[:window][:innerWidth]
+        height = JS.global[:window][:innerHeight]
+        bloc.call({ width: width, height: height }) if bloc.is_a? Proc
+      end
+      JS.global[:window].addEventListener('resize', event_handler)
+    else
+      event_handler = ->(event) do
+        bloc.call(event) if bloc.is_a? Proc
+      end
+      @element.addEventListener(property, event_handler)
+    end
+  end
 
   def keyboard_keypress(bloc)
-
-    # element = JS.global[:document].getElementById(@id.to_s)
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
         Native(event).preventDefault()
@@ -192,8 +205,6 @@ class HTML
   end
 
   def keyboard_keydown(bloc)
-
-    # element = JS.global[:document].getElementById(@id.to_s)
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
         Native(event).preventDefault()
@@ -205,7 +216,6 @@ class HTML
   end
 
   def keyboard_keyup(bloc)
-    # element = JS.global[:document].getElementById(@id.to_s)
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
         Native(event).preventDefault()
@@ -221,9 +231,7 @@ class HTML
   end
 
   def keyboard_input(bloc)
-    # element = JS.global[:document].getElementById(@id.to_s)
     input_handler = ->(event) do
-
       if grab(@id).keyboard[:kill] == true
         Native(event).preventDefault()
       else
@@ -322,6 +330,35 @@ class HTML
     end)
   end
 
+  def resize(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.resizable({
+                         edges: { left: true, right: true, top: true, bottom: true },
+                         inertia: true,
+                         modifiers: [],
+                         listeners: {
+                           move: lambda do |native_event|
+                             event = Native(native_event)
+                             bloc.call({ width: event[:rect][:width], height: event[:rect][:height] }) if bloc.instance_of? Proc
+                             x = (@element[:offsetLeft].to_f || 0)
+                             y = (@element[:offsetTop].to_f || 0)
+                             width = event[:rect][:width]
+                             height = event[:rect][:height]
+                             # Translate when resizing from any corner
+                             x += event[:deltaRect][:left].to_f
+                             y += event[:deltaRect][:top].to_f
+
+                             @element[:style][:left] = "#{x}px"
+                             @element[:style][:top] = "#{y}px"
+                             @element[:style][:width] = "#{width}px"
+                             @element[:style][:height] = "#{height}px"
+                           end
+                         },
+
+                       })
+  end
+
+
   def over_over(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('mouseover') do
@@ -332,7 +369,6 @@ class HTML
   def over_false(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.unset
-
   end
 
   def over_enter(bloc)

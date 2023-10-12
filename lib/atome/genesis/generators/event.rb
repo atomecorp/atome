@@ -182,3 +182,5 @@ new({ sanitizer: :keyboard }) do |params|
 
 end
 
+new({ particle: :resize })
+

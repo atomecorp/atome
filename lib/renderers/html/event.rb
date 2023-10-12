@@ -23,3 +23,11 @@ new({ method: :play, renderer: :html }) do |params = true, user_bloc|
   end
   html.action(:play)
 end
+
+new({ method: :on, renderer: :html }) do |params, user_bloc|
+  html.on(params, user_bloc)
+end
+
+new({ method: :resize, renderer: :html }) do |_params, user_bloc|
+  html.resize(user_bloc)
+end
