@@ -235,20 +235,20 @@ class Atome
     end
   end
 
-  def physical
-    # TODO :  automatise materials type list when creating a new atome it should be specified if material or not
-    types = %i[texts images videos shapes wwws]
-    atomes_found = []
-    types.each do |type|
-      ids_found = atome[type]
-      next unless ids_found
-
-      ids_found.each do |id_found|
-        atomes_found << id_found
-      end
-    end
-    atomes_found
-  end
+  # def physical
+  #   # TODO :  automatise materials type list when creating a new atome it should be specified if material or not
+  #   types = %i[texts images videos shapes wwws]
+  #   atomes_found = []
+  #   types.each do |type|
+  #     ids_found = atome[type]
+  #     next unless ids_found
+  #
+  #     ids_found.each do |id_found|
+  #       atomes_found << id_found
+  #     end
+  #   end
+  #   atomes_found
+  # end
 
   def detach_atome(atome_id_to_detach)
     atome_to_detach = grab(atome_id_to_detach)

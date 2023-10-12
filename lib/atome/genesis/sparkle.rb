@@ -87,7 +87,9 @@ def atome_infos
   puts "users: #{Universe.users}"
   puts "current user: #{Universe.current_user}"
   puts "machine: #{Universe.current_machine}"
-  puts "server: #{Universe.current_server}"
+  server = Universe.current_server
+  server ||= 'disconnected'
+  puts "server: #{server}"
 end
 
 # default_user.set_current_user(:anonymous)

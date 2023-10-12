@@ -180,6 +180,7 @@ class Universe
       if RUBY_ENGINE.downcase != :native
         grab(:view).html.internet
       else
+        # write code here for native
       end
     end
 

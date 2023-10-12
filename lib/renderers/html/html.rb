@@ -389,29 +389,4 @@ class HTML
     JS.eval("return navigator.onLine")
   end
 
-  def change_tag_type(new_type)
-
-    # alert @element[:attributes].to_s
-    element_id = @element[:id]
-
-    # Utilisez JS.eval pour exécuter une fonction JavaScript qui convertit NamedNodeMap en un tableau d'objets
-    attributes_array = JS.eval(<<-JS)
-    (function() {
-      var element = document.getElementById("#{element_id}");
-      var attrs = [];
-      for (var i = 0; i < element.attributes.length; i++) {
-        var attr = element.attributes[i];
-        attrs.push({name: attr.name, value: attr.value});
-      }
-      return attrs;
-    })()
-    JS
-
-    # Affichez le tableau d'attributs en Ruby
-    attributes_array.each do |attr|
-      puts "Name: #{attr["name"]}, Value: #{attr["value"]}"
-    end
-
-  end
-
 end

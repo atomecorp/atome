@@ -1,16 +1,16 @@
 #  frozen_string_literal: true
 
-# require './examples/keyboard'
+require './examples/drag'
+
 # require '../experimental/scroll'
 # https://github.com/travist/jsencrypt
 
-# TODO : debug code below:
 
 # TODO: check that atome gem build correctly the solution
 # TODO: change atomic repository so that it install atome gem correctly
-# TODO : add onscroll event
 # TODO : find a way to unbind a specific event
-
+# TODO : animation
+# TODO : markup to allow after creation changes
 
 
 # new(particle: :language)
@@ -67,8 +67,8 @@
 # end
 #
 # new({atome: :poilu})
-new({ atome: :matrix })
-new({ particle: :cells })
+# new({ atome: :matrix })
+# new({ particle: :cells })
 
 # m=matrix({  id: :the_m, width: :auto, left: 130, top: 0, right: 100, height: 399, smooth: 8, color: :yellowgreen,
 #             cells: {
@@ -76,7 +76,7 @@ new({ particle: :cells })
 #             }
 #          })
 # m.structure()
-matrix({ width: :auto, left: 130, top: 0, right: 100, height: 399, smooth: 8, color: :green })
+# matrix({ width: :auto, left: 130, top: 0, right: 100, height: 399, smooth: 8, color: :green })
 
 # mm.cells do |el|
 #   group(el)
