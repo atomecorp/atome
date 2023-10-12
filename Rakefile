@@ -78,10 +78,11 @@ end
 
 def build_common(application_location, host_type, user_code)
   user_code ||= './vendor/assets/application'
-  FileUtils.mkdir_p(application_location) unless Dir.exist?(application_location)
+  # building application directory and opal temp
+  FileUtils.mkdir_p("#{application_location}/tmp/opal") unless Dir.exist?(application_location)
   `cp -r ./vendor/assets/ #{application_location}/`
   build_aui("#{application_location}/src/utilities/aui.rb")
-  build_host_type("#{application_location}/src/utilities/mode.rb", host_type)
+  build_host_type("#{application_location}/src/utilities/host_mode.rb", host_type)
   `cp -r #{user_code} #{application_location}`
 end
 
@@ -95,7 +96,7 @@ def wasm_initialize(path, app_name, wasi_source)
   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
   #  run task : reset_cache or  delete the tmp dir :
   # and UNCOMMENT the line  below : ('curl -LO ....')
-  # `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
   `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
@@ -112,22 +113,7 @@ def wasm_initialize(path, app_name, wasi_source)
   system(command)
 end
 
-task :test_opal do
-  app_name = :test
-  dest_path = './tmp/'
-  user_code = './test/application'
-  application_location = "#{dest_path}#{app_name}"
-  build_common(application_location, :server, user_code)
-  # As Ruby Wasm and Opal have different require usage we must create and copy files into a temp folder
-  # test_temp_dir = "tmp/test_app/temp"
-  # Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
-  # test_opal_dir = "tmp/test_app/temp/opal"
-  # Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
 
-  `cd #{application_location} ;atome update;atome run browser`
-  `open #{application_location}/src/index_opal.html`
-  puts 'atome opal is build and running!'
-end
 
 task :test_wasm do
   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
@@ -185,7 +171,7 @@ task :test_osx do
   dest_path = './tmp/'
   user_code = './test/application'
   application_location = "#{dest_path}#{app_name}"
-  build_common(application_location, :osx, user_code)
+  build_common(application_location, :tauri, user_code)
   wasm_initialize(dest_path, app_name, wasi_source)
   `cd #{application_location};atome update;atome run osx`
   puts 'atome osx is running'
@@ -196,44 +182,56 @@ task :test_server do
   dest_path = './tmp/'
   user_code = './test/application'
   application_location = "#{dest_path}#{app_name}"
-  build_common(application_location, :server, user_code)
-  # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
-  # test_temp_dir = "tmp/test_app/temp"
-  # Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
-  # test_opal_dir = "tmp/test_app/temp/opal"
-  # Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
+  build_common(application_location, :roda, user_code)
   `cd #{application_location};atome update;atome run server guard production`
-  # `cd #{application_location};atome update;atome run server guard production`
-
 end
 
-# task :run_wasm_client_code do
-#   source_file = "vendor/assets/application/index.rb"
-#   # source_file = "test/application/index.rb"
-#   source_file = "test/client/delices_de_vezelin/index.rb"
-#   new_file_content = generate_resolved_file(source_file)
-#   index_html = File.read("vendor/assets/src/index.html")
-#   index_html = index_html.sub('</html>', "<script type='text/ruby' >#{new_file_content}</script>\n</html>")
-#   File.write('tmp/test_app/src/index.html', index_html)
-#   `open tmp/test_app/src/index.html`
-#   puts 'atome wasm user code executed'
-# end
+task :test_opal do
+  app_name = :test
+  dest_path = './tmp/'
+  user_code = './test/application'
+  application_location = "#{dest_path}#{app_name}"
+  build_common(application_location, :opal, user_code)
+  `cd #{application_location} ;atome update;atome run browser`
+  `open #{application_location}/src/index_opal.html`
+  puts 'atome opal is build and running!'
+end
 
-# task :build_gem do
-#   build_common('production', :universal)
-#
-#   # As Ruby Wasm and Opal have different require usage we must create and copy fail into a temp file
-#   test_temp_dir = "tmp/production/temp"
-#   Dir.mkdir(test_temp_dir) unless Dir.exist?(test_temp_dir)
-#   test_opal_dir = "tmp/production/temp/opal"
-#   Dir.mkdir(test_opal_dir) unless Dir.exist?(test_opal_dir)
-#   `cd tmp/production;atome update`
-#   `rake build`
-#   `cd pkg; gem install atome --local`
-#   `open tmp/production/src/index.html`
-#
-#   puts 'atome opal production is build'
-# end
+task :build_gem do
+
+  wasi_source = 'wasi-vfs-osx_arm'
+  app_name = :production
+  dest_path = './tmp/'
+  user_code = './vendor/assets/application'
+  # application_location = "#{dest_path}#{app_name}"
+
+  # app_name = :test
+  # dest_path = './tmp/'
+  # user_code = './test/application'
+  application_location = "#{dest_path}#{app_name}"
+  build_common(application_location, :opal, user_code)
+  wasm_initialize(dest_path, app_name, wasi_source)
+  `cd #{application_location} ;atome update;atome run browser`
+  `rake build`
+  puts 'atome opal production is build'
+end
+
+task :run_wasm_client_code do
+
+  app_name = :test
+  dest_path = './tmp/'
+  user_code = './test/application'
+  # user_code = './vendor/assets/application'
+  # user_code = './test/client/delices_de_vezelin'
+  application_location = "#{dest_path}#{app_name}"
+  source_file = "#{user_code}/index.rb"
+  new_file_content = generate_resolved_file(source_file)
+  index_html = File.read("vendor/assets/src/index.html")
+  index_html = index_html.sub('</html>', "<script type='text/ruby' >#{new_file_content}</script>\n</html>")
+  File.write("#{application_location}/src/index.html", index_html)
+  `open #{application_location}/src/index.html`
+  puts 'atome wasm user code executed'
+end
 
 
 

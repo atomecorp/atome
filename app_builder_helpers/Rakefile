@@ -25,7 +25,7 @@ def build_opal(user_project_path)
   end
 end
 
-def build_aui(user_project_path)
+def build_aui_for_opal(user_project_path)
   #  now we add an uniq aui to the app
   aui_js = "#{user_project_path}/src/js/aui.js"
   File.new aui_js, 'w'
@@ -33,6 +33,17 @@ def build_aui(user_project_path)
   aui_content = builder.build("#{user_project_path}/src/utilities/aui.rb").to_s
   File.open(aui_js, 'w') do |f|
     f.puts aui_content
+  end
+end
+
+def build_host_mode_for_opal(user_project_path)
+  #  now we add an uniq aui to the app
+  host_mode_js = "#{user_project_path}/src/js/host_mode.js"
+  File.new host_mode_js, 'w'
+  builder = Opal::Builder.new
+  host_mode_content = builder.build("#{user_project_path}/src/utilities/host_mode.rb").to_s
+  File.open(host_mode_js, 'w') do |f|
+    f.puts host_mode_content
   end
 end
 
@@ -252,10 +263,10 @@ end
 task default: :run
 
 def build_libraries(user_project_path, gem_location)
-  build_aui(user_project_path)
+  build_aui_for_opal(user_project_path)
+  build_host_mode_for_opal(user_project_path)
   build_atome_kernel(user_project_path, gem_location)
   build_opal(user_project_path)
-  # build_opal_browser(user_project_path)
   build_opal_parser(user_project_path)
   build_opal_extensions(user_project_path, gem_location)
 end

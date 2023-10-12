@@ -10,8 +10,4 @@
 /Gemfile.lock
 *.ds_store
 *.idea
-/vendor/assets/src/js/atome/kernel.js
-/vendor/assets/src/js/application.js
-/vendor/assets/src/js/aui.js
-/vendor/assets/src/js/opal/
-/vendor/assets/src/wasm/ruby/
+
