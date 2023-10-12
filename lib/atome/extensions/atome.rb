@@ -60,10 +60,6 @@ class Object
     grab(:view).circle(params, &proc)
   end
 
-  def matrix(params = {}, &proc)
-    grab(:view).matrix(params, &proc)
-  end
-
   # #############commented batch methods
   # # the method below generate Atome method creation at Object level
   def atome_method_for_object(element)
@@ -113,10 +109,4 @@ if (++x ===#{repeat} )  {
 `
   end
 
-  def online?
-    if RUBY_ENGINE.downcase == 'opal' || RUBY_ENGINE.downcase == 'wasm32-wasi'
-      grab(:view).html.online?
-    else
-    end
-  end
 end

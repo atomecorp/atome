@@ -385,7 +385,7 @@ class HTML
     end
   end
 
-  def online?
+  def internet
     JS.eval("return navigator.onLine")
   end
 
@@ -413,6 +413,5 @@ class HTML
     end
 
   end
-
 
 end

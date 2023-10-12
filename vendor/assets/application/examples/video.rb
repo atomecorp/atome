@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if online?
+if Universe.internet
   v = video({ path: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" })
 else
   v = video(:video_missing)

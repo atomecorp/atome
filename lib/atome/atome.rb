@@ -117,8 +117,8 @@ class Atome
   public
 
   # the line below is used for ephemera atomes
-  attr_accessor :property, :value, :real_atome, :user_proc
-  attr_reader :atome, :structure # , :at_time
+  # attr_accessor :property, :value, :real_atome, :user_proc
+  attr_reader :atome, #:structure # , :at_time
 
   def set(value)
     @real_atome[@property] = value
@@ -160,6 +160,6 @@ class Atome
     @atome[element]
   end
 
-  Universe.connected
+  # Universe.connected
 end
 

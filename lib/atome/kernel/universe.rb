@@ -176,8 +176,11 @@ class Universe
       @machine = machine_id
     end
 
-    def connected
-      true
+    def internet
+      if RUBY_ENGINE.downcase != :native
+        grab(:view).html.internet
+      else
+      end
     end
 
     def synchronised(action_nb, pass)

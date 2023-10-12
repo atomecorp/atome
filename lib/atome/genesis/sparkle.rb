@@ -82,7 +82,6 @@ def atome_infos
   puts "atome version: #{Atome::VERSION}"
   puts "device identity: #{Universe.app_identity}"
   puts "application identity: #{Atome::aui}"
-  # puts "application mode: #{Atome.mode}"
   puts "host framework: #{$host}"
   puts "engine: #{Universe.engine}"
   puts "users: #{Universe.users}"
