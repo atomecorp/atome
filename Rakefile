@@ -13,34 +13,34 @@ task :reset_cache do
   `rm  -r -f ./pkg`
 end
 
-def resolve_requires(file_path, root_path, processed_files = Set.new, depth = 0)
-  return '' unless File.exist?(file_path)
-  return '' if processed_files.include?(file_path) || depth > 10 # check circular dependencies and depth
-
-  content = File.read(file_path)
-  processed_files.add(file_path)
-  current_dir = File.dirname(File.expand_path(file_path)) # use the absolute pah
-  content.gsub!(/^(require|require_relative)\s+['"](.*?)['"]$/) do |match|
-    type = $1
-    required_file_name = $2
-    required_file = if type == 'require_relative'
-                      File.join(current_dir, required_file_name + '.rb')
-                    else
-                      File.join(root_path, required_file_name + '.rb')
-                    end
-    if File.exist?(required_file)
-      resolve_requires(required_file, root_path, processed_files, depth + 1)
-    else
-      match
-    end
-  end
-  content
-end
-
-def generate_resolved_file(source_file_path)
-  root_path = File.dirname(File.expand_path(source_file_path))
-  resolve_requires(source_file_path, root_path)
-end
+# def resolve_requires(file_path, root_path, processed_files = Set.new, depth = 0)
+#   return '' unless File.exist?(file_path)
+#   return '' if processed_files.include?(file_path) || depth > 10 # check circular dependencies and depth
+#
+#   content = File.read(file_path)
+#   processed_files.add(file_path)
+#   current_dir = File.dirname(File.expand_path(file_path)) # use the absolute pah
+#   content.gsub!(/^(require|require_relative)\s+['"](.*?)['"]$/) do |match|
+#     type = $1
+#     required_file_name = $2
+#     required_file = if type == 'require_relative'
+#                       File.join(current_dir, required_file_name + '.rb')
+#                     else
+#                       File.join(root_path, required_file_name + '.rb')
+#                     end
+#     if File.exist?(required_file)
+#       resolve_requires(required_file, root_path, processed_files, depth + 1)
+#     else
+#       match
+#     end
+#   end
+#   content
+# end
+#
+# def generate_resolved_file(source_file_path)
+#   root_path = File.dirname(File.expand_path(source_file_path))
+#   resolve_requires(source_file_path, root_path)
+# end
 
 # def build_aui(path)
 #   FileUtils.mkdir_p(path) unless Dir.exist?(path)
@@ -60,19 +60,19 @@ end
 #   end
 # end
 
-def build_host_type(path, host_mode)
-  host_type = <<~STR
-    class Atome
-      def self.host
-        "#{host_mode}"
-      end
-    end
-  STR
-  File.new(path, 'w')
-  File.open(path, 'w') do |f|
-    f.puts host_type
-  end
-end
+# def build_host_type(path, host_mode)
+#   host_type = <<~STR
+#     class Atome
+#       def self.host
+#         "#{host_mode}"
+#       end
+#     end
+#   STR
+#   File.new(path, 'w')
+#   File.open(path, 'w') do |f|
+#     f.puts host_type
+#   end
+# end
 
 # def build_common(application_location, host_type, user_code)
 #   user_code ||= './vendor/assets/application'
@@ -187,7 +187,7 @@ task :test_opal do
   destination = './tmp/'
   create_application(source, destination, project_name)
   # the line below is to add addition script to the application folder (useful for test per example)
-  replace_application_folder(source, destination, project_name)
+  add_to_application_folder(source, destination, project_name)
   # build opal
   build_opal_library(source, destination, project_name)
   # build parser
@@ -195,19 +195,14 @@ task :test_opal do
   # build atome kernel
   build_atome_kernel_for_opal(source, destination, project_name)
   # build host_mode
-  build_host_mode(destination, project_name, :opal)
+  build_host_mode(destination, project_name, :web)
   # build Opal extensions
-  build_opal_extensions(source, destination, project_name)
-  # build Infos
   build_opal_extensions(source, destination, project_name)
   # build application
   build_opal_application(source, destination, project_name)
-
-  # build_common(application_location, :opal, user_code)
-  # `cd #{application_location} ;atome update`
-  # # `cd #{application_location} ;atome run browser`
-  # `open #{application_location}/src/index_opal.html`
-  # puts 'atome opal is build and running!'
+  # open the app
+  `open #{destination}#{project_name}/src/index_opal.html`
+  puts 'atome opal is build and running!'
 end
 task :build_gem do
   # wasi_source = 'wasi-vfs-osx_arm'

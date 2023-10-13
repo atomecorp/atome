@@ -1,7 +1,9 @@
 #  frozen_string_literal: true
 
-require './examples/shadow'
-
+require "./examples/shadow"
+# require './web2'
+# require File.expand_path('../examples/shadow.rb', __FILE__)
+# require File.expand_path('../web2.rb', __FILE__)
 # alert "==> #{Atome.aui}"
 # require '../experimental/scroll'
 # https://github.com/travist/jsencrypt
@@ -15,7 +17,6 @@ require './examples/shadow'
 # TODO : matrix
 # TODO : implement scroll
 # TODO : markup to allow after creation changes
-
 
 # new(particle: :language)
 # new(particle: :international)
