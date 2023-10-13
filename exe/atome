@@ -108,7 +108,7 @@ end
 
 def add_to_application_folder(script_source, destination, project_name)
   # this method is to add addition script to the application folder (useful for test per example)
-  source_dir = "#{script_source}test/application"
+  source_dir = "#{script_source}#{project_name}/application"
   destination_dir = "#{destination}#{project_name}/application"
   FileUtils.cp_r(Dir["#{source_dir}/*"], destination_dir)
 end
@@ -127,8 +127,6 @@ def build_opal_library(atome_source, destination, project_name, production = nil
 end
 
 def create_application(source, destination, project_name, production = nil)
-  # we delete previous app to start  a clean environment
-  # FileUtils.rm_rf("#{destination}#{project_name}")
   FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
   FileUtils.cp_r("#{source}vendor/assets/", "#{destination}#{project_name}")
   build_aui(destination, project_name)
@@ -195,7 +193,6 @@ def wasm_initialize (source, destination, project_name, wasi_source)
   STRDELIM
   cleaned_cmd = cmd.lines.reject { |line| line.start_with?('#') }.join
   command = cleaned_cmd.chomp.gsub("\n", ' ')
-  puts command
   system(command)
 end
 
