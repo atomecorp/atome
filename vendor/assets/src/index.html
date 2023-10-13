@@ -18,57 +18,11 @@
     <script type="text/javascript" src="js/third_parties/fabric.min.js" defer></script>
     <script defer src="js/atome/atome_helpers/communication.js" type="text/javascript"></script>
     <script defer src="js/atome/atome_helpers/file.js" type="text/javascript"></script>
-
     <title>atome</title>
 </head>
 <body id='user_view' class='atome' oncontextmenu="return false;">
 <div id='copyright'>©atome 2023</div>
 </body>
-
-<script>
-
-
-    let ws;
-
-    function startWebSocket(msg) {
-
-
-        ws = new WebSocket('ws://localhost:9393');
-
-        ws.onopen = function () {
-            displayMessage("Connected to WebSocket.");
-        };
-
-        ws.onmessage = function (event) {
-            displayMessage("Received: " + event.data);
-        };
-
-        ws.onclose = function (event) {
-            displayMessage("WebSocket closed.");
-        };
-
-    }
-
-    function sendMessage(msg) {
-
-        if (ws) {
-            ws.send("Hello, WebSocket!");
-            // displayMessage("Sent: Hello, WebSocket!");
-        } else {
-            displayMessage("WebSocket is not connected.");
-        }
-    }
-
-    function displayMessage(message) {
-        // alert("message is : "+message);
-        // const messagesDiv = document.getElementById('messages');
-        // messagesDiv.innerHTML += "<p>" + message + "</p>";
-        "message"
-    }
-
-</script>
-
-
 <script type="text/ruby">
     require 'js'
     require '/lib/platform_specific/wasm/atome_wasm_extensions'

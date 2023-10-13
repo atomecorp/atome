@@ -4,96 +4,225 @@
 require 'fileutils'
 require 'securerandom'
 require 'digest/sha2'
+require 'pathname'
+require 'opal'
+require 'parser'
+require 'uglifier'
+
 # below are the methods needed for atome creation and run
-def test_path(project_name, arg_name, path)
-  if project_name != 'run' && project_name != 'guard' && !project_name.nil? &&
-     project_name != 'port:' && project_name != 'server' && project_name != 'build'
-    # the line below remove the optional parameters from the project name
-    project_name = project_name.sub(ARGV[ARGV.find_index(arg_name) + 1], '')
-    "#{path}/#{project_name}"
-  end
-  path
-end
+# def test_path(project_name, arg_name, path)
+#   if project_name != 'run' && project_name != 'guard' && !project_name.nil? &&
+#     project_name != 'port:' && project_name != 'server' && project_name != 'build'
+#     # the line below remove the optional parameters from the project name
+#     project_name = project_name.sub(ARGV[ARGV.find_index(arg_name) + 1], '')
+#     "#{path}/#{project_name}"
+#   end
+#   path
+# end
+#
+# def found_path(arg_name)
+#   project_name = ARGV[ARGV.find_index(arg_name) + 1]
+#   path = `pwd`.chomp
+#   if ARGV[ARGV.find_index(arg_name) + 1] == 'production'
+#     app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
+#     `cd #{app_builder_helpers};rake minimizer[#{path}]`
+#   end
+#   path = `pwd`.chomp
+#   test_path(project_name, arg_name, path)
+# end
+#
+# def delete_all(dir, user_application = nil)
+#   Dir.foreach(dir) do |e|
+#     next if %w[. ..].include? e
+#
+#     full_name = dir + File::Separator + e
+#     if FileTest.directory?(full_name)
+#       delete_all(full_name, user_application) if user_application && dir != 'application'
+#     else
+#       File.delete(full_name)
+#     end
+#   end
+#   Dir.delete(dir) if user_application && dir != 'application'
+# end
 
-def found_path(arg_name)
-  project_name = ARGV[ARGV.find_index(arg_name) + 1]
-  path = `pwd`.chomp
-  if ARGV[ARGV.find_index(arg_name) + 1] == 'production'
-    app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
-    `cd #{app_builder_helpers};rake minimizer[#{path}]`
-  end
-  path = `pwd`.chomp
-  test_path(project_name, arg_name, path)
-end
+# def build_app(path, production)
+#   # now run the rake task to build the needed libraries (atome, renderers, etc...)
+#   app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
+#   # now run the rake task to compile user code to javascript
+#   `cd #{app_builder_helpers};rake build_user_code[#{path},#{production}]`
+# end
 
-def delete_all(dir, user_application = nil)
-  Dir.foreach(dir) do |e|
-    next if %w[. ..].include? e
+# def app_creation(project_name, force)
+#   new_app_creation = false
+#   unless force && File.directory?(project_name)
+#     new_app_creation = true
+#     Dir.mkdir project_name
+#   end
+#   new_app_creation
+# end
+# ####################################
 
-    full_name = dir + File::Separator + e
-    if FileTest.directory?(full_name)
-      delete_all(full_name, user_application) if user_application && dir != 'application'
-    else
-      File.delete(full_name)
+#
+
+# def wasm_initialize(path, app_name, wasi_source)
+#   application_location = "#{path}#{app_name}"
+#   wasm_location = "#{application_location}/src/wasm/"
+#   Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
+#   Dir.mkdir(application_location) unless Dir.exist?(application_location)
+#   wasm_temp_folder = "#{application_location}/tmp"
+#   Dir.mkdir(wasm_temp_folder) unless Dir.exist?(wasm_temp_folder)
+#   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
+#   #  run task : reset_cache or  delete the tmp dir :
+#   # and UNCOMMENT the line  below : ('curl -LO ....')
+#   `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+#   `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+#   `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
+#   `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
+#   cmd = <<~STRDELIM
+#     ./vendor/assets/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
+#     --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
+#     --mapdir lib::./lib/
+#     --mapdir /::#{application_location}/application/
+#     --mapdir utilities::#{application_location}/src/utilities/
+#     -o #{application_location}/src/wasm/ruby_browser.wasm
+#   STRDELIM
+#   cleaned_cmd = cmd.lines.reject { |line| line.start_with?('#') }.join
+#   command = cleaned_cmd.chomp.gsub("\n", ' ')
+#   system(command)
+# end
+
+def build_aui(destination, project_name)
+  path = "#{destination}#{project_name}/src/utilities/"
+  FileUtils.mkdir_p(path) unless Dir.exist?(path)
+  uuid = SecureRandom.uuid
+  sha = Digest::SHA256.hexdigest(uuid)
+  coded_id = sha.gsub('-', '_')
+  aui_file = <<~STR
+    class Atome
+      def self.aui
+        "#{coded_id}"
+      end
     end
+  STR
+  File.new("#{path}aui.rb", 'w')
+  File.open("#{path}aui.rb", 'w') do |f|
+    f.puts aui_file
   end
-  Dir.delete(dir) if user_application && dir != 'application'
-end
-
-def build_app(path, production)
-  # now run the rake task to build the needed libraries (atome, renderers, etc...)
-  app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
-  # now run the rake task to compile user code to javascript
-  `cd #{app_builder_helpers};rake build_user_code[#{path},#{production}]`
-end
-
-def test_app_creation(project_name, current_path, force)
-  new_app_creation = false
-  unless force && File.directory?(project_name)
-    new_app_creation = true
-    Dir.mkdir project_name
-    # now lets create the application identity
-    uuid = SecureRandom.uuid
-    sha = Digest::SHA256.hexdigest(uuid)
-    coded_id = sha.gsub('-', '_')
-    app_creation(content_to_add(coded_id), current_path, project_name)
+  # now building opal version
+  js_directory = "#{destination}#{project_name}/src/js"
+  opal_js = "#{js_directory}/aui.js"
+  File.new opal_js, 'w'
+  # we add platform_specific script to the Opal framework
+  opal_content = Opal::Builder.build("#{path}aui.rb").to_s
+  File.open(opal_js, 'w') do |f|
+    f.puts opal_content
   end
-  new_app_creation
+
 end
 
-def build_atome_resources(current_path, project_name, production)
-  gem_assets_location = File.join(File.dirname(__FILE__), '../vendor/assets/')
-  app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
-  target_template_location = "#{current_path}/#{project_name}"
-  Dir.entries(gem_assets_location).select do |entry|
-    if File.join(entry) && !%w[. ..].include?(entry)
-      entry = "#{File.dirname(__FILE__)}/../vendor/assets/#{entry}"
-      FileUtils.cp_r entry, target_template_location
+def build_host_mode(destination, project_name, mode)
+  path = "#{destination}#{project_name}/src/utilities/"
+  FileUtils.mkdir_p(path) unless Dir.exist?(path)
+  host_type = <<~STR
+    class Atome
+      def self.host
+        "#{mode}"
+      end
     end
+  STR
+  File.new("#{path}host_mode.rb", 'w')
+  File.open("#{path}host_mode.rb", 'w') do |f|
+    f.puts host_type
   end
-  # now run the rake task to build the needed libraries (atome, renderers, etc...)
-  `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
-end
-
-def create_application(project_name, force, production, atome_mode = 'index_opal')
-  current_path = `pwd`.chomp
-  new_app_creation = test_app_creation(project_name, current_path, force)
-  build_atome_resources(current_path, project_name, production)
-  return unless new_app_creation
-
-  # now adding name to the app
-  index_html = "#{current_path}/#{project_name}/src/#{atome_mode}.html"
-  index_html_content = File.open(index_html).read
-  index_html_content = index_html_content.gsub('<title>atome</title>', "<title>#{project_name}</title>")
-  File.open(index_html, 'w') do |f|
-    f.puts index_html_content
+  # now building opal version
+  js_directory = "#{destination}#{project_name}/src/js"
+  opal_js = "#{js_directory}/host_mode.js"
+  File.new opal_js, 'w'
+  # we add platform_specific script to the Opal framework
+  opal_content = Opal::Builder.build("#{path}host_mode.rb").to_s
+  File.open(opal_js, 'w') do |f|
+    f.puts opal_content
   end
 end
 
-def update_application(project_name, production)
-  app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
-  `cd #{app_builder_helpers};rake system_updater[#{project_name},#{production}]`
+def build_opal_application(source, destination, project_name)
+  application_js = "#{destination}#{project_name}/src/js/application.js"
+  builder = Opal::Builder.new
+  builder.append_paths("#{destination}#{project_name}/application/")
+  # puts "#{source}#{project_name}/tmp/opal/index.rb"
+
+  # source_directory = "#{source}/application"
+  # destination_directory = "#{source}/tmp/opal"
+  # process_directory(source_directory, destination_directory, source)
+  # application_content = builder.build("#{source}#{project_name}/tmp/opal/index.rb").to_s
+  application_content = builder.build("#{destination}#{project_name}/application/index.rb").to_s
+  puts application_content
+  # File.open(application_js, 'w') do |f|
+  #   f.puts application_content
+  # end
 end
+
+def replace_application_folder(script_source, destination, project_name)
+  # this method is to add addition script to the application folder (useful for test per example)
+  FileUtils.cp_r("#{script_source}test/application", "#{destination}#{project_name}/application")
+end
+
+def create_application(source, destination, project_name, production = nil)
+  FileUtils.mkdir_p(destination)
+  FileUtils.cp_r("#{source}vendor/assets/", "#{destination}#{project_name}")
+  # FileUtils.mkdir_p("#{destination}#{project_name}/tmp/opal")
+  build_aui(destination, project_name)
+
+  # build_host_mode("#{destination}/src/utilities/", :wasm)
+  # # wasm_initialize(destination, project_name)
+
+  # #############
+  # app_name = "/#{project_name}"
+  #
+  # # destination = "#{target_dir}#{app_name}/"
+  # FileUtils.rm_rf(destination) if Dir.exist?(destination)
+  # FileUtils.cp_r(source, destination)
+  #
+  # build_aui("#{destination}/src/utilities/")
+  # build_host_type("#{destination}/src/utilities/", :wasm)
+  # FileUtils.mkdir_p("#{destination}/tmp/opal") unless Dir.exist?("#{destination}/tmp/opal")
+
+end
+
+# def build_atome_resources(target_dir, project_name, production)
+#   target_location = "#{target_dir}/#{project_name}"
+#
+#   chemin_initial =__FILE__
+#   gem_location = "#{Pathname(chemin_initial).parent.parent.to_s}/vendor/assets/"
+#   #########################
+#   wasi_source = 'wasi-vfs-osx_arm'
+#   app_name = "/#{project_name}"
+#   # puts project_name
+#   dest_path = target_dir
+#   user_code = "#{gem_location}/application"
+#   application_location = "#{dest_path}#{app_name}"
+#   build_common(application_location, :opal, user_code)
+#   wasm_initialize(dest_path, app_name, wasi_source)
+#   # `cd #{application_location} ;atome update;atome run browser`
+#
+#
+#   #########################
+#   # Dir.entries(source_location).select do |folder|
+#   #   if File.join(folder) && !%w[. ..].include?(folder)
+#   #     entry = "#{File.dirname(__FILE__)}/../vendor/assets"
+#   #     FileUtils.cp_r entry, target_location
+#   #   end
+#   # end
+#   # now run the rake task to build the needed libraries (atome, renderers, etc...)
+#   #   app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
+#   # `cd #{app_builder_helpers};rake system_builder[#{current_path}/#{project_name},#{production}]`
+#
+# end
+
+# def update_application(project_name, production)
+#   app_builder_helpers = File.join(File.dirname(__FILE__), '../app_builder_helpers')
+#   `cd #{app_builder_helpers};rake system_updater[#{project_name},#{production}]`
+# end
 
 def guard_check
   loop do
@@ -102,21 +231,63 @@ def guard_check
   nil unless ARGV.include?('guard')
 end
 
-def browser_case(location)
-
-  # `cd #{location}/src;open index_opal.html`
+def build_opal_library(atome_source, destination, project_name, production = nil)
+  user_project_path = "#{destination}#{project_name}"
+  opal_directory = "#{user_project_path}/src/js/opal"
+  opal_js = "#{opal_directory}/opal.js"
+  Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
+  File.new opal_js, 'w'
+  # we add platform_specific script to the Opal framework
+  opal_content = Opal::Builder.build("#{atome_source}/lib/platform_specific/opal/opal.rb").to_s
+  File.open(opal_js, 'w') do |f|
+    f.puts opal_content
+  end
 end
 
-def osx_case(location)
+def build_opal_parser(source, destination, project_name)
+
+  parser_js = "#{destination}#{project_name}/src/js/opal/opal_parser.js"
+  File.new parser_js, 'w'
+  parser_content = Opal::Builder.build("#{source}/lib/platform_specific/opal/opal_parser.rb").to_s
+  File.open(parser_js, 'w') do |f|
+    f.puts parser_content
+  end
+end
+
+def build_atome_kernel_for_opal(source, destination, project_name)
+  #  now lets build the atome kernel
+  atome_directory = "#{destination}#{project_name}/src/js/atome"
+  kernel_js = "#{atome_directory}/kernel.js"
+  File.new kernel_js, 'w'
+  builder = Opal::Builder.new
+  builder.append_paths("#{source}lib/")
+  kernel_content = builder.build("#{source}lib/atome.rb").to_s
+  File.open(kernel_js, 'w') do |f|
+    f.puts kernel_content
+  end
+end
+
+def build_opal_extensions(source, destination, project_name)
+  opal_directory = "#{destination}#{project_name}/src/js/opal"
+  extensions_js = "#{opal_directory}/atome_opal_extensions.js"
+  File.new extensions_js, 'w'
+  builder = Opal::Builder.new
+  builder.append_paths("#{source}lib/platform_specific/opal/")
+  extensions_content = builder.build("#{source}lib/platform_specific/opal/atome_opal_extensions.rb").to_s
+  File.open(extensions_js, 'w') do |f|
+    f.puts extensions_content
+  end
+end
+
+def build_for_wasm(wasi_file)
+  puts 'building now'
+end
+
+def build_for_osx(location)
   `cd #{location};cargo tauri dev`
 end
 
-def compile_case(location)
-  `cd #{location}/src`
-  guard_check
-end
-
-def server_case(port, location, production)
+def build_for_server(port, location, production)
   threads = []
   threads << Thread.new do
     sleep 3
@@ -126,16 +297,23 @@ def server_case(port, location, production)
   `cd #{location}/server;puma --port #{port} #{prod}`
 end
 
+def compile_application(location)
+  `cd #{location}/src`
+  guard_check
+end
+
 def run_case(build_target, location, port, production)
   case build_target
   when :server
-    server_case(port, location, production)
-  when :browser
-    browser_case(location)
+    build_for_server(port, location, production)
+  when :opal
+    build_opal_library(atome_source, destination, project_name, production = nil)
+  when :wasm
+    build_for_wasm(wasi_file)
   when :osx
-    osx_case(location)
+    build_for_osx(location)
   when :compile
-    compile_case(location)
+    compile_application(location)
   when :native
     # freebsd
   else
@@ -150,41 +328,43 @@ end
 
 # below we analyse the ARGV
 location = '/'
-force = nil
+# force = nil
 production = nil
 port = 9292
 
-production = 'production' if ARGV.include?('production')
-
-force = 'force' if ARGV.include?('force')
-
-port = ARGV[ARGV.find_index('port:') + 1] if ARGV.include?('port:')
-
-platforms = %w[android browser server osx freebsd ios linux osx windows]
-# now setting build_target
-
-build_target = 'browser'
-
-platforms.each do |platform|
-  build_target = platform if ARGV.include?(platform)
-end
+# port = ARGV[ARGV.find_index('port:') + 1] if ARGV.include?('port:')
+#
+# platforms = %w[android browser server osx freebsd ios linux osx windows]
+# # now setting build_target
+#
+build_target = 'opal'
+#
+# platforms.each do |platform|
+#   build_target = platform if ARGV.include?(platform)
+# end
 
 if ARGV.include?('create')
+  production = 'production' if ARGV.include?('production')
   project_name = ARGV[1]
-  atome_mode = ARGV[2]
-  location = "/#{project_name}"
-  create_application(project_name, force, production, atome_mode)
+  # location = "/#{project_name}"
+  destination = `pwd`.chomp
+  # source = "#{Pathname(__FILE__).parent.parent.to_s}/vendor/assets/"
+  source = "#{Pathname(__FILE__).parent.parent.to_s}"
+  # source = gem_source_path
+  create_application(source, destination, project_name, production)
 end
 
-if ARGV.include?('build')
-  path = found_path('build')
-  build_app(path, production)
-end
+# if ARGV.include?('build')
+#
+#   path = found_path('build')
+#   build_app(path, production)
+# end
 
 if ARGV.include?('update')
-  # TODO: also update index.html and all other files except the application folder
-  path = found_path('update')
-  update_application(path, production)
+
+  # # TODO: also update index.html and all other files except the application folder
+  # path = found_path('update')
+  # update_application(path, production)
 end
 
 if ARGV.include?('guard')
@@ -196,7 +376,6 @@ if ARGV.include?('guard')
   end
 end
 
-
 if ARGV.include?('run')
   path = if location != '/'
            "#{`pwd`.chomp}/#{location}"
@@ -205,10 +384,10 @@ if ARGV.include?('run')
          end
   demo_location = "#{path}/src/medias/rubies"
 
-  filenames = Dir.glob(demo_location+'/examples/*.rb')
-  demos_list_content=[]
+  filenames = Dir.glob(demo_location + '/examples/*.rb')
+  demos_list_content = []
   filenames.each do |path|
-    filename= File.basename(path)
+    filename = File.basename(path)
     demos_list_content << filename
   end
 
