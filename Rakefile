@@ -84,45 +84,51 @@ end
 #   # `cp -r #{user_code} #{application_location}`
 # end
 
-def wasm_initialize(path, app_name, wasi_source)
-  application_location = "#{path}#{app_name}"
-  wasm_location = "#{application_location}/src/wasm/"
-  Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
-  Dir.mkdir(application_location) unless Dir.exist?(application_location)
-  wasm_temp_folder = "#{application_location}/tmp"
-  Dir.mkdir(wasm_temp_folder) unless Dir.exist?(wasm_temp_folder)
-  #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
-  #  run task : reset_cache or  delete the tmp dir :
-  # and UNCOMMENT the line  below : ('curl -LO ....')
-  `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
-  `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
-  `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
-  `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
-  cmd = <<~STRDELIM
-    ./vendor/assets/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
-    --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
-    --mapdir lib::./lib/
-    --mapdir /::#{application_location}/application/
-    --mapdir utilities::#{application_location}/src/utilities/
-    -o #{application_location}/src/wasm/ruby_browser.wasm
-  STRDELIM
-  cleaned_cmd = cmd.lines.reject { |line| line.start_with?('#') }.join
-  command = cleaned_cmd.chomp.gsub("\n", ' ')
-  system(command)
-end
+# def wasm_initialize(path, app_name, wasi_source)
+#   application_location = "#{path}#{app_name}"
+#   wasm_location = "#{application_location}/src/wasm/"
+#   Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
+#   Dir.mkdir(application_location) unless Dir.exist?(application_location)
+#   wasm_temp_folder = "#{application_location}/tmp"
+#   Dir.mkdir(wasm_temp_folder) unless Dir.exist?(wasm_temp_folder)
+#   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
+#   #  run task : reset_cache or  delete the tmp dir :
+#   # and UNCOMMENT the line  below : ('curl -LO ....')
+#   `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+#   `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+#   `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
+#   `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
+#   cmd = <<~STRDELIM
+#     ./vendor/assets/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
+#     --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
+#     --mapdir lib::./lib/
+#     --mapdir /::#{application_location}/application/
+#     --mapdir utilities::#{application_location}/src/utilities/
+#     -o #{application_location}/src/wasm/ruby_browser.wasm
+#   STRDELIM
+#   cleaned_cmd = cmd.lines.reject { |line| line.start_with?('#') }.join
+#   command = cleaned_cmd.chomp.gsub("\n", ' ')
+#   system(command)
+# end
+
+
 
 task :test_wasm do
-  # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-  wasi_source = 'wasi-vfs-osx_arm'
-  app_name = :test
-  dest_path = './tmp/'
-  user_code = './test/application'
-  application_location = "#{dest_path}#{app_name}"
-  build_common(application_location, :wasm, user_code)
-  wasm_initialize(dest_path, app_name, wasi_source)
-  `open #{application_location}/src/index.html`
-  puts 'atome wasm is build and running'
+  project_name = :test
+  source = './'
+  destination = './tmp/'
+  wasi_file = 'wasi-vfs-osx_arm'
+  create_application(source, destination, project_name)
+  # the line below is to add addition script to the application folder (useful for test per example)
+  add_to_application_folder(source, destination, project_name)
+  # build host_mode
+  build_host_mode(destination, project_name, 'web-wasi')
+  # build wasm
+  build_for_wasm(source, destination, project_name, wasi_file)
+  `open #{destination}#{project_name}/src/index.html`
+  puts 'atome opal is build and running!'
 end
+
 task :test_wasm_osx_x86 do
   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
   wasi_source = 'wasi-vfs-osx_x86'
@@ -181,7 +187,6 @@ task :test_server do
   `cd #{application_location};atome update;atome run server guard production`
 end
 task :test_opal do
-
   project_name = :test
   source = './'
   destination = './tmp/'
@@ -195,7 +200,7 @@ task :test_opal do
   # build atome kernel
   build_atome_kernel_for_opal(source, destination, project_name)
   # build host_mode
-  build_host_mode(destination, project_name, :web)
+  build_host_mode(destination, project_name, 'web-opal')
   # build Opal extensions
   build_opal_extensions(source, destination, project_name)
   # build application

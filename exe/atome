@@ -91,10 +91,11 @@ def build_host_mode(destination, project_name, mode)
   end
 end
 
+# opal compilation
 def build_opal_application(source, destination, project_name)
   # first we need to remplace all './require ' with require  so opal can parse the path
-  Dir.mkdir("#{destination}#{project_name}/tmp")
-  Dir.mkdir("#{destination}#{project_name}/tmp/application")
+  Dir.mkdir("#{destination}#{project_name}/tmp") unless Dir.exist?("#{destination}#{project_name}/tmp")
+  Dir.mkdir("#{destination}#{project_name}/tmp/application") unless Dir.exist?("#{destination}#{project_name}/tmp/application")
   process_directories("#{destination}#{project_name}/application", "#{destination}#{project_name}/tmp/application")
   application_js = "#{destination}#{project_name}/src/js/application.js"
   builder = Opal::Builder.new
@@ -127,8 +128,8 @@ end
 
 def create_application(source, destination, project_name, production = nil)
   # we delete previous app to start  a clean environment
-  FileUtils.rm_rf("#{destination}#{project_name}")
-  FileUtils.mkdir_p(destination)
+  # FileUtils.rm_rf("#{destination}#{project_name}")
+  FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
   FileUtils.cp_r("#{source}vendor/assets/", "#{destination}#{project_name}")
   build_aui(destination, project_name)
 end
@@ -168,6 +169,36 @@ def build_opal_extensions(source, destination, project_name)
   end
 end
 
+# wasm compilation
+
+# def wasm_initialize(path, app_name, wasi_source)
+def wasm_initialize (source, destination, project_name, wasi_source)
+  application_location = "#{destination}#{project_name}"
+  wasm_location = "#{application_location}/src/wasm/"
+  Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
+
+  wasm_temp_folder = "#{application_location}/tmp"
+  Dir.mkdir(wasm_temp_folder) unless Dir.exist?(wasm_temp_folder)
+  #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
+  # and UNCOMMENT the line  below : ('curl -LO ....')
+  # `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
+  `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
+  cmd = <<~STRDELIM
+    #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
+    --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
+    --mapdir lib::#{source}lib/
+    --mapdir /::#{application_location}/application/
+    --mapdir utilities::#{application_location}/src/utilities/
+    -o #{application_location}/src/wasm/ruby_browser.wasm
+  STRDELIM
+  cleaned_cmd = cmd.lines.reject { |line| line.start_with?('#') }.join
+  command = cleaned_cmd.chomp.gsub("\n", ' ')
+  puts command
+  system(command)
+end
+
 def guard_check
   loop do
     sleep 1
@@ -175,8 +206,8 @@ def guard_check
   nil unless ARGV.include?('guard')
 end
 
-def build_for_wasm(wasi_file)
-  puts 'building now'
+def build_for_wasm(source, destination, project_name, wasi_file)
+  wasm_initialize(source, destination, project_name, wasi_file)
 end
 
 def build_for_osx(location)
