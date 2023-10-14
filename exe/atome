@@ -283,9 +283,28 @@ if ARGV.include?('create')
 end
 
 if ARGV.include?('update')
-  # # TODO: also update index.html and all other files except the application folder
-  # path = found_path('update')
-  # update_application(path, production)
+  # TODO: also update index.html and all other files except the application folder
+  # first we delete everything but application
+  folders_to_keep = ['application']
+  Dir.foreach(destination) do |item|
+    item_path = File.join(destination, item)
+    if File.directory?(item_path) && !folders_to_keep.include?(item)
+      FileUtils.rm_rf(item_path) unless item == '.' || item == '..'
+    elsif File.file?(item_path)
+      File.delete(item_path)
+    end
+  end
+  # now we update
+  puts "#{source}/vendor/assets"
+
+  update_source = "#{source}/vendor/assets"
+
+  Dir.glob("#{update_source}/*").each do |item|
+    target = File.join(destination, File.basename(item))
+    unless File.exist?(target)
+      FileUtils.cp_r(item, target)
+    end
+  end
 end
 
 if ARGV.include?('guard')
