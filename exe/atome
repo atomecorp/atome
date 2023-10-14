@@ -11,27 +11,40 @@ require 'uglifier'
 
 # utils
 
-def modify_and_copy_file(source_path, destination_path)
+def modify_and_copy_file(source_path, destination_path, destination_dir)
+
   file_content = File.read(source_path)
+
   modified_code = file_content.gsub(/require\s+(['"])(.*?)\1/) do |match|
     quote = $1
     relative_path = $2
-    "require File.expand_path(#{quote}.#{relative_path}.rb#{quote}, __FILE__)"
+    if relative_path.start_with?('./')
+      relative_path_copy = "#{relative_path}"
+      relative_path_copy.slice!(0, 2)
+      destination_dir_copy = "#{destination_dir}"
+      destination_dir_copy.slice!(0, 2)
+      "require #{quote}#{relative_path_copy}#{quote}"
+    else
+      match
+    end
+
   end
   File.write(destination_path, modified_code)
 end
 
 def process_directories(source_dir, destination_dir)
+
   Dir.entries(source_dir).each do |entry|
     next if entry == '.' || entry == '..'
 
     source_path = File.join(source_dir, entry)
     destination_path = File.join(destination_dir, entry)
+
     if File.directory?(source_path)
       Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
       process_directories(source_path, destination_path)
     elsif File.file?(source_path)
-      modify_and_copy_file(source_path, destination_path)
+      modify_and_copy_file(source_path, destination_path, destination_dir)
     end
   end
 end
@@ -92,18 +105,50 @@ def build_host_mode(destination, project_name, mode)
 end
 
 # opal compilation
-def build_opal_application(source, destination, project_name)
+def build_opal_application(_source, destination, project_name)
   # first we need to remplace all './require ' with require  so opal can parse the path
   Dir.mkdir("#{destination}/#{project_name}/tmp") unless Dir.exist?("#{destination}/#{project_name}/tmp")
   Dir.mkdir("#{destination}/#{project_name}/tmp/application") unless Dir.exist?("#{destination}/#{project_name}/tmp/application")
   process_directories("#{destination}/#{project_name}/application", "#{destination}/#{project_name}/tmp/application")
-  application_js = "#{destination}/#{project_name}/src/js/application.js"
-  builder = Opal::Builder.new
-  builder.append_paths("#{destination}/#{project_name}}/tmp/application/")
-  application_content = builder.build("#{destination}/#{project_name}/tmp/application/index.rb").to_s
-  File.open(application_js, 'w') do |f|
-    f.puts application_content
+
+  opal_compiler_content = <<STR
+# frozen_string_literal: true
+
+require 'opal'
+application_js = "../../src/js/application.js"
+builder = Opal::Builder.new
+builder.append_paths("./")
+application_content = builder.build("./index.rb").to_s
+File.open(application_js, 'w') do |f|
+  f.puts application_content
+end
+STR
+  # dossier_destination= "#{destination}/#{project_name}}/tmp/application/"
+
+  # we create an hidden file
+  opal_compiler = "#{destination}/#{project_name}/tmp/application/.opal_compiler.rb"
+  File.open(opal_compiler, 'w') do |f|
+    f.puts opal_compiler_content
   end
+  # puts"-----------#{destination}/#{project_name}/tmp/application/.opal_compiler.rb}----------------"
+  # prev_path=`pwd`.chomp
+  # Dir.chdir("#{destination}/#{project_name}/tmp/application/")
+  # puts `pwd`
+  # opal_compiler_path = File.expand_path(".opal_compiler.rb", __dir__)
+  #
+  # # Utiliser require_relative avec le chemin absolu complet
+  # require_relative opal_compiler_path
+  # require "#{destination}/#{project_name}/tmp/application/.opal_compiler"
+  # Dir.chdir(prev_path)
+
+  puts `cd #{destination}/#{project_name}/tmp/application/;pwd;ruby .opal_compiler.rb`
+
+  # require_relative  "#{destination}/#{project_name}/tmp/application/.opal_compiler"
+  # system("#{destination}/#{project_name}/tmp/application/.opal_compiler.rb")
+  ######### `ruby #{destination}/#{project_name}/tmp/application/.opal_compiler.rb` #########
+  # system("#{destination}/#{project_name}/tmp/application/.opal_compiler.rb")
+  # puts :kjhkjhkjhk
+
 end
 
 def add_to_application_folder(script_source, destination, project_name)
@@ -167,6 +212,17 @@ def build_opal_extensions(source, destination, project_name)
 end
 
 # wasm compilation
+def wasm_common(source, destination, project_name, wasi_file, script_source = nil)
+  # create_application(source, destination, project_name)
+  # the line below is to add addition script to the application folder (useful for test per example)
+  if script_source
+    add_to_application_folder(script_source, destination, project_name)
+  end
+  # build host_mode
+  build_host_mode(destination, project_name, 'web-wasi')
+  # build wasm
+  build_for_wasm(source, destination, project_name, wasi_file)
+end
 
 # def wasm_initialize(path, app_name, wasi_source)
 def wasm_initialize (source, destination, project_name, wasi_source)
@@ -219,7 +275,7 @@ def build_for_server(destination, project_name, port, production)
     `open http://localhost:9292`
   end
   prod = '--env production' if production
-  `cd #{destination}#{project_name}/server;puma --port #{port} #{prod}`
+  `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
 end
 
 def compile_application(location)
@@ -264,10 +320,27 @@ port = if ARGV.include?('port:')
 production = 'production' if ARGV.include?('production')
 build_target = 'opal'
 wasi_file = 'wasi-vfs-osx_arm' # default to osx arm
-# TODO : get wasi params from ARG to allow comile on windows / Unix
+# TODO : get wasi params from ARG to allow compile on windows / Unix
 if ARGV.include?('create')
+  create_application(source, destination, project_name)
   # create_application(source, destination, project_name, production)
-  wasm_common(:production, wasi_file)
+  wasm_common(source, destination, project_name, wasi_file)
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
+  puts "'destination must be '/' but we may have to send 2 different destinations below "
+  build_opal_application(source, destination, project_name)
+end
+
+if ARGV.include?('rebuild')
+  # create_application(source, destination, project_name, production)
+  wasm_common(source, destination, project_name, wasi_file)
   # build opal
   build_opal_library(source, destination, project_name)
   # build parser
@@ -278,6 +351,24 @@ if ARGV.include?('create')
   build_opal_extensions(source, destination, project_name)
   # build application
   build_opal_application(source, destination, project_name)
+end
+if ARGV.include?('run')
+  # build application
+  build_opal_application(source, destination, project_name)
+end
+if ARGV.include?('debug')
+  # build application
+  # first we need to remplace all './require ' with require  so opal can parse the path
+  # Dir.mkdir("#{destination}/#{project_name}/tmp") unless Dir.exist?("#{destination}/#{project_name}/tmp")
+  # Dir.mkdir("#{destination}/#{project_name}/tmp/application") unless Dir.exist?("#{destination}/#{project_name}/tmp/application")
+  # process_directories("#{destination}/#{project_name}/application", "#{destination}/#{project_name}/tmp/application")
+  application_js = "#{destination}/#{project_name}/src/js/application.js"
+  builder = Opal::Builder.new
+  builder.append_paths("#{destination}/#{project_name}}/tmp/application/")
+  application_content = builder.build("#{destination}/#{project_name}/tmp/application/index.rb").to_s
+  File.open(application_js, 'w') do |f|
+    f.puts application_content
+  end
 end
 
 # if ARGV.include?('build')
