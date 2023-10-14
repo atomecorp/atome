@@ -137,6 +137,11 @@ task :test_server do
   # build application
   build_opal_application(source, destination, project_name)
   # build and open the app
+  threads = []
+  threads << Thread.new do
+    sleep 1
+    `open http://localhost:9292`
+  end
   build_for_server(destination, project_name, 9292, :production)
 end
 
