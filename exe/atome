@@ -38,7 +38,7 @@ end
 
 # builders
 def build_aui(destination, project_name)
-  path = "#{destination}#{project_name}/src/utilities/"
+  path = "#{destination}/#{project_name}/src/utilities/"
   FileUtils.mkdir_p(path) unless Dir.exist?(path)
   uuid = SecureRandom.uuid
   sha = Digest::SHA256.hexdigest(uuid)
@@ -55,7 +55,7 @@ def build_aui(destination, project_name)
     f.puts aui_file
   end
   # now building opal version
-  js_directory = "#{destination}#{project_name}/src/js"
+  js_directory = "#{destination}/#{project_name}/src/js"
   opal_js = "#{js_directory}/aui.js"
   File.new opal_js, 'w'
   # we add platform_specific script to the Opal framework
@@ -67,7 +67,7 @@ def build_aui(destination, project_name)
 end
 
 def build_host_mode(destination, project_name, mode)
-  path = "#{destination}#{project_name}/src/utilities/"
+  path = "#{destination}/#{project_name}/src/utilities/"
   FileUtils.mkdir_p(path) unless Dir.exist?(path)
   host_type = <<~STR
     class Atome
@@ -81,7 +81,7 @@ def build_host_mode(destination, project_name, mode)
     f.puts host_type
   end
   # now building opal version
-  js_directory = "#{destination}#{project_name}/src/js"
+  js_directory = "#{destination}/#{project_name}/src/js"
   opal_js = "#{js_directory}/host_mode.js"
   File.new opal_js, 'w'
   # we add platform_specific script to the Opal framework
@@ -94,13 +94,13 @@ end
 # opal compilation
 def build_opal_application(source, destination, project_name)
   # first we need to remplace all './require ' with require  so opal can parse the path
-  Dir.mkdir("#{destination}#{project_name}/tmp") unless Dir.exist?("#{destination}#{project_name}/tmp")
-  Dir.mkdir("#{destination}#{project_name}/tmp/application") unless Dir.exist?("#{destination}#{project_name}/tmp/application")
-  process_directories("#{destination}#{project_name}/application", "#{destination}#{project_name}/tmp/application")
-  application_js = "#{destination}#{project_name}/src/js/application.js"
+  Dir.mkdir("#{destination}/#{project_name}/tmp") unless Dir.exist?("#{destination}/#{project_name}/tmp")
+  Dir.mkdir("#{destination}/#{project_name}/tmp/application") unless Dir.exist?("#{destination}/#{project_name}/tmp/application")
+  process_directories("#{destination}/#{project_name}/application", "#{destination}/#{project_name}/tmp/application")
+  application_js = "#{destination}/#{project_name}/src/js/application.js"
   builder = Opal::Builder.new
-  builder.append_paths("#{destination}#{project_name}}/tmp/application/")
-  application_content = builder.build("#{destination}#{project_name}/tmp/application/index.rb").to_s
+  builder.append_paths("#{destination}/#{project_name}}/tmp/application/")
+  application_content = builder.build("#{destination}/#{project_name}/tmp/application/index.rb").to_s
   File.open(application_js, 'w') do |f|
     f.puts application_content
   end
@@ -108,13 +108,12 @@ end
 
 def add_to_application_folder(script_source, destination, project_name)
   # this method is to add addition script to the application folder (useful for test per example)
-  source_dir = "#{script_source}#{project_name}/application"
-  destination_dir = "#{destination}#{project_name}/application"
-  FileUtils.cp_r(Dir["#{source_dir}/*"], destination_dir)
+  destination_dir = "#{destination}/#{project_name}/application"
+  FileUtils.cp_r(Dir["#{script_source}/*"], destination_dir)
 end
 
 def build_opal_library(atome_source, destination, project_name, production = nil)
-  user_project_path = "#{destination}#{project_name}"
+  user_project_path = "#{destination}/#{project_name}"
   opal_directory = "#{user_project_path}/src/js/opal"
   opal_js = "#{opal_directory}/opal.js"
   Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
@@ -128,13 +127,13 @@ end
 
 def create_application(source, destination, project_name, production = nil)
   FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
-  FileUtils.cp_r("#{source}vendor/assets/", "#{destination}#{project_name}")
+  FileUtils.cp_r("#{source}/vendor/assets/", "#{destination}/#{project_name}")
   build_aui(destination, project_name)
 end
 
 def build_opal_parser(source, destination, project_name)
 
-  parser_js = "#{destination}#{project_name}/src/js/opal/opal_parser.js"
+  parser_js = "#{destination}/#{project_name}/src/js/opal/opal_parser.js"
   File.new parser_js, 'w'
   parser_content = Opal::Builder.build("#{source}/lib/platform_specific/opal/opal_parser.rb").to_s
   File.open(parser_js, 'w') do |f|
@@ -144,24 +143,24 @@ end
 
 def build_atome_kernel_for_opal(source, destination, project_name)
   #  now lets build the atome kernel
-  atome_directory = "#{destination}#{project_name}/src/js/atome"
+  atome_directory = "#{destination}/#{project_name}/src/js/atome"
   kernel_js = "#{atome_directory}/kernel.js"
   File.new kernel_js, 'w'
   builder = Opal::Builder.new
-  builder.append_paths("#{source}lib/")
-  kernel_content = builder.build("#{source}lib/atome.rb").to_s
+  builder.append_paths("#{source}/lib/")
+  kernel_content = builder.build("#{source}/lib/atome.rb").to_s
   File.open(kernel_js, 'w') do |f|
     f.puts kernel_content
   end
 end
 
 def build_opal_extensions(source, destination, project_name)
-  opal_directory = "#{destination}#{project_name}/src/js/opal"
+  opal_directory = "#{destination}/#{project_name}/src/js/opal"
   extensions_js = "#{opal_directory}/atome_opal_extensions.js"
   File.new extensions_js, 'w'
   builder = Opal::Builder.new
-  builder.append_paths("#{source}lib/platform_specific/opal/")
-  extensions_content = builder.build("#{source}lib/platform_specific/opal/atome_opal_extensions.rb").to_s
+  builder.append_paths("#{source}/lib/platform_specific/opal/")
+  extensions_content = builder.build("#{source}/lib/platform_specific/opal/atome_opal_extensions.rb").to_s
   File.open(extensions_js, 'w') do |f|
     f.puts extensions_content
   end
@@ -171,7 +170,7 @@ end
 
 # def wasm_initialize(path, app_name, wasi_source)
 def wasm_initialize (source, destination, project_name, wasi_source)
-  application_location = "#{destination}#{project_name}"
+  application_location = "#{destination}/#{project_name}"
   wasm_location = "#{application_location}/src/wasm/"
   Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
 
@@ -188,7 +187,7 @@ def wasm_initialize (source, destination, project_name, wasi_source)
   cmd = <<~STRDELIM
     #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
     --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
-    --mapdir lib::#{source}lib/
+    --mapdir lib::#{source}/lib/
     --mapdir /::#{application_location}/application/
     --mapdir utilities::#{application_location}/src/utilities/
     -o #{application_location}/src/wasm/ruby_browser.wasm
@@ -254,21 +253,31 @@ end
 
 # below we analyse the ARGV
 location = '/'
-production = nil
-port = 9292
-
-port = ARGV[ARGV.find_index('port:') + 1] if ARGV.include?('port:')
+project_name = ARGV[1]
+destination = `pwd`.chomp
+source = Pathname(__FILE__).parent.parent.to_s
+port = if ARGV.include?('port:')
+         ARGV[ARGV.find_index('port:') + 1]
+       else
+         9292
+       end
+production = 'production' if ARGV.include?('production')
 build_target = 'opal'
-
+wasi_file = 'wasi-vfs-osx_arm' # default to osx arm
+# TODO : get wasi params from ARG to allow comile on windows / Unix
 if ARGV.include?('create')
-  production = 'production' if ARGV.include?('production')
-  project_name = ARGV[1]
-  # location = "/#{project_name}"
-  destination = `pwd`.chomp
-  # source = "#{Pathname(__FILE__).parent.parent.to_s}/vendor/assets/"
-  source = "#{Pathname(__FILE__).parent.parent.to_s}"
-  # source = gem_source_path
-  create_application(source, destination, project_name, production)
+  # create_application(source, destination, project_name, production)
+  wasm_common(:production, wasi_file)
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
+  build_opal_application(source, destination, project_name)
 end
 
 # if ARGV.include?('build')

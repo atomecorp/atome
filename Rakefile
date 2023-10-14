@@ -43,11 +43,12 @@ def generate_resolved_file(source_file_path)
 end
 
 def wasm_common(project_name, wasi_file = 'wasi-vfs-osx_arm')
-  source = './'
-  destination = './tmp/'
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
   create_application(source, destination, project_name)
   # the line below is to add addition script to the application folder (useful for test per example)
-  add_to_application_folder(source, destination, project_name)
+  add_to_application_folder(script_source, destination, project_name) unless project_name == :production
   # build host_mode
   build_host_mode(destination, project_name, 'web-wasi')
   # build wasm
@@ -82,11 +83,12 @@ end
 
 task :test_opal do
   project_name = :test
-  source = './'
-  destination = './tmp/'
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
   create_application(source, destination, project_name)
   # the line below is to add addition script to the application folder (useful for test per example)
-  add_to_application_folder(source, destination, project_name)
+  add_to_application_folder(script_source, destination, project_name)
   # build opal
   build_opal_library(source, destination, project_name)
   # build parser
@@ -100,17 +102,18 @@ task :test_opal do
   # build application
   build_opal_application(source, destination, project_name)
   # open the app
-  `open #{destination}#{project_name}/src/index_opal.html`
+  `open #{destination}/#{project_name}/src/index_opal.html`
   puts 'atome opal is build and running!'
 end
 
 task :test_server do
   project_name = :test
-  source = './'
-  destination = './tmp/'
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
   create_application(source, destination, project_name)
   # the line below is to add addition script to the application folder (useful for test per example)
-  add_to_application_folder(source, destination, project_name)
+  add_to_application_folder(script_source, destination, project_name)
   # build opal
   build_opal_library(source, destination, project_name)
   # build parser
@@ -129,7 +132,7 @@ end
 
 task :test_osx do
   wasm_common(:test, 'wasi-vfs-osx_arm')
-  destination = './tmp/'
+  destination = './tmp'
   # build and open the app
   build_for_osx(destination)
   puts 'atome osx is running'
@@ -138,12 +141,10 @@ end
 
 task :build_gem do
   project_name = :production
-  source = './'
-  destination = './tmp/'
+  source = '.'
+  destination = './tmp'
   # we build for OSX here
   wasm_common(:production, 'wasi-vfs-osx_arm')
-  # the line below is to add addition script to the application folder (useful for test per example)
-  # add_to_application_folder(source, destination, project_name)
   # build opal
   build_opal_library(source, destination, project_name)
   # build parser
@@ -159,7 +160,7 @@ task :build_gem do
   # installing  the gem
   `cd pkg; gem install atome --local`
   # open the app
-  `open #{destination}#{project_name}/src/index.html`
+  `open #{destination}/#{project_name}/src/index.html`
   puts 'atome gem built and installed'
 
 end
