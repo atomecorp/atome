@@ -43,7 +43,6 @@ def generate_resolved_file(source_file_path)
 end
 
 def wasm_common(project_name, wasi_file = 'wasi-vfs-osx_arm')
-
   source = './'
   destination = './tmp/'
   create_application(source, destination, project_name)
@@ -53,25 +52,32 @@ def wasm_common(project_name, wasi_file = 'wasi-vfs-osx_arm')
   build_host_mode(destination, project_name, 'web-wasi')
   # build wasm
   build_for_wasm(source, destination, project_name, wasi_file)
-  `open #{destination}#{project_name}/src/index.html`
-  puts 'atome opal is build and running!'
+
 end
 
 task :test_wasm do
-  wasm_common :test, 'wasi-vfs-osx_arm'
+  wasm_common(:test, 'wasi-vfs-osx_arm')
+  `open ./tmp/#{project_name}/src/index.html`
+  puts 'atome wasm is build and running!'
 end
 
 task :test_wasm_osx_x86 do
   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-  wasm_common :test, 'wasi-vfs-osx_x86'
+  wasm_common(:test, 'wasi-vfs-osx_x86')
+  `open ./tmp/#{project_name}/src/index.html`
+  puts 'atome wasm is build and running!'
 end
 task :test_wasm_windows do
   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-  wasm_common :test, 'wasi-vfs.exe pack'
+  wasm_common(:test, 'wasi-vfs.exe pack')
+  `open ./tmp/#{project_name}/src/index.html`
+  puts 'atome wasm is build and running!'
 end
 task :test_wasm_unix do
   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-  wasm_common :test, 'wasi-vfs-unix pack tmp'
+  wasm_common(:test, 'wasi-vfs-unix pack tmp')
+  `open ./tmp/#{project_name}/src/index.html`
+  puts 'atome wasm is build and running!'
 end
 
 task :test_opal do
@@ -97,20 +103,37 @@ task :test_opal do
   `open #{destination}#{project_name}/src/index_opal.html`
   puts 'atome opal is build and running!'
 end
-task :test_osx do
-  wasm_common2 'wasi-vfs-unix pack tmp'
 
-  `cd tmp/test_app;atome update;atome run osx`
+task :test_server do
+  project_name = :test
+  source = './'
+  destination = './tmp/'
+  create_application(source, destination, project_name)
+  # the line below is to add addition script to the application folder (useful for test per example)
+  add_to_application_folder(source, destination, project_name)
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build host_mode
+  build_host_mode(destination, project_name, 'puma-roda')
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
+  build_opal_application(source, destination, project_name)
+  # build and open the app
+  build_for_server(destination, project_name, 9292, :production)
+end
+
+task :test_osx do
+  wasm_common(:test, 'wasi-vfs-osx_arm')
+  destination = './tmp/'
+  # build and open the app
+  build_for_osx(destination)
   puts 'atome osx is running'
 
-end
-task :test_server do
-  app_name = :test
-  dest_path = './tmp/'
-  user_code = './test/application'
-  application_location = "#{dest_path}#{app_name}"
-  build_common(application_location, :roda, user_code)
-  `cd #{application_location};atome update;atome run server guard production`
 end
 
 task :build_gem do
@@ -131,12 +154,12 @@ task :build_gem do
   build_opal_extensions(source, destination, project_name)
   # build application
   build_opal_application(source, destination, project_name)
-  # open the app
-  `open #{destination}#{project_name}/src/index.html`
   # building the gem
   `rake build` # run build_app thru ARGV in exe atome
   # installing  the gem
   `cd pkg; gem install atome --local`
+  # open the app
+  `open #{destination}#{project_name}/src/index.html`
   puts 'atome gem built and installed'
 
 end

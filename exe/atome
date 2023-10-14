@@ -179,7 +179,9 @@ def wasm_initialize (source, destination, project_name, wasi_source)
   Dir.mkdir(wasm_temp_folder) unless Dir.exist?(wasm_temp_folder)
   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
   # and UNCOMMENT the line  below : ('curl -LO ....')
-  # `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  unless File.exist?("#{wasm_temp_folder}/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz")
+    `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+  end
   `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
   `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
@@ -207,18 +209,18 @@ def build_for_wasm(source, destination, project_name, wasi_file)
   wasm_initialize(source, destination, project_name, wasi_file)
 end
 
-def build_for_osx(location)
-  `cd #{location};cargo tauri dev`
+def build_for_osx(destination)
+  `cd #{destination};cargo tauri dev`
 end
 
-def build_for_server(port, location, production)
+def build_for_server(destination, project_name, port, production)
   threads = []
   threads << Thread.new do
-    sleep 3
+    sleep 1
     `open http://localhost:9292`
   end
   prod = '--env production' if production
-  `cd #{location}/server;puma --port #{port} #{prod}`
+  `cd #{destination}#{project_name}/server;puma --port #{port} #{prod}`
 end
 
 def compile_application(location)
@@ -229,11 +231,11 @@ end
 def run_case(build_target, location, port, production)
   case build_target
   when :server
-    build_for_server(port, location, production)
+    build_for_server(location, port, project_name, production)
   when :opal
     build_opal_library(atome_source, destination, project_name, production = nil)
   when :wasm
-    build_for_wasm(wasi_file)
+    build_for_wasm(source, destination, project_name, wasi_file)
   when :osx
     build_for_osx(location)
   when :compile
