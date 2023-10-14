@@ -1,7 +1,6 @@
 #  frozen_string_literal: true
-
+box
 require "./examples/shadow"
-require "json"
 # require './web2'
 # require File.expand_path('../examples/shadow.rb', __FILE__)
 # require File.expand_path('../web2.rb', __FILE__)

@@ -330,6 +330,7 @@ if ARGV.include?('run')
     wasm_common(source, destination, project_name, wasi_file)
     `open #{current_path}/src/index.html`
   when 'server'
+    build_opal_application(nil, destination, project_name)
     threads = []
     threads << Thread.new do
       sleep 1
@@ -337,6 +338,8 @@ if ARGV.include?('run')
     end
     build_for_server(destination, project_name, 9292, :production)
   when 'osx'
+    wasi_file = 'wasi-vfs-osx_arm'
+    wasm_common(source, destination, project_name, wasi_file)
     build_for_osx(destination)
   when 'android'
     # to be filled
