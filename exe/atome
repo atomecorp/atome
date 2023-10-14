@@ -123,32 +123,13 @@ File.open(application_js, 'w') do |f|
   f.puts application_content
 end
 STR
-  # dossier_destination= "#{destination}/#{project_name}}/tmp/application/"
 
   # we create an hidden file
   opal_compiler = "#{destination}/#{project_name}/tmp/application/.opal_compiler.rb"
   File.open(opal_compiler, 'w') do |f|
     f.puts opal_compiler_content
   end
-  # puts"-----------#{destination}/#{project_name}/tmp/application/.opal_compiler.rb}----------------"
-  # prev_path=`pwd`.chomp
-  # Dir.chdir("#{destination}/#{project_name}/tmp/application/")
-  # puts `pwd`
-  # opal_compiler_path = File.expand_path(".opal_compiler.rb", __dir__)
-  #
-  # # Utiliser require_relative avec le chemin absolu complet
-  # require_relative opal_compiler_path
-  # require "#{destination}/#{project_name}/tmp/application/.opal_compiler"
-  # Dir.chdir(prev_path)
-
-  puts `cd #{destination}/#{project_name}/tmp/application/;pwd;ruby .opal_compiler.rb`
-
-  # require_relative  "#{destination}/#{project_name}/tmp/application/.opal_compiler"
-  # system("#{destination}/#{project_name}/tmp/application/.opal_compiler.rb")
-  ######### `ruby #{destination}/#{project_name}/tmp/application/.opal_compiler.rb` #########
-  # system("#{destination}/#{project_name}/tmp/application/.opal_compiler.rb")
-  # puts :kjhkjhkjhk
-
+  `cd #{destination}/#{project_name}/tmp/application/;pwd;ruby .opal_compiler.rb`
 end
 
 def add_to_application_folder(script_source, destination, project_name)
@@ -224,7 +205,6 @@ def wasm_common(source, destination, project_name, wasi_file, script_source = ni
   build_for_wasm(source, destination, project_name, wasi_file)
 end
 
-# def wasm_initialize(path, app_name, wasi_source)
 def wasm_initialize (source, destination, project_name, wasi_source)
   application_location = "#{destination}/#{project_name}"
   wasm_location = "#{application_location}/src/wasm/"
@@ -273,30 +253,6 @@ def build_for_server(destination, project_name, port, production)
   `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
 end
 
-# def compile_application(location)
-#   `cd #{location}/src`
-#   guard_check
-# end
-
-# def run_case(build_target, location, port, production)
-#   case build_target
-#   when :server
-#     build_for_server(location, port, project_name, production)
-#   when :opal
-#     build_opal_library(atome_source, destination, project_name, production = nil)
-#   when :wasm
-#     build_for_wasm(source, destination, project_name, wasi_file)
-#   when :osx
-#     build_for_osx(location)
-#   when :compile
-#     compile_application(location)
-#   when :native
-#     # freebsd
-#   else
-#     guard_check
-#   end
-# end
-
 def run_application(build_target, location, port = 9292, production = false)
   build_app(location, nil)
   run_case(build_target, location, port, production)
@@ -307,13 +263,7 @@ location = '/'
 project_name = ARGV[1]
 destination = `pwd`.chomp
 source = Pathname(__FILE__).parent.parent.to_s
-port = if ARGV.include?('port:')
-         ARGV[ARGV.find_index('port:') + 1]
-       else
-         9292
-       end
-production = 'production' if ARGV.include?('production')
-build_target = 'opal'
+
 wasi_file = 'wasi-vfs-osx_arm' # default to osx arm
 # TODO : get wasi params from ARG to allow compile on windows / Unix
 if ARGV.include?('create')
@@ -332,44 +282,6 @@ if ARGV.include?('create')
   build_opal_application(source, destination, project_name)
 end
 
-# if ARGV.include?('rebuild')
-#   # create_application(source, destination, project_name, production)
-#   wasm_common(source, destination, project_name, wasi_file)
-#   # build opal
-#   build_opal_library(source, destination, project_name)
-#   # build parser
-#   build_opal_parser(source, destination, project_name)
-#   # build atome kernel
-#   build_atome_kernel_for_opal(source, destination, project_name)
-#   # build Opal extensions
-#   build_opal_extensions(source, destination, project_name)
-#   # build application
-#   build_opal_application(source, destination, project_name)
-# end
-# if ARGV.include?('run')
-#   # build application
-#   build_opal_application(source, destination, project_name)
-# end
-# if ARGV.include?('debug')
-#   # build application
-#   # first we need to remplace all './require ' with require  so opal can parse the path
-#   # Dir.mkdir("#{destination}/#{project_name}/tmp") unless Dir.exist?("#{destination}/#{project_name}/tmp")
-#   # Dir.mkdir("#{destination}/#{project_name}/tmp/application") unless Dir.exist?("#{destination}/#{project_name}/tmp/application")
-#   # process_directories("#{destination}/#{project_name}/application", "#{destination}/#{project_name}/tmp/application")
-#   application_js = "#{destination}/#{project_name}/src/js/application.js"
-#   builder = Opal::Builder.new
-#   builder.append_paths("#{destination}/#{project_name}}/tmp/application/")
-#   application_content = builder.build("#{destination}/#{project_name}/tmp/application/index.rb").to_s
-#   File.open(application_js, 'w') do |f|
-#     f.puts application_content
-#   end
-# end
-
-# if ARGV.include?('build')
-#   path = found_path('build')
-#   build_app(path, production)
-# end
-
 if ARGV.include?('update')
   # # TODO: also update index.html and all other files except the application folder
   # path = found_path('update')
@@ -386,23 +298,16 @@ if ARGV.include?('guard')
 end
 
 if ARGV.include?('run')
-
   current_path = `pwd`.chomp
   segments = current_path.split("/")
   project_name = segments.last
   destination = segments[0...-1].join("/")
-
-  # puts "running : #{destination}"
   case ARGV[1]
   when 'opal'
     build_opal_application(nil, destination, project_name)
     `open #{destination}/#{project_name}/src/index_opal.html`
   when 'wasm' # osx wasi
-
-    #{source}/lib/
-    # source = Pathname(__FILE__).parent.parent.to_s
-    puts source
-    # wasi_file = 'wasi-vfs-osx_arm'
+    wasi_file = 'wasi-vfs-osx_arm'
     wasm_common(source, destination, project_name, wasi_file)
     `open #{current_path}/src/index.html`
   when 'server'
@@ -412,54 +317,22 @@ if ARGV.include?('run')
       `open http://localhost:9292`
     end
     build_for_server(destination, project_name, 9292, :production)
-
   when 'osx'
     build_for_osx(destination)
-    # `open #{destination}/#{project_name}/src/index_opal.html`
   when 'android'
+    # to be filled
   when 'ios'
+    # to be filled
   when 'windows'
+    # to be filled
   when 'linux'
+    # to be filled
   when 'freebsd'
+    # to be filled
   else
+    wasi_file = 'wasi-vfs-osx_arm'
+    wasm_common(source, destination, project_name, wasi_file)
+    `open #{current_path}/src/index.html`
   end
-  # build_opal_application(nil, destination, project_name)
-  # `open #{destination}/#{project_name}/src/index_opal.html`
-
-  # path = if location != '/'
-  #          "#{`pwd`.chomp}/#{location}"
-  #        else
-  #          found_path('run')
-  #        end
-  # demo_location = "#{path}/src/medias/rubies"
-  #
-  # filenames = Dir.glob(demo_location + '/examples/*.rb')
-  # demos_list_content = []
-  # filenames.each do |path|
-  #   filename = File.basename(path)
-  #   demos_list_content << filename
-  # end
-  #
-  # case build_target
-  # when 'android'
-  #   # set_atome_mode(path,'tauri')
-  #   # TODO: write code here
-  # when 'browser'
-  #   run_application(:browser, path)
-  # when 'freebsd'
-  #   # TODO: write code here
-  # when 'ios'
-  #   # TODO: write code here
-  # when 'linux'
-  #   # TODO: write code here
-  # when 'osx'
-  #   run_application(:osx, path)
-  # when 'server'
-  #   run_application(:server, path, port, production)
-  # when 'windows'
-  #   # TODO: write code here
-  # else
-  #   run_application(:browser, path)
-  # end
 
 end

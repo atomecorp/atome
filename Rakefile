@@ -161,33 +161,16 @@ task :test_osx do
 end
 
 task :build_gem do
-  # project_name = :production
-  # source = '.'
-  # destination = './tmp'
-  # wasi_file = 'wasi-vfs-osx_arm'
-  # wasm_common(source, destination, project_name, wasi_file)
-  # # build opal
-  # build_opal_library(source, destination, project_name)
-  # # build parser
-  # build_opal_parser(source, destination, project_name)
-  # # build atome kernel
-  # build_atome_kernel_for_opal(source, destination, project_name)
-  # # build Opal extensions
-  # build_opal_extensions(source, destination, project_name)
-  # # build application
-  # build_opal_application(source, destination, project_name)
-  # # building the gem
+  # building the gem
   `rake build` # run build_app thru ARGV in exe atome
   # installing  the gem
   `cd pkg; gem install atome --local`
   # open the app
-  # `open #{destination}/#{project_name}/src/index.html`
   puts 'atome gem built and installed'
 
 end
 
 # task :run_wasm_client_code do
-#
 #   app_name = :test
 #   dest_path = './tmp/'
 #   user_code = './test/application'
@@ -202,9 +185,3 @@ end
 #   `open #{application_location}/src/index.html`
 #   puts 'atome wasm user code executed'
 # end
-
-
-
-
-
-
