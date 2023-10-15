@@ -7,16 +7,16 @@ const communication = {
         // this.websocket = new WebSocket(address);
 
         this.websocket.onopen = function (event) {
-            rubyVMCallback("puts 'Connected to the WebSocket.'")
+            rubyVMCallback('puts', 'Connected to WebSocket')
         };
 
         this.websocket.onmessage = function (event) {
-            alert('pol');
-            rubyVMCallback("puts 'the ruby callback : " + event.data + "' ")
+            rubyVMCallback('puts', " object ruby callback : " + event.data)
         };
 
         this.websocket.onclose = function (event) {
-            rubyVMCallback("puts 'WebSocket closed.'")
+            rubyVMCallback('puts', 'WebSocket closed')
+
         };
 
         this.websocket.onerror = function (event) {
@@ -67,15 +67,16 @@ const communication = {
         this.websocket = new WebSocket(address);
 
         this.websocket.onopen = function (event) {
-            rubyVMCallback("puts 'Connected to WebSocket.'")
+            rubyVMCallback('puts', 'Connected to WebSocket')
         };
 
         this.websocket.onmessage = function (event) {
-            rubyVMCallback("puts 'object ruby callback : " + event.data + "' ")
+            rubyVMCallback('puts', " object ruby callback : " + event.data)
         };
 
         this.websocket.onclose = function (event) {
-            rubyVMCallback("puts 'WebSocket closed.'")
+            rubyVMCallback('puts', 'Connected closed')
+
         };
 
         this.websocket.onerror = function (event) {
@@ -93,40 +94,23 @@ const communication = {
 /////////////////////////// connection ws
 
 
-// let websocket = new WebSocket('ws://localhost:9292');
-// websocket.onopen = function (event) {
-//     rubyVMCallback("puts 'Connected to WebSocket.'")
-// };
-//
-// websocket.onmessage = function (event) {
-//     rubyVMCallback("puts 'ruby callback : " + event.data + "' ")
-// };
-//
-// websocket.onclose = function (event) {
-//     rubyVMCallback("puts 'WebSocket closed.'")
-// };
-//
-// websocket.onerror = function(event) {
-//     // to prevent error disturbing the console
-//     event.preventDefault();
-//     console.log('connection lost!')
-// };
-// alert (websocket);
 function connect(address) {
 
 // alert('kool');
     websocket = new WebSocket(address);
 
     websocket.onopen = function (event) {
-        rubyVMCallback("puts 'Connected to WebSocket.'")
+        rubyVMCallback('puts', 'Connected to WebSocket')
     };
 
     websocket.onmessage = function (event) {
-        rubyVMCallback("puts 'the ruby callback : " + event.data + "' ")
+        rubyVMCallback('puts', " object ruby callback : " + event.data)
+
     };
 
     websocket.onclose = function (event) {
-        rubyVMCallback("puts 'WebSocket closed.'")
+        rubyVMCallback('puts', 'Connected closed')
+
     };
 
     websocket.onerror = function (event) {
@@ -139,15 +123,5 @@ function connect(address) {
 
 function ws_sender() {
     websocket.send("the Hello, WebSocket!!!")
-    // if (websocket) {
-    //     websocket.send("Hello, WebSocket!");
-    // } else {
-    //     displayMessage("WebSocket is not connected.");
-    // }
 }
 
-///////////////////////////////////////////////////////////
-// communication.initialize()
-// setTimeout(function (){
-//     communication.ws_sender('hello')
-// },3333)

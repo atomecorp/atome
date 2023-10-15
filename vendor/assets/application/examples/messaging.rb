@@ -4,7 +4,7 @@ b = box({ color: :red })
 
 b.touch(true) do
   b.connection('localhost:9292') do |params|
-    alert "connection is : #{params}"
+    alert " the connection is : #{params}"
   end
 end
 

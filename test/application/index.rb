@@ -1,19 +1,44 @@
 #  frozen_string_literal: true
 box({ color: :orange })
 # require "./examples/shadow"
+require "./examples/messaging"
+# puts('Connected to WebSocket.')
 # require './web2'
 # require File.expand_path('../examples/shadow.rb', __FILE__)
 # require File.expand_path('../web2.rb', __FILE__)
 # alert "==> #{Atome.aui}"
 # require '../experimental/scroll'
 # https://github.com/travist/jsencrypt
-
+# ###################
 if Atome::host == 'tauri'
-  JS.eval("callExecuteCommand('pwd')")
-else
-  alert Atome::host
-  alert Atome::host.class
+  JS.eval("callExecuteCommand('shell_callback','pwd')")
+  # JS.eval("callExecuteCommand('pwd')")
 end
+new({ particle: :shell })
+
+def shell_callback(params)
+  puts "the beautifully params is #{params}"
+end
+
+grab(:view).shell('pwd') do |e|
+  alert e
+end
+grab(:view).shell_code[:shell]
+
+# alert grab(:view).inspect
+# def shell_call_back(bloc)
+#   bloc.call
+# end
+#
+# def shell(params, &bloc)
+#
+# end
+# shell(:my_command) do |result|
+#   alert result
+# end
+
+# ####################
+
 # if JS.eval(" window.__TAURI__")
 #   alert 'tauri'
 # else

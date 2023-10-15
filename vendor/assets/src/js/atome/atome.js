@@ -15,20 +15,44 @@ const atomeJS = Object.assign(communication, File);
 //Send shell command
 
 
-async function callExecuteCommand(comd) {
+//////////////////// new one ///////////////////////
+async function callExecuteCommand(callback_method, cmd,) {
     let cmd_result;
     try {
-        const command = comd; // Remplacez ceci par votre commande shell souhaitée
-        const response = await window.__TAURI__.invoke('execute_command', {command});
+        const command = cmd;
+        let response;
+        response = await window.__TAURI__.invoke('execute_command', {command});
         cmd_result = response;
-        // console.log(response); // Cela affichera la sortie de la commande ou l'erreur dans la console
     } catch (error) {
-        // console.error(error);
         cmd_result = error;
     }
-    alert('callback' + cmd_result)
-    return cmd_result;
+    // callback=;
+    // rubyVMCallback_org(callback_method+"(' ===> "+cmd_result+"')")
+    rubyVMCallback(callback_method, "(' ===> " + cmd_result + "')")
+    // alert('callback_method' + cmd_result)
+    // return cmd_result;
 }
+
+////////////////////
+
+// async function callExecuteCommand(comd) {
+//     let cmd_result;
+//     try {
+//         const command = comd; // Remplacez ceci par votre commande shell souhaitée
+//         const response = await window.__TAURI__.invoke('execute_command', {command});
+//         cmd_result = response;
+//         // console.log(response); // Cela affichera la sortie de la commande ou l'erreur dans la console
+//     } catch (error) {
+//         // console.error(error);
+//         cmd_result = error;
+//     }
+//     // alert('callback' + cmd_result)
+//     // return cmd_result;
+//     rubyVMCallback('puts '+"'"+cmd_result+"'")
+// }
+
+
+
 
 // we check if we are in tauri context
 // if (typeof window.__TAURI__ !== 'undefined') {

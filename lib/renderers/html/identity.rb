@@ -31,6 +31,9 @@ new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_val
   html.add_class(:text)
 end
 
+new({ method: :type, type: :string, specific: :color, renderer: :html }) do
+end
+
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |value, _user_proc|
   html.innerText(value)
 end
