@@ -108,7 +108,9 @@ end
 def build_opal_application(_source, destination, project_name)
   # first we need to remplace all './require ' with require  so opal can parse the path
   Dir.mkdir("#{destination}/#{project_name}/tmp") unless Dir.exist?("#{destination}/#{project_name}/tmp")
-  Dir.mkdir("#{destination}/#{project_name}/tmp/application") unless Dir.exist?("#{destination}/#{project_name}/tmp/application")
+  unless Dir.exist?("#{destination}/#{project_name}/tmp/application")
+    Dir.mkdir("#{destination}/#{project_name}/tmp/application")
+  end
   process_directories("#{destination}/#{project_name}/application", "#{destination}/#{project_name}/tmp/application")
 
   opal_compiler_content = <<STR
@@ -151,9 +153,20 @@ def build_opal_library(atome_source, destination, project_name, production = nil
   end
 end
 
-def create_application(source, destination, project_name, production = nil)
+def create_application(source, destination, project_name)
+  project_path = "#{destination}/#{project_name}"
   FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
-  FileUtils.cp_r("#{source}/vendor/assets/", "#{destination}/#{project_name}")
+  FileUtils.mkdir_p(project_path) unless Dir.exist?(project_path)
+  files_list = ['application', 'server', 'src', 'src-tauri', 'src-wasm', 'Guardfile', 'Rakefile']
+  file_to_refresh = ['application', 'server', 'src', 'Rakefile']
+  # we delete many folder to ensure they'll refreshed
+  file_to_refresh.each do |file|
+    FileUtils.rm_rf("#{destination}/#{project_name}/#{file}")
+  end
+  # we copy all folder to be refreshed
+  files_list.each do |file|
+    FileUtils.cp_r("#{source}/vendor/assets/#{file}", "#{destination}/#{project_name}/#{file}") unless Dir.exist?(file)
+  end
   build_aui(destination, project_name)
 end
 
@@ -196,9 +209,7 @@ end
 def wasm_common(source, destination, project_name, wasi_file, script_source = nil)
   # create_application(source, destination, project_name)
   # the line below is to add addition script to the application folder (useful for test per example)
-  if script_source
-    add_to_application_folder(script_source, destination, project_name)
-  end
+  add_to_application_folder(script_source, destination, project_name) if script_source
   # build host_mode
   build_host_mode(destination, project_name, 'web-wasi')
   # build wasm
@@ -301,9 +312,7 @@ if ARGV.include?('update')
 
   Dir.glob("#{update_source}/*").each do |item|
     target = File.join(destination, File.basename(item))
-    unless File.exist?(target)
-      FileUtils.cp_r(item, target)
-    end
+    FileUtils.cp_r(item, target) unless File.exist?(target)
   end
 end
 
