@@ -15,6 +15,21 @@ if Atome::host == 'tauri'
   # JS.eval("callExecuteCommand('pwd')")
 end
 new({ particle: :shell })
+new({ particle: :terminal })
+
+test_box = box()
+test_box.terminal(:hello) do |params_back|
+  alert "super cool: #{params_back}"
+end
+
+test_box.terminal_callback
+
+new({ callback: :terminal }) do
+  # TODO : change the context to avoid test_box.terminal
+  alert test_box.terminal
+end
+
+test_box.terminal_callback
 
 def shell_callback(params)
   puts "the beautifully params is #{params}"

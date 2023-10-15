@@ -120,6 +120,7 @@ class Atome
   # attr_accessor :property, :value, :real_atome, :user_proc
   attr_reader :atome #, :structure # , :at_time
 
+  # not sure the method below is still used
   def set(value)
     @real_atome[@property] = value
   end
@@ -140,6 +141,7 @@ class Atome
 
     store_value(element) if store
     # we create a proc holder of any new particle if user pass a bloc
+    particle_callback(element, params)
     store_proc(element, params, &user_proc) if user_proc
     @store_allow = true
 

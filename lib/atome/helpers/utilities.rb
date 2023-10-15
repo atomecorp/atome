@@ -135,6 +135,14 @@ class Atome
     end
   end
 
+  def particle_callback(element, params)
+    Atome.define_method "#{element}_callback" do
+      proc_found = instance_variable_get("@#{element}_code")[element]
+      proc_found.call(params) if proc_found.is_a? Proc
+    end
+  end
+
+
   def particles(particles_found = nil)
     if particles_found
       particles_found.each do |particle_found, value_found|
@@ -150,25 +158,25 @@ class Atome
     real_atome[property] << particle
   end
 
-  def add_to_hash(particle, values, &user_proc)
-    @atome[:add][particle] = true
-    # we update  the holder of any new particle if user pass a bloc
-    store_proc(particle, &user_proc) if user_proc
-    values.each do |value_id, value|
-      @atome[particle][value_id] = value
-    end
-  end
-
-  def add_to_array(particle, value, &_user_proc)
-    @atome[:add][particle] = true
-    # we update  the holder of any new particle if user pass a bloc
-    @atome[particle] << value
-  end
-
-  def add_to_atome(atome_type, particle_found, &user_proc)
-    @atome[:add][atome_type] = particle_found
-    send(atome_type, particle_found, &user_proc)
-  end
+  # def add_to_hash(particle, values, &user_proc)
+  #   @atome[:add][particle] = true
+  #   # we update  the holder of any new particle if user pass a bloc
+  #   store_proc(particle, &user_proc) if user_proc
+  #   values.each do |value_id, value|
+  #     @atome[particle][value_id] = value
+  #   end
+  # end
+  #
+  # def add_to_array(particle, value, &_user_proc)
+  #   @atome[:add][particle] = true
+  #   # we update  the holder of any new particle if user pass a bloc
+  #   @atome[particle] << value
+  # end
+  #
+  # def add_to_atome(atome_type, particle_found, &user_proc)
+  #   @atome[:add][atome_type] = particle_found
+  #   send(atome_type, particle_found, &user_proc)
+  # end
 
   def add(particles, &user_proc)
 

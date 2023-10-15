@@ -31,6 +31,11 @@ class Object
       end
       render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
       generator.build_render(render_method, &bloc)
+    elsif params.key?(:callback)
+      particle_targetted = params[:callback]
+      Atome.define_method "#{particle_targetted}_callback" do
+        bloc.call
+      end
     end
 
   end
