@@ -206,12 +206,12 @@ def build_opal_extensions(source, destination, project_name)
 end
 
 # wasm compilation
-def wasm_common(source, destination, project_name, wasi_file, script_source = nil)
+def wasm_common(source, destination, project_name, wasi_file, host_mode, script_source = nil)
   # create_application(source, destination, project_name)
   # the line below is to add addition script to the application folder (useful for test per example)
   add_to_application_folder(script_source, destination, project_name) if script_source
   # build host_mode
-  build_host_mode(destination, project_name, 'web-wasi')
+  build_host_mode(destination, project_name, host_mode)
   # build wasm
   build_for_wasm(source, destination, project_name, wasi_file)
 end
@@ -280,7 +280,7 @@ wasi_file = 'wasi-vfs-osx_arm' # default to osx arm
 if ARGV.include?('create')
   create_application(source, destination, project_name)
   # create_application(source, destination, project_name, production)
-  wasm_common(source, destination, project_name, wasi_file)
+  wasm_common(source, destination, project_name, wasi_file, :universal)
   # build opal
   build_opal_library(source, destination, project_name)
   # build parser
@@ -336,7 +336,7 @@ if ARGV.include?('run')
     `open #{destination}/#{project_name}/src/index_opal.html`
   when 'wasm' # osx wasi
     wasi_file = 'wasi-vfs-osx_arm'
-    wasm_common(source, destination, project_name, wasi_file)
+    wasm_common(source, destination, project_name, wasi_file, :pure_wasi)
     `open #{current_path}/src/index.html`
   when 'server'
     build_opal_application(nil, destination, project_name)
@@ -348,7 +348,7 @@ if ARGV.include?('run')
     build_for_server(destination, project_name, 9292, :production)
   when 'osx'
     wasi_file = 'wasi-vfs-osx_arm'
-    wasm_common(source, destination, project_name, wasi_file)
+    wasm_common(source, destination, project_name, wasi_file, :tauro)
     build_for_osx(destination)
   when 'android'
     # to be filled
@@ -362,7 +362,7 @@ if ARGV.include?('run')
     # to be filled
   else
     wasi_file = 'wasi-vfs-osx_arm'
-    wasm_common(source, destination, project_name, wasi_file)
+    wasm_common(source, destination, project_name, wasi_file, 'pure_wasm')
     `open #{current_path}/src/index.html`
   end
 

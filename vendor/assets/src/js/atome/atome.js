@@ -1,5 +1,4 @@
 const atomeJS = Object.assign(communication, File);
-console.log('in tauri  mode we should add a js script to specify if tauri is active or not ')
 
 //call greet test
 // async function callGreet() {
@@ -14,23 +13,29 @@ console.log('in tauri  mode we should add a js script to specify if tauri is act
 // callGreet();
 
 //Send shell command
+
+
 async function callExecuteCommand(comd) {
+    let cmd_result;
     try {
         const command = comd; // Remplacez ceci par votre commande shell souhaitée
         const response = await window.__TAURI__.invoke('execute_command', {command});
-        console.log(response); // Cela affichera la sortie de la commande ou l'erreur dans la console
+        cmd_result = response;
+        // console.log(response); // Cela affichera la sortie de la commande ou l'erreur dans la console
     } catch (error) {
-        console.error(error);
+        // console.error(error);
+        cmd_result = error;
     }
+    alert('callback' + cmd_result)
+    return cmd_result;
 }
 
 // we check if we are in tauri context
-if (typeof window.__TAURI__ === 'undefined') {
-
-} else {
-
-    callExecuteCommand('pwd');
-}
+// if (typeof window.__TAURI__ !== 'undefined') {
+//     callExecuteCommand('pwd');
+//
+// } else {
+// }
 
 
 // 'ls -l'

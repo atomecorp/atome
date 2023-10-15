@@ -48,8 +48,9 @@ task :test_wasm do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
+  host_mode = 'pure_wasm'
   create_application(source, destination, project_name)
-  wasm_common(source, destination, project_name, wasi_file, script_source)
+  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   `open ./tmp/#{project_name}/src/index.html`
   puts 'atome wasm is build and running!'
 end
@@ -61,8 +62,9 @@ task :test_wasm_osx_x86 do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_x86'
+  host_mode = 'pure_wasm'
   create_application(source, destination, project_name)
-  wasm_common(source, destination, project_name, wasi_file, script_source)
+  wasm_common(source, destination, project_name, wasi_file, script_source, host_mode, script_source)
   `open ./tmp/#{project_name}/src/index.html`
   puts 'atome wasm is build and running!'
 end
@@ -73,8 +75,9 @@ task :test_wasm_windows do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs.exe pack'
+  host_mode = 'pure_wasm'
   create_application(source, destination, project_name)
-  wasm_common(source, destination, project_name, wasi_file, script_source)
+  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   `open ./tmp/#{project_name}/src/index.html`
   puts 'atome wasm is build and running!'
 end
@@ -85,8 +88,9 @@ task :test_wasm_unix do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-unix pack tmp'
+  host_mode = 'pure_wasm'
   create_application(source, destination, project_name)
-  wasm_common(source, destination, project_name, wasi_file, script_source)
+  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   `open ./tmp/#{project_name}/src/index.html`
   puts 'atome wasm is build and running!'
 end
@@ -151,8 +155,9 @@ task :test_osx do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
+  host_mode = 'tauri'
   create_application(source, destination, project_name)
-  wasm_common(source, destination, project_name, wasi_file, script_source)
+  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
   # build and open the app
   build_for_osx(destination)

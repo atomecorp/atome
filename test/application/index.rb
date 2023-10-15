@@ -8,6 +8,18 @@ box({ color: :orange })
 # require '../experimental/scroll'
 # https://github.com/travist/jsencrypt
 
+if Atome::host == 'tauri'
+  JS.eval("callExecuteCommand('pwd')")
+else
+  alert Atome::host
+  alert Atome::host.class
+end
+# if JS.eval(" window.__TAURI__")
+#   alert 'tauri'
+# else
+#    'not tauri'
+# end
+
 
 # TODO: check that atome gem build correctly the solution
 # TODO: change atomic repository so that it install atome gem correctly
