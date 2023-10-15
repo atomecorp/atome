@@ -1,278 +1,278 @@
-# frozen_string_literal: true
-
-# FIXME: check when creating gem version the new gem is not always fully updated we have to type gem uninstall first
-
-require 'opal'
-require 'parser'
-require 'uglifier'
-
-
-Opal.append_path 'app'
-
-# def build_opal_content
-#   Opal::Builder.build('../lib/platform_specific/opal/opal.rb').to_s
-# end
+# # frozen_string_literal: true
 #
-# def build_opal(user_project_path)
+# # FIXME: check when creating gem version the new gem is not always fully updated we have to type gem uninstall first
 #
+# require 'opal'
+# require 'parser'
+# require 'uglifier'
+#
+#
+# Opal.append_path 'app'
+#
+# # def build_opal_content
+# #   Opal::Builder.build('../lib/platform_specific/opal/opal.rb').to_s
+# # end
+# #
+# # def build_opal(user_project_path)
+# #
+# #   opal_directory = "#{user_project_path}/src/js/opal"
+# #   opal_js = "#{opal_directory}/opal.js"
+# #   Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
+# #
+# #   File.new opal_js, 'w'
+# #   opal_content = build_opal_content
+# #   File.open(opal_js, 'w') do |f|
+# #     f.puts opal_content
+# #   end
+# # end
+#
+# # def build_aui_for_opal(user_project_path)
+# #   #  now we add an uniq aui to the app
+# #   aui_js = "#{user_project_path}/src/js/aui.js"
+# #   File.new aui_js, 'w'
+# #   builder = Opal::Builder.new
+# #   aui_content = builder.build("#{user_project_path}/src/utilities/aui.rb").to_s
+# #   File.open(aui_js, 'w') do |f|
+# #     f.puts aui_content
+# #   end
+# # end
+#
+# # def build_host_mode_for_opal(user_project_path)
+# #   host_mode_js = "#{user_project_path}/src/js/host_mode.js"
+# #   File.new host_mode_js, 'w'
+# #   builder = Opal::Builder.new
+# #   host_mode_content = builder.build("#{user_project_path}/src/utilities/host_mode.rb").to_s
+# #   File.open(host_mode_js, 'w') do |f|
+# #     f.puts host_mode_content
+# #   end
+# # end
+#
+# # def copy_assets_files(user_project_path, gem_location)
+# #   server_location = "#{gem_location}/../vendor/assets/server/"
+# #   FileUtils.copy_entry server_location, "#{user_project_path}/server", preserve: nil
+# #   css_location ="#{gem_location}/../vendor/assets/src/css/"
+# #   FileUtils.copy_entry css_location, "#{user_project_path}/src/css", preserve: nil
+# #   js_location ="#{gem_location}/../vendor/assets/src/js/"
+# #   FileUtils.copy_entry js_location, "#{user_project_path}/src/js", preserve: nil
+# #   index_location ="#{gem_location}/../vendor/assets/src/index.html"
+# #   FileUtils.copy_entry index_location, "#{user_project_path}/src/index.html", preserve: nil
+# # end
+#
+# # def build_atome_kernel(user_project_path, gem_location)
+# #   #  now lets build the atome kernel
+# #   atome_directory = "#{user_project_path}/src/js/atome"
+# #   Dir.mkdir(atome_directory) unless File.directory?(atome_directory)
+# #   kernel_js = "#{atome_directory}/kernel.js"
+# #   File.new kernel_js, 'w'
+# #   builder = Opal::Builder.new
+# #   builder.append_paths("#{gem_location}/../lib/")
+# #   kernel_content = builder.build("#{gem_location}/../lib/atome.rb").to_s
+# #   File.open(kernel_js, 'w') do |f|
+# #     f.puts kernel_content
+# #   end
+# # end
+#
+# def build_opal_extensions(user_project_path, gem_location)
 #   opal_directory = "#{user_project_path}/src/js/opal"
-#   opal_js = "#{opal_directory}/opal.js"
-#   Dir.mkdir(opal_directory) unless File.directory?(opal_directory)
-#
-#   File.new opal_js, 'w'
-#   opal_content = build_opal_content
-#   File.open(opal_js, 'w') do |f|
-#     f.puts opal_content
+#   extensions_js = "#{opal_directory}/atome_opal_extensions.js"
+#   File.new extensions_js, 'w'
+#   builder = Opal::Builder.new
+#   builder.append_paths("#{gem_location}/../lib/platform_specific/opal/")
+#   extensions_content = builder.build("#{gem_location}/../lib/platform_specific/opal/atome_opal_extensions.rb").to_s
+#   File.open(extensions_js, 'w') do |f|
+#     f.puts extensions_content
 #   end
 # end
-
-# def build_aui_for_opal(user_project_path)
-#   #  now we add an uniq aui to the app
-#   aui_js = "#{user_project_path}/src/js/aui.js"
-#   File.new aui_js, 'w'
+#
+# # def build_opal_parser(user_project_path)
+# #   parser_js = "#{user_project_path}/src/js/opal/opal_parser.js"
+# #   File.new parser_js, 'w'
+# #   parser_content = Opal::Builder.build('../lib/platform_specific/opal/opal_parser.rb').to_s
+# #   File.open(parser_js, 'w') do |f|
+# #     f.puts parser_content
+# #   end
+# # end
+#
+# def modify_and_copy_file(source_path, destination_path,source_code)
+#   file_content = File.read(source_path)
+#   modified_content = file_content.gsub('     ', ' ').gsub('    ', ' ').gsub('   ', ' ').gsub('  ', ' ').gsub("require './", "require 'tmp/opal/").gsub('require "./', 'require "tmp/opal/')
+#   File.write(destination_path, modified_content)
+#
+# end
+# def process_directory(source_dir, destination_dir, source_code)
+#   Dir.entries(source_dir).each do |entry|
+#     next if entry == '.' || entry == '..'
+#
+#     source_path = File.join(source_dir, entry)
+#     destination_path = File.join(destination_dir, entry)
+#
+#     if File.directory?(source_path)
+#       Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
+#       process_directory(source_path, destination_path,source_code)
+#     elsif File.file?(source_path)
+#       modify_and_copy_file(source_path, destination_path,source_code)
+#     end
+#   end
+# end
+# def build_user_code(user_project_path, source_code)
+#   application_js = "#{user_project_path}/src/js/application.js"
 #   builder = Opal::Builder.new
-#   aui_content = builder.build("#{user_project_path}/src/utilities/aui.rb").to_s
+#   builder.append_paths("#{user_project_path}/")
+#   source_directory = "#{source_code}/application"
+#   destination_directory = "#{source_code}/tmp/opal"
+#   process_directory(source_directory, destination_directory, source_code)
+#   application_content = builder.build("#{source_code}/tmp/opal/index.rb").to_s
+#   File.open(application_js, 'w') do |f|
+#     f.puts application_content
+#   end
+# end
+#
+# def build_system_infos(user_project_path, source_code)
+#   system_infos_js = "#{user_project_path}/src/js/infos.js"
+#       builder = Opal::Builder.new
+#   builder.append_paths("#{user_project_path}/")
+#   # system_infos = builder.build("#{source_code}/src/utilities/mode.rb").to_s
+#   File.open(system_infos_js, 'w') do |f|
+#     f.puts system_infos
+#   end
+# end
+#
+# def minimize_aui(user_project_path)
+#   aui_js = "#{user_project_path}/src/js/aui.js"
+#   aui_content = File.open(aui_js).read
+#   aui_content = Uglifier.new.compile(aui_content)
 #   File.open(aui_js, 'w') do |f|
 #     f.puts aui_content
 #   end
 # end
-
-# def build_host_mode_for_opal(user_project_path)
-#   host_mode_js = "#{user_project_path}/src/js/host_mode.js"
-#   File.new host_mode_js, 'w'
-#   builder = Opal::Builder.new
-#   host_mode_content = builder.build("#{user_project_path}/src/utilities/host_mode.rb").to_s
-#   File.open(host_mode_js, 'w') do |f|
-#     f.puts host_mode_content
+#
+# def minimize_opal(user_project_path)
+#   opal_js = "#{user_project_path}/src/js/opal/opal.js"
+#   opal_content = File.open(opal_js).read
+#   opal_content = Uglifier.new.compile(opal_content)
+#   File.open(opal_js, 'w') do |f|
+#     f.puts opal_content
 #   end
 # end
-
-# def copy_assets_files(user_project_path, gem_location)
-#   server_location = "#{gem_location}/../vendor/assets/server/"
-#   FileUtils.copy_entry server_location, "#{user_project_path}/server", preserve: nil
-#   css_location ="#{gem_location}/../vendor/assets/src/css/"
-#   FileUtils.copy_entry css_location, "#{user_project_path}/src/css", preserve: nil
-#   js_location ="#{gem_location}/../vendor/assets/src/js/"
-#   FileUtils.copy_entry js_location, "#{user_project_path}/src/js", preserve: nil
-#   index_location ="#{gem_location}/../vendor/assets/src/index.html"
-#   FileUtils.copy_entry index_location, "#{user_project_path}/src/index.html", preserve: nil
-# end
-
-# def build_atome_kernel(user_project_path, gem_location)
-#   #  now lets build the atome kernel
-#   atome_directory = "#{user_project_path}/src/js/atome"
-#   Dir.mkdir(atome_directory) unless File.directory?(atome_directory)
-#   kernel_js = "#{atome_directory}/kernel.js"
-#   File.new kernel_js, 'w'
-#   builder = Opal::Builder.new
-#   builder.append_paths("#{gem_location}/../lib/")
-#   kernel_content = builder.build("#{gem_location}/../lib/atome.rb").to_s
-#   File.open(kernel_js, 'w') do |f|
-#     f.puts kernel_content
-#   end
-# end
-
-def build_opal_extensions(user_project_path, gem_location)
-  opal_directory = "#{user_project_path}/src/js/opal"
-  extensions_js = "#{opal_directory}/atome_opal_extensions.js"
-  File.new extensions_js, 'w'
-  builder = Opal::Builder.new
-  builder.append_paths("#{gem_location}/../lib/platform_specific/opal/")
-  extensions_content = builder.build("#{gem_location}/../lib/platform_specific/opal/atome_opal_extensions.rb").to_s
-  File.open(extensions_js, 'w') do |f|
-    f.puts extensions_content
-  end
-end
-
-# def build_opal_parser(user_project_path)
+#
+# def minimize_parser(user_project_path)
 #   parser_js = "#{user_project_path}/src/js/opal/opal_parser.js"
-#   File.new parser_js, 'w'
-#   parser_content = Opal::Builder.build('../lib/platform_specific/opal/opal_parser.rb').to_s
+#   parser_content = File.open(parser_js).read
+#   parser_content = Uglifier.new.compile(parser_content)
 #   File.open(parser_js, 'w') do |f|
 #     f.puts parser_content
 #   end
 # end
-
-def modify_and_copy_file(source_path, destination_path,source_code)
-  file_content = File.read(source_path)
-  modified_content = file_content.gsub('     ', ' ').gsub('    ', ' ').gsub('   ', ' ').gsub('  ', ' ').gsub("require './", "require 'tmp/opal/").gsub('require "./', 'require "tmp/opal/')
-  File.write(destination_path, modified_content)
-
-end
-def process_directory(source_dir, destination_dir, source_code)
-  Dir.entries(source_dir).each do |entry|
-    next if entry == '.' || entry == '..'
-
-    source_path = File.join(source_dir, entry)
-    destination_path = File.join(destination_dir, entry)
-
-    if File.directory?(source_path)
-      Dir.mkdir(destination_path) unless Dir.exist?(destination_path)
-      process_directory(source_path, destination_path,source_code)
-    elsif File.file?(source_path)
-      modify_and_copy_file(source_path, destination_path,source_code)
-    end
-  end
-end
-def build_user_code(user_project_path, source_code)
-  application_js = "#{user_project_path}/src/js/application.js"
-  builder = Opal::Builder.new
-  builder.append_paths("#{user_project_path}/")
-  source_directory = "#{source_code}/application"
-  destination_directory = "#{source_code}/tmp/opal"
-  process_directory(source_directory, destination_directory, source_code)
-  application_content = builder.build("#{source_code}/tmp/opal/index.rb").to_s
-  File.open(application_js, 'w') do |f|
-    f.puts application_content
-  end
-end
-
-def build_system_infos(user_project_path, source_code)
-  system_infos_js = "#{user_project_path}/src/js/infos.js"
-      builder = Opal::Builder.new
-  builder.append_paths("#{user_project_path}/")
-  # system_infos = builder.build("#{source_code}/src/utilities/mode.rb").to_s
-  File.open(system_infos_js, 'w') do |f|
-    f.puts system_infos
-  end
-end
-
-def minimize_aui(user_project_path)
-  aui_js = "#{user_project_path}/src/js/aui.js"
-  aui_content = File.open(aui_js).read
-  aui_content = Uglifier.new.compile(aui_content)
-  File.open(aui_js, 'w') do |f|
-    f.puts aui_content
-  end
-end
-
-def minimize_opal(user_project_path)
-  opal_js = "#{user_project_path}/src/js/opal/opal.js"
-  opal_content = File.open(opal_js).read
-  opal_content = Uglifier.new.compile(opal_content)
-  File.open(opal_js, 'w') do |f|
-    f.puts opal_content
-  end
-end
-
-def minimize_parser(user_project_path)
-  parser_js = "#{user_project_path}/src/js/opal/opal_parser.js"
-  parser_content = File.open(parser_js).read
-  parser_content = Uglifier.new.compile(parser_content)
-  File.open(parser_js, 'w') do |f|
-    f.puts parser_content
-  end
-end
-
-def minimize_kernel(user_project_path)
-  kernel_js = "#{user_project_path}/src/js/atome/kernel.js"
-  kernel_content = File.open(kernel_js).read
-  kernel_content = Uglifier.new.compile(kernel_content)
-  File.open(kernel_js, 'w') do |f|
-    f.puts kernel_content
-  end
-end
-
-def minimize_atome(user_project_path)
-  atome_js = "#{user_project_path}/src/js/atome/atome.js"
-  atome_content = File.open(atome_js).read
-  atome_content = Uglifier.new.compile(atome_content)
-  File.open(atome_js, 'w') do |f|
-    f.puts atome_content
-  end
-end
-
-def minimize_opal_extensions(user_project_path)
-  atome_opal_extensions_js = "#{user_project_path}/src/js/opal/atome_opal_extensions.js"
-  atome_opal_extensions_content = File.open(atome_opal_extensions_js).read
-  atome_opal_extensions_content = Uglifier.new.compile(atome_opal_extensions_content)
-  File.open(atome_opal_extensions_js, 'w') do |f|
-    f.puts atome_opal_extensions_content
-  end
-end
-
-def minimize_libraries(user_project_path)
-  # minimizing aui
-  minimize_aui(user_project_path)
-  # minimizing opal
-  minimize_opal(user_project_path)
-  # # minimizing opal_browser
-  # minimize_browser(user_project_path)
-  # minimizing opal_parser
-  minimize_parser(user_project_path)
-  # minimizing atome_lib
-  minimize_kernel(user_project_path)
-  # minimizing atome
-  minimize_atome(user_project_path)
-  # minimizing atome_lib
-  minimize_opal_extensions(user_project_path)
-  # minimizing application
-  minimize_application(user_project_path)
-  # minimize(user_project_path) if production == 'production'
-end
-
-def minimize_application(user_project_path)
-  # minimizing user codes
-  application_js = "#{user_project_path}/src/js/application.js"
-  application_content = File.open(application_js).read
-  application_content = Uglifier.new.compile(application_content)
-  File.open(application_js, 'w') do |f|
-    f.puts application_content
-  end
-end
-
-task :build_user_code, :user_project_path, :production do |_t, args|
-  user_project_path = args[:user_project_path]
-  source_code = "#{user_project_path}"
-  build_system_infos(user_project_path, source_code)
-  build_user_code(user_project_path, source_code)
-end
-
-task :system_builder, :user_project_path, :production do |_t, args|
-  user_project_path = args[:user_project_path]
-  production = args[:production]
-  source_code = '../vendor/assets'
-  build_common_libraries(user_project_path, production)
-  build_system_infos(user_project_path, source_code)
-  build_user_code(user_project_path, source_code)
-
-  # TODO: catch and message to user when when there's no force and folder already exist
-end
-
-task :system_updater, :user_project_path, :production do |_t, args|
-  user_project_path = args[:user_project_path]
-  production = args[:production]
-  gem_location = File.join(File.dirname(__FILE__))
-  build_libraries(user_project_path, gem_location)
-  build_common_libraries(user_project_path, production)
-end
-
-task :minimizer, :user_project_path do |_t, args|
-  user_project_path = args[:user_project_path]
-  minimize(user_project_path)
-end
-
-task default: :run
-
-def build_libraries(user_project_path, gem_location)
-  build_aui_for_opal(user_project_path)
-  build_host_mode_for_opal(user_project_path)
-  build_atome_kernel(user_project_path, gem_location)
-  build_opal(user_project_path)
-  build_opal_parser(user_project_path)
-  build_opal_extensions(user_project_path, gem_location)
-end
-
-def minimize(user_project_path)
-  minimize_libraries(user_project_path)
-  # minimize_user_code(user_project_path)
-end
-
-def build_common_libraries(user_project_path, production)
-  gem_location = File.join(File.dirname(__FILE__))
-  copy_assets_files(user_project_path, gem_location)
-  build_libraries(user_project_path, gem_location)
-  minimize(user_project_path) if production == 'production'
-end
-
-# TODO: integrate pure JS (ruby2js) compilation
+#
+# def minimize_kernel(user_project_path)
+#   kernel_js = "#{user_project_path}/src/js/atome/kernel.js"
+#   kernel_content = File.open(kernel_js).read
+#   kernel_content = Uglifier.new.compile(kernel_content)
+#   File.open(kernel_js, 'w') do |f|
+#     f.puts kernel_content
+#   end
+# end
+#
+# def minimize_atome(user_project_path)
+#   atome_js = "#{user_project_path}/src/js/atome/atome.js"
+#   atome_content = File.open(atome_js).read
+#   atome_content = Uglifier.new.compile(atome_content)
+#   File.open(atome_js, 'w') do |f|
+#     f.puts atome_content
+#   end
+# end
+#
+# def minimize_opal_extensions(user_project_path)
+#   atome_opal_extensions_js = "#{user_project_path}/src/js/opal/atome_opal_extensions.js"
+#   atome_opal_extensions_content = File.open(atome_opal_extensions_js).read
+#   atome_opal_extensions_content = Uglifier.new.compile(atome_opal_extensions_content)
+#   File.open(atome_opal_extensions_js, 'w') do |f|
+#     f.puts atome_opal_extensions_content
+#   end
+# end
+#
+# def minimize_libraries(user_project_path)
+#   # minimizing aui
+#   minimize_aui(user_project_path)
+#   # minimizing opal
+#   minimize_opal(user_project_path)
+#   # # minimizing opal_browser
+#   # minimize_browser(user_project_path)
+#   # minimizing opal_parser
+#   minimize_parser(user_project_path)
+#   # minimizing atome_lib
+#   minimize_kernel(user_project_path)
+#   # minimizing atome
+#   minimize_atome(user_project_path)
+#   # minimizing atome_lib
+#   minimize_opal_extensions(user_project_path)
+#   # minimizing application
+#   minimize_application(user_project_path)
+#   # minimize(user_project_path) if production == 'production'
+# end
+#
+# def minimize_application(user_project_path)
+#   # minimizing user codes
+#   application_js = "#{user_project_path}/src/js/application.js"
+#   application_content = File.open(application_js).read
+#   application_content = Uglifier.new.compile(application_content)
+#   File.open(application_js, 'w') do |f|
+#     f.puts application_content
+#   end
+# end
+#
+# task :build_user_code, :user_project_path, :production do |_t, args|
+#   user_project_path = args[:user_project_path]
+#   source_code = "#{user_project_path}"
+#   build_system_infos(user_project_path, source_code)
+#   build_user_code(user_project_path, source_code)
+# end
+#
+# task :system_builder, :user_project_path, :production do |_t, args|
+#   user_project_path = args[:user_project_path]
+#   production = args[:production]
+#   source_code = '../vendor/assets'
+#   build_common_libraries(user_project_path, production)
+#   build_system_infos(user_project_path, source_code)
+#   build_user_code(user_project_path, source_code)
+#
+#   # TODO: catch and message to user when when there's no force and folder already exist
+# end
+#
+# task :system_updater, :user_project_path, :production do |_t, args|
+#   user_project_path = args[:user_project_path]
+#   production = args[:production]
+#   gem_location = File.join(File.dirname(__FILE__))
+#   build_libraries(user_project_path, gem_location)
+#   build_common_libraries(user_project_path, production)
+# end
+#
+# task :minimizer, :user_project_path do |_t, args|
+#   user_project_path = args[:user_project_path]
+#   minimize(user_project_path)
+# end
+#
+# task default: :run
+#
+# def build_libraries(user_project_path, gem_location)
+#   build_aui_for_opal(user_project_path)
+#   build_host_mode_for_opal(user_project_path)
+#   build_atome_kernel(user_project_path, gem_location)
+#   build_opal(user_project_path)
+#   build_opal_parser(user_project_path)
+#   build_opal_extensions(user_project_path, gem_location)
+# end
+#
+# def minimize(user_project_path)
+#   minimize_libraries(user_project_path)
+#   # minimize_user_code(user_project_path)
+# end
+#
+# def build_common_libraries(user_project_path, production)
+#   gem_location = File.join(File.dirname(__FILE__))
+#   copy_assets_files(user_project_path, gem_location)
+#   build_libraries(user_project_path, gem_location)
+#   minimize(user_project_path) if production == 'production'
+# end
+#
+# # TODO: integrate pure JS (ruby2js) compilation
