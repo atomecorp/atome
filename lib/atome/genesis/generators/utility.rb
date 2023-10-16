@@ -102,4 +102,5 @@ new({ initialize: :unit, value: {} })
 new({ particle: :login }) do |params|
   set_current_user(id) if params
 end
+new({ particle: :terminal })
 

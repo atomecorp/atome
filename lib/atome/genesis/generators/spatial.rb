@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-new({ particle: :left, type: :integer }) do |_params, user_proc|
-  instance_exec(&user_proc) if user_proc.is_a?(Proc)
-end
+new({ particle: :left, type: :integer })
 new({ particle: :right, type: :integer })
 new({ particle: :top, type: :integer })
 new({ particle: :bottom, type: :integer })

@@ -27,7 +27,6 @@ class Atome
   end
 
   def collapse
-
     # TODO : try to optimise the two lines below to avoid conditions
     @atome[:unit] = {} unless @atome[:unit]
     @atome[:security] = {} unless @atome[:security]
@@ -133,13 +132,27 @@ class Atome
     else
       instance_variable_get(elem_code)[element] = user_proc
     end
+    # the commented line below will automatically execute the callback method
+    # we keep it commented because sometime the execution is conditioned, ex : run callbck on a touch
+    # send("#{element}_callback")
   end
 
+  # this method is used to automatically create a callback method  sufifxed par '_callbback' ex :.shell => shell_callback
+  # it can be override if you create a method like:
+  # new({callback: :shell}) do |params, bloc|
+  # # …write what you want …
+  # end
   def particle_callback(element, params)
     Atome.define_method "#{element}_callback" do
       proc_found = instance_variable_get("@#{element}_code")[element]
       proc_found.call(params) if proc_found.is_a? Proc
     end
+  end
+
+  # this method generate the method accessible for end developers
+  # it's the send the method define in "particle_callback"
+  def callback(element)
+    send("#{element}_callback")
   end
 
 
