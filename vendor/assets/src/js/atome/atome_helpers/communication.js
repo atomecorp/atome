@@ -7,15 +7,15 @@ const communication = {
         // this.websocket = new WebSocket(address);
 
         this.websocket.onopen = function (event) {
-            rubyVMCallback('puts', 'Connected to WebSocket')
+            rubyVMCallback("puts 'Connected to WebSocket'")
         };
 
         this.websocket.onmessage = function (event) {
-            rubyVMCallback('puts', " object ruby callback : " + event.data)
+            rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
         };
 
         this.websocket.onclose = function (event) {
-            rubyVMCallback('puts', 'WebSocket closed')
+            rubyVMCallback("puts 'WebSocket closed'")
 
         };
 
@@ -67,15 +67,16 @@ const communication = {
         this.websocket = new WebSocket(address);
 
         this.websocket.onopen = function (event) {
-            rubyVMCallback('puts', 'Connected to WebSocket')
+            rubyVMCallback("puts 'Connected to WebSocket'")
         };
 
         this.websocket.onmessage = function (event) {
-            rubyVMCallback('puts', " object ruby callback : " + event.data)
+            rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
+
         };
 
         this.websocket.onclose = function (event) {
-            rubyVMCallback('puts', 'Connected closed')
+            rubyVMCallback("puts 'WebSocket closed'")
 
         };
 
@@ -100,17 +101,16 @@ function connect(address) {
     websocket = new WebSocket(address);
 
     websocket.onopen = function (event) {
-        rubyVMCallback('puts', 'Connected to WebSocket')
+        rubyVMCallback("puts 'Connected to WebSocket'")
+
     };
 
     websocket.onmessage = function (event) {
-        rubyVMCallback('puts', " object ruby callback : " + event.data)
-
+        rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
     };
 
     websocket.onclose = function (event) {
-        rubyVMCallback('puts', 'Connected closed')
-
+        rubyVMCallback("puts 'WebSocket closed'")
     };
 
     websocket.onerror = function (event) {

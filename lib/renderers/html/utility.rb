@@ -8,5 +8,7 @@ new({ renderer: :html, method: :renderers, type: :string })
 new({ renderer: :html, method: :delete, type: :string }) do |params|
   html.delete(id)
 end
-
+new({ renderer: :html, method: :terminal, type: :multiple }) do |value, &bloc|
+  html.terminal(value, &bloc)
+end
 

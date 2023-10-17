@@ -1,5 +1,22 @@
 const atomeJS = Object.assign(communication, File);
 
+// generic callback method
+
+async function callback(callback_method, cmd) {
+    let ruby_callback_method = 'A.callback(:' + callback_method + ')'
+    let instance_variable_to_set = '@' + callback_method + '_code'
+    let cmd_result;
+    try {
+        let response;
+        response = await 'ok'
+        cmd_result = response;
+    } catch (error) {
+        cmd_result = error;
+    }
+    rubyVMCallback("Atome.instance_variable_set('" + instance_variable_to_set + "','" + cmd_result + "')")
+    rubyVMCallback(ruby_callback_method)
+}
+
 //call greet test
 // async function callGreet() {
 //     try {
@@ -14,9 +31,8 @@ const atomeJS = Object.assign(communication, File);
 
 //Send shell command
 
-
-//////////////////// new one ///////////////////////
-async function callExecuteCommand(callback_method, cmd,) {
+//////////////////// shell  ///////////////////////
+async function callExecuteCommand(callback_method, cmd) {
     let cmd_result;
     try {
         const command = cmd;
@@ -26,11 +42,13 @@ async function callExecuteCommand(callback_method, cmd,) {
     } catch (error) {
         cmd_result = error;
     }
-    // callback=;
-    // rubyVMCallback_org(callback_method+"(' ===> "+cmd_result+"')")
-    rubyVMCallback(callback_method, "(' ===> " + cmd_result + "')")
-    // alert('callback_method' + cmd_result)
-    // return cmd_result;
+    rubyVMCallback(callback_method, "('" + cmd_result + "')")
+}
+
+//////////////////// terminal  ///////////////////////
+
+function terminal(cmd) {
+    callback('terminal', cmd)
 }
 
 ////////////////////
@@ -50,8 +68,6 @@ async function callExecuteCommand(callback_method, cmd,) {
 //     // return cmd_result;
 //     rubyVMCallback('puts '+"'"+cmd_result+"'")
 // }
-
-
 
 
 // we check if we are in tauri context

@@ -40,7 +40,7 @@ class HTML
     @html_type = markup_found.to_s
     @html = JS.global[:document].createElement(@html_type)
     JS.global[:document][:body].appendChild(@html)
-    add_class("atome")
+    add_class('atome')
     id(id)
     self
   end
@@ -50,7 +50,7 @@ class HTML
     @html_type = markup_found.to_s
     @html = JS.global[:document].createElement(@html_type)
     JS.global[:document][:body].appendChild(@html)
-    add_class("atome")
+    add_class('atome')
     id(id)
     self
   end
@@ -60,7 +60,7 @@ class HTML
     @html_type = markup_found.to_s
     @html = JS.global[:document].createElement(@html_type)
     JS.global[:document][:body].appendChild(@html)
-    add_class("atome")
+    add_class('atome')
     self.id(id)
     self
   end
@@ -70,7 +70,7 @@ class HTML
     @html_type = markup_found.to_s
     @html = JS.global[:document].createElement(@html_type)
     JS.global[:document][:body].appendChild(@html)
-    add_class("atome")
+    add_class('atome')
     self.id(id)
     self
   end
@@ -80,9 +80,9 @@ class HTML
     @html_type = markup_found.to_s
     @html = JS.global[:document].createElement(@html_type)
     JS.global[:document][:body].appendChild(@html)
-    add_class("atome")
+    add_class('atome')
 
-    @html.setAttribute('src', "https://www.youtube.com/embed/lLeQZ8Llkso?si=MMsGBEXELy9yBl9R")
+    @html.setAttribute('src', 'https://www.youtube.com/embed/lLeQZ8Llkso?si=MMsGBEXELy9yBl9R')
     # below we get image to feed width and height if needed
     # image = JS.global[:Image].new
 
@@ -92,7 +92,7 @@ class HTML
 
   def raw(id)
     @html = JS.global[:document].createElement('div')
-    add_class("atome")
+    add_class('atome')
     self.id(id)
     JS.global[:document][:body].appendChild(@html)
     self
@@ -201,7 +201,7 @@ class HTML
         bloc.call(event) if bloc.is_a? Proc
       end
     end
-    @element.addEventListener("keypress", keypress_handler)
+    @element.addEventListener('keypress', keypress_handler)
   end
 
   def keyboard_keydown(bloc)
@@ -212,7 +212,7 @@ class HTML
         bloc.call(event) if bloc.is_a? Proc
       end
     end
-    @element.addEventListener("keydown", keypress_handler)
+    @element.addEventListener('keydown', keypress_handler)
   end
 
   def keyboard_keyup(bloc)
@@ -223,7 +223,7 @@ class HTML
         bloc.call(event) if bloc.is_a? Proc
       end
     end
-    @element.addEventListener("keyup", keypress_handler)
+    @element.addEventListener('keyup', keypress_handler)
   end
 
   def keyboard_kill(bloc)
@@ -242,7 +242,7 @@ class HTML
       end
 
     end
-    @element.addEventListener("input", input_handler)
+    @element.addEventListener('input', input_handler)
   end
 
   def event(action, options, bloc)
@@ -358,7 +358,6 @@ class HTML
                        })
   end
 
-
   def over_over(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.on('mouseover') do
@@ -422,7 +421,18 @@ class HTML
   end
 
   def internet
-    JS.eval("return navigator.onLine")
+    JS.eval('return navigator.onLine')
+  end
+
+  def terminal(cmd)
+    if Atome.host == 'tauri'
+      alert "write js code now"
+      # JS.eval("terminal('#{cmd}')")
+    else
+      JS.eval("terminal('#{cmd}')")
+    end
   end
 
 end
+
+

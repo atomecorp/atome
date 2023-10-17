@@ -95,3 +95,7 @@ end
 # default_user.set_current_user(:anonymous)
 Universe.current_machine = machine_id
 atome_infos
+# the constant A is used to access alla atomes methods
+A = Atome.new(
+  { renderers: default_render, id: :atome, type: :element, tag: { system: true }, attach: [], attached: [] }
+)

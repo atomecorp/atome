@@ -1,7 +1,7 @@
 #  frozen_string_literal: true
 #
 # box({ color: :orange })
-require "./examples/callback"
+# require "./examples/messaging"
 # puts('Connected to WebSocket.')
 # require './web2'
 # require File.expand_path('../examples/shadow.rb', __FILE__)
@@ -9,37 +9,36 @@ require "./examples/callback"
 # alert "==> #{Atome.aui}"
 # require '../experimental/scroll'
 # https://github.com/travist/jsencrypt
-# ###################
-if Atome::host == 'tauri'
-  JS.eval("callExecuteCommand('shell_callback','pwd')")
-  # JS.eval("callExecuteCommand('pwd')")
-end
-new({ particle: :shell })
-new({ particle: :terminal })
-
-
-
-
-
-def shell_callback(params)
-  puts "the beautifully params is #{params}"
-end
-
-grab(:view).shell('pwd') do |e|
-  alert e
-end
-grab(:view).shell_code[:shell]
-
-# alert grab(:view).inspect
-# def shell_call_back(bloc)
-#   bloc.call
+# ########### shell ########
+# class Atome
+#   def terminal_callback(params)
+#     text "the beautifully params is #{params}"
+#   end
 # end
-#
-# def shell(params, &bloc)
-#
+
+# if Atome.host == 'tauri'
+#   JS.eval("callExecuteCommand('shell_callback','pwd')")
+# else
+#   JS.eval("terminal('A.terminal_callback','pwd')")
 # end
-# shell(:my_command) do |result|
-#   alert result
+# ############### works continue here ##############
+A.terminal('cmd') do |e|
+  text("the callback data is : #{e}")
+end
+# ############### works continue here ##############
+# A.callback(:terminal)
+
+# grab(:view).shell('pwd') do |e|
+#   alert e
+# end
+# grab(:view).shell_code[:shell]
+
+# ########### terminal ########
+#   JS.eval("terminal('terminal_callback','pwd')")
+#
+#
+# def terminal_callback(params)
+#   text "the beautifully params is #{params}"
 # end
 
 # ####################

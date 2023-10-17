@@ -3,9 +3,10 @@
 //     rubyVM.eval(stringToEval);
 // }
 
-function rubyVMCallback(method, stringToEval) {
-    let ruby_message = `${method} ${stringToEval}`
-    rubyVM.eval(ruby_message);
+function rubyVMCallback(method) {
+    // let ruby_message = `${method}${stringToEval}`
+    // alert(method);
+    rubyVM.eval(method);
 }
 
 
