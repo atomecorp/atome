@@ -1,9 +1,6 @@
 function rubyVMCallback(rubycode) {
-    // let ruby_message = `${method}${stringToEval}`
-    // alert(rubycode);
     rubyVM.eval(rubycode);
 }
-
 
 
 // var checkInterval = setInterval(function () {

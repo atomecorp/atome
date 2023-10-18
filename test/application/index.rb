@@ -1,7 +1,7 @@
 #  frozen_string_literal: true
 #
 # box({ color: :orange })
-# require "./examples/messaging"
+# require "./examples/shadow"
 # puts('Connected to WebSocket.')
 # require './web2'
 # require File.expand_path('../examples/shadow.rb', __FILE__)
@@ -40,9 +40,9 @@
 #
 # end
 
-A.terminal('pwd') do |data|
-  text " => #{data}"
-end
+# A.terminal('pwd') do |data|
+#   text "callback content  :\n #{data}"
+# end
 
 # ############### works continue here ##############
 # class Atome
