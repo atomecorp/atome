@@ -9,54 +9,21 @@
 # alert "==> #{Atome.aui}"
 # require '../experimental/scroll'
 # https://github.com/travist/jsencrypt
-# ########### base sheell ########
-# box({id: :toto})
-# class Atome
-#   def shell_callback(params)
-#     text "the params is :  #{params}"
-#   end
-# end
-#
-#
-#
-# if Atome.host == 'tauri'
-#   JS.eval("callExecuteCommand('shell_callback','pwd')")
-# else
-#   JS.eval("terminal('A.terminal_callback','pwd')")
-# end
-# ################# shell ####################
 
-# class Atome
-#
-#   def terminal_call(params)
-#     # text "the params is :\n  #{params}"
-#     # callback_data= A.instance_variable_get('@callback')[:terminal]
-#     # bloc_found = A.instance_variable_get('@terminal_code')[:terminal]
-#     #
-#     # bloc_found.call(params) if bloc_found.is_a?(Proc)
-#     alert :ok
-#     call(:terminal)
-#   end
-#
-# end
-
-# A.terminal('pwd') do |data|
+# # ########### base read file ########
+# A.terminal('ls') do |data|
 #   text "callback content  :\n #{data}"
 # end
+if Atome.host == 'tauri'
+  # JS.eval("callExecuteCommand('shell_callback','pwd')")
+  JS.eval("readFile('atome','Cargo.toml')")
+else
+  puts 'nothing here'
+  # JS.eval("terminal('A.terminal_callback','pwd')")
+end
 
-# ############### works continue here ##############
-# class Atome
-#   def terminal_callback
-#
-#     alert A.instance_variables
-#     # alert A.id
-#     # alert @terminal_code[:terminal].class
-#     #@callback
-#     # alert params
-#     # return_params='cool'
-#     # bloc.call(return_params)
-#   end
-# end
+
+
 #######################
 # test_box = box()
 # test_box.blur(9) do |params_back|

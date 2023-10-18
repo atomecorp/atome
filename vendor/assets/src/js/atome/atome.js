@@ -18,6 +18,23 @@ async function callback(callback_method, cmd) {
 }
 
 
+//read file
+
+
+async function readFile(atome_id, filePath) {
+    let fileContent;
+    try {
+        fileContent = await window.__TAURI__.invoke('read_file', {filePath: filePath});
+    } catch (error) {
+        fileContent = error;
+    }
+    alert(fileContent);
+    // rubyVMCallback("grab(:" + atome_id + ").callback({ fileContent: '" + fileContent + "' })");
+    // rubyVMCallback("grab(:" + atome_id + ").call(:fileContent)");
+}
+
+
+
 // Terminal
 
 async function terminal(atome_id, cmd) {
