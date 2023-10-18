@@ -33,7 +33,7 @@ module Essentials
     shape: { type: :shape, width: 99, height: 99,
              apply: [:shape_color],
              left: 100, top: 100, clones: [] },
-    text: { type: :text, component: { size: 66 },
+    text: { type: :text, component: { size: 18 },
             apply: [:text_color],
             width: :auto, height: :auto, clones: [] },
     drm: { type: :drm, attach: [:black_matter], attached: [] },

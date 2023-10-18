@@ -13,6 +13,7 @@ class Atome
     @broadcast = {}
     @history = {}
     @security = {}
+    @callback = {}
 
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
@@ -126,29 +127,25 @@ class Atome
   end
 
   def particle_creation(element, params, store, rendering, &user_proc)
-
     @store_allow = false
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
     if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc) # post is before rendering and broadcasting
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
     end
+    # we create a proc holder of any new particle if user pass a bloc
+    particle_callback(element)
+    store_proc(element, params, &user_proc) if user_proc
     render(element, params, &user_proc) if rendering
     broadcasting(element)
     if Atome.instance_variable_get("@post_#{element}").is_a?(Proc) # post is after rendering and broadcasting
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
     end
-
     store_value(element) if store
-    # we create a proc holder of any new particle if user pass a bloc
-    particle_callback(element, params)
-    store_proc(element, params, &user_proc) if user_proc
     @store_allow = true
-
     if Atome.instance_variable_get("@after_#{element}").is_a?(Proc) # after is post saving
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@after_#{element}"))
     end
-
     self
   end
 

@@ -9,22 +9,69 @@
 # alert "==> #{Atome.aui}"
 # require '../experimental/scroll'
 # https://github.com/travist/jsencrypt
-# ########### shell ########
+# ########### base sheell ########
+# box({id: :toto})
 # class Atome
-#   def terminal_callback(params)
-#     text "the beautifully params is #{params}"
+#   def shell_callback(params)
+#     text "the params is :  #{params}"
 #   end
 # end
-
+#
+#
+#
 # if Atome.host == 'tauri'
 #   JS.eval("callExecuteCommand('shell_callback','pwd')")
 # else
 #   JS.eval("terminal('A.terminal_callback','pwd')")
 # end
-# ############### works continue here ##############
-A.terminal('cmd') do |e|
-  text("the callback data is : #{e}")
+# ################# shell ####################
+
+class Atome
+
+  def terminal_call(params)
+    # text "the params is :\n  #{params}"
+    # callback_data= A.instance_variable_get('@callback')[:terminal]
+    bloc_found = A.instance_variable_get('@terminal_code')[:terminal]
+    # alert bloc_found.class
+    bloc_found.call(params) if bloc_found.is_a?(Proc)
+  end
+
 end
+
+A.terminal('pwd') do |data|
+  text " => #{data}"
+end
+
+# ############### works continue here ##############
+# class Atome
+#   def terminal_callback
+#
+#     alert A.instance_variables
+#     # alert A.id
+#     # alert @terminal_code[:terminal].class
+#     #@callback
+#     # alert params
+#     # return_params='cool'
+#     # bloc.call(return_params)
+#   end
+# end
+#######################
+# test_box = box()
+# test_box.blur(9) do |params_back|
+#   puts "here is the callback #{params_back}"
+# end
+# # per example it's possible to set back params like this
+# test_box.callback({ blur: :my_data })
+# ########### terminal here############
+# # def poil
+# #   grab(:atome).call(:terminal)
+# # end
+# A.terminal('pwd') do |e|
+#   text("the callback data is : #{e}")
+# end
+# # grab(:atome).callback({terminal: 'my message'})
+# # grab(:atome).call(:terminal)
+# # grab(:atome).call(:terminal)
 # ############### works continue here ##############
 # A.callback(:terminal)
 

@@ -424,12 +424,14 @@ class HTML
     JS.eval('return navigator.onLine')
   end
 
-  def terminal(cmd)
+  def terminal(id, cmd)
     if Atome.host == 'tauri'
-      alert "write js code now"
-      # JS.eval("terminal('#{cmd}')")
+      # alert "write js code now"
+      JS.eval("shell('#{id}','#{cmd}')")
+      # JS.eval("terminal('#{id}','#{cmd}')")
     else
-      JS.eval("terminal('#{cmd}')")
+      JS.eval("terminal('A.terminal_callback','pwd')")
+      # JS.eval("distant_terminal('#{id}','#{cmd}')")
     end
   end
 

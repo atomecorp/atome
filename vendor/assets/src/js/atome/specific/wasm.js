@@ -1,12 +1,7 @@
-// function rubyVMCallback_org(stringToEval) {
-//     alert(stringToEval)
-//     rubyVM.eval(stringToEval);
-// }
-
-function rubyVMCallback(method) {
+function rubyVMCallback(rubycode) {
     // let ruby_message = `${method}${stringToEval}`
-    // alert(method);
-    rubyVM.eval(method);
+    // alert(rubycode);
+    rubyVM.eval(rubycode);
 }
 
 

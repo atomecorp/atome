@@ -17,21 +17,8 @@ async function callback(callback_method, cmd) {
     rubyVMCallback(ruby_callback_method)
 }
 
-//call greet test
-// async function callGreet() {
-//     try {
-//         const response = await window.__TAURI__.invoke('greet', { name: 'John' });
-//         console.log(response); // Cela affichera la réponse dans la console
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
-//
-// callGreet();
 
-//Send shell command
-
-//////////////////// shell  ///////////////////////
+//////////////////// Baseshell  ///////////////////////
 async function callExecuteCommand(callback_method, cmd) {
     let cmd_result;
     try {
@@ -42,31 +29,86 @@ async function callExecuteCommand(callback_method, cmd) {
     } catch (error) {
         cmd_result = error;
     }
-    rubyVMCallback(callback_method, "('" + cmd_result + "')")
+    rubyVMCallback("grab(:toto).left(3)");
+    cmd_result = cmd_result.replace(/\r?\n/g, "");
+    rubyVMCallback('A.' + callback_method + "('" + cmd_result + "')");
 }
+
+/////////////////// shelll ///////////////////////////
+
+async function shell(atome_id, cmd) {
+    let cmd_result;
+    try {
+        const command = cmd;
+        let response;
+        response = await window.__TAURI__.invoke('execute_command', {command});
+        cmd_result = response;
+    } catch (error) {
+        cmd_result = error;
+    }
+    cmd_result = cmd_result.replace(/\r?\n/g, "");
+
+    rubyVMCallback("grab(:" + atome_id + ").callback({ terminal: '" + cmd_result + "' })");
+    // rubyVMCallback("grab(:"+atome_id+").data('"+cmd_result+"')");
+    rubyVMCallback("grab(:" + atome_id + ").terminal_call('" + cmd_result + "')");
+
+}
+
 
 //////////////////// terminal  ///////////////////////
 
-function terminal(cmd) {
-    callback('terminal', cmd)
+function distant_terminal(id, cmd) {
+    let myd_data_test = 'terminal will soon be implemented for distant connection';
+    let call_back_to_send = `grab(:${id}).callback({terminal: "${myd_data_test}"})`
+    let call = `grab(:${id}).call(:terminal)`
+    rubyVMCallback(call_back_to_send)
+    rubyVMCallback(call)
 }
 
-////////////////////
+async function terminal(id, cmd) {
+    let cmd_result;
+    try {
+        const command = cmd;
+        let response;
+        response = await window.__TAURI__.invoke('execute_command', {command});
+        cmd_result = response;
+    } catch (error) {
+        cmd_result = error;
+    }
+    // rubyVMCallback(callback_method, "('" + cmd_result + "')")
+    cmd_result = cmd_result.replace(/\r?\n/g, "");
+    // let call_back_to_send = `grab(:${id}).callback({terminal: "${cmd_result}"})`;
+    let call = `grab(:${id}).call(:terminal)`
+    rubyVMCallback(call)
+    // rubyVMCallback("A.terminal_callback('" + cmd_result + "')")
+}
 
-// async function callExecuteCommand(comd) {
+// async function terminal(id, cmd) {
 //     let cmd_result;
 //     try {
-//         const command = comd; // Remplacez ceci par votre commande shell souhaitée
-//         const response = await window.__TAURI__.invoke('execute_command', {command});
+//         const command = 'pwd';
+//         let response;
+//         response = await window.__TAURI__.invoke('execute_command', {command});
 //         cmd_result = response;
-//         // console.log(response); // Cela affichera la sortie de la commande ou l'erreur dans la console
+//         cmd_result = cmd_result.replace(/\r?\n/g, "");
+//         let call = `grab(:${id}).call(:terminal)`
+//         let call_back_to_send = `grab(:${id}).callback({terminal: "${cmd_result}"})`;
+//         rubyVMCallback(call_back_to_send);
+//         rubyVMCallback(call);
+//         alert('ok');
 //     } catch (error) {
-//         // console.error(error);
 //         cmd_result = error;
 //     }
-//     // alert('callback' + cmd_result)
-//     // return cmd_result;
-//     rubyVMCallback('puts '+"'"+cmd_result+"'")
+//
+//
+//     // rubyVMCallback(call_back_to_send);
+//     // rubyVMCallback(call);
+//
+//     // let myd_data_test = 'terminal will soon be implemented for distant connection';
+//     // let call_back_to_send = `grab(:${id}).callback({terminal: "${myd_data_test}"})`
+//     // let call = `grab(:${id}).call(:terminal)`
+//     // rubyVMCallback(call_back_to_send)
+//     // rubyVMCallback(call)
 // }
 
 

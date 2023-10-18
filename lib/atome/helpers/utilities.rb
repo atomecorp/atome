@@ -142,17 +142,21 @@ class Atome
   # new({callback: :shell}) do |params, bloc|
   # # …write what you want …
   # end
-  def particle_callback(element, params)
+  def particle_callback(element)
     Atome.define_method "#{element}_callback" do
       proc_found = instance_variable_get("@#{element}_code")[element]
-      proc_found.call(params) if proc_found.is_a? Proc
+      proc_found.call(@callback[element]) if proc_found.is_a? Proc
     end
   end
 
   # this method generate the method accessible for end developers
   # it's the send the method define in "particle_callback"
-  def callback(element)
+  def call(element)
     send("#{element}_callback")
+  end
+
+  def callback(data)
+    @callback[data.keys[0]] = data[data.keys[0]]
   end
 
 
