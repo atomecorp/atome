@@ -26,17 +26,19 @@
 # end
 # ################# shell ####################
 
-class Atome
-
-  def terminal_call(params)
-    # text "the params is :\n  #{params}"
-    # callback_data= A.instance_variable_get('@callback')[:terminal]
-    bloc_found = A.instance_variable_get('@terminal_code')[:terminal]
-    # alert bloc_found.class
-    bloc_found.call(params) if bloc_found.is_a?(Proc)
-  end
-
-end
+# class Atome
+#
+#   def terminal_call(params)
+#     # text "the params is :\n  #{params}"
+#     # callback_data= A.instance_variable_get('@callback')[:terminal]
+#     # bloc_found = A.instance_variable_get('@terminal_code')[:terminal]
+#     #
+#     # bloc_found.call(params) if bloc_found.is_a?(Proc)
+#     alert :ok
+#     call(:terminal)
+#   end
+#
+# end
 
 A.terminal('pwd') do |data|
   text " => #{data}"

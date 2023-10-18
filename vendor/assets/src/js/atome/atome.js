@@ -36,7 +36,7 @@ async function callExecuteCommand(callback_method, cmd) {
 
 /////////////////// shelll ///////////////////////////
 
-async function shell(atome_id, cmd) {
+async function terminal(atome_id, cmd) {
     let cmd_result;
     try {
         const command = cmd;
@@ -50,7 +50,8 @@ async function shell(atome_id, cmd) {
 
     rubyVMCallback("grab(:" + atome_id + ").callback({ terminal: '" + cmd_result + "' })");
     // rubyVMCallback("grab(:"+atome_id+").data('"+cmd_result+"')");
-    rubyVMCallback("grab(:" + atome_id + ").terminal_call('" + cmd_result + "')");
+    // rubyVMCallback("grab(:" + atome_id + ").terminal_call('" + cmd_result + "')");
+    rubyVMCallback("grab(:" + atome_id + ").call(:terminal)");
 
 }
 
@@ -65,23 +66,23 @@ function distant_terminal(id, cmd) {
     rubyVMCallback(call)
 }
 
-async function terminal(id, cmd) {
-    let cmd_result;
-    try {
-        const command = cmd;
-        let response;
-        response = await window.__TAURI__.invoke('execute_command', {command});
-        cmd_result = response;
-    } catch (error) {
-        cmd_result = error;
-    }
-    // rubyVMCallback(callback_method, "('" + cmd_result + "')")
-    cmd_result = cmd_result.replace(/\r?\n/g, "");
-    // let call_back_to_send = `grab(:${id}).callback({terminal: "${cmd_result}"})`;
-    let call = `grab(:${id}).call(:terminal)`
-    rubyVMCallback(call)
-    // rubyVMCallback("A.terminal_callback('" + cmd_result + "')")
-}
+// async function terminal(id, cmd) {
+//     let cmd_result;
+//     try {
+//         const command = cmd;
+//         let response;
+//         response = await window.__TAURI__.invoke('execute_command', {command});
+//         cmd_result = response;
+//     } catch (error) {
+//         cmd_result = error;
+//     }
+//     // rubyVMCallback(callback_method, "('" + cmd_result + "')")
+//     cmd_result = cmd_result.replace(/\r?\n/g, "");
+//     // let call_back_to_send = `grab(:${id}).callback({terminal: "${cmd_result}"})`;
+//     let call = `grab(:${id}).call(:terminal)`
+//     rubyVMCallback(call)
+//     // rubyVMCallback("A.terminal_callback('" + cmd_result + "')")
+// }
 
 // async function terminal(id, cmd) {
 //     let cmd_result;
