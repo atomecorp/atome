@@ -34,6 +34,36 @@ async function readFile(atome_id, filePath) {
 }
 
 
+// list folder
+
+async function listDirectoryContent(atome_id, directoryPath) {
+    let directoryContent;
+    try {
+        directoryContent = await window.__TAURI__.invoke('list_directory_content', {directoryPath: directoryPath});
+    } catch (error) {
+        directoryContent = error;
+    }
+    alert(directoryContent);
+    // rubyVMCallback("grab(:" + atome_id + ").callback({ directoryContent: '" + directoryContent + "' })");
+    // rubyVMCallback("grab(:" + atome_id + ").call(:directoryContent)");
+}
+
+
+// change dir
+
+async function changeCurrentDirectory(atome_id, newPath) {
+    let result;
+    try {
+        // Utilisez Tauri pour changer le répertoire de travail courant
+        result = await window.__TAURI__.invoke('change_dir', {path: newPath});
+    } catch (error) {
+        result = error;
+    }
+    alert(result);
+}
+
+
+
 
 // Terminal
 

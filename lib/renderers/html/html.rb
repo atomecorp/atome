@@ -8,6 +8,95 @@ class HTML
     @element = JS.global[:document].getElementById(@id.to_s)
   end
 
+  def hypertext(params)
+    current_div = JS.global[:document].getElementById(@id.to_s)
+    current_div[:innerHTML] = params
+  end
+
+  def extract_properties(properties_string)
+    properties_hash = {}
+    properties = properties_string.split(';').map(&:strip).reject(&:empty?)
+    properties.each do |property|
+      key, value = property.split(':').map(&:strip)
+      properties_hash[key] = value
+    end
+    properties_hash
+  end
+
+  def get_page_style
+    style_elements = JS.global[:document].querySelectorAll('style')
+    ccs_hash = {}
+    length = style_elements[:length].to_i
+    (0...length).each { |i|
+      style = style_elements.item(i)
+      css_string = style[:innerHTML].to_s
+      hash_result = {}
+      inside_media = false
+      media_hash = {}
+
+      css_string.lines.each do |line|
+        line.strip!
+        next if line.empty? || line.start_with?("/*")
+        if inside_media
+          if line == "}"
+            hash_result["@media"] << media_hash
+            inside_media = false
+            next
+          end
+
+          selector, properties = line.split('{').map(&:strip)
+          next unless properties&.end_with?("}")
+
+          properties = properties[0...-1].strip
+          media_hash[selector] = extract_properties(properties)
+        elsif line.start_with?("@media")
+          media_content = line.match(/@media\s*\(([^)]+)\)\s*{/)
+          next unless media_content
+
+          media_query = media_content[1]
+          hash_result["@media"] = [media_query]
+          inside_media = true
+        else
+          selector, properties = line.split('{').map(&:strip)
+          next unless properties&.end_with?("}")
+
+          properties = properties[0...-1].strip
+          hash_result[selector] = extract_properties(properties)
+        end
+      end
+      ccs_hash = ccs_hash.merge(hash_result)
+    }
+    ccs_hash
+  end
+
+  def hyperedit(params)
+    html_object = JS.global[:document].getElementById(params.to_s)
+    particles_from_style = {}
+    # we get all the styles tag present in the page
+    get_page_style
+    classes_found = html_object[:classList].to_s.split(' ')
+    classes_found.each do |class_found|
+      if get_page_style[".#{class_found}"]
+        particles_from_style = particles_from_style.merge(get_page_style[".#{class_found}"])
+      end
+    end
+    particles_found = {}
+    particles_found[:data] = html_object[:innerText].to_s.chomp
+    particles_found[:markup] = html_object[:tagName].to_s
+
+    style_found = html_object[:style][:cssText].to_s
+
+    style_found.split(';').each do |pair|
+      key, value = pair.split(':').map(&:strip)
+      particles_from_style[key.to_sym] = value if key && value
+    end
+    particles_found = particles_found.merge(particles_from_style)
+    current_atome = grab(@id)
+    current_atome.callback({ hyperedit: particles_found })
+    current_atome.call(:hyperedit)
+
+  end
+
   def connect(params, &bloc)
     JS.eval("atomeJS.connect('ws://#{params}')")
   end

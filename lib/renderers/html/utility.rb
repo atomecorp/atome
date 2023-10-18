@@ -11,4 +11,10 @@ end
 new({ renderer: :html, method: :terminal, type: :multiple }) do |value, &bloc|
   html.terminal(id, value)
 end
+new({ renderer: :html, method: :hypertext }) do |params|
+  html.hypertext(params)
+end
+new({ renderer: :html, method: :hyperedit }) do |params|
+  html.hyperedit(params)
+end
 

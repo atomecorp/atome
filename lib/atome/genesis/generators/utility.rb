@@ -103,4 +103,9 @@ new({ particle: :login }) do |params|
   set_current_user(id) if params
 end
 new({ particle: :terminal })
+new({ particle: :hypertext })
+new({ particle: :hyperedit })
+
+
+
 

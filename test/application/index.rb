@@ -1,7 +1,7 @@
 #  frozen_string_literal: true
-#
+
 # box({ color: :orange })
-# require "./examples/shadow"
+require "./examples/convert"
 # puts('Connected to WebSocket.')
 # require './web2'
 # require File.expand_path('../examples/shadow.rb', __FILE__)
@@ -14,15 +14,14 @@
 # A.terminal('ls') do |data|
 #   text "callback content  :\n #{data}"
 # end
-if Atome.host == 'tauri'
-  # JS.eval("callExecuteCommand('shell_callback','pwd')")
-  JS.eval("readFile('atome','Cargo.toml')")
-else
-  puts 'nothing here'
-  # JS.eval("terminal('A.terminal_callback','pwd')")
-end
 
-
+# if Atome.host == 'tauri'
+#   # JS.eval("readFile('atome','Cargo.toml')")
+#   JS.eval("listDirectoryContent('atome','/')")
+# else
+#   puts 'nothing here'
+#   # JS.eval("terminal('A.terminal_callback','pwd')")
+# end
 
 #######################
 # test_box = box()
@@ -74,7 +73,9 @@ end
 # TODO : matrix
 # TODO : implement scroll
 # TODO : markup to allow after creation changes
-
+# TODO : Drag'nDrop file import
+# TODO : change particle_code for {code:{particle: :data_code}}
+# TODO : rename HTML class and html objetc to Browser
 # new(particle: :language)
 # new(particle: :international)
 # new(particle: :state)
