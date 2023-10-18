@@ -1,7 +1,7 @@
 #  frozen_string_literal: true
 
 # box({ color: :orange })
-require "./examples/convert"
+# require "./examples/convert"
 # puts('Connected to WebSocket.')
 # require './web2'
 # require File.expand_path('../examples/shadow.rb', __FILE__)
@@ -15,13 +15,13 @@ require "./examples/convert"
 #   text "callback content  :\n #{data}"
 # end
 
-# if Atome.host == 'tauri'
-#   # JS.eval("readFile('atome','Cargo.toml')")
-#   JS.eval("listDirectoryContent('atome','/')")
-# else
-#   puts 'nothing here'
-#   # JS.eval("terminal('A.terminal_callback','pwd')")
-# end
+if Atome.host == 'tauri'
+  # JS.eval("readFile('atome','Cargo.toml')")
+  JS.eval("listDirectoryContent('atome','/')")
+else
+  puts 'nothing here'
+  # JS.eval("terminal('A.terminal_callback','pwd')")
+end
 
 #######################
 # test_box = box()

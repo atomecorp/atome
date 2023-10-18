@@ -1,8 +1,7 @@
-// main.rs
-
 use std::process::Command;
 use std::str;
 use std::fs;
+// use serde::Deserialize;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -46,9 +45,28 @@ fn write_file(file_path: &str, content: &str) -> Result<(), String> {
     }
 }
 
+// Nouvelle commande pour lister le contenu du répertoire
+#[tauri::command]
+fn list_directory_content(directory_path: String) -> Result<Vec<String>, String> {
+    let path = std::path::Path::new(&directory_path);
+    match fs::read_dir(path) {
+        Ok(entries) => {
+            let entries: Vec<String> = entries
+                .filter_map(|entry| {
+                    entry.ok().and_then(|e| {
+                        e.path().file_name().and_then(std::ffi::OsStr::to_str).map(|s| s.to_owned())
+                    })
+                })
+                .collect();
+            Ok(entries)
+        }
+        Err(_) => Err("Failed to read directory.".to_string()),
+    }
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, execute_command, read_file, write_file])
+        .invoke_handler(tauri::generate_handler![greet, execute_command, read_file, write_file, list_directory_content])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

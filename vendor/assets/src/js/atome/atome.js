@@ -36,6 +36,7 @@ async function readFile(atome_id, filePath) {
 
 // list folder
 
+// almost works
 async function listDirectoryContent(atome_id, directoryPath) {
     let directoryContent;
     try {
