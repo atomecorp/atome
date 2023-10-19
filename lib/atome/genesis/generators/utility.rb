@@ -107,6 +107,7 @@ new({ particle: :hyperedit })
 new({ particle: :terminal })
 new({ particle: :read })
 new({ particle: :browse })
+new({ particle: :copies })
 
 
 

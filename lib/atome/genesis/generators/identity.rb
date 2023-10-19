@@ -31,3 +31,4 @@ new({ particle: :clones }) do |clones_found|
   end
 end
 new({ particle: :markup })
+new({particle: :bundle})

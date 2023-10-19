@@ -3,9 +3,11 @@
 # box({ color: :orange })
 # require "./examples/shadow"
 # require "./examples/convert"
+require "./examples/hypertext"
+# require "./examples/generator"
 # require "./examples/callback"
 # require "./examples/read"
-require "./examples/browse"
+# require "./examples/browse"
 # require "./examples/terminal"
 # puts('Connected to WebSocket.')
 # require './web2'
@@ -13,63 +15,19 @@ require "./examples/browse"
 # require File.expand_path('../web2.rb', __FILE__)
 # alert "==> #{Atome.aui}"
 # require '../experimental/scroll'
-# https://github.com/travist/jsencrypt
-
-# # ########### base read file ########
-# A.terminal('ls') do |data|
-#   text "callback content  :\n #{data}"
-# end
-
-# if Atome.host == 'tauri'
-#   # JS.eval("readFile('atome','Cargo.toml')")
-#   JS.eval("listDirectory('atome','/')")
-# else
-#   puts 'nothing here'
-#   # JS.eval("terminal('A.terminal_callback','pwd')")
-# end
-
-#######################
-# test_box = box()
-# test_box.blur(9) do |params_back|
-#   puts "here is the callback #{params_back}"
-# end
-# # per example it's possible to set back params like this
-# test_box.callback({ blur: :my_data })
-# ########### terminal here############
-# # def poil
-# #   grab(:atome).call(:terminal)
-# # end
-# A.terminal('pwd') do |e|
-#   text("the callback data is : #{e}")
-# end
-# # grab(:atome).callback({terminal: 'my message'})
-# # grab(:atome).call(:terminal)
-# # grab(:atome).call(:terminal)
-# ############### works continue here ##############
-# A.callback(:terminal)
-
-# grab(:view).shell('pwd') do |e|
-#   alert e
-# end
-# grab(:view).shell_code[:shell]
-
-# ########### terminal ########
-#   JS.eval("terminal('terminal_callback','pwd')")
+# # https://github.com/travist/jsencrypt
+# def generator(params)
+#   default_styles={type: :shape,  renderers: [:html],width: 66, height: 66}
+#   style=default_styles.merge(params[:style])
+#   Atome.new(type: params[:type], id: :tutu,renderers: [:html])
 #
-#
-# def terminal_callback(params)
-#   text "the beautifully params is #{params}"
 # end
 
-# ####################
-
-# if JS.eval(" window.__TAURI__")
-#   alert 'tauri'
-# else
-#    'not tauri'
-# end
+############################
 
 
+
+###########################
 # TODO: check that atome gem build correctly the solution
 # TODO: change atomic repository so that it install atome gem correctly
 # TODO : find a way to unbind a specific event
