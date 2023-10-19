@@ -4,8 +4,9 @@
 # require "./examples/shadow"
 # require "./examples/convert"
 # require "./examples/hypertext"
-require "./examples/generator"
+# require "./examples/generator"
 # require "./examples/callback"
+require "./examples/display"
 # require "./examples/read"
 # require "./examples/browse"
 # require "./examples/terminal"
@@ -24,8 +25,6 @@ require "./examples/generator"
 # end
 
 ############################
-# matrix
-
 
 ###########################
 # TODO: check that atome gem build correctly the solution
