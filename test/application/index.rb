@@ -3,8 +3,8 @@
 # box({ color: :orange })
 # require "./examples/shadow"
 # require "./examples/convert"
-require "./examples/hypertext"
-# require "./examples/generator"
+# require "./examples/hypertext"
+require "./examples/generator"
 # require "./examples/callback"
 # require "./examples/read"
 # require "./examples/browse"
@@ -24,7 +24,7 @@ require "./examples/hypertext"
 # end
 
 ############################
-
+# matrix
 
 
 ###########################

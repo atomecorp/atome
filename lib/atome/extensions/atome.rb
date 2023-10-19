@@ -112,25 +112,5 @@ if (++x ===#{repeat} )  {
 `
   end
 
-  def generator(params)
-    default_styles = { type: :shape, renderers: [:html], width: 66, height: 66, color: :gray, left: 12, top: 12 }
-    style_found = default_styles.merge(params)
-    color_found = color(style_found[:color])
-    left_pos = style_found[:left]
-    top_pos = style_found[:top]
-    params[:copies].downto(0) do |_index|
-      bundle_id = if params[:bundle]
-                    "#{params[:bundle]}_#{Universe.atomes.length}"
-                  else
-                    "bundle_#{Universe.atomes.length}"
-                  end
-      style_found[:id] = bundle_id
-      a = Atome.new(style_found)
-      a.apply([color_found.id])
-      a.left((a.width + left_pos) * _index)
-      a.top((a.height + top_pos) * _index)
-    end
-
-  end
 
 end

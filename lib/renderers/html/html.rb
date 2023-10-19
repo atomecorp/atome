@@ -30,7 +30,6 @@ class HTML
     style_tags = main_view_content.split(/<\/?style[^>]*>/i).select.with_index { |_, index| index.odd? }
     style_tags = style_tags.join('')
     style_tags = style_tags.split("\n")
-    # ccs_hash = {}
     hash_result = {}
     inside_media = false
     media_hash = {}
@@ -38,6 +37,7 @@ class HTML
     style_tags.each do |line|
       line = line.strip
       next if line.empty? || line.start_with?("/*")
+
       if inside_media
         if line == "}"
           hash_result["@media"] << media_hash
@@ -65,59 +65,7 @@ class HTML
         hash_result[selector] = extract_properties(properties)
       end
     end
-    # alert hash_result[:body]
-    # ccs_hash.merge(hash_result)
-
     hash_result
-    # else
-    #   # current_div[:innerHTML]
-    #   main_view= JS.global[:document].getElementById('view')
-    #   puts main_view[:innerHTML]
-    #   style_elements = JS.global[:document].querySelectorAll('style')
-    #   ccs_hash = {}
-    #   length = style_elements[:length].to_i
-    #   (0...length).each { |i|
-    #     style = style_elements.item(i)
-    #     css_string = style[:innerHTML].to_s
-    #     hash_result = {}
-    #     inside_media = false
-    #     media_hash = {}
-    #
-    #     css_string.lines.each do |line|
-    #       line.strip!
-    #       next if line.empty? || line.start_with?("/*")
-    #       if inside_media
-    #         if line == "}"
-    #           hash_result["@media"] << media_hash
-    #           inside_media = false
-    #           next
-    #         end
-    #
-    #         selector, properties = line.split('{').map(&:strip)
-    #         next unless properties&.end_with?("}")
-    #
-    #         properties = properties[0...-1].strip
-    #         media_hash[selector] = extract_properties(properties)
-    #       elsif line.start_with?("@media")
-    #         media_content = line.match(/@media\s*\(([^)]+)\)\s*{/)
-    #         next unless media_content
-    #
-    #         media_query = media_content[1]
-    #         hash_result["@media"] = [media_query]
-    #         inside_media = true
-    #       else
-    #         selector, properties = line.split('{').map(&:strip)
-    #         next unless properties&.end_with?("}")
-    #
-    #         properties = properties[0...-1].strip
-    #         hash_result[selector] = extract_properties(properties)
-    #       end
-    #     end
-    #     ccs_hash = ccs_hash.merge(hash_result)
-    #   }
-    #   ccs_hash
-    # end
-
   end
 
   def hyperedit(params)
@@ -126,7 +74,6 @@ class HTML
     particles_from_style = {}
     # we get all the styles tag present in the page
     get_page_style
-    # alert get_page_style
     if html_object[:className].to_s
       classes_found = html_object[:className].to_s.split(' ')
       classes_found.each do |class_found|

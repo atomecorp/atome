@@ -89,6 +89,12 @@ class Atome
     end
     new_atome
   end
+  def store(params)
+    params.each do |particle_to_save, data|
+      @atome[particle_to_save]=data
+    end
+
+  end
 
   def history(filter = {})
     filter[:id] = id

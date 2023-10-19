@@ -87,5 +87,14 @@ new({ atome: :human }) do |params|
   Universe.add_user = params[:id]
 end
 new({ atome: :machine })
+new ({ atome: :generator }) do |params|
+  # we remove build and store it in a temporary particle  as it has to be added after atome creation
+  build=params.delete(:build)
+  params[:temporary]={build: build}
+end
+new({post: :generator}) do |params|
+  build_plans= params[:temporary][:build]
+  grab(params[:id]).build(build_plans)
+end
 
 
