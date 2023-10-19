@@ -521,6 +521,24 @@ class HTML
     end
   end
 
+  def read(id, file)
+    if Atome.host == 'tauri'
+      JS.eval("readFile('#{id}','#{file}')")
+    else
+      puts " work in progress"
+      # JS.eval("readFile('#{id}','#{file}')")
+    end
+  end
+
+  def browse(id, file)
+    if Atome.host == 'tauri'
+      JS.eval("browseFile('#{id}','#{file}')")
+    else
+      puts " work in progress"
+      # JS.eval("readFile('#{id}','#{file}')")
+    end
+  end
+
 end
 
 

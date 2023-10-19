@@ -28,25 +28,24 @@ async function readFile(atome_id, filePath) {
     } catch (error) {
         fileContent = error;
     }
-    alert(fileContent);
-    // rubyVMCallback("grab(:" + atome_id + ").callback({ fileContent: '" + fileContent + "' })");
-    // rubyVMCallback("grab(:" + atome_id + ").call(:fileContent)");
+    // alert(fileContent);
+    rubyVMCallback("grab(:" + atome_id + ").callback({ read: '" + fileContent + "' })");
+    rubyVMCallback("grab(:" + atome_id + ").call(:read)");
 }
 
 
 // list folder
 
 // almost works
-async function listDirectoryContent(atome_id, directoryPath) {
+async function browseFile(atome_id, directoryPath) {
     let directoryContent;
     try {
         directoryContent = await window.__TAURI__.invoke('list_directory_content', {directoryPath: directoryPath});
     } catch (error) {
         directoryContent = error;
     }
-    alert(directoryContent);
-    // rubyVMCallback("grab(:" + atome_id + ").callback({ directoryContent: '" + directoryContent + "' })");
-    // rubyVMCallback("grab(:" + atome_id + ").call(:directoryContent)");
+    rubyVMCallback("grab(:" + atome_id + ").callback({ browse: '" + directoryContent + "' })");
+    rubyVMCallback("grab(:" + atome_id + ").call(:browse)");
 }
 
 

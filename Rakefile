@@ -174,9 +174,7 @@ task :update_osx do
   update_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
-  # build and open the app
-  # build_for_osx(destination)
-  # puts 'atome osx is running'
+  puts 'atome osx is updated'
 end
 
 task :build_gem do
@@ -186,7 +184,6 @@ task :build_gem do
   `cd pkg; gem install atome --local`
   # open the app
   puts 'atome gem built and installed'
-
 end
 
 # task :run_wasm_client_code do

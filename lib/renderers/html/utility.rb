@@ -8,13 +8,21 @@ new({ renderer: :html, method: :renderers, type: :string })
 new({ renderer: :html, method: :delete, type: :string }) do |params|
   html.delete(id)
 end
-new({ renderer: :html, method: :terminal, type: :multiple }) do |value, &bloc|
-  html.terminal(id, value)
-end
 new({ renderer: :html, method: :hypertext }) do |params|
   html.hypertext(params)
 end
 new({ renderer: :html, method: :hyperedit }) do |params|
   html.hyperedit(params)
+end
+new({ renderer: :html, method: :read, type: :string }) do |value, &bloc|
+  html.read(id, value)
+end
+
+new({ renderer: :html, method: :browse, type: :string }) do |value, &bloc|
+  html.browse(id, value)
+end
+
+new({ renderer: :html, method: :terminal, type: :string }) do |value, &bloc|
+  html.terminal(id, value)
 end
 
