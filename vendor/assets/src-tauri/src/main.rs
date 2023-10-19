@@ -1,7 +1,6 @@
 use std::process::Command;
 use std::str;
 use std::fs;
-// use serde::Deserialize;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]

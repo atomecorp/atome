@@ -162,7 +162,21 @@ task :test_osx do
   # build and open the app
   build_for_osx(destination)
   puts 'atome osx is running'
+end
 
+task :update_osx do
+  project_name = :test
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
+  wasi_file = 'wasi-vfs-osx_arm'
+  host_mode = 'tauri'
+  update_application(source, destination, project_name)
+  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
+  destination = './tmp'
+  # build and open the app
+  # build_for_osx(destination)
+  # puts 'atome osx is running'
 end
 
 task :build_gem do

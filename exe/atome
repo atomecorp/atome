@@ -170,6 +170,23 @@ def create_application(source, destination, project_name)
   build_aui(destination, project_name)
 end
 
+def update_application(source, destination, project_name)
+  project_path = "#{destination}/#{project_name}"
+  FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
+  FileUtils.mkdir_p(project_path) unless Dir.exist?(project_path)
+  files_list = ['application', 'server', 'src', 'src-tauri', 'src-wasm', 'Guardfile', 'Rakefile']
+  file_to_refresh = ['application','server', 'src',]
+  # we delete many folder to ensure they'll refreshed
+  file_to_refresh.each do |file|
+    FileUtils.rm_rf("#{destination}/#{project_name}/#{file}")
+  end
+  # we copy all folder to be refreshed
+  files_list.each do |file|
+    FileUtils.cp_r("#{source}/vendor/assets/#{file}", "#{destination}/#{project_name}/#{file}") unless Dir.exist?(file)
+  end
+  build_aui(destination, project_name)
+end
+
 def build_opal_parser(source, destination, project_name)
 
   parser_js = "#{destination}/#{project_name}/src/js/opal/opal_parser.js"
