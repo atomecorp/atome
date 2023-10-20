@@ -14,3 +14,4 @@ container.addEventListener('scroll', lambda do |event|
   new_height = initialHeight + scroll_position
   circle[:style][:height] = "#{new_height}px"
 end)
+

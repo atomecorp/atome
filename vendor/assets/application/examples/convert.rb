@@ -34,7 +34,7 @@ def convert(params)
   when params.keys.include?(:atome)
 
     # Atome.new({type})
-    alert params[:atome]
+    puts params[:atome]
   else
     # ...
   end

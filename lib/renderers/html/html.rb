@@ -2,10 +2,10 @@
 
 class HTML
   def initialize(id_found, current_atome)
-    @html ||= JS.global[:document].getElementById(id_found.to_s)
+    @element ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
     @atome = current_atome
-    @element = JS.global[:document].getElementById(@id.to_s)
+    # @element = JS.global[:document].getElementById(@id.to_s)
   end
 
   def hypertext(params)
@@ -24,7 +24,6 @@ class HTML
   end
 
   def get_page_style
-
     main_view = JS.global[:document].getElementById('view')
     main_view_content = main_view[:innerHTML].to_s
     style_tags = main_view_content.split(/<\/?style[^>]*>/i).select.with_index { |_, index| index.odd? }
@@ -113,12 +112,12 @@ class HTML
   end
 
   def attr(attribute, value)
-    @html.setAttribute(attribute.to_s, value.to_s)
+    @element.setAttribute(attribute.to_s, value.to_s)
     self
   end
 
   def add_class(class_to_add)
-    @html[:classList].add(class_to_add.to_s)
+    @element[:classList].add(class_to_add.to_s)
     self
   end
 
@@ -129,9 +128,9 @@ class HTML
 
   def shape(id)
     markup_found = @atome.markup || :div
-    @html_type = markup_found.to_s
-    @html = JS.global[:document].createElement(@html_type)
-    JS.global[:document][:body].appendChild(@html)
+    @element_type = markup_found.to_s
+    @element = JS.global[:document].createElement(@element_type)
+    JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     id(id)
     self
@@ -139,9 +138,9 @@ class HTML
 
   def text(id)
     markup_found = @atome.markup || :pre
-    @html_type = markup_found.to_s
-    @html = JS.global[:document].createElement(@html_type)
-    JS.global[:document][:body].appendChild(@html)
+    @element_type = markup_found.to_s
+    @element = JS.global[:document].createElement(@element_type)
+    JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     id(id)
     self
@@ -149,9 +148,9 @@ class HTML
 
   def image(id)
     markup_found = @atome.markup || :img
-    @html_type = markup_found.to_s
-    @html = JS.global[:document].createElement(@html_type)
-    JS.global[:document][:body].appendChild(@html)
+    @element_type = markup_found.to_s
+    @element = JS.global[:document].createElement(@element_type)
+    JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     self.id(id)
     self
@@ -159,9 +158,9 @@ class HTML
 
   def video(id)
     markup_found = @atome.markup || :video
-    @html_type = markup_found.to_s
-    @html = JS.global[:document].createElement(@html_type)
-    JS.global[:document][:body].appendChild(@html)
+    @element_type = markup_found.to_s
+    @element = JS.global[:document].createElement(@element_type)
+    JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     self.id(id)
     self
@@ -169,12 +168,12 @@ class HTML
 
   def www(id)
     markup_found = @atome.markup || :iframe
-    @html_type = markup_found.to_s
-    @html = JS.global[:document].createElement(@html_type)
-    JS.global[:document][:body].appendChild(@html)
+    @element_type = markup_found.to_s
+    @element = JS.global[:document].createElement(@element_type)
+    JS.global[:document][:body].appendChild(@element)
     add_class('atome')
 
-    @html.setAttribute('src', 'https://www.youtube.com/embed/lLeQZ8Llkso?si=MMsGBEXELy9yBl9R')
+    @element.setAttribute('src', 'https://www.youtube.com/embed/lLeQZ8Llkso?si=MMsGBEXELy9yBl9R')
     # below we get image to feed width and height if needed
     # image = JS.global[:Image].new
 
@@ -183,40 +182,40 @@ class HTML
   end
 
   def raw(id)
-    @html = JS.global[:document].createElement('div')
+    @element = JS.global[:document].createElement('div')
     add_class('atome')
     self.id(id)
-    JS.global[:document][:body].appendChild(@html)
+    JS.global[:document][:body].appendChild(@element)
     self
   end
 
   def raw_data(html_string)
-    @html[:innerHTML] = html_string
+    @element[:innerHTML] = html_string
   end
 
   def video_path(video_path, type = 'video/mp4')
     source = JS.global[:document].createElement('source')
     source.setAttribute('src', video_path)
     source.setAttribute('type', type)
-    @html.appendChild(source)
+    @element.appendChild(source)
   end
 
   def innerText(data)
-    @html[:innerText] = data.to_s
+    @element[:innerText] = data.to_s
   end
 
   def textContent(data)
-    @html[:textContent] = data
+    @element[:textContent] = data
   end
 
   def path(objet_path)
-    @html.setAttribute('src', objet_path)
+    @element.setAttribute('src', objet_path)
     # below we get image to feed width and height if needed
     # image = JS.global[:Image].new
-    @html[:src] = objet_path
-    @html[:onload] = lambda do |_event|
-      @html[:width]
-      @html[:height]
+    @element[:src] = objet_path
+    @element[:onload] = lambda do |_event|
+      @element[:width]
+      @element[:height]
     end
   end
 
@@ -252,8 +251,12 @@ class HTML
 
   def append_to(parent_id_found)
     parent_found = JS.global[:document].getElementById(parent_id_found.to_s)
-    parent_found.appendChild(@html)
+    parent_found.appendChild(@element)
     self
+  end
+
+  def display(param)
+    @element[:style][:display] = param.to_s
   end
 
   def delete(id_to_delete)
@@ -263,7 +266,7 @@ class HTML
 
   def append(child_id_found)
     child_found = JS.global[:document].getElementById(child_id_found.to_s)
-    @html.appendChild(child_found)
+    @element.appendChild(child_found)
     self
   end
 
@@ -541,6 +544,38 @@ class HTML
       # JS.eval("readFile('#{id}','#{file}')")
     end
   end
+
+  def handle_input(event)
+    target = event[:target]
+    inner_text = target[:innerText].to_s
+    grab(@id).store(data: inner_text)
+  end
+
+  # this method update the data content of the atome
+  def update_data(params)
+    @input_listener ||= lambda { |event| handle_input(event) }
+    if params
+      @element.addEventListener('input', &@input_listener)
+    else
+      alert :stopped
+      @element.removeEventListener('input', &@input_listener)
+    end
+  end
+
+
+  # def handle_input(event)
+  #   target = event[:target]
+  #   inner_text = target[:innerText].to_s
+  #    grab(@id).store(data: inner_text)
+  # end
+  #
+  #
+  #
+  # def update_data(params)
+  #   @element.addEventListener('input') do |event|
+  #     handle_input(event)
+  #   end
+  # end
 
 end
 

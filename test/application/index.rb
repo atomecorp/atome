@@ -4,9 +4,11 @@
 # require "./examples/shadow"
 # require "./examples/convert"
 # require "./examples/hypertext"
-# require "./examples/generator"
+# require "./examples/generator_and_build"
 # require "./examples/callback"
-require "./examples/display"
+# require "./examples/display"
+require "./examples/scroll"
+# require "./examples/animation"
 # require "./examples/read"
 # require "./examples/browse"
 # require "./examples/terminal"
@@ -33,7 +35,8 @@ require "./examples/display"
 # TODO : animation
 # TODO : shadow
 # TODO : matrix
-# TODO : implement scroll
+# TODO : gradient
+# TODO : implement scroll / on overflow
 # TODO : markup to allow after creation changes
 # TODO : Drag'nDrop file import
 # TODO : change particle_code for {code:{particle: :data_code}}
