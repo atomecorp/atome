@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
-new ({ particle: :overflow }) do |params|
-  html.style(:overflow, params)
+new({ method: :overflow,renderer: :html,  type: :string }) do |params, bloc|
+  # alert params
+ html.overflow(params,bloc)
 end

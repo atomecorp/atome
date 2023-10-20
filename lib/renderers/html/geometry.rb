@@ -13,7 +13,6 @@ new({ method: :height,renderer: :html,  type: :string }) do |value, _user_proc|
   html.style(:height, "#{value}px")
 end
 
-new({ method: :overflow,renderer: :html,  type: :string })
 
 
 new({ method: :size, type: :hash, renderer: :html }) do |value, _user_proc|

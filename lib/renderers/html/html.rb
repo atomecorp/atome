@@ -465,6 +465,19 @@ class HTML
     interact.unset
   end
 
+  def overflow(params, bloc)
+    style(:overflow, params)
+
+    @element.addEventListener('scroll', lambda do |event|
+      scroll_top = @element[:scrollTop].to_i
+      scroll_left = @element[:scrollLeft].to_i
+      bloc.call({left:scroll_left, top: scroll_top})  if bloc.is_a? Proc
+      # scroll_position = container[:scrollTop].to_i
+      # new_height = initialHeight + scroll_position
+      # circle[:style][:height] = "#{new_height}px"
+    end)
+  end
+
   def over_enter(bloc)
     JS.global[:myRubyMouseEnterCallback] = bloc
     JS.eval("document.querySelector('##{@id}').addEventListener('mouseenter', function() { myRubyMouseEnterCallback(); });")
@@ -561,7 +574,6 @@ class HTML
       @element.removeEventListener('input', &@input_listener)
     end
   end
-
 
   # def handle_input(event)
   #   target = event[:target]
