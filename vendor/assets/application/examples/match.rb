@@ -101,15 +101,7 @@ A.match({condition:{max: {width: 777}, min: {height: 333}, operator: :and }})  d
 }
 end
 
-# match can work without condtion the n it's always applied
-
-# A.match({condition:{min: {width: 0}}})  do
-# {
-#   circle_1: { color: :red , width: 23},
-#   circle_2: { color: :orange , width: 23, top: 12},
-#   box_1: { width: 123, left: 222, color: :blue, rotate: 22}
-# }
-# end
+# match can work without any condition then the particles are always applied
 
 # A.match({}) do
 #   {

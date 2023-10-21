@@ -48,8 +48,8 @@ new({ particle: :time })
 new({ particle: :on })
 new({ particle: :fullscreen })
 new({ particle: :mute })
-new({ particle: :drag, store: false })
 
+new({ particle: :drag, store: false })
 new({ sanitizer: :drag }) do |params, _proc|
   @drag ||= {}
   params = if params.instance_of? Hash
@@ -80,21 +80,42 @@ new({ sanitizer: :drag }) do |params, _proc|
 
            end
   @drag[params] = true
-
   store_value(:drag)
   params
-
 end
 
-new({ particle: :drop })
-
+new({ particle: :drop, store: false })
 new({ sanitizer: :drop }) do |params|
-  params = { action: true } if params == true
+  # params = { action: true } if params == true
+
+  @drop ||= {}
+  params = if params.instance_of? Hash
+             params.keys[0]
+           else
+             case params
+             when true
+               :true
+             when :enter
+               :enter
+             when :activate
+               :activate
+             when :deactivate
+               :deactivate
+             when :leave
+               :leave
+             else
+               :true
+             end
+
+           end
+  @drop[params] = true
+
+  store_value(:drop)
   params
+
 end
 
 new({ particle: :over, type: :hash, store: false })
-
 new({ sanitizer: :over }) do |params|
   # # TODO: factorise code below
 

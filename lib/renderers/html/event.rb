@@ -4,6 +4,10 @@ new({ method: :drag, type: :symbol, renderer: :html }) do |params, user_bloc|
   html.event(:drag, params, user_bloc)
 end
 
+new({ method: :drop, type: :symbol, renderer: :html }) do |params, user_bloc|
+  html.event(:drop, params, user_bloc)
+end
+
 new({ method: :touch, type: :integer, renderer: :html }) do |params, user_bloc|
   html.event(:touch, params, user_bloc)
 end
