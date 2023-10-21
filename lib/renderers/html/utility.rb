@@ -26,3 +26,16 @@ new({ renderer: :html, method: :terminal, type: :string }) do |value, &bloc|
   html.terminal(id, value)
 end
 
+
+
+new({renderer: :html, method: :match}) do |params, bloc|
+  case id
+  when :atome || :view
+    result = bloc.call
+    result = { alterations: result }
+    params = params.merge(result)
+    html.match(params)
+  else
+    # code to be written i
+  end
+end

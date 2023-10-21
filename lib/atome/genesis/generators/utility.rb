@@ -159,6 +159,17 @@ new ({ particle: :build, store: false }) do |params|
   end
 end
 
+new({ particle: :match }) do |params,_bloc|
+  params
+end
+
+new({ sanitizer: :match }) do |params, _bloc|
+  unless params[:condition]
+    params[:condition]={min: {width: 0}}
+  end
+  params
+end
+
 
 
 

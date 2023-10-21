@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class HTML
+
+
+
   def initialize(id_found, current_atome)
     @element ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
@@ -11,6 +14,89 @@ class HTML
   def hypertext(params)
     current_div = JS.global[:document].getElementById(@id.to_s)
     current_div[:innerHTML] = params
+  end
+  def add_css_to_atomic_style(css)
+    style_element = JS.global[:document].getElementById('atomic_style')
+    text_node = JS.global[:document].createTextNode(css)
+    style_element.appendChild(text_node)
+  end
+
+  def convert_to_css(data)
+    conditions = data[:condition]
+    apply = data[:alterations]
+
+    # Convert the conditions
+    condition_strings = []
+
+    if conditions[:max]
+      condition_strings << "(max-width: #{conditions[:max][:width]}px)" if conditions[:max][:width]
+      condition_strings << "(max-height: #{conditions[:max][:height]}px)" if conditions[:max][:height]
+    end
+
+    if conditions[:min]
+      condition_strings << "(min-width: #{conditions[:min][:width]}px)" if conditions[:min][:width]
+      condition_strings << "(min-height: #{conditions[:min][:height]}px)" if conditions[:min][:height]
+    end
+
+    operator = conditions[:operator] == :and ? "and" : "or"
+
+    # Convert properties to apply
+    property_strings = []
+    apply.each do |key, values|
+      inner_properties = []
+      values.each do |property, value|
+        if property == :color
+          inner_properties << "background-color: #{value} !important;"
+        else
+          inner_properties << "#{property}: #{value}px !important;" if value.is_a?(Integer)
+          inner_properties << "#{property}: #{value} !important;" if value.is_a?(Symbol)
+        end
+      end
+      # Prefix each key with "#"
+      property_strings << "##{key} {\n#{inner_properties.join("\n")}\n}"
+    end
+
+    # let it build
+    css = "@media #{condition_strings.join(" #{operator} ")} {\n#{property_strings.join("\n")}\n}"
+    add_css_to_atomic_style(css)
+    css
+  end
+
+  def css_to_data(css)
+    data = {
+      :condition => {},
+      :apply => {}
+    }
+    # Extract conditions
+    media_conditions = css.match(/@media ([^\{]+)/)[1].split(',').map(&:strip)
+    media_conditions.each do |condition|
+      type = condition.match(/(max|min)-/)[1].to_sym
+      property = condition.match(/(width|height)/)[1].to_sym
+      value = condition.match(/(\d+)/)[1].to_i
+
+      data[:condition][type] ||= {}
+      data[:condition][type][property] = value
+    end
+
+    # Extract properties to be applied
+    css.scan(/(\w+) \{([^\}]+)\}/).each do |match|
+      key = match[0].to_sym
+      properties = match[1].split(';').map(&:strip).reject(&:empty?)
+
+      data[:apply][key] ||= {}
+      properties.each do |property|
+        prop, value = property.split(':').map(&:strip)
+        if prop == "background-color"
+          data[:apply][key][:color] = value.to_sym
+        elsif value[-2..] == "px"
+          data[:apply][key][prop.to_sym] = value.to_i
+        else
+          data[:apply][key][prop.to_sym] = value.to_sym
+        end
+      end
+    end
+
+    data
   end
 
   def extract_properties(properties_string)
@@ -97,6 +183,11 @@ class HTML
     current_atome.callback({ hyperedit: particles_found })
     current_atome.call(:hyperedit)
 
+  end
+
+  def match(params)
+    css_converted = convert_to_css(params)
+    css_to_data(css_converted)
   end
 
   def connect(params, &bloc)

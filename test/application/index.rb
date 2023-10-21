@@ -7,7 +7,7 @@
 # require "./examples/generator_and_build"
 # require "./examples/callback"
 # require "./examples/display"
-require "./examples/transformer"
+require "./examples/match"
 # require "./examples/on_resize"
 # require "./examples/scroll"
 # require "./examples/animation"
