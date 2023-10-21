@@ -97,4 +97,4 @@ new({post: :generator}) do |params|
   grab(params[:id]).build(build_plans)
 end
 
-
+new ({ atome: :transformer })

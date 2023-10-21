@@ -7,7 +7,9 @@
 # require "./examples/generator_and_build"
 # require "./examples/callback"
 # require "./examples/display"
-require "./examples/scroll"
+# require "./examples/transformer"
+require "./examples/on_resize"
+# require "./examples/scroll"
 # require "./examples/animation"
 # require "./examples/read"
 # require "./examples/browse"
@@ -36,7 +38,7 @@ require "./examples/scroll"
 # TODO : shadow
 # TODO : matrix
 # TODO : gradient
-# TODO : implement scroll / on overflow
+# DONE : implement scroll / on overflow
 # TODO : markup to allow after creation changes
 # TODO : Drag'nDrop file import
 # TODO : change particle_code for {code:{particle: :data_code}}

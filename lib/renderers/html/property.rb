@@ -17,5 +17,4 @@ end
 new({ renderer: :html, method: :edit }) do |params|
   html.attr(:contenteditable, params)
   html.update_data(params)
-
 end

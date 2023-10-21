@@ -43,9 +43,6 @@ new({ particle: :display }) do |params|
 
   end
 end
-
-
-
 new({particle: :visible})
 new({renderer: :html,method: :visible}) do |params|
   if params== false
@@ -55,7 +52,7 @@ new({renderer: :html,method: :visible}) do |params|
   end
   html.display(params)
 end
-b = box
+b = box({color: :red})
 # original properties allow to modify particles of the current atome
 # items properties allow to modify particles of cloned or newly generated atomes
 wait 2 do

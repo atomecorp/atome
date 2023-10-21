@@ -273,7 +273,21 @@ class HTML
   ###### event handler ######
   def on(property, bloc)
     property = property.to_s
-    if property == 'resize'
+
+    if property.start_with?('media:')
+      # Extraire la requête média de la propriété
+      media_query = property.split(':', 2).last
+
+      mql = JS.global[:window].matchMedia(media_query)
+
+      event_handler = ->(event) do
+        bloc.call({ matches: event[:matches] }) if bloc.is_a? Proc
+      end
+
+      # Ajouter un écouteur à l'objet matchMedia
+      mql.addListener(event_handler)
+
+    elsif property == 'resize'
       event_handler = ->(event) do
         width = JS.global[:window][:innerWidth]
         height = JS.global[:window][:innerHeight]
@@ -287,6 +301,23 @@ class HTML
       @element.addEventListener(property, event_handler)
     end
   end
+
+  # def on(property, bloc)
+  #   property = property.to_s
+  #   if property == 'resize'
+  #     event_handler = ->(event) do
+  #       width = JS.global[:window][:innerWidth]
+  #       height = JS.global[:window][:innerHeight]
+  #       bloc.call({ width: width, height: height }) if bloc.is_a? Proc
+  #     end
+  #     JS.global[:window].addEventListener('resize', event_handler)
+  #   else
+  #     event_handler = ->(event) do
+  #       bloc.call(event) if bloc.is_a? Proc
+  #     end
+  #     @element.addEventListener(property, event_handler)
+  #   end
+  # end
 
   def keyboard_keypress(bloc)
     keypress_handler = ->(event) do
