@@ -1,5 +1,13 @@
 #  frozen_string_literal: true
 
+
+def add_css_to_atomic_style(css)
+  # Récupérez la balise style avec l'ID "atomic_style"
+  style_element = JS.global[:document].getElementById('atomic_style')
+  # Ajoutez le contenu CSS à la balise style
+  text_node = JS.global[:document].createTextNode(css)
+  style_element.appendChild(text_node)
+end
 #########################################
 
 
@@ -9,14 +17,18 @@ def convert_to_css(data)
 
   # Convertir les conditions
   condition_strings = []
+
   if conditions[:max]
     condition_strings << "(max-width: #{conditions[:max][:width]}px)" if conditions[:max][:width]
     condition_strings << "(max-height: #{conditions[:max][:height]}px)" if conditions[:max][:height]
   end
+
   if conditions[:min]
     condition_strings << "(min-width: #{conditions[:min][:width]}px)" if conditions[:min][:width]
     condition_strings << "(min-height: #{conditions[:min][:height]}px)" if conditions[:min][:height]
   end
+
+  operator = conditions[:operator] == :and ? "and" : "or"
 
   # Convertir les propriétés à appliquer
   property_strings = []
@@ -24,20 +36,22 @@ def convert_to_css(data)
     inner_properties = []
     values.each do |property, value|
       if property == :color
-        inner_properties << "background-color: #{value};"
+        inner_properties << "background-color: #{value} !important;"
       else
-        inner_properties << "#{property}: #{value}px;" if value.is_a?(Integer)
-        inner_properties << "#{property}: #{value};" if value.is_a?(Symbol)
+        inner_properties << "#{property}: #{value}px !important;" if value.is_a?(Integer)
+        inner_properties << "#{property}: #{value} !important;" if value.is_a?(Symbol)
       end
     end
-    property_strings << "#{key} {\n#{inner_properties.join("\n")}\n}"
+    # Préfixer chaque clé avec un "#"
+    property_strings << "##{key} {\n#{inner_properties.join("\n")}\n}"
   end
 
   # Assembler le tout
-  css = "@media #{condition_strings.join(", ")} {\n#{property_strings.join("\n")}\n}"
-
+  css = "@media #{condition_strings.join(" #{operator} ")} {\n#{property_strings.join("\n")}\n}"
+  add_css_to_atomic_style(css)
   css
 end
+
 
 def css_to_data(css)
   data = {
@@ -78,8 +92,9 @@ end
 
 ########################################
 
-new({particle: :transform}) do |params|
-   # params='kjh'
+new({particle: :transform})
+new({particle: :match}) do  |p|
+  alert p
 end
 
 new({sanitizer: :transform }) do |params, bloc|
@@ -103,27 +118,18 @@ circle({left: 600, top:200, id: :circle_4})
 text({data: 'welcome to my beautifully website', id: :my_text})
 
 
-# def A.transform(params)
-#   if block_given?
-#     styles = yield
-#     alert styles
-#     # Convertir 'styles' en CSS ou effectuer d'autres traitements
-#     # ...
-#   end
-# end
-
-A.transform({condition:{max: {width: 300}, min: {height: 120} }})  do
+A.transform({condition:{max: {width: 777}, min: {height: 666}, operator: :and }})  do
 {
   circle_1: { color: :red , width: 23},
-  circle_2: { color: :red , width: 23, top: 12},
-  box_1: { width: 123, left: 222}
+  circle_2: { color: :orange , width: 23, top: 12},
+  box_1: { width: 123, left: 222, color: :blue, rotate: 22}
 }
 end
 
 
 
 transformer(atomes: [:box_1,:circle_1,:circle_2,:circle_3,:circle_4,:my_text],
-            condition:{max: {width: 300}, min: {height: 120} } ,
+            condition:{max: {width: 600}, min: {height: 120} } ,
             )
-
+A.match(:ok)
 # alert A.transform
