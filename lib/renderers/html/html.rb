@@ -255,17 +255,26 @@ class HTML
     self
   end
 
+  # def shadow(id)
+  #   alert 'so kool'
+  #   # markup_found = @atome.markup || :video
+  #   # @element_type = markup_found.to_s
+  #   # @element = JS.global[:document].createElement(@element_type)
+  #   # JS.global[:document][:body].appendChild(@element)
+  #   # add_class('atome')
+  #   # self.id(id)
+  #   # self
+  # end
+
   def www(id)
     markup_found = @atome.markup || :iframe
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
     JS.global[:document][:body].appendChild(@element)
     add_class('atome')
-
     @element.setAttribute('src', 'https://www.youtube.com/embed/lLeQZ8Llkso?si=MMsGBEXELy9yBl9R')
     # below we get image to feed width and height if needed
     # image = JS.global[:Image].new
-
     self.id(id)
     self
   end
@@ -390,23 +399,6 @@ class HTML
       @element.addEventListener(property, event_handler)
     end
   end
-
-  # def on(property, bloc)
-  #   property = property.to_s
-  #   if property == 'resize'
-  #     event_handler = ->(event) do
-  #       width = JS.global[:window][:innerWidth]
-  #       height = JS.global[:window][:innerHeight]
-  #       bloc.call({ width: width, height: height }) if bloc.is_a? Proc
-  #     end
-  #     JS.global[:window].addEventListener('resize', event_handler)
-  #   else
-  #     event_handler = ->(event) do
-  #       bloc.call(event) if bloc.is_a? Proc
-  #     end
-  #     @element.addEventListener(property, event_handler)
-  #   end
-  # end
 
   def keyboard_keypress(bloc)
     keypress_handler = ->(event) do
@@ -553,7 +545,6 @@ class HTML
 
   end
 
-
   def drop_activate(bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.dropzone({
@@ -608,7 +599,6 @@ class HTML
                         end
                       })
   end
-
 
   def resize(bloc)
     interact = JS.eval("return interact('##{@id}')")
@@ -738,8 +728,7 @@ class HTML
     if Atome.host == 'tauri'
       JS.eval("browseFile('#{id}','#{file}')")
     else
-      puts " work in progress"
-      # JS.eval("readFile('#{id}','#{file}')")
+      puts "work in progress"
     end
   end
 
@@ -760,20 +749,4 @@ class HTML
     end
   end
 
-  # def handle_input(event)
-  #   target = event[:target]
-  #   inner_text = target[:innerText].to_s
-  #    grab(@id).store(data: inner_text)
-  # end
-  #
-  #
-  #
-  # def update_data(params)
-  #   @element.addEventListener('input') do |event|
-  #     handle_input(event)
-  #   end
-  # end
-
 end
-
-

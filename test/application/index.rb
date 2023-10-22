@@ -1,14 +1,14 @@
 #  frozen_string_literal: true
 
 # box({ color: :orange })
-# require "./examples/shadow"
+require "./examples/shadow"
 # require "./examples/convert"
 # require "./examples/hypertext"
 # require "./examples/generator_and_build"
 # require "./examples/callback"
 # require "./examples/display"
 # require "./examples/match"
-require "./examples/drop"
+# require "./examples/drop"
 # require "./examples/on_resize"
 # require "./examples/scroll"
 # require "./examples/animation"

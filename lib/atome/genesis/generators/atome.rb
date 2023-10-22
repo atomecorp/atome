@@ -37,13 +37,7 @@ end
 new({ atome: :www })
 
 new({ atome: :shadow, type: :hash })
-# new({ sanitizer: :shadow }) do |params|
-#   # # TODO : when attaching color to a shadow it should colorized it , cf : c.shadow({color: :blue}) should work
-#   # params = {} unless params.instance_of? Hash
-#   # default_params = { red: 0, green: 0, blue: 0, alpha: 1, blur: 3, left: 3, top: 3 }
-#   # new_params = default_params.merge!(params)
-#   # new_params
-# end
+
 new({ atome: :raw })
 new({ atome: :shape })
 new({ atome: :code })

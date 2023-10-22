@@ -7,6 +7,7 @@ end
 new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
   html.style(:top, "#{params}px")
 end
+new({ method: :top, type: :integer, renderer: :html, specific: :shadow })
 
 new({ method: :bottom, type: :integer, renderer: :html }) do |params|
   html.style(:bottom, "#{params}px")
@@ -25,6 +26,9 @@ new({ method: :left, type: :integer, renderer: :html }) do |params|
 end
 
 new({ method: :left, type: :integer, specific: :color, renderer: :html })
+
+new({ method: :left, type: :integer, renderer: :html, specific: :shadow })
+
 
 new({ method: :top, type: :integer, specific: :color, renderer: :html })
 
