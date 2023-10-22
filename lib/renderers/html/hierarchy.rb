@@ -16,7 +16,9 @@ end
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
   case parent_found.type
   when :shadow
-
+    shadow_copy = shadow.dup
+    shadow_copy.pop
+    puts "shadow to treat #{shadow_copy}"
     red = parent_found.red * 255
     green = parent_found.green * 255
     blue = parent_found.blue * 255

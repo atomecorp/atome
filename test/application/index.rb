@@ -41,7 +41,7 @@ require "./examples/shadow"
 # TODO : matrix
 # TODO : gradient
 # TODO : multiple shadows
-# TODO : automatise shadows api (make 'affect' optional)
+# TODO : automatise shadows api add auto id and make 'affect' optional
 # done : implement scroll / on overflow
 # TODO : markup to allow after creation changes
 # TODO : Drag'nDrop file import
