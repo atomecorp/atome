@@ -8,17 +8,13 @@ new({ renderer: :html, method: :attach, type: :string, specific: :color }) do |p
   grab(parent_found).apply(id)
 end
 
-# new({ renderer: :html, method: :attach, type: :string, specific: :shadow }) do |parent_found, _user_proc|
-#   # grab(parent_found).apply(id)
-#   alert "#{type} : #{:beefcake}"
-# end
-#
+
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
   case parent_found.type
   when :shadow
     shadow_copy = shadow.dup
     shadow_copy.pop
-    puts "shadow to treat #{shadow_copy}"
+    # puts "shadows to treat #{shadow_copy}"
     red = parent_found.red * 255
     green = parent_found.green * 255
     blue = parent_found.blue * 255
@@ -39,6 +35,9 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     end
 
   else
+    color_copy = color.dup
+    color_copy.pop
+    puts "colors to treat #{color_copy}"
     # we assume it's a color
     red = parent_found.red * 255
     green = parent_found.green * 255
@@ -46,7 +45,6 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     alpha = parent_found.alpha
     html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
   end
-
 end
 
 new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |parent_found, _user_proc|

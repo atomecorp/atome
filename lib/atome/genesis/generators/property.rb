@@ -31,10 +31,3 @@ new({ particle: :diffusion }) do
 end
 new({ particle: :edit })
 
-
-# new({ particle: :green, specific: :shadow, render: false }) do
-#   # alert :mmmmmm
-#   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
-#   # self
-# end
-
