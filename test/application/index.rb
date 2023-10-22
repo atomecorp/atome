@@ -36,10 +36,13 @@ require "./examples/shadow"
 # TODO: change atomic repository so that it install atome gem correctly
 # TODO : find a way to unbind a specific event
 # TODO : animation
-# TODO : shadow
+# done : shadow
+# done : drop
 # TODO : matrix
 # TODO : gradient
-# DONE : implement scroll / on overflow
+# TODO : multiple shadows
+# TODO : automatise shadows api (make 'affect' optional)
+# done : implement scroll / on overflow
 # TODO : markup to allow after creation changes
 # TODO : Drag'nDrop file import
 # TODO : change particle_code for {code:{particle: :data_code}}

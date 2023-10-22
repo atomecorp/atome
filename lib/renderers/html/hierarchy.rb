@@ -29,6 +29,8 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     if parent_found.invert
       html.style("boxShadow", "#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}) inset")
     elsif parent_found.option == :natural
+      # patch to render clean on safari
+      html.style("transform", "translate3d(0, 0, 0)")
       html.style("filter", "drop-shadow(#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}))")
     else
       html.style("boxShadow", "#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha})")

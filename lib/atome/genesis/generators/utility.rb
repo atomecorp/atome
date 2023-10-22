@@ -170,6 +170,8 @@ new({ sanitizer: :match }) do |params, _bloc|
   params
 end
 
+new({ particle: :invert })
+new({ particle: :option })
 
 
 
