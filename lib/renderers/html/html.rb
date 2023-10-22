@@ -13,6 +13,7 @@ class HTML
     current_div = JS.global[:document].getElementById(@id.to_s)
     current_div[:innerHTML] = params
   end
+
   def add_css_to_atomic_style(css)
     style_element = JS.global[:document].getElementById('atomic_style')
     text_node = JS.global[:document].createTextNode(css)
@@ -544,141 +545,69 @@ class HTML
     end)
   end
 
+  def drop_action(native_event, bloc)
+    event = Native(native_event)
+    draggable_element = event[:relatedTarget][:id].to_s
+    dropzone_element = event[:target][:id].to_s
+    bloc.call({ source: draggable_element, destination: dropzone_element }) if bloc.is_a? Proc
 
-  ######################
+  end
 
-  # Méthode pour initialiser la zone de dépôt
-  def drop_true(bloc)
+
+  def drop_activate(bloc)
     interact = JS.eval("return interact('##{@id}')")
-
     interact.dropzone({
-                        accept: nil, # Accepte tous les éléments
-                        overlap: 0.75,
+                        # accept: nil, # Accept any element
+                        # overlap: 0.75,
                         ondropactivate: lambda do |native_event|
-                          dropactivate(Native(native_event))
-                        end,
-                        ondropdeactivate: lambda do |native_event|
-                          dropdeactivate(Native(native_event))
-                        end,
-                        ondrop: lambda do |native_event|
-                          drop(Native(native_event))
-                        end,
-                        ondragenter: lambda do |native_event|
-                          dragenter(Native(native_event))
-                        end,
-                        ondragleave: lambda do |native_event|
-                          dragleave(Native(native_event))
+                          drop_action(native_event, bloc)
                         end
                       })
   end
 
-  # Gestionnaires d'événements pour chaque action
-
-  def dropactivate(event)
-    # event[:target].classList.add('drop-active')
+  def drop_deactivate(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.dropzone({
+                        # accept: nil, # Accept any element
+                        # overlap: 0.75,
+                        ondropdeactivate: lambda do |native_event|
+                          drop_action(native_event, bloc)
+                        end
+                      })
   end
 
-  def dropdeactivate(event)
-    # event[:target].classList.remove('drop-active')
-    # event[:target].classList.remove('drop-target')
+  def drop_true(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.dropzone({
+                        # accept: nil, # Accept any element
+                        overlap: 0.75,
+                        ondrop: lambda do |native_event|
+                          drop_action(native_event, bloc)
+                        end
+                      })
   end
 
-  def drop(event)
-    alert :kool
-    # event[:relatedTarget].textContent = 'Dropped'
+  def drop_enter(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.dropzone({
+                        # accept: nil,
+                        overlap: 0.001,
+                        ondragenter: lambda do |native_event|
+                          drop_action(native_event, bloc)
+                        end
+                      })
   end
 
-  def dragenter(event)
-    draggableElement = event[:relatedTarget]
-    dropzoneElement = event[:target]
-
-    # dropzoneElement.classList.add('drop-target')
-    # draggableElement.classList.add('can-drop')
-    # draggableElement.textContent = 'Dragged in'
+  def drop_leave(bloc)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.dropzone({
+                        # accept: nil,
+                        # overlap: 0.75,
+                        ondragleave: lambda do |native_event|
+                          drop_action(native_event, bloc)
+                        end
+                      })
   end
-
-  def dragleave(event)
-    # event[:target].classList.remove('drop-target')
-    # event[:relatedTarget].classList.remove('can-drop')
-    # event[:relatedTarget].textContent = 'Dragged out'
-  end
-
-
-
-  #####################
-  # def drop_true(bloc)
-  #   interact = JS.eval("return interact('##{@id}')")
-  #   interact.dropzone({
-  #                       accept: nil,
-  #                       overlap: 'pointer' || 'center'
-  #                     })
-  #
-  #   # dropactivate event
-  #   interact.on('dropactivate', lambda do |_native_event|
-  #     # Votre code pour gérer dropactivate
-  #     bloc.call if bloc.is_a? Proc
-  #   end)
-  #
-  #   # dropdeactivate event
-  #   interact.on('dropdeactivate', lambda do |_native_event|
-  #     # Votre code pour gérer dropdeactivate
-  #     bloc.call if bloc.is_a? Proc
-  #   end)
-  #
-  #   # drop event
-  #   interact.on('drop', lambda do |_native_event|
-  #     # Votre code pour gérer drop
-  #     bloc.call if bloc.is_a? Proc
-  #   end)
-  #
-  #   # dragenter event
-  #   interact.on('dragenter', lambda do |_native_event|
-  #     # Votre code pour gérer dragenter
-  #     bloc.call if bloc.is_a? Proc
-  #   end)
-  #
-  #   # dragleave event
-  #   interact.on('dragleave', lambda do |_native_event|
-  #     # Votre code pour gérer dragleave
-  #     bloc.call if bloc.is_a? Proc
-  #   end)
-  # end
-
-
-  # def drop_true(bloc)
-  #   interact = JS.eval("return interact('##{@id}')")
-  #   interact.dropzone({
-  #                        # drag: true,
-  #                        accept:  nil,
-  #                        # #            minSpeed: 200,
-  #                        # #            endSpeed: 100 },
-  #                        overlap: 'pointer' || 'center'
-  #                      })
-  #
-  #   # JS.eval(<<-JS)
-  #   #   interact('##{@id}').draggable({
-  #   #     drag: true,
-  #   #     modifiers: [
-  #   #       interact.modifiers.restrict({
-  #   #         restriction: 'parent',
-  #   #         endOnly: true
-  #   #       })
-  #   #     ]
-  #   #   });
-  #   # JS
-  #   #
-  #   interact.on('dragmove', lambda do |native_event|
-  #     # # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
-  #     event = Native(native_event)
-  #     bloc.call(event) if bloc.instance_of? Proc
-  #     dx = event[:dx]
-  #     dy = event[:dy]
-  #     x = (@atome.left || 0) + dx.to_f
-  #     y = (@atome.top || 0) + dy.to_f
-  #     @atome.left(x)
-  #     @atome.top(y)
-  #   end)
-  # end
 
 
   def resize(bloc)
@@ -727,7 +656,7 @@ class HTML
     @element.addEventListener('scroll', lambda do |event|
       scroll_top = @element[:scrollTop].to_i
       scroll_left = @element[:scrollLeft].to_i
-      bloc.call({left:scroll_left, top: scroll_top})  if bloc.is_a? Proc
+      bloc.call({ left: scroll_left, top: scroll_top }) if bloc.is_a? Proc
       # scroll_position = container[:scrollTop].to_i
       # new_height = initialHeight + scroll_position
       # circle[:style][:height] = "#{new_height}px"

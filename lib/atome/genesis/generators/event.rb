@@ -85,7 +85,8 @@ new({ sanitizer: :drag }) do |params, _proc|
 end
 
 new({ particle: :drop, store: false })
-new({ sanitizer: :drop }) do |params|
+new({ sanitizer: :drop }) do |params, bloc|
+
   # params = { action: true } if params == true
 
   @drop ||= {}
@@ -96,12 +97,16 @@ new({ sanitizer: :drop }) do |params|
              when true
                :true
              when :enter
+               instance_variable_get('@drop_code')[:enter] = bloc
                :enter
              when :activate
+               instance_variable_get('@drop_code')[:activate] = bloc
                :activate
              when :deactivate
+               instance_variable_get('@drop_code')[:deactivate] = bloc
                :deactivate
              when :leave
+               instance_variable_get('@drop_code')[:leave] = bloc
                :leave
              else
                :true
