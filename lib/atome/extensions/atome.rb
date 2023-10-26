@@ -2,18 +2,18 @@
 
 class Object
   def new(params, &bloc)
-    generator = Genesis.generator
+    # Genesis = Genesis.Genesis
     if params.key?(:atome)
       Universe.add_atomes_specificities params[:atome]
-      generator.build_atome(params[:atome], &bloc)
+      Genesis.build_atome(params[:atome], &bloc)
     elsif params.key?(:particle)
       # render indicate if the particle needs to be rendered
       # store tell the system if it need to store the particle value
       # type help the system what type of type the particle will receive and store
-      generator.build_particle(params[:particle], { render: params[:render], return: params[:return],
-                                                    store: params[:store], type: params[:type] }, &bloc)
+      Genesis.build_particle(params[:particle], { render: params[:render], return: params[:return],
+                                                  store: params[:store], type: params[:type] }, &bloc)
     elsif params.key?(:sanitizer)
-      generator.build_sanitizer(params[:sanitizer], &bloc)
+      Genesis.build_sanitizer(params[:sanitizer], &bloc)
     elsif params.key?(:pre)
       Atome.instance_variable_set("@pre_#{params[:pre]}", bloc)
     elsif params.key?(:post)
@@ -27,7 +27,7 @@ class Object
         params[:specific] = "#{params[:specific]}_"
       end
       render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
-      generator.build_render(render_method, &bloc)
+      Genesis.build_render(render_method, &bloc)
     elsif params.key?(:callback)
       particle_targetted = params[:callback]
       Atome.define_method "#{particle_targetted}_callback" do
@@ -42,7 +42,7 @@ class Object
   end
 
   def identity_generator(type = :element)
-    "#{type}_#{Universe.counter}"
+    "#{@type}_#{Universe.counter}"
   end
 
   def grab(id_to_get)

@@ -1,7 +1,8 @@
 #  frozen_string_literal: true
-
+# require 'json'
 # box({ color: :orange })
-require "./examples/shadow"
+# require "./examples/shadow"
+# require "./examples/clear"
 # require "./examples/convert"
 # require "./examples/hypertext"
 # require "./examples/generator_and_build"
@@ -30,7 +31,7 @@ require "./examples/shadow"
 # end
 
 ############################
-
+# alert grab(:view).atome[:id]
 ###########################
 # TODO: check that atome gem build correctly the solution
 # TODO: change atomic repository so that it install atome gem correctly

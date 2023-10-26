@@ -3,7 +3,7 @@
 new({ particle: :renderers })
 new({ particle: :code })
 new({ particle: :run }) do |params|
-  code_found = @atome[:code]
+  code_found = @code
   instance_exec(params, &code_found) if code_found.is_a?(Proc)
 end
 new({ particle: :broadcast })
@@ -12,13 +12,13 @@ new({ particle: :data })
 new({ particle: :delete, render: false }) do |params, &user_proc|
   if params == true
     # We use the tag persistent to exclude color of system object and other default colors
-    unless tag && tag[:persistent]
+    unless @tag && @tag[:persistent]
       # now we detach the atome from it's parent
       # now we init rendering
       render(:delete, params, &user_proc)
       # the machine delete the current atome from the universe
-      id_found = @atome[:id].to_sym
-      parents_found = @atome[:attach]
+      id_found = @id.to_sym
+      parents_found = @attach
       Universe.delete(id_found)
       parents_found.each do |parent_id_found|
         parent_found = grab(parent_id_found)
@@ -53,10 +53,11 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
 
     # we check if the params passed is an atome to treat it in a different way
     if Universe.atome_list.include?(params)
-      @atome["#{params}s"].each do |item_to_del|
-
-        delete({ id: item_to_del })
-      end
+      alert "write code here : #{params}"
+      # @!atome["#{params}s"].each do |item_to_del|
+      #
+      #   delete({ id: item_to_del })
+      # end
     else
       send(params, 0) unless params == :id
     end
@@ -64,16 +65,15 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
 end
 new({ particle: :clear })
 new({ post: :clear }) do
-
   attached_found = []
-  @atome[:attached].each do |attached_id_found|
+  attached.each do |attached_id_found|
     attached_found << attached_id_found
   end
   attached_found.each do |child_id_found|
 
     child_found = grab(child_id_found)
 
-    child_found.delete(true) if child_found
+    child_found&.delete(true)
 
   end
 
@@ -108,7 +108,7 @@ new({ particle: :terminal })
 new({ particle: :read })
 new({ particle: :browse })
 new({ particle: :copies })
-new({particle: :temporary})
+new({ particle: :temporary })
 new({ particle: :atomes })
 new ({ particle: :build, store: false }) do |params|
   # we get the id or generate it for the new builder
@@ -135,14 +135,12 @@ new ({ particle: :build, store: false }) do |params|
   color_found = color(params[:color])
   left_pos = params[:left]
   top_pos = params[:top]
-  unless atomes
-    atomes({})
-  end
+  atomes({}) unless atomes
 
   params[:id] = identity_generator(params[:type]) unless params[:id]
   atomes[params[:id]] = []
   params[:copies].downto(0) do |index|
-    item_number=  params[:copies]-index
+    item_number = params[:copies] - index
     bundle_id = if params[:id]
                   "#{params[:id]}_#{item_number}"
                 else
@@ -153,8 +151,8 @@ new ({ particle: :build, store: false }) do |params|
     a = Atome.new(copied_items_params)
     a.attach(copied_items_params[:attach])
     a.apply([color_found.id])
-    a.left(((a.width + left_pos) * item_number)+ left_pos)
-    a.top(((a.height + top_pos) * item_number)+ top_pos)
+    a.left(((a.width + left_pos) * item_number) + left_pos)
+    a.top(((a.height + top_pos) * item_number) + top_pos)
     atomes[params[:id]] << bundle_id
   end
 end
@@ -164,9 +162,7 @@ new({ particle: :match }) do |params,_bloc|
 end
 
 new({ sanitizer: :match }) do |params, _bloc|
-  unless params[:condition]
-    params[:condition]={min: {width: 0}}
-  end
+  params[:condition] = { min: { width: 0 } } unless params[:condition]
   params
 end
 

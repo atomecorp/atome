@@ -1,11 +1,11 @@
 # frozen_string_literal: true
-
+#  this class is aimed at html rendering
 class HTML
 
   def initialize(id_found, current_atome)
     @element ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
-    @atome = current_atome
+    @original_atome = current_atome
     # @element = JS.global[:document].getElementById(@id.to_s)
   end
 
@@ -216,7 +216,7 @@ class HTML
   end
 
   def shape(id)
-    markup_found = @atome.markup || :div
+    markup_found = @original_atome.markup || :div
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
     JS.global[:document][:body].appendChild(@element)
@@ -226,7 +226,7 @@ class HTML
   end
 
   def text(id)
-    markup_found = @atome.markup || :pre
+    markup_found = @original_atome.markup || :pre
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
     JS.global[:document][:body].appendChild(@element)
@@ -236,7 +236,7 @@ class HTML
   end
 
   def image(id)
-    markup_found = @atome.markup || :img
+    markup_found = @original_atome.markup || :img
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
     JS.global[:document][:body].appendChild(@element)
@@ -246,7 +246,7 @@ class HTML
   end
 
   def video(id)
-    markup_found = @atome.markup || :video
+    markup_found = @original_atome.markup || :video
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
     JS.global[:document][:body].appendChild(@element)
@@ -257,7 +257,7 @@ class HTML
 
   # def shadow(id)
   #   alert 'so kool'
-  #   # markup_found = @atome.markup || :video
+  #   # markup_found = @original_atome.markup || :video
   #   # @element_type = markup_found.to_s
   #   # @element = JS.global[:document].createElement(@element_type)
   #   # JS.global[:document][:body].appendChild(@element)
@@ -267,7 +267,7 @@ class HTML
   # end
 
   def www(id)
-    markup_found = @atome.markup || :iframe
+    markup_found = @original_atome.markup || :iframe
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
     JS.global[:document][:body].appendChild(@element)
@@ -502,10 +502,10 @@ class HTML
       bloc.call(event) if bloc.instance_of? Proc
       dx = event[:dx]
       dy = event[:dy]
-      x = (@atome.left || 0) + dx.to_f
-      y = (@atome.top || 0) + dy.to_f
-      @atome.left(x)
-      @atome.top(y)
+      x = (@original_atome.left || 0) + dx.to_f
+      y = (@original_atome.top || 0) + dy.to_f
+      @original_atome.left(x)
+      @original_atome.top(y)
     end)
   end
 
@@ -748,5 +748,7 @@ class HTML
       @element.removeEventListener('input', &@input_listener)
     end
   end
+
+
 
 end

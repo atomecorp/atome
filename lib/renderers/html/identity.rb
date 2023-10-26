@@ -3,31 +3,31 @@
 new({ renderer: :html, method: :id, type: :string })
 
 new({ method: :type, type: :string, renderer: :html }) do |_value, _user_proc|
-  html.shape(@atome[:id])
+  html.shape(@id)
 end
 
 new({ method: :type, type: :string, renderer: :html, specific: :image }) do |_value, _user_proc|
-  html.image(@atome[:id])
+  html.image(@id)
 end
 
 new({ method: :type, type: :string, renderer: :html, specific: :video }) do |_value, _user_proc|
-  html.video(@atome[:id])
+  html.video(@id)
 end
 
 new({ method: :type, type: :string, renderer: :html, specific: :www }) do |_value, _user_proc|
-  html.www(@atome[:id])
+  html.www(@id)
 end
 
 new({ method: :type, type: :string, renderer: :html, specific: :raw }) do |_value, _user_proc|
-  html.raw(@atome[:id])
+  html.raw(@id)
 end
 
 new({ method: :type, type: :string, specific: :shape, renderer: :html }) do |_value, _user_proc|
-  html.shape(@atome[:id])
+  html.shape(@id)
 end
 
 new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_value, _user_proc|
-  html.text(@atome[:id])
+  html.text(@id)
   html.add_class(:text)
 end
 
@@ -36,7 +36,7 @@ end
 
 # new({ method: :type, type: :string, specific: :shadow, renderer:  }) do
 #   # alert "on est en est ici : id is : "
-#   # html.shadow(@atome[:id])
+#   # html.shadow(id)
 #   # html.innerText(value)
 # end
 

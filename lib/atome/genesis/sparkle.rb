@@ -2,10 +2,6 @@
 
 # now let's get the default render engine
 
-
-
-
-
 # Lets create the U.I.
 
 default_render = Essentials.default_params[:render_engines]

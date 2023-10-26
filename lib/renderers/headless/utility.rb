@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-generator = Genesis.generator
+# generator = Genesis.generator
 
-generator.build_render(:headless_schedule)
-generator.build_render(:headless_reader)
+Genesis.build_render(:headless_schedule)
+Genesis.build_render(:headless_reader)

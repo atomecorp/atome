@@ -8,36 +8,41 @@ new({ renderer: :html, method: :attach, type: :string, specific: :color }) do |p
   grab(parent_found).apply(id)
 end
 
-
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
   case parent_found.type
   when :shadow
-    shadow_copy = shadow.dup
-    shadow_copy.pop
-    # puts "shadows to treat #{shadow_copy}"
-    red = parent_found.red * 255
-    green = parent_found.green * 255
-    blue = parent_found.blue * 255
-    alpha = parent_found.alpha
-    left = parent_found.left
-    top = parent_found.top
-    blur = parent_found.blur
-
-    # inset = :inset if parent_found.invert
-    if parent_found.invert
-      html.style("boxShadow", "#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}) inset")
-    elsif parent_found.option == :natural
-      # patch to render clean on safari
-      html.style("transform", "translate3d(0, 0, 0)")
-      html.style("filter", "drop-shadow(#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}))")
-    else
-      html.style("boxShadow", "#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha})")
+    shadows_to_apply = { filter: [], boxShadow: [] }
+    shadow.each do |shadow_id_found|
+      shadow_found = grab(shadow_id_found)
+      red = shadow_found.red * 255
+      green = shadow_found.green * 255
+      blue = shadow_found.blue * 255
+      alpha = shadow_found.alpha
+      left = shadow_found.left
+      top = shadow_found.top
+      blur = shadow_found.blur
+      inset = :inset if shadow_found.invert
+      if shadow_found.option == :natural
+        shadows_to_apply[:filter] << "drop-shadow(#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}))"
+      else
+        shadows_to_apply[:boxShadow] << "#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}) #{inset}"
+      end
     end
-
+    drop_shadow = shadows_to_apply[:filter].join(' ')
+    box_shadow = shadows_to_apply[:boxShadow].join(',')
+    # puts "===> #{shadow}"
+    # html.style("transformr", "translate3d(0, 0, 0)")
+    # html.style("boxShadow", box_shadow)
+    # html.style("filter", drop_shadow)
   else
-    color_copy = color.dup
-    color_copy.pop
-    puts "colors to treat #{color_copy}"
+    # begin
+    #   color
+    # rescue => e
+    #   puts inspect
+    # end
+    # color_copy = color.dup
+    # color_copy.pop
+    # puts "*** colors to treat #{color_copy} : #{color_copy.length}"
     # we assume it's a color
     red = parent_found.red * 255
     green = parent_found.green * 255

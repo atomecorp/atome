@@ -5,7 +5,7 @@ new({ sanitizer: :color }) do |params|
   # the condition below is to prevent the creation of multiple unwanted colors with same property and no ID specified
   unless params[:id]
     uniq_value = "#{params[:red].to_s.sub('.', '_')}_#{params[:green].to_s.sub('.', '_')}_#{params[:blue].to_s.sub('.', '_')}_#{params[:alpha].to_s.sub('.', '_')}_#{params[:left].to_s.sub('.', '_')}_#{params[:top].to_s.sub('.', '_')}_#{params[:diffusion].to_s.sub('.', '_')}"
-    params[:id] = "#{@atome[:id]}_color_#{uniq_value}".to_sym
+    params[:id] = "#{@id}_color_#{uniq_value}".to_sym
   end
   params
 end
@@ -81,7 +81,7 @@ new({ atome: :human }) do |params|
   Universe.add_user = params[:id]
 end
 new({ atome: :machine })
-new ({ atome: :generator }) do |params|
+new({ atome: :generator }) do |params|
   # we remove build and store it in a temporary particle  as it has to be added after atome creation
   build=params.delete(:build)
   params[:temporary]={build: build}

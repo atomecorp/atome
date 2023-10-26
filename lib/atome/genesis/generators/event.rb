@@ -30,7 +30,7 @@ new({ sanitizer: :touch }) do |params, _user_bloc|
            end
   @touch[params] = true
 
-  store_value(:touch)
+  store_value(:touch, params)
   params
 
 end
@@ -38,13 +38,9 @@ end
 new({ particle: :play })
 new({ particle: :pause })
 
-# new({ particle: :play }) do
-#   @atome[:pause] = :false
-# end
+
 new({ particle: :time })
-# new({ particle: :pause }) do
-#   @atome[:play] = :false
-# end
+
 new({ particle: :on })
 new({ particle: :fullscreen })
 new({ particle: :mute })
@@ -80,7 +76,7 @@ new({ sanitizer: :drag }) do |params, _proc|
 
            end
   @drag[params] = true
-  store_value(:drag)
+  store_value(:drag, params)
   params
 end
 
@@ -115,7 +111,7 @@ new({ sanitizer: :drop }) do |params, bloc|
            end
   @drop[params] = true
 
-  store_value(:drop)
+  store_value(:drop, params)
   params
 
 end
@@ -146,7 +142,7 @@ new({ sanitizer: :over }) do |params|
            end
   @over[params] = true
 
-  store_value(:over)
+  store_value(:over, params)
   params
 
 end
@@ -203,10 +199,12 @@ new({ sanitizer: :keyboard }) do |params|
 
            end
   @keyboard[params] = true
-  store_value(:keyboard)
+  store_value(:keyboard, params)
   params
 
 end
 
 new({ particle: :resize })
+
+
 

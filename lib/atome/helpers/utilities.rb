@@ -26,13 +26,14 @@ class Atome
 
   end
 
-  def collapse
+  def collapse(new_atome)
     # TODO : try to optimise the two lines below to avoid conditions
-    @atome[:unit] = {} unless @atome[:unit]
-    @atome[:security] = {} unless @atome[:security]
-    @atome.each do |element, value|
+    # new_atome[:unit] = {} unless unit
+    # new_atome[:security] = {} unless new_atome[:security]
+    new_atome.each do |element, value|
       send(element, value)
     end
+
   end
 
   def authorise(password, destroy = true)
@@ -40,8 +41,7 @@ class Atome
   end
 
   def write_auth(element)
-    # puts "===+> #{security}"
-    if security[element]
+    if @security[element]
       password_found = @temps_authorisation[0]
       authorisation = Black_matter.check_password(password_found, Black_matter.password)
       password_destruction = @temps_authorisation[1]
@@ -51,6 +51,7 @@ class Atome
     else
       true
     end
+    true
   end
 
   def read_auth(element)
@@ -63,6 +64,7 @@ class Atome
     else
       true
     end
+    true
   end
 
   def particle_sanitizer(element, params, &user_proc)
@@ -89,15 +91,17 @@ class Atome
     end
     new_atome
   end
+
   def store(params)
     params.each do |particle_to_save, data|
-      @atome[particle_to_save]=data
+      # @!atome[particle_to_save]=data
+      # instance_variable_set(particle_to_save,data)
     end
 
   end
 
   def history(filter = {})
-    filter[:id] = id
+    filter[:id] = @id
     Universe.story(filter)
   end
 
@@ -165,7 +169,6 @@ class Atome
     @callback[data.keys[0]] = data[data.keys[0]]
   end
 
-
   def particles(particles_found = nil)
     if particles_found
       particles_found.each do |particle_found, value_found|
@@ -176,49 +179,36 @@ class Atome
     end
   end
 
-  def <<(particle)
+  # def <<(particle)
+  #   alert "ici : #{self} #{particle}"
+  #   # instance_variable_get("@#{property}") << particle
+  # end
 
-    real_atome[property] << particle
-  end
-
-  # def add_to_hash(particle, values, &user_proc)
-  #   @atome[:add][particle] = true
-  #   # we update  the holder of any new particle if user pass a bloc
-  #   store_proc(particle, &user_proc) if user_proc
-  #   values.each do |value_id, value|
-  #     @atome[particle][value_id] = value
+  # def add(particles, &user_proc)
+  #
+  #   @!atome[:add] = {} unless @!atome[:add]
+  #   particles.each do |particle, value|
+  #     particle_type = Universe.particle_list[particle] || 'atome'
+  #     send("add_to_#{particle_type}", particle, value, &user_proc)
+  #     # now we remove systematically the added hash so next particle won't be automatically added
+  #     @!atome[:add].delete(particle)
   #   end
   # end
   #
-  # def add_to_array(particle, value, &_user_proc)
-  #   @atome[:add][particle] = true
-  #   # we update  the holder of any new particle if user pass a bloc
-  #   @atome[particle] << value
+  # def substract(_particles, &_user_proc)
+  #   # TODO : write code here to remove add elements"
+  #   puts "write code here to remove add elements"
   # end
-  #
-  # def add_to_atome(atome_type, particle_found, &user_proc)
-  #   @atome[:add][atome_type] = particle_found
-  #   send(atome_type, particle_found, &user_proc)
-  # end
-
-  def add(particles, &user_proc)
-
-    @atome[:add] = {} unless @atome[:add]
-    particles.each do |particle, value|
-      particle_type = Universe.particle_list[particle] || 'atome'
-      send("add_to_#{particle_type}", particle, value, &user_proc)
-      # now we remove systematically the added hash so next particle won't be automatically added
-      @atome[:add].delete(particle)
+  def atome
+    # allow to get all atomes instance variables available as a Hash
+    instance_variables.each_with_object({}) do |var, hash|
+      hash[var[1..-1].to_sym] = instance_variable_get(var) # var[1..-1] enlève le '@' au début
     end
   end
 
-  def substract(_particles, &_user_proc)
-    # TODO : write code here to remove add elements"
-    puts "write code here to remove add elements"
-  end
-
   def refresh
-    collapse
+    puts "You need to send all instance variable the workflow has changed! "
+    collapse(atome_to_hash)
   end
 
   def each(&proc)
@@ -292,11 +282,11 @@ class Atome
     puts msg
   end
 
-  def set_current_user(id)
-    if Universe.users[id]
-      Universe.current_user = id
+  def set_current_user(user_id)
+    if Universe.users[user_id]
+      Universe.current_user = user_id
     else
-      debug "#{id} not found"
+      debug "#{user_id} not found"
     end
   end
 end
