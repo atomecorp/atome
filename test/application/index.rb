@@ -5,7 +5,7 @@
 # require "./examples/clear"
 # require "./examples/convert"
 # require "./examples/hypertext"
-# require "./examples/generator_and_build"
+require "./examples/generator_and_build"
 # require "./examples/callback"
 # require "./examples/display"
 # require "./examples/match"

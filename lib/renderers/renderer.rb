@@ -5,7 +5,9 @@ class Atome
   # private
 
   def render(element, params, &user_proc)
+
     render_engines = @renderers
+    puts "render theis : #{render_engines} / #{element}, #{params}"
     render_engines.each do |render_engine|
       # in case we found an exception the method call will have the form, example for color top  : html_color_top
       exception_found = "#{Universe.get_atomes_specificities[type][element]}"

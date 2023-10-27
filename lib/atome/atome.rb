@@ -33,19 +33,18 @@ class Atome
     # @atome = new_atome
     # we reorder the hash
     # # #########
-    # # hash = {:renderers => [], :id => :eDen, :type => :element, :tag => {:system=>true}, :attach => [], :attached => []}
-    # ordered_keys = [:id, :type, :renderers]
-    # ordered_part = ordered_keys.map { |k| [k, new_atome[k]] }.to_h
-    # other_part = new_atome.reject { |k, _| ordered_keys.include?(k) }
-    # # Fusionner les deux parties pour obtenir le hash réorganisé
-    # reordered_atome = ordered_part.merge(other_part)
+    ordered_keys = [:renderers,:id, :type ]
+    ordered_part = ordered_keys.map { |k| [k, new_atome[k]] }.to_h
+    other_part = new_atome.reject { |k, _| ordered_keys.include?(k) }
+    # Fusionner les deux parties pour obtenir le hash réorganisé
+    reordered_atome = ordered_part.merge(other_part)
     # # #########
-
+    # puts "=> #{reordered_atome}\n-> #{new_atome}"
     # @!atome[:forbidden]='you are not allow to read protected particle'
     # we initiate the rendering using set_type method,
     # eg : for for browser we will call :browser_type generate method in identity.rb file
     # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
-    collapse(new_atome) if new_atome
+    collapse(reordered_atome) if reordered_atome
 
 
   end

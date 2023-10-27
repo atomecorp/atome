@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
-def attachment_common(child_id, parents_ids, &user_proc)
+def attachment_common(child_id, parents_ids,direction, &user_proc)
   # FIXME : it seems we sometime iterate when for nothing
   parents_ids.each do |parent_id|
     child_found = grab(child_id)
     parent_found = grab(parent_id)
-    parent_found. attached ||= []
-    child_found.attach ||= []
-    child_found.attach << parent_id
-    parent_found.attached << child_id
+    if  direction ==:attach
+      parent_found.attached ||= []
+    else
+      child_found.attach ||= []
+    end
+    # child_found.attach << parent_id
+    # parent_found.attached << child_id
     child_found&.render(:attach, parent_id, &user_proc)
   end
 end
@@ -17,7 +20,7 @@ new({ particle: :attach, render: false }) do |parents_ids, &user_proc|
   unless parents_ids == []
     parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
 
-    attachment_common(@id, parents_ids, &user_proc)
+    attachment_common(@id, parents_ids,:attach, &user_proc)
     parents_ids
   end
 
@@ -30,7 +33,7 @@ new({ particle: :attached, render: false }) do |children_ids, &user_proc|
   children_ids.each do |children_id|
     # grab(children_id).attach << @id
 
-    attachment_common(children_id, parents_ids, &user_proc)
+    attachment_common(children_id, parents_ids,:attached, &user_proc)
   end
   children_ids
 end

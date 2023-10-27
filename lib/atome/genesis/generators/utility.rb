@@ -127,7 +127,7 @@ new ({ particle: :build, store: false }) do |params|
     build_hash = { byild_id => params }
     store({ 'build': build_hash })
   end
-
+  #
   # now we'll created the wanted atomes
   # here are the default params
   default_styles = { type: :shape, renderers: [:html], width: 66, height: 66, color: :gray, left: 12, top: 12, copies: 0, attach: [:view] }
@@ -139,6 +139,8 @@ new ({ particle: :build, store: false }) do |params|
 
   params[:id] = identity_generator(params[:type]) unless params[:id]
   atomes[params[:id]] = []
+
+  ###########@
   params[:copies].downto(0) do |index|
     item_number = params[:copies] - index
     bundle_id = if params[:id]
@@ -148,11 +150,12 @@ new ({ particle: :build, store: false }) do |params|
                 end
     copied_items_params = params.dup
     copied_items_params[:id] = bundle_id
-    a = Atome.new(copied_items_params)
-    a.attach(copied_items_params[:attach])
-    a.apply([color_found.id])
-    a.left(((a.width + left_pos) * item_number) + left_pos)
-    a.top(((a.height + top_pos) * item_number) + top_pos)
+    # alert copied_items_params
+    copy= Atome.new(copied_items_params)
+    copy.attach(copied_items_params[:attach])
+    copy.apply([color_found.id])
+    copy.left(((copy.width + left_pos) * item_number) + left_pos)
+    copy.top(((copy.height + top_pos) * item_number) + top_pos)
     atomes[params[:id]] << bundle_id
   end
 end
