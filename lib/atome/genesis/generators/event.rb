@@ -30,7 +30,6 @@ new({ sanitizer: :touch }) do |params, _user_bloc|
            end
   @touch[params] = true
 
-  store_value(:touch, params)
   params
 
 end
@@ -76,7 +75,6 @@ new({ sanitizer: :drag }) do |params, _proc|
 
            end
   @drag[params] = true
-  store_value(:drag, params)
   params
 end
 
@@ -111,7 +109,6 @@ new({ sanitizer: :drop }) do |params, bloc|
            end
   @drop[params] = true
 
-  store_value(:drop, params)
   params
 
 end
@@ -142,7 +139,6 @@ new({ sanitizer: :over }) do |params|
            end
   @over[params] = true
 
-  store_value(:over, params)
   params
 
 end
@@ -174,8 +170,8 @@ new(particle: :keyboard, type: :hash, store: false)
 new({ sanitizer: :keyboard }) do |params|
   # # TODO: factorise code below
   @keyboard ||= {}
-  params = if params.instance_of? Hash
 
+  params = if params.instance_of? Hash
              params.keys[0]
            else
 
@@ -198,8 +194,16 @@ new({ sanitizer: :keyboard }) do |params|
              end
 
            end
+  # alert  "#{@keyboard} : #{params}"
+  # unless @keyboard.instance_of? Hash
+  #   puts  "A - #{@keyboard} : #{params}"
+  #
+  # else
+  #
+  #   puts  "B - #{@keyboard} : #{params}"
+  #    # @keyboard @keyboardw
+  # end
   @keyboard[params] = true
-  store_value(:keyboard, params)
   params
 
 end

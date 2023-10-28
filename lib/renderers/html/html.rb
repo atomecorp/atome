@@ -402,10 +402,10 @@ class HTML
 
   def keyboard_keypress(bloc)
     keypress_handler = ->(event) do
-      if grab(@id).keyboard[:kill] == true
+      if @original_atome.keyboard[:kill] == true
         Native(event).preventDefault()
-      else
-        bloc.call(event) if bloc.is_a? Proc
+      elsif bloc.is_a? Proc
+        bloc.call(event)
       end
     end
     @element.addEventListener('keypress', keypress_handler)
@@ -413,10 +413,10 @@ class HTML
 
   def keyboard_keydown(bloc)
     keypress_handler = ->(event) do
-      if grab(@id).keyboard[:kill] == true
+      if @original_atome.keyboard[:kill] == true
         Native(event).preventDefault()
-      else
-        bloc.call(event) if bloc.is_a? Proc
+      elsif bloc.is_a? Proc
+        bloc.call(event)
       end
     end
     @element.addEventListener('keydown', keypress_handler)
@@ -426,8 +426,10 @@ class HTML
     keypress_handler = ->(event) do
       if grab(@id).keyboard[:kill] == true
         Native(event).preventDefault()
-      else
-        bloc.call(event) if bloc.is_a? Proc
+      elsif bloc.is_a? Proc
+        # we update the @data of the atome
+        @original_atome.instance_variable_set('@data',@element[:innerText].to_s)
+        bloc.call(event)
       end
     end
     @element.addEventListener('keyup', keypress_handler)
@@ -439,13 +441,11 @@ class HTML
 
   def keyboard_input(bloc)
     input_handler = ->(event) do
-      if grab(@id).keyboard[:kill] == true
+      if @original_atome.keyboard[:kill] == true
         Native(event).preventDefault()
-      else
-        if Native(event)[:target]
-          input_content = Native(event)[:target][:textContent] # Obtenez le contenu textuel de l'élément <pre>
-          bloc.call(input_content) if bloc.is_a? Proc
-        end
+      elsif Native(event)[:target]
+        input_content = Native(event)[:target][:textContent] # Obtenez le contenu textuel de l'élément <pre>
+        bloc.call(input_content) if bloc.is_a? Proc
       end
 
     end
@@ -744,11 +744,8 @@ class HTML
     if params
       @element.addEventListener('input', &@input_listener)
     else
-      alert :stopped
       @element.removeEventListener('input', &@input_listener)
     end
   end
-
-
 
 end

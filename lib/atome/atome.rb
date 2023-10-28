@@ -49,13 +49,13 @@ class Atome
 
   end
 
-  def store_value(element, params)
-    instance_variable_set("@#{element}", params)
-    # params = instance_variable_get("@#{element}")
-    # puts "add the line below to make it work"
-    # @atome[element] = params
-
-  end
+  # def store_value(element, params)
+  #   instance_variable_set("@#{element}", params)
+  #   # params = instance_variable_get("@#{element}")
+  #   # puts "add the line below to make it work"
+  #   # @atome[element] = params
+  #
+  # end
 
   # public
 
@@ -82,7 +82,8 @@ class Atome
     if Atome.instance_variable_get("@post_#{element}").is_a?(Proc) # post is after rendering and broadcasting
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
     end
-    store_value(element, params) if store
+    instance_variable_set("@#{element}", params) if store
+    # store_value(element, params) if store
     @store_allow = true
     if Atome.instance_variable_get("@after_#{element}").is_a?(Proc) # after is post saving
       instance_exec(params, user_proc, self, &Atome.instance_variable_get("@after_#{element}"))

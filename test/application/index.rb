@@ -1,15 +1,17 @@
 #  frozen_string_literal: true
 # require 'json'
 # box({ color: :orange })
-# require "./examples/shadow"
+require "./examples/shadow"
 # require "./examples/clear"
 # require "./examples/convert"
 # require "./examples/hypertext"
-require "./examples/generator_and_build"
+# require "./examples/generator_and_build"
 # require "./examples/callback"
+# require "./examples/keyboard"
+# require "./examples/over"
 # require "./examples/display"
-# require "./examples/match"
 # require "./examples/drop"
+# require "./examples/match"
 # require "./examples/on_resize"
 # require "./examples/scroll"
 # require "./examples/animation"

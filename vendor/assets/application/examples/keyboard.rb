@@ -45,8 +45,9 @@ wait 4.5 do
   puts '------ :not editable: ------'
   t.edit(false)
 end
-#
+
 wait 3 do
   puts '------ :stopped: ------'
+  text({data:  'stop editing', top: 150 })
   t.keyboard(:kill)
 end

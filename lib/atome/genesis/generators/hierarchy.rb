@@ -10,8 +10,6 @@ def attachment_common(child_id, parents_ids,direction, &user_proc)
     else
       child_found.attach ||= []
     end
-    # child_found.attach << parent_id
-    # parent_found.attached << child_id
     child_found&.render(:attach, parent_id, &user_proc)
   end
 end
@@ -44,7 +42,7 @@ new({ sanitizer: :attached }) do |children_ids|
 end
 
 new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_proc|
-  puts "probleme ici ca choppe trop de children id: #{@id} : #{parents_ids}"
+  # puts "probleme ici ca choppe trop de children id: #{@id} : #{parents_ids}"
 
   # alert "#{id} : #{parents_ids}"
   # parents_ids.each do |i|

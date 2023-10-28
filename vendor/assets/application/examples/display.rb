@@ -25,18 +25,22 @@ new({ particle: :display }) do |params|
       container=''
       attach.each do |parent|
         container=grab(parent).box({width: default_width, height: default_height*3, overflow: :auto, color: :white, depth: 0})
-        # container.scroll(:auto) do |e|
-        #   puts "===> #{e}"
-        # end
       end
       particles.each_with_index  do |(particle_found,value), index|
         line=container.box({width: default_width, height: default_height, left: 0, top:((default_height+margin)*index)})
         line.text({ data: "#{particle_found} : ", top: -default_height / 2, left: 2 })
         input_value=line.text({ data: value, top: -default_height / 2 , left: 5, edit: true})
         input_value.keyboard(:down) do |native_event|
+          event = Native(native_event)
+          if event[:keyCode].to_i == 13
+            event.preventDefault()
+            input_value.color(:red)
+          end
         end
         input_value.keyboard(:up) do |native_event|
-          send(particle_found,input_value.data)
+          data_found= input_value.data
+          # alert   "grab(#{id}).send(#{particle_found},#{data_found})"
+         send(particle_found,data_found)
         end
       end
   when :table
@@ -66,7 +70,9 @@ end
 # wait 2 do
 #   b.display(:none)
 # end
-
+b.touch(true) do
+  alert.b.inspect
+end
 
 # TODO : find how to restore natural display after removing display mode
 
