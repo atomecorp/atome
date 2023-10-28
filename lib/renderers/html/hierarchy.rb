@@ -11,6 +11,7 @@ end
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
   case parent_found.type
   when :shadow
+
     shadows_to_apply = { filter: [], boxShadow: [] }
     shadow.each do |shadow_id_found|
       shadow_found = grab(shadow_id_found)
@@ -31,10 +32,12 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     drop_shadow = shadows_to_apply[:filter].join(' ')
     box_shadow = shadows_to_apply[:boxShadow].join(',')
     # puts "===> #{shadow}"
-    # html.style("transformr", "translate3d(0, 0, 0)")
-    # html.style("boxShadow", box_shadow)
-    # html.style("filter", drop_shadow)
+    alert "me: #{inspect}, boxShadow => #{box_shadow}, drop_shadow => #{drop_shadow}"
+    html.style("transformr", "translate3d(0, 0, 0)")
+    html.style("boxShadow", box_shadow)
+    html.style("filter", drop_shadow)
   else
+
     # begin
     #   color
     # rescue => e

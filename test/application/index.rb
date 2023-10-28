@@ -7,10 +7,10 @@
 # require "./examples/browse"
 # require "./examples/callback"
 # require "./examples/delete"
-require "./examples/edit"
+# require "./examples/edit"
 
 
-# require "./examples/shadow"
+require "./examples/shadow"
 # require "./examples/clear"
 # require "./examples/convert"
 # require "./examples/hypertext"
@@ -50,13 +50,13 @@ require "./examples/edit"
 # TODO : animation
 # done : shadow
 # done : drop
-# TODO : matrix
+# TODO : matrix/grid
 # TODO : gradient
 # TODO : multiple shadows
 # TODO : automatise shadows api add auto id and make 'affect' optional
 # done : implement scroll / on overflow
 # TODO : markup to allow after creation changes
-# TODO : Drag'nDrop file import
+# TODO : Drag and Drop file import
 # TODO : change particle_code for {code:{particle: :data_code}}
 # TODO : rename HTML class and html objetc to Browser
 # new(particle: :language)

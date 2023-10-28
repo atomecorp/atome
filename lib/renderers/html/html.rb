@@ -738,6 +738,7 @@ class HTML
 
   # this method update the data content of the atome
   def update_data(params)
+    # we update the @data of the atome
     @input_listener ||= lambda { |event| handle_input }
     if params
       @element.addEventListener('input', &@input_listener)

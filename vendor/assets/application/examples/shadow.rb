@@ -1,133 +1,208 @@
 # frozen_string_literal: true
 
-# TODO : ATTENTION if id is not specified for the shadow it wont create a new one
-c = circle({ id: :the_circle, left: 122, drag: { move: true, inertia: true, lock: :start } })
-c.color({ id: :col1, red: 1, blue: 1 })
-c.color({ id: :col2, red: 0, blue: 1, green: 0.3 })
-c.color({id: :yellow_green, blue: 0.5, green: 1})
-c2 = circle({ id: :the_circle2, left: 222, drag: { move: true, inertia: true, lock: :start } })
-c2
-b=circle({id: :the_buzz})
-b.color({id: :the_red, red: 1 })
-b.color(:green)
-color_la=b.color({id: :la_col,  red: 0})
-# grab(:view).color(:green)
-# grab(:view).color(:yellow)
-c3 = circle({ id: :the_circle3, left: 322, drag: { move: true, inertia: true, lock: :start } })
+# class Atome
+#   # Initialisation de la liste des méthodes existantes
+#   @methodes_existantes = instance_methods(false)
+#
+#   def self.method_added(method_name)
+#     if @methodes_existantes.include?(method_name)
+#       puts "La méthode #{method_name} a été modifiée."
+#     else
+#       puts "La méthode #{method_name} a été créée."
+#       @methodes_existantes << method_name
+#     end
+#     super
+#   end
+# end
 
-# puts "c apply => #{c.instance_variable_get('@apply')}:"
-puts "c.apply : #{c.apply}"
-puts   "c.color : c.color#{c.color}"
+class Atome
+  def self.surveiller_instance(instance, methodes_a_surveiller, variables_a_surveiller)
+    # Surveiller les méthodes
+    methodes_a_surveiller.each do |methode|
+      methode_originale = instance.method(methode)
+      instance.define_singleton_method(methode) do |*args, &block|
+        valeur_avant = instance.instance_variable_get("@#{methode}")
+        resultat = methode_originale.call(*args, &block)
+        valeur_apres = instance.instance_variable_get("@#{methode}")
 
-puts " color shis : #{ color_la.red}"
-wait 2 do
-  color_la.red(1)
-  puts "color should have changed : #{ color_la.red}"
+        if args.empty?
+          puts "Surveillance: Lecture de #{methode}"
+        else
+          if valeur_avant != valeur_apres
+            puts "Surveillance: Modification de #{methode} de #{valeur_avant} à #{valeur_apres}"
+          else
+            puts "Surveillance: Appel de #{methode} sans modification"
+          end
+        end
+
+        resultat
+      end
+    end
+
+    # Surveiller les variables d'instance
+    variables_a_surveiller.each do |var|
+      # Redéfinir le getter
+      instance.define_singleton_method(var) do
+        puts "Surveillance: Lecture de #{var}"
+        instance_variable_get("@#{var}")
+      end
+
+      # Redéfinir le setter
+      instance.define_singleton_method("#{var}=") do |value|
+        puts "Surveillance: Modification de #{var}"
+        instance_variable_set("@#{var}", value)
+      end
+    end
+  end
 end
-puts '****===----------===****'
-# puts "atome_to_hash : #{c.atome_to_hash}"
 
-# puts "IV: #{c.inspect}  : #{c.inspect.class}"
-# puts "Saved :#{c.atome} : #{c.atome.class}"
+# Votre code pour créer et manipuler les instances
+c = circle({ id: :the_circle, left: 122, color: :orange, drag: { move: true, inertia: true, lock: :start } })
+
+wait 2 do
+  col = color({ id: :col1, red: 1, blue: 1 })
+  Atome.surveiller_instance(col, [:red, :blue], [:variable1, :variable2])
+  col.red(0.3)
+  c.apply([:col1])
+  wait 2 do
+    puts "before : #{col.inspect}"
+    col.red(0)  # Appel en écriture
+    col.red     # Appel en lecture
+    puts "after : #{col.inspect}"
+    c.apply([:col1])
+  end
+end
 
 
-# hash1 = c.inspect
-# hash2 = c.atome
+
+
+###################################
+# # uncomment beleow
+# color_la_ci=c.color({id: :yellow_green, blue: 0.5, green: 1})
+# c2 = circle({ id: :the_circle2, left: 222, drag: { move: true, inertia: true, lock: :start } })
+# c2
+# b=circle({id: :the_buzz})
+# b.color({id: :the_red, red: 1 })
+# b.color(:green)
+# color_la=b.color({id: :la_col,  red: 0})
+# # grab(:view).color(:green)
+# # grab(:view).color(:yellow)
+# c3 = circle({ id: :the_circle3, left: 322, drag: { move: true, inertia: true, lock: :start } })
 #
-# def normalize_key(key)
-#   key.to_s.gsub(/[@:]/, '').to_sym  # Supprime les préfixes '@' et ':', puis convertit en symbole
+# # puts "c apply => #{c.instance_variable_get('@apply')}:"
+# c.apply(color_la_ci)
+# puts "c.apply : #{c.apply}"
+# puts   "c.color : c.color#{c.color}"
+#
+# puts " color shis : #{ color_la.red}"
+# wait 2 do
+#   color_la.red(1)
+#   puts "color should have changed : #{ color_la.red}"
 # end
 #
-# def normalize_hash(hash)
-#   hash.transform_keys { |k| normalize_key(k) }
-# end
+# # puts "atome_to_hash : #{c.atome_to_hash}"
 #
-# def common_elements(hash1, hash2)
-#   normalized_hash1 = normalize_hash(hash1)
-#   normalized_hash2 = normalize_hash(hash2)
-#
-#   common_keys = normalized_hash1.keys & normalized_hash2.keys
-#   common_keys.select { |k| normalized_hash1[k] == normalized_hash2[k] }.map { |k| [k, normalized_hash1[k]] }.to_h
-# end
-#
-# def orphan_elements(hash1, hash2)
-#   normalized_hash1 = normalize_hash(hash1)
-#   normalized_hash2 = normalize_hash(hash2)
-#
-#   orphan_keys_from_hash1 = normalized_hash1.keys - normalized_hash2.keys
-#   orphan_keys_from_hash2 = normalized_hash2.keys - normalized_hash1.keys
-#
-#   orphans_from_hash1 = orphan_keys_from_hash1.map { |k| [k, normalized_hash1[k]] }.to_h
-#   orphans_from_hash2 = orphan_keys_from_hash2.map { |k| [k, normalized_hash2[k]] }.to_h
-#
-#   [orphans_from_hash1, orphans_from_hash2]
-# end
+# # puts "IV: #{c.inspect}  : #{c.inspect.class}"
+# # puts "Saved :#{c.atome} : #{c.atome.class}"
 #
 #
+# # hash1 = c.inspect
+# # hash2 = c.atome
+# #
+# # def normalize_key(key)
+# #   key.to_s.gsub(/[@:]/, '').to_sym  # Supprime les préfixes '@' et ':', puis convertit en symbole
+# # end
+# #
+# # def normalize_hash(hash)
+# #   hash.transform_keys { |k| normalize_key(k) }
+# # end
+# #
+# # def common_elements(hash1, hash2)
+# #   normalized_hash1 = normalize_hash(hash1)
+# #   normalized_hash2 = normalize_hash(hash2)
+# #
+# #   common_keys = normalized_hash1.keys & normalized_hash2.keys
+# #   common_keys.select { |k| normalized_hash1[k] == normalized_hash2[k] }.map { |k| [k, normalized_hash1[k]] }.to_h
+# # end
+# #
+# # def orphan_elements(hash1, hash2)
+# #   normalized_hash1 = normalize_hash(hash1)
+# #   normalized_hash2 = normalize_hash(hash2)
+# #
+# #   orphan_keys_from_hash1 = normalized_hash1.keys - normalized_hash2.keys
+# #   orphan_keys_from_hash2 = normalized_hash2.keys - normalized_hash1.keys
+# #
+# #   orphans_from_hash1 = orphan_keys_from_hash1.map { |k| [k, normalized_hash1[k]] }.to_h
+# #   orphans_from_hash2 = orphan_keys_from_hash2.map { |k| [k, normalized_hash2[k]] }.to_h
+# #
+# #   [orphans_from_hash1, orphans_from_hash2]
+# # end
+# #
+# #
+# #
+# # puts "Éléments communs : #{common_elements(hash1, hash2)}"
+# # orphans_1, orphans_2 = orphan_elements(hash1, hash2)
+# # puts "Éléments orphelins de instance variable : #{orphans_1}"
+# # puts "Éléments orphelins de atome : #{orphans_2}"
+# # puts '-------------'
 #
-# puts "Éléments communs : #{common_elements(hash1, hash2)}"
-# orphans_1, orphans_2 = orphan_elements(hash1, hash2)
-# puts "Éléments orphelins de instance variable : #{orphans_1}"
-# puts "Éléments orphelins de atome : #{orphans_2}"
-# puts '-------------'
-
-# puts puts "instance variable : #{hash1}"
-# puts puts "atome : #{hash2}"
-
-# puts c.html.inspect
-# c.box
-# c2.box
-# c2.box
-# c3.box
-# c3.color(:yellow)
-# alert c3.color
-# c.shadow({
-#            id: :s1,
-#            affect: [:the_circle],
-#            left: 29, top: 3, blur: 9,
-#            invert: false,
-#            red: 0, green: 0, blue: 0, alpha: 1
-#          })
-
-# c.shadow({
-#            id: :s2,
-#            affect: [:the_circle],
-#            left: 3, top: 9, blur: 9,
-#            invert: true,
-#            red: 0, green: 0, blue: 0, alpha: 1
-#          })
-# c.shadow({
-#            id: :s3,
-#            affect: [:the_circle],
-#            left: -3, top: -3, blur: 9,
-#            invert: true,
-#            red: 0, green: 0, blue: 0, alpha: 1
-#          })
+# # puts puts "instance variable : #{hash1}"
+# # puts puts "atome : #{hash2}"
 #
-# c.shadow({
-#            id: :s4,
-#            affect: [:the_circle],
-#            left: 20, top: 0, blur: 9,
-#            option: :natural,
-#            red: 0, green: 0, blue: 0, alpha: 1
-#          })
+# # puts c.html.inspect
+# # c.box
+# # c2.box
+# # c2.box
+# # c3.box
+# # c3.color(:yellow)
+# # alert c3.color
+# # c.shadow({
+# #            id: :s1,
+# #            affect: [:the_circle],
+# #            left: 29, top: 3, blur: 9,
+# #            invert: false,
+# #            red: 0, green: 0, blue: 0, alpha: 1
+# #          })
 #
-# c2.shadow({
-#             id: :s5,
-#             affect: [:the_circle2],
-#             left: 9, top: 9, blur: 9,
-#             option: :natural,
-#             red: 0, green: 0, blue: 0, alpha: 1
-#           })
-#
-# c3.shadow({
-#             id: :s6,
-#             affect: [:the_circle3],
-#             left: 3, top: 3, blur: 9,
-#             red: 0, green: 0, blue: 0, alpha: 1
-#           })
-# c3.shadow
-# alert c2.inspect
+# # c.shadow({
+# #            id: :s2,
+# #            affect: [:the_circle],
+# #            left: 3, top: 9, blur: 9,
+# #            invert: true,
+# #            red: 0, green: 0, blue: 0, alpha: 1
+# #          })
+# # c.shadow({
+# #            id: :s3,
+# #            affect: [:the_circle],
+# #            left: -3, top: -3, blur: 9,
+# #            invert: true,
+# #            red: 0, green: 0, blue: 0, alpha: 1
+# #          })
+# #
+# # c.shadow({
+# #            id: :s4,
+# #            affect: [:the_circle],
+# #            left: 20, top: 0, blur: 9,
+# #            option: :natural,
+# #            red: 0, green: 0, blue: 0, alpha: 1
+# #          })
+# #
+# # c2.shadow({
+# #             id: :s5,
+# #             affect: [:the_circle2],
+# #             left: 9, top: 9, blur: 9,
+# #             option: :natural,
+# #             red: 0, green: 0, blue: 0, alpha: 1
+# #           })
+# #
+# # c3.shadow({
+# #             id: :s6,
+# #             affect: [:the_circle3],
+# #             left: 3, top: 3, blur: 9,
+# #             red: 0, green: 0, blue: 0, alpha: 1
+# #           })
+# # c3.shadow
+# # alert c2.inspect
 
 
 
