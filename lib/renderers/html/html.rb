@@ -428,7 +428,7 @@ class HTML
         Native(event).preventDefault()
       elsif bloc.is_a? Proc
         # we update the @data of the atome
-        @original_atome.instance_variable_set('@data',@element[:innerText].to_s)
+        # @original_atome.instance_variable_set('@data',@element[:innerText].to_s)
         bloc.call(event)
       end
     end
@@ -732,15 +732,13 @@ class HTML
     end
   end
 
-  def handle_input(event)
-    target = event[:target]
-    inner_text = target[:innerText].to_s
-    grab(@id).store(data: inner_text)
+  def handle_input
+    @original_atome.instance_variable_set("@data", @element[:innerText].to_s)
   end
 
   # this method update the data content of the atome
   def update_data(params)
-    @input_listener ||= lambda { |event| handle_input(event) }
+    @input_listener ||= lambda { |event| handle_input }
     if params
       @element.addEventListener('input', &@input_listener)
     else
