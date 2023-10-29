@@ -50,7 +50,6 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     end
   else
 
-
     # we check if the params passed is an atome to treat it in a different way
     if Universe.atome_list.include?(params)
       alert "write code here : #{params}"
@@ -67,13 +66,15 @@ new({ particle: :clear })
 new({ post: :clear }) do
   attached_found = []
   attached.each do |attached_id_found|
+
     attached_found << attached_id_found
   end
   attached_found.each do |child_id_found|
-
     child_found = grab(child_id_found)
-
-    child_found&.delete(true)
+    # we exclude system  objects
+    unless child_found.tag && child_found.tag[:system]
+      child_found&.delete(true)
+    end
 
   end
 
@@ -151,7 +152,7 @@ new ({ particle: :build, store: false }) do |params|
     copied_items_params = params.dup
     copied_items_params[:id] = bundle_id
     # alert copied_items_params
-    copy= Atome.new(copied_items_params)
+    copy = Atome.new(copied_items_params)
     copy.attach(copied_items_params[:attach])
     copy.apply([color_found.id])
     copy.left(((copy.width + left_pos) * item_number) + left_pos)
@@ -160,7 +161,7 @@ new ({ particle: :build, store: false }) do |params|
   end
 end
 
-new({ particle: :match }) do |params,_bloc|
+new({ particle: :match }) do |params, _bloc|
   params
 end
 

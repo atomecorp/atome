@@ -69,9 +69,9 @@ Atome.new(
 machine_id = :dummy_machine
 default_password = :star_wars
 
-machine({ id: machine_id, password: default_password, name: :macAir, data: { date: '10090717' } })
+machine({ id: machine_id, password: default_password, name: :macAir, data: { date: '10090717' }, tag: { system: true } })
 
-human({ id: :anonymous, login: true, password: default_password, data: { birthday: '10/05/1996' } })
+human({ id: :anonymous, login: true, password: default_password, data: { birthday: '10/05/1996' }, tag: { system: true } })
 
 # atome infos
 def atome_infos
