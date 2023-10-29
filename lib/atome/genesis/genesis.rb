@@ -3,10 +3,6 @@
 # allow to access Atome class using only a uniq atome
 class Genesis
   class << self
-    # def generator
-    #   # alert "ici on fait trop d'atome vide"
-    #   Genesis.new
-    # end
 
     def create_particle(element, store, render)
       Atome.define_method "set_#{element}" do |params, &user_proc|
@@ -34,8 +30,6 @@ class Genesis
     end
 
     def build_atome(atome_name, &atome_proc)
-      # puts  "--------> atome_name is : #{atome_name}"
-      # TODO : atomes should tell the Universe if they're parts of physical category or else
       # we add the new method to the atome's collection of methods
       Universe.add_to_atome_list(atome_name)
       # the method below generate Atome method creation at Object level,
@@ -76,18 +70,14 @@ class Genesis
       Universe.add_optional_method(method_name.to_sym, method_proc)
     end
 
-    #################################
-
     def new_particle(element, store, render, &method_proc)
-      # we initialise the history for the current particle
-      # Atome.instance_variable_set('@history',{element => []})
       Atome.define_method element do |params = nil, &user_proc|
         @history[element] ||= []
         if (params || params == false) && write_auth(element)
-
-          # the line below execute the proc created when using the build_particle method
-          instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
           params = particle_sanitizer(element, params, &user_proc)
+          # the line below execute the main code when creating a new particle
+          # ex : new({ particle: :my_particle } do....
+          instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
           Genesis.create_particle(element, store, render)
           if @type == :group
             unless %i[type id collected].include?(element)
@@ -105,18 +95,6 @@ class Genesis
           Universe.historicize(@id, :write, element, params)
 
         elsif read_auth(element)
-          # alert element
-          # we are on a getter here!!
-          # alert "#{@id}, :read, #{element}, #{@!atome[element]}"
-          # Universe.historicize(@id, :read, element, @!atome[element])
-          #  toto = "@#{element}"
-          # alert @!atome[element]
-          # alert instance_variable_get(toto)
-
-          # instance_variable_get("@#{element}")
-          # @atome[element] # security pass here
-          # puts  "inspection :: #{self.inspect}"
-          # puts " difference between @atome and instance variable: \n#{element}: #{ @atome[element]}\n#{element} : #{instance_variable_get("@#{element}")}"
           instance_variable_get("@#{element}")
           # TODO : create a fast method to get particle: eg:
           #  Atome.define_method "set_#{element}" ... =>  send("set_#{element}"
@@ -135,13 +113,16 @@ class Genesis
       end
     end
 
+
+
     def new_atome(element, &method_proc)
 
       # the method define below is the slowest but params are analysed and sanitized
       Atome.define_method element do |params = nil, &user_proc|
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         if params
-          atome_pre_process(element, params, &user_proc)
+          params = particle_sanitizer(element, params)
+          atome_processor(element, params, &user_proc)
         else
           # when no params passed whe assume teh user want a getter,
           # as getter should give us all atome of a given within the atome
@@ -165,13 +146,11 @@ class Genesis
         # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
         # to the shape particles list : @!atome[:shape] << params[:id]
         Atome.new(params, &user_proc)
-        # new_atome
         # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
       end
 
     end
 
   end
-
 
 end

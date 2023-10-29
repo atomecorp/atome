@@ -105,25 +105,55 @@ class Atome
   def particle_sanitizer(element, params, &user_proc)
     bloc_found = Universe.get_sanitizer_method(element)
     # sanitizer occurs before any treatment
+    # it's call at the very start when a new atome is created : in genesis.rb /new_atome
+    # it's also call when creating a new particle in genesis/ new_particle befre creating the particle
+    # and also before creating additional method  in genesis/ additional_particle_methods
     params = instance_exec(params, user_proc, &bloc_found) if bloc_found.is_a?(Proc)
     params
   end
 
-  def atome_pre_process(element, params, &user_proc)
-    params = particle_sanitizer(element, params)
+  def particle_pre(element, params, &user_proc)
+    if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc) # post is before rendering and broadcasting
+      params=   instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
+    end
+    params
+  end
 
-    # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
-    params = atome_common(element, params)
+  def particle_post(element, params, &user_proc)
+    if Atome.instance_variable_get("@post_#{element}").is_a?(Proc) # post is after rendering and broadcasting
+      params=   instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
+    end
+    params
+  end
+
+  def particle_after(element, params, &user_proc)
+    if Atome.instance_variable_get("@after_#{element}").is_a?(Proc) # after is post saving
+      params=   instance_exec(params, user_proc, self, &Atome.instance_variable_get("@after_#{element}"))
+    end
+    params
+  end
+
+  def atome_pre(element, params, &user_proc)
     if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
       instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
     end
+  end
 
-    new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
-    # TODO : check if we don't have a security issue allowing atome modification after creation
-    # if we have one find another solution the keep this facility
+  def atome_post(element, params, &user_proc)
     if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
       instance_exec(params, new_atome, user_proc, &Atome.instance_variable_get("@post_#{element}"))
     end
+  end
+
+  def atome_processor(element, params, &user_proc)
+
+    # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
+    params = atome_common(element, params)
+    atome_pre(element, params, &user_proc)
+    new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+    # TODO : check if we don't have a security issue allowing atome modification after creation
+    # if we have one find another solution the keep this facility
+    atome_post(element, params, &user_proc)
     new_atome
   end
 
