@@ -144,14 +144,14 @@ class Atome
 
   def atome_pre_process(element, params, &user_proc)
     if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc)
-      params= instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
+      params = instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
     end
     params
   end
 
-  def atome_post_process(element, params, &user_proc)
+  def atome_post_process(element, new_atome, params, &user_proc)
     if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
-      instance_exec(params, new_atome, user_proc, &Atome.instance_variable_get("@post_#{element}"))
+      new_atome.instance_exec(params, user_proc, &Atome.instance_variable_get("@post_#{element}"))
     end
   end
 
@@ -160,10 +160,10 @@ class Atome
     # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
     params = atome_common(element, params)
     atome_pre_process(element, params, &user_proc)
-    params=new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
+    params = new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
     # TODO : check if we don't have a security issue allowing atome modification after creation
     # if we have one find another solution the keep this facility
-    atome_post_process(element, params, &user_proc)
+    atome_post_process(element, new_atome, params, &user_proc)
     new_atome
   end
 

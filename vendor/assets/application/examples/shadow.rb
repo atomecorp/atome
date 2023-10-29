@@ -19,7 +19,7 @@
 c = circle({ id: :the_circle, left: 122, color: :orange, drag: { move: true, inertia: true, lock: :start } })
 wait 2 do
   col = color({ id: :col1, red: 1, blue: 1 })
-  Atome.global_monitoring(col, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
+  # Atome.global_monitoring(col, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
   col.red(0.6)
   c.apply([:col1])
   wait 2 do

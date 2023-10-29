@@ -9,6 +9,9 @@ new({ sanitizer: :color }) do |params|
   end
   params
 end
+new({ post: :color }) do |p|
+  Atome.global_monitoring(self, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
+end
 new({ atome: :image })
 new({ sanitizer: :image }) do |params|
   unless params.instance_of? Hash
@@ -83,11 +86,11 @@ end
 new({ atome: :machine })
 new({ atome: :generator }) do |params|
   # we remove build and store it in a temporary particle  as it has to be added after atome creation
-  build=params.delete(:build)
-  params[:temporary]={build: build}
+  build = params.delete(:build)
+  params[:temporary] = { build: build }
 end
-new({post: :generator}) do |params|
-  build_plans= params[:temporary][:build]
+new({ post: :generator }) do |params|
+  build_plans = params[:temporary][:build]
   grab(params[:id]).build(build_plans)
 end
 
