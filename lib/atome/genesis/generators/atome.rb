@@ -54,28 +54,28 @@ end
 new({ atome: :animation })
 new({ atome: :group })
 new({ atome: :text, type: :hash })
-new({ post: :text }) do |params, current_atome|
-  if @data.instance_of? Array
-    @data.each_with_index do |data_found, index|
+new({ post: :text }) do |params|
+  data_found= params[:data]
+  if data_found.instance_of? Array
+    data_found.each_with_index do |data_found, index|
       # we treat the first element
       if index == 0
-        current_atome.send(:data, data_found)
+        send(:data, data_found)
       else
         # we create new text's atome attached to the main one (the first element above)
-        current_atome.text(data_found)
+        text(data_found)
       end
 
     end
   else
-    current_atome.send(:data, @data)
+   send(:data, data_found)
   end
   params
 end
+
 new({ sanitizer: :text }) do |params|
   # to allow text api with the form text(:hello) instead of text({data: :hello})
   params = { data: params } unless params.instance_of? Hash
-  # we delete and store the data for later analysis in:  "post: :text"
-  @data = params.delete(:data)
   params
 end
 # for later use ( physical is a css like style)
