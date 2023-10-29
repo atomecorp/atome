@@ -36,7 +36,7 @@ class Atome
     ordered_keys = [:renderers,:id, :type ]
     ordered_part = ordered_keys.map { |k| [k, new_atome[k]] }.to_h
     other_part = new_atome.reject { |k, _| ordered_keys.include?(k) }
-    # Fusionner les deux parties pour obtenir le hash réorganisé
+    # merge the parts  to obtain an re-ordered hash
     reordered_atome = ordered_part.merge(other_part)
     # # #########
     # puts "=> #{reordered_atome}\n-> #{new_atome}"

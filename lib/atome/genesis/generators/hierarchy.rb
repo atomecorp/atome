@@ -55,7 +55,7 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
   children_ids = [id]
   # alert parents_ids
   parents_ids.each do |parent_id|
-    # instance_variable_get('@apply') << parent_id
+    instance_variable_get('@apply') << parent_id
     parent_found = grab(parent_id)
     parent_affect = parent_found.instance_variable_get('@affect')
     parent_found.instance_variable_set('@affect', []) unless parent_affect.instance_of? Array

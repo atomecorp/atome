@@ -15,72 +15,23 @@
 #   end
 # end
 
-class Atome
-  def self.surveiller_instance(instance, methodes_a_surveiller, variables_a_surveiller)
-    methodes_a_surveiller.each do |methode|
-      methode_originale = instance.method(methode)
-      instance.define_singleton_method(methode) do |*args, &block|
-        valeur_avant = instance.instance_variable_get("@#{methode}")
-        resultat = methode_originale.call(*args, &block)
-        valeur_apres = instance.instance_variable_get("@#{methode}")
-        if args.empty?
-          puts "Surveillance: Lecture de #{methode}"
-        else
-          if valeur_avant != valeur_apres
-            # puts "Surveillance: Modification de #{methode} de #{valeur_avant} à #{valeur_apres}"
-            # alert "apply : #{apply}"
-            # alert "affect : #{affect}"
-            instance.instance_variable_set("@#{methode}",valeur_apres)
-            # child_found&.render(:apply, parent_found, &user_proc)
-            affect.each do |targeted_atome|
-              puts 'kjkj'
-              grab(targeted_atome).render(:apply, self)
-                # child_found&.render(:apply, parent_found, &user_proc)
-              # self.render(:attach, targeted_atome)
-              # get the content of the affect instance_variable and send it
-              # to the affect method to apply the atome to all atome children
-              # affect[[ :blackhole,targeted_atome]]
-            end
-          else
-            puts "Surveillance: Appel de #{methode} sans modification"
-          end
-        end
-        resultat
-      end
-    end
-    variables_a_surveiller.each do |var|
-      instance.define_singleton_method(var) do
-        puts "Surveillance: Lecture de #{var}"
-        instance_variable_get("@#{var}")
-      end
-      instance.define_singleton_method("#{var}=") do |value|
-        puts "Surveillance: Modification de #{var}"
-        instance_variable_set("@#{var}", value)
-      end
-    end
-  end
-end
 
-# Votre code pour créer et manipuler les instances
 c = circle({ id: :the_circle, left: 122, color: :orange, drag: { move: true, inertia: true, lock: :start } })
-
+c.rotate(33)
+alert c
 wait 2 do
   col = color({ id: :col1, red: 1, blue: 1 })
-  alert col.affect
-  Atome.surveiller_instance(col, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
+  Atome.global_monitoring(col, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
   col.red(0.6)
   c.apply([:col1])
   wait 2 do
     puts "before : #{col.inspect}"
     col.red(0) # Appel en écriture
     col.red # Appel en lecture
-    puts "after : #{col.inspect}"
-    # c.apply([:col1])
-    alert col.affect
+    alert "after col is : #{col.affect}"
+    alert "after c is : #{c.apply}"
   end
 end
-
-
 
 ###################################
 # # uncomment beleow

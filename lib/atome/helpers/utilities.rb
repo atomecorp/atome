@@ -2,15 +2,50 @@
 
 # toolbox   method here
 class Atome
+  class << self
+    def controller_sender(message)
+      return if $host == :html
+      json_msg = message.to_json
+      atome_js.JS.controller_sender(json_msg)
+    end
 
-  # local server messaging
-  def self.controller_sender(message)
-    return if $host == :html
-
-    json_msg = message.to_json
-    atome_js.JS.controller_sender(json_msg)
+    def global_monitoring(instance, methods_to_monitor, variables_to_monitor)
+      methods_to_monitor.each do |methode|
+        original_method = instance.method(methode)
+        instance.define_singleton_method(methode) do |*args, &block|
+          value_before = instance.instance_variable_get("@#{methode}")
+          result = original_method.call(*args, &block)
+          value_after = instance.instance_variable_get("@#{methode}")
+          if args.empty?
+            # "read monitoring: #{methode}"
+          elsif value_before != value_after
+            affect.each do |targeted_atome|
+              # get the content of the affect instance_variable and send it
+              # to the affect method to apply the atome to all atome children
+              grab(targeted_atome).render(:apply, self)
+            end
+            # puts "monitoring #{value_before} to #{value_after}"
+          else
+            # "monitoring: call #{methode} without modification"
+          end
+          result
+        end
+      end
+      variables_to_monitor.each do |var|
+        instance.define_singleton_method(var) do
+          # puts "read monitoring of : #{var}"
+          instance_variable_get("@#{var}")
+        end
+        instance.define_singleton_method("#{var}=") do |value|
+          # puts "write monitoring of : #{var}"
+          instance_variable_set("@#{var}", value)
+        end
+      end
+    end
 
   end
+
+  # local server messaging
 
   def response_listener(hashed_msg)
     js_action = hashed_msg.JS[:action]
