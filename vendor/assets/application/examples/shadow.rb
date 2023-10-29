@@ -17,17 +17,11 @@
 
 
 c = circle({ id: :the_circle, left: 122, color: :orange, drag: { move: true, inertia: true, lock: :start } })
+col = c.color({ id: :col1, red: 1, blue: 1 })
 wait 2 do
-  col = color({ id: :col1, red: 1, blue: 1 })
-  # Atome.global_monitoring(col, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
   col.red(0.6)
-  c.apply([:col1])
   wait 2 do
-    puts "before : #{col.inspect}"
     col.red(0) # Appel en écriture
-    col.red # Appel en lecture
-    # alert "after col is : #{col.affect}"
-    # alert "after c is : #{c.apply}"
   end
 end
 
