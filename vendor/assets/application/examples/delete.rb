@@ -5,8 +5,11 @@ c = circle({ left: 222, color: :orange, blur: 6 })
 
 wait 1 do
   c.delete(:left)
-  c.delete(:blur)
+  wait 1 do
+    c.delete(:blur)
+  end
 end
+
 b.touch(true) do
   c.delete(true)
 end

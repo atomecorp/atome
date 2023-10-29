@@ -6,11 +6,11 @@
 # require "./examples/attached"
 # require "./examples/browse"
 # require "./examples/callback"
-# require "./examples/delete"
+require "./examples/delete"
 # require "./examples/edit"
 
 
-require "./examples/shadow"
+# require "./examples/shadow"
 # require "./examples/clear"
 # require "./examples/convert"
 # require "./examples/hypertext"

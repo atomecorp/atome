@@ -46,6 +46,7 @@ html, body {
 }
 
 .atome {
+    will-change: transform;
     cursor: default;
     pointer-events: auto;
     caret-color: white;
