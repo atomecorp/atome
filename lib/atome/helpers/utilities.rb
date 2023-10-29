@@ -102,6 +102,15 @@ class Atome
     true
   end
 
+  def particle_main(element, params, &user_proc)
+    # TODO : optimise below removing all conditions if possible
+    if Atome.instance_variable_get("@main_#{element}").is_a?(Proc) # post is before rendering and broadcasting
+      result = instance_exec(params, user_proc, self, &Atome.instance_variable_get("@main_#{element}"))
+      params = result if result && !result.instance_of?(Atome)
+    end
+    params
+  end
+
   def particle_sanitizer(element, params, &user_proc)
     bloc_found = Universe.get_sanitizer_method(element)
     # sanitizer occurs before any treatment
@@ -114,21 +123,21 @@ class Atome
 
   def particle_pre(element, params, &user_proc)
     if Atome.instance_variable_get("@pre_#{element}").is_a?(Proc) # post is before rendering and broadcasting
-      params=   instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
+      params = instance_exec(params, user_proc, self, &Atome.instance_variable_get("@pre_#{element}"))
     end
     params
   end
 
   def particle_post(element, params, &user_proc)
     if Atome.instance_variable_get("@post_#{element}").is_a?(Proc) # post is after rendering and broadcasting
-      params=   instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
+      params = instance_exec(params, user_proc, self, &Atome.instance_variable_get("@post_#{element}"))
     end
     params
   end
 
   def particle_after(element, params, &user_proc)
     if Atome.instance_variable_get("@after_#{element}").is_a?(Proc) # after is post saving
-      params=   instance_exec(params, user_proc, self, &Atome.instance_variable_get("@after_#{element}"))
+      params = instance_exec(params, user_proc, self, &Atome.instance_variable_get("@after_#{element}"))
     end
     params
   end

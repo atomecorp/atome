@@ -77,7 +77,7 @@ class Genesis
           params = particle_sanitizer(element, params, &user_proc)
           # the line below execute the main code when creating a new particle
           # ex : new({ particle: :my_particle } do....
-          instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+          # instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
           Genesis.create_particle(element, store, render)
           if @type == :group
             unless %i[type id collected].include?(element)

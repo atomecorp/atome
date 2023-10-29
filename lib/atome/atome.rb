@@ -27,18 +27,20 @@ class Atome
   end
 
   def particle_creation(element, params, store, rendering, &user_proc)
+
     @store_allow = false
+    params = particle_main(element, params, &user_proc)
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
     # pre rendering processor
-    params=particle_pre(element, params, &user_proc)
+    params = particle_pre(element, params, &user_proc)
     # we create a proc holder of any new particle if user pass a bloc
     particle_callback(element)
     store_proc(element, params, &user_proc) if user_proc
     render(element, params, &user_proc) if rendering
     broadcasting(element)
     # post rendering processor
-    params=particle_post(element, params, &user_proc)
+    params = particle_post(element, params, &user_proc)
     instance_variable_set("@#{element}", params) if store
     @store_allow = true
     # post storage processor
