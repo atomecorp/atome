@@ -8,15 +8,12 @@
 # require "./examples/generator_and_build"
 # require "./examples/display"
 # require "./examples/match"
-require "./examples/clear"
-
-
+# require "./examples/clear"
 # require "./examples/attach"
 # require "./examples/attached"
 # require "./examples/browse"
 # require "./examples/delete"
-
-# require "./examples/shadow"
+require "./examples/shadow"
 # require "./examples/convert"
 # require "./examples/hypertext"
 # require "./examples/callback"

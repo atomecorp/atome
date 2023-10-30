@@ -48,8 +48,10 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
 
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   children_ids = [id]
+
+  parents_ids=@apply+parents_ids
   parents_ids.each do |parent_id|
-    instance_variable_get('@apply') << parent_id
+
     parent_found = grab(parent_id)
     parent_affect = parent_found.instance_variable_get('@affect')
     parent_found.instance_variable_set('@affect', []) unless parent_affect.instance_of? Array
@@ -57,12 +59,9 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
       parent_found.instance_variable_get('@affect') << child_id
       child_found = grab(child_id)
       child_found&.render(:apply, parent_found, &user_proc)
-      # store({ apply: parent_id })
-      # s!tore_value(:apply,parent_id )
-
     end
   end
-  # instance_variable_set('@apply', [:poi, ])
+  instance_variable_set('@apply',parents_ids)
   parents_ids
 end
 

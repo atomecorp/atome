@@ -4,9 +4,9 @@ new({ renderer: :html, method: :attach, type: :string }) do |parent_found, _user
   html.append_to(parent_found)
 end
 
-new({ renderer: :html, method: :attach, type: :string, specific: :color }) do |parent_found, _user_proc|
-  grab(parent_found).apply(id)
-end
+# new({ renderer: :html, method: :attach, type: :string, specific: :color }) do |parent_found, _user_proc|
+#   grab(parent_found).apply(id)
+# end
 
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
   case parent_found.type
@@ -31,27 +31,30 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     end
     drop_shadow = shadows_to_apply[:filter].join(' ')
     box_shadow = shadows_to_apply[:boxShadow].join(',')
-    # puts "===> #{shadow}"
     alert "me: #{inspect}, boxShadow => #{box_shadow}, drop_shadow => #{drop_shadow}"
     html.style("transformr", "translate3d(0, 0, 0)")
     html.style("boxShadow", box_shadow)
     html.style("filter", drop_shadow)
   else
-
-    # begin
-    #   color
-    # rescue => e
-    #   puts inspect
-    # end
-    # color_copy = color.dup
-    # color_copy.pop
-    # puts "*** colors to treat #{color_copy} : #{color_copy.length}"
-    # we assume it's a color
     red = parent_found.red * 255
     green = parent_found.green * 255
     blue = parent_found.blue * 255
     alpha = parent_found.alpha
+    # puts "parent: \n#{parent_found.id}, apply: \n#{apply}"
+    colors_to_apply=[]
+    apply.each do |color_id|
+      color_found=grab(color_id)
+      red = color_found.red * 255
+      green = color_found.green * 255
+      blue = color_found.blue * 255
+      alpha = color_found.alpha
+      colors_to_apply << "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+    end
+    colors_to_apply=colors_to_apply.join(',')
     html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+    # html.style(:background, "linear-gradient(to right, red, rgba(#{red}, #{green}, #{blue}, #{alpha}))")
+    html.style(:background, "linear-gradient(to right, #{colors_to_apply})")
+
   end
 end
 

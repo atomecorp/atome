@@ -149,7 +149,7 @@ class Atome
     params
   end
 
-  def atome_post_process(element, params,new_atome, &user_proc)
+  def atome_post_process(element, params, new_atome, &user_proc)
 
     if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
       new_atome.instance_exec(params, user_proc, &Atome.instance_variable_get("@post_#{element}"))
@@ -164,7 +164,7 @@ class Atome
     new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
     # TODO : check if we don't have a security issue allowing atome modification after creation
     # if we have one find another solution the keep this facility
-    atome_post_process(element, params,new_atome, &user_proc)
+    atome_post_process(element, params, new_atome, &user_proc)
     new_atome
   end
 
@@ -275,6 +275,7 @@ class Atome
   #   # TODO : write code here to remove add elements"
   #   puts "write code here to remove add elements"
   # end
+
   def atome
     # allow to get all atomes instance variables available as a Hash
     instance_variables.each_with_object({}) do |var, hash|
@@ -282,9 +283,38 @@ class Atome
     end
   end
 
+  # def to_hash
+  #   hash = {}
+  #   instance_variables.each do |var|
+  #     hash[var.to_s.delete('@').to_sym] = instance_variable_get(var)
+  #   end
+  #   hash
+  # end
+
+  def to_hash
+    hash = {}
+    instance_variables.each do |var|
+      next if var == :@html_object || var == :@history || var == :@store_allow
+      hash[var.to_s.delete('@').to_sym] = instance_variable_get(var)
+    end
+    hash
+  end
+
   def refresh
-    puts "You need to send all instance variable the workflow has changed! "
-    collapse(atome_to_hash)
+    # puts "You need to send all instance variable the workflow has changed! "
+    # to_hash[:left]=444
+    # set({ left: 333 })
+    # alert to_hash[:left]
+    to_hash.each do |k, v|
+      puts "sending #{k}, #{v}"
+      send(k, v)
+
+    end
+    alert :good
+    # set(to_hash)
+    # set({ left: 333, width: 222 })
+
+    # collapse(to_hash)
   end
 
   def each(&proc)
