@@ -43,10 +43,11 @@ Atome.new(
   { renderers: default_render, id: :circle_color, type: :color, tag: ({ system: true, persistent: true }),
     red: 0.6, green: 0.6, blue: 0.6, alpha: 1, attach: [], attached: [] }
 )
+
 # system object creation
 # the black_matter is used to store un materialized atomes
 Atome.new(
-  { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
+  { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],apply: [],
     left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, attached: []
   })
 
@@ -62,7 +63,7 @@ Atome.new(
 # unreal port, hold system object and tools
 Atome.new(
   { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: { system: true },
-    left: 0, top: 0, width: 0, height: 0, overflow: :visible, attached: []
+    left: 0, top: 0, width: 0, height: 0, overflow: :visible, attached: [],apply: []
   }
 )
 

@@ -52,10 +52,10 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
 
     # we check if the params passed is an atome to treat it in a different way
     if Universe.atome_list.include?(params)
-      alert "write code here : #{params}"
-      # @!atome["#{params}s"].each do |item_to_del|
-      #
-      #   delete({ id: item_to_del })
+      alert "write code here : #{apply} , #{attached}"
+      # @apply.each do |color_to_remove|
+      # wait 0.1 do
+      #   remove(color_to_remove)
       # end
     else
       send(params, 0) unless params == :id

@@ -9,10 +9,13 @@ def attachment_common(child_id, parents_ids, direction, &user_proc)
     child_found.attach
     if direction == :attach
       parent_found.attached ||= []
-      parent_found.attached << child_id
+      # parent_found.attached << child_id
+      parent_found.attached.push(child_id) unless parent_found.attached.include?(child_id)
     else
       child_found.attach ||= []
-      child_found.attach << parent_id
+      # child_found.attach << parent_id
+      child_found.attach.push(parent_id) unless child_found.attach.include?(parent_id)
+
     end
     child_found&.render(:attach, parent_id, &user_proc)
   end
@@ -43,25 +46,25 @@ new({ sanitizer: :attached }) do |children_ids|
 end
 
 new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_proc|
-
-  instance_variable_set('@apply', []) unless instance_variable_get('@apply')
-
+  # TODO: optimize the 2 lines below:
+  @apply ||= []
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
+  parents_ids = @apply.concat(parents_ids) unless @apply.include?(parents_ids)
+
   children_ids = [id]
 
-  parents_ids=@apply+parents_ids
   parents_ids.each do |parent_id|
-
     parent_found = grab(parent_id)
     parent_affect = parent_found.instance_variable_get('@affect')
     parent_found.instance_variable_set('@affect', []) unless parent_affect.instance_of? Array
+    affect_element = parent_found.instance_variable_get('@affect')
     children_ids.each do |child_id|
-      parent_found.instance_variable_get('@affect') << child_id
+      affect_element << child_id unless affect_element.include?(child_id)
       child_found = grab(child_id)
       child_found&.render(:apply, parent_found, &user_proc)
     end
   end
-  instance_variable_set('@apply',parents_ids)
+
   parents_ids
 end
 
@@ -73,7 +76,6 @@ new({ particle: :affect, render: false }) do |children_ids, &user_proc|
   end
   children_ids
 end
-
 
 new({ particle: :detached, store: false }) # unfastened
 new({ sanitizer: :detached }) do |values|

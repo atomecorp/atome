@@ -31,11 +31,12 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     end
     drop_shadow = shadows_to_apply[:filter].join(' ')
     box_shadow = shadows_to_apply[:boxShadow].join(',')
-    alert "me: #{inspect}, boxShadow => #{box_shadow}, drop_shadow => #{drop_shadow}"
+    alert "shadow rendering: #{inspect}, boxShadow => #{box_shadow}, drop_shadow => #{drop_shadow}"
     html.style("transformr", "translate3d(0, 0, 0)")
     html.style("boxShadow", box_shadow)
     html.style("filter", drop_shadow)
   else
+
     red = parent_found.red * 255
     green = parent_found.green * 255
     blue = parent_found.blue * 255

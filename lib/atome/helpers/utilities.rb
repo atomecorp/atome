@@ -301,20 +301,10 @@ class Atome
   end
 
   def refresh
-    # puts "You need to send all instance variable the workflow has changed! "
-    # to_hash[:left]=444
-    # set({ left: 333 })
-    # alert to_hash[:left]
     to_hash.each do |k, v|
       puts "sending #{k}, #{v}"
       send(k, v)
-
     end
-    alert :good
-    # set(to_hash)
-    # set({ left: 333, width: 222 })
-
-    # collapse(to_hash)
   end
 
   def each(&proc)
@@ -352,15 +342,7 @@ class Atome
     end
   end
 
-  def particle_to_remove_decision(particle_to_remove)
-    if particle_to_remove.instance_of? Hash
-      particle_to_remove.each do |particle_found, value|
-        send("remove_#{particle_found}", value)
-      end
-    else
-      send(particle_to_remove, 0)
-    end
-  end
+
 
   # def physical
   #   # TODO :  automatise materials type list when creating a new atome it should be specified if material or not
