@@ -12,6 +12,8 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
       color_id_found.each do |color_applied|
         remove(color_applied)
       end
+    when :shadow
+      alert "remove all shadows"
     end
 
   else
@@ -24,6 +26,7 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
         # html.style(:background, '')
         # html.style(:background, :black)
         html.style(:backgroundColor, :black)
+
       else
         # we reset background
         html.style(:background, '')
@@ -31,7 +34,7 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
         render(:apply, atome_to_remove)
       end
     when :shadow
-
+      alert "shadow to remove #{object_id_to_remove}"
     else
     end
   end

@@ -26,6 +26,13 @@ c.shadow({
            red: 0, green: 1, blue: 0, alpha: 1
          })
 
+wait 2 do
+  c.remove(:s4)
+  wait 2 do
+    c.remove({ all: :shadow })
+  end
+end
+
 
 
 

@@ -8,7 +8,6 @@ color({id: :last_col,  green: 0.3, blue: 0.5})
 color({id: :last_col2,  red: 1, blue: 0.5})
 wait 1 do
   b.remove(:box_color)
-
   wait 1 do
     b.remove(:new_col)
     wait 1 do

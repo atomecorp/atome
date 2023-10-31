@@ -64,9 +64,6 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
       colors_to_apply = colors_to_apply.join(',')
       html.style(:background, "#{diffusion}-gradient(#{direction} #{colors_to_apply})")
     end
-    # if id == :the_circle
-    #   alert "color: #{inspect}"
-    # end
     html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
   end
 end
