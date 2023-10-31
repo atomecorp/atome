@@ -9,8 +9,8 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
     case object_id_to_remove[:all]
     when :color
       color_id_found = apply.dup
-      color_id_found.each do |colo_applied|
-        remove(colo_applied)
+      color_id_found.each do |color_applied|
+        remove(color_applied)
       end
     end
 
@@ -21,11 +21,13 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
     when :color
       if @apply == []
         # we remove the last color set
-        # html.style(:background, "")
-        html.style(:background, :black)
+        # html.style(:background, '')
+        # html.style(:background, :black)
+        html.style(:backgroundColor, :black)
       else
         # we reset background
-        html.style(:background, "")
+        html.style(:background, '')
+        html.style(:backgroundColor, '')
         render(:apply, atome_to_remove)
       end
     when :shadow

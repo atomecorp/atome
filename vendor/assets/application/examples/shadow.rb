@@ -51,18 +51,18 @@ bii = box({ top: 166 })
 
 # bii.set({left: 222, width: 222})
 bii.color(:red)
-new({ particle: :remove }) do |params|
-  apply.delete(params)
-  refresh
-end
+# new({ particle: :remove }) do |params|
+#   apply.delete(params)
+#   refresh
+# end
 
 wait 1 do
   bii.color(:yellow)
-  wait 1 do
+  wait 2 do
     bii.remove(:box_color)
+    alert bii.apply
   end
 end
-alert bii.apply
 # alert "to create gradient use add, to remove an applied color use remove "
 
 # puts "atome_to_hash : #{c.atome_to_hash}"

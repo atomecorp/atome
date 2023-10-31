@@ -38,15 +38,11 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
   else
     gradient = @paint[:gradient]
 
-    if @paint[:diffusion]
-      diffusion = @paint[:diffusion]
-    else
-      diffusion = :linear
-    end
-    if @paint[:direction] && diffusion== :linear
-      direction = " to #{@paint[:direction]},"
-    elsif  diffusion== :linear
-      direction = " to bottom,"
+    diffusion = @paint[:diffusion] || :linear
+    if @paint[:direction] && diffusion == :linear
+      direction = "to #{@paint[:direction]},"
+    elsif diffusion == :linear
+      direction = 'to bottom,'
     end
 
     red = parent_found.red * 255
@@ -65,10 +61,8 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
       end
       colors_to_apply = colors_to_apply.join(',')
       html.style(:background, "#{diffusion}-gradient(#{direction} #{colors_to_apply})")
-    else
-      html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
     end
-
+    html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
 
   end
 end
