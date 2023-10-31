@@ -11,6 +11,7 @@ class Atome
     @security = {}
     @callback = {}
     @unit = {}
+    @paint = {}
     @id = new_atome[:id]
     @type = new_atome[:type]
     # now we store the proc in a an atome's property called :bloc

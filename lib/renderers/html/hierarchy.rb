@@ -36,25 +36,39 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     html.style("boxShadow", box_shadow)
     html.style("filter", drop_shadow)
   else
+    gradient = @paint[:gradient]
+
+    if @paint[:diffusion]
+      diffusion = @paint[:diffusion]
+    else
+      diffusion = :linear
+    end
+    if @paint[:direction] && diffusion== :linear
+      direction = " to #{@paint[:direction]},"
+    elsif  diffusion== :linear
+      direction = " to bottom,"
+    end
 
     red = parent_found.red * 255
     green = parent_found.green * 255
     blue = parent_found.blue * 255
     alpha = parent_found.alpha
-    # puts "parent: \n#{parent_found.id}, apply: \n#{apply}"
-    colors_to_apply=[]
-    apply.each do |color_id|
-      color_found=grab(color_id)
-      red = color_found.red * 255
-      green = color_found.green * 255
-      blue = color_found.blue * 255
-      alpha = color_found.alpha
-      colors_to_apply << "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+    if gradient
+      colors_to_apply = []
+      @apply.each do |color_id|
+        color_found = grab(color_id)
+        red = color_found.red * 255
+        green = color_found.green * 255
+        blue = color_found.blue * 255
+        alpha = color_found.alpha
+        colors_to_apply << "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+      end
+      colors_to_apply = colors_to_apply.join(',')
+      html.style(:background, "#{diffusion}-gradient(#{direction} #{colors_to_apply})")
+    else
+      html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
     end
-    colors_to_apply=colors_to_apply.join(',')
-    html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
-    # html.style(:background, "linear-gradient(to right, red, rgba(#{red}, #{green}, #{blue}, #{alpha}))")
-    html.style(:background, "linear-gradient(to right, #{colors_to_apply})")
+
 
   end
 end

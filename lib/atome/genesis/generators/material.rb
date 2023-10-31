@@ -54,3 +54,5 @@ new({ sanitizer: :definition }) do |params|
   params = params.gsub(/<svg[^>]*>|<\/svg>/, '')
   params
 end
+
+new({ particle: :paint })
