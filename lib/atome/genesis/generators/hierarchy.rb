@@ -52,7 +52,6 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
   parents_ids = @apply.concat(parents_ids) unless @apply.include?(parents_ids)
 
   children_ids = [id]
-
   parents_ids.each do |parent_id|
     parent_found = grab(parent_id)
     parent_affect = parent_found.instance_variable_get('@affect')
@@ -71,7 +70,7 @@ end
 new({ particle: :affect, render: false }) do |children_ids, &user_proc|
   children_ids.each do |child_id|
     child_found = grab(child_id)
-    child_found&.render(:apply, self, &user_proc)
+    ## # child_found&.render(:apply, self, &user_proc)
     child_found&.apply([id], &user_proc)
   end
   children_ids

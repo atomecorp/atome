@@ -39,7 +39,13 @@ end
 
 new({ atome: :www })
 
-new({ atome: :shadow, type: :hash })
+new({ atome: :shadow }) do |params|
+  if params
+    attach_value = params.delete(:affect)
+    params[:affect] = attach_value
+  end
+  params
+end
 
 new({ atome: :raw })
 new({ atome: :shape })
@@ -55,7 +61,7 @@ new({ atome: :animation })
 new({ atome: :group })
 new({ atome: :text, type: :hash })
 new({ post: :text }) do |params|
-  data_found= params[:data]
+  data_found = params[:data]
   if data_found.instance_of? Array
     data_found.each_with_index do |data_found, index|
       # we treat the first element
@@ -68,7 +74,7 @@ new({ post: :text }) do |params|
 
     end
   else
-   send(:data, data_found)
+    send(:data, data_found)
   end
   params
 end

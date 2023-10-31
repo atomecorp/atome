@@ -14,6 +14,7 @@ class Atome
     @paint = {}
     @id = new_atome[:id]
     @type = new_atome[:type]
+    # @new_atome=new_atome
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     # we reorder the hash
@@ -24,7 +25,7 @@ class Atome
     reordered_atome = ordered_part.merge(other_part)
     # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
     collapse(reordered_atome) # if reordered_atome
-
+    # remove_instance_variable(:@new_atome)
   end
 
   def particle_creation(element, params, store, rendering, &user_proc)

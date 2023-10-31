@@ -14,8 +14,9 @@ class Atome
     essential_params = Essentials.default_params[atome_preset] || {}
     basic_params[:type] = essential_params[:type] || :element
     # condition to handle color's atome that shouldn't be attach to view
-    if params[:type] == :color || basic_params[:type] == :color
-      params[:affect] = [id]
+    if params[:type] == :color || basic_params[:type] == :color || params[:type] == :shadow || basic_params[:type] == :shadow
+      # puts "First solution found here, please do the same for shadows!!! #{params}"
+      params[:affect] = [id] unless params[:affect]
     else
       params[:attach] = [id] # if essential_params[:attach] && essential_params[:attach][0] == nil
     end

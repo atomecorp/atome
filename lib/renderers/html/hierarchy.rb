@@ -9,12 +9,14 @@ end
 # end
 
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
+  # puts "id: #{id}, parent_found:  #{parent_found.id}"
   case parent_found.type
   when :shadow
 
     shadows_to_apply = { filter: [], boxShadow: [] }
     shadow.each do |shadow_id_found|
       shadow_found = grab(shadow_id_found)
+      # alert shadow_found.inspect
       red = shadow_found.red * 255
       green = shadow_found.green * 255
       blue = shadow_found.blue * 255
@@ -22,6 +24,7 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
       left = shadow_found.left
       top = shadow_found.top
       blur = shadow_found.blur
+      # alert @new_atome
       inset = :inset if shadow_found.invert
       if shadow_found.option == :natural
         shadows_to_apply[:filter] << "drop-shadow(#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}))"
@@ -31,20 +34,19 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     end
     drop_shadow = shadows_to_apply[:filter].join(' ')
     box_shadow = shadows_to_apply[:boxShadow].join(',')
-    alert "shadow rendering: #{inspect}, boxShadow => #{box_shadow}, drop_shadow => #{drop_shadow}"
-    html.style("transformr", "translate3d(0, 0, 0)")
+    # alert "shadow rendering: #{inspect}, boxShadow => #{box_shadow}, drop_shadow => #{drop_shadow}"
+    # alert "shadow rendering:  boxShadow => #{box_shadow}, drop_shadow => #{drop_shadow}"
+    html.style("transform", "translate3d(0, 0, 0)")
     html.style("boxShadow", box_shadow)
     html.style("filter", drop_shadow)
   else
     gradient = @paint[:gradient]
-
     diffusion = @paint[:diffusion] || :linear
     if @paint[:direction] && diffusion == :linear
       direction = "to #{@paint[:direction]},"
     elsif diffusion == :linear
       direction = 'to bottom,'
     end
-
     red = parent_found.red * 255
     green = parent_found.green * 255
     blue = parent_found.blue * 255
@@ -62,8 +64,10 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
       colors_to_apply = colors_to_apply.join(',')
       html.style(:background, "#{diffusion}-gradient(#{direction} #{colors_to_apply})")
     end
+    # if id == :the_circle
+    #   alert "color: #{inspect}"
+    # end
     html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
-
   end
 end
 

@@ -37,7 +37,7 @@ module Essentials
             apply: [:text_color],
             width: :auto, height: :auto, clones: [] },
     drm: { type: :drm, attach: [:black_matter], attached: [] },
-    shadow: { type: :shadow, attach: [:black_matter], attached: [] },
+    shadow: { type: :shadow, attach: [], attached: [], red: 0, green: 0, blue: 0, alpha: 0 },
     color: { type: :color, attach: [], red: 0, green: 0, blue: 0, alpha: 1, attached: [] }
   }
 
