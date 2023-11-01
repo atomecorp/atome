@@ -14,17 +14,23 @@ new({ particle: :hide })
 new({ particle: :remove }) do |object_id_to_remove|
 
   if object_id_to_remove.instance_of?(Hash)
-    object_id_to_remove
-  else
-    object_to_remove = grab(object_id_to_remove)
-    @apply.delete(object_id_to_remove)
-    @attached.delete(object_id_to_remove)
-    # we remove the id  from all atomes binding associated methods :  (attached, affect)
-    object_to_remove.instance_variable_get("@attached").delete(id)
-    object_to_remove.instance_variable_get("@affect").delete(id)
+    case  object_id_to_remove[:all]
 
+    when :color
+      alert "color to remove : #{color}"
+    when :paint
+      alert "paint to remove : #{paint}"
+    end
+  else
+  #   object_to_remove = grab(object_id_to_remove)
+  #   @apply.delete(object_id_to_remove)
+  #   @attached.delete(object_id_to_remove)
+  #   # we remove the id  from all atomes binding associated methods :  (attached, affect)
+  #   object_to_remove.instance_variable_get("@attached").delete(id)
+  #   object_to_remove.instance_variable_get("@affect").delete(id)
+  #
   end
-  object_id_to_remove
+  # object_id_to_remove
 
   # case object_to_remove
   # when :color
@@ -35,6 +41,7 @@ new({ particle: :remove }) do |object_id_to_remove|
   # else
   #   # object_to_remove_decision(object_to_remove)
   # end
+  object_id_to_remove
 end
 
 new({ particle: :classes }) do |value|

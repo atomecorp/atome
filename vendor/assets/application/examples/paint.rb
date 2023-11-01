@@ -2,19 +2,20 @@
 
 c=circle({drag: true})
 
-c.color(:white)
-c.color(:red)
-c.color(:yellow)
-wait 1 do
-  c.paint({ gradient: true })
-  wait 1 do
-    c.paint({ gradient: true, direction: :left })
-    wait 1 do
-      c.paint({ gradient: true, diffusion: :radial })
-      wait 1 do
-        c.paint({ gradient: true, diffusion: :conic })
-        wait 2 do
+c1=c.color(:white).id
+c2=c.color(:red).id
+c3=c.color(:yellow).id
+wait 0.5 do
+  c.paint({ gradient: [c1,c2] })
+  wait 0.5 do
+    c.paint({ gradient: [c1,c2, c3], direction: :left })
+    wait 0.5 do
+      c.paint({ gradient: [c1,c2], diffusion: :radial })
+      wait 0.5 do
+        c.paint({ gradient: [c1,c2, c3], diffusion: :conic })
+        wait 0.5 do
           c.remove({all: :color})
+          c.remove({all: :paint})
         end
       end
     end
