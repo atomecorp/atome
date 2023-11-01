@@ -49,6 +49,7 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     # if when found colors when use it for the gradient , else whe use the colors within the current atome
     # gradient_found = params[:colors] || @apply
     # we get all the paint atomes applied to the current atome
+    gradients_to_apply = []
     paint.each do |paint_id|
       colors_to_apply = []
       # now we get the paint atome
@@ -62,6 +63,10 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
         direction = ' to bottom,'
       end
 
+      if paint_atome.rotate
+        direction = "#{paint_atome.rotate}deg,"
+      end
+
       # now we get the gradient and the color insied
       paint_atome.gradient.each do |color_id|
         color_found = grab(color_id)
@@ -72,9 +77,13 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
         colors_to_apply << "rgba(#{red}, #{green}, #{blue}, #{alpha})"
       end
       colors_to_apply = colors_to_apply.join(',')
-      html.style(:background, "#{diffusion}-gradient(#{direction} #{colors_to_apply})")
+      gradients_to_apply << "#{diffusion}-gradient(#{direction} #{colors_to_apply})"
     end
-
+    # TODO : create complexe gradient staking the gradients uncommenting the line below
+    # beware the colors_to_apply syntax is incorrect for complexe gradient
+    # full_gradient_to_apply=gradients_to_apply.join(',')
+    full_gradient_to_apply = gradients_to_apply.last
+    html.style(:background, full_gradient_to_apply)
   else
     #
   end
