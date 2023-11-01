@@ -8,29 +8,21 @@
 # additional Atome methods
 class Atome
   def atome_common(atome_preset, params)
-
     basic_params = { renderers: [] }
-    # TODO : optimise the whole code below and make it rubocop friendly
     essential_params = Essentials.default_params[atome_preset] || {}
     basic_params[:type] = essential_params[:type] || :element
-    # condition to handle color's atome that shouldn't be attach to view
-    if params[:type] == :color || basic_params[:type] == :color || params[:type] == :shadow || basic_params[:type] == :shadow
-      # puts "First solution found here, please do the same for shadows!!! #{params}"
+    basic_params[:id] = params[:id] || identity_generator(atome_preset)
+    basic_params[:renderers] = @renderers || essential_params[:renderers]
+    essential_params = basic_params.merge(essential_params)
+    params=essential_params.merge(params)
+    # condition to handle color/shadow/paint atomes that shouldn't be attach to view
+    if params[:type] == :color || params[:type] == :shadow || params[:type] == :paint
       params[:affect] = [id] unless params[:affect]
     else
-      params[:attach] = [id] # if essential_params[:attach] && essential_params[:attach][0] == nil
+      params[:attach] = params[:attach] || [@id] || [:view]
     end
 
-    params[:attached] = [] unless params[:attached]
-
-    basic_params[:id] = params[:id] || identity_generator(atome_preset)
-    basic_params[:attach] = params[:attach] || [@id] || [:view]
-
-    basic_params[:renderers] = @renderers || essential_params[:renderers]
-
-    essential_params = basic_params.merge(essential_params)
-
-    essential_params.merge(params)
+    params
   end
 
   def preset_common(params, &bloc)

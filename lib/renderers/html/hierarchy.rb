@@ -12,7 +12,6 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
   # puts "id: #{id}, parent_found:  #{parent_found.id}"
   case parent_found.type
   when :shadow
-
     shadows_to_apply = { filter: [], boxShadow: [] }
     shadow.each do |shadow_id_found|
       shadow_found = grab(shadow_id_found)
@@ -39,21 +38,32 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     html.style("transform", "translate3d(0, 0, 0)")
     html.style("boxShadow", box_shadow)
     html.style("filter", drop_shadow)
-  else
-    gradient = @paint[:gradient]
-    diffusion = @paint[:diffusion] || :linear
-    if @paint[:direction] && diffusion == :linear
-      direction = "to #{@paint[:direction]},"
-    elsif diffusion == :linear
-      direction = 'to bottom,'
-    end
+  when :color
     red = parent_found.red * 255
     green = parent_found.green * 255
     blue = parent_found.blue * 255
     alpha = parent_found.alpha
-    if gradient
+    html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+  when :paint
+
+    # if when found colors when use it for the gradient , else whe use the colors within the current atome
+    # gradient_found = params[:colors] || @apply
+    # we get all the paint atomes applied to the current atome
+    paint.each do |paint_id|
       colors_to_apply = []
-      @apply.each do |color_id|
+      # now we get the paint atome
+      paint_atome = grab(paint_id)
+      paint_diffusion = paint_atome.diffusion
+      paint_direction = paint_atome.direction
+      diffusion = paint_diffusion || :linear
+      if paint_direction && paint_direction == :linear
+        direction = " to #{params[:direction]},"
+      elsif diffusion == :linear
+        direction = ' to bottom,'
+      end
+
+      # now we get the gradient and the color insied
+      paint_atome.gradient.each do |color_id|
         color_found = grab(color_id)
         red = color_found.red * 255
         green = color_found.green * 255
@@ -64,7 +74,9 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
       colors_to_apply = colors_to_apply.join(',')
       html.style(:background, "#{diffusion}-gradient(#{direction} #{colors_to_apply})")
     end
-    html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+
+  else
+    #
   end
 end
 

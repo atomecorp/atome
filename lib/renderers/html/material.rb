@@ -13,7 +13,7 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
         remove(color_applied)
       end
     when :shadow
-      alert "remove all shadows"
+      alert 'remove all shadows'
     end
 
   else
@@ -34,31 +34,39 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
         render(:apply, atome_to_remove)
       end
     when :shadow
-      alert "shadow to remove #{object_id_to_remove}"
+      alert "shadow to remove #{object_id_to_remove}\n#{grab(object_id_to_remove).inspect}"
     else
+      #
     end
   end
 
 end
 
+new({ method: :gradient, renderer: :html, type: :hash }) do |params, _bloc|
+  # alert params
+  # diffusion = @diffusion || :linear
+  #
+  # if @direction && @diffusion == :linear
+  #   direction = " to #{params[:direction]},"
+  # elsif diffusion == :linear
+  #   direction = ' to bottom,'
+  # end
+  # colors_to_apply = []
+  # # if when found colors when use it for the gradient , else whe use the colors within the current atome
+  # # gradient_found = params[:colors] || @apply
+  # params.each do |color_id|
+  #   color_found = grab(color_id)
+  #   red = color_found.red * 255
+  #   green = color_found.green * 255
+  #   blue = color_found.blue * 255
+  #   alpha = color_found.alpha
+  #   colors_to_apply << "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+  # end
+  #
+  # colors_to_apply = colors_to_apply.join(',')
+  # # alert colors_to_apply
+  # # alert inspect
+  # html.style(:background, "#{diffusion}-gradient(#{direction} #{colors_to_apply})")
 
-new({ method: :paint, renderer: :html, type: :hash }) do |params, _bloc|
-  diffusion = params[:diffusion] || :linear
-  if params[:direction] && diffusion == :linear
-    direction = " to #{params[:direction]},"
-  elsif diffusion == :linear
-    direction = " to bottom,"
-  end
-  colors_to_apply = []
-  @apply.each do |color_id|
-    color_found = grab(color_id)
-    red = color_found.red * 255
-    green = color_found.green * 255
-    blue = color_found.blue * 255
-    alpha = color_found.alpha
-    colors_to_apply << "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  end
-  colors_to_apply = colors_to_apply.join(',')
-  html.style(:background, "#{diffusion}-gradient(#{direction} #{colors_to_apply})")
   params
 end

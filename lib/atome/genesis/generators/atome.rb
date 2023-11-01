@@ -36,9 +36,7 @@ new({ sanitizer: :video }) do |params|
   # TODO : the line below should get the value from default params Essentials
   params
 end
-
 new({ atome: :www })
-
 new({ atome: :shadow }) do |params|
   if params
     attach_value = params.delete(:affect)
@@ -46,7 +44,6 @@ new({ atome: :shadow }) do |params|
   end
   params
 end
-
 new({ atome: :raw })
 new({ atome: :shape })
 new({ atome: :code })
@@ -56,7 +53,6 @@ new({ sanitizer: :element }) do |params|
   default_params = { data: '' }
   default_params.merge!(params)
 end
-
 new({ atome: :animation })
 new({ atome: :group })
 new({ atome: :text, type: :hash })
@@ -78,7 +74,6 @@ new({ post: :text }) do |params|
   end
   params
 end
-
 new({ sanitizer: :text }) do |params|
   # to allow text api with the form text(:hello) instead of text({data: :hello})
   params = { data: params } unless params.instance_of? Hash
@@ -99,4 +94,16 @@ new({ post: :generator }) do |params|
   build_plans = params[:temporary][:build]
   grab(params[:id]).build(build_plans)
 end
+new({ atome: :paint })
+# new({ sanitizer: :paint }) do |params|
+#   if params[:id]
+#     id_found= params.delete(:id)
+#     params={id: id_found, renderers: [], type: :paint, data: params }
+#   else
+#     params={ renderers: [], type: :paint, data: params }
+#
+#   end
+#   params
+# end
+
 

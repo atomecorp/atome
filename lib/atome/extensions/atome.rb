@@ -42,8 +42,8 @@ class Object
     grab(:view).delete(atomes)
   end
 
-  def identity_generator(type = :element)
-    "#{@type}_#{Universe.counter}"
+  def identity_generator(type_needed = :element)
+    "#{type_needed}_#{Universe.counter}"
   end
 
   def grab(id_to_get)

@@ -11,7 +11,7 @@ class Atome
     @security = {}
     @callback = {}
     @unit = {}
-    @paint = {}
+    # @paint = {}
     @id = new_atome[:id]
     @type = new_atome[:type]
     # @new_atome=new_atome

@@ -112,6 +112,7 @@ class Atome
   end
 
   def particle_sanitizer(element, params, &user_proc)
+
     bloc_found = Universe.get_sanitizer_method(element)
     # sanitizer occurs before any treatment
     # it's call at the very start when a new atome is created : in genesis.rb /new_atome
@@ -147,6 +148,11 @@ class Atome
       params = instance_exec(params, self, user_proc, &Atome.instance_variable_get("@pre_#{element}"))
     end
     params
+  end
+
+  def atome_sanitizer(element, params, &user_proc)
+    # Attention: the method is the same as the one used for the partcicle
+    particle_sanitizer(element, params)
   end
 
   def atome_post_process(element, params, new_atome, &user_proc)
@@ -341,8 +347,6 @@ class Atome
       send(particle, value)
     end
   end
-
-
 
   # def physical
   #   # TODO :  automatise materials type list when creating a new atome it should be specified if material or not

@@ -121,7 +121,7 @@ class Genesis
       Atome.define_method element do |params = nil, &user_proc|
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
         if params
-          params = particle_sanitizer(element, params)
+          params = atome_sanitizer(element, params, &user_proc)
           atome_processor(element, params, &user_proc)
         else
           # when no params passed whe assume teh user want a getter,

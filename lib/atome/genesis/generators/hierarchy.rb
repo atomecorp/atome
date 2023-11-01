@@ -3,21 +3,15 @@
 def attachment_common(child_id, parents_ids, direction, &user_proc)
   # FIXME : it seems we sometime iterate when for nothing
   parents_ids.each do |parent_id|
-
-    child_found = grab(child_id)
     parent_found = grab(parent_id)
-    child_found.attach
     if direction == :attach
       parent_found.attached ||= []
-      # parent_found.attached << child_id
-      parent_found.attached.push(child_id) unless parent_found.attached.include?(child_id)
+      parent_found.attached.push(@id) unless parent_found.attached.include?(@id)
     else
-      child_found.attach ||= []
-      # child_found.attach << parent_id
-      child_found.attach.push(parent_id) unless child_found.attach.include?(parent_id)
-
+      attach ||= []
+      attach.push(parent_id) unless attach.include?(parent_id)
     end
-    child_found&.render(:attach, parent_id, &user_proc)
+    render(:attach, parent_id, &user_proc)
   end
 end
 
@@ -70,7 +64,6 @@ end
 new({ particle: :affect, render: false }) do |children_ids, &user_proc|
   children_ids.each do |child_id|
     child_found = grab(child_id)
-    ## # child_found&.render(:apply, self, &user_proc)
     child_found&.apply([id], &user_proc)
   end
   children_ids
