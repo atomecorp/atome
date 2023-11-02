@@ -38,7 +38,6 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
     atome_type_found = atome_to_remove.type
     case atome_type_found
     when :color
-
       if color == []
         # we remove the last color set
         # html.style(:background, '')
@@ -49,12 +48,7 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
         # we reset background
         html.style(:background, '')
         html.style(:backgroundColor, '')
-        # alert "for: #{@id}, color to remove now : #{atome_to_remove.id}"
-        # puts "remains : #{@apply}"
-        puts "apply is #{@apply}"
         @apply.delete(object_id_to_remove)
-        puts "apply is now #{@apply}"
-        # render(:apply, atome_to_remove)
         apply(@apply)
       end
     when :shadow
