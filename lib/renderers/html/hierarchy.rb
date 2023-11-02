@@ -9,7 +9,7 @@ end
 # end
 
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
-  # puts "id: #{id}, parent_found:  #{parent_found.id}"
+  # puts "apply rendering : id: #{id}, parent_found:  #{parent_found.id}"
   case parent_found.type
   when :shadow
     shadows_to_apply = { filter: [], boxShadow: [] }

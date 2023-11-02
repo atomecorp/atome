@@ -43,8 +43,7 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
   # TODO: optimize the 2 lines below:
   @apply ||= []
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
-  parents_ids = @apply.concat(parents_ids) unless @apply.include?(parents_ids)
-
+  parents_ids = @apply.concat(parents_ids).uniq
   children_ids = [id]
   parents_ids.each do |parent_id|
     parent_found = grab(parent_id)
@@ -57,7 +56,7 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
       child_found&.render(:apply, parent_found, &user_proc)
     end
   end
-
+  @apply=parents_ids
   parents_ids
 end
 

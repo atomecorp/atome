@@ -4,69 +4,73 @@ new({ method: :overflow, renderer: :html, type: :string }) do |params, bloc|
   html.overflow(params, bloc)
 end
 
+new({ method: :gradient, renderer: :html, type: :hash })
+
 new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove, bloc|
   if object_id_to_remove.instance_of? Hash
-    case object_id_to_remove[:all]
-    when :color
-      color_id_found = apply.dup
-      color_id_found.each do |color_applied|
-        remove(color_applied)
-      end
-    when :shadow
-      alert 'remove all shadows'
+    # case object_id_to_remove[:all]
+    # when :color
+    #   atome_ids_found = color.dup
+    #   atome_ids_found.each do |atome_id|
+    #     remove(atome_id)
+    #   end
+    # when :paint
+    #   atome_ids_founds = paint.dup
+    #   atome_ids_founds.each do |atome_id|
+    #     remove(atome_id)
+    #   end
+    # when :shadow
+    #   atome_id_founds = paint.dup
+    #   alert "shadow to remove :#{atome_id_founds}"
+    #   atome_id_founds.each do |atome_id|
+    #     remove(atome_id)
+    #   end
+    # end
+    atome_ids_found = send(object_id_to_remove[:all])
+    atome_ids_found.each do |atome_id|
+      remove(atome_id)
     end
 
   else
+
     atome_to_remove = grab(object_id_to_remove)
+    # alert atome_to_remove.id
     atome_type_found = atome_to_remove.type
     case atome_type_found
     when :color
-      if @apply == []
+
+      if color == []
         # we remove the last color set
         # html.style(:background, '')
         # html.style(:background, :black)
         html.style(:backgroundColor, :black)
-
       else
+        puts "==> #{atome_to_remove.id} :::#{@id}"
         # we reset background
         html.style(:background, '')
         html.style(:backgroundColor, '')
-        render(:apply, atome_to_remove)
+        # alert "for: #{@id}, color to remove now : #{atome_to_remove.id}"
+        # puts "remains : #{@apply}"
+        puts "apply is #{@apply}"
+        @apply.delete(object_id_to_remove)
+        puts "apply is now #{@apply}"
+        # render(:apply, atome_to_remove)
+        apply(@apply)
       end
     when :shadow
       alert "shadow to remove #{object_id_to_remove}\n#{grab(object_id_to_remove).inspect}"
+    when :paint
+      atome_to_remove = grab(object_id_to_remove)
+      atome_to_remove.gradient.each do |color_id|
+        html.style(:background, '')
+        html.style(:backgroundColor, '')
+        @apply.delete(color_id)
+      end
+      @apply.delete(object_id_to_remove)
+      apply(@apply)
     else
       #
     end
   end
 
-end
-
-new({ method: :gradient, renderer: :html, type: :hash }) do |params, _bloc|
-  # alert params
-  # diffusion = @diffusion || :linear
-  #
-  # if @direction && @diffusion == :linear
-  #   direction = " to #{params[:direction]},"
-  # elsif diffusion == :linear
-  #   direction = ' to bottom,'
-  # end
-  # colors_to_apply = []
-  # # if when found colors when use it for the gradient , else whe use the colors within the current atome
-  # # gradient_found = params[:colors] || @apply
-  # params.each do |color_id|
-  #   color_found = grab(color_id)
-  #   red = color_found.red * 255
-  #   green = color_found.green * 255
-  #   blue = color_found.blue * 255
-  #   alpha = color_found.alpha
-  #   colors_to_apply << "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-  # end
-  #
-  # colors_to_apply = colors_to_apply.join(',')
-  # # alert colors_to_apply
-  # # alert inspect
-  # html.style(:background, "#{diffusion}-gradient(#{direction} #{colors_to_apply})")
-
-  params
 end

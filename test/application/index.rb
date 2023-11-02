@@ -3,6 +3,9 @@
 # box({ color: :orange })
 
 
+# require "./examples/paint"
+require "./examples/remove"
+
 # require "./examples/edit"
 # require "./examples/keyboard"
 # require "./examples/generator_and_build"
@@ -10,12 +13,10 @@
 # require "./examples/match"
 # require "./examples/clear"
 # require "./examples/attach"
-require "./examples/paint"
 # require "./examples/attached"
 # require "./examples/browse"
 # require "./examples/delete"
 # require "./examples/shadow"
-# require "./examples/remove"
 # require "./examples/gradient"
 # require "./examples/refresh"
 # require "./examples/convert"
