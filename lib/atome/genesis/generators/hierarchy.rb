@@ -7,11 +7,14 @@ def attachment_common(child_id, parents_ids, direction, &user_proc)
     if direction == :attach
       parent_found.attached ||= []
       parent_found.attached.push(@id) unless parent_found.attached.include?(@id)
+      render(:attach, parent_id, &user_proc)
     else
-      attach ||= []
-      attach.push(parent_id) unless attach.include?(parent_id)
+      child_found= grab(child_id)
+      child_found.attach ||= []
+      child_found.attach.push(parent_id) unless attach.include?(parent_id)
+      child_found.render(:attach, parent_id, &user_proc)
     end
-    render(:attach, parent_id, &user_proc)
+
   end
 end
 

@@ -4,8 +4,7 @@
 
 
 # require "./examples/paint"
-require "./examples/remove"
-
+# require "./examples/remove"
 # require "./examples/edit"
 # require "./examples/keyboard"
 # require "./examples/generator_and_build"
@@ -13,7 +12,7 @@ require "./examples/remove"
 # require "./examples/match"
 # require "./examples/clear"
 # require "./examples/attach"
-# require "./examples/attached"
+require "./examples/attached"
 # require "./examples/browse"
 # require "./examples/delete"
 # require "./examples/shadow"
