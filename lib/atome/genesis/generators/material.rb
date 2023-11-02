@@ -14,6 +14,7 @@ new({ particle: :hide })
 new({ particle: :remove })
 
 new({post: :remove}) do |params|
+
   if params.instance_of?(Hash)
     case params[:all]
     when :color
@@ -24,6 +25,10 @@ new({post: :remove}) do |params|
       paint.each do |atome_id_found|
         @apply.delete(atome_id_found)
       end
+    # when :shadow
+    #   alert :remove_shade
+    else
+      puts 'write code'
     end
   else
     #   object_to_remove = grab(object_id_to_remove)
