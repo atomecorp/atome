@@ -8,6 +8,7 @@
 # require "./examples/keyboard"
 # require "./examples/generator_and_build"
 require "./examples/display"
+# require "./examples/resize"
 # require "./examples/animation"
 # require "./examples/match"
 # require "./examples/clear"

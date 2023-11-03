@@ -286,8 +286,18 @@ class HTML
     @element.appendChild(source)
   end
 
+  def sanitize_text(text)
+    text.to_s
+        .gsub('&', '&amp;')
+        .gsub('<', '&lt;')
+        .gsub('>', '&gt;')
+        .gsub('"', '&quot;')
+        .gsub("'", '&apos;')
+  end
+
   def innerText(data)
-    @element[:innerText] = data.to_s
+    sanitized_data = sanitize_text(data.to_s)
+    @element[:innerText] = sanitized_data
   end
 
   def textContent(data)

@@ -26,23 +26,32 @@ new({ particle: :display, render: false }) do |params|
         end
         container = ''
         attach.each do |parent|
-          container = grab(parent).box({ id: list_id, width: container_width, height: container_height, overflow: :auto, color: :white, depth: 0 })
+          container = grab(parent).box({ id: list_id, width: container_width, height: container_height, overflow: :auto, color: :black, depth: 0 })
         end
-        particles.each_with_index do |(particle_found, value), index|
-          line = container.box({ id: "#{list_id}_#{index}", width: item_width, height: item_height, left: 0, top: ((item_height + item_margin) * index) })
-          line.text({ data: "#{particle_found} : ", top: -item_height / 2, left: 2 })
-          input_value = line.text({ data: value, top: -item_height / 2, left: 5, edit: true })
-          input_value.keyboard(:down) do |native_event|
-            event = Native(native_event)
-            if event[:keyCode].to_i == 13
-              event.preventDefault()
-              input_value.color(:red)
+        sorted_particles = particles.sort.to_h
+        sorted_particles.each_with_index do |(particle_found, value), index|
+            line = container.box({ id: "#{list_id}_#{index}", width: item_width, height: item_height, left: 0, top: ((item_height + item_margin) * index) })
+            line.text({ data: "#{particle_found} : ", top: -item_height / 2, left: 2 })
+            if value.instance_of?(String) || value.instance_of?(Symbol) || value.instance_of?(Integer)
+              # alert particle_value
+              input_value = line.text({ data: value, top: -item_height / 2, left: 5, edit: true })
+              input_value.keyboard(:down) do |native_event|
+                event = Native(native_event)
+                if event[:keyCode].to_i == 13
+                  event.preventDefault()
+                  input_value.color(:red)
+                end
+              end
+              input_value.keyboard(:up) do |native_event|
+                data_found = input_value.data
+                send(particle_found, data_found)
+              end
+            else
+              puts "value is :#{value.class} => #{value}"
             end
-          end
-          input_value.keyboard(:up) do |native_event|
-            data_found = input_value.data
-            send(particle_found, data_found)
-          end
+
+
+
         end
         closer = container.circle({id: "#{list_id}_closer", width: 33, height: 33, top: 3, right: 3, color: :red, position: :sticky })
         closer.touch(true) do
@@ -66,17 +75,24 @@ new({ particle: :display, render: false }) do |params|
         container = grab(parent).box({ id: grid_id, width: container_width, height: container_height, overflow: :auto, color: :white, depth: 0 })
       end
       params[:data].each_with_index do |item, index|
-        item= container.box({id: "#{grid_id}_#{index}", top: 0, left: index*120, position: :relative, left: nil, right: nil})
+        item= container.box({id: "#{grid_id}_#{index}", top: 0,  position: :relative, left: nil, right: nil})
         item.touch(true) do
           container.delete(true)
           visible(true)
         end
       end
 
-      container.html.style('gridTemplateColumns', '1fr 1fr 1fr 1fr 1fr 1fr')
+      # container.html.style('gridTemplateColumns', '1fr 1fr 1fr 1fr 1fr 1fr')
+      container.html.style('gridTemplateColumns', 'repeat(4, 1fr)')
       container.html.style('gridTemplateRows', 'auto')
       container.html.style('gridGap', '10px')
       container.html.style('display', 'grid')
+      container.on(:resize) do |event|
+        puts event[:dx]
+      end
+      container.resize(true) do |event|
+        puts event
+      end
 
     end
 
@@ -131,4 +147,4 @@ c.touch(true) do
 end
 
 # TODO : find how to restore natural display after removing display mode
-
+alert "color on text "
