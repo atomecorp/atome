@@ -78,24 +78,15 @@
 #     puts "play aaa say #{po}"
 #   end
 # end
-#
+
+#TODO : make the code above works
+# create a animation object
+# create callback methode when playing
+
 new({particle: :animate}) do |params|
-
-  html.animation({ from: 0, to: 300, duration: 1000 })
-  html.start_animation({ from: 0, to: 300, duration: 1000 })
-
-
-  # html.prepare_animation('the_box', { from: '0px', to: '300px', duration: 1000, property: 'transform' }, ->(value) { puts "La valeur actuelle est #{value}" })
-  # Plus tard, vous pouvez démarrer l'animation avec:
-  # wait 2 do
-  #   html.stop_animation
-  # end
-  # html.play_animation('the_box')
-
+  html.play_animation({ from: 0, to: 300, duration: 1000 })
 end
 
-# Exemple d'utilisation :
-# anime un élément avec l'id 'my_element' pour qu'il se déplace à 100px sur l'axe X en 500ms
 
 b=box({id: :the_box})
 

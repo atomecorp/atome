@@ -44,6 +44,10 @@ new({ particle: :display, render: false }) do |params|
          send(particle_found,data_found)
         end
       end
+      closer=container.circle({width:33, height:  33, top: 3, right: 3, color: :red})
+      closer.touch(true) do
+         container.delete(true)
+      end
   when :table
 
   end
@@ -60,11 +64,11 @@ end
 b = box({color: :red})
 # original properties allow to modify particles of the current atome
 # items properties allow to modify particles of cloned or newly generated atomes
-wait 2 do
-  alert "Before : #{b.inspect}"
-  b.display({mode: :list , original: {visible: true, left: 0, top: 0}})
-  alert "after : #{b.inspect}"
-end
+# wait 2 do
+#   alert "Before : #{b.inspect}"
+#   b.display({mode: :list , original: {visible: true, left: 0, top: 0}})
+#   alert "after : #{b.inspect}"
+# end
 # wait 2 do
 #   b.visible(false)
 # end
@@ -74,8 +78,10 @@ end
 #   b.display(:none)
 # end
 b.touch(true) do
-  grab("#{b.id}_list_mode").delete(true)
-  alert "should be deleted!!"
+  id_to_delete="#{b.id}_list_mode"
+  if grab(id_to_delete)
+    grab(id_to_delete).delete(true)
+  end
   b.display({mode: :list , original: {visible: true, left: 0, top: 0}})
 end
 

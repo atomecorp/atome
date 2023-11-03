@@ -736,35 +736,29 @@ class HTML
   end
 
 
-  def animation(params)
-   @anim="target_div.style.transform = 'translateX(' + v + 'px)';"
-  end
+
   # animation below
   def animate(animation_properties)
-    command = <<-JS
-    var target_div = document.getElementById('#{@id}');
-    window.currentAnimation = popmotion.animate({
-      from: #{animation_properties[:from]},
-      to: #{animation_properties[:to]},
-      duration: #{animation_properties[:duration]},
-      onUpdate: function(v) {
-       // target_div.style.transform = 'translateX(' + v + 'px)';
-#{@anim}
-rubyVMCallback("puts x= "+v)
-rubyVMCallback("grab('#{@id}').left("+v+")")
-
-      },
-      onComplete: function() {
-
-        window.currentAnimation = null;
-rubyVMCallback("puts :complete")
-      }
-    });
+    command = <<~JS
+          var target_div = document.getElementById('#{@id}');
+          window.currentAnimation = popmotion.animate({
+            from: #{animation_properties[:from]},
+            to: #{animation_properties[:to]},
+            duration: #{animation_properties[:duration]},
+            onUpdate: function(v) {
+      rubyVMCallback("puts x= "+v)
+      rubyVMCallback("grab('#{@id}').left("+v+")")
+            },
+            onComplete: function() {
+              window.currentAnimation = null;
+      rubyVMCallback("puts :complete")
+            }
+          });
     JS
     JS.eval(command)
   end
 
-  def start_animation(properties)
+  def play_animation(properties)
     required_keys = [:from, :to, :duration]
     if properties.is_a?(Hash) && (required_keys - properties.keys).empty?
       animate(properties)
