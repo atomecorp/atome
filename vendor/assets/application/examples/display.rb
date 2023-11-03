@@ -2,7 +2,7 @@
 
 
 # matrix
-new({ particle: :display }) do |params|
+new({ particle: :display, render: false }) do |params|
   unless params.instance_of? Hash
     params = { mode: params, target: :atomes }
   end
@@ -23,8 +23,9 @@ new({ particle: :display }) do |params|
       default_height=30
       margin=3
       container=''
+      list_id="#{id}_list_mode"
       attach.each do |parent|
-        container=grab(parent).box({width: default_width, height: default_height*3, overflow: :auto, color: :white, depth: 0})
+        container=grab(parent).box({id: list_id,width: default_width, height: default_height*3, overflow: :auto, color: :white, depth: 0})
       end
       particles.each_with_index  do |(particle_found,value), index|
         line=container.box({width: default_width, height: default_height, left: 0, top:((default_height+margin)*index)})
@@ -54,13 +55,15 @@ new({renderer: :html,method: :visible}) do |params|
   elsif params== true
     params= :block
   end
-  html.display(params)
+  html.visible(params)
 end
 b = box({color: :red})
 # original properties allow to modify particles of the current atome
 # items properties allow to modify particles of cloned or newly generated atomes
 wait 2 do
+  alert "Before : #{b.inspect}"
   b.display({mode: :list , original: {visible: true, left: 0, top: 0}})
+  alert "after : #{b.inspect}"
 end
 # wait 2 do
 #   b.visible(false)
@@ -71,7 +74,9 @@ end
 #   b.display(:none)
 # end
 b.touch(true) do
-  alert.b.inspect
+  grab("#{b.id}_list_mode").delete(true)
+  alert "should be deleted!!"
+  b.display({mode: :list , original: {visible: true, left: 0, top: 0}})
 end
 
 # TODO : find how to restore natural display after removing display mode

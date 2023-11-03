@@ -6,7 +6,6 @@ class HTML
     @element ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
     @original_atome = current_atome
-    # @element = JS.global[:document].getElementById(@id.to_s)
   end
 
   def hypertext(params)
@@ -255,17 +254,6 @@ class HTML
     self
   end
 
-  # def shadow(id)
-  #   alert 'so kool'
-  #   # markup_found = @original_atome.markup || :video
-  #   # @element_type = markup_found.to_s
-  #   # @element = JS.global[:document].createElement(@element_type)
-  #   # JS.global[:document][:body].appendChild(@element)
-  #   # add_class('atome')
-  #   # self.id(id)
-  #   # self
-  # end
-
   def www(id)
     markup_found = @original_atome.markup || :iframe
     @element_type = markup_found.to_s
@@ -353,7 +341,7 @@ class HTML
     self
   end
 
-  def display(param)
+  def visible(param)
     @element[:style][:display] = param.to_s
   end
 
@@ -745,6 +733,48 @@ class HTML
     else
       @element.removeEventListener('input', &@input_listener)
     end
+  end
+
+
+  def animation(params)
+   @anim="target_div.style.transform = 'translateX(' + v + 'px)';"
+  end
+  # animation below
+  def animate(animation_properties)
+    command = <<-JS
+    var target_div = document.getElementById('#{@id}');
+    window.currentAnimation = popmotion.animate({
+      from: #{animation_properties[:from]},
+      to: #{animation_properties[:to]},
+      duration: #{animation_properties[:duration]},
+      onUpdate: function(v) {
+       // target_div.style.transform = 'translateX(' + v + 'px)';
+#{@anim}
+rubyVMCallback("puts x= "+v)
+rubyVMCallback("grab('#{@id}').left("+v+")")
+
+      },
+      onComplete: function() {
+
+        window.currentAnimation = null;
+rubyVMCallback("puts :complete")
+      }
+    });
+    JS
+    JS.eval(command)
+  end
+
+  def start_animation(properties)
+    required_keys = [:from, :to, :duration]
+    if properties.is_a?(Hash) && (required_keys - properties.keys).empty?
+      animate(properties)
+    else
+      raise ArgumentError, "Properties must be a hash with :from, :to, and :duration keys"
+    end
+  end
+
+  def stop_animation
+    JS.eval("if (window.currentAnimation) window.currentAnimation.stop();")
   end
 
 end

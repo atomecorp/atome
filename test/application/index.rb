@@ -2,17 +2,17 @@
 # require 'json'
 # box({ color: :orange })
 
-
 # require "./examples/paint"
 # require "./examples/remove"
 # require "./examples/edit"
 # require "./examples/keyboard"
 # require "./examples/generator_and_build"
 # require "./examples/display"
+require "./examples/animation"
 # require "./examples/match"
 # require "./examples/clear"
 # require "./examples/attach"
-require "./examples/attached"
+# require "./examples/attached"
 # require "./examples/browse"
 # require "./examples/delete"
 # require "./examples/shadow"
@@ -26,6 +26,7 @@ require "./examples/attached"
 # require "./examples/on_resize"
 # require "./examples/scroll"
 # require "./examples/animation"
+# require "./examples/video"
 # require "./examples/read"
 # require "./examples/browse"
 # require "./examples/terminal"

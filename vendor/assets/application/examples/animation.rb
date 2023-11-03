@@ -1,15 +1,15 @@
-# frozen_string_literal: true
-
-bb = text({ id: :the_ref, width: 369, data: "touch me!" })
-bb.color(:orange)
-box({ id: :my_box, drag: true })
-c = circle({ id: :the_circle, left: 222, drag: { move: true, inertia: true, lock: :start } })
-c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,
-           attach: [:the_circle],
-           left: 3, top: 9, blur: 19,
-           red: 0, green: 0, blue: 0, alpha: 1
-         })
-
+# # frozen_string_literal: true
+#
+# bb = text({ id: :the_ref, width: 369, data: "touch me!" })
+# bb.color(:orange)
+# box({ id: :my_box, drag: true })
+# c = circle({ id: :the_circle, left: 222, drag: { move: true, inertia: true, lock: :start } })
+# c.shadow({ renderers: [:html], id: :shadow2, type: :shadow,
+#            attach: [:the_circle],
+#            left: 3, top: 9, blur: 19,
+#            red: 0, green: 0, blue: 0, alpha: 1
+#          })
+#
 # Atome.new(animation: { renderers: [:browser], id: :the_animation1, type: :animation, attach: [],attached: []})
 # aa = animation({
 #                  targets: %i[my_box the_circle],
@@ -78,4 +78,26 @@ c.shadow({ renderers: [:browser], id: :shadow2, type: :shadow,
 #     puts "play aaa say #{po}"
 #   end
 # end
+#
+new({particle: :animate}) do |params|
+
+  html.animation({ from: 0, to: 300, duration: 1000 })
+  html.start_animation({ from: 0, to: 300, duration: 1000 })
+
+
+  # html.prepare_animation('the_box', { from: '0px', to: '300px', duration: 1000, property: 'transform' }, ->(value) { puts "La valeur actuelle est #{value}" })
+  # Plus tard, vous pouvez démarrer l'animation avec:
+  # wait 2 do
+  #   html.stop_animation
+  # end
+  # html.play_animation('the_box')
+
+end
+
+# Exemple d'utilisation :
+# anime un élément avec l'id 'my_element' pour qu'il se déplace à 100px sur l'axe X en 500ms
+
+b=box({id: :the_box})
+
+b.animate(true)
 

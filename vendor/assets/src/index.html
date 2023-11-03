@@ -35,4 +35,42 @@
 </script>
 <script defer src="js/atome/specific/wasm.js" type="text/javascript"></script>
 <script defer src="js/atome/atome.js" type="text/javascript"></script>
+
+<!--<script>-->
+<!--    setTimeout(function (){-->
+
+<!--        function createAndAnimateDiv() {-->
+<!--            // Crée un nouvel élément div-->
+<!--            var div = document.createElement('div');-->
+<!--            // Définit des styles de base pour qu'il soit visible-->
+<!--            div.style.width = '50px';-->
+<!--            div.style.height = '50px';-->
+<!--            div.style.backgroundColor = 'blue';-->
+<!--            div.style.position = 'absolute'; // Permet l'animation sur l'axe X-->
+
+<!--            // Ajoute le div au corps du document-->
+<!--            document.body.appendChild(div);-->
+
+<!--            // Utilise Popmotion pour animer le div sur l'axe X-->
+<!--            popmotion.animate({-->
+<!--                from: 0,-->
+<!--                to: 300,-->
+<!--                duration: 1000,-->
+<!--                onUpdate: (v) => {-->
+<!--                    // Met à jour la transformation et la largeur du div directement-->
+<!--                    div.style.transform = `translateX(${v}px)`;-->
+<!--                    div.style.width = `${50 + v}px`;-->
+<!--                },-->
+<!--                onComplete: () => alert('Animation complete!')-->
+<!--            });-->
+<!--        }-->
+
+<!--// Exécutez cette fonction pour voir l'animation-->
+<!--        createAndAnimateDiv();-->
+
+
+<!--    }, 3000)-->
+
+
+<!--</script>-->
 </html>
