@@ -1,67 +1,104 @@
 #  frozen_string_literal: true
 
-
 # matrix
 new({ particle: :display, render: false }) do |params|
-  unless params.instance_of? Hash
-    params = { mode: params, target: :atomes }
+  unless params[:items]
+    params[:items] = { width: 200, height: 33 }
   end
-  target_found = params[:target]
-  particles_to_alter=params[:original]
-  particles_to_alter.each do |particle_found, value|
-    send(particle_found, value)
-  end
-
+  container_width = params[:width] ||= 555
+  container_height = params[:width] ||= 555
+  item_width = params[:items][:width] ||= 400
+  item_height = params[:items][:height] ||= 50
+  item_margin = params[:margin] ||= 3
   mode = params[:mode]
-  case mode
 
+  case mode
   when :none
   when :custom
-
   when :list
-      default_width=333
-      default_height=30
-      margin=3
-      container=''
-      list_id="#{id}_list_mode"
-      attach.each do |parent|
-        container=grab(parent).box({id: list_id,width: default_width, height: default_height*3, overflow: :auto, color: :white, depth: 0})
-      end
-      particles.each_with_index  do |(particle_found,value), index|
-        line=container.box({width: default_width, height: default_height, left: 0, top:((default_height+margin)*index)})
-        line.text({ data: "#{particle_found} : ", top: -default_height / 2, left: 2 })
-        input_value=line.text({ data: value, top: -default_height / 2 , left: 5, edit: true})
-        input_value.keyboard(:down) do |native_event|
-          event = Native(native_event)
-          if event[:keyCode].to_i == 13
-            event.preventDefault()
-            input_value.color(:red)
+    if params[:data].instance_of? Array
+    elsif params[:data] == :particles
+      list_id = "#{id}_list"
+      unless grab(list_id)
+        particles_to_alter = params[:original]
+        particles_to_alter.each do |particle_found, value|
+          send(particle_found, value)
+        end
+        container = ''
+        attach.each do |parent|
+          container = grab(parent).box({ id: list_id, width: container_width, height: container_height, overflow: :auto, color: :white, depth: 0 })
+        end
+        particles.each_with_index do |(particle_found, value), index|
+          line = container.box({ id: "#{list_id}_#{index}", width: item_width, height: item_height, left: 0, top: ((item_height + item_margin) * index) })
+          line.text({ data: "#{particle_found} : ", top: -item_height / 2, left: 2 })
+          input_value = line.text({ data: value, top: -item_height / 2, left: 5, edit: true })
+          input_value.keyboard(:down) do |native_event|
+            event = Native(native_event)
+            if event[:keyCode].to_i == 13
+              event.preventDefault()
+              input_value.color(:red)
+            end
+          end
+          input_value.keyboard(:up) do |native_event|
+            data_found = input_value.data
+            send(particle_found, data_found)
           end
         end
-        input_value.keyboard(:up) do |native_event|
-          data_found= input_value.data
-          # alert   "grab(#{id}).send(#{particle_found},#{data_found})"
-         send(particle_found,data_found)
+        closer = container.circle({id: "#{list_id}_closer", width: 33, height: 33, top: 3, right: 3, color: :red, position: :sticky })
+        closer.touch(true) do
+          container.delete(true)
         end
       end
-      closer=container.circle({width:33, height:  33, top: 3, right: 3, color: :red})
-      closer.touch(true) do
-         container.delete(true)
+
+    else
+
+    end
+
+  when :grid
+    grid_id = "#{id}_grid"
+    unless grab(grid_id)
+      particles_to_alter = params[:original]
+      particles_to_alter.each do |particle_found, value|
+        send(particle_found, value)
       end
-  when :table
+      container = ''
+      attach.each do |parent|
+        container = grab(parent).box({ id: grid_id, width: container_width, height: container_height, overflow: :auto, color: :white, depth: 0 })
+      end
+      params[:data].each_with_index do |item, index|
+        item= container.box({id: "#{grid_id}_#{index}", top: 0, left: index*120, position: :relative, left: nil, right: nil})
+        item.touch(true) do
+          container.delete(true)
+          visible(true)
+        end
+      end
+
+      container.html.style('gridTemplateColumns', '1fr 1fr 1fr 1fr 1fr 1fr')
+      container.html.style('gridTemplateRows', 'auto')
+      container.html.style('gridGap', '10px')
+      container.html.style('display', 'grid')
+
+    end
 
   end
 end
-new({particle: :visible})
-new({renderer: :html,method: :visible}) do |params|
-  if params== false
-    params= :none
-  elsif params== true
-    params= :block
+new({ particle: :visible })
+new({ renderer: :html, method: :visible }) do |params|
+  if params == false
+    params = :none
+  elsif params == true
+    params = :block
   end
   html.visible(params)
 end
-b = box({color: :red})
+new({particle: :position}) do
+end
+new({ method: :position, type: :integer, renderer: :html }) do |params|
+  html.style(:position, params)
+end
+
+
+b = box({ color: :red })
 # original properties allow to modify particles of the current atome
 # items properties allow to modify particles of cloned or newly generated atomes
 # wait 2 do
@@ -78,13 +115,20 @@ b = box({color: :red})
 #   b.display(:none)
 # end
 b.touch(true) do
-  id_to_delete="#{b.id}_list_mode"
-  if grab(id_to_delete)
-    grab(id_to_delete).delete(true)
-  end
-  b.display({mode: :list , original: {visible: true, left: 0, top: 0}})
+  b.display({ mode: :list, data: :particles, width: 333, items: { width: 200, height: 33 }, height: 33, margin: 5, original: { visible: true, left: 0, top: 0 } })
+end
+
+c = circle({ left: 333 })
+
+fake_array=[]
+i=0
+while i < 32 do
+  fake_array << i
+  i+=1
+end
+c.touch(true) do
+  c.display({ mode: :grid, data: fake_array, original: { visible: false } })
 end
 
 # TODO : find how to restore natural display after removing display mode
-
 

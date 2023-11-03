@@ -311,13 +311,14 @@ class HTML
   end
 
   def style(property, value = nil)
-    @element[:style][property] = value.to_s
     if value
       @element[:style][property] = value.to_s
-    else
+    elsif value.nil?
       @element[:style][property]
+    else # If value is explicitly set to false, remove the property
+      command = "document.getElementById('#{@id}').style.removeProperty('#{property}')"
+      JS.eval(command)
     end
-    @element[:style][property]
   end
 
   def filter(property, value)

@@ -6,8 +6,6 @@ c1=c.color(:white).id
 c2=c.color(:red).id
 c3=c.color(:yellow).id
 color({id: :toto, red: 1 , alpha: 0.5})
-# c.color(id: :the_red, red: 1)
-# c.apply([:toto])
 wait 0.5 do
   c.paint({ gradient: [c1,c2], direction: :left })
   wait 0.5 do
@@ -18,11 +16,6 @@ wait 0.5 do
         c.paint({ gradient: [c1,c2, c3], diffusion: :conic })
         wait 0.5 do
           c.remove({all: :paint})
-          # c.remove({all: :color})
-          # alert "c paint is : #{c.paint}"
-          # alert "color: #{c.color}"
-          # alert "paint : #{c.paint}"
-          # alert "apply : #{c.apply}"
         end
       end
     end
