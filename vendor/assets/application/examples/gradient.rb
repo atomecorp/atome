@@ -37,6 +37,6 @@ the_text.left(333)
 # the_text.attached([])
 #@type=:shape, @preset=:circle, @renderers=[:html], @broadcast={}, @id=:circle_20, @callback={}, @unit={}, @security={}, @left=100, @top=100, @store_allow=true, @attach=[:view], @apply=[:circle_color], @width=99, @attached=[], @height=99, @smooth="100%", @clones=[]>
 wait 0.3 do
-  the_text.paint({ gradient:  [col_1.id, col_2.id], direction: :left , id: :toto })
+  the_text.paint({ gradient:  [col_1.id, col_2.id], direction: :left , id: :painted_love })
 end
 # #TODO : gradient on text!

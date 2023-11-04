@@ -45,7 +45,6 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     # gradient_found = params[:colors] || @apply
     # we get all the paint atomes applied to the current atome
     gradients_to_apply = []
-    # alert paint
     paint.each do |paint_id|
       colors_to_apply = []
       # now we get the paint atome
@@ -95,46 +94,49 @@ new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |par
       alpha = parent_found.alpha
       html.style(:color, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
   when :paint
-    puts paint
     # if when found colors when use it for the gradient , else whe use the colors within the current atome
     # gradient_found = params[:colors] || @apply
     # we get all the paint atomes applied to the current atome
     gradients_to_apply = []
-    # alert parent_found.type
-    # paint.each do |paint_id|
-    #   colors_to_apply = []
-    #   # now we get the paint atome
-    #   paint_atome = grab(paint_id)
-    #   paint_diffusion = paint_atome.diffusion
-    #   paint_direction = paint_atome.direction
-    #   diffusion = paint_diffusion || :linear
-    #   if paint_direction && paint_direction == :linear
-    #     direction = " to #{params[:direction]},"
-    #   elsif diffusion == :linear
-    #     direction = ' to bottom,'
-    #   end
-    #
-    #   if paint_atome.rotate
-    #     direction = "#{paint_atome.rotate}deg,"
-    #   end
-    #
-    #   # now we get the gradient and the color insied
-    #   paint_atome.gradient.each do |color_id|
-    #     color_found = grab(color_id)
-    #     red = color_found.red * 255
-    #     green = color_found.green * 255
-    #     blue = color_found.blue * 255
-    #     alpha = color_found.alpha
-    #     colors_to_apply << "rgba(#{red}, #{green}, #{blue}, #{alpha})"
-    #   end
-    #   colors_to_apply = colors_to_apply.join(',')
-    #   gradients_to_apply << "#{diffusion}-gradient(#{direction} #{colors_to_apply})"
-    # end
-    # # TODO : create complexe gradient staking the gradients uncommenting the line below
-    # # beware the colors_to_apply syntax is incorrect for complexe gradient
-    # # full_gradient_to_apply=gradients_to_apply.join(',')
-    # full_gradient_to_apply = gradients_to_apply.last
-    # html.style(:background, full_gradient_to_apply)
+    paint.each do |paint_id|
+      colors_to_apply = []
+      # now we get the paint atome
+      paint_atome = grab(paint_id)
+      paint_diffusion = paint_atome.diffusion
+      paint_direction = paint_atome.direction
+      diffusion = paint_diffusion || :linear
+      if paint_direction && paint_direction == :linear
+        direction = " to #{params[:direction]},"
+      elsif diffusion == :linear
+        direction = ' to bottom,'
+      end
+
+      if paint_atome.rotate
+        direction = "#{paint_atome.rotate}deg,"
+      end
+
+      # now we get the gradient and the color insied
+      paint_atome.gradient.each do |color_id|
+        color_found = grab(color_id)
+        red = color_found.red * 255
+        green = color_found.green * 255
+        blue = color_found.blue * 255
+        alpha = color_found.alpha
+        colors_to_apply << "rgba(#{red}, #{green}, #{blue}, #{alpha})"
+      end
+      colors_to_apply = colors_to_apply.join(',')
+      gradients_to_apply << "#{diffusion}-gradient(#{direction} #{colors_to_apply})"
+    end
+    # TODO : create complexe gradient staking the gradients uncommenting the line below
+    # beware the colors_to_apply syntax is incorrect for complexe gradient
+    # full_gradient_to_apply=gradients_to_apply.join(',')
+    full_gradient_to_apply = gradients_to_apply.last
+
+    html.style(:backgroundClip, 'text')
+    html.style(:color, 'transparent')
+    # html.style(display, 'inline-block')
+
+    html.style(:backgroundImage, full_gradient_to_apply)
     end
 
 end
