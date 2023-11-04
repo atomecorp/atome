@@ -113,10 +113,7 @@ class Genesis
       end
     end
 
-
-
     def new_atome(element, &method_proc)
-
       # the method define below is the slowest but params are analysed and sanitized
       Atome.define_method element do |params = nil, &user_proc|
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)

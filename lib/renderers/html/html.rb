@@ -325,7 +325,8 @@ class HTML
       @element[:style][property] = value.to_s
     elsif value.nil?
       @element[:style][property]
-    else # If value is explicitly set to false, remove the property
+    else
+      # If value is explicitly set to false, remove the property
       command = "document.getElementById('#{@id}').style.removeProperty('#{property}')"
       JS.eval(command)
     end
@@ -663,9 +664,10 @@ class HTML
   end
 
   def touch_tap(bloc)
+
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('tap', bloc) do
-      bloc.call if bloc.is_a? Proc
+    interact.on('tap') do |event|
+      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
     end
   end
 
@@ -676,29 +678,29 @@ class HTML
 
   def touch_double(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('doubletap') do
-      bloc.call if bloc.is_a? Proc
+    interact.on('doubletap') do |event|
+      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
     end
   end
 
   def touch_long(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('hold') do
-      bloc.call if bloc.is_a? Proc
+    interact.on('hold') do |event|
+      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
     end
   end
 
   def touch_down(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('down') do
-      bloc.call if bloc.is_a? Proc
+    interact.on('down') do |event|
+      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
     end
   end
 
   def touch_up(bloc)
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('up') do
-      bloc.call if bloc.is_a? Proc
+    interact.on('up') do |event|
+      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
     end
   end
 
@@ -745,8 +747,6 @@ class HTML
       @element.removeEventListener('input', &@input_listener)
     end
   end
-
-
 
   # animation below
   def animate(animation_properties)
