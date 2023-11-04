@@ -43,11 +43,27 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     # end
     # grab(params[:id]).delete(true)
   elsif params.instance_of? Hash
-    # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
-    # with id my_monitor
-    params.each do |param, value|
-      atome[param][value] = nil
+    if params[:recursive]
+      attached.each do |atome_id|
+        grab(atome_id).delete({ recursive: true })
+      end
+      render(:delete, params, &user_proc)
+      # the machine delete the current atome from the universe
+      id_found = @id.to_sym
+      parents_found = @attach
+      Universe.delete(id_found)
+      parents_found.each do |parent_id_found|
+        parent_found = grab(parent_id_found)
+        parent_found.attached.delete(id_found)
+      end
+    else
+      # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
+      # with id my_monitor
+      params.each do |param, value|
+        atome[param][value] = nil
+      end
     end
+
   else
 
     # we check if the params passed is an atome to treat it in a different way

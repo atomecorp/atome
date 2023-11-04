@@ -3,7 +3,8 @@
 # box({ color: :orange })
 
 # require "./examples/display"
-require "./examples/resize"
+require "./examples/delete"
+# require "./examples/resize"
 # require "./examples/on_resize"
 # require "./examples/touch"
 # require "./examples/tagged"

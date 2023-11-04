@@ -2,7 +2,8 @@
 
 b = box()
 c = circle({ left: 222, color: :orange, blur: 6 })
-
+c.box({color: :red, width: 33, height: 33, left: 333})
+c.box({color: :orange, width: 33, height: 33, left: 123})
 wait 1 do
   c.delete(:left)
   wait 1 do
@@ -11,7 +12,9 @@ wait 1 do
 end
 
 b.touch(true) do
-  c.delete(true)
+  puts Universe.atomes.length
+  c.delete({ recursive: true })
+  puts Universe.atomes.length
 end
 
 # b = box({left: 333, id: :the_box_1})
