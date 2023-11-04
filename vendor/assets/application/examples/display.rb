@@ -134,17 +134,16 @@ b.touch(true) do
   b.display({ mode: :list, data: :particles, width: 333, items: { width: 200, height: 33 }, height: 33, margin: 5, original: { visible: true, left: 0, top: 0 } })
 end
 
-c = circle({ left: 333 })
-
-fake_array=[]
-i=0
-while i < 32 do
-  fake_array << i
-  i+=1
-end
-c.touch(true) do
-  c.display({ mode: :grid, data: fake_array, original: { visible: false } })
-end
+# c = circle({ left: 333 })
+#
+# fake_array=[]
+# i=0
+# while i < 32 do
+#   fake_array << i
+#   i+=1
+# end
+# c.touch(true) do
+#   c.display({ mode: :grid, data: fake_array, original: { visible: false } })
+# end
 
 # TODO : find how to restore natural display after removing display mode
-alert "color on text "

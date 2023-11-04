@@ -1,21 +1,22 @@
 #  frozen_string_literal: true
 # require 'json'
 # box({ color: :orange })
-
+b = box
+circle({ left: 222 })
+# require "./examples/display"  # inspect for solution, the solution is in : new({ particle: :preset })
+# require "./examples/clear" # inspect for solution
+# require "./examples/match" # inspect for solution
+# require "./examples/attach" # inspect for solution
+# require "./examples/attached"
 # require "./examples/paint"
 # require "./examples/remove"
 # require "./examples/edit"
 # require "./examples/keyboard"
 # require "./examples/generator_and_build"
-# require "./examples/display"
-require "./examples/shadow"
+# require "./examples/shadow"
 # require "./examples/gradient"
 # require "./examples/resize"
 # require "./examples/animation"
-# require "./examples/match"
-# require "./examples/clear"
-# require "./examples/attach"
-# require "./examples/attached"
 # require "./examples/browse"
 # require "./examples/delete"
 # require "./examples/refresh"

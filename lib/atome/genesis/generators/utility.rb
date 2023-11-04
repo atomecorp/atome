@@ -96,21 +96,17 @@ end
 new({ particle: :cursor })
 
 new({ particle: :preset }) do |params|
-  # alert "=> id is : #{@id} :: #{Essentials.default_params[params]}"
   if params.instance_of? Hash
     Essentials.new_default_params(params)
-    params_to_send=params
+    params_to_send = params
   else
-    params_to_send= Essentials.default_params[params].dup
+    params_to_send = Essentials.default_params[params].dup
     # we remove preset to avoid infinite loop
     params_to_send.delete(:preset)
-
-    params_to_send.each do |particle_found,value|
-      puts "sending : #{particle_found}, #{value}"
-      send(particle_found,value)
+    params_to_send.each do |particle_found, value|
+      send(particle_found, value)
     end
-    # send(params_to_send)
-    params_to_send={params =>   params_to_send}
+    params_to_send = { params => params_to_send }
   end
   params_to_send
 end

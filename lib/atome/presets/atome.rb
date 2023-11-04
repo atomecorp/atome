@@ -9,12 +9,15 @@
 class Atome
   def atome_common(atome_preset, params)
     basic_params = { renderers: [] }
+    # TODO : remove Essentials.default_params[atome_preset] || {} as it is
+    # applyied twice because preset is now a particle
     essential_params = Essentials.default_params[atome_preset] || {}
     basic_params[:type] = essential_params[:type] || :element
     basic_params[:id] = params[:id] || identity_generator(atome_preset)
     basic_params[:renderers] = @renderers || essential_params[:renderers]
     essential_params = basic_params.merge(essential_params)
-    params=essential_params.merge(params)
+    reordered_params = essential_params.reject { |key, _| params.has_key?(key) }
+    params = reordered_params.merge(params)
     # condition to handle color/shadow/paint atomes that shouldn't be attach to view
     if params[:type] == :color || params[:type] == :shadow || params[:type] == :paint
       params[:affect] = [id] unless params[:affect]
