@@ -600,13 +600,19 @@ class HTML
                       })
   end
 
-  def resize(bloc)
+  def resize(params, bloc)
     interact = JS.eval("return interact('##{@id}')")
+    min_width = params[:min][:width]
+    min_height = params[:min][:height]
+    max_width = params[:max][:width]
+    max_height = params[:max][:height]
+
     interact.resizable({
                          edges: { left: true, right: true, top: true, bottom: true },
                          inertia: true,
                          modifiers: [],
                          listeners: {
+
                            move: lambda do |native_event|
                              event = Native(native_event)
                              bloc.call({ width: event[:rect][:width], height: event[:rect][:height] }) if bloc.instance_of? Proc
@@ -617,11 +623,13 @@ class HTML
                              # Translate when resizing from any corner
                              x += event[:deltaRect][:left].to_f
                              y += event[:deltaRect][:top].to_f
+                             if width.to_i.between?(min_width, max_width) && height.to_i.between?(min_height, max_height)
+                               @element[:style][:left] = "#{x}px"
+                               @element[:style][:top] = "#{y}px"
+                               @element[:style][:width] = "#{width}px"
+                               @element[:style][:height] = "#{height}px"
+                             end
 
-                             @element[:style][:left] = "#{x}px"
-                             @element[:style][:top] = "#{y}px"
-                             @element[:style][:width] = "#{width}px"
-                             @element[:style][:height] = "#{height}px"
                            end
                          },
 

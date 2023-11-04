@@ -5,6 +5,6 @@ m.drag(true)
 m.on(:resize) do |event|
   puts event[:dx]
 end
-m.resize(true) do |event|
+m.resize({ min: {width: 10, height: 10} , max:{width: 300, height: 600}}) do |event|
   puts event
 end
