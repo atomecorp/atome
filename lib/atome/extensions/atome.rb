@@ -111,5 +111,24 @@ if (++x ===#{repeat} )  {
    }}, #{delay * 1000})
 `
   end
+  def tagged(params)
+    atome_get=[]
+    if params.instance_of? Hash
+      params.each do |tag_name, tag_value|
+        Universe.atomes.each do |atomes_id_found,atomes_found|
+          if atomes_found.tag[tag_name]== tag_value
+            atome_get << atomes_id_found
+          end
+        end
+      end
+    else
+      Universe.atomes.each do |atomes_id_found,atomes_found|
+        if atomes_found.tag[params]
+          atome_get << atomes_id_found
+        end
+      end
+    end
+    atome_get
+  end
 
 end

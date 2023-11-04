@@ -10,6 +10,7 @@ class Atome
     @history = {}
     @security = {}
     @callback = {}
+    @tag = {}
     @attached = []
     @unit = {}
     @collected = {}
