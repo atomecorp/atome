@@ -27,16 +27,9 @@ wait 0.5 do
 end
 
 the_text = text({ data: 'hello for al the people in front of their machine', center: true, top: 222, width: 777, component: { size: 66 } })
-# the_text = shape({id: :poil,type: :shape, width: 99, height: 99,color: :red,
-#
-#                   left: 100, top: 300, clones: []})
-# the_text = shape ({preset: :circle })
-# the_text = circle
-# alert the_text.inspect
+
 the_text.left(333)
-# the_text.attached([])
-#@type=:shape, @preset=:circle, @renderers=[:html], @broadcast={}, @id=:circle_20, @callback={}, @unit={}, @security={}, @left=100, @top=100, @store_allow=true, @attach=[:view], @apply=[:circle_color], @width=99, @attached=[], @height=99, @smooth="100%", @clones=[]>
-wait 0.3 do
+
   the_text.paint({ gradient:  [col_1.id, col_2.id], direction: :left , id: :painted_love })
-end
+
 # #TODO : gradient on text!

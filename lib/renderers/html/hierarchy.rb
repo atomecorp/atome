@@ -9,6 +9,8 @@ end
 # end
 
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
+
+  # TODO : factorise code below between text and shape, especially shadow as code is written twice and  identical
   case parent_found.type
   when :shadow
     shadows_to_apply = { filter: [], boxShadow: [] }
@@ -86,7 +88,28 @@ new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |par
   # TODO:   we should treat objet when multiple : #{self.inspect}
   case parent_found.type
   when :shadow
-
+    shadows_to_apply = { filter: [], boxShadow: [] }
+    shadow.each do |shadow_id_found|
+      shadow_found = grab(shadow_id_found)
+      red = shadow_found.red * 255
+      green = shadow_found.green * 255
+      blue = shadow_found.blue * 255
+      alpha = shadow_found.alpha
+      left = shadow_found.left
+      top = shadow_found.top
+      blur = shadow_found.blur
+      inset = :inset if shadow_found.invert
+      if shadow_found.option == :natural
+        shadows_to_apply[:filter] << "drop-shadow(#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}))"
+      else
+        shadows_to_apply[:boxShadow] << "#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}) #{inset}"
+      end
+    end
+    drop_shadow = shadows_to_apply[:filter].join(' ')
+    box_shadow = shadows_to_apply[:boxShadow].join(',')
+    html.style("transform", "translate3d(0, 0, 0)")
+    html.style("boxShadow", box_shadow)
+    html.style("filter", drop_shadow)
   when :color
       red = parent_found.red * 255
       green = parent_found.green * 255
