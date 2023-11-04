@@ -12,7 +12,7 @@ class Atome
     @callback = {}
     @attached = []
     @unit = {}
-    # @paint = {}
+    @collected = {}
     @id = new_atome[:id]
     @type = new_atome[:type]
     # @new_atome=new_atome
