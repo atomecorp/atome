@@ -35,3 +35,5 @@ new({ method: :top, type: :integer, specific: :color, renderer: :html })
 new({ method: :rotate, type: :integer, renderer: :html }) do |params|
   html.transform(:rotate, params)
 end
+
+new({ method: :rotate, type: :integer, renderer: :html, specific: :paint })
