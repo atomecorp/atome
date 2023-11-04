@@ -615,7 +615,9 @@ class HTML
 
                            move: lambda do |native_event|
                              event = Native(native_event)
-                             bloc.call({ width: event[:rect][:width], height: event[:rect][:height] }) if bloc.instance_of? Proc
+                             if bloc.instance_of? Proc
+                               bloc.call({ width: event[:rect][:width], height: event[:rect][:height] })
+                             end
                              x = (@element[:offsetLeft].to_f || 0)
                              y = (@element[:offsetTop].to_f || 0)
                              width = event[:rect][:width]
@@ -623,12 +625,15 @@ class HTML
                              # Translate when resizing from any corner
                              x += event[:deltaRect][:left].to_f
                              y += event[:deltaRect][:top].to_f
-                             if width.to_i.between?(min_width, max_width) && height.to_i.between?(min_height, max_height)
-                               @element[:style][:left] = "#{x}px"
-                               @element[:style][:top] = "#{y}px"
-                               @element[:style][:width] = "#{width}px"
-                               @element[:style][:height] = "#{height}px"
-                             end
+                         
+                             @element[:style][:width] = "#{width}px" if width.to_i.between?(min_width, max_width)
+
+                             # Vérifier et ajuster la hauteur indépendamment
+                             @element[:style][:height] = "#{height}px" if height.to_i.between?(min_height, max_height)
+
+                             # Les positions x et y peuvent être ajustées ici si nécessaire
+                             @element[:style][:left] = "#{x}px"
+                             @element[:style][:top] = "#{y}px"
 
                            end
                          },
