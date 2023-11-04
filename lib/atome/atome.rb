@@ -10,6 +10,7 @@ class Atome
     @history = {}
     @security = {}
     @callback = {}
+    @attached = []
     @unit = {}
     # @paint = {}
     @id = new_atome[:id]
