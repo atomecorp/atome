@@ -82,7 +82,7 @@ class Genesis
           if @type == :group
             unless %i[type id collected].include?(element)
               collected.each do |collected_found|
-                grab(collected_found).send(element, params)
+                grab(collected_found).send(element, params, &user_proc)
               end
             end
           else

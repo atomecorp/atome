@@ -132,40 +132,25 @@ c.touch(true) do
 end
 ############## Generator #############
 gen = generator({ id: :genesis, build: {top: 66, copies: 1} })
-gen.build({ id: :bundler, copies: 32, color: :red, width: 33, height: 44,  left: 123, smooth: 9, blur: 3, attach: [:view] })
+gen.build({ id: :bundler, copies: 32,  tag: {group: :to_grid},color: :red, width: 33, height: 44,  left: 123, smooth: 9, blur: 3, attach: [:view] })
 grab(:bundler_1).color(:blue)
-# ################ Group ################
-bbbbb=box
-bbbbb.circle({left: 0, top: 0, tag: {group: :to_grid}})
-bbbbb.box({left: 120, top: 120, tag: {group: :from_grid}})
-bbbbb.circle({left: 240, top: 240,  tag: {group: :from_grid}})
-bbbbb.box({left: 330, top: 330,tag: {group: :to_grid}})
-bbbbb.box({left: 330, top: 600,tag: :no_tag})
 
-the_view = grab(bbbbb.id)
 color({ id: :the_orange, red: 1, green: 0.4 })
 
-the_group = group({ collected: the_view.shape })
-wait 0.3 do
+atome_to_grid =  tagged({group: :to_grid })
+the_group = group({ collected: atome_to_grid })
+
+the_group.touch(true) do
+  alert :kool
+end
+# wait 0.3 do
   the_group.left(633)
-  wait 2 do
-    the_group.rotate(23)
-    wait 2 do
-      the_group.apply([:the_orange])
-      the_group.blur(6)
-    end
-  end
-end
-# puts the_group.collected
-
-
-
-tagged(:group).each do |atome_id|
-  grab(atome_id).color(:green)
-end
-
-
- tagged({group: :to_grid }).each do |atome_id|
-   grab(atome_id).color(:blue)
- end
-
+alert the_group.inspect
+  # wait 0.5 do
+  #   the_group.rotate(23)
+  #   wait 0.5 do
+  #     the_group.apply([:the_orange])
+  #     the_group.blur(6)
+  #   end
+  # end
+# end

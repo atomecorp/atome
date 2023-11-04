@@ -2,8 +2,8 @@
 # require 'json'
 # box({ color: :orange })
 
-# require "./examples/display"
-require "./examples/tagged"
+require "./examples/display"
+# require "./examples/tagged"
 # require "./examples/group"
 # require "./examples/clear"
 # require "./examples/match"

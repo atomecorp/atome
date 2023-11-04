@@ -156,7 +156,6 @@ new ({ particle: :build, store: false }) do |params|
   params[:id] = identity_generator(params[:type]) unless params[:id]
   atomes[params[:id]] = []
 
-  ###########@
   params[:copies].downto(0) do |index|
     item_number = params[:copies] - index
     bundle_id = if params[:id]
