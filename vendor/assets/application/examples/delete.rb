@@ -1,28 +1,25 @@
 # frozen_string_literal: true
 
 b = box()
+b.text('touch me')
 
 b.touch(true) do
-  # puts "1 : #{Universe.atomes.length}"
   c = grab(:view).circle({id: :circling, left: 222, color: :orange, blur: 6 })
   c.box({id: :boxing,color: :orange, width: 33, height: 33, left: 123})
-
   c.box({id: :boxy,color: :red, width: 33, height: 33, left: 333})
-  wait 0.2 do
+  c.text('touch me')
+  wait 0.5 do
     c.delete(:left)
-    wait 0.2 do
+    wait 0.5 do
       c.delete(:blur)
     end
-    # puts "2 : #{Universe.atomes.length}"
   end
 
   c.touch(true) do
-    # puts "---- #{Universe.atomes.length} ----"
     c.delete({ recursive: true })
-    # puts "--> #{Universe.atomes.length} <----"
   end
 end
-
+alert "object with sale id should not be created"
 
 ############
 # b = box({left: 333, id: :the_box_1})

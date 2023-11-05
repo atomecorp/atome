@@ -52,7 +52,7 @@ class Object
   end
 
   def box(params = {}, &proc)
-    grab(:view).box(params, &proc)
+      grab(:view).box(params, &proc)
   end
 
   def vector(params = {}, &proc)

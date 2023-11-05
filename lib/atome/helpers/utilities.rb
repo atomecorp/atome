@@ -236,7 +236,7 @@ class Atome
   # end
   def particle_callback(element)
     Atome.define_method "#{element}_callback" do
-      alert " chekc here if we need to change for an instance_exec instead of a bloc.call"
+      alert 'check here if we need to change for an instance_exec instead of a bloc.call'
       proc_found = instance_variable_get("@#{element}_code")[element]
       proc_found.call(@callback[element]) if proc_found.is_a? Proc
     end

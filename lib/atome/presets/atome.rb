@@ -32,10 +32,9 @@ class Atome
   end
 
   def preset_common(params, &bloc)
-    # params.delete(:preset)
-    # alert params[:preset]
-    # alert params
-    Atome.new(params, &bloc)
+    # if an atome with current id exist we update the ID in the params
+    params[:id]="#{params[:id]}_#{Universe.atomes.length}" if grab(params[:id])
+      Atome.new(params, &bloc)
   end
 
   def box(params = {}, &bloc)
