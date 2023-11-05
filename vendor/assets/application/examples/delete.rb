@@ -1,22 +1,30 @@
 # frozen_string_literal: true
 
 b = box()
-c = circle({ left: 222, color: :orange, blur: 6 })
-c.box({color: :red, width: 33, height: 33, left: 333})
-c.box({color: :orange, width: 33, height: 33, left: 123})
-wait 1 do
-  c.delete(:left)
-  wait 1 do
-    c.delete(:blur)
+
+b.touch(true) do
+  # puts "1 : #{Universe.atomes.length}"
+  c = grab(:view).circle({id: :circling, left: 222, color: :orange, blur: 6 })
+  c.box({id: :boxing,color: :orange, width: 33, height: 33, left: 123})
+
+  c.box({id: :boxy,color: :red, width: 33, height: 33, left: 333})
+  wait 0.2 do
+    c.delete(:left)
+    wait 0.2 do
+      c.delete(:blur)
+    end
+    # puts "2 : #{Universe.atomes.length}"
+  end
+
+  c.touch(true) do
+    # puts "---- #{Universe.atomes.length} ----"
+    c.delete({ recursive: true })
+    # puts "--> #{Universe.atomes.length} <----"
   end
 end
 
-b.touch(true) do
-  puts Universe.atomes.length
-  c.delete({ recursive: true })
-  puts Universe.atomes.length
-end
 
+############
 # b = box({left: 333, id: :the_box_1})
 # b.color({id: :the_orange_col, red: 1, blue: 0.5})
 # b.circle({top: 66, id: :the_circle_1, color: :yellow})

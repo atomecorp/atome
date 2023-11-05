@@ -8,14 +8,31 @@ new({ particle: :run }) do |params|
 end
 new({ particle: :broadcast })
 new({ particle: :data })
-# new({particle: :additional })
-new({ particle: :delete, render: false }) do |params, &user_proc|
+
+def delete_recursive(atome_id)
+  return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system])
+  parents_found = grab(atome_id).attach
+  parents_found.each do |parent_id_found|
+    parent_found = grab(parent_id_found)
+    new_array = parent_found.attached.dup
+    new_array.delete(atome_id)
+    parent_found.instance_variable_set('@attached', new_array)
+  end
+  grab(atome_id).attached.each do |atome_id_found|
+    delete_recursive(atome_id_found)
+  end
+  grab(atome_id).render(:delete, { :recursive => true })
+  grab(atome_id).touch(false)
+  Universe.delete(atome_id)
+end
+
+new({ particle: :delete, render: false }) do |params|
   if params == true
     # We use the tag persistent to exclude color of system object and other default colors
-    unless @tag && @tag[:persistent]
+    unless @tag && (@tag[:persistent] || @tag[:system])
       # now we detach the atome from it's parent
       # now we init rendering
-      render(:delete, params, &user_proc)
+      render(:delete, params)
       # the machine delete the current atome from the universe
       id_found = @id.to_sym
       parents_found = @attach
@@ -43,18 +60,15 @@ new({ particle: :delete, render: false }) do |params, &user_proc|
     # end
     # grab(params[:id]).delete(true)
   elsif params.instance_of? Hash
+
     if params[:recursive]
-      attached.each do |atome_id|
-        grab(atome_id).delete({ recursive: true })
-      end
-      render(:delete, params, &user_proc)
-      # the machine delete the current atome from the universe
-      id_found = @id.to_sym
-      parents_found = @attach
-      Universe.delete(id_found)
-      parents_found.each do |parent_id_found|
-        parent_found = grab(parent_id_found)
-        parent_found.attached.delete(id_found)
+      unless grab(@id).tag && (grab(@id).tag[:persistent] || grab(@id).tag[:system])
+        attached.each do |atttached_atomes|
+          delete_recursive(atttached_atomes)
+        end
+        touch(false)
+        render(:delete, params)
+        Universe.delete(@id)
       end
     else
       # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
@@ -112,6 +126,7 @@ end
 new({ particle: :cursor })
 
 new({ particle: :preset }) do |params|
+
   if params.instance_of? Hash
     Essentials.new_default_params(params)
     params_to_send = params
@@ -119,6 +134,7 @@ new({ particle: :preset }) do |params|
     params_to_send = Essentials.default_params[params].dup
     # we remove preset to avoid infinite loop
     params_to_send.delete(:preset)
+    params_to_send.delete(:type)
     params_to_send.each do |particle_found, value|
       send(particle_found, value)
     end

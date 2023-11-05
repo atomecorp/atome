@@ -677,14 +677,13 @@ class HTML
   end
 
   def touch_tap(bloc)
-
     interact = JS.eval("return interact('##{@id}')")
     interact.on('tap') do |event|
       @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
     end
   end
 
-  def touch_false(bloc)
+  def touch_false(_bloc)
     interact = JS.eval("return interact('##{@id}')")
     interact.unset
   end
@@ -794,5 +793,11 @@ class HTML
   def stop_animation
     JS.eval("if (window.currentAnimation) window.currentAnimation.stop();")
   end
+
+
+  # def remove_event(bloc)
+  #   interact = JS.eval("return interact('##{@id}')")
+  #   interact.off('tap', &bloc)
+  # end
 
 end
