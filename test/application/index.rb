@@ -2,10 +2,10 @@
 # require 'json'
 # box({ color: :orange })
 
-# require "./examples/display"
+require "./examples/display"
 # require "./examples/debug"
 # require "./examples/presets"
-require "./examples/delete"
+# require "./examples/delete"
 # require "./examples/resize"
 # require "./examples/on_resize"
 # require "./examples/touch"

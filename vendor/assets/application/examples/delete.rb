@@ -19,7 +19,6 @@ b.touch(true) do
     c.delete({ recursive: true })
   end
 end
-alert "object with sale id should not be created"
 
 ############
 # b = box({left: 333, id: :the_box_1})
