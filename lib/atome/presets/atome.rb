@@ -49,11 +49,11 @@ class Atome
     preset_common(params, &bloc)
   end
 
-  def vector(params = {}, &bloc)
-    atome_preset = :vector
-    params = atome_common(atome_preset, params)
-    preset_common(params, &bloc)
-  end
+  # def vector(params = {}, &bloc)
+  #   atome_preset = :vector
+  #   params = atome_common(atome_preset, params)
+  #   preset_common(params, &bloc)
+  # end
 
 end
 

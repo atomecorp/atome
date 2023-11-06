@@ -141,3 +141,13 @@ function distant_terminal(id, cmd) {
 //
 // // Lire le fichier
 // readAndDisplayFile(filePath);
+
+function createSvgElement(tagName, attributes) {
+    var elem = document.createElementNS('http://www.w3.org/2000/svg', tagName);
+    for (var attr in attributes) {
+        if (attributes.hasOwnProperty(attr)) {
+            elem.setAttribute(attr, attributes[attr]);
+        }
+    }
+    return elem;
+}

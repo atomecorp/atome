@@ -4,6 +4,8 @@ new({ renderer: :html, method: :attach, type: :string }) do |parent_found, _user
   html.append_to(parent_found)
 end
 
+
+
 # new({ renderer: :html, method: :attach, type: :string, specific: :color }) do |parent_found, _user_proc|
 #   grab(parent_found).apply(id)
 # end

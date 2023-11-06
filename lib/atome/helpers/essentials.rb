@@ -24,7 +24,7 @@ module Essentials
     box: { type: :shape, width: 99, height: 99,
            apply: [:box_color],
            left: 100, top: 100, clones: [], preset: :box },
-    vector: { type: :shape, width: 99, height: 99,
+    vector: { type: :vector, width: 99, height: 99,
               attached: [],
               left: 100, top: 100, clones: [], preset: :vector, definition: corp },
     circle: { type: :shape, width: 99, height: 99, smooth: '100%',

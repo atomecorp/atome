@@ -95,15 +95,6 @@ new({ post: :generator }) do |params|
   grab(params[:id]).build(build_plans)
 end
 new({ atome: :paint })
-# new({ sanitizer: :paint }) do |params|
-#   if params[:id]
-#     id_found= params.delete(:id)
-#     params={id: id_found, renderers: [], type: :paint, data: params }
-#   else
-#     params={ renderers: [], type: :paint, data: params }
-#
-#   end
-#   params
-# end
+new({ atome: :vector})
 
 

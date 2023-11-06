@@ -6,6 +6,10 @@ new({ method: :type, type: :string, renderer: :html }) do |_value, _user_proc|
   html.shape(@id)
 end
 
+new({ method: :type, type: :string, renderer: :html, specific: :vector }) do |_value, _user_proc|
+  html.svg(@id)
+end
+
 new({ method: :type, type: :string, renderer: :html, specific: :image }) do |_value, _user_proc|
   html.image(@id)
 end
@@ -45,6 +49,13 @@ end
 
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |value, _user_proc|
   html.innerText(value)
+end
+
+new({ method: :data, type: :string, specific: :vector, renderer: :html }) do |value, _user_proc|
+  html.svg_data(value)
+  # wait 1 do
+  #   html.test
+  # end
 end
 
 new({ method: :component, type: :hash, specific: :text, renderer: :html }) do |params, _user_proc|
