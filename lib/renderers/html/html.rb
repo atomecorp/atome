@@ -288,18 +288,26 @@ class HTML
     self
   end
 
-  def svg_data(path)
-    svg_ns = "http://www.w3.org/2000/svg"
-    new_path = JS.global[:document].createElementNS(svg_ns, "path")
-    JS.global[:document][:body].appendChild(new_path)
-    new_path.setAttribute('viewBox', '0 0 1024 1024')
-    new_path.setAttribute('version', '1.1')
-    new_path.setAttribute('id', 'myPath')
-    new_path.setAttribute('d', 'M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80')
-    new_path.setAttribute('stroke', 'black')
-    new_path.setAttribute('stroke-width', 5)
-    new_path.setAttribute('fill', 'red')
-    @element.appendChild(new_path)
+  def svg_data(data)
+    data.each do |type_passed, datas|
+      svg_ns = "http://www.w3.org/2000/svg"
+      new_path = JS.global[:document].createElementNS(svg_ns, type_passed)
+      JS.global[:document][:body].appendChild(new_path)
+      datas.each do |property, value|
+        new_path.setAttribute(property, value)
+      end
+      @element.appendChild(new_path)
+    end
+  end
+
+  def update_svg_data(data)
+    data.each do |type_passed, datas|
+      element_to_update = JS.global[:document].getElementById(type_passed)
+      datas.each do |property, value|
+        puts "#{property}, #{value}"
+        element_to_update.setAttribute(property, value)
+      end
+    end
   end
 
   def raw_data(html_string)
@@ -687,9 +695,6 @@ class HTML
       scroll_top = @element[:scrollTop].to_i
       scroll_left = @element[:scrollLeft].to_i
       bloc.call({ left: scroll_left, top: scroll_top }) if bloc.is_a? Proc
-      # scroll_position = container[:scrollTop].to_i
-      # new_height = initialHeight + scroll_position
-      # circle[:style][:height] = "#{new_height}px"
     end)
   end
 

@@ -65,6 +65,10 @@ new({ method: :component, type: :hash, specific: :text, renderer: :html }) do |p
   end
 end
 
+new({ method: :component, type: :hash, specific: :vector, renderer: :html }) do |params, _user_proc|
+  html.update_svg_data(params)
+end
+
 new({ method: :path, type: :string, renderer: :html }) do |value, _user_proc|
   html.path(value)
 end
