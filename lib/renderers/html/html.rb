@@ -275,75 +275,11 @@ class HTML
     self
   end
 
-  # ######
-
-  def html_element(type)
-    markup_found = @original_atome.markup || type
-    element_type = markup_found.to_s
-    new_element = JS.global[:document].createElement(element_type)
-    @element.appendChild(new_element)
-    # add_class('atome')
-    # new_element.attr('id', id)
-    new_element
-  end
-
   def svg(id)
-
-    ############ soluce
-    # Étape 1 : Création de l'élément SVG
-    svg_ns = "http://www.w3.org/2000/svg"
-    svg = JS.global[:document].createElementNS(svg_ns, "svg")
-    svg.setAttribute("width", "100")
-    svg.setAttribute("height", "100")
-    svg.setAttribute("viewBox", "0 0 100 100")
-
-    # Étape 2 : Ajout d'un élément path simple
-    path = JS.global[:document].createElementNS(svg_ns, "path")
-    path.setAttribute("d", "M10 10 H 90 V 90 H 10 L 10 10")
-    path.setAttribute("stroke", "black")
-    path.setAttribute("stroke-width", "2")
-    path.setAttribute("fill", "transparent")
-
-    # Ajouter le path au SVG
-    svg.appendChild(path)
-
-    # Ajouter le SVG au body du document
-    JS.global[:document][:body].appendChild(svg)
-    ############## end soluce
-
-    ##################### last solution
-
-
-    create_svg = <<~STR
-      var svg = createSvgElement('svg', { id: 'mySvg', width: 200, height: 200 });
-      var circle = createSvgElement('circle', {id: 'myCircle', cx: 50, cy: 50, r: 40, stroke: 'green', 'stroke-width': 4, fill: 'yellow' });
-      svg.appendChild(circle);
-      document.getElementById('view').appendChild(svg);
-    STR
-
-    add_svg_path= <<~STR
-  var svg = document.getElementById('mySvg');
-         var path = createSvgElement('path', {
-        id: 'myPath',
-        d: 'M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80',
-        stroke: 'black',
-        'stroke-width': 2,
-        fill: 'none'
-      });
-      svg.appendChild(path);
-    STR
-
-
-
-    JS.eval(create_svg)
-    wait 1 do
-      JS.eval(add_svg_path)
-    end
-    ##################### end last solution
-
     markup_found = @original_atome.markup || 'svg'
     @element_type = markup_found.to_s
-    @element = JS.global[:document].createElement(@element_type)
+    svg_ns = "http://www.w3.org/2000/svg"
+    @element = JS.global[:document].createElementNS(svg_ns, "svg")
     JS.global[:document][:body].appendChild(@element)
     @element.setAttribute('viewBox', '0 0 1024 1024')
     @element.setAttribute('version', '1.1')
@@ -353,84 +289,18 @@ class HTML
   end
 
   def svg_data(path)
-
-    # @element.setAttribute('viewBox', '0 0 1024 1024')
-    # @element.setAttribute('version', '1.1')
-    # puts html_string
-    # @element[:innerHTML] = html_string
-
-    # ############ works #############
-    # pre_tag=  '<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">'
-    # post_tag='</svg>'
-    # path="#{pre_tag}#{path}#{post_tag}"
-    # alert
-    # path_created=html_element(:path)
     svg_ns = "http://www.w3.org/2000/svg"
-    new_path_element = JS.global[:document].createElementNS(svg_ns, "path")
-    # Configurer les attributs de l'élément path ici
-    new_path_element.setAttribute("d", "M10 10 H 90 V 90 H 10 L 10 10")
-
-    @element.appendChild(new_path_element)
-
-    # path_created.setAttribute("d", path)
-    # path_created.setAttribute("stroke", "black")
-    # path_created.setAttribute("stroke-width", "8")
-    # path_created.setAttribute("fill", "black")
-
-    # path_created[:innerHTML] = path
-    # JS.global[:document].getElementById('toto')[:innerHTML] = path
-    # @element[:innerHTML] = path
-    # # ############ works #############
-
-    ############### solution
-    # old_svg_element = JS.global[:document].getElementById(@id)
-    #
-    # # Créez un nouvel élément SVG
-    # svg_ns = "http://www.w3.org/2000/svg"
-    # new_svg_element = JS.global[:document].createElementNS(svg_ns, "svg")
-    #
-    # # Définissez le contenu intérieur de la nouvelle balise SVG avec le nouveau chemin SVG
-    #
-    # pre_tag=  '<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">'
-    # post_tag='</svg>'
-    # path="#{pre_tag}#{path}#{post_tag}"
-    # new_svg_element.innerHTML = path
-    #
-    # alert new_svg_element
-    # alert old_svg_element
-    #
-    # # Remplacez l'ancien élément SVG par le nouveau
-    # old_svg_element.parentNode.replaceChild(new_svg_element, old_svg_element)
-
-    ################ solution
-
-    # svg_ns = "http://www.w3.org/2000/svg"
-    # # Crée un nouvel élément path avec l'espace de noms SVG
-    # path_element = JS.global[:document].createElementNS(svg_ns, "path")
-    # # Définit les attributs du chemin
-    # path_element.setAttribute("d", path_data)
-    # path_element.setAttribute("stroke", "black")
-    # path_element.setAttribute("stroke-width", "8")
-    # path_element.setAttribute("fill", "black")
-
-    # Récupère l'élément SVG existant par ID et ajoute le nouvel élément path
-    # svg_element = JS.global[:document][:getElementById].call(@id)
-    # @element.appendChild(path_element)
-
+    new_path = JS.global[:document].createElementNS(svg_ns, "path")
+    JS.global[:document][:body].appendChild(new_path)
+    new_path.setAttribute('viewBox', '0 0 1024 1024')
+    new_path.setAttribute('version', '1.1')
+    new_path.setAttribute('id', 'myPath')
+    new_path.setAttribute('d', 'M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80')
+    new_path.setAttribute('stroke', 'black')
+    new_path.setAttribute('stroke-width', 5)
+    new_path.setAttribute('fill', 'red')
+    @element.appendChild(new_path)
   end
-
-  # def test
-  #   @element.setAttribute('viewBox', '0 0 1024 1024')
-  #   @element.setAttribute('version', '1.1')
-  #   # @element.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
-  #   # @original_atome.width(700)
-  #   @original_atome.left(33)
-  #   @original_atome.top(33)
-  #   @element[:style][:display] = 'block'
-  # end
-  #
-  #
-  # #####
 
   def raw_data(html_string)
     @element[:innerHTML] = html_string
