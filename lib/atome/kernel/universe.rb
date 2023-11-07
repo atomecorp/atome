@@ -192,7 +192,7 @@ class Universe
     end
 
     def historicize(id, operation, element, params)
-      @history[@history.length] = { id => { operation => { element => params } }, sync: false }
+      @history[@history.length] = { id => { operation => { element => params } }, sync: false, time: Time.now }
     end
 
     def story(filter)
@@ -205,7 +205,7 @@ class Universe
       filtered_history = []
       @history.each do |operation_number, alteration|
         if alteration[atome_id] && (alteration[atome_id][operation]) && (alteration[atome_id][operation][particle])
-          filtered_history << { operation: operation_number, filter[:particle] => alteration[atome_id][operation][particle], sync: alteration[:sync] }
+          filtered_history << { operation: operation_number, filter[:particle] => alteration[atome_id][operation][particle], sync: alteration[:sync], time: alteration[:time] }
         end
       end
       filtered_history
