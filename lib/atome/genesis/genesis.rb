@@ -94,16 +94,16 @@ class Genesis
           # we add the changes to the stack that must be synchronised
           Universe.historicize(@id, :write, element, params)
         elsif (params || params == false)
-          puts "send a valid password to write #{element} value"
+          "send a valid password to write #{element} value"
         elsif read_auth(element)
-          value_found=instance_variable_get("@#{element}")
+          value_found = instance_variable_get("@#{element}")
           # uncomment below to  historicize all read action
           # Universe.historicize(@id, :read, element, value_found)
           value_found
           # TODO : create a fast method to get particle: eg:
           #  Atome.define_method "set_#{element}" ... =>  send("set_#{element}"
         else
-          puts "send a valid password to read #{element} value"
+          "send a valid password to read #{element} value"
         end
       end
     end
@@ -146,7 +146,7 @@ class Genesis
         # Object.const_set(element, Module.new)
         # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
         # to the shape particles list : @!atome[:shape] << params[:id]
-          Atome.new(params, &user_proc)
+        Atome.new(params, &user_proc)
         # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
       end
 

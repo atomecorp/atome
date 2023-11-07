@@ -13,7 +13,6 @@ new ({ sanitizer: :security }) do |params|
       read_password = protection[:read][:password]
       protection[:read][:password] = Black_matter.encode(read_password) if read_password
     end
-
   end
   params
 end
