@@ -41,11 +41,6 @@ end
 new({ method: :type, type: :string, specific: :color, renderer: :html }) do
 end
 
-# new({ method: :type, type: :string, specific: :shadow, renderer:  }) do
-#   # alert "on est en est ici : id is : "
-#   # html.shadow(id)
-#   # html.innerText(value)
-# end
 
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |value, _user_proc|
   html.innerText(value)

@@ -304,9 +304,34 @@ class HTML
     data.each do |type_passed, datas|
       element_to_update = JS.global[:document].getElementById(type_passed)
       datas.each do |property, value|
-        puts "#{property}, #{value}"
         element_to_update.setAttribute(property, value)
       end
+    end
+  end
+
+  def get_svg_children_ids
+    command = <<-JS
+      var svgElement = document.getElementById("#{@id}");
+      if (!svgElement) {
+        console.log("SVG Element not found");
+        return []; 
+      }
+      var children = svgElement.children;
+      var ids = [];
+      for (var i = 0; i < children.length; i++) {
+        ids.push(children[i].id);
+      }
+  ids
+    JS
+    JS.eval("return #{command}")
+  end
+
+  def colorize_svg_data(data)
+    puts get_svg_children_ids
+    get_svg_children_ids.each do |svg_child_id|
+      element_to_update = JS.global[:document].getElementById(svg_child_id)
+      element_to_update.setAttribute(:fill, data)
+      element_to_update.setAttribute(:stroke, data)
     end
   end
 

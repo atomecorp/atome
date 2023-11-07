@@ -6,9 +6,17 @@ v = vector({ data: { path: { d: edition, id: :p1, stroke: :black, 'stroke-width'
 
 wait 1 do
   v.data(circle: { cx: 1000, cy: 1000, r: 340, id: :p2, stroke: :green, 'stroke-width' => 35, fill: :yellow })
-  v.color(:orange)
   wait 1 do
-    v.component(p2: {fill: :blue,'stroke-width' => 166 })
+    v.color(:cyan) # colorise everything with the color method
+    wait 1 do
+      v.shadow({
+                 id: :s4,
+                 left: 20, top: 0, blur: 9,
+                 option: :natural,
+                 red: 0, green: 1, blue: 0, alpha: 1
+               })
+      v.component(p2: {fill: :blue,'stroke-width' => 166 })
+    end
   end
 end
 
