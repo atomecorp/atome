@@ -185,7 +185,9 @@ class Universe
     end
 
     def synchronised(action_nb, pass)
+
       return unless Black_matter.check_password(pass, Black_matter.password)
+
       @history[action_nb][:sync] = true
     end
 
@@ -194,7 +196,6 @@ class Universe
     end
 
     def story(filter)
-
       # temp algo awaiting db to be ready, just for POC and tests
       return unless filter
 

@@ -27,5 +27,3 @@ new ({ sanitizer: :password }) do |params|
   end
   params
 end
-
-

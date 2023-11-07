@@ -74,6 +74,13 @@ machine({ id: machine_id, password: default_password, name: :macAir, data: { dat
 
 human({ id: :anonymous, login: true, password: default_password, data: { birthday: '10/05/1996' }, tag: { system: true } })
 
+# default_user.set_current_user(:anonymous)
+Universe.current_machine = machine_id
+# the constant A is used to access alla atomes methods
+A = Atome.new(
+  { renderers: default_render, id: :atome, type: :element, tag: { system: true }, attach: [], attached: [] }
+)
+
 # atome infos
 def atome_infos
   puts "atome version: #{Atome::VERSION}"
@@ -88,11 +95,4 @@ def atome_infos
   server ||= 'disconnected'
   puts "server: #{server}"
 end
-
-# default_user.set_current_user(:anonymous)
-Universe.current_machine = machine_id
 atome_infos
-# the constant A is used to access alla atomes methods
-A = Atome.new(
-  { renderers: default_render, id: :atome, type: :element, tag: { system: true }, attach: [], attached: [] }
-)

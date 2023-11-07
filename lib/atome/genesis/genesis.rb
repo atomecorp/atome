@@ -95,11 +95,14 @@ class Genesis
           Universe.historicize(@id, :write, element, params)
 
         elsif read_auth(element)
-          instance_variable_get("@#{element}")
+          value_found=instance_variable_get("@#{element}")
+          # uncomment below to  historicize all read action
+          # Universe.historicize(@id, :read, element, value_found)
+          value_found
           # TODO : create a fast method to get particle: eg:
           #  Atome.define_method "set_#{element}" ... =>  send("set_#{element}"
         else
-          "#{element} particle read need a password"
+          puts "send a valid password to read #{element} value"
         end
       end
     end

@@ -5,6 +5,7 @@ class Atome
   class << self
     def controller_sender(message)
       return if $host == :html
+
       json_msg = message.to_json
       atome_js.JS.controller_sender(json_msg)
     end
@@ -71,36 +72,7 @@ class Atome
 
   end
 
-  def authorise(password, destroy = true)
-    @temps_authorisation = [password, destroy]
-  end
 
-  def write_auth(element)
-    if @security[element]
-      password_found = @temps_authorisation[0]
-      authorisation = Black_matter.check_password(password_found, Black_matter.password)
-      password_destruction = @temps_authorisation[1]
-      @temps_authorisation = [nil, true] if password_destruction
-      return true if authorisation
-      false
-    else
-      true
-    end
-    true
-  end
-
-  def read_auth(element)
-    if @security[element]
-      password_found = @temps_authorisation[0]
-      authorisation = Black_matter.check_password(password_found, Black_matter.password)
-      password_destruction = @temps_authorisation[1]
-      @temps_authorisation = [nil, true] if password_destruction
-      true if authorisation
-    else
-      true
-    end
-    true
-  end
 
   def particle_main(element, params, &user_proc)
     # TODO : optimise below removing all conditions if possible
@@ -302,6 +274,7 @@ class Atome
     hash = {}
     instance_variables.each do |var|
       next if var == :@html_object || var == :@history || var == :@store_allow
+
       hash[var.to_s.delete('@').to_sym] = instance_variable_get(var)
     end
     hash
