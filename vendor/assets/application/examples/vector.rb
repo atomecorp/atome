@@ -16,6 +16,7 @@ wait 1 do
                  red: 0, green: 1, blue: 0, alpha: 1
                })
       v.component(p2: {fill: :blue,'stroke-width' => 166 })
+      v.left(222)
     end
   end
 end

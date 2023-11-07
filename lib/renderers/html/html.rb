@@ -313,7 +313,6 @@ class HTML
     command = <<-JS
       var svgElement = document.getElementById("#{@id}");
       if (!svgElement) {
-        console.log("SVG Element not found");
         return []; 
       }
       var children = svgElement.children;
@@ -327,7 +326,6 @@ class HTML
   end
 
   def colorize_svg_data(data)
-    puts get_svg_children_ids
     get_svg_children_ids.each do |svg_child_id|
       element_to_update = JS.global[:document].getElementById(svg_child_id)
       element_to_update.setAttribute(:fill, data)
