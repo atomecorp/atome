@@ -22,7 +22,7 @@ new ({ particle: :password })
 new ({ sanitizer: :password }) do |params|
   params = Black_matter.encode(params)
   if type == :human
-    # we store the hashed password inti the Universe for easy access
+    # we store the hashed password into the Universe for easier access
     Black_matter.set_password(params)
   end
   params

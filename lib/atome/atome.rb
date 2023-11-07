@@ -16,6 +16,7 @@ class Atome
     @collected = {}
     @id = new_atome[:id]
     @type = new_atome[:type]
+    @temp_authorisation=[]
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     # we reorder the hash

@@ -93,7 +93,8 @@ class Genesis
           # we historicize all write action below
           # we add the changes to the stack that must be synchronised
           Universe.historicize(@id, :write, element, params)
-
+        elsif (params || params == false)
+          puts "send a valid password to write #{element} value"
         elsif read_auth(element)
           value_found=instance_variable_get("@#{element}")
           # uncomment below to  historicize all read action

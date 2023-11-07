@@ -5,7 +5,7 @@ class Black_matter
     end
 
     def check_password(input_password, stored_hash)
-      input_hash = encode(input_password.to_s)
+      input_hash = encode(input_password)
       input_hash == stored_hash
     end
 

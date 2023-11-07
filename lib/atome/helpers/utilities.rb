@@ -282,7 +282,6 @@ class Atome
 
   def refresh
     to_hash.each do |k, v|
-      puts "sending #{k}, #{v}"
       send(k, v)
     end
   end
