@@ -21,6 +21,8 @@ class Object
       Atome.instance_variable_set("@post_#{params[:post]}", bloc)
     elsif params.key?(:after)
       Atome.instance_variable_set("@after_#{params[:after]}", bloc)
+    elsif params.key?(:read)
+      Atome.instance_variable_set("@read_#{params[:read]}", bloc)
     elsif params[:renderer]
       renderer_found = params[:renderer]
       if params[:specific]

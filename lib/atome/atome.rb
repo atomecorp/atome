@@ -16,9 +16,11 @@ class Atome
     @collected = {}
     @id = new_atome[:id]
     @type = new_atome[:type]
-    @temp_authorisation=[]
+    # @authorisations={}
+
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
+    # new_atome[:password]={read: :tot, write: :toto} unless new_atome[:password]
     # we reorder the hash
     ordered_keys = [:renderers, :id, :type]
     ordered_part = ordered_keys.map { |k| [k, new_atome[k]] }.to_h

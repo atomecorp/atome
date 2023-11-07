@@ -85,8 +85,6 @@ class Genesis
                 grab(collected_found).send(element, params, &user_proc)
               end
             end
-          else
-            # to be written
           end
           send("set_#{element}", params, &user_proc) # sent to : Atome.define_method "set_#{element}" ..
 
@@ -99,6 +97,7 @@ class Genesis
           value_found = instance_variable_get("@#{element}")
           # uncomment below to  historicize all read action
           # Universe.historicize(@id, :read, element, value_found)
+          value_found= particle_read(element, value_found, &user_proc)
           value_found
           # TODO : create a fast method to get particle: eg:
           #  Atome.define_method "set_#{element}" ... =>  send("set_#{element}"

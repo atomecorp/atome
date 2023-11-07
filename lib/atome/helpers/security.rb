@@ -2,38 +2,77 @@
 
 # extensions for security
 class Atome
-  def authorise(input_password, destroy = true)
-    password=Black_matter.encode(input_password)
-    @temp_authorisation = [password, destroy]
+  def authorise(autorisations)
+    autorisations[:read]&.each do |k, v|
+      autorisations[:read][k] = Black_matter.encode(v)
+      # autorisations[:read][k] = v
+
+    end
+    autorisations[:write]&.each do |k, v|
+      autorisations[:write][k] = Black_matter.encode(v)
+      # autorisations[:write][k] = v
+    end
+
+    @authorisations = autorisations
+  end
+
+  def check_password_destruction(operation, element)
+    return unless @authorisations[:destroy]
+    @authorisations[operation].delete(element)
   end
 
   def write_auth(element)
-    if @security[element]
-      password_found = @temp_authorisation[0]
-      # puts @temp_authorisation[0]
+    if (@password && @password[:write]) && @authorisations && @authorisations[:write]
+      if !@authorisations[:write][element]
+        return false
+      elsif @password[:write][element] == @authorisations[:write][element]
+        # we check if we a specific password to read the particle
+        check_password_destruction(:write, element)
+        return true
+      elsif @authorisations[:write][:atome] == @password[:write][:atome]
 
-      authorisation = Black_matter.check_password(password_found, Black_matter.password)
-      password_destruction = @temp_authorisation[1]
-      @temp_authorisation = [nil, true] if password_destruction
-      return authorisation
-
+        puts "#{@authorisations[:write][:atome]} == #{@password[:write][:atome]}"
+        check_password_destruction(:write, element)
+        # we check if we a a password that allow to read the whole atome so all the particles
+        return true
+        # elsif password[:write][:atome] == Black_matter.password[:write][:atome]
+        #   # last chance we try to find if the user password stored globally works
+        #   return true
+      else
+        check_password_destruction(:write, element)
+        return false
+      end
+      check_password_destruction(:write, element)
     else
       true
     end
-    true
   end
 
   def read_auth(element)
-    if @security[element]
-      password_found = @temp_authorisation[0]
-      authorisation = Black_matter.check_password(password_found, Black_matter.password)
-      password_destruction = @temp_authorisation[1]
-      @temp_authorisation = [nil, true] if password_destruction
-      return authorisation
+
+    if (@password && @password[:read]) && @authorisations && @authorisations[:read]
+      if !@authorisations[:read][element]
+        return false
+      elsif @password[:read][element] == @authorisations[:read][element]
+        check_password_destruction(:read, element)
+        # we check if we a specific password to read the particle
+        return true
+      elsif @authorisations[:read][:atome] == @password[:read][:atome]
+        check_password_destruction(:read, element)
+        # we check if we a a password that allow to read the whole atome so all the particles
+        return true
+        # elsif password[:read][:atome] == Black_matter.password[:read][:atome]
+        #   # last chance we try to find if the user password stored globally works
+        #   return true
+      else
+        check_password_destruction(:read, element)
+
+        return false
+      end
+      check_password_destruction(:read, element)
     else
       true
     end
-    true
   end
 
 end

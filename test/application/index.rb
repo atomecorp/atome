@@ -5,6 +5,7 @@
 # require "./examples/display"
 # require "./examples/vector"
 require "./examples/security"
+# require "./examples/sync"
 # require "./examples/refresh"
 # require "./examples/history"
 # require "./examples/image"

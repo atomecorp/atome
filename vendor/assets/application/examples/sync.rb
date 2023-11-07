@@ -1,5 +1,4 @@
 #  frozen_string_literal: true
-
 b = box({ id: :the_box })
 b.data(:canyouwritethis)
 b.rotate(33)

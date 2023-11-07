@@ -83,6 +83,15 @@ class Atome
     params
   end
 
+  def particle_read(element, params, &user_proc)
+    if Atome.instance_variable_get("@read_#{element}").is_a?(Proc) # post is before rendering and broadcasting
+      params = instance_exec(params, user_proc, self, &Atome.instance_variable_get("@read_#{element}"))
+    end
+    params
+  end
+
+
+
   def particle_sanitizer(element, params, &user_proc)
 
     bloc_found = Universe.get_sanitizer_method(element)

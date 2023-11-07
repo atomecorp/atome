@@ -68,7 +68,7 @@ Atome.new(
 )
 
 machine_id = :dummy_machine
-default_password = :star_wars
+default_password = { read: {atome: :star_wars},write: {atome: :star_wars} }
 
 machine({ id: machine_id, password: default_password, name: :macAir, data: { date: '10090717' }, tag: { system: true } })
 

@@ -1,28 +1,35 @@
 # frozen_string_literal: true
 
-new ({ particle: :security })
-
-new ({ sanitizer: :security }) do |params|
-  params.each do |_particle, protection|
-    if protection[:write]
-      write_password = protection[:write][:password]
-      protection[:write][:password] = Black_matter.encode(write_password) if write_password
-    end
-
-    if protection[:read]
-      read_password = protection[:read][:password]
-      protection[:read][:password] = Black_matter.encode(read_password) if read_password
-    end
-  end
-  params
-end
 
 new ({ particle: :password })
 new ({ sanitizer: :password }) do |params|
-  params = Black_matter.encode(params)
+  params = { read: params, write: params } unless params.instance_of? Hash
+
+  # encoding below
+  params[:read]&.each do |k, v|
+    params[:read][k] = Black_matter.encode(v)
+    # params[:read][k] = v
+  end
+  params[:write]&.each do |k, v|
+    params[:write][k] = Black_matter.encode(v)
+    # params[:write][k] = v
+  end
+
+  params[:read] = Black_matter.password unless params[:read]
+  params[:write] = Black_matter.password unless params[:write]
+
   if type == :human
     # we store the hashed password into the Universe for easier access
     Black_matter.set_password(params)
   end
+  params
+end
+
+new({ read: :password }) do |params|
+  params = Black_matter.password if params.nil?
+  unless @authorisations[:write][:atome]
+    params[:read][:atome]=Black_matter.password[:read][:atome]
+  end
+  params[:write][:atome]=Black_matter.password[:write][:atome] unless @authorisations[:write][:atome]
   params
 end
