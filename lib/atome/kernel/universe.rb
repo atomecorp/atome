@@ -185,7 +185,7 @@ class Universe
     end
 
     def synchronised(action_nb, pass)
-      return unless pass == Black_matter.password[:read][:atome]
+      return unless Black_matter.encode(pass) == Black_matter.password[:read][:atome]
 
       @history[action_nb][:sync] = true
     end

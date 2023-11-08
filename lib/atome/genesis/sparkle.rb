@@ -68,11 +68,13 @@ Atome.new(
 )
 
 machine_id = :dummy_machine
-default_password = { read: {atome: :star_wars},write: {atome: :star_wars} }
+# attention we must used two separate pass to avoid the password to be encode twice
+machine_password = { read: {atome: :star_wars},write: {atome: :star_wars} }
+user_password = { read: {atome: :star_wars},write: {atome: :star_wars} }
 
-machine({ id: machine_id, password: default_password, name: :macAir, data: { date: '10090717' }, tag: { system: true } })
+machine({ id: machine_id, password: machine_password, name: :macAir, data: { date: '10090717' }, tag: { system: true } })
 
-human({ id: :anonymous, login: true, password: default_password, data: { birthday: '10/05/1996' }, tag: { system: true } })
+human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' }, tag: { system: true } })
 
 # default_user.set_current_user(:anonymous)
 Universe.current_machine = machine_id

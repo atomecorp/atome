@@ -3,6 +3,7 @@
 
 new ({ particle: :password })
 new ({ sanitizer: :password }) do |params|
+
   params = { read: params, write: params } unless params.instance_of? Hash
 
   # encoding below

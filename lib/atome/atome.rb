@@ -8,7 +8,7 @@ class Atome
     # the keys :renderers, :type and :id should be placed in the first position in the hash
     @broadcast = {}
     @history = {}
-    @security = {}
+    # @security = {}
     @callback = {}
     @tag = {}
     @attached = []
@@ -35,7 +35,7 @@ class Atome
 
   def particle_creation(element, params, store, rendering, &user_proc)
 
-    @store_allow = false
+    # @store_allow = false
     params = particle_main(element, params, &user_proc)
     # Params is now an instance variable so it should be passed thru different methods
     instance_variable_set("@#{element}", params) if store
@@ -49,7 +49,7 @@ class Atome
     # post rendering processor
     params = particle_post(element, params, &user_proc)
     instance_variable_set("@#{element}", params) if store
-    @store_allow = true
+    # @store_allow = true
     # post storage processor
     particle_after(element, params, &user_proc)
     self

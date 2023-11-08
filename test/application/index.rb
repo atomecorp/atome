@@ -2,10 +2,12 @@
 # require 'json'
 # box({ color: :orange })
 
+# require "./examples/generator_and_build"
 # require "./examples/display"
+# require "./examples/clones"
 # require "./examples/vector"
-require "./examples/security"
-# require "./examples/sync"
+# require "./examples/security"
+require "./examples/sync"
 # require "./examples/refresh"
 # require "./examples/history"
 # require "./examples/image"

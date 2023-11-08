@@ -158,54 +158,6 @@ new({ particle: :browse })
 new({ particle: :copies })
 new({ particle: :temporary })
 new({ particle: :atomes })
-new ({ particle: :build, store: false }) do |params|
-  # we get the id or generate it for the new builder
-  if params[:id]
-    byild_id = params[:id]
-  else
-    byild_id = "auto_builded_#{Universe.atomes.length}"
-    params[:id] = byild_id
-  end
-  # now we create a hash if it doesnt already exist
-  # if it exist we feed the hash
-  if build
-    build[byild_id] = params
-  else
-    #
-    build_hash = { byild_id => params }
-    store({ 'build': build_hash })
-  end
-  #
-  # now we'll created the wanted atomes
-  # here are the default params
-  default_styles = { type: :shape, renderers: [:html], width: 66, height: 66, color: :gray, left: 12, top: 12, copies: 0, attach: [:view] }
-  params = default_styles.merge(params)
-  color_found = color(params[:color])
-  left_pos = params[:left]
-  top_pos = params[:top]
-  atomes({}) unless atomes
-
-  params[:id] = identity_generator(params[:type]) unless params[:id]
-  atomes[params[:id]] = []
-
-  params[:copies].downto(0) do |index|
-    item_number = params[:copies] - index
-    bundle_id = if params[:id]
-                  "#{params[:id]}_#{item_number}"
-                else
-                  "#{params[:id]}_#{item_number}"
-                end
-    copied_items_params = params.dup
-    copied_items_params[:id] = bundle_id
-    # alert copied_items_params
-    copy = Atome.new(copied_items_params)
-    copy.attach(copied_items_params[:attach])
-    copy.apply([color_found.id])
-    copy.left(((copy.width + left_pos) * item_number) + left_pos)
-    copy.top(((copy.height + top_pos) * item_number) + top_pos)
-    atomes[params[:id]] << bundle_id
-  end
-end
 
 new({ particle: :match }) do |params, _bloc|
   params

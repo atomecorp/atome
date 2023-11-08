@@ -282,7 +282,7 @@ class Atome
   def to_hash
     hash = {}
     instance_variables.each do |var|
-      next if var == :@html_object || var == :@history || var == :@store_allow
+      next if %i[@html_object @history].include?(var)
 
       hash[var.to_s.delete('@').to_sym] = instance_variable_get(var)
     end
