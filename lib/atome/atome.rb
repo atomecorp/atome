@@ -16,6 +16,7 @@ class Atome
     @collected = {}
     @id = new_atome[:id]
     @type = new_atome[:type]
+    @html = HTML.new(@id, self)
     # @authorisations={}
 
     # now we store the proc in a an atome's property called :bloc
@@ -29,7 +30,6 @@ class Atome
     reordered_atome = ordered_part.merge(other_part)
 
     # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
-
     collapse(reordered_atome)
   end
 

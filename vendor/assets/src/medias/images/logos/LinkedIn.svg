@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="76" height="76"  xml:space="preserve" id="linkedInCanvas">
+  <g id="linkedInCanvas-layer1">
+        <g id="linkedInCanvas-g3019">
+            <rect id="linkedin-back" stroke="none" fill="rgb(0, 102, 153)" x="-0.12" y="-0.22" width="75.75" height="76.25" rx="5.6" />
+          <path id="linkedInCanvas-path28" fill-rule="evenodd" stroke="none" fill="rgb(255, 255, 255)" d="M 22.85,63.61 L 22.85,29.18 11.41,29.18 11.41,63.61 22.85,63.61 Z M 17.13,24.48 C 21.12,24.48 23.6,21.84 23.6,18.53 23.53,15.15 21.12,12.58 17.2,12.58 13.29,12.58 10.73,15.15 10.73,18.53 10.73,21.84 13.21,24.48 17.05,24.48 L 17.13,24.48 Z M 17.13,24.48" />
+          <path id="linkedInCanvas-path30" fill-rule="evenodd" stroke="none" fill="rgb(255, 255, 255)" d="M 29.18,63.61 L 40.63,63.61 40.63,44.38 C 40.63,43.35 40.7,42.33 41,41.59 41.83,39.54 43.71,37.41 46.88,37.41 51.02,37.41 52.67,40.56 52.67,45.19 L 52.67,63.61 64.12,63.61 64.12,43.87 C 64.12,33.29 58.47,28.37 50.94,28.37 44.77,28.37 42.06,31.82 40.55,34.17 L 40.63,34.17 40.63,29.18 29.18,29.18 C 29.33,32.41 29.18,63.61 29.18,63.61 Z M 29.18,63.61" />
+        </g>
+    </g>
+</svg>

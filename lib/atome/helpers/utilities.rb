@@ -55,21 +55,16 @@ class Atome
   end
 
   def self.controller_listener
-
     return if $host == :html
 
     atome_js.JS.controller_listener() # js folder atome/helipers/atome/communication
-
   end
 
   def collapse(new_atome)
     # TODO : try to optimise the two lines below to avoid conditions
-    # new_atome[:unit] = {} unless unit
-    # new_atome[:security] = {} unless new_atome[:security]
     new_atome.each do |element, value|
       send(element, value)
     end
-
   end
 
 
@@ -290,9 +285,31 @@ class Atome
   end
 
   def refresh
-    to_hash.each do |k, v|
-      send(k, v)
+    particles_found=to_hash
+    # type_found=particles_found.delete(:type)
+
+
+    particles_found.each do |particle_found, value_found|
+      # puts @type
+      # unless k.to_sym == :type
+      #   if @type == v
+        send(particle_found, value_found)
     end
+    # delete(true)
+    # alert "#{type_found} : #{type}"
+    # unless type_found==@type
+    #   alert :ok
+    #   # wait 1 do
+    #   #   alert :before
+    #   #   delete({ recursive: true })
+    #   #   alert :after
+    #   #
+    #   # end
+    #   # # self.delete(true)
+    #   # particles_found[:type]=type_found
+    #   # send(:type, type_found)
+    #
+    # end
   end
 
   def each(&proc)

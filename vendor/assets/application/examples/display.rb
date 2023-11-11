@@ -180,7 +180,7 @@ new ({ particle: :build, store: false }) do |params|
   if params[:id]
     byild_id = params[:id]
   else
-    byild_id = "auto_builded_#{Universe.atomes.length}"
+    byild_id = "auto_build_#{Universe.atomes.length}"
     params[:id] = byild_id
   end
   # now we create a hash if it doesnt already exist

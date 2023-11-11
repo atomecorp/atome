@@ -1,31 +1,43 @@
 #  frozen_string_literal: true
 
 b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
+
+t=text({id: :the_text, data: 'type of touch : ?'})
+
+t.touch(true) do
+  b.touch({remove: :down})
+  # use b.touch(:remove) to remove all touches bindings
+  t.data('touch killed')
+end
 b.touch(true) do
+  t.data('type of touch : ?')
   b.color(:red)
 end
 
 b.touch(:long) do
+  t.data('type of touch is : long ')
   b.color(:black)
 end
 
 b.touch(:up) do
+  t.data('type of touch is : up ')
   puts :up
 end
 
 b.touch(:down) do
+  t.data('type of touch is : down ')
   b.color(:white)
 end
 
-b.touch({ double: true }) do
+b.touch(:double) do
+  t.color(:red)
+  t.data('type of touch is : double ')
   b.color(:yellowgreen)
 end
 
 b.touch(true) do
+  # t.data('type of touch is : touch ')
   puts 'ok'
 end
 
-wait 7 do
-  b.touch(false)
-  text('finished')
-end
+

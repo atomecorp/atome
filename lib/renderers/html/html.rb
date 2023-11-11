@@ -214,7 +214,15 @@ class HTML
     self
   end
 
+  def check_double(id)
+    # we remove any element if the id already exist
+    element_to_delete = JS.global[:document].getElementById(id.to_s)
+    delete(id) unless element_to_delete.inspect == 'null'
+  end
+
   def shape(id)
+    # we remove any element if the id already exist
+    check_double(id)
     markup_found = @original_atome.markup || :div
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
@@ -225,6 +233,8 @@ class HTML
   end
 
   def text(id)
+    # we remove any element if the id already exist
+    check_double(id)
     markup_found = @original_atome.markup || :pre
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
@@ -235,6 +245,8 @@ class HTML
   end
 
   def image(id)
+    # we remove any element if the id already exist
+    check_double(id)
     markup_found = @original_atome.markup || :img
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
@@ -245,6 +257,8 @@ class HTML
   end
 
   def video(id)
+    # we remove any element if the id already exist
+    check_double(id)
     markup_found = @original_atome.markup || :video
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
@@ -255,6 +269,8 @@ class HTML
   end
 
   def www(id)
+    # we remove any element if the id already exist
+    check_double(id)
     markup_found = @original_atome.markup || :iframe
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
@@ -268,6 +284,8 @@ class HTML
   end
 
   def raw(id)
+    # we remove any element if the id already exist
+    check_double(id)
     @element = JS.global[:document].createElement('div')
     add_class('atome')
     self.id(id)
@@ -276,6 +294,8 @@ class HTML
   end
 
   def svg(id)
+    # we remove any element if the id already exist
+    check_double(id)
     markup_found = @original_atome.markup || 'svg'
     @element_type = markup_found.to_s
     svg_ns = "http://www.w3.org/2000/svg"
@@ -291,10 +311,10 @@ class HTML
   def svg_data(data)
     data.each do |type_passed, datas|
       svg_ns = "http://www.w3.org/2000/svg"
-      new_path = JS.global[:document].createElementNS(svg_ns, type_passed)
+      new_path = JS.global[:document].createElementNS(svg_ns.to_s, type_passed.to_s)
       JS.global[:document][:body].appendChild(new_path)
       datas.each do |property, value|
-        new_path.setAttribute(property, value)
+        new_path.setAttribute(property.to_s, value.to_s)
       end
       @element.appendChild(new_path)
     end
@@ -302,36 +322,34 @@ class HTML
 
   def update_svg_data(data)
     data.each do |type_passed, datas|
-      element_to_update = JS.global[:document].getElementById(type_passed)
+      element_to_update = JS.global[:document].getElementById(type_passed.to_s)
       datas.each do |property, value|
-        element_to_update.setAttribute(property, value)
+        element_to_update.setAttribute(property.to_s, value.to_s)
       end
     end
   end
 
-  def get_svg_children_ids
+  def colorize_svg_data(data)
     command = <<-JS
-      var svgElement = document.getElementById("#{@id}");
+       let svgElement = document.getElementById("#{@id}");
       if (!svgElement) {
-        return []; 
+        return [];
       }
       var children = svgElement.children;
       var ids = [];
       for (var i = 0; i < children.length; i++) {
+        var element = document.getElementById(children[i].id); // Récupérer l'élément par son ID
+        if (element) {
+            element.setAttribute('fill', '#{data}'); // Modifier l'attribut fill
+            element.setAttribute('stroke', '#{data}'); // Modifier l'attribut stroke
+        }
         ids.push(children[i].id);
       }
-  ids
+  return ids
     JS
-    JS.eval("return #{command}")
+    JS.eval(command)
   end
 
-  def colorize_svg_data(data)
-    get_svg_children_ids.each do |svg_child_id|
-      element_to_update = JS.global[:document].getElementById(svg_child_id)
-      element_to_update.setAttribute(:fill, data)
-      element_to_update.setAttribute(:stroke, data)
-    end
-  end
 
   def raw_data(html_string)
     @element[:innerHTML] = html_string
@@ -510,8 +528,8 @@ class HTML
     @element.addEventListener('input', input_handler)
   end
 
-  def event(action, options, bloc)
-    send("#{action}_#{options}", bloc)
+  def event(action, options)
+    send("#{action}_#{options}")
   end
 
   def drag_false(val)
@@ -519,21 +537,21 @@ class HTML
     interact.unset
   end
 
-  def drag_start(bloc)
+  def drag_start()
     interact = JS.eval("return interact('##{@id}')")
     interact.on('dragstart', lambda do |_native_event|
       bloc.call if bloc.is_a? Proc
     end)
   end
 
-  def drag_end(bloc)
+  def drag_end()
     interact = JS.eval("return interact('##{@id}')")
     interact.on('dragend', lambda do |_native_event|
       bloc.call if bloc.is_a? Proc
     end)
   end
 
-  def drag_move(bloc)
+  def drag_move()
     interact = JS.eval("return interact('##{@id}')")
     interact.draggable({
                          drag: true,
@@ -557,7 +575,9 @@ class HTML
     interact.on('dragmove', lambda do |native_event|
       # # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      bloc.call(event) if bloc.instance_of? Proc
+      puts @original_atome.inspect
+      puts @original_atome.instance_variable_get('@drag_code')
+      # bloc.call(event) if bloc.instance_of? Proc
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f
@@ -684,12 +704,11 @@ class HTML
                              x += event[:deltaRect][:left].to_f
                              y += event[:deltaRect][:top].to_f
 
-                             @element[:style][:width] = "#{width}px" if width.to_i.between?(min_width, max_width)
+                             @original_atome.width (width if width.to_i.between?(min_width, max_width))
+                             @original_atome.height (height if height.to_i.between?(min_height, max_height))
 
-                             # Vérifier et ajuster la hauteur indépendamment
-                             @element[:style][:height] = "#{height}px" if height.to_i.between?(min_height, max_height)
-
-                             # Les positions x et y peuvent être ajustées ici si nécessaire
+                             @original_atome.left(x)
+                             @original_atome.top (y)
                              @element[:style][:left] = "#{x}px"
                              @element[:style][:top] = "#{y}px"
 
@@ -713,11 +732,11 @@ class HTML
 
   def overflow(params, bloc)
     style(:overflow, params)
-
+    @overflow = @original_atome.instance_variable_get('@overflow_code')[:overflow]
     @element.addEventListener('scroll', lambda do |event|
       scroll_top = @element[:scrollTop].to_i
       scroll_left = @element[:scrollLeft].to_i
-      bloc.call({ left: scroll_left, top: scroll_top }) if bloc.is_a? Proc
+      @original_atome.instance_exec({ left: scroll_left, top: scroll_top }, &@overflow) if @overflow.is_a?(Proc)
     end)
   end
 
@@ -731,44 +750,76 @@ class HTML
     JS.eval("document.querySelector('##{@id}').addEventListener('mouseleave', function() { myRubyMouseLeaveCallback(); });")
   end
 
-  def touch_tap(bloc)
+  def touch_tap
     interact = JS.eval("return interact('##{@id}')")
+    @tap = @original_atome.instance_variable_get('@touch_code')[:touch]
     interact.on('tap') do |event|
-      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
+      # bloc=@tap
+      @original_atome.instance_exec(event, &@tap) if @tap.is_a?(Proc)
     end
   end
 
-  def touch_false(_bloc)
+  def touch_double
     interact = JS.eval("return interact('##{@id}')")
-    interact.unset
-  end
-
-  def touch_double(bloc)
-    interact = JS.eval("return interact('##{@id}')")
+    @touch_double = @original_atome.instance_variable_get('@touch_code')[:double]
     interact.on('doubletap') do |event|
-      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
+      @original_atome.instance_exec(event, &@touch_double) if @touch_double.is_a?(Proc)
     end
   end
 
-  def touch_long(bloc)
+  def touch_long
+    @touch_long = @original_atome.instance_variable_get('@touch_code')[:long]
     interact = JS.eval("return interact('##{@id}')")
     interact.on('hold') do |event|
-      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
+      @original_atome.instance_exec(event, &@touch_long) if @touch_long.is_a?(Proc)
     end
   end
 
-  def touch_down(bloc)
+  def touch_down
+    @touch_down = @original_atome.instance_variable_get('@touch_code')[:down]
     interact = JS.eval("return interact('##{@id}')")
     interact.on('down') do |event|
-      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
+      @original_atome.instance_exec(event, &@touch_down) if @touch_down.is_a?(Proc)
     end
   end
 
-  def touch_up(bloc)
+  def touch_up
+    @touch_up = @original_atome.instance_variable_get('@touch_code')[:up]
     interact = JS.eval("return interact('##{@id}')")
     interact.on('up') do |event|
-      @original_atome.instance_exec(event, &bloc) if bloc.is_a?(Proc)
+      # alert "up : #{self}"
+      @original_atome.instance_exec(event, &@touch_up) if @touch_up.is_a?(Proc)
     end
+  end
+
+  def touch_remove
+    interact = JS.eval("return interact('##{@id}')")
+    # up = @original_atome.instance_variable_get('@touch_code').delete(:up)
+    # double = @original_atome.instance_variable_get('@touch_code').delete(:double)
+    # touch = @original_atome.instance_variable_get('@touch_code').delete(:touch)
+    # long = @original_atome.instance_variable_get('@touch_code').delete(:long)
+
+    interact.unset
+    # alert
+    # @original_atome.instance_variable_get('@touch_code')[:up] = up
+    # @original_atome.instance_variable_get('@touch_code')[:double] = double
+    # @original_atome.instance_variable_get('@touch_code')[:touch] = touch
+    # @original_atome.instance_variable_get('@touch_code')[:long] = long
+    # touch_double
+    # touch_down
+  end
+
+  def filter_touch(item_to_remove) end
+
+  def touch_remove_down
+    # alert "before : #{@touch_down.inspect}"
+    touch_remove
+    # alert "after : #{@touch_down}"
+
+    # down = @original_atome.instance_variable_get('@touch_code').delete(:down)
+
+    @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+    touch_down
   end
 
   def internet

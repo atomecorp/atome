@@ -91,7 +91,7 @@ circle({ left: 33, top: 200, id: :circle_1 })
 circle({ left: 200, top: 200, id: :circle_2 })
 circle({ left: 400, top: 200, id: :circle_3 })
 circle({ left: 600, top: 200, id: :circle_4 })
-text({ data: 'welcome to my beautifully website', id: :my_text })
+text({ data: "resize the window to it's minimum to activate response", id: :my_text })
 
 A.match({condition:{max: {width: 777}, min: {height: 333}, operator: :and }})  do
 {

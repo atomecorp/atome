@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
 class Atome
-  def html
-    @html_object = HTML.new(id, self)
+  def html(obj = nil)
+    if obj
+      @html = obj
+    else
+      @html
+
+    end
+    # @html_object = HTML.new(id, self)
   end
 
   def to_px

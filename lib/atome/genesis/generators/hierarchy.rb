@@ -46,7 +46,11 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
   # TODO: optimize the 2 lines below:
   @apply ||= []
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
-  parents_ids = @apply.concat(parents_ids).uniq
+  parents_ids.each do |parent_id|
+    @apply.delete(parent_id)
+    @apply << parent_id
+  end
+  parents_ids = @apply
   children_ids = [id]
   parents_ids.each do |parent_id|
     parent_found = grab(parent_id)
@@ -54,12 +58,16 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
     parent_found.instance_variable_set('@affect', []) unless parent_affect.instance_of? Array
     affect_element = parent_found.instance_variable_get('@affect')
     children_ids.each do |child_id|
-      affect_element << child_id unless affect_element.include?(child_id)
+      # affect_element << child_id unless affect_element.include?(child_id)
+      affect_element.delete(child_id)
+      affect_element.push(child_id)
+      affect_element << child_id
       child_found = grab(child_id)
       child_found&.render(:apply, parent_found, &user_proc)
     end
   end
   @apply=parents_ids
+
   parents_ids
 end
 

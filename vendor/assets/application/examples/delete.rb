@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 b = box()
-b.text('touch me')
+b.text('click me')
 
 b.touch(true) do
   c = grab(:view).circle({id: :circling, left: 222, color: :orange, blur: 6 })
   c.box({id: :boxing,color: :orange, width: 33, height: 33, left: 123})
   c.box({id: :boxy,color: :red, width: 33, height: 33, left: 333})
-  c.text('touch me')
+  c.text('tap here')
   wait 0.5 do
     c.delete(:left)
     wait 0.5 do

@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
-new({ method: :drag, type: :symbol, renderer: :html }) do |params, user_bloc|
-  html.event(:drag, params, user_bloc)
+new({ method: :drag, type: :symbol, renderer: :html }) do |params|
+  html.event(:drag, params)
 end
 
-new({ method: :drop, type: :symbol, renderer: :html }) do |params, user_bloc|
-  html.event(:drop, params, user_bloc)
+new({ method: :drop, type: :symbol, renderer: :html }) do |params|
+  html.event(:drop, params)
 end
 
-new({ method: :touch, type: :integer, renderer: :html }) do |params, user_bloc|
-  html.event(:touch, params, user_bloc)
+new({ method: :touch, type: :integer, renderer: :html }) do |params|
+  html.event(:touch, params)
 end
 
-new({ method: :over, type: :integer, renderer: :html }) do |params, user_bloc|
-  html.event(:over, params, user_bloc)
+new({ method: :over, type: :integer, renderer: :html }) do |params|
+  html.event(:over, params)
 end
 
-new({ method: :keyboard, renderer: :html }) do |params, user_bloc|
-  html.event(:keyboard, params, user_bloc)
+new({ method: :keyboard, renderer: :html }) do |params|
+  html.event(:keyboard, params)
 end
 
-new({ method: :play, renderer: :html }) do |params = true, user_bloc|
+new({ method: :play, renderer: :html }) do |params = true|
   # html.event(:keyboard, params, user_bloc)
   if params != true
     html.currentTime(params)
@@ -38,3 +38,4 @@ new({ method: :resize, renderer: :html }) do |params, user_bloc|
   end
   html.resize(params,user_bloc)
 end
+

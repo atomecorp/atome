@@ -46,11 +46,13 @@ new({ method: :data, type: :string, specific: :text, renderer: :html }) do |valu
   html.innerText(value)
 end
 
-new({ method: :data, type: :string, specific: :vector, renderer: :html }) do |value, _user_proc|
+new({ method: :data, type: :string, specific: :vector, renderer: :html }) do |value|
+
+   # @data.each do |type_passed, datas|
+   #   # html.svg_data(type_passed, datas)
+   # end
+   # alert value[1].class
   html.svg_data(value)
-  # wait 1 do
-  #   html.test
-  # end
 end
 
 new({ method: :component, type: :hash, specific: :text, renderer: :html }) do |params, _user_proc|

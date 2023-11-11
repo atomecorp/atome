@@ -7,7 +7,6 @@ new({ particle: :run }) do |params|
   instance_exec(params, &code_found) if code_found.is_a?(Proc)
 end
 new({ particle: :broadcast })
-new({ particle: :data })
 
 def delete_recursive(atome_id)
   return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system])
@@ -22,7 +21,7 @@ def delete_recursive(atome_id)
     delete_recursive(atome_id_found)
   end
   grab(atome_id).render(:delete, { :recursive => true })
-  grab(atome_id).touch(false)
+  grab(atome_id).touch(:remove)
   Universe.delete(atome_id)
 end
 
@@ -66,7 +65,7 @@ new({ particle: :delete, render: false }) do |params|
         attached.each do |atttached_atomes|
           delete_recursive(atttached_atomes)
         end
-        touch(false)
+        touch(:remove)
         render(:delete, params)
         Universe.delete(@id)
       end

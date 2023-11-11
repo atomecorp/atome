@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 new({ particle: :component })
-new({ particle: :overflow })
+
 new({ particle: :edit })
 new({ particle: :style })
 new({ pre: :style }) do |styles_send, _user_proc|

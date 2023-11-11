@@ -24,11 +24,23 @@ new({ particle: :clones }) do |clones_found|
     original_id = atome[:id]
     clone_found[:id] = clone_id
     clone_found = particles.merge(clone_found)
+    clone_found.delete(:html_object)
+    # clone_found.delete(:touch_code)
+    #  clone_found.delete(:attached)
+    # clone_found.delete(:entangled)
     cloned_atome = Atome.new(clone_found)
-    cloned_atome.monitor({ atomes: [original_id], particles: particles_entangled }) do |_atome, particle, value|
-      cloned_atome.send(particle, value)
+    monitor({ atomes: [original_id], particles: particles_entangled }) do |_atome, particle, value|
+      # cloned_atome.send(particle, value)
     end
   end
 end
 new({ particle: :markup })
 new({particle: :bundle})
+new({ particle: :data })
+# new({ particle: :data,specific: :vector, render: false }) do |value|
+#   # value.each do |type_passed, datas_found |
+#   #   render(:data, [type_passed, datas_found ])
+#   # end
+#
+#
+# end

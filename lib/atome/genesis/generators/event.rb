@@ -2,34 +2,48 @@
 
 new({ particle: :touch, type: :hash, store: false })
 
-new({ sanitizer: :touch }) do |params, _user_bloc|
+new({ sanitizer: :touch }) do |params, user_bloc|
   # TODO: factorise code below
   @touch ||= {}
+  @touch_code ||= {}
   params = if params.instance_of? Hash
-             params.keys[0]
+             # params.keys[0]
+              "#{params.keys[0]}_#{params[params.keys[0]]}"
+
+
+
+
+             # "#{params.keys[0]}_#{params.keys[params.keys[0]]}}"
+             # alert  "#{params.keys[0]}_#{params.keys[params.keys[0]]}}"
+             # "#{params.keys[0]}_#{params.keys[params.keys[0]]}}"
            else
              case params
              when true
                :tap
              when :touch
                :tap
+               @touch_code[:touch]=user_bloc
              when :down
+               @touch_code[:down]=user_bloc
                :down
              when :up
+               @touch_code[:up]=user_bloc
                :up
              when :long
+               @touch_code[:long]=user_bloc
                :long
              when :double
+               @touch_code[:double]=user_bloc
                :double
+             when :remove
+               params
              when false
                false
              else
                :tap
              end
-
            end
   @touch[params] = true
-
   params
 
 end
@@ -194,15 +208,7 @@ new({ sanitizer: :keyboard }) do |params|
              end
 
            end
-  # alert  "#{@keyboard} : #{params}"
-  # unless @keyboard.instance_of? Hash
-  #   puts  "A - #{@keyboard} : #{params}"
-  #
-  # else
-  #
-  #   puts  "B - #{@keyboard} : #{params}"
-  #    # @keyboard @keyboardw
-  # end
+
   @keyboard[params] = true
   params
 
@@ -210,5 +216,10 @@ end
 
 new({ particle: :resize })
 
+new({ particle: :overflow }) do |params, bloc|
+  @overflow_code ||= {}
+  instance_variable_get('@overflow_code')[:overflow] = bloc
+  params
 
+end
 
