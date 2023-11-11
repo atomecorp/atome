@@ -54,7 +54,7 @@ class Object
   end
 
   def box(params = {}, &proc)
-      grab(:view).box(params, &proc)
+    grab(:view).box(params, &proc)
   end
 
   # def vector(params = {}, &proc)
@@ -113,23 +113,23 @@ if (++x ===#{repeat} )  {
    }}, #{delay * 1000})
 `
   end
+
   def tagged(params)
-    atome_get=[]
+    atome_get = []
     if params.instance_of? Hash
       params.each do |tag_name, tag_value|
-        Universe.atomes.each do |atomes_id_found,atomes_found|
-          if atomes_found.tag[tag_name]== tag_value
+        Universe.atomes.each do |atomes_id_found, atomes_found|
+          if atomes_found.tag&.instance_of?(Hash) && (atomes_found.tag[tag_name] == tag_value)
             atome_get << atomes_id_found
           end
         end
       end
     else
-      Universe.atomes.each do |atomes_id_found,atomes_found|
-        if atomes_found.tag[params]
-          atome_get << atomes_id_found
-        end
+      Universe.atomes.each do |atomes_id_found, atomes_found|
+        atome_get << atomes_id_found if atomes_found.tag&.instance_of?(Hash) && atomes_found.tag[params]
       end
     end
+
     atome_get
   end
 

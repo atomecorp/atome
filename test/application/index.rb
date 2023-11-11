@@ -1,7 +1,7 @@
 #  frozen_string_literal: true
 # require 'json'
 
-# require "./examples/tagged"
+require "./examples/tagged"
 # require "./examples/keyboard"
 # require "./examples/convert"
 # require "./examples/hypertext"
@@ -25,7 +25,7 @@
 # require "./examples/touch"
 # require "./examples/group"
 # require "./examples/clear"
-require "./examples/match"
+# require "./examples/match"
 # require "./examples/attach"
 # require "./examples/attached"
 # require "./examples/paint"
