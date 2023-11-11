@@ -213,8 +213,8 @@ class Atome
   def particle_callback(element)
     Atome.define_method "#{element}_callback" do
       proc_found = instance_variable_get("@#{element}_code")[element]
-      instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
-      # proc_found.call(@callback[element]) if proc_found.is_a? Proc
+      # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
+      proc_found.call(@callback[element]) if proc_found.is_a? Proc
     end
   end
 
