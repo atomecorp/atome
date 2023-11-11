@@ -1,12 +1,13 @@
 #  frozen_string_literal: true
 # require 'json'
 
-require "./examples/tagged"
-# require "./examples/keyboard"
-# require "./examples/convert"
-# require "./examples/hypertext"
-# require "./examples/touch"
 
+require "./examples/convert"
+# require "./examples/keyboard"
+# require "./examples/touch"
+# require "./examples/hypertext"
+
+# require "./examples/tagged"
 # require "./examples/debug"
 # require "./examples/color"
 # require "./examples/clones"
