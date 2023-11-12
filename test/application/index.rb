@@ -3,8 +3,8 @@
 
 
 # require "./examples/convert"
-require "./examples/touch"
-# require "./examples/drag"
+# require "./examples/touch"
+require "./examples/drag"
 # require "./examples/keyboard"
 # require "./examples/hypertext"
 # require "./examples/tagged"

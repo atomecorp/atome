@@ -536,9 +536,39 @@ class HTML
     @original_atome.top(restricted_y)
   end
 
-  def drag_false(_option)
-    interact = JS.eval("return interact('##{@id}')")
-    interact.unset
+  # def drag_false(_option)
+  #   interact = JS.eval("return interact('##{@id}')")
+  #   interact.unset
+  # end
+
+  def drag_remove(option)
+    case option
+    when :start
+      @original_atome.instance_variable_get('@drag_code')[:start] = ''
+      drag_start(option)
+    when :end , :stop
+      @original_atome.instance_variable_get('@drag_code')[:end] = ''
+      drag_end(option)
+    when :locked
+      @original_atome.instance_variable_get('@drag_code')[:locked] = ''
+      drag_locked(option)
+    when :restrict
+      @original_atome.instance_variable_get('@drag_code')[:restrict] = ''
+      drag_restrict(option)
+    else
+      # to remove all interact event ( touch, drag, scale, ... uncomment below)
+      # interact = JS.eval("return interact('##{@id}')")
+      # interact.unset
+      @original_atome.instance_variable_get('@drag_code')[:start] = ''
+      drag_start(option)
+      @original_atome.instance_variable_get('@drag_code')[:end] = ''
+      drag_end(option)
+      @original_atome.instance_variable_get('@drag_code')[:locked] = ''
+      drag_locked(option)
+      @original_atome.instance_variable_get('@drag_code')[:restrict] = ''
+      drag_restrict(option)
+    end
+
   end
 
   def drag_start(_option)
@@ -836,7 +866,6 @@ class HTML
   end
 
   def touch_remove(option)
-
     case option
     when :double
       @original_atome.instance_variable_get('@touch_code')[:double] = ''
@@ -854,8 +883,19 @@ class HTML
       @original_atome.instance_variable_get('@touch_code')[:up] = ''
       touch_up(option)
     else
-      interact = JS.eval("return interact('##{@id}')")
-      interact.unset
+      @original_atome.instance_variable_get('@touch_code')[:double] = ''
+      touch_double(option)
+      @original_atome.instance_variable_get('@touch_code')[:down] = ''
+      touch_down(option)
+      @original_atome.instance_variable_get('@touch_code')[:long] = ''
+      touch_long(option)
+      @original_atome.instance_variable_get('@touch_code')[:tap] = ''
+      touch_tap(option)
+      @original_atome.instance_variable_get('@touch_code')[:up] = ''
+      touch_up(option)
+      # to remove all interact event ( touch, drag, scale, ... uncomment below)
+      # interact = JS.eval("return interact('##{@id}')")
+      # interact.unset
     end
 
   end
