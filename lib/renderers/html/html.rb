@@ -536,12 +536,12 @@ class HTML
     @original_atome.top(restricted_y)
   end
 
-  def drag_false(option)
+  def drag_false(_option)
     interact = JS.eval("return interact('##{@id}')")
     interact.unset
   end
 
-  def drag_start(option)
+  def drag_start(_option)
     interact = JS.eval("return interact('##{@id}')")
     @drag_start = @original_atome.instance_variable_get('@drag_code')[:start]
     interact.on('dragstart') do |native_event|
@@ -550,7 +550,7 @@ class HTML
     end
   end
 
-  def drag_end(option)
+  def drag_end(_option)
     interact = JS.eval("return interact('##{@id}')")
     @drag_end = @original_atome.instance_variable_get('@drag_code')[:end]
     interact.on('dragend') do |native_event|
@@ -559,7 +559,7 @@ class HTML
     end
   end
 
-  def drag_move(option)
+  def drag_move(_option)
     interact = JS.eval("return interact('##{@id}')")
     interact.draggable({
                          drag: true,
@@ -612,7 +612,6 @@ class HTML
         min_left
         min_top
       end
-
     else
       parent_found = grab(option)
       min_left = parent_found.left
@@ -639,7 +638,7 @@ class HTML
     end
   end
 
-  def drag_locked(option)
+  def drag_locked(_option)
     interact = JS.eval("return interact('##{@id}')")
     interact.draggable({
                          drag: true,
@@ -791,7 +790,7 @@ class HTML
     JS.eval("document.querySelector('##{@id}').addEventListener('mouseleave', function() { myRubyMouseLeaveCallback(); });")
   end
 
-  def touch_tap
+  def touch_tap(_option)
     interact = JS.eval("return interact('##{@id}')")
     @touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
     interact.on('tap') do |native_event|
@@ -800,7 +799,7 @@ class HTML
     end
   end
 
-  def touch_double
+  def touch_double(_option)
     interact = JS.eval("return interact('##{@id}')")
     @touch_double = @original_atome.instance_variable_get('@touch_code')[:double]
     interact.on('doubletap') do |native_event|
@@ -809,7 +808,7 @@ class HTML
     end
   end
 
-  def touch_long
+  def touch_long(_option)
     @touch_long = @original_atome.instance_variable_get('@touch_code')[:long]
     interact = JS.eval("return interact('##{@id}')")
     interact.on('hold') do |native_event|
@@ -818,7 +817,7 @@ class HTML
     end
   end
 
-  def touch_down
+  def touch_down(_option)
     @touch_down = @original_atome.instance_variable_get('@touch_code')[:down]
     interact = JS.eval("return interact('##{@id}')")
     interact.on('down') do |native_event|
@@ -827,7 +826,7 @@ class HTML
     end
   end
 
-  def touch_up
+  def touch_up(_option)
     @touch_up = @original_atome.instance_variable_get('@touch_code')[:up]
     interact = JS.eval("return interact('##{@id}')")
     interact.on('up') do |native_event|
@@ -836,47 +835,64 @@ class HTML
     end
   end
 
-  def touch_remove
-    interact = JS.eval("return interact('##{@id}')")
-    interact.unset
+  def touch_remove(option)
+
+    case option
+    when :double
+      @original_atome.instance_variable_get('@touch_code')[:double] = ''
+      touch_double(option)
+    when :down
+      @original_atome.instance_variable_get('@touch_code')[:down] = ''
+      touch_down(option)
+    when :long
+      @original_atome.instance_variable_get('@touch_code')[:long] = ''
+      touch_long(option)
+    when :tap
+      @original_atome.instance_variable_get('@touch_code')[:tap] = ''
+      touch_tap(option)
+    when :up
+      @original_atome.instance_variable_get('@touch_code')[:up] = ''
+      touch_up(option)
+    else
+      interact = JS.eval("return interact('##{@id}')")
+      interact.unset
+    end
+
   end
 
-  def filter_touch(item_to_remove) end
-
-  def touch_remove_long
-    # touch_remove
-    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:long] = ''
-    touch_long
-  end
-
-  def touch_remove_double
-    # touch_remove
-    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:double] = ''
-    touch_double
-  end
-
-  def touch_remove_tap
-    # touch_remove
-    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:tap] = ''
-    touch_tap
-  end
-
-  def touch_remove_up
-    # touch_remove
-    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:up] = ''
-    touch_up
-  end
-
-  def touch_remove_down
-    # touch_remove
-    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:down] = ''
-    touch_down
-  end
+  # def touch_remove_long(_option)
+  #   # touch_remove
+  #   # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+  #   @original_atome.instance_variable_get('@touch_code')[:long] = ''
+  #   touch_long(_option)
+  # end
+  # def touch_remove_double(_option)
+  #   # touch_remove
+  #   # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+  #   @original_atome.instance_variable_get('@touch_code')[:double] = ''
+  #   touch_double(_option)
+  # end
+  # def touch_remove_tap(_option)
+  #   # touch_remove
+  #   # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+  #   @original_atome.instance_variable_get('@touch_code')[:tap] = ''
+  #   touch_tap(_option)
+  # end
+  #
+  # def touch_remove_up(_option)
+  #   # touch_remove
+  #   # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+  #   @original_atome.instance_variable_get('@touch_code')[:up] = ''
+  #   touch_up(_option)
+  # end
+  #
+  # def touch_remove_down(_option)
+  #   alert :ici
+  #   # touch_remove
+  #   # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+  #   @original_atome.instance_variable_get('@touch_code')[:down] = ''
+  #   touch_down(_option)
+  # end
 
   def internet
     JS.eval('return navigator.onLine')

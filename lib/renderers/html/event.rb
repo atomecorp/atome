@@ -10,7 +10,8 @@ new({ method: :drop, type: :symbol, renderer: :html }) do |params|
 end
 
 new({ method: :touch, type: :integer, renderer: :html }) do |params|
-  html.event(:touch, params)
+  option = @touch[params]
+  html.event(:touch, params, option)
 end
 
 new({ method: :over, type: :integer, renderer: :html }) do |params|

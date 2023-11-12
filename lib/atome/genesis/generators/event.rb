@@ -5,9 +5,11 @@ new({ sanitizer: :touch }) do |params, user_bloc|
   # TODO: factorise code below
   @touch ||= {}
   @touch_code ||= {}
+  option= true
   params = if params.instance_of? Hash
              @touch_code[params.keys[0]]=user_bloc
-             "#{params.keys[0]}_#{params[params.keys[0]]}"
+             option= params[params.keys[0]]
+             params.keys[0]
            else
              case params
              when true
@@ -38,7 +40,7 @@ new({ sanitizer: :touch }) do |params, user_bloc|
                :tap
              end
            end
-  @touch[params] = true
+  @touch[params] = option
   params
 
 end

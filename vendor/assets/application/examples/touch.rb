@@ -12,6 +12,8 @@ end
 b.touch(true) do
   t.data('type of touch : ?')
   b.color(:red)
+  puts 'box tapped'
+
 end
 
 b.touch(:long) do
@@ -22,7 +24,6 @@ end
 b.touch(:up) do
   t.data('type of touch is : up ')
   b.color(:orange)
-  puts :up
 end
 
 b.touch(:down) do
@@ -34,9 +35,4 @@ b.touch(:double) do
   t.color(:red)
   t.data('type of touch is : double ')
   b.color(:yellowgreen)
-end
-
-b.touch(true) do
-  # t.data('type of touch is : touch ')
-  puts 'box tapped'
 end
