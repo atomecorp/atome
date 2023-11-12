@@ -7,19 +7,16 @@ class Atome
     else
       @html
     end
-    # @html_object = HTML.new(id, self)
   end
 
-  def to_px
-    id_found = real_atome[:id]
-    property_found = property
-    value_get = ''
-    `
- div = document.getElementById(#{id_found});
- var style = window.getComputedStyle(div);
- var original_value = style.getPropertyValue(#{property_found});
- #{value_get}= parseInt(original_value);
- `
-    value_get
+  def to_px(particle)
+    ruby_wasm_code = <<-JS
+  var div = document.getElementById("#{@id}");
+  var style = window.getComputedStyle(div);
+  var original_value = style.getPropertyValue("#{particle}");
+  var parsed_value = parseInt(original_value);
+  return parsed_value;
+    JS
+    JS.eval(ruby_wasm_code).to_f
   end
 end

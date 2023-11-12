@@ -1,23 +1,24 @@
 #  frozen_string_literal: true
-
-b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
-
+a=box({width: 666, height: 777, color: :orange})
+b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2, depth: 1 })
+cc=circle({color: :red, left: 0, top: 0})
 clone = ""
 b.drag(:start) do
   b.color(:black)
   b.height(123)
-  clone = box({ id: "#{b.id}_cloned", left: b.left, top: b.top })
+  # beware you must use grab(:view) else it'll be attached to the context, that means to 'b' in this case
+  clone = grab(:view).box({ id: "#{b.id}_cloned", left: b.left, top: b.top, depth: 3 })
 end
 
 b.drag(:stop) do
   b.color(:white)
   b.height(12)
   clone.delete(true)
-
 end
 
-b.drag(:lock) do |native_event|
-  event = Native(native_event)
+
+
+b.drag(:locked) do |event|
   dx = event[:dx]
   dy = event[:dy]
   x = (clone.left || 0) + dx.to_f
@@ -25,4 +26,13 @@ b.drag(:lock) do |native_event|
   clone.left(x)
   clone.top(y)
 end
+cc.drag({ restrict: {max:{ left: 240, top: 190}} }) do |event|
 
+end
+
+
+c=circle
+
+c.drag({ restrict: a.id }) do |event|
+
+end

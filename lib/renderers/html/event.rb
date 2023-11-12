@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 new({ method: :drag, type: :symbol, renderer: :html }) do |params|
-  html.event(:drag, params)
+  option = @drag[params]
+  html.event(:drag, params, option)
 end
 
 new({ method: :drop, type: :symbol, renderer: :html }) do |params|
@@ -21,7 +22,6 @@ new({ method: :keyboard, renderer: :html }) do |params|
 end
 
 new({ method: :play, renderer: :html }) do |params = true|
-  # html.event(:keyboard, params, user_bloc)
   if params != true
     html.currentTime(params)
   end
@@ -34,8 +34,8 @@ end
 
 new({ method: :resize, renderer: :html }) do |params, user_bloc|
   unless params.instance_of? Hash
-    params={min: {width: 10, height: 10}, max: {width: 2000, height: 2000}}
+    params = { min: { width: 10, height: 10 }, max: { width: 2000, height: 2000 } }
   end
-  html.resize(params,user_bloc)
+  html.resize(params, user_bloc)
 end
 

@@ -11,10 +11,11 @@ new({ sanitizer: :touch }) do |params, user_bloc|
            else
              case params
              when true
+               @touch_code[:tap] = user_bloc
                :tap
              when :touch
-               :tap
                @touch_code[:tap] = user_bloc
+               :tap
              when :down
                @touch_code[:down] = user_bloc
                :down
@@ -30,8 +31,10 @@ new({ sanitizer: :touch }) do |params, user_bloc|
              when :remove
                params
              when false
-               false
+               @touch_code[:remove] = user_bloc
+               :remove
              else
+               @touch_code[:tap] = user_bloc
                :tap
              end
            end
@@ -46,36 +49,51 @@ new({ particle: :on })
 new({ particle: :fullscreen })
 new({ particle: :mute })
 new({ particle: :drag, store: false })
-new({ sanitizer: :drag }) do |params, _proc|
+new({ sanitizer: :drag }) do |params, user_bloc|
   @drag ||= {}
+  @drag_code ||= {}
+  option= true
+
   params = if params.instance_of? Hash
+             @drag_code[params.keys[0]]=user_bloc
+             option= params[params.keys[0]]
              params.keys[0]
            else
              case params
              when true
+               @drag_code[:move] = user_bloc
                :move
              when :move
+               @drag_code[:move] = user_bloc
                :move
              when :drag
+               @drag_code[:move] = user_bloc
                :move
              when :clone
+               @drag_code[:clone] = user_bloc
                :clone
              when :start
+               @drag_code[:start] = user_bloc
                :start
              when :stop
+               @drag_code[:end] = user_bloc
                :end
              when :end
+               @drag_code[:end] = user_bloc
                :end
-             when :lock
-               :lock
+             when :locked
+               @drag_code[:locked] = user_bloc
+               :locked
              when false
-               false
+               @drag_code[:remove] = user_bloc
+               :remove
              else
-               :tap
+               @drag_code[:move] = user_bloc
+               :move
              end
 
            end
-  @drag[params] = true
+  @drag[params] = option
   params
 end
 new({ particle: :drop, store: false })

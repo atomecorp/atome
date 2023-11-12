@@ -6,8 +6,8 @@ t=text({id: :the_text, data: 'type of touch : ?'})
 
 t.touch(:down) do
   b.touch({remove: :down})
-   # b.touch(:remove) #to remove all touches bindings
-  t.data('touch killed')
+   # b.touch(:remove) # or  b.touch(false) to remove all touches bindings
+  t.data('touch down killed')
 end
 b.touch(true) do
   t.data('type of touch : ?')
@@ -38,5 +38,5 @@ end
 
 b.touch(true) do
   # t.data('type of touch is : touch ')
-  puts 'ok'
+  puts 'box tapped'
 end

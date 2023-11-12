@@ -350,7 +350,6 @@ class HTML
     JS.eval(command)
   end
 
-
   def raw_data(html_string)
     @element[:innerHTML] = html_string
   end
@@ -528,30 +527,39 @@ class HTML
     @element.addEventListener('input', input_handler)
   end
 
-  def event(action, options)
-    send("#{action}_#{options}")
+  def event(action, variance, option = nil)
+    send("#{action}_#{variance}", option)
   end
 
-  def drag_false(val)
+  def restrict_movement(restricted_x, restricted_y)
+    @original_atome.left(restricted_x)
+    @original_atome.top(restricted_y)
+  end
+
+  def drag_false(option)
     interact = JS.eval("return interact('##{@id}')")
     interact.unset
   end
 
-  def drag_start()
+  def drag_start(option)
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('dragstart', lambda do |_native_event|
-      bloc.call if bloc.is_a? Proc
-    end)
+    @drag_start = @original_atome.instance_variable_get('@drag_code')[:start]
+    interact.on('dragstart') do |native_event|
+      event = Native(native_event)
+      @original_atome.instance_exec(event, &@drag_start) if @drag_start.is_a?(Proc)
+    end
   end
 
-  def drag_end()
+  def drag_end(option)
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('dragend', lambda do |_native_event|
-      bloc.call if bloc.is_a? Proc
-    end)
+    @drag_end = @original_atome.instance_variable_get('@drag_code')[:end]
+    interact.on('dragend') do |native_event|
+      event = Native(native_event)
+      @original_atome.instance_exec(event, &@drag_end) if @drag_end.is_a?(Proc)
+    end
   end
 
-  def drag_move()
+  def drag_move(option)
     interact = JS.eval("return interact('##{@id}')")
     interact.draggable({
                          drag: true,
@@ -560,34 +568,21 @@ class HTML
                                     endSpeed: 100 },
                        })
 
-    JS.eval(<<-JS)
-      interact('##{@id}').draggable({
-        drag: true,
-        modifiers: [
-          interact.modifiers.restrict({
-            restriction: 'parent',
-            endOnly: true
-          })
-        ]
-      });
-    JS
-
-    interact.on('dragmove', lambda do |native_event|
+    @drag_move = @original_atome.instance_variable_get('@drag_code')[:move]
+    interact.on('dragmove') do |native_event|
       # # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      puts @original_atome.inspect
-      puts @original_atome.instance_variable_get('@drag_code')
-      # bloc.call(event) if bloc.instance_of? Proc
+      @original_atome.instance_exec(event, &@drag_move) if @drag_move.is_a?(Proc)
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f
       y = (@original_atome.top || 0) + dy.to_f
       @original_atome.left(x)
       @original_atome.top(y)
-    end)
+    end
   end
 
-  def drag_lock(bloc)
+  def drag_restrict(option)
     interact = JS.eval("return interact('##{@id}')")
     interact.draggable({
                          drag: true,
@@ -596,23 +591,69 @@ class HTML
                                     endSpeed: 100 },
                        })
 
-    JS.eval(<<-JS)
-      interact('##{@id}').draggable({
-        drag: true,
-        modifiers: [
-          interact.modifiers.restrict({
-            restriction: 'parent',
-            endOnly: true
-          })
-        ]
-      });
-    JS
+    @drag_move = @original_atome.instance_variable_get('@drag_code')[:move]
+    if option.instance_of? Hash
+      max_left = grab(:view).to_px(:width)
+      max_top = grab(:view).to_px(:height)
+      min_left = 0
+      min_top = 0
 
-    interact.on('dragmove', lambda do |native_event|
+      if option[:max]
+        max_left = option[:max][:left] || max_left
+        max_top = option[:max][:top] || max_top
+      else
+        max_left
+        max_top
+      end
+      if option[:min]
+        min_left = option[:min][:left] || min_left
+        min_top = option[:min][:top] || min_top
+      else
+        min_left
+        min_top
+      end
+
+    else
+      parent_found = grab(option)
+      min_left = parent_found.left
+      min_top = parent_found.top
+      parent_width = parent_found.width
+      parent_height = parent_found.height
+      original_width = @original_atome.width
+      original_height = @original_atome.height
+      max_left = min_left + parent_width - original_width
+      max_top = min_top + parent_height - original_height
+    end
+
+    interact.on('dragmove') do |native_event|
       # # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      bloc.call(event) if bloc.instance_of? Proc
-    end)
+      @original_atome.instance_exec(event, &@drag_move) if @drag_move.is_a?(Proc)
+      dx = event[:dx]
+      dy = event[:dy]
+      x = (@original_atome.left || 0) + dx.to_f
+      y = (@original_atome.top || 0) + dy.to_f
+      restricted_x = [[x, min_left].max, max_left].min
+      restricted_y = [[y, min_top].max, max_top].min
+      restrict_movement(restricted_x, restricted_y)
+    end
+  end
+
+  def drag_locked(option)
+    interact = JS.eval("return interact('##{@id}')")
+    interact.draggable({
+                         drag: true,
+                         inertia: { resistance: 12,
+                                    minSpeed: 200,
+                                    endSpeed: 100 }
+                       })
+
+    @drag_lock = @original_atome.instance_variable_get('@drag_code')[:locked]
+    interact.on('dragmove') do |native_event|
+      # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
+      event = Native(native_event)
+      @original_atome.instance_exec(event, &@drag_lock) if @drag_lock.is_a?(Proc)
+    end
   end
 
   def drop_action(native_event, bloc)
@@ -752,17 +793,18 @@ class HTML
 
   def touch_tap
     interact = JS.eval("return interact('##{@id}')")
-    @tap = @original_atome.instance_variable_get('@touch_code')[:tap]
-    interact.on('tap') do |event|
-      # bloc=@tap
-      @original_atome.instance_exec(event, &@tap) if @tap.is_a?(Proc)
+    @touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
+    interact.on('tap') do |native_event|
+      event = Native(native_event)
+      @original_atome.instance_exec(event, &@touch_tap) if @touch_tap.is_a?(Proc)
     end
   end
 
   def touch_double
     interact = JS.eval("return interact('##{@id}')")
     @touch_double = @original_atome.instance_variable_get('@touch_code')[:double]
-    interact.on('doubletap') do |event|
+    interact.on('doubletap') do |native_event|
+      event = Native(native_event)
       @original_atome.instance_exec(event, &@touch_double) if @touch_double.is_a?(Proc)
     end
   end
@@ -770,7 +812,8 @@ class HTML
   def touch_long
     @touch_long = @original_atome.instance_variable_get('@touch_code')[:long]
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('hold') do |event|
+    interact.on('hold') do |native_event|
+      event = Native(native_event)
       @original_atome.instance_exec(event, &@touch_long) if @touch_long.is_a?(Proc)
     end
   end
@@ -778,7 +821,8 @@ class HTML
   def touch_down
     @touch_down = @original_atome.instance_variable_get('@touch_code')[:down]
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('down') do |event|
+    interact.on('down') do |native_event|
+      event = Native(native_event)
       @original_atome.instance_exec(event, &@touch_down) if @touch_down.is_a?(Proc)
     end
   end
@@ -786,8 +830,8 @@ class HTML
   def touch_up
     @touch_up = @original_atome.instance_variable_get('@touch_code')[:up]
     interact = JS.eval("return interact('##{@id}')")
-    interact.on('up') do |event|
-      # alert "up : #{self}"
+    interact.on('up') do |native_event|
+      event = Native(native_event)
       @original_atome.instance_exec(event, &@touch_up) if @touch_up.is_a?(Proc)
     end
   end
@@ -802,31 +846,35 @@ class HTML
   def touch_remove_long
     # touch_remove
     # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:long]=''
+    @original_atome.instance_variable_get('@touch_code')[:long] = ''
     touch_long
   end
+
   def touch_remove_double
     # touch_remove
     # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:double]=''
+    @original_atome.instance_variable_get('@touch_code')[:double] = ''
     touch_double
   end
+
   def touch_remove_tap
     # touch_remove
     # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:tpa]=''
+    @original_atome.instance_variable_get('@touch_code')[:tap] = ''
     touch_tap
   end
+
   def touch_remove_up
     # touch_remove
     # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:up]=''
+    @original_atome.instance_variable_get('@touch_code')[:up] = ''
     touch_up
   end
+
   def touch_remove_down
     # touch_remove
     # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
-    @original_atome.instance_variable_get('@touch_code')[:down]=''
+    @original_atome.instance_variable_get('@touch_code')[:down] = ''
     touch_down
   end
 
