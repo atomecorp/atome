@@ -573,10 +573,10 @@ class HTML
 
   def drag_start(_option)
     interact = JS.eval("return interact('##{@id}')")
-    @drag_start = @original_atome.instance_variable_get('@drag_code')[:start]
+    drag_start = @original_atome.instance_variable_get('@drag_code')[:start]
     interact.on('dragstart') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@drag_start) if @drag_start.is_a?(Proc)
+      @original_atome.instance_exec(event, &drag_start) if drag_start.is_a?(Proc)
     end
   end
 
@@ -621,7 +621,7 @@ class HTML
                                     endSpeed: 100 },
                        })
 
-    @drag_move = @original_atome.instance_variable_get('@drag_code')[:move]
+    drag_move = @original_atome.instance_variable_get('@drag_code')[:move]
     if option.instance_of? Hash
       max_left = grab(:view).to_px(:width)
       max_top = grab(:view).to_px(:height)
@@ -657,7 +657,7 @@ class HTML
     interact.on('dragmove') do |native_event|
       # # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@drag_move) if @drag_move.is_a?(Proc)
+      @original_atome.instance_exec(event, &drag_move) if drag_move.is_a?(Proc)
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f
@@ -677,11 +677,11 @@ class HTML
                                     endSpeed: 100 }
                        })
 
-    @drag_lock = @original_atome.instance_variable_get('@drag_code')[:locked]
+    drag_lock = @original_atome.instance_variable_get('@drag_code')[:locked]
     interact.on('dragmove') do |native_event|
       # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@drag_lock) if @drag_lock.is_a?(Proc)
+      @original_atome.instance_exec(event, &drag_lock) if drag_lock.is_a?(Proc)
     end
   end
 
@@ -694,70 +694,68 @@ class HTML
 
   def drop_activate(_option)
     interact = JS.eval("return interact('##{@id}')")
-    @drop_activate = @original_atome.instance_variable_get('@drop_code')[:activate]
+    drop_activate = @original_atome.instance_variable_get('@drop_code')[:activate]
 
     interact.dropzone({
                         # accept: nil, # Accept any element
                         # overlap: 0.75,
                         ondropactivate: lambda do |native_event|
-                          drop_action(native_event, @drop_activate)
+                          drop_action(native_event, drop_activate)
                         end
                       })
   end
 
   def drop_deactivate(_option)
     interact = JS.eval("return interact('##{@id}')")
-    @drop_deactivate = @original_atome.instance_variable_get('@drop_code')[:deactivate]
+    drop_deactivate = @original_atome.instance_variable_get('@drop_code')[:deactivate]
     interact.dropzone({
                         # accept: nil, # Accept any element
                         # overlap: 0.75,
                         ondropdeactivate: lambda do |native_event|
-                          drop_action(native_event, @drop_deactivate)
+                          drop_action(native_event, drop_deactivate)
                         end
                       })
   end
 
   def drop_dropped(_option)
-    @drop_dropped = @original_atome.instance_variable_get('@drop_code')[:dropped]
+    drop_dropped = @original_atome.instance_variable_get('@drop_code')[:dropped]
     interact = JS.eval("return interact('##{@id}')")
     interact.dropzone({
                         # accept: nil, # Accept any element
                         overlap: 0.75,
                         ondrop: lambda do |native_event|
-                          drop_action(native_event, @drop_dropped)
+                          drop_action(native_event, drop_dropped)
                         end
                       })
   end
 
   def drop_enter(_option)
     interact = JS.eval("return interact('##{@id}')")
-    @drop_enter = @original_atome.instance_variable_get('@drop_code')[:enter]
+    drop_enter = @original_atome.instance_variable_get('@drop_code')[:enter]
 
     interact.dropzone({
                         # accept: nil,
                         overlap: 0.001,
                         ondragenter: lambda do |native_event|
-                          drop_action(native_event, @drop_enter)
+                          drop_action(native_event, drop_enter)
                         end
                       })
   end
 
   def drop_leave(_option)
     interact = JS.eval("return interact('##{@id}')")
-    @drop_leave = @original_atome.instance_variable_get('@drop_code')[:leave]
+    drop_leave = @original_atome.instance_variable_get('@drop_code')[:leave]
 
     interact.dropzone({
                         # accept: nil,
                         # overlap: 0.75,
                         ondragleave: lambda do |native_event|
-                          drop_action(native_event, @drop_leave)
+                          drop_action(native_event, drop_leave)
                         end
                       })
   end
 
-
   def drop_remove(option)
-
     case option
     when :activate
       @original_atome.instance_variable_get('@drop_code')[:activate] = ''
@@ -834,8 +832,11 @@ class HTML
 
   def over_over(bloc)
     interact = JS.eval("return interact('##{@id}')")
+    over_over = @original_atome.instance_variable_get('@over_code')[:over]
+
     interact.on('mouseover') do
-      bloc.call if bloc.is_a? Proc
+      @original_atome.instance_exec( &over_over) if over_over.is_a?(Proc)
+      # bloc.call if bloc.is_a? Proc
     end
   end
 
@@ -866,46 +867,46 @@ class HTML
 
   def touch_tap(_option)
     interact = JS.eval("return interact('##{@id}')")
-    @touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
+    touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
     interact.on('tap') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_tap) if @touch_tap.is_a?(Proc)
+      @original_atome.instance_exec(event, &touch_tap) if touch_tap.is_a?(Proc)
     end
   end
 
   def touch_double(_option)
     interact = JS.eval("return interact('##{@id}')")
-    @touch_double = @original_atome.instance_variable_get('@touch_code')[:double]
+    touch_double = @original_atome.instance_variable_get('@touch_code')[:double]
     interact.on('doubletap') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_double) if @touch_double.is_a?(Proc)
+      @original_atome.instance_exec(event, &touch_double) if touch_double.is_a?(Proc)
     end
   end
 
   def touch_long(_option)
-    @touch_long = @original_atome.instance_variable_get('@touch_code')[:long]
+    touch_long = @original_atome.instance_variable_get('@touch_code')[:long]
     interact = JS.eval("return interact('##{@id}')")
     interact.on('hold') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_long) if @touch_long.is_a?(Proc)
+      @original_atome.instance_exec(event, &touch_long) if touch_long.is_a?(Proc)
     end
   end
 
   def touch_down(_option)
-    @touch_down = @original_atome.instance_variable_get('@touch_code')[:down]
+    touch_down = @original_atome.instance_variable_get('@touch_code')[:down]
     interact = JS.eval("return interact('##{@id}')")
     interact.on('down') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_down) if @touch_down.is_a?(Proc)
+      @original_atome.instance_exec(event, &touch_down) if touch_down.is_a?(Proc)
     end
   end
 
   def touch_up(_option)
-    @touch_up = @original_atome.instance_variable_get('@touch_code')[:up]
+    touch_up = @original_atome.instance_variable_get('@touch_code')[:up]
     interact = JS.eval("return interact('##{@id}')")
     interact.on('up') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_up) if @touch_up.is_a?(Proc)
+      @original_atome.instance_exec(event, &touch_up) if touch_up.is_a?(Proc)
     end
   end
 
