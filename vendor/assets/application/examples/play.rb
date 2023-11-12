@@ -7,7 +7,9 @@ else
 end
 
 v.touch(true) do
-  v.play(true)
+  v.play(true) do |event|
+    puts event
+  end
   wait 3 do
     v.play(66)
   end

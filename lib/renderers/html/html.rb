@@ -546,7 +546,7 @@ class HTML
     when :start
       @original_atome.instance_variable_get('@drag_code')[:start] = ''
       drag_start(option)
-    when :end , :stop
+    when :end, :stop
       @original_atome.instance_variable_get('@drag_code')[:end] = ''
       drag_end(option)
     when :locked
@@ -689,63 +689,107 @@ class HTML
     event = Native(native_event)
     draggable_element = event[:relatedTarget][:id].to_s
     dropzone_element = event[:target][:id].to_s
-    bloc.call({ source: draggable_element, destination: dropzone_element }) if bloc.is_a? Proc
-
+    @original_atome.instance_exec({ source: draggable_element, destination: dropzone_element }, &bloc) if bloc.is_a? Proc
   end
 
-  def drop_activate(bloc)
+  def drop_activate(_option)
     interact = JS.eval("return interact('##{@id}')")
+    @drop_activate = @original_atome.instance_variable_get('@drop_code')[:activate]
+
     interact.dropzone({
                         # accept: nil, # Accept any element
                         # overlap: 0.75,
                         ondropactivate: lambda do |native_event|
-                          drop_action(native_event, bloc)
+                          drop_action(native_event, @drop_activate)
                         end
                       })
   end
 
-  def drop_deactivate(bloc)
+  def drop_deactivate(_option)
     interact = JS.eval("return interact('##{@id}')")
+    @drop_deactivate = @original_atome.instance_variable_get('@drop_code')[:deactivate]
     interact.dropzone({
                         # accept: nil, # Accept any element
                         # overlap: 0.75,
                         ondropdeactivate: lambda do |native_event|
-                          drop_action(native_event, bloc)
+                          drop_action(native_event, @drop_deactivate)
                         end
                       })
   end
 
-  def drop_true(bloc)
+  def drop_dropped(_option)
+    @drop_dropped = @original_atome.instance_variable_get('@drop_code')[:dropped]
     interact = JS.eval("return interact('##{@id}')")
     interact.dropzone({
                         # accept: nil, # Accept any element
                         overlap: 0.75,
                         ondrop: lambda do |native_event|
-                          drop_action(native_event, bloc)
+                          drop_action(native_event, @drop_dropped)
                         end
                       })
   end
 
-  def drop_enter(bloc)
+  def drop_enter(_option)
     interact = JS.eval("return interact('##{@id}')")
+    @drop_enter = @original_atome.instance_variable_get('@drop_code')[:enter]
+
     interact.dropzone({
                         # accept: nil,
                         overlap: 0.001,
                         ondragenter: lambda do |native_event|
-                          drop_action(native_event, bloc)
+                          drop_action(native_event, @drop_enter)
                         end
                       })
   end
 
-  def drop_leave(bloc)
+  def drop_leave(_option)
     interact = JS.eval("return interact('##{@id}')")
+    @drop_leave = @original_atome.instance_variable_get('@drop_code')[:leave]
+
     interact.dropzone({
                         # accept: nil,
                         # overlap: 0.75,
                         ondragleave: lambda do |native_event|
-                          drop_action(native_event, bloc)
+                          drop_action(native_event, @drop_leave)
                         end
                       })
+  end
+
+
+  def drop_remove(option)
+
+    case option
+    when :activate
+      @original_atome.instance_variable_get('@drop_code')[:activate] = ''
+      drop_activate(option)
+    when :deactivate
+      @original_atome.instance_variable_get('@drop_code')[:deactivate] = ''
+      drop_deactivate(option)
+    when :dropped
+      @original_atome.instance_variable_get('@drop_code')[:dropped] = ''
+      drop_dropped(option)
+    when :enter
+      @original_atome.instance_variable_get('@drop_code')[:enter] = ''
+      drop_enter(option)
+    when :leave
+      @original_atome.instance_variable_get('@drop_code')[:leave] = ''
+      drop_leave(option)
+    else
+      # to remove all interact event ( touch, drag, scale, ... uncomment below)
+      # interact = JS.eval("return interact('##{@id}')")
+      # interact.unset
+      @original_atome.instance_variable_get('@drop_code')[:activate] = ''
+      drop_activate(option)
+      @original_atome.instance_variable_get('@drop_code')[:deactivate] = ''
+      drop_deactivate(option)
+      @original_atome.instance_variable_get('@drop_code')[:dropped] = ''
+      drop_dropped(option)
+      @original_atome.instance_variable_get('@drop_code')[:enter] = ''
+      drop_enter(option)
+      @original_atome.instance_variable_get('@drop_code')[:leave] = ''
+      drop_leave(option)
+    end
+
   end
 
   def resize(params, bloc)

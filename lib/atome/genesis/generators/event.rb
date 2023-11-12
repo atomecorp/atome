@@ -5,10 +5,10 @@ new({ sanitizer: :touch }) do |params, user_bloc|
   # TODO: factorise code below
   @touch ||= {}
   @touch_code ||= {}
-  option= true
+  option = true
   params = if params.instance_of? Hash
-             @touch_code[params.keys[0]]=user_bloc
-             option= params[params.keys[0]]
+             @touch_code[params.keys[0]] = user_bloc
+             option = params[params.keys[0]]
              params.keys[0]
            else
              case params
@@ -47,18 +47,20 @@ end
 new({ particle: :play })
 new({ particle: :pause })
 new({ particle: :time })
-new({ particle: :on })
+new({ particle: :on }) do |params|
+  params = { min: { width: 10, height: 10 }, max: { width: 2000, height: 2000 } } unless params.instance_of? Hash
+  params
+end
 new({ particle: :fullscreen })
 new({ particle: :mute })
 new({ particle: :drag, store: false })
 new({ sanitizer: :drag }) do |params, user_bloc|
   @drag ||= {}
   @drag_code ||= {}
-  option= true
-
+  option = true
   params = if params.instance_of? Hash
-             @drag_code[params.keys[0]]=user_bloc
-             option= params[params.keys[0]]
+             @drag_code[params.keys[0]] = user_bloc
+             option = params[params.keys[0]]
              params.keys[0]
            else
              case params
@@ -99,38 +101,40 @@ new({ sanitizer: :drag }) do |params, user_bloc|
   params
 end
 new({ particle: :drop, store: false })
-new({ sanitizer: :drop }) do |params, bloc|
-
-  # params = { action: true } if params == true
-
+new({ sanitizer: :drop }) do |params, user_bloc|
   @drop ||= {}
+  @drop_code ||= {}
+  option = true
   params = if params.instance_of? Hash
+             @drop_code[params.keys[0]] = user_bloc
+             option = params[params.keys[0]]
              params.keys[0]
            else
              case params
              when true
-               :true
+               @drop_code[:dropped] = user_bloc
+               :dropped
              when :enter
-               instance_variable_get('@drop_code')[:enter] = bloc
+               @drop_code[:enter] = user_bloc
                :enter
              when :activate
-               instance_variable_get('@drop_code')[:activate] = bloc
+               @drop_code[:activate] = user_bloc
                :activate
              when :deactivate
-               instance_variable_get('@drop_code')[:deactivate] = bloc
+               @drop_code[:deactivate] = user_bloc
                :deactivate
              when :leave
-               instance_variable_get('@drop_code')[:leave] = bloc
+               @drop_code[:leave] = user_bloc
                :leave
              else
                :true
+               @drop_code[:dropped] = user_bloc
+               :dropped
              end
 
            end
-  @drop[params] = true
-
+  @drop[params] = option
   params
-
 end
 new({ particle: :over, type: :hash, store: false })
 new({ sanitizer: :over }) do |params|
