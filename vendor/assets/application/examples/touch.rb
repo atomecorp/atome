@@ -10,10 +10,9 @@ t.touch(:down) do
   t.data('touch down killed')
 end
 b.touch(true) do
-  t.data('type of touch : ?')
+  # t.data('type of touch : ?')
   b.color(:red)
   puts 'box tapped'
-
 end
 
 b.touch(:long) do
@@ -22,6 +21,7 @@ b.touch(:long) do
 end
 
 b.touch(:up) do
+
   t.data('type of touch is : up ')
   b.color(:orange)
 end

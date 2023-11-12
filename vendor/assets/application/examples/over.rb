@@ -1,17 +1,18 @@
 #  frozen_string_literal: true
 
 b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
-b.over({ :over => true }) do
-  puts 'ok'
+b.over(true) do
+  b.color(:black)
+  puts "I'm inside"
 end
-b.over({ enter: true }) do
+b.over(:enter) do
   b.color(:yellow)
 end
 b.over(:leave) do
   b.color(:red)
 end
-
-wait 7 do
-  b.over(false)
-  text('finished')
+t=b.text('touch me to stop over leave')
+t.touch(true) do
+  b.over({ remove: :enter })
+  t.data('finished')
 end

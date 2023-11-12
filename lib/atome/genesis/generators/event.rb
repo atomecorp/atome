@@ -137,30 +137,37 @@ new({ sanitizer: :drop }) do |params, user_bloc|
   params
 end
 new({ particle: :over, type: :hash, store: false })
-new({ sanitizer: :over }) do |params|
-  # # TODO: factorise code below
-
+new({ sanitizer: :over }) do |params, user_bloc|
+  #  TODO: factorise code below
   @over ||= {}
+  @over_code ||= {}
+  option = true
   params = if params.instance_of? Hash
+             @over_code[params.keys[0]] = user_bloc
+             option = params[params.keys[0]]
              params.keys[0]
            else
              case params
              when true
+               @over_code[:over] = user_bloc
                :over
              when :over
+               @over_code[:over] = user_bloc
                :over
              when :enter
+               @over_code[:enter] = user_bloc
                :enter
              when :leave
+               @over_code[:leave] = user_bloc
                :leave
-             when false
-               false
+             # when false
+             #   false
              else
                :over
              end
 
            end
-  @over[params] = true
+  @over[params] = option
 
   params
 

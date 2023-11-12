@@ -3,11 +3,11 @@
 
 
 # require "./examples/convert"
-require "./examples/touch"
+# require "./examples/touch"
 # require "./examples/drag"
 # require "./examples/drop"
 # require "./examples/over"
-# require "./examples/play"
+require "./examples/play"
 # require "./examples/on_resize"
 # require "./examples/resize"
 # require "./examples/keyboard"
