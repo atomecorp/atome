@@ -1,39 +1,31 @@
 # frozen_string_literal: true
 
 new({ particle: :touch, type: :hash, store: false })
-
 new({ sanitizer: :touch }) do |params, user_bloc|
   # TODO: factorise code below
   @touch ||= {}
   @touch_code ||= {}
   params = if params.instance_of? Hash
-             # params.keys[0]
-              "#{params.keys[0]}_#{params[params.keys[0]]}"
-
-
-
-
-             # "#{params.keys[0]}_#{params.keys[params.keys[0]]}}"
-             # alert  "#{params.keys[0]}_#{params.keys[params.keys[0]]}}"
-             # "#{params.keys[0]}_#{params.keys[params.keys[0]]}}"
+             @touch_code[params.keys[0]]=user_bloc
+             "#{params.keys[0]}_#{params[params.keys[0]]}"
            else
              case params
              when true
                :tap
              when :touch
                :tap
-               @touch_code[:touch]=user_bloc
+               @touch_code[:tap] = user_bloc
              when :down
-               @touch_code[:down]=user_bloc
+               @touch_code[:down] = user_bloc
                :down
              when :up
-               @touch_code[:up]=user_bloc
+               @touch_code[:up] = user_bloc
                :up
              when :long
-               @touch_code[:long]=user_bloc
+               @touch_code[:long] = user_bloc
                :long
              when :double
-               @touch_code[:double]=user_bloc
+               @touch_code[:double] = user_bloc
                :double
              when :remove
                params
@@ -47,17 +39,12 @@ new({ sanitizer: :touch }) do |params, user_bloc|
   params
 
 end
-
 new({ particle: :play })
 new({ particle: :pause })
-
-
 new({ particle: :time })
-
 new({ particle: :on })
 new({ particle: :fullscreen })
 new({ particle: :mute })
-
 new({ particle: :drag, store: false })
 new({ sanitizer: :drag }) do |params, _proc|
   @drag ||= {}
@@ -91,7 +78,6 @@ new({ sanitizer: :drag }) do |params, _proc|
   @drag[params] = true
   params
 end
-
 new({ particle: :drop, store: false })
 new({ sanitizer: :drop }) do |params, bloc|
 
@@ -126,7 +112,6 @@ new({ sanitizer: :drop }) do |params, bloc|
   params
 
 end
-
 new({ particle: :over, type: :hash, store: false })
 new({ sanitizer: :over }) do |params|
   # # TODO: factorise code below
@@ -156,7 +141,6 @@ new({ sanitizer: :over }) do |params|
   params
 
 end
-
 new({ particle: :sort }) do |_value, sort_proc|
   @sort_proc = sort_proc
 end
@@ -178,9 +162,7 @@ new({ particle: :stiffness })
 new({ particle: :velocity })
 new({ particle: :repeat })
 new({ particle: :ease })
-
 new(particle: :keyboard, type: :hash, store: false)
-
 new({ sanitizer: :keyboard }) do |params|
   # # TODO: factorise code below
   @keyboard ||= {}
@@ -213,9 +195,7 @@ new({ sanitizer: :keyboard }) do |params|
   params
 
 end
-
 new({ particle: :resize })
-
 new({ particle: :overflow }) do |params, bloc|
   @overflow_code ||= {}
   instance_variable_get('@overflow_code')[:overflow] = bloc

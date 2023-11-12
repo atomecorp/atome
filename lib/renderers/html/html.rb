@@ -752,7 +752,7 @@ class HTML
 
   def touch_tap
     interact = JS.eval("return interact('##{@id}')")
-    @tap = @original_atome.instance_variable_get('@touch_code')[:touch]
+    @tap = @original_atome.instance_variable_get('@touch_code')[:tap]
     interact.on('tap') do |event|
       # bloc=@tap
       @original_atome.instance_exec(event, &@tap) if @tap.is_a?(Proc)
@@ -794,31 +794,39 @@ class HTML
 
   def touch_remove
     interact = JS.eval("return interact('##{@id}')")
-    # up = @original_atome.instance_variable_get('@touch_code').delete(:up)
-    # double = @original_atome.instance_variable_get('@touch_code').delete(:double)
-    # touch = @original_atome.instance_variable_get('@touch_code').delete(:touch)
-    # long = @original_atome.instance_variable_get('@touch_code').delete(:long)
-
     interact.unset
-    # alert
-    # @original_atome.instance_variable_get('@touch_code')[:up] = up
-    # @original_atome.instance_variable_get('@touch_code')[:double] = double
-    # @original_atome.instance_variable_get('@touch_code')[:touch] = touch
-    # @original_atome.instance_variable_get('@touch_code')[:long] = long
-    # touch_double
-    # touch_down
   end
 
   def filter_touch(item_to_remove) end
 
+  def touch_remove_long
+    # touch_remove
+    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+    @original_atome.instance_variable_get('@touch_code')[:long]=''
+    touch_long
+  end
+  def touch_remove_double
+    # touch_remove
+    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+    @original_atome.instance_variable_get('@touch_code')[:double]=''
+    touch_double
+  end
+  def touch_remove_tap
+    # touch_remove
+    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+    @original_atome.instance_variable_get('@touch_code')[:tpa]=''
+    touch_tap
+  end
+  def touch_remove_up
+    # touch_remove
+    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+    @original_atome.instance_variable_get('@touch_code')[:up]=''
+    touch_up
+  end
   def touch_remove_down
-    # alert "before : #{@touch_down.inspect}"
-    touch_remove
-    # alert "after : #{@touch_down}"
-
-    # down = @original_atome.instance_variable_get('@touch_code').delete(:down)
-
-    @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+    # touch_remove
+    # @original_atome.instance_variable_get('@touch_code')[:down] = @touch_down
+    @original_atome.instance_variable_get('@touch_code')[:down]=''
     touch_down
   end
 
@@ -839,7 +847,6 @@ class HTML
       JS.eval("readFile('#{id}','#{file}')")
     else
       puts " work in progress"
-      # JS.eval("readFile('#{id}','#{file}')")
     end
   end
 

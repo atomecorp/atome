@@ -4,9 +4,9 @@ b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
 
 t=text({id: :the_text, data: 'type of touch : ?'})
 
-t.touch(true) do
+t.touch(:down) do
   b.touch({remove: :down})
-  # use b.touch(:remove) to remove all touches bindings
+   # b.touch(:remove) #to remove all touches bindings
   t.data('touch killed')
 end
 b.touch(true) do
@@ -21,6 +21,7 @@ end
 
 b.touch(:up) do
   t.data('type of touch is : up ')
+  b.color(:orange)
   puts :up
 end
 
@@ -39,5 +40,3 @@ b.touch(true) do
   # t.data('type of touch is : touch ')
   puts 'ok'
 end
-
-

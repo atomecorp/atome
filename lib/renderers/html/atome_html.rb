@@ -6,7 +6,6 @@ class Atome
       @html = obj
     else
       @html
-
     end
     # @html_object = HTML.new(id, self)
   end

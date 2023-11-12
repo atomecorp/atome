@@ -2,11 +2,10 @@
 # require 'json'
 
 
-require "./examples/convert"
+# require "./examples/convert"
+require "./examples/touch"
 # require "./examples/keyboard"
-# require "./examples/touch"
 # require "./examples/hypertext"
-
 # require "./examples/tagged"
 # require "./examples/debug"
 # require "./examples/color"
