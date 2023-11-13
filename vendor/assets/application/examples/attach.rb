@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 # Here is the attach explanation and example
+# the attach method in atome is both a getter and a setter
+# attach and attached particles serve the same purpose but just in the opposite direction
+# please note that atome.attach([:atome_id]) means that atome will be the parent of the atome with the id :atome_id
+# to sum up :  attach and attached are both setter and getter :
+# attach will attach the current object to the IDs passed in the params. The current atome will be the child of the the atomes width IDS passed in the the params,
+# while attached is the opposite to attached it will attach IDs passed in the params to the current atome. The current atome will be the parent of of the the atomes width IDS passed in the the params
 
 # atome.attach([:atome_id]) means that atome will be the child of the atome with the id :atome_id
 # Here is how to use it as a setter :
@@ -25,9 +31,3 @@ wait 1 do
   # to retrieve atome attached to the atome c_12 just type tha other method
   puts  c.attached #=> [:b_1]
 end
-
-
-
-# to sum up :  attach and attached are both setter and getter :
-# attach will attach the current object to the IDs passed in the params. The current atome will be the child of the the atomes width IDS passed in the the params,
-# while attached is the opposite

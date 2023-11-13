@@ -416,7 +416,7 @@ class HTML
     @element[:currentTime] = time
   end
 
-  def action(_ction_call)
+  def action(action, variance, option = nil)
     # alert :ok
     # line below doesn't work width opal
     # @element.send("#{action_call}()")

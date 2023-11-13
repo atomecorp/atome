@@ -44,7 +44,39 @@ new({ sanitizer: :touch }) do |params, user_bloc|
   params
 
 end
-new({ particle: :play })
+new({ particle: :play, store: false })
+new({ sanitizer: :play }) do |params, user_bloc|
+  @play ||= {}
+  @play_code ||= {}
+  option = true
+  params = if params.instance_of? Hash
+             @play_code[params.keys[0]] = user_bloc
+             option = params[params.keys[0]]
+             params.keys[0]
+           else
+             case params
+             when true
+               @play_code[:play] = user_bloc
+               :play
+             when :stop
+               @play_code[:stop] = user_bloc
+               :stop
+             when :play
+               @play_code[:play] = user_bloc
+               :play
+             when :pause
+               @play_code[:pause] = user_bloc
+               :pause
+             else
+               @play_code[:play] = user_bloc
+               :play
+             end
+
+           end
+  @play[params] = option
+  params
+end
+
 new({ particle: :pause })
 new({ particle: :time })
 new({ particle: :on }) do |params|
@@ -127,7 +159,6 @@ new({ sanitizer: :drop }) do |params, user_bloc|
                @drop_code[:leave] = user_bloc
                :leave
              else
-               :true
                @drop_code[:dropped] = user_bloc
                :dropped
              end
@@ -160,8 +191,8 @@ new({ sanitizer: :over }) do |params, user_bloc|
              when :leave
                @over_code[:leave] = user_bloc
                :leave
-             # when false
-             #   false
+               # when false
+               #   false
              else
                :over
              end
