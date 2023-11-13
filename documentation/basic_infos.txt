@@ -1,0 +1,207 @@
+Install atome (OSX)
+
+
+Install rust & taurie
+curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+brew install openssl
+cargo install tauri-cli --force
+
+Install Homebew
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+Install rbenv, wasi-vfs, wasmtime :
+brew install rbenv
+#brew install wasmtime
+#brew install  wasi-vfs
+
+##############
+brew install npm
+npm install --save ruby-3_2-wasm-wasi@latest
+##############
+
+
+
+Install ruby :
+rbenv install -l
+rbenv install 3.2.2
+
+nano ~/.zshrc => add : eval "$(rbenv init - zsh)"
+rbenv shell  3.2.2
+rbenv global   3.2.2
+gem update --system
+gem update
+
+Get atome gem :
+git clone https://github.com/atomecorp/atome.git
+
+In the terminal at atome root , type:
+bundle install
+Bundle update
+
+
+
+#Third parties javascript library is located at different location
+#If you need to update it or add a JS library you need to clone : https://github.com/atomecorp/atome_third_parties_js.git
+
+The importance of the type :
+
+When a new atome is created the  rendering occurs when it’s type is set : see :  lib/atome/generators/identity.rb
+
+##### rendering a new atome type
+
+Rendering special atomes (color, shadow)that that only affect materials atome(shape, text)
+
+When crating a new atome the first thing the system  is looking at Is ‘type’ so to render, go to identity.rb in your current render folder (ex :html) and create renderer for the current atom type ex :
+new({ method: :type, type: :string, specific: :shape, renderer: :html }) do |_value, _user_proc|
+  html.shape(@atome[:id])
+end
+
+
+Paths:
+
+new render here : /Users/jean-ericgodard/Documents/Work/codes/atome/lib/atome/extensions/atome.rb
+class Object
+  def new(params, &bloc)
+
+rendering call here: /Users/jean-ericgodard/Documents/Work/codes/atome/lib/renderers/renderer.rb
+
+Automatic renderer generation here: /Users/jean-ericgodard/Documents/Work/codes/atome/lib/atome/extensions/atome.rb :
+class Object
+  def new(params, &bloc)
+
+renderers are build here : /Users/jean-ericgodard/Documents/Work/codes/atome/lib/atome/genesis/genesis.rb
+ def build_render(renderer_name, &method_proc)
+
+
+
+
+ remove condition  /Users/jean-ericgodard/Documents/Work/codes/atome/lib/renderers/renderer.rb in def rendering
+
+New particle exemple :
+
+new({ particle: :shell })
+# automatically create a @shell instance variable in the atome to store the value
+Usage  :
+
+s=shape({})
+s.shell(‘pwd’)
+s.shape => ‘pwd’
+
+Callback :
+
+s.shell(‘pwd’) do |method_return|
+	puts method_return
+end
+# note that automatically create a @shell_code instance variable in the atome to store proc
+
+Also atome automatically create a call back method suffix with ‘_callback’ ex: shell_callback
+If you call this method the bloc will be executed with the value as parameters
+
+This automatic method could be override using  : new({callback: :shell}) do |params, bloc|
+# …write what you want …
+end
+
+To get the proc you’ll need to use :
+s.shell_code[:shell]
+# please note that s.shell_code return a hash because a single particle may hold many proc (by default the method_code return the default code )
+
+
+
+Callback from javascript :
+In : vendor/assets/src/js/specific/ there’s two methods used to handle callback
+The easier method to send the callback to ruby is to use rubyVMCallback like this :
+
+With javascript you can  call the internal ‘automatically created ‘ method : termninal_callback and send them the data getter from javascript like this :
+rubyVMCallback(‘particle_callback', "('" + js_data + "')")
+Exemple with terminal particle:
+rubyVMCallback('termninal_callback', "('" + cmd_result + "')")
+Or call the callback like this :
+rubyVMCallback( " instance_variable_set(‘@terminal_code’, "’" +data+  "’" )")
+rubyVMCallback("callback(:terminal) ")
+
+One is called wasm.js directory and one called opal.js both have the same method  :  rubyVMCallback
+
+On the js side there’s a special method call  ‘callback’ in atome.js file , this method handle all the needed code to create a callback, this method is call like this:
+callback(particle, value)
+Ex : callback('terminal', ‘cmd’)
+
+
+
+
+The power of ‘A’
+# the constant A is used to access any atomes methods without having to create a new atome
+Ex :
+A.monitor({ atomes: [:the_box, :the_cirle], particles: [:left] }) do |atome, particle, value|
+  puts "changes : #{atome.id}, #{particle}, #{value}"
+end
+
+ to prevent a particle data to be saved you can use :
+
+new ({particle: :build, store: false}) do
+
+# …..
+end
+To save manually you can use the store method , like this :
+
+store({build: :my_data })
+
+
+The modifier atomes (color, shadow)
+Here is the mechanism of such atome:
+
+
+
+Important:
+
+Each Each particles and atome is store as an :
+- Particle as an Instant variable in the object itself , get the value of the article simply using : atome.particle
+- Each particle as a hash in the the instance variable @atome within the atome  you can retrieve any particle content using : @atome[:particle]
+- The atome object is also available in html  in the @atome instance variable
+- Atome object is also available in the class Universe within @atomes , to retrieve it use Universe.atomes[atome_id]
+
+It may need a bit more optimization
+
+
+Atomes have a  special method to refresh all attached /affected atomes , call : Atome.global_monitoring
+Code at :  helpers/utilities.rb /def global_monitoring
+Usage :
+Atome.global_monitoring(self, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
+
+
+The  ephemera @new_atome to allow access to data send to the  atome at init time
+
+
+
+Important : for atomes that needs to be attached or apply to
+This happen in the method  in presets/atome.rb : atome_common
+at this line :
+ if params[:type] == :color || basic_params[:type] == :color || params[:type] == :shadow || basic_params[:type] == :shadow
+
+
+
+
+Sanitizer , pre, post , after in atome/helpers/utilities.rb
+
+Sanitizer :
+Particle : allow to modify params send by user before parsing creation  (context is the current atome)
+Atome : allow to modify params send by user before parsing creation
+
+To remove :  in material.b add it to : « new({post: :remove}) do |params| »
+
+
+Pre :
+Particle  : after params parsing and  before rendering  (context is the current atome)
+Atome :  after params parsing and before atome creation  (context is the parent atome)
+
+Post
+Particle  :  after params parsing and  after rendering  (context is the current atome)
+Atome:  after params parsing and  after atome creation (context is the current atome)
+
+After :
+Particle  : only after rendering and storage (context is the current atome)
+
+To alter a particle when reading it’s value you can use :preview and :review
+
+
+

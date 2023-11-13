@@ -417,9 +417,11 @@ class HTML
   end
 
   def action(_ction_call)
+    # alert :ok
     # line below doesn't work width opal
     # @element.send("#{action_call}()")
-    JS.eval("document.getElementById('#{@id}').play();")
+    # JS.eval("document.getElementById('#{@id}').play();")
+    @element.play()
   end
 
   def append_to(parent_id_found)
@@ -1072,6 +1074,7 @@ class HTML
   end
 
   def play_animation(properties)
+    alert 'change for standard method : action'
     required_keys = [:from, :to, :duration]
     if properties.is_a?(Hash) && (required_keys - properties.keys).empty?
       animate(properties)

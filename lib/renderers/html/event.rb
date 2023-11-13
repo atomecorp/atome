@@ -26,9 +26,10 @@ new({ method: :keyboard, renderer: :html }) do |params|
 end
 
 new({ method: :play, renderer: :html }) do |params = true|
-  option = @play[params]
-  html.currentTime(params, option) if params != true
+  # option = @play[params]
+  # html.currentTime(params, option) if params != true
   html.action(:play)
+  # params
 end
 
 new({ method: :on, renderer: :html }) do |params|

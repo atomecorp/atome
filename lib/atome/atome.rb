@@ -17,6 +17,8 @@ class Atome
     @id = new_atome[:id]
     @type = new_atome[:type]
     @html = HTML.new(@id, self)
+    @attach=[]
+    @attached=[]
     # @authorisations={}
 
     # now we store the proc in a an atome's property called :bloc

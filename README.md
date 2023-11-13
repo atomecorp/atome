@@ -32,6 +32,10 @@ Open source technology included
 
 [comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/ruby.png" width="100" />)
 
+- Ruby Wasm : is a ruby standard libary used to embed the ruby language in many environments including the web  (https://github.com/ruby/ruby.wasm)
+
+[comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/ruby.png" width="100" />)
+
 - Opal : is a ruby gem used to compile the ruby language to JS (https://opalrb.com)
 
 [comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/opal.png" width="100" />)

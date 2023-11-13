@@ -83,6 +83,8 @@
 # create a animation object
 # create callback methode when playing
 
+
+# here is how to animate shape :
 new({particle: :animate}) do |params|
   html.play_animation({ from: 0, to: 300, duration: 1000 })
 end

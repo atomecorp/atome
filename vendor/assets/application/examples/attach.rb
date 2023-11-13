@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-b = box({ id: :c315 })
-circle({ id: :c_12, top: 0, drag: true })
-wait 1 do
-  b.attach([:c_12])
-end
+# Here is the attach explanation and example
 
-circle({ id: :c_123, color: :cyan, left: 233, drag: true })
+# atome.attach([:atome_id]) means that atome will be the child of the atome with the id :atome_id
+# Here is how to use it as a setter :
+b = box({ id: :b315, color: :red })
+circle({ id: :c_12, top: 0, drag: true, color: :yellow })
+
+
+c=circle({ id: :c_123, color: :cyan, left: 233, drag: true })
  box({ id: :b_1, left: 333, drag: true })
 grab(:b_1).attach([:c_123])
 
@@ -15,4 +17,17 @@ bb.attach([:b_1])
 
 
 box({ id: :my_test_box })
+wait 1 do
+  b.attach([:c_12])
+  # Here is how to use it as a getter :
+  # to retrieve witch atomes b315 is attached to  to the atome c_12 just type
+  puts  b.attach # => [:c_12]
+  # to retrieve atome attached to the atome c_12 just type tha other method
+  puts  c.attached #=> [:b_1]
+end
 
+
+
+# to sum up :  attach and attached are both setter and getter :
+# attach will attach the current object to the IDs passed in the params. The current atome will be the child of the the atomes width IDS passed in the the params,
+# while attached is the opposite
