@@ -203,15 +203,13 @@ new({ sanitizer: :over }) do |params, user_bloc|
 
            end
 
-  case params
+  # case params
 
-  when :remove
-    @over_code[option]=''
-  else
-    # nothing
-  end
-  @over[params] = option
-
+  # when :remove
+  #   @over_code[option] = ''
+  # else
+    @over[params] = option
+  # end
   params
 
 end

@@ -416,18 +416,64 @@ class HTML
     @element[:currentTime] = time
   end
 
-  def update_frame
-    # Mettez ici la logique pour obtenir la frame actuelle, si possible
-    # puts @element.currentTime # affiche le temps actuel de la vidéo
+  # def bind_frame_listener
+  #   fps = 30 # Assumer un taux de frame constant, ajustez selon votre vidéo
+  #   @frame_listener_callback = lambda do |event|
+  #     current_frame = (@element[:currentTime].to_i * fps).to_i
+  #     puts "Frame actuelle : #{current_frame}"
+  #   end
+  #   @element.addEventListener('timeupdate', @frame_listener_callback)
+  # end
+  # def bind_frame_listener
+  #   fps = 50 # Assumer un taux de frame constant, ajustez selon votre vidéo
+  #   @frame_listener_callback = lambda do |event|
+  #     current_time = @element[:currentTime].to_f # Convertir en Float
+  #     current_frame = (current_time * fps).to_i
+  #     puts "Frame actuelle : #{current_frame}"
+  #     grab(:my_text).data(current_frame)
+  #
+  #   end
+  #   @element.addEventListener('timeupdate', @frame_listener_callback)
+  # end
+  def self.video_callback(time, current_atome)
+    grab(current_atome).left(time-900)
+  end
+  def bind_frame_listener
+    fps = 30 # Assumer un taux de frame constant, ajustez selon votre vidéo
 
-    # Appelle cette méthode à nouveau au prochain frame
-    `requestAnimationFrame(#{method(:update_frame).to_proc})`
+    frame_listener_js = <<-JS
+    var videoElement = document.querySelector('##{@id}');
+    var lastFrame = -1;
+    var fps = #{fps};
+    function frameListener() {
+      var currentFrame = Math.floor(videoElement.currentTime * fps);
+      if (currentFrame != lastFrame) {
+       // console.log("Frame actuelle : " + currentFrame);
+          rubyVMCallback(`HTML.video_callback  ${currentFrame}, '#{@id}'`);
+        lastFrame = currentFrame;
+      }
+      requestAnimationFrame(frameListener);
+    }
+    requestAnimationFrame(frameListener);
+  JS
+
+    JS.eval(frame_listener_js)
+  end
+
+
+
+  # Méthode pour retirer l'écouteur d'événements de frame
+  def remove_frame_listener
+    if @frame_listener_callback
+      @element.removeEventListener('timeupdate', @frame_listener_callback)
+      @frame_listener_callback = nil
+    end
   end
 
   def action(action, variance, option = nil)
-    currentTime(option)
+    currentTime(30)
+    bind_frame_listener
     @element.play()
-    update_frame
   end
 
   def append_to(parent_id_found)
@@ -859,6 +905,8 @@ class HTML
     end)
   end
 
+
+
   def over_over(_option)
     interact = JS.eval("return interact('##{@id}')")
     @over_over = @original_atome.over_code[:over]
@@ -870,62 +918,51 @@ class HTML
     end
   end
 
-  # def over_enter(_option)
-  #
-  #   @over_enter = @original_atome.over_code[:enter]
-  #   JS.global[:myRubyMouseEnterCallback] = @over_enter
-  #   @element.addEventListener('mouseenter', lambda do |event|
-  #     puts :entering
-  #     @original_atome.instance_exec('my_params', &@over_enter) if @over_enter.is_a?(Proc)
-  #   end)
-  # end
-
-
-  # Method to add a mouseenter event listener
   def over_enter(_option)
-    # Storing the code to execute in an instance variable
-    @over_enter_code = @original_atome.over_code[:enter]
-
-    # Check if the code to execute is a Proc and create a corresponding lambda
-    if @over_enter_code.is_a?(Proc)
+    @over_enter = @original_atome.instance_variable_get('@over_code')[:enter]
+    if @over_enter
       @over_enter_callback = lambda do |event|
-        # Use 'instance_exec' with the code block if it is available
-        @original_atome.instance_exec('my_params', &@over_enter_code) if @over_enter_code
+        @original_atome.instance_exec(event, &@over_enter) if @over_enter.is_a? Proc
       end
-
-      # Add the event listener with this lambda
       @element.addEventListener('mouseenter', @over_enter_callback)
     end
   end
 
+
   def over_leave(_option)
-    @over_leave = @original_atome.over_code[:leave]
-    @element.addEventListener('mouseleave', lambda do |event|
-      @original_atome.instance_exec('my_params', &@over_leave) if @over_leave.is_a?(Proc)
-    end)
+    @over_leave = @original_atome.instance_variable_get('@over_code')[:leave]
+    if @over_leave
+      @over_leave_callback = lambda do |event|
+        @original_atome.instance_exec(event, &@over_leave) if @over_leave.is_a? Proc
+      end
+      @element.addEventListener('mouseleave', @over_leave_callback)
+    end
   end
+
+
 
   def over_remove(option)
     case option
     when :enter
-      # Ensure the lambda exists before attempting to remove it
       if @over_enter_callback
         # Remove the event listener using the same lambda
         @element.removeEventListener('mouseenter', @over_enter_callback)
-
-        # Reset the lambda and the code to nil
         @over_enter_callback = nil
-        @over_enter_code = nil
+        @over_enter = nil
       end
-      # @element.removeEventListener('mouseenter', JS.global[:myRubyMouseEnterCallback])
-      # @over_enter = ''
     when :leave
-      @over_leave = ''
+      @element.removeEventListener('mouseleave', @over_leave_callback)
+      @over_leave_callback = nil
+      @over_leave = nil
     when :over
       @over_over = ''
     else
-      @over_enter = ''
-      @over_leave = ''
+      @element.removeEventListener('mouseenter', @over_enter_callback)
+      @over_enter_callback = nil
+      @over_enter = nil
+      @element.removeEventListener('mouseleave', @over_leave_callback)
+      @over_leave_callback = nil
+      @over_leave = nil
       @over_over = ''
     end
   end

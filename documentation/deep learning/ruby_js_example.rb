@@ -6,16 +6,25 @@
 # example with the over method
 # the method below add an event listener and trig the code found in the @original_atome.over_code[:enter]
 def over_enter(_option)
-  @over_enter = @original_atome.over_code[:enter]
-  @element.addEventListener('mouseenter', lambda do |event|
-    @original_atome.instance_exec('my_params', &@over_enter) if @over_enter.is_a?(Proc)
-  end)
+  @over_enter = @original_atome.instance_variable_get('@over_code')[:enter]
+  if @over_enter
+    @over_enter_callback = lambda do |event|
+      @original_atome.instance_exec(event, &@over_enter) if @over_enter.is_a? Proc
+    end
+    @element.addEventListener('mouseenter', @over_enter_callback)
+  end
 end
 # you can unbind using the method below
 def remove_over_enter(_option)
-  @element.removeEventListener('mouseenter', @over_enter)
-  @over_enter = ''
+  if @over_enter_callback
+    # Remove the event listener using the same lambda
+    @element.removeEventListener('mouseenter', @over_enter_callback)
+    @over_enter_callback = nil
+    @over_enter = nil
+  end
 end
+
+
 
 
 # please note that in the HTML class instance @element is always the current HTML object and is always define
