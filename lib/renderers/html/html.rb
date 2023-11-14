@@ -416,12 +416,18 @@ class HTML
     @element[:currentTime] = time
   end
 
+  def update_frame
+    # Mettez ici la logique pour obtenir la frame actuelle, si possible
+    # puts @element.currentTime # affiche le temps actuel de la vidéo
+
+    # Appelle cette méthode à nouveau au prochain frame
+    `requestAnimationFrame(#{method(:update_frame).to_proc})`
+  end
+
   def action(action, variance, option = nil)
-    # alert :ok
-    # line below doesn't work width opal
-    # @element.send("#{action_call}()")
-    # JS.eval("document.getElementById('#{@id}').play();")
+    currentTime(option)
     @element.play()
+    update_frame
   end
 
   def append_to(parent_id_found)
@@ -862,35 +868,64 @@ class HTML
       event = Native(native_event)
       @original_atome.instance_exec(event, &@over_over) if @over_over.is_a?(Proc)
     end
-
   end
 
-  def over_enter(_option)
-    JS.global[:myRubyMouseEnterCallback] = Proc.new { @original_atome.over_code[:enter].call }
-    JS.eval("document.querySelector('##{@id}').addEventListener('mouseenter', myRubyMouseEnterCallback);")
+  # def over_enter(_option)
+  #
+  #   @over_enter = @original_atome.over_code[:enter]
+  #   JS.global[:myRubyMouseEnterCallback] = @over_enter
+  #   @element.addEventListener('mouseenter', lambda do |event|
+  #     puts :entering
+  #     @original_atome.instance_exec('my_params', &@over_enter) if @over_enter.is_a?(Proc)
+  #   end)
+  # end
 
+
+  # Method to add a mouseenter event listener
+  def over_enter(_option)
+    # Storing the code to execute in an instance variable
+    @over_enter_code = @original_atome.over_code[:enter]
+
+    # Check if the code to execute is a Proc and create a corresponding lambda
+    if @over_enter_code.is_a?(Proc)
+      @over_enter_callback = lambda do |event|
+        # Use 'instance_exec' with the code block if it is available
+        @original_atome.instance_exec('my_params', &@over_enter_code) if @over_enter_code
+      end
+
+      # Add the event listener with this lambda
+      @element.addEventListener('mouseenter', @over_enter_callback)
+    end
   end
 
   def over_leave(_option)
-    JS.global[:myRubyMouseLeaveCallback] = Proc.new { @original_atome.over_code[:leave].call }
-    JS.eval("document.querySelector('##{@id}').addEventListener('mouseleave', myRubyMouseLeaveCallback);")
+    @over_leave = @original_atome.over_code[:leave]
+    @element.addEventListener('mouseleave', lambda do |event|
+      @original_atome.instance_exec('my_params', &@over_leave) if @over_leave.is_a?(Proc)
+    end)
   end
 
   def over_remove(option)
     case option
     when :enter
-      JS.eval("document.querySelector('##{@id}').removeEventListener('mouseenter', myRubyMouseEnterCallback);")
-      JS.global[:myRubyMouseEnterCallback] = nil
+      # Ensure the lambda exists before attempting to remove it
+      if @over_enter_callback
+        # Remove the event listener using the same lambda
+        @element.removeEventListener('mouseenter', @over_enter_callback)
+
+        # Reset the lambda and the code to nil
+        @over_enter_callback = nil
+        @over_enter_code = nil
+      end
+      # @element.removeEventListener('mouseenter', JS.global[:myRubyMouseEnterCallback])
+      # @over_enter = ''
     when :leave
-      JS.eval("document.querySelector('##{@id}').removeEventListener('mouseleave', myRubyMouseLeaveCallback);")
-      JS.global[:myRubyMouseLeaveCallback] = nil
+      @over_leave = ''
     when :over
       @over_over = ''
     else
-      JS.eval("document.querySelector('##{@id}').removeEventListener('mouseenter', myRubyMouseEnterCallback);")
-      JS.global[:myRubyMouseEnterCallback] = nil
-      JS.eval("document.querySelector('##{@id}').removeEventListener('mouseleave', myRubyMouseLeaveCallback);")
-      JS.global[:myRubyMouseLeaveCallback] = nil
+      @over_enter = ''
+      @over_leave = ''
       @over_over = ''
     end
   end

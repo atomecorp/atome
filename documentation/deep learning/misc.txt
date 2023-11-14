@@ -1,0 +1,9 @@
+Important, please note that almost all requests for JavaScript code will have to be translated into Ruby Wasm, which is the common denominator between Opal and Ruby Wasm. This is because any code written for Ruby Wasm will work with Opal, whereas the reverse is not true. For example, a code with backticks will not work. Can you take this into account each time you are asked for code?
+
+The most important thing is to never use backticks for interpreting JavaScript code in a Ruby environment; instead, use JS.eval.
+
+
+
+
+please this is important to note that within the HTML class @element is a js object,  @id is both the id of the atome and the id of the html object
+finally @original_atome is used to acces the atome from the HTML class

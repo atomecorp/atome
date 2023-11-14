@@ -240,7 +240,3 @@ Contact:
 
 
 
-
-
-can you mix and reformat the two texts in md format
-

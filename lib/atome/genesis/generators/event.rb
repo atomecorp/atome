@@ -69,11 +69,13 @@ new({ sanitizer: :play }) do |params, user_bloc|
                :pause
              else
                @play_code[:play] = user_bloc
+               option = params
                :play
              end
 
            end
   @play[params] = option
+
   params
 end
 
@@ -169,11 +171,13 @@ new({ sanitizer: :drop }) do |params, user_bloc|
 end
 new({ particle: :over, type: :hash, store: false })
 new({ sanitizer: :over }) do |params, user_bloc|
+
   #  TODO: factorise code below
   @over ||= {}
   @over_code ||= {}
   option = true
   params = if params.instance_of? Hash
+
              @over_code[params.keys[0]] = user_bloc
              option = params[params.keys[0]]
              params.keys[0]
@@ -198,6 +202,14 @@ new({ sanitizer: :over }) do |params, user_bloc|
              end
 
            end
+
+  case params
+
+  when :remove
+    @over_code[option]=''
+  else
+    # nothing
+  end
   @over[params] = option
 
   params

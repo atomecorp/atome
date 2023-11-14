@@ -15,12 +15,8 @@ brew install rbenv
 #brew install wasmtime
 #brew install  wasi-vfs
 
-##############
 brew install npm
 npm install --save ruby-3_2-wasm-wasi@latest
-##############
-
-
 
 Install ruby :
 rbenv install -l
