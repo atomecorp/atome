@@ -1,5 +1,6 @@
-
 # frozen_string_literal: true
+
+# require without relative is needed when using Opal
 
 require 'renderers/html/atome'
 require 'renderers/html/atome_html'

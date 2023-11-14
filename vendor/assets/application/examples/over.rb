@@ -11,7 +11,7 @@ end
 b.over(:leave) do
   b.color(:red)
 end
-t=b.text('touch me to stop over leave')
+t=b.text('touch me to stop over enter')
 t.touch(true) do
   b.over({ remove: :enter })
   t.data('finished')

@@ -1,6 +1,8 @@
 
 # frozen_string_literal: true
 
+# relative is needed when using ruby wasm
+
 require_relative './atome'
 require_relative './atome_html'
 require_relative './communication'

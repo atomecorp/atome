@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# relative is needed when using ruby wasm
 require 'fileutils'
 require 'securerandom'
 require_relative './atome/version'
@@ -31,8 +32,8 @@ require_relative './atome/genesis/generators/utility'
 require_relative './atome/helpers/utilities'
 require_relative './atome/helpers/security'
 require_relative './renderers/html/index_relative'
-require_relative './renderers/headless/index'
-require_relative './renderers/server/index'
+require_relative './renderers/headless/index_relative'
+require_relative './renderers/server/index_relative'
 require_relative './atome/extensions/matrix'
 require_relative './atome/helpers/sanitizer'
 # require_relative './atome/genesis/group/group'

@@ -4,8 +4,9 @@
 class Atome
   include Essentials
 
-  def initialize(new_atome = nil, &atomes_proc)
+  def initialize(new_atome = {}, &atomes_proc)
     # the keys :renderers, :type and :id should be placed in the first position in the hash
+
     @broadcast = {}
     @history = {}
     # @security = {}
@@ -14,13 +15,12 @@ class Atome
     @attached = []
     @unit = {}
     @collected = {}
-    @id = new_atome[:id]
-    @type = new_atome[:type]
-    @html = HTML.new(@id, self)
+    @id = new_atome[:id] || identity_generator(:element)
+    @type = new_atome[:type] || :element
     @attach=[]
     @attached=[]
-    # @authorisations={}
-
+    @html = HTML.new(@id, self)
+    @headless= Headless.new(@id, self)
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     # new_atome[:password]={read: :tot, write: :toto} unless new_atome[:password]

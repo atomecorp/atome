@@ -1,3 +1,4 @@
 # frozen_string_literal: true
 
-require_relative 'utility'
+# require without relative is needed when using Opal
+require 'renderers/server/utility'

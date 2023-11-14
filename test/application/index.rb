@@ -1,16 +1,17 @@
 #  frozen_string_literal: true
 # require 'json'
-
-
+require "./examples/basic_understanding"
+# require "./examples/presets"
+# require "./examples/hierarchy"
 # require "./examples/callback"
 # require "./examples/convert"
 # require "./examples/touch"
 # require "./examples/drag"
 # require "./examples/drop"
 # require "./examples/over"
-require "./examples/play"
 # require "./examples/attach"
 # require "./examples/attached"
+# require "./examples/play"
 # require "./examples/animation"
 # require "./examples/on_resize"
 # require "./examples/resize"
