@@ -11,7 +11,7 @@
 # require "./examples/over"
 # require "./examples/attach"
 # require "./examples/attached"
-# require "./examples/play"
+require "./examples/play"
 # require "./examples/animation"
 # require "./examples/on_resize"
 # require "./examples/resize"
@@ -56,7 +56,7 @@
 # require "./examples/video"
 # require "./examples/read"
 # require "./examples/browse"
-require "./examples/terminal"
+# require "./examples/terminal"
 # puts('Connected to WebSocket.')
 # require './web2'
 # require File.expand_path('../examples/shadow.rb', __FILE__)

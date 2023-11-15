@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 #  this class is aimed at html rendering
+
 class HTML
 
   def initialize(id_found, current_atome)
@@ -416,63 +417,22 @@ class HTML
     @element[:currentTime] = time
   end
 
-  # def bind_frame_listener
-  #   fps = 30 # Assumer un taux de frame constant, ajustez selon votre vidéo
-  #   @frame_listener_callback = lambda do |event|
-  #     current_frame = (@element[:currentTime].to_i * fps).to_i
-  #     puts "Frame actuelle : #{current_frame}"
-  #   end
-  #   @element.addEventListener('timeupdate', @frame_listener_callback)
-  # end
-  # def bind_frame_listener
-  #   fps = 50 # Assumer un taux de frame constant, ajustez selon votre vidéo
-  #   @frame_listener_callback = lambda do |event|
-  #     current_time = @element[:currentTime].to_f # Convertir en Float
-  #     current_frame = (current_time * fps).to_i
-  #     puts "Frame actuelle : #{current_frame}"
-  #     grab(:my_text).data(current_frame)
-  #
-  #   end
-  #   @element.addEventListener('timeupdate', @frame_listener_callback)
-  # end
-  def self.video_callback(time, current_atome)
-    grab(current_atome).left(time-900)
-  end
-  def bind_frame_listener
-    fps = 30 # Assumer un taux de frame constant, ajustez selon votre vidéo
-
-    frame_listener_js = <<-JS
-    var videoElement = document.querySelector('##{@id}');
-    var lastFrame = -1;
-    var fps = #{fps};
-    function frameListener() {
-      var currentFrame = Math.floor(videoElement.currentTime * fps);
-      if (currentFrame != lastFrame) {
-       // console.log("Frame actuelle : " + currentFrame);
-          rubyVMCallback(`HTML.video_callback  ${currentFrame}, '#{@id}'`);
-        lastFrame = currentFrame;
-      }
-      requestAnimationFrame(frameListener);
-    }
-    requestAnimationFrame(frameListener);
-  JS
-
-    JS.eval(frame_listener_js)
-  end
-
-
-
-  # Méthode pour retirer l'écouteur d'événements de frame
-  def remove_frame_listener
-    if @frame_listener_callback
-      @element.removeEventListener('timeupdate', @frame_listener_callback)
-      @frame_listener_callback = nil
-    end
+  def animation_frame_callback(proc_pass)
+    JS.global[:window].requestAnimationFrame(-> (timestamp) {
+      current_time= @element[:currentTime]
+      fps = 30
+      current_frame = (current_time.to_f * fps).to_i
+      # puts current_frame
+      # puts current_time
+      @original_atome.instance_exec({ frame: current_frame, time: current_time }, &proc_pass) if proc_pass.is_a? Proc
+      animation_frame_callback(proc_pass)
+    })
   end
 
   def action(action, variance, option = nil)
     currentTime(30)
-    bind_frame_listener
+    proc_found= @original_atome.instance_variable_get('@play_code')[action]
+    animation_frame_callback(proc_found)
     @element.play()
   end
 
@@ -905,8 +865,6 @@ class HTML
     end)
   end
 
-
-
   def over_over(_option)
     interact = JS.eval("return interact('##{@id}')")
     @over_over = @original_atome.over_code[:over]
@@ -928,7 +886,6 @@ class HTML
     end
   end
 
-
   def over_leave(_option)
     @over_leave = @original_atome.instance_variable_get('@over_code')[:leave]
     if @over_leave
@@ -938,8 +895,6 @@ class HTML
       @element.addEventListener('mouseleave', @over_leave_callback)
     end
   end
-
-
 
   def over_remove(option)
     case option

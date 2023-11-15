@@ -10,7 +10,7 @@ end
 v.touch(true) do
   # v.play(true)
   v.play(169) do |event|
-    puts event
+    puts "event is : #{event}"
   end
   # wait 3 do
   #   v.play(66)

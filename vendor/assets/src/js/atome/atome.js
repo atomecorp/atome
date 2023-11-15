@@ -3,20 +3,20 @@ const atomeJS = Object.assign(communication, File);
 // generic callback method
 
 
-// async function callback(callback_method, cmd) {
-//     let ruby_callback_method = 'A.callback(:' + callback_method + ')'
-//     let instance_variable_to_set = '@' + callback_method + '_code'
-//     let cmd_result;
-//     try {
-//         let response;
-//         response = await 'ok'
-//         cmd_result = response;
-//     } catch (error) {
-//         cmd_result = error;
-//     }
-//     rubyVMCallback("Atome.instance_variable_set('" + instance_variable_to_set + "','" + cmd_result + "')")
-//     rubyVMCallback(ruby_callback_method)
-// }
+async function callback(callback_method, cmd) {
+    let ruby_callback_method = 'A.callback(:' + callback_method + ')'
+    let instance_variable_to_set = '@' + callback_method + '_code'
+    let cmd_result;
+    try {
+        let response;
+        response = await 'ok'
+        cmd_result = response;
+    } catch (error) {
+        cmd_result = error;
+    }
+    rubyVMCallback("Atome.instance_variable_set('" + instance_variable_to_set + "','" + cmd_result + "')")
+    rubyVMCallback(ruby_callback_method)
+}
 
 //read file
 
@@ -151,3 +151,5 @@ function createSvgElement(tagName, attributes) {
     }
     return elem;
 }
+
+
