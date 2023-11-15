@@ -44,7 +44,6 @@ cc.drag(:locked) do |event|
   left = [min_left, left].max
   left = [left, max_left].min
 
-  # Mise à jour de la vidéo et de la position de `cc`
   v.html.currentTime(left/10)
   cc.left(left)
 end

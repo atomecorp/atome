@@ -445,12 +445,6 @@ class HTML
       animation_frame_callback(proc_found, play_content)
       @element.play
     end
-    # currentTime(30)
-    proc_found= @original_atome.instance_variable_get('@play_code')[actaction_foundion]
-    play_content= @original_atome.instance_variable_get('@play')
-    # alert "play_content : #{play_content}, play_content class : #{play_content.class}"
-    animation_frame_callback(proc_found, play_content)
-    @element.play()
   end
 
   def append_to(parent_id_found)
