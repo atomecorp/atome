@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-
+# new({ particle: :state })
 new({ particle: :real })
 new({ particle: :type })
 new({ particle: :id })

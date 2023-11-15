@@ -362,18 +362,18 @@ class HTML
     @element.appendChild(source)
   end
 
-  def sanitize_text(text)
-    text.to_s
-        .gsub('&', '&amp;')
-        .gsub('<', '&lt;')
-        .gsub('>', '&gt;')
-        .gsub('"', '&quot;')
-        .gsub("'", '&apos;')
-  end
+  # def sanitize_text(text)
+  #   text.to_s
+  #       .gsub('&', '&amp;')
+  #       .gsub('<', '&lt;')
+  #       .gsub('>', '&gt;')
+  #       .gsub('"', '&quot;')
+  #       .gsub("'", '&apos;')
+  # end
 
   def innerText(data)
-    sanitized_data = sanitize_text(data.to_s)
-    @element[:innerText] = sanitized_data
+    # sanitized_data = sanitize_text(data.to_s)
+    @element[:innerText] = data
   end
 
   def textContent(data)
@@ -414,25 +414,42 @@ class HTML
   end
 
   def currentTime(time)
+    # alert time
     @element[:currentTime] = time
   end
 
-  def animation_frame_callback(proc_pass)
+  def animation_frame_callback(proc_pass, play_content)
     JS.global[:window].requestAnimationFrame(-> (timestamp) {
       current_time= @element[:currentTime]
       fps = 30
       current_frame = (current_time.to_f * fps).to_i
-      # puts current_frame
-      # puts current_time
       @original_atome.instance_exec({ frame: current_frame, time: current_time }, &proc_pass) if proc_pass.is_a? Proc
-      animation_frame_callback(proc_pass)
+      # we update play instance variable so if user ask for atome.play it will return current frame
+      play_content[:play]=current_frame
+      animation_frame_callback(proc_pass, play_content)
     })
   end
 
-  def action(action, variance, option = nil)
-    currentTime(30)
-    proc_found= @original_atome.instance_variable_get('@play_code')[action]
-    animation_frame_callback(proc_found)
+  def action(_particle, action_found, option = nil)
+
+    # alert option
+    if action_found== :stop
+      currentTime(option)
+      @element.pause
+      elsif action_found== :pause
+        @element.pause
+    else
+      currentTime(option)
+      proc_found= @original_atome.instance_variable_get('@play_code')[action_found]
+      play_content= @original_atome.instance_variable_get('@play')
+      animation_frame_callback(proc_found, play_content)
+      @element.play
+    end
+    # currentTime(30)
+    proc_found= @original_atome.instance_variable_get('@play_code')[actaction_foundion]
+    play_content= @original_atome.instance_variable_get('@play')
+    # alert "play_content : #{play_content}, play_content class : #{play_content.class}"
+    animation_frame_callback(proc_found, play_content)
     @element.play()
   end
 
