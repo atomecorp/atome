@@ -830,7 +830,7 @@ class HTML
     # alert options
     interact = JS.eval("return interact('##{@id}')")
     if params == :remove
-      @resize=''
+      @resize = ''
       interact.resizable(false)
     else
       min_width = options[:min][:width] || 10
@@ -846,25 +846,22 @@ class HTML
 
                              move: lambda do |native_event|
                                if @resize.is_a?(Proc)
-                               event = Native(native_event)
-                               # if bloc.instance_of? Proc
-                               #   bloc.call({ width: event[:rect][:width], height: event[:rect][:height] })
-                               # end
-                               @original_atome.instance_exec(event, &@resize)
-                               x = (@element[:offsetLeft].to_i || 0)
-                               y = (@element[:offsetTop].to_i || 0)
-                               width = event[:rect][:width]
-                               height = event[:rect][:height]
-                               # Translate when resizing from any corner
-                               x += event[:deltaRect][:left].to_f
-                               y += event[:deltaRect][:top].to_f
-                               @original_atome.width (width.to_i if width.to_i.between?(min_width, max_width))
-                               @original_atome.height (height.to_i if height.to_i.between?(min_height, max_height))
-                               #
-                               @original_atome.left(x)
-                               @original_atome.top (y)
-                               # @element[:style][:left] = "#{x}px"
-                               # @element[:style][:top] = "#{y}px"
+                                 event = Native(native_event)
+                                 @original_atome.instance_exec(event, &@resize)
+                                 x = (@element[:offsetLeft].to_i || 0)
+                                 y = (@element[:offsetTop].to_i || 0)
+                                 width = event[:rect][:width]
+                                 height = event[:rect][:height]
+                                 # Translate when resizing from any corner
+                                 x += event[:deltaRect][:left].to_f
+                                 y += event[:deltaRect][:top].to_f
+                                 @original_atome.width (width.to_i if width.to_i.between?(min_width, max_width))
+                                 @original_atome.height (height.to_i if height.to_i.between?(min_height, max_height))
+                                 #
+                                 @original_atome.left(x)
+                                 @original_atome.top (y)
+                                 # @element[:style][:left] = "#{x}px"
+                                 # @element[:style][:top] = "#{y}px"
                                end
                              end
                            },
