@@ -78,7 +78,6 @@ new({ sanitizer: :play }) do |params, user_bloc|
 
   params
 end
-
 new({ particle: :pause })
 new({ particle: :time })
 new({ particle: :on }) do |params|
@@ -267,7 +266,36 @@ new({ sanitizer: :keyboard }) do |params|
   params
 
 end
-new({ particle: :resize })
+new({ particle: :resize, store: false  })
+
+new({ sanitizer: :resize }) do |params, user_bloc|
+  @resize ||= {}
+  @resize_code ||= {}
+
+  option = {}
+  params = if params.instance_of? Hash
+             @resize_code[:resize] = user_bloc
+             option = params[params.keys[0]]
+             :resize
+           else
+             case params
+             when true
+               @resize_code[:resize] = user_bloc
+               :resize
+             when :remove
+
+               :remove
+             else
+               @resize_code[:resize] = user_bloc
+               option = params
+               :resize
+             end
+
+           end
+  @resize[params] = option
+
+  params
+end
 new({ particle: :overflow }) do |params, bloc|
   @overflow_code ||= {}
   instance_variable_get('@overflow_code')[:overflow] = bloc

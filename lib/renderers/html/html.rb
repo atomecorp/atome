@@ -826,44 +826,52 @@ class HTML
 
   end
 
-  def resize(params, bloc)
+  def resize(params, options)
+    # alert options
     interact = JS.eval("return interact('##{@id}')")
-    min_width = params[:min][:width]
-    min_height = params[:min][:height]
-    max_width = params[:max][:width]
-    max_height = params[:max][:height]
+    if params == :remove
+      @resize=''
+      interact.resizable(false)
+    else
+      min_width = options[:min][:width] || 10
+      min_height = options[:min][:height] || 10
+      max_width = options[:max][:width] || 3000
+      max_height = options[:max][:height] || 3000
+      @resize = @original_atome.instance_variable_get('@resize_code')[:resize]
+      interact.resizable({
+                           edges: { left: true, right: true, top: true, bottom: true },
+                           inertia: true,
+                           modifiers: [],
+                           listeners: {
 
-    interact.resizable({
-                         edges: { left: true, right: true, top: true, bottom: true },
-                         inertia: true,
-                         modifiers: [],
-                         listeners: {
-
-                           move: lambda do |native_event|
-                             event = Native(native_event)
-                             if bloc.instance_of? Proc
-                               bloc.call({ width: event[:rect][:width], height: event[:rect][:height] })
+                             move: lambda do |native_event|
+                               if @resize.is_a?(Proc)
+                               event = Native(native_event)
+                               # if bloc.instance_of? Proc
+                               #   bloc.call({ width: event[:rect][:width], height: event[:rect][:height] })
+                               # end
+                               @original_atome.instance_exec(event, &@resize)
+                               x = (@element[:offsetLeft].to_i || 0)
+                               y = (@element[:offsetTop].to_i || 0)
+                               width = event[:rect][:width]
+                               height = event[:rect][:height]
+                               # Translate when resizing from any corner
+                               x += event[:deltaRect][:left].to_f
+                               y += event[:deltaRect][:top].to_f
+                               @original_atome.width (width.to_i if width.to_i.between?(min_width, max_width))
+                               @original_atome.height (height.to_i if height.to_i.between?(min_height, max_height))
+                               #
+                               @original_atome.left(x)
+                               @original_atome.top (y)
+                               # @element[:style][:left] = "#{x}px"
+                               # @element[:style][:top] = "#{y}px"
+                               end
                              end
-                             x = (@element[:offsetLeft].to_f || 0)
-                             y = (@element[:offsetTop].to_f || 0)
-                             width = event[:rect][:width]
-                             height = event[:rect][:height]
-                             # Translate when resizing from any corner
-                             x += event[:deltaRect][:left].to_f
-                             y += event[:deltaRect][:top].to_f
+                           },
 
-                             @original_atome.width (width if width.to_i.between?(min_width, max_width))
-                             @original_atome.height (height if height.to_i.between?(min_height, max_height))
+                         })
+    end
 
-                             @original_atome.left(x)
-                             @original_atome.top (y)
-                             @element[:style][:left] = "#{x}px"
-                             @element[:style][:top] = "#{y}px"
-
-                           end
-                         },
-
-                       })
   end
 
   def overflow(params, bloc)
