@@ -362,18 +362,18 @@ class HTML
     @element.appendChild(source)
   end
 
-  # def sanitize_text(text)
-  #   text.to_s
-  #       .gsub('&', '&amp;')
-  #       .gsub('<', '&lt;')
-  #       .gsub('>', '&gt;')
-  #       .gsub('"', '&quot;')
-  #       .gsub("'", '&apos;')
-  # end
+  def sanitize_text(text)
+    text.to_s
+        .gsub('&', "\&")
+        .gsub('<', "\<")
+        .gsub('>', "\>")
+        .gsub('"', "\"")
+        .gsub("'", "\'")
+  end
 
   def innerText(data)
-    # sanitized_data = sanitize_text(data.to_s)
-    @element[:innerText] = data
+    sanitized_data = sanitize_text(data.to_s)
+    @element[:innerText] = sanitized_data
   end
 
   def textContent(data)
@@ -420,12 +420,12 @@ class HTML
 
   def animation_frame_callback(proc_pass, play_content)
     JS.global[:window].requestAnimationFrame(-> (timestamp) {
-      current_time= @element[:currentTime]
+      current_time = @element[:currentTime]
       fps = 30
       current_frame = (current_time.to_f * fps).to_i
       @original_atome.instance_exec({ frame: current_frame, time: current_time }, &proc_pass) if proc_pass.is_a? Proc
       # we update play instance variable so if user ask for atome.play it will return current frame
-      play_content[:play]=current_frame
+      play_content[:play] = current_frame
       animation_frame_callback(proc_pass, play_content)
     })
   end
@@ -433,15 +433,15 @@ class HTML
   def action(_particle, action_found, option = nil)
 
     # alert option
-    if action_found== :stop
+    if action_found == :stop
       currentTime(option)
       @element.pause
-      elsif action_found== :pause
-        @element.pause
+    elsif action_found == :pause
+      @element.pause
     else
       currentTime(option)
-      proc_found= @original_atome.instance_variable_get('@play_code')[action_found]
-      play_content= @original_atome.instance_variable_get('@play')
+      proc_found = @original_atome.instance_variable_get('@play_code')[action_found]
+      play_content = @original_atome.instance_variable_get('@play')
       animation_frame_callback(proc_found, play_content)
       @element.play
     end

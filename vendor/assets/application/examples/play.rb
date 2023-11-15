@@ -37,7 +37,7 @@ left=0
 cc.drag(:locked) do |event|
   dx = event[:dx]
   dy = event[:dy]
-  left += dx
+  left += dx.to_f
   min_left = 0
   max_left = 600
 
