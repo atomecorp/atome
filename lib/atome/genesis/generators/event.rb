@@ -80,8 +80,33 @@ new({ sanitizer: :play }) do |params, user_bloc|
 end
 new({ particle: :pause })
 new({ particle: :time })
-new({ particle: :on }) do |params|
-  params = { min: { width: 10, height: 10 }, max: { width: 2000, height: 2000 } } unless params.instance_of? Hash
+new({ particle: :on, store: false })
+new({ sanitizer: :on }) do |params, user_bloc|
+  @on ||= {}
+  @on_code ||= {}
+
+  option = {}
+  params = if params.instance_of? Hash
+             @on_code[:view_resize] = user_bloc
+             option = params[params.keys[0]]
+             :resize
+           else
+             case params
+             when true
+               @on_code[:view_resize] = user_bloc
+               :resize
+             when :remove
+
+               :remove
+             else
+               @on_code[:view_resize] = user_bloc
+               option = params
+               :resize
+             end
+
+           end
+  @on[params] = option
+
   params
 end
 new({ particle: :fullscreen })
@@ -267,7 +292,6 @@ new({ sanitizer: :keyboard }) do |params|
 
 end
 new({ particle: :resize, store: false  })
-
 new({ sanitizer: :resize }) do |params, user_bloc|
   @resize ||= {}
   @resize_code ||= {}

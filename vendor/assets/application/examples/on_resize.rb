@@ -3,5 +3,5 @@
 # please note that whatever the atome resize will return the size of the view!
 view = grab(:view)
 view.on(:resize) do |event|
-  puts event
+  puts "view size is #{event}"
 end

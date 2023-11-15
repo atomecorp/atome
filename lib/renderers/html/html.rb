@@ -469,7 +469,8 @@ class HTML
   end
 
   ###### event handler ######
-  def on(property, bloc)
+  def on(property, option)
+    bloc =   @original_atome.instance_variable_get('@on_code')[:view_resize]
     property = property.to_s
 
     if property.start_with?('media:')
