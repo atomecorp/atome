@@ -399,15 +399,16 @@ class HTML
 
   def style(property, value = nil)
     if value
+      ############## tests
        # Accéder à l'objet CSSStyleDeclaration
-        styles = @element[:style]
-
-      # Parcourir toutes les propriétés de style
-       styles_collected=[]
-      styles.to_a.each do |style|
-        styles_collected << "#{style}: #{styles[style]}"
-      end
-       puts "==> #{styles_collected}"
+      #   styles = @element[:style]
+      #
+      # # Parcourir toutes les propriétés de style
+      #  styles_collected=[]
+      # styles.to_a.each do |style|
+      #   styles_collected << "#{style}: #{styles[style]}"
+      # end
+      #  puts "==> #{styles_collected}"
       ################ tests
       @element[:style][property] = value.to_s
       # puts "===> after: #{@element[:style][property]}"
@@ -765,10 +766,15 @@ class HTML
     interact.dropzone({
                         # accept: nil, # Accept any element
                         # overlap: 0.75,
-                        ondropactivate: lambda do |native_event|
-                          drop_action(native_event, @drop_activate)
-                        end
+                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
+                        # ondropactivate: lambda do |native_event|
+                        #   drop_action(native_event, @drop_activate)
+                        # end
                       })
+
+    interact.on('dropactivate') do |native_event|
+      drop_action(native_event, @drop_activate)
+    end
   end
 
   def drop_deactivate(_option)
@@ -777,10 +783,15 @@ class HTML
     interact.dropzone({
                         # accept: nil, # Accept any element
                         # overlap: 0.75,
-                        ondropdeactivate: lambda do |native_event|
-                          drop_action(native_event, @drop_deactivate)
-                        end
+                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
+                        # ondropdeactivate: lambda do |native_event|
+                        #   drop_action(native_event, @drop_deactivate)
+                        # end
                       })
+
+    interact.on('dropdeactivate') do |native_event|
+      drop_action(native_event, @drop_deactivate)
+    end
   end
 
   def drop_dropped(_option)
@@ -789,23 +800,34 @@ class HTML
     interact.dropzone({
                         # accept: nil, # Accept any element
                         overlap: 0.75,
-                        ondrop: lambda do |native_event|
-                          drop_action(native_event, @drop_dropped)
-                        end
+                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
+                        # ondrop: lambda do |native_event|
+                        #   drop_action(native_event, @drop_dropped)
+                        # end
                       })
+
+    interact.on('drop') do |native_event|
+      drop_action(native_event, @drop_dropped)
+    end
   end
 
   def drop_enter(_option)
     interact = JS.eval("return interact('##{@id}')")
+
     @drop_enter = @original_atome.instance_variable_get('@drop_code')[:enter]
 
     interact.dropzone({
                         # accept: nil,
                         overlap: 0.001,
-                        ondragenter: lambda do |native_event|
-                          drop_action(native_event, @drop_enter)
-                        end
+                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
+                        # ondragenter: lambda do |native_event|
+                        #   drop_action(native_event, @drop_enter)
+                        # end
                       })
+
+    interact.on('dragenter') do |native_event|
+      drop_action(native_event, @drop_enter)
+    end
   end
 
   def drop_leave(_option)
@@ -815,10 +837,16 @@ class HTML
     interact.dropzone({
                         # accept: nil,
                         # overlap: 0.75,
-                        ondragleave: lambda do |native_event|
-                          drop_action(native_event, @drop_leave)
-                        end
+                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
+                        # ondragleave: lambda do |native_event|
+                        #   drop_action(native_event, @drop_leave)
+                        # end
                       })
+
+    interact.on('dragleave') do |native_event|
+      drop_action(native_event, @drop_leave)
+    end
+
   end
 
   def drop_remove(option)
