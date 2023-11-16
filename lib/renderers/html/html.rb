@@ -764,17 +764,14 @@ class HTML
     @drop_activate = @original_atome.instance_variable_get('@drop_code')[:activate]
 
     interact.dropzone({
-                        # accept: nil, # Accept any element
-                        # overlap: 0.75,
-                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
-                        # ondropactivate: lambda do |native_event|
-                        #   drop_action(native_event, @drop_activate)
-                        # end
+                        accept: nil, # Accept any element
+                        overlap: 0.75,
+                        ondropactivate: lambda do |native_event|
+                          drop_action(native_event, @drop_activate)
+                        end
                       })
 
-    interact.on('dropactivate') do |native_event|
-      drop_action(native_event, @drop_activate)
-    end
+
   end
 
   def drop_deactivate(_option)
@@ -784,14 +781,14 @@ class HTML
                         # accept: nil, # Accept any element
                         # overlap: 0.75,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
-                        # ondropdeactivate: lambda do |native_event|
-                        #   drop_action(native_event, @drop_deactivate)
-                        # end
+                        ondropdeactivate: lambda do |native_event|
+                          drop_action(native_event, @drop_deactivate)
+                        end
                       })
 
-    interact.on('dropdeactivate') do |native_event|
-      drop_action(native_event, @drop_deactivate)
-    end
+    # interact.on('dropdeactivate') do |native_event|
+    #   drop_action(native_event, @drop_deactivate)
+    # end
   end
 
   def drop_dropped(_option)
@@ -801,14 +798,14 @@ class HTML
                         # accept: nil, # Accept any element
                         overlap: 0.75,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
-                        # ondrop: lambda do |native_event|
-                        #   drop_action(native_event, @drop_dropped)
-                        # end
+                        ondrop: lambda do |native_event|
+                          drop_action(native_event, @drop_dropped)
+                        end
                       })
 
-    interact.on('drop') do |native_event|
-      drop_action(native_event, @drop_dropped)
-    end
+    # interact.on('drop') do |native_event|
+    #   drop_action(native_event, @drop_dropped)
+    # end
   end
 
   def drop_enter(_option)
@@ -820,14 +817,14 @@ class HTML
                         # accept: nil,
                         overlap: 0.001,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
-                        # ondragenter: lambda do |native_event|
-                        #   drop_action(native_event, @drop_enter)
-                        # end
+                        ondragenter: lambda do |native_event|
+                          drop_action(native_event, @drop_enter)
+                        end
                       })
 
-    interact.on('dragenter') do |native_event|
-      drop_action(native_event, @drop_enter)
-    end
+    # interact.on('dragenter') do |native_event|
+    #   drop_action(native_event, @drop_enter)
+    # end
   end
 
   def drop_leave(_option)
@@ -838,14 +835,14 @@ class HTML
                         # accept: nil,
                         # overlap: 0.75,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
-                        # ondragleave: lambda do |native_event|
-                        #   drop_action(native_event, @drop_leave)
-                        # end
+                        ondragleave: lambda do |native_event|
+                          drop_action(native_event, @drop_leave)
+                        end
                       })
 
-    interact.on('dragleave') do |native_event|
-      drop_action(native_event, @drop_leave)
-    end
+    # interact.on('dragleave') do |native_event|
+    #   drop_action(native_event, @drop_leave)
+    # end
 
   end
 
@@ -886,6 +883,7 @@ class HTML
 
   end
 
+
   def resize(params, options)
     # alert options
     interact = JS.eval("return interact('##{@id}')")
@@ -903,7 +901,6 @@ class HTML
                            inertia: true,
                            modifiers: [],
                            listeners: {
-
                              move: lambda do |native_event|
                                if @resize.is_a?(Proc)
                                  event = Native(native_event)
@@ -917,7 +914,6 @@ class HTML
                                  y += event[:deltaRect][:top].to_f
                                  @original_atome.width (width.to_i if width.to_i.between?(min_width, max_width))
                                  @original_atome.height (height.to_i if height.to_i.between?(min_height, max_height))
-                                 #
                                  @original_atome.left(x)
                                  @original_atome.top (y)
                                  # @element[:style][:left] = "#{x}px"
@@ -927,6 +923,28 @@ class HTML
                            },
 
                          })
+
+      # interact.on('move') do |native_event|
+      #   if @resize.is_a?(Proc)
+      #     event = Native(native_event)          # @original_atome.instance_exec(event, &@resize)
+      #     x = (@element[:offsetLeft].to_i || 0)
+      #     y = (@element[:offsetTop].to_i || 0)
+      #     width = event[:rect][:width]
+      #     height = event[:rect][:height]
+      #     # Translate when resizing from any corner
+      #     x += event[:deltaRect][:left].to_f
+      #     y += event[:deltaRect][:top].to_f
+      #     @original_atome.width (width.to_i if width.to_i.between?(min_width, max_width))
+      #     @original_atome.height (height.to_i if height.to_i.between?(min_height, max_height))
+      #     #
+      #     @original_atome.left(x)
+      #     @original_atome.top (y)
+      #     # @element[:style][:left] = "#{x}px"
+      #     # @element[:style][:top] = "#{y}px"
+      #   end
+      #
+      #
+      # end
     end
 
   end

@@ -12,11 +12,12 @@ new({ renderer: :html, method: :smooth, type: :string }) do |value, _user_proc|
                   when Integer
                     "#{value}px"
                   else
-                    "#{value}px"
+                    if value.is_a?(String) && value.end_with?('%')
+                      value
+                    else
+                      "#{value}px"
+                    end
                   end
-  # alert format_params
-  # toto = "#{value}px"
-  # alert format_params.class
   html.style('border-radius', format_params)
 end
 
