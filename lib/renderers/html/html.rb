@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #  this class is aimed at html rendering
 
 class HTML
@@ -398,7 +399,18 @@ class HTML
 
   def style(property, value = nil)
     if value
+       # Accéder à l'objet CSSStyleDeclaration
+        styles = @element[:style]
+
+      # Parcourir toutes les propriétés de style
+       styles_collected=[]
+      styles.to_a.each do |style|
+        styles_collected << "#{style}: #{styles[style]}"
+      end
+       puts "==> #{styles_collected}"
+      ################ tests
       @element[:style][property] = value.to_s
+      # puts "===> after: #{@element[:style][property]}"
     elsif value.nil?
       @element[:style][property]
     else

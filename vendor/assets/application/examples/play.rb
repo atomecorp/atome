@@ -1,24 +1,17 @@
 # frozen_string_literal: true
 
 if Universe.internet
-  v = video({ path: "medias/videos/avengers.mp4", id: :my_video })
-  # v = video({ path: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" })
+  # v = video({ path: "medias/videos/avengers.mp4", id: :my_video })
+  v = video({ path: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" })
 else
   v = video(:video_missing)
 end
 v.left(200)
 v.touch(true) do
-  # # v.play(true)
-  # v.play(169) do |event|
-  #   puts "event is : #{event}"
-  # end
   alert v.play
-  # wait 3 do
-  #   v.play(66)
-  # end
 end
 
-t=text({id: :my_text, data: :hello})
+t=text({id: :my_text, data: "play video"})
 
 t.touch(true) do
   v.data=0

@@ -286,30 +286,10 @@ class Atome
 
   def refresh
     particles_found=to_hash
-    # type_found=particles_found.delete(:type)
-
-
     particles_found.each do |particle_found, value_found|
-      # puts @type
-      # unless k.to_sym == :type
-      #   if @type == v
-        send(particle_found, value_found)
+      send(particle_found, value_found)
     end
-    # delete(true)
-    # alert "#{type_found} : #{type}"
-    # unless type_found==@type
-    #   alert :ok
-    #   # wait 1 do
-    #   #   alert :before
-    #   #   delete({ recursive: true })
-    #   #   alert :after
-    #   #
-    #   # end
-    #   # # self.delete(true)
-    #   # particles_found[:type]=type_found
-    #   # send(:type, type_found)
-    #
-    # end
+
   end
 
   def each(&proc)
