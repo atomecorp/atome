@@ -296,10 +296,10 @@ new({ sanitizer: :keyboard }) do |params, user_bloc|
 end
 new({ particle: :resize, store: false  })
 new({ sanitizer: :resize }) do |params, user_bloc|
-  @resize ||= {}
+  @resize ||= { }
   @resize_code ||= {}
 
-  option = {}
+  option = {min: { width: 10, height: 10 }, max: { width: 3000, height: 3000 }}
   params = if params.instance_of? Hash
              @resize_code[:resize] = user_bloc
              option = params[params.keys[0]]

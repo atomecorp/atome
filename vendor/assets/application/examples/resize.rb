@@ -5,11 +5,12 @@ m.drag(true)
 m.on(:resize) do |event|
   puts event[:dx]
 end
+
 m.resize({ size: { min: { width: 10, height: 10 }, max: { width: 300, height: 600 } } }) do |event|
   puts "width is  is #{event[:rect][:width]}"
 end
 
-t=text({data: :unbind})
+t=text({data: ' click me to unbind resize'})
 t.touch(true) do
   t.data('resize unbinded')
   m.resize(:remove)
