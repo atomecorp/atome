@@ -1,5 +1,4 @@
-#In the context of the Atome framework, when you provide code, debug, or give examples, in fact, whenever there are comments in the code, please always write these comments in English.
-
+# In the context of the Atome framework, when you provide code, debug, or give examples, in fact, whenever there are comments in the code, please always write these comments in English.
 
 # here how to use a callback between ruby and javascript with binding and unbinding :
 
@@ -7,25 +6,23 @@
 # the method below add an event listener and trig the code found in the @original_atome.over_code[:enter]
 def over_enter(_option)
   @over_enter = @original_atome.instance_variable_get('@over_code')[:enter]
-  if @over_enter
-    @over_enter_callback = lambda do |event|
-      @original_atome.instance_exec(event, &@over_enter) if @over_enter.is_a? Proc
-    end
-    @element.addEventListener('mouseenter', @over_enter_callback)
+  return unless @over_enter
+  @over_enter_callback = lambda do |event|
+    @original_atome.instance_exec(event, &@over_enter) if @over_enter.is_a? Proc
   end
+  @element.addEventListener('mouseenter', @over_enter_callback)
+
 end
+
 # you can unbind using the method below
 def remove_over_enter(_option)
-  if @over_enter_callback
-    # Remove the event listener using the same lambda
-    @element.removeEventListener('mouseenter', @over_enter_callback)
-    @over_enter_callback = nil
-    @over_enter = nil
-  end
+  return unless @over_enter_callback
+  # Remove the event listener using the same lambda
+  @element.removeEventListener('mouseenter', @over_enter_callback)
+  @over_enter_callback = nil
+  @over_enter = nil
+
 end
-
-
-
 
 # please note that in the HTML class instance @element is always the current HTML object and is always define
 # You forget every time - one should never suggest using backticks to interpolate JS code. How can you integrate this?

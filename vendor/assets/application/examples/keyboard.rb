@@ -7,7 +7,7 @@ t.edit(true)
 
 t.keyboard(:press) do |native_event|
   event = Native(native_event)
-  puts "====>#{event[:key]} :  #{event[:keyCode]}"
+  puts "press : #{event[:key]} :  #{event[:keyCode]}"
 end
 
 t.keyboard(:down) do |native_event|
@@ -26,28 +26,34 @@ end
 
 t.keyboard(true) do |native_event|
   event = Native(native_event)
-  puts event[:keyCode]
-  puts event[:key]
+  puts " true => #{event[:keyCode]}"
+  puts "true => #{event[:key]}"
 
 end
 
-t.keyboard(:input) do |native_event|
-  event = Native(native_event)
-  puts event
-end
+# t.keyboard(:input) do |native_event|
+#   event = Native(native_event)
+#   puts event
+# end
 
-t.keyboard(:keydown) do |native_event|
-  event = Native(native_event)
-  puts "down : #{event[:keyCode]}"
-end
+# t.keyboard(:keydown) do |native_event|
+#   event = Native(native_event)
+#   puts "down : #{event[:keyCode]}"
+# end
 
-wait 4.5 do
-  puts '------ :not editable: ------'
+c = circle({ top: 123, left: 0, width: 55, height: 55 })
+c2 = circle({ top: 123, left: 80, width: 55, height: 55 })
+c3 = circle({ top: 123, left: 150, width: 55, height: 55 })
+
+c.touch(true) do
+  text({ data: 'stop up', top: 150 })
+  t.keyboard({ remove: :up })
+end
+c2.touch(true) do
+  text({ data: 'remove all', top: 150 })
+  t.keyboard(:remove)
+end
+c3.touch(true) do
   t.edit(false)
-end
-
-wait 3 do
-  puts '------ :stopped: ------'
-  text({data:  'stop editing', top: 150 })
-  t.keyboard(:kill)
+  text({ data: 'stop editing', top: 150 })
 end

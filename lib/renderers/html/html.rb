@@ -469,8 +469,8 @@ class HTML
   end
 
   ###### event handler ######
-  def on(property, option)
-    bloc =   @original_atome.instance_variable_get('@on_code')[:view_resize]
+  def on(property, _option)
+    bloc = @original_atome.instance_variable_get('@on_code')[:view_resize]
     property = property.to_s
 
     if property.start_with?('media:')
@@ -501,57 +501,81 @@ class HTML
     end
   end
 
-  def keyboard_keypress(bloc)
-    keypress_handler = ->(event) do
-      if @original_atome.keyboard[:kill] == true
-        Native(event).preventDefault()
-      elsif bloc.is_a? Proc
-        bloc.call(event)
-      end
+  def keyboard_press(_option)
+    @keyboard_press = @original_atome.instance_variable_get('@keyboard_code')[:press]
+
+    keypress_handler = ->(native_event) do
+
+      event = Native(native_event)
+      @original_atome.instance_exec(event, &@keyboard_press) if @keyboard_press.is_a?(Proc)
+      # if @original_atome.keyboard[:kill] == true
+      #   Native(event).preventDefault()
+      # elsif bloc.is_a? Proc
+      #   bloc.call(event)
+      # end
     end
     @element.addEventListener('keypress', keypress_handler)
   end
 
-  def keyboard_keydown(bloc)
+  def keyboard_down(_option)
+    @keyboard_down = @original_atome.instance_variable_get('@keyboard_code')[:down]
+
     keypress_handler = ->(event) do
-      if @original_atome.keyboard[:kill] == true
-        Native(event).preventDefault()
-      elsif bloc.is_a? Proc
-        bloc.call(event)
-      end
+      @original_atome.instance_exec(event, &@keyboard_down) if @keyboard_down.is_a?(Proc)
+
     end
     @element.addEventListener('keydown', keypress_handler)
   end
 
-  def keyboard_keyup(bloc)
+  def keyboard_up(_option)
+    @keyboard_up = @original_atome.instance_variable_get('@keyboard_code')[:up]
+
     keypress_handler = ->(event) do
-      if grab(@id).keyboard[:kill] == true
-        Native(event).preventDefault()
-      elsif bloc.is_a? Proc
-        # we update the @data of the atome
-        # @original_atome.instance_variable_set('@data',@element[:innerText].to_s)
-        bloc.call(event)
-      end
+
+      @original_atome.instance_exec(event, &@keyboard_up) if @keyboard_up.is_a?(Proc)
+
+
+      # if grab(@id).keyboard[:kill] == true
+      #   Native(event).preventDefault()
+      # elsif bloc.is_a? Proc
+      #   # we update the @data of the atome
+      #   # @original_atome.instance_variable_set('@data',@element[:innerText].to_s)
+      #   bloc.call(event)
+      # end
     end
     @element.addEventListener('keyup', keypress_handler)
   end
 
-  def keyboard_kill(bloc)
-    bloc.call if bloc.is_a? Proc
-  end
-
-  def keyboard_input(bloc)
-    input_handler = ->(event) do
-      if @original_atome.keyboard[:kill] == true
-        Native(event).preventDefault()
-      elsif Native(event)[:target]
-        input_content = Native(event)[:target][:textContent] # Obtenez le contenu textuel de l'élément <pre>
-        bloc.call(input_content) if bloc.is_a? Proc
-      end
-
+  def keyboard_remove(option)
+    case option
+    when :down
+      @keyboard_down = ''
+    when :up
+      @keyboard_up = ''
+    when :down
+      @keyboard_press = ''
+    else
+      @keyboard_down = ''
+      @keyboard_up = ''
+      @keyboard_press = ''
     end
-    @element.addEventListener('input', input_handler)
   end
+
+  # @original_atome.instance_variable_get('@touch_code')[:double] = ''
+  # touch_double(optio
+  #
+  # def keyboard_input(bloc)
+  #   input_handler = ->(event) do
+  #     if @original_atome.keyboard[:kill] == true
+  #       Native(event).preventDefault()
+  #     elsif Native(event)[:target]
+  #       input_content = Native(event)[:target][:textContent] # Obtenez le contenu textuel de l'élément <pre>
+  #       bloc.call(input_content) if bloc.is_a? Proc
+  #     end
+  #
+  #   end
+  #   @element.addEventListener('input', input_handler)
+  # end
 
   def event(action, variance, option = nil)
     send("#{action}_#{variance}", option)
@@ -561,11 +585,6 @@ class HTML
     @original_atome.left(restricted_x)
     @original_atome.top(restricted_y)
   end
-
-  # def drag_false(_option)
-  #   interact = JS.eval("return interact('##{@id}')")
-  #   interact.unset
-  # end
 
   def drag_remove(option)
     case option

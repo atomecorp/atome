@@ -103,10 +103,8 @@ new({ sanitizer: :on }) do |params, user_bloc|
                option = params
                :resize
              end
-
            end
   @on[params] = option
-
   params
 end
 new({ particle: :fullscreen })
@@ -259,37 +257,42 @@ new({ particle: :velocity })
 new({ particle: :repeat })
 new({ particle: :ease })
 new(particle: :keyboard, type: :hash, store: false)
-new({ sanitizer: :keyboard }) do |params|
-  # # TODO: factorise code below
+new({ sanitizer: :keyboard }) do |params, user_bloc|
   @keyboard ||= {}
+  @keyboard_code ||= {}
 
+  option = {}
   params = if params.instance_of? Hash
-             params.keys[0]
+             # @keyboard_code[:keyboard] = user_bloc
+             option = params[params.keys[0]]
+             :remove
            else
-
              case params
              when true
-               :keypress
-             when :press
-               :keypress
+               @keyboard_code[:press] = user_bloc
+               :press
              when :down
-               :keydown
+               @keyboard_code[:down] = user_bloc
+               :down
              when :up
-               :keyup
-             when :input
-
-               :input
-             when :kill
-               :kill
+               @keyboard_code[:up] = user_bloc
+               :up
+             when :press
+               @keyboard_code[:press] = user_bloc
+               :press
+             when :remove
+               @keyboard_code[:remove] = user_bloc
+               :remove
              else
-               :keypress
+               @keyboard_code[:press] = user_bloc
+               option = params
+               :press
              end
 
            end
+  @keyboard[params] = option
 
-  @keyboard[params] = true
   params
-
 end
 new({ particle: :resize, store: false  })
 new({ sanitizer: :resize }) do |params, user_bloc|
@@ -307,14 +310,12 @@ new({ sanitizer: :resize }) do |params, user_bloc|
                @resize_code[:resize] = user_bloc
                :resize
              when :remove
-
                :remove
              else
                @resize_code[:resize] = user_bloc
                option = params
                :resize
              end
-
            end
   @resize[params] = option
 
