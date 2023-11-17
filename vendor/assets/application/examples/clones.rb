@@ -132,3 +132,8 @@ end
 #     c.apply([:col1])
 #   end
 # end
+the_b=box({color: :green})
+
+the_b.resize(true) do
+  puts :j
+end
