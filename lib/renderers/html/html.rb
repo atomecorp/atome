@@ -520,7 +520,11 @@ class HTML
     keypress_handler = ->(native_event) do
 
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@keyboard_press) if @keyboard_press.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @keyboard_press.call(event)  if @keyboard_press.is_a?(Proc)
+      # @original_atome.instance_exec(event, &@keyboard_press) if @keyboard_press.is_a?(Proc)
       # if @original_atome.keyboard[:kill] == true
       #   Native(event).preventDefault()
       # elsif bloc.is_a? Proc
@@ -534,7 +538,12 @@ class HTML
     @keyboard_down = @original_atome.instance_variable_get('@keyboard_code')[:down]
 
     keypress_handler = ->(event) do
-      @original_atome.instance_exec(event, &@keyboard_down) if @keyboard_down.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @keyboard_down.call(event)  if @keyboard_down.is_a?(Proc)
+
+      # @original_atome.instance_exec(event, &@keyboard_down) if @keyboard_down.is_a?(Proc)
 
     end
     @element.addEventListener('keydown', keypress_handler)
@@ -544,8 +553,12 @@ class HTML
     @keyboard_up = @original_atome.instance_variable_get('@keyboard_code')[:up]
 
     keypress_handler = ->(event) do
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @keyboard_up.call(event)  if @keyboard_up.is_a?(Proc)
 
-      @original_atome.instance_exec(event, &@keyboard_up) if @keyboard_up.is_a?(Proc)
+      # @original_atome.instance_exec(event, &@keyboard_up) if @keyboard_up.is_a?(Proc)
 
 
       # if grab(@id).keyboard[:kill] == true
@@ -643,7 +656,13 @@ class HTML
     @drag_start = @original_atome.instance_variable_get('@drag_code')[:start]
     interact.on('dragstart') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@drag_start) if @drag_start.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @drag_start.call(event)  if @drag_start.is_a?(Proc)
+
+
+      # @original_atome.instance_exec(event, &@drag_start) if @drag_start.is_a?(Proc)
     end
   end
 
@@ -652,7 +671,14 @@ class HTML
     @drag_end = @original_atome.instance_variable_get('@drag_code')[:end]
     interact.on('dragend') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@drag_end) if @drag_end.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @drag_end.call(event)  if @drag_end.is_a?(Proc)
+
+
+
+      # @original_atome.instance_exec(event, &@drag_end) if @drag_end.is_a?(Proc)
     end
   end
 
@@ -669,7 +695,13 @@ class HTML
     interact.on('dragmove') do |native_event|
       # # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@drag_move) if @drag_move.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @drag_move.call(event)  if @drag_move.is_a?(Proc)
+
+
+      # @original_atome.instance_exec(event, &@drag_move) if @drag_move.is_a?(Proc)
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f
@@ -724,7 +756,12 @@ class HTML
     interact.on('dragmove') do |native_event|
       # # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@drag_start) if @drag_start.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @drag_start.call(event)  if @drag_start.is_a?(Proc)
+
+      # @original_atome.instance_exec(event, &@drag_start) if @drag_start.is_a?(Proc)
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f
@@ -748,7 +785,12 @@ class HTML
     interact.on('dragmove') do |native_event|
       # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@drag_lock) if @drag_lock.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @drag_lock.call(event)  if @drag_lock.is_a?(Proc)
+
+      # @original_atome.instance_exec(event, &@drag_lock) if @drag_lock.is_a?(Proc)
     end
   end
 
@@ -756,7 +798,12 @@ class HTML
     event = Native(native_event)
     draggable_element = event[:relatedTarget][:id].to_s
     dropzone_element = event[:target][:id].to_s
-    @original_atome.instance_exec({ source: draggable_element, destination: dropzone_element }, &bloc) if bloc.is_a? Proc
+    # we use .call instead of instance_eval because instance_eval bring the current object as context
+    # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+    # group etc..
+    bloc.call({ source: draggable_element, destination: dropzone_element })  if bloc.is_a?(Proc)
+
+    # @original_atome.instance_exec({ source: draggable_element, destination: dropzone_element }, &bloc) if bloc.is_a? Proc
   end
 
   def drop_activate(_option)
@@ -904,7 +951,14 @@ class HTML
                              move: lambda do |native_event|
                                if @resize.is_a?(Proc)
                                  event = Native(native_event)
-                                 @original_atome.instance_exec(event, &@resize)
+                                 # we use .call instead of instance_eval because instance_eval bring the current object as context
+                                 # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+                                 # group etc..
+                                 @resize.call(event)  if @resize.is_a?(Proc)
+
+                                 # @original_atome.instance_exec(event, &@resize)
+
+
                                  x = (@element[:offsetLeft].to_i || 0)
                                  y = (@element[:offsetTop].to_i || 0)
                                  width = event[:rect][:width]
@@ -955,7 +1009,12 @@ class HTML
     @element.addEventListener('scroll', lambda do |event|
       scroll_top = @element[:scrollTop].to_i
       scroll_left = @element[:scrollLeft].to_i
-      @original_atome.instance_exec({ left: scroll_left, top: scroll_top }, &@overflow) if @overflow.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @overflow.call({ left: scroll_left, top: scroll_top }) if @overflow.is_a?(Proc)
+
+      # @original_atome.instance_exec({ left: scroll_left, top: scroll_top }, &@overflow) if @overflow.is_a?(Proc)
     end)
   end
 
@@ -966,7 +1025,12 @@ class HTML
       JS.global[:myRubyMouseOverCallback] = Proc.new { @original_atome.over_code[:over].call }
       JS.eval("document.querySelector('##{@id}').addEventListener('mouseleave', myRubyMouseOverCallback);")
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@over_over) if @over_over.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @over_over.call(event) if @over_over.is_a?(Proc)
+
+      # @original_atome.instance_exec(event, &@over_over) if @over_over.is_a?(Proc)
     end
   end
 
@@ -974,7 +1038,12 @@ class HTML
     @over_enter = @original_atome.instance_variable_get('@over_code')[:enter]
     if @over_enter
       @over_enter_callback = lambda do |event|
-        @original_atome.instance_exec(event, &@over_enter) if @over_enter.is_a? Proc
+        # we use .call instead of instance_eval because instance_eval bring the current object as context
+        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+        # group etc..
+        @over_enter.call(event) if @over_enter.is_a?(Proc)
+
+        # @original_atome.instance_exec(event, &@over_enter) if @over_enter.is_a? Proc
       end
       @element.addEventListener('mouseenter', @over_enter_callback)
     end
@@ -984,7 +1053,12 @@ class HTML
     @over_leave = @original_atome.instance_variable_get('@over_code')[:leave]
     if @over_leave
       @over_leave_callback = lambda do |event|
-        @original_atome.instance_exec(event, &@over_leave) if @over_leave.is_a? Proc
+        # we use .call instead of instance_eval because instance_eval bring the current object as context
+        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+        # group etc..
+        @over_leave.call(event) if @over_leave.is_a?(Proc)
+
+        # @original_atome.instance_exec(event, &@over_leave) if @over_leave.is_a? Proc
       end
       @element.addEventListener('mouseleave', @over_leave_callback)
     end
@@ -1021,7 +1095,11 @@ class HTML
     @touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
     interact.on('tap') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_tap) if @touch_tap.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @touch_tap.call(event)  if @touch_tap.is_a?(Proc)
+      # @original_atome.instance_exec(event, &@touch_tap) if @touch_tap.is_a?(Proc)
     end
   end
 
@@ -1030,7 +1108,12 @@ class HTML
     @touch_double = @original_atome.instance_variable_get('@touch_code')[:double]
     interact.on('doubletap') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_double) if @touch_double.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @touch_double.call(event) if @touch_double.is_a?(Proc)
+
+      # @original_atome.instance_exec(event, &@touch_double) if @touch_double.is_a?(Proc)
     end
   end
 
@@ -1039,7 +1122,12 @@ class HTML
     interact = JS.eval("return interact('##{@id}')")
     interact.on('hold') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_long) if @touch_long.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @touch_long.call(event) if @touch_long.is_a?(Proc)
+
+      # @original_atome.instance_exec(event, &@touch_long) if @touch_long.is_a?(Proc)
     end
   end
 
@@ -1048,7 +1136,12 @@ class HTML
     interact = JS.eval("return interact('##{@id}')")
     interact.on('down') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_down) if @touch_down.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @touch_down.call(event) if @touch_down.is_a?(Proc)
+
+      # @original_atome.instance_exec(event, &@touch_down) if @touch_down.is_a?(Proc)
     end
   end
 
@@ -1057,7 +1150,12 @@ class HTML
     interact = JS.eval("return interact('##{@id}')")
     interact.on('up') do |native_event|
       event = Native(native_event)
-      @original_atome.instance_exec(event, &@touch_up) if @touch_up.is_a?(Proc)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @touch_up.call(event) if @touch_up.is_a?(Proc)
+
+      # @original_atome.instance_exec(event, &@touch_up) if @touch_up.is_a?(Proc)
     end
   end
 

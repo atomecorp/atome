@@ -29,12 +29,13 @@ wait 0.5 do
 end
 puts the_group.collected
 grab(:the_first_box).smooth(9)
-# grab(:the_text).touch(true) do
-wait 3 do
-  the_group2= group({ collected: [:the_c,:the_first_box, :the_text, :cc ] })
-  the_group2.apply([:the_lemon])
+grab(:the_text).touch(true) do
+the_group2= group({ collected: [:the_c,:the_first_box, :the_text, :cc ] })
+the_group2.apply([:the_lemon])
 end
+
 
 # grab(:the_text).touch(true) do
 # FIXME : on touch code above crash but works with wait
+
 
