@@ -67,8 +67,6 @@ class Atome
     end
   end
 
-
-
   def particle_main(element, params, &user_proc)
     # TODO : optimise below removing all conditions if possible
     if Atome.instance_variable_get("@main_#{element}").is_a?(Proc) # post is before rendering and broadcasting
@@ -84,8 +82,6 @@ class Atome
     end
     params
   end
-
-
 
   def particle_sanitizer(element, params, &user_proc)
 
@@ -173,20 +169,20 @@ class Atome
     end
   end
 
-  def monitor(params = nil, &proc_monitoring)
-    if params
-      monitoring = atome[:monitor] ||= {}
-      params[:atomes].each do |atome_id|
-        target_broadcaster = grab(atome_id).instance_variable_get('@broadcast')
-        monitor_id = params[:id] || "monitor#{target_broadcaster.length}"
-        monitoring[monitor_id] = params.merge({ code: proc_monitoring })
-        target_broadcaster[monitor_id] = { particles: params[:particles], code: proc_monitoring }
-      end
-    else
-      atome[:monitor]
-    end
-
-  end
+  # def monitor(params = nil, &proc_monitoring)
+  #   if params
+  #     monitoring = atome[:monitor] ||= {}
+  #     params[:atomes].each do |atome_id|
+  #       target_broadcaster = grab(atome_id).instance_variable_get('@broadcast')
+  #       monitor_id = params[:id] || "monitor#{target_broadcaster.length}"
+  #       monitoring[monitor_id] = params.merge({ code: proc_monitoring })
+  #       target_broadcaster[monitor_id] = { particles: params[:particles], code: proc_monitoring }
+  #     end
+  #   else
+  #     atome[:monitor]
+  #   end
+  #
+  # end
 
   def store_proc(element, params = true, &user_proc)
     instance_variable_set("@#{element}_code", {}) unless instance_variable_get("@#{element}_code")
@@ -301,25 +297,24 @@ class Atome
   def include?(value)
     self.include?(value)
   end
+  #
+  # def each_with_index(*_args, &block)
+  #   value.each_with_index(&block)
+  # end
 
-  def each_with_index(*_args, &block)
-    value.each_with_index(&block)
-  end
+  # def [](range)
+  #   if instance_of?(Atome)
+  #     value[range]
+  #   elsif value[range].instance_of?(Array)
+  #     Batch.new(value[range])
+  #     # return collector_object
+  #   end
+  # end
 
-  def [](range)
-    if instance_of?(Atome)
-      value[range]
-    elsif value[range].instance_of?(Array)
-      Batch.new(value[range])
-      # return collector_object
-    end
-
-  end
-
-  def []=(params, value)
-    # TODO : it may miss some code, see above
-    self[params] = value
-  end
+  # def []=(params, value)
+  #   # TODO : it may miss some code, see above
+  #   self[params] = value
+  # end
 
   def set(params)
     params.each do |particle, value|

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-text({ data: 'hello for al the people in front of their machine jhgj  jg jgh jhg  iuuy res ', center: true, top: 120, width: 77, component: { size: 11 } })
-box({ left: 12 })
+text({ id: :the_text,data: 'Touch me to group and colorize', center: true, top: 120, width: 77, component: { size: 11 } })
+box({ left: 12, id: :the_first_box })
 the_circle = circle({ id: :cc, color: :yellowgreen, top: 222 })
 the_circle.image('red_planet')
 the_circle.color('red')
@@ -12,16 +12,29 @@ element({ id: :the_element })
 the_view = grab(:view)
 
 color({ id: :the_orange, red: 1, green: 0.4 })
+color({ id: :the_lemon, red: 0, blue: 1 })
 
 the_group = group({ collected: the_view.shape })
-wait 2 do
+
+
+wait 0.5 do
   the_group.left(633)
-  wait 2 do
+  wait 0.5 do
     the_group.rotate(23)
-    wait 2 do
+    wait 0.5 do
       the_group.apply([:the_orange])
       the_group.blur(6)
     end
   end
 end
 puts the_group.collected
+grab(:the_first_box).smooth(9)
+# grab(:the_text).touch(true) do
+wait 3 do
+  the_group2= group({ collected: [:the_c,:the_first_box, :the_text, :cc ] })
+  the_group2.apply([:the_lemon])
+end
+
+# grab(:the_text).touch(true) do
+# FIXME : on touch code above crash but works with wait
+

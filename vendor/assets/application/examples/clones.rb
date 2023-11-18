@@ -120,7 +120,10 @@ wait 1 do
     b.width(155)
   end
 end
-# TODO : make it works for event like touch , also attach and attched
+
+
+# TODO : make it works for event like touch , also attach and attached
+# TODO : make it works for event like touch , also attach and attached
 # wait 2 do
 #   col = color({ id: :col1, red: 1, blue: 1 })
 #   Atome.monitoring([col], [:red, :blue], [:variable1, :variable2])

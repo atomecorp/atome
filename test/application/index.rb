@@ -1,6 +1,6 @@
 #  frozen_string_literal: true
 # require 'json'
-require "./examples/clones"
+# require "./examples/clones"
 # require "./examples/raw_html"
 # require "./examples/vector"
 # require "./examples/generator_and_build"
@@ -35,7 +35,7 @@ require "./examples/clones"
 # require "./examples/presets"
 # require "./examples/delete"
 # require "./examples/touch"
-# require "./examples/group"
+require "./examples/group"
 # require "./examples/clear"
 # require "./examples/grab"
 # require "./examples/match"
@@ -178,5 +178,6 @@ require "./examples/clones"
 #   el_found=grab(el)
 #   el_found.rotate(22).text(:hello).color(:red)
 # end
+
 
 
