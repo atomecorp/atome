@@ -14,8 +14,8 @@ require 'uglifier'
 def modify_and_copy_file(source_path, destination_path, destination_dir)
 
   file_content = File.read(source_path)
-
-  modified_code = file_content.gsub(/require\s+(['"])(.*?)\1/) do |match|
+  cleaned_content = file_content.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+  modified_code = cleaned_content.gsub(/require\s+(['"])(.*?)\1/) do |match|
     quote = $1
     relative_path = $2
     if relative_path.start_with?('./')
