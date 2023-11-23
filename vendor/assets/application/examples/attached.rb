@@ -26,9 +26,11 @@ wait 2 do
 
   # Here is how to use it as a getter :
   # to retrieve witch atomes b315 is attached to  to the atome c_12 just type
-  puts  c.attach # => [:the_box]
+  puts  "c.attach#{c.attach}" # => [:the_box]
   # to retrieve atome attached to the atome c_12 just type tha other method
-  puts  b.attached #=> [:the_circle]
+  puts  "b.attached : #{b.attached}" #=> [:the_circle]
+  puts "b.color : #{b.color}"
+  puts "c.color : #{c.color}"
 end
 
 

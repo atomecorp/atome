@@ -34,12 +34,16 @@ new({ particle: :delete, render: false }) do |params|
       render(:delete, params)
       # the machine delete the current atome from the universe
       id_found = @id.to_sym
-      parents_found = @attach
-      Universe.delete(id_found)
-      parents_found.each do |parent_id_found|
-        parent_found = grab(parent_id_found)
-        parent_found.attached.delete(id_found)
-      end
+      # parents_found = @attach
+      # Universe.delete(id_found)
+      # alert "parents_found : #{parents_found}, #{parents_found.class}"
+      # parents_found.each do |parent_id_found|
+      #   parent_found = grab(parent_id_found)
+      #   parent_found.attached.delete(id_found)
+      # end
+
+      parent_found = grab(@attach)
+      parent_found.attached.delete(id_found)
 
     end
     # elsif params == :physical
@@ -95,7 +99,6 @@ new({ particle: :clear })
 new({ post: :clear }) do
   attached_found = []
   attached.each do |attached_id_found|
-
     attached_found << attached_id_found
   end
   attached_found.each do |child_id_found|
@@ -104,9 +107,7 @@ new({ post: :clear }) do
     unless child_found.tag && child_found.tag[:system]
       child_found&.delete(true)
     end
-
   end
-
 end
 new({ particle: :path })
 new({ particle: :schedule }) do |date, proc|

@@ -92,8 +92,7 @@
 #       the_matrix.instance_variable_set('@cell_style', cells_data[:particles])
 #       current_matrix.instance_variable_get('@cells') << current_cell_id
 #
-#         current_cell.attached([cells_shadow_id])
-#         current_cell.attached([cells_color_id])
+
 #         apply_style(current_cell, cells_data[:particles])
 #
 #     end

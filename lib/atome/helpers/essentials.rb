@@ -16,16 +16,15 @@ module Essentials
   @default_params = {
     # Warning :  type must be define first
     render_engines: [:html],
-    image: { type: :image, attached: [] },
+    image: { type: :image },
     # FIXME : look at build_atome FIXME to resolve default parent attachment problem
-    video: { type: :video, attached: [] },
-    animation: { type: :animation, attach: [:black_matter], attached: [] },
-    element: { type: :element, renderers: [], attach: [:black_matter], attached: [] },
+    video: { type: :video },
+    animation: { type: :animation, attach: :black_matter },
+    element: { type: :element, renderers: [], attach: :black_matter },
     box: { type: :shape, width: 99, height: 99,
            apply: [:box_color],
            left: 100, top: 100, clones: [], preset: :box },
     vector: { type: :vector, width: 99, height: 99,
-              attached: [],
               left: 100, top: 100, clones: [], preset: :vector, definition: corp },
     circle: { type: :shape, width: 99, height: 99, smooth: '100%',
               apply: [:circle_color],
@@ -36,9 +35,9 @@ module Essentials
     text: { type: :text, component: { size: 18 },
             apply: [:text_color],
             width: :auto, height: :auto, clones: [] },
-    drm: { type: :drm, attach: [:black_matter], attached: [] },
-    shadow: { type: :shadow, attach: [], attached: [], red: 0, green: 0, blue: 0, alpha: 0 },
-    color: { type: :color, attach: [], red: 0, green: 0, blue: 0, alpha: 1, attached: [] }
+    drm: { type: :drm, attach: :black_matter },
+    shadow: { type: :shadow, red: 0, green: 0, blue: 0, alpha: 0 },
+    color: { type: :color, red: 0, green: 0, blue: 0, alpha: 1 }
   }
 
   def self.default_params

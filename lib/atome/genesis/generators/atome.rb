@@ -9,7 +9,7 @@ new({ sanitizer: :color }) do |params|
   end
   params
 end
-new({ post: :color }) do |p|
+new({ post: :color }) do
   Atome.global_monitoring(self, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
 end
 new({ atome: :image })

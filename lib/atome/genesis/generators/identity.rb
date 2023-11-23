@@ -25,9 +25,6 @@ new({ particle: :clones }) do |clones_found|
     clone_found[:id] = clone_id
     clone_found = particles.merge(clone_found)
     clone_found.delete(:html_object)
-    # clone_found.delete(:touch_code)
-    #  clone_found.delete(:attached)
-    # clone_found.delete(:entangled)
     cloned_atome = Atome.new(clone_found)
     monitor({ atomes: [original_id], particles: particles_entangled }) do |_atome, particle, value|
       # cloned_atome.send(particle, value)

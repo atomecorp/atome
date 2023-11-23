@@ -97,7 +97,7 @@ class Genesis
           value_found = instance_variable_get("@#{element}")
           # uncomment below to  historicize all read action
           # Universe.historicize(@id, :read, element, value_found)
-          value_found= particle_read(element, value_found, &user_proc)
+          value_found = particle_read(element, value_found, &user_proc)
           value_found
           # TODO : create a fast method to get particle: eg:
           #  Atome.define_method "set_#{element}" ... =>  send("set_#{element}"
@@ -128,12 +128,18 @@ class Genesis
           # as getter should give us all atome of a given within the atome
           # ex : puts a.shape => return all atome with the type 'shape' in this atome
           collected_atomes = []
-          attached.each do |attached_atome|
-            collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
-          end
-          # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being attached
-          apply.each do |attached_atome|
-            collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+          # attached.each do |attached_atome|
+          #   collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+          # end
+          # TODO : add category for atome( material/physical vs modifier : color, shadow, .. vs shape, image ..)
+          # then add condition same things fo code in presets/atome atome_common
+          if %i[color shadow paint].include?(element)
+            # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being attached
+            apply.each do |attached_atome|
+              # collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+            end
+          else
+            collected_atomes = attached
           end
           collected_atomes
         end

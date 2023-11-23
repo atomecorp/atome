@@ -49,6 +49,10 @@ class Object
   end
 
   def grab(id_to_get)
+    # if id_to_get.instance_of? Array
+    #   alert "case 1 ; #{id_to_get}"
+    #   id_to_get=''
+    # end
     id_to_get = id_to_get.to_sym
     Universe.atomes[id_to_get]
   end
@@ -72,10 +76,11 @@ class Object
     Object.define_method element do |params, &user_proc|
       default_parent = if Essentials.default_params[element][:attach]
                          # condition default attach value = [] , per example color to avoid colors to be attach to view by default
-                         Essentials.default_params[element][:attach][0] || :black_matter
+                         Essentials.default_params[element][:attach] || :black_matter
                        else
                          :view
                        end
+      # alert "default_parent is :::: > #{default_parent} :: #{default_parent.class}"
       grab(default_parent).send(element, params, &user_proc)
     end
   end

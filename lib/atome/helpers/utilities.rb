@@ -135,10 +135,10 @@ class Atome
   end
 
   def atome_processor(element, params, &user_proc)
-
     # TODO: replace with the line below but need extensive testing as it crash some demos ex: animation
     params = atome_common(element, params)
     atome_pre_process(element, params, &user_proc)
+
     new_atome = send("set_#{element}", params, &user_proc) # it call  Atome.define_method "set_#{element}" in  new_atome method
     # TODO : check if we don't have a security issue allowing atome modification after creation
     # if we have one find another solution the keep this facility

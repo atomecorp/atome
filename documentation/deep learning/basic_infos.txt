@@ -201,3 +201,17 @@ To alter a particle when reading it’s value you can use :preview and :review
 
 
 
+pay attention to atome category marterial vs modifier
+color, shadow and paint are modifier
+while shape, image, vector, video audio are materials
+
+there is some specific treatment/code here :
+in presets/atome, atome_common:
+ if params[:type] == :color || params[:type] == :shadow || params[:type] == :paint
+
+ and in genesis,  new_atome :
+ :   if %i[color shadow paint].include?(element)
+
+
+
+

@@ -8,10 +8,13 @@
 # additional Atome methods
 class Atome
   def atome_common(atome_preset, params)
+    puts "atome_common  before: #{atome_preset}, #{params}"
+
     basic_params = { renderers: [] }
     # TODO : remove Essentials.default_params[atome_preset] || {} as it is
     # applied twice because preset is now a particle
     preset_params = Essentials.default_params[atome_preset] || {}
+
     basic_params[:type] = preset_params[:type] || :element
     basic_params[:id] = params[:id] || identity_generator(atome_preset)
     basic_params[:renderers] = @renderers || preset_params[:renderers]
@@ -21,13 +24,18 @@ class Atome
     # params[:preset]=atome_preset
     # reordered_params = basic_params.reject { |key, _| params.has_key?(key) }
     params = reordered_params.merge(params)
+    puts " atome_common : #{preset_params} : #{params} => #{reordered_params}"
+
     # condition to handle color/shadow/paint atomes that shouldn't be attach to view
-    if params[:type] == :color || params[:type] == :shadow || params[:type] == :paint
+    # TODO : add category for atome( material/physical vs modifier : color, shadow, .. vs shape, image ..)
+    # then add condition same things fo code in genesis new_atome
+    puts "<< solution below >>"
+    if %i[color shadow paint].include?(atome_preset)
       params[:affect] = [id] unless params[:affect]
     else
-      params[:attach] = params[:attach] || [@id] || [:view]
+      params[:attach] = params[:attach] || @id || :view
     end
-
+    puts "atome_common after : #{element}, #{params}"
     params
   end
 
