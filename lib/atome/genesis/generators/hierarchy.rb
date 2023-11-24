@@ -15,7 +15,6 @@ def attachment_common(child_id, parents_id, direction, &user_proc)
   #     child_found.render(:attach, parent_id, &user_proc)
   #   end
   # end
-  # alert "self: #{@id} : parents_ids : #{parents_ids}, #{parents_ids.class}"
   parent_found = grab(parents_id)
   if direction == :attach
     # puts "case 2 ; #{parents_id} -  #{parents_id.class} remove condition below"
@@ -48,31 +47,24 @@ new({ particle: :attach, render: false }) do |parents_id, &user_proc|
   #   parents_id= :my_box
   # end
   attachment_common(@id, parents_id, :attach, &user_proc)
-  # puts "pass!! : #{parents_ids}"
   parents_id
-  # end
 
 end
 
 new({ particle: :attached, render: false }) do |children_ids, &user_proc|
   children_ids = [children_ids] unless children_ids.instance_of?(Array)
-  # alert "parents_ids : #{@id}"
   parents_id = @id
   children_ids.each do |children_id|
-    # alert "here : #{children_id} ==>  #{parents_id}  : #{parents_id.class}"
     attachment_common(children_id, parents_id, :attached, &user_proc)
   end
   children_ids
 end
 
 new({ sanitizer: :attached }) do |children_ids|
-  # alert "children_ids : #{children_ids}"
-  # children_ids = [children_ids] unless children_ids.instance_of?(Array)
   children_ids
 end
 
 new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_proc|
-  puts "here => #{parents_ids}"
   # TODO: optimize the 2 lines below:
   @apply ||= []
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
@@ -90,7 +82,7 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
     children_ids.each do |child_id|
       # affect_element << child_id unless affect_element.include?(child_id)
       affect_element.delete(child_id)
-      affect_element.push(child_id)
+      # affect_element.push(child_id)
       affect_element << child_id
       child_found = grab(child_id)
       child_found&.render(:apply, parent_found, &user_proc)
@@ -123,5 +115,5 @@ new({ sanitizer: :detached }) do |values|
   end
   values
 end
-new({ particle: :collected })
+new({ particle: :collect})
 

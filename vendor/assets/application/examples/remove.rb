@@ -33,7 +33,7 @@ b.touch(true) do
   puts "before => #{b.apply}"
   b.remove({all: :color})
   puts "after => #{b.apply}"
-  wait 2 do
+  wait 1 do
     b.paint({id: :the_gradient_1,gradient: [:box_color, :circle_color]})
     b.paint({id: :the_gradient,gradient: [:other_col, :new_col]})
     wait 1 do

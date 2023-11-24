@@ -79,19 +79,18 @@ class Genesis
           # ex : new({ particle: :my_particle } do....
           # instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
           Genesis.create_particle(element, store, render)
-          if @type == :group
-            unless %i[type id collected].include?(element)
-              collected.each do |collected_found|
-                grab(collected_found).send(element, params, &user_proc)
-              end
+          if @type == :group && !%i[type id collect].include?(element)
+            collect.each do |collected_found|
+              grab(collected_found).send(element, params, &user_proc)
             end
           end
+
           send("set_#{element}", params, &user_proc) # sent to : Atome.define_method "set_#{element}" ..
 
           # we historicize all write action below
           # we add the changes to the stack that must be synchronised
           Universe.historicize(@id, :write, element, params)
-        elsif (params || params == false)
+        elsif params || params == false
           "send a valid password to write #{element} value"
         elsif read_auth(element)
           value_found = instance_variable_get("@#{element}")
@@ -117,6 +116,7 @@ class Genesis
     end
 
     def new_atome(element, &method_proc)
+
       # the method define below is the slowest but params are analysed and sanitized
       Atome.define_method element do |params = nil, &user_proc|
         instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
@@ -136,10 +136,13 @@ class Genesis
           if %i[color shadow paint].include?(element)
             # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being attached
             apply.each do |attached_atome|
-              # collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+              collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
             end
           else
-            collected_atomes = attached
+            # collected_atomes = attached
+            attached.each do |attached_atome|
+              collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+            end
           end
           collected_atomes
         end

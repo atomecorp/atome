@@ -37,7 +37,7 @@ module Essentials
             width: :auto, height: :auto, clones: [] },
     drm: { type: :drm, attach: :black_matter },
     shadow: { type: :shadow, red: 0, green: 0, blue: 0, alpha: 0 },
-    color: { type: :color, red: 0, green: 0, blue: 0, alpha: 1 }
+    color: { type: :color, red: 0, green: 0, blue: 0, alpha: 1}
   }
 
   def self.default_params

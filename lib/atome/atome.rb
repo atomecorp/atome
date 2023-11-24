@@ -6,16 +6,15 @@ class Atome
 
   def initialize(new_atome = {}, &atomes_proc)
     # the keys :renderers, :type and :id should be placed in the first position in the hash
-
     @broadcast = {}
     @history = {}
     @callback = {}
     @tag = {}
     @unit = {}
-    @collected = {}
+    @collect = {}
     @id = new_atome[:id] || identity_generator(:element)
     @type = new_atome[:type] || :element
-    # @attached=[]
+    @attached=[]
     @html = HTML.new(@id, self)
     @headless= Headless.new(@id, self)
     # now we store the proc in a an atome's property called :bloc
