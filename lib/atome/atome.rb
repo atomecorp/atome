@@ -19,7 +19,6 @@ class Atome
     @headless= Headless.new(@id, self)
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
-    # new_atome[:password]={read: :tot, write: :toto} unless new_atome[:password]
     # we reorder the hash
     ordered_keys = %i[renderers id type]
     ordered_part = ordered_keys.map { |k| [k, new_atome[k]] }.to_h
@@ -47,7 +46,6 @@ class Atome
     # post rendering processor
     params = particle_post(element, params, &user_proc)
     instance_variable_set("@#{element}", params) if store
-    # @store_allow = true
     # post storage processor
     particle_after(element, params, &user_proc)
     self

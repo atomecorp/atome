@@ -41,4 +41,3 @@ new({ method: :resize, renderer: :html }) do |params, user_bloc|
   option = @resize[params]
   html.resize(params, option)
 end
-

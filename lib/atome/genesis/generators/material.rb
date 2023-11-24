@@ -13,7 +13,7 @@ new({ particle: :hide })
 
 new({ particle: :remove })
 
-new({post: :remove}) do |params|
+new({ post: :remove }) do |params|
 
   if params.instance_of?(Hash)
     case params[:all]
@@ -25,32 +25,11 @@ new({post: :remove}) do |params|
       paint.each do |atome_id_found|
         @apply.delete(atome_id_found)
       end
-    # when :shadow
-    #   alert :remove_shade
     else
       puts 'write code'
     end
-  else
-    #   object_to_remove = grab(object_id_to_remove)
-    #   @apply.delete(object_id_to_remove)
-    #   @attached.delete(object_id_to_remove)
-    #   # we remove the id  from all atomes binding associated methods :  (attached, affect)
-    #   object_to_remove.instance_variable_get("@attached").delete(id)
-    #   object_to_remove.instance_variable_get("@affect").delete(id)
-    #
   end
-  # object_id_to_remove
-
-  # case object_to_remove
-  # when :color
-  #   send(object_to_remove, :black)
-  # when :shadow
-  #   # TODO : code to write
-  #   puts 'code to write'
-  # else
-  #   # object_to_remove_decision(object_to_remove)
-  # end
-   params
+  params
 end
 
 new({ particle: :classes }) do |value|

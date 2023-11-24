@@ -17,8 +17,6 @@ class Black_matter
       @password
     end
 
-
-
   end
 
 end

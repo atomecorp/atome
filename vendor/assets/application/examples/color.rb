@@ -14,7 +14,7 @@ t4=text(data: :orange, left: 400, top: 123)
 t5=text(data: :cyan, left: 500, top: 123)
 
 item_to_batch=[t.id,t1.id,t2.id, t3.id, t4.id, t5.id]
-the_group= group({ collected: item_to_batch })
+the_group= group({ collect: item_to_batch })
 the_group.apply([:the_col])
 t.touch(true) do
   b.color({id: :red, red: 1 })

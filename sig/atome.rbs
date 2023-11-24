@@ -53,6 +53,8 @@ module Atome
 
   def get_row: -> untyped
 
+  def headless: -> untyped
+
   def matrix: -> untyped
 
   def physical: -> untyped

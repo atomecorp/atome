@@ -25,7 +25,7 @@ end
 new({ method: :size, type: :hash, renderer: :html }) do |value, _user_proc|
   # html.style('fontSize',"#{value}px")
 end
-#
+
 new({ method: :size, type: :int, renderer: :html, specific: :text }) do |value, _user_proc|
   html.style('fontSize', "#{value}px")
 end

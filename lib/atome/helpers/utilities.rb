@@ -25,20 +25,15 @@ class Atome
               # to the affect method to apply the atome to all atome children
               grab(targeted_atome).render(:apply, self)
             end
-            # puts "monitoring #{value_before} to #{value_after}"
-          else
-            # "monitoring: call #{methode} without modification"
           end
           result
         end
       end
       variables_to_monitor.each do |var|
         instance.define_singleton_method(var) do
-          # puts "read monitoring of : #{var}"
           instance_variable_get("@#{var}")
         end
         instance.define_singleton_method("#{var}=") do |value|
-          # puts "write monitoring of : #{var}"
           instance_variable_set("@#{var}", value)
         end
       end
@@ -171,21 +166,6 @@ class Atome
     end
   end
 
-  # def monitor(params = nil, &proc_monitoring)
-  #   if params
-  #     monitoring = atome[:monitor] ||= {}
-  #     params[:atomes].each do |atome_id|
-  #       target_broadcaster = grab(atome_id).instance_variable_get('@broadcast')
-  #       monitor_id = params[:id] || "monitor#{target_broadcaster.length}"
-  #       monitoring[monitor_id] = params.merge({ code: proc_monitoring })
-  #       target_broadcaster[monitor_id] = { particles: params[:particles], code: proc_monitoring }
-  #     end
-  #   else
-  #     atome[:monitor]
-  #   end
-  #
-  # end
-
   def store_proc(element, params = true, &user_proc)
     instance_variable_set("@#{element}_code", {}) unless instance_variable_get("@#{element}_code")
     # TODO : we may have to change this code if we need multiple proc for an particle
@@ -236,41 +216,12 @@ class Atome
     end
   end
 
-  # def <<(particle)
-  #   alert "ici : #{self} #{particle}"
-  #   # instance_variable_get("@#{property}") << particle
-  # end
-
-  # def add(particles, &user_proc)
-  #
-  #   @!atome[:add] = {} unless @!atome[:add]
-  #   particles.each do |particle, value|
-  #     particle_type = Universe.particle_list[particle] || 'atome'
-  #     send("add_to_#{particle_type}", particle, value, &user_proc)
-  #     # now we remove systematically the added hash so next particle won't be automatically added
-  #     @!atome[:add].delete(particle)
-  #   end
-  # end
-  #
-  # def substract(_particles, &_user_proc)
-  #   # TODO : write code here to remove add elements"
-  #   puts "write code here to remove add elements"
-  # end
-
   def atome
     # allow to get all atomes instance variables available as a Hash
     instance_variables.each_with_object({}) do |var, hash|
       hash[var[1..-1].to_sym] = instance_variable_get(var) # var[1..-1] enlève le '@' au début
     end
   end
-
-  # def to_hash
-  #   hash = {}
-  #   instance_variables.each do |var|
-  #     hash[var.to_s.delete('@').to_sym] = instance_variable_get(var)
-  #   end
-  #   hash
-  # end
 
   def to_hash
     hash = {}
@@ -283,7 +234,7 @@ class Atome
   end
 
   def refresh
-    particles_found=to_hash
+    particles_found = to_hash
     particles_found.each do |particle_found, value_found|
       send(particle_found, value_found)
     end
@@ -297,47 +248,14 @@ class Atome
   end
 
   def include?(value)
-    self.include?(value)
+    include?(value)
   end
-  #
-  # def each_with_index(*_args, &block)
-  #   value.each_with_index(&block)
-  # end
-
-  # def [](range)
-  #   if instance_of?(Atome)
-  #     value[range]
-  #   elsif value[range].instance_of?(Array)
-  #     Batch.new(value[range])
-  #     # return collector_object
-  #   end
-  # end
-
-  # def []=(params, value)
-  #   # TODO : it may miss some code, see above
-  #   self[params] = value
-  # end
 
   def set(params)
     params.each do |particle, value|
       send(particle, value)
     end
   end
-
-  # def physical
-  #   # TODO :  automatise materials type list when creating a new atome it should be specified if material or not
-  #   types = %i[texts images videos shapes wwws]
-  #   atomes_found = []
-  #   types.each do |type|
-  #     ids_found = atome[type]
-  #     next unless ids_found
-  #
-  #     ids_found.each do |id_found|
-  #       atomes_found << id_found
-  #     end
-  #   end
-  #   atomes_found
-  # end
 
   def detach_atome(atome_id_to_detach)
     atome_to_detach = grab(atome_id_to_detach)
@@ -346,7 +264,6 @@ class Atome
   end
 
   def debug(msg)
-    # add id-f debug mode
     puts msg
   end
 

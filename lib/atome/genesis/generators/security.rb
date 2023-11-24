@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 new ({ particle: :password })
 new ({ sanitizer: :password }) do |params|
 
@@ -9,11 +8,9 @@ new ({ sanitizer: :password }) do |params|
   # encoding below
   params[:read]&.each do |k, v|
     params[:read][k] = Black_matter.encode(v)
-    # params[:read][k] = v
   end
   params[:write]&.each do |k, v|
     params[:write][k] = Black_matter.encode(v)
-    # params[:write][k] = v
   end
 
   params[:read] = Black_matter.password unless params[:read]
@@ -28,9 +25,7 @@ end
 
 new({ read: :password }) do |params|
   params = Black_matter.password if params.nil?
-  unless @authorisations[:write][:atome]
-    params[:read][:atome]=Black_matter.password[:read][:atome]
-  end
+  params[:read][:atome]=Black_matter.password[:read][:atome] unless @authorisations[:write][:atome]
   params[:write][:atome]=Black_matter.password[:write][:atome] unless @authorisations[:write][:atome]
   params
 end

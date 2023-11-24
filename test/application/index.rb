@@ -1,9 +1,12 @@
 #  frozen_string_literal: true
-alert :grad
-# require 'jsonclon'
+##make it works
+# require "./examples/clones"
+# require "./examples/generator_and_build"
+# require "./examples/display"
+
+#### must works
 # require "./examples/group"
 # require "./examples/apply"
-# require "./examples/clones"
 # require "./examples/monitor"
 # require "./examples/paint"
 # require "./examples/gradient"
@@ -11,8 +14,6 @@ alert :grad
 # require "./examples/shadow"
 # require "./examples/raw_html"
 # require "./examples/vector"
-# require "./examples/generator_and_build"
-# require "./examples/display"
 # require "./examples/basic_understanding"
 # require "./examples/presets"
 # require "./examples/hierarchy"
@@ -24,7 +25,7 @@ alert :grad
 # require "./examples/play"
 # require "./examples/animation"
 # require "./examples/resize"
-require "./examples/drop"
+# require "./examples/drop"
 # require "./examples/on_resize"
 # require "./examples/keyboard"
 # require "./examples/hypertext"
@@ -40,18 +41,23 @@ require "./examples/drop"
 # require "./examples/image"
 # require "./examples/presets"
 # require "./examples/delete"
-# require "./examples/touch"
 # require "./examples/clear"
-# require "./examples/attached"`
+# require "./examples/attached"
 # require "./examples/attach"
 # require "./examples/grab"
 # require "./examples/match"
 # require "./examples/edit"
-# require "./examples/browse"
 # require "./examples/scroll"
 # require "./examples/video"
+
+# Native tests #
+# require "./examples/browse"
 # require "./examples/read"
 # require "./examples/terminal"
+
+# #server tests
+
+# end test
 # puts('Connected to WebSocket.')
 # require './web2'
 # require File.expand_path('../examples/shadow.rb', __FILE__)

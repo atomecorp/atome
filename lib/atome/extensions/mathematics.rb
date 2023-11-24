@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
+# Basic add on
 class Atome
-  def /(val)
-    value / val
+  def /(other)
+    value / other
   end
 
-  def *(val)
-    value * val
+  def *(other)
+    value * other
   end
 
-  def -(val)
-    value - val
+  def -(other)
+    value - other
   end
 
-
-  def +(val)
-    value + val
+  def +(other)
+    value + other
   end
 end

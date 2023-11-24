@@ -225,13 +225,7 @@ new({ sanitizer: :over }) do |params, user_bloc|
 
            end
 
-  # case params
-
-  # when :remove
-  #   @over_code[option] = ''
-  # else
     @over[params] = option
-  # end
   params
 
 end
@@ -327,4 +321,3 @@ new({ particle: :overflow }) do |params, bloc|
   params
 
 end
-

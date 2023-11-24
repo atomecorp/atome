@@ -1,10 +1,10 @@
 # frozen_string_literal: true
-#add renderer html to atome
+# add renderer html to atome
 
+# headless rendering for atome
 class Atome
-  def headless(_val=nil);end
+  def headless(_val = nil); end
 end
-
 
 #  this class is aimed at headless rendering
 class Headless
@@ -15,4 +15,4 @@ class Headless
     @original_atome = current_atome
   end
 
-  end
+end

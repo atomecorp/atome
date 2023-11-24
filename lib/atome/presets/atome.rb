@@ -18,9 +18,6 @@ class Atome
     basic_params[:renderers] = @renderers || preset_params[:renderers]
     essential_params = basic_params.merge(preset_params)
     reordered_params = essential_params.reject { |key, _| params.has_key?(key) }
-
-    # params[:preset]=atome_preset
-    # reordered_params = basic_params.reject { |key, _| params.has_key?(key) }
     params = reordered_params.merge(params)
 
     # condition to handle color/shadow/paint atomes that shouldn't be attach to view
@@ -57,13 +54,6 @@ class Atome
     params = atome_common(atome_preset, params)
     preset_common(params, &bloc)
   end
-
-  # def vector(params = {}, &bloc)
-  #   atome_preset = :vector
-  #   params = atome_common(atome_preset, params)
-  #   preset_common(params, &bloc)
-  # end
-
 end
 
 

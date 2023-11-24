@@ -1,52 +1,28 @@
 # frozen_string_literal: true
 
 new({ method: :top, type: :integer, renderer: :html }) do |params|
-  # if params.instance_of? Integer
-    html.style(:top, "#{params}px")
-  # else
-  #   html.style(:top, params)
-  # end
+  html.style(:top, "#{params}px")
 end
 
 new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
-  # if params.instance_of? Integer
-    html.style(:top, "#{params}px")
-  # else
-  #   html.style(:top, params)
-  # end
+  html.style(:top, "#{params}px")
 end
 new({ method: :top, type: :integer, renderer: :html, specific: :shadow })
 
 new({ method: :bottom, type: :integer, renderer: :html }) do |params|
-  # if params.instance_of? Integer
-    html.style(:bottom, "#{params}px")
-  # else
-  #   html.style(:bottom, params)
-  # end
+  html.style(:bottom, "#{params}px")
 end
 
 new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params|
-  # if params.instance_of? Integer
-    html.style(:bottom, "#{params}px")
-  # else
-  #   html.style(:bottom, params)
-  # end
+  html.style(:bottom, "#{params}px")
 end
 
 new({ method: :right, type: :integer, renderer: :html }) do |params|
-  # if params.instance_of? Integer
-    html.style(:right, "#{params}px")
-  # else
-  #   html.style(:right, params)
-  # end
+  html.style(:right, "#{params}px")
 end
 
 new({ method: :left, type: :integer, renderer: :html }) do |params|
-  # if params.instance_of? Symbol
-  #   html.style(:left, params)
-  # else
-    html.style(:left, "#{params}px")
-  # end
+  html.style(:left, "#{params}px")
 end
 
 new({ method: :left, type: :integer, specific: :color, renderer: :html })

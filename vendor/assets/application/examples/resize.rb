@@ -6,7 +6,7 @@ m.on(:resize) do |event|
   puts event[:dx]
 end
 
-m.resize({ size: { min: { width: 10, height: 10 }, max: { width: 300, height: 600 } } }) do |event|
+m.resize({ size: { min: { width: 90, height: 190 }, max: { width: 300, height: 600 } } }) do |event|
   puts "width is  is #{event[:rect][:width]}"
 end
 

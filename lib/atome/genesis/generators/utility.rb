@@ -10,13 +10,12 @@ new({ particle: :broadcast })
 
 def delete_recursive(atome_id)
   return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system])
-  parents_found = grab(atome_id).attach
-  parents_found.each do |parent_id_found|
-    parent_found = grab(parent_id_found)
-    new_array = parent_found.attached.dup
-    new_array.delete(atome_id)
-    parent_found.instance_variable_set('@attached', new_array)
-  end
+
+  parent_id_found = grab(atome_id).attach
+  parent_found = grab(parent_id_found)
+  new_array = parent_found.attached.dup
+  new_array.delete(atome_id)
+  parent_found.instance_variable_set('@attached', new_array)
   grab(atome_id).attached.each do |atome_id_found|
     delete_recursive(atome_id_found)
   end
@@ -34,34 +33,9 @@ new({ particle: :delete, render: false }) do |params|
       render(:delete, params)
       # the machine delete the current atome from the universe
       id_found = @id.to_sym
-      # parents_found = @attach
-      # Universe.delete(id_found)
-      # alert "parents_found : #{parents_found}, #{parents_found.class}"
-      # parents_found.each do |parent_id_found|
-      #   parent_found = grab(parent_id_found)
-      #   parent_found.attached.delete(id_found)
-      # end
-
       parent_found = grab(@attach)
       parent_found.attached.delete(id_found)
-
     end
-    # elsif params == :physical
-    #   # this will delete any child with a visual type cf : images, shapes, videos, ...
-    #   physical.each do |atome_id_found|
-    #     # atome_id_found.delete(true)
-    #     grab(atome_id_found).delete(true)
-    #   end
-    # elsif params[:id]
-    # the machine try to an atome by it's ID and delete it
-    # We check for recursive, if found we delete attached atomes too
-    # if params[:recursive] == true
-    #   physical_found = grab(params[:id]).physical
-    #   physical_found.each do |atome_id_found|
-    #     grab(atome_id_found).delete(true)
-    #   end
-    # end
-    # grab(params[:id]).delete(true)
   elsif params.instance_of? Hash
 
     if params[:recursive]
@@ -81,18 +55,11 @@ new({ particle: :delete, render: false }) do |params|
       end
     end
 
-  else
-
+  elsif Universe.atome_list.include?(params)
     # we check if the params passed is an atome to treat it in a different way
-    if Universe.atome_list.include?(params)
-      alert "write code here : #{apply} , #{attached}"
-      # @apply.each do |color_to_remove|
-      # wait 0.1 do
-      #   remove(color_to_remove)
-      # end
-    else
-      send(params, 0) unless params == :id
-    end
+    puts "write code here : #{apply} , #{attached}"
+  else
+    send(params, 0) unless params == :id
   end
 end
 new({ particle: :clear })
@@ -170,9 +137,4 @@ end
 
 new({ particle: :invert })
 new({ particle: :option })
-
-
-
-
-
 

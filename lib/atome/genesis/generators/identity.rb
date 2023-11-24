@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# new({ particle: :state })
 new({ particle: :real })
 new({ particle: :type })
 new({ particle: :id })
@@ -27,17 +26,10 @@ new({ particle: :clones }) do |clones_found|
     clone_found.delete(:html_object)
     cloned_atome = Atome.new(clone_found)
     monitor({ atomes: [original_id], particles: particles_entangled }) do |_atome, particle, value|
-      # cloned_atome.send(particle, value)
+      cloned_atome.send(particle, value)
     end
   end
 end
 new({ particle: :markup })
 new({particle: :bundle})
 new({ particle: :data })
-# new({ particle: :data,specific: :vector, render: false }) do |value|
-#   # value.each do |type_passed, datas_found |
-#   #   render(:data, [type_passed, datas_found ])
-#   # end
-#
-#
-# end

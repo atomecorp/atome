@@ -4,10 +4,6 @@ new({ renderer: :html, method: :attach, type: :string }) do |parent_found, _user
   html.append_to(parent_found)
 end
 
-# new({ renderer: :html, method: :attach, type: :string, specific: :color }) do |parent_found, _user_proc|
-#   grab(parent_found).apply(id)
-# end
-
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
 
   # TODO : factorise code below between text and shape, especially shadow as code is written twice and  identical
@@ -40,8 +36,6 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     green = parent_found.green * 255
     blue = parent_found.blue * 255
     alpha = parent_found.alpha
-    # puts "render apply #{apply} ===>  rgba(#{red}, #{green}, #{blue}, #{alpha})"
-    # puts "render apply #{apply} : #{red}, #{green}, #{blue}, #{alpha}"
     html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
   when :paint
 
@@ -113,11 +107,11 @@ new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |par
     html.style("boxShadow", box_shadow)
     html.style("filter", drop_shadow)
   when :color
-      red = parent_found.red * 255
-      green = parent_found.green * 255
-      blue = parent_found.blue * 255
-      alpha = parent_found.alpha
-      html.style(:color, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+    red = parent_found.red * 255
+    green = parent_found.green * 255
+    blue = parent_found.blue * 255
+    alpha = parent_found.alpha
+    html.style(:color, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
   when :paint
     # if when found colors when use it for the gradient , else whe use the colors within the current atome
     # gradient_found = params[:colors] || @apply
@@ -159,10 +153,8 @@ new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |par
 
     html.style(:backgroundClip, 'text')
     html.style(:color, 'transparent')
-    # html.style(display, 'inline-block')
-
     html.style(:backgroundImage, full_gradient_to_apply)
-    end
+  end
 
 end
 
@@ -198,7 +190,7 @@ new({ renderer: :html, method: :apply, type: :string, specific: :vector }) do |p
     green = parent_found.green * 255
     blue = parent_found.blue * 255
     alpha = parent_found.alpha
-    html.colorize_svg_data( "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+    html.colorize_svg_data("rgba(#{red}, #{green}, #{blue}, #{alpha})")
   when :paint
 
     # if when found colors when use it for the gradient , else whe use the colors within the current atome
@@ -237,9 +229,5 @@ new({ renderer: :html, method: :apply, type: :string, specific: :vector }) do |p
     # full_gradient_to_apply=gradients_to_apply.join(',')
     full_gradient_to_apply = gradients_to_apply.last
     html.style(:background, full_gradient_to_apply)
-  else
-    #
   end
 end
-
-

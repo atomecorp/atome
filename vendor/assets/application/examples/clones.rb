@@ -156,22 +156,22 @@ class HTML
     # @element.setAttribute('id', val)
   end
 
-  def force_top(id,value)
-    element=JS.global[:document].getElementById(id.to_s)
-    element[:style][:top] ='33px'
-  end
+  # def force_top(id,value)
+  #   element=JS.global[:document].getElementById(id.to_s)
+  #   element[:style][:top] ='33px'
+  # end
 end
 
 new({ particle: :add_class }) do |params|
   html.add_class(params)
 end
-
-new({ particle: :force_top }) do |params|
-  html.force_top(params)
-end
+#
+# new({ particle: :force_top }) do |params|
+#   html.force_top(params)
+# end
 
 b = box({ id: :toto })
 bb = box({ id: :toto, left: 333 })
 bb.add_class(:toto)
 b.add_class(:toto)
-bb.force_top(:toto,3)
+# bb.force_top(:toto,3)

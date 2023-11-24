@@ -17,4 +17,3 @@ require 'renderers/html//security'
 require 'renderers/html/spatial'
 require 'renderers/html//time'
 require 'renderers/html/utility'
-

@@ -4,11 +4,9 @@
 class Universe
   @counter = 0
   @atomes = {}
-  # @classes = {}
   @atome_list = []
   @particle_list = {}
   @renderer_list = %i[html browser headless server log]
-  # @options = {}
   @sanitizers = {}
   @specificities = {}
   @history = {}
@@ -34,17 +32,6 @@ class Universe
     def get_atomes_specificities
       @specificities
     end
-
-    # def add_optional_method(method_name, method_proc)
-    #   # this method is used to add optional methods
-    #   instance_variable_get('@options').merge!({ method_name => method_proc })
-    # end
-    #
-    # def get_optional_method(method_name)
-    #   # this method is used to get optional methods
-    #   instance_variable_get('@options')[method_name]
-    # end
-
     def add_sanitizer_method(method_name, &method_proc)
       # this method is used to add sanitizer methods
       instance_variable_get('@sanitizers').merge!({ method_name => method_proc })

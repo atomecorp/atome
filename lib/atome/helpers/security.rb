@@ -5,12 +5,9 @@ class Atome
   def authorise(autorisations)
     autorisations[:read]&.each do |k, v|
       autorisations[:read][k] = Black_matter.encode(v)
-      # autorisations[:read][k] = v
-
     end
     autorisations[:write]&.each do |k, v|
       autorisations[:write][k] = Black_matter.encode(v)
-      # autorisations[:write][k] = v
     end
 
     @authorisations = autorisations
@@ -18,6 +15,7 @@ class Atome
 
   def check_password_destruction(operation, element)
     return unless @authorisations[:destroy]
+
     @authorisations[operation].delete(element)
   end
 
@@ -35,13 +33,11 @@ class Atome
         check_password_destruction(:write, element)
         # we check if we a a password that allow to read the whole atome so all the particles
         return true
-        # elsif password[:write][:atome] == Black_matter.password[:write][:atome]
-        #   # last chance we try to find if the user password stored globally works
-        #   return true
       else
         check_password_destruction(:write, element)
         return false
       end
+
       check_password_destruction(:write, element)
     else
       true
@@ -61,18 +57,15 @@ class Atome
         check_password_destruction(:read, element)
         # we check if we a a password that allow to read the whole atome so all the particles
         return true
-        # elsif password[:read][:atome] == Black_matter.password[:read][:atome]
-        #   # last chance we try to find if the user password stored globally works
-        #   return true
       else
         check_password_destruction(:read, element)
 
         return false
       end
+
       check_password_destruction(:read, element)
     else
       true
     end
   end
-
 end

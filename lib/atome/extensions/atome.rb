@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# atome extensions
 class Object
   def new(params, &bloc)
     # Genesis = Genesis.Genesis
@@ -37,7 +38,6 @@ class Object
         bloc.call
       end
     end
-
   end
 
   def delete (atomes)
@@ -60,39 +60,28 @@ class Object
     grab(:view).box(params, &proc)
   end
 
-  # def vector(params = {}, &proc)
-  #   grab(:view).vector(params, &proc)
-  # end
-
   def circle(params = {}, &proc)
     grab(:view).circle(params, &proc)
   end
 
-  # #############commented batch methods
-  # # the method below generate Atome method creation at Object level
+  # the method below generate Atome method creation at Object level
   def atome_method_for_object(element)
-
     Object.define_method element do |params, &user_proc|
-      default_parent = if Essentials.default_params[element][:attach]
-                         # condition default attach value = [] , per example color to avoid colors to be attach to view by default
-                         Essentials.default_params[element][:attach] #|| :black_matter
-                       else
-                         :view
-                       end
+      default_parent = Essentials.default_params[element][:attach] || :view
       grab(default_parent).send(element, params, &user_proc)
     end
   end
 
   def wait(time, id = nil, &proc)
     # we generate an uniq id
-    if time == :kill || time == 'kill'
+    if [:kill, 'kill'].include?(time)
       JS.eval("clearTimeout(window.timeoutIds['#{id}']);")
     else
       obj = Object.new
       unique_id = obj.object_id
 
-      id = unique_id unless id
-      time = time * 1000
+      id ||= unique_id
+      time *= 1000
       callback_id = "myRubyCallback_#{id}"
       JS.global[callback_id.to_sym] = proc
       JS.eval("if (!window.timeoutIds) { window.timeoutIds = {}; } window.timeoutIds['#{id}'] = setTimeout(function() { #{callback_id}(); }, #{time});")
@@ -132,7 +121,6 @@ if (++x ===#{repeat} )  {
         atome_get << atomes_id_found if atomes_found.tag&.instance_of?(Hash) && atomes_found.tag[params]
       end
     end
-
     atome_get
   end
 

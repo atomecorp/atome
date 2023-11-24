@@ -8,4 +8,3 @@ new({ particle: :rotate, type: :integer })
 new({ particle: :direction, type: :string })
 new({ particle: :center, type: :string})
 new({particle: :depth, type: :integer})
-
