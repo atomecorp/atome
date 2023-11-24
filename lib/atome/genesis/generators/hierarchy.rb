@@ -60,6 +60,7 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
 end
 
 new({ particle: :affect, render: false }) do |children_ids, &user_proc|
+  children_ids=[children_ids] unless children_ids.instance_of? Array
   children_ids.each do |child_id|
     child_found = grab(child_id)
     child_found&.apply([id], &user_proc)

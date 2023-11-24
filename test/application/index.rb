@@ -1,12 +1,15 @@
 #  frozen_string_literal: true
-##make it works
+
+# require "./examples/debug"
+
+# make it works
 # require "./examples/clones"
 # require "./examples/generator_and_build"
 # require "./examples/display"
 
 #### must works
 # require "./examples/group"
-# require "./examples/apply"
+require "./examples/apply"
 # require "./examples/monitor"
 # require "./examples/paint"
 # require "./examples/gradient"
@@ -30,7 +33,6 @@
 # require "./examples/keyboard"
 # require "./examples/hypertext"
 # require "./examples/tagged"
-# require "./examples/debug"
 # require "./examples/color"
 # require "./examples/security"
 # require "./examples/sync"
