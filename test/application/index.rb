@@ -7,9 +7,13 @@
 # require "./examples/generator_and_build"
 # require "./examples/display"
 
+#in progreess
+require "./examples/duplicate"
+
 #### must works
 # require "./examples/group"
-require "./examples/apply"
+# require "./examples/affect"
+# require "./examples/apply"
 # require "./examples/monitor"
 # require "./examples/paint"
 # require "./examples/gradient"

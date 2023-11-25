@@ -1,6 +1,5 @@
 # # frozen_string_literal: true
 
-
 class Atome
   class << self
     def monitoring(atomes_to_monitor, particles_to_monitor, &bloc)
@@ -13,17 +12,20 @@ class Atome
             # monitoring bloc before calling original method
             value_before = atome_to_monitor.instance_variable_get("@#{monitored_particle}")
             if args.empty?
-              args = nil
+              # args = nil
             else
               if monitored_particle == :touch
+                # instance_variable_set("@#{monitored_particle}", { tap: args[0] })
+                # instance_variable_set("@#{monitored_particle}_code", { touch: proc })
+                # args = { tap: args[0] }
+              elsif monitored_particle == :apply
                 # alert monitored_particle
-                instance_variable_set("@#{monitored_particle}", { tap: args[0] })
-                instance_variable_set("@#{monitored_particle}_code", { touch: proc })
-                args = { tap: args[0] }
+
               else
                 instance_variable_set("@#{monitored_particle}", args[0])
+                args = args[0]
               end
-              args = args[0]
+
             end
 
             if value_before != args # we check if the value ahs changed prior bloc call
@@ -39,13 +41,12 @@ class Atome
 end
 
 c = circle({ id: :the_circle, left: 12, top: 0, color: :orange, drag: { move: true, inertia: true, lock: :start } })
-b = box({ top: 123, drag: true})
-
+b = box({ top: 123, drag: true })
 
 # #######################
-atomes_monitored = [ b]
+atomes_monitored = [b]
 # particles_monitored=[:left, :width, :touch, :apply]
-particles_monitored=[:left,  :touch, :apply]
+particles_monitored = [:left, :touch, :apply]
 Atome.monitoring(atomes_monitored, particles_monitored) do |monitor_infos|
   puts monitor_infos
   # atomes_monitored.each do |atome_to_update|
@@ -71,9 +72,7 @@ end
 c.touch(:down) do
   puts :touchy
 end
-
-c=color({id: :my_col, red: 1})
-
+color({ blue: 1, id: :big_col })
 wait 2 do
-  c.apply([:my_col])
+  b.apply(:big_col)
 end

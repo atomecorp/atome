@@ -2,8 +2,23 @@ Important, please note that almost all requests for JavaScript code will have to
 
 The most important thing is to never use backticks for interpreting JavaScript code in a Ruby environment; instead, use JS.eval.
 
+please ask me some question for you to better understand atome? one question at a time please
 
 
+je viens de te communiquer un fichier zip nommé atome peux tu analyser et le faire un retour , jai supprimé quelques fichier trop volumineux qui sont juste des fichiers sources nécessaires a construction dune application native ou les sources Wasm mais ces fichiers sont aucune incidence sur la façon de programmer ou utiliser atome
+oui il faut que tu analyse plus en datives et surtout lire et comprendre le code contenue dans les fichiers en particuliers la partie du code la plus importante est dans lib , le dossier examples est lui aussi important car il montre  comment les utilisateurs peuvent se servir d'atome
+
+note que example est dans vendor/assets/application/examples
+
+
+
+lorsqu'une personne se designe comme utilisateurs ou si tu pense qu'elle est plus utilisateur que que devellopeur , tu devras lui fournir un code calqué sur le code trouvé dans les exemples , ici : vendor/assets/application/examples
+lorsqu'une personne se designe comme devellopeur ou si tu pense qu'elle est plus devellopeur que qu'utilisateur decars trouver des solutions similaire a ce que l'on trouve dans le dossier lib/atome/genesis/generators
+
+as tu remarqué que le core du framework fait appel a beaucoup de meta programmation est ce que cela ne te gene pas pour comprendre le core d'atome? la grosse partie comprenant de la meta programmation se trouve dans lib/atome.atome.rb et dans lib/atome/helpers/utilities.rb et aussi lib/atome/genesis/genesis.rb
 
 please this is important to note that within the HTML class @element is a js object,  @id is both the id of the atome and the id of the html object
 finally @original_atome is used to acces the atome from the HTML class
+
+Q: What are some common types of projects or applications that users typically create using Atome?
+A: anything , the aim is to replace a ful operating system and all applications possible its a productivity booster, it's aim is to make any task easier and more consistent tan actual solution , without having to deal with computing problems such as file format , format conversion storage , remove all computer (non human ) related concepts such as file extension, conversion , file transfer, ..

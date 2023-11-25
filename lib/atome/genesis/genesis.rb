@@ -85,11 +85,12 @@ class Genesis
             end
           end
 
-          send("set_#{element}", params, &user_proc) # sent to : Atome.define_method "set_#{element}" ..
+          computed_params= send("set_#{element}", params, &user_proc) # sent to : Atome.define_method "set_#{element}" ..
 
           # we historicize all write action below
           # we add the changes to the stack that must be synchronised
           Universe.historicize(@id, :write, element, params)
+          computed_params
         elsif params || params == false
           "send a valid password to write #{element} value"
         elsif read_auth(element)
@@ -103,6 +104,7 @@ class Genesis
         else
           "send a valid password to read #{element} value"
         end
+
       end
     end
 

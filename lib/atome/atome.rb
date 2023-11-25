@@ -6,7 +6,7 @@ class Atome
 
   def initialize(new_atome = {}, &atomes_proc)
     # the keys :renderers, :type and :id should be placed in the first position in the hash
-    @broadcast = {}
+    #@broadcast = {}
     @history = {}
     @callback = {}
     @tag = {}
@@ -42,7 +42,7 @@ class Atome
     particle_callback(element)
     store_proc(element, params, &user_proc) if user_proc
     render(element, params, &user_proc) if rendering
-    broadcasting(element)
+    # broadcasting(element)
     # post rendering processor
     params = particle_post(element, params, &user_proc)
     instance_variable_set("@#{element}", params) if store

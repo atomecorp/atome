@@ -6,7 +6,7 @@ new({ particle: :run }) do |params|
   code_found = @code
   instance_exec(params, &code_found) if code_found.is_a?(Proc)
 end
-new({ particle: :broadcast })
+#new({ particle: :broadcast })
 
 def delete_recursive(atome_id)
   return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system])

@@ -10,34 +10,34 @@ class Atome
       atome_js.JS.controller_sender(json_msg)
     end
 
-    def global_monitoring(instance, methods_to_monitor, variables_to_monitor)
-      methods_to_monitor.each do |methode|
-        original_method = instance.method(methode)
-        instance.define_singleton_method(methode) do |*args, &block|
-          value_before = instance.instance_variable_get("@#{methode}")
-          result = original_method.call(*args, &block)
-          value_after = instance.instance_variable_get("@#{methode}")
-          if args.empty?
-            # "read monitoring: #{methode}"
-          elsif value_before != value_after
-            affect.each do |targeted_atome|
-              # get the content of the affect instance_variable and send it
-              # to the affect method to apply the atome to all atome children
-              grab(targeted_atome).render(:apply, self)
-            end
-          end
-          result
-        end
-      end
-      variables_to_monitor.each do |var|
-        instance.define_singleton_method(var) do
-          instance_variable_get("@#{var}")
-        end
-        instance.define_singleton_method("#{var}=") do |value|
-          instance_variable_set("@#{var}", value)
-        end
-      end
-    end
+    # def global_monitoring(instance, methods_to_monitor, variables_to_monitor)
+    #   methods_to_monitor.each do |methode|
+    #     original_method = instance.method(methode)
+    #     instance.define_singleton_method(methode) do |*args, &block|
+    #       value_before = instance.instance_variable_get("@#{methode}")
+    #       result = original_method.call(*args, &block)
+    #       value_after = instance.instance_variable_get("@#{methode}")
+    #       if args.empty?
+    #         # "read monitoring: #{methode}"
+    #       elsif value_before != value_after
+    #         affect.each do |targeted_atome|
+    #           # get the content of the affect instance_variable and send it
+    #           # to the affect method to apply the atome to all atome children
+    #           grab(targeted_atome).render(:apply, self)
+    #         end
+    #       end
+    #       result
+    #     end
+    #   end
+    #   variables_to_monitor.each do |var|
+    #     instance.define_singleton_method(var) do
+    #       instance_variable_get("@#{var}")
+    #     end
+    #     instance.define_singleton_method("#{var}=") do |value|
+    #       instance_variable_set("@#{var}", value)
+    #     end
+    #   end
+    # end
 
   end
 
@@ -156,15 +156,15 @@ class Atome
     Universe.story(filter)
   end
 
-  def broadcasting(element)
-    params = instance_variable_get("@#{element}")
-    @broadcast.each_value do |particle_monitored|
-      if particle_monitored[:particles].include?(element)
-        code_found = particle_monitored[:code]
-        instance_exec(self, element, params, &code_found) if code_found.is_a?(Proc)
-      end
-    end
-  end
+  # def broadcasting(element)
+  #   params = instance_variable_get("@#{element}")
+  #   @broadcast.each_value do |particle_monitored|
+  #     if particle_monitored[:particles].include?(element)
+  #       code_found = particle_monitored[:code]
+  #       instance_exec(self, element, params, &code_found) if code_found.is_a?(Proc)
+  #     end
+  #   end
+  # end
 
   def store_proc(element, params = true, &user_proc)
     instance_variable_set("@#{element}_code", {}) unless instance_variable_get("@#{element}_code")

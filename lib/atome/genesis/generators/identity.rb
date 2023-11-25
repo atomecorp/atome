@@ -15,21 +15,21 @@ new({ sanitizer: :id }) do |params|
 end
 new({ particle: :name })
 new({ particle: :active })
-new({ particle: :entangled, type: :array })
-new({ particle: :clones }) do |clones_found|
-  clones_found.each_with_index do |clone_found, index|
-    particles_entangled = clone_found[:entangled] ||= []
-    clone_id = "#{particles[:id]}_clone_#{index}"
-    original_id = atome[:id]
-    clone_found[:id] = clone_id
-    clone_found = particles.merge(clone_found)
-    clone_found.delete(:html_object)
-    cloned_atome = Atome.new(clone_found)
-    monitor({ atomes: [original_id], particles: particles_entangled }) do |_atome, particle, value|
-      cloned_atome.send(particle, value)
-    end
-  end
-end
+# new({ particle: :entangled, type: :array })
+# new({ particle: :clones }) do |clones_found|
+#   clones_found.each_with_index do |clone_found, index|
+#     particles_entangled = clone_found[:entangled] ||= []
+#     clone_id = "#{particles[:id]}_clone_#{index}"
+#     original_id = atome[:id]
+#     clone_found[:id] = clone_id
+#     clone_found = particles.merge(clone_found)
+#     clone_found.delete(:html_object)
+#     cloned_atome = Atome.new(clone_found)
+#     monitor({ atomes: [original_id], particles: particles_entangled }) do |_atome, particle, value|
+#       cloned_atome.send(particle, value)
+#     end
+#   end
+# end
 new({ particle: :markup })
 new({particle: :bundle})
 new({ particle: :data })
