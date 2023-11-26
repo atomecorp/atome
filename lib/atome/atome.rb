@@ -48,7 +48,7 @@ class Atome
     instance_variable_set("@#{element}", params) if store
     # post storage processor
     particle_after(element, params, &user_proc)
-    self
+    # self
   end
 
   def inspect

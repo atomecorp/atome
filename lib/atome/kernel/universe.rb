@@ -32,6 +32,7 @@ class Universe
     def get_atomes_specificities
       @specificities
     end
+
     def add_sanitizer_method(method_name, &method_proc)
       # this method is used to add sanitizer methods
       instance_variable_get('@sanitizers').merge!({ method_name => method_proc })
@@ -119,7 +120,9 @@ class Universe
     def engine
       platform = RUBY_PLATFORM.downcase
       output = if platform == :opal
-                 `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
+                 platform = JS.global[:navigator][:userAgent].to_s.downcase
+                 platform.include?('win32') ? 'ipconfig /all' : 'ifconfig'
+                 # `#{platform =~ /win32/ ? 'ipconfig /all' : 'ifconfig'}`
                elsif platform == 'wasm32-wasi'
                  'ifconfig'
                elsif platform_type == :windows
@@ -132,7 +135,9 @@ class Universe
     end
 
     def current_server
-      `window.location.href` if RUBY_ENGINE.downcase == 'opal'
+      return unless RUBY_ENGINE.downcase == 'opal' # Remplacez 'atome' par la valeur correcte pour votre environnement Atome
+      JS.global[:location][:href].to_s
+
     end
 
     def current_user

@@ -31,10 +31,10 @@ module Essentials
               left: 100, top: 100,  preset: :circle },
     shape: { type: :shape, width: 99, height: 99,
              apply: [:shape_color],
-             left: 100, top: 100, clones: [] },
+             left: 100, top: 100 },
     text: { type: :text, component: { size: 18 },
             apply: [:text_color],
-            width: :auto, height: :auto, clones: [] },
+            width: :auto, height: :auto },
     drm: { type: :drm, attach: :black_matter },
     shadow: { type: :shadow, red: 0, green: 0, blue: 0, alpha: 0 },
     color: { type: :color, red: 0, green: 0, blue: 0, alpha: 1}

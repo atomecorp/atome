@@ -93,17 +93,59 @@ class Object
     instance_exec(counter, &proc) if proc.is_a?(Proc)
   end
 
+  def repeat_callback(params, counter)
+    @repeat[params].call(counter)
+  end
+
   def repeat(delay = 1, repeat = 0, &proc)
-    # below we exec the call a first time
-    instance_exec(0, &proc) if proc.is_a?(Proc)
-    # as we exec one time above we subtract one below
-    `
-var  x = 1
-var intervalID = window.setInterval(function(){ Opal.Object.$repeater(x,#{proc})
-if (++x ===#{repeat} )  {
-       window.clearInterval(intervalID);
-   }}, #{delay * 1000})
-`
+    @repeat ||= []
+    @repeat << proc
+    repeat_id = @repeat.length - 1
+    intervalId = JS.eval(<<~JS)
+                function repeat(action, interval, repetitions) {
+               let count = 0;
+               let intervalId = null;
+
+               function executeAction() {
+                   if (count < repetitions) {
+                       action(count);
+                       count++;
+                   } else {
+                       clearInterval(intervalId);
+                   }
+               }
+
+               executeAction(); // Exécute l'action immédiatement
+               intervalId = setInterval(executeAction, interval);
+               return intervalId;
+           }
+
+           function myAction(counter) {
+               rubyVMCallback("repeat_callback(#{repeat_id}, "+counter+")")
+           }
+
+           const intervalId = repeat(myAction, #{delay} * 1000, #{repeat}); // Répète myAction toutes les 1000 millisecondes, 5 fois
+
+      return intervalId;
+    JS
+    intervalId
+
+  end
+
+  def stop(params)
+    case params
+    when Hash
+      if params.key?(:repeat)
+        repeater_to_stop = params[:repeat]
+        JS.eval(<<~JS)
+          clearInterval(#{repeater_to_stop});
+        JS
+      else
+        puts "La clé :repeat n'existe pas dans params"
+      end
+    else
+      puts "params n'est pas un hash"
+    end
   end
 
   def tagged(params)

@@ -6,15 +6,17 @@
 # require "./examples/clones"
 # require "./examples/generator_and_build"
 # require "./examples/display"
+# require "./examples/monitor"
 
 #in progreess
-require "./examples/duplicate"
+# require "./examples/duplicate"
+require "./examples/repeat"
+
 
 #### must works
 # require "./examples/group"
 # require "./examples/affect"
 # require "./examples/apply"
-# require "./examples/monitor"
 # require "./examples/paint"
 # require "./examples/gradient"
 # require "./examples/remove"

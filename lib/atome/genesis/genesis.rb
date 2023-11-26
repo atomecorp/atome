@@ -70,7 +70,7 @@ class Genesis
       Universe.add_optional_method(method_name.to_sym, method_proc)
     end
 
-    def new_particle(element, store, render, &method_proc)
+    def new_particle(element, store, render, &_method_proc)
       Atome.define_method element do |params = nil, &user_proc|
         @history[element] ||= []
         if (params || params == false) && write_auth(element)
@@ -85,7 +85,7 @@ class Genesis
             end
           end
 
-          computed_params= send("set_#{element}", params, &user_proc) # sent to : Atome.define_method "set_#{element}" ..
+          computed_params= send("set_#{element}", params, &user_proc) # sent to : create_particle / Atome.define_method "set_#{element}"
 
           # we historicize all write action below
           # we add the changes to the stack that must be synchronised
