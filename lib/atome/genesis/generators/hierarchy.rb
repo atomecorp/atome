@@ -1,13 +1,31 @@
 # frozen_string_literal: true
+def detach_child(child)
+  return unless child.attach
+
+    parent = grab(child.attach)
+    parent.attached.delete(@id)
+  
+end
+
+def detach_from_parent(parent_found, child_found)
+  child_found.attach(false)
+end
 
 def attachment_common(child_id, parents_id, direction, &user_proc)
   parent_found = grab(parents_id)
   if direction == :attach
-    parent_found.attached ||= []
+    if parent_found
+      parent_found.attached ||= []
       parent_found.attached.push(@id) unless parent_found.attached.include?(@id)
+      detach_child(self)
       render(:attach, parents_id, &user_proc)
+    else
+      # we remove the current id  from parent
+      grab(attach).attached.delete(@id)
+    end
   else
     child_found = grab(child_id)
+    detach_from_parent(parent_found, child_found)
     child_found.render(:attach, parents_id, &user_proc)
   end
 end
@@ -60,7 +78,7 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
 end
 
 new({ particle: :affect, render: false }) do |children_ids, &user_proc|
-  children_ids=[children_ids] unless children_ids.instance_of? Array
+  children_ids = [children_ids] unless children_ids.instance_of? Array
   children_ids.each do |child_id|
     child_found = grab(child_id)
     child_found&.apply([id], &user_proc)
@@ -82,4 +100,4 @@ new({ sanitizer: :detached }) do |values|
   end
   values
 end
-new({ particle: :collect})
+new({ particle: :collect })

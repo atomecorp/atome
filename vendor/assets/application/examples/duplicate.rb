@@ -1,67 +1,67 @@
 # frozen_string_literal: true
 
-new({particle: :duplicate, store: false}) do |params|
-  new_atome_id=:toto
-  new_atome=Atome.new({ type: @type, renderers: @renderers, id: new_atome_id  })
-
-  instance_variables.each do |particle_found|
-    particle_name=particle_found.to_s.sub('@','')
-    unless particle_name == 'history' || particle_name == 'callback' || particle_name ==  'touch_code' || particle_name ==  'html'
-
-      particle_content = self.send(particle_name)
-        puts "#{particle_name} : #{particle_content}"
-        new_atome.set(particle_name => particle_content)
-
-    end
-
+new({ particle: :duplicate, store: false }) do |params|
+  if @duplicate
+    copy_number = @duplicate.length
+  else
+    copy_number = 0
   end
+
+  new_atome_id = "#{@id}_copy_#{copy_number}"
+  new_atome = Atome.new({ type: @type, renderers: @renderers, id: new_atome_id })
+
+  attached_atomes = []
+  attached_found = attached.dup
+  particles_found = instance_variables.dup
+
+  particles_found.delete(:@history)
+  particles_found.delete(:@callback)
+  particles_found.delete(:@duplicate)
+  particles_found.delete(:@touch_code)
+  # touch_code=instance_variable_get('@touch_code')
+  particles_found.delete(:@html)
+  particles_found.delete(:@attached)
+  particles_found.delete(:@id)
+  params[:id] = new_atome_id
+  attached_found.each do |child_id_found|
+    child_found = grab(child_id_found)
+    if child_found
+      new_child = child_found.duplicate({})
+      attached_atomes << new_child.id
+    end
+  end
+  particles_found.each do |particle_found|
+    particle_name = particle_found.to_s.sub('@', '')
+    particle_content = self.send(particle_name)
+    new_atome.set(particle_name => particle_content)
+    # new_atome.instance_variable_set('@touch_code',touch_code)
+  end
+  params[:attached] = attached_atomes
+
   if params.instance_of? Hash
-    params.each do |k,v|
-      new_atome.send(k,v)
+    params.each do |k, v|
+      new_atome.send(k, v)
     end
   end
-  new_atome.id(new_atome_id)
-  # alert "=> #{new_atome.id}"
-   @duplicate ||= {}
-  @duplicate[new_atome_id] = new_atome
 
-  @duplicate
-# :poi
-  # :poil
+  @duplicate ||= {}
+  @duplicate[new_atome_id] = new_atome
+  new_atome
 end
 
+new({ after: :duplicate }) do |params|
+  @duplicate[@duplicate.keys[@duplicate.keys.length - 1]]
+end
 
-b=box({id: :the_boxy})
-# b.touch(true)  do
-alert b.inspect
-  # bb=b.duplicate({top: 33})
-# bb=b.left(44)
-# bbb= bb[:toto]
-# alert b.inspect
-# alert bbb.inspect
+b = box({ id: :the_boxy })
+b.text(:hello)
+b.touch(true) do
+  alert :okk
+end
+bb = b.duplicate({  width: 33, left: 234, top: 222 })
+bb.color(:red)
+bb2 = b.duplicate({ width: 33, left: 12 })
+bb3 = b.duplicate({ width: 33, left: 444 })
+bb3.color(:green)
+bb2.color(:orange)
 
-# wait 1 do
-#   b.left(333)
-#   wait 1 do
-#     grab(:toto).top(44)
-#
-#   end
-# end
-# bbb.left(3333)
-#   # alert b.id
-#   # wait 2 do
-#   #   alert bb.id
-#   #   # b.top(1)
-#   # end
-#   # alert bb
-#   bbb.set({left: 2})
-#   bbb.set({top: 2})
-#   bbb.set({width: 28})
-#   bbb.set({height: 82})
-# end
-
-
-# full of hate full of love full of pain full of revenge
-# i just wanna feel better , just wanna forget not sure I'll forgive
-# better be dead than live this , better feel alive than dying in your arms
-# so much power now , so little power on you

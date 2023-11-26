@@ -49,9 +49,8 @@ class Object
   end
 
   def grab(id_to_get)
-    if id_to_get.instance_of? Array
-      id_to_get = ''
-    end
+    return if id_to_get == false
+    id_to_get = '' if id_to_get.instance_of? Array
     id_to_get = id_to_get.to_sym
     Universe.atomes[id_to_get]
   end

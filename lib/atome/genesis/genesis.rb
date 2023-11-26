@@ -6,7 +6,7 @@ class Genesis
 
     def create_particle(element, store, render)
       Atome.define_method "set_#{element}" do |params, &user_proc|
-        particle_creation(element, params, store, render, &user_proc)
+       particle_creation(element, params, store, render, &user_proc)
       end
     end
 

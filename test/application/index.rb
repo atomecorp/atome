@@ -9,11 +9,11 @@
 # require "./examples/monitor"
 
 #in progreess
-# require "./examples/duplicate"
-require "./examples/repeat"
+require "./examples/duplicate"
 
 
-#### must works
+#### works
+# require "./examples/repeat"
 # require "./examples/group"
 # require "./examples/affect"
 # require "./examples/apply"

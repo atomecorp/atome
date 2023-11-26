@@ -14,9 +14,9 @@ class Atome
     @collect = {}
     @id = new_atome[:id] || identity_generator(:element)
     @type = new_atome[:type] || :element
-    @attached=[]
+    @attached = []
     @html = HTML.new(@id, self)
-    @headless= Headless.new(@id, self)
+    @headless = Headless.new(@id, self)
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     # we reorder the hash
@@ -48,6 +48,7 @@ class Atome
     instance_variable_set("@#{element}", params) if store
     # post storage processor
     particle_after(element, params, &user_proc)
+
     # self
   end
 
