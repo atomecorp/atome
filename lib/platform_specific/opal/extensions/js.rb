@@ -11,7 +11,7 @@ module JS
   end
 
   def self.global
-    Native(`window`)
+    JS.eval('window')
   end
 
 end

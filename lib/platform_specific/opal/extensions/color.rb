@@ -3,11 +3,18 @@
 # rgb utility
 class Atome
   def rgb_html(string)
-    `
-  col = w3color(#{string});
-  rgb_col=col.toRgb();
-  return Opal.hash(rgb_col)
- `
+    #    `
+    #  col = w3color(#{string});
+    #  rgb_col=col.toRgb();
+    #  return Opal.hash(rgb_col)
+    # `
+    js_code = <<-JS
+  var col = w3color('#{string}');
+  var rgb_col = col.toRgb();
+  return rgb_col;
+    JS
+
+    JS.eval(js_code)
   end
 
   def to_rgb(string)

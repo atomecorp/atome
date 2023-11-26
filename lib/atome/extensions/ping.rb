@@ -5,7 +5,6 @@ class Atome
   def up?(host, _my_proc)
     check = Net::Ping::External.new(host)
     return unless check.ping?
-
     'ping respond!!'
   end
 
