@@ -9,10 +9,11 @@
 # require "./examples/monitor"
 
 #in progreess
-require "./examples/duplicate"
 
+require "./examples/layout"
 
 #### works
+# require "./examples/duplicate"
 # require "./examples/repeat"
 # require "./examples/group"
 # require "./examples/affect"

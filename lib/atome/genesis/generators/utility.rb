@@ -6,7 +6,7 @@ new({ particle: :run }) do |params|
   code_found = @code
   instance_exec(params, &code_found) if code_found.is_a?(Proc)
 end
-#new({ particle: :broadcast })
+# new({ particle: :broadcast })
 
 def delete_recursive(atome_id)
   return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system])
@@ -139,12 +139,13 @@ new({ particle: :invert })
 new({ particle: :option })
 
 new({ particle: :duplicate, store: false }) do |params|
-  if @duplicate
-    copy_number = @duplicate.length
-  else
-    copy_number = 0
-  end
-  copies_wanted = params.delete(:copies)
+
+
+  copy_number = if @duplicate
+                  @duplicate.length
+                else
+                  0
+                end
   new_atome_id = "#{@id}_copy_#{copy_number}"
   new_atome = Atome.new({ type: @type, renderers: @renderers, id: new_atome_id })
 
@@ -175,7 +176,8 @@ new({ particle: :duplicate, store: false }) do |params|
     # new_atome.instance_variable_set('@touch_code',touch_code)
   end
   params[:attached] = attached_atomes
-
+  # FIXME: below  dunno why we have to add this manually
+  new_atome.height(@height)
   if params.instance_of? Hash
     params.each do |k, v|
       new_atome.send(k, v)
