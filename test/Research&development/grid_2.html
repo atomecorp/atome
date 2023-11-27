@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Changement d'affichage</title>
+	<style>
+		.grid-container {
+			/* Styles de base pour le conteneur */
+		}
+
+		.grid-display {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 20px;
+		}
+
+		.grid-item {
+			/* Styles pour les éléments de la grille */
+		}
+
+		/* Style pour les éléments à exclure du mode grille */
+		.grid-container.grid-display .exclude-from-grid {
+			grid-column: 1 / -1; /* S'étend sur toutes les colonnes */
+			grid-row: auto; /* Se place à la rangée naturelle */
+		}
+		.exclude-from-grid {
+			display: block;
+		}
+	</style>
+
+
+</head>
+<body>
+<div class="grid-container" id="myGridContainer">
+	<div class="grid-item">Item 1</div>
+	<div class="grid-item">Item 2</div>
+	<div class="grid-item">Item 2</div>
+	<div class="grid-item">Item 2</div>
+	<div class="grid-item">Item 2</div>
+	<div class="grid-item">Item 2</div>
+	<div class="grid-item " style="width: 99px; height: 99px; background-color: rgb(128, 128, 128); left: 100px; top: 100px;">Exclu de la grille</div>
+	<div class="grid-item" style="width: 99px; height: 99px; background-color: rgb(128, 128, 128); left: 200px; top: 100px;">Exclu de la grille</div>
+	<div class="grid-item" style="width: 99px; height: 99px; background-color: rgb(128, 128, 128); left: 400px; top: 100px;">Exclu de la grille</div>
+	<div class="grid-item">Item 4</div>
+	<!-- Plus de divs ici -->
+</div>
+
+<button onclick="toggleGridDisplay()">Basculer l'affichage</button>
+<script>
+	function toggleGridDisplay() {
+		const container = document.getElementById('myGridContainer');
+		container.classList.toggle('grid-display');
+	}
+</script>
+
+</body>
+</html>
