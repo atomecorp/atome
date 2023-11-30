@@ -76,3 +76,9 @@ end
 new({ method: :data, type: :string, renderer: :html, specific: :raw }) do |value, _user_proc|
   html.raw_data(value)
 end
+
+new({ renderer: :html, method: :category, type: :symbol }) do |category_names|
+  category_names.each do |category_name|
+    html.add_class(category_name)
+  end
+end

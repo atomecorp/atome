@@ -33,3 +33,10 @@ new({ particle: :active })
 new({ particle: :markup })
 new({particle: :bundle})
 new({ particle: :data })
+
+new({particle: :category, store: false}) do |category_names|
+  category_names=[category_names] unless category_names.instance_of? Array
+  category_names.each do |category_name| 
+    @category << category_name
+  end
+end

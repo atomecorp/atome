@@ -29,11 +29,10 @@ end
 container= box({width: 500, height: 500, overflow: :scroll})
 
 b=container.box({ color: :red, id: :the_box, left: 3 })
-b.class(:ok)
-alert b.class
+# b.class(:ok)
 16.times do |index|
   width_found = b.width
-  b.duplicate({ left: b.left + index * (width_found + 45) , top: 0})
+  b.duplicate({ left: b.left + index * (width_found + 45) , top: 0, category: :matrix })
 end
 
-container.layout({ atomes: b.duplicate.keys, display: :grid, rows: 4, column: 4 })
+container.layout({ atomes: b.duplicate.keys, display: :grid, rows: 4, column: 4})

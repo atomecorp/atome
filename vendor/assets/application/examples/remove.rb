@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-b = box({ top: 166 , id: :the_box})
+b = box({ top: 166 , id: :the_box, left: 333})
 b.color({id: :new_col, red: 1})
 b.color({id: :other_col,  green: 1})
 # b.paint({gradient: [:other_col, :new_col]})

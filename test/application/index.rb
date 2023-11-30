@@ -13,6 +13,7 @@
 require "./examples/layout"
 
 #### works
+# require "./examples/category"
 # require "./examples/duplicate"
 # require "./examples/repeat"
 # require "./examples/group"

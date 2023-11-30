@@ -14,7 +14,7 @@ new({ particle: :hide })
 new({ particle: :remove })
 
 new({ post: :remove }) do |params|
-
+  # TODO : we have to rethink the removal of atome and particles (with exception like category) and maybe 'use particle type' to handle removal
   if params.instance_of?(Hash)
     case params[:all]
     when :color
@@ -26,7 +26,15 @@ new({ post: :remove }) do |params|
         @apply.delete(atome_id_found)
       end
     else
-      puts 'write code'
+      params.each do |particle, value|
+        case particle
+        when :category
+          @category.delete(value) if particle == :category
+        else
+          puts 'write code'
+        end
+      end
+
     end
   end
   params

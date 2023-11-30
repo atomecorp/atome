@@ -211,6 +211,11 @@ class HTML
     self
   end
 
+  def remove_class(class_to_remove)
+    @element[:classList].remove(class_to_remove.to_s)
+    self
+  end
+
   def id(id)
     attr('id', id)
     self

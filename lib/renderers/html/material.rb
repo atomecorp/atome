@@ -9,15 +9,23 @@ new({ method: :gradient, renderer: :html, type: :hash })
 new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove, bloc|
 
   if object_id_to_remove.instance_of? Hash
-    atome_ids_found = send(object_id_to_remove[:all])
-    atome_ids_found.each do |atome_id|
-      remove(atome_id)
+    object_id_to_remove.each do |particle, value|
+      case particle
+      when :category
+        html.remove_class(value)
+      else
+        atome_ids_found = send(object_id_to_remove[:all])
+        atome_ids_found.each do |atome_id|
+          remove(atome_id)
+        end
+      end
     end
+
+
 
   else
 
     atome_to_remove = grab(object_id_to_remove)
-    # alert atome_to_remove.id
     atome_type_found = atome_to_remove.type
     case atome_type_found
     when :color
