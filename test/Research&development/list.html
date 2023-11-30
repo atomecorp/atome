@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Changement d'affichage</title>
     <style>
-
         html, body {
-
             font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
             font-size: 12px;
             margin: 0;
@@ -20,7 +18,6 @@
             z-index: 0;
             color: lightgray;
         }
-
 
         #view {
             left: 0px;
@@ -58,7 +55,11 @@
 </head>
 <body>
 <div id="view">
-    <button class="atome" onclick="toggleGridDisplay()" style="top:0px">Basculer l'affichage</button>
+    <button style="position: relative" class="atome" onclick="displayDefault()">Affichage d'Origine</button>
+    <button style="position: relative"class="atome" onclick="displayGrid()">Mode Grille</button>
+    <button style="position: relative"class="atome" onclick="displayList()">Mode Liste</button>
+
+
 
     <div class="atome grid" style="top: 33px; left: 33px; width: 199px; height: 22px">Item 1</div>
     <div class="atome grid" style="top: 43px; left: 33px; width: 99px; height: 22px">Item 2</div>
@@ -79,7 +80,6 @@
         grille
     </div>
     <div class="atome grid" style="top: 83px; left: 433px">Item 44</div>
-
 
 
     <div id="myGridContainer" style="width: 555px; height: 555px;background-color: #00bb00; top:200px; left: 90px; position: absolute">
@@ -103,63 +103,116 @@
 </div>
 <script>
 
-    function display_in_grid(parent, parentStyle, childrenTargeted, childrenStyle, gridOption, gridGap, gridMargin, gridMode) {
+    // function saveOriginalStyles(elements) {
+    //     elements.forEach(element => {
+    //         element.setAttribute('data-original-style', element.getAttribute('style'));
+    //     });
+    // }
+    //
+    // function restoreOriginalStyles(elements) {
+    //     elements.forEach(element => {
+    //         const originalStyle = element.getAttribute('data-original-style');
+    //         element.setAttribute('style', originalStyle);
+    //     });
+    // }
+    function display_in_grid(parent, parentStyle, childrenTargeted, childrenStyle, listMode, gridMode) {
         const container = document.getElementById(parent);
+        if (!container) {
+            console.error('Container not found:', parent);
+            return;
+        }
         const elements = container.querySelectorAll('.' + childrenTargeted);
 
-        if (gridMode === true) {
-            // Apply grid style dynamically
-            container.style.display = 'grid';
-            container.style.gridTemplateColumns = gridOption;
-            container.style.gap = gridGap + 'px';
-            container.style.padding = gridMargin + 'px';
-            container.style.padding = '0px';
+        container.style.display = '';
+        container.style.gridTemplateColumns = '';
+        container.style.gap = '';
+        container.style.padding = '';
+        container.style.flexDirection = '';
 
-            elements.forEach(element => {
-                applyStyle(element, childrenStyle); // Apply style
-                  element.classList.remove('atome');
-            });
-            container.classList.add(parentStyle);
-        } else {
-            elements.forEach(element => {
+        elements.forEach(element => {
+            element.classList.add('atome');
+            removeStyle(element, childrenStyle); // Remove style
+        });
+        container.classList.remove(parentStyle);
+
+        if (gridMode) {
+            // Apply grid styles
+            container.style.display = 'grid';
+            container.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            container.style.gap = '20px';
+            container.style.padding = '0px';
+        } else if (listMode) {
+            // Apply list styles
+            container.style.display = 'flex';
+            container.style.flexDirection = 'column';
+            container.style.padding = '0px';
+        }
+
+        // Apply or remove styles from elements
+        elements.forEach(element => {
+            if (gridMode || listMode) {
+                applyStyle(element, childrenStyle);
+                element.classList.remove('atome');
+            } else {
+                removeStyle(element, childrenStyle);
                 element.classList.add('atome');
-                removeStyle(element, childrenStyle); // Remove style
-            });
-            container.classList.remove(parentStyle);
+            }
+        });
+
+        // Update container class
+        if (parentStyle) {
+            if (gridMode || listMode) {
+                container.classList.add(parentStyle);
+            } else {
+                container.classList.remove(parentStyle);
+            }
         }
     }
 
+
     function applyStyle(element, styleObject) {
         for (const property in styleObject) {
-            element.style[property] = styleObject[property];
+            if (styleObject.hasOwnProperty(property)) {
+                element.style[property] = styleObject[property];
+            }
         }
     }
 
     function removeStyle(element, styleObject) {
         for (const property in styleObject) {
-            element.style[property] = ''; // Reset to default
+            if (styleObject.hasOwnProperty(property)) {
+                element.style[property] = ''; // Reset to default
+            }
         }
     }
 
-    let display_grid = false;
-    function toggleGridDisplay() {
-        display_grid = !display_grid;
+    function displayDefault() {
+        // Code pour rétablir l'affichage d'origine
+        display_in_grid('myGridContainer', '', 'grid', {}, false, false);
+    }
+
+    function displayGrid() {
+        // Code pour passer en mode grille
         let grid_style = {
             backgroundColor: 'rebeccapurple',
+            borderRadius: '29px',
             width: '100%',
             height: '100%',
-            borderRadius: '29px',
             display: 'flex',
             justifyContent: 'center',
-        alignItems: 'center'
-
+            alignItems: 'center'
         };
-        // display_in_grid('view', 'grid_display', 'grid', grid_style, 'repeat(4, 1fr)',20, 20, display_grid)
-
-        display_in_grid('myGridContainer', 'grid_display', 'grid', grid_style, 'repeat(4, 1fr)', 20, 20, display_grid);
+        display_in_grid('myGridContainer', 'grid_display', 'grid', grid_style, false, true);
     }
-//TODO :  make a conversion table that list all atome object equivalent in html in shows the differences ex : shape => div /svg, color=> backgroundColor, left: left+px, smooth => border-radius, etc...
-</script>
 
+    function displayList() {
+        // Code pour passer en mode liste
+        let list_style = {
+            borderRadius: '10px',
+            margin: '5px 0'
+        };
+        display_in_grid('myGridContainer', 'list_display', 'grid', list_style, true, false);
+    }
+</script>
 </body>
 </html>

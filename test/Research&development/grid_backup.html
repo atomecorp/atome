@@ -29,7 +29,6 @@
             top: 0px;
             bottom: 0px;
             width: auto;
-            /*display: block;*/
             height: auto;
             overflow: hidden;
             position: absolute;
@@ -55,11 +54,6 @@
             overflow: visible;
         }
 
-        .gridy {
-            background-color: rebeccapurple;
-            width: 100% !important;
-            height: 100% !important;
-        }
     </style>
 </head>
 <body>
@@ -110,52 +104,61 @@
 </div>
 <script>
 
-
-
-    function display_in_grid(parent, parent_style, children_targeted, children_style, grid_option, grid_gap, grid_margin, grid_mode) {
+    function display_in_grid(parent, parentStyle, childrenTargeted, childrenStyle, gridOption, gridGap, gridMargin, gridMode) {
         const container = document.getElementById(parent);
-        const childrenTargeted = children_targeted;
         const elements = container.querySelectorAll('.' + childrenTargeted);
 
-        if (grid_mode === true) {
-            // Apply  style grid_display dynamically
+        if (gridMode === true) {
+            // Apply grid style dynamically
             container.style.display = 'grid';
-            container.style.gridTemplateColumns = grid_option;
-            container.style.gap = grid_gap + 'px';
-            container.style.padding = grid_margin+'px'
+            container.style.gridTemplateColumns = gridOption;
+            container.style.gap = gridGap + 'px';
+            container.style.padding = gridMargin + 'px';
+
             elements.forEach(element => {
-                element.classList.add(children_style);
+                applyStyle(element, childrenStyle); // Apply style
                 element.classList.remove('atome');
             });
-            container.classList.add(parent_style);
+            container.classList.add(parentStyle);
         } else {
             elements.forEach(element => {
                 element.classList.add('atome');
-                element.classList.remove(children_style);
+                removeStyle(element, childrenStyle); // Remove style
             });
-            container.classList.remove(parent_style);
+            container.classList.remove(parentStyle);
         }
     }
 
+    function applyStyle(element, styleObject) {
+        for (const property in styleObject) {
+            element.style[property] = styleObject[property];
+        }
+    }
 
-    let display_grid = true
+    function removeStyle(element, styleObject) {
+        for (const property in styleObject) {
+            element.style[property] = ''; // Reset to default
+        }
+    }
+
+    let display_grid = false;
     function toggleGridDisplay() {
+        display_grid = !display_grid;
+        let grid_style = {
+            backgroundColor: 'rebeccapurple',
+            width: '100%',
+            height: '100%',
+            borderRadius: '29px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
 
-        if (display_grid === false) {
-            grid=true
-            display_grid = true;
+        };
+        // display_in_grid('view', 'grid_display', 'grid', grid_style, 'repeat(4, 1fr)',20, 20, display_grid)
 
-        }
-
-        else{
-            grid=false
-            display_grid = false;
-
-        }
-        // display_in_grid('view', 'grid_display', 'grid', 'gridy', 'repeat(4, 1fr)',20, 20)
-        display_in_grid('myGridContainer', 'grid_display', 'grid', 'gridy', 'repeat(4, 1fr)',20, 20, grid)
-
+        display_in_grid('myGridContainer', 'grid_display', 'grid', grid_style, 'repeat(4, 1fr)', 20, 20, display_grid);
     }
+    //TODO :  make a conversion table that list all atome object equivalent in html in shows the differences ex : shape => div /svg, color=> backgroundColor, left: left+px, smooth => border-radius, etc...
 </script>
 
 </body>

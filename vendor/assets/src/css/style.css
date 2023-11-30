@@ -24,7 +24,7 @@ html, body {
     top: 0px;
     bottom: 0px;
     width: auto;
-    display: block;
+    /*display: block;*/
     height: auto;
     overflow: hidden;
     position: absolute;

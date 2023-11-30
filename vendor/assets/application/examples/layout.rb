@@ -4,7 +4,6 @@ class HTML
   def toggle_display(container_class)
     container = JS.global[:document].querySelector("##{container_class}")
     # container = JS.global[:document].querySelector(".atome")
-
     if container[:classList].contains?("grid-display")
       container[:classList].remove("grid-display")
       container[:classList].remove("check")
@@ -19,18 +18,22 @@ end
 
 new({ particle: :layout }) do |p|
   # we create the conatiner
-  container=  box
+  container=  box(color: :red)
   # alert container.class
   # container_class=:my_val
   # container.html.add_class(container_class)
   container.html.toggle_display(box.id)
 end
 
-b = box
 
+container= box({width: 500, height: 500, overflow: :scroll})
+
+b=container.box({ color: :red, id: :the_box, left: 3 })
+b.class(:ok)
+alert b.class
 16.times do |index|
   width_found = b.width
-  b.duplicate({ left: b.left + index * (width_found + 45) })
+  b.duplicate({ left: b.left + index * (width_found + 45) , top: 0})
 end
 
-b.layout({ atomes: b.duplicate.keys, display: :grid, rows: 4, column: 4 })
+container.layout({ atomes: b.duplicate.keys, display: :grid, rows: 4, column: 4 })

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changement d'affichage</title>
+    <style>
+
+        html, body {
+
+            font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+            background: rgba(39, 39, 39, 1);
+            overflow: hidden;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            color: lightgray;
+        }
+
+
+        #view {
+            left: 0px;
+            font-size: 15px;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+            width: auto;
+            height: auto;
+            overflow: hidden;
+            position: absolute;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .atome {
+            will-change: transform;
+            cursor: default;
+            pointer-events: auto;
+            caret-color: white;
+            outline: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            position: absolute;
+            display: inline-block;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            -webkit-overflow-scrolling: touch;
+            -webkit-user-drag: none;
+            caret-shape: bar;
+            overflow: visible;
+        }
+
+    </style>
+</head>
+<body>
+<div id="view">
+    <!--    <button class="atome" onclick="griddDisplay()" style="top:0px">Basculer l'affichage</button>-->
+
+
+    <button style="position: relative" class="atome" onclick="natural_display()">Affichage d'Origine</button>
+    <button style="position: relative" class="atome" onclick="griddDisplay()">Mode Grille</button>
+    <button style="position: relative" class="atome" onclick="listDisplay()">Mode Liste</button>
+
+    <div class="atome matrix" style="top: 33px; left: 33px; width: 199px; height: 22px">Item 1</div>
+    <div class="atome matrix" style="top: 43px; left: 33px; width: 99px; height: 22px">Item 2</div>
+    <div class="atome matrix" style="top: 53px; left: 33px; width: 99px; height: 22px">Item 3</div>
+    <div class="atome matrix" style="top: 63px; left: 33px; width: 99px; height: 22px">Item 4</div>
+    <div class="atome matrix" style="top: 73px; left: 33px; width: 99px; height: 22px">Item 5</div>
+    <div class="atome matrix" style="top: 83px; left: 33px; width: 99px; height: 22px">Item 6</div>
+    <div class="atome"
+         style="width: 99px; height: 19px; background-color: rgb(128, 128, 128); left: 100px; top: 100px;">Exclu!
+    </div>
+    <div class="atome grid"
+         style="width: 99px; height: 39px; background-color: rgb(128, 128, 128); left: 200px; top: 100px;">Pas Exclu
+        de
+    </div>
+    <div class="atome "
+         style="width: 99px; height: 99px; background-color: rgb(128, 128, 128); left: 400px; top: 100px;">Exclu de
+        la
+        grille
+    </div>
+    <div class="atome grid" style="top: 83px; left: 433px">Item 44</div>
+
+
+    <div id="myGridContainer"
+         style="width: 555px; height: 555px;background-color: #00bb00; top:200px; left: 90px; position: absolute">
+        <div class="atome matrix" style="width: 200px;top: 133px; left: 33px;  height: 25px">- inside 1</div>
+        <div class="atome matrix" style="width: 200px;top: 153px; left: 33px;  height: 25px">- inside 2</div>
+        <div class="atome matrix" style="width: 200px;top: 173px; left: 33px; height: 25px">- inside 3</div>
+        <div class="atome matrix" style="width: 200px;top: 193px; left: 33px; height: 25px">- inside 4</div>
+        <div class="atome matrix" style="width: 200px;top: 213px; left: 33px; height: 25px">- inside 5</div>
+        <div class="atome matrix" style="width: 200px;top: 233px; left: 33px;  height: 25px">- inside 6</div>
+        <div class="atome matrix" style="width: 200px;top: 253px; left: 33px;  height: 25px">- inside 7</div>
+        <div class="atome matrix" style="width: 200px;top: 273px; left: 33px;  height: 25px">- inside 8</div>
+        <div class="atome matrix" style="width: 200px;top: 293px; left: 33px; height: 25px">- inside 9</div>
+        <div class="atome matrix" style="width: 200px;top: 313px; left: 33px; height: 25px">- inside 10</div>
+        <div class="atome matrix" style="width: 200px;top: 333px; left: 33px; height: 25px">- inside 11</div>
+        <div class="atome matrix" style="width: 200px;top: 353px; left: 33px;  height: 25px">- inside 12</div>
+        <div class="atome matrix" style="width: 200px;top: 373px; left: 33px;  height: 25px">- inside 13</div>
+        <div class="atome matrix" style="width: 200px;top: 393px; left: 33px;  height: 25px">- inside 14</div>
+        <div class="atome matrix" style="width: 200px;top: 413px; left: 33px; height: 25px">- inside 15</div>
+        <div class="atome matrix" style="width: 200px;top: 433px; left: 33px; height: 25px">- inside 16</div>
+    </div>
+</div>
+<script>
+
+
+    function display_natural(parent, childrenClassTargeted, childrenStyle) {
+        const container = document.getElementById(parent);
+        const elements = container.querySelectorAll('.' + childrenClassTargeted);
+        elements.forEach(element => {
+            element.classList.add('atome');
+            removeStyle(element, childrenStyle);
+        });
+    }
+
+    function display_matrix(parent, mode, childrenTargeted, childrenStyle, gridOption, gridGap, gridMargin) {
+        const container = document.getElementById(parent);
+        const elements = container.querySelectorAll('.' + childrenTargeted);
+
+        // Apply grid style dynamically
+        container.style.display = mode;
+        container.style.gridTemplateColumns = gridOption;
+        container.style.flexDirection = 'column';
+        container.style.gap = gridGap + 'px';
+        container.style.padding = gridMargin + 'px';
+        container.style.padding = '0px';
+
+        elements.forEach(element => {
+            applyStyle(element, childrenStyle); // Apply style
+            element.classList.remove('atome');
+        });
+    }
+
+    function applyStyle(element, styleObject) {
+        for (const property in styleObject) {
+            element.style[property] = styleObject[property];
+        }
+    }
+
+    function removeStyle(element, styleObject) {
+        for (const property in styleObject) {
+            element.style[property] = ''; // Reset to default
+        }
+    }
+
+    function griddDisplay() {
+
+        let grid_style = {
+            backgroundColor: 'rebeccapurple',
+            width: '100%',
+            height: '100%',
+            borderRadius: '29px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+
+        };
+
+        display_matrix('myGridContainer', 'grid', 'matrix', grid_style, 'repeat(4, 1fr)', 20, 20);
+    }
+
+    function listDisplay() {
+
+        let list_style = {
+            backgroundColor: 'rebeccapurple',
+            width: '100%',
+            height: '29px',
+            borderRadius: '59px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            marginBottom: '20px',
+            padding: '0px'
+
+        };
+
+        display_matrix('view', 'list', 'matrix', list_style, 'repeat(1, 1fr)', 20, 20);
+    }
+
+
+    function natural_display() {
+        let grid_style = {
+            backgroundColor: 'rebeccapurple',
+            width: '100%',
+            borderRadius: '29px',
+            display: 'bloc',
+            justifyContent: 'center',
+            alignItems: 'center'
+
+        };
+        display_natural('view', 'matrix', grid_style);
+    }
+
+
+    //TODO :  make a conversion table that list all atome object equivalent in html in shows the differences ex : shape => div /svg, color=> backgroundColor, left: left+px, smooth => border-radius, etc...
+</script>
+
+</body>
+</html>
