@@ -20,11 +20,7 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
         end
       end
     end
-
-
-
   else
-
     atome_to_remove = grab(object_id_to_remove)
     atome_type_found = atome_to_remove.type
     case atome_type_found

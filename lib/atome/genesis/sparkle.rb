@@ -74,14 +74,13 @@ user_password = { read: { atome: :star_wars }, write: { atome: :star_wars } }
 Atome.new({ renderers: default_render, id: machine_id, type: :machine, password: machine_password,
             name: :macAir, data: { date: '10090717' }, tag: { system: true } })
 
-human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' }, tag: { system: true } , attach: :user_view })
+human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' },selection: [], tag: { system: true } , attach: :user_view })
 
 Universe.current_machine = machine_id
 # the constant A is used to access alla atomes methods
 A = Atome.new(
   { renderers: default_render, id: :atome, type: :element, tag: { system: true } }
 )
-
 # atome infos
 def atome_infos
   puts "atome version: #{Atome::VERSION}"

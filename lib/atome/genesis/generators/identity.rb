@@ -40,3 +40,5 @@ new({particle: :category, store: false}) do |category_names|
     @category << category_name
   end
 end
+# The selection particle is used by current user to store selected atomes
+new(particle: :selection)
