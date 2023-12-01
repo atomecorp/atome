@@ -42,3 +42,14 @@ new({particle: :category, store: false}) do |category_names|
 end
 # The selection particle is used by current user to store selected atomes
 new(particle: :selection)
+
+new(particle: :selected) do |params|
+  if params == true
+    grab(Universe.current_user).selection << @id
+  elsif params == false
+    grab(Universe.current_user).selection.delete(@id)
+  else
+    puts "write selected code here..."
+  end
+  params
+end

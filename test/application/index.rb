@@ -10,10 +10,10 @@
 
 #in progreess
 
-# require "./examples/layout"
-require "./examples/select"
+require "./examples/layout"
 
 #### works
+# require "./examples/selected"
 # require "./examples/category"
 # require "./examples/duplicate"
 # require "./examples/repeat"

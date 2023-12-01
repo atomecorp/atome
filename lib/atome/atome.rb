@@ -10,7 +10,7 @@ class Atome
     @history = {}
     @callback = {}
     @tag = {}
-    @select = false
+    @selected = false
     @unit = {}
     @collect = {}
     @id = new_atome[:id] || identity_generator(:element)
