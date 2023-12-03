@@ -31,7 +31,10 @@ grab(:the_text).touch(true) do
 bibi=box({left: 555})
 the_group2= group({ collect: [:the_c,:the_first_box, :the_text, :cc , bibi.id] })
 the_group2.top(55)
+# puts we remove the circle(:cc) so it' wont be affected by the color :the_lemon
+the_group2.collect.delete( :cc )
 the_group2.apply([:the_lemon])
+
 end
 
 

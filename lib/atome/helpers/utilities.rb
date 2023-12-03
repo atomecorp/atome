@@ -124,9 +124,9 @@ class Atome
 
   def atome_post_process(element, params, new_atome, &user_proc)
 
-    if Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
+    return unless Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
       new_atome.instance_exec(params, user_proc, &Atome.instance_variable_get("@post_#{element}"))
-    end
+    
   end
 
   def atome_processor(element, params, &user_proc)

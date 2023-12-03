@@ -94,9 +94,11 @@ class Genesis
         elsif params || params == false
           "send a valid password to write #{element} value"
         elsif read_auth(element)
+          # particle getter below
           value_found = instance_variable_get("@#{element}")
           # uncomment below to  historicize all read action
           # Universe.historicize(@id, :read, element, value_found)
+          # we add the optional read plugin
           value_found = particle_read(element, value_found, &user_proc)
           value_found
           # TODO : create a fast method to get particle: eg:

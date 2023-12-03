@@ -10,7 +10,8 @@
 
 #in progreess
 
-require "./examples/layout"
+# require "./examples/layout"
+require "./examples/copy"
 
 #### works
 # require "./examples/selected"

@@ -71,9 +71,7 @@ new({ post: :clear }) do
   attached_found.each do |child_id_found|
     child_found = grab(child_id_found)
     # we exclude system  objects
-    unless child_found.tag && child_found.tag[:system]
-      child_found&.delete(true)
-    end
+    child_found&.delete(true) unless child_found.tag && child_found.tag[:system]
   end
 end
 new({ particle: :path })
@@ -139,8 +137,6 @@ new({ particle: :invert })
 new({ particle: :option })
 
 new({ particle: :duplicate, store: false }) do |params|
-
-
   copy_number = if @duplicate
                   @duplicate.length
                 else
@@ -153,15 +149,20 @@ new({ particle: :duplicate, store: false }) do |params|
   attached_found = attached.dup
   particles_found = instance_variables.dup
 
-  particles_found.delete(:@history)
-  particles_found.delete(:@callback)
-  particles_found.delete(:@duplicate)
-  particles_found.delete(:@touch_code)
-  # touch_code=instance_variable_get('@touch_code')
-  particles_found.delete(:@html)
-  particles_found.delete(:@attached)
-  particles_found.delete(:@id)
+  keys_to_delete = [:@history, :@callback, :@duplicate, :@copy, :@paste, :@touch_code, :@html, :@attached, :@id]
+  keys_to_delete.each { |key| particles_found.delete(key) }
   params[:id] = new_atome_id
+
+  particles_found.each do |particle_found|
+    particle_name = particle_found.to_s.sub('@', '')
+
+    particle_content = self.send(particle_name)
+    # FIXME: find a better to attach object when false is found
+    particle_content = :view if particle_content == false
+    new_atome.set(particle_name => particle_content)
+    # new_atome.instance_variable_set('@touch_code',touch_code)
+  end
+
   attached_found.each do |child_id_found|
     child_found = grab(child_id_found)
     if child_found
@@ -169,15 +170,10 @@ new({ particle: :duplicate, store: false }) do |params|
       attached_atomes << new_child.id
     end
   end
-  particles_found.each do |particle_found|
-    particle_name = particle_found.to_s.sub('@', '')
-    particle_content = self.send(particle_name)
-    new_atome.set(particle_name => particle_content)
-    # new_atome.instance_variable_set('@touch_code',touch_code)
-  end
   params[:attached] = attached_atomes
   # FIXME: below  dunno why we have to add this manually
   new_atome.height(@height)
+  new_atome.width(@width)
   if params.instance_of? Hash
     params.each do |k, v|
       new_atome.send(k, v)
@@ -186,9 +182,48 @@ new({ particle: :duplicate, store: false }) do |params|
 
   @duplicate ||= {}
   @duplicate[new_atome_id] = new_atome
+
   new_atome
 end
 
 new({ after: :duplicate }) do |params|
   @duplicate[@duplicate.keys[@duplicate.keys.length - 1]]
+end
+
+new({ particle: :copy }) do |items_id|
+  unless items_id.instance_of? Array
+    items_id = [items_id]
+  end
+  grab(:copy).collect << items_id
+end
+
+
+new({ particle: :paste }) do |params|
+
+  all_copies = grab(:copy).collect
+  if params == true
+    copies_found = all_copies.last
+  elsif params.instance_of? Integer
+    copies_found = all_copies[params.to_i]
+  elsif params.instance_of? Array
+    copies_found = [all_copies[params[0]][params[1]]]
+  end
+  new_atomes = []
+  applies_found = []
+  copies_found.each do |copy_found|
+    new_atome = grab(copy_found).duplicate({attach: @id })
+    new_atomes << new_atome.id
+    # FIXME: below start to patch because apply is not apply , so we store it and apply it again
+    applies_found << new_atome.apply
+  end
+
+  # FIXME: end here the patch  because apply is not apply , so we store it and apply it again
+  new_atomes.each_with_index do |id_found, index|
+    grab(id_found).apply(applies_found[index])
+  end
+  new_atomes
+end
+
+new({ read: :paste }) do |p|
+  @copy
 end

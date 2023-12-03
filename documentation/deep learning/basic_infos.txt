@@ -123,8 +123,6 @@ callback(particle, value)
 Ex : callback('terminal', ‘cmd’)
 
 
-
-
 The power of ‘A’
 # the constant A is used to access any atomes methods without having to create a new atome
 Ex :
@@ -145,7 +143,6 @@ store({build: :my_data })
 
 The modifier atomes (color, shadow)
 Here is the mechanism of such atome:
-
 
 
 Important:
@@ -197,7 +194,8 @@ Atome:  after params parsing and  after atome creation (context is the current a
 After :
 Particle  : only after rendering and storage (context is the current atome)
 
-To alter a particle when reading it’s value you can use :preview and :review
+read:
+To alter a particle before getting the  value
 
 
 

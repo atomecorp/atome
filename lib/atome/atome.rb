@@ -17,6 +17,7 @@ class Atome
     @type = new_atome[:type] || :element
     @attached = []
     @category = []
+    # @copy = []
     @html = HTML.new(@id, self)
     @headless = Headless.new(@id, self)
     # now we store the proc in a an atome's property called :bloc

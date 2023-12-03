@@ -1,9 +1,10 @@
 # frozen_string_literal: true
+
 class HTML
 
   def toggle_display(container_class)
     container = JS.global[:document].querySelector("##{container_class}")
-    # container = JS.global[:document].querySelector(".atome")
+    container = JS.global[:document].querySelector(".atome")
     if container[:classList].contains?("grid-display")
       container[:classList].remove("grid-display")
       container[:classList].remove("check")
@@ -19,10 +20,10 @@ end
 new({ particle: :layout }) do |p|
   # we create the conatiner
   container=  box(color: :red)
-  # alert container.class
-  # container_class=:my_val
-  # container.html.add_class(container_class)
-  container.html.toggle_display(box.id)
+  # # alert container.class
+  container_class=:my_val
+  container.html.add_class(container_class)
+  # container.html.toggle_display(box.id)
 end
 
 
@@ -34,5 +35,25 @@ b=container.box({ color: :red, id: :the_box, left: 3 })
   width_found = b.width
   b.duplicate({ left: b.left + index * (width_found + 45) , top: 0, category: :matrix })
 end
-#
+
+
+container.attached.each do |atome_found|
+  grab(atome_found).selected(true)
+end
+###############
+# system
+Atome.new({ renderers: [:html], id: :selector,collect: [], type: :group, tag: { system: true } })
+new({read: :selection}) do |params_get|
+  selector= grab(:selector)
+  selector.collect = params_get
+  selector
+end
+#################@
+selected_items= grab(Universe.current_user).selection
+
+
+selected_items.rotate(9)
+
+selected_items.layout({id: :my_layout, mode: :grid})
+
 # container.layout({ atomes: b.duplicate.keys, display: :grid, rows: 4, column: 4})
