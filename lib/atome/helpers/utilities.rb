@@ -125,8 +125,8 @@ class Atome
   def atome_post_process(element, params, new_atome, &user_proc)
 
     return unless Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
-      new_atome.instance_exec(params, user_proc, &Atome.instance_variable_get("@post_#{element}"))
-    
+    new_atome.instance_exec(params, user_proc, &Atome.instance_variable_get("@post_#{element}"))
+
   end
 
   def atome_processor(element, params, &user_proc)
@@ -245,6 +245,10 @@ class Atome
     collect.each do |val|
       instance_exec(val, &proc) if proc.is_a?(Proc)
     end
+  end
+
+  def <<(item)
+    collect << item
   end
 
   def include?(value)

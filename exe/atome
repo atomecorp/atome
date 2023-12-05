@@ -243,7 +243,10 @@ def wasm_initialize (source, destination, project_name, wasi_source)
   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
   # and UNCOMMENT the line  below : ('curl -LO ....')
   unless File.exist?("#{wasm_temp_folder}/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz")
-    `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+    # `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+    `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+    # debug :  https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-minimal-js-debug.tar.gz
+    # standard :     `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   end
   `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
   `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`

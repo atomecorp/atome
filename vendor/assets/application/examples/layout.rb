@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 class HTML
 
   # def toggle_display(container_class)
@@ -68,11 +69,11 @@ container.attached.each do |atome_found|
   grab(atome_found).selected(true)
 end
 
-new({ read: :selection }) do |params_get|
-  selector = grab(:selector)
-  selector.collect = params_get
-  selector
-end
+# new({ read: :selection }) do |params_get|
+#   selector = grab(:selector)
+#   selector.collect = params_get
+#   selector
+# end
 
 #################@
 selected_items = grab(Universe.current_user).selection # we create a group

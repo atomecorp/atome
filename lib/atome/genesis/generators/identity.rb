@@ -43,7 +43,11 @@ end
 # The selection particle is used by current user to store selected atomes
 new(particle: :selection)
 
-
+new({ read: :selection }) do |params_get|
+  selector = grab(:selector)
+  selector.collect = params_get
+  selector
+end
 
 new(particle: :selected) do |params|
   if params == true

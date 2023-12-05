@@ -35,6 +35,11 @@ In the terminal at atome root , type:
 bundle install
 Bundle update
 
+ Ruby wasm ti allow local use of ruby wasm :
+ 1 - download :
+ https://cdn.jsdelivr.net/npm/@ruby/3.2-wasm-wasi@2.3.0/dist/browser.script.iife.js
+2 - change
+
 
 
 #Third parties javascript library is located at different location
