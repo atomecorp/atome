@@ -13,6 +13,15 @@ t.touch(true) do
   end
   puts "2 - current_user : #{grab(Universe.current_user).selection}"
   puts "2 - b selected : #{b.selected}"
+  selected_items = grab(Universe.current_user).selection # we create a group
+
+  selected_items.each do |atome_id_selected|
+    atome_selected=grab(atome_id_selected)
+    atome_selected.width=rand(333)
+    atome_selected.height=rand(333)
+
+  end
+
   b.selected(false)
   puts "3 current_user- #{grab(Universe.current_user).selection}"
   puts "3 - b selected : #{b.selected}"

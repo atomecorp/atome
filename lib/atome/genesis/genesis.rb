@@ -79,7 +79,8 @@ class Genesis
           # ex : new({ particle: :my_particle } do....
           # instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
           Genesis.create_particle(element, store, render)
-          if @type == :group && !%i[type id collect].include?(element)
+          # TODO: try to optimise and find a better way wo we can remove the condition below
+          if @type == :group && !%i[type id collect layout].include?(element)
             collect.each do |collected_found|
               grab(collected_found).send(element, params, &user_proc)
             end

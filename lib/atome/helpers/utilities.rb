@@ -242,7 +242,7 @@ class Atome
   end
 
   def each(&proc)
-    value.each do |val|
+    collect.each do |val|
       instance_exec(val, &proc) if proc.is_a?(Proc)
     end
   end
