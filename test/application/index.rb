@@ -10,10 +10,12 @@
 
 #in progreess
 
+# require "./examples/find"
 # require "./examples/layout"
-require "./examples/copy"
+require "./examples/random"
 
 #### works
+# require "./examples/copy"
 # require "./examples/selected"
 # require "./examples/category"
 # require "./examples/duplicate"

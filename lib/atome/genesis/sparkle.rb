@@ -71,9 +71,15 @@ machine_id = :dummy_machine
 machine_password = { read: { atome: :star_wars }, write: { atome: :star_wars } }
 user_password = { read: { atome: :star_wars }, write: { atome: :star_wars } }
 
+# copy basket
+Atome.new({ renderers: [:html], id: :copy, collect: [], type: :group, tag: { system: true } })
+
+
+#machine
 Atome.new({ renderers: default_render, id: machine_id, type: :machine, password: machine_password,
             name: :macAir, data: { date: '10090717' }, tag: { system: true } })
 
+#user
 human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' },selection: [], tag: { system: true } , attach: :user_view })
 
 Universe.current_machine = machine_id
