@@ -119,9 +119,10 @@
     }
 
     function display_matrix(parent, mode, childrenTargeted, childrenStyle, gridOption, gridGap, gridMargin) {
+      //display_matrix('myGridContainer', 'grid', 'matrix', grid_style, 'repeat(4, 1fr)', 20, 20);
         const container = document.getElementById(parent);
         const elements = container.querySelectorAll('.' + childrenTargeted);
-
+// alert("mode : "+mode);
         // Apply grid style dynamically
         container.style.display = mode;
         container.style.gridTemplateColumns = gridOption;

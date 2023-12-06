@@ -10,8 +10,8 @@
 
 #in progreess
 
-require "./examples/find"
-# require "./examples/layout"
+# require "./examples/find"
+require "./examples/layout"
 
 #### works
 # require "./examples/random"
