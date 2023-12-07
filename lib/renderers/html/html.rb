@@ -458,9 +458,9 @@ class HTML
     self
   end
 
-  def visible(param)
-    @element[:style][:display] = param.to_s
-  end
+  # def visible(param)
+  #   @element[:style][:display] = param.to_s
+  # end
 
   def delete(id_to_delete)
     element_to_delete = JS.global[:document].getElementById(id_to_delete.to_s)
@@ -648,7 +648,7 @@ class HTML
                                     endSpeed: 100 },
                        })
 
-    @drag_move = @original_atome.instance_variable_get('@drag_code')[:move]
+    @drag_move = @original_atome.instance_variable_get('@drag_code')[:restrict]
     if option.instance_of? Hash
       max_left = grab(:view).to_px(:width)
       max_top = grab(:view).to_px(:height)
@@ -687,7 +687,7 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @drag_start.call(event) if @drag_start.is_a?(Proc)
+      @drag_move.call(event) if @drag_move.is_a?(Proc)
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f

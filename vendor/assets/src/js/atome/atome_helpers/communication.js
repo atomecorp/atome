@@ -2,7 +2,6 @@ const communication = {
     // websocket: new WebSocket('ws://localhost:9292'),
     websocket: null,
     initialize: function () {
-        // alert ('lll');
         this.websocket = new WebSocket('ws://localhost:9292')
         // this.websocket = new WebSocket(address);
 
@@ -26,22 +25,23 @@ const communication = {
         };
     },
     controller_sender: function (msg) {
-        var json_msg = JSON.parse(msg);
-
-        if (window.webkit) {
-            try {
-                window.webkit.messageHandlers.toggleMessageHandler.postMessage(json_msg);
-            } catch (error) {
-                console.log('no server, unable to post message')
-            }
-
-        } else {
-            try {
-                window.chrome.webview.postMessage(json_msg);
-            } catch (error) {
-                console.log('no server, unable to post message')
-            }
-        }
+        alert(msg);
+        let json_msg = JSON.parse(msg);
+        //
+        // if (window.webkit) {
+        //     try {
+        //         window.webkit.messageHandlers.toggleMessageHandler.postMessage(json_msg);
+        //     } catch (error) {
+        //         console.log('no server, unable to post message')
+        //     }
+        //
+        // } else {
+        //     try {
+        //         window.chrome.webview.postMessage(json_msg);
+        //     } catch (error) {
+        //         console.log('no server, unable to post message')
+        //     }
+        // }
     },
     controller_listener: function () {
         if (window.webkit) {

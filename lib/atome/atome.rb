@@ -17,7 +17,7 @@ class Atome
     @type = new_atome[:type] || :element
     @attached = []
     @category = []
-    @display = { }
+    @display = { mode: :default, default: {} }
     # @copy = []
     @html = HTML.new(@id, self)
     @headless = Headless.new(@id, self)

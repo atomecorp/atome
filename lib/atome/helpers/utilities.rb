@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 # toolbox   method here
+require 'json'
 class Atome
   class << self
     def controller_sender(message)
       return if $host == :html
-
       json_msg = message.to_json
-      atome_js.JS.controller_sender(json_msg)
+      js_json_msg = json_msg.inspect
+      js_command = "atomeJS.controller_sender(#{js_json_msg})"
+      JS.eval(js_command)
     end
 
     # def global_monitoring(instance, methods_to_monitor, variables_to_monitor)

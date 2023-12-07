@@ -11,7 +11,9 @@
 #in progreess
 
 # require "./examples/find"
-require "./examples/layout"
+# require "./examples/layout"
+
+require './works/vie'
 
 #### works
 # require "./examples/random"
