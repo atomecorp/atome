@@ -39,21 +39,34 @@ cursor.shadow({
               })
 label=text({data: 0, top: 69, left: 30, component: { size: 12 }, color: :gray})
 cursor.drag({ restrict: {max:{ left: 309, top: 0}} }) do |event|
-  dx = event[:dx]
-  puts dx.to_f
-  label.data(dx.to_i)
+  puts cursor.left
+  value = cursor.left/309*100
+  label.data(value)
+  cursor.controller({ action: :setModuleParameterValue,  params: { moduleId: 6456549897,parameterId: 9846546, value:  value} })
+
 end
+
+
+support=box({top: 250, left: 12, width: 300, height: 40, smooth: 9, color:{red: 0.3, green: 0.3, blue: 0.3}, id: :support })
+
+support.shadow({
+                id: :s3,
+                left: 3, top: 3, blur: 9,
+                invert: true,
+                red: 0, green: 0, blue: 0, alpha: 0.7
+              })
 input_element = JS.global[:document].createElement("input")
 input_element[:type] = "file"
 
-input_element.addEventListener("change") do |event|
+input_element.addEventListener("change") do |native_event|
+  event = Native(native_event)
   file = event[:target][:files][0]
   if file
     puts "file requested: #{file[:name]}"
-    slider.controller(file)
+    support.controller({ action: :loadProject,  params: { path: file[:name]} })
   end
 end
 
-view_div = JS.global[:document].querySelector("#view")
+view_div = JS.global[:document].querySelector("#support")
 
 view_div.appendChild(input_element)

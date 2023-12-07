@@ -25,23 +25,22 @@ const communication = {
         };
     },
     controller_sender: function (msg) {
-        alert(msg);
         let json_msg = JSON.parse(msg);
-        //
-        // if (window.webkit) {
-        //     try {
-        //         window.webkit.messageHandlers.toggleMessageHandler.postMessage(json_msg);
-        //     } catch (error) {
-        //         console.log('no server, unable to post message')
-        //     }
-        //
-        // } else {
-        //     try {
-        //         window.chrome.webview.postMessage(json_msg);
-        //     } catch (error) {
-        //         console.log('no server, unable to post message')
-        //     }
-        // }
+
+        if (window.webkit) {
+            try {
+                window.webkit.messageHandlers.toggleMessageHandler.postMessage(json_msg);
+            } catch (error) {
+                console.log('no server, unable to post message')
+            }
+
+        } else {
+            try {
+                window.chrome.webview.postMessage(json_msg);
+            } catch (error) {
+                console.log('no server, unable to post message')
+            }
+        }
     },
     controller_listener: function () {
         if (window.webkit) {
