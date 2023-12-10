@@ -12,8 +12,12 @@
 
 # require "./examples/find"
 # require "./examples/layout"
+# require "./examples/file"
 
-require './works/vie'
+# works
+# require './works/vie'
+# require './works/photos'
+require './works/photos3'
 
 #### works
 # require "./examples/random"

@@ -36,3 +36,11 @@ new({ method: :rotate, type: :integer, renderer: :html }) do |params|
 end
 
 new({ method: :rotate, type: :integer, renderer: :html, specific: :paint })
+
+new({renderer: :html, method: :position }) do |params|
+  html.style("position", params)
+end
+
+new({renderer: :html, method: :depth }) do |params|
+  html.style("z-index", params)
+end

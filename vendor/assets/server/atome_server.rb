@@ -94,7 +94,7 @@ class App < Roda
         end
 
         ws.on(:message) do |event|
-
+          #TODO : encode event on both client and server
         ws.send(event.data.reverse.to_json) # Envoie le message inversé au client
         end
 

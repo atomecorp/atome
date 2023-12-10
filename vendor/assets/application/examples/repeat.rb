@@ -22,3 +22,5 @@ cc.touch(true) do
   stop({ repeat: my_repeater })
   t2.data(:stopped)
 end
+
+# use Float::INFINITY to infinite repeat

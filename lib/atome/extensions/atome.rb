@@ -115,7 +115,7 @@ class Object
                    }
                }
 
-               executeAction(); // Exécute l'action immédiatement
+               executeAction(); // execute immediatly
                intervalId = setInterval(executeAction, interval);
                return intervalId;
            }
@@ -124,7 +124,7 @@ class Object
                rubyVMCallback("repeat_callback(#{repeat_id}, "+counter+")")
            }
 
-           const intervalId = repeat(myAction, #{delay} * 1000, #{repeat}); // Répète myAction toutes les 1000 millisecondes, 5 fois
+           const intervalId = repeat(myAction, #{delay} * 1000, #{repeat}); 
 
       return intervalId;
     JS

@@ -1,4 +1,4 @@
-# #  frozen_string_literal: true
+#  frozen_string_literal: true
 
 
 
@@ -70,3 +70,5 @@ end
 view_div = JS.global[:document].querySelector("#support")
 
 view_div.appendChild(input_element)
+
+
