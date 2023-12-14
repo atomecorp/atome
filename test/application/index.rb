@@ -11,13 +11,14 @@
 #in progreess
 
 # require "./examples/find"
-# require "./examples/layout"
+require "./examples/layout"
 # require "./examples/file"
 
 # works
 # require './works/vie'
 # require './works/photos'
-require './works/photos3'
+# require './works/photos6'
+# require './test'
 
 #### works
 # require "./examples/random"

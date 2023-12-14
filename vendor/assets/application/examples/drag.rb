@@ -25,6 +25,8 @@ b.drag(:locked) do |event|
   y = (clone.top || 0) + dy.to_f
   clone.left(x)
   clone.top(y)
+  puts "x: #{x}"
+  puts "y: #{y}"
 end
 cc.drag({ restrict: {max:{ left: 240, top: 190}} }) do |event|
 

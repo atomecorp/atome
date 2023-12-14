@@ -1,7 +1,14 @@
 Install atome (OSX)
 
+IMPORTANT :
+For tauri in prod in "exe/atome" in :
+def build_for_osx(destination).. type:
+  `cd #{destination};cargo tauri build`
+  for dev type :
+   `cd #{destination};cargo tauri dev`
 
-Install rust & taurie
+
+Install rust & tauri
 curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 brew install openssl
 cargo install tauri-cli --force

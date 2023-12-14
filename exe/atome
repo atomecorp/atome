@@ -175,7 +175,7 @@ def update_application(source, destination, project_name)
   FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
   FileUtils.mkdir_p(project_path) unless Dir.exist?(project_path)
   files_list = ['application', 'server', 'src', 'src-tauri', 'src-wasm', 'Guardfile', 'Rakefile']
-  file_to_refresh = ['application','server', 'src',]
+  file_to_refresh = ['application', 'server', 'src',]
   # we delete many folder to ensure they'll refreshed
   file_to_refresh.each do |file|
     FileUtils.rm_rf("#{destination}/#{project_name}/#{file}")
@@ -275,8 +275,11 @@ def build_for_wasm(source, destination, project_name, wasi_file)
   wasm_initialize(source, destination, project_name, wasi_file)
 end
 
-def build_for_osx(destination)
-  `cd #{destination};cargo tauri dev`
+def build_for_osx(destination, mode = :dev)
+  # dev or build
+
+  `cd #{destination};cargo tauri #{mode}`
+
 end
 
 def build_for_server(destination, project_name, port, production)
@@ -284,10 +287,10 @@ def build_for_server(destination, project_name, port, production)
   `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
 end
 
-def run_application(build_target, location, port = 9292, production = false)
-  build_app(location, nil)
-  run_case(build_target, location, port, production)
-end
+# def run_application(build_target, location, port = 9292, production = false)
+#   build_app(location, nil)
+#   run_case(build_target, location, port, production)
+# end
 
 # below we analyse the ARGV
 location = '/'
@@ -368,7 +371,7 @@ if ARGV.include?('run')
     build_for_server(destination, project_name, 9292, :production)
   when 'osx'
     wasi_file = 'wasi-vfs-osx_arm'
-    wasm_common(source, destination, project_name, wasi_file, :tauro)
+    wasm_common(source, destination, project_name, wasi_file, :tauri)
     build_for_osx(destination)
   when 'android'
     # to be filled

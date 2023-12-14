@@ -25,9 +25,15 @@
     <script src='js/atome/kernel.js' defer></script>
     <script defer src="js/atome/atome_helpers/communication.js" type="text/javascript"></script>
     <script defer src="js/atome/atome_helpers/file.js" type="text/javascript"></script>
+    <script>
+        // to prevent right click
+        document.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+        });
+    </script>
     <title>atome</title>
 </head>
-<body id='user_view' class='atome' oncontextmenu="return false;">
+<body id='user_view' class='atome'>
 <div id='copyright'>©atome 2027</div>
 </body>
 <script defer src="js/atome/specific/opal.js" type="text/javascript"></script>

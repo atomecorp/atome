@@ -119,7 +119,20 @@ task :test_opal do
   `open #{destination}/#{project_name}/src/index_opal.html`
   puts 'atome opal is build and running!'
 end
+task :server_wasm do
+  project_name = :test
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
+  wasi_file = 'wasi-vfs-osx_arm'
+  host_mode = 'pure_wasm'
+  create_application(source, destination, project_name)
+  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
+  # `open ./tmp/#{project_name}/src/index.html`
+  puts 'atome wasm is build and running!'
+  build_for_server(destination, project_name, 9292, :production)
 
+end
 task :test_server do
   project_name = :test
   source = '.'
@@ -160,7 +173,22 @@ task :test_osx do
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
   # build and open the app
-  build_for_osx(destination)
+  build_for_osx(destination, :dev)
+  puts 'atome osx is running'
+end
+
+task :build_osx do
+  project_name = :test
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
+  wasi_file = 'wasi-vfs-osx_arm'
+  host_mode = 'tauri'
+  create_application(source, destination, project_name)
+  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
+  destination = './tmp'
+  # build and open the app
+  build_for_osx(destination, :build)
   puts 'atome osx is running'
 end
 
@@ -176,6 +204,53 @@ task :update_osx do
   destination = './tmp'
   puts 'atome osx is updated'
 end
+
+task :osx_server do
+  project_name = :test
+    source = '.'
+    destination = './tmp'
+    script_source = './test/application'
+    create_application(source, destination, project_name)
+    # the line below is to add addition script to the application folder (useful for test per example)
+    add_to_application_folder(script_source, destination, project_name)
+    # build opal
+    build_opal_library(source, destination, project_name)
+    # build parser
+    build_opal_parser(source, destination, project_name)
+    # build atome kernel
+    build_atome_kernel_for_opal(source, destination, project_name)
+    # build host_mode
+    build_host_mode(destination, project_name, 'puma-roda')
+    # build Opal extensions
+    build_opal_extensions(source, destination, project_name)
+    # build application
+    build_opal_application(source, destination, project_name)
+    # build and open the app
+
+    project_name = :test
+    source = '.'
+    destination = './tmp'
+    script_source = './test/application'
+    wasi_file = 'wasi-vfs-osx_arm'
+    host_mode = 'tauri'
+    create_application(source, destination, project_name)
+    wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
+    destination = './tmp'
+    threads = []
+    threads << Thread.new do
+      build_for_server(destination, project_name, 9292, :production)
+    end
+    build_for_osx(destination)
+
+
+    puts 'atome osx is running'
+
+
+
+
+
+end
+
 
 task :build_gem do
   # building the gem

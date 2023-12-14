@@ -67,6 +67,12 @@
 #   end
 # end
 
+# class HTML
+#
+#   def
+#
+# end
+
 class Atome
   def remove_layout
     display[:mode] = :default
@@ -76,7 +82,7 @@ class Atome
     grand_parent = parent_found.attach
     # and attach the item to the grand parent
     # we remove the parent category and restore atome category
-    remove({ category: attach})
+    remove({ category: attach })
     category(:atome)
     attach(grand_parent)
     #  we delete the parent (the layout) if it no more children attached
@@ -88,7 +94,7 @@ end
 
 new({ particle: :layout }) do |params|
   mode_found = params.delete(:mode) || :list
-  elements_style= params.delete(:element) || {}
+  elements_style = params.delete(:element) || {}
   # layout_width = params[:width] ||= 333
   # layout_height = params[:height] ||= 333
   # now we get the list of the atome to layout
@@ -108,8 +114,8 @@ new({ particle: :layout }) do |params|
       end
       # now we get the default particles and restore it
       atome_to_layout.display[:default].each do |particle, value|
-        atome_to_layout.send(:delete,particle)
-        atome_to_layout.send(particle,value)
+        atome_to_layout.send(:delete, particle)
+        atome_to_layout.send(particle, value)
       end
 
       atome_to_layout.remove_layout
@@ -125,16 +131,14 @@ new({ particle: :layout }) do |params|
       params[:id] = id_found
       container_class = id_found
     end
-    # container.width = layout_width
-    # container.height = layout_height
-    container.remove({ category: :atome})
+    container.remove({ category: :atome })
     container.category(:matrix)
-    alert ">> #{mode_found}"
+    puts "mode_found >> #{mode_found}"
     params.each do |particle, value|
       container.send(particle, value)
     end
     # now we add user wanted particles
-    alert params
+    puts "params #{params}"
 
     atomes_to_layout.each do |atome_id_to_layout|
       atome_to_layout = grab(atome_id_to_layout)
@@ -143,27 +147,21 @@ new({ particle: :layout }) do |params|
       atome_to_layout.display[:mode] = mode_found
       atome_to_layout.display[:layout] = id_found
       atome_to_layout.attach(container_class)
-      atome_to_layout.remove({ category: :atome})
+      atome_to_layout.remove({ category: :atome })
       atome_to_layout.category(container_class)
-      #the hash below is used to restore element state
-      original_state={}
+      # the hash below is used to restore element state
+      original_state = {}
       elements_style.each do |particle, value|
         # we have to store all elements particle to restore it later
-        original_state[particle]=atome_to_layout.send(particle)
+        original_state[particle] = atome_to_layout.send(particle)
         atome_to_layout.send(particle, value)
       end
-      atome_to_layout.display[:default]=original_state
-      # puts "display is : #{atome_to_layout.display}"
+      atome_to_layout.display[:default] = original_state
       # atome_to_layout.html.add_class(container_class)
-      # puts container_class
     end
   end
   params
 end
-
-# new({ renderer: :html, method: :layout, type: :hash }) do |params, _user_proc|
-#   html.layout(params)
-# end
 
 new({ particle: :display })
 
@@ -190,8 +188,33 @@ selected_items.each do |atome_found|
   atomes_found << atome_found
 end
 
-random_found = atomes_found.sample(17)
+# Simple verif
 
+selected_items.layout({ id: :my_layout, mode: :list, width: 500, height: 800, overflow: :scroll })
+
+# # full verif
+# wait 1 do
+#   selected_items.layout({ mode: :grid, width: 900, height: 500, color: :green,element: {height: 22, rotate: 22} })
+#   # alert grab('the_box_copy_4').display
+#   wait 1 do
+#     # selected_items.layout({ mode: :grid, width: 800, height: 500 })
+#     wait 1 do
+#       selected_items.layout({ mode: :default, width: 500, height: 500 })
+#       # alert grab('the_box_copy_4').display
+#       wait 1 do
+#         selected_items.layout({ id: :my_layout, mode: :list, width: 151, height: 800, overflow: :scroll })
+#         wait 1 do
+#           selected_items.layout({ mode: :default, width: 500, height: 500 })
+#         end
+#       end
+#     end
+#   end
+# end
+#
+#
+# # random test
+# random_found = atomes_found.sample(17)
+#
 # random_found.each do |atome_id|
 #   atome_found = grab(atome_id)
 #   if atome_found.type == :shape
@@ -202,26 +225,3 @@ random_found = atomes_found.sample(17)
 #     atome_found.color({ red: rand, green: rand, blue: rand })
 #   end
 # end
-wait 1 do
-  selected_items.layout({ mode: :grid, width: 900, height: 500, color: :green,element: {height: 22, rotate: 22} })
-  # alert grab('the_box_copy_4').display
-  wait 1 do
-    # selected_items.layout({ mode: :grid, width: 800, height: 500 })
-    wait 1 do
-      selected_items.layout({ mode: :default, width: 500, height: 500 })
-      # alert grab('the_box_copy_4').display
-      wait 1 do
-        selected_items.layout({ id: :my_layout, mode: :list, width: 151, height: 800, overflow: :scroll })
-        wait 1 do
-          selected_items.layout({ mode: :default, width: 500, height: 500 })
-        end
-      end
-    end
-  end
-end
-
-# JS.global[:console].clear()
-
-
-# b=box
-# alert ">> #{b.display}"
