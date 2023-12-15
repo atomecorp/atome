@@ -1096,7 +1096,7 @@ class HTML
   end
 
   def play_animation(properties)
-    alert 'change for standard method : action'
+    puts 'change for standard method : action'
     required_keys = [:from, :to, :duration]
     if properties.is_a?(Hash) && (required_keys - properties.keys).empty?
       animate(properties)
