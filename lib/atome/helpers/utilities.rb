@@ -280,4 +280,22 @@ class Atome
       debug "#{user_id} not found"
     end
   end
+  def remove_layout
+    display(:default)
+    # we get the current parent (the previous layout)
+    parent_found = grab(attach)
+    # we get the parent of the parent
+    grand_parent = parent_found.attach
+    # and attach the item to the grand parent
+    # we remove the parent category and restore atome category
+    remove({ category: attach })
+    category(:atome)
+    attach(grand_parent)
+    #  we delete the parent (the layout) if it no more children attached
+    if parent_found.attached.length == 0
+      parent_found.delete(true)
+    end
+  end
+
+
 end

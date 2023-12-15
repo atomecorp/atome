@@ -87,6 +87,9 @@ Universe.current_machine = machine_id
 A = Atome.new(
   { renderers: default_render, id: :atome, type: :element, tag: { system: true } }
 )
+# atome selector / collector
+Atome.new({ renderers: [:html], id: :selector, collect: [], type: :group, tag: { system: true } })
+
 # atome infos
 def atome_infos
   puts "atome version: #{Atome::VERSION}"

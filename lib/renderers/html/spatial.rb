@@ -44,3 +44,15 @@ end
 new({renderer: :html, method: :depth }) do |params|
   html.style("z-index", params)
 end
+
+new({ method: :organise, renderer: :html }) do |params|
+  html.style(:gridTemplateColumns, params)
+end
+
+new({ method: :spacing, renderer: :html }) do |params|
+  html.style(:gap, "#{params}px")
+end
+
+new({ method: :display, renderer: :html }) do |params|
+  html.style(:display, params)
+end

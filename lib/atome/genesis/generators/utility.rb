@@ -197,7 +197,6 @@ new({ particle: :copy }) do |items_id|
   grab(:copy).collect << items_id
 end
 
-
 new({ particle: :paste }) do |params|
 
   all_copies = grab(:copy).collect
@@ -211,7 +210,7 @@ new({ particle: :paste }) do |params|
   new_atomes = []
   applies_found = []
   copies_found.each do |copy_found|
-    new_atome = grab(copy_found).duplicate({attach: @id })
+    new_atome = grab(copy_found).duplicate({ attach: @id })
     new_atomes << new_atome.id
     # FIXME: below start to patch because apply is not apply , so we store it and apply it again
     applies_found << new_atome.apply
@@ -227,3 +226,5 @@ end
 new({ read: :paste }) do |p|
   @copy
 end
+
+new({ particle: :backup })
