@@ -21,7 +21,6 @@ t.touch(true) do
     atome_selected.height=rand(333)
 
   end
-
   b.selected(false)
   puts "3 current_user- #{grab(Universe.current_user).selection}"
   puts "3 - b selected : #{b.selected}"

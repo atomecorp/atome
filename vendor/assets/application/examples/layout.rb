@@ -17,7 +17,7 @@ atomes_found = []
 selected_items.each do |atome_found|
   atomes_found << atome_found
 end
-# # random test
+
 # random_found = atomes_found.sample(17)
 #
 # random_found.each do |atome_id|
@@ -32,9 +32,7 @@ end
 #   end
 # end
 
-
 selected_items.layout({ mode: :default, width: 500, height: 22 })
-
 
 wait 1 do
   selected_items.layout({ mode: :grid, width: 900, height: 500, color: :green, element: { rotate: 22, height: 100, width: 150 } })
@@ -51,4 +49,3 @@ wait 1 do
     end
   end
 end
-

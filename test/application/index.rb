@@ -11,7 +11,6 @@
 #in progreess
 
 # require "./examples/find"
-require "./examples/layout"
 # require "./examples/file"
 
 # works
@@ -21,9 +20,10 @@ require "./examples/layout"
 # require './test'
 
 #### works
+# require "./examples/layout"
 # require "./examples/random"
 # require "./examples/copy"
-# require "./examples/selected"
+require "./examples/selected"
 # require "./examples/category"
 # require "./examples/duplicate"
 # require "./examples/repeat"

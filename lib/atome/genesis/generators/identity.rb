@@ -53,7 +53,7 @@ new(particle: :selected) do |params|
   if params == true
     grab(Universe.current_user).selection << @id
   elsif params == false
-    grab(Universe.current_user).selection.delete(@id)
+    grab(Universe.current_user).selection.collect.delete(@id)
   else
     # TODO: for future use
   end
