@@ -39,15 +39,7 @@ new({ method: :spacing, renderer: :html }) do |params|
 end
 
 new({ method: :display, renderer: :html }) do |params|
-  # if params[:mode] == :default
-  #   display_mode = :bloc
-  # else
-  #   display_mode = params[:mode]
-  # end
-  # puts "2 - particle :#{id} : #{params}"
-
-  html.style(:display, params.to_s)
-  # html.style(:display, 'flex')
+  html.style(:display, params)
 end
 
 new({ particle: :layout }) do |params|
@@ -65,21 +57,18 @@ new({ particle: :layout }) do |params|
     # the user want to revert the layout to the default
     atomes_to_organise.each do |atome_id_to_organise|
       atome_found = grab(atome_id_to_organise)
-      unless params[:id]
-        params[:id] = atome_found.display[:layout]
-      end
       # now restoring
-      atome_found.backup.each do |particle, value|
-        puts "#{particle} : #{value}"
-        atome_found.send(:delete, particle)
-        atome_found.send(particle, value)
+      if atome_found.backup
+        atome_found.backup.each do |particle, value|
+          atome_found.send(:delete, particle)
+          atome_found.send(particle, value)
+        end
+        atome_found.remove_layout
       end
-      # atome_found.display[:default].each do |particle, value|
-      #   atome_found.send(:delete, particle)
-      # end
-      atome_found.remove_layout
+
     end
   else
+
     if params[:id]
       container_name = params[:id]
       container = grab(:view).box({ id: container_name })
@@ -101,7 +90,14 @@ new({ particle: :layout }) do |params|
     # now we add user wanted particles
     atomes_to_organise.each do |atome_id_to_organise|
       atome_found = grab(atome_id_to_organise)
-
+      # now restoring
+      if atome_found.backup
+        atome_found.backup.each do |particle, value|
+          atome_found.send(:delete, particle)
+          atome_found.send(particle, value)
+        end
+        # atome_found.remove_layout
+      end
       # we remove previous display mode
       atome_found.remove_layout
       atome_found.display[:mode] = mode_found
@@ -114,42 +110,23 @@ new({ particle: :layout }) do |params|
       # we only store the state if  atome_found.display[:default]== {} it means this is the original state
       elements_style.each do |particle, value|
         # we have to store all elements particle to restore it later
-        atome_found.backup({})  unless atome_found.backup
+        atome_found.backup({}) unless atome_found.backup
         unless atome_found.backup[particle]
           particle_to_save = atome_found.send(particle) || 0
           atome_found.backup[particle] = particle_to_save
         end
-        # we store if the isn't already in the backup
 
-        # unless atome_found.display[:default][:particle]
-        #   particle_to_save = atome_found.send(particle) || 0
-        #   atome_found.display[:default][particle] = particle_to_save
-        #   atome_found
-        # end
         atome_found.send(particle, value)
-
-        ###################### changes here #################
       end
-
-      # elements_style.each do |particle, value| do
-      #
-      # end
-      # we store the original state only if it is not empty
-      #  unless original_state == {}
-      #    atome_found.display[:default]=atome_found.display[:default].merge(original_state)
-      #  end
-
     end
-
   end
-
   params
 end
 
 # system
 Atome.new({ renderers: [:html], id: :selector, collect: [], type: :group, tag: { system: true } })
 
-############### tests
+############### verification
 
 b = box({ color: :red, id: :the_box, left: 3 })
 5.times do |index|
@@ -169,19 +146,19 @@ selected_items.each do |atome_found|
   atomes_found << atome_found
 end
 # random test
-random_found = atomes_found.sample(17)
-
-random_found.each do |atome_id|
-  atome_found = grab(atome_id)
-  if atome_found.type == :shape
-    atome_found.left(rand(700))
-    atome_found.width(rand(200))
-    atome_found.height(rand(200))
-    # atome_found.rotate(rand(90))
-    atome_found.smooth(rand(120))
-    atome_found.color({ red: rand, green: rand, blue: rand })
-  end
-end
+# random_found = atomes_found.sample(17)
+#
+# random_found.each do |atome_id|
+#   atome_found = grab(atome_id)
+#   if atome_found.type == :shape
+#     atome_found.left(rand(700))
+#     atome_found.width(rand(200))
+#     atome_found.height(rand(200))
+#     # atome_found.rotate(rand(90))
+#     atome_found.smooth(rand(120))
+#     atome_found.color({ red: rand, green: rand, blue: rand })
+#   end
+# end
 
 # selected_items.each do |atome_id_found|
 #   atome_found=grab(atome_id_found)
@@ -202,9 +179,6 @@ end
 #   puts  "#{atome_found.id} #{atome_found.width} :  #{atome_found.backup}"
 # end
 
-
-
-
 # Simple check
 # wait 1 do
 #   selected_items.layout({ mode: :grid, width: 900, height: 500, color: :green, element: { rotate: 22, height: 66, width: 66 } })
@@ -221,23 +195,23 @@ end
 # selected_items.layout({ mode: :grid, width: 900, height: 500, color: :green, element: { height: 21 } })
 
 # selected_items.layout({ id: :my_layout, mode: :list, width: 500, height: 800, overflow: :scroll, display:  :flex  })
-
+selected_items.layout({ mode: :default, width: 500, height: 22 })
 # full check
 wait 1 do
   selected_items.layout({ mode: :grid, width: 900, height: 500, color: :green, element: { rotate: 22, height: 100, width: 150 } })
-#   # puts "1 #{b.display}"
+  #   # puts "1 #{b.display}"
   wait 1 do
-    selected_items.layout({ mode: :grid, width: 80, height: 500 , overflow: :scroll})
+    selected_items.layout({ mode: :grid, width: 80, height: 500, overflow: :scroll })
     # puts "2 #{b.display}"
     wait 1 do
-      selected_items.layout({ mode: :default, width: 500,  height: 22 })
+      selected_items.layout({ mode: :default, width: 500, height: 22 })
       # puts "3 #{b.display}"
       wait 1 do
         selected_items.layout({ id: :my_layout, mode: :list, width: 800, height: 800, overflow: :scroll, element: { height: 22, width: 800 } })
-#         # puts "4 #{b.display}"
+        #         # puts "4 #{b.display}"
         wait 1 do
-          selected_items.layout({ mode: :default})
-#           # puts "5 #{b.display}"
+          selected_items.layout({ mode: :default })
+          #           # puts "5 #{b.display}"
         end
       end
     end
