@@ -23,7 +23,7 @@ html, body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     flex-direction: column;
-    gap: 20px;
+    gap: 400px;
     padding: 3px;
 }
 /*.matrix_element{*/
