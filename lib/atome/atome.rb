@@ -6,7 +6,6 @@ class Atome
 
   def initialize(new_atome = {}, &atomes_proc)
     # the keys :renderers, :type and :id should be placed in the first position in the hash
-    #@broadcast = {}
     @history = {}
     @callback = {}
     @tag = {}
@@ -17,8 +16,8 @@ class Atome
     @type = new_atome[:type] || :element
     @attached = []
     @category = []
-    @display = { mode: :default, default: {} }
-    # @copy = []
+    # @display = { mode: :default }
+    # @backup={} # mainly used to restore particle when using grid /table /list display mode
     @html = HTML.new(@id, self)
     @headless = Headless.new(@id, self)
     # now we store the proc in a an atome's property called :bloc
