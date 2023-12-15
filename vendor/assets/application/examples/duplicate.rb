@@ -57,8 +57,10 @@ b = circle({ id: :the_cirlce })
 b.text(:hello)
 bb = b.duplicate({  width: 33, left: 234, top: 222 })
 bb.color(:red)
+wait 1 do
 bb2 = b.duplicate({ width: 33, left: 12 })
 bb3 = b.duplicate({ width: 33, left: 444 })
 bb3.color(:green)
 bb2.color(:orange)
+end
 
