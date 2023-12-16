@@ -152,29 +152,35 @@ function createSvgElement(tagName, attributes) {
     return elem;
 }
 
+//
+// function sanitizeString(str) {
+//     return str.replace(/'/g, "\\'");
+// }
+// function fileread(){
+//     var inputElement = document.createElement("input");
+//     inputElement.type = "file";
+//
+//     inputElement.addEventListener("change", function(event) {
+//         var file = event.target.files[0];
+//         var reader = new FileReader();
+//
+//         reader.onload = function(event) {
+//             var content = event.target.result;
+//             var sanitizedContent = sanitizeString(content);
+//             rubyVMCallback("input_callback('"+sanitizedContent+"')");
+//         };
+//
+//         reader.readAsText(file);
+//     });
+//
+// // Ajout de l'élément input à la div
+//     var viewDiv = document.querySelector("#support");
+//     viewDiv.appendChild(inputElement);
+// }
 
-function sanitizeString(str) {
-    return str.replace(/'/g, "\\'");
+
+function fileRead(val){
+   Opal.Atome.$opal_file_handler('kjhj','jhgh','ppp')
 }
-function fileread(){
-    var inputElement = document.createElement("input");
-    inputElement.type = "file";
 
-    inputElement.addEventListener("change", function(event) {
-        var file = event.target.files[0];
-        var reader = new FileReader();
-
-        reader.onload = function(event) {
-            var content = event.target.result;
-            var sanitizedContent = sanitizeString(content);
-            rubyVMCallback("input_callback('"+sanitizedContent+"')");
-        };
-
-        reader.readAsText(file);
-    });
-
-// Ajout de l'élément input à la div
-    var viewDiv = document.querySelector("#support");
-    viewDiv.appendChild(inputElement);
-}
 

@@ -7,4 +7,5 @@ require 'extensions/ping'
 require 'extensions/sha'
 require 'extensions/color'
 require 'native'
+require 'promise'
 

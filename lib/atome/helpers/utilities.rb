@@ -4,6 +4,9 @@
 require 'json'
 class Atome
   class << self
+
+
+
     def controller_sender(message)
       return if $host == :html
       json_msg = message.to_json
