@@ -60,12 +60,15 @@ class Atome
     def opal_file_handler(parent, callback, content)
 
       puts parent
+      puts callback
+      puts content
 
     end
     end
 
 end
-
+call_back_method='my_meth'
+parent='view'
 input = %x{ document.createElement('input') }
 %x{ #{input}.type = 'file'; }
 
@@ -84,9 +87,9 @@ input = %x{ document.createElement('input') }
 
     reader.onload = function(e) {
       var content = e.target.result;
-Opal.Atome.$opal_file_handler(content)
+Opal.Atome.$opal_file_handler('#{parent}','#{call_back_method}',content )
 
-      console.log("File content:", content);
+      //console.log("File content:", content);
     };
 
     reader.onloadend = function() {
