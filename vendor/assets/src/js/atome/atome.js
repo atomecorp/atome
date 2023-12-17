@@ -179,21 +179,22 @@ function createSvgElement(tagName, attributes) {
 // }
 
 
-function fileRead(val){
-   Opal.Atome.$opal_file_handler('kjhj','jhgh','ppp')
-}
 
 
 
 function fileForOpal(parent, bloc) {
     // Assuming @id is available or passed in the context where this function is used.
-    parent = this.id || parent; // Replace with appropriate context variable if needed
-    var input = document.createElement('input');
+    // parent = this.id || parent; // Replace with appropriate context variable if needed
+    let input = document.createElement('input');
     input.type = 'file';
+    // input.style.position = "absolute";
+    // input.style.display = "none";
+    // input.style.width = "0px";
+    // input.style.height = "0px";
 
     input.addEventListener('change', function(event) {
-        var file = event.target.files[0];
-        var reader = new FileReader();
+        let file = event.target.files[0];
+        let reader = new FileReader();
 
         reader.onloadstart = function() {
             console.log("Load start");
@@ -219,17 +220,7 @@ function fileForOpal(parent, bloc) {
         reader.readAsText(file);
     });
 
-    var viewDiv = document.getElementById('view');
+    var viewDiv = document.getElementById(parent);
     viewDiv.appendChild(input);
 }
 
-
-//
-// setTimeout(function () {
-//     fileForOpal('view')
-//     // Example usage
-//     // fileForOpal('view', function(fileContent) {
-//     //     console.log("opal ===> " + fileContent);
-//     // });
-//
-// }, 1000);

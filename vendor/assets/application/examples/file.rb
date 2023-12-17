@@ -1,13 +1,13 @@
 #  frozen_string_literal: true
 
 new({ particle: :import })
-
+class Atome
+  def file_for_opal(parent, &bloc)
+    JS.eval("fileForOpal('#{parent}', #{bloc})")
+  end
+end
 new({ renderer: :html, method: :import, type: :blob }) do |params|
   if Atome::host == 'web-opal'
-    def file_for_opal(parent, &bloc)
-      JS.eval("fileForOpal('#{parent}', #{bloc})")
-    end
-
     file_for_opal(:view) do |file_content|
       puts "opal ===>#{file_content}"
     end
@@ -22,14 +22,15 @@ new({ renderer: :html, method: :import, type: :blob }) do |params|
       div_element[:style][:position] = "absolute"
       div_element[:style][:top] = "0px"
       div_element[:style][:left] = "0px"
-      div_element[:id] = "monDiv"
+      # div_element=JS.global[:document].getElementById(parent.to_s)
+      # alert div_element2.class
 
       input_element = JS.global[:document].createElement("input")
       input_element[:type] = "file"
       input_element[:style][:position] = "absolute"
-      input_element[:style][:display] = "none"
-      input_element[:style][:width] = "0px"
-      input_element[:style][:height] = "0px"
+      # input_element[:style][:display] = "none"
+      # input_element[:style][:width] = "0px"
+      # input_element[:style][:height] = "0px"
 
       input_element.addEventListener("change") do |native_event|
         event = Native(native_event)
@@ -60,7 +61,7 @@ new({ renderer: :html, method: :import, type: :blob }) do |params|
 
 end
 
-b = box
+b = box({drag: true})
 b.import(true)
 
 
