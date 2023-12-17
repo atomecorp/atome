@@ -2,13 +2,17 @@
 
 # toolbox   method here
 require 'json'
+
 class Atome
   class << self
 
-
+    def file_handler(parent, content, bloc)
+      grab(parent).instance_exec(content, &bloc)
+    end
 
     def controller_sender(message)
       return if $host == :html
+
       json_msg = message.to_json
       js_json_msg = json_msg.inspect
       js_command = "atomeJS.controller_sender(#{js_json_msg})"
@@ -130,6 +134,7 @@ class Atome
   def atome_post_process(element, params, new_atome, &user_proc)
 
     return unless Atome.instance_variable_get("@post_#{element}").is_a?(Proc)
+
     new_atome.instance_exec(params, user_proc, &Atome.instance_variable_get("@post_#{element}"))
 
   end
@@ -283,6 +288,7 @@ class Atome
       debug "#{user_id} not found"
     end
   end
+
   def remove_layout
     display(:default)
     # we get the current parent (the previous layout)
@@ -299,6 +305,5 @@ class Atome
       parent_found.delete(true)
     end
   end
-
 
 end

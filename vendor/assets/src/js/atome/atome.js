@@ -184,3 +184,52 @@ function fileRead(val){
 }
 
 
+
+function fileForOpal(parent, bloc) {
+    // Assuming @id is available or passed in the context where this function is used.
+    parent = this.id || parent; // Replace with appropriate context variable if needed
+    var input = document.createElement('input');
+    input.type = 'file';
+
+    input.addEventListener('change', function(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onloadstart = function() {
+            console.log("Load start");
+        };
+
+        reader.onprogress = function(e) {
+            console.log("Loading: " + (e.loaded / e.total * 100) + '%');
+        };
+
+        reader.onload = function(e) {
+            var content = e.target.result;
+            Opal.Atome.$file_handler(parent,content, bloc )
+        };
+
+        reader.onloadend = function() {
+            console.log("Load end");
+        };
+
+        reader.onerror = function() {
+            console.error("Error reading file");
+        };
+
+        reader.readAsText(file);
+    });
+
+    var viewDiv = document.getElementById('view');
+    viewDiv.appendChild(input);
+}
+
+
+//
+// setTimeout(function () {
+//     fileForOpal('view')
+//     // Example usage
+//     // fileForOpal('view', function(fileContent) {
+//     //     console.log("opal ===> " + fileContent);
+//     // });
+//
+// }, 1000);
