@@ -6,11 +6,39 @@ require 'bundler/gem_tasks'
 load 'exe/atome'
 
 task :cleanup do
-  `gem cleanup atome;yes | gem uninstall atome;cd pkg`
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # Code à exécuter sous Windows
+    `gem cleanup atome`
+    `echo yes | gem uninstall atome`
+    `cd pkg`
+
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # Code à exécuter sous MacOS
+    `gem cleanup atome;yes | gem uninstall atome;cd pkg`
+  else
+    # Code à exécuter sous Unix/Linux
+    `gem cleanup atome;yes | gem uninstall atome;cd pkg`
+  end
+
+
 end
 task :reset_cache do
-  `rm  -r -f ./tmp`
-  `rm  -r -f ./pkg`
+
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # Code à exécuter sous Windows
+   `rmdir /s /q .\\tmp`
+    `rmdir /s /q .\\pkg`
+
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # Code à exécuter sous MacOS
+    `rm  -r -f ./tmp`
+    `rm  -r -f ./pkg`
+  else
+    # Code à exécuter sous Unix/Linux
+    `rm  -r -f ./tmp`
+    `rm  -r -f ./pkg`
+  end
+
 end
 
 def resolve_requires(file_path, root_path, processed_files = Set.new, depth = 0)
@@ -51,7 +79,18 @@ task :test_wasm do
   host_mode = 'pure_wasm'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-  `open ./tmp/#{project_name}/src/index.html`
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # Code à exécuter sous Windows
+    `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # Code à exécuter sous MacOS
+    `open ./tmp/#{project_name}/src/index.html`
+  else
+    # Code à exécuter sous Unix/Linux
+    `open ./tmp/#{project_name}/src/index.html`
+  end
+
+
   puts 'atome wasm is build and running!'
 end
 
@@ -65,7 +104,18 @@ task :test_wasm_osx_x86 do
   host_mode = 'pure_wasm'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, script_source, host_mode, script_source)
-  `open ./tmp/#{project_name}/src/index.html`
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # Code à exécuter sous Windows
+    `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # Code à exécuter sous MacOS
+    `open ./tmp/#{project_name}/src/index.html`
+  else
+    # Code à exécuter sous Unix/Linux
+    `open ./tmp/#{project_name}/src/index.html`
+  end
+
+
   puts 'atome wasm is build and running!'
 end
 task :test_wasm_windows do
@@ -78,7 +128,16 @@ task :test_wasm_windows do
   host_mode = 'pure_wasm'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-  `open ./tmp/#{project_name}/src/index.html`
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # Code à exécuter sous Windows
+    `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # Code à exécuter sous MacOS
+    `open ./tmp/#{project_name}/src/index.html`
+  else
+    # Code à exécuter sous Unix/Linux
+    `open ./tmp/#{project_name}/src/index.html`
+  end
   puts 'atome wasm is build and running!'
 end
 task :test_wasm_unix do
@@ -91,7 +150,16 @@ task :test_wasm_unix do
   host_mode = 'pure_wasm'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-  `open ./tmp/#{project_name}/src/index.html`
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # Code à exécuter sous Windows
+    `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # Code à exécuter sous MacOS
+    `open ./tmp/#{project_name}/src/index.html`
+  else
+    # Code à exécuter sous Unix/Linux
+    `open ./tmp/#{project_name}/src/index.html`
+  end
   puts 'atome wasm is build and running!'
 end
 
@@ -116,7 +184,17 @@ task :test_opal do
   # build application
   build_opal_application(source, destination, project_name)
   # open the app
-  `open #{destination}/#{project_name}/src/index_opal.html`
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # Code à exécuter sous Windows
+    `start "" "#{destination}\\#{project_name}\\src\\index_opal.html"`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # Code à exécuter sous MacOS
+    `open #{destination}/#{project_name}/src/index_opal.html`
+  else
+    # Code à exécuter sous Unix/Linux
+    `open #{destination}/#{project_name}/src/index_opal.html`
+  end
+
   puts 'atome opal is build and running!'
 end
 task :server_wasm do
@@ -157,7 +235,18 @@ task :test_server do
   threads = []
   threads << Thread.new do
     sleep 1
-    `open http://localhost:9292`
+
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+      # Code à exécuter sous Windows
+      `start "" "http://localhost:9292"`
+    elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+      # Code à exécuter sous MacOS
+      `open http://localhost:9292`
+    else
+      # Code à exécuter sous Unix/Linux
+      `open http://localhost:9292`
+    end
+
   end
   build_for_server(destination, project_name, 9292, :production)
 end
@@ -245,10 +334,6 @@ task :osx_server do
 
     puts 'atome osx is running'
 
-
-
-
-
 end
 
 
@@ -256,8 +341,20 @@ task :build_gem do
   # building the gem
   `rake build` # run build_app thru ARGV in exe atome
   # installing  the gem
-  `cd pkg; gem install atome --local`
-  # open the app
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # Code à exécuter sous Windows
+    `cd pkg && gem install atome --local`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # Code à exécuter sous MacOS
+    `cd pkg; gem install atome --local`
+    # open the app
+  else
+    # Code à exécuter sous Unix/Linux
+    `cd pkg; gem install atome --local`
+    # open the app
+  end
+
+
   puts 'atome gem built and installed'
 end
 
