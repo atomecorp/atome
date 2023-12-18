@@ -187,11 +187,10 @@ function fileForOpal(parent, bloc) {
     // parent = this.id || parent; // Replace with appropriate context variable if needed
     let input = document.createElement('input');
     input.type = 'file';
-    // input.style.position = "absolute";
-    // input.style.display = "none";
-    // input.style.width = "0px";
-    // input.style.height = "0px";
-
+    input.style.position = "absolute";
+    input.style.display = "none";
+    input.style.width = "0px";
+    input.style.height = "0px";
     input.addEventListener('change', function(event) {
         let file = event.target.files[0];
         let reader = new FileReader();
@@ -219,8 +218,15 @@ function fileForOpal(parent, bloc) {
 
         reader.readAsText(file);
     });
-
-    var viewDiv = document.getElementById(parent);
-    viewDiv.appendChild(input);
+    let div_element = document.getElementById(parent);
+    div_element.appendChild(input);
+    div_element.addEventListener('mousedown', function (event){
+        input.click()
+    })
+    // div_element.addEventListener("mousedown"){
+    //     do |event|
+    //     input_element.click
+    //     end
+    // }
 }
 

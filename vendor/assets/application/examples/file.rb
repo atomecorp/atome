@@ -44,7 +44,6 @@ new({ renderer: :html, method: :import, type: :blob }) do |params|
       end
       div_element.appendChild(input_element)
     end
-
     create_file_browser(:options) do |file_content|
       puts "wasm ===>#{file_content}"
     end
