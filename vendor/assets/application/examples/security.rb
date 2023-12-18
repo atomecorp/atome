@@ -2,7 +2,7 @@
 
 
 c=circle({left: 220})
-t=text({left: 550,data: :hello,password: { read: {atome: :my_secret} }})
+t=text({left: 550,data: :hello,password: { read: { atome: :my_secret} }})
 b = box({ id: :the_box, left: 66,smooth: 1.789,
           password: {
             read: {
@@ -18,16 +18,16 @@ b = box({ id: :the_box, left: 66,smooth: 1.789,
 
 
 
-b.authorise({ read: {atome: :the_pass,smooth: :read_pass }, write: {smooth: :write_pass}, destroy: true}  )
+b.authorise({ read: { atome: :the_pass, smooth: :read_pass }, write: { smooth: :write_pass}, destroy: true}  )
 puts b.smooth
 # next will be rejected because destroy: true
 puts b.smooth
 #
-b.authorise({ read: {atome: :wrong_pass,smooth: :no_read_pass }, write: {smooth: :wrong_write_pass}, destroy: false}  )
+b.authorise({ read: { atome: :wrong_pass, smooth: :no_read_pass }, write: { smooth: :wrong_write_pass}, destroy: false}  )
 puts 'will send the wrong password'
 puts b.smooth
 
-b.authorise({ read: {atome: :wrong_pass,smooth: :read_pass }, write: {smooth: :wrong_write_pass}, destroy: false}  )
+b.authorise({ read: { atome: :wrong_pass, smooth: :read_pass }, write: { smooth: :wrong_write_pass}, destroy: false}  )
 puts "'with send the right password it'll works"
 puts b.smooth
 # authorise has two params the first is the password to authorise the second is used to destroy the password or keep for
@@ -41,7 +41,7 @@ wait 1 do
       b.authorise({write: {smooth: :write_pass}, destroy: false} )
       b.smooth(66)
       wait 1 do
-        b.authorise({write: {smooth: :false_pass, atome: :no_apss, destroy: true}} )
+        b.authorise({write: { smooth: :false_pass, atome: :no_apss, destroy: true}} )
         b.smooth(6)
       end
     end
