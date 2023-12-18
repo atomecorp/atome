@@ -3,15 +3,16 @@
 new({ particle: :import })
 
 class Atome
-  def file_for_opal(parent, &bloc)
+  def file_for_opal(parent, bloc)
     JS.eval("fileForOpal('#{parent}', #{bloc})")
   end
 end
 
-new({ renderer: :html, method: :import, type: :blob }) do |params|
+new({ renderer: :html, method: :import, type: :blob }) do |_params, bloc|
+
   if Atome::host == 'web-opal'
-    file_for_opal(@id) do |file_content|
-      puts "opal ===>#{file_content}"
+    file_for_opal(@id, bloc) do |file_content|
+      bloc.call(file_content)
     end
 
   else
@@ -45,14 +46,17 @@ new({ renderer: :html, method: :import, type: :blob }) do |params|
       div_element.appendChild(input_element)
     end
     create_file_browser(:options) do |file_content|
-      puts "wasm ===>#{file_content}"
+      # puts "wasm ===>#{file_content}"
+      bloc.call(file_content)
     end
   end
 
 end
 
 b = box({ drag: true })
-b.import(true)
+b.import(true) do  |content|
+  puts "add code here, content:  #{content}"
+end
 
 
 

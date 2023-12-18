@@ -63,8 +63,6 @@ async function changeCurrentDirectory(atome_id, newPath) {
 }
 
 
-
-
 // Terminal
 
 async function terminal(atome_id, cmd) {
@@ -179,40 +177,35 @@ function createSvgElement(tagName, attributes) {
 // }
 
 
-
-
-
 function fileForOpal(parent, bloc) {
-    // Assuming @id is available or passed in the context where this function is used.
-    // parent = this.id || parent; // Replace with appropriate context variable if needed
     let input = document.createElement('input');
     input.type = 'file';
     input.style.position = "absolute";
     input.style.display = "none";
     input.style.width = "0px";
     input.style.height = "0px";
-    input.addEventListener('change', function(event) {
+    input.addEventListener('change', function (event) {
         let file = event.target.files[0];
         let reader = new FileReader();
 
-        reader.onloadstart = function() {
+        reader.onloadstart = function () {
             console.log("Load start");
         };
 
-        reader.onprogress = function(e) {
+        reader.onprogress = function (e) {
             console.log("Loading: " + (e.loaded / e.total * 100) + '%');
         };
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             var content = e.target.result;
-            Opal.Atome.$file_handler(parent,content, bloc )
+            Opal.Atome.$file_handler(parent, content, bloc)
         };
 
-        reader.onloadend = function() {
+        reader.onloadend = function () {
             console.log("Load end");
         };
 
-        reader.onerror = function() {
+        reader.onerror = function () {
             console.error("Error reading file");
         };
 
@@ -220,13 +213,9 @@ function fileForOpal(parent, bloc) {
     });
     let div_element = document.getElementById(parent);
     div_element.appendChild(input);
-    div_element.addEventListener('mousedown', function (event){
+    div_element.addEventListener('mousedown', function (event) {
         input.click()
     })
-    // div_element.addEventListener("mousedown"){
-    //     do |event|
-    //     input_element.click
-    //     end
-    // }
+
 }
 
