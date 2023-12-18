@@ -10,6 +10,8 @@ class Atome
       grab(parent).instance_exec(content, &bloc)
     end
 
+
+
     def controller_sender(message)
       return if $host == :html
 
@@ -51,6 +53,9 @@ class Atome
   end
 
   # local server messaging
+  def file_for_opal(parent, bloc)
+    JS.eval("fileForOpal('#{parent}', #{bloc})")
+  end
 
   def response_listener(hashed_msg)
     js_action = hashed_msg.JS[:action]
