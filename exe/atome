@@ -142,7 +142,6 @@ STR
   else
     # Code à exécuter sous Unix/Linux
     `cd #{destination}/#{project_name}/tmp/application/;pwd;ruby .opal_compiler.rb`
-
   end
 
 end
@@ -258,7 +257,9 @@ def wasm_initialize (source, destination, project_name, wasi_source)
   unless File.exist?("#{wasm_temp_folder}/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz")
 
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-      `cd /d %wasm_temp_folder% && curl -LO https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz
+      application_location = "#{destination}\\#{project_name}"
+      wasm_temp_folder = "#{application_location}\\tmp"
+      `cd /d #{wasm_temp_folder} && curl -LO https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz
 `
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # Code à exécuter sous MacOS
@@ -276,10 +277,13 @@ def wasm_initialize (source, destination, project_name, wasi_source)
 
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
     # Code à exécuter sous Windows
-    `cd /d %wasm_temp_folder% && 7z x ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
-    `move %wasm_temp_folder%\\3_2-wasm32-unknown-wasi-full-js\\usr\\local\\bin\\ruby %wasm_temp_folder%\\system_ruby_browser.wasm`
-    `del %application_location%\\src\\wasm\\ruby_browser.wasm`
+    application_location = "#{destination}\\#{project_name}"
 
+    `cd /d #{wasm_temp_folder} && tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+    `move #{wasm_temp_folder}\\3_2-wasm32-unknown-wasi-full-js\\usr\\local\\bin\\ruby #{wasm_temp_folder}\\system_ruby_browser.wasm`
+    puts "========"
+    `del #{application_location}\\src\\wasm\\ruby_browser.wasm`
+    puts "========"
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # Code à exécuter sous MacOS
     `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
@@ -292,14 +296,41 @@ def wasm_initialize (source, destination, project_name, wasi_source)
     `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
   end
 
-  cmd = <<~STRDELIM
+
+
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # Code à exécuter sous Windows
+    cmd = <<~STRDELIM
+"#{application_location}\\src-wasm\\wasm\\#{wasi_source}" pack "#{wasm_temp_folder}\\system_ruby_browser.wasm"
+    -mapdir usr::"#{wasm_temp_folder}\\3_2-wasm32-unknown-wasi-full-js\\usr"
+    -mapdir lib::"#{source}\\lib\\"
+    -mapdir \::"#{application_location}\\application\\"
+    -mapdir utilities::"#{application_location}\\src\\utilities\\"
+    -o "#{application_location}\\src\\wasm\\ruby_browser.wasm"
+    STRDELIM
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # Code à exécuter sous MacOS
+    cmd = <<~STRDELIM
     #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
     --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
     --mapdir lib::#{source}/lib/
     --mapdir /::#{application_location}/application/
     --mapdir utilities::#{application_location}/src/utilities/
     -o #{application_location}/src/wasm/ruby_browser.wasm
-  STRDELIM
+    STRDELIM
+  else
+    # Code à exécuter sous Unix/Linux
+    cmd = <<~STRDELIM
+    #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
+    --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
+    --mapdir lib::#{source}/lib/
+    --mapdir /::#{application_location}/application/
+    --mapdir utilities::#{application_location}/src/utilities/
+    -o #{application_location}/src/wasm/ruby_browser.wasm
+    STRDELIM
+  end
+
+
   cleaned_cmd = cmd.lines.reject { |line| line.start_with?('#') }.join
   command = cleaned_cmd.chomp.gsub("\n", ' ')
   system(command)
@@ -320,7 +351,7 @@ def build_for_osx(destination, mode = :dev)
   # dev or build
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
     # Code à exécuter sous Windows
-    `cd /d #{destination} && cargo tauri %mode%`
+    `cd /d #{destination} && cargo tauri #{mode}`
 
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # Code à exécuter sous MacOS
@@ -337,7 +368,7 @@ def build_for_server(destination, project_name, port, production)
   prod = '--env production' if production
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
     # Code à exécuter sous Windows
-   `cd /d #{destination}\\#{project_name}\\server && puma --port %port% %prod%`
+    `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # Code à exécuter sous MacOS
     `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
@@ -360,17 +391,21 @@ project_name = ARGV[1]
 if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
   # Code à exécuter sous Windows
   destination = `cd`.chomp
+  wasi_file = 'wasi-vfs.exe'
+
 elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
   # Code à exécuter sous MacOS
   destination = `pwd`.chomp
+  wasi_file = 'wasi-vfs-osx_arm' # default to osx arm
 else
   # Code à exécuter sous Unix/Linux
   destination = `pwd`.chomp
+  wasi_file = 'wasi-vfs-unix'
 end
 
 source = Pathname(__FILE__).parent.parent.to_s
 
-wasi_file = 'wasi-vfs-osx_arm' # default to osx arm
+
 # TODO : get wasi params from ARG to allow compile on windows / Unix
 if ARGV.include?('create')
   create_application(source, destination, project_name)
@@ -483,7 +518,7 @@ if ARGV.include?('run')
 
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # Code à exécuter sous Windows
-      `start "" "%current_path%\\src\\index.html"`
+      `start "" "#{current_path}\\src\\index.html"`
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # Code à exécuter sous MacOS
       `open #{current_path}/src/index.html`
