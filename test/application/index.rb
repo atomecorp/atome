@@ -11,7 +11,6 @@
 #in progreess
 
 # require "./examples/find"
-require "./examples/file"
 
 # works
 # require './works/vie'
@@ -47,7 +46,8 @@ require "./examples/file"
 # require "./examples/play"
 # require "./examples/animation"
 # require "./examples/resize"
-# require "./examples/drop"
+box({id: :exept})
+require "./examples/drop"
 # require "./examples/on_resize"
 # require "./examples/keyboard"
 # require "./examples/hypertext"
