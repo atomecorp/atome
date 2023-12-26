@@ -218,98 +218,99 @@ function fileForOpal(parent, bloc) {
     })
 
 }
-
-function importer(){
-
-    // Gestionnaire pour le drag and drop de fichiers
-    document.body.addEventListener('dragover', function(e) {
-        e.preventDefault(); // Nécessaire pour autoriser le drop
-        // Modifier le style si nécessaire
-    });
-
-    document.body.addEventListener('drop', function(e) {
-        e.preventDefault();
-        let files = e.dataTransfer.files; // Obtention de la liste des fichiers déposés
-
-        if (files.length) {
-            // Parcourir chaque fichier
-            for (let i = 0; i < files.length; i++) {
-                let file = files[i];
-                let reader = new FileReader();
-
-                // Lire le fichier en tant que texte
-                reader.readAsText(file);
-
-                // Événement déclenché une fois la lecture terminée
-                reader.onload = function() {
-                    console.log('Contenu du fichier #' + (i + 1));
-                    console.log('Nom: ' + file.name);
-                    console.log('Type: ' + file.type);
-                    console.log('Taille: ' + file.size + ' octets');
-                    console.log('Contenu: \n' + reader.result); // Affichage du contenu du fichier
-                };
-
-                // Gestion des erreurs de lecture
-                reader.onerror = function() {
-                    console.error('Erreur de lecture du fichier: ' + file.name);
-                };
-            }
-        }
-        // if (e.dataTransfer.files.length) {
-        //     alert (e.dataTransfer.files);
-        //     // Traiter les fichiers déposés
-        // }
-    });
-
-// Gestionnaire pour les éléments div
-    var divs = document.querySelectorAll('.draggable-div');
-    divs.forEach(function(div) {
-        div.addEventListener('dragstart', function(e) {
-            e.dataTransfer.setData('text/plain', 'some-data');
-            e.stopPropagation(); // Empêcher la propagation au body
-        });
-    });
-
-}
-
-importer()
-
-
-function exception_import (){
-    // Sélectionner la div spéciale par son ID
-    var specialDiv = document.getElementById('exept');
-
-// Gestionnaire d'événements pour la 'special-div' pour le drag over
-    specialDiv.addEventListener('dragover', function(e) {
-
-        specialDiv.style.backgroundColor= 'red';
-        e.preventDefault(); // Prévenir le comportement par défaut
-        e.stopPropagation(); // Arrêter la propagation de l'événement
-    });
-    specialDiv.addEventListener('dragleave', function(e) {
-        specialDiv.style.backgroundColor = 'yellow'; // Réinitialiser la couleur de fond lors du drag out
-        e.stopPropagation(); // Arrêter la propagation de l'événement
-    });
-// Gestionnaire d'événements pour la 'special-div' pour le drop
-    specialDiv.addEventListener('drop', function(e) {
-        e.preventDefault(); // Prévenir le comportement par défaut
-        e.stopPropagation(); // Arrêter la propagation de l'événement
-
-        // Traitement spécifique pour les fichiers déposés sur la 'special-div'
-        console.log('Fichier déposé dans la zone spéciale');
-    });
-
-// Gestionnaire d'événements pour le body pour le drop
-//     document.body.addEventListener('drop', function(e) {
-//         e.preventDefault(); // Prévenir le comportement par défaut
 //
-//         // Traitement pour les fichiers déposés en dehors de la 'special-div'
-//         console.log('Fichier déposé hors de la zone spéciale');
+// function importer(){
+//
+//     // Gestionnaire pour le drag and drop de fichiers
+//     document.body.addEventListener('dragover', function(e) {
+//         e.preventDefault(); // Nécessaire pour autoriser le drop
+//         // Modifier le style si nécessaire
 //     });
+//
+//     document.body.addEventListener('drop', function(e) {
+//         e.preventDefault();
+//         let files = e.dataTransfer.files; // Obtention de la liste des fichiers déposés
+//
+//         if (files.length) {
+//             // Parcourir chaque fichier
+//             for (let i = 0; i < files.length; i++) {
+//                 let file = files[i];
+//                 let reader = new FileReader();
+//
+//                 // Lire le fichier en tant que texte
+//                 reader.readAsText(file);
+//
+//                 // Événement déclenché une fois la lecture terminée
+//                 reader.onload = function() {
+//                     console.log('Contenu du fichier #' + (i + 1));
+//                     console.log('Nom: ' + file.name);
+//                     console.log('Type: ' + file.type);
+//                     console.log('Taille: ' + file.size + ' octets');
+//                     console.log('Contenu: \n' + reader.result); // Affichage du contenu du fichier
+//                 };
+//
+//                 // Gestion des erreurs de lecture
+//                 reader.onerror = function() {
+//                     console.error('Erreur de lecture du fichier: ' + file.name);
+//                 };
+//             }
+//         }
+//         // if (e.dataTransfer.files.length) {
+//         //     alert (e.dataTransfer.files);
+//         //     // Traiter les fichiers déposés
+//         // }
+//     });
+//
+// // Gestionnaire pour les éléments div
+//     var divs = document.querySelectorAll('.draggable-div');
+//     divs.forEach(function(div) {
+//         div.addEventListener('dragstart', function(e) {
+//             e.dataTransfer.setData('text/plain', 'some-data');
+//             e.stopPropagation(); // Empêcher la propagation au body
+//         });
+//     });
+//
+// }
+//
+// importer()
+//
+//
+// function exception_import (){
+//     // Sélectionner la div spéciale par son ID
+//     var specialDiv = document.getElementById('exept');
+//
+// // Gestionnaire d'événements pour la 'special-div' pour le drag over
+//     specialDiv.addEventListener('dragover', function(e) {
+//
+//         specialDiv.style.backgroundColor= 'red';
+//         e.preventDefault(); // Prévenir le comportement par défaut
+//         e.stopPropagation(); // Arrêter la propagation de l'événement
+//     });
+//     specialDiv.addEventListener('dragleave', function(e) {
+//         specialDiv.style.backgroundColor = 'yellow'; // Réinitialiser la couleur de fond lors du drag out
+//         e.stopPropagation(); // Arrêter la propagation de l'événement
+//     });
+// // Gestionnaire d'événements pour la 'special-div' pour le drop
+//     specialDiv.addEventListener('drop', function(e) {
+//         e.preventDefault(); // Prévenir le comportement par défaut
+//         e.stopPropagation(); // Arrêter la propagation de l'événement
+//
+//         // Traitement spécifique pour les fichiers déposés sur la 'special-div'
+//         console.log('Fichier déposé dans la zone spéciale');
+//     });
+//
+// // Gestionnaire d'événements pour le body pour le drop
+// //     document.body.addEventListener('drop', function(e) {
+// //         e.preventDefault(); // Prévenir le comportement par défaut
+// //
+// //         // Traitement pour les fichiers déposés en dehors de la 'special-div'
+// //         console.log('Fichier déposé hors de la zone spéciale');
+// //     });
+//
+//
+// }
+// setTimeout(function () {
+//     exception_import();
+// console.log('ready');
+// }, 3000);
 
-
-}
-setTimeout(function () {
-    exception_import();
-console.log('ready');
-}, 3000);

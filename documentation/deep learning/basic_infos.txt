@@ -20,7 +20,8 @@ Install Homebew
 Install rbenv, wasi-vfs, wasmtime :
 brew install rbenv
 #brew install wasmtime
-#brew install  wasi-vfs
+# => please chack as it is certainly useless because we have in vendor/src-wasm/wasm/wasi_vfs_...,
+  if need to install  use :  brew install  wasi-vfs
 
 brew install npm
 npm install --save ruby-3_2-wasm-wasi@latest
@@ -42,10 +43,73 @@ In the terminal at atome root , type:
 bundle install
 Bundle update
 
- Ruby wasm ti allow local use of ruby wasm :
+ Ruby wasm time allow local use of ruby wasm :
  1 - download :
  https://cdn.jsdelivr.net/npm/@ruby/3.2-wasm-wasi@2.3.0/dist/browser.script.iife.js
 2 - change
+
+
+# how to Install on windows :
+
+# Install ruby :
+https://rubyinstaller.org/downloads install with devkit
+# check install using :
+ruby -v
+gem list
+
+# update gem using the two following commands
+gem update --system
+gem update
+
+#install node:
+https://nodejs.org/en/download
+# check install using :
+node -v
+
+#install wasi :
+npm install --save ruby-3_2-wasm-wasi@latest
+
+#install rust :
+https://www.rust-lang.org/tools/install use rustup
+# check install using :
+rustc --version
+
+
+#install tauri:
+npm install --save-dev @tauri-apps/cli
+# check install using :
+npm fund
+
+#install wasmtime :
+https://wasmtime.dev/
+# check install using :
+ruby wastime --version
+
+#install git :
+https://git-scm.com/
+
+
+# Get atome framework :
+git clone https://github.com/atomecorp/atome.git
+
+# go in the cloned directory the in the terminal at atome root , type:
+bundle install
+Bundle update
+
+# to check we build atome gem
+rake build_gem
+
+# in the terminal type
+gem list
+# check atome is part of the list of the gems
+
+# then in the folder of your choice create a new atome app using :
+atome create my_app
+cd my_app
+atome run browser
+
+
+
 
 
 

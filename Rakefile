@@ -2,42 +2,66 @@
 require 'fileutils'
 require 'securerandom'
 require 'digest/sha2'
+require 'rubygems'
+require 'rubygems/command_manager'
+require 'rubygems/uninstaller'
 require 'bundler/gem_tasks'
 load 'exe/atome'
 
 task :cleanup do
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # Code à exécuter sous Windows
-    `gem cleanup atome`
-    `echo yes | gem uninstall atome`
-    `cd pkg`
 
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # Code à exécuter sous MacOS
-    `gem cleanup atome;yes | gem uninstall atome;cd pkg`
-  else
-    # Code à exécuter sous Unix/Linux
-    `gem cleanup atome;yes | gem uninstall atome;cd pkg`
+  manager = Gem::CommandManager.instance
+  cleanup_command = manager['cleanup']
+
+  begin
+    cleanup_command.invoke('atome')
+  rescue Gem::SystemExitException => e
+    puts "Erreur lors du nettoyage : #{e.message}"
   end
 
+  begin
+    uninstaller = Gem::Uninstaller.new('atome', { executables: true, all: true, force: true })
+    uninstaller.uninstall
+  rescue Gem::InstallError => e
+    puts "Erreur lors de la désinstallation : #{e.message}"
+  end
+
+  Dir.chdir('pkg') do
+    # Effectuez vos opérations dans le dossier 'pkg'
+  end
+
+  # if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+  #   # Code à exécuter sous Windows
+  #   `gem cleanup atome`
+  #   `echo yes | gem uninstall atome`
+  #   `cd pkg`
+  #
+  # elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+  #   # Code à exécuter sous MacOS
+  #   `gem cleanup atome;yes | gem uninstall atome;cd pkg`
+  # else
+  #   # Code à exécuter sous Unix/Linux
+  #   `gem cleanup atome;yes | gem uninstall atome;cd pkg`
+  # end
 
 end
 task :reset_cache do
-
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # Code à exécuter sous Windows
-   `rmdir /s /q .\\tmp`
-    `rmdir /s /q .\\pkg`
-
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # Code à exécuter sous MacOS
-    `rm  -r -f ./tmp`
-    `rm  -r -f ./pkg`
-  else
-    # Code à exécuter sous Unix/Linux
-    `rm  -r -f ./tmp`
-    `rm  -r -f ./pkg`
-  end
+  FileUtils.rm_rf('./tmp')
+  FileUtils.rm_rf('./pkg')
+  # if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+  #   # Code à exécuter sous Windows
+  #   `rmdir /s /q .\\tmp`
+  #   `rmdir /s /q .\\pkg`
+  #
+  # elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+  #   # Code à exécuter sous MacOS
+  #   `rm  -r -f ./tmp`
+  #   `rm  -r -f ./pkg`
+  # else
+  #   # Code à exécuter sous Unix/Linux
+  #   `rm  -r -f ./tmp`
+  #   `rm  -r -f ./pkg`
+  # end
 
 end
 
@@ -70,98 +94,121 @@ def generate_resolved_file(source_file_path)
   resolve_requires(source_file_path, root_path)
 end
 
+def wasm_params(source, destination, project_name, wasi_file, host_mode, script_source)
+  create_application(source, destination, project_name)
+  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
+end
+
 task :test_wasm do
   project_name = :test
   source = '.'
-  destination = './tmp'
-  script_source = './test/application'
-  wasi_file = 'wasi-vfs-osx_arm'
-  host_mode = 'pure_wasm'
-  create_application(source, destination, project_name)
-  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # Code à exécuter sous Windows
-    `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # Code à exécuter sous MacOS
-    `open ./tmp/#{project_name}/src/index.html`
-  else
-    # Code à exécuter sous Unix/Linux
-    `open ./tmp/#{project_name}/src/index.html`
-  end
 
+  host_mode = 'pure_wasm'
+
+  file_path = "./tmp/#{project_name}/src/index.html"
+
+  case RbConfig::CONFIG['host_os']
+  when /darwin|mac os/
+
+    cpu_type = RbConfig::CONFIG['host_cpu']
+    wasi_file = if cpu_type.include?('arm') || cpu_type.include?('aarch64')
+                  # Commande pour Mac ARM
+                  'wasi-vfs-osx_arm'
+                else
+                  # Commande pour Mac Intel x86
+                  'wasi-vfs-osx_x86'
+                end
+    destination = './tmp'
+    script_source = './test/application'
+
+    wasm_params(source, destination, project_name, wasi_file, host_mode, script_source)
+    system "open", file_path
+  when /linux|bsd/
+    destination = './tmp'
+    script_source = './test/application'
+    wasi_file = 'wasi-vfs-unix pack tmp'
+    wasm_params(source, destination, project_name, wasi_file, host_mode, script_source)
+    system "xdg-open", file_path
+  when /mswin|mingw|cygwin/
+    destination = '.\\tmp'
+    script_source = '.\\test\\application'
+    wasi_file = 'wasi-vfs.exe pack'
+    wasm_params(source, destination, project_name, wasi_file, host_mode, script_source)
+    system "start", file_path
+  else
+    raise "Système d'exploitation non reconnu"
+  end
 
   puts 'atome wasm is build and running!'
 end
 
-task :test_wasm_osx_x86 do
-  # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-  project_name = :test
-  source = '.'
-  destination = './tmp'
-  script_source = './test/application'
-  wasi_file = 'wasi-vfs-osx_x86'
-  host_mode = 'pure_wasm'
-  create_application(source, destination, project_name)
-  wasm_common(source, destination, project_name, wasi_file, script_source, host_mode, script_source)
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # Code à exécuter sous Windows
-    `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # Code à exécuter sous MacOS
-    `open ./tmp/#{project_name}/src/index.html`
-  else
-    # Code à exécuter sous Unix/Linux
-    `open ./tmp/#{project_name}/src/index.html`
-  end
-
-
-  puts 'atome wasm is build and running!'
-end
-task :test_wasm_windows do
-  # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-  project_name = :test
-  source = '.'
-  destination = './tmp'
-  script_source = './test/application'
-  wasi_file = 'wasi-vfs.exe pack'
-  host_mode = 'pure_wasm'
-  create_application(source, destination, project_name)
-  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # Code à exécuter sous Windows
-    `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # Code à exécuter sous MacOS
-    `open ./tmp/#{project_name}/src/index.html`
-  else
-    # Code à exécuter sous Unix/Linux
-    `open ./tmp/#{project_name}/src/index.html`
-  end
-  puts 'atome wasm is build and running!'
-end
-task :test_wasm_unix do
-  # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-  project_name = :test
-  source = '.'
-  destination = './tmp'
-  script_source = './test/application'
-  wasi_file = 'wasi-vfs-unix pack tmp'
-  host_mode = 'pure_wasm'
-  create_application(source, destination, project_name)
-  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # Code à exécuter sous Windows
-    `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # Code à exécuter sous MacOS
-    `open ./tmp/#{project_name}/src/index.html`
-  else
-    # Code à exécuter sous Unix/Linux
-    `open ./tmp/#{project_name}/src/index.html`
-  end
-  puts 'atome wasm is build and running!'
-end
+# task :test_wasm_osx_x86 do
+#   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
+#   project_name = :test
+#   source = '.'
+#   destination = './tmp'
+#   script_source = './test/application'
+#   wasi_file = 'wasi-vfs-osx_x86'
+#   host_mode = 'pure_wasm'
+#   create_application(source, destination, project_name)
+#   wasm_common(source, destination, project_name, wasi_file, script_source, host_mode, script_source)
+#   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+#     # Code à exécuter sous Windows
+#     `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
+#   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+#     # Code à exécuter sous MacOS
+#     `open ./tmp/#{project_name}/src/index.html`
+#   else
+#     # Code à exécuter sous Unix/Linux
+#     `open ./tmp/#{project_name}/src/index.html`
+#   end
+#
+#   puts 'atome wasm is build and running!'
+# end
+# task :test_wasm_windows do
+#   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
+#   project_name = :test
+#   source = '.'
+#   destination = './tmp'
+#   script_source = './test/application'
+#   wasi_file = 'wasi-vfs.exe pack'
+#   host_mode = 'pure_wasm'
+#   create_application(source, destination, project_name)
+#   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
+#   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+#     # Code à exécuter sous Windows
+#     `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
+#   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+#     # Code à exécuter sous MacOS
+#     `open ./tmp/#{project_name}/src/index.html`
+#   else
+#     # Code à exécuter sous Unix/Linux
+#     `open ./tmp/#{project_name}/src/index.html`
+#   end
+#   puts 'atome wasm is build and running!'
+# end
+# task :test_wasm_unix do
+#   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
+#   project_name = :test
+#   source = '.'
+#   destination = './tmp'
+#   script_source = './test/application'
+#   wasi_file = 'wasi-vfs-unix pack tmp'
+#   host_mode = 'pure_wasm'
+#   create_application(source, destination, project_name)
+#   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
+#   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+#     # Code à exécuter sous Windows
+#     `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
+#   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+#     # Code à exécuter sous MacOS
+#     `open ./tmp/#{project_name}/src/index.html`
+#   else
+#     # Code à exécuter sous Unix/Linux
+#     `open ./tmp/#{project_name}/src/index.html`
+#   end
+#   puts 'atome wasm is build and running!'
+# end
 
 task :test_opal do
   project_name = :test
@@ -296,46 +343,44 @@ end
 
 task :osx_server do
   project_name = :test
-    source = '.'
-    destination = './tmp'
-    script_source = './test/application'
-    create_application(source, destination, project_name)
-    # the line below is to add addition script to the application folder (useful for test per example)
-    add_to_application_folder(script_source, destination, project_name)
-    # build opal
-    build_opal_library(source, destination, project_name)
-    # build parser
-    build_opal_parser(source, destination, project_name)
-    # build atome kernel
-    build_atome_kernel_for_opal(source, destination, project_name)
-    # build host_mode
-    build_host_mode(destination, project_name, 'puma-roda')
-    # build Opal extensions
-    build_opal_extensions(source, destination, project_name)
-    # build application
-    build_opal_application(source, destination, project_name)
-    # build and open the app
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
+  create_application(source, destination, project_name)
+  # the line below is to add addition script to the application folder (useful for test per example)
+  add_to_application_folder(script_source, destination, project_name)
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build host_mode
+  build_host_mode(destination, project_name, 'puma-roda')
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
+  build_opal_application(source, destination, project_name)
+  # build and open the app
 
-    project_name = :test
-    source = '.'
-    destination = './tmp'
-    script_source = './test/application'
-    wasi_file = 'wasi-vfs-osx_arm'
-    host_mode = 'tauri'
-    create_application(source, destination, project_name)
-    wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-    destination = './tmp'
-    threads = []
-    threads << Thread.new do
-      build_for_server(destination, project_name, 9292, :production)
-    end
-    build_for_osx(destination)
+  project_name = :test
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
+  wasi_file = 'wasi-vfs-osx_arm'
+  host_mode = 'tauri'
+  create_application(source, destination, project_name)
+  wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
+  destination = './tmp'
+  threads = []
+  threads << Thread.new do
+    build_for_server(destination, project_name, 9292, :production)
+  end
+  build_for_osx(destination)
 
-
-    puts 'atome osx is running'
+  puts 'atome osx is running'
 
 end
-
 
 task :build_gem do
   # building the gem
@@ -353,7 +398,6 @@ task :build_gem do
     `cd pkg; gem install atome --local`
     # open the app
   end
-
 
   puts 'atome gem built and installed'
 end

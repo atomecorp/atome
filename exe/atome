@@ -70,6 +70,7 @@ def build_aui(destination, project_name)
   # now building opal version
   js_directory = "#{destination}/#{project_name}/src/js"
   opal_js = "#{js_directory}/aui.js"
+  FileUtils.mkdir_p(js_directory)
   File.new opal_js, 'w'
   # we add platform_specific script to the Opal framework
   opal_content = Opal::Builder.build("#{path}aui.rb").to_s
@@ -177,7 +178,7 @@ def create_application(source, destination, project_name)
   end
   # we copy all folder to be refreshed
   files_list.each do |file|
-    FileUtils.cp_r("#{source}/vendor/assets/#{file}", "#{destination}/#{project_name}/#{file}") unless Dir.exist?(file)
+    FileUtils.cp_r("#{source}/vendor/assets/#{file}", "#{destination}/#{project_name}/#{file}")
   end
   build_aui(destination, project_name)
 end
@@ -213,6 +214,7 @@ def build_atome_kernel_for_opal(source, destination, project_name)
   #  now lets build the atome kernel
   atome_directory = "#{destination}/#{project_name}/src/js/atome"
   kernel_js = "#{atome_directory}/kernel.js"
+  FileUtils.mkdir_p(atome_directory)
   File.new kernel_js, 'w'
   builder = Opal::Builder.new
   builder.append_paths("#{source}/lib/")
@@ -281,9 +283,7 @@ def wasm_initialize (source, destination, project_name, wasi_source)
 
     `cd /d #{wasm_temp_folder} && tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
     `move #{wasm_temp_folder}\\3_2-wasm32-unknown-wasi-full-js\\usr\\local\\bin\\ruby #{wasm_temp_folder}\\system_ruby_browser.wasm`
-    puts "========"
     `del #{application_location}\\src\\wasm\\ruby_browser.wasm`
-    puts "========"
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # Code à exécuter sous MacOS
     `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
@@ -295,41 +295,38 @@ def wasm_initialize (source, destination, project_name, wasi_source)
     `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
     `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
   end
-
-
 
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
     # Code à exécuter sous Windows
     cmd = <<~STRDELIM
-"#{application_location}\\src-wasm\\wasm\\#{wasi_source}" pack "#{wasm_temp_folder}\\system_ruby_browser.wasm"
-    -mapdir usr::"#{wasm_temp_folder}\\3_2-wasm32-unknown-wasi-full-js\\usr"
-    -mapdir lib::"#{source}\\lib\\"
-    -mapdir \::"#{application_location}\\application\\"
-    -mapdir utilities::"#{application_location}\\src\\utilities\\"
-    -o "#{application_location}\\src\\wasm\\ruby_browser.wasm"
+      "#{application_location}\\src-wasm\\wasm\\#{wasi_source}" pack "#{wasm_temp_folder}\\system_ruby_browser.wasm"
+          -mapdir usr::"#{wasm_temp_folder}\\3_2-wasm32-unknown-wasi-full-js\\usr"
+          -mapdir lib::"#{source}\\lib\\"
+          -mapdir \::"#{application_location}\\application\\"
+          -mapdir utilities::"#{application_location}\\src\\utilities\\"
+          -o "#{application_location}\\src\\wasm\\ruby_browser.wasm"
     STRDELIM
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # Code à exécuter sous MacOS
     cmd = <<~STRDELIM
-    #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
-    --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
-    --mapdir lib::#{source}/lib/
-    --mapdir /::#{application_location}/application/
-    --mapdir utilities::#{application_location}/src/utilities/
-    -o #{application_location}/src/wasm/ruby_browser.wasm
+      #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
+      --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
+      --mapdir lib::#{source}/lib/
+      --mapdir /::#{application_location}/application/
+      --mapdir utilities::#{application_location}/src/utilities/
+      -o #{application_location}/src/wasm/ruby_browser.wasm
     STRDELIM
   else
     # Code à exécuter sous Unix/Linux
     cmd = <<~STRDELIM
-    #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
-    --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
-    --mapdir lib::#{source}/lib/
-    --mapdir /::#{application_location}/application/
-    --mapdir utilities::#{application_location}/src/utilities/
-    -o #{application_location}/src/wasm/ruby_browser.wasm
+      #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
+      --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
+      --mapdir lib::#{source}/lib/
+      --mapdir /::#{application_location}/application/
+      --mapdir utilities::#{application_location}/src/utilities/
+      -o #{application_location}/src/wasm/ruby_browser.wasm
     STRDELIM
   end
-
 
   cleaned_cmd = cmd.lines.reject { |line| line.start_with?('#') }.join
   command = cleaned_cmd.chomp.gsub("\n", ' ')
@@ -360,7 +357,6 @@ def build_for_osx(destination, mode = :dev)
     # Code à exécuter sous Unix/Linux
     `cd #{destination};cargo tauri #{mode}`
   end
-
 
 end
 
@@ -405,7 +401,6 @@ end
 
 source = Pathname(__FILE__).parent.parent.to_s
 
-
 # TODO : get wasi params from ARG to allow compile on windows / Unix
 if ARGV.include?('create')
   create_application(source, destination, project_name)
@@ -426,23 +421,18 @@ end
 if ARGV.include?('update')
   # TODO: also update index.html and all other files except the application folder
   # first we delete everything but application
-  folders_to_keep = ['application']
-  Dir.foreach(destination) do |item|
+
+  files_to_treat = %w[server src-tauri src-wasm Guardfile Rakefile src/css src/js/atome src/js/third_parties src/medias
+src/favicon.ico src/index.html src/index_opal.html src/index_server.html src/index_server_wasm.html]
+  files_to_treat.each do |item|
     item_path = File.join(destination, item)
-    if File.directory?(item_path) && !folders_to_keep.include?(item)
+    if File.directory?(item_path)
       FileUtils.rm_rf(item_path) unless item == '.' || item == '..'
     elsif File.file?(item_path)
       File.delete(item_path)
     end
-  end
-  # now we update
-  puts "#{source}/vendor/assets"
-
-  update_source = "#{source}/vendor/assets"
-
-  Dir.glob("#{update_source}/*").each do |item|
-    target = File.join(destination, File.basename(item))
-    FileUtils.cp_r(item, target) unless File.exist?(target)
+    source_item = "#{source}/vendor/assets/#{item}"
+    FileUtils.cp_r(source_item, item)
   end
 end
 
@@ -483,7 +473,6 @@ if ARGV.include?('run')
     threads = []
     threads << Thread.new do
       sleep 1
-
 
       if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
         # Code à exécuter sous Windows
