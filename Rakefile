@@ -335,3 +335,76 @@ task :push_gem do
   end
   puts "#{latest_file} pushed"
 end
+
+
+task :full_test do
+
+  # building the gem
+  `rake build` # run build_app thru ARGV in exe atome
+  # installing  the gem
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # code to exec for Windows
+    `cd pkg && gem install atome --local`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # code to exec for MacOS
+    `cd pkg; gem install atome --local`
+    # open the app
+  else
+    # code to exec for Unix/Linux
+    `cd pkg; gem install atome --local`
+    # open the app
+  end
+
+  puts 'atome gem built and installed'
+
+  # now building new test app
+  project_name = :test
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
+  create_application(source, destination, project_name)
+  # the line below is to add addition script to the application folder (useful for test per example)
+  add_to_application_folder(script_source, destination, project_name)
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build host_mode
+  build_host_mode(destination, project_name, 'web-opal')
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
+  build_opal_application(source, destination, project_name)
+  # open the app
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # code to exec for Windows
+    `start "" "#{destination}\\#{project_name}\\src\\index_opal.html"`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # code to exec for MacOS
+    `open #{destination}/#{project_name}/src/index_opal.html`
+  else
+    # code to exec for Unix/Linux
+    `open #{destination}/#{project_name}/src/index_opal.html`
+  end
+
+  puts 'atome opal is build and running!'
+
+  # now running the app
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # code to exec for Windows
+    `cd #{destination} && atome run server`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # code to exec for MacOS
+    `cd #{destination}; atome run server`
+    # open the app
+  else
+    # code to exec for Unix/Linux
+    `cd #{destination}; atome run server`
+    # open the app
+  end
+
+end
+
+

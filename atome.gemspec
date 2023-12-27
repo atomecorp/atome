@@ -55,6 +55,12 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sqlite3', '~> 1.4'
   spec.add_runtime_dependency 'uglifier', '~> 0.1'
   #spec.add_runtime_dependency 'webrick', '~> 1.7.0'
+  # # the gem below are need to make the atome server works on Windows
+  spec.add_runtime_dependency 'win32-security', '~> 0.5.0'
+  spec.add_runtime_dependency 'tzinfo-data', '~> 1.2023.4'
+
+
+
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
