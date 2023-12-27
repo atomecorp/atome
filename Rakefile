@@ -16,53 +16,25 @@ task :cleanup do
   begin
     cleanup_command.invoke('atome')
   rescue Gem::SystemExitException => e
-    puts "Erreur lors du nettoyage : #{e.message}"
+    puts "Error : #{e.message}"
   end
 
   begin
     uninstaller = Gem::Uninstaller.new('atome', { executables: true, all: true, force: true })
     uninstaller.uninstall
   rescue Gem::InstallError => e
-    puts "Erreur lors de la désinstallation : #{e.message}"
+    puts "Error uninstalling : #{e.message}"
   end
 
   Dir.chdir('pkg') do
-    # Effectuez vos opérations dans le dossier 'pkg'
+    #  treatment here
   end
 
-  # if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-  #   # Code à exécuter sous Windows
-  #   `gem cleanup atome`
-  #   `echo yes | gem uninstall atome`
-  #   `cd pkg`
-  #
-  # elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-  #   # Code à exécuter sous MacOS
-  #   `gem cleanup atome;yes | gem uninstall atome;cd pkg`
-  # else
-  #   # Code à exécuter sous Unix/Linux
-  #   `gem cleanup atome;yes | gem uninstall atome;cd pkg`
-  # end
 
 end
 task :reset_cache do
   FileUtils.rm_rf('./tmp')
   FileUtils.rm_rf('./pkg')
-  # if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-  #   # Code à exécuter sous Windows
-  #   `rmdir /s /q .\\tmp`
-  #   `rmdir /s /q .\\pkg`
-  #
-  # elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-  #   # Code à exécuter sous MacOS
-  #   `rm  -r -f ./tmp`
-  #   `rm  -r -f ./pkg`
-  # else
-  #   # Code à exécuter sous Unix/Linux
-  #   `rm  -r -f ./tmp`
-  #   `rm  -r -f ./pkg`
-  # end
-
 end
 
 def resolve_requires(file_path, root_path, processed_files = Set.new, depth = 0)
@@ -142,73 +114,6 @@ task :test_wasm do
   puts 'atome wasm is build and running!'
 end
 
-# task :test_wasm_osx_x86 do
-#   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-#   project_name = :test
-#   source = '.'
-#   destination = './tmp'
-#   script_source = './test/application'
-#   wasi_file = 'wasi-vfs-osx_x86'
-#   host_mode = 'pure_wasm'
-#   create_application(source, destination, project_name)
-#   wasm_common(source, destination, project_name, wasi_file, script_source, host_mode, script_source)
-#   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-#     # Code à exécuter sous Windows
-#     `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
-#   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-#     # Code à exécuter sous MacOS
-#     `open ./tmp/#{project_name}/src/index.html`
-#   else
-#     # Code à exécuter sous Unix/Linux
-#     `open ./tmp/#{project_name}/src/index.html`
-#   end
-#
-#   puts 'atome wasm is build and running!'
-# end
-# task :test_wasm_windows do
-#   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-#   project_name = :test
-#   source = '.'
-#   destination = './tmp'
-#   script_source = './test/application'
-#   wasi_file = 'wasi-vfs.exe pack'
-#   host_mode = 'pure_wasm'
-#   create_application(source, destination, project_name)
-#   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-#   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-#     # Code à exécuter sous Windows
-#     `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
-#   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-#     # Code à exécuter sous MacOS
-#     `open ./tmp/#{project_name}/src/index.html`
-#   else
-#     # Code à exécuter sous Unix/Linux
-#     `open ./tmp/#{project_name}/src/index.html`
-#   end
-#   puts 'atome wasm is build and running!'
-# end
-# task :test_wasm_unix do
-#   # wasi Source here : https://github.com/kateinoigakukun/wasi-vfs/releases
-#   project_name = :test
-#   source = '.'
-#   destination = './tmp'
-#   script_source = './test/application'
-#   wasi_file = 'wasi-vfs-unix pack tmp'
-#   host_mode = 'pure_wasm'
-#   create_application(source, destination, project_name)
-#   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-#   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-#     # Code à exécuter sous Windows
-#     `start "" ".\\tmp\\#{project_name}\\src\\index.html"`
-#   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-#     # Code à exécuter sous MacOS
-#     `open ./tmp/#{project_name}/src/index.html`
-#   else
-#     # Code à exécuter sous Unix/Linux
-#     `open ./tmp/#{project_name}/src/index.html`
-#   end
-#   puts 'atome wasm is build and running!'
-# end
 
 task :test_opal do
   project_name = :test
@@ -232,13 +137,13 @@ task :test_opal do
   build_opal_application(source, destination, project_name)
   # open the app
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # Code à exécuter sous Windows
+    # code to exec for Windows
     `start "" "#{destination}\\#{project_name}\\src\\index_opal.html"`
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # Code à exécuter sous MacOS
+    # code to exec for MacOS
     `open #{destination}/#{project_name}/src/index_opal.html`
   else
-    # Code à exécuter sous Unix/Linux
+    # code to exec for Unix/Linux
     `open #{destination}/#{project_name}/src/index_opal.html`
   end
 
@@ -253,7 +158,6 @@ task :server_wasm do
   host_mode = 'pure_wasm'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
-  # `open ./tmp/#{project_name}/src/index.html`
   puts 'atome wasm is build and running!'
   build_for_server(destination, project_name, 9292, :production)
 
@@ -284,13 +188,13 @@ task :test_server do
     sleep 1
 
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-      # Code à exécuter sous Windows
+      # code to exec for Windows
       `start "" "http://localhost:9292"`
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-      # Code à exécuter sous MacOS
+      # code to exec for MacOS
       `open http://localhost:9292`
     else
-      # Code à exécuter sous Unix/Linux
+      # code to exec for Unix/Linux
       `open http://localhost:9292`
     end
 
@@ -387,14 +291,14 @@ task :build_gem do
   `rake build` # run build_app thru ARGV in exe atome
   # installing  the gem
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # Code à exécuter sous Windows
+    # code to exec for Windows
     `cd pkg && gem install atome --local`
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # Code à exécuter sous MacOS
+    # code to exec for MacOS
     `cd pkg; gem install atome --local`
     # open the app
   else
-    # Code à exécuter sous Unix/Linux
+    # code to exec for Unix/Linux
     `cd pkg; gem install atome --local`
     # open the app
   end
@@ -402,18 +306,32 @@ task :build_gem do
   puts 'atome gem built and installed'
 end
 
-# task :run_wasm_client_code do
-#   app_name = :test
-#   dest_path = './tmp/'
-#   user_code = './test/application'
-#   # user_code = './vendor/assets/application'
-#   # user_code = './test/client/delices_de_vezelin'
-#   application_location = "#{dest_path}#{app_name}"
-#   source_file = "#{user_code}/index.rb"
-#   new_file_content = generate_resolved_file(source_file)
-#   index_html = File.read('vendor/assets/src/index.html')
-#   index_html = index_html.sub('</html>', "<script type='text/ruby' >#{new_file_content}</script>\n</html>")
-#   File.write("#{application_location}/src/index.html", index_html)
-#   `open #{application_location}/src/index.html`
-#   puts 'atome wasm user code executed'
-# end
+
+task :push_gem do
+  # pushing  the gem
+
+  dir_path = './pkg'
+  entries = Dir.entries(dir_path)
+
+  gem_files = entries.select { |file| file.end_with?('.gem') }
+
+  sorted_versions = gem_files.map { |file|
+    file.scan(/\d+\.\d+\.\d+\.\d+\.\d+/).first
+  }.compact.sort_by { |version| Gem::Version.new(version) }
+
+  latest_version = sorted_versions.last
+  latest_file = gem_files.find { |file| file.include?(latest_version) }
+
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # code to exec for Windows
+    `cd pkg && gem push #{latest_file}`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # code to exec for MacOS
+    `cd pkg; gem push #{latest_file}`
+    # open the app
+  else
+    # code to exec for Unix/Linux
+    `cd pkg; gem push #{latest_file}`
+  end
+  puts "#{latest_file} pushed"
+end

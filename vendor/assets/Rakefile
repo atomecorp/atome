@@ -1,3 +1,4 @@
-# task :build do
-#   `atome build`
-# end
+# used by guard , see ./Guardfile
+task :build do
+  `atome build`
+end
