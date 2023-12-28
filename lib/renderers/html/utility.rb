@@ -87,3 +87,4 @@ end
 new({ renderer: :html, method: :selected, specific: :text  }) do |value, &bloc|
   html.select_text(value)
 end
+

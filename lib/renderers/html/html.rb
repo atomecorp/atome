@@ -277,13 +277,13 @@ class HTML
   end
 
   def select_text(range)
-    # TODO : use atome colorobject  instead of basic css color
-    back_color ='rgba(150,150,255, 0.9)'
-      text_color =:white
-    if range.instance_of?(Hash)
-      back_color=range[:color]
-      text_color=range[:text]
-    end
+    # TODO : use atome color object  instead of basic css color
+    back_color = grab(:back_selection)
+    text_color = grab(:text_selection)
+
+    back_color_rgba = "rgba(#{back_color.red * 255},#{back_color.green * 255},#{back_color.blue * 255}, #{back_color.alpha})"
+    text_color_rgba = "rgba(#{text_color.red * 255},#{text_color.green * 255},#{text_color.blue * 255}, #{text_color.alpha})"
+
     range = JS.global[:document].createRange()
     range.selectNodeContents(@element)
     selection = JS.global[:window].getSelection()
@@ -291,11 +291,9 @@ class HTML
     selection.addRange(range)
     @element.focus()
     style = JS.global[:document].createElement('style')
-    style[:innerHTML] = "::selection { background-color: #{back_color}; color: #{text_color}; }"
+    style[:innerHTML] = "::selection { background-color: #{back_color_rgba}; color: #{text_color_rgba}; }"
     JS.global[:document][:head].appendChild(style)
-    # puts @element[:innerText].to_s.length
     return unless @element[:innerText].to_s.length == 1
-
     @element[:innerHTML] = '&#8203;'
   end
 

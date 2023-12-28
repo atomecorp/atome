@@ -47,8 +47,8 @@
 # require "./examples/animation"
 # require "./examples/resize"
 box({id: :my_box})
-require "./examples/drop"
-# require "./examples/select_text"
+# require "./examples/drop"
+require "./examples/select_text"
 # require "./examples/edit"
 # require "./examples/on_resize"
 # require "./examples/keyboard"

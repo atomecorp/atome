@@ -44,6 +44,16 @@ Atome.new(
     red: 0.6, green: 0.6, blue: 0.6, alpha: 1 }
 )
 
+Atome.new(
+  { renderers: default_render, id: :back_selection, type: :color, tag: ({ system: true, persistent: true }),
+    red: 0.6, green: 0.6, blue: 0.1, alpha: 0.7}
+)
+
+Atome.new(
+  { renderers: default_render, id: :text_selection, type: :color, tag: ({ system: true, persistent: true }),
+    red: 0.3, green: 0.3, blue: 0.3, alpha: 0.9}
+)
+
 # system object creation
 # the black_matter is used to store un materialized atomes
 Atome.new(
