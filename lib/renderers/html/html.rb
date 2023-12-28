@@ -248,7 +248,45 @@ class HTML
     JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     id(id)
+    ####
+
+    # editable_pres = JS.global[:document].querySelectorAll('pre[contenteditable="true"]')
+    # editable_pres_array = Array.new(editable_pres[:length].to_i) { |i| editable_pres.call(:item, i) }
+    # editable_pres_array.each do |pre|
+    #   pre.addEventListener('input') do
+    #     if pre[:innerText].strip == ''
+    #       pre[:innerHTML] = '&#8203;' # Insère un caractère d'espace insécable
+    #     end
+    #   end
+    # end
+
+    # editable_pres = JS.global[:document].querySelectorAll('pre[contenteditable="true"]')
+    #
+    # editable_pres_array = Array.new(editable_pres[:length].to_i) { |i| editable_pres.call(:item, i) }
+    # editable_pres_array.each do |pre|
+    #   pre.addEventListener('click') do
+    #     # Focus sur l'élément pour activer le curseur
+    #     pre.focus()
+    #     alert :ok
+    #     # Optionnel : Ajoutez du style pour rendre le curseur plus visible
+    #     pre[:style][:caretColor] = 'blue' # Changez la couleur du curseur en bleu
+    #   end
+    # end
+    ###
     self
+  end
+
+  def select_text(range)
+    range = JS.global[:document].createRange()
+    range.selectNodeContents(@element)
+    selection = JS.global[:window].getSelection()
+    selection.removeAllRanges()
+    selection.addRange(range)
+    @element.focus()
+    # puts @element[:innerText].to_s.length
+    return unless @element[:innerText].to_s.length == 1
+    @element[:innerHTML] = '&#8203;'
+
   end
 
   def image(id)
@@ -895,28 +933,28 @@ class HTML
 
   def over_enter(_option)
     @over_enter = @original_atome.instance_variable_get('@over_code')[:enter]
-    if @over_enter
-      @over_enter_callback = lambda do |event|
-        # we use .call instead of instance_eval because instance_eval bring the current object as context
-        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-        # group etc..
-        @over_enter.call(event) if @over_enter.is_a?(Proc)
-      end
-      @element.addEventListener('mouseenter', @over_enter_callback)
+    return unless @over_enter
+    @over_enter_callback = lambda do |event|
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @over_enter.call(event) if @over_enter.is_a?(Proc)
     end
+    @element.addEventListener('mouseenter', @over_enter_callback)
+
   end
 
   def over_leave(_option)
     @over_leave = @original_atome.instance_variable_get('@over_code')[:leave]
-    if @over_leave
-      @over_leave_callback = lambda do |event|
-        # we use .call instead of instance_eval because instance_eval bring the current object as context
-        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-        # group etc..
-        @over_leave.call(event) if @over_leave.is_a?(Proc)
-      end
-      @element.addEventListener('mouseleave', @over_leave_callback)
+    return unless @over_leave
+    @over_leave_callback = lambda do |event|
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+      # group etc..
+      @over_leave.call(event) if @over_leave.is_a?(Proc)
     end
+    @element.addEventListener('mouseleave', @over_leave_callback)
+
   end
 
   def over_remove(option)
@@ -1030,7 +1068,6 @@ class HTML
 
   end
 
-
   def internet
     JS.eval('return navigator.onLine')
   end
@@ -1098,11 +1135,11 @@ class HTML
   def play_animation(properties)
     puts 'change for standard method : action'
     required_keys = [:from, :to, :duration]
-    if properties.is_a?(Hash) && (required_keys - properties.keys).empty?
-      animate(properties)
-    else
+    unless properties.is_a?(Hash) && (required_keys - properties.keys).empty?
       raise ArgumentError, "Properties must be a hash with :from, :to, and :duration keys"
     end
+    animate(properties)
+
   end
 
   def stop_animation

@@ -82,3 +82,8 @@ new({ renderer: :html, method: :import, type: :blob }) do |_params, bloc|
   end
 
 end
+
+
+new({ renderer: :html, method: :selected, specific: :text  }) do |value, &bloc|
+  html.select_text(value)
+end

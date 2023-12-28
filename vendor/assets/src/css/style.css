@@ -18,6 +18,8 @@ html, body {
 }
 
 pre {
+    background-color: #00bb00;
+    min-width: 100px;
     margin: 0;
     padding: 0;
 }

@@ -46,7 +46,7 @@
 # require "./examples/play"
 # require "./examples/animation"
 # require "./examples/resize"
-box({id: :exept})
+box({id: :my_box})
 require "./examples/drop"
 # require "./examples/on_resize"
 # require "./examples/keyboard"
