@@ -16,12 +16,16 @@ html, body {
     z-index: 0;
     color: lightgray;
 }
-
 pre {
     min-width: 100px;
+    background-color: #00bb00;
     margin: 0;
     padding: 0;
 }
+/*::selection {*/
+/*    color: black;*/
+/*    background-color: black;*/
+/*}*/
 
 .matrix{
     background-color: blue;
@@ -158,3 +162,5 @@ pre {
 /*    color: transparent;*/
 /*    background: none;*/
 /*}*/
+
+

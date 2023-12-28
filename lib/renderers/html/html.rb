@@ -277,16 +277,26 @@ class HTML
   end
 
   def select_text(range)
+    # TODO : use atome colorobject  instead of basic css color
+    back_color ='rgba(150,150,255, 0.9)'
+      text_color =:white
+    if range.instance_of?(Hash)
+      back_color=range[:color]
+      text_color=range[:text]
+    end
     range = JS.global[:document].createRange()
     range.selectNodeContents(@element)
     selection = JS.global[:window].getSelection()
     selection.removeAllRanges()
     selection.addRange(range)
     @element.focus()
+    style = JS.global[:document].createElement('style')
+    style[:innerHTML] = "::selection { background-color: #{back_color}; color: #{text_color}; }"
+    JS.global[:document][:head].appendChild(style)
     # puts @element[:innerText].to_s.length
     return unless @element[:innerText].to_s.length == 1
-    @element[:innerHTML] = '&#8203;'
 
+    @element[:innerHTML] = '&#8203;'
   end
 
   def image(id)
@@ -934,6 +944,7 @@ class HTML
   def over_enter(_option)
     @over_enter = @original_atome.instance_variable_get('@over_code')[:enter]
     return unless @over_enter
+
     @over_enter_callback = lambda do |event|
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
@@ -947,6 +958,7 @@ class HTML
   def over_leave(_option)
     @over_leave = @original_atome.instance_variable_get('@over_code')[:leave]
     return unless @over_leave
+
     @over_leave_callback = lambda do |event|
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
@@ -1138,6 +1150,7 @@ class HTML
     unless properties.is_a?(Hash) && (required_keys - properties.keys).empty?
       raise ArgumentError, "Properties must be a hash with :from, :to, and :duration keys"
     end
+
     animate(properties)
 
   end

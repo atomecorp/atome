@@ -48,6 +48,8 @@
 # require "./examples/resize"
 box({id: :my_box})
 require "./examples/drop"
+# require "./examples/select_text"
+# require "./examples/edit"
 # require "./examples/on_resize"
 # require "./examples/keyboard"
 # require "./examples/hypertext"
@@ -67,7 +69,6 @@ require "./examples/drop"
 # require "./examples/attach"
 # require "./examples/grab"
 # require "./examples/match"
-# require "./examples/edit"
 # require "./examples/scroll"
 # require "./examples/video"
 
