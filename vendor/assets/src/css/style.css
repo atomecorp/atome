@@ -18,14 +18,10 @@ html, body {
 }
 pre {
     min-width: 100px;
-    background-color: #00bb00;
     margin: 0;
     padding: 0;
 }
-/*::selection {*/
-/*    color: black;*/
-/*    background-color: black;*/
-/*}*/
+
 
 .matrix{
     background-color: blue;
