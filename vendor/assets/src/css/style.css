@@ -17,6 +17,11 @@ html, body {
     color: lightgray;
 }
 
+pre {
+    margin: 0;
+    padding: 0;
+}
+
 .matrix{
     background-color: blue;
     border-radius: 9px;
