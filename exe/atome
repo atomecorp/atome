@@ -9,9 +9,7 @@ require 'opal'
 require 'parser'
 require 'uglifier'
 
-
 # utils
-
 
 def modify_and_copy_file(source_path, destination_path, destination_dir)
 
@@ -335,12 +333,12 @@ def wasm_initialize (source, destination, project_name, wasi_source)
   system(command)
 end
 
-def guard_check
-  loop do
-    sleep 1
-  end
-  nil unless ARGV.include?('guard')
-end
+# def guard_check
+#   # loop do
+#   #   sleep 1
+#   # end
+#   nil unless ARGV.include?('guard')
+# end
 
 def build_for_wasm(source, destination, project_name, wasi_file)
   wasm_initialize(source, destination, project_name, wasi_file)
@@ -429,38 +427,43 @@ src/favicon.ico src/index.html src/index_opal.html src/index_server.html src/ind
 end
 
 if ARGV.include?('guard')
-  Thread.new do
-    sleep 1.2
-    Dir.chdir("./#{location}") do
-      `guard`
-    end
+  # puts "guarding"
+  # sleep 1.2
+  Dir.chdir("./#{location}") do
+    `bundle exec guard`
   end
+  # end
 end
 
 if ARGV.include?('run')
-
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # code to exec with Windows
-    current_path = `cd`.chomp
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # code to exec with MacOS
-    current_path = `pwd`.chomp
-  else
-    # code to exec with Unix/Linux
-    current_path = `pwd`.chomp
-  end
-  segments = current_path.split("/")
+  current_path = if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+                   # code to exec with Windows
+                   `cd`.chomp
+                 elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+                   # code to exec with MacOS
+                   `pwd`.chomp
+                 else
+                   # code to exec with Unix/Linux
+                   `pwd`.chomp
+                 end
+  segments = current_path.split('/')
   project_name = segments.last
-  destination = segments[0...-1].join("/")
+  destination = segments[0...-1].join('/')
   case ARGV[1]
   when 'opal'
+    puts 'building Opal'
     build_opal_application(nil, destination, project_name)
+    # build host_mode
+    build_host_mode(destination, project_name, 'web-opal')
+    # build Opal extensions
     `open #{destination}/#{project_name}/src/index_opal.html`
   when 'wasm' # osx wasi
+    puts 'building Ruby wasm'
     wasi_file = 'wasi-vfs-osx_arm'
     wasm_common(source, destination, project_name, wasi_file, :pure_wasi)
     `open #{current_path}/src/index.html`
   when 'server'
+    puts 'building Server'
     build_opal_application(nil, destination, project_name)
     threads = []
     threads << Thread.new do
@@ -480,23 +483,31 @@ if ARGV.include?('run')
     end
     build_for_server(destination, project_name, 9292, :production)
   when 'osx'
+    puts 'building osx'
     wasi_file = 'wasi-vfs-osx_arm'
     wasm_common(source, destination, project_name, wasi_file, :tauri)
     build_for_osx(destination)
   when 'android'
+    puts 'building Android'
+
     # to be filled
   when 'ios'
+    puts 'building iOS'
+
     # to be filled
   when 'windows'
+    puts 'building Windows'
     # to be filled
   when 'linux'
+    puts 'building Linux'
     # to be filled
   when 'freebsd'
+    puts 'building Freebsd'
     # to be filled
   else
+    puts 'building Default(Ruby Wasm)'
     wasi_file = 'wasi-vfs-osx_arm'
     wasm_common(source, destination, project_name, wasi_file, 'pure_wasm')
-
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec with Windows
       `start "" "#{current_path}\\src\\index.html"`
@@ -512,9 +523,22 @@ if ARGV.include?('run')
 
 end
 
-
 # if ARGV.include?('build')
-#   puts "kool"
+#   # project_name = segments.last
+#   puts "( source: #{source}, destination: #{destination}, project_name: #{project_name})"
+#   # build_opal_library(source, destination, project_name)
+#   # build parser
+#   # build_opal_parser(source, destination, project_name)
+#   # # build atome kernel
+#   # build_atome_kernel_for_opal(source, destination, project_name)
+#   # # build host_mode
+#   # build_host_mode(destination, project_name, 'web-opal')
+#   # # build Opal extensions
+#   # build_opal_extensions(source, destination, project_name)
+#   # # build application
+#   # build_opal_application(source, destination, project_name)
 #   # path = found_path('build')
 #   # build_app(path, production)
 # end
+
+

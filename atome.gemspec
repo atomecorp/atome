@@ -6,13 +6,13 @@ Gem::Specification.new do |spec|
   spec.name = 'atome'
   spec.version = Atome::VERSION
   spec.authors = ['Jean-Eric Godard']
-  spec.email = ['jeezs@atopme.one']
+  spec.email = ['jeezs@atome.one']
 
   spec.summary = 'the creative framework'
   spec.description = 'the creative framework.'
   spec.homepage = 'https://atome.one'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 3.1'
+  spec.required_ruby_version = '>= 3.3'
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
 
   spec.metadata['homepage_uri'] = spec.homepage
@@ -32,11 +32,12 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'arduino_firmata', '~> 0.3'
+  # spec.add_runtime_dependency 'arduino_firmata', '~> 0.3'
   spec.add_runtime_dependency 'eventmachine', '~> 1.2.7'
   spec.add_runtime_dependency 'faye-websocket', '~> 0.1'
   spec.add_runtime_dependency 'geocoder', '~> 1.8'
   spec.add_runtime_dependency 'guard', '~> 2.1'
+  # # spec.add_runtime_dependency 'guard', '2.1'
   spec.add_runtime_dependency 'guard-rake', '~> 1.0'
   spec.add_runtime_dependency 'image_size', '~> 3.0'
   spec.add_runtime_dependency 'mail', '~> 2.1'
@@ -58,8 +59,6 @@ Gem::Specification.new do |spec|
   # the gem below are need to make the atome server works on Windows
   spec.add_runtime_dependency 'win32-security', '~> 0.5.0'
   spec.add_runtime_dependency 'tzinfo-data', '~> 1.2023.4'
-
-
 
 
   # Uncomment to register a new dependency of your gem

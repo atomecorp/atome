@@ -13,7 +13,7 @@
 # require "./examples/find"
 
 # works
-# require './works/vie'
+require './works/vie'
 # require './works/photos'
 # require './works/photos6'
 # require './test'
@@ -46,9 +46,10 @@
 # require "./examples/play"
 # require "./examples/animation"
 # require "./examples/resize"
-box({id: :my_box})
+# box({id: :my_box})
 # require "./examples/drop"
-require "./examples/select_text"
+# require "./examples/file"
+# require "./examples/select_text"
 # require "./examples/edit"
 # require "./examples/on_resize"
 # require "./examples/keyboard"

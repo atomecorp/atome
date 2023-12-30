@@ -1,4 +1,4 @@
 # used by guard , see ./Guardfile
 task :build do
-  `atome build`
+  `atome run opal`
 end
