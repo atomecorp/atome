@@ -414,7 +414,17 @@ source = Pathname(__FILE__).parent.parent.to_s
 if ARGV.include?('create')
   create_application(source, destination, project_name)
   # create_application(source, destination, project_name, production)
-
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build host_mode
+  build_host_mode(destination, project_name, 'web-opal')
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
   build_opal_application(source, destination, project_name)
 end
 
@@ -471,8 +481,6 @@ if ARGV.include?('run')
     # build host_mode
     build_host_mode(destination, project_name, 'web-opal')
     # build Opal extensions
-
-
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
       `start "" "#{destination}\\#{project_name}\\src\\index_opal.html"`
