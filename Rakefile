@@ -114,7 +114,6 @@ task :test_wasm do
   puts 'atome wasm is build and running!'
 end
 
-
 task :test_opal do
   project_name = :test
   source = '.'

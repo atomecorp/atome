@@ -7,6 +7,7 @@
 # require "./examples/generator_and_build"
 # require "./examples/display"
 # require "./examples/monitor"
+# TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
 
 #in progreess
 
