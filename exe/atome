@@ -380,16 +380,16 @@ end
 # end
 
 # below we analyse the ARGV
-if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-  # code to exec with Windows
-  location = "\\"
-elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-  # code to exec with MacOS
-  location = '/'
-else
-  # code to exec with Unix/Linux
-  location = '/'
-end
+location = if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+             # code to exec with Windows
+             '\\'
+           elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+             # code to exec with MacOS
+             '/'
+           else
+             # code to exec with Unix/Linux
+             '/'
+           end
 
 project_name = ARGV[1]
 
@@ -471,12 +471,35 @@ if ARGV.include?('run')
     # build host_mode
     build_host_mode(destination, project_name, 'web-opal')
     # build Opal extensions
-    `open #{destination}/#{project_name}/src/index_opal.html`
+
+
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+      # code to exec for Windows
+      `start "" "#{destination}\\#{project_name}\\src\\index_opal.html"`
+    elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+      # code to exec for MacOS
+      `open #{destination}/#{project_name}/src/index_opal.html`
+    else
+      # code to exec for Unix/Linux
+      `open #{destination}/#{project_name}/src/index_opal.html`
+    end
+
+
   when 'wasm' # osx wasi
     puts 'building Ruby wasm'
     wasi_file = 'wasi-vfs-osx_arm'
     wasm_common(source, destination, project_name, wasi_file, :pure_wasi)
-    `open #{current_path}/src/index.html`
+
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+      # code to exec for Windows
+      `start "" "#{destination}\\#{project_name}\\src\\index.html"`
+    elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+      # code to exec for MacOS
+      `open #{destination}/#{project_name}/src/index.html`
+    else
+      # code to exec for Unix/Linux
+      `open #{destination}/#{project_name}/src/index.html`
+    end
   when 'server'
     puts 'building Server'
     build_opal_application(nil, destination, project_name)
