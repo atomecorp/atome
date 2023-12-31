@@ -447,25 +447,23 @@ src/favicon.ico src/index.html src/index_opal.html src/index_server.html src/ind
 end
 
 if ARGV.include?('guard')
-  # puts "guarding"
-  # sleep 1.2
+  puts 'guarding'
   Dir.chdir("./#{location}") do
-    `bundle exec guard`
+    `guard`
   end
-  # end
 end
 
 if ARGV.include?('run')
-  current_path = if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-                   # code to exec with Windows
-                   `cd`.chomp
-                 elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-                   # code to exec with MacOS
-                   `pwd`.chomp
-                 else
-                   # code to exec with Unix/Linux
-                   `pwd`.chomp
-                 end
+  # current_path = if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+  #                  # code to exec with Windows
+  #                  `cd`.chomp
+  #                elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+  #                  # code to exec with MacOS
+  #                  `pwd`.chomp
+  #                else
+  #                  # code to exec with Unix/Linux
+  #                  `pwd`.chomp
+  #                end
   # segments = current_path.split('/')
   # project_name = segments.last
   # destination = segments[0...-1].join('/')
@@ -477,6 +475,7 @@ if ARGV.include?('run')
   case ARGV[1]
   when 'opal'
     puts 'building Opal'
+
     build_opal_application(nil, destination, project_name)
     # build host_mode
     build_host_mode(destination, project_name, 'web-opal')
@@ -492,7 +491,7 @@ if ARGV.include?('run')
       `open #{destination}/#{project_name}/src/index_opal.html`
     end
 
-
+    puts "opal ready!"
   when 'wasm' # osx wasi
     puts 'building Ruby wasm'
     wasi_file = 'wasi-vfs-osx_arm'
