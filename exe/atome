@@ -333,13 +333,6 @@ def wasm_initialize (source, destination, project_name, wasi_source)
   system(command)
 end
 
-# def guard_check
-#   # loop do
-#   #   sleep 1
-#   # end
-#   nil unless ARGV.include?('guard')
-# end
-
 def build_for_wasm(source, destination, project_name, wasi_file)
   wasm_initialize(source, destination, project_name, wasi_file)
 end
@@ -399,11 +392,6 @@ STR
   end
 
 end
-
-# def run_application(build_target, location, port = 9292, production = false)
-#   build_app(location, nil)
-#   run_case(build_target, location, port, production)
-# end
 
 # below we analyse the ARGV
 location = if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
@@ -477,54 +465,73 @@ project_name = current_path.basename.to_s
 destination = current_path.parent.to_s
 
 if ARGV.include?('run')
-  guard_content = ''
-  case ARGV[1]
-  when 'opal'
-    guard_content = <<STR
+
+
+    guard_content = ''
+    case ARGV[1]
+    when 'opal'
+      guard_content = <<STR
 guard 'rake', first_match: true, :task => 'build_opal' do
   watch(%r{^server.+\.rb})
   watch(%r{^application.+\.rb})
 end
 STR
-  when 'wasm' # osx wasi
-    guard_content = <<STR
+
+      File.open("./#{location}/Guardfile", "w") do |f|
+        f.write(guard_content)
+      end
+      puts 'guarding'
+      Dir.chdir("./#{location}") do
+        `guard`
+      end
+    when 'wasm' # osx wasi
+      guard_content = <<STR
 guard 'rake', first_match: true, :task => 'build_wasm' do
   watch(%r{^server.+\.rb})
   watch(%r{^application.+\.rb})
 end
 STR
-  when 'server'
-    guard_content = <<STR
+
+      File.open("./#{location}/Guardfile", "w") do |f|
+        f.write(guard_content)
+      end
+      puts 'guarding'
+      Dir.chdir("./#{location}") do
+        `guard`
+      end
+    when 'server'
+      guard_content = <<STR
 guard 'rake', first_match: true, :task => 'build_server' do
   watch(%r{^server.+\.rb})
   watch(%r{^application.+\.rb})
 end
 
 STR
-  when 'osx'
 
-  when 'android'
-    # to be filled
-  when 'ios'
-    # to be filled
-  when 'windows'
-    # to be filled
-  when 'linux'
-    # to be filled
-  when 'freebsd'
-    # to be filled
-  end
+      File.open("./#{location}/Guardfile", "w") do |f|
+        f.write(guard_content)
+      end
+      puts 'guarding'
+      threads = []
+      Dir.chdir("./#{location}") do
+        threads << Thread.new do
+          `guard`
+        end
+      end
+    when 'osx'
 
-  File.open("./#{location}/Guardfile", "w") do |f|
-    f.write(guard_content)
-  end
-  puts 'guarding'
-  threads = []
-  Dir.chdir("./#{location}") do
-    threads << Thread.new do
-      `guard`
+    when 'android'
+      # to be filled
+    when 'ios'
+      # to be filled
+    when 'windows'
+      # to be filled
+    when 'linux'
+      # to be filled
+    when 'freebsd'
+      # to be filled
     end
-  end
+
 
 end
 
@@ -631,3 +638,4 @@ end
 if ARGV.include?('freebsd')
   puts 'building Freebsd'
 end
+
