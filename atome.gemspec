@@ -37,7 +37,11 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'faye-websocket', '~> 0.1'
   spec.add_runtime_dependency 'geocoder', '~> 1.8'
   spec.add_runtime_dependency 'guard', '~> 2.1'
+  # spec.add_runtime_dependency 'guard-shell', '~> 0.7.2'
+  # spec.add_runtime_dependency 'guard-puma', '~> 0.8.1'
+  # spec.add_runtime_dependency 'shotgun', '~> 0.9.2'
   spec.add_runtime_dependency 'guard-rake', '~> 1.0'
+  # spec.add_runtime_dependency 'rerun', '~> 0.14.0'
   spec.add_runtime_dependency 'image_size', '~> 3.0'
   spec.add_runtime_dependency 'mail', '~> 2.1'
   spec.add_runtime_dependency 'net-ping', '~> 2.0'
@@ -56,8 +60,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'uglifier', '~> 0.1'
   #spec.add_runtime_dependency 'webrick', '~> 1.7.0'
   # the gem below are need to make the atome server works on Windows
-  spec.add_runtime_dependency 'win32-security', '~> 0.5.0'
   spec.add_runtime_dependency 'tzinfo-data', '~> 1.2023.4'
+  spec.add_runtime_dependency 'win32-security', '~> 0.5.0'
 
 
   # Uncomment to register a new dependency of your gem
