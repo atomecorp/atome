@@ -195,7 +195,7 @@ new ({ particle: :build, store: false }) do |params|
   #
   # now we'll created the wanted atomes
   # here are the default params
-  default_styles = { type: :shape, renderers: [:html], width: 66, height: 66, color: :gray, left: 12, top: 12, copies: 0, attach: [:view] }
+  default_styles = { type: :shape, renderers: [:html], width: 66, height: 66, color: :gray, left: 12, top: 12, copies: 0, attach: :view }
   params = default_styles.merge(params)
   color_found = color(params[:color])
   left_pos = params[:left]

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-Atome.new(
-  { renderers: [:html], id: :test_box, type: :shape, attach: :view, apply: [:shape_color],
-    tag: { system: true }, left: 120,  top: 120, bottom: 0, width: 333, height:333, overflow: :auto,
-  }
+Atome.new( { renderers: [:html], attach: :view,id: :my_test_box, type: :shape, apply: [:shape_color],
+             left: 120, top: 0, width: 100, smooth: 15, height: 100, overflow: :visible, attached: [], center: true
+           })
 
-)

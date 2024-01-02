@@ -84,7 +84,6 @@ new({ atome: :human }) do |params|
   Universe.add_user = params[:id]
 end
 new({ atome: :machine })
-
 new({ atome: :paint })
 new({ atome: :vector })
 
