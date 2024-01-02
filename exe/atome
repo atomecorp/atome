@@ -201,7 +201,6 @@ def update_application(source, destination, project_name)
 end
 
 def build_opal_parser(source, destination, project_name)
-
   parser_js = "#{destination}/#{project_name}/src/js/opal/opal_parser.js"
   File.new parser_js, 'w'
   parser_content = Opal::Builder.build("#{source}/lib/platform_specific/opal/opal_parser.rb").to_s
@@ -393,6 +392,40 @@ STR
 
 end
 
+# utils
+def ensure_rb_extension(filename)
+  filename.end_with?('.rb') ? filename : "#{filename}.rb"
+end
+
+def find_requires(file)
+  requires = []
+  File.foreach(file) do |line|
+    trimmed_line = line.strip
+    if trimmed_line.start_with?('require ') || trimmed_line.start_with?('require_relative ')
+      match = trimmed_line.match(/['"]([^'"]+)['"]/)
+      if match
+        path = match[1].end_with?('.rb') ? match[1][0...-3] : match[1]
+        requires << path
+      end
+    end
+  end
+  requires
+end
+
+def copy_file(source, destination)
+  FileUtils.mkdir_p(File.dirname(destination))
+  FileUtils.cp(source, destination)
+end
+
+def copy_with_requires(source, destination, base_folder)
+  destination_file = File.join(destination, source.sub(base_folder + '/', ''))
+  copy_file(source, destination_file)
+  find_requires(source).each do |relative_path|
+    required_file = File.join(base_folder, "#{relative_path}.rb")
+    copy_with_requires(required_file, destination, base_folder) if File.exist?(required_file)
+  end
+end
+
 # below we analyse the ARGV
 location = if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
              # code to exec with Windows
@@ -479,42 +512,39 @@ project_name = current_path.basename.to_s
 destination = current_path.parent.to_s
 
 if ARGV.include?('run')
-
-
-    guard_content = ''
-    case ARGV[1]
-    when 'opal'
-      guard_content = <<STR
+  case ARGV[1]
+  when 'opal'
+    guard_content = <<STR
 guard 'rake', first_match: true, :task => 'build_opal' do
   watch(%r{^server.+\.rb})
   watch(%r{^application.+\.rb})
 end
 STR
 
-      File.open("./#{location}/Guardfile", "w") do |f|
-        f.write(guard_content)
-      end
-      puts 'guarding'
-      Dir.chdir("./#{location}") do
-        `guard`
-      end
-    when 'wasm' # osx wasi
-      guard_content = <<STR
+    File.open("./#{location}/Guardfile", "w") do |f|
+      f.write(guard_content)
+    end
+    puts 'guarding'
+    Dir.chdir("./#{location}") do
+      `guard`
+    end
+  when 'wasm' # osx wasi
+    guard_content = <<STR
 guard 'rake', first_match: true, :task => 'build_wasm' do
   watch(%r{^server.+\.rb})
   watch(%r{^application.+\.rb})
 end
 STR
 
-      File.open("./#{location}/Guardfile", "w") do |f|
-        f.write(guard_content)
-      end
-      puts 'guarding'
-      Dir.chdir("./#{location}") do
-        `guard`
-      end
-    when 'server'
-      guard_content = <<STR
+    File.open("./#{location}/Guardfile", "w") do |f|
+      f.write(guard_content)
+    end
+    puts 'guarding'
+    Dir.chdir("./#{location}") do
+      `guard`
+    end
+  when 'server'
+    guard_content = <<STR
 guard 'rake', first_match: true, :task => 'build_server' do
   watch(%r{^server.+\.rb})
   watch(%r{^application.+\.rb})
@@ -522,30 +552,28 @@ end
 
 STR
 
-      File.open("./#{location}/Guardfile", "w") do |f|
-        f.write(guard_content)
-      end
-      puts 'guarding'
-      threads = []
-      Dir.chdir("./#{location}") do
-        threads << Thread.new do
-          `guard`
-        end
-      end
-    when 'osx'
-
-    when 'android'
-      # to be filled
-    when 'ios'
-      # to be filled
-    when 'windows'
-      # to be filled
-    when 'linux'
-      # to be filled
-    when 'freebsd'
-      # to be filled
+    File.open("./#{location}/Guardfile", "w") do |f|
+      f.write(guard_content)
     end
-
+    puts 'guarding'
+    threads = []
+    Dir.chdir("./#{location}") do
+      threads << Thread.new do
+        `guard`
+      end
+    end
+  when 'osx'
+  when 'android'
+    # to be filled
+  when 'ios'
+    # to be filled
+  when 'windows'
+    # to be filled
+  when 'linux'
+    # to be filled
+  when 'freebsd'
+    # to be filled
+  end
 
 end
 
@@ -591,6 +619,7 @@ end
 if ARGV.include?('server')
   puts 'building Server'
   build_opal_application(nil, destination, project_name)
+  build_host_mode(destination, project_name, 'web-opal')
   threads = []
   threads << Thread.new do
     sleep 1
@@ -634,22 +663,34 @@ if ARGV.include?('osx')
   build_for_osx(destination)
 end
 
-if ARGV.include?('android')
-  puts 'building Android'
-end
+puts 'building Android' if ARGV.include?('android')
 
-if ARGV.include?('ios')
-  puts 'building iOS'
-end
-if ARGV.include?('windows')
-  puts 'building Windows'
+puts 'building iOS' if ARGV.include?('ios')
+puts 'building Windows' if ARGV.include?('windows')
+puts 'building Linux' if ARGV.include?('linux')
+puts 'building Freebsd' if ARGV.include?('freebsd')
+
+if ARGV.include?('sparkle')
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    temp_dir = 'C:\Windows\Temp'
+    # code to exec with Windows
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    temp_dir = '/tmp'
+    # code to exec with MacOS
+  else
+    temp_dir = '/tmp'
+    # code to exec with Unix/Linux
+  end
+  unless Dir.exist?("#{temp_dir}/atome_app")
+    # `cd #{temp_dir}; atome create atome_app;cd atome_app;atome run opal`
+    `cd #{temp_dir}; atome create atome_app`
+  end
+
+  project_name = ARGV[1]
+  project_name = ensure_rb_extension(project_name)
+  base_folder = File.dirname(project_name)
+
+  copy_with_requires(project_name, "#{temp_dir}/atome_app/application", base_folder)
+  `cd #{temp_dir}/atome_app;atome run opal`
 
 end
-if ARGV.include?('linux')
-  puts 'building Linux'
-
-end
-if ARGV.include?('freebsd')
-  puts 'building Freebsd'
-end
-
