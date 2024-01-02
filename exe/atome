@@ -458,6 +458,20 @@ src/favicon.ico src/index.html src/index_opal.html src/index_server.html src/ind
     source_item = "#{source}/vendor/assets/#{item}"
     FileUtils.cp_r(source_item, item)
   end
+  # now rebuilding aop lib
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build host_mode
+  build_host_mode(destination, project_name, 'web-opal')
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
+  build_opal_application(source, destination, project_name)
+
 end
 
 current_path = Pathname.new(Dir.pwd)
