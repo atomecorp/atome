@@ -413,6 +413,8 @@ def find_requires(file)
 end
 
 def copy_file(source, destination)
+  return if source == 'server.rb'
+
   FileUtils.mkdir_p(File.dirname(destination))
   FileUtils.cp(source, destination)
 end
@@ -577,99 +579,6 @@ STR
 
 end
 
-if ARGV.include?('opal')
-  puts 'building Opal'
-
-  build_opal_application(nil, destination, project_name)
-  # build host_mode
-  build_host_mode(destination, project_name, 'web-opal')
-  # build Opal extensions
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # code to exec for Windows
-    `start "" "#{destination}\\#{project_name}\\src\\index_opal.html"`
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # code to exec for MacOS
-    `open #{destination}/#{project_name}/src/index_opal.html`
-  else
-    # code to exec for Unix/Linux
-    `open #{destination}/#{project_name}/src/index_opal.html`
-  end
-
-  puts "opal ready!"
-end
-
-if ARGV.include?('wasm')
-  puts 'building Ruby wasm'
-  wasi_file = 'wasi-vfs-osx_arm'
-  wasm_common(source, destination, project_name, wasi_file, :pure_wasi)
-
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # code to exec for Windows
-    `start "" "#{destination}\\#{project_name}\\src\\index.html"`
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # code to exec for MacOS
-    `open #{destination}/#{project_name}/src/index.html`
-  else
-    # code to exec for Unix/Linux
-    `open #{destination}/#{project_name}/src/index.html`
-  end
-
-end
-
-if ARGV.include?('server')
-  puts 'building Server'
-  build_opal_application(nil, destination, project_name)
-  build_host_mode(destination, project_name, 'web-opal')
-  threads = []
-  threads << Thread.new do
-    sleep 1
-    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-      # code to exec with Windows
-      `start "" "#{destination}\\#{project_name}\\src\\index_opal.html`
-    elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-      # code to exec with MacOS
-      `open http://localhost:9292`
-    else
-      # code to exec with Unix/Linux
-      `open http://localhost:9292`
-    end
-  end
-  threads << Thread.new do
-    build_for_server(destination, project_name, 9292, false)
-  end
-
-  threads.each(&:join)
-end
-
-if ARGV.include?('server_refresh')
-  puts 're building Server'
-  build_opal_application(nil, destination, project_name)
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # code to exec with Windows
-    `start "" "#{destination}\\#{project_name}\\src\\index_opal.html`
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # code to exec with MacOS
-    `open http://localhost:9292`
-  else
-    # code to exec with Unix/Linux
-    `open http://localhost:9292`
-  end
-end
-
-if ARGV.include?('osx')
-  puts 'building osx'
-  wasi_file = 'wasi-vfs-osx_arm'
-  wasm_common(source, destination, project_name, wasi_file, :tauri)
-  build_for_osx(destination)
-end
-
-puts 'building Android' if ARGV.include?('android')
-
-puts 'building iOS' if ARGV.include?('ios')
-puts 'building Windows' if ARGV.include?('windows')
-puts 'building Linux' if ARGV.include?('linux')
-puts 'building Freebsd' if ARGV.include?('freebsd')
-
 if ARGV.include?('sparkle')
   temp_dir = if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
                'C:\Windows\Temp'
@@ -681,15 +590,126 @@ if ARGV.include?('sparkle')
                '/tmp'
                # code to exec with Unix/Linux
              end
-  unless Dir.exist?("#{temp_dir}/atome_app")
-    `cd #{temp_dir}; atome create atome_app`
-  end
 
+  `cd #{temp_dir}; atome create atome_app` unless Dir.exist?("#{temp_dir}/atome_app")
+  # search for server file
+  if File.exist?('server.rb')
+    file_content = File.read('server.rb')
+    File.write("#{temp_dir}/atome_app/server/atome_server.rb", file_content)
+    base_folder = File.dirname(project_name)
+    copy_with_requires('server.rb', "#{temp_dir}/atome_app/server", base_folder)
+  end
   project_name = ARGV[1]
-  project_name = 'index.rb' if project_name.nil?
+  if project_name.nil? || project_name == 'opal' || project_name == 'wasm' || project_name == 'server'
+    project_name = 'index.rb'
+  end
   project_name = ensure_rb_extension(project_name)
   base_folder = File.dirname(project_name)
   copy_with_requires(project_name, "#{temp_dir}/atome_app/application", base_folder)
-  `cd #{temp_dir}/atome_app;atome run opal`
+
+  if ARGV.include?('opal')
+    `cd #{temp_dir}/atome_app;atome run opal`
+
+  elsif ARGV.include?('wasm')
+    `cd #{temp_dir}/atome_app;atome run wasm`
+
+  elsif ARGV.include?('server')
+    `cd #{temp_dir}/atome_app;atome run server`
+  else
+    `cd #{temp_dir}/atome_app;atome run opal`
+  end
+else
+  if ARGV.include?('opal')
+    puts 'building Opal'
+
+    build_opal_application(nil, destination, project_name)
+    # build host_mode
+    build_host_mode(destination, project_name, 'web-opal')
+    # build Opal extensions
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+      # code to exec for Windows
+      `start "" "#{destination}\\#{project_name}\\src\\index_opal.html"`
+    elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+      # code to exec for MacOS
+      `open #{destination}/#{project_name}/src/index_opal.html`
+    else
+      # code to exec for Unix/Linux
+      `open #{destination}/#{project_name}/src/index_opal.html`
+    end
+
+    puts "opal ready!"
+  end
+
+  if ARGV.include?('wasm')
+    puts 'building Ruby wasm'
+    wasi_file = 'wasi-vfs-osx_arm'
+    wasm_common(source, destination, project_name, wasi_file, :pure_wasi)
+
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+      # code to exec for Windows
+      `start "" "#{destination}\\#{project_name}\\src\\index.html"`
+    elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+      # code to exec for MacOS
+      `open #{destination}/#{project_name}/src/index.html`
+    else
+      # code to exec for Unix/Linux
+      `open #{destination}/#{project_name}/src/index.html`
+    end
+
+  end
+
+  if ARGV.include?('server')
+    puts 'building Server'
+    build_opal_application(nil, destination, project_name)
+    build_host_mode(destination, project_name, 'web-opal')
+    threads = []
+    threads << Thread.new do
+      sleep 1
+      if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+        # code to exec with Windows
+        `start "" "#{destination}\\#{project_name}\\src\\index_opal.html`
+      elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+        # code to exec with MacOS
+        `open http://localhost:9292`
+      else
+        # code to exec with Unix/Linux
+        `open http://localhost:9292`
+      end
+    end
+    threads << Thread.new do
+      build_for_server(destination, project_name, 9292, false)
+    end
+
+    threads.each(&:join)
+  end
+
+  if ARGV.include?('server_refresh')
+    puts 're building Server'
+    build_opal_application(nil, destination, project_name)
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+      # code to exec with Windows
+      `start "" "#{destination}\\#{project_name}\\src\\index_opal.html`
+    elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+      # code to exec with MacOS
+      `open http://localhost:9292`
+    else
+      # code to exec with Unix/Linux
+      `open http://localhost:9292`
+    end
+  end
+
+  if ARGV.include?('osx')
+    puts 'building osx'
+    wasi_file = 'wasi-vfs-osx_arm'
+    wasm_common(source, destination, project_name, wasi_file, :tauri)
+    build_for_osx(destination)
+  end
+
+  puts 'building Android' if ARGV.include?('android')
+
+  puts 'building iOS' if ARGV.include?('ios')
+  puts 'building Windows' if ARGV.include?('windows')
+  puts 'building Linux' if ARGV.include?('linux')
+  puts 'building Freebsd' if ARGV.include?('freebsd')
 
 end
