@@ -79,7 +79,6 @@ Atome.new(
 machine_id = :dummy_machine
 # attention we must used two separate pass to avoid the password to be encode twice
 machine_password = { read: { atome: :star_wars }, write: { atome: :star_wars } }
-user_password = { read: { atome: :star_wars }, write: { atome: :star_wars } }
 
 # copy basket
 Atome.new({ renderers: [:html], id: :copy, collect: [], type: :group, tag: { system: true } })
@@ -90,6 +89,8 @@ Atome.new({ renderers: default_render, id: machine_id, type: :machine, password:
             name: :macAir, data: { date: '10090717' }, tag: { system: true } })
 
 #user
+user_password = {global: :star_win, read: { atome: :star_wars }, write: { atome: :star_wars } }
+
 human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' },selection: [], tag: { system: true } , attach: :user_view })
 
 Universe.current_machine = machine_id
@@ -115,4 +116,4 @@ def atome_infos
   puts "server: #{server}"
 end
 
-atome_infos
+# atome_infos

@@ -2,6 +2,7 @@
 
 # atome server
 require 'em/pure_ruby' if RUBY_PLATFORM == 'x64-mingw32'
+require 'fileutils'
 require '../src/utilities/aui'
 require 'digest/sha2'
 require 'faye/websocket'
@@ -14,7 +15,30 @@ require 'rufus-scheduler'
 require 'securerandom'
 require 'sequel'
 
-Faye::WebSocket.load_adapter('puma') # Utilisez l'adaptateur 'thin' pour Faye
+class EDen
+  def self.terminal(cmd,option,ws,value, user, pass)
+    `#{cmd}`
+  end
+
+  def self.file(source, operation,ws,value,user, pass)
+    file_content= File.send(operation, source, value).to_s
+    file_content = file_content.gsub("'", "\"")
+    "=> operation: #{operation}, source:  #{source} , content : #{file_content},"
+  end
+  # return_message = EDen.safe_send(action_requested, message,option, current_user, user_pass)
+
+  def self.safe_send(method_name, *args)
+    method_sym = method_name.to_sym
+    eden_methods = EDen.singleton_methods(false) - Object.singleton_methods
+    if eden_methods.include?(method_sym)
+      send(method_sym, *args)
+    else
+      "forbidden action:  #{method_name}"
+    end
+  end
+end
+
+Faye::WebSocket.load_adapter('puma')
 
 class String
   def is_json?
@@ -65,6 +89,7 @@ class Database
 end
 
 class App < Roda
+
   # comment below when test will be done
   File.delete("./eden.sqlite3") if File.exist?("./eden.sqlite3")
   eden = Database.connect_database
@@ -74,11 +99,8 @@ class App < Roda
   items.insert(name: 'abc', width: rand * 100)
   items.insert(name: 'def', width: rand * 100)
   items.insert(name: 'ghi', width: rand * 100)
-
   puts "Item count: #{items.count}"
-
   puts "The average price is: #{items.avg(:width)}"
-
   index_content = File.read("../src/index_server.html")
 
   opts[:root] = '../src'
@@ -87,15 +109,26 @@ class App < Roda
     r.root do
       if Faye::WebSocket.websocket?(r.env)
         ws = Faye::WebSocket.new(r.env)
-
         ws.on :open do |event|
           ws.send('server ready'.to_json)
           ws.send('asking for synchro data'.to_json)
         end
 
         ws.on(:message) do |event|
-          #TODO : encode event on both client and server
-        ws.send(event.data.reverse.to_json) # Envoie le message inversé au client
+          json_string = event.data.gsub(/(\w+):/) { "\"#{$1}\":" }.gsub('=>', ':')
+          full_data = JSON.parse(json_string)
+          message = full_data['message']
+          action_requested = full_data['action']
+          value= full_data['value']
+          option= full_data['option']
+          current_user = full_data['user']
+          user_pass = full_data['pass']['global']
+          if action_requested
+            return_message = EDen.safe_send(action_requested, message,option,ws,value, current_user, user_pass)
+          else
+            return_message = "no action msg: #{full_data}"
+          end
+          ws.send(return_message.to_json)
         end
 
         ws.on(:close) do |event|

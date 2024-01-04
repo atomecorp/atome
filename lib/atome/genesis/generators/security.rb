@@ -6,6 +6,8 @@ new ({ sanitizer: :password }) do |params|
   params = { read: params, write: params } unless params.instance_of? Hash
 
   # encoding below
+  params[:global] = Black_matter.encode(params[:global])
+
   params[:read]&.each do |k, v|
     params[:read][k] = Black_matter.encode(v)
   end
@@ -25,7 +27,7 @@ end
 
 new({ read: :password }) do |params|
   params = Black_matter.password if params.nil?
-  params[:read][:atome]=Black_matter.password[:read][:atome] unless @authorisations[:write][:atome]
-  params[:write][:atome]=Black_matter.password[:write][:atome] unless @authorisations[:write][:atome]
+  params[:read][:atome] = Black_matter.password[:read][:atome] unless @authorisations[:write][:atome]
+  params[:write][:atome] = Black_matter.password[:write][:atome] unless @authorisations[:write][:atome]
   params
 end

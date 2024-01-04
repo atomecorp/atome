@@ -138,6 +138,7 @@ cursor.drag({ restrict: {max:{ left: 309, top: 0}} }) do |event|
 
 end
 
+# new({ particle: :import })
 
 support=box({top: 250, left: 12, width: 300, height: 40, smooth: 9, color:{red: 0.3, green: 0.3, blue: 0.3}, id: :support })
 
@@ -147,6 +148,8 @@ support.shadow({
                  invert: true,
                  red: 0, green: 0, blue: 0, alpha: 0.7
                })
+
+# support.duplicate
 support.import(true) do  |content|
   puts "add code here, content:  #{content}"
 end

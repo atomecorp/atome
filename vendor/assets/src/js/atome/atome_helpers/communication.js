@@ -86,8 +86,9 @@ const communication = {
         };
 
     },
-    ws_sender: function (address) {
-        this.websocket.send("Hello, WebSocket! !look look")
+    ws_sender: function (message) {
+        // now we send the data to the server
+        this.websocket.send(message)
     },
 }
 
@@ -120,7 +121,7 @@ function connect(address) {
 
 }
 
-function ws_sender() {
-    websocket.send("the Hello, WebSocket!!!")
-}
+// function ws_sender() {
+//     websocket.send("the Hello, WebSocket!!!")
+// }
 

@@ -14,12 +14,13 @@
 # require "./examples/find"
 
 # works
-require './works/vie'
+# require './works/vie'
 # require './works/photos'
 # require './works/photos6'
 # require './test'
 
 #### works
+require "./examples/messaging"
 # require "./examples/layout"
 # require "./examples/random"
 # require "./examples/copy"
