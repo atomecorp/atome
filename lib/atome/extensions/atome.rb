@@ -165,5 +165,44 @@ class Object
     end
     atome_get
   end
+  # shortcut
+  # we initialise $current_hovered_element
+  $current_hovered_element = nil
+
+  def shortcut(key:, option: nil, affect: :all, exclude: [], &block)
+    element_ids = (Array(affect) + Array(exclude)).uniq
+
+    element_ids.each do |element_id|
+      element = JS.global[:document].querySelector("##{element_id}")
+      if element
+        element.addEventListener("mouseenter") { $current_hovered_element = element_id }
+        element.addEventListener("mouseleave") { $current_hovered_element = nil }
+      end
+    end
+
+    JS.global[:document].addEventListener("keydown") do |native_event|
+      event = Native(native_event)
+      key_pressed = event[:key].downcase
+      ctrl_pressed = event[:ctrlKey]
+      alt_pressed = event[:altKey]
+      meta_pressed = event[:metaKey]
+
+      modifier_matched = case option
+                         when :ctrl then ctrl_pressed
+                         when :alt then alt_pressed
+                         when :meta then meta_pressed
+                         else true
+                         end
+
+      affect_condition = affect == :all || Array(affect).include?($current_hovered_element)
+      exclude_condition = !Array(exclude).include?($current_hovered_element)
+      if $current_hovered_element.nil?
+        $current_hovered_element=:view
+      end
+      if key_pressed == key.to_s.downcase && modifier_matched && affect_condition && exclude_condition
+        block.call(key_pressed, $current_hovered_element)
+      end
+    end
+  end
 
 end

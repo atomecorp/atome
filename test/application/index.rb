@@ -12,7 +12,7 @@
 #in progreess
 
 # require "./examples/find"
-
+require "./examples/shortcut"
 # works
 # require './works/vie'
 # require './works/photos'
@@ -20,7 +20,7 @@
 # require './test'
 
 #### works
-require "./examples/messaging"
+# require "./examples/messaging"
 # require "./examples/layout"
 # require "./examples/random"
 # require "./examples/copy"
