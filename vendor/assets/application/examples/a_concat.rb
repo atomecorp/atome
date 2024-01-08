@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+
 # Chemin du dossier contenant les fichiers
 folder_path = "./*"
 

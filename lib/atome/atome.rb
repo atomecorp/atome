@@ -5,6 +5,9 @@ class Atome
   include Essentials
 
   def initialize(new_atome = {}, &atomes_proc)
+    # TODO: atome format should always be as followed : {value: 0.44, unit: :px, opt1: 554}
+    # when using optimised version of atome you must type eg : a.set({left: {value: 33, unit: '%', reference: :center}})
+
     # the keys :renderers, :type and :id should be placed in the first position in the hash
     @history = {}
     @callback = {}

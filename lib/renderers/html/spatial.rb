@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 new({ method: :top, type: :integer, renderer: :html }) do |params|
-  html.style(:top, "#{params}px")
+  # TODO: replace px with the unit specified by the user or sepcified by default by the system
+  params="#{params}px" unless params.instance_of?(Symbol)
+  html.style(:top, params)
+
 end
 
 new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
@@ -10,19 +13,25 @@ end
 new({ method: :top, type: :integer, renderer: :html, specific: :shadow })
 
 new({ method: :bottom, type: :integer, renderer: :html }) do |params|
-  html.style(:bottom, "#{params}px")
+  # TODO: replace px with the unit specified by the user or sepcified by default by the system
+  params="#{params}px" unless params.instance_of?(Symbol)
+  html.style(:bottom, params)
 end
 
 new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params|
-  html.style(:bottom, "#{params}px")
+  html.style(:bottom, params)
 end
 
 new({ method: :right, type: :integer, renderer: :html }) do |params|
-  html.style(:right, "#{params}px")
+  # TODO: replace px with the unit specified by the user or sepcified by default by the system
+  params="#{params}px" unless params.instance_of?(Symbol)
+  html.style(:right, params)
 end
 
 new({ method: :left, type: :integer, renderer: :html }) do |params|
-  html.style(:left, "#{params}px")
+  # TODO: replace px with the unit specified by the user or sepcified by default by the system
+  params="#{params}px" unless params.instance_of?(Symbol)
+  html.style(:left, params)
 end
 
 new({ method: :left, type: :integer, specific: :color, renderer: :html })

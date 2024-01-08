@@ -29,7 +29,7 @@ const communication = {
 
         if (window.webkit) {
             try {
-                window.webkit.messageHandlers.toggleMessageHandler.postMessage(json_msg);
+                window.webkit.messageHandlers.wkHandler.postMessage(json_msg);
             } catch (error) {
                 console.log('no server, unable to post message')
             }

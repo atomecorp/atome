@@ -465,6 +465,11 @@ class HTML
     @element[:style][:filter] = filter_needed
   end
 
+  def backdropFilter(property, value)
+    filter_needed = "#{property}(#{value})"
+    @element[:style][:"-webkit-backdrop-filter"] = filter_needed
+  end
+
   def currentTime(time)
     @element[:currentTime] = time
   end

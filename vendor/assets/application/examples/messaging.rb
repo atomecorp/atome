@@ -16,6 +16,7 @@ b.touch(true) do
   end
 end
 
+
 c = box({ color: :yellow, left: 333 })
 
 c.touch(true) do
@@ -25,3 +26,4 @@ c.touch(true) do
   # b.message({message: 'cd ..;cd server;ls; pwd'})
   # c = box({ color: :red, left: 333 })
 end
+
