@@ -218,38 +218,3 @@ function fileForOpal(parent, bloc) {
     })
 
 }
-
-
-
-// function exception_import (atome_id){
-//     let specialDiv = document.getElementById(atome_id);
-//     specialDiv.addEventListener('dragover', function(e) {
-//         specialDiv.style.backgroundColor= 'red';
-//         e.preventDefault();
-//         e.stopPropagation();
-//     });
-//     specialDiv.addEventListener('dragleave', function(e) {
-//         specialDiv.style.backgroundColor = 'yellow';
-//         e.stopPropagation();
-//     });
-//     specialDiv.addEventListener('drop', function(e) {
-//         e.preventDefault();
-//         e.stopPropagation();
-//
-//         // Traitement spécifique pour les fichiers déposés sur la 'special-div'
-//         console.log('Fichier déposé dans la zone spéciale');
-//     });
-//
-//     document.body.addEventListener('drop', function(e) {
-//         e.preventDefault();
-//         console.log('Fichier déposé hors de la zone spéciale');
-//     });
-//
-//
-// }
-
-
-// setTimeout(function () {
-//     exception_import('my_box');
-// console.log('ready');
-// }, 3000);

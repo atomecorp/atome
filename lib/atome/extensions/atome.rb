@@ -166,6 +166,7 @@ class Object
     atome_get
   end
   # shortcut
+
   # we initialise $current_hovered_element
   $current_hovered_element = nil
 
@@ -259,6 +260,89 @@ class Object
         event = Native(native_event)
         event.preventDefault
       end
+    end
+  end
+
+  # import methode below
+  def importer_all(&proc)
+    JS.global[:document][:body].addEventListener('dragover') do |native_event|
+      event = Native(native_event)
+      event.preventDefault
+    end
+
+    JS.global[:document][:body].addEventListener('drop') do |native_event|
+      event = Native(native_event)
+      event.preventDefault
+      files = event[:dataTransfer][:files]
+
+      if files[:length].to_i > 0
+        (0...files[:length].to_i).each do |i|
+          file = files[i]
+          reader = JS.eval('let a= new FileReader(); return a')
+          reader.readAsText(file)
+          reader.addEventListener('load') do
+            proc.call({ content: reader[:result].to_s, name: file[:name].to_s, type: file[:type].to_s, size: file[:size].to_s })
+          end
+          reader.addEventListener('error') do
+            puts 'Error: ' + file[:name].to_s
+          end
+        end
+      end
+    end
+  end
+
+  def exception_import(atome_id, &proc)
+    if Universe.user_atomes.include?(atome_id.to_sym)
+      special_div = JS.global[:document].getElementById(atome_id)
+      special_div.addEventListener('dragover') do |native_event|
+        event = Native(native_event)
+        special_div[:style][:backgroundColor] = 'red'
+        event.preventDefault
+        event.stopPropagation
+      end
+
+      special_div.addEventListener('dragleave') do |native_event|
+        event = Native(native_event)
+        special_div[:style][:backgroundColor] = 'yellow'
+        event.stopPropagation
+      end
+
+      special_div.addEventListener('drop') do |native_event|
+        event = Native(native_event)
+        event.preventDefault
+        event.stopPropagation
+
+        files = event[:dataTransfer][:files]
+
+        if files[:length].to_i > 0
+          (0...files[:length].to_i).each do |i|
+            file = files[i]
+            reader = JS.eval('let a= new FileReader(); return a')
+            reader.readAsText(file)
+            reader.addEventListener('load') do
+              proc.call({ content: reader[:result].to_s, name: file[:name].to_s, type: file[:type].to_s, size: file[:size].to_s })
+            end
+            reader.addEventListener('error') do
+              puts 'Error: ' + file[:name].to_s
+            end
+          end
+        end
+      end
+      JS.global[:document][:body].addEventListener('drop') do |native_event|
+        event = Native(native_event)
+        event.preventDefault
+        event.stopPropagation
+
+        puts 'Fichier déposé hors de la zone spéciale'
+      end
+    end
+  end
+
+  def importer(target=:all,&proc)
+    if target== :all
+      importer_all(&proc)
+    else
+      exception_import(target,&proc)
     end
   end
 
