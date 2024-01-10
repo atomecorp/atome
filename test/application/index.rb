@@ -10,9 +10,11 @@
 # TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
 
 #in progreess
-require "./examples/import"
+# require "./examples/text"
+# require "./examples/table"
 # require "./examples/find"
-# require "./examples/shortcut"
+
+
 # works
 # require './works/vie'
 # require './works/photos'
@@ -20,9 +22,11 @@ require "./examples/import"
 # require './test'
 
 #### works
+# require "./examples/import"
+require "./examples/shortcut"
 # require "./examples/messaging"
 # require "./examples/console"
-# require "./examples/layout"
+# require "./examples/layo◊ut"
 # require "./examples/random"
 # require "./examples/copy"
 # require "./examples/selected"

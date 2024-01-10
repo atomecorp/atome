@@ -12,10 +12,10 @@ shortcut(key: :b,  affect: :all) do |key, object_id|
 end
 text({data: "Key 'b'  on :all", top: 0})
 
-shortcut(key: :t, option: :meta,affect: [:my_circle, :red_box]) do |key, object_id|
+shortcut(key: :e, option: :meta,affect: [:my_circle, :red_box]) do |key, object_id|
   puts "Key #{key}  press on #{object_id}"
 end
-text({data: "Key 't' with Meta  on [:my_circle, :red_box]", top: 30, left: 0, position: :absolute})
+text({data: "Key 'e' with Meta  on [:my_circle, :red_box]", top: 30, left: 0, position: :absolute})
 
 
 shortcut(key: :j, option: :ctrl, affect: :all, exclude: [:my_circle, :my_box]) do |key, object_id|

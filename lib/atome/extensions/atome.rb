@@ -175,7 +175,7 @@ class Object
 
     element_ids.each do |element_id|
       element = JS.global[:document].querySelector("##{element_id}")
-      if element
+      unless element_id.to_sym == :all
         element.addEventListener("mouseenter") { $current_hovered_element = element_id }
         element.addEventListener("mouseleave") { $current_hovered_element = nil }
       end
@@ -183,10 +183,10 @@ class Object
 
     JS.global[:document].addEventListener("keydown") do |native_event|
       event = Native(native_event)
-      key_pressed = event[:key].downcase
-      ctrl_pressed = event[:ctrlKey]
-      alt_pressed = event[:altKey]
-      meta_pressed = event[:metaKey]
+      key_pressed = event[:key].to_s.downcase
+      ctrl_pressed = event[:ctrlKey].to_s
+      alt_pressed = event[:altKey].to_s
+      meta_pressed = event[:metaKey].to_s
 
       modifier_matched = case option
                          when :ctrl then ctrl_pressed
