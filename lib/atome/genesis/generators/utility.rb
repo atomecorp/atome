@@ -232,3 +232,13 @@ new({ particle: :backup })
 
 new({ particle: :import })
 
+new({ particle: :compute }) do |params|
+  unless params.instance_of?(Hash)
+    params = { particle: params }
+  end
+  params[:unit] ||= :pixel
+  params[:reference] ||= :view
+  params
+end
+
+

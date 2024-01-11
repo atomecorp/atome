@@ -165,6 +165,7 @@ class Object
     end
     atome_get
   end
+
   # shortcut
 
   # we initialise $current_hovered_element
@@ -197,9 +198,7 @@ class Object
 
       affect_condition = affect == :all || Array(affect).include?($current_hovered_element)
       exclude_condition = !Array(exclude).include?($current_hovered_element)
-      if $current_hovered_element.nil?
-        $current_hovered_element=:view
-      end
+      $current_hovered_element = :view if $current_hovered_element.nil?
       if key_pressed == key.to_s.downcase && modifier_matched && affect_condition && exclude_condition
         block.call(key_pressed, $current_hovered_element)
       end
@@ -208,9 +207,9 @@ class Object
 
   def console(debug)
     if debug
-      console=box({id: :console,  width: :auto, height:225, bottom: 0,top: :auto, left: 0,right: 0,depth: 30, color: {alpha: 0, red: 0.1, green: 0.3 , blue:0.3}})
-      console_back=console.box({id: :console_back,blur: { value: 10, affect: :back}, overflow: :auto, width: :auto, height: :auto, top: 25, bottom: 0,left: 0,right: 0, depth: 30, color: {alpha: 0.3, red: 1, green: 1 , blue: 1}})
-      console_top=console.box({id: :console_top,overflow: :auto, width: :auto, height:25, top: 0, bottom: 0,left: 0,right: 0, depth: 30, color: {alpha: 1, red: 0.3, green: 0.3 , blue: 0.3}})
+      console = box({ id: :console, width: :auto, height: 225, bottom: 0, top: :auto, left: 0, right: 0, depth: 30, color: { alpha: 0, red: 0.1, green: 0.3, blue: 0.3 } })
+      console_back = console.box({ id: :console_back, blur: { value: 10, affect: :back }, overflow: :auto, width: :auto, height: :auto, top: 25, bottom: 0, left: 0, right: 0, depth: 30, color: { alpha: 0.3, red: 1, green: 1, blue: 1 } })
+      console_top = console.box({ id: :console_top, overflow: :auto, width: :auto, height: 25, top: 0, bottom: 0, left: 0, right: 0, depth: 30, color: { alpha: 1, red: 0.3, green: 0.3, blue: 0.3 } })
 
       console_top.touch(:double) do
         console.height(25)
@@ -226,27 +225,27 @@ class Object
                          })
       console.drag(:locked) do |event|
         dy = event[:dy]
-        y =  console.to_px(:top)+dy.to_f
+        y = console.to_px(:top) + dy.to_f
         console.top(y)
         console.height(:auto)
-        total_height=grab(:view).to_px(:height)
+        total_height = grab(:view).to_px(:height)
         # console_back.height(total_height-console.top)
       end
-      console_output=console_back.text({data: '', id: :console_output, component: {size: 12}})
+      console_output = console_back.text({ data: '', id: :console_output, component: { size: 12 } })
       JS.eval <<~JS
-    (function() {
-      var oldLog = console.log;
-      var consoleDiv = document.getElementById("console_output");
-      console.log = function(message) {
-        if (consoleDiv) {
-          consoleDiv.innerHTML += '<p>' + message + '</p>';
-        }
-        oldLog.apply(console, arguments);
-      };
-    }());
-  JS
+        (function() {
+          var oldLog = console.log;
+          var consoleDiv = document.getElementById("console_output");
+          console.log = function(message) {
+            if (consoleDiv) {
+              consoleDiv.innerHTML += '<p>' + message + '</p>';
+            }
+            oldLog.apply(console, arguments);
+          };
+        }());
+      JS
 
-      console_clear=console_top.circle({id: :console_clear, color: :red, top: 3, left: 3, width: 19, height:19})
+      console_clear = console_top.circle({ id: :console_clear, color: :red, top: 3, left: 3, width: 19, height: 19 })
       console_clear.touch(true) do
         console_output.data("")
       end
@@ -332,17 +331,138 @@ class Object
         event = Native(native_event)
         event.preventDefault
         event.stopPropagation
-
-        puts 'Fichier déposé hors de la zone spéciale'
+        # puts 'File drop out of the special zonne'
       end
     end
   end
 
-  def importer(target=:all,&proc)
-    if target== :all
+  def importer(target = :all, &proc)
+    if target == :all
       importer_all(&proc)
     else
-      exception_import(target,&proc)
+      exception_import(target, &proc)
+    end
+  end
+
+  def infos
+    particle_list = Universe.particle_list.dup
+    particle_list.delete(:password)
+    particle_list.delete(:selection)
+    infos = {}
+    particle_list.each do |particle_found|
+      infos[particle_found[0]] = send(particle_found[0]) unless send(particle_found[0]).nil?
+    end
+    infos
+  end
+
+  def dig
+    ids = []
+    dig_recursive = lambda do |atome|
+      ids << atome.id
+      atome.attached.each { |attached_atome| dig_recursive.call(grab(attached_atome)) }
+    end
+    dig_recursive.call(self)
+    ids
+  end
+
+  def fit(params)
+    target_size = params[:value]
+    axis = params[:axis]
+    objet_atome = self
+    atomes_found = objet_atome.dig
+    total_width = found_area_used(atomes_found)[:max][:x] - found_area_used(atomes_found)[:min][:x]
+    total_height = found_area_used(atomes_found)[:max][:y] - found_area_used(atomes_found)[:min][:y]
+    if axis == :x
+      ratio = target_size / total_width
+      # now we resize and re-position all atomes
+      atomes_found.each do |atome_id|
+        current_atome = grab(atome_id)
+        current_atome.left(current_atome.left * ratio)
+        current_atome.top(current_atome.top * ratio)
+        current_atome.width(current_atome.width * ratio)
+        current_atome.height(current_atome.height * ratio)
+      end
+    else
+      ratio = target_size / total_height
+      # now we resize and re-position all atomes
+      atomes_found.each do |atome_id|
+        current_atome = grab(atome_id)
+        current_atome.left(current_atome.left * ratio)
+        current_atome.top(current_atome.top * ratio)
+        current_atome.width(current_atome.width * ratio)
+        current_atome.height(current_atome.height * ratio)
+      end
+    end
+    # total_size, max_other_axis_size = calculate_total_size(objet_atome, axis)
+    # scale_factor = target_size.to_f / total_size
+    # resize_and_reposition(objet_atome, scale_factor, axis, max_other_axis_size)
+  end
+
+  def found_area_used(ids)
+
+    min_x, min_y = Float::INFINITY, Float::INFINITY
+    max_x, max_y = 0, 0
+
+    ids.each do |id|
+      atome = grab(id)
+
+      x = atome.compute({ particle: :left })[:value]
+      y = atome.compute({ particle: :top })[:value]
+      width = atome.width
+      height = atome.height
+      min_x = [min_x, x].min
+      min_y = [min_y, y].min
+      max_x = [max_x, x + width].max
+      max_y = [max_y, y + height].max
+    end
+
+    espace_utilise = {
+      min: { x: min_x, y: min_y },
+      max: { x: max_x, y: max_y }
+    }
+    espace_utilise
+  end
+
+  def calculate_total_size(objet_atome, axis)
+    total_size = (axis == :x) ? objet_atome.width : objet_atome.height
+    max_other_axis_size = (axis == :x) ? objet_atome.height : objet_atome.width
+
+    objet_atome.attached.each do |child_id|
+      child = grab(child_id)
+      child_size = (axis == :x) ? child.width : child.height
+      other_axis_size = (axis == :x) ? child.height : child.width
+
+      total_size += child_size
+      max_other_axis_size = [max_other_axis_size, other_axis_size].max
+    end
+
+    [total_size, max_other_axis_size]
+  end
+
+  def resize_and_reposition(objet_atome, scale_factor, axis, max_other_axis_size)
+    current_position = 0
+    resize_object(objet_atome, scale_factor, axis, max_other_axis_size)
+    current_position += (axis == :x) ? objet_atome.width : objet_atome.height
+    objet_atome.attached.each do |child_id|
+      child = grab(child_id)
+      resize_object(child, scale_factor, axis, max_other_axis_size)
+      child.top(child.top * scale_factor)
+      child.left(child.left * scale_factor)
+      current_position += child.height
+    end
+  end
+
+  def resize_object(objet, scale_factor, axis, max_other_axis_size)
+    if axis == :x
+      new_width = objet.width * scale_factor
+      new_height = new_width / (objet.width.to_f / objet.height)
+      objet.width(new_width)
+      objet.height([new_height, max_other_axis_size].min)
+    else
+      new_height = objet.height * scale_factor
+      new_width = new_height / (objet.height.to_f / objet.width)
+      objet.height(new_height)
+      objet.width([new_width, max_other_axis_size].min)
     end
   end
 

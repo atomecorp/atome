@@ -88,3 +88,21 @@ new({ renderer: :html, method: :selected, specific: :text  }) do |value, &bloc|
   html.select_text(value)
 end
 
+new({ method: :compute, type: :hash, renderer: :html }) do |params|
+  element = JS.global[:document].getElementById(@id.to_s)
+  bounding_box = element.getBoundingClientRect()
+
+  top = bounding_box[:top]
+  left = bounding_box[:left]
+
+  value_found = case params[:particle]
+                when :left
+                  left.to_f
+                when :top
+                  top.to_f
+                else
+                  nil
+                end
+  @compute[:value] = value_found
+end
+
