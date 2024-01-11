@@ -3,6 +3,8 @@
 
 class HTML
 
+
+
   def table(data)
     table_html = JS.global[:document].createElement("table")
     thead = JS.global[:document].createElement("thead")
@@ -10,8 +12,8 @@ class HTML
     header_row.setAttribute('id', "0")
     data.first.keys.each do |header|
       th = JS.global[:document].createElement("th")
-      # th[:textContent]
-      th.textContent = header
+      # th.textContent = header
+      th[:textContent] = header.to_s
       header_row.appendChild(th)
     end
     thead.appendChild(header_row)
@@ -23,26 +25,27 @@ class HTML
       row.values.each_with_index do |cell, cell_index|
         td = JS.global[:document].createElement("td")
         td.setAttribute('id', "#{row_index}_#{cell_index}")
-        td.style[:border] = "1px solid black"
-        td.style[:overflow] = "auto"
-        td.style[:backgroundColor] = "white"
-        td.style[:boxShadow] = "10px 10px 5px #888888"
+        td[:style][:border] = "1px solid black"
+        td[:style][:overflow] = "auto"
+        td[:style][:backgroundColor] = "white"
+        td[:style][:boxShadow] = "10px 10px 5px #888888"
         if cell.instance_of? Atome
           html_element = JS.global[:document].getElementById(cell.id.to_s)
           td.appendChild(html_element)
-          html_element.style[:transformOrigin] = "top left"
-          html_element.style[:position] = "relative"
+          html_element[:style][:transformOrigin] = "top left"
+          html_element[:style][:position] = "relative"
           # td.style[:width] = '330px'
           # td.style[:height] = '330px'
           # html_element.style[:scale] = "0.3"
           cell.top(0)
           cell.left(0)
         else
-          td.textContent = cell
+          td[:textContent] = cell.to_s
+          # td.textContent = cell
         end
-        td.style[:width] = '33px'
-        td.style[:height] = '33px'
-        td.style[:overflow] = 'hidden'
+        td[:style][:width] = '33px'
+        td[:style][:height] = '33px'
+        td[:style][:overflow] = 'hidden'
         # td.style[:display] = 'table-cell'
 
         tr.appendChild(td)

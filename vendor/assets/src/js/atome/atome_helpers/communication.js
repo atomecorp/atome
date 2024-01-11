@@ -97,7 +97,6 @@ const communication = {
 
 function connect(address) {
 
-// alert('kool');
     websocket = new WebSocket(address);
 
     websocket.onopen = function (event) {
@@ -121,7 +120,9 @@ function connect(address) {
 
 }
 
-// function ws_sender() {
-//     websocket.send("the Hello, WebSocket!!!")
-// }
 
+
+function controller_message(msg){
+    // message receiver from controller (Vie)
+    console.log(msg)
+}
