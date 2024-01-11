@@ -207,8 +207,8 @@ class Object
 
   def console(debug)
     if debug
-      console = box({ id: :console, width: :auto, height: 225, bottom: 0, top: :auto, left: 0, right: 0, depth: 30, color: { alpha: 0, red: 0.1, green: 0.3, blue: 0.3 } })
-      console_back = console.box({ id: :console_back, blur: { value: 10, affect: :back }, overflow: :auto, width: :auto, height: :auto, top: 25, bottom: 0, left: 0, right: 0, depth: 30, color: { alpha: 0.3, red: 1, green: 1, blue: 1 } })
+      console = box({ id: :console, width: :auto, height: 225, bottom: 0, top: :auto, left: 0, right: 0, depth: 30, color: { alpha: 0, red: 0, green: 0, blue: 0 } })
+      console_back = console.box({ id: :console_back, blur: { value: 5, affect: :back }, overflow: :auto, width: :auto, height: :auto, top: 25, bottom: 0, left: 0, right: 0, depth: 30, color: { alpha: 0.5, red: 0, green: 0, blue: 0 } })
       console_top = console.box({ id: :console_top, overflow: :auto, width: :auto, height: 25, top: 0, bottom: 0, left: 0, right: 0, depth: 30, color: { alpha: 1, red: 0.3, green: 0.3, blue: 0.3 } })
 
       console_top.touch(:double) do

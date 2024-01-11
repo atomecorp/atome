@@ -13,3 +13,7 @@ new({ particle: :message }) do |params, bloc|
 
   html.send_message(params, &bloc)
 end
+
+new({ particle: :controller }) do |msg|
+  Atome.controller_sender(msg)
+end

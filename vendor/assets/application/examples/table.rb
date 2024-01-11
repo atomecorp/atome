@@ -10,6 +10,7 @@ class HTML
     header_row.setAttribute('id', "0")
     data.first.keys.each do |header|
       th = JS.global[:document].createElement("th")
+      # th[:textContent]
       th.textContent = header
       header_row.appendChild(th)
     end
@@ -79,11 +80,11 @@ new({ method: :data, type: :string, specific: :matrix, renderer: :html }) do |va
   html.table(value)
 end
 
-c = circle({ id: :my_cirle, color: :red, drag: true })
-c.box
-c.touch(true) do
-  alert :okk
-end
+# c = circle({ id: :my_cirle, color: :red, drag: true })
+# # c.box
+# c.touch(true) do
+#   alert :okk
+# end
 m = matrix({ renderers: [:html], attach: :view, id: :my_test_box, type: :matrix, apply: [:shape_color],
              left: 333, top: 0, width: 300, smooth: 15, height: 900, overflow: :scroll, data: [
     { dfgdf: 1, name: 'Alice', age: 30, no: 'oko', t: 123, r: 654, f: 123, g: 654, w: 123, x: 654, c: 123, v: 654 },
@@ -93,15 +94,15 @@ m = matrix({ renderers: [:html], attach: :view, id: :my_test_box, type: :matrix,
 
   ]
            })
-m.color(:orange)
-m.cells({}) do |params|
-  alert :celling
-end
-m.rows({}) do |params|
-
-end
-m.columns({}) do |params|
-
-end
-
-m.border({ thickness: 5, color: color(:blue), pattern: :dotted })
+# m.color(:orange)
+# m.cells({}) do |params|
+#   alert :celling
+# end
+# m.rows({}) do |params|
+#
+# end
+# m.columns({}) do |params|
+#
+# end
+#
+# m.border({ thickness: 5, color: color(:blue), pattern: :dotted })

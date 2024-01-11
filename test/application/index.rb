@@ -17,7 +17,7 @@
 
 
 # works
-# require './works/vie'
+require './works/vie'
 # require './works/photos'
 # require './works/photos6'
 # require './test'
