@@ -84,7 +84,7 @@ new({ renderer: :html, method: :import, type: :blob }) do |_params, bloc|
 end
 
 
-new({ renderer: :html, method: :selected, specific: :text  }) do |value, &bloc|
+new({ renderer: :html, method: :selected, specific: :text }) do |value, &bloc|
   html.select_text(value)
 end
 
@@ -94,15 +94,21 @@ new({ method: :compute, type: :hash, renderer: :html }) do |params|
 
   top = bounding_box[:top]
   left = bounding_box[:left]
-
+  width = bounding_box[:width]
+  height = bounding_box[:height]
   value_found = case params[:particle]
                 when :left
                   left.to_f
                 when :top
                   top.to_f
+                when :width
+                  width.to_f
+                when :height
+                  height.to_f
                 else
                   nil
                 end
   @compute[:value] = value_found
 end
+
 

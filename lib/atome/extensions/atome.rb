@@ -101,7 +101,7 @@ class Object
     @repeat ||= []
     @repeat << proc
     repeat_id = @repeat.length - 1
-    intervalId = JS.eval(<<~JS)
+    JS.eval(<<~JS)
                 function repeat(action, interval, repetitions) {
                let count = 0;
                let intervalId = null;
@@ -128,7 +128,6 @@ class Object
 
       return intervalId;
     JS
-    intervalId
 
   end
 
@@ -366,6 +365,9 @@ class Object
   end
 
   def fit(params)
+    unless params.instance_of?(Hash)
+      params = { value: params }
+    end
     target_size = params[:value]
     axis = params[:axis]
     objet_atome = self
@@ -379,8 +381,10 @@ class Object
         current_atome = grab(atome_id)
         current_atome.left(current_atome.left * ratio)
         current_atome.top(current_atome.top * ratio)
-        current_atome.width(current_atome.width * ratio)
-        current_atome.height(current_atome.height * ratio)
+        new_width = current_atome.to_px(:width) * ratio
+        new_height = current_atome.to_px(:height) * ratio
+        current_atome.width(new_width)
+        current_atome.height(new_height)
       end
     else
       ratio = target_size / total_height
@@ -389,8 +393,8 @@ class Object
         current_atome = grab(atome_id)
         current_atome.left(current_atome.left * ratio)
         current_atome.top(current_atome.top * ratio)
-        current_atome.width(current_atome.width * ratio)
-        current_atome.height(current_atome.height * ratio)
+        current_atome.width(current_atome.to_px(:width) * ratio)
+        current_atome.height(current_atome.to_px(:height) * ratio)
       end
     end
     # total_size, max_other_axis_size = calculate_total_size(objet_atome, axis)
@@ -408,29 +412,26 @@ class Object
 
       x = atome.compute({ particle: :left })[:value]
       y = atome.compute({ particle: :top })[:value]
-      width = atome.width
-      height = atome.height
+      width = atome.to_px(:width)
+      height = atome.to_px(:height)
       min_x = [min_x, x].min
       min_y = [min_y, y].min
       max_x = [max_x, x + width].max
       max_y = [max_y, y + height].max
     end
 
-    espace_utilise = {
-      min: { x: min_x, y: min_y },
-      max: { x: max_x, y: max_y }
-    }
-    espace_utilise
+    { min: { x: min_x, y: min_y }, max: { x: max_x, y: max_y } }
+
   end
 
   def calculate_total_size(objet_atome, axis)
-    total_size = (axis == :x) ? objet_atome.width : objet_atome.height
-    max_other_axis_size = (axis == :x) ? objet_atome.height : objet_atome.width
+    total_size = (axis == :x) ? objet_atome.to_px(:width) : objet_atome.to_px(:height)
+    max_other_axis_size = (axis == :x) ? objet_atome.to_px(:height) : objet_atome.to_px(:width)
 
     objet_atome.attached.each do |child_id|
       child = grab(child_id)
-      child_size = (axis == :x) ? child.width : child.height
-      other_axis_size = (axis == :x) ? child.height : child.width
+      child_size = (axis == :x) ? child.to_px(:width) : child.to_px(:height)
+      other_axis_size = (axis == :x) ? child.to_px(:height) : child.to_px(:width)
 
       total_size += child_size
       max_other_axis_size = [max_other_axis_size, other_axis_size].max
@@ -442,13 +443,13 @@ class Object
   def resize_and_reposition(objet_atome, scale_factor, axis, max_other_axis_size)
     current_position = 0
     resize_object(objet_atome, scale_factor, axis, max_other_axis_size)
-    current_position += (axis == :x) ? objet_atome.width : objet_atome.height
+    current_position += (axis == :x) ? objet_atome.to_px(:width) : objet_atome.to_px(:height)
     objet_atome.attached.each do |child_id|
       child = grab(child_id)
       resize_object(child, scale_factor, axis, max_other_axis_size)
       child.top(child.top * scale_factor)
       child.left(child.left * scale_factor)
-      current_position += child.height
+      current_position += child.to_px(:height)
     end
   end
 

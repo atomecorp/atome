@@ -64,16 +64,18 @@ new({ particle: :delete, render: false }) do |params|
   end
 end
 new({ particle: :clear })
+
+
 new({ post: :clear }) do
-  attached_found = []
-  attached.each do |attached_id_found|
-    attached_found << attached_id_found
-  end
-  attached_found.each do |child_id_found|
-    child_found = grab(child_id_found)
-    # we exclude system  objects
-    child_found&.delete(true) unless child_found.tag && child_found.tag[:system]
-  end
+    attached_found = []
+    attached.each do |attached_id_found|
+      attached_found << attached_id_found
+    end
+    attached_found.each do |child_id_found|
+      child_found = grab(child_id_found)
+      # we exclude system  objects
+      child_found&.delete(true) unless child_found.tag && child_found.tag[:system]
+    end
 end
 new({ particle: :path })
 new({ particle: :schedule }) do |date, proc|
@@ -192,9 +194,7 @@ new({ after: :duplicate }) do |params|
 end
 
 new({ particle: :copy }) do |items_id|
-  unless items_id.instance_of? Array
-    items_id = [items_id]
-  end
+  items_id = [items_id] unless items_id.instance_of? Array
   grab(:copy).collect << items_id
 end
 
@@ -233,9 +233,7 @@ new({ particle: :backup })
 new({ particle: :import })
 
 new({ particle: :compute }) do |params|
-  unless params.instance_of?(Hash)
-    params = { particle: params }
-  end
+  params = { particle: params } unless params.instance_of?(Hash)
   params[:unit] ||= :pixel
   params[:reference] ||= :view
   params

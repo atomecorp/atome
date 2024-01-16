@@ -306,6 +306,8 @@ class HTML
     JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     self.id(id)
+
+
     self
   end
 
@@ -1161,5 +1163,48 @@ class HTML
   def stop_animation
     JS.eval("if (window.currentAnimation) window.currentAnimation.stop();")
   end
+
+
+
+
+  def table_insert(cell_data)
+    # def insert(cell_data)
+      row_index, cell_index = cell_data[:cell]
+      new_content = cell_data[:content]
+      cell_id = "#{row_index}_#{cell_index}"
+      cell_element = JS.global[:document].getElementById(cell_id)
+
+      # Vérifier si l'élément cellulaire existe
+      if cell_element.nil?
+        puts "Cellule non trouvée avec ID: #{cell_id}"
+        return
+      end
+
+      # Mettre à jour le contenu de la cellule
+      if new_content.instance_of? Atome
+        # Si le nouveau contenu est un objet Atome
+        # Vous pouvez ajouter une logique ici pour gérer cela, par exemple:
+        # Supprimer le contenu actuel de la cellule
+        cell_element.innerHTML = ""
+        # Ajouter l'objet Atome à la cellule
+        html_element = JS.global[:document].getElementById(new_content.id.to_s)
+        cell_element.appendChild(html_element)
+      else
+        # Si le nouveau contenu est du texte ou autre
+        cell_element[:textContent] = new_content.to_s
+      end
+    end
+
+  # end
+
+  def table_remove(params)
+    alert "table remove thie #{params}"
+  end
+
+
+  def table_sort(params)
+    alert "table to sort #{params}"
+  end
+
 
 end

@@ -18,12 +18,17 @@ new({ sanitizer: :image }) do |params|
     # TODO : we have to convert all image to png or maintain a database with extension
     # FIXME : temporary patch that add .png to the string if no extension is found
     params = "#{params}.png" if params.to_s.split('.').length == 1
-
     params = { path: "./medias/images/#{params}" }
   end
   # TODO : the line below should get the value from default params Essentials
   params
 end
+new({ post: :image }) do
+  # we have find the size od the image to set it in the atome
+  instance_variable_set("@width", compute({ particle: :width })[:value])
+  instance_variable_set("@height", compute({ particle: :height })[:value])
+end
+
 new({ atome: :video })
 new({ sanitizer: :video }) do |params|
   unless params.instance_of? Hash

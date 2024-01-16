@@ -16,7 +16,7 @@ module Essentials
   @default_params = {
     # Warning :  type must be define first
     render_engines: [:html],
-    image: { type: :image },
+    image: { type: :image, left: 0, top: 0},
     # FIXME : look at build_atome FIXME to resolve default parent attachment problem
     video: { type: :video },
     animation: { type: :animation, attach: :black_matter },
@@ -32,7 +32,7 @@ module Essentials
     shape: { type: :shape, width: 99, height: 99,
              apply: [:shape_color],
              left: 100, top: 100 },
-    text: { type: :text, component: { size: 18 },
+    text: { type: :text, component: { size: 18 },left: 0, top: 0,
             apply: [:text_color],
             width: :auto, height: :auto },
     drm: { type: :drm, attach: :black_matter },

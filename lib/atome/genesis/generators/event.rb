@@ -229,9 +229,10 @@ new({ sanitizer: :over }) do |params, user_bloc|
   params
 
 end
-new({ particle: :sort }) do |_value, sort_proc|
-  @sort_proc = sort_proc
-end
+# new({ particle: :sort }) do |_value, sort_proc|
+#   @sort_proc = sort_proc
+# end
+
 new({ particle: :targets })
 new({ particle: :start })
 new({ pre: :start }) do |_value, user_proc|
