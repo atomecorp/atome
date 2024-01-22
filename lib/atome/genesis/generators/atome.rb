@@ -92,4 +92,8 @@ new({ atome: :machine })
 new({ atome: :paint })
 new({ atome: :vector })
 
+new({ atome: :matrix })
+new({ atome: :atomized, type: :hash })
+
+
 

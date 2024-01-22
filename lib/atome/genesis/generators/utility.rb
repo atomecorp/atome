@@ -240,3 +240,9 @@ new({ particle: :compute }) do |params|
 end
 
 
+new({ particle: :get }) do |params|
+  cell = params[:cell]
+  row_nb = cell[0]
+  column_nb = cell[1]
+  data[row_nb][data[row_nb].keys[column_nb]] # we get the content of the cell
+end

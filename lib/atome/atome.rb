@@ -26,7 +26,7 @@ class Atome
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     # we reorder the hash
-    ordered_keys = %i[renderers id type]
+    ordered_keys = %i[renderers id alien type]
     ordered_part = ordered_keys.map { |k| [k, new_atome[k]] }.to_h
     other_part = new_atome.reject { |k, _| ordered_keys.include?(k) }
     # merge the parts  to obtain an re-ordered hash

@@ -59,3 +59,4 @@ new({ sanitizer: :definition }) do |params|
 end
 
 new({ particle: :gradient })
+new({ particle: :border })

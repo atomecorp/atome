@@ -82,3 +82,11 @@ new({ renderer: :html, method: :category, type: :symbol }) do |category_names|
     html.add_class(category_name)
   end
 end
+
+new({ method: :data, type: :string, specific: :matrix, renderer: :html }) do |value, _user_proc|
+  html.table(value)
+end
+
+new({ method: :type, type: :hash, specific: :atomized, renderer: :html }) do |value, _user_proc|
+  html.atomized(alien)
+end

@@ -10,19 +10,19 @@
 # TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
 
 #in progreess
-
-require "./examples/table"
+require "./examples/atomizer"
 # require "./examples/find"
 
 
 
-# works
+# Projects
 # require './works/vie'
 # require './works/photos'
 # require './works/photos6'
 # require './test'
 
 #### works
+# require "./examples/table"
 # require "./examples/size"
 # require "./examples/fit"
 # require "./examples/infos"

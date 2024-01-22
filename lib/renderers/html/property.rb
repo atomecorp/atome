@@ -36,3 +36,24 @@ new({ method: :border, type: :hash, renderer: :html }) do |value, _user_proc|
 
   html.style(:border, "#{type} #{thickness}px rgba(#{color})")
 end
+
+new({ method: :clean, renderer: :html, type: :hash }) do |params|
+  html.table_clean(params)
+end
+
+new({ method: :insert, renderer: :html, type: :hash }) do |params|
+  html.table_insert(params)
+end
+
+
+
+new({ method: :remove, renderer: :html, type: :hash }) do |params|
+  html.table_remove(params)
+end
+
+
+
+
+new({ method: :sort, renderer: :html, type: :hash }) do |params|
+  html.refresh_table(params)
+end

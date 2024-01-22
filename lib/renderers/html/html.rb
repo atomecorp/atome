@@ -38,7 +38,7 @@ class HTML
       condition_strings << "(min-height: #{conditions[:min][:height]}px)" if conditions[:min][:height]
     end
 
-    operator = conditions[:operator] == :and ? "and" : "or"
+    operator = conditions[:operator] == :and ? 'and' : 'or'
 
     # Convert properties to apply
     property_strings = []
@@ -86,9 +86,9 @@ class HTML
       data[:apply][key] ||= {}
       properties.each do |property|
         prop, value = property.split(':').map(&:strip)
-        if prop == "background-color"
+        if prop == 'background-color'
           data[:apply][key][:color] = value.to_sym
-        elsif value[-2..] == "px"
+        elsif value[-2..] == 'px'
           data[:apply][key][prop.to_sym] = value.to_i
         else
           data[:apply][key][prop.to_sym] = value.to_sym
@@ -121,30 +121,30 @@ class HTML
 
     style_tags.each do |line|
       line = line.strip
-      next if line.empty? || line.start_with?("/*")
+      next if line.empty? || line.start_with?('/*')
 
       if inside_media
-        if line == "}"
-          hash_result["@media"] << media_hash
+        if line == '}'
+          hash_result['@media'] << media_hash
           inside_media = false
           next
         end
 
         selector, properties = line.split('{').map(&:strip)
-        next unless properties&.end_with?("}")
+        next unless properties&.end_with?('}')
 
         properties = properties[0...-1].strip
         media_hash[selector] = extract_properties(properties)
-      elsif line.start_with?("@media")
+      elsif line.start_with?('@media')
         media_content = line.match(/@media\s*\(([^)]+)\)\s*{/)
         next unless media_content
 
         media_query = media_content[1]
-        hash_result["@media"] = [media_query]
+        hash_result['@media'] = [media_query]
         inside_media = true
       else
         selector, properties = line.split('{').map(&:strip)
-        next unless properties&.end_with?("}")
+        next unless properties&.end_with?('}')
 
         properties = properties[0...-1].strip
         hash_result[selector] = extract_properties(properties)
@@ -353,8 +353,8 @@ class HTML
     check_double(id)
     markup_found = @original_atome.markup || 'svg'
     @element_type = markup_found.to_s
-    svg_ns = "http://www.w3.org/2000/svg"
-    @element = JS.global[:document].createElementNS(svg_ns, "svg")
+    svg_ns = 'http://www.w3.org/2000/svg'
+    @element = JS.global[:document].createElementNS(svg_ns, 'svg')
     JS.global[:document][:body].appendChild(@element)
     @element.setAttribute('viewBox', '0 0 1024 1024')
     @element.setAttribute('version', '1.1')
@@ -365,7 +365,7 @@ class HTML
 
   def svg_data(data)
     data.each do |type_passed, datas|
-      svg_ns = "http://www.w3.org/2000/svg"
+      svg_ns = 'http://www.w3.org/2000/svg'
       new_path = JS.global[:document].createElementNS(svg_ns.to_s, type_passed.to_s)
       JS.global[:document][:body].appendChild(new_path)
       datas.each do |property, value|
@@ -421,7 +421,7 @@ class HTML
         .gsub('&', "\&")
         .gsub('<', "\<")
         .gsub('>', "\>")
-        .gsub('"', "\"")
+        .gsub('"', '"')
         .gsub("'", "\'")
   end
 
@@ -1101,7 +1101,7 @@ class HTML
     if Atome.host == 'tauri'
       JS.eval("readFile('#{id}','#{file}')")
     else
-      puts " work in progress"
+      puts ' work in progress'
     end
   end
 
@@ -1109,12 +1109,12 @@ class HTML
     if Atome.host == 'tauri'
       JS.eval("browseFile('#{id}','#{file}')")
     else
-      puts "work in progress"
+      puts 'work in progress'
     end
   end
 
   def handle_input
-    @original_atome.instance_variable_set("@data", @element[:innerText].to_s)
+    @original_atome.instance_variable_set('@data', @element[:innerText].to_s)
   end
 
   # this method update the data content of the atome
@@ -1153,7 +1153,7 @@ class HTML
     puts 'change for standard method : action'
     required_keys = [:from, :to, :duration]
     unless properties.is_a?(Hash) && (required_keys - properties.keys).empty?
-      raise ArgumentError, "Properties must be a hash with :from, :to, and :duration keys"
+      raise ArgumentError, 'Properties must be a hash with :from, :to, and :duration keys'
     end
 
     animate(properties)
@@ -1161,42 +1161,139 @@ class HTML
   end
 
   def stop_animation
-    JS.eval("if (window.currentAnimation) window.currentAnimation.stop();")
+    JS.eval('if (window.currentAnimation) window.currentAnimation.stop();')
   end
 
   # Table manipulation
 
+  def table(data)
+    table_html = JS.global[:document].createElement('table')
+    thead = JS.global[:document].createElement('thead')
+
+    max_length = data.max_by { |row| row.keys.length }.keys.length
+
+    if @original_atome.option[:header]
+      header_row = JS.global[:document].createElement('tr')
+
+      max_length.times do |i|
+        th = JS.global[:document].createElement('th')
+        th[:textContent] = data.map { |row| row.keys[i].to_s }.compact.first || ''
+        header_row.appendChild(th)
+      end
+
+      thead.appendChild(header_row)
+    end
+
+    table_html.appendChild(thead)
+    tbody = JS.global[:document].createElement('tbody')
+
+    data.each_with_index do |row, row_index|
+      tr = JS.global[:document].createElement('tr')
+
+      max_length.times do |cell_index|
+        td = JS.global[:document].createElement('td')
+        cell_size = set_td_style(td)
+        cell_height = cell_size[:cell_height]
+
+        cell_value = row.values[cell_index]
+        if cell_value.instance_of? Atome
+          cell_value.fit(cell_height)
+          html_element = JS.global[:document].getElementById(cell_value.id.to_s)
+          td.appendChild(html_element)
+          html_element[:style][:transformOrigin] = 'top left'
+          html_element[:style][:position] = 'relative'
+          cell_value.top(0)
+          cell_value.left(0)
+        else
+          td[:textContent] = cell_value.to_s
+        end
+        tr.appendChild(td)
+      end
+
+      tbody.appendChild(tr)
+    end
+    table_html.appendChild(tbody)
+    JS.global[:document].querySelector("##{@id}").appendChild(table_html)
+  end
+
+  def refresh_table(_params)
+    # first we need to extact all atome from the table or they will be deleted by the table refres
+    data = @original_atome.data
+    data.each do |row|
+      row.each do |k, v|
+        if v.instance_of? Atome
+          v.attach(:view)
+        end
+      end
+    end
+    table_element = JS.global[:document].querySelector("##{@id} table")
+    if table_element.nil?
+      puts 'Table not found'
+      return
+    end
+    (table_element[:rows].to_a.length - 1).downto(1) do |i|
+      table_element.deleteRow(i)
+    end
+
+    max_cells = data.map { |row| row.keys.length }.max
+
+    data.each do |row|
+      new_row = table_element.insertRow(-1)
+      max_cells.times do |i|
+        key = row.keys[i]
+        value = row[key]
+        cell = new_row.insertCell(-1)
+        if value.instance_of? Atome
+          html_element = JS.global[:document].getElementById(value.id.to_s)
+          cell.appendChild(html_element)
+        else
+          cell[:textContent] = value.to_s
+        end
+        set_td_style(cell)
+      end
+    end
+  end
+  def set_td_style(td)
+    cell_height = 50
+    td[:style][:border] = '1px solid black'
+    td[:style][:backgroundColor] = 'white'
+    td[:style][:boxShadow] = '10px 10px 5px #888888'
+    td[:style][:width] = "#{cell_height}px"
+    td[:style]['min-width'] = "#{cell_height}px"
+    td[:style]['max-width'] = "#{cell_height}px"
+    td[:style]['min-height'] = "#{cell_height}px"
+    td[:style]['max-height'] = "#{cell_height}px"
+    td[:style][:height] = "#{cell_height}px"
+    td[:style][:overflow] = 'hidden'
+    { cell_height: cell_height, cell_width: cell_height }
+  end
+
+
   def insert_cell(params)
     row_index, cell_index = params[:cell]
     new_content = params[:content]
-
-    # Récupérez le div avec l'ID 'my_test_box'
     container = JS.global[:document].getElementById(@id.to_s)
 
-    # Vérifiez si le div contient un tableau
     table = container.querySelector('table')
     if table.nil?
-      puts "No table found in the container"
+      puts 'No table found in the container'
       return
     end
 
-    # Obtenez la ligne spécifique, en supposant que le tableau est bien formé
     row = table.querySelectorAll('tr')[row_index]
     if row.nil?
       puts "Row at index #{row_index} not found"
       return
     end
 
-    # Obtenez la cellule spécifique dans la ligne
     cell = row.querySelectorAll('td')[cell_index]
     if cell.nil?
       puts "Cell at index #{cell_index} in row #{row_index} not found"
       return
     end
 
-    # Modifiez le contenu de la cellule
     if new_content.instance_of? Atome
-      cell.innerHTML = ""
+      cell.innerHTML = ''
       html_element = JS.global[:document].getElementById(new_content.id.to_s)
       cell.appendChild(html_element)
     else
@@ -1209,20 +1306,18 @@ class HTML
     table_element = JS.global[:document].querySelector("##{@id} table")
 
     if table_element.nil?
-      puts "Tableau non trouvé"
+      puts 'Tableau non trouvé'
       return
     end
 
-    tbody = table_element.querySelector("tbody")
+    tbody = table_element.querySelector('tbody')
 
-    header_row = table_element.querySelector("thead tr")
-    column_count = header_row ? header_row.querySelectorAll("th").to_a.length : 0
+    header_row = table_element.querySelector('thead tr')
+    column_count = header_row ? header_row.querySelectorAll('th').to_a.length : 0
 
-    new_row = JS.global[:document].createElement("tr")
-    # new_row.setAttribute('id', insert_at_index.to_s)
+    new_row = JS.global[:document].createElement('tr')
     column_count.times do |cell_index|
-      td = JS.global[:document].createElement("td")
-      # td.setAttribute('id', "#{insert_at_index}_#{cell_index}")
+      td = JS.global[:document].createElement('td')
       set_td_style(td)
       new_row.appendChild(td)
     end
@@ -1230,40 +1325,31 @@ class HTML
     if insert_at_index.zero?
       tbody.insertBefore(new_row, tbody.firstChild)
     else
-      reference_row = tbody.querySelectorAll("tr").to_a[insert_at_index]
+      reference_row = tbody.querySelectorAll('tr').to_a[insert_at_index]
       tbody.insertBefore(new_row, reference_row)
     end
 
-    rows = tbody.querySelectorAll("tr").to_a
-    # rows.each_with_index do |row, i|
-    #   row.setAttribute('id', i.to_s)
-    #   # cells = row.querySelectorAll("td").to_a
-    #   # cells.each_with_index do |cell, cell_index|
-    #   #   cell.setAttribute('id', "#{i}_#{cell_index}")
-    #   # end
-    # end
   end
 
   def insert_column(params)
     insert_at_index = params[:column]
     table_element = JS.global[:document].querySelector("##{@id} table")
     if table_element.nil?
-      puts "Table not found"
+      puts 'Table not found'
       return
     end
-    rows = table_element.querySelectorAll("tr").to_a
+    rows = table_element.querySelectorAll('tr').to_a
     rows.each_with_index do |row, index|
       if index == 0
-        # ok
+        # case1
       else
-        new_cell = JS.global[:document].createElement("td")
-        # new_cell.setAttribute('id', "temp")
-        new_cell[:innerText] = ""
+        new_cell = JS.global[:document].createElement('td')
+        new_cell[:innerText] = ''
         set_td_style(new_cell)
         if insert_at_index.zero?
           row.insertBefore(new_cell, row.firstChild)
         else
-          child_nodes = row.querySelectorAll("td").to_a
+          child_nodes = row.querySelectorAll('td').to_a
 
           if insert_at_index < child_nodes.length
             reference_cell = child_nodes[insert_at_index]
@@ -1276,48 +1362,7 @@ class HTML
 
     end
 
-    # rows.each_with_index do |row, row_index|
-    #   cells = row.querySelectorAll("td").to_a
-    #   cells.each_with_index do |cell, cell_index|
-    #     cell.setAttribute('id', "#{@id}_#{row_index}_#{cell_index}")
-    #   end
-    # end
   end
-
-  # def insert_column(params)
-  #   insert_at_index = params[:column]
-  #   table_element = JS.global[:document].querySelector("##{@id} table")
-  #   if table_element.nil?
-  #     puts "Table not found"
-  #     return
-  #   end
-  #   rows = table_element.querySelectorAll("tr").to_a
-  #   rows.each_with_index do |row, row_index|
-  #     new_cell = JS.global[:document].createElement("td")
-  #     new_cell.setAttribute('id', "temp")
-  #
-  #     if insert_at_index.zero?
-  #       row.insertBefore(new_cell, row.firstChild)
-  #     else
-  #       child_nodes = row.querySelectorAll("td").to_a
-  #       if insert_at_index < child_nodes.length
-  #         reference_cell = child_nodes[insert_at_index]
-  #         row.insertBefore(new_cell, reference_cell)
-  #       else
-  #         row.appendChild(new_cell)
-  #       end
-  #     end
-  #
-  #
-  #       cells = row.querySelectorAll("td").to_a
-  #       cells.each_with_index do |cell, cell_index|
-  #         cell.setAttribute('id', "#{@id}_#{row_index}_#{cell_index}")
-  #       end
-  #
-  #     alert new_cell.getAttribute('id')
-  #     set_td_style(new_cell)
-  #   end
-  # end
 
   def table_insert(params)
     if params[:cell]
@@ -1330,7 +1375,6 @@ class HTML
 
   end
 
-  # end
 
   def table_remove(params)
     if params[:row]
@@ -1338,11 +1382,11 @@ class HTML
       table_element = JS.global[:document].querySelector("##{@id} table")
 
       if table_element.nil?
-        puts "Table not found"
+        puts 'Table not found'
         return
       end
 
-      rows = table_element.querySelectorAll("tbody tr").to_a
+      rows = table_element.querySelectorAll('tbody tr').to_a
 
       if row_index >= rows.length
         puts "row not found : #{row_index}"
@@ -1354,56 +1398,35 @@ class HTML
 
       rows.each_with_index do |row, i|
         next if i <= row_index
-
-        # row.setAttribute('id', (i - 1).to_s)
-        # cells = row.querySelectorAll("td").to_a
-        # cells.each_with_index do |cell, cell_index|
-        #   # cell.setAttribute('id', "#{i - 1}_#{cell_index}")
-        # end
       end
     elsif params[:column]
       column_index = params[:column]
       table_element = JS.global[:document].querySelector("##{@id} table")
 
       if table_element.nil?
-        puts "Table not found"
+        puts 'Table not found'
         return
       end
 
-      rows = table_element.querySelectorAll("tbody tr").to_a
+      rows = table_element.querySelectorAll('tbody tr').to_a
       rows.each do |row|
-        cells = row.querySelectorAll("td").to_a
+        cells = row.querySelectorAll('td').to_a
         if column_index < cells.length
           cell_to_remove = cells[column_index]
           cell_to_remove[:parentNode].removeChild(cell_to_remove)
         end
       end
 
-      # rows.each_with_index do |row, row_index|
-      #   # cells = row.querySelectorAll("td").to_a
-      #   # cells.each_with_index do |cell, cell_index|
-      #   #   cell.setAttribute('id', "#{@id}_#{row_index}_#{cell_index}")
-      #   # end
-      # end
     end
   end
+  # atomisation
 
-  # def table_sort(params)
-  #   alert "html will sort : #{params}"
-  #
-  # end
 
-  # # Exemple d'utilisation
-  # @data = [
-  #   { name: 'Alice', age: 30 },
-  #   { name: 'Bob', age: 22 },
-  #   { name: 'Carol', age: 25 },
-  # ]
-  #
-  # # Trier par âge en ordre alphabétique
-  # sort({ column: 2, method: :alphabetic })
-  #
-  # # Trier par âge en ordre numérique
-  # sort({ column: 2, method: :numeric })
+  def atomized(html_object)
+    @element = html_object
 
+    # @element.setAttribute('id', @id.to_s)
+  end
 end
+
+

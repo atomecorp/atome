@@ -59,3 +59,6 @@ new(particle: :selected) do |params|
   end
   params
 end
+
+new({ particle: :format })
+new({ particle: :alien }) #special particel that old alien object

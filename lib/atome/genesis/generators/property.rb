@@ -30,4 +30,78 @@ new({ particle: :diffusion }) do
   self
 end
 
-new = new({ particle: :border })
+
+new({ particle: :clean }) do |params|
+  cell = params[:cell]
+  row_nb = cell[0]
+  column_nb = cell[1]
+  data[row_nb][data[row_nb].keys[column_nb]] = "" # we remove the data from the cell
+  params
+end
+
+new({ particle: :insert }) do |params|
+  # cell
+  if params[:cell]
+    content = params[:content]
+    cell = params[:cell]
+    row_nb = cell[0]
+    column_nb = cell[1]
+    data[row_nb][data[row_nb].keys[column_nb]] = content # we remove the data from the cell
+  elsif params[:row]
+    position_to_insert = params[:row]
+    data.insert(position_to_insert, {})
+  elsif params[:column]
+  end
+
+  params
+end
+
+new({ particle: :remove }) do |params|
+
+  if params[:row]
+    data.delete_at(params[:row])
+
+  elsif params[:column]
+    column = params[:column]
+    data.map do |hash|
+      hash.delete(hash.keys[column]) if hash.keys[column]
+      hash
+    end
+  end
+  params
+end
+
+
+new({ particle: :sort }) do |params|
+  column = params[:column]
+  method = params[:method]
+
+  if column.nil? || method.nil?
+    puts "Column and method parameters are required."
+    return
+  end
+
+  @data.sort_by! do |row|
+    value = row.values[column - 1]
+    if value.instance_of? Atome
+      0
+    else
+      case method
+      when :alphabetic
+        value.to_s
+      when :numeric
+        if value.is_a?(Numeric)
+          value
+        elsif value.respond_to?(:to_i)
+          value.to_i
+        else
+          0
+        end
+      else
+        value
+      end
+    end
+  end
+
+  params
+end
