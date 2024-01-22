@@ -482,7 +482,7 @@ if ARGV.include?('update')
   # first we delete everything but application
 
   files_to_treat = %w[server src-tauri src-wasm Guardfile Rakefile src/css src/js/atome src/js/third_parties src/medias
-src/favicon.ico src/index.html src/index_opal.html src/index_server.html src/index_server_wasm.html]
+src/favicon.ico src/index_wasm.html src/index_opal.html src/index_server.html src/index_server_wasm.html]
   files_to_treat.each do |item|
     item_path = File.join(destination, item)
     if File.directory?(item_path)
@@ -647,13 +647,13 @@ else
 
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
-      `start "" "#{destination}\\#{project_name}\\src\\index.html"`
+      `start "" "#{destination}\\#{project_name}\\src\\index_wasm.html"`
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec for MacOS
-      `open #{destination}/#{project_name}/src/index.html`
+      `open #{destination}/#{project_name}/src/index_wasm.html`
     else
       # code to exec for Unix/Linux
-      `open #{destination}/#{project_name}/src/index.html`
+      `open #{destination}/#{project_name}/src/index_wasm.html`
     end
 
   end

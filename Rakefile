@@ -77,7 +77,7 @@ task :test_wasm do
 
   host_mode = 'pure_wasm'
 
-  file_path = "./tmp/#{project_name}/src/index.html"
+  file_path = "./tmp/#{project_name}/src/index_wasm.html"
 
   case RbConfig::CONFIG['host_os']
   when /darwin|mac os/

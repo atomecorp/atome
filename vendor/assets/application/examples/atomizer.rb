@@ -3,7 +3,7 @@
 # dummies html objects :
 
 #object 1
-div_rouge = JS.global[:document].call(:createElement, "div")
+div_rouge = JS.global[:document].createElement( "div")
 
 div_rouge[:style][:backgroundColor] = "red"
 div_rouge[:style][:width] = "100px"
@@ -14,7 +14,7 @@ div_view.appendChild(div_rouge)
 
 
 #object 2
-span_bleu = JS.global[:document].call(:createElement, "span")
+span_bleu =  JS.global[:document].createElement( "span")
 span_bleu[:style][:backgroundColor] = "blue"
 span_bleu[:innerHTML] = "blue"
 span_bleu[:style][:width] = "10px"
@@ -23,7 +23,7 @@ div_rouge.appendChild(span_bleu)
 
 
 #object 2
-span_white = JS.global[:document].call(:createElement, "h1")
+span_white =  JS.global[:document].createElement( "h1")
 span_white[:style][:color] = "white"
 span_white[:innerHTML] = "Hello"
 span_white[:style][:width] = "10px"
