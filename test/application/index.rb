@@ -10,7 +10,7 @@
 # TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
 
 #in progreess
-require "./examples/atomizer"
+require "./examples/center"
 # require "./examples/find"
 
 
@@ -22,6 +22,7 @@ require "./examples/atomizer"
 # require './test'
 
 #### works
+# require "./examples/atomizer"
 # require "./examples/table"
 # require "./examples/size"
 # require "./examples/fit"

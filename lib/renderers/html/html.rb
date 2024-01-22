@@ -20,7 +20,6 @@ class HTML
     end
   end
 
-
   def initialize(id_found, current_atome)
     @element ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
@@ -1268,6 +1267,7 @@ class HTML
       end
     end
   end
+
   def set_td_style(td)
     cell_height = 50
     td[:style][:border] = '1px solid black'
@@ -1282,7 +1282,6 @@ class HTML
     td[:style][:overflow] = 'hidden'
     { cell_height: cell_height, cell_width: cell_height }
   end
-
 
   def insert_cell(params)
     row_index, cell_index = params[:cell]
@@ -1390,7 +1389,6 @@ class HTML
 
   end
 
-
   def table_remove(params)
     if params[:row]
       row_index = params[:row]
@@ -1437,9 +1435,86 @@ class HTML
 
   # atomisation!
   def atomized(html_object)
-    html_object=html_object[0] if html_object.instance_of? Array
+    html_object = html_object[0] if html_object.instance_of? Array
     @element = html_object
   end
+
+
+  # def center(options, attach)
+  #   parent = grab(attach)
+  #
+  #   # Centre sur l'axe X
+  #   if options[:x]
+  #     x_position = calculate_position(options[:x], parent.to_px(:width), @original_atome.to_px(:width))
+  #     @original_atome.left(x_position)
+  #   end
+  #
+  #   # Centre sur l'axe Y
+  #   if options[:y]
+  #     y_position = calculate_position(options[:y], parent.to_px(:height), @original_atome.to_px(:height))
+  #     @original_atome.top(y_position)
+  #   end
+  # end
+  #
+  # # Méthode auxiliaire pour calculer la position
+  # def calculate_position(option, parent_dimension, self_dimension)
+  #   if option.is_a?(String) && option.end_with?('%')
+  #     percent = option.chop.to_f / 100.0
+  #     (parent_dimension - self_dimension) * percent
+  #   elsif option == 0
+  #     # Cas spécial pour centrer l'objet
+  #     (parent_dimension - self_dimension) / 2.0
+  #   else
+  #     option
+  #   end
+  # end
+
+  def center(options, attach)
+    @center_options = options
+    @parent = grab(attach)
+
+    # Appliquer le centrage initial
+    apply_centering(@center_options, @parent)
+
+    # Si l'option dynamique est activée, ajouter un écouteur d'événements
+    if @center_options[:dynamic]
+      event_handler = ->(event) do
+        apply_centering(@center_options, @parent)
+      end
+      JS.global[:window].addEventListener('resize', event_handler)
+    end
+  end
+
+  private
+
+  # Méthode auxiliaire pour appliquer le centrage
+  def apply_centering(options, parent)
+    # Centre sur l'axe X
+    if options[:x]
+      x_position = calculate_position(options[:x], parent.to_px(:width), @original_atome.to_px(:width))
+      @original_atome.left(x_position)
+    end
+
+    # Centre sur l'axe Y
+    if options[:y]
+      y_position = calculate_position(options[:y], parent.to_px(:height), @original_atome.to_px(:height))
+      @original_atome.top(y_position)
+    end
+  end
+
+  # Méthode auxiliaire pour calculer la position
+  def calculate_position(option, parent_dimension, self_dimension)
+    if option.is_a?(String) && option.end_with?('%')
+      percent = option.chop.to_f / 100.0
+      (parent_dimension - self_dimension) * percent
+    elsif option == 0
+      # Cas spécial pour centrer l'objet
+      (parent_dimension - self_dimension) / 2.0
+    else
+      option
+    end
+  end
+
 end
 
 

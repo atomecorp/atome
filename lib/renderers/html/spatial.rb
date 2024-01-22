@@ -65,3 +65,7 @@ end
 new({ method: :display, renderer: :html }) do |params|
   html.style(:display, params)
 end
+
+new({renderer: :html, method: :center}) do |params|
+  html.center(params, attach)
+end

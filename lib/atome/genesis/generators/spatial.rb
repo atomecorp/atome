@@ -97,5 +97,7 @@ new({ particle: :layout }) do |params|
   end
   params
 end
+new({particle: :center})
+
 
 
