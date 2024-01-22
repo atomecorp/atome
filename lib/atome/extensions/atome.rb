@@ -467,4 +467,20 @@ class Object
     end
   end
 
+  def atomizer(params)
+    unless params.instance_of? Hash
+      params = { target: params }
+    end
+    id = params[:id]
+    if id
+      id_wanted = { id: id }
+    else
+      id_wanted = {}
+    end
+    basis = { alien: params[:target],renderers: [:html],  type: :atomized }.merge(id_wanted)
+    a = Atome.new(basis)
+    return a
+    # convert any foreign object (think HTML) to a pseudo atome objet , that embed foreign objet
+  end
+
 end

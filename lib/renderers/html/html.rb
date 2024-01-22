@@ -4,6 +4,23 @@
 
 class HTML
 
+  def self.locate(selector, base_element = JS.global[:document][:body])
+    return base_element if selector.empty?
+
+    if selector.has_key?(:id)
+      base_element.querySelector("##{selector[:id]}")
+    elsif selector.has_key?(:parent)
+      parent = base_element.querySelector("##{selector[:parent]}")
+      return nil if parent.nil?
+      parent.querySelectorAll("*").to_a
+    elsif selector.has_key?(:html)
+      html_element = selector[:html]
+      return nil if html_element.nil?
+      html_element.querySelectorAll("*").to_a
+    end
+  end
+
+
   def initialize(id_found, current_atome)
     @element ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
@@ -1221,9 +1238,7 @@ class HTML
     data = @original_atome.data
     data.each do |row|
       row.each do |k, v|
-        if v.instance_of? Atome
-          v.attach(:view)
-        end
+        v.attach(:view) if v.instance_of? Atome
       end
     end
     table_element = JS.global[:document].querySelector("##{@id} table")
@@ -1419,13 +1434,11 @@ class HTML
 
     end
   end
-  # atomisation
 
-
+  # atomisation!
   def atomized(html_object)
+    html_object=html_object[0] if html_object.instance_of? Array
     @element = html_object
-
-    # @element.setAttribute('id', @id.to_s)
   end
 end
 
