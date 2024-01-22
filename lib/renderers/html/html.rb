@@ -294,6 +294,7 @@ class HTML
     style[:innerHTML] = "::selection { background-color: #{back_color_rgba}; color: #{text_color_rgba}; }"
     JS.global[:document][:head].appendChild(style)
     return unless @element[:innerText].to_s.length == 1
+
     @element[:innerHTML] = '&#8203;'
   end
 
@@ -306,7 +307,6 @@ class HTML
     JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     self.id(id)
-
 
     self
   end
@@ -1164,47 +1164,246 @@ class HTML
     JS.eval("if (window.currentAnimation) window.currentAnimation.stop();")
   end
 
+  # Table manipulation
 
+  def insert_cell(params)
+    row_index, cell_index = params[:cell]
+    new_content = params[:content]
 
+    # Récupérez le div avec l'ID 'my_test_box'
+    container = JS.global[:document].getElementById(@id.to_s)
 
-  def table_insert(cell_data)
-    # def insert(cell_data)
-      row_index, cell_index = cell_data[:cell]
-      new_content = cell_data[:content]
-      cell_id = "#{row_index}_#{cell_index}"
-      cell_element = JS.global[:document].getElementById(cell_id)
-
-      # Vérifier si l'élément cellulaire existe
-      if cell_element.nil?
-        puts "Cellule non trouvée avec ID: #{cell_id}"
-        return
-      end
-
-      # Mettre à jour le contenu de la cellule
-      if new_content.instance_of? Atome
-        # Si le nouveau contenu est un objet Atome
-        # Vous pouvez ajouter une logique ici pour gérer cela, par exemple:
-        # Supprimer le contenu actuel de la cellule
-        cell_element.innerHTML = ""
-        # Ajouter l'objet Atome à la cellule
-        html_element = JS.global[:document].getElementById(new_content.id.to_s)
-        cell_element.appendChild(html_element)
-      else
-        # Si le nouveau contenu est du texte ou autre
-        cell_element[:textContent] = new_content.to_s
-      end
+    # Vérifiez si le div contient un tableau
+    table = container.querySelector('table')
+    if table.nil?
+      puts "No table found in the container"
+      return
     end
+
+    # Obtenez la ligne spécifique, en supposant que le tableau est bien formé
+    row = table.querySelectorAll('tr')[row_index]
+    if row.nil?
+      puts "Row at index #{row_index} not found"
+      return
+    end
+
+    # Obtenez la cellule spécifique dans la ligne
+    cell = row.querySelectorAll('td')[cell_index]
+    if cell.nil?
+      puts "Cell at index #{cell_index} in row #{row_index} not found"
+      return
+    end
+
+    # Modifiez le contenu de la cellule
+    if new_content.instance_of? Atome
+      cell.innerHTML = ""
+      html_element = JS.global[:document].getElementById(new_content.id.to_s)
+      cell.appendChild(html_element)
+    else
+      cell[:textContent] = new_content.to_s
+    end
+  end
+
+  def insert_row(params)
+    insert_at_index = params[:row]
+    table_element = JS.global[:document].querySelector("##{@id} table")
+
+    if table_element.nil?
+      puts "Tableau non trouvé"
+      return
+    end
+
+    tbody = table_element.querySelector("tbody")
+
+    header_row = table_element.querySelector("thead tr")
+    column_count = header_row ? header_row.querySelectorAll("th").to_a.length : 0
+
+    new_row = JS.global[:document].createElement("tr")
+    # new_row.setAttribute('id', insert_at_index.to_s)
+    column_count.times do |cell_index|
+      td = JS.global[:document].createElement("td")
+      # td.setAttribute('id', "#{insert_at_index}_#{cell_index}")
+      set_td_style(td)
+      new_row.appendChild(td)
+    end
+
+    if insert_at_index.zero?
+      tbody.insertBefore(new_row, tbody.firstChild)
+    else
+      reference_row = tbody.querySelectorAll("tr").to_a[insert_at_index]
+      tbody.insertBefore(new_row, reference_row)
+    end
+
+    rows = tbody.querySelectorAll("tr").to_a
+    # rows.each_with_index do |row, i|
+    #   row.setAttribute('id', i.to_s)
+    #   # cells = row.querySelectorAll("td").to_a
+    #   # cells.each_with_index do |cell, cell_index|
+    #   #   cell.setAttribute('id', "#{i}_#{cell_index}")
+    #   # end
+    # end
+  end
+
+  def insert_column(params)
+    insert_at_index = params[:column]
+    table_element = JS.global[:document].querySelector("##{@id} table")
+    if table_element.nil?
+      puts "Table not found"
+      return
+    end
+    rows = table_element.querySelectorAll("tr").to_a
+    rows.each_with_index do |row, index|
+      if index == 0
+        # ok
+      else
+        new_cell = JS.global[:document].createElement("td")
+        # new_cell.setAttribute('id', "temp")
+        new_cell[:innerText] = ""
+        set_td_style(new_cell)
+        if insert_at_index.zero?
+          row.insertBefore(new_cell, row.firstChild)
+        else
+          child_nodes = row.querySelectorAll("td").to_a
+
+          if insert_at_index < child_nodes.length
+            reference_cell = child_nodes[insert_at_index]
+            row.insertBefore(new_cell, reference_cell)
+          else
+            row.appendChild(new_cell)
+          end
+        end
+      end
+
+    end
+
+    # rows.each_with_index do |row, row_index|
+    #   cells = row.querySelectorAll("td").to_a
+    #   cells.each_with_index do |cell, cell_index|
+    #     cell.setAttribute('id', "#{@id}_#{row_index}_#{cell_index}")
+    #   end
+    # end
+  end
+
+  # def insert_column(params)
+  #   insert_at_index = params[:column]
+  #   table_element = JS.global[:document].querySelector("##{@id} table")
+  #   if table_element.nil?
+  #     puts "Table not found"
+  #     return
+  #   end
+  #   rows = table_element.querySelectorAll("tr").to_a
+  #   rows.each_with_index do |row, row_index|
+  #     new_cell = JS.global[:document].createElement("td")
+  #     new_cell.setAttribute('id', "temp")
+  #
+  #     if insert_at_index.zero?
+  #       row.insertBefore(new_cell, row.firstChild)
+  #     else
+  #       child_nodes = row.querySelectorAll("td").to_a
+  #       if insert_at_index < child_nodes.length
+  #         reference_cell = child_nodes[insert_at_index]
+  #         row.insertBefore(new_cell, reference_cell)
+  #       else
+  #         row.appendChild(new_cell)
+  #       end
+  #     end
+  #
+  #
+  #       cells = row.querySelectorAll("td").to_a
+  #       cells.each_with_index do |cell, cell_index|
+  #         cell.setAttribute('id', "#{@id}_#{row_index}_#{cell_index}")
+  #       end
+  #
+  #     alert new_cell.getAttribute('id')
+  #     set_td_style(new_cell)
+  #   end
+  # end
+
+  def table_insert(params)
+    if params[:cell]
+      insert_cell(params)
+    elsif params[:row]
+      insert_row(params)
+    elsif params[:column]
+      insert_column(params)
+    end
+
+  end
 
   # end
 
   def table_remove(params)
-    alert "table remove thie #{params}"
+    if params[:row]
+      row_index = params[:row]
+      table_element = JS.global[:document].querySelector("##{@id} table")
+
+      if table_element.nil?
+        puts "Table not found"
+        return
+      end
+
+      rows = table_element.querySelectorAll("tbody tr").to_a
+
+      if row_index >= rows.length
+        puts "row not found : #{row_index}"
+        return
+      end
+      row_to_remove = rows[row_index]
+
+      row_to_remove[:parentNode].removeChild(row_to_remove)
+
+      rows.each_with_index do |row, i|
+        next if i <= row_index
+
+        # row.setAttribute('id', (i - 1).to_s)
+        # cells = row.querySelectorAll("td").to_a
+        # cells.each_with_index do |cell, cell_index|
+        #   # cell.setAttribute('id', "#{i - 1}_#{cell_index}")
+        # end
+      end
+    elsif params[:column]
+      column_index = params[:column]
+      table_element = JS.global[:document].querySelector("##{@id} table")
+
+      if table_element.nil?
+        puts "Table not found"
+        return
+      end
+
+      rows = table_element.querySelectorAll("tbody tr").to_a
+      rows.each do |row|
+        cells = row.querySelectorAll("td").to_a
+        if column_index < cells.length
+          cell_to_remove = cells[column_index]
+          cell_to_remove[:parentNode].removeChild(cell_to_remove)
+        end
+      end
+
+      # rows.each_with_index do |row, row_index|
+      #   # cells = row.querySelectorAll("td").to_a
+      #   # cells.each_with_index do |cell, cell_index|
+      #   #   cell.setAttribute('id', "#{@id}_#{row_index}_#{cell_index}")
+      #   # end
+      # end
+    end
   end
 
+  # def table_sort(params)
+  #   alert "html will sort : #{params}"
+  #
+  # end
 
-  def table_sort(params)
-    alert "table to sort #{params}"
-  end
-
+  # # Exemple d'utilisation
+  # @data = [
+  #   { name: 'Alice', age: 30 },
+  #   { name: 'Bob', age: 22 },
+  #   { name: 'Carol', age: 25 },
+  # ]
+  #
+  # # Trier par âge en ordre alphabétique
+  # sort({ column: 2, method: :alphabetic })
+  #
+  # # Trier par âge en ordre numérique
+  # sort({ column: 2, method: :numeric })
 
 end
