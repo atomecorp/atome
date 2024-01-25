@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 new({ renderer: :html, method: :smooth, type: :string }) do |value, _user_proc|
-  # alert :ici
   format_params = case value
                   when Array
                     data_collected = []

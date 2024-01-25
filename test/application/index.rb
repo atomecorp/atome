@@ -15,17 +15,19 @@
 # in progress
 # require "./examples/server"
 # require "./examples/find"
-# require "./examples/unit"
+require "./examples/help"
+# require "./examples/example"
 
 
 
 # Projects
-require './works/vie'
+# require './works/vie'
 # require './works/photos'
 # require './works/photos6'
 # require './test'
 
 #### works
+# require "./examples/unit"
 # require "./examples/int8"
 # require "./examples/center"
 # require "./examples/atomizer"
@@ -39,7 +41,7 @@ require './works/vie'
 # require "./examples/shortcut"
 # require "./examples/server"
 # require "./examples/console"
-# require "./examples/layo◊ut"
+# require "./examples/layout"
 # require "./examples/random"
 # require "./examples/copy"
 # require "./examples/selected"

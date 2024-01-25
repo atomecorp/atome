@@ -52,6 +52,26 @@ class Atome
 
   end
 
+
+  def help(particle, &doc)
+    if doc
+      Universe.set_help(particle, &doc)
+    else
+      doc_found = Universe.get_help(particle)
+      instance_exec(&doc_found) if doc_found.is_a?(Proc)
+    end
+  end
+
+  def example(particle, &example)
+    if example
+      Universe.set_example(particle, &example)
+    else
+      example_found = Universe.get_example(particle)
+      instance_exec(&example_found) if example_found.is_a?(Proc)
+    end
+  end
+
+
   # local server messaging
   def file_for_opal(parent, bloc)
     JS.eval("fileForOpal('#{parent}', #{bloc})")

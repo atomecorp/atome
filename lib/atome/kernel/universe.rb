@@ -11,9 +11,27 @@ class Universe
   @specificities = {}
   @history = {}
   @users = {}
+  @help = {}
+  @example = {}
 
   class << self
     attr_reader :atomes, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
+
+    def set_help(particle, &doc)
+      @help[particle] = doc
+    end
+
+    def get_help(particle)
+      @help[particle]
+    end
+
+    def set_example(particle, &example)
+      @example[particle] = example
+    end
+
+    def get_example(particle)
+      @example[particle]
+    end
 
     def add_to_particle_list(particle = nil, type)
       instance_variable_get('@particle_list')[particle] = type
