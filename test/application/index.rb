@@ -15,7 +15,7 @@
 # in progress
 # require "./examples/server"
 # require "./examples/find"
-
+require './examples/test'
 
 
 
@@ -24,6 +24,7 @@
 # require './works/photos'
 # require './works/photos6'
 # require './test'
+
 
 #### works
 # # require "./examples/help"

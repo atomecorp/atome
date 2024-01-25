@@ -1,24 +1,23 @@
 # frozen_string_literal: true
 
 new({ method: :left, type: :integer, renderer: :html }) do |params|
-  unit = @unit[:left] || :px
+  unit = @unit[:left] || :px if params.is_a? Numeric
   js[:style][:left] = "#{params}#{unit}"
 end
 
 new({ method: :top, type: :integer, renderer: :html }) do |params|
-  unit = @unit[:top] || :px
-  # alert  unit
+  unit = @unit[:top] || :px if params.is_a? Numeric
   js[:style][:top] = "#{params}#{unit}"
 end
 new({ method: :bottom, type: :integer, renderer: :html }) do |params|
-  unit = @unit[:bottom] || :px
-  js[:style][:bottom] =  "#{params}#{unit}"
+  unit = @unit[:bottom] || :px if params.is_a? Numeric
+  js[:style][:bottom] = "#{params}#{unit}"
 end
 
 new({ method: :right, type: :integer, renderer: :html }) do |params|
-  unit = @unit[:right] || :px
+  unit = @unit[:right] || :px if params.is_a? Numeric
 
-  js[:style][:right] =  "#{params}#{unit}"
+  js[:style][:right] = "#{params}#{unit}"
 end
 
 new({ method: :top, type: :integer, renderer: :html, specific: :shadow })
