@@ -36,6 +36,10 @@ class Atome
     collapse(reordered_atome)
   end
 
+  def js
+    html.object
+  end
+
   def particle_creation(element, params, store, rendering, &user_proc)
 
     # @store_allow = false

@@ -26,6 +26,10 @@ class HTML
     @original_atome = current_atome
   end
 
+  def object
+    @element
+  end
+
   def hypertext(params)
     current_div = JS.global[:document].getElementById(@id.to_s)
     current_div[:innerHTML] = params
@@ -1473,10 +1477,8 @@ class HTML
     @center_options = options
     @parent = grab(attach)
 
-    # Appliquer le centrage initial
     apply_centering(@center_options, @parent)
 
-    # Si l'option dynamique est activée, ajouter un écouteur d'événements
     if @center_options[:dynamic]
       event_handler = ->(event) do
         apply_centering(@center_options, @parent)
@@ -1487,7 +1489,6 @@ class HTML
 
   private
 
-  # Méthode auxiliaire pour appliquer le centrage
   def apply_centering(options, parent)
     # Centre sur l'axe X
     if options[:x]
@@ -1495,20 +1496,17 @@ class HTML
       @original_atome.left(x_position)
     end
 
-    # Centre sur l'axe Y
     if options[:y]
       y_position = calculate_position(options[:y], parent.to_px(:height), @original_atome.to_px(:height))
       @original_atome.top(y_position)
     end
   end
 
-  # Méthode auxiliaire pour calculer la position
   def calculate_position(option, parent_dimension, self_dimension)
     if option.is_a?(String) && option.end_with?('%')
       percent = option.chop.to_f / 100.0
       (parent_dimension - self_dimension) * percent
     elsif option == 0
-      # Cas spécial pour centrer l'objet
       (parent_dimension - self_dimension) / 2.0
     else
       option

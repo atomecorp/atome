@@ -1,38 +1,32 @@
 # frozen_string_literal: true
 
+new({ method: :left, type: :integer, renderer: :html }) do |params|
+  js[:style][:left] = "#{params[:value]}#{params[:unit]}"
+end
+
 new({ method: :top, type: :integer, renderer: :html }) do |params|
-  # TODO: replace px with the unit specified by the user or sepcified by default by the system
-  params="#{params}px" unless params.instance_of?(Symbol)
-  html.style(:top, params)
-
+  js[:style][:top] = "#{params[:value]}#{params[:unit]}"
 end
 
-new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
-  html.style(:top, "#{params}px")
-end
+# new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
+#   html.style(:top, "#{params}px")
+# end
 new({ method: :top, type: :integer, renderer: :html, specific: :shadow })
 
 new({ method: :bottom, type: :integer, renderer: :html }) do |params|
-  # TODO: replace px with the unit specified by the user or sepcified by default by the system
-  params="#{params}px" unless params.instance_of?(Symbol)
-  html.style(:bottom, params)
+  js[:style][:bottom] = "#{params[:value]}#{params[:unit]}"
 end
 
-new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params|
-  html.style(:bottom, params)
-end
+# new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params|
+#   html.style(:bottom, params)
+# end
 
 new({ method: :right, type: :integer, renderer: :html }) do |params|
-  # TODO: replace px with the unit specified by the user or sepcified by default by the system
-  params="#{params}px" unless params.instance_of?(Symbol)
-  html.style(:right, params)
+  js[:style][:right] = "#{params[:value]}#{params[:unit]}"
+
 end
 
-new({ method: :left, type: :integer, renderer: :html }) do |params|
-  # TODO: replace px with the unit specified by the user or sepcified by default by the system
-  params="#{params}px" unless params.instance_of?(Symbol)
-  html.style(:left, params)
-end
+
 
 new({ method: :left, type: :integer, specific: :color, renderer: :html })
 
@@ -46,11 +40,11 @@ end
 
 new({ method: :rotate, type: :integer, renderer: :html, specific: :paint })
 
-new({renderer: :html, method: :position }) do |params|
+new({ renderer: :html, method: :position }) do |params|
   html.style("position", params)
 end
 
-new({renderer: :html, method: :depth }) do |params|
+new({ renderer: :html, method: :depth }) do |params|
   html.style("z-index", params)
 end
 
@@ -66,6 +60,6 @@ new({ method: :display, renderer: :html }) do |params|
   html.style(:display, params)
 end
 
-new({renderer: :html, method: :center}) do |params|
+new({ renderer: :html, method: :center }) do |params|
   html.center(params, attach)
 end

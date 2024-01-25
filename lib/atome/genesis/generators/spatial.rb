@@ -1,9 +1,29 @@
 # frozen_string_literal: true
 
-new({ particle: :left, type: :integer })
-new({ particle: :right, type: :integer })
-new({ particle: :top, type: :integer })
-new({ particle: :bottom, type: :integer })
+new ({particle: :left})  do |params|
+  unless params.instance_of? Hash
+    params= {value: params, unit: :px}
+  end
+  params
+end
+new({ particle: :right, type: :integer })do |params|
+  unless params.instance_of? Hash
+    params= {value: params, unit: :px}
+  end
+  params
+end
+new({ particle: :top, type: :integer })do |params|
+  unless params.instance_of? Hash
+    params= {value: params, unit: :px}
+  end
+  params
+end
+new({ particle: :bottom, type: :integer })do |params|
+  unless params.instance_of? Hash
+    params= {value: params, unit: :px}
+  end
+  params
+end
 new({ particle: :rotate, type: :integer })
 new({ particle: :direction, type: :string })
 new({ particle: :center, type: :string})

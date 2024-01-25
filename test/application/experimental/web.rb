@@ -479,13 +479,11 @@ var map = L.map(#{map_created_id}).setView(coordinate, view);
   end
 
   def delete_children_recursively(page)
-    if grab(page)
-      grab(page).attached&.each do |child_found|
+    grab(page)&.attached&.each do |child_found|
         delete_children_recursively(child_found)
-        grab(child_found).delete(true) if grab(child_found)
-      end
+        grab(child_found)&.delete(true)
     end
-    grab(page).delete(true) if grab(page)
+    grab(page)&.delete(true)
   end
 
   def title(params)

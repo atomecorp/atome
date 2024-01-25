@@ -117,17 +117,20 @@ class App < Roda
         ws.on(:message) do |event|
           json_string = event.data.gsub(/(\w+):/) { "\"#{$1}\":" }.gsub('=>', ':')
           full_data = JSON.parse(json_string)
+
           message = full_data['message']
           action_requested = full_data['action']
           value= full_data['value']
           option= full_data['option']
           current_user = full_data['user']
           user_pass = full_data['pass']['global']
-          if action_requested
+          # if action_requested == :request
+          #   request (message)
+          # end
             return_message = EDen.safe_send(action_requested, message,option,ws,value, current_user, user_pass)
-          else
-            return_message = "no action msg: #{full_data}"
-          end
+          # else
+          #   return_message = "no action msg: #{full_data}"
+          # end
           ws.send(return_message.to_json)
         end
 

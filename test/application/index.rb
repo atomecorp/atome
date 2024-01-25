@@ -9,8 +9,12 @@
 # require "./examples/monitor"
 # TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
 
-#in progreess
-require "./examples/center"
+# require "./web2"
+
+
+# in progress
+require "./examples/test"
+# require "./examples/center"
 # require "./examples/find"
 
 
