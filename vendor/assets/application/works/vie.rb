@@ -182,6 +182,9 @@ fill_toolzone(%i[files edition select group link copy undo settings])
 in_box=input_box
 
 
+console(true)
+
+
 
 
 

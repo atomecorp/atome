@@ -40,6 +40,17 @@ class Object
     end
   end
 
+  def reorder_particles(hash_to_reorder)
+    # we reorder the hash
+    ordered_keys =  %i[renderers id alien type attach int8 unit]
+
+    ordered_part = ordered_keys.map { |k| [k, hash_to_reorder[k]] }.to_h
+    other_part = hash_to_reorder.reject { |k, _| ordered_keys.include?(k) }
+    # merge the parts  to obtain an re-ordered hash
+    reordered_hash = ordered_part.merge(other_part)
+    reordered_hash
+  end
+
   def delete (atomes)
     grab(:view).delete(atomes)
   end

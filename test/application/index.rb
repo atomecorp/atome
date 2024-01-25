@@ -59,7 +59,7 @@
 # require "./examples/raw_html"
 # require "./examples/vector"
 # require "./examples/basic_understanding"
-require "./examples/configuration"
+# require "./examples/preset"
 # require "./examples/hierarchy"
 # require "./examples/callback"
 # require "./examples/convert"

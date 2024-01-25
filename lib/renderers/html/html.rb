@@ -1475,6 +1475,7 @@ class HTML
 
   def center(options, attach)
     @center_options = options
+
     @parent = grab(attach)
 
     apply_centering(@center_options, @parent)

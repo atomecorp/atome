@@ -14,16 +14,14 @@
 #  {value: params, unit: :px} unless params.instance_of? Hash
 # end
 
-new ({particle: :left})
-new ({particle: :right})
-new ({particle: :top})
-new ({particle: :bottom})
-
+new ({ particle: :left })
+new ({ particle: :right })
+new ({ particle: :top })
+new ({ particle: :bottom })
 
 new({ particle: :rotate, type: :integer })
 new({ particle: :direction, type: :string })
-new({ particle: :center, type: :string})
-new({particle: :depth, type: :integer})
+new({ particle: :depth, type: :integer })
 new({ particle: :position })
 new({ particle: :organise })
 new({ particle: :spacing })
@@ -107,7 +105,19 @@ new({ particle: :layout }) do |params|
   end
   params
 end
-new({particle: :center})
+
+new({ particle: :center, type: :hash }) do |params|
+
+  if params == true
+    params = { x: 0, y: 0, dynamic: true }
+  end
+  params
+end
+
+
+
+
+
 
 
 
