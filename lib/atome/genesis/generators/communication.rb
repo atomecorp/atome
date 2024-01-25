@@ -17,3 +17,9 @@ end
 new({ particle: :controller }) do |msg|
   Atome.controller_sender(msg)
 end
+
+
+
+new({ particle: :int8 })
+new({ particle: :language })
+

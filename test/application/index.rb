@@ -13,8 +13,8 @@
 
 
 # in progress
-require "./examples/server"
-# require "./examples/center"
+require "./examples/int8"
+# require "./examples/server"
 # require "./examples/find"
 
 
@@ -26,6 +26,7 @@ require "./examples/server"
 # require './test'
 
 #### works
+# require "./examples/center"
 # require "./examples/atomizer"
 # require "./examples/table"
 # require "./examples/size"
