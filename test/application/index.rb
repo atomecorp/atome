@@ -13,19 +13,19 @@
 
 
 # in progress
-require "./examples/int8"
 # require "./examples/server"
 # require "./examples/find"
 
 
 
 # Projects
-# require './works/vie'
+require './works/vie'
 # require './works/photos'
 # require './works/photos6'
 # require './test'
 
 #### works
+# require "./examples/int8"
 # require "./examples/center"
 # require "./examples/atomizer"
 # require "./examples/table"

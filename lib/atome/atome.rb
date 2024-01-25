@@ -10,6 +10,7 @@ class Atome
 
     # the keys :renderers, :type and :id should be placed in the first position in the hash
     @history = {}
+    # @language = :english
     @callback = {}
     @tag = {}
     @selected = false

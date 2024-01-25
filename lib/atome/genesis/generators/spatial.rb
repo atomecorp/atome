@@ -1,29 +1,25 @@
 # frozen_string_literal: true
 
-new ({particle: :left})  do |params|
-  unless params.instance_of? Hash
-    params= {value: params, unit: :px}
-  end
-  params
-end
-new({ particle: :right, type: :integer })do |params|
-  unless params.instance_of? Hash
-    params= {value: params, unit: :px}
-  end
-  params
-end
-new({ particle: :top, type: :integer })do |params|
-  unless params.instance_of? Hash
-    params= {value: params, unit: :px}
-  end
-  params
-end
-new({ particle: :bottom, type: :integer })do |params|
-  unless params.instance_of? Hash
-    params= {value: params, unit: :px}
-  end
-  params
-end
+# new ({particle: :left})  do |params|
+#   {value: params, unit: :px} unless params.instance_of? Hash
+# end
+# new({ particle: :right, type: :integer })do |params|
+#   {value: params, unit: :px} unless params.instance_of? Hash
+# end
+# new({ particle: :top, type: :integer })do |params|
+#   {value: params, unit: :px} unless params.instance_of? Hash
+#
+# end
+# new({ particle: :bottom, type: :integer })do |params|
+#  {value: params, unit: :px} unless params.instance_of? Hash
+# end
+
+new ({particle: :left})
+new ({particle: :right})
+new ({particle: :top})
+new ({particle: :bottom})
+
+
 new({ particle: :rotate, type: :integer })
 new({ particle: :direction, type: :string })
 new({ particle: :center, type: :string})
@@ -32,9 +28,7 @@ new({ particle: :position })
 new({ particle: :organise })
 new({ particle: :spacing })
 new({ particle: :display }) do |params|
-  unless params.instance_of? Hash
-    params = { mode: params }
-  end
+  params = { mode: params } unless params.instance_of? Hash
   params
 end
 new({ particle: :layout }) do |params|
@@ -43,9 +37,7 @@ new({ particle: :layout }) do |params|
   elements_style = params.delete(:element) || {}
   # now we get the list of the atome to layout
   atomes_to_organise = []
-  if type == :group
-    atomes_to_organise = collect
-  end
+  atomes_to_organise = collect if type == :group
   # if params[:listing] is specified group collection is override
   atomes_to_organise = params[:listing] if params[:listing]
   if mode_found == :default
@@ -76,9 +68,7 @@ new({ particle: :layout }) do |params|
     end
     container.remove({ category: :atome })
     container.category(:matrix)
-    if mode_found == :list
-      params[:organise] = '1fr'
-    end
+    params[:organise] = '1fr' if mode_found == :list
     params.each do |particle, value|
       container.send(particle, value)
     end

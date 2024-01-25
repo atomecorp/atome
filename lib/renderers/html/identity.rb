@@ -42,11 +42,11 @@ new({ method: :type, type: :string, specific: :color, renderer: :html }) do
 end
 
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |params|
-  js[:innerHTML] = if language
-                     int8[language]
-                   else
-                     params
-                   end
+    js[:innerHTML] = if language
+                       int8[language].to_s
+                     else
+                       params.to_s
+                     end
 end
 
 new({ method: :data, type: :string, specific: :vector, renderer: :html }) do |value|
