@@ -17,6 +17,8 @@ class Atome
     @metrics = {}
     @unit = {}
     @collect = {}
+    @collect = {}
+    @int8= {}
     @id = new_atome[:id] || identity_generator(:element)
     @type = new_atome[:type] || :element
     @attached = []

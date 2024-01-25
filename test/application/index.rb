@@ -15,8 +15,7 @@
 # in progress
 # require "./examples/server"
 # require "./examples/find"
-require "./examples/help"
-# require "./examples/example"
+
 
 
 
@@ -27,6 +26,8 @@ require "./examples/help"
 # require './test'
 
 #### works
+# # require "./examples/help"
+# # require "./examples/example"
 # require "./examples/unit"
 # require "./examples/int8"
 # require "./examples/center"
@@ -58,7 +59,7 @@ require "./examples/help"
 # require "./examples/raw_html"
 # require "./examples/vector"
 # require "./examples/basic_understanding"
-# require "./examples/presets"
+require "./examples/configuration"
 # require "./examples/hierarchy"
 # require "./examples/callback"
 # require "./examples/convert"

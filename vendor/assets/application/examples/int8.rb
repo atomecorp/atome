@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-t = text({ int8: { english: :hello, french: :salut, deutch: :halo }, language: :deutch })
+t = text({ int8: { english: :hello, french: :salut, deutch: :halo } })
 
 wait 1 do
   t.language(:french)
@@ -12,3 +12,6 @@ wait 1 do
 end
 
 puts t.data
+
+
+
