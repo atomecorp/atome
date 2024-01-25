@@ -13,7 +13,7 @@
 
 
 # in progress
-require "./examples/test"
+require "./examples/server"
 # require "./examples/center"
 # require "./examples/find"
 
@@ -35,7 +35,7 @@ require "./examples/test"
 # require "./examples/dig"
 # require "./examples/import"
 # require "./examples/shortcut"
-# require "./examples/messaging"
+# require "./examples/server"
 # require "./examples/console"
 # require "./examples/layo◊ut"
 # require "./examples/random"
