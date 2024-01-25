@@ -9,8 +9,8 @@ c.touch(true) do
 end
 
 puts '------'
-puts "b.compute  left return the position on the screen of the item : #{b.compute({reference: c.id, particle: :left, unit: :pixel})}"
+puts "b.compute  left return the position on the screen of the item : #{b.compute({reference: c.id, particle: :left, metrics: :pixel})}"
 puts "b.compute left : #{b.compute({ particle: :left })[:value]}, c left : #{b.left}"
 puts "b.compute top :#{b.compute({ particle: :top })[:value]}, c top: #{b.top}"
-alert "i.compute width :#{i.compute({ particle: :width })[:value]}, i width: #{i.width}"
-alert "i.compute height :#{i.compute({ particle: :height })[:value]}, i height: #{i.height}"
+puts  "i.compute width :#{i.compute({ particle: :width })[:value]}, i width: #{i.width}"
+pus "i.compute height :#{i.compute({ particle: :height })[:value]}, i height: #{i.height}"

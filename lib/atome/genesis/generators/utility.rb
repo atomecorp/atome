@@ -113,7 +113,7 @@ end
 new({ particle: :relations, type: :hash })
 new({ particle: :tag, render: false, type: :hash })
 new({ particle: :web })
-new({ particle: :unit, type: :hash })
+new({ particle: :metrics, type: :hash })
 new({ initialize: :unit, value: {} })
 new({ particle: :login }) do |params|
   set_current_user(id) if params

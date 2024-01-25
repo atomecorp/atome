@@ -15,11 +15,13 @@
 # in progress
 # require "./examples/server"
 # require "./examples/find"
+# require "./examples/unit"
+require "./examples/compute"
 
 
 
 # Projects
-require './works/vie'
+# require './works/vie'
 # require './works/photos'
 # require './works/photos6'
 # require './test'

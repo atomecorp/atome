@@ -14,7 +14,7 @@ class Atome
     @callback = {}
     @tag = {}
     @selected = false
-    @unit = {}
+    @metrics = {}
     @collect = {}
     @id = new_atome[:id] || identity_generator(:element)
     @type = new_atome[:type] || :element
