@@ -1,42 +1,36 @@
 # frozen_string_literal: true
 
 new({ method: :left, type: :integer, renderer: :html }) do |params|
-  js[:style][:left]="#{params}px"
-  # js[:style][:left] = "#{params[:value]}#{params[:unit]}"
+  unit = @unit[:left] || :px
+  js[:style][:left] = "#{params}#{unit}"
 end
 
 new({ method: :top, type: :integer, renderer: :html }) do |params|
-  # js[:style][:top] = "#{params[:value]}#{params[:unit]}"
-  js[:style][:top]="#{params}px"
-  #
+  unit = @unit[:top] || :px
+  # alert  unit
+  js[:style][:top] = "#{params}#{unit}"
 end
 new({ method: :bottom, type: :integer, renderer: :html }) do |params|
-  # js[:style][:bottom] = "#{params[:value]}#{params[:unit]}"
-  js[:style][:bottom]="#{params}px"
-  #
+  unit = @unit[:bottom] || :px
+  js[:style][:bottom] =  "#{params}#{unit}"
 end
 
 new({ method: :right, type: :integer, renderer: :html }) do |params|
-  js[:style][:right]="#{params}px"
-  # js[:style][:right] = "#{params[:value]}#{params[:unit]}"
-end
+  unit = @unit[:right] || :px
 
+  js[:style][:right] =  "#{params}#{unit}"
+end
 
 new({ method: :top, type: :integer, renderer: :html, specific: :shadow })
 
-
-
-
-
-new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
-  html.style(:top, "#{params}px")
-end
-
-new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params|
-  html.style(:bottom, params)
-end
-
-
+# new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
+#   unit = @unit[:left] || :px
+#   html.style(:top,  "#{params}#{unit}"
+# end
+#
+# new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params|
+#   html.style(:bottom,  "#{params}#{unit}")
+# end
 
 new({ method: :left, type: :integer, specific: :color, renderer: :html })
 
