@@ -15,7 +15,7 @@
 # in progress
 # require "./examples/server"
 # require "./examples/find"
-require './examples/test'
+require "./examples/test"
 
 
 
@@ -27,8 +27,9 @@ require './examples/test'
 
 
 #### works
-# # require "./examples/help"
-# # require "./examples/example"
+# require './examples/css'
+# require "./examples/help"
+# require "./examples/example"
 # require "./examples/unit"
 # require "./examples/int8"
 # require "./examples/center"

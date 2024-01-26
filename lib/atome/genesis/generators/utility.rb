@@ -65,17 +65,16 @@ new({ particle: :delete, render: false }) do |params|
 end
 new({ particle: :clear })
 
-
 new({ post: :clear }) do
-    attached_found = []
-    attached.each do |attached_id_found|
-      attached_found << attached_id_found
-    end
-    attached_found.each do |child_id_found|
-      child_found = grab(child_id_found)
-      # we exclude system  objects
-      child_found&.delete(true) unless child_found.tag && child_found.tag[:system]
-    end
+  attached_found = []
+  attached.each do |attached_id_found|
+    attached_found << attached_id_found
+  end
+  attached_found.each do |child_id_found|
+    child_found = grab(child_id_found)
+    # we exclude system  objects
+    child_found&.delete(true) unless child_found.tag && child_found.tag[:system]
+  end
 end
 new({ particle: :path })
 new({ particle: :schedule }) do |date, proc|
@@ -239,10 +238,15 @@ new({ particle: :compute }) do |params|
   params
 end
 
-
 new({ particle: :get }) do |params|
   cell = params[:cell]
   row_nb = cell[0]
   column_nb = cell[1]
   data[row_nb][data[row_nb].keys[column_nb]] # we get the content of the cell
+end
+
+new ({ particle: :css })
+
+new({ read: :css }) do
+  CssProxy.new(js, nil, self)
 end

@@ -19,6 +19,7 @@ class Atome
     @collect = {}
     @collect = {}
     @int8= {}
+    @css = {}
     @id = new_atome[:id] || identity_generator(:element)
     @type = new_atome[:type] || :element
     @attached = []

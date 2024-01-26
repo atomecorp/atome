@@ -495,3 +495,44 @@ class Object
   end
 
 end
+
+
+class CssProxy
+  def initialize(js, parent_key = nil, current_atome)
+    @js = js
+    @css={}
+    @parent_key = parent_key
+    @style = {}
+    @current_atome=current_atome
+  end
+
+
+  def [](key)
+    if @parent_key
+      @current_atome.instance_variable_get('@css')[@parent_key]&.[](key)
+    else
+      CssProxy.new(@js, key, @current_atome)
+    end
+  end
+
+
+
+  def []=(key, value)
+    if @parent_key
+      @js[@parent_key][key] = value
+      @current_atome.instance_variable_set('@css',{@parent_key => {key => value}})
+      @css[@parent_key]={key => value}
+      puts "==> Clé parente: #{@parent_key}, Clé: #{key}, Valeur: #{value}"
+    else
+      @style[key] = value
+      @js[key] = value
+    end
+
+    @js.update_style(@style) if @parent_key.nil?
+  end
+
+  def to_s
+    @current_atome.instance_variable_get('@css').to_s
+  end
+
+end
