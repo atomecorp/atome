@@ -1,24 +1,9 @@
 # frozen_string_literal: true
 
-# new ({particle: :left})  do |params|
-#   {value: params, unit: :px} unless params.instance_of? Hash
-# end
-# new({ particle: :right, type: :integer })do |params|
-#   {value: params, unit: :px} unless params.instance_of? Hash
-# end
-# new({ particle: :top, type: :integer })do |params|
-#   {value: params, unit: :px} unless params.instance_of? Hash
-#
-# end
-# new({ particle: :bottom, type: :integer })do |params|
-#  {value: params, unit: :px} unless params.instance_of? Hash
-# end
-
-new ({ particle: :left })
-new ({ particle: :right })
-new ({ particle: :top })
-new ({ particle: :bottom })
-
+new({ particle: :left })
+new({ particle: :right })
+new({ particle: :top })
+new({ particle: :bottom })
 new({ particle: :rotate, type: :integer })
 new({ particle: :direction, type: :string })
 new({ particle: :depth, type: :integer })
@@ -30,7 +15,6 @@ new({ particle: :display }) do |params|
   params
 end
 new({ particle: :layout }) do |params|
-
   mode_found = params.delete(:mode) || :list
   elements_style = params.delete(:element) || {}
   # now we get the list of the atome to layout
@@ -43,14 +27,13 @@ new({ particle: :layout }) do |params|
     atomes_to_organise.each do |atome_id_to_organise|
       atome_found = grab(atome_id_to_organise)
       # now restoring
-      if atome_found.backup
-        atome_found.backup.each do |particle, value|
-          atome_found.send(:delete, particle)
-          atome_found.send(particle, value)
-        end
-        atome_found.remove_layout
-      end
+      next unless atome_found.backup
 
+      atome_found.backup.each do |particle, value|
+        atome_found.send(:delete, particle)
+        atome_found.send(particle, value)
+      end
+      atome_found.remove_layout
     end
   else
 
@@ -74,12 +57,10 @@ new({ particle: :layout }) do |params|
     atomes_to_organise.each do |atome_id_to_organise|
       atome_found = grab(atome_id_to_organise)
       # now restoring
-      if atome_found.backup
-        atome_found.backup.each do |particle, value|
-          atome_found.send(:delete, particle)
-          atome_found.send(particle, value)
-        end
-        # atome_found.remove_layout
+      # atome_found.remove_layout
+      atome_found.backup&.each do |particle, value|
+        atome_found.send(:delete, particle)
+        atome_found.send(particle, value)
       end
       # we remove previous display mode
       atome_found.remove_layout
@@ -105,19 +86,7 @@ new({ particle: :layout }) do |params|
   end
   params
 end
-
 new({ particle: :center, type: :hash }) do |params|
-
-  if params == true
-    params = { x: 0, y: 0, dynamic: true }
-  end
+  params = { x: 0, y: 0, dynamic: true } if params == true
   params
 end
-
-
-
-
-
-
-
-

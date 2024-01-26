@@ -14,7 +14,7 @@ class Atome
     @callback = {}
     @tag = {}
     @selected = false
-    @metrics = {}
+    #@metrics = {}
     @unit = {}
     @collect = {}
     @collect = {}
