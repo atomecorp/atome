@@ -26,7 +26,7 @@
 
 #### works
 # require './examples/css'
-# require "./examples/help"
+require "./examples/help"
 # require "./examples/example"
 # require "./examples/unit"
 # require "./examples/int8"
@@ -70,7 +70,7 @@
 # require "./examples/animation"
 # require "./examples/resize"
 # box({id: :my_box})
-require "./examples/drop"
+# require "./examples/drop"
 # require "./examples/file"
 # require "./examples/select_text"
 # require "./examples/edit"
