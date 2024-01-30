@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
 new({ particle: :connection }) do |params, bloc|
-  params = { server: params } unless params.instance_of? Hash
-  html.connect(params[:server], &bloc)
+
+  params = { server: params} unless params.instance_of? Hash
+  params[:user] = Universe.current_user
+  params[:pass] = Black_matter.password
+  params[:atomes] = Universe.atome_list
+  params[:particles] =Universe.particle_list
+
+
+  html.connect(params, &bloc)
+
 end
 
 new({ particle: :message }) do |params, bloc|

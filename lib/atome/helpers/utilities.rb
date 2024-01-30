@@ -282,6 +282,14 @@ class Atome
     end
   end
 
+  def each_with_index(&proc)
+    index=0
+    collect.each do |val|
+      instance_exec(val,index, &proc) if proc.is_a?(Proc)
+      index+=1
+    end
+  end
+
   def <<(item)
     collect << item
   end

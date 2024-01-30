@@ -13,4 +13,4 @@ puts "b.compute  left return the position on the screen of the item : #{b.comput
 puts "b.compute left : #{b.compute({ particle: :left })[:value]}, c left : #{b.left}"
 puts "b.compute top :#{b.compute({ particle: :top })[:value]}, c top: #{b.top}"
 puts  "i.compute width :#{i.compute({ particle: :width })[:value]}, i width: #{i.width}"
-pus "i.compute height :#{i.compute({ particle: :height })[:value]}, i height: #{i.height}"
+puts "i.compute height :#{i.compute({ particle: :height })[:value]}, i height: #{i.height}"

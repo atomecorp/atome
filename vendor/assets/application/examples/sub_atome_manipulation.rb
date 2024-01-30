@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 
-
-# b=box({right: 45, left: :auto})
-#
-#
-# b.smooth(6)
-# alert b.left
-# alert b.right
-
 b=box({id: :the_box})
 b.text({id: :the_text, left: 90, top: 30, data: :ok})
 b.text({id: :the_text2, left: 190, top: 30, data: :hello})
