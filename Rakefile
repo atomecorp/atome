@@ -285,7 +285,7 @@ task :osx_server do
 
 end
 
-task :build_gem do
+def gem_builder
   # building the gem
   `rake build` # run build_app thru ARGV in exe atome
   # installing  the gem
@@ -301,14 +301,21 @@ task :build_gem do
     `cd pkg; gem install atome --local`
     # open the app
   end
+end
+
+task :build_gem do
+  gem_builder
 
   puts 'atome gem built and installed'
 end
 
 
 task :push_gem do
-  # pushing  the gem
 
+  # building gem
+  gem_builder
+
+  # pushing  the gem
   dir_path = './pkg'
   entries = Dir.entries(dir_path)
 
