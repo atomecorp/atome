@@ -667,7 +667,7 @@ else
       sleep 1
       if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
         # code to exec with Windows
-        `start "" "#{destination}\\#{project_name}\\src\\index_opal.html`
+        `start "" "#{destination}\\#{project_name}\\src\\index_server.html`
       elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
         # code to exec with MacOS
         `open http://localhost:9292`
