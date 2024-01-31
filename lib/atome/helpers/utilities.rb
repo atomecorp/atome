@@ -21,6 +21,9 @@ class Atome
       JS.eval(js_command)
     end
 
+
+
+
     # def global_monitoring(instance, methods_to_monitor, variables_to_monitor)
     #   methods_to_monitor.each do |methode|
     #     original_method = instance.method(methode)
@@ -51,6 +54,26 @@ class Atome
     # end
 
   end
+
+
+  def help(particle, &doc)
+    if doc
+      Universe.set_help(particle, &doc)
+    else
+      doc_found = Universe.get_help(particle)
+      instance_exec(&doc_found) if doc_found.is_a?(Proc)
+    end
+  end
+
+  def example(particle, &example)
+    if example
+      Universe.set_example(particle, &example)
+    else
+      example_found = Universe.get_example(particle)
+      instance_exec(&example_found) if example_found.is_a?(Proc)
+    end
+  end
+
 
   # local server messaging
   def file_for_opal(parent, bloc)
@@ -262,6 +285,14 @@ class Atome
     end
   end
 
+  def each_with_index(&proc)
+    index=0
+    collect.each do |val|
+      instance_exec(val,index, &proc) if proc.is_a?(Proc)
+      index+=1
+    end
+  end
+
   def <<(item)
     collect << item
   end
@@ -310,5 +341,20 @@ class Atome
       parent_found.delete(true)
     end
   end
+  def server(server_params=nil)
+    if server_params
+      @current_server= server_params
+    else
+      @current_server
+    end
+
+  end
+
+  def init_websocket
+    connection(server)
+  end
 
 end
+
+
+

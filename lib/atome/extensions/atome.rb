@@ -40,6 +40,17 @@ class Object
     end
   end
 
+  def reorder_particles(hash_to_reorder)
+    # we reorder the hash
+    ordered_keys =  %i[renderers id alien type attach int8 unit]
+
+    ordered_part = ordered_keys.map { |k| [k, hash_to_reorder[k]] }.to_h
+    other_part = hash_to_reorder.reject { |k, _| ordered_keys.include?(k) }
+    # merge the parts  to obtain an re-ordered hash
+    reordered_hash = ordered_part.merge(other_part)
+    reordered_hash
+  end
+
   def delete (atomes)
     grab(:view).delete(atomes)
   end
@@ -481,6 +492,47 @@ class Object
     a = Atome.new(basis)
     return a
     # convert any foreign object (think HTML) to a pseudo atome objet , that embed foreign objet
+  end
+
+end
+
+
+class CssProxy
+  def initialize(js, parent_key = nil, current_atome)
+    @js = js
+    @css={}
+    @parent_key = parent_key
+    @style = {}
+    @current_atome=current_atome
+  end
+
+
+  def [](key)
+    if @parent_key
+      @current_atome.instance_variable_get('@css')[@parent_key]&.[](key)
+    else
+      CssProxy.new(@js, key, @current_atome)
+    end
+  end
+
+
+
+  def []=(key, value)
+    if @parent_key
+      @js[@parent_key][key] = value
+      @current_atome.instance_variable_set('@css',{@parent_key => {key => value}})
+      @css[@parent_key]={key => value}
+      puts "==> Clé parente: #{@parent_key}, Clé: #{key}, Valeur: #{value}"
+    else
+      @style[key] = value
+      @js[key] = value
+    end
+
+    @js.update_style(@style) if @parent_key.nil?
+  end
+
+  def to_s
+    @current_atome.instance_variable_get('@css').to_s
   end
 
 end

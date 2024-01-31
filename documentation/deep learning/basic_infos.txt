@@ -109,12 +109,13 @@ cd my_app
 atome run browser
 
 
+getter setter for atome are situated in lib/atome/genesis/genesis.rb :     def new_atome(element, &method_proc)
+the getter return a group from the collected atomes ( all included atomes)
 
 
 
-
-#Third parties javascript library is located at different location
-#If you need to update it or add a JS library you need to clone : https://github.com/atomecorp/atome_third_parties_js.git
+# Third parties's javascript libraries are located at different location
+# If you need to update it or add a JS library you need to clone : https://github.com/atomecorp/atome_third_parties_js.git
 
 The importance of the type :
 
@@ -145,12 +146,9 @@ class Object
 renderers are build here : /Users/jean-ericgodard/Documents/Work/codes/atome/lib/atome/genesis/genesis.rb
  def build_render(renderer_name, &method_proc)
 
+remove condition  /Users/jean-ericgodard/Documents/Work/codes/atome/lib/renderers/renderer.rb in def rendering
 
-
-
- remove condition  /Users/jean-ericgodard/Documents/Work/codes/atome/lib/renderers/renderer.rb in def rendering
-
-New particle exemple :
+New particle example :
 
 new({ particle: :shell })
 # automatically create a @shell instance variable in the atome to store the value
@@ -216,7 +214,6 @@ To save manually you can use the store method , like this :
 
 store({build: :my_data })
 
-
 The modifier atomes (color, shadow)
 Here is the mechanism of such atome:
 
@@ -232,22 +229,17 @@ Each Each particles and atome is store as an :
 It may need a bit more optimization
 
 
-Atomes have a  special method to refresh all attached /affected atomes , call : Atome.global_monitoring
+Atomes have a  special method to monitor all attached /affected atomes , call : Atome.global_monitoring
 Code at :  helpers/utilities.rb /def global_monitoring
 Usage :
 Atome.global_monitoring(self, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
 
-
-The  ephemera @new_atome to allow access to data send to the  atome at init time
-
-
+The ephemera @new_atome to allow access to data send to the  atome at init time
 
 Important : for atomes that needs to be attached or apply to
 This happen in the method  in presets/atome.rb : atome_common
 at this line :
  if params[:type] == :color || basic_params[:type] == :color || params[:type] == :shadow || basic_params[:type] == :shadow
-
-
 
 
 Sanitizer , pre, post , after in atome/helpers/utilities.rb
@@ -275,7 +267,7 @@ To alter a particle before getting the  value
 
 
 
-pay attention to atome category marterial vs modifier
+pay attention to atome category material vs modifier
 color, shadow and paint are modifier
 while shape, image, vector, video audio are materials
 

@@ -14,7 +14,6 @@ end
 new({ method: :alpha, type: :integer, specific: :color, renderer: :html }) do |value, _user_proc|
 end
 
-
 new({ renderer: :html, method: :diffusion, type: :string })
 
 # edit
@@ -22,7 +21,6 @@ new({ renderer: :html, method: :edit }) do |params|
   html.attr(:contenteditable, params)
   html.update_data(params)
 end
-
 
 new({ method: :border, type: :hash, renderer: :html }) do |value, _user_proc|
   thickness = value[:thickness] || 5
@@ -45,15 +43,19 @@ new({ method: :insert, renderer: :html, type: :hash }) do |params|
   html.table_insert(params)
 end
 
-
-
 new({ method: :remove, renderer: :html, type: :hash }) do |params|
   html.table_remove(params)
 end
 
-
-
-
 new({ method: :sort, renderer: :html, type: :hash }) do |params|
   html.refresh_table(params)
+end
+
+new({ particle: :unit, store: false }) do |params|
+  params.each do |k, v|
+    @unit[k] = v
+    # now we refresh the particle
+    send(k, send(k))
+  end
+  @unit
 end

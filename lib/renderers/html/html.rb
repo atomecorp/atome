@@ -210,7 +210,16 @@ class HTML
   end
 
   def connect(params, &bloc)
-    JS.eval("atomeJS.connect('ws://#{params}')")
+    type= params[:type]
+    server= params[:address]
+    user=params[:user]
+    pass=params[:pass]
+    atomes=params[:atomes]
+    particles=params[:particles]
+    JS.eval("atomeJS.connect('#{type}','#{server}','#{user}','#{pass}',#{atomes.to_json},#{particles.to_json})")
+    #
+    # JS.eval("atomeJS.connect('ws://#{server}')")
+    # @original_atome.message(:helloworld)
   end
 
   def send_message(message)
@@ -1475,6 +1484,7 @@ class HTML
 
   def center(options, attach)
     @center_options = options
+
     @parent = grab(attach)
 
     apply_centering(@center_options, @parent)

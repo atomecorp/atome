@@ -1,32 +1,35 @@
 # frozen_string_literal: true
 
 new({ method: :left, type: :integer, renderer: :html }) do |params|
-  js[:style][:left] = "#{params[:value]}#{params[:unit]}"
+  unit = @unit[:left] || :px if params.is_a? Numeric
+  js[:style][:left] = "#{params}#{unit}"
 end
 
 new({ method: :top, type: :integer, renderer: :html }) do |params|
-  js[:style][:top] = "#{params[:value]}#{params[:unit]}"
+  unit = @unit[:top] || :px if params.is_a? Numeric
+  js[:style][:top] = "#{params}#{unit}"
 end
-
-# new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
-#   html.style(:top, "#{params}px")
-# end
-new({ method: :top, type: :integer, renderer: :html, specific: :shadow })
-
 new({ method: :bottom, type: :integer, renderer: :html }) do |params|
-  js[:style][:bottom] = "#{params[:value]}#{params[:unit]}"
+  unit = @unit[:bottom] || :px if params.is_a? Numeric
+  js[:style][:bottom] = "#{params}#{unit}"
 end
-
-# new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params|
-#   html.style(:bottom, params)
-# end
 
 new({ method: :right, type: :integer, renderer: :html }) do |params|
-  js[:style][:right] = "#{params[:value]}#{params[:unit]}"
+  unit = @unit[:right] || :px if params.is_a? Numeric
 
+  js[:style][:right] = "#{params}#{unit}"
 end
 
+new({ method: :top, type: :integer, renderer: :html, specific: :shadow })
 
+# new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
+#   unit = @unit[:left] || :px
+#   html.style(:top,  "#{params}#{unit}"
+# end
+#
+# new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params|
+#   html.style(:bottom,  "#{params}#{unit}")
+# end
 
 new({ method: :left, type: :integer, specific: :color, renderer: :html })
 

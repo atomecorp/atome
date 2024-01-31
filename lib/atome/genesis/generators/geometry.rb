@@ -2,9 +2,6 @@
 
 new({ particle: :width })
 new({ particle: :height })
-# new({ particle: :size }) do |params|
-#   params
-# end
 
 new({ particle: :size }) do |params|
   params = { value: params } unless params.instance_of? Hash

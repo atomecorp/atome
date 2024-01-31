@@ -13,19 +13,23 @@
 
 
 # in progress
-require "./examples/server"
-# require "./examples/center"
 # require "./examples/find"
-
-
+# require "./examples/test"
 
 # Projects
 # require './works/vie'
 # require './works/photos'
 # require './works/photos6'
 # require './test'
+require './examples/test'
 
 #### works
+# require './examples/css'
+# require "./examples/help"
+# require "./examples/example"
+# require "./examples/unit"
+# require "./examples/int8"
+# require "./examples/center"
 # require "./examples/atomizer"
 # require "./examples/table"
 # require "./examples/size"
@@ -36,8 +40,8 @@ require "./examples/server"
 # require "./examples/import"
 # require "./examples/shortcut"
 # require "./examples/server"
-# require "./examples/console"
-# require "./examples/layo◊ut"
+# # require "./examples/console"
+# require "./examples/layout"
 # require "./examples/random"
 # require "./examples/copy"
 # require "./examples/selected"
@@ -54,7 +58,7 @@ require "./examples/server"
 # require "./examples/raw_html"
 # require "./examples/vector"
 # require "./examples/basic_understanding"
-# require "./examples/presets"
+# require "./examples/preset"
 # require "./examples/hierarchy"
 # require "./examples/callback"
 # require "./examples/convert"
@@ -64,7 +68,6 @@ require "./examples/server"
 # require "./examples/play"
 # require "./examples/animation"
 # require "./examples/resize"
-# box({id: :my_box})
 # require "./examples/drop"
 # require "./examples/file"
 # require "./examples/select_text"

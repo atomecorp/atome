@@ -34,7 +34,9 @@ class Atome
     else
       params[:attach] = params[:attach] || @id || :view
     end
-    params
+    # # we reorder the hash
+    reordered_params =reorder_particles(params)
+    reordered_params
   end
 
   def preset_common(params, &bloc)
@@ -44,6 +46,7 @@ class Atome
   end
 
   def box(params = {}, &bloc)
+
     atome_preset = :box
     params = atome_common(atome_preset, params)
     preset_common(params, &bloc)
