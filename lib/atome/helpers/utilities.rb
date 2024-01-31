@@ -21,6 +21,9 @@ class Atome
       JS.eval(js_command)
     end
 
+
+
+
     # def global_monitoring(instance, methods_to_monitor, variables_to_monitor)
     #   methods_to_monitor.each do |methode|
     #     original_method = instance.method(methode)
@@ -338,5 +341,20 @@ class Atome
       parent_found.delete(true)
     end
   end
+  def server(server_params=nil)
+    if server_params
+      @current_server= server_params
+    else
+      @current_server
+    end
+
+  end
+
+  def init_websocket
+    connection(server)
+  end
 
 end
+
+
+

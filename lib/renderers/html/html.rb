@@ -210,8 +210,8 @@ class HTML
   end
 
   def connect(params, &bloc)
-    type= 'ws'
-    server= params[:server]
+    type= params[:type]
+    server= params[:address]
     user=params[:user]
     pass=params[:pass]
     atomes=params[:atomes]

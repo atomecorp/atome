@@ -138,3 +138,6 @@ STR
     eval(code)
   end
 end
+
+# we init server default address
+A.server({ address: 'localhost:9292' , type: 'ws'})

@@ -1,27 +1,27 @@
 # frozen_string_literal: true
 
+# If you need to specify another address for the server use A.server_adress
+A.server({ address: 'localhost:9292' , type: 'ws'})
+user_password = {global: :all_star, read: { atome: :all_star }, write: { atome: :all_star } }
+
+human({ id: :jeezs, login: true, password: user_password, data: { birthday: '10/05/2016' },selection: [], tag: { system: true } , attach: :user_view })
 
 
-# b=box({right: 45, left: :auto})
 #
+# b = box({ color: :red, id: :my_box })
 #
-# b.smooth(6)
-# alert b.left
-# alert b.right
+# b.touch(true) do
+#   b.connection('localhost:9292') do |params|
+#     alert " the connection is : #{params}"
+#   end
+# end
 
-b=box({id: :the_box})
-b.text({id: :the_text, left: 90, top: 30, data: :ok})
-b.text({id: :the_text2, left: 190, top: 30, data: :hello})
+b = box({ color: :yellow, left: 333 })
 
-
-wait 1 do
-  b.text.left(30)
-  wait 1 do
-    b.text.color(:white)
-    b.text.each_with_index do |el, index|
-
-      grab(el).left(30+30*index)
-    end
-    b.color(:black)
-  end
+b.touch(true) do
+  b.message({message: 'cd ..;cd server;ls; pwd', action: :terminal })
+  b.message({message: 'capture.rb', action: :file, option: :read })
+  b.message({message: 'tototo.rb', action: :file, option: :write, value: :hello })
+  # b.message({message: 'cd ..;cd server;ls; pwd'})
+  # c = box({ color: :red, left: 333 })
 end

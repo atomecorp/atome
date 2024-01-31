@@ -1,0 +1,38 @@
+# rounded rectangle example :
+
+
+var topLeft = new Point(100, 100); // Starting point for the rectangle
+var rectWidth = 150; // Width of the rectangle
+var rectHeight = 100; // Height of the rectangle
+var cornerRadiusTopLeft = 20; // Radius for the rounding of the top left corner
+var cornerRadiusBottomRight = 69; // Radius for the rounding of the bottom right corner
+
+var path = new Path();
+
+// Starts from the point just after the rounded top left corner
+path.moveTo(new Point(topLeft.x + cornerRadiusTopLeft, topLeft.y));
+
+// Draws the top line to the top right corner
+path.lineTo(new Point(topLeft.x + rectWidth, topLeft.y));
+
+// Draws the right vertical line to the start of the bottom right corner rounding
+path.lineTo(new Point(topLeft.x + rectWidth, topLeft.y + rectHeight - cornerRadiusBottomRight));
+
+// Uses quadraticCurveTo to create the rounding for the bottom right corner
+path.quadraticCurveTo(new Point(topLeft.x + rectWidth, topLeft.y + rectHeight), new Point(topLeft.x + rectWidth - cornerRadiusBottomRight, topLeft.y + rectHeight));
+
+// Draws the bottom line to the start of the bottom left corner rounding
+path.lineTo(new Point(topLeft.x, topLeft.y + rectHeight));
+
+// Draws the left vertical line to the start of the top left corner rounding
+path.lineTo(new Point(topLeft.x, topLeft.y + cornerRadiusTopLeft));
+
+// Uses quadraticCurveTo to create the rounding for the top left corner
+path.quadraticCurveTo(new Point(topLeft.x, topLeft.y), new Point(topLeft.x + cornerRadiusTopLeft, topLeft.y));
+
+// Closes the path to complete the shape
+path.closePath();
+
+// Sets the stroke properties
+path.strokeColor = 'black';
+path.strokeWidth = 2;
