@@ -4,3 +4,4 @@
 class Atome
   VERSION = '0.5.6.0.1'
 end
+
