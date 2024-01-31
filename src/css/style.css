@@ -1,0 +1,162 @@
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html, body {
+
+    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    background: rgba(39, 39, 39, 1);
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    color: lightgray;
+}
+pre {
+    min-width: 100px;
+    margin: 0;
+    padding: 0;
+}
+
+
+.matrix{
+    background-color: blue;
+    border-radius: 9px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    flex-direction: column;
+    gap: 12px;
+    padding: 3px;
+}
+/*.matrix_element{*/
+/*    background-color: rebeccapurple;*/
+/*    width: 100%;*/
+/*    height: 29px;*/
+/*    border-radius: 59px;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    flex-direction: column;*/
+/*    margin-bottom: 20px;*/
+/*    padding: 0px*/
+/*}*/
+
+#view {
+    left: 0px;
+    font-size: 25px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: auto;
+    /*display: block;*/
+    height: auto;
+    overflow: hidden;
+    position: absolute;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+.ui-selected {
+    border: #00bb00 solid 3px;
+}
+
+.ui-selecting {
+    border: orange solid 3px;
+}
+
+.selected {
+    outline: 2px dashed white;
+    background-color: #00bb00;
+}
+
+.atome {
+    will-change: transform;
+    cursor: default;
+    pointer-events: auto;
+    caret-color: white;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    position: absolute;
+    display: inline-block;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    -webkit-overflow-scrolling: touch;
+    -webkit-user-drag: none;
+    caret-shape: bar;
+    overflow: visible;
+}
+
+.text {
+    /*-webkit-text-fill-color: transparent;*/
+    /*-webkit-background-clip: text;*/
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    position: relative;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.center_vertical {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    transform: translateY(-50%);
+}
+
+.center_horizontal{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.e_align_h_left {
+    text-align: left;
+}
+
+.e_align_h_right {
+    text-align: right;
+}
+
+.e_align_h_center {
+    text-align: center;
+}
+
+.el_align_h {
+    text-align: justify;
+}
+
+.el_align_v {
+    display: flex;
+    align-items: center;
+}
+
+
+.el_align_v_bottom {
+    display: flex;
+    align-items: flex-end;
+}
+
+/*::selection {*/
+/*    color: transparent;*/
+/*    background: none;*/
+/*}*/
+/*!* For Mozilla Firefox *!*/
+/*::-moz-selection {*/
+/*    color: transparent;*/
+/*    background: none;*/
+/*}*/
+
+
