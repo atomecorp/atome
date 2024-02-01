@@ -47,7 +47,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'artoo', '~> 1.8.2'
   # spec.add_runtime_dependency 'arduino_firmata', '~> 0.3'
-  spec.add_runtime_dependency 'eVe', '~>  0.1.0'
+  # spec.add_runtime_dependency 'eVe', '~>  0.1.0'
   spec.add_runtime_dependency 'eventmachine', '~> 1.2.7'
   spec.add_runtime_dependency 'faye-websocket', '~> 0.1'
   spec.add_runtime_dependency 'geocoder', '~> 1.8'
