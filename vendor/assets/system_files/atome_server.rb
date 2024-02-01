@@ -49,7 +49,7 @@ class String
     end
   end
 end
-
+puts "kjhj"
 class Database
   def self.connect_database
     if File.exist?("eden.sqlite3")
