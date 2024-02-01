@@ -10,5 +10,4 @@
 /Gemfile.lock
 *.ds_store
 *.idea
-/lib/eVe/eVe.rb
-/lib/eVe/eVe_relative.rb
+/lib/eVe/
