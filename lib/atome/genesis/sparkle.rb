@@ -139,5 +139,5 @@ STR
   end
 end
 
-# we init server default address
-A.server({ address: 'localhost:9292' , type: 'ws'})
+# we init server default address now initialise in index.html for server
+# A.server({ address: 'localhost:9292' , type: 'ws'})

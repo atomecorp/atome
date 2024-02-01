@@ -66,6 +66,8 @@ const communication = {
         this.websocket = new WebSocket(type+'://'+server);
         this.websocket.onopen = function (event) {
             rubyVMCallback("puts 'Connected to WebSocket'")
+
+            Opal.eval('A.init_database');
         };
         this.websocket.onmessage = function (event) {
             rubyVMCallback("puts 'object ruby callback : " + event.data + "'")

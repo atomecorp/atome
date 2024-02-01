@@ -90,7 +90,7 @@ class App < Roda
 
         ws.on :open do |event|
           ws.send('server ready'.to_json)
-          ws.send('asking for synchro data'.to_json)
+          # ws.send('asking for synchro data'.to_json)
         end
 
         ws.on(:message) do |event|

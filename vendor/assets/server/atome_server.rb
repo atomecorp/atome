@@ -16,15 +16,20 @@ require 'securerandom'
 require 'sequel'
 
 class EDen
-  def self.terminal(cmd,option,ws,value, user, pass)
+  def self.terminal(cmd, option, ws, value, user, pass)
     `#{cmd}`
   end
 
-  def self.file(source, operation,ws,value,user, pass)
-    file_content= File.send(operation, source, value).to_s
+  def self.init_db(cmd, option, ws, value, user, pass)
+    "the value is : #{value}"
+  end
+
+  def self.file(source, operation, ws, value, user, pass)
+    file_content = File.send(operation, source, value).to_s
     file_content = file_content.gsub("'", "\"")
     "=> operation: #{operation}, source:  #{source} , content : #{file_content},"
   end
+
   # return_message = EDen.safe_send(action_requested, message,option, current_user, user_pass)
 
   def self.safe_send(method_name, *args)
@@ -49,7 +54,9 @@ class String
     end
   end
 end
+
 puts "kjhj"
+
 class Database
   def self.connect_database
     if File.exist?("eden.sqlite3")
@@ -235,7 +242,6 @@ class Database
 
 end
 
-
 class App < Roda
 
   # comment below when test will be done
@@ -248,7 +254,7 @@ class App < Roda
   items.insert(creator: 'toi')
   items.insert(creator: 'vous')
   puts "Item count: #{items.count}"
-  test= "Item count: #{items.count}"
+  test = "Item count: #{items.count}"
   # puts "My name is: #{items(:creator)}"
   index_content = File.read("../src/index_server.html")
   opts[:root] = '../src'
@@ -259,7 +265,7 @@ class App < Roda
         ws = Faye::WebSocket.new(r.env)
         ws.on :open do |event|
           ws.send('server ready'.to_json)
-          ws.send('asking for synchro data'.to_json)
+          # ws.send('asking for synchro data'.to_json)
         end
 
         ws.on(:message) do |event|
@@ -267,12 +273,12 @@ class App < Roda
           full_data = JSON.parse(json_string)
           message = full_data['message']
           action_requested = full_data['action']
-          value= full_data['value']
-          option= full_data['option']
+          value = full_data['value']
+          option = full_data['option']
           current_user = full_data['user']
           user_pass = full_data['pass']['global']
           if action_requested
-            return_message = EDen.safe_send(action_requested, message,option,ws,value, current_user, user_pass)
+            return_message = EDen.safe_send(action_requested, message, option, ws, value, current_user, user_pass)
           else
             return_message = "no action msg: #{test}"
           end
