@@ -665,17 +665,17 @@ else
     build_host_mode(destination, project_name, 'web-opal')
     threads = []
     threads << Thread.new do
-      sleep 1
-      if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-        # code to exec with Windows
-        `start "" "#{destination}\\#{project_name}\\src\\index_server.html`
-      elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-        # code to exec with MacOS
-        `open http://localhost:9292`
-      else
-        # code to exec with Unix/Linux
-        `open http://localhost:9292`
-      end
+      # sleep 1
+      # if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+      #   # code to exec with Windows
+      #   `start "" "#{destination}\\#{project_name}\\src\\index_server.html`
+      # elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+      #   # code to exec with MacOS
+      #   `open http://localhost:9292`
+      # else
+      #   # code to exec with Unix/Linux
+      #   `open http://localhost:9292`
+      # end
     end
     threads << Thread.new do
       build_for_server(destination, project_name, 9292, false)
@@ -689,7 +689,7 @@ else
     build_opal_application(nil, destination, project_name)
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec with Windows
-      `start "" "#{destination}\\#{project_name}\\src\\index_opal.html`
+      `start "" "#{destination}\\#{project_name}\\src\\index_server.html`
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec with MacOS
       `open http://localhost:9292`
@@ -707,7 +707,6 @@ else
   end
 
   puts 'building Android' if ARGV.include?('android')
-
   puts 'building iOS' if ARGV.include?('ios')
   puts 'building Windows' if ARGV.include?('windows')
   puts 'building Linux' if ARGV.include?('linux')

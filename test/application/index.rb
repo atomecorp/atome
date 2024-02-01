@@ -21,7 +21,7 @@
 # require './works/photos'
 # require './works/photos6'
 # require './test'
-require './examples/test'
+# require './examples/test'
 
 #### works
 # require './examples/css'
@@ -39,7 +39,7 @@ require './examples/test'
 # require "./examples/dig"
 # require "./examples/import"
 # require "./examples/shortcut"
-# require "./examples/server"
+require "./examples/server"
 # # require "./examples/console"
 # require "./examples/layout"
 # require "./examples/random"
