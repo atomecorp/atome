@@ -22,15 +22,28 @@ Gem::Specification.new do |spec|
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
 
+  # spec.files = Dir.chdir(File.expand_path(__dir__)) do
+  #   `git ls-files -z`.split("\x0").reject do |f|
+  #     (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
+  #   end
+  # end
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject do |f|
+    # Utilisez git ls-files pour récupérer les fichiers, puis filtrez-les selon vos besoins
+    git_files = `git ls-files -z`.split("\x0").reject do |f|
       (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
     end
+
+    # Ajoutez manuellement les fichiers du dossier lib/eVe
+    eve_files = Dir['lib/eVe/**/*']
+
+    # Combine les deux listes de fichiers
+    git_files + eve_files
   end
 
   spec.bindir = 'exe'
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
+
 
   spec.add_runtime_dependency 'artoo', '~> 1.8.2'
   # spec.add_runtime_dependency 'arduino_firmata', '~> 0.3'
@@ -42,6 +55,7 @@ Gem::Specification.new do |spec|
   # spec.add_runtime_dependency 'guard-shell', '~> 0.7.2'
   # spec.add_runtime_dependency 'guard-puma', '~> 0.8.1'
   # spec.add_runtime_dependency 'shotgun', '~> 0.9.2'
+  spec.add_runtime_dependency 'gems', '~> 1.2'
   spec.add_runtime_dependency 'guard-rake', '~> 1.0'
   # spec.add_runtime_dependency 'rerun', '~> 0.14.0'
   spec.add_runtime_dependency 'image_size', '~> 3.0'
