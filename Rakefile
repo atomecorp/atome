@@ -8,6 +8,19 @@ require 'rubygems/uninstaller'
 require 'bundler/gem_tasks'
 load 'exe/atome'
 
+
+
+folder_name = 'lib/eVe'
+
+unless Dir.exist?(folder_name)
+  Dir.mkdir(folder_name)
+    File.open('lib/eVe/eVe_relative.rb', 'w') do |file|
+    end
+    File.open('lib/eVe/eVe.rb', 'w') do |file|
+    end
+end
+
+
 task :cleanup do
 
   manager = Gem::CommandManager.instance
