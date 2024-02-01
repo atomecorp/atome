@@ -184,7 +184,6 @@ def create_application(source, destination, project_name)
 end
 
 def update_application(source, destination, project_name)
-  `gem install atome`
   project_path = "#{destination}/#{project_name}"
   FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
   FileUtils.mkdir_p(project_path) unless Dir.exist?(project_path)
@@ -479,6 +478,7 @@ if ARGV.include?('create')
 end
 
 if ARGV.include?('update')
+  `gem install atome`
   # TODO: also update index.html and all other files except the application folder
   # first we delete everything but application
 
