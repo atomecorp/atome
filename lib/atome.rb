@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# require 'eve'
 
 # require without relative is needed when using Opal
 require 'fileutils'
@@ -34,4 +33,5 @@ require 'renderers/html/index'
 require 'renderers/headless/index'
 require 'renderers/server/index'
 require 'atome/helpers/sanitizer'
+require 'eVe/eVe'
 require 'atome/genesis/sparkle'

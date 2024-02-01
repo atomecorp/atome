@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# require 'eve'
 # relative is needed when using ruby wasm
 require 'fileutils'
 require 'securerandom'
@@ -33,4 +32,5 @@ require_relative './renderers/html/index_relative'
 require_relative './renderers/headless/index_relative'
 require_relative './renderers/server/index_relative'
 require_relative './atome/helpers/sanitizer'
+require_relative './eVe/eVe_relative'
 require_relative './atome/genesis/sparkle'

@@ -32,7 +32,9 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_runtime_dependency 'artoo', '~> 1.8.2'
   # spec.add_runtime_dependency 'arduino_firmata', '~> 0.3'
+  spec.add_runtime_dependency 'eVe', '~>  0.1.0'
   spec.add_runtime_dependency 'eventmachine', '~> 1.2.7'
   spec.add_runtime_dependency 'faye-websocket', '~> 0.1'
   spec.add_runtime_dependency 'geocoder', '~> 1.8'
@@ -58,11 +60,10 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sequel', '~> 5.5'
   spec.add_runtime_dependency 'sqlite3', '~> 1.4'
   spec.add_runtime_dependency 'uglifier', '~> 0.1'
-  #spec.add_runtime_dependency 'webrick', '~> 1.7.0'
+  # spec.add_runtime_dependency 'webrick', '~> 1.7.0'
   # the gem below are need to make the atome server works on Windows
   spec.add_runtime_dependency 'tzinfo-data', '~> 1.2023.4'
   spec.add_runtime_dependency 'win32-security', '~> 0.5.0'
-
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"

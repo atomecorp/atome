@@ -185,7 +185,7 @@ task :test_server do
   threads = []
   threads << Thread.new do
 
-
+    sleep 1
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
        `start  http://localhost:9292`

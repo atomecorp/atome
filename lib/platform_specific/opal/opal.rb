@@ -2,3 +2,4 @@
 
 # render methods
 require 'opal'
+
