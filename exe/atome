@@ -353,7 +353,7 @@ def build_for_osx(destination, mode = :dev)
 
 end
 
-def build_for_server(destination, project_name, port, production)
+def build_for_opal_server(destination, project_name, port, production)
   if production
     prod = '--env production'
     ru_file = <<STR
@@ -383,7 +383,9 @@ STR
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
       f.write(ru_file)
     end
+    puts 'o-a'
     `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+    puts 'o-b'
   else
     # code to exec with Unix/Linux
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
@@ -391,6 +393,55 @@ STR
     end
     `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
   end
+
+end
+
+
+def build_for_wasm_server(destination, project_name, port, production)
+  if production
+    prod = '--env production'
+    ru_file = <<STR
+require 'roda'
+require './atome_server_wasm.rb'
+run App.app.freeze
+STR
+  else
+    ru_file = <<STR
+require 'roda'
+require 'rack/unreloader'
+Unreloader = Rack::Unreloader.new(subclasses: %w[Roda]) { App }
+Unreloader.require './atome_server_wasm.rb'
+run Unreloader
+require './atome_server.rb'
+STR
+  end
+
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+
+    # code to exec with Windows
+    File.open("#{destination}\\#{project_name}\\server\\config.ru", "w") do |f|
+      f.write(ru_file)
+    end
+    `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # code to exec with MacOS
+    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
+      f.write(ru_file)
+    end
+    puts 'w-a'
+
+    `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+    puts 'w-b'
+
+  else
+    puts 'e'
+    # code to exec with Unix/Linux
+    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
+      f.write(ru_file)
+    end
+    `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+  end
+  puts 'f'
 
 end
 
@@ -703,11 +754,36 @@ else
       # end
     end
     threads << Thread.new do
-      build_for_server(destination, project_name, 9292, false)
+      build_for_opal_server(destination, project_name, 9292, false)
     end
 
     threads.each(&:join)
 
+  end
+
+  if ARGV.include?('wasm_server')
+    puts 'building Server'
+    build_opal_application(nil, destination, project_name)
+    build_host_mode(destination, project_name, 'web-opal')
+    threads = []
+    # threads << Thread.new do
+    #   # sleep 1
+    #   # if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    #   #   # code to exec with Windows
+    #   #   `start "" "#{destination}\\#{project_name}\\src\\index_server.html`
+    #   # elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    #   #   # code to exec with MacOS
+    #   #   `open http://localhost:9292`
+    #   # else
+    #   #   # code to exec with Unix/Linux
+    #   #   `open http://localhost:9292`
+    #   # end
+    # end
+    threads << Thread.new do
+      build_for_wasm_server(destination, project_name, 9292, false)
+    end
+    threads.each(&:join)
+    puts 'wasm server is running'
   end
 
   if ARGV.include?('server_refresh')

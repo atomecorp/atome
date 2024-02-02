@@ -79,7 +79,7 @@ class App < Roda
 
   puts "The average price is: #{items.avg(:width)}"
 
-  index_content = File.read("../src/index_server.html")
+  index_content = File.read("../src/index_server_wasm.html")
 
   opts[:root] = '../src'
   plugin :static, %w[/css /js /medias], root: '../src'
