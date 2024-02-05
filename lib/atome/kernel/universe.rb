@@ -9,6 +9,8 @@ class Universe
   @renderer_list = %i[html browser headless server log]
   @sanitizers = {}
   @specificities = {}
+  @categories= { communication: [], effect: [], event: [], geometry: [], hierarchy: [], identity: [], material: [],
+  property: [], security: [], spatial: [], time: [], utility: [], }
   @history = {}
   @users = {}
   @help = {}
@@ -31,6 +33,10 @@ class Universe
 
     def get_example(particle)
       @example[particle]
+    end
+
+    def categories
+      @categories
     end
 
     def add_to_particle_list(particle = nil, type)

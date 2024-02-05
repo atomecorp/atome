@@ -16,13 +16,19 @@ require 'securerandom'
 require 'sequel'
 
 class EDen
-  def self.terminal(cmd, option, ws, value, user, pass)
+  def self.terminal(cmd, option, ws, value, user, pass, eden)
     `#{cmd}`
   end
 
-  def self.init_db(cmd, option, ws, value, user, pass)
+  def self.init_db(cmd, option, ws, value, user, pass, eden)
     "the value is : #{value}"
   end
+
+  def self.insert(cmd, option, ws, value, user, pass, eden)
+    eden.insert(value)
+  end
+
+
 
   def self.file(source, operation, ws, value, user, pass)
     file_content = File.send(operation, source, value).to_s
@@ -245,7 +251,7 @@ end
 class App < Roda
 
   # comment below when test will be done
-  File.delete("./eden.sqlite3") if File.exist?("./eden.sqlite3")
+  # File.delete("./eden.sqlite3") if File.exist?("./eden.sqlite3")
   eden = Database.connect_database
   items = eden[:atome]
 
@@ -278,7 +284,7 @@ class App < Roda
           current_user = full_data['user']
           user_pass = full_data['pass']['global']
           if action_requested
-            return_message = EDen.safe_send(action_requested, message, option, ws, value, current_user, user_pass)
+            return_message = EDen.safe_send(action_requested, message, option, ws, value, current_user, user_pass, eden)
           else
             return_message = "no action msg: #{test}"
           end

@@ -15,6 +15,7 @@
 # in progress
 # require "./examples/find"
 # require "./examples/test"
+require "./examples/categories"
 
 # Projects
 # require './works/vie'
@@ -39,7 +40,7 @@
 # require "./examples/dig"
 # require "./examples/import"
 # require "./examples/shortcut"
-require "./examples/server"
+# require "./examples/server"
 # # require "./examples/console"
 # require "./examples/layout"
 # require "./examples/random"

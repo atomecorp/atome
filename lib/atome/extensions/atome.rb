@@ -5,15 +5,24 @@ class Object
   def new(params, &bloc)
     # Genesis = Genesis.Genesis
     if params.key?(:atome)
-      Universe.add_atomes_specificities params[:atome]
-      Genesis.build_atome(params[:atome], &bloc)
+      if Universe.atome_list.include?(params[:atome])
+        puts "atome already exist you can't create it"
+      else
+        Universe.add_atomes_specificities params[:atome]
+        Genesis.build_atome(params[:atome], &bloc)
+      end
     elsif params.key?(:particle)
-      Atome.instance_variable_set("@main_#{params[:particle]}", bloc)
-      # render indicate if the particle needs to be rendered
-      # store tell the system if it need to store the particle value
-      # type help the system what type of type the particle will receive and store
-      Genesis.build_particle(params[:particle], { render: params[:render], return: params[:return],
-                                                  store: params[:store], type: params[:type] }, &bloc)
+      if Universe.particle_list[params[:particle]]
+        puts "particle already exist you can't create it"
+      else
+        Atome.instance_variable_set("@main_#{params[:particle]}", bloc)
+        # render indicate if the particle needs to be rendered
+        # store tell the system if it need to store the particle value
+        # type help the system what type of type the particle will receive and store
+        Genesis.build_particle(params[:particle], { render: params[:render], return: params[:return],
+                                                    store: params[:store], type: params[:type] }, &bloc)
+      end
+
     elsif params.key?(:sanitizer)
       Genesis.build_sanitizer(params[:sanitizer], &bloc)
     elsif params.key?(:pre)
@@ -42,7 +51,7 @@ class Object
 
   def reorder_particles(hash_to_reorder)
     # we reorder the hash
-    ordered_keys =  %i[renderers id alien type attach int8 unit]
+    ordered_keys = %i[renderers id alien type attach int8 unit]
 
     ordered_part = ordered_keys.map { |k| [k, hash_to_reorder[k]] }.to_h
     other_part = hash_to_reorder.reject { |k, _| ordered_keys.include?(k) }
@@ -488,7 +497,7 @@ class Object
     else
       id_wanted = {}
     end
-    basis = { alien: params[:target],renderers: [:html],  type: :atomized }.merge(id_wanted)
+    basis = { alien: params[:target], renderers: [:html], type: :atomized }.merge(id_wanted)
     a = Atome.new(basis)
     return a
     # convert any foreign object (think HTML) to a pseudo atome objet , that embed foreign objet
@@ -496,16 +505,14 @@ class Object
 
 end
 
-
 class CssProxy
   def initialize(js, parent_key = nil, current_atome)
     @js = js
-    @css={}
+    @css = {}
     @parent_key = parent_key
     @style = {}
-    @current_atome=current_atome
+    @current_atome = current_atome
   end
-
 
   def [](key)
     if @parent_key
@@ -515,13 +522,11 @@ class CssProxy
     end
   end
 
-
-
   def []=(key, value)
     if @parent_key
       @js[@parent_key][key] = value
-      @current_atome.instance_variable_set('@css',{@parent_key => {key => value}})
-      @css[@parent_key]={key => value}
+      @current_atome.instance_variable_set('@css', { @parent_key => { key => value } })
+      @css[@parent_key] = { key => value }
       puts "==> Clé parente: #{@parent_key}, Clé: #{key}, Valeur: #{value}"
     else
       @style[key] = value

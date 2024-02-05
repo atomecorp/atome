@@ -66,7 +66,7 @@ end
 
 class App < Roda
   # comment below when test will be done
-  File.delete("./eden.sqlite3") if File.exist?("./eden.sqlite3")
+  # File.delete("./eden.sqlite3") if File.exist?("./eden.sqlite3")
   eden = Database.connect_database
   items = eden[:atome]
 
