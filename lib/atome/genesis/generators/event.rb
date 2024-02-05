@@ -44,7 +44,7 @@ new({ sanitizer: :touch }) do |params, user_bloc|
   params
 
 end
-new({ particle: :play, store: false })
+new({ particle: :play, category: :event, type: :boolean, store: false })
 new({ sanitizer: :play }) do |params, user_bloc|
   @play ||= {}
   @play_code ||= {}
@@ -78,9 +78,9 @@ new({ sanitizer: :play }) do |params, user_bloc|
 
   params
 end
-new({ particle: :pause })
-new({ particle: :time })
-new({ particle: :on, store: false })
+new({ particle: :pause, category: :event, type: :boolean })
+new({ particle: :time, category: :event, type: :int })
+new({ particle: :on, category: :event, type: :boolean, store: false })
 new({ sanitizer: :on }) do |params, user_bloc|
   @on ||= {}
   @on_code ||= {}
@@ -107,9 +107,9 @@ new({ sanitizer: :on }) do |params, user_bloc|
   @on[params] = option
   params
 end
-new({ particle: :fullscreen })
-new({ particle: :mute })
-new({ particle: :drag, store: false })
+new({ particle: :fullscreen, category: :event, type: :boolean })
+new({ particle: :mute, category: :event, type: :boolean })
+new({ particle: :drag, category: :event, type: :boolean, store: false })
 new({ sanitizer: :drag }) do |params, user_bloc|
   @drag ||= {}
   @drag_code ||= {}
@@ -156,7 +156,7 @@ new({ sanitizer: :drag }) do |params, user_bloc|
   @drag[params] = option
   params
 end
-new({ particle: :drop, store: false })
+new({ particle: :drop, category: :event, type: :boolean, store: false })
 new({ sanitizer: :drop }) do |params, user_bloc|
   @drop ||= {}
   @drop_code ||= {}
@@ -191,7 +191,7 @@ new({ sanitizer: :drop }) do |params, user_bloc|
   @drop[params] = option
   params
 end
-new({ particle: :over, type: :hash, store: false })
+new({ particle: :over, category: :event, type: :hash, store: false })
 new({ sanitizer: :over }) do |params, user_bloc|
 
   #  TODO: factorise code below
@@ -233,25 +233,25 @@ end
 #   @sort_proc = sort_proc
 # end
 
-new({ particle: :targets })
-new({ particle: :start })
+new({ particle: :targets, category: :event, type: :string })
+new({ particle: :start, category: :event, type: :boolean })
 new({ pre: :start }) do |_value, user_proc|
   @animation_start_proc = user_proc
 end
-new({ particle: :stop })
+new({ particle: :stop, category: :event, type: :boolean })
 new({ pre: :stop }) do |_value, user_proc|
   @animation_stop_proc = user_proc
 end
-new({ particle: :begin })
-new({ particle: :end })
-new({ particle: :duration })
-new({ particle: :mass })
-new({ particle: :damping })
-new({ particle: :stiffness })
-new({ particle: :velocity })
-new({ particle: :repeat })
-new({ particle: :ease })
-new(particle: :keyboard, type: :hash, store: false)
+new({ particle: :begin, category: :event, type: :time })
+new({ particle: :end, category: :event, type: :time })
+new({ particle: :duration, category: :event, type: :int })
+new({ particle: :mass, category: :event, type: :int })
+new({ particle: :damping, category: :event, type: :int })
+new({ particle: :stiffness, category: :event, type: :int })
+new({ particle: :velocity, category: :event, type: :int })
+new({ particle: :repeat, category: :event, type: :boolean })
+new({ particle: :ease, category: :event, type: :boolean })
+new(particle: :keyboard, category: :event, type: :hash, store: false)
 new({ sanitizer: :keyboard }) do |params, user_bloc|
   @keyboard ||= {}
   @keyboard_code ||= {}
@@ -289,7 +289,7 @@ new({ sanitizer: :keyboard }) do |params, user_bloc|
 
   params
 end
-new({ particle: :resize, store: false  })
+new({ particle: :resize, category: :event, type: :boolean, store: false  })
 new({ sanitizer: :resize }) do |params, user_bloc|
   @resize ||= { }
   @resize_code ||= {}
@@ -316,7 +316,7 @@ new({ sanitizer: :resize }) do |params, user_bloc|
 
   params
 end
-new({ particle: :overflow }) do |params, bloc|
+new({ particle: :overflow, category: :event, type: :boolean }) do |params, bloc|
   @overflow_code ||= {}
   instance_variable_get('@overflow_code')[:overflow] = bloc
   params

@@ -30,12 +30,12 @@ def attachment_common(child_id, parents_id, direction, &user_proc)
   end
 end
 
-new({ particle: :attach, render: false }) do |parents_id, &user_proc|
+new({ particle: :attach, category: :hierarchy, type: :string, render: false }) do |parents_id, &user_proc|
   attachment_common(@id, parents_id, :attach, &user_proc)
   parents_id
 end
 
-new({ particle: :attached, render: false }) do |children_ids, &user_proc|
+new({ particle: :attached, category: :hierarchy, type: :string, render: false }) do |children_ids, &user_proc|
   children_ids = [children_ids] unless children_ids.instance_of?(Array)
   parents_id = @id
   children_ids.each do |children_id|
@@ -48,7 +48,7 @@ new({ sanitizer: :attached }) do |children_ids|
   children_ids
 end
 
-new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_proc|
+new({ particle: :apply, category: :hierarchy, type: :string, render: false, store: false }) do |parents_ids, &user_proc|
   # TODO: optimize the 2 lines below:
   @apply ||= []
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
@@ -77,7 +77,7 @@ new({ particle: :apply, render: false, store: false }) do |parents_ids, &user_pr
   parents_ids
 end
 
-new({ particle: :affect, render: false }) do |children_ids, &user_proc|
+new({ particle: :affect, category: :hierarchy, type: :string, render: false }) do |children_ids, &user_proc|
   children_ids = [children_ids] unless children_ids.instance_of? Array
   children_ids.each do |child_id|
     child_found = grab(child_id)
@@ -86,7 +86,7 @@ new({ particle: :affect, render: false }) do |children_ids, &user_proc|
   children_ids
 end
 
-new({ particle: :detached, store: false }) # unfastened
+new({ particle: :detached, category: :hierarchy, type: :string, store: false }) # unfastened
 new({ sanitizer: :detached }) do |values|
   # unfastened
   if values.instance_of? Array
@@ -100,4 +100,4 @@ new({ sanitizer: :detached }) do |values|
   end
   values
 end
-new({ particle: :collect })
+new({ particle: :collect, category: :hierarchy, type: :string })

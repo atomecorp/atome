@@ -9,29 +9,29 @@ def extract_rgb_alpha(color_string)
   { red: red, green: green, blue: blue, alpha: alpha }
 end
 
-new({ particle: :red }) do
+new({ particle: :red, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
-new({ particle: :green }) do
+new({ particle: :green, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
-new({ particle: :blue }) do
+new({ particle: :blue, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
-new({ particle: :alpha }) do
+new({ particle: :alpha, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
-new({ particle: :diffusion }) do
+new({ particle: :diffusion, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
 
 
-new({ particle: :clean }) do |params|
+new({ particle: :clean, category: :property, type: :boolean }) do |params|
   cell = params[:cell]
   row_nb = cell[0]
   column_nb = cell[1]
@@ -39,7 +39,7 @@ new({ particle: :clean }) do |params|
   params
 end
 
-new({ particle: :insert }) do |params|
+new({ particle: :insert, category: :property, type: :string }) do |params|
   # cell
   if params[:cell]
     content = params[:content]
@@ -56,7 +56,7 @@ new({ particle: :insert }) do |params|
   params
 end
 
-new({ particle: :remove }) do |params|
+new({ particle: :remove, category: :property, type: :boolean }) do |params|
 
   if params[:row]
     data.delete_at(params[:row])
@@ -72,7 +72,7 @@ new({ particle: :remove }) do |params|
 end
 
 
-new({ particle: :sort }) do |params|
+new({ particle: :sort, category: :property, type: :int }) do |params|
   column = params[:column]
   method = params[:method]
 

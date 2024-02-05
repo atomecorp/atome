@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-new({ particle: :width })
-new({ particle: :height })
+new({ particle: :width, category: :geometry, type: :int })
+new({ particle: :height, category: :geometry, type: :int })
 
-new({ particle: :size }) do |params|
+new({ particle: :size, category: :geometry, type: :int }) do |params|
   params = { value: params } unless params.instance_of? Hash
   params[:recursive] ||= false
   params[:reference] ||= :x

@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-new({ particle: :left })
-new({ particle: :right })
-new({ particle: :top })
-new({ particle: :bottom })
-new({ particle: :rotate, type: :integer })
-new({ particle: :direction, type: :string })
-new({ particle: :depth, type: :integer })
-new({ particle: :position })
-new({ particle: :organise })
-new({ particle: :spacing })
-new({ particle: :display }) do |params|
+new({ particle: :left, category: :spatial, type: :int })
+new({ particle: :right, category: :spatial, type: :int })
+new({ particle: :top, category: :spatial, type: :int })
+new({ particle: :bottom, category: :spatial, type: :int })
+new({ particle: :rotate, category: :spacial, type: :integer })
+new({ particle: :direction, category: :spatial, type: :string })
+new({ particle: :depth, category: :spatial, type: :integer })
+new({ particle: :position, category: :spatial, type: :int })
+new({ particle: :organise, category: :spatial, type: :string })
+new({ particle: :spacing, category: :spatial, type: :string })
+new({ particle: :display, category: :spatial, type: :boolean }) do |params|
   params = { mode: params } unless params.instance_of? Hash
   params
 end
-new({ particle: :layout }) do |params|
+new({ particle: :layout, category: :spatial, type: :int }) do |params|
   mode_found = params.delete(:mode) || :list
   elements_style = params.delete(:element) || {}
   # now we get the list of the atome to layout
