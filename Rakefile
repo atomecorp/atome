@@ -8,6 +8,19 @@ require 'rubygems/uninstaller'
 require 'bundler/gem_tasks'
 load 'exe/atome'
 
+
+
+folder_name = 'lib/eVe'
+
+unless Dir.exist?(folder_name)
+  Dir.mkdir(folder_name)
+    File.open('lib/eVe/eVe_relative.rb', 'w') do |file|
+    end
+    File.open('lib/eVe/eVe.rb', 'w') do |file|
+    end
+end
+
+
 task :cleanup do
 
   manager = Gem::CommandManager.instance
@@ -148,7 +161,7 @@ task :test_opal do
 
   puts 'atome opal is build and running!'
 end
-task :server_wasm do
+task :test_server_wasm do
   project_name = :test
   source = '.'
   destination = './tmp'
@@ -158,7 +171,7 @@ task :server_wasm do
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   puts 'atome wasm is build and running!'
-  build_for_server(destination, project_name, 9292, :production)
+  build_for_wasm_server(destination, project_name, 9292, :production)
 
 end
 task :test_server do
@@ -200,7 +213,7 @@ task :test_server do
     end
 
   end
-  build_for_server(destination, project_name, 9292, :production)
+  build_for_opal_server(destination, project_name, 9292, :production)
 end
 
 task :test_osx do
@@ -279,7 +292,7 @@ task :osx_server do
   destination = './tmp'
   threads = []
   threads << Thread.new do
-    build_for_server(destination, project_name, 9292, :production)
+    build_for_opal_server(destination, project_name, 9292, :production)
   end
   build_for_osx(destination)
 

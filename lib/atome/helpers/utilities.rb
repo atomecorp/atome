@@ -10,8 +10,6 @@ class Atome
       grab(parent).instance_exec(content, &bloc)
     end
 
-
-
     def controller_sender(message)
       return if $host == :html
 
@@ -20,9 +18,6 @@ class Atome
       js_command = "atomeJS.controller_sender(#{js_json_msg})"
       JS.eval(js_command)
     end
-
-
-
 
     # def global_monitoring(instance, methods_to_monitor, variables_to_monitor)
     #   methods_to_monitor.each do |methode|
@@ -55,7 +50,6 @@ class Atome
 
   end
 
-
   def help(particle, &doc)
     if doc
       Universe.set_help(particle, &doc)
@@ -73,7 +67,6 @@ class Atome
       instance_exec(&example_found) if example_found.is_a?(Proc)
     end
   end
-
 
   # local server messaging
   def file_for_opal(parent, bloc)
@@ -286,10 +279,10 @@ class Atome
   end
 
   def each_with_index(&proc)
-    index=0
+    index = 0
     collect.each do |val|
-      instance_exec(val,index, &proc) if proc.is_a?(Proc)
-      index+=1
+      instance_exec(val, index, &proc) if proc.is_a?(Proc)
+      index += 1
     end
   end
 
@@ -341,9 +334,10 @@ class Atome
       parent_found.delete(true)
     end
   end
-  def server(server_params=nil)
+
+  def server(server_params = nil)
     if server_params
-      @current_server= server_params
+      @current_server = server_params
     else
       @current_server
     end
@@ -354,6 +348,9 @@ class Atome
     connection(server)
   end
 
+  def init_database # this method is call from JS (atome/communication)
+    message({action:  :init_db, value: {atome: {}, particles: {}} })
+  end
 end
 
 

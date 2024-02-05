@@ -8,6 +8,8 @@ require 'pathname'
 require 'opal'
 require 'parser'
 require 'uglifier'
+require 'rubygems'
+require 'gems'
 
 # utils
 
@@ -351,7 +353,7 @@ def build_for_osx(destination, mode = :dev)
 
 end
 
-def build_for_server(destination, project_name, port, production)
+def build_for_opal_server(destination, project_name, port, production)
   if production
     prod = '--env production'
     ru_file = <<STR
@@ -381,7 +383,9 @@ STR
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
       f.write(ru_file)
     end
+    puts 'o-a'
     `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+    puts 'o-b'
   else
     # code to exec with Unix/Linux
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
@@ -389,6 +393,55 @@ STR
     end
     `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
   end
+
+end
+
+
+def build_for_wasm_server(destination, project_name, port, production)
+  if production
+    prod = '--env production'
+    ru_file = <<STR
+require 'roda'
+require './atome_server_wasm.rb'
+run App.app.freeze
+STR
+  else
+    ru_file = <<STR
+require 'roda'
+require 'rack/unreloader'
+Unreloader = Rack::Unreloader.new(subclasses: %w[Roda]) { App }
+Unreloader.require './atome_server_wasm.rb'
+run Unreloader
+require './atome_server.rb'
+STR
+  end
+
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+
+    # code to exec with Windows
+    File.open("#{destination}\\#{project_name}\\server\\config.ru", "w") do |f|
+      f.write(ru_file)
+    end
+    `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # code to exec with MacOS
+    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
+      f.write(ru_file)
+    end
+    puts 'w-a'
+
+    `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+    puts 'w-b'
+
+  else
+    puts 'e'
+    # code to exec with Unix/Linux
+    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
+      f.write(ru_file)
+    end
+    `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+  end
+  puts 'f'
 
 end
 
@@ -480,33 +533,56 @@ end
 if ARGV.include?('update')
   `gem install atome`
   # TODO: also update index.html and all other files except the application folder
-  # first we delete everything but application
+  # we check we are in atome app
+  if Dir.exist?("#{destination}/application") && !Dir.exist?("#{destination}/vendor")
+    # first we delete everything but application
 
-  files_to_treat = %w[server src-tauri src-wasm Guardfile Rakefile src/css src/js/atome src/js/third_parties src/medias
+    files_to_treat = %w[server src-tauri src-wasm Guardfile Rakefile src/css src/js/atome src/js/third_parties src/medias
 src/favicon.ico src/index_wasm.html src/index_opal.html src/index_server.html src/index_server_wasm.html]
-  files_to_treat.each do |item|
-    item_path = File.join(destination, item)
-    if File.directory?(item_path)
-      FileUtils.rm_rf(item_path) unless item == '.' || item == '..'
-    elsif File.file?(item_path)
-      File.delete(item_path)
+    files_to_treat.each do |item|
+      item_path = File.join(destination, item)
+      if File.directory?(item_path)
+        FileUtils.rm_rf(item_path) unless item == '.' || item == '..'
+      elsif File.file?(item_path)
+        File.delete(item_path)
+      end
+      source_item = "#{source}/vendor/assets/#{item}"
+      FileUtils.cp_r(source_item, item)
     end
-    source_item = "#{source}/vendor/assets/#{item}"
-    FileUtils.cp_r(source_item, item)
+    # now rebuilding aop lib
+    # build opal
+    build_opal_library(source, destination, project_name)
+    # build parser
+    build_opal_parser(source, destination, project_name)
+    # build atome kernel
+    build_atome_kernel_for_opal(source, destination, project_name)
+    # build host_mode
+    build_host_mode(destination, project_name, 'web-opal')
+    # build Opal extensions
+    build_opal_extensions(source, destination, project_name)
+    # build application
+    build_opal_application(source, destination, project_name)
+
+    ########################
+
+    # unless Dir.exist?("#{destination}/vendor")
+    #   Dir.mkdir("#{destination}/vendor")
+    # end
+
+    #######################
+
+    puts "your application is up to date"
   end
-  # now rebuilding aop lib
-  # build opal
-  build_opal_library(source, destination, project_name)
-  # build parser
-  build_opal_parser(source, destination, project_name)
-  # build atome kernel
-  build_atome_kernel_for_opal(source, destination, project_name)
-  # build host_mode
-  build_host_mode(destination, project_name, 'web-opal')
-  # build Opal extensions
-  build_opal_extensions(source, destination, project_name)
-  # build application
-  build_opal_application(source, destination, project_name)
+
+  # now we get the version of the atome gem
+  gem_name = 'atome'
+
+  # Obtenez les informations du gem depuis RubyGems.org
+  gem_info = Gems.info(gem_name)
+
+  # Extrait la version la plus récente du gem
+  latest_version = gem_info['version']
+  puts "#{gem_name} #{latest_version} is now installed "
 
 end
 
@@ -678,11 +754,36 @@ else
       # end
     end
     threads << Thread.new do
-      build_for_server(destination, project_name, 9292, false)
+      build_for_opal_server(destination, project_name, 9292, false)
     end
 
     threads.each(&:join)
 
+  end
+
+  if ARGV.include?('wasm_server')
+    puts 'building Server'
+    build_opal_application(nil, destination, project_name)
+    build_host_mode(destination, project_name, 'web-opal')
+    threads = []
+    # threads << Thread.new do
+    #   # sleep 1
+    #   # if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    #   #   # code to exec with Windows
+    #   #   `start "" "#{destination}\\#{project_name}\\src\\index_server.html`
+    #   # elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    #   #   # code to exec with MacOS
+    #   #   `open http://localhost:9292`
+    #   # else
+    #   #   # code to exec with Unix/Linux
+    #   #   `open http://localhost:9292`
+    #   # end
+    # end
+    threads << Thread.new do
+      build_for_wasm_server(destination, project_name, 9292, false)
+    end
+    threads.each(&:join)
+    puts 'wasm server is running'
   end
 
   if ARGV.include?('server_refresh')
@@ -690,14 +791,14 @@ else
     build_opal_application(nil, destination, project_name)
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec with Windows
-       # `start #{destination}\\#{project_name}\\src\\index_server.html`
+      # `start #{destination}\\#{project_name}\\src\\index_server.html`
       `start   http://localhost:9292`
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec with MacOS
       `open http://localhost:9292`
     else
       # code to exec with Unix/Linux
-       `open http://localhost:9292`
+      `open http://localhost:9292`
     end
   end
 

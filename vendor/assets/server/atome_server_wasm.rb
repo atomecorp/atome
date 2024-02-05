@@ -66,7 +66,7 @@ end
 
 class App < Roda
   # comment below when test will be done
-  File.delete("./eden.sqlite3") if File.exist?("./eden.sqlite3")
+  # File.delete("./eden.sqlite3") if File.exist?("./eden.sqlite3")
   eden = Database.connect_database
   items = eden[:atome]
 
@@ -79,7 +79,7 @@ class App < Roda
 
   puts "The average price is: #{items.avg(:width)}"
 
-  index_content = File.read("../src/index_server.html")
+  index_content = File.read("../src/index_server_wasm.html")
 
   opts[:root] = '../src'
   plugin :static, %w[/css /js /medias], root: '../src'
@@ -90,7 +90,7 @@ class App < Roda
 
         ws.on :open do |event|
           ws.send('server ready'.to_json)
-          ws.send('asking for synchro data'.to_json)
+          # ws.send('asking for synchro data'.to_json)
         end
 
         ws.on(:message) do |event|
