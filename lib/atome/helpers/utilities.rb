@@ -206,16 +206,35 @@ class Atome
     # FIXME : find a better algorithm can be found to avoid test if option is a Hash
     Object.attr_accessor "#{element}_code"
     elem_code = "@#{element}_code"
-    if params.instance_of? Hash
-      option_found = params.values[0]
-      instance_variable_get(elem_code)["#{option_found}_code"] = user_proc
-    else
+    # if params.instance_of? Hash
+    #   option_found = params.values[0]
+    #   instance_variable_get(elem_code)["#{option_found}_code"] = user_proc
+    # else
       instance_variable_get(elem_code)[element] = user_proc
-    end
-    # the commented line below will automatically execute the callback method
-    # we keep it commented because sometime the execution is conditioned, ex : run callbck on a touch
-    # send("#{element}_callback")
+    # end
   end
+
+  # ###################### new 1
+  # def store_proc(element, params = true, &user_proc)
+  #   instance_variable_set("@#{element}_code", {}) unless instance_variable_get("@#{element}_code")
+  #   # TODO : we may have to change this code if we need multiple proc for an particle
+  #   # FIXME : find a better algorithm can be found to avoid test if option is a Hash
+  #   Object.attr_accessor "#{element}_code"
+  #   elem_code = "@#{element}_code"
+  #   if params.instance_of? Hash
+  #     option_found = params.values[0]
+  #     puts "#{instance_variable_get(elem_code)["#{option_found}_code"]}"
+  #     proc_stored= instance_variable_get(elem_code)["#{option_found}_code"] = []
+  #     # proc_stored=[]
+  #   else
+  #     proc_stored= instance_variable_get(elem_code)[element] = []
+  #   end
+  #   proc_stored << user_proc
+  #   # the commented line below will automatically execute the callback method
+  #   # we keep it commented because sometime the execution is conditioned, ex : run callbck on a touch
+  #   # send("#{element}_callback")
+  # end
+  # ##################### new 1
 
   # This method is used to automatically create a callback method suffixed by '_callback'. For example: shell => shell_callback.
   # it can be override if you create a method like:
@@ -223,7 +242,7 @@ class Atome
   # # …write what you want …
   # end
   def particle_callback(element)
-    Atome.define_method "#{element}_callback" do
+    Atome.define_method("#{element}_callback") do |return_params|
       # we test if instance_variable_get("@#{element}_code") is a hash for the can se the particle value is a hash
       proc_found = if instance_variable_get("@#{element}_code").instance_of? Hash
                      # Then we get the first item of the hash because the proc is attached to it
@@ -232,21 +251,28 @@ class Atome
                    else
                      instance_variable_get("@#{element}_code")[element]
                      # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
-                   end
+                            end
+      # array_of_proc_found.each do |proc_found|
+        proc_found.call(return_params) if proc_found.is_a? Proc
+      # end if array_of_proc_found
 
-      proc_found.call(@callback[element]) if proc_found.is_a? Proc
+      # if array_of_proc_found
+      #   proc_found= array_of_proc_found.shift
+      #   proc_found.call(return_params) if proc_found.is_a? Proc
+      # end
+
     end
   end
 
   # this method generate the method accessible for end developers
   # it's the send the method define in "particle_callback"
-  def call(element)
-    send("#{element}_callback")
+  def callback(element, return_params = nil)
+    send("#{element}_callback", return_params)
   end
 
-  def callback(data)
-    @callback[data.keys[0]] = data[data.keys[0]]
-  end
+  # def callback(data)
+  #   @callback[data.keys[0]] = data[data.keys[0]]
+  # end
 
   def particles(particles_found = nil)
     if particles_found
@@ -355,10 +381,19 @@ class Atome
   end
 
   def server_receiver(params)
-    message[:message_code].call(params) if message[:message_code].is_a? Proc
+    # alert params
+    # alert message_code
+    calllbacks_found= instance_variable_get('@message_code')
+    # we delete the default message created by atome
+    calllbacks_found.delete(:message)
+    # we get the oldest available callback, to treat it
+    oldest_callback = calllbacks_found.delete(calllbacks_found.keys.first)
+    oldest_callback.call(params) if oldest_callback.is_a? Proc
+    # callback(:message, params)
   end
 
   def init_websocket
+    instance_variable_set('@message_code', {})
     connection(server)
   end
 

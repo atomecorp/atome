@@ -21,7 +21,7 @@ end
 
 
 importer do |val|
-  alert "case 21 #{val}"
+  puts "case 21 #{val}"
 end
 
 # importer(:all) do |val|
@@ -29,5 +29,5 @@ end
 # end
 
 importer('the_boxy') do |val|
-  alert "yes !!! exception found : #{val}"
+  puts "yes !!! exception found : #{val}"
 end

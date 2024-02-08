@@ -6,10 +6,10 @@
 # please note that atome.attach([:atome_id]) means that atome will be the parent of the atome with the id :atome_id
 # to sum up :  attach and attached are both setter and getter :
 # a.attach(b.ib) will attach the current object to the IDs passed in the params. The current atome will be the child of the the atomes width IDS passed in the the params,
-# a.attach(b.ib) means (insert 'o' into 'b') or a is parent b is child
+# a.attach(b.ib) means (insert 'b' into 'a') or a is parent b is child
 
-# while a.attached(b.id) (insert 'b' into 'a')is the opposite to attached it will attach IDs passed in the params to the current atome. The current atome will be the parent of of the the atomes width IDS passed in the the params
-# a.attached(b.ib) means (insert 'b' into 'a') or a is child b is parent
+# while a.attached(b.id) (insert 'a' into 'b')is the opposite to attached it will attach IDs passed in the params to the current atome. The current atome will be the parent of of the the atomes width IDS passed in the the params
+# a.attached(b.ib) means (insert 'a' into 'b') or a is child b is parent
 
 # atome.attach([:atome_id]) means that atome will be the child of the atome with the id :atome_id
 # Here is how to use it as a setter :

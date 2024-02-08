@@ -41,11 +41,12 @@ class Object
       end
       render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
       Genesis.build_render(render_method, &bloc)
-    elsif params.key?(:callback)
-      particle_targetted = params[:callback]
-      Atome.define_method "#{particle_targetted}_callback" do
-        bloc.call
-      end
+    # elsif params.key?(:callback)
+    #   particle_targetted = params[:callback]
+    #   Atome.define_method("#{particle_targetted}_callback", option) do
+    #     alert option
+    #     bloc.call(option)
+    #   end
     end
   end
 

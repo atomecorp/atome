@@ -72,7 +72,6 @@ const communication = {
             Opal.eval('A.init_database');
         };
         this.websocket.onmessage = function (event) {
-          alert("A.server_receiver(" + event.data  + ")")
             // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
             // rubyVMCallback('message', "('" + event.data  + "')")
             // rubyVMCallback("A.callback({ touch: '" + event.data  + "' })");

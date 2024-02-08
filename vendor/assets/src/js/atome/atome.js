@@ -59,7 +59,7 @@ async function changeCurrentDirectory(atome_id, newPath) {
     } catch (error) {
         result = error;
     }
-    alert(result);
+    alert('result is : '+ result);
 }
 
 

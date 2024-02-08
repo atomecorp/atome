@@ -56,22 +56,6 @@ new({ particle: :insert, category: :property, type: :string }) do |params|
   params
 end
 
-new({ particle: :remove, category: :property, type: :boolean }) do |params|
-
-  if params[:row]
-    data.delete_at(params[:row])
-
-  elsif params[:column]
-    column = params[:column]
-    data.map do |hash|
-      hash.delete(hash.keys[column]) if hash.keys[column]
-      hash
-    end
-  end
-  params
-end
-
-
 new({ particle: :sort, category: :property, type: :int }) do |params|
   column = params[:column]
   method = params[:method]

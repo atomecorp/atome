@@ -8,7 +8,7 @@ b = box({ top: 123 })
 t = text({ data: :hello, left: 300 })
 
 t.touch(true) do
-  alert "#{b.touch} , #{b.touch_code}"
+  puts "#{b.touch} , #{b.touch_code}"
   b.touch_code[:touch].call
 end
 col = color({ id: :col1, red: 1, blue: 1 })
@@ -39,7 +39,7 @@ ccc = color(:red)
 wait 1 do
   # b.left(133)
   b.touch(true) do
-    alert "b width is #{b.width}"
+    puts "b width is #{b.width}"
   end
 
   c.left(133)

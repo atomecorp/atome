@@ -70,7 +70,7 @@ new({ particle: :display, render: false }) do |params|
       container = grab(:view).box({ id: grid_id, width: container_width, height: container_height, overflow: :auto, color: :white, depth: 0 })
       ############## deletion
       container.touch(true) do
-        alert "removing container recursively : #{container.id}"
+        puts "removing container recursively : #{container.id}"
         val_1= Universe.atomes.length
         puts "val_1 : #{val_1}"
         container.delete({ recursive: true })

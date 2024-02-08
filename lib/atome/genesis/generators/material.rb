@@ -11,7 +11,20 @@ new({ pre: :style }) do |styles_send, _user_proc|
 end
 new({ particle: :hide, category: :material, type: :boolean })
 
-new({ particle: :remove, category: :material, type: :boolean })
+new({ particle: :remove, category: :property, type: :hash }) do |params|
+
+  if params[:row]
+    data.delete_at(params[:row])
+
+  elsif params[:column]
+    column = params[:column]
+    data.map do |hash|
+      hash.delete(hash.keys[column]) if hash.keys[column]
+      hash
+    end
+  end
+  params
+end
 
 new({ post: :remove }) do |params|
   # TODO : we have to rethink the removal of atome and particles (with exception like category) and maybe 'use particle type' to handle removal

@@ -217,9 +217,7 @@ class HTML
     atomes=params[:atomes]
     particles=params[:particles]
     JS.eval("atomeJS.connect('#{type}','#{server}','#{user}','#{pass}',#{atomes.to_json},#{particles.to_json})")
-    #
     # JS.eval("atomeJS.connect('ws://#{server}')")
-    # @original_atome.message(:helloworld)
   end
 
   def send_message(message)

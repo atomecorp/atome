@@ -55,7 +55,7 @@ b.find(
                 ]
               }]
 ) do
-  alert 'items found'
+  puts 'items found'
 end
 
 

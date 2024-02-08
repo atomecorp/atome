@@ -13,10 +13,10 @@
 
 # in progress
 # require "./examples/find"
-require "./examples/test"
+# require "./examples/test"
 # require "./examples/categories"
 # require "./examples/atome_particle_validation"
-# require "./examples/database_handling"
+require "./examples/database_handling"
 # require "./examples/read"
 
 
