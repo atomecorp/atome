@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-new({ particle: :smooth })
+new({ particle: :smooth, category: :effect, type: :int })
 
 
-new({ particle: :blur }) do |params|
+new({ particle: :blur, category: :effect, type: :int }) do |params|
   # alert params
   { value: params, affect: :self } unless params.instance_of?(Hash)
   # params

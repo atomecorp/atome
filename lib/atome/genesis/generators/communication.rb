@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-new({ particle: :connection }) do |params, bloc|
+new({ particle: :connection, category: :communication, type: :hash }) do |params, bloc|
   # params = { server: params }
   # type = { server: params }
   params[:user] = Universe.current_user
@@ -15,7 +15,7 @@ new({ particle: :connection }) do |params, bloc|
   # end
 end
 
-new({ particle: :message }) do |params, bloc|
+new({ particle: :message, category: :communication, type: :hash }) do |params, bloc|
 
   params = { data: params } unless params.instance_of? Hash
   params[:user] = 'dfghg4df5gdfgh654'
@@ -26,13 +26,13 @@ new({ particle: :message }) do |params, bloc|
   params
 end
 
-new({ particle: :controller }) do |msg|
+new({ particle: :controller, category: :communication, type: :hash }) do |msg|
   Atome.controller_sender(msg)
 end
 
-new({ particle: :int8 })
+new({ particle: :int8, category: :communication, type: :int })
 
-new({ particle: :language }) do |params|
+new({ particle: :language, category: :communication, type: :string }) do |params|
   @data = int8[params]
   params
 end

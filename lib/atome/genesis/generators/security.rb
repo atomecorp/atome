@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-new ({ particle: :password })
+new ({ particle: :password, category: :security, type: :string })
 new ({ sanitizer: :password }) do |params|
 
   params = { read: params, write: params } unless params.instance_of? Hash

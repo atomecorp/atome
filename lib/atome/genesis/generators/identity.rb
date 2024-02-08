@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-new({ particle: :real })
-new({ particle: :type })
-new({ particle: :id })
+new({ particle: :real, category: :identity, type: :string })
+new({ particle: :type, category: :identity, type: :string })
+new({ particle: :id, category: :identity, type: :int })
 new({ sanitizer: :id }) do |params|
   # first we sanitize the the id below
   params = params.to_sym
@@ -13,8 +13,8 @@ new({ sanitizer: :id }) do |params|
   end
   params
 end
-new({ particle: :name })
-new({ particle: :active })
+new({ particle: :name, category: :identity, type: :string })
+new({ particle: :active, category: :identity, type: :boolean })
 # new({ particle: :entangled, type: :array })
 # new({ particle: :clones }) do |clones_found|
 #   clones_found.each_with_index do |clone_found, index|
@@ -30,18 +30,18 @@ new({ particle: :active })
 #     end
 #   end
 # end
-new({ particle: :markup })
-new({particle: :bundle})
-new({ particle: :data })
+new({ particle: :markup, category: :identity, type: :string })
+new({particle: :bundle, category: :identity, type: :string})
+new({ particle: :data, category: :identity, type: :string })
 
-new({particle: :category, store: false}) do |category_names|
+new({particle: :category, category: :identity, type: :string, store: false}) do |category_names|
   category_names=[category_names] unless category_names.instance_of? Array
   category_names.each do |category_name| 
     @category << category_name
   end
 end
 # The selection particle is used by current user to store selected atomes
-new(particle: :selection)
+new(particle: :selection, category: :identity, type: :string)
 
 new({ read: :selection }) do |params_get|
   selector = grab(:selector)
@@ -49,7 +49,7 @@ new({ read: :selection }) do |params_get|
   selector
 end
 
-new(particle: :selected) do |params|
+new(particle: :selected, category: :identity, type: :boolean) do |params|
   if params == true
     grab(Universe.current_user).selection << @id
   elsif params == false
@@ -60,5 +60,5 @@ new(particle: :selected) do |params|
   params
 end
 
-new({ particle: :format })
-new({ particle: :alien }) #special particel that old alien object
+new({ particle: :format, category: :identity, type: :string })
+new({ particle: :alien, category: :identity, type: :string }) #special particel that old alien object
