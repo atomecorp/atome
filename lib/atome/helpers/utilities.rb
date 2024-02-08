@@ -394,7 +394,8 @@ class Atome
 
   def init_websocket
     instance_variable_set('@message_code', {})
-    connection(server)
+    # connection is particle (communication.rb)
+    connection(@current_server)
   end
 
   def init_database # this method is call from JS (atome/communication)

@@ -38,13 +38,17 @@
 </body>
 <script defer src="js/atome/specific/opal.js" type="text/javascript"></script>
 <script defer src="js/atome/atome.js" type="text/javascript"></script>
-<script defer src='js/application.js'></script>
 <script>
+    function loadApplicationJs() {
+        var script = document.createElement('script');
+        script.src = 'js/application.js';
+        document.body.appendChild(script);
+    }
     window.addEventListener('load', function () {
         Opal.eval('atome_infos')
         Opal.eval("A.server({ address: 'localhost:9292' , type: 'ws'})")
         Opal.eval('A.init_websocket')
     })
-
 </script>
+
 </html>

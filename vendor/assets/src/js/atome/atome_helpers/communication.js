@@ -67,9 +67,10 @@ const communication = {
     connect: function (type, server, user, pass, atomes, particles) {
         this.websocket = new WebSocket(type+'://'+server);
         this.websocket.onopen = function (event) {
-            rubyVMCallback("puts 'Connected to WebSocket'")
 
             Opal.eval('A.init_database');
+ // now new can exec user code : loadApplicationJs in index.html
+            loadApplicationJs();
         };
         this.websocket.onmessage = function (event) {
             // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")

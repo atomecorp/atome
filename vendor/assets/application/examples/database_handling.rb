@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 
-wait 0.5 do
   A.message({ action: :insert, data: { table: :security, particle: :email, data: 'jeezs@jeezs.net' } })
   A.message({ action: :insert, data: { table: :security, particle: :name, data: 'jeezs' } }) do |data_received_from_server|
     puts "mon action 1 #{data_received_from_server}"
@@ -22,4 +21,3 @@ wait 0.5 do
   A.message({ action: :insert, data: { table: :security, particle: :name, data: 'jeezs' } }) do |ll|
     puts 'kjhgjhg'
   end
-end

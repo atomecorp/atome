@@ -45,5 +45,11 @@
     A.init_websocket
 </script>
 <script defer src="js/atome/specific/wasm.js" type="text/javascript"></script>
-<script defer src="js/atome/atome.js" type="text/javascript"></script>
+<script>
+    function loadApplicationJs() {
+        var script = document.createElement('script');
+        script.src = 'js/application.js';
+        document.body.appendChild(script);
+    }
+</script>
 </html>
