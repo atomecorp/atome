@@ -19,34 +19,37 @@ class Atome
       JS.eval(js_command)
     end
 
-    # def global_monitoring(instance, methods_to_monitor, variables_to_monitor)
-    #   methods_to_monitor.each do |methode|
-    #     original_method = instance.method(methode)
-    #     instance.define_singleton_method(methode) do |*args, &block|
-    #       value_before = instance.instance_variable_get("@#{methode}")
-    #       result = original_method.call(*args, &block)
-    #       value_after = instance.instance_variable_get("@#{methode}")
-    #       if args.empty?
-    #         # "read monitoring: #{methode}"
-    #       elsif value_before != value_after
-    #         affect.each do |targeted_atome|
-    #           # get the content of the affect instance_variable and send it
-    #           # to the affect method to apply the atome to all atome children
-    #           grab(targeted_atome).render(:apply, self)
-    #         end
-    #       end
-    #       result
-    #     end
-    #   end
-    #   variables_to_monitor.each do |var|
-    #     instance.define_singleton_method(var) do
-    #       instance_variable_get("@#{var}")
-    #     end
-    #     instance.define_singleton_method("#{var}=") do |value|
-    #       instance_variable_set("@#{var}", value)
-    #     end
-    #   end
-    # end
+    # monitoring system
+    def monitoring(atomes_to_monitor, particles_to_monitor, &bloc)
+      atomes_to_monitor.each do |atome_to_monitor|
+        particles_to_monitor.each do |monitored_particle|
+          # Store original method
+          original_method = atome_to_monitor.method(monitored_particle)
+
+          # redefine method
+          atome_to_monitor.define_singleton_method(monitored_particle) do |*args, &proc|
+
+            # Monitor before calling original method
+            value_before = atome_to_monitor.instance_variable_get("@#{monitored_particle}")
+            if args.empty?
+              args = nil
+            else
+              if monitored_particle == :touch
+                instance_variable_set("@#{monitored_particle}", { tap: args[0] })
+                instance_variable_set("@#{monitored_particle}_code", { touch: proc })
+
+                args = { tap: args[0] }
+              else
+                instance_variable_set("@#{monitored_particle}", args[0])
+              end
+              args = args[0]
+            end
+            instance_exec({ original: value_before, altered: args, particle: monitored_particle }, &bloc) if bloc.is_a?(Proc)
+            original_method.call(*args)
+          end
+        end
+      end
+    end
 
   end
 
@@ -214,15 +217,23 @@ class Atome
     # send("#{element}_callback")
   end
 
-  # this method is used to automatically create a callback method  sufifxed par '_callbback' ex :.shell => shell_callback
+  # This method is used to automatically create a callback method suffixed by '_callback'. For example: shell => shell_callback.
   # it can be override if you create a method like:
   # new({callback: :shell}) do |params, bloc|
   # # …write what you want …
   # end
   def particle_callback(element)
     Atome.define_method "#{element}_callback" do
-      proc_found = instance_variable_get("@#{element}_code")[element]
-      # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
+      # we test if instance_variable_get("@#{element}_code") is a hash for the can se the particle value is a hash
+      proc_found = if instance_variable_get("@#{element}_code").instance_of? Hash
+                     # Then we get the first item of the hash because the proc is attached to it
+                     instance_variable_get("@#{element}_code").values.first
+                     # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
+                   else
+                     instance_variable_get("@#{element}_code")[element]
+                     # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
+                   end
+
       proc_found.call(@callback[element]) if proc_found.is_a? Proc
     end
   end
@@ -341,7 +352,10 @@ class Atome
     else
       @current_server
     end
+  end
 
+  def server_receiver(params)
+    message[:message_code].call(params) if message[:message_code].is_a? Proc
   end
 
   def init_websocket
@@ -349,7 +363,17 @@ class Atome
   end
 
   def init_database # this method is call from JS (atome/communication)
-    message({action:  :init_db, value: {atome: {}, particles: {}} })
+    message({ action: :init_db, value: { atome: {}, particles: {} } })
+  end
+
+  def encrypt(string)
+    # if RUBY_ENGINE.downcase == 'opal' || 'wasm32-wasi'
+    # `sha256(#{string})`
+    js_code = "sha256('#{string}')"
+    JS.eval(js_code)
+    # else
+    # Digest::SHA256.hexdigest(string)
+    # end
   end
 end
 

@@ -96,7 +96,7 @@ new({ atome: :matrix })
 new({ atome: :atomized, type: :hash })
 
 # new({ atome: :color, type: :model })
-new({ atome: :color, type: :template })
+# new({ atome: :color, type: :template })
 
 
 

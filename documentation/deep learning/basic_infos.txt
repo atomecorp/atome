@@ -160,6 +160,9 @@ s.shape => ‘pwd’
 
 Callback :
 
+
+Important : all atome particle have a pros associated often use for callback when needed :
+to acces this code use "particle_name_code" ex for touch to access the callbacks use : touch_code
 s.shell(‘pwd’) do |method_return|
 	puts method_return
 end
@@ -281,3 +284,6 @@ in presets/atome, atome_common:
 
 
 
+atome expert and atome developers
+expert develop atome core
+developers create solution with atome framework

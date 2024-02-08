@@ -11,7 +11,7 @@ new({ pre: :style }) do |styles_send, _user_proc|
 end
 new({ particle: :hide })
 
-new({ particle: :remove })
+#new({ particle: :remove })
 
 new({ post: :remove }) do |params|
   # TODO : we have to rethink the removal of atome and particles (with exception like category) and maybe 'use particle type' to handle removal

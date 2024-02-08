@@ -6,14 +6,14 @@ class Object
     # Genesis = Genesis.Genesis
     if params.key?(:atome)
       if Universe.atome_list.include?(params[:atome])
-        puts "atome already exist you can't create it"
+        puts "atome #{params[:atome]} already exist you can't create it"
       else
         Universe.add_atomes_specificities params[:atome]
         Genesis.build_atome(params[:atome], &bloc)
       end
     elsif params.key?(:particle)
       if Universe.particle_list[params[:particle]]
-        puts "particle already exist you can't create it"
+        puts "particle #{params[:particle]} already exist you can't create it"
       else
         Atome.instance_variable_set("@main_#{params[:particle]}", bloc)
         # render indicate if the particle needs to be rendered
@@ -539,5 +539,8 @@ class CssProxy
   def to_s
     @current_atome.instance_variable_get('@css').to_s
   end
+
+
+
 
 end

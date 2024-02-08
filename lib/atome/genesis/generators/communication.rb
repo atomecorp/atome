@@ -17,11 +17,13 @@ end
 
 new({ particle: :message }) do |params, bloc|
 
-  params = { message: params } unless params.instance_of? Hash
-  params[:user] = Universe.current_user
-  params[:pass] = Black_matter.password
+  params = { data: params } unless params.instance_of? Hash
+  params[:user] = 'dfghg4df5gdfgh654'
+  params[:pass] = 'gfhkzrhgzr4h98948'
 
-  html.send_message(params, &bloc)
+  html.send_message(params)
+  params[:message_code]=bloc
+  params
 end
 
 new({ particle: :controller }) do |msg|

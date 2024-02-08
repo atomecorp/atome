@@ -383,9 +383,7 @@ STR
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
       f.write(ru_file)
     end
-    puts 'o-a'
     `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
-    puts 'o-b'
   else
     # code to exec with Unix/Linux
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|

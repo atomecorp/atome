@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+
+# works only in native for now
 A.read('Cargo.toml') do |data|
   text "file content  :\n #{data}"
 end

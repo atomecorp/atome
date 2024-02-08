@@ -10,7 +10,9 @@ const communication = {
         };
 
         this.websocket.onmessage = function (event) {
-            rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
+            rubyVMCallback('message', "('" + event.data  + "')")
+
+            // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
         };
 
         this.websocket.onclose = function (event) {
@@ -70,8 +72,12 @@ const communication = {
             Opal.eval('A.init_database');
         };
         this.websocket.onmessage = function (event) {
-            rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
-
+          alert("A.server_receiver(" + event.data  + ")")
+            // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
+            // rubyVMCallback('message', "('" + event.data  + "')")
+            // rubyVMCallback("A.callback({ touch: '" + event.data  + "' })");
+            rubyVMCallback("A.server_receiver(" + event.data  + ")");
+            // alert(event.data)
         };
 
         this.websocket.onclose = function (event) {
@@ -105,7 +111,7 @@ function connect(address) {
     };
 
     websocket.onmessage = function (event) {
-        rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
+        // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
     };
 
     websocket.onclose = function (event) {

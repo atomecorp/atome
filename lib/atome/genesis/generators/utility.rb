@@ -85,11 +85,7 @@ new({ particle: :schedule }) do |date, proc|
     send("#{renderer}_schedule", format_date, &proc)
   end
 end
-new({ particle: :read }) do |file, proc|
-  Universe.renderer_list.each do |renderer|
-    send("#{renderer}_reader", file, &proc)
-  end
-end
+
 new({ particle: :cursor })
 
 new({ particle: :preset }) do |params|
@@ -120,6 +116,7 @@ end
 new({ particle: :hypertext })
 new({ particle: :hyperedit })
 new({ particle: :terminal })
+
 new({ particle: :read })
 new({ particle: :browse })
 new({ particle: :copies })

@@ -3,10 +3,9 @@
 # require "./examples/debug"
 
 # make it works
-# require "./examples/clones"
 # require "./examples/generator_and_build"
 # require "./examples/display"
-# require "./examples/monitor"
+
 # TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
 
 # require "./web2"
@@ -14,10 +13,15 @@
 
 # in progress
 # require "./examples/find"
-# require "./examples/test"
-require "./examples/categories"
+require "./examples/test"
+# require "./examples/categories"
+# require "./examples/atome_particle_validation"
+# require "./examples/database_handling"
+# require "./examples/read"
+
 
 # Projects
+# require "./examples/encrypt"
 # require './works/vie'
 # require './works/photos'
 # require './works/photos6'
@@ -25,6 +29,7 @@ require "./examples/categories"
 # require './examples/test'
 
 #### works
+# require "./examples/clones&monitoring"
 # require './examples/css'
 # require "./examples/help"
 # require "./examples/example"
