@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-new({ particle: :renderers, catgegory: :utility, type: :string })
-new({ particle: :code, catgegory: :utility, type: :string })
-new({ particle: :run, catgegory: :utility, type: :boolean }) do |params|
+new({ particle: :renderers, category: :utility, type: :string })
+new({ particle: :code, category: :utility, type: :string })
+new({ particle: :run, category: :utility, type: :boolean }) do |params|
   code_found = @code
   instance_exec(params, &code_found) if code_found.is_a?(Proc)
 end
@@ -24,7 +24,7 @@ def delete_recursive(atome_id)
   Universe.delete(atome_id)
 end
 
-new({ particle: :delete, catgegory: :utility, type: :boolean, render: false }) do |params|
+new({ particle: :delete, category: :utility, type: :boolean, render: false }) do |params|
   if params == true
     # We use the tag persistent to exclude color of system object and other default colors
     unless @tag && (@tag[:persistent] || @tag[:system])
@@ -63,7 +63,7 @@ new({ particle: :delete, catgegory: :utility, type: :boolean, render: false }) d
     send(params, 0) unless params == :id
   end
 end
-new({ particle: :clear, catgegory: :utility, type: :boolean })
+new({ particle: :clear, category: :utility, type: :boolean })
 
 new({ post: :clear }) do
   attached_found = []
@@ -76,8 +76,8 @@ new({ post: :clear }) do
     child_found&.delete(true) unless child_found.tag && child_found.tag[:system]
   end
 end
-new({ particle: :path, catgegory: :utility, type: :string })
-new({ particle: :schedule, catgegory: :utility, type: :string }) do |date, proc|
+new({ particle: :path, category: :utility, type: :string })
+new({ particle: :schedule, category: :utility, type: :string }) do |date, proc|
   date = date.to_s
   delimiters = [',', ' ', ':', '-']
   format_date = date.split(Regexp.union(delimiters))
@@ -85,14 +85,14 @@ new({ particle: :schedule, catgegory: :utility, type: :string }) do |date, proc|
     send("#{renderer}_schedule", format_date, &proc)
   end
 end
-# new({ particle: :read, catgegory: :utility, type: :string }) do |file, proc|
+# new({ particle: :read, category: :utility, type: :string }) do |file, proc|
 #   Universe.renderer_list.each do |renderer|
 #     send("#{renderer}_reader", file, &proc)
 #   end
 # end
-new({ particle: :cursor, catgegory: :utility, type: :string })
+new({ particle: :cursor, category: :utility, type: :string })
 
-new({ particle: :preset, catgegory: :utility, type: :string }) do |params|
+new({ particle: :preset, category: :utility, type: :string }) do |params|
 
   if params.instance_of? Hash
     Essentials.new_default_params(params)
@@ -111,22 +111,22 @@ new({ particle: :preset, catgegory: :utility, type: :string }) do |params|
 end
 new({ particle: :relations, category: :utility, type: :hash })
 new({ particle: :tag, render: false, category: :utility, type: :hash })
-new({ particle: :web, catgegory: :utility, type: :string })
+new({ particle: :web, category: :utility, type: :string })
 # new({ particle: :metrics, type: :hash })
 new({ initialize: :unit, value: {} })
-new({ particle: :login, catgegory: :utility, type: :string }) do |params|
+new({ particle: :login, category: :utility, type: :string }) do |params|
   set_current_user(id) if params
 end
-new({ particle: :hypertext, catgegory: :utility, type: :string })
-new({ particle: :hyperedit, catgegory: :utility, type: :string })
-new({ particle: :terminal, catgegory: :utility, type: :string })
-new({ particle: :read, catgegory: :utility, type: :string })
-new({ particle: :browse, catgegory: :utility, type: :string })
-new({ particle: :copies, catgegory: :utility, type: :string})
-new({ particle: :temporary, catgegory: :utility, type: :int })
-new({ particle: :atomes, catgegory: :utility, type: :string })
+new({ particle: :hypertext, category: :utility, type: :string })
+new({ particle: :hyperedit, category: :utility, type: :string })
+new({ particle: :terminal, category: :utility, type: :string })
+new({ particle: :read, category: :utility, type: :string })
+new({ particle: :browse, category: :utility, type: :string })
+new({ particle: :copies, category: :utility, type: :string})
+new({ particle: :temporary, category: :utility, type: :int })
+new({ particle: :atomes, category: :utility, type: :string })
 
-new({ particle: :match, catgegory: :utility, type: :string }) do |params, _bloc|
+new({ particle: :match, category: :utility, type: :string }) do |params, _bloc|
   params
 end
 
@@ -135,10 +135,10 @@ new({ sanitizer: :match }) do |params, _bloc|
   params
 end
 
-new({ particle: :invert, catgegory: :utility, type: :boolean })
-new({ particle: :option, catgegory: :utility, type: :string })
+new({ particle: :invert, category: :utility, type: :boolean })
+new({ particle: :option, category: :utility, type: :string })
 
-new({ particle: :duplicate, catgegory: :utility, type: :string, store: false }) do |params|
+new({ particle: :duplicate, category: :utility, type: :string, store: false }) do |params|
   copy_number = if @duplicate
                   @duplicate.length
                 else
@@ -192,12 +192,12 @@ new({ after: :duplicate }) do |params|
   @duplicate[@duplicate.keys[@duplicate.keys.length - 1]]
 end
 
-new({ particle: :copy, catgegory: :utility, type: :string }) do |items_id|
+new({ particle: :copy, category: :utility, type: :string }) do |items_id|
   items_id = [items_id] unless items_id.instance_of? Array
   grab(:copy).collect << items_id
 end
 
-new({ particle: :paste, catgegory: :utility, type: :string }) do |params|
+new({ particle: :paste, category: :utility, type: :string }) do |params|
 
   all_copies = grab(:copy).collect
   if params == true
@@ -227,25 +227,25 @@ new({ read: :paste }) do |p|
   @copy
 end
 
-new({ particle: :backup, catgegory: :utility, type: :string })
+new({ particle: :backup, category: :utility, type: :string })
 
-new({ particle: :import, catgegory: :utility, type: :string })
+new({ particle: :import, category: :utility, type: :string })
 
-new({ particle: :compute, catgegory: :utility, type: :string }) do |params|
+new({ particle: :compute, category: :utility, type: :string }) do |params|
   params = { particle: params } unless params.instance_of?(Hash)
   params[:unit] ||= :pixel
   params[:reference] ||= :view
   params
 end
 
-new({ particle: :get, catgegory: :utility, type: :string }) do |params|
+new({ particle: :get, category: :utility, type: :string }) do |params|
   cell = params[:cell]
   row_nb = cell[0]
   column_nb = cell[1]
   data[row_nb][data[row_nb].keys[column_nb]] # we get the content of the cell
 end
 
-new ({ particle: :css, catgegory: :utility, type: :string })
+new ({ particle: :css, category: :utility, type: :string })
 
 new({ read: :css }) do
   CssProxy.new(js, nil, self)
