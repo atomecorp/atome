@@ -46,12 +46,12 @@ Atome.new(
 
 Atome.new(
   { renderers: default_render, id: :back_selection, type: :color, tag: ({ system: true, persistent: true }),
-    red: 0.6, green: 0.6, blue: 0.1, alpha: 0.7}
+    red: 0.6, green: 0.6, blue: 0.1, alpha: 0.7 }
 )
 
 Atome.new(
   { renderers: default_render, id: :text_selection, type: :color, tag: ({ system: true, persistent: true }),
-    red: 0.3, green: 0.3, blue: 0.3, alpha: 0.9}
+    red: 0.3, green: 0.3, blue: 0.3, alpha: 0.9 }
 )
 
 # system object creation
@@ -72,7 +72,7 @@ Atome.new(
 # unreal port, hold system object and tools
 Atome.new(
   { renderers: default_render, id: :intuition, type: :shape, attach: :user_view, tag: { system: true },
-    left: 0, top: 0, bottom: 0,width: 0, height: :auto, overflow: :visible
+    left: 0, top: 0, bottom: 0, width: 0, height: :auto, overflow: :visible
   }
 )
 
@@ -83,15 +83,14 @@ machine_password = { read: { atome: :star_wars }, write: { atome: :star_wars } }
 # copy basket
 Atome.new({ renderers: [:html], id: :copy, collect: [], type: :group, tag: { system: true } })
 
-
-#machine
+# machine
 Atome.new({ renderers: default_render, id: machine_id, type: :machine, password: machine_password,
             name: :macAir, data: { date: '10090717' }, tag: { system: true } })
 
-#user
-user_password = {global: :star_win, read: { atome: :star_wars }, write: { atome: :star_wars } }
+# user
+user_password = { global: :star_win, read: { atome: :star_wars }, write: { atome: :star_wars } }
 
-human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' },selection: [],  attach: :user_view })
+human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' }, selection: [], attach: :user_view })
 
 Universe.current_machine = machine_id
 # the constant A is used to access alla atomes methods
@@ -116,7 +115,6 @@ def atome_infos
   puts "server: #{server}"
 end
 
-
 # help and example below :
 #
 A.example(:left) do
@@ -139,5 +137,28 @@ STR
   end
 end
 
-# we init server default address now initialise in index.html for server
-# A.server({ address: 'localhost:9292' , type: 'ws'})
+# the method below init the user
+def atome_genesis
+  atome_infos
+  A.server({ address: 'localhost:9292', type: 'ws' })
+  A.init_websocket
+end
+
+def init_database # this method is call from JS (atome/communication)
+  atomes = Universe.atome_list
+  particles = Universe.particle_list
+  A.message({ action: :init_db, atome: atomes })
+  particles.each do |particle, value|
+    value[:category] = :undefined if value[:category].nil?
+    A.message({ action: :init_db, particle: particle, type: value[:type], category: value[:category] })
+  end
+
+end
+
+def user_login
+
+  user = Universe.current_user
+  pass = Black_matter.password
+  message({ action: :login, value: user })
+  message({ action: :pass, value: pass })
+end

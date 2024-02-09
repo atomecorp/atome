@@ -39,8 +39,8 @@ class Universe
       @categories
     end
 
-    def add_to_particle_list(particle = nil, type)
-      instance_variable_get('@particle_list')[particle] = type
+    def add_to_particle_list(particle = nil, type, category)
+      instance_variable_get('@particle_list')[particle] = { type: type, category: category }
     end
 
     def add_atomes_specificities atome_type_to_add

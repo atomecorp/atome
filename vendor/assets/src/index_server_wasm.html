@@ -40,15 +40,16 @@
     require '/lib/atome_relative'
     require './index'
     #puts Universe.host
-    atome_infos
-    A.server({ address: 'localhost:9292' , type: 'ws'})
-    A.init_websocket
+    atome_genesis
 </script>
 <script defer src="js/atome/specific/wasm.js" type="text/javascript"></script>
 <script>
     function loadApplicationJs() {
         var script = document.createElement('script');
         script.src = 'js/application.js';
+        script.onload = function() {
+            rubyVMCallback("A.init_database");
+        };
         document.body.appendChild(script);
     }
 </script>

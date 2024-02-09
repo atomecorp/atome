@@ -42,12 +42,14 @@
     function loadApplicationJs() {
         var script = document.createElement('script');
         script.src = 'js/application.js';
+        script.onload = function() {
+            rubyVMCallback("A.init_database");
+        };
         document.body.appendChild(script);
     }
+
     window.addEventListener('load', function () {
-        Opal.eval('atome_infos')
-        Opal.eval("A.server({ address: 'localhost:9292' , type: 'ws'})")
-        Opal.eval('A.init_websocket')
+        rubyVMCallback('atome_genesis');
     })
 </script>
 

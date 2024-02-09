@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 new({ particle: :connection, category: :communication, type: :hash }) do |params, bloc|
-  params[:user] = Universe.current_user
-  params[:pass] = Black_matter.password
-  params[:atomes] = Universe.atome_list
-  params[:particles] = Universe.particle_list
+
   # FIXME :  html method shouldn't be here
   html.connect(params, &bloc)
 end

@@ -31,7 +31,7 @@ end
 # end
 b = box
 b.keyboard(true) do
-  puts 'okok'
+  # puts 'okok'
 end
 
 # wait 4 do

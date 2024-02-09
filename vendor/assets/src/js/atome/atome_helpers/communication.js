@@ -68,9 +68,12 @@ const communication = {
         this.websocket = new WebSocket(type+'://'+server);
         this.websocket.onopen = function (event) {
 
-            Opal.eval('A.init_database');
+            // Opal.eval('A.init_database');
  // now new can exec user code : loadApplicationJs in index.html
+ //            rubyVMCallback("A.init_database");
             loadApplicationJs();
+            rubyVMCallback("A.user_login");
+            // rubyVMCallback("A.init_database");
         };
         this.websocket.onmessage = function (event) {
             // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
@@ -100,31 +103,31 @@ const communication = {
 
 /////////////////////////// connection ws
 
-
-function connect(address) {
-
-    websocket = new WebSocket(address);
-
-    websocket.onopen = function (event) {
-        rubyVMCallback("puts 'Connected to WebSocket'")
-
-    };
-
-    websocket.onmessage = function (event) {
-        // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
-    };
-
-    websocket.onclose = function (event) {
-        rubyVMCallback("puts 'WebSocket closed'")
-    };
-
-    websocket.onerror = function (event) {
-        // to prevent error disturbing the console
-        event.preventDefault();
-        console.log('connection lost!')
-    };
-
-}
+//
+// function connect(address) {
+//
+//     websocket = new WebSocket(address);
+//
+//     websocket.onopen = function (event) {
+//         rubyVMCallback("puts 'Connected to WebSocket'")
+//
+//     };
+//
+//     websocket.onmessage = function (event) {
+//         // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
+//     };
+//
+//     websocket.onclose = function (event) {
+//         rubyVMCallback("puts 'WebSocket closed'")
+//     };
+//
+//     websocket.onerror = function (event) {
+//         // to prevent error disturbing the console
+//         event.preventDefault();
+//         console.log('connection lost!')
+//     };
+//
+// }
 
 
 

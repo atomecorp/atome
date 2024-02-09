@@ -398,9 +398,7 @@ class Atome
     connection(@current_server)
   end
 
-  def init_database # this method is call from JS (atome/communication)
-    message({ action: :init_db, value: { atome: {}, particles: {} } })
-  end
+
 
   def encrypt(string)
     # if RUBY_ENGINE.downcase == 'opal' || 'wasm32-wasi'

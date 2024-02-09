@@ -20,7 +20,8 @@ class Object
         # store tell the system if it need to store the particle value
         # type help the system what type of type the particle will receive and store
         Genesis.build_particle(params[:particle], { render: params[:render], return: params[:return],
-                                                    store: params[:store], type: params[:type] }, &bloc)
+                                                    store: params[:store], type: params[:type],
+                                                    category: params[:category] }, &bloc)
       end
 
     elsif params.key?(:sanitizer)

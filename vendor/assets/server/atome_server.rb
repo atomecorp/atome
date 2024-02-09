@@ -25,17 +25,20 @@ class EDen
     `#{cmd}`
   end
 
+  def self.init_db(cmd, option, ws, value, user, pass)
+    "kjgh"
+  end
+
   def self.query(cmd, option, ws, value, user, pass)
     identity_table = db_access[cmd['table'].to_sym]
-    result=  identity_table.send(:all).send(:select)
+    result = identity_table.send(:all).send(:select)
     { action: :query, data: cmd['table'], return: result }
   end
 
   def self.insert(cmd, option, ws, value, user, pass)
     identity_table = db_access[:identity]
     identity_table.insert(email: 'tre@tre')
-    # identity_table.insert(password: 'poipoi')
-    { action: :insert, data: cmd, return: { email: 'tre@tre' }}
+    { action: :insert, data: cmd, return: { email: 'tre@tre' } }
   end
 
   def self.authentification(cmd, option, ws, value, user, pass)
@@ -323,11 +326,7 @@ class App < Roda
           option = full_data['option']
           current_user = full_data['user']
           user_pass = full_data['pass']['global']
-          # if action_requested
-            return_message = EDen.safe_send(action_requested, data, option, ws, value, current_user, user_pass)
-          # else
-          #   return_message = "no action msg: #{test}"
-          # end
+          return_message = EDen.safe_send(action_requested, data, option, ws, value, current_user, user_pass)
           ws.send(return_message.to_json)
         end
 

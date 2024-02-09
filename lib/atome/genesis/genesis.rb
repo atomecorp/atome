@@ -12,6 +12,7 @@ class Genesis
 
     def build_particle(particle_name, options = {}, &particle_proc)
       type = options[:type]
+      category = options[:category]
       type = :string if options[:type].nil?
       store = options[:store]
       store = true if options[:store].nil?
@@ -19,7 +20,7 @@ class Genesis
       render = true if options[:render].nil?
 
       # we add the new method to the particle's collection of methods
-      Universe.add_to_particle_list(particle_name, type)
+      Universe.add_to_particle_list(particle_name, type, category)
       # the line below create an empty particle method for each renderer, eg: browser_left, headless_width, ...
       # the line below create the corresponding particle method for Batch class
       # particle_method_for_batch(particle_name)

@@ -212,11 +212,12 @@ class HTML
   def connect(params, &bloc)
     type= params[:type]
     server= params[:address]
-    user=params[:user]
-    pass=params[:pass]
-    atomes=params[:atomes]
-    particles=params[:particles]
-    JS.eval("atomeJS.connect('#{type}','#{server}','#{user}','#{pass}',#{atomes.to_json},#{particles.to_json})")
+    # user=params[:user]
+    # pass=params[:pass]
+    # atomes=params[:atomes]
+    # particles=params[:particles]
+    # 'atomeJS.connect' is in the communication.js file ( connect: function (type, server, )
+    JS.eval("atomeJS.connect('#{type}','#{server}')")
     # JS.eval("atomeJS.connect('ws://#{server}')")
   end
 
