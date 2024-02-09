@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-new({ particle: :touch, type: :hash, store: false })
+new({ particle: :touch, category: :event, type: :hash, store: false })
 new({ sanitizer: :touch }) do |params, user_bloc|
   # TODO: factorise code below
   @touch ||= {}

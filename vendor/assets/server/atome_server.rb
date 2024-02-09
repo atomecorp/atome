@@ -26,6 +26,7 @@ class EDen
   end
 
   def self.init_db(cmd, option, ws, value, user, pass)
+    # Database.
     "kjgh"
   end
 
@@ -104,9 +105,23 @@ class String
 end
 
 class Database
+
+  def self.table_exists?(table_name)
+    eden = Sequel.connect("sqlite://eden.sqlite3")
+    if eden.table_exists?(table_name)
+      puts "La table #{table_name} existe dans la base de données."
+    else
+      puts "La table suivante :  #{table_name} n'existe pas dans la base de données."
+    end
+
+  end
+
+  # def self.create_table(table_name)
   def self.connect_database
     if File.exist?("eden.sqlite3")
       eden = Sequel.connect("sqlite://eden.sqlite3")
+      # now we test if the table exist
+      table_exists?(:table_name)
     else
       eden = Sequel.connect("sqlite://eden.sqlite3")
       eden.create_table :atome do
@@ -120,6 +135,18 @@ class Database
         JSON :data
         JSON :controller
       end
+
+      ###################
+
+      Sequel.extension :migration
+
+      Sequel.migration do
+        change do
+          add_column :communication, :jesaispas, String
+        end
+      end.apply(eden, :up)
+
+      ###################
 
       eden.create_table :effect do
         primary_key :effect_id

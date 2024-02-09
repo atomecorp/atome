@@ -18,4 +18,3 @@ end
 A.message({ action: :insert, data: { table: :security, particle: :name, data: 'jeezs' } }) do |ll|
   puts 'last message received'
 end
-

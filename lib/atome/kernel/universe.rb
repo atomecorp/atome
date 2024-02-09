@@ -9,8 +9,9 @@ class Universe
   @renderer_list = %i[html browser headless server log]
   @sanitizers = {}
   @specificities = {}
-  @categories= { communication: [], effect: [], event: [], geometry: [], hierarchy: [], identity: [], material: [],
-  property: [], security: [], spatial: [], time: [], utility: [], }
+
+  @categories = %w[ communication effect event geometry hierarchy identity material
+                  property security spatial time utility ]
   @history = {}
   @users = {}
   @help = {}
@@ -84,9 +85,7 @@ class Universe
     def user_atomes
       collected_id = []
       @atomes.each do |id_found, atome_found|
-        unless atome_found.tag && atome_found.tag[:system]
-          collected_id << id_found
-        end
+        collected_id << id_found unless atome_found.tag && atome_found.tag[:system]
       end
       collected_id
     end
@@ -94,9 +93,7 @@ class Universe
     def system_atomes
       collected_id = []
       @atomes.each do |id_found, atome_found|
-        if atome_found.tag && atome_found.tag[:system]
-          collected_id << id_found
-        end
+        collected_id << id_found if atome_found.tag && atome_found.tag[:system]
       end
       collected_id
     end
@@ -159,7 +156,8 @@ class Universe
     end
 
     def current_server
-      return unless RUBY_ENGINE.downcase == 'opal' # Remplacez 'atome' par la valeur correcte pour votre environnement Atome
+      # Remplacez 'atome' par la valeur correcte pour votre environnement Atome
+      return unless RUBY_ENGINE.downcase == 'opal'
       JS.global[:location][:href].to_s
 
     end

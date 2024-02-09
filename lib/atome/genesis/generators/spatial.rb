@@ -86,7 +86,7 @@ new({ particle: :layout, category: :spatial, type: :int }) do |params|
   end
   params
 end
-new({ particle: :center, type: :hash }) do |params|
+new({ particle: :center, category: :spatial, type: :hash }) do |params|
   params = { x: 0, y: 0, dynamic: true } if params == true
   params
 end

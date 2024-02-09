@@ -113,7 +113,9 @@ new({ particle: :relations, category: :utility, type: :hash })
 new({ particle: :tag, render: false, category: :utility, type: :hash })
 new({ particle: :web, category: :utility, type: :string })
 # new({ particle: :metrics, type: :hash })
+# do not change the line below initialise is a special method
 new({ initialize: :unit, value: {} })
+
 new({ particle: :login, category: :utility, type: :string }) do |params|
   set_current_user(id) if params
 end

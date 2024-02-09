@@ -216,6 +216,50 @@ task :test_server do
   build_for_opal_server(destination, project_name, 9292, :production)
 end
 
+
+task :opal_server_rebuild do
+  project_name = :test
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
+  create_application(source, destination, project_name)
+  # the line below is to add addition script to the application folder (useful for test per example)
+  add_to_application_folder(script_source, destination, project_name)
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build host_mode
+  build_host_mode(destination, project_name, 'puma-roda')
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
+  build_opal_application(source, destination, project_name)
+  # build and open the app
+  threads = []
+  threads << Thread.new do
+
+    sleep 1
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+      # code to exec for Windows
+      `start  http://localhost:9292`
+      # `start #{destination}\\#{project_name}\\src\\index_server.html`
+
+    elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+      # code to exec for MacOS
+      `open http://localhost:9292`
+    else
+      # code to exec for Unix/Linux
+      `open http://localhost:9292`
+    end
+
+  end
+
+  # build_for_opal_server(destination, project_name, 9292, :production)
+end
+
 task :test_osx do
   project_name = :test
   source = '.'

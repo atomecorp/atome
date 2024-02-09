@@ -145,18 +145,15 @@ def atome_genesis
 end
 
 def init_database # this method is call from JS (atome/communication)
-  atomes = Universe.atome_list
+  alert "we are here : need to send category, then particle, category list  =>  [#{Universe.categories}]"
   particles = Universe.particle_list
-  A.message({ action: :init_db, atome: atomes })
   particles.each do |particle, value|
     value[:category] = :undefined if value[:category].nil?
     A.message({ action: :init_db, particle: particle, type: value[:type], category: value[:category] })
   end
-
 end
 
 def user_login
-
   user = Universe.current_user
   pass = Black_matter.password
   message({ action: :login, value: user })
