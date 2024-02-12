@@ -145,12 +145,14 @@ def atome_genesis
 end
 
 def init_database # this method is call from JS (atome/communication)
-  alert "we are here : need to send category, then particle, category list  =>  [#{Universe.categories}]"
+
   particles = Universe.particle_list
-  particles.each do |particle, value|
-    value[:category] = :undefined if value[:category].nil?
-    A.message({ action: :init_db, particle: particle, type: value[:type], category: value[:category] })
-  end
+  categories = Universe.categories
+  atomes = Universe.atomes
+  # particles.each do |particle, value|
+  #   value[:category] = :undefined if value[:category].nil?
+  #   A.message({ action: :init_db, particle: particle, type: value[:type], category: value[:category] })
+  # end
 end
 
 def user_login

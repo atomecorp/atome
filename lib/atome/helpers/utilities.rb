@@ -388,6 +388,7 @@ class Atome
     calllbacks_found.delete(:message)
     # we get the oldest available callback, to treat it
     oldest_callback = calllbacks_found.delete(calllbacks_found.keys.first)
+    params=params[:return] #TODO : format retrun data correctly instead of this line
     oldest_callback.call(params) if oldest_callback.is_a? Proc
     # callback(:message, params)
   end

@@ -22,12 +22,16 @@ class EDen
   end
 
   def self.terminal(cmd, option, ws, value, user, pass)
-    `#{cmd}`
+    {return: `#{cmd}` }
+  end
+
+  def self.pass(cmd, option, ws, value, user, pass)
+    {return: 'pass received' }
   end
 
   def self.init_db(cmd, option, ws, value, user, pass)
     # Database.
-    "kjgh"
+    {return: 'database initialised' }
   end
 
   def self.query(cmd, option, ws, value, user, pass)
@@ -42,41 +46,41 @@ class EDen
     { action: :insert, data: cmd, return: { email: 'tre@tre' } }
   end
 
-  def self.authentification(cmd, option, ws, value, user, pass)
-    db = Database.connect_database
-    identity_items = db[:identity]
-    security_items = db[:security]
-
-    identity_items.insert(email: 'tre@tre')
-    security_items.insert(password: 'poipoi')
-    # testtest= "Mails count: #{identity_items.count}"
-
-    user_email = value["mail"]
-    user_password = value["pass"]
-
-    # user_exists = identity_items.all.select{|item| item[:email]==user_email}
-    user_exists = identity_items.send(:all).send(:select) do |item|
-      item[:email] == user_email
-    end
-
-    if user_exists.empty?
-      # "Mails count: #{identity_items.count}"
-      # "Mails count: #{identity_items.all}"
-      "Email non trouvé, erreur"
-      # Ask to the user if he wants to subscribe
-      # Send the basic template
-    else
-      "Email trouvé, cherche mdp"
-      # Verify password
-      # If password isn't ok, send error
-      # If the password is ok, send the user account template
-    end
-  end
+  # def self.authentification(cmd, option, ws, value, user, pass)
+  #   db = Database.connect_database
+  #   identity_items = db[:identity]
+  #   security_items = db[:security]
+  #
+  #   identity_items.insert(email: 'tre@tre')
+  #   security_items.insert(password: 'poipoi')
+  #   # testtest= "Mails count: #{identity_items.count}"
+  #
+  #   user_email = value["mail"]
+  #   user_password = value["pass"]
+  #
+  #   # user_exists = identity_items.all.select{|item| item[:email]==user_email}
+  #   user_exists = identity_items.send(:all).send(:select) do |item|
+  #     item[:email] == user_email
+  #   end
+  #
+  #   if user_exists.empty?
+  #     # "Mails count: #{identity_items.count}"
+  #     # "Mails count: #{identity_items.all}"
+  #     "Email non trouvé, erreur"
+  #     # Ask to the user if he wants to subscribe
+  #     # Send the basic template
+  #   else
+  #     "Email trouvé, cherche mdp"
+  #     # Verify password
+  #     # If password isn't ok, send error
+  #     # If the password is ok, send the user account template
+  #   end
+  # end
 
   def self.file(source, operation, ws, value, user, pass)
     file_content = File.send(operation, source, value).to_s
     file_content = file_content.gsub("'", "\"")
-    "=> operation: #{operation}, source:  #{source} , content : #{file_content},"
+    {return:  "=> operation: #{operation}, source:  #{source} , content : #{file_content}" }
   end
 
   # return_message = EDen.safe_send(action_requested, data,option, current_user, user_pass)
@@ -87,7 +91,7 @@ class EDen
     if eden_methods.include?(method_sym)
       send(method_sym, *args)
     else
-      "forbidden action:  #{method_name}"
+      {return:  "forbidden action:  #{method_name}" }
     end
   end
 end
@@ -340,8 +344,8 @@ class App < Roda
       if Faye::WebSocket.websocket?(r.env)
         ws = Faye::WebSocket.new(r.env)
         ws.on :open do |event|
-          ws.send('server ready'.to_json)
-          ws.send('asking for synchro data'.to_json)
+          ws.send({return:  'server ready' }.to_json)
+          # ws.send('asking for synchro data'.to_json)
         end
 
         ws.on(:message) do |event|
@@ -353,6 +357,7 @@ class App < Roda
           option = full_data['option']
           current_user = full_data['user']
           user_pass = full_data['pass']['global']
+          # return_message = EDen.safe_send(action_requested, data, option, ws, value, current_user, user_pass)
           return_message = EDen.safe_send(action_requested, data, option, ws, value, current_user, user_pass)
           ws.send(return_message.to_json)
         end
