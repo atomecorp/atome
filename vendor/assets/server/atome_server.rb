@@ -22,16 +22,16 @@ class EDen
   end
 
   def self.terminal(cmd, option, ws, value, user, pass)
-    {return: `#{cmd}` }
+    { return: `#{cmd}` }
   end
 
   def self.pass(cmd, option, ws, value, user, pass)
-    {return: 'pass received' }
+    { return: 'pass received' }
   end
 
   def self.init_db(cmd, option, ws, value, user, pass)
     # Database.
-    {return: 'database initialised' }
+    { return: 'database initialised' }
   end
 
   def self.query(cmd, option, ws, value, user, pass)
@@ -40,10 +40,23 @@ class EDen
     { action: :query, data: cmd['table'], return: result }
   end
 
-  def self.insert(cmd, option, ws, value, user, pass)
-    identity_table = db_access[:identity]
-    identity_table.insert(email: 'tre@tre')
-    { action: :insert, data: cmd, return: { email: 'tre@tre' } }
+  # def self.insert(cmd, option, ws, value, user, pass)
+  #   identity_table = db_access[:identity]
+  #   identity_table.insert(email: 'tre@tre')
+  #   { action: :insert, data: cmd, return: { email: 'tre@tre' } }
+  # end
+
+  def self.insert(params, option, ws, value, user, pass)
+    table = params['table']
+    particle = params['particle']
+    data = params['data']
+    identity_table = db_access[table.to_sym]
+    # identity_table = db_access[:identity]
+    #######
+    identity_table.insert(particle => data )
+      # identity_table.insert(email: 'tre@tre')
+    #
+    { return: "column : #{particle},  in table : #{table}, updated with : #{data}" }
   end
 
   # def self.authentification(cmd, option, ws, value, user, pass)
@@ -80,7 +93,7 @@ class EDen
   def self.file(source, operation, ws, value, user, pass)
     file_content = File.send(operation, source, value).to_s
     file_content = file_content.gsub("'", "\"")
-    {return:  "=> operation: #{operation}, source:  #{source} , content : #{file_content}" }
+    { return: "=> operation: #{operation}, source:  #{source} , content : #{file_content}" }
   end
 
   # return_message = EDen.safe_send(action_requested, data,option, current_user, user_pass)
@@ -91,7 +104,7 @@ class EDen
     if eden_methods.include?(method_sym)
       send(method_sym, *args)
     else
-      {return:  "forbidden action:  #{method_name}" }
+      { return: "forbidden action:  #{method_name}" }
     end
   end
 end
@@ -344,7 +357,7 @@ class App < Roda
       if Faye::WebSocket.websocket?(r.env)
         ws = Faye::WebSocket.new(r.env)
         ws.on :open do |event|
-          ws.send({return:  'server ready' }.to_json)
+          ws.send({ return: 'server ready' }.to_json)
           # ws.send('asking for synchro data'.to_json)
         end
 
