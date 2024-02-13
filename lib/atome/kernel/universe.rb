@@ -9,6 +9,7 @@ class Universe
   @renderer_list = %i[html browser headless server log]
   @sanitizers = {}
   @specificities = {}
+  @messages = {}
 
   @categories = %w[ communication effect event geometry hierarchy identity material
                   property security spatial time utility ]
@@ -19,6 +20,18 @@ class Universe
 
   class << self
     attr_reader :atomes, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
+
+    def messages
+      @messages
+    end
+
+    def store_messages(new_msg)
+      @messages[new_msg[:msg_nb]] = new_msg[:proc]
+    end
+
+    def delete_messages(msg_to_del)
+      @messages.delete(msg_to_del)
+    end
 
     def set_help(particle, &doc)
       @help[particle] = doc

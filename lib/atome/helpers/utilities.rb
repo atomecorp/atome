@@ -177,13 +177,13 @@ class Atome
     new_atome
   end
 
-  def store(params)
-    params.each do |particle_to_save, data|
-      # @!atome[particle_to_save]=data
-      # instance_variable_set(particle_to_save,data)
-    end
-
-  end
+  # def store(params)
+  #   params.each do |particle_to_save, data|
+  #     # @!atome[particle_to_save]=data
+  #     # instance_variable_set(particle_to_save,data)
+  #   end
+  #
+  # end
 
   def history(filter = {})
     filter[:id] = @id
@@ -210,7 +210,7 @@ class Atome
     #   option_found = params.values[0]
     #   instance_variable_get(elem_code)["#{option_found}_code"] = user_proc
     # else
-      instance_variable_get(elem_code)[element] = user_proc
+    instance_variable_get(elem_code)[element] = user_proc
     # end
   end
 
@@ -251,9 +251,9 @@ class Atome
                    else
                      instance_variable_get("@#{element}_code")[element]
                      # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
-                            end
+                   end
       # array_of_proc_found.each do |proc_found|
-        proc_found.call(return_params) if proc_found.is_a? Proc
+      proc_found.call(return_params) if proc_found.is_a? Proc
       # end if array_of_proc_found
 
       # if array_of_proc_found
@@ -381,25 +381,13 @@ class Atome
   end
 
   def server_receiver(params)
-    # alert params
-    # alert message_code
-    calllbacks_found= instance_variable_get('@message_code')
-    # we delete the default message created by atome
-    calllbacks_found.delete(:message)
-    # we get the oldest available callback, to treat it
-    oldest_callback = calllbacks_found.delete(calllbacks_found.keys.first)
-    params=params[:return] #TODO : format retrun data correctly instead of this line
-    oldest_callback.call(params) if oldest_callback.is_a? Proc
-    # callback(:message, params)
+    callback_found = Universe.messages[params[:message_id]]
+    callback_found.call(params) if callback_found.is_a? Proc
   end
 
   def init_websocket
-    instance_variable_set('@message_code', {})
-    # connection is particle (communication.rb)
     connection(@current_server)
   end
-
-
 
   def encrypt(string)
     # if RUBY_ENGINE.downcase == 'opal' || 'wasm32-wasi'

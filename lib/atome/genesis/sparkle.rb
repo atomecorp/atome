@@ -141,7 +141,9 @@ end
 def atome_genesis
   atome_infos
   A.server({ address: 'localhost:9292', type: 'ws' })
-  A.init_websocket
+  A.init_websocket do |msg|
+    puts "-3 #{msg}"
+  end
 end
 
 def init_database # this method is call from JS (atome/communication)
@@ -149,6 +151,7 @@ def init_database # this method is call from JS (atome/communication)
   particles = Universe.particle_list
   categories = Universe.categories
   atomes = Universe.atomes
+  # puts "we are here!!"
   # particles.each do |particle, value|
   #   value[:category] = :undefined if value[:category].nil?
   #   A.message({ action: :init_db, particle: particle, type: value[:type], category: value[:category] })
@@ -158,6 +161,10 @@ end
 def user_login
   user = Universe.current_user
   pass = Black_matter.password
-  message({ action: :login, value: user })
-  message({ action: :pass, value: pass })
+  message({ action: :login, value: user }) do  |msg|
+    puts "-2 #{msg}"
+  end
+  message({ action: :pass, value: pass }) do |msg|
+    puts "-1 #{msg}"
+  end
 end

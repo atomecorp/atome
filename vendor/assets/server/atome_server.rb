@@ -21,79 +21,52 @@ class EDen
     Database.connect_database
   end
 
-  def self.terminal(cmd, option, ws, value, user, pass)
-    { return: `#{cmd}` }
+  def self.terminal(cmd, option, ws, value, user, pass, message_id)
+    { return: `#{cmd}`, message_id: message_id }
   end
 
-  def self.pass(cmd, option, ws, value, user, pass)
-    { return: 'pass received' }
+  def self.pass(cmd, option, ws, value, user, pass, message_id)
+    { return: 'password received', message_id: message_id }
   end
 
-  def self.init_db(cmd, option, ws, value, user, pass)
+  def self.login(cmd, option, ws, value, user, pass, message_id)
+    { return: 'login received', message_id: message_id }
+  end
+
+  def self.init_db(cmd, option, ws, value, user, pass, message_id)
     # Database.
-    { return: 'database initialised' }
+    { return: 'database initialised', message_id: message_id }
   end
 
-  def self.query(cmd, option, ws, value, user, pass)
+  def self.query(cmd, option, ws, value, user, pass, message_id)
     identity_table = db_access[cmd['table'].to_sym]
     result = identity_table.send(:all).send(:select)
-    { action: :query, data: cmd['table'], return: result }
+    { action: :query, data: cmd['table'], return: "==> #{result}", message_id: message_id }
   end
 
-  # def self.insert(cmd, option, ws, value, user, pass)
-  #   identity_table = db_access[:identity]
-  #   identity_table.insert(email: 'tre@tre')
-  #   { action: :insert, data: cmd, return: { email: 'tre@tre' } }
-  # end
-
-  def self.insert(params, option, ws, value, user, pass)
-    table = params['table']
-    particle = params['particle']
+  def self.insert(params, option, ws, value, user, pass, message_id)
+    table = params['table'].to_sym
+    particle = params['particle'].to_sym
     data = params['data']
-    identity_table = db_access[table.to_sym]
-    # identity_table = db_access[:identity]
-    #######
-    identity_table.insert(particle => data )
-      # identity_table.insert(email: 'tre@tre')
-    #
-    { return: "column : #{particle},  in table : #{table}, updated with : #{data}" }
+    if db_access.table_exists?(table)
+      schema = db_access.schema(table)
+      if schema.any? { |col_def| col_def.first == particle }
+        identity_table = db_access[table.to_sym]
+        identity_table.insert(particle => data)
+        { action: :insert, return: "column : #{particle}, in table : #{table}, updated with : #{data}", message_id: message_id }
+      else
+        { action: :insert, return: "column not found: #{particle.class}", message_id: message_id }
+      end
+    else
+      { action: :insert, return: "table not found: #{table.class}", message_id: message_id }
+
+    end
   end
 
-  # def self.authentification(cmd, option, ws, value, user, pass)
-  #   db = Database.connect_database
-  #   identity_items = db[:identity]
-  #   security_items = db[:security]
-  #
-  #   identity_items.insert(email: 'tre@tre')
-  #   security_items.insert(password: 'poipoi')
-  #   # testtest= "Mails count: #{identity_items.count}"
-  #
-  #   user_email = value["mail"]
-  #   user_password = value["pass"]
-  #
-  #   # user_exists = identity_items.all.select{|item| item[:email]==user_email}
-  #   user_exists = identity_items.send(:all).send(:select) do |item|
-  #     item[:email] == user_email
-  #   end
-  #
-  #   if user_exists.empty?
-  #     # "Mails count: #{identity_items.count}"
-  #     # "Mails count: #{identity_items.all}"
-  #     "Email non trouvé, erreur"
-  #     # Ask to the user if he wants to subscribe
-  #     # Send the basic template
-  #   else
-  #     "Email trouvé, cherche mdp"
-  #     # Verify password
-  #     # If password isn't ok, send error
-  #     # If the password is ok, send the user account template
-  #   end
-  # end
-
-  def self.file(source, operation, ws, value, user, pass)
+  def self.file(source, operation, ws, value, user, pass, message_id)
     file_content = File.send(operation, source, value).to_s
     file_content = file_content.gsub("'", "\"")
-    { return: "=> operation: #{operation}, source:  #{source} , content : #{file_content}" }
+    { return: "=> operation: #{operation}, source:  #{source} , content : #{file_content}", message_id: message_id }
   end
 
   # return_message = EDen.safe_send(action_requested, data,option, current_user, user_pass)
@@ -124,6 +97,7 @@ end
 class Database
 
   def self.table_exists?(table_name)
+    # code below must be removed but not fpr now
     eden = Sequel.connect("sqlite://eden.sqlite3")
     if eden.table_exists?(table_name)
       puts "La table #{table_name} existe dans la base de données."
@@ -336,19 +310,6 @@ class Database
 end
 
 class App < Roda
-
-  # comment below when test will be done
-  # File.delete("./eden.sqlite3") if File.exist?("./eden.sqlite3")
-  eden = Database.connect_database
-  items = eden[:atome]
-
-  # populate the table
-  items.insert(creator: 'moi')
-  items.insert(creator: 'toi')
-  items.insert(creator: 'vous')
-  puts "Item count: #{items.count}"
-  test = "Item count: #{items.count}"
-  # puts "My name is: #{items(:creator)}"
   index_content = File.read("../src/index_server.html")
   opts[:root] = '../src'
   plugin :static, %w[/css /js /medias], root: '../src'
@@ -358,9 +319,7 @@ class App < Roda
         ws = Faye::WebSocket.new(r.env)
         ws.on :open do |event|
           ws.send({ return: 'server ready' }.to_json)
-          # ws.send('asking for synchro data'.to_json)
         end
-
         ws.on(:message) do |event|
           json_string = event.data.gsub(/(\w+):/) { "\"#{$1}\":" }.gsub('=>', ':')
           full_data = JSON.parse(json_string)
@@ -369,9 +328,9 @@ class App < Roda
           value = full_data['value']
           option = full_data['option']
           current_user = full_data['user']
+          message_id = full_data['message_id']
           user_pass = full_data['pass']['global']
-          # return_message = EDen.safe_send(action_requested, data, option, ws, value, current_user, user_pass)
-          return_message = EDen.safe_send(action_requested, data, option, ws, value, current_user, user_pass)
+          return_message = EDen.safe_send(action_requested, data, option, ws, value, current_user, user_pass, message_id)
           ws.send(return_message.to_json)
         end
 
@@ -380,10 +339,8 @@ class App < Roda
         end
         ws.rack_response
       end
-
       index_content
     end
-
   end
 
 end

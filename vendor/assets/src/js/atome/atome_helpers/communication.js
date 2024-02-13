@@ -1,5 +1,4 @@
 const communication = {
-    // websocket: new WebSocket('ws://localhost:9292'),
     websocket: null,
     initialize: function () {
         this.websocket = new WebSocket('ws://localhost:9292')
@@ -10,9 +9,7 @@ const communication = {
         };
 
         this.websocket.onmessage = function (event) {
-            rubyVMCallback('message', "('" + event.data  + "')")
-
-            // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
+            rubyVMCallback('message', "('" + event.data + "')")
         };
 
         this.websocket.onclose = function (event) {
@@ -65,22 +62,15 @@ const communication = {
         }
     },
     connect: function (type, server, user, pass, atomes, particles) {
-        this.websocket = new WebSocket(type+'://'+server);
+        this.websocket = new WebSocket(type + '://' + server);
         this.websocket.onopen = function (event) {
 
-            // Opal.eval('A.init_database');
- // now new can exec user code : loadApplicationJs in index.html
- //            rubyVMCallback("A.init_database");
+            // now new can exec user code : loadApplicationJs in index.html
             loadApplicationJs();
             rubyVMCallback("A.user_login");
-            // rubyVMCallback("A.init_database");
         };
         this.websocket.onmessage = function (event) {
-            // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
-            // rubyVMCallback('message', "('" + event.data  + "')")
-            // rubyVMCallback("A.callback({ touch: '" + event.data  + "' })");
-            rubyVMCallback("A.server_receiver(" + event.data  + ")");
-            // alert(event.data)
+            rubyVMCallback("A.server_receiver(" + event.data + ")");
         };
 
         this.websocket.onclose = function (event) {
@@ -97,6 +87,7 @@ const communication = {
     },
     ws_sender: function (message) {
         // now we send the data to the server
+        // puts "--> message : #{message}"
         this.websocket.send(message)
     },
 }
@@ -130,8 +121,7 @@ const communication = {
 // }
 
 
-
-function controller_message(msg){
+function controller_message(msg) {
     // message receiver from controller (Vie)
     console.log(msg)
 }
