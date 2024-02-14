@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# The class Universe is used to  retrieve some data needed for the atome framework
+# The class Universe is used to retrieve some data needed for the atome framework
 # per example you can retrieve the list of all available particles
 puts Universe.particle_list
 # this give at the date 14/11/2023 :

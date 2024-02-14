@@ -22,19 +22,19 @@ class EDen
   end
 
   def self.terminal(data, message_id)
-    { data: `#{data}`, message_id: message_id }
+    { data: { message: `#{data}` }, message_id: message_id }
   end
 
-  def self.authorization(data, message_id)
-    { data: 'password received', message_id: message_id }
+  def self.authorization(_data, message_id)
+    { data: { message: 'password received'}, message_id: message_id }
   end
 
-  def self.authentication(data, message_id)
-    { data: 'login received', message_id: message_id }
+  def self.authentication(_data, message_id)
+    { data: { message: 'login received' }, message_id: message_id }
   end
 
-  def self.init_db(data, message_id)
-    { data: 'database initialised', message_id: message_id }
+  def self.init_db(_data, message_id)
+    { data: { message: 'database initialised' }, message_id: message_id }
   end
 
   def self.query(data, message_id)
@@ -52,12 +52,12 @@ class EDen
       if schema.any? { |col_def| col_def.first == particle }
         identity_table = db_access[table.to_sym]
         identity_table.insert(particle => data)
-        { data: "column : #{particle}, in table : #{table}, updated with : #{data}", message_id: message_id }
+        { data: { message: "column : #{particle}, in table : #{table}, updated with : #{data}"}, message_id: message_id }
       else
-        { data: "column not found: #{particle.class}", message_id: message_id }
+        { data: { message: "column not found: #{particle.class}" }, message_id: message_id }
       end
     else
-      { data: "table not found: #{table.class}", message_id: message_id }
+      { data: { message: "table not found: #{table.class}" }, message_id: message_id }
 
     end
   end
