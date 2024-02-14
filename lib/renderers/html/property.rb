@@ -51,11 +51,3 @@ new({ method: :sort, renderer: :html, type: :hash }) do |params|
   html.refresh_table(params)
 end
 
-new({ particle: :unit, store: false }) do |params|
-  params.each do |k, v|
-    @unit[k] = v
-    # now we refresh the particle
-    send(k, send(k))
-  end
-  @unit
-end

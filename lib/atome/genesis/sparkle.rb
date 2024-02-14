@@ -147,15 +147,33 @@ def atome_genesis
 end
 
 def init_database # this method is call from JS (atome/communication)
+  # we init the db file eDen
+  A.message({ action: :init_db, data: { database: :eDen } }) do |db_state|
+    puts db_state
+  end
 
   particles = Universe.particle_list
   categories = Universe.categories
-  atomes = Universe.atomes
-  puts "we are here!!"
-  # particles.each do |particle, value|
-  #   value[:category] = :undefined if value[:category].nil?
-  #   A.message({ action: :init_db, particle: particle, type: value[:type], category: value[:category] })
-  # end
+  categories.each do |category|
+    A.message({ action: :crate_db_table, data: { table: category } }) do |db_state|
+      puts db_state
+    end
+  end
+  particles_length=particles.length
+  particles.each_with_index do  |(particle, infos), index|
+    type = infos[:type]
+    table = infos[:category]
+    @i=1
+    A.message({ action: :create_db_column, data: { table: table, column: particle, type: type } }) do |db_state|
+      @i+=1
+      if @i==particles_length
+        user_login
+      end
+      puts db_state
+    end
+
+  end
+
 end
 
 def user_login
@@ -164,7 +182,7 @@ def user_login
   message({ action: :authentication, data: { email: 'jeezs@atome.one' } }) do |email|
     puts "email received : #{email}"
   end
-  message({ action: :authorization, data: { password: password } }) do |p|
-    puts "2 : #{p}"
+  message({ action: :authorization, data: { password: password } }) do |pass|
+    puts "password recieved : #{pass}"
   end
 end

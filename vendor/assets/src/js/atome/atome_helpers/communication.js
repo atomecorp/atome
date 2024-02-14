@@ -67,7 +67,7 @@ const communication = {
 
             // now new can exec user code : loadApplicationJs in index.html
             loadApplicationJs();
-            rubyVMCallback("A.user_login");
+            // rubyVMCallback("A.user_login");
         };
         this.websocket.onmessage = function (event) {
             // console.log(event.data)

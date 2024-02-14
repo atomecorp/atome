@@ -8,8 +8,8 @@ end
 
 new({ particle: :message, category: :communication, type: :hash }) do |params, bloc|
   params = { data: params } unless params.instance_of? Hash
-  params[:user] = 'dfghg4df5gdfgh654'
-  params[:pass] = 'gfhkzrhgzr4h98948'
+  # params[:user] = 'dfghg4df5gdfgh654'
+  # params[:pass] = 'gfhkzrhgzr4h98948'
  # instance_variable_set('@message_code', {}) unless instance_variable_get('@message_code')
  #  store_proc= instance_variable_get('@message_code')
   message_id= "msg_#{Universe.messages.length}"

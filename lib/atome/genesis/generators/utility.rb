@@ -115,7 +115,14 @@ new({ particle: :web, category: :utility, type: :string })
 # new({ particle: :metrics, type: :hash })
 # do not change the line below initialise is a special method
 new({ initialize: :unit, value: {} })
-
+new({ particle: :unit, store: false, type: :string, category: :utility }) do |params|
+  params.each do |k, v|
+    @unit[k] = v
+    # now we refresh the particle
+    send(k, send(k))
+  end
+  @unit
+end
 new({ particle: :login, category: :utility, type: :string }) do |params|
   set_current_user(id) if params
 end
@@ -124,7 +131,7 @@ new({ particle: :hyperedit, category: :utility, type: :string })
 new({ particle: :terminal, category: :utility, type: :string })
 new({ particle: :read, category: :utility, type: :string })
 new({ particle: :browse, category: :utility, type: :string })
-new({ particle: :copies, category: :utility, type: :string})
+new({ particle: :copies, category: :utility, type: :string })
 new({ particle: :temporary, category: :utility, type: :int })
 new({ particle: :atomes, category: :utility, type: :string })
 

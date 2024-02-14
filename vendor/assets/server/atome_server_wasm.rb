@@ -26,43 +26,43 @@ class String
   end
 end
 
-class Database
-  def self.connect_database
-    if File.exist?("eden.sqlite3")
-      eden = Sequel.connect("sqlite://eden.sqlite3")
-    else
-      eden = Sequel.connect("sqlite://eden.sqlite3")
-      eden.create_table :atome do
-        primary_key :atome_id
-        String :aui
-        String :id
-        String :type
-        String :name
-        String :content
-        String :position
-        String :dimension
-        String :color
-        String :right
-        String :effect
-        String :shadow
-        String :border
-        String :fill
-        Float :x
-        Float :xx
-        Float :y
-        Float :yy
-        Float :z
-        Float :zz
-        Float :width
-        Float :height
-        Float :depth
-      end
-
-    end
-    eden
-  end
-
-end
+# class Database
+#   def self.connect_database
+#     if File.exist?("eden.sqlite3")
+#       eden = Sequel.connect("sqlite://eden.sqlite3")
+#     else
+#       eden = Sequel.connect("sqlite://eden.sqlite3")
+#       eden.create_table :atome do
+#         primary_key :atome_id
+#         String :aui
+#         String :id
+#         String :type
+#         String :name
+#         String :content
+#         String :position
+#         String :dimension
+#         String :color
+#         String :right
+#         String :effect
+#         String :shadow
+#         String :border
+#         String :fill
+#         Float :x
+#         Float :xx
+#         Float :y
+#         Float :yy
+#         Float :z
+#         Float :zz
+#         Float :width
+#         Float :height
+#         Float :depth
+#       end
+#
+#     end
+#     eden
+#   end
+#
+# end
 
 class App < Roda
   # comment below when test will be done
