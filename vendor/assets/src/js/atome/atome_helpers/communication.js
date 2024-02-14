@@ -70,6 +70,7 @@ const communication = {
             rubyVMCallback("A.user_login");
         };
         this.websocket.onmessage = function (event) {
+            // console.log(event.data)
             rubyVMCallback("A.server_receiver(" + event.data + ")");
         };
 

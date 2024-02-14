@@ -4,18 +4,21 @@ user_password = {global: :all_star, read: { atome: :all_star }, write: { atome: 
 
 human({ id: :jeezs, login: true, password: user_password, data: { birthday: '10/05/2016' },selection: [], tag: { system: true } , attach: :user_view })
 
-
-
-
-
-
 c = box({ color: :yellow, left: 333 })
-
 c.touch(true) do
-  c.message({message: 'cd ..;cd server;ls; pwd', action: :terminal })
-  c.message({message: 'capture.rb', action: :file, option: :read })
-  c.message({message: 'tototo.rb', action: :file, option: :write, value: :hello })
-  # b.message({message: 'cd ..;cd server;ls; pwd'})
-  # c = box({ color: :red, left: 333 })
-end
+  c.message({data: 'cd ..;cd server;ls; pwd', action: :terminal }) do |result|
+    puts "shell command return: #{result}"
+  end
+  c.message({data: {source: 'capture.rb',operation: :read  }, action: :file}) do |result|
 
+    puts "file read encoded_content: #{result[:data].gsub('\x23', '#')}"
+  end
+  c.message({ action: :file,data: {source: 'user_created_file.rb', operation: :write, value: :hello }})do |result|
+    puts "file creation result : #{result}"
+  end
+
+  A.message({ action: :terminal , data: 'cd ..;cd server;ls; pwd'}) do |result|
+    puts "result : #{result}"
+  end
+end
+#

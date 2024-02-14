@@ -17,6 +17,7 @@
 # require "./examples/categories"
 # require "./examples/atome_particle_validation"
 require "./examples/database_handling"
+# require "./examples/server"
 # require "./examples/read"
 
 

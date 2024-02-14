@@ -151,7 +151,7 @@ def init_database # this method is call from JS (atome/communication)
   particles = Universe.particle_list
   categories = Universe.categories
   atomes = Universe.atomes
-  # puts "we are here!!"
+  puts "we are here!!"
   # particles.each do |particle, value|
   #   value[:category] = :undefined if value[:category].nil?
   #   A.message({ action: :init_db, particle: particle, type: value[:type], category: value[:category] })
@@ -159,12 +159,12 @@ def init_database # this method is call from JS (atome/communication)
 end
 
 def user_login
-  user = Universe.current_user
-  pass = Black_matter.password
-  message({ action: :login, value: user }) do  |msg|
-    puts "-2 #{msg}"
+  # user = Universe.current_user
+  password = Black_matter.password
+  message({ action: :authentication, data: { email: 'jeezs@atome.one' } }) do |p|
+    puts "1 : #{p}"
   end
-  message({ action: :pass, value: pass }) do |msg|
-    puts "-1 #{msg}"
+  message({ action: :authorization, data: { password: password } }) do |p|
+    puts "2 : #{p}"
   end
 end

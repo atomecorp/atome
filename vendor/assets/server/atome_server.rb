@@ -21,64 +21,59 @@ class EDen
     Database.connect_database
   end
 
-  def self.terminal(cmd, option, ws, value, user, pass, message_id)
-    { return: `#{cmd}`, message_id: message_id }
+  def self.terminal(data, message_id)
+    { data: `#{data}`, message_id: message_id }
   end
 
-  def self.pass(cmd, option, ws, value, user, pass, message_id)
-    { return: 'password received', message_id: message_id }
+  def self.authorization(data, message_id)
+    { data: 'password received', message_id: message_id }
   end
 
-  def self.login(cmd, option, ws, value, user, pass, message_id)
-    { return: 'login received', message_id: message_id }
+  def self.authentication(data, message_id)
+    { data: 'login received', message_id: message_id }
   end
 
-  def self.init_db(cmd, option, ws, value, user, pass, message_id)
-    # Database.
-    { return: 'database initialised', message_id: message_id }
+  def self.init_db(data, message_id)
+    { data: 'database initialised', message_id: message_id }
   end
 
-  def self.query(cmd, option, ws, value, user, pass, message_id)
-    identity_table = db_access[cmd['table'].to_sym]
+  def self.query(data, message_id)
+    identity_table = db_access[data['table'].to_sym]
     result = identity_table.send(:all).send(:select)
-    { action: :query, data: cmd['table'], return: "==> #{result}", message_id: message_id }
+    { data: { table: data['table'], infos: result }, message_id: message_id }
   end
 
-  def self.insert(params, option, ws, value, user, pass, message_id)
-    table = params['table'].to_sym
-    particle = params['particle'].to_sym
-    data = params['data']
+  def self.insert(data, message_id)
+    table = data['table'].to_sym
+    particle = data['particle'].to_sym
+    data = data['data']
     if db_access.table_exists?(table)
       schema = db_access.schema(table)
       if schema.any? { |col_def| col_def.first == particle }
         identity_table = db_access[table.to_sym]
         identity_table.insert(particle => data)
-        { action: :insert, return: "column : #{particle}, in table : #{table}, updated with : #{data}", message_id: message_id }
+        { data: "column : #{particle}, in table : #{table}, updated with : #{data}", message_id: message_id }
       else
-        { action: :insert, return: "column not found: #{particle.class}", message_id: message_id }
+        { data: "column not found: #{particle.class}", message_id: message_id }
       end
     else
-      { action: :insert, return: "table not found: #{table.class}", message_id: message_id }
+      { data: "table not found: #{table.class}", message_id: message_id }
 
     end
   end
 
-  def self.file(source, operation, ws, value, user, pass, message_id)
-    file_content = File.send(operation, source, value).to_s
+  def self.file(data, message_id)
+
+    file_content = File.send(data['operation'], data['source'], data['value']).to_s
     file_content = file_content.gsub("'", "\"")
-    { return: "=> operation: #{operation}, source:  #{source} , content : #{file_content}", message_id: message_id }
+
+    file_content = file_content.gsub('#', '\x23')
+    { data: "=> operation: #{data['operation']}, source: #{data['source']}, content: #{file_content}", message_id: message_id }
   end
 
-  # return_message = EDen.safe_send(action_requested, data,option, current_user, user_pass)
-
-  def self.safe_send(method_name, *args)
+  def self.safe_send(method_name, data, message_id)
     method_sym = method_name.to_sym
-    eden_methods = EDen.singleton_methods(false) - Object.singleton_methods
-    if eden_methods.include?(method_sym)
-      send(method_sym, *args)
-    else
-      { return: "forbidden action:  #{method_name}" }
-    end
+    send(method_sym, data, message_id)
   end
 end
 
@@ -97,7 +92,6 @@ end
 class Database
 
   def self.table_exists?(table_name)
-    # code below must be removed but not fpr now
     eden = Sequel.connect("sqlite://eden.sqlite3")
     if eden.table_exists?(table_name)
       puts "La table #{table_name} existe dans la base de données."
@@ -325,12 +319,12 @@ class App < Roda
           full_data = JSON.parse(json_string)
           data = full_data['data']
           action_requested = full_data['action']
-          value = full_data['value']
-          option = full_data['option']
-          current_user = full_data['user']
+          # value = full_data['value']
+          # option = full_data['option']
+          # current_user = full_data['user']
           message_id = full_data['message_id']
-          user_pass = full_data['pass']['global']
-          return_message = EDen.safe_send(action_requested, data, option, ws, value, current_user, user_pass, message_id)
+          # user_pass = full_data['pass']['global']
+          return_message = EDen.safe_send(action_requested, data, message_id)
           ws.send(return_message.to_json)
         end
 
