@@ -161,8 +161,8 @@ end
 def user_login
   # user = Universe.current_user
   password = Black_matter.password
-  message({ action: :authentication, data: { email: 'jeezs@atome.one' } }) do |p|
-    puts "1 : #{p}"
+  message({ action: :authentication, data: { email: 'jeezs@atome.one' } }) do |email|
+    puts "email received : #{email}"
   end
   message({ action: :authorization, data: { password: password } }) do |p|
     puts "2 : #{p}"
