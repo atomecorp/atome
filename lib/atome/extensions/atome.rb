@@ -1,7 +1,6 @@
 # frozen_string_literal: true
+module ObjectExtension
 
-# atome extensions
-class Object
   def new(params, &bloc)
     # Genesis = Genesis.Genesis
     if params.key?(:atome)
@@ -42,14 +41,68 @@ class Object
       end
       render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
       Genesis.build_render(render_method, &bloc)
-    # elsif params.key?(:callback)
-    #   particle_targetted = params[:callback]
-    #   Atome.define_method("#{particle_targetted}_callback", option) do
-    #     alert option
-    #     bloc.call(option)
-    #   end
+      # elsif params.key?(:callback)
+      #   particle_targetted = params[:callback]
+      #   Atome.define_method("#{particle_targetted}_callback", option) do
+      #     alert option
+      #     bloc.call(option)
+      #   end
     end
+    super if defined?(super)
   end
+
+end
+# atome extensions
+class Object
+  include ObjectExtension
+  # def new(params, &bloc)
+  #   # Genesis = Genesis.Genesis
+  #   if params.key?(:atome)
+  #     if Universe.atome_list.include?(params[:atome])
+  #       puts "atome #{params[:atome]} already exist you can't create it"
+  #     else
+  #       Universe.add_atomes_specificities params[:atome]
+  #       Genesis.build_atome(params[:atome], &bloc)
+  #     end
+  #   elsif params.key?(:particle)
+  #     if Universe.particle_list[params[:particle]]
+  #       puts "particle #{params[:particle]} already exist you can't create it"
+  #     else
+  #       Atome.instance_variable_set("@main_#{params[:particle]}", bloc)
+  #       # render indicate if the particle needs to be rendered
+  #       # store tell the system if it need to store the particle value
+  #       # type help the system what type of type the particle will receive and store
+  #       Genesis.build_particle(params[:particle], { render: params[:render], return: params[:return],
+  #                                                   store: params[:store], type: params[:type],
+  #                                                   category: params[:category] }, &bloc)
+  #     end
+  #
+  #   elsif params.key?(:sanitizer)
+  #     Genesis.build_sanitizer(params[:sanitizer], &bloc)
+  #   elsif params.key?(:pre)
+  #     Atome.instance_variable_set("@pre_#{params[:pre]}", bloc)
+  #   elsif params.key?(:post)
+  #     Atome.instance_variable_set("@post_#{params[:post]}", bloc)
+  #   elsif params.key?(:after)
+  #     Atome.instance_variable_set("@after_#{params[:after]}", bloc)
+  #   elsif params.key?(:read)
+  #     Atome.instance_variable_set("@read_#{params[:read]}", bloc)
+  #   elsif params[:renderer]
+  #     renderer_found = params[:renderer]
+  #     if params[:specific]
+  #       Universe.set_atomes_specificities(params)
+  #       params[:specific] = "#{params[:specific]}_"
+  #     end
+  #     render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
+  #     Genesis.build_render(render_method, &bloc)
+  #   # elsif params.key?(:callback)
+  #   #   particle_targetted = params[:callback]
+  #   #   Atome.define_method("#{particle_targetted}_callback", option) do
+  #   #     alert option
+  #   #     bloc.call(option)
+  #   #   end
+  #   end
+  # end
 
   def reorder_particles(hash_to_reorder)
     # we reorder the hash
