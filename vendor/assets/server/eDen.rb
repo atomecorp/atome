@@ -12,39 +12,62 @@ class EDen
       { data: { message: `#{data}` }, message_id: message_id }
     end
 
-    def authorization(data, message_id)
-      db = db_access
-      security_items = db[:security]
-      user_password = data["password"]
-      user_exists = security_items.where(password: user_password).first
-
-      if !user_exists
-        { return: 'Password not found', message_id: message_id }
-        # Ask to the user if he wants to subscribe
-        # Send the basic template
-      else
-        { return: 'Password found, connected', message_id: message_id }
-        # Send the user account template
-      end
+    def sanitize_email(email)
+      invalid_chars_pattern = /[^a-zA-Z0-9.-@]+/
+      email.gsub(invalid_chars_pattern, '')
     end
 
     def authentication(data, message_id)
-      # { data: { message: 'login received' }, message_id: message_id }
+      # database connexion :
       db = db_access
+      # retrieving data from the 'identity' table
       identity_items = db[:identity]
+      # retrieving sent data
       user_email = data["email"]
-      mail_exists = identity_items.where(email: user_email).first
+      # data cleansing of superfluous characters
+      sanitized_email = sanitize_email(user_email)
+      # database search
+      mail_exists = identity_items.where(email: sanitized_email).first
 
       if !mail_exists
-        { return: 'Email not found', message_id: message_id }
-        # { return: user_email, message_id: message_id }
-        # Ask to the user if he wants to subscribe
-        # Send the basic template
+        return { return: 'Email non trouvé, erreur', authorized: false, message_id: message_id }
       else
-        { return: 'Email found, looking for pass', message_id: message_id }
-        # Verify password
-        # If password isn't ok, send error
-        # If the password is ok, send the user account template
+        @@mail = user_email
+        if @@mail && @@pass
+          @@mail = nil
+          @@pass = nil
+          return { return: 'logged', authorized: true, message_id: message_id }
+          # Send the user account template
+        else
+          return { return: 'Email trouvé, cherche mdp', authorized: true, message_id: message_id }
+        end
+      end
+    end
+
+    def authorization(data, message_id)
+      # database connexion :
+      db = db_access
+      # retrieving data from the 'security' table
+      security_items = db[:security]
+      # retrieving sent data
+      user_password = data["password"]
+      # database search
+      user_exists = security_items.where(password: user_password).first
+
+      if !user_exists
+        puts "password recu : :#{user_password},   @@mail : #{  @@mail} , pass : #{  @@pass}"
+        return { return: 'Password non trouvé, erreur', authorized: false, message_id: message_id }
+      else
+        @@pass = user_password
+        if @@mail && @@pass
+          # reset variables containing mail and password
+          @@mail = nil
+          @@pass = nil
+          return { return: 'logged', authorized: true, message_id: message_id }
+          # Send the user account template
+        else
+          return { return: 'Password trouvé, cherche mdp', authorized: true, message_id: message_id }
+        end
       end
     end
 
