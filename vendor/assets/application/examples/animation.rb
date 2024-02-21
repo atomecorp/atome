@@ -87,8 +87,5 @@
 
 b=box({id: :the_box})
 
-
-# Ex : params : { from: 0, to: 300, duration: 1000 }
   b.animate({ to: 90 })
-# end
 
