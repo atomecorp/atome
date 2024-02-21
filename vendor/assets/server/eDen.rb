@@ -4,6 +4,10 @@
 
 class EDen
   class << self
+
+    @@mail = nil
+    @@pass = nil
+
     def db_access
       Database.db_access
     end
