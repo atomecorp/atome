@@ -9,7 +9,7 @@ first_repeater=repeat(1, repeat = 99) do |counter|
   t1.data(counter)
 end
 
-my_repeater=repeat(3, repeat = 9) do |counter|
+my_repeater=repeat(1, repeat = 9) do |counter|
   t2.data(counter)
 end
 

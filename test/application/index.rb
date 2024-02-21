@@ -9,7 +9,7 @@
 # TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
 
 # require "./web2"
-
+# alert Universe.eVe
 
 # in progress
 # require "./examples/find"
@@ -48,12 +48,14 @@
 # require "./examples/import"
 # require "./examples/shortcut"
 # require "./examples/server"
-# # require "./examples/console"
+# require "./examples/console"
 # require "./examples/layout"
 # require "./examples/random"
+# require "./examples/find"
 # require "./examples/copy"
 # require "./examples/selected"
 # require "./examples/category"
+# require "./examples/categories"
 # require "./examples/duplicate"
 # require "./examples/repeat"
 # require "./examples/group"
@@ -92,7 +94,7 @@
 # require "./examples/smooth"
 # require "./examples/history"
 # require "./examples/image"
-# require "./examples/presets"
+# require "./examples/preset"
 # require "./examples/delete"
 # require "./examples/clear"
 # require "./examples/attached"
@@ -239,39 +241,4 @@
 #   el_found=grab(el)
 #   el_found.rotate(22).text(:hello).color(:red)
 # end
-
-
-new(application: {name: :compose })
-
-
-grab(:toto).color(:cyan)
-
-def layout
-  compose_back=box
-
-  compose_back.color({ alpha: 0 })
-  media_reader=compose_back.box({left: 99, width: 250, height: 250, top: 99})
-  viewer_1=compose_back.box({left: 360, width: 250, height: 250, top: 99})
-  viewer_2=compose_back.box({left: 690, width: 250, height: 250, top: 99})
-  timeline=compose_back.box({left: 99, width: 250, height: 250, top: 399})
-  login=compose_back.text(:log)
-  login.touch(true) do
-    compose_back.delete(true)
-    # grab(:view).clear(true)
-    form
-  end
-
-end
-
-def form
-  form1=box
-  form1.text(:login)
-
-  form1.touch(true) do
-    form1.delete(true)
-    layout
-  end
-
-end
-form
 

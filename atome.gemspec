@@ -78,6 +78,10 @@ Gem::Specification.new do |spec|
   # the gem below are need to make the atome server works on Windows
   spec.add_runtime_dependency 'tzinfo-data', '~> 1.2023.4'
   spec.add_runtime_dependency 'win32-security', '~> 0.5.0'
+  spec.add_runtime_dependency  'wdm', '>= 0.1.0' if Gem.win_platform?
+
+  # patch because guard have bad dependency
+  # spec.add_runtime_dependency  'pry', '>= 0.14.2'
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"

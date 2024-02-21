@@ -9,7 +9,7 @@ end
 
 
 Universe.user_atomes.each do |atome_id|
-  atome_found = grab(atome_id)
+  atome_found = hook(atome_id)
   if atome_found.type == :shape
     atome_found.color(:orange)
     atome_found.smooth(200)
@@ -19,7 +19,7 @@ end
 
 random_found =Universe.user_atomes.sample(7)
 random_found.each do |atome_id|
-  atome_found = grab(atome_id)
+  atome_found = hook(atome_id)
   if atome_found.type == :shape
     atome_found.top(rand(600))
     atome_found.width(rand(120))
@@ -31,7 +31,7 @@ end
 
 random_found =Universe.user_atomes.sample(9)
 random_found.each do |atome_id|
-  atome_found = grab(atome_id)
+  atome_found = hook(atome_id)
   if atome_found.type == :shape
     atome_found.left(rand(700))
     atome_found.width(rand(120))

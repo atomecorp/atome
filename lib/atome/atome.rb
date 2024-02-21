@@ -4,6 +4,9 @@
 class Atome
   include Essentials
 
+  def aid(_v=nil)
+    @aid
+  end
   def initialize(new_atome = {}, &atomes_proc)
     # TODO: atome format should always be as followed : {value: 0.44, unit: :px, opt1: 554}
     # when using optimised version of atome you must type eg : a.set({left: {value: 33, unit: '%', reference: :center}})
@@ -20,7 +23,10 @@ class Atome
     @collect = {}
     @int8= {}
     @css = {}
-    @id = new_atome[:id] || identity_generator(:element)
+    @aid =  identity_generator(:a).to_sym
+    Universe.add_to_atomes( @aid, self)
+    @id = new_atome[:id] || @aid
+    Universe.id_to_aid(@id,@aid)
     @type = new_atome[:type] || :element
     @attached = []
     @category = []

@@ -123,12 +123,29 @@ class Object
     "#{type_needed}_#{Universe.counter}"
   end
 
-  def grab(id_to_get)
-    return if id_to_get == false
+  def hook(a_id)
+    a_id=a_id.to_sym
+    Universe.atomes[a_id]
+  end
 
-    id_to_get = '' if id_to_get.instance_of? Array
-    id_to_get = id_to_get.to_sym
-    Universe.atomes[id_to_get]
+  def grab(id_to_get)
+    id_to_get=id_to_get.to_sym
+    return if id_to_get == false
+    aid_to_get= Universe.atomes_ids[id_to_get]
+    # puts id_to_get.class
+    # alert Universe.atomes
+    aid_to_get = '' if aid_to_get.instance_of? Array
+    # id_to_get = id_to_get.to_sym
+
+    # if id_to_get.nil? do
+    # if aid_to_get.nil?
+    #   alert   id_to_get
+    # else
+
+    # end
+    # end
+    # alert Universe.atomes[id_to_get]
+    Universe.atomes[aid_to_get]
   end
 
   def box(params = {}, &proc)

@@ -91,6 +91,10 @@ end
 
 
 b=box({id: :the_box})
-
-b.animate(true)
+wait 3 do
+  b.animate(true)
+  wait 1 do
+    `Opal.eval("grab('the_box').left(299.4479333333333)")`
+  end
+end
 

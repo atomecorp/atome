@@ -4,6 +4,7 @@
 class Universe
   @counter = 0
   @atomes = {}
+  @atomes_ids = {}
   @atome_list = []
   @particle_list = {}
   @renderer_list = %i[html browser headless server log]
@@ -19,10 +20,18 @@ class Universe
   @example = {}
 
   class << self
-    attr_reader :atomes, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
+    attr_reader :atomes,:atomes_ids, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
 
     def messages
       @messages
+    end
+
+    def eVe(val = nil)
+      if val
+        @eve = val
+      else
+        @eve
+      end
     end
 
     def store_messages(new_msg)
@@ -85,9 +94,13 @@ class Universe
       instance_variable_get('@atome_list').push(atome)
     end
 
-    def add_to_atomes(id, atome)
-      @atomes[id] = atome
+    def add_to_atomes(aid, atome)
+      @atomes[aid] = atome
       @counter = @counter + 1
+    end
+
+    def id_to_aid(id, aid)
+      @atomes_ids[id] = aid
     end
 
     def update_atome_id(id, atome, prev_id)

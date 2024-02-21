@@ -5,11 +5,20 @@ new({ particle: :type, category: :identity, type: :string })
 new({ particle: :id, category: :identity, type: :int })
 new({ sanitizer: :id }) do |params|
   # first we sanitize the the id below
+
   params = params.to_sym
-  if @id.to_sym != params
-    Universe.update_atome_id(params, self, @id)
+  # we check id is already assign
+  if Universe.atomes[params]
+    # we reassign the old id
+    puts "the id : #{params} is already used"
+    params = @id
   else
-    Universe.add_to_atomes(params, self)
+    if @id.to_sym != params
+      Universe.update_atome_id(params, self, @id)
+    else
+      Universe.add_to_atomes(params, self)
+    end
+
   end
   params
 end
@@ -31,12 +40,12 @@ new({ particle: :active, category: :identity, type: :boolean })
 #   end
 # end
 new({ particle: :markup, category: :identity, type: :string })
-new({particle: :bundle, category: :identity, type: :string})
+new({ particle: :bundle, category: :identity, type: :string })
 new({ particle: :data, category: :identity, type: :string })
 
-new({particle: :category, category: :identity, type: :string, store: false}) do |category_names|
-  category_names=[category_names] unless category_names.instance_of? Array
-  category_names.each do |category_name| 
+new({ particle: :category, category: :identity, type: :string, store: false }) do |category_names|
+  category_names = [category_names] unless category_names.instance_of? Array
+  category_names.each do |category_name|
     @category << category_name
   end
 end
@@ -61,6 +70,6 @@ new(particle: :selected, category: :identity, type: :boolean) do |params|
 end
 
 new({ particle: :format, category: :identity, type: :string })
-new({ particle: :alien, category: :identity, type: :string }) #special particel that old alien object
+new({ particle: :alien, category: :identity, type: :string }) # special particel that old alien object
 
 new({ particle: :email, category: :identity, type: :string })
