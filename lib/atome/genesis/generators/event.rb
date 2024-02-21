@@ -322,3 +322,13 @@ new({ particle: :overflow, category: :event, type: :boolean }) do |params, bloc|
   params
 
 end
+
+new({particle: :animate}) do |params|
+  if params.instance_of? Hash
+    params={ from: 0, to: 300, duration: 1000 }.merge(params)
+  else
+    params={ from: 0, to: 300, duration: 1000 }
+  end
+
+  html.play_animation(params)
+end

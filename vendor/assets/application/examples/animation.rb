@@ -84,17 +84,12 @@
 # create callback methode when playing
 
 
-# here is how to animate shape :
-new({particle: :animate}) do |params|
-  html.play_animation({ from: 0, to: 300, duration: 1000 })
-end
-
+# # here is how to animate shape :
 
 b=box({id: :the_box})
-wait 3 do
-  b.animate(true)
-  wait 1 do
-    `Opal.eval("grab('the_box').left(299.4479333333333)")`
-  end
-end
+
+
+# Ex : params : { from: 0, to: 300, duration: 1000 }
+  b.animate({ to: 90 })
+# end
 
