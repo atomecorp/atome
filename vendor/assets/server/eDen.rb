@@ -131,5 +131,4 @@ class EDen
       send(method_sym, data, message_id)
     end
   end
-
 end

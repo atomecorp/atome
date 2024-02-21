@@ -43,5 +43,3 @@ t=text({data: 'touch me to unbind drag stop for b (clone will not deleted anymor
 t.touch(true) do
   b.drag({remove: :stop})
 end
-
-
