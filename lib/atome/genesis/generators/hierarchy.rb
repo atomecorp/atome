@@ -22,7 +22,7 @@ def attachment_common(child_id, parents_id, direction, &user_proc)
       render(:attach, parents_id, &user_proc)
     else
       # we remove the current id  from parent
-      grab(attach).attached.delete(@id)
+      # grab(attach).attached.delete(@id)
     end
   else
     child_found = grab(child_id)

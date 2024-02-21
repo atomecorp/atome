@@ -754,8 +754,8 @@ class HTML
       parent_found = grab(option)
       min_left = parent_found.left
       min_top = parent_found.top
-      parent_width = parent_found.width
-      parent_height = parent_found.height
+      parent_width = parent_found.compute({ particle: :width })[:value]
+      parent_height = parent_found.compute({ particle: :height })[:value]
       original_width = @original_atome.width
       original_height = @original_atome.height
       max_left = min_left + parent_width - original_width

@@ -120,7 +120,7 @@ class Object
   end
 
   def identity_generator(type_needed = :element)
-    "#{type_needed}_#{Universe.counter}"
+    "#{type_needed}_#{Universe.counter}".to_sym
   end
 
   def hook(a_id)
