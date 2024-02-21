@@ -83,7 +83,6 @@
 # create a animation object
 # create callback methode when playing
 
-
 # # here is how to animate shape :
 
 b=box({id: :the_box})
