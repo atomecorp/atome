@@ -97,7 +97,7 @@
 # require "./examples/preset"
 # require "./examples/delete"
 # require "./examples/clear"
-# require "./examples/attached"
+require "./examples/attached"
 # require "./examples/attach"
 # require "./examples/grab"
 # require "./examples/match"

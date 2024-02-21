@@ -7,11 +7,12 @@ def detach_child(child)
   
 end
 
-def detach_from_parent(parent_found, child_found)
-  child_found.attach(false)
-end
+# def detach_from_parent(parent_found, child_found)
+#   child_found.attach(parent_found.id)
+# end
 
 def attachment_common(child_id, parents_id, direction, &user_proc)
+
   parent_found = grab(parents_id)
   if direction == :attach
     if parent_found
@@ -25,7 +26,7 @@ def attachment_common(child_id, parents_id, direction, &user_proc)
     end
   else
     child_found = grab(child_id)
-    detach_from_parent(parent_found, child_found)
+    child_found.attach(parents_id)
     child_found.render(:attach, parents_id, &user_proc)
   end
 end
