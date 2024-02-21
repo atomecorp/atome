@@ -20,13 +20,20 @@ wait 1 do
   b.apply([:active_color])
 end
 c = circle({ left: 333, id: :the_circle })
-wait 2 do
+wait 1 do
+
+  puts "before: -------"
+  puts  "c.attach #{c.attach}"
+  puts  "b.attached : #{b.attached}"
+  puts "b.color : #{b.color}"
+  puts "c.color : #{c.color}"
   c.apply(:inactive_color)
   b.attached([c.id])
+  puts "After: -------"
 
   # Here is how to use it as a getter :
   # to retrieve witch atomes b315 is attached to  to the atome c_12 just type
-  puts  "c.attach#{c.attach}" # => [:the_box]
+  puts  "c.attach #{c.attach}" # => [:the_box]
   # to retrieve atome attached to the atome c_12 just type tha other method
   puts  "b.attached : #{b.attached}" #=> [:the_circle]
   puts "b.color : #{b.color}"

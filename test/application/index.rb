@@ -14,13 +14,13 @@
 # in progress
 # require "./examples/find"
 # require "./examples/test"
+# require "./examples/smooth"
 # require "./examples/categories"
 # require "./examples/atome_particle_validation"
 # require "./examples/database_handling"
 # require "./examples/server"
 # require "./examples/read"
 # require "./examples/unit"
-
 
 # Projects
 # require "./examples/encrypt"
@@ -29,7 +29,6 @@
 # require './works/photos6'
 # require './test'
 # require './examples/test'
-
 #### works
 # require "./examples/clones&monitoring"
 # require './examples/css'

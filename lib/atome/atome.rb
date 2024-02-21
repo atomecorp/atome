@@ -23,7 +23,7 @@ class Atome
     @collect = {}
     @int8= {}
     @css = {}
-    @aid =  identity_generator(:a).to_sym
+    @aid =  identity_generator(:a)
     Universe.add_to_atomes( @aid, self)
     @id = new_atome[:id] || @aid
     Universe.id_to_aid(@id,@aid)
