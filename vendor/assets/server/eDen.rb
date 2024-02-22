@@ -3,6 +3,9 @@
 # server utils to handle eDen Db
 
 class EDen
+
+  @@mail = nil
+  @@pass = nil
   class << self
     def db_access
       Database.db_access

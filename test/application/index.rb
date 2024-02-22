@@ -75,7 +75,7 @@
 # require "./examples/drag"
 # require "./examples/over"
 # require "./examples/play"
-require "./examples/animation"
+# require "./examples/animation"
 # require "./examples/resize"
 # require "./examples/drop"
 # require "./examples/file"

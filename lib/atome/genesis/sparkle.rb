@@ -154,22 +154,27 @@ def init_database # this method is call from JS (atome/communication)
 
   particles = Universe.particle_list
   categories = Universe.categories
+  # here we populate the DB
   categories.each do |category|
     A.message({ action: :crate_db_table, data: { table: category } }) do |db_state|
-      puts db_state
+      # puts db_state
     end
   end
   particles_length=particles.length
   particles.each_with_index do  |(particle, infos), index|
     type = infos[:type]
     table = infos[:category]
-    @i=1
-    A.message({ action: :create_db_column, data: { table: table, column: particle, type: type } }) do |db_state|
-      @i+=1
-      if @i==particles_length
-        user_login
+    if  type && table
+      @i=1
+      A.message({ action: :create_db_column, data: { table: table, column: particle, type: type } }) do |db_state|
+        @i+=1
+        if @i==particles_length
+          user_login
+        end
+        # puts db_state
       end
-      puts db_state
+    else
+      puts "*** Warning feed type and category to #{particle}"
     end
 
   end
