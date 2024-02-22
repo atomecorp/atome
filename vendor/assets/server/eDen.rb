@@ -7,6 +7,10 @@ class EDen
   @@mail = nil
   @@pass = nil
   class << self
+
+    @@mail = nil
+    @@pass = nil
+
     def db_access
       Database.db_access
     end
