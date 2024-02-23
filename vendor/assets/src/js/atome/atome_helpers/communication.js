@@ -123,6 +123,6 @@ const communication = {
 
 
 function controller_message(msg) {
-    // message receiver from controller (Vie)
-    console.log(msg)
+    let json_msg = JSON.parse(msg);
+    console.log(json_msg);
 }
