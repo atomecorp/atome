@@ -81,7 +81,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sequel', '~> 5.5'
   spec.add_runtime_dependency 'sqlite3', '~> 1.4'
   spec.add_runtime_dependency 'uglifier', '~> 0.1'
-  spec.add_runtime_dependency 'eVe', '~> 0.1.0.0.9'
+  spec.add_runtime_dependency 'atome_eVe', '~> 0.1.0.0.0'
   # spec.add_runtime_dependency 'webrick', '~> 1.7.0'
   # the gem below are need to make the atome server works on Windows
   spec.add_runtime_dependency 'tzinfo-data', '~> 1.2023.4'

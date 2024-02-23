@@ -36,7 +36,3 @@ require 'renderers/server/index'
 require 'atome/helpers/sanitizer'
 require 'atome/genesis/sparkle'
 require 'eVe/lib/eVe'
-# require 'eVe'
-# gem_spec = Gem::Specification.find_by_name(gem_name)
-# gem_path = gem_spec.gem_dir
-# puts "Le chemin vers la gemme '#{gem_name}' est '#{gem_path}'"

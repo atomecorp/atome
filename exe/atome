@@ -185,7 +185,7 @@ def create_application(source, destination, project_name)
   end
   build_aui(destination, project_name)
   # now lets add eVe now
-  gem_spec = Gem::Specification.find_by_name('eVe')
+  gem_spec = Gem::Specification.find_by_name('atome_eVe')
   gem_path = gem_spec.gem_dir
   FileUtils.cp_r(Dir["#{gem_path}/*"], source+"/lib/eVe/")
 

@@ -34,9 +34,4 @@ require_relative './renderers/headless/index_relative'
 require_relative './renderers/server/index_relative'
 require_relative './atome/helpers/sanitizer'
 require_relative './atome/genesis/sparkle'
-require_relative './eVe/lib/eVe_relative'
-
-# require 'eVe'
-# gem_spec = Gem::Specification.find_by_name(gem_name)
-# gem_path = gem_spec.gem_dir
-# puts "Le chemin vers la gemme '#{gem_name}' est '#{gem_path}'"
+require_relative './eVe/lib/eVe'
