@@ -27,17 +27,24 @@ Gem::Specification.new do |spec|
   #     (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
   #   end
   # end
+  # spec.files = Dir.chdir(File.expand_path(__dir__)) do
+  #   # Utilisez git ls-files pour récupérer les fichiers, puis filtrez-les selon vos besoins
+  #   git_files = `git ls-files -z`.split("\x0").reject do |f|
+  #     (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
+  #   end
+  #
+  #   # Ajoutez manuellement les fichiers du dossier lib/eVe
+  #   eve_files = Dir['lib/eVe/**/*']
+  #
+  #   # Combine les deux listes de fichiers
+  #   git_files + eve_files
+  # end
+
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     # Utilisez git ls-files pour récupérer les fichiers, puis filtrez-les selon vos besoins
-    git_files = `git ls-files -z`.split("\x0").reject do |f|
+    `git ls-files -z`.split("\x0").reject do |f|
       (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
     end
-
-    # Ajoutez manuellement les fichiers du dossier lib/eVe
-    eve_files = Dir['lib/eVe/**/*']
-
-    # Combine les deux listes de fichiers
-    git_files + eve_files
   end
 
   spec.bindir = 'exe'
@@ -74,6 +81,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sequel', '~> 5.5'
   spec.add_runtime_dependency 'sqlite3', '~> 1.4'
   spec.add_runtime_dependency 'uglifier', '~> 0.1'
+  spec.add_runtime_dependency 'eVe', '~> 0.1.0.0.9'
   # spec.add_runtime_dependency 'webrick', '~> 1.7.0'
   # the gem below are need to make the atome server works on Windows
   spec.add_runtime_dependency 'tzinfo-data', '~> 1.2023.4'

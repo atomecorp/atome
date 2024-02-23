@@ -8,8 +8,6 @@ require 'rubygems/uninstaller'
 require 'bundler/gem_tasks'
 load 'exe/atome'
 
-
-
 folder_name = 'lib/eVe'
 
 unless Dir.exist?(folder_name)

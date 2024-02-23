@@ -12,7 +12,7 @@ class Universe
   @specificities = {}
   @messages = {}
 
-  @categories = %w[ communication effect event geometry hierarchy identity material
+  @categories = %w[atome communication effect event geometry hierarchy identity material
                   property security spatial time utility ]
   @history = {}
   @users = {}

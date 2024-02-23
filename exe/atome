@@ -156,6 +156,7 @@ def add_to_application_folder(script_source, destination, project_name)
 end
 
 def build_opal_library(atome_source, destination, project_name, production = nil)
+
   user_project_path = "#{destination}/#{project_name}"
   opal_directory = "#{user_project_path}/src/js/opal"
   opal_js = "#{opal_directory}/opal.js"
@@ -183,6 +184,11 @@ def create_application(source, destination, project_name)
     FileUtils.cp_r("#{source}/vendor/assets/#{file}", "#{destination}/#{project_name}/#{file}")
   end
   build_aui(destination, project_name)
+  # now lets add eVe now
+  gem_spec = Gem::Specification.find_by_name('eVe')
+  gem_path = gem_spec.gem_dir
+  FileUtils.cp_r(Dir["#{gem_path}/*"], source+"/lib/eVe/")
+
 end
 
 def update_application(source, destination, project_name)
@@ -591,6 +597,7 @@ destination = current_path.parent.to_s
 if ARGV.include?('run')
   case ARGV[1]
   when 'opal'
+
     guard_content = <<STR
 guard 'rake', first_match: true, :task => 'build_opal' do
   watch(%r{^server.+\.rb})
