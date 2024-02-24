@@ -68,7 +68,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'image_size', '~> 3.0'
   spec.add_runtime_dependency 'mail', '~> 2.1'
   spec.add_runtime_dependency 'net-ping', '~> 2.0'
-  spec.add_runtime_dependency 'opal', '~> 1.5'
+  spec.add_runtime_dependency 'opal', '>= 1.5'
   spec.add_runtime_dependency 'parser', '~> 3.1'
   spec.add_runtime_dependency 'puma', '~> 6.0'
   spec.add_runtime_dependency 'rack', '~> 2.2'
@@ -81,7 +81,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sequel', '~> 5.5'
   spec.add_runtime_dependency 'sqlite3', '~> 1.4'
   spec.add_runtime_dependency 'uglifier', '~> 0.1'
-  spec.add_runtime_dependency 'atome_eVe', '~> 0.1.0.0.0'
+  spec.add_runtime_dependency 'atome_eVe', '>= 0.1.0.0.7'
   # spec.add_runtime_dependency 'webrick', '~> 1.7.0'
   # the gem below are need to make the atome server works on Windows
   spec.add_runtime_dependency 'tzinfo-data', '~> 1.2023.4'

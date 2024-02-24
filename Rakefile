@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+
+
 require 'fileutils'
 require 'securerandom'
 require 'digest/sha2'
@@ -9,6 +11,14 @@ require 'bundler/gem_tasks'
 load 'exe/atome'
 
 folder_name = 'lib/eVe'
+
+# allow or deny eVe gem content to be copied to local eVe or not
+refresh_eVe=true
+
+# if refresh_eVe
+# # doesn't work
+#   `bundle update`
+# end
 
 unless Dir.exist?(folder_name)
   Dir.mkdir(folder_name)
@@ -77,8 +87,8 @@ def generate_resolved_file(source_file_path)
   resolve_requires(source_file_path, root_path)
 end
 
-def wasm_params(source, destination, project_name, wasi_file, host_mode, script_source)
-  create_application(source, destination, project_name)
+def wasm_params(source, destination, project_name, wasi_file, host_mode, script_source, refresh_eVe)
+  create_application(source, destination, project_name, refresh_eVe)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
 end
 
@@ -104,19 +114,19 @@ task :test_wasm do
     destination = './tmp'
     script_source = './test/application'
 
-    wasm_params(source, destination, project_name, wasi_file, host_mode, script_source)
+    wasm_params(source, destination, project_name, wasi_file, host_mode, script_source,refresh_eVe)
     system "open", file_path
   when /linux|bsd/
     destination = './tmp'
     script_source = './test/application'
     wasi_file = 'wasi-vfs-unix pack tmp'
-    wasm_params(source, destination, project_name, wasi_file, host_mode, script_source)
+    wasm_params(source, destination, project_name, wasi_file, host_mode, script_source,refresh_eVe)
     system "xdg-open", file_path
   when /mswin|mingw|cygwin/
     destination = '.\\tmp'
     script_source = '.\\test\\application'
     wasi_file = 'wasi-vfs.exe pack'
-    wasm_params(source, destination, project_name, wasi_file, host_mode, script_source)
+    wasm_params(source, destination, project_name, wasi_file, host_mode, script_source,refresh_eVe)
     system "start", file_path
   else
     raise "Système d'exploitation non reconnu"
@@ -130,7 +140,7 @@ task :test_opal do
   source = '.'
   destination = './tmp'
   script_source = './test/application'
-  create_application(source, destination, project_name)
+  create_application(source, destination, project_name, refresh_eVe)
   # the line below is to add addition script to the application folder (useful for test per example)
   add_to_application_folder(script_source, destination, project_name)
   # build opal
@@ -166,7 +176,7 @@ task :test_server_wasm do
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
   host_mode = 'pure_wasm'
-  create_application(source, destination, project_name)
+  create_application(source, destination, project_name, refresh_eVe)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   puts 'atome wasm is build and running!'
   build_for_wasm_server(destination, project_name, 9292, :production)
@@ -177,7 +187,7 @@ task :test_server do
   source = '.'
   destination = './tmp'
   script_source = './test/application'
-  create_application(source, destination, project_name)
+  create_application(source, destination, project_name, refresh_eVe)
   # the line below is to add addition script to the application folder (useful for test per example)
   add_to_application_folder(script_source, destination, project_name)
   # build opal
@@ -220,7 +230,7 @@ task :opal_server_rebuild do
   source = '.'
   destination = './tmp'
   script_source = './test/application'
-  create_application(source, destination, project_name)
+  create_application(source, destination, project_name, refresh_eVe)
   # the line below is to add addition script to the application folder (useful for test per example)
   add_to_application_folder(script_source, destination, project_name)
   # build opal
@@ -265,7 +275,7 @@ task :test_osx do
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
   host_mode = 'tauri'
-  create_application(source, destination, project_name)
+  create_application(source, destination, project_name, refresh_eVe)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
   # build and open the app
@@ -280,7 +290,7 @@ task :build_osx do
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
   host_mode = 'tauri'
-  create_application(source, destination, project_name)
+  create_application(source, destination, project_name, refresh_eVe)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
   # build and open the app
@@ -306,7 +316,7 @@ task :osx_server do
   source = '.'
   destination = './tmp'
   script_source = './test/application'
-  create_application(source, destination, project_name)
+  create_application(source, destination, project_name, refresh_eVe)
   # the line below is to add addition script to the application folder (useful for test per example)
   add_to_application_folder(script_source, destination, project_name)
   # build opal
@@ -329,7 +339,7 @@ task :osx_server do
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
   host_mode = 'tauri'
-  create_application(source, destination, project_name)
+  create_application(source, destination, project_name, refresh_eVe)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
   threads = []
@@ -425,7 +435,7 @@ task :full_test do
   source = '.'
   destination = './tmp'
   script_source = './test/application'
-  create_application(source, destination, project_name)
+  create_application(source, destination, project_name, refresh_eVe)
   # the line below is to add addition script to the application folder (useful for test per example)
   add_to_application_folder(script_source, destination, project_name)
   # build opal
