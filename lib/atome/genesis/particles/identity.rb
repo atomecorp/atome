@@ -2,7 +2,7 @@
 
 new({ particle: :real, category: :identity, type: :string })
 new({ particle: :type, category: :identity, type: :string })
-new({ particle: :id, category: :identity, type: :int })
+new({ particle: :id, category: :identity, type: :string })
 new({ sanitizer: :id }) do |params|
   # first we sanitize the the id below
 
@@ -12,6 +12,7 @@ new({ sanitizer: :id }) do |params|
     # we reassign the old id
     puts "the id : #{params} is already used"
     params = @id
+    # return false
   else
     if @id.to_sym != params
       Universe.update_atome_id(params, self, @id)

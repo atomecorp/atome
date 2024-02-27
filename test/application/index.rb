@@ -11,7 +11,6 @@
 # require "./web2"
 # alert Universe.eVe
 
-require "./examples/on_the_fly_ruby_code_loading"
 # in progress
 # require "./examples/find"
 # require "./examples/test"
@@ -31,7 +30,10 @@ require "./examples/on_the_fly_ruby_code_loading"
 # require './test'
 # require './examples/test'
 #### works
+# require "./examples/table"
+require "./examples/border"
 # require "./examples/clones&monitoring"
+# require "./examples/on_the_fly_ruby_code_loading"
 # require './examples/css'
 # require "./examples/help"
 # require "./examples/example"
@@ -39,7 +41,6 @@ require "./examples/on_the_fly_ruby_code_loading"
 # require "./examples/int8"
 # require "./examples/center"
 # require "./examples/atomizer"
-# require "./examples/table"
 # require "./examples/size"
 # require "./examples/fit"
 # require "./examples/infos"
@@ -249,10 +250,3 @@ require "./examples/on_the_fly_ruby_code_loading"
 #     puts msg
 #   end
 # end
-
-# require 'securerandom'
-
-# ◊
-
-
-

@@ -8,6 +8,7 @@
 # additional Atome methods
 class Atome
   def atome_common(atome_preset, params)
+
     basic_params = { renderers: [] }
     # TODO : remove Essentials.default_params[atome_preset] || {} as it is
     # applied twice because preset is now a particle
@@ -15,12 +16,13 @@ class Atome
 
     basic_params[:type] = preset_params[:type] || :element
     # basic_params[:aid] =  identity_generator(:a)
-    basic_params[:id] = params[:id] || identity_generator(atome_preset)
+    basic_params[:id] = params[:id]|| identity_generator(atome_preset)
     basic_params[:renderers] = @renderers || preset_params[:renderers]
     essential_params = basic_params.merge(preset_params)
+    #
     reordered_params = essential_params.reject { |key, _| params.has_key?(key) }
     params = reordered_params.merge(params)
-
+    params[:id]=params[:id].to_sym
     # condition to handle color/shadow/paint atomes that shouldn't be attach to view
     # TODO : add category for atome( material/physical vs modifier : color, shadow, .. vs shape, image ..)
     # then add condition same things fo code in genesis new_atome

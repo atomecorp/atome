@@ -123,6 +123,6 @@ const communication = {
 
 
 function controller_message(msg) {
-    let json_msg = JSON.parse(msg);
-    console.log(json_msg);
+    // let json_msgs = JSON.parse(msg);
+    rubyVMCallback("A.receptor("+msg+")")
 }
