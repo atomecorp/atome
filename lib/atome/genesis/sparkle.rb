@@ -156,7 +156,7 @@ def init_database # this method is call from JS (atome/communication)
 
   particles = Universe.particle_list
   # now we populate the DB
-  A.message({ action: :crate_db_table, data: { table: :authentication } }) do |_db_state|
+  A.message({ action: :crate_db_table, data: { table: :user } }) do |_db_state|
   end
 
   A.message({ action: :create_db_column, data: { table: :user, column: :email, type: :string } }) do |_db_state|
