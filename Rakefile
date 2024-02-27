@@ -10,23 +10,23 @@ require 'rubygems/uninstaller'
 require 'bundler/gem_tasks'
 load 'exe/atome'
 
-folder_name = 'lib/eVe'
-
-# allow or deny eVe gem content to be copied to local eVe or not
+# folder_name = 'lib/eVe'
+#
+# # allow or deny eVe gem content to be copied to local eVe or not
 refresh_eVe=true
-
-# if refresh_eVe
-# # doesn't work
-#   `bundle update`
+#
+# # if refresh_eVe
+# # # doesn't work
+# #   `bundle update`
+# # end
+#
+# unless Dir.exist?(folder_name)
+#   Dir.mkdir(folder_name)
+#     File.open('lib/eVe/eVe_relative.rb', 'w') do |file|
+#     end
+#     File.open('lib/eVe/eVe.rb', 'w') do |file|
+#     end
 # end
-
-unless Dir.exist?(folder_name)
-  Dir.mkdir(folder_name)
-    File.open('lib/eVe/eVe_relative.rb', 'w') do |file|
-    end
-    File.open('lib/eVe/eVe.rb', 'w') do |file|
-    end
-end
 
 
 task :cleanup do
@@ -179,6 +179,24 @@ task :test_server_wasm do
   create_application(source, destination, project_name, refresh_eVe)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   puts 'atome wasm is build and running!'
+  threads = []
+  threads << Thread.new do
+
+    sleep 1
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+      # code to exec for Windows
+      `start  http://localhost:9292`
+      # `start #{destination}\\#{project_name}\\src\\index_server.html`
+
+    elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+      # code to exec for MacOS
+      `open http://localhost:9292`
+    else
+      # code to exec for Unix/Linux
+      `open http://localhost:9292`
+    end
+
+  end
   build_for_wasm_server(destination, project_name, 9292, :production)
 
 end

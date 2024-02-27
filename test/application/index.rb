@@ -11,6 +11,7 @@
 # require "./web2"
 # alert Universe.eVe
 
+require "./examples/on_the_fly_ruby_code_loading"
 # in progress
 # require "./examples/find"
 # require "./examples/test"
@@ -240,3 +241,12 @@
 #   el_found=grab(el)
 #   el_found.rotate(22).text(:hello).color(:red)
 # end
+
+
+wait 1 do
+  A.message({action: :insert, data: {table: :atome, particle: :width, data: 888}}) do |msg|
+
+    puts msg
+  end
+end
+

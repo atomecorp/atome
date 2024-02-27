@@ -15,6 +15,7 @@ require 'roda'
 require 'rufus-scheduler'
 require 'securerandom'
 require 'sequel'
+
 require './eDen'
 require './database'
 require './extensions'
@@ -24,7 +25,7 @@ Faye::WebSocket.load_adapter('puma')
 class App < Roda
   index_content = File.read("../src/index_server.html")
   opts[:root] = '../src'
-  plugin :static, %w[/css /js /medias], root: '../src'
+  plugin :static, %w[/css /js /medias /wasm], root: '../src'
   route do |r|
     r.root do
       if Faye::WebSocket.websocket?(r.env)

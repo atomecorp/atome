@@ -45,7 +45,7 @@ Bundle update
 
  Ruby wasm time allow local use of ruby wasm :
  1 - download :
- https://cdn.jsdelivr.net/npm/@ruby/3.2-wasm-wasi@2.3.0/dist/browser.script.iife.js
+ https://cdn.jsdelivr.net/npm/@ruby/3.2-wasm-wasi@2.3.0/dist/browser.script.iife2.js
 2 - change
 
 

@@ -59,7 +59,7 @@ async function changeCurrentDirectory(atome_id, newPath) {
     } catch (error) {
         result = error;
     }
-    alert('result is : '+ result);
+    alert('result is : ' + result);
 }
 
 
@@ -218,3 +218,80 @@ function fileForOpal(parent, bloc) {
     })
 
 }
+
+
+// function loadFeature() {
+//     var script = document.createElement('script');
+//     script.src = 'js/molecules/web.js?' + new Date().getTime();
+//     // script.onload = function () {
+//     //     // Code to use loaded features
+//     // };
+//    // puts to solve native (osx) compatiblity use fetch
+//
+//     document.head.appendChild(script);
+// }
+
+// function loadFeature() {
+//     fetch('js/molecules/web.js')
+//         .then(response => {
+//             if (response.ok) {
+//                 return response.text();
+//             }
+//             throw new Error('Le chargement du fichier a échoué');
+//         })
+//         .then(data => {
+//             console.log(data); // Log le contenu du fichier web.js
+//             // Vous pouvez ici utiliser le contenu du fichier comme nécessaire
+//         })
+//         .catch(error => {
+//             console.error('Erreur lors du chargement du fichier:', error);
+//         });
+// }
+
+
+function loadFeature() {
+    if (NativeMode) {
+        // fetch('js/molecules/web.js')
+        //     .then(response => {
+        //         if (response.ok) {
+        //             return response.text();
+        //         }
+        //         throw new Error('Le chargement du fichier a échoué');
+        //     })
+        //     .then(data => {
+        //         // console.log(data);
+        //         eval(data);
+        //         // you can use file content as you want
+        //     })
+        //     .catch(error => {
+        //         console.error('Erreur lors du chargement du fichier:', error);
+        //     });
+        fetch('js/molecules/web.js')
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('load fail');
+            })
+            .then(data => {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.text = data;
+                document.head.appendChild(script);
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement du fichier:', error);
+            });
+
+    } else {
+        var script = document.createElement('script');
+        script.src = 'js/molecules/web.js?' + new Date().getTime();
+        // script.onload = function () {
+        //     // Code to use loaded features
+        // };
+
+        document.head.appendChild(script);
+    }
+}
+
+

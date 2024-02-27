@@ -116,7 +116,7 @@ def atome_infos
 end
 
 # help and example below :
-#
+
 A.example(:left) do
   english = 'here is an example, touch me to get some help, or click the code to exec'
   french = "voici un example, click moi pour de l'aide, ou  clicker le code pour l'executer"
@@ -148,35 +148,40 @@ end
 
 def init_database # this method is call from JS (atome/communication)
   # we init the db file eDen
-  A.message({ action: :init_db, data: { database: :eDen } }) do |db_state|
-    puts db_state
+  A.message({ action: :init_db, data: { database: :eDen } }) do |_db_state|
   end
+  # authentication : email, pass
+  # atome : date, particles
+  # history : aid, particle, value, date
 
   particles = Universe.particle_list
-  categories = Universe.categories
-  # here we populate the DB
-  categories.each do |category|
-    A.message({ action: :crate_db_table, data: { table: category } }) do |db_state|
-      # puts db_state
-    end
+  # now we populate the DB
+  A.message({ action: :crate_db_table, data: { table: :authentication } }) do |_db_state|
   end
-  particles_length=particles.length
-  particles.each_with_index do  |(particle, infos), index|
-    type = infos[:type]
-    table = infos[:category]
-    if  type && table
-      @i=1
-      A.message({ action: :create_db_column, data: { table: table, column: particle, type: type } }) do |db_state|
-        @i+=1
-        if @i==particles_length
-          user_login
-        end
-        # puts db_state
-      end
-    else
-      puts "*** Warning feed type and category to #{particle}"
-    end
 
+  A.message({ action: :create_db_column, data: { table: :user, column: :email, type: :string } }) do |_db_state|
+  end
+
+  A.message({ action: :create_db_column, data: { table: :user, column: :password, type: :string } }) do |_db_state|
+  end
+
+  A.message({ action: :crate_db_table, data: { table: :history } }) do |_db_state|
+  end
+  A.message({ action: :create_db_column, data: { table: :history, column: :aid, type: :string } }) do |_db_state|
+  end
+  A.message({ action: :create_db_column, data: { table: :history, column: :particle, type: :string } }) do |_db_state|
+  end
+  A.message({ action: :create_db_column, data: { table: :history, column: :value, type: :string } }) do |_db_state|
+  end
+  A.message({ action: :create_db_column, data: { table: :history, column: :date, type: :datetime } }) do |_db_state|
+  end
+
+  A.message({ action: :crate_db_table, data: { table: :atome } }) do |_db_state|
+  end
+  particles.each do |particle, infos|
+    type = infos[:type]
+    A.message({ action: :create_db_column, data: { table: :atome, column: particle, type: type } }) do |_db_state|
+    end
   end
 
 end

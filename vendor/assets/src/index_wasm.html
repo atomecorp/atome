@@ -20,17 +20,17 @@
     <script type="text/javascript" src="js/third_parties/papaparse.min.js" defer></script>
     <script defer src="js/atome/atome_helpers/communication.js" type="text/javascript"></script>
     <script defer src="js/atome/atome_helpers/file.js" type="text/javascript"></script>
-<!--    <script>-->
-<!--        // to prevent right click-->
-<!--        document.addEventListener("contextmenu", function (e) {-->
-<!--            e.preventDefault();-->
-<!--        });-->
-<!--    </script>-->
+    <!--    <script>-->
+    <!--        // to prevent right click-->
+    <!--        document.addEventListener("contextmenu", function (e) {-->
+    <!--            e.preventDefault();-->
+    <!--        });-->
+    <!--    </script>-->
     <title>atome</title>
 </head>
 <body id='user_view' class='atome'>
 
-<div id='copyright'>©atome 2023</div>
+<div id='copyright'>©atome 2024</div>
 </body>
 <script type="text/ruby">
     require 'js'
@@ -38,15 +38,12 @@
     require '/utilities/aui'
     require '/utilities/host_mode'
     require '/lib/atome_relative'
-    # if Universe.eVe
-    #   require './index'
-    #else
-    #  require './index'
-   # end
-      require './index'
-    #puts Universe.host
+    require './index'
     atome_infos
 </script>
 <script defer src="js/atome/specific/wasm.js" type="text/javascript"></script>
+<script type="text/javascript">
+    const NativeMode = false; // used by atome.js to load code on the fly
+</script>
 <script defer src="js/atome/atome.js" type="text/javascript"></script>
 </html>

@@ -40,7 +40,7 @@ class Database
             end
           end.apply(eden, :up)
         rescue Sequel::DatabaseError => e
-          puts "Erreur lors de l'ajout de la colonne : #{e.message}"
+          puts "error adding column  : #{e.message}"
         end
       end
     end

@@ -185,14 +185,15 @@ def create_application(source, destination, project_name, eVe_copy=true)
   end
   build_aui(destination, project_name)
   # now lets add eVe now
-  if eVe_copy
-    # we update eVe first
-    gem_spec = Gem::Specification.find_by_name('atome_eVe')
-    gem_path = gem_spec.gem_dir
-    puts "eve location : #{gem_path}"
-    FileUtils.cp_r(Dir["#{gem_path}/*"], source+"/lib/eVe/")
-  end
-
+  # if eVe_copy
+  #   # we update eVe first
+  #   gem_spec = Gem::Specification.find_by_name('atome_eVe')
+  #   gem_path = gem_spec.gem_dir
+  #   puts "eve location : #{gem_path}"
+  #   FileUtils.cp_r(Dir["#{gem_path}/*"], source+"/lib/eVe/")
+  # end
+  # build eVe kernel
+  # build_eVe_kernel_for_opal(source, destination, project_name)
 end
 
 def update_application(source, destination, project_name)
@@ -234,6 +235,34 @@ def build_atome_kernel_for_opal(source, destination, project_name)
     f.puts kernel_content
   end
 end
+
+# def build_eVe_kernel_for_opal(source, destination, project_name)
+#
+#   gem_name = 'atome_eVe'
+#   # begin
+#     Gem::Specification.find_by_name(gem_name)
+#     # puts " gem 'eve' est installée."
+#     gem_spec = Gem::Specification.find_by_name(gem_name)
+#     gem_path = gem_spec.gem_dir
+#     # puts "Le chemin vers la gem '#{gem_name}' est '#{gem_path}'"
+#   # puts '-----'
+#   # puts "==> #{gem_path}/lib/eVe.rb"
+#   # rescue Gem::LoadError
+#   #   # Code à exécuter si la gemme 'eve' n'est pas installée
+#   #   puts "La gem '#{gem_name}' n'est pas installée."
+#   # end
+#   #  now lets build the atome kernel
+#   atome_directory = "#{destination}/#{project_name}/src/js/atome"
+#   kernel_js = "#{atome_directory}/eVe_kernel.js"
+#   FileUtils.mkdir_p(atome_directory)
+#   File.new kernel_js, 'w'
+#   builder = Opal::Builder.new
+#   builder.append_paths("#{source}/lib/")
+#   kernel_content = builder.build("#{gem_path}/lib/eVe.rb").to_s
+#   File.open(kernel_js, 'w') do |f|
+#     f.puts kernel_content
+#   end
+# end
 
 def build_opal_extensions(source, destination, project_name)
   opal_directory = "#{destination}/#{project_name}/src/js/opal"
@@ -436,21 +465,20 @@ STR
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
       f.write(ru_file)
     end
-    puts 'w-a'
+    # puts 'w-a'
 
     `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
-    puts 'w-b'
+    # puts 'w-b'
 
   else
-    puts 'e'
+    # puts 'e'
     # code to exec with Unix/Linux
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
       f.write(ru_file)
     end
     `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
   end
-  puts 'f'
-
+  # puts 'f'
 end
 
 # utils
@@ -545,7 +573,7 @@ if ARGV.include?('update')
   if Dir.exist?("#{destination}/application") && !Dir.exist?("#{destination}/vendor")
     # first we delete everything but application
 
-    files_to_treat = %w[server src-tauri src-wasm Guardfile Rakefile src/css src/js/atome src/js/third_parties src/medias
+    files_to_treat = %w[server src-tauri src-wasm Guardfile Rakefile src/css src/js/atome src/js/molecules src/js/third_parties src/medias
 src/favicon.ico src/index_wasm.html src/index_opal.html src/index_server.html src/index_server_wasm.html]
     files_to_treat.each do |item|
       item_path = File.join(destination, item)
