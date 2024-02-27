@@ -123,10 +123,15 @@ class Universe
       end
       collected_id
     end
-
+    def generate_uuid
+      uuid = SecureRandom.uuid.gsub('-','')
+      formatted_time = Time.now.strftime("%Y%m%d%H%M%S")
+      "#{uuid}#{formatted_time}"
+    end
     def app_identity
-      # each app hav its own identity, this allow to generate new user identities from th
-      @app_identity = 369
+      # each app hav its own identity, this allow to generate new user identities from the
+      # unique_id = generate_unique_id_with_timestamp
+      @app_identity = generate_uuid
       # the identity is define as follow : parentsCreatorID_softwareInstanceID_objetID
       # in this case parents is eve so 0, Software instance number is main eVe server which is also 0,
       # and finally the object is 3 as this the third object created by the main server

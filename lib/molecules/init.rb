@@ -38,7 +38,7 @@ module Molecule
   end
 
   # tests
-  new({application: :compose, header: true, footer: true })
+  # new({application: :compose, header: true, footer: true })
   #
   # new(page: {name: :home, application: :compose, attach: :root })
   #
