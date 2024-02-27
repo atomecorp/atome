@@ -243,10 +243,16 @@ require "./examples/test"
 # end
 
 
-wait 1 do
-  A.message({action: :insert, data: {table: :atome, particle: :width, data: 888}}) do |msg|
+# wait 1 do
+#   A.message({action: :insert, data: {table: :atome, particle: :width, data: 888}}) do |msg|
+#
+#     puts msg
+#   end
+# end
 
-    puts msg
-  end
-end
+# require 'securerandom'
+
+# ◊
+
+
 

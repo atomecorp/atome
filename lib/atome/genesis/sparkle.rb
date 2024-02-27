@@ -103,8 +103,8 @@ Atome.new({ renderers: [:html], id: :selector, collect: [], type: :group, tag: {
 # atome infos
 def atome_infos
   puts "atome version: #{Atome::VERSION}"
-  puts "device identity: #{Universe.app_identity}"
-  puts "application identity: #{Atome::aui}"
+  puts "device identity: #{Atome::aui}"
+  puts "application identity: #{Universe.app_identity}"
   puts "host framework: #{Atome::host}"
   puts "engine: #{Universe.engine}"
   puts "users: #{Universe.users}"
