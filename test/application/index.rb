@@ -13,7 +13,7 @@
 
 # in progress
 # require "./examples/find"
-# require "./examples/test"
+require "./examples/test"
 # require "./examples/smooth"
 # require "./examples/categories"
 # require "./examples/atome_particle_validation"
