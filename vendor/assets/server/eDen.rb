@@ -107,20 +107,30 @@ class EDen
 
     def insert(data, message_id)
       table = data['table'].to_sym
-      particle = data['particle'].to_sym
-      data = data['data']
+      particles = data['particles']
+
       if db_access.table_exists?(table)
         schema = db_access.schema(table)
-        if schema.any? { |col_def| col_def.first == particle }
-          identity_table = db_access[table.to_sym]
-          identity_table.insert(particle => data)
-          { data: { message: "column : #{particle}, in table : #{table}, updated with : #{data}" }, message_id: message_id }
+        insert_data = {}
+
+        particles.each do |particle, value|
+          particle_sym = particle.to_sym
+          if schema.any? { |col_def| col_def.first == particle_sym }
+            insert_data[particle_sym] = value
+          else
+            return { data: { message: "column not found: #{particle}" }, message_id: message_id }
+          end
+        end
+
+        if insert_data.any?
+          identity_table = db_access[table]
+          identity_table.insert(insert_data)
+          { data: { message: "Data inserted in table: #{table}" }, message_id: message_id }
         else
-          { data: { message: "column not found: #{particle.class}" }, message_id: message_id }
+          { data: { message: "No valid columns provided" }, message_id: message_id }
         end
       else
-        { data: { message: "table not found: #{table.class}" }, message_id: message_id }
-
+        { data: { message: "table not found: #{table}" }, message_id: message_id }
       end
     end
 

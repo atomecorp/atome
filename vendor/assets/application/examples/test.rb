@@ -1,1 +1,2 @@
-# frozen_string_literal: true
+puts 'hello'
+puts Universe.particle_list
