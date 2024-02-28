@@ -1,5 +1,20 @@
 # frozen_string_literal: true
-new({ atome: :color, type: :hash })
+new({ atome: :color, type: :hash }) do |params|
+  # # TODO : hack must call it properly thru renderer
+  # if params[:affect]
+  #   params[:affect].each do |affected|
+  #     grab(affected).html.reset_background
+  #   end
+  # end
+
+end
+
+# new ({post: :color}) do |params|
+#   # # TODO : hack must call it properly thru renderer
+#   # params[:affect].each do |affected|
+#   #   grab(affected).html.reset_background
+#   # end
+# end
 new({ sanitizer: :color }) do |params|
   params = create_color_hash(params) unless params.instance_of? Hash
   # the condition below is to prevent the creation of multiple unwanted colors with same property and no ID specified

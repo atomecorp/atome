@@ -20,7 +20,8 @@ wait 0.5 do
           # circ.color(:blue)
           circ.paint({ gradient: [col_4.id, col_5.id], diffusion: :conic })
           wait 1 do
-            circ.paint({ gradient: [col_5.id, col_5.id], diffusion: :conic })
+            circ.color(:blue)
+            # circ.paint({ gradient: [col_5.id, col_5.id], diffusion: :conic })
           end
         end
       end

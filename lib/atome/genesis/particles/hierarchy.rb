@@ -51,6 +51,8 @@ end
 
 new({ particle: :apply, category: :hierarchy, type: :string, render: false, store: false }) do |parents_ids, &user_proc|
   # TODO: optimize the 2 lines below:
+  # html.reset_background
+  # alert :ok
   @apply ||= []
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   parents_ids.each do |parent_id|
@@ -81,8 +83,17 @@ end
 new({ particle: :affect, category: :hierarchy, type: :string, render: false }) do |children_ids, &user_proc|
   children_ids = [children_ids] unless children_ids.instance_of? Array
   children_ids.each do |child_id|
+    # params[:affect].each do |affected|
+    # end
+
     child_found = grab(child_id)
-    child_found&.apply([id], &user_proc)
+    # alert "must exist : #{child_found.id}"
+    # puts "correct condition below #{id}"
+    #FIXME : found why it crash when removing the conditon below
+    unless child_found.id == :black_matter
+      child_found.remove({all: :paint})
+    end
+      child_found&.apply([id], &user_proc)
   end
   children_ids
 end

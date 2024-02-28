@@ -1445,6 +1445,21 @@ class HTML
     end
   end
 
+  def reset_background
+    style(:background, 'black')
+  end
+
+  def remove(params)
+    #TODO: FIXME:  "html : must create a case here  #{params} (#{@original_atome.id})"
+
+    # puts @original_atome.color[0]
+
+    reset_background
+    # style(:background, '')
+    # style(:background, 'black')
+    # @original_atome.color(:red)
+    # @original_atome.apply(@original_atome.color[0])
+  end
   # atomisation!
   def atomized(html_object)
     html_object = html_object[0] if html_object.instance_of? Array
