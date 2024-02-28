@@ -2,6 +2,6 @@
 
 #  return atome version
 class Atome
-  VERSION = '0.5.6.3.7'
+  VERSION = '0.5.6.3.8'
 end
 

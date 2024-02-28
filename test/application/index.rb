@@ -13,7 +13,7 @@
 
 # in progress
 # require "./examples/find"
-require "./examples/test"
+# require "./examples/test"
 # require "./examples/smooth"
 # require "./examples/categories"
 # require "./examples/atome_particle_validation"
@@ -31,7 +31,7 @@ require "./examples/test"
 # require './examples/test'
 #### works
 # require "./examples/table"
-require "./examples/border"
+# require "./examples/border"
 # require "./examples/clones&monitoring"
 # require "./examples/on_the_fly_ruby_code_loading"
 # require './examples/css'
@@ -63,7 +63,7 @@ require "./examples/border"
 # require "./examples/affect"
 # require "./examples/apply"
 # require "./examples/paint"
-# require "./examples/gradient"
+require "./examples/gradient"
 # require "./examples/remove"
 # require "./examples/shadow"
 # require "./examples/raw_html"

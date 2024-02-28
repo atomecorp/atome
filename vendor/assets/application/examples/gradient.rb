@@ -17,8 +17,11 @@ wait 0.5 do
       wait 0.5 do
         painter = circ.paint({ id: :the_painter2, gradient: [col_1.id, col_2.id, col_3.id], direction: :left })
         wait 0.5 do
-          circ.color(:blue)
+          # circ.color(:blue)
           circ.paint({ gradient: [col_4.id, col_5.id], diffusion: :conic })
+          wait 1 do
+            circ.paint({ gradient: [col_5.id, col_5.id], diffusion: :conic })
+          end
         end
       end
     end

@@ -9,13 +9,14 @@ color({id: :toto, red: 1 , alpha: 0.5})
 wait 0.5 do
   c.paint({ gradient: [c1,c2], direction: :left })
   wait 0.5 do
-    c.paint({ gradient: [c1,c2, c3], direction: :left })
     wait 0.5 do
       c.paint({ gradient: [c1,c2], diffusion: :radial })
       wait 0.5 do
-        c.paint({ gradient: [c1,c2, c3], diffusion: :conic })
+        cc= c.paint({ gradient: [c1,c2, c3], diffusion: :conic })
         wait 0.5 do
+          # cc.delete(true)
           c.remove({all: :paint})
+          c.paint({ gradient: [c3, c3], diffusion: :conic })
         end
       end
     end

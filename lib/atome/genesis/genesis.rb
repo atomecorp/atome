@@ -150,8 +150,9 @@ class Genesis
               collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
             end
           end
-          group({ collect: collected_atomes })
-
+          puts "===> potential problem with group  here"
+          # group({ collect: collected_atomes })
+          collected_atomes
         end
       end
 

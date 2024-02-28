@@ -60,6 +60,7 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
     # we check if the params passed is an atome to treat it in a different way
     puts "write code here : #{apply} , #{attached}"
   else
+    # alert grab(params).delete(true)
     send(params, 0) unless params == :id
   end
 end
