@@ -31,7 +31,7 @@
 # require './examples/test'
 #### works
 # require "./examples/table"
-# require "./examples/border"
+require "./examples/border"
 # require "./examples/clones&monitoring"
 # require "./examples/on_the_fly_ruby_code_loading"
 # require './examples/css'
@@ -63,7 +63,7 @@
 # require "./examples/affect"
 # require "./examples/apply"
 # require "./examples/paint"
-require "./examples/gradient"
+# require "./examples/gradient"
 # require "./examples/remove"
 # require "./examples/shadow"
 # require "./examples/raw_html"

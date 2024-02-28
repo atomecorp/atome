@@ -45,7 +45,12 @@ class Atome
   def preset_common(params, &bloc)
     ## if an atome with current id exist we update the ID in the params
     # params[:id] = "#{params[:id]}_#{Universe.atomes.length}" if grab(params[:id])
+    # if Universe.atomes[params[:id]]
+    #   alert "atome found : #{ grab(params[:id])}"
+    #   grab(params[:id])
+    # else
     Atome.new(params, &bloc)
+    # end
   end
 
   def box(params = {}, &bloc)

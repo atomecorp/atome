@@ -36,4 +36,4 @@ the_text.left(333)
 
   the_text.paint({ gradient:  [col_1.id, col_2.id], direction: :left , id: :painted_love })
 
-# #TODO : gradient on text!
+

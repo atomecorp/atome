@@ -6,7 +6,7 @@ class Genesis
 
     def create_particle(element, store, render)
       Atome.define_method "set_#{element}" do |params, &user_proc|
-       particle_creation(element, params, store, render, &user_proc)
+        particle_creation(element, params, store, render, &user_proc)
       end
     end
 
@@ -72,8 +72,17 @@ class Genesis
     end
 
     def new_particle(element, store, render, &_method_proc)
+      # unless @id
+      #   alert self.id
+      # end
+
       Atome.define_method element do |params = nil, &user_proc|
+        # if @id
+        #   alert  "======> #{self.class}"
         @history[element] ||= []
+        # else
+        #   alert  "======> #{self.inspect}"
+        # end
         if (params || params == false) && write_auth(element)
           params = particle_sanitizer(element, params, &user_proc)
           # the line below execute the main code when creating a new particle
@@ -87,7 +96,7 @@ class Genesis
             end
           end
 
-          computed_params= send("set_#{element}", params, &user_proc) # sent to : create_particle / Atome.define_method "set_#{element}"
+          computed_params = send("set_#{element}", params, &user_proc) # sent to : create_particle / Atome.define_method "set_#{element}"
 
           # we historicize all write action below
           # we add the changes to the stack that must be synchronised
@@ -108,7 +117,9 @@ class Genesis
         else
           "send a valid password to read #{element} value"
         end
-
+        # else
+        #
+        #  end
       end
     end
 
@@ -162,7 +173,14 @@ class Genesis
         # Object.const_set(element, Module.new)
         # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
         # to the shape particles list : @!atome[:shape] << params[:id]
-        Atome.new(params, &user_proc)
+        # Atome.new(params, &user_proc)
+
+        if Universe.atomes[params[:id]]
+          # if atome id already exist we grab the previous one
+          grab(params[:id])
+        else
+          Atome.new(params, &user_proc)
+        end
         # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
       end
 
