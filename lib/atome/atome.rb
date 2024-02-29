@@ -34,7 +34,7 @@ class Atome
       @collect = {}
       @int8= {}
       @css = {}
-      @aid =  identity_generator(:a)
+      @aid =  identity_generator
       Universe.add_to_atomes( @aid, self)
       @id = new_atome[:id] || @aid
       Universe.id_to_aid(@id,@aid)

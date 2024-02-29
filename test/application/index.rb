@@ -30,10 +30,11 @@
 # require './test'
 # require './examples/test'
 #### works
+require "./examples/aid"
 # require "./examples/table"
 # require "./examples/remove"
 # require "./examples/delete"
-require "./examples/border"
+# require "./examples/border"
 # require "./examples/clones&monitoring"
 # require "./examples/on_the_fly_ruby_code_loading"
 # require './examples/css'

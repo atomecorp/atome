@@ -119,8 +119,9 @@ class Object
     grab(:view).delete(atomes)
   end
 
-  def identity_generator(type_needed = :element)
-    "#{type_needed}_#{Universe.counter}".to_sym
+  def identity_generator
+
+    "#{Universe.app_identity}_#{Universe.counter}".to_sym
   end
 
   def hook(a_id)

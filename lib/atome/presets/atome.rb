@@ -16,7 +16,7 @@ class Atome
 
     basic_params[:type] = preset_params[:type] || :element
     # basic_params[:aid] =  identity_generator(:a)
-    basic_params[:id] = params[:id]|| identity_generator(atome_preset)
+    basic_params[:id] = params[:id]|| identity_generator
     basic_params[:renderers] = @renderers || preset_params[:renderers]
     essential_params = basic_params.merge(preset_params)
     #
