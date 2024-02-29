@@ -152,14 +152,17 @@ class Genesis
           # then add condition same things fo code in presets/atome atome_common
           if %i[color shadow paint].include?(element)
             # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being attached
-            apply.each do |attached_atome|
+            @apply.each do |attached_atome|
               collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
             end
           else
             # collected_atomes = attached
-            attached.each do |attached_atome|
-              collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
-            end
+            # if @attached
+              attached.each do |attached_atome|
+                collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+              end
+            # end
+
           end
           # TODO/ FIXME : potential problem with group  here"
           # group({ collect: collected_atomes })

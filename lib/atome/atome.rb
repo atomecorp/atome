@@ -29,7 +29,8 @@ class Atome
       @tag = {}
       @selected = false
       #@metrics = {}
-      @unit = {}
+    @unit = {}
+      @apply = []
       @collect = {}
       @collect = {}
       @int8= {}

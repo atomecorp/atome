@@ -188,7 +188,6 @@ task :test_server_wasm do
       # code to exec for Windows
       `start  http://localhost:9292?date=#{timestamp}`
       # `start #{destination}\\#{project_name}\\src\\index_server.html`
-
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec for MacOS
       `open http://localhost:9292?date=#{timestamp}`
@@ -376,6 +375,10 @@ end
 
 def gem_builder
   # building the gem
+  dossier = './pkg'
+
+  # we cleanup pkg folder content
+  FileUtils.rm_rf(Dir.glob("#{dossier}/*"))
   `rake build` # run build_app thru ARGV in exe atome
   # installing  the gem
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/

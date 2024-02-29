@@ -30,7 +30,8 @@
 # require './test'
 # require './examples/test'
 #### works
-require "./examples/aid"
+require "./examples/matrix"
+# require "./examples/aid"
 # require "./examples/table"
 # require "./examples/remove"
 # require "./examples/delete"
