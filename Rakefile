@@ -183,17 +183,18 @@ task :test_server_wasm do
   threads << Thread.new do
 
     sleep 1
+    timestamp=Time.now.strftime("%Y%m%d%H%M%S")
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
-      `start  http://localhost:9292`
+      `start  http://localhost:9292.#{timestamp}`
       # `start #{destination}\\#{project_name}\\src\\index_server.html`
 
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec for MacOS
-      `open http://localhost:9292`
+      `open http://localhost:9292.#{timestamp}`
     else
       # code to exec for Unix/Linux
-      `open http://localhost:9292`
+      `open http://localhost:9292.#{timestamp}`
     end
 
   end
@@ -225,17 +226,19 @@ task :test_server do
   threads << Thread.new do
 
     sleep 1
+    timestamp=Time.now.strftime("%Y%m%d%H%M%S")
+
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
-       `start  http://localhost:9292`
+       `start  http://localhost:9292.#{timestamp}`
       # `start #{destination}\\#{project_name}\\src\\index_server.html`
 
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec for MacOS
-      `open http://localhost:9292`
+      `open http://localhost:9292.#{timestamp}`
     else
       # code to exec for Unix/Linux
-      `open http://localhost:9292`
+      `open http://localhost:9292.#{timestamp}`
     end
 
   end
@@ -268,17 +271,18 @@ task :opal_server_rebuild do
   threads << Thread.new do
 
     sleep 1
+    timestamp=Time.now.strftime("%Y%m%d%H%M%S")
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
-      `start  http://localhost:9292`
+      `start  http://localhost:9292.#{timestamp}`
       # `start #{destination}\\#{project_name}\\src\\index_server.html`
 
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec for MacOS
-      `open http://localhost:9292`
+      `open http://localhost:9292.#{timestamp}`
     else
       # code to exec for Unix/Linux
-      `open http://localhost:9292`
+      `open http://localhost:9292.#{timestamp}`
     end
 
   end
