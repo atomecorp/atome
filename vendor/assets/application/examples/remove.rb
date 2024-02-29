@@ -14,22 +14,34 @@ b.shadow({
            invert: false,
            red: 0, green: 0, blue: 0, alpha: 1
          })
+
+
 wait 1 do
   b.remove(:other_col)
   wait 1 do
     b.remove(:new_col)
     wait 1 do
       b.remove(:box_color)
+
       wait 1 do
         b.apply(:last_col)
         wait 1 do
           b.apply(:last_col2)
+          b.remove(:s1)
         end
       end
     end
   end
 end
 b.touch(true) do
+  b.shadow({
+             id: :s1,
+             # affect: [:the_circle],
+             left: 9, top: 3, blur: 9,
+             invert: false,
+             red: 0, green: 0, blue: 0, alpha: 1
+           })
+
   puts "before => #{b.apply}"
   b.remove({all: :color})
   puts "after => #{b.apply}"
@@ -40,6 +52,7 @@ b.touch(true) do
       b.remove(:the_gradient)
       wait 1 do
         b.remove(all: :shadow)
+        b.color(:cyan)
       end
     end
   end

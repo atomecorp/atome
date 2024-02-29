@@ -12,19 +12,35 @@ end
 new({ particle: :hide, category: :material, type: :boolean })
 
 new({ particle: :remove, category: :property, type: :hash }) do |params|
+  if  params.instance_of? Hash
+    if params[:row]
+      data.delete_at(params[:row])
 
-  if params[:row]
-    data.delete_at(params[:row])
-
-  elsif params[:column]
-    column = params[:column]
-    data.map do |hash|
-      hash.delete(hash.keys[column]) if hash.keys[column]
-      hash
+    elsif params[:column]
+      column = params[:column]
+      data.map do |hash|
+        hash.delete(hash.keys[column]) if hash.keys[column]
+        hash
+      end
+    # elsif params[:all]
+    #   apply.each do |applied_atome|
+    #     if  grab(applied_atome).type.to_sym ==  params[:all].to_sym
+    #       puts "!go"
+    #     end
+    #   end
+      # puts "so_good #{params}"
+      # puts "***> #{apply}"
     end
+    params
+  else
+
+    params
   end
-  params
+
+
 end
+# new({ particle: :remove, category: :property, type: :hash })
+
 
 new({ post: :remove }) do |params|
   # TODO : we have to rethink the removal of atome and particles (with exception like category) and maybe 'use particle type' to handle removal
@@ -38,13 +54,17 @@ new({ post: :remove }) do |params|
       paint.each do |atome_id_found|
         @apply.delete(atome_id_found)
       end
+    when :shadow
+      shadow.each do |atome_id_found|
+        @apply.delete(atome_id_found)
+      end
     else
       params.each do |particle, value|
         case particle
         when :category
           @category.delete(value) if particle == :category
         else
-          puts 'write code'
+          puts 'write code to remove atome applied'
         end
       end
 

@@ -2,6 +2,14 @@
 
 new({ atome: :color, type: :hash })
 
+# new({ post: :color }) do |params|
+#   puts "====> #{params}"
+#   params
+# end
+# new({ pre: :color}) do |params|
+#   alert "==> pre color params : #{params}"
+# end
+
 # new({ atome: :color, type: :hash })do |params|
 #   puts "1 #{params}______"
 #   params
@@ -14,7 +22,11 @@ new({ atome: :color, type: :hash })
 #   # end
 # end
 new({ sanitizer: :color }) do |params|
+  # alert "sanitizer color: #{params}"
   params = create_color_hash(params) unless params.instance_of? Hash
+  # if params[:id]
+  #   alert "id is #{params[:id]}"
+  # end
   # the condition below is to prevent the creation of multiple unwanted colors with same property and no ID specified
   unless params[:id]
     uniq_value = "#{params[:red].to_s.sub('.', '_')}_#{params[:green].to_s.sub('.', '_')}_#{params[:blue].to_s.sub('.', '_')}_#{params[:alpha].to_s.sub('.', '_')}_#{params[:left].to_s.sub('.', '_')}_#{params[:top].to_s.sub('.', '_')}_#{params[:diffusion].to_s.sub('.', '_')}"

@@ -177,7 +177,11 @@ class Genesis
 
         if Universe.atomes[params[:id]]
           # if atome id already exist we grab the previous one
-          grab(params[:id])
+          # this prevent the creation of new atome if the atome already exist
+          previous_atome= grab(params[:id])
+          # now we must re-affect affected atomes
+          previous_atome.affect(params[:affect])
+          previous_atome
         else
           Atome.new(params, &user_proc)
         end

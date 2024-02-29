@@ -210,8 +210,8 @@ class HTML
   end
 
   def connect(params, &bloc)
-    type= params[:type]
-    server= params[:address]
+    type = params[:type]
+    server = params[:address]
     # user=params[:user]
     # pass=params[:pass]
     # atomes=params[:atomes]
@@ -1401,71 +1401,135 @@ class HTML
 
   end
 
-  def table_remove(params)
-    if params[:row]
-      row_index = params[:row]
-      table_element = JS.global[:document].querySelector("##{@id} table")
+  def remove(params)
+    # puts "remove => #{params}"
+    # TODO: FIXME:  "html : must create a case here  #{params} (#{@original_atome.id})"
+    case params
+    when Hash
+      params.each do |k, v|
+        case k
+        when :row
+          row_index = params[:row]
+          table_element = JS.global[:document].querySelector("##{@id} table")
 
-      if table_element.nil?
-        puts 'Table not found'
-        return
-      end
+          if table_element.nil?
+            puts 'Table not found'
+            return
+          end
 
-      rows = table_element.querySelectorAll('tbody tr').to_a
+          rows = table_element.querySelectorAll('tbody tr').to_a
 
-      if row_index >= rows.length
-        puts "row not found : #{row_index}"
-        return
-      end
-      row_to_remove = rows[row_index]
+          if row_index >= rows.length
+            puts "row not found : #{row_index}"
+            return
+          end
+          row_to_remove = rows[row_index]
 
-      row_to_remove[:parentNode].removeChild(row_to_remove)
+          row_to_remove[:parentNode].removeChild(row_to_remove)
 
-      rows.each_with_index do |row, i|
-        next if i <= row_index
-      end
-    elsif params[:column]
-      column_index = params[:column]
-      table_element = JS.global[:document].querySelector("##{@id} table")
+          rows.each_with_index do |row, i|
+            next if i <= row_index
+          end
+        when :column
+          column_index = params[:column]
+          table_element = JS.global[:document].querySelector("##{@id} table")
 
-      if table_element.nil?
-        puts 'Table not found'
-        return
-      end
+          if table_element.nil?
+            puts 'Table not found'
+            return
+          end
 
-      rows = table_element.querySelectorAll('tbody tr').to_a
-      rows.each do |row|
-        cells = row.querySelectorAll('td').to_a
-        if column_index < cells.length
-          cell_to_remove = cells[column_index]
-          cell_to_remove[:parentNode].removeChild(cell_to_remove)
+          rows = table_element.querySelectorAll('tbody tr').to_a
+          rows.each do |row|
+            cells = row.querySelectorAll('td').to_a
+            if column_index < cells.length
+              cell_to_remove = cells[column_index]
+              cell_to_remove[:parentNode].removeChild(cell_to_remove)
+            end
+          end
+        when :all
+          case v
+          when :paint
+            style(:background, 'black')
+            # style('box-shadow', 'none')
+            # style('text-shadow', 'none')
+          when :color
+          when :shadow
+            style('box-shadow', 'none')
+            style('text-shadow', 'none')
+          end
         end
       end
-
+    else
+      @original_atome.apply.delete(params)
+      style(:background, 'black')
+      style('box-shadow', 'none')
+      style('text-shadow', 'none')
+      @original_atome.apply(@original_atome.apply)
     end
-  end
-
-  def reset_background
-    style(:background, 'black')
-  end
-
-  def remove(params)
-    #TODO: FIXME:  "html : must create a case here  #{params} (#{@original_atome.id})"
-
-    # puts @original_atome.color[0]
-
-    reset_background
+    # alert "remove : #{params} , type: #{@original_atome.type}"
+    # reset_background
     # style(:background, '')
     # style(:background, 'black')
     # @original_atome.color(:red)
     # @original_atome.apply(@original_atome.color[0])
   end
+
+  def table_remove(params)
+    if params[:row]
+      # row_index = params[:row]
+      # table_element = JS.global[:document].querySelector("##{@id} table")
+      #
+      # if table_element.nil?
+      #   puts 'Table not found'
+      #   return
+      # end
+      #
+      # rows = table_element.querySelectorAll('tbody tr').to_a
+      #
+      # if row_index >= rows.length
+      #   puts "row not found : #{row_index}"
+      #   return
+      # end
+      # row_to_remove = rows[row_index]
+      #
+      # row_to_remove[:parentNode].removeChild(row_to_remove)
+      #
+      # rows.each_with_index do |row, i|
+      #   next if i <= row_index
+      # end
+    elsif params[:column]
+      # column_index = params[:column]
+      # table_element = JS.global[:document].querySelector("##{@id} table")
+      #
+      # if table_element.nil?
+      #   puts 'Table not found'
+      #   return
+      # end
+      #
+      # rows = table_element.querySelectorAll('tbody tr').to_a
+      # rows.each do |row|
+      #   cells = row.querySelectorAll('td').to_a
+      #   if column_index < cells.length
+      #     cell_to_remove = cells[column_index]
+      #     cell_to_remove[:parentNode].removeChild(cell_to_remove)
+      #   end
+      # end
+
+    end
+  end
+
+  # def reset_background
+  #   style(:background, 'black')
+  #   style('box-shadow', 'none')
+  #   style('text-shadow', 'none')
+  # end
+
   # atomisation!
   def atomized(html_object)
     html_object = html_object[0] if html_object.instance_of? Array
     @element = html_object
   end
-
 
   # def center(options, attach)
   #   parent = grab(attach)

@@ -52,7 +52,6 @@ end
 new({ particle: :apply, category: :hierarchy, type: :string, render: false, store: false }) do |parents_ids, &user_proc|
   # TODO: optimize the 2 lines below:
   # html.reset_background
-  # alert :ok
   @apply ||= []
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   parents_ids.each do |parent_id|

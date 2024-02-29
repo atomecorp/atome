@@ -2,15 +2,23 @@
 
 b = box()
 b.text('click me')
-
+orange=''
 b.touch(true) do
-  c = grab(:view).circle({id: :circling, left: 222, color: :orange, blur: 6 })
-  c.box({id: :boxing,color: :orange, width: 33, height: 33, left: 123})
-  c.box({id: :boxy,color: :red, width: 33, height: 33, left: 333})
+  c = grab(:view).circle({id: :circling, left: 222, color: :orange, blur: 1.9 })
+  orange=c.box({id: :boxing,color: {id: :orange_col, red: 1, blue: 0.2 }, width: 33, height: 33, left: 123})
+  orange.shadow({
+             id: :s1,
+             # affect: [:the_circle],
+             left: 9, top: 3, blur: 9,
+             invert: false,
+             red: 0, green: 0, blue: 0, alpha: 1
+           })
+  c.box({id: :boxy,color: {id: :red_col, red: 1 }, width: 33, height: 33, left: 333})
   c.text('tap here')
   wait 0.5 do
     c.delete(:left)
     wait 0.5 do
+      # orange.color(:pink)
       c.delete(:blur)
     end
   end
@@ -18,7 +26,11 @@ b.touch(true) do
   c.touch(true) do
     c.delete({ recursive: true })
   end
+  # alert orange.apply
 end
+
+
+
 
 ############
 # b = box({left: 333, id: :the_box_1})
