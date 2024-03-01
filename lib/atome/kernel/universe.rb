@@ -244,7 +244,6 @@ class Universe
         JS.global[:localStorage].setItem(operation_timing,"{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
         @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
       end
-
     end
 
     def story(filter)
