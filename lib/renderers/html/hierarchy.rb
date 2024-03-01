@@ -93,7 +93,7 @@ new({ renderer: :html, method: :apply, type: :string, specific: :text }) do |par
       alpha = shadow_found.alpha
       left = shadow_found.left
       top = shadow_found.top
-      blur = shadow_found.blur
+      blur = shadow_found.blur[:value] # new correct behavior all atome's value should now be get using :value,here to resolve conflict  with blur and back blur
       inset = :inset if shadow_found.invert
       if shadow_found.option == :natural
         shadows_to_apply[:filter] << "drop-shadow(#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}))"

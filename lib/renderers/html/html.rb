@@ -1450,21 +1450,24 @@ class HTML
         when :all
           case v
           when :paint
-            style(:background, 'black')
+            style(:background, 'none')
             # style('box-shadow', 'none')
             # style('text-shadow', 'none')
           when :color
           when :shadow
             style('box-shadow', 'none')
             style('text-shadow', 'none')
+            style("filter", 'none')
           end
         end
       end
     else
       @original_atome.apply.delete(params)
-      style(:background, 'black')
+      style(:background, 'none')
       style('box-shadow', 'none')
       style('text-shadow', 'none')
+      style("boxShadow", 'none')
+      style("filter", 'none')
       @original_atome.apply(@original_atome.apply)
     end
     # alert "remove : #{params} , type: #{@original_atome.type}"

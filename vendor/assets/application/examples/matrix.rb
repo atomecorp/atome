@@ -121,18 +121,22 @@ module Molecule
 
   end
 end
-
+c= circle({left: 399})
 test_cell.touch(true) do
-  alert :ok
   test_cell.alternate([{ width: 33, color: :red }, { width: 66, color: :orange }])
   # puts "=> #{Universe.atomes.length}"
   # puts test_cell.color
   # if test_cell.data==true
   #   test_cell.data(false)
-  col_1 = color(:black)
-  test_cell.paint({ gradient: [col_1, col_1], direction: :left })
-  grab(:red_col).delete(true)
-  test_cell.color(:green)
+  # col_1 = color(:black)
+
+  @current_matrix.paint({ gradient: [col_1.id, col_1.id], direction: :top })
+  other_col=test_cell.color(:white)
+  c.paint({ gradient: [col_1, col_2], direction: :left })
+  test_cell.paint({ gradient: [col_1, other_col], direction: :left })
+  # test_cell
+  # grab(:red_col).delete(true)
+  # test_cell.color(:green)
   # else
   #   test_cell.data(true)
   #   test_cell.color(:blue)

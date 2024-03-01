@@ -78,6 +78,13 @@ class EDen
       end
     end
 
+    def localstorage(data, message_id)
+      # return test
+      # ws.send(return_message.to_json)
+      return { return: 'localstorage content received', authorized: true, message_id: message_id }
+
+    end
+
     def init_db(_data, message_id)
       unless File.exist?("eden.sqlite3")
         Sequel.connect("sqlite://eden.sqlite3")

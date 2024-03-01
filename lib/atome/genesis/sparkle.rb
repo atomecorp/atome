@@ -3,7 +3,6 @@
 # now let's get the default render engine
 
 # Lets create the U.I.
-
 default_render = Essentials.default_params[:render_engines]
 Atome.new(
   { renderers: [], id: :eDen, type: :element, tag: { system: true } }
@@ -90,7 +89,8 @@ Atome.new({ renderers: default_render, id: machine_id, type: :machine, password:
 # user
 user_password = { global: :star_win, read: { atome: :star_wars }, write: { atome: :star_wars } }
 
-human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' }, selection: [], attach: :user_view })
+# human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' }, selection: [], attach: :user_view })
+human({ id: identity_generator, login: true, password: user_password, data: { birthday: '10/05/1996' }, selection: [], attach: :user_view })
 
 Universe.current_machine = machine_id
 # the constant A is used to access alla atomes methods
@@ -146,7 +146,7 @@ def atome_genesis
   end
 end
 
-def init_database # this method is call from JS (atome/communication)
+def init_database # this method is call from JS (atome/communication) at WS connection
   # we init the db file eDen
   A.message({ action: :init_db, data: { database: :eDen } }) do |_db_state|
   end
@@ -184,6 +184,11 @@ def init_database # this method is call from JS (atome/communication)
     end
   end
 
+  # now we send localstorage content to the server
+  puts  "now we send localstorage  send_localstorage_content to the server"
+  send_localstorage_content
+  # A.message({ action: :localstorage, data: get_localstorage_content }) do |_db_state|
+  # end
 end
 
 def user_login
@@ -193,6 +198,7 @@ def user_login
     puts "email received : #{email}"
   end
   message({ action: :authorization, data: { password: password } }) do |pass|
-    puts "password recieved : #{pass}"
+    puts "password received : #{pass}"
   end
 end
+# Universe.allow_history=true

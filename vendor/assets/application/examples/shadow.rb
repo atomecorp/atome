@@ -34,14 +34,17 @@ wait 2 do
 end
 
 
-the_text = text({ data: 'hello for al the people in front of their machine', center: true, top: 222, width: 777, component: { size: 66 } })
-
+the_text = text({ data: 'text with shadow!', center: true, top: 222, width: 777, component: { size: 66 } })
 
 
 the_text.shadow({
-           id: :s4,
-           left: 20, top: 0, blur: 9,
+           id: :my_shadow,
+           left: 6, top: 6, blur: 6,
            option: :natural,
-           red: 0, green: 1, blue: 0, alpha: 1
+           red: 0, green: 0, blue: 0, alpha: 1
          })
+
+the_text.left(255)
+the_text.top(66)
+the_text.color(:red)
 

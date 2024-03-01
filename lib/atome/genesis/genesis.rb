@@ -100,7 +100,7 @@ class Genesis
 
           # we historicize all write action below
           # we add the changes to the stack that must be synchronised
-          Universe.historicize(@id, :write, element, params)
+          Universe.historicize(@aid, :write, element, params)
           computed_params
         elsif params || params == false
           "send a valid password to write #{element} value"

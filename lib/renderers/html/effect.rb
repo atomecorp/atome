@@ -21,7 +21,7 @@ new({ renderer: :html, method: :smooth, type: :string }) do |value, _user_proc|
 end
 
 new({ renderer: :html, method: :blur, type: :integer }) do |params, _user_proc|
-    if params[:affect] == :back
+    if params[:affect] == :back || params[:affect] == :back
       html.backdropFilter(:blur, "#{params[:value]}px")
     else
       html.filter(:blur, "#{params[:value]}px")

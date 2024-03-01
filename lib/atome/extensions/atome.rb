@@ -111,8 +111,8 @@ class Object
     ordered_part = ordered_keys.map { |k| [k, hash_to_reorder[k]] }.to_h
     other_part = hash_to_reorder.reject { |k, _| ordered_keys.include?(k) }
     # merge the parts  to obtain an re-ordered hash
-    reordered_hash = ordered_part.merge(other_part)
-    reordered_hash
+   ordered_part.merge(other_part)
+    # reordered_hash
   end
 
   def delete (atomes)
@@ -120,8 +120,7 @@ class Object
   end
 
   def identity_generator
-
-    "#{Universe.app_identity}_#{Universe.counter}".to_sym
+    "a_#{Universe.app_identity}_#{Universe.counter}".to_sym
   end
 
   def hook(a_id)

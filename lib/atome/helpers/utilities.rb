@@ -6,6 +6,7 @@ require 'json'
 class Atome
   class << self
 
+
     def file_handler(parent, content, bloc)
       grab(parent).instance_exec(content, &bloc)
     end
@@ -397,6 +398,56 @@ class Atome
     # else
     # Digest::SHA256.hexdigest(string)
     # end
+  end
+  def get_localstorage_content
+    storage= JS.global[:localStorage]
+    storage_array= storage.to_a
+    storage_items={}
+    storage_array.each_with_index do |_i, index|
+      key = JS.global[:localStorage].key(index)
+      value = JS.global[:localStorage].getItem(key)
+      storage_items[key] = value
+    end
+    storage_items
+  end
+
+  def sanitize_data_for_json(data)
+    data=data.gsub('"', '\\"')
+    # case data
+    # when String
+    #   data.gsub('"', '\\"')
+    # when Hash
+    #   data.transform_values { |value| sanitize_data(value) }
+    # when Array
+    #   data.map { |value| sanitize_data(value) }
+    # else
+    #   data
+    # end
+    data
+  end
+
+  def send_localstorage_content
+    storage= JS.global[:localStorage]
+    storage_array= storage.to_a
+    # storage_items={}
+    storage_array.each_with_index do |_i, index|
+      key = JS.global[:localStorage].key(index)
+      value = sanitize_data_for_json(JS.global[:localStorage].getItem(key))
+      # storage_items[key] = value
+      # puts key
+      # puts value
+      # A.message({ action: :localstorage, data: {key => value} }) do |_db_state|
+      #   # puts  _db_state
+      # end
+    end
+    # A.message({ action: :end_localstorage, data: '' }) do |_db_state|
+    #   puts _db_state
+    # end
+  end
+
+  def to_sym
+    puts "sanitizer temp patch when an atome is passed instead of an id"
+    @id
   end
 end
 

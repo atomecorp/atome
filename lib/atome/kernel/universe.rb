@@ -11,17 +11,18 @@ class Universe
   @sanitizers = {}
   @specificities = {}
   @messages = {}
-
+ @increment=0
   @categories = %w[atome communication effect event geometry hierarchy identity material
                   property security spatial time utility ]
   @history = {}
   @users = {}
   @help = {}
   @example = {}
-
+  @allow_history= false
+  # @historicize=false
   class << self
     attr_reader :atomes,:atomes_ids, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
-
+    attr_accessor :allow_history
     def messages
       @messages
     end
@@ -236,7 +237,14 @@ class Universe
     end
 
     def historicize(id, operation, element, params)
-      @history[@history.length] = { id => { operation => { element => params } }, sync: false, time: Time.now }
+      if @allow_history
+        operation_timing= Time.now.strftime("%Y%m%d%H%M%S%3N")+@increment.to_s
+        @increment+=1
+        @increment=@increment%100
+        JS.global[:localStorage].setItem(operation_timing,"{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
+        @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
+      end
+
     end
 
     def story(filter)
