@@ -35,7 +35,8 @@ new({ sanitizer: :color }) do |params|
   params
 end
 # new({ post: :color }) do
-#   Atome.global_monitoring(self, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
+#
+#   # Atome.global_monitoring(self, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
 # end
 new({ atome: :image })
 new({ sanitizer: :image }) do |params|
@@ -54,7 +55,6 @@ new({ post: :image }) do
   instance_variable_set("@width", compute({ particle: :width })[:value])
   instance_variable_set("@height", compute({ particle: :height })[:value])
 end
-
 new({ atome: :video })
 new({ sanitizer: :video }) do |params|
   unless params.instance_of? Hash

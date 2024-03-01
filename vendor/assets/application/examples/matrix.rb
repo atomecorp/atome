@@ -22,12 +22,12 @@ def matrix(id, horizontal_nb, vertical_nb, spacing, size)
   end
   box_width = available_width / horizontal_nb
   box_height = available_height / vertical_nb
-
+  background=box({id: :background, width: 666, height: 666, color:{alpha: 0}})
   vertical_nb.times do |y|
     horizontal_nb.times do |x|
       id_generated = "#{id}_#{x}_#{y}"
       matrix_cells << id_generated
-      new_box = box({ id: id_generated })
+      new_box = background.box({ id: id_generated })
       new_box.width(box_width)
       new_box.height(box_height)
       new_box.left((box_width + spacing) * x + spacing)
@@ -142,4 +142,12 @@ test_cell.touch(true) do
   #   test_cell.color(:blue)
   # end
 
+end
+wait 1 do
+  @current_matrix.width(33)
+end
+@current_matrix.drag(true)
+wait 2 do
+  grab(:background).left(666)
+  grab(:background).drag(true)
 end

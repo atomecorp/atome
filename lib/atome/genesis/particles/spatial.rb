@@ -90,3 +90,9 @@ new({ particle: :center, category: :spatial, type: :hash }) do |params|
   params = { x: 0, y: 0, dynamic: true } if params == true
   params
 end
+new ({ particle: :increment, category: :spatial, type: :hash }) do |params|
+  params.each do |particle, value|
+    prev_value=send(particle)
+    send(particle, value+prev_value)
+  end
+end

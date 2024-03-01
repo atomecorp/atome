@@ -32,7 +32,6 @@ class Atome
     @unit = {}
       @apply = []
       @collect = {}
-      @collect = {}
       @int8= {}
       @css = {}
       @aid =  identity_generator
@@ -40,7 +39,8 @@ class Atome
       @id = new_atome[:id] || @aid
       Universe.id_to_aid(@id,@aid)
       @type = new_atome[:type] || :element
-      @attached = []
+    @attached = []
+    @affect = []
       @category = []
       # @display = { mode: :default }
       # @backup={} # mainly used to restore particle when using grid /table /list display mode

@@ -7,23 +7,63 @@ def extract_rgb_alpha(color_string)
   blue = match_data[3].to_i
   alpha = match_data[4] ? match_data[4].to_f : nil
   { red: red, green: green, blue: blue, alpha: alpha }
+
 end
 
 new({ particle: :red, category: :property, type: :string }) do
+  # alert :ok
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
+# FIXME  we have to apply both at post and after to make it work
+# used to refresh all affected atomes
+new({after: :red}) do |params|
+  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+  a.each do |atome_to_refresh|
+      grab(atome_to_refresh).apply(id)
+    end
+  params
+end
+
+
 new({ particle: :green, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
+
+# used to refresh all affected atomes
+new({after: :green}) do |params|
+  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+  a.each do |atome_to_refresh|
+    grab(atome_to_refresh).apply(id)
+  end
+  params
+end
+
 new({ particle: :blue, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
+
+# used to refresh all affected atomes
+new({after: :blue}) do |params|
+  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+  a.each do |atome_to_refresh|
+    grab(atome_to_refresh).apply(id)
+  end
+  params
+end
 new({ particle: :alpha, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
+end
+# used to refresh all affected atomes
+new({after: :alpha}) do |params|
+  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+  a.each do |atome_to_refresh|
+    grab(atome_to_refresh).apply(id)
+  end
+  params
 end
 new({ particle: :diffusion, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
