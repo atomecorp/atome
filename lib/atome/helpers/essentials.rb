@@ -37,7 +37,8 @@ module Essentials
             apply: [:text_color],
             width: :auto, height: :auto, language: :english },
     drm: { type: :drm, attach: :black_matter },
-    shadow: { type: :shadow, red: 0, green: 0, blue: 0, alpha: 0 },
+    shadow: { type: :shadow, red: 0, green: 0, blue: 0, alpha: 1, blur: 3, left: 3, top: 3 },
+    border: { type: :border, red: 0, green: 0, blue: 0, alpha: 0, pattern: :solid, thickness: 6 },
     color: { type: :color, red: 0, green: 0, blue: 0, alpha: 1}
   }
 

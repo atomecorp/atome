@@ -36,7 +36,7 @@
 # require "./examples/table"
 # require "./examples/remove"
 # require "./examples/delete"
-# require "./examples/border"
+require "./examples/border"
 # require "./examples/clones&monitoring"
 # require "./examples/on_the_fly_ruby_code_loading"
 # require './examples/css'
@@ -69,7 +69,7 @@
 # require "./examples/apply"
 # require "./examples/paint"
 # require "./examples/gradient"
-require "./examples/shadow"
+# require "./examples/shadow"
 # require "./examples/blur"
 # require "./examples/raw_html"
 # require "./examples/vector"

@@ -2,9 +2,9 @@
 def detach_child(child)
   return unless child.attach
 
-    parent = grab(child.attach)
-    parent.attached.delete(@id)
-  
+  parent = grab(child.attach)
+  parent.attached.delete(@id)
+
 end
 
 # def detach_from_parent(parent_found, child_found)
@@ -50,14 +50,14 @@ new({ sanitizer: :attached }) do |children_ids|
 end
 
 new({ particle: :apply, category: :hierarchy, type: :string, render: false, store: false }) do |parents_ids, &user_proc|
-  # TODO: optimize the 2 lines below:
-  # html.reset_background
+
   @apply ||= []
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   parents_ids.each do |parent_id|
     @apply.delete(parent_id)
     @apply << parent_id
   end
+  puts affect
   parents_ids = @apply
   children_ids = [id]
   parents_ids.each do |parent_id|
@@ -66,16 +66,13 @@ new({ particle: :apply, category: :hierarchy, type: :string, render: false, stor
     parent_found.instance_variable_set('@affect', []) unless parent_affect.instance_of? Array
     affect_element = parent_found.instance_variable_get('@affect')
     children_ids.each do |child_id|
-      # affect_element << child_id unless affect_element.include?(child_id)
       affect_element.delete(child_id)
-      # affect_element.push(child_id)
       affect_element << child_id
       child_found = grab(child_id)
       child_found&.render(:apply, parent_found, &user_proc)
     end
   end
   @apply = parents_ids
-
   parents_ids
 end
 
@@ -83,9 +80,9 @@ new({ particle: :affect, category: :hierarchy, type: :string, render: false }) d
   children_ids = [children_ids] unless children_ids.instance_of? Array
   children_ids.each do |child_id|
     child_found = grab(child_id)
-    #FIXME : found why it crash when removing the condition below
+    # FIXME : found why it crash when removing the condition below
     unless child_found.id == :black_matter
-      child_found.remove({all: :paint})
+      child_found.remove({ all: :paint })
     end
     child_found.apply([id], &user_proc)
   end

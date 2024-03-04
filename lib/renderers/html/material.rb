@@ -52,16 +52,32 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
   end
 end
 
+# new({ method: :border, type: :hash, renderer: :html }) do |value, _user_proc|
+#   thickness = value[:thickness] || 5
+#   type = value[:pattern] || :solid
+#
+#   if value[:color].instance_of? Atome
+#     color_found = value[:color]
+#   else
+#     color_found = grab('black_matter').color(value[:color])
+#   end
+#
+#   red = color_found.red * 255
+#   green = color_found.green * 255
+#   blue = color_found.blue * 255
+#   alpha = color_found.alpha
+#
+#   html.style(:border, "#{type} #{thickness}px rgba(#{red},#{green},#{blue},#{alpha})")
+# end
+new({ method: :thickness, type: :integer, renderer: :html}) do |params|
+  # now we refresh if needed for dynamic refresh od affected atomes
+  # html.style(:border, "#{type} #{thickness}px rgba(#{red},#{green},#{blue},#{alpha})")
+  affect(affect)
+end
 
-new({ method: :border, type: :hash, renderer: :html }) do |value, _user_proc|
-  thickness = value[:thickness] || 5
-  type = value[:pattern] || :solid
-  color = if value[:color]
-            color_found = value[:color]
-            "#{color_found.red * 255},#{color_found.green * 255},#{color_found.blue * 255},#{color_found.alpha} "
-          else
-            "0,0,0,1"
-          end
-
-  html.style(:border, "#{type} #{thickness}px rgba(#{color})")
+# end
+new({ method: :pattern, type: :integer, renderer: :html}) do |params|
+  # now we refresh if needed for dynamic refresh od affected atomes
+  # html.style(:border, "#{type} #{thickness}px rgba(#{red},#{green},#{blue},#{alpha})")
+  affect(affect)
 end

@@ -58,6 +58,10 @@ new({ post: :remove }) do |params|
       shadow.each do |atome_id_found|
         @apply.delete(atome_id_found)
       end
+    when :border
+      border.each do |atome_id_found|
+        @apply.delete(atome_id_found)
+      end
     else
       params.each do |particle, value|
         case particle
@@ -92,4 +96,7 @@ new({ sanitizer: :definition }) do |params|
 end
 
 new({ particle: :gradient, category: :material, type: :int })
-new({ particle: :border, category: :material, type: :int })
+
+new({ particle: :thickness, category: :material, type: :int })
+new({ particle: :pattern, category: :material, type: :string })
+# new({ particle: :border, category: :material, type: :int })

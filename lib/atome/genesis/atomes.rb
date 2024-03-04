@@ -69,23 +69,17 @@ new({ sanitizer: :video }) do |params|
 end
 new({ atome: :www })
 new({ atome: :shadow }) do |params|
-  # if params
-  #   if params.delete(:affect)
-  #     attach_value = params.delete(:affect)
-  #   else
-  #     attach_value=id
-  #   end
-  #
-  #   params[:affect] = attach_value
-  #   alert "=> params : #{params}"
-  #
-  # end
-
   if params
     attach_value = params.delete(:affect)
     params[:affect] = attach_value
   end
-  # alert "=> params : #{params}"
+  params
+end
+new({ atome: :border }) do |params|
+  if params
+    attach_value = params.delete(:affect)
+    params[:affect] = attach_value
+  end
   params
 end
 new({ atome: :raw })
@@ -130,7 +124,6 @@ end
 new({ atome: :machine })
 new({ atome: :paint })
 new({ atome: :vector })
-
 new({ atome: :matrix })
 new({ atome: :atomized, type: :hash })
 

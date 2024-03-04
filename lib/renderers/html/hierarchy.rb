@@ -38,7 +38,6 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     alpha = parent_found.alpha
     html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
   when :paint
-
     # if when found colors when use it for the gradient , else whe use the colors within the current atome
     # gradient_found = params[:colors] || @apply
     # we get all the paint atomes applied to the current atome
@@ -75,6 +74,17 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     # full_gradient_to_apply=gradients_to_apply.join(',')
     full_gradient_to_apply = gradients_to_apply.last
     html.style(:background, full_gradient_to_apply)
+  when :border
+    border.each do |border_id_found|
+      border_found = grab(border_id_found)
+      red = border_found.red * 255
+      green = border_found.green * 255
+      blue = border_found.blue * 255
+      alpha = border_found.alpha
+      thickness = border_found.thickness
+      pattern = border_found.pattern
+      html.style(:border, "#{pattern} #{thickness}px rgba(#{red},#{green},#{blue},#{alpha})")
+    end
   else
     #
   end
