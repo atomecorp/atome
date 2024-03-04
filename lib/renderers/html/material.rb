@@ -69,15 +69,7 @@ end
 #
 #   html.style(:border, "#{type} #{thickness}px rgba(#{red},#{green},#{blue},#{alpha})")
 # end
-new({ method: :thickness, type: :integer, renderer: :html}) do |params|
-  # now we refresh if needed for dynamic refresh od affected atomes
-  # html.style(:border, "#{type} #{thickness}px rgba(#{red},#{green},#{blue},#{alpha})")
-  affect(affect)
-end
+new({ method: :thickness, type: :integer, renderer: :html})
 
 # end
-new({ method: :pattern, type: :integer, renderer: :html}) do |params|
-  # now we refresh if needed for dynamic refresh od affected atomes
-  # html.style(:border, "#{type} #{thickness}px rgba(#{red},#{green},#{blue},#{alpha})")
-  affect(affect)
-end
+new({ method: :pattern, type: :integer, renderer: :html})

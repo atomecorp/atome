@@ -98,5 +98,19 @@ end
 new({ particle: :gradient, category: :material, type: :int })
 
 new({ particle: :thickness, category: :material, type: :int })
+new({ after: :thickness}) do |params|
+  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+  a.each do |atome_to_refresh|
+    grab(atome_to_refresh).apply(id)
+  end
+  params
+end
 new({ particle: :pattern, category: :material, type: :string })
+new({ after: :pattern })do |params|
+  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+  a.each do |atome_to_refresh|
+    grab(atome_to_refresh).apply(id)
+  end
+  params
+end
 # new({ particle: :border, category: :material, type: :int })
