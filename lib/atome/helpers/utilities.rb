@@ -318,11 +318,16 @@ class Atome
   end
 
   def refresh
+    # we get the current color because they will be removed
+    # prev_color=color
+    # alert color.class
     particles_found = to_hash
     particles_found.each do |particle_found, value_found|
       send(particle_found, value_found)
     end
-
+     color.each do |col|
+       apply(col)
+     end
   end
 
   def each(&proc)

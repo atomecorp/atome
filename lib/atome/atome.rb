@@ -4,7 +4,7 @@
 class Atome
   include Essentials
 
-  def aid(_v=nil)
+  def aid(_v = nil)
     @aid
   end
 
@@ -22,36 +22,36 @@ class Atome
     #   alert "atome found : #{ grab(new_atome[:id])}"
     #    grab(new_atome[:id])
     # else
-      # the keys :renderers, :type and :id should be placed in the first position in the hash
-      @history = {}
-      # @language = :english
-      # @callback = {}
-      @tag = {}
-      @selected = false
-      #@metrics = {}
+    # the keys :renderers, :type and :id should be placed in the first position in the hash
+    @history = {}
+    # @language = :english
+    # @callback = {}
+    @tag = {}
+    @selected = false
+    #@metrics = {}
     @unit = {}
-      @apply = []
-      @collect = {}
-      @int8= {}
-      @css = {}
-      @aid =  identity_generator
-      Universe.add_to_atomes( @aid, self)
-      @id = new_atome[:id] || @aid
-      Universe.id_to_aid(@id,@aid)
-      @type = new_atome[:type] || :element
+    @apply = []
+    @collect = {}
+    @int8 = {}
+    @css = {}
+    @aid = identity_generator
+    Universe.add_to_atomes(@aid, self)
+    @id = new_atome[:id] || @aid
+    Universe.id_to_aid(@id, @aid)
+    @type = new_atome[:type] || :element
     @attached = []
     @affect = []
-      @category = []
-      # @display = { mode: :default }
-      # @backup={} # mainly used to restore particle when using grid /table /list display mode
-      @html = HTML.new(@id, self)
-      @headless = Headless.new(@id, self)
-      # now we store the proc in a an atome's property called :bloc
-      new_atome[:code] = atomes_proc if atomes_proc
-      # we reorder the hash
-      reordered_atome =reorder_particles(new_atome)
-      # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
-      collapse(reordered_atome)
+    @category = []
+    # @display = { mode: :default }
+    # @backup={} # mainly used to restore particle when using grid /table /list display mode
+    @html = HTML.new(@id, self)
+    @headless = Headless.new(@id, self)
+    # now we store the proc in a an atome's property called :bloc
+    new_atome[:code] = atomes_proc if atomes_proc
+    # we reorder the hash
+    reordered_atome = reorder_particles(new_atome)
+    # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
+    collapse(reordered_atome)
     # end
 
   end

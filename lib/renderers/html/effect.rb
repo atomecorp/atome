@@ -27,3 +27,25 @@ new({ renderer: :html, method: :blur, type: :integer }) do |params, _user_proc|
       html.filter(:blur, "#{params[:value]}px")
     end
   end
+
+
+new({ renderer: :html, method: :blur, type: :integer, specific: :shadow }) do |params, _user_proc|
+  if params[:affect] == :back || params[:affect] == :back
+    html.backdropFilter(:blur, "#{params[:value]}px")
+  else
+    html.filter(:blur, "#{params[:value]}px")
+  end
+  # now we refresh if needed for dynamic refresh od affected atomes
+   affect(affect)
+end
+
+# new({ particle: :blur, category: :effect, type: :int , specific: :shadow}) do |params|
+#   alert :cool
+#   if affect.nil?
+#     affect_to = affect
+#   else
+#     affect_to = [:self]
+#   end
+#   val= { value: params, affect: affect_to } unless params.instance_of?(Hash)
+#   val
+# end

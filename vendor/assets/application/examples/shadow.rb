@@ -34,7 +34,7 @@ wait 2 do
 end
 
 
-the_text = text({ data: 'text with shadow!', center: true, top: 222, width: 777, component: { size: 66 } })
+the_text = text({ data: 'text with shadow!', center: true, top: 222, width: 777, component: { size: 66 }, id: :my_text })
 
 
 the_text.shadow({
@@ -47,4 +47,14 @@ the_text.shadow({
 the_text.left(255)
 the_text.top(66)
 the_text.color(:red)
+
+wait 1 do
+  text_shadow= grab(:my_shadow)
+  text_shadow.alpha(0.5)
+  text_shadow.left(120)
+  text_shadow.blur({ value: 1 })
+
+  # grab(:my_text).refresh(true)
+
+end
 

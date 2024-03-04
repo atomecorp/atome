@@ -30,7 +30,7 @@
 # require './test'
 # require './examples/test'
 #### works
-require "./examples/increment"
+# require "./examples/increment"
 # require "./examples/matrix"
 # require "./examples/aid"
 # require "./examples/table"
@@ -69,7 +69,7 @@ require "./examples/increment"
 # require "./examples/apply"
 # require "./examples/paint"
 # require "./examples/gradient"
-# require "./examples/shadow"
+require "./examples/shadow"
 # require "./examples/blur"
 # require "./examples/raw_html"
 # require "./examples/vector"
