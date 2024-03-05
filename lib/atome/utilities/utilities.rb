@@ -94,9 +94,6 @@ class Atome
   def collapse(new_atome)
     # TODO : try to optimise the two lines below to avoid conditions
     new_atome.each do |element, value|
-      A.message({ action: :historise, data: {element => value} }) do |_db_state|
-        puts  " new line in history : #{_db_state}"
-      end
       send(element, value)
     end
   end
@@ -446,9 +443,9 @@ class Atome
       # storage_items[key] = value
       # puts key
       # puts value
-      A.message({ action: :localstorage, data: {key => value} }) do |_db_state|
-        puts  _db_state
-      end
+      # A.message({ action: :localstorage, data: {key => value} }) do |_db_state|
+      #   # puts  _db_state
+      # end
     end
     # A.message({ action: :end_localstorage, data: '' }) do |_db_state|
     #   puts _db_state
@@ -466,7 +463,6 @@ class Atome
     params[:message_id]=message_id
     Universe.store_messages({msg_nb:message_id, proc: bloc })
     html.send_message(params)
-
   end
 end
 
