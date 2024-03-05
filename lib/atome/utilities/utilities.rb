@@ -7,20 +7,7 @@ class Atome
   class << self
 
 
-    def sync(params, &bloc)
-      alert :server_sync
-        # params = { data: params } unless params.instance_of? Hash
-        # # params[:user] = 'dfghg4df5gdfgh654'
-        # # params[:pass] = 'gfhkzrhgzr4h98948'
-        # # instance_variable_set('@message_code', {}) unless instance_variable_get('@message_code')
-        # #  store_proc= instance_variable_get('@message_code')
-        # message_id= "msg_#{Universe.messages.length}"
-        # params[:message_id]=message_id
-        # #  store_proc[mmessage_id]=bloc
-        # Universe.store_messages({msg_nb:message_id, proc: bloc })
-        # html.send_message(params)
 
-    end
 
     def file_handler(parent, content, bloc)
       grab(parent).instance_exec(content, &bloc)
@@ -468,6 +455,15 @@ class Atome
   def to_sym
     puts "sanitizer temp patch when an atome is passed instead of an id"
     @id
+  end
+
+  def sync(params, &bloc)
+    params = { data: params } unless params.instance_of? Hash
+    message_id= "msg_#{Universe.messages.length}"
+    params[:message_id]=message_id
+    Universe.store_messages({msg_nb:message_id, proc: bloc })
+    html.send_message(params)
+
   end
 end
 

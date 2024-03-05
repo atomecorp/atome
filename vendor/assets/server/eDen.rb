@@ -85,11 +85,18 @@ class EDen
 
     end
 
+    def historicize(data, message_id)
+      # return test
+      # ws.send(return_message.to_json)
+      return { return: 'item to historicize  received', authorized: true, message_id: message_id }
+
+    end
+
     def init_db(_data, message_id)
       unless File.exist?("eden.sqlite3")
         Sequel.connect("sqlite://eden.sqlite3")
       end
-      { data: { message: 'database initialised' }, message_id: message_id }
+      { data: { message: 'database_ready' }, message_id: message_id }
     end
 
     def crate_db_table(data, message_id)

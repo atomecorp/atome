@@ -11,18 +11,20 @@ class Universe
   @sanitizers = {}
   @specificities = {}
   @messages = {}
- @increment=0
+  @increment = 0
   @categories = %w[atome communication effect event geometry hierarchy identity material
                   property security spatial time utility ]
   @history = {}
   @users = {}
   @help = {}
   @example = {}
-  @allow_history= false
+  @allow_history = false
+  @database_ready = false
   # @historicize=false
   class << self
-    attr_reader :atomes,:atomes_ids, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
-    attr_accessor :allow_history
+    attr_reader :atomes, :atomes_ids, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
+    attr_accessor :allow_history, :database_ready
+
     def messages
       @messages
     end
@@ -124,11 +126,13 @@ class Universe
       end
       collected_id
     end
+
     def generate_uuid
-      uuid = SecureRandom.uuid.gsub('-','')
+      uuid = SecureRandom.uuid.gsub('-', '')
       formatted_time = Time.now.strftime("%Y%m%d%H%M%S")
       "#{uuid}#{formatted_time}"
     end
+
     def app_identity
       # each app hav its own identity, this allow to generate new user identities from the
       # unique_id = generate_unique_id_with_timestamp
@@ -237,11 +241,16 @@ class Universe
     end
 
     def historicize(id, operation, element, params)
-      if @allow_history
-        operation_timing= Time.now.strftime("%Y%m%d%H%M%S%3N")+@increment.to_s
-        @increment+=1
-        @increment=@increment%100
-        JS.global[:localStorage].setItem(operation_timing,"{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
+
+      if @allow_history && @database_ready
+        # sync
+        A.sync({ action: :historicize, data: { table: :user } }) do |_db_state|
+          # puts "===> #{_db_state}"
+        end
+        operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
+        @increment += 1
+        @increment = @increment % 100
+        JS.global[:localStorage].setItem(operation_timing, "{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
         @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
       end
     end

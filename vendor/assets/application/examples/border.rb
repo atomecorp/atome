@@ -3,6 +3,7 @@
 # col=color({red: 1, green: 0.2, id: :the_col})
 c = circle({ id: :the_circle })
 b = box({ left: 333, id: :the_box })
+circle({ top: 190, width: 99, height: 99, id: :dont_break_too })
 c2 = circle({ top: 190, width: 99, height: 99, id: :dont_break })
 # let's add the border
 wait 1 do
@@ -13,6 +14,7 @@ wait 1 do
               top: 3,
               blur: 9,
               invert: false,
+              option: :natural,
               red: 0, green: 0, blue: 0, alpha: 1
             })
   c2.border({ thickness: 5, red: 1, green: 0, blue: 0, alpha: 1, pattern: :dotted, id: :borderline })
@@ -43,6 +45,8 @@ b.touch(true) do
       wait 1 do
         # if the_door (border) is change all affect atomes are refreshed
         grab(:the_door).red(0)
+        c2.color({alpha: 0})
+
       end
     end
   end

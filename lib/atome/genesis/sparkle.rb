@@ -142,13 +142,19 @@ def atome_genesis
   atome_infos
   A.server({ address: 'localhost:9292', type: 'ws' })
   A.init_websocket do |msg|
-    puts "-3 #{msg}"
+    puts "websocket initailsaed #{msg}"
   end
 end
 
 def init_database # this method is call from JS (atome/communication) at WS connection
   # we init the db file eDen
-  A.message({ action: :init_db, data: { database: :eDen } }) do |_db_state|
+  A.sync({ action: :init_db, data: { database: :eDen } }) do |data|
+
+    if data[:data][:message] == 'database_ready'
+      Universe.database_ready = true
+    else
+      Universe.database_ready = false
+    end
   end
   # authentication : email, pass
   # atome : date, particles
@@ -156,36 +162,37 @@ def init_database # this method is call from JS (atome/communication) at WS conn
 
   particles = Universe.particle_list
   # now we populate the DB
-  A.message({ action: :crate_db_table, data: { table: :user } }) do |_db_state|
+  A.sync({ action: :crate_db_table, data: { table: :user } }) do |_db_state|
+    # puts "===> #{_db_state}"
   end
 
-  A.message({ action: :create_db_column, data: { table: :user, column: :email, type: :string } }) do |_db_state|
+  A.sync({ action: :create_db_column, data: { table: :user, column: :email, type: :string } }) do |_db_state|
   end
 
-  A.message({ action: :create_db_column, data: { table: :user, column: :password, type: :string } }) do |_db_state|
+  A.sync({ action: :create_db_column, data: { table: :user, column: :password, type: :string } }) do |_db_state|
   end
 
-  A.message({ action: :crate_db_table, data: { table: :history } }) do |_db_state|
+  A.sync({ action: :crate_db_table, data: { table: :history } }) do |_db_state|
   end
-  A.message({ action: :create_db_column, data: { table: :history, column: :aid, type: :string } }) do |_db_state|
+  A.sync({ action: :create_db_column, data: { table: :history, column: :aid, type: :string } }) do |_db_state|
   end
-  A.message({ action: :create_db_column, data: { table: :history, column: :particle, type: :string } }) do |_db_state|
+  A.sync({ action: :create_db_column, data: { table: :history, column: :particle, type: :string } }) do |_db_state|
   end
-  A.message({ action: :create_db_column, data: { table: :history, column: :value, type: :string } }) do |_db_state|
+  A.sync({ action: :create_db_column, data: { table: :history, column: :value, type: :string } }) do |_db_state|
   end
-  A.message({ action: :create_db_column, data: { table: :history, column: :date, type: :datetime } }) do |_db_state|
+  A.sync({ action: :create_db_column, data: { table: :history, column: :date, type: :datetime } }) do |_db_state|
   end
 
-  A.message({ action: :crate_db_table, data: { table: :atome } }) do |_db_state|
+  A.sync({ action: :crate_db_table, data: { table: :atome } }) do |_db_state|
   end
   particles.each do |particle, infos|
     type = infos[:type]
-    A.message({ action: :create_db_column, data: { table: :atome, column: particle, type: type } }) do |_db_state|
+    A.sync({ action: :create_db_column, data: { table: :atome, column: particle, type: type } }) do |_db_state|
     end
   end
 
   # now we send localstorage content to the server
-  puts  "now we send localstorage  send_localstorage_content to the server"
+  puts "now we send localstorage  send_localstorage_content to the server"
   send_localstorage_content
   # A.message({ action: :localstorage, data: get_localstorage_content }) do |_db_state|
   # end
@@ -194,11 +201,12 @@ end
 def user_login
   # user = Universe.current_user
   password = Black_matter.password
-  message({ action: :authentication, data: { email: 'jeezs@atome.one' } }) do |email|
+  sync({ action: :authentication, data: { email: 'jeezs@atome.one' } }) do |email|
     puts "email received : #{email}"
   end
-  message({ action: :authorization, data: { password: password } }) do |pass|
+  sync({ action: :authorization, data: { password: password } }) do |pass|
     puts "password received : #{pass}"
   end
 end
+
 # Universe.allow_history=true
