@@ -210,4 +210,3 @@ def user_login
 end
 
 # Universe.allow_history=true
-alert Universe.current_user
