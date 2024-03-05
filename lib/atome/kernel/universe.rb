@@ -243,9 +243,7 @@ class Universe
     def historicize(id, operation, element, params)
 
       if @allow_history && @database_ready
-        # sync
         A.sync({ action: :historicize, data: { table: :user } }) do |_db_state|
-          # puts "===> #{_db_state}"
         end
         operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
         @increment += 1

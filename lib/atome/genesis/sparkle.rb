@@ -162,7 +162,7 @@ def init_database # this method is call from JS (atome/communication) at WS conn
 
   particles = Universe.particle_list
   # now we populate the DB
-  A.sync({ action: :crate_db_table, data: { table: :user } }) do |_db_state|
+  A.sync({ action: :crate_db_table, data: { table: :user, type: :string  } }) do |_db_state|
     # puts "===> #{_db_state}"
   end
 
@@ -210,3 +210,4 @@ def user_login
 end
 
 # Universe.allow_history=true
+alert Universe.current_user

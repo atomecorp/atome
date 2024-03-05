@@ -101,7 +101,9 @@ class EDen
 
     def crate_db_table(data, message_id)
       table = data['table']
-      Database.create_table(table)
+      type = data['type']
+      primary = data['primary']
+      Database.create_table(table, type)
       { data: { message: "table #{table} added" }, message_id: message_id }
     end
 

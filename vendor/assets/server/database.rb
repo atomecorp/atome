@@ -9,11 +9,25 @@ class Database
       Sequel.connect("sqlite://eden.sqlite3")
     end
 
-    def create_table(table_name)
+    def create_table(table_name, type)
       eden = Sequel.connect("sqlite://eden.sqlite3")
+      type= case type
+
+            when 'string'
+              String
+            when 'int'
+              Integer
+            when 'hash'
+              JSON
+            when 'date'
+              DateTime
+            else
+              Integer
+      end
       unless eden.table_exists?(table_name)
         eden.create_table table_name.to_sym do
-          primary_key "#{table_name}_id".to_sym
+          # primary_key "#{table_name}_id".to_sym
+          column "#{table_name}_id".to_sym, type, primary_key: true
         end
       end
     end
