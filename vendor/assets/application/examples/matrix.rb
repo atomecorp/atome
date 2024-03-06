@@ -22,7 +22,8 @@ def matrix(id, horizontal_nb, vertical_nb, spacing, size)
   end
   box_width = available_width / horizontal_nb
   box_height = available_height / vertical_nb
-  background=box({id: :background, width: 666, height: 666, color:{alpha: 0}})
+  background=box({id: "#{id}_background", width: 666, height: 666, color:{alpha: 0}})
+
   vertical_nb.times do |y|
     horizontal_nb.times do |x|
       id_generated = "#{id}_#{x}_#{y}"
@@ -147,7 +148,8 @@ wait 1 do
   @current_matrix.width(33)
 end
 @current_matrix.drag(true)
+alert @current_matrix.id
 wait 2 do
-  grab(:background).left(666)
-  grab(:background).drag(true)
+  grab(:vie_0_background).left(666)
+  grab(:vie_0_background).drag(true)
 end

@@ -50,14 +50,12 @@ new({ sanitizer: :attached }) do |children_ids|
 end
 
 new({ particle: :apply, category: :hierarchy, type: :string, render: false, store: false }) do |parents_ids, &user_proc|
-
   @apply ||= []
   parents_ids = [parents_ids] unless parents_ids.instance_of?(Array)
   parents_ids.each do |parent_id|
     @apply.delete(parent_id)
     @apply << parent_id
   end
-  puts affect
   parents_ids = @apply
   children_ids = [id]
   parents_ids.each do |parent_id|

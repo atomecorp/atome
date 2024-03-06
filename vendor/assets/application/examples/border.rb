@@ -66,3 +66,33 @@ end
 # # b.attached([col.id])
 # c.border({ thickness: 5, pattern: :dotted })
 # b.border({ thickness: 5, attached: col.id, pattern: :dotted })
+bb=box({top: 50, left: 100})
+bb.text(:touch_me)
+bord=bb.border({ thickness: 3,  pattern: :dotted})
+bb.touch(true) do
+  col=bord.color({red: 1 })
+
+  wait 2 do
+    col.green(1)
+  end
+  # bord.apply(:titi)
+  # puts 'opk'
+end
+
+
+# c=color(:pink)
+# # red: 1, green: 1, blue: 0, alpha: 1,
+# wait 0.2 do
+#   bord.red(1)
+#   wait 0.2 do
+#     bord.green(1)
+#     wait 0.2 do
+#       bord.blue(1)
+#       wait 0.2 do
+#         bord.alpha(1)
+#         bord.apply(c.id)
+#       end
+#     end
+#   end
+#
+# end

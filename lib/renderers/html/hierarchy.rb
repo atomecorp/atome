@@ -37,6 +37,11 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     blue = parent_found.blue * 255
     alpha = parent_found.alpha
     html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+    if type.to_sym ==:border
+      affect.each do |at_found|
+        grab(at_found).html.style(:border, "solid 2px rgba(#{red},#{green},#{blue},#{alpha})")
+      end
+    end
   when :paint
     # if when found colors when use it for the gradient , else whe use the colors within the current atome
     # gradient_found = params[:colors] || @apply
