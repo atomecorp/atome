@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 # main Atome entry here
+# used as a callback when the atome is ready
+Atome.instance_variable_set('@initialized',{})
 class Atome
   include Essentials
 
@@ -19,7 +21,6 @@ class Atome
     #   #   old_atome.send(element, value)
     #   # end
     #   # return false
-    #   alert "atome found : #{ grab(new_atome[:id])}"
     #    grab(new_atome[:id])
     # else
     # the keys :renderers, :type and :id should be placed in the first position in the hash
@@ -46,6 +47,8 @@ class Atome
     # @backup={} # mainly used to restore particle when using grid /table /list display mode
     @html = HTML.new(@id, self)
     @headless = Headless.new(@id, self)
+    @initialized={}
+
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     # we reorder the hash
@@ -53,6 +56,18 @@ class Atome
     # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
     collapse(reordered_atome)
     # end
+    # puts "@initialized : #{Atome.instance_variable_get('@initialized')}"
+    # puts "****> #{Atome.instance_variable_get('@initialized')}"
+
+    # if Atome.instance_variable_get('@initialized')
+    # puts  "-----> #{Atome.instance_variable_get('@initialized')}"
+    #   Atome.instance_variable_get('@initialized').each do |p_found, bloc|
+    #     # puts "==> #{p_found}"
+    #     # instance_exec.call
+    #     # instance_exec(p_found, &bloc) if bloc.is_a?(Proc)
+    #   end
+    # end
+
 
   end
 
@@ -76,7 +91,7 @@ class Atome
     # post rendering processor
     params = particle_post(element, params, &user_proc)
     instance_variable_set("@#{element}", params) if store
-    # post storage processor
+    # after storage processor
     particle_after(element, params, &user_proc)
 
     # self
@@ -91,3 +106,5 @@ class Atome
     "#<#{self.class}: #{content}>"
   end
 end
+
+

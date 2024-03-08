@@ -6,9 +6,6 @@ require 'json'
 class Atome
   class << self
 
-
-
-
     def file_handler(parent, content, bloc)
       grab(parent).instance_exec(content, &bloc)
     end
@@ -92,9 +89,17 @@ class Atome
   end
 
   def collapse(new_atome)
-    # TODO : try to optimise the two lines below to avoid conditions
+    initialized_procs = []
+    initialized = Atome.instance_variable_get('@initialized')
+
     new_atome.each do |element, value|
       send(element, value)
+      initialized_proc = initialized[element]
+      initialized_procs << initialized_proc if initialized_proc.is_a?(Proc)
+    end
+
+    initialized_procs.each do |proc|
+      instance_exec(element, &proc)
     end
   end
 

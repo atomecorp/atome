@@ -82,6 +82,10 @@ new({ atome: :border }) do |params|
   end
   params
 end
+new({ post: :border }) do |params|
+  # in order to apply the color to the atome border if a color is passed
+  color(params[:color])
+end
 new({ atome: :raw })
 new({ atome: :shape })
 new({ atome: :code })

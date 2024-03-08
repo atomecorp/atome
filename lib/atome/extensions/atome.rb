@@ -4,12 +4,12 @@ module ObjectExtension
   def new(params, &bloc)
     # Genesis = Genesis.Genesis
     if params.key?(:atome)
-      if Universe.atome_list.include?(params[:atome])
-        puts "atome #{params[:atome]} already exist you can't create it"
-      else
+      # if Universe.atome_list.include?(params[:atome])
+      #   puts "atome #{params[:atome]} already exist you can't create it"
+      # else
         Universe.add_atomes_specificities params[:atome]
         Genesis.build_atome(params[:atome], &bloc)
-      end
+      # end
     elsif params.key?(:particle)
       if Universe.particle_list[params[:particle]]
         puts "particle #{params[:particle]} already exist you can't create it"
@@ -31,6 +31,9 @@ module ObjectExtension
       Atome.instance_variable_set("@post_#{params[:post]}", bloc)
     elsif params.key?(:after)
       Atome.instance_variable_set("@after_#{params[:after]}", bloc)
+    elsif params.key?(:initialized)
+      Atome.instance_variable_get('@initialized')[params[:initialized]] = bloc
+      # puts "******> #{Atome.instance_variable_get('@initialized')}"
     elsif params.key?(:read)
       Atome.instance_variable_set("@read_#{params[:read]}", bloc)
     elsif params[:renderer]
