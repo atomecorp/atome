@@ -32,8 +32,7 @@ module ObjectExtension
     elsif params.key?(:after)
       Atome.instance_variable_set("@after_#{params[:after]}", bloc)
     elsif params.key?(:initialized)
-      Atome.instance_variable_get('@initialized')[params[:initialized]] = bloc
-      # puts "******> #{Atome.instance_variable_get('@initialized')}"
+      Atome.initialized[params[:initialized]] = bloc
     elsif params.key?(:read)
       Atome.instance_variable_set("@read_#{params[:read]}", bloc)
     elsif params[:renderer]

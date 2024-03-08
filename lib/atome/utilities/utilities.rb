@@ -5,7 +5,9 @@ require 'json'
 
 class Atome
   class << self
+    attr_accessor :initialized
 
+    # end
     def file_handler(parent, content, bloc)
       grab(parent).instance_exec(content, &bloc)
     end
@@ -53,6 +55,8 @@ class Atome
 
   end
 
+  @initialized = {}
+
   def help(particle, &doc)
     if doc
       Universe.set_help(particle, &doc)
@@ -90,16 +94,18 @@ class Atome
 
   def collapse(new_atome)
     initialized_procs = []
-    initialized = Atome.instance_variable_get('@initialized')
+    initialized = Atome.initialized
 
     new_atome.each do |element, value|
       send(element, value)
       initialized_proc = initialized[element]
-      initialized_procs << initialized_proc if initialized_proc.is_a?(Proc)
+      initialized_procs << {value => initialized_proc } if initialized_proc.is_a?(Proc)
     end
 
-    initialized_procs.each do |proc|
-      instance_exec(element, &proc)
+    initialized_procs.each do |value|
+       value.each do |val, proc|
+         instance_exec(val, &proc)
+       end
     end
   end
 
@@ -315,9 +321,9 @@ class Atome
     particles_found.each do |particle_found, value_found|
       send(particle_found, value_found)
     end
-     color.each do |col|
-       apply(col)
-     end
+    color.each do |col|
+      apply(col)
+    end
   end
 
   def each(&proc)
@@ -409,10 +415,11 @@ class Atome
     # Digest::SHA256.hexdigest(string)
     # end
   end
+
   def get_localstorage_content
-    storage= JS.global[:localStorage]
-    storage_array= storage.to_a
-    storage_items={}
+    storage = JS.global[:localStorage]
+    storage_array = storage.to_a
+    storage_items = {}
     storage_array.each_with_index do |_i, index|
       key = JS.global[:localStorage].key(index)
       value = JS.global[:localStorage].getItem(key)
@@ -422,7 +429,7 @@ class Atome
   end
 
   def sanitize_data_for_json(data)
-    data=data.gsub('"', '\\"')
+    data = data.gsub('"', '\\"')
     # case data
     # when String
     #   data.gsub('"', '\\"')
@@ -437,8 +444,8 @@ class Atome
   end
 
   def send_localstorage_content
-    storage= JS.global[:localStorage]
-    storage_array= storage.to_a
+    storage = JS.global[:localStorage]
+    storage_array = storage.to_a
     # storage_items={}
     storage_array.each_with_index do |_i, index|
       key = JS.global[:localStorage].key(index)
@@ -462,9 +469,9 @@ class Atome
 
   def sync(params, &bloc)
     params = { data: params } unless params.instance_of? Hash
-    message_id= "msg_#{Universe.messages.length}"
-    params[:message_id]=message_id
-    Universe.store_messages({msg_nb:message_id, proc: bloc })
+    message_id = "msg_#{Universe.messages.length}"
+    params[:message_id] = message_id
+    Universe.store_messages({ msg_nb: message_id, proc: bloc })
     html.send_message(params)
   end
 end

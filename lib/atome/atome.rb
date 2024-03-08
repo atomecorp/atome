@@ -2,7 +2,7 @@
 
 # main Atome entry here
 # used as a callback when the atome is ready
-Atome.instance_variable_set('@initialized',{})
+# Atome.instance_variable_set('@initialized',{})
 class Atome
   include Essentials
 

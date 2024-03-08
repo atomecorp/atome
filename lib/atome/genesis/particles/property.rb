@@ -129,3 +129,8 @@ new({ particle: :sort, category: :property, type: :int }) do |params|
 
   params
 end
+
+new({particle: :inside, render: false})
+new({ initialized: :inside }) do |params, &user_proc|
+  render(:inside, params, &user_proc)
+end

@@ -9,7 +9,7 @@ end
 m = matrix({ renderers: [:html], attach: :view, id: :my_test_box, type: :matrix, apply: [:shape_color],
              left: 333, top: 0, width: 900, smooth: 15, height: 900, overflow: :scroll, option: { header: true },
              component: {
-               border: { thickness: 5, color: color(:blue), pattern: :dotted },
+               border: { thickness: 5, color: :blue, pattern: :dotted },
                overflow: :auto,
                color: "white",
                shadow: {
@@ -34,7 +34,7 @@ m = matrix({ renderers: [:html], attach: :view, id: :my_test_box, type: :matrix,
 
 # tests
 m.color(:orange)
-m.border({ thickness: 5, color: color(:blue), pattern: :dotted })
+m.border({ thickness: 5, color: :blue, pattern: :dotted })
 
 puts m.get({ cell: [1, 2] })
 wait 2 do

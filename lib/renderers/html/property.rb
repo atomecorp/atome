@@ -41,3 +41,12 @@ new({ method: :sort, renderer: :html, type: :hash }) do |params|
   html.refresh_table(params)
 end
 
+new({ method: :inside, renderer: :html }) do |params|
+  if params
+    affect.each do |at_found|
+      grab(at_found).html.style("box-sizing", 'border-box')
+    end
+  else
+    html.style("boxSizing", ' content-box')
+  end
+end

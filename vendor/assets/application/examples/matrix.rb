@@ -148,7 +148,7 @@ wait 1 do
   @current_matrix.width(33)
 end
 @current_matrix.drag(true)
-alert @current_matrix.id
+# alert @current_matrix.id
 wait 2 do
   grab(:vie_0_background).left(666)
   grab(:vie_0_background).drag(true)
