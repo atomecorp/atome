@@ -86,11 +86,7 @@ new({ particle: :schedule, category: :utility, type: :string }) do |date, proc|
     send("#{renderer}_schedule", format_date, &proc)
   end
 end
-# new({ particle: :read, category: :utility, type: :string }) do |file, proc|
-#   Universe.renderer_list.each do |renderer|
-#     send("#{renderer}_reader", file, &proc)
-#   end
-# end
+
 new({ particle: :cursor, category: :utility, type: :string })
 
 new({ particle: :preset, category: :utility, type: :string }) do |params|
@@ -154,27 +150,8 @@ new({ particle: :duplicate, category: :utility, type: :string, store: false }) d
                 else
                   0
                 end
-  new_atome_id = "#{@id}_copy_#{copy_number}"
-  new_atome = Atome.new({ type: @type, renderers: @renderers, id: new_atome_id })
-
   attached_atomes = []
   attached_found = attached.dup
-  particles_found = instance_variables.dup
-
-  keys_to_delete = [:@history, :@callback, :@duplicate, :@copy, :@paste, :@touch_code, :@html, :@attached, :@id]
-  keys_to_delete.each { |key| particles_found.delete(key) }
-  params[:id] = new_atome_id
-
-  particles_found.each do |particle_found|
-    particle_name = particle_found.to_s.sub('@', '')
-
-    particle_content = self.send(particle_name)
-    # FIXME: find a better to attach object when false is found
-    particle_content = :view if particle_content == false
-    new_atome.set(particle_name => particle_content)
-    # new_atome.instance_variable_set('@touch_code',touch_code)
-  end
-
   attached_found.each do |child_id_found|
     child_found = grab(child_id_found)
     if child_found
@@ -183,19 +160,17 @@ new({ particle: :duplicate, category: :utility, type: :string, store: false }) d
     end
   end
   params[:attached] = attached_atomes
-  # FIXME: below  dunno why we have to add this manually
-  new_atome.height(@height)
-  new_atome.width(@width)
-  if params.instance_of? Hash
-    params.each do |k, v|
-      new_atome.send(k, v)
-    end
-  end
-
+  infos_found =infos.dup
+  keys_to_delete = [ :history, :callback, :duplicate, :copy, :paste, :touch_code, :html, :attached, :aid]
+  keys_to_delete.each { |key| infos_found.delete(key) }
+  new_atome_id = "#{@id}_copy_#{copy_number}".to_sym
+  infos_found[:id]=new_atome_id
+  infos_found=infos_found.merge(params)
+  new_atome =Atome.new( infos_found)
   @duplicate ||= {}
   @duplicate[new_atome_id] = new_atome
-
   new_atome
+
 end
 
 new({ after: :duplicate }) do |params|

@@ -442,9 +442,12 @@ class Object
     particle_list.delete(:password)
     particle_list.delete(:selection)
     infos = {}
+    particle_list[:css]=:poil
     particle_list.each do |particle_found|
       infos[particle_found[0]] = send(particle_found[0]) unless send(particle_found[0]).nil?
     end
+    # we convert CssProxy object to hash below
+    infos[:css]=eval(infos[:css].to_s)
     infos
   end
 

@@ -6,9 +6,19 @@
 class Atome
   include Essentials
 
+
   def aid(_v = nil)
     @aid
   end
+
+
+  # dummy method to catch a method get all instance variable and try to call a method but initialized is only an
+  # instance variable not a method
+  # FIXME : replace all
+  # def initialized(*_msg)
+  #
+  # end
+
 
   def initialize(new_atome = {}, &atomes_proc)
     # TODO: atome format should always be as followed : {value: 0.44, unit: :px, opt1: 554}
@@ -48,7 +58,7 @@ class Atome
     @html = HTML.new(@id, self)
     @headless = Headless.new(@id, self)
     @initialized={}
-
+    @creator= Universe.current_user
     # now we store the proc in a an atome's property called :bloc
     new_atome[:code] = atomes_proc if atomes_proc
     # we reorder the hash

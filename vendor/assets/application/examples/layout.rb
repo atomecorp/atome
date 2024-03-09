@@ -18,19 +18,6 @@ selected_items.each do |atome_found|
   atomes_found << atome_found
 end
 
-# random_found = atomes_found.sample(17)
-#
-# random_found.each do |atome_id|
-#   atome_found = grab(atome_id)
-#   if atome_found.type == :shape
-#     atome_found.left(rand(700))
-#     atome_found.width(rand(200))
-#     atome_found.height(rand(200))
-#     # atome_found.rotate(rand(90))
-#     atome_found.smooth(rand(120))
-#     atome_found.color({ red: rand, green: rand, blue: rand })
-#   end
-# end
 
 selected_items.layout({ mode: :default, width: 500, height: 22 })
 

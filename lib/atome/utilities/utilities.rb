@@ -462,10 +462,10 @@ class Atome
     # end
   end
 
-  def to_sym
-    puts "sanitizer temp patch when an atome is passed instead of an id"
-    @id
-  end
+  # def to_sym
+  #   puts "sanitizer temp patch when an atome is passed instead of an id"
+  #   @id
+  # end
 
   def sync(params, &bloc)
     params = { data: params } unless params.instance_of? Hash

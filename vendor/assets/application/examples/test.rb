@@ -1,2 +1,1 @@
-puts 'hello'
-puts Universe.particle_list
+# frozen_string_literal: true

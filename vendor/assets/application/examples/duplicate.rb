@@ -52,13 +52,17 @@
 # new({ after: :duplicate }) do |params|
 #   @duplicate[@duplicate.keys[@duplicate.keys.length - 1]]
 # end
+# c=circle
+# c.color({red: 1, id: :titi})
+# # b=box({apply: [:titi], left: 123})
 
-b = circle({ id: :the_cirlce })
+
+b = circle({ id: :the_circle })
 b.text(:hello)
 bb = b.duplicate({  width: 33, left: 234, top: 222 })
 bb.color(:red)
 wait 1 do
-bb2 = b.duplicate({ width: 33, left: 12 })
+bb2 = b.duplicate({ width: 33, left: 12, top: 99 })
 bb3 = b.duplicate({ width: 33, left: 444 })
 bb3.color(:green)
 bb2.color(:orange)
