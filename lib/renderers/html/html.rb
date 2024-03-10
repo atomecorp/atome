@@ -200,7 +200,6 @@ class HTML
 
     # alert "hyperedit"
 
-
     particles_found = particles_found.merge(particles_from_style)
     current_atome = grab(@id)
     usr_bloc.call(particles_found)
@@ -496,14 +495,17 @@ class HTML
   end
 
   def fill(params)
-    atome_path= grab(params[:atome]).path
+    atome_path = grab(params[:atome]).path
     @element[:style][:backgroundImage] = "url('#{atome_path}')"
     @element[:style][:backgroundRepeat] = 'repeat'
-    # @element[:style][:backgroundPosition] = '0 0, 110px 110px'
-    # @element[:style][:backgroundPosition] = "99px 0px"
-    # background-size: auto auto;
-    # @element[:style][:backgroundSize] = "cover"
-    @element[:style][:backgroundSize] = "#{params[:width]}px #{params[:height]}px"
+    if params[:repeat]
+      img_width = @original_atome.width / params[:repeat][:x]
+      img_height = @original_atome.height / params[:repeat][:y]
+      @element[:style][:backgroundSize] = "#{img_width}px #{img_height}px"
+    else
+      @element[:style][:backgroundSize] = "#{params[:width]}px #{params[:height]}px"
+
+    end
 
   end
 

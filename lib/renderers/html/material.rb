@@ -77,3 +77,8 @@ new({ method: :pattern, type: :integer, renderer: :html})
 new({ method: :fill, renderer: :html }) do |params|
   html.fill(params)
 end
+
+new({ method: :opacity, type: :integer, renderer: :html}) do |value|
+  # html.opacity(value)
+  html.style('opacity',value)
+end
