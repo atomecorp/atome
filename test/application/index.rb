@@ -38,7 +38,7 @@
 # require './examples/test'
 #
 #### works
-require "./examples/sub_atome_manipulation"
+# require "./examples/sub_atome_manipulation"
 # require "./examples/increment"
 # require "./examples/matrix"
 # require "./examples/aid"

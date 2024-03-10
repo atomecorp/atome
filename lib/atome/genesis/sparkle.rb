@@ -211,5 +211,4 @@ def user_login
 
 end
 
-puts '------------------------'
 Universe.allow_history=true
