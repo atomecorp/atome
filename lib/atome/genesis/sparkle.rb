@@ -113,6 +113,7 @@ def atome_infos
   server = Universe.current_server
   server ||= 'disconnected'
   puts "server: #{server}"
+
 end
 
 # help and example below :
@@ -207,6 +208,8 @@ def user_login
   sync({ action: :authorization, data: { password: password } }) do |pass|
     puts "password received : #{pass}"
   end
+
 end
 
-# Universe.allow_history=true
+puts '------------------------'
+Universe.allow_history=true

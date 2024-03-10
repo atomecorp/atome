@@ -11,8 +11,8 @@ end
 new({ renderer: :html, method: :hypertext }) do |params|
   html.hypertext(params)
 end
-new({ renderer: :html, method: :hyperedit }) do |params|
-  html.hyperedit(params)
+new({ renderer: :html, method: :hyperedit }) do |params, usr_proc|
+  html.hyperedit(params, usr_proc)
 end
 new({ renderer: :html, method: :read, type: :string }) do |value, &bloc|
   html.read(id, value)

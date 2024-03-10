@@ -6,11 +6,9 @@
 class Atome
   include Essentials
 
-
   def aid(_v = nil)
     @aid
   end
-
 
   # dummy method to catch a method get all instance variable and try to call a method but initialized is only an
   # instance variable not a method

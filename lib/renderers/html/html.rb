@@ -173,7 +173,7 @@ class HTML
     hash_result
   end
 
-  def hyperedit(params)
+  def hyperedit(params, usr_bloc)
     html_object = JS.global[:document].getElementById(params.to_s)
     particles_from_style = {}
     # we get all the styles tag present in the page
@@ -197,10 +197,15 @@ class HTML
       key, value = pair.split(':').map(&:strip)
       particles_from_style[key.to_sym] = value if key && value
     end
+
+    # alert "hyperedit"
+
+
     particles_found = particles_found.merge(particles_from_style)
     current_atome = grab(@id)
-    current_atome.callback({ hyperedit: particles_found })
-    current_atome.call(:hyperedit)
+    usr_bloc.call(particles_found)
+    # current_atome.callback({ hyperedit: particles_found })
+    # current_atome.call(:hyperedit)
 
   end
 

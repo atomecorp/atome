@@ -107,6 +107,7 @@ class Atome
          instance_exec(val, &proc)
        end
     end
+
   end
 
   def particle_main(element, params, &user_proc)
@@ -165,7 +166,7 @@ class Atome
   end
 
   def atome_sanitizer(element, params, &user_proc)
-    # Attention: the method is the same as the one used for the partcicle
+    # Attention: the method is the same as the one used for the particle
     particle_sanitizer(element, params)
   end
 
@@ -199,9 +200,14 @@ class Atome
   #
   # end
 
-  def history(filter = {})
-    filter[:id] = @id
-    Universe.story(filter)
+  # def history(filter = {})
+  #
+  #   filter[:id] = @id
+  #   Universe.story(filter)
+  # end
+
+  def history
+    Universe.story
   end
 
   # def broadcasting(element)
@@ -305,10 +311,10 @@ class Atome
     end
   end
 
-  def to_hash
+  def particles_to_hash
     hash = {}
     instance_variables.each do |var|
-      next if %i[@html_object @history].include?(var)
+      next if %i[@html_object @history, @initialized].include?(var)
 
       hash[var.to_s.delete('@').to_sym] = instance_variable_get(var)
     end
@@ -317,7 +323,7 @@ class Atome
 
   def refresh
     # we get the current color because they will be removed
-    particles_found = to_hash
+    particles_found = particles_to_hash
     particles_found.each do |particle_found, value_found|
       send(particle_found, value_found)
     end

@@ -242,9 +242,10 @@ class Universe
 
     def historicize(id, operation, element, params)
 
-      if @allow_history && @database_ready
-        A.sync({ action: :historicize, data: { table: :user } }) do |_db_state|
-        end
+      # if @allow_history && @database_ready
+        if @allow_history
+      #   A.sync({ action: :historicize, data: { table: :user } }) do |_db_state|
+      #   end
         operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
         @increment += 1
         @increment = @increment % 100
@@ -253,20 +254,21 @@ class Universe
       end
     end
 
-    def story(filter)
-      # temp algo awaiting db to be ready, just for POC and tests
-      return unless filter
-
-      operation = filter[:operation]
-      atome_id = filter[:id]
-      particle = filter[:particle]
-      filtered_history = []
-      @history.each do |operation_number, alteration|
-        if alteration[atome_id] && (alteration[atome_id][operation]) && (alteration[atome_id][operation][particle])
-          filtered_history << { operation: operation_number, filter[:particle] => alteration[atome_id][operation][particle], sync: alteration[:sync], time: alteration[:time] }
-        end
-      end
-      filtered_history
+    def story
+      @history
+      # # temp algo awaiting db to be ready, just for POC and tests
+      # return unless filter
+      #
+      # operation = filter[:operation]
+      # atome_id = filter[:id]
+      # particle = filter[:particle]
+      # filtered_history = []
+      # @history.each do |operation_number, alteration|
+      #   if alteration[atome_id] && (alteration[atome_id][operation]) && (alteration[atome_id][operation][particle])
+      #     filtered_history << { operation: operation_number, filter[:particle] => alteration[atome_id][operation][particle], sync: alteration[:sync], time: alteration[:time] }
+      #   end
+      # end
+      # filtered_history
     end
 
   end

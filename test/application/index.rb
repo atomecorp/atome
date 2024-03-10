@@ -1,28 +1,13 @@
 #  frozen_string_literal: true
 
-# To repair
-require "./examples/duplicate"
-# require "./examples/layout"
-# require "./examples/random"
-# require "./examples/find"
-# require "./examples/copy"
-# require "./examples/category"
-# require "./examples/preset"
-# require "./examples/callback"
-# require "./examples/convert"
-# require "./examples/hypertext"
-# require "./examples/sync"
-# require "./examples/refresh"
-# require "./examples/type_mutation"
-# require "./examples/history"
-# To repair
-
-
+# deprecated:
 
 
 # require "./examples/debug"
 
 # make it works
+# require "./examples/history"
+# require "./examples/sync"
 # require "./examples/generator_and_build"
 # require "./examples/display"
 
@@ -48,9 +33,10 @@ require "./examples/duplicate"
 # require './works/photos'
 # require './works/photos6'
 # require './test'
-require './examples/test'
+# require './examples/test'
 #
 #### works
+require "./examples/sub_atome_manipulation"
 # require "./examples/increment"
 # require "./examples/matrix"
 # require "./examples/aid"
