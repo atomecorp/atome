@@ -73,3 +73,7 @@ new({ method: :thickness, type: :integer, renderer: :html})
 
 # end
 new({ method: :pattern, type: :integer, renderer: :html})
+
+new({ method: :fill, renderer: :html }) do |params|
+  html.fill(params)
+end

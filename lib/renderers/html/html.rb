@@ -495,6 +495,18 @@ class HTML
     end
   end
 
+  def fill(params)
+    atome_path= grab(params[:atome]).path
+    @element[:style][:backgroundImage] = "url('#{atome_path}')"
+    @element[:style][:backgroundRepeat] = 'repeat'
+    # @element[:style][:backgroundPosition] = '0 0, 110px 110px'
+    # @element[:style][:backgroundPosition] = "99px 0px"
+    # background-size: auto auto;
+    # @element[:style][:backgroundSize] = "cover"
+    @element[:style][:backgroundSize] = "#{params[:width]}px #{params[:height]}px"
+
+  end
+
   def filter(property, value)
     filter_needed = "#{property}(#{value})"
     @element[:style][:filter] = filter_needed

@@ -114,3 +114,4 @@ new({ after: :pattern })do |params|
   params
 end
 # new({ particle: :border, category: :material, type: :int })
+new({particle: :fill})
