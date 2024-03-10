@@ -495,18 +495,48 @@ class HTML
   end
 
   def fill(params)
-    atome_path = grab(params[:atome]).path
-    @element[:style][:backgroundImage] = "url('#{atome_path}')"
-    @element[:style][:backgroundRepeat] = 'repeat'
-    if params[:repeat]
-      img_width = @original_atome.width / params[:repeat][:x]
-      img_height = @original_atome.height / params[:repeat][:y]
-      @element[:style][:backgroundSize] = "#{img_width}px #{img_height}px"
-    else
-      @element[:style][:backgroundSize] = "#{params[:width]}px #{params[:height]}px"
+    # we remove previous background
+    elements_to_remove = @element.getElementsByClassName('background')
 
+    elements_to_remove = elements_to_remove.to_a
+    elements_to_remove.each do |child|
+      @element.removeChild(child)
     end
+    params.each do |param|
+      background_layer = JS.global[:document].createElement("div")
+      background_layer[:style][:transform] = "rotate(#{param[:rotate]}deg)"  # Applique une rotation de 45 degrés à l'élément
+      background_layer[:style][:position] = "absolute"
 
+      if param[:position]
+        background_layer[:style][:top] = "#{param[:position][:x]}px"
+        background_layer[:style][:left] = "#{param[:position][:y]}px"
+      else
+        background_layer[:style][:top] = "0"
+        background_layer[:style][:left] = "0"
+      end
+
+      if param[:size]
+        background_layer[:style][:width] = "#{param[:size][:x]}px"
+        background_layer[:style][:height] = "#{param[:size][:y]}px"
+      else
+        background_layer[:style][:width] = "100%"
+        background_layer[:style][:height] = "100%"
+      end
+
+      atome_path = grab(param[:atome]).path
+      background_layer[:style][:backgroundImage] = "url('#{atome_path}')"
+      background_layer[:style][:backgroundRepeat] = 'repeat'
+      background_layer[:className] = 'background'
+      background_layer[:style][:opacity] = param[:opacity]
+      if param[:repeat]
+        img_width = @original_atome.width / param[:repeat][:x]
+        img_height = @original_atome.height / param[:repeat][:y]
+        background_layer[:style][:backgroundSize] = "#{img_width}px #{img_height}px"
+      else
+        background_layer[:style][:backgroundSize] = "#{param[:width]}px #{param[:height]}px"
+      end
+      @element.appendChild(background_layer)
+    end
   end
 
   def filter(property, value)
