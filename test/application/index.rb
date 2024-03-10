@@ -12,6 +12,8 @@
 # require "./examples/display"
 
 # TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
+# TODO : we may return an atome instead of a an arry in genesis/ew_atome group({ collect: collected_atomes })
+# TODO :  finish  sync and history   apis
 
 # require "./web2"
 # alert Universe.eVe
