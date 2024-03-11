@@ -3,6 +3,7 @@
 new({ particle: :touch, category: :event, type: :hash, store: false })
 new({ sanitizer: :touch }) do |params, user_bloc|
   # TODO: factorise code below
+  # alert  "touch_code: #{@touch_code}"
   @touch ||= {}
   @touch_code ||= {}
   option = true
