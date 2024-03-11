@@ -105,7 +105,10 @@ class Universe
     def id_to_aid(id, aid)
       @atomes_ids[id] = aid
     end
-
+    # def update_atome_id(aid, atome, prev_id)
+    #   @atomes[id] = atome
+    #   @atomes.delete(prev_id)
+    # end
     # def update_atome_id(id, atome, prev_id)
     #   @atomes[id] = atome
     #   @atomes.delete(prev_id)
@@ -114,7 +117,9 @@ class Universe
     def user_atomes
       collected_id = []
       @atomes.each do |id_found, atome_found|
-        collected_id << id_found unless atome_found.tag && atome_found.tag[:system]
+        # collected_id << id_found unless atome_found.tag && atome_found.tag[:system]
+        collected_id << atome_found.id unless atome_found.tag && atome_found.tag[:system]
+
       end
       collected_id
     end

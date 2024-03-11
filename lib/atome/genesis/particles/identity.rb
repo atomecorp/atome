@@ -8,12 +8,21 @@ new({ sanitizer: :id }) do |params|
 
   params = params.to_sym
   # we check id is already assign
+  # the condition below is to prevent the creation of multiple unwanted colors with same property and no ID specified
+  #   if @id.to_sym != params
+  #     Universe.update_atome_id(params, self, @id)
+  #   else
+  #     Universe.add_to_atomes(params, self)
+  #   end
 
-    # if @id.to_sym != params
-    #   Universe.update_atome_id(params, self, @id)
-    # else
-    #   Universe.add_to_atomes(params, self)
-    # end
+
+  # Universe.atomes.each do |_aid,atome_f|
+  #
+  #   if atome_f.id == params
+  #     puts  "===> no for #{params}"
+  #   end
+  #
+  # end
 
   params
 end
