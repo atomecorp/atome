@@ -28,25 +28,32 @@ class EDen
       # database connexion :
       db = db_access
       # retrieving data from the 'identity' table
-      identity_items = db[:identity]
+      identity_items = db[:user]
       # retrieving sent data
-      user_email = data["email"]
+      user_email = data["particles"]["email"]
       # data cleansing of superfluous characters
       sanitized_email = sanitize_email(user_email)
       # database search
       mail_exists = identity_items.where(email: sanitized_email).first
-
+      # mail_exists = identity_items.where(email: user_email).first
+      puts 'ok'
       if !mail_exists
-        return { return: 'Email non trouvé, erreur', authorized: false, message_id: message_id }
+        @@pass = nil
+        puts "authentication @@pass : #{@@pass}"
+        return { return: 'Email non trouvé, erreur', message_id: message_id }
       else
         @@mail = user_email
+        puts "authentication @@mail du else : #{@@mail}"
+        puts "authentication @@pass du else : #{@@pass}"
         if @@mail && @@pass
+          puts "authentication @@mail du else v2 : #{@@mail}"
+          puts "authentication @@pass du else v2 : #{@@pass}"
           @@mail = nil
           @@pass = nil
-          return { return: 'logged', authorized: true, message_id: message_id }
+          return { return: 'logged', mail_authorized: true, user_id: mail_exists[:user_id], message_id: message_id }
           # Send the user account template
         else
-          return { return: 'Email trouvé, cherche mdp', authorized: true, message_id: message_id }
+          return { return: 'Email trouvé, cherche mdp', mail_authorized: false, message_id: message_id }
         end
       end
     end
@@ -55,25 +62,32 @@ class EDen
       # database connexion :
       db = db_access
       # retrieving data from the 'security' table
-      security_items = db[:security]
+      security_items = db[:user]
       # retrieving sent data
-      user_password = data["password"]
+      user_password = data["particles"]["password"]
       # database search
       user_exists = security_items.where(password: user_password).first
+      puts "user_exists : #{user_exists}"
 
       if !user_exists
-        puts "password recu : :#{user_password},   @@mail : #{  @@mail} , pass : #{  @@pass}"
-        return { return: 'Password non trouvé, erreur', authorized: false, message_id: message_id }
+        @@mail = nil
+        puts "authorization @@mail du else : #{@@mail}"
+        return { return: 'Password non trouvé, erreur', message_id: message_id }
       else
         @@pass = user_password
+        puts "authorization @@pass : #{@@pass}"
+        puts "authorization @@mail du else : #{@@mail}"
         if @@mail && @@pass
+          puts "authorization @@pass v2 : #{@@pass}"
+          puts "authorization @@mail du else v2 : #{@@mail}"
           # reset variables containing mail and password
           @@mail = nil
           @@pass = nil
-          return { return: 'logged', authorized: true, message_id: message_id }
+          # return { return: 'Password trouvé, cherche mdp', password_authorized: false, message_id: message_id }
+          return { return: 'logged', password_authorized: true, user_id: user_exists[:user_id], message_id: message_id }
           # Send the user account template
         else
-          return { return: 'Password trouvé, cherche mdp', authorized: true, message_id: message_id }
+          return { return: 'Password trouvé, cherche mdp', password_authorized: false, message_id: message_id }
         end
       end
     end

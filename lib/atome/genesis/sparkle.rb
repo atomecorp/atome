@@ -143,7 +143,7 @@ def atome_genesis
   atome_infos
   A.server({ address: 'localhost:9292', type: 'ws' })
   A.init_websocket do |msg|
-    puts "websocket initailsaed #{msg}"
+    puts "websocket initialised #{msg}"
   end
 end
 
