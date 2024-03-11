@@ -17,33 +17,3 @@ b.touch(:down) do
   end
 end
 
-# c= color({ red: 1, id: :toto })
-# # puts c.aid
-# puts Universe.atomes.length
-# wait 0.5 do
-#   c= color({ red: 1, id: :toto })
-#   # puts c.aid
-#   puts Universe.atomes.length
-# end
-
-# wait 1 do
-#   c= color({ red: 1, id: :toto })
-#   puts c.aid
-#   puts Universe.atomes.length
-#   wait 1 do
-#     c= color({ red: 1, id: :toto })
-#     puts c.aid
-#     puts Universe.atomes.length
-#     wait 1 do
-#       c= color({ red: 1, id: :toto })
-#       puts c.aid
-#       puts Universe.atomes.length
-#       wait 1 do
-#         c= color({ red: 1, id: :toto })
-#         puts c.aid
-#         puts Universe.atomes.length
-#         alert "=> #{Universe.user_atomes}"
-#       end
-#     end
-#   end
-# end

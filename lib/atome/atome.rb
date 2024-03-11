@@ -47,8 +47,11 @@ class Atome
 
     @id = new_atome[:id] || @aid
     Universe.atomes.each do |_aid,atome_f|
+      # we affect the already existing atome to target
         if atome_f.id == @id
-          puts  "===> no for #{@id}"
+          new_atome[:affect].each do |affected|
+            grab(affected).apply(@id)
+          end
           return false
         end
     end
