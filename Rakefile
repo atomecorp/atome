@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 require 'fileutils'
 require 'securerandom'
 require 'digest/sha2'
@@ -169,6 +168,7 @@ task :test_opal do
 
   puts 'atome opal is build and running!'
 end
+
 task :test_server_wasm do
   project_name = :test
   source = '.'
@@ -200,12 +200,14 @@ task :test_server_wasm do
   build_for_wasm_server(destination, project_name, 9292, :production)
 
 end
+
+
 task :test_server do
   project_name = :test
   source = '.'
   destination = './tmp'
   script_source = './test/application'
-  create_application(source, destination, project_name, refresh_eVe)
+  create_application(source, destination, project_name)
   # the line below is to add addition script to the application folder (useful for test per example)
   add_to_application_folder(script_source, destination, project_name)
   # build opal
@@ -241,9 +243,8 @@ task :test_server do
     end
 
   end
-  build_for_opal_server(destination, project_name, 9292, :production)
+  build_for_opal_server(destination, project_name, 9292, :production, true)
 end
-
 
 task :opal_server_rebuild do
   project_name = :test
@@ -401,7 +402,6 @@ task :build_gem do
   puts 'atome gem built and installed'
 end
 
-
 task :push_gem do
 
   # building gem
@@ -433,7 +433,6 @@ task :push_gem do
   end
   puts "#{latest_file} pushed"
 end
-
 
 task :full_test do
 

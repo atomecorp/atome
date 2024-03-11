@@ -169,7 +169,7 @@ def build_opal_library(atome_source, destination, project_name, production = nil
   end
 end
 
-def create_application(source, destination, project_name, eVe_copy=true)
+def create_application(source, destination, project_name)
   project_path = "#{destination}/#{project_name}"
   FileUtils.mkdir_p(destination) unless Dir.exist?(destination)
   FileUtils.mkdir_p(project_path) unless Dir.exist?(project_path)
@@ -392,7 +392,35 @@ def build_for_osx(destination, mode = :dev)
 
 end
 
-def build_for_opal_server(destination, project_name, port, production)
+def init_server(destination, project_name, port, prod, ru_file)
+
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # code to exec with Windows
+    File.open("#{destination}\\#{project_name}\\server\\config.ru", "w") do |f|
+      f.write(ru_file)
+    end
+    # `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
+    system("start cmd /c cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}")
+
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # code to exec with MacOS
+    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
+      f.write(ru_file)
+    end
+    # `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+    system("cd #{destination}/#{project_name}/server && puma --port #{port} #{prod}")
+
+  else
+    # code to exec with Unix/Linux
+    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
+      f.write(ru_file)
+    end
+    # `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+    system("cd #{destination}/#{project_name}/server && puma --port #{port} #{prod}")
+  end
+end
+
+def build_for_opal_server(destination, project_name, port, production, run_server = true)
   if production
     prod = '--env production'
     ru_file = <<STR
@@ -410,31 +438,13 @@ run Unreloader
 require './atome_server.rb'
 STR
   end
-
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-    # code to exec with Windows
-    File.open("#{destination}\\#{project_name}\\server\\config.ru", "w") do |f|
-      f.write(ru_file)
-    end
-    `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # code to exec with MacOS
-    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
-      f.write(ru_file)
-    end
-    `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
-  else
-    # code to exec with Unix/Linux
-    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
-      f.write(ru_file)
-    end
-    `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+  if run_server ==true
+    init_server(destination, project_name, port, prod, ru_file)
   end
 
 end
 
-
-def build_for_wasm_server(destination, project_name, port, production)
+def build_for_wasm_server(destination, project_name, port, production, run_server = true)
   if production
     prod = '--env production'
     ru_file = <<STR
@@ -452,33 +462,29 @@ run Unreloader
 require './atome_server.rb'
 STR
   end
-
-  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-
-    # code to exec with Windows
-    File.open("#{destination}\\#{project_name}\\server\\config.ru", "w") do |f|
-      f.write(ru_file)
-    end
-    `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
-  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
-    # code to exec with MacOS
-    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
-      f.write(ru_file)
-    end
-    # puts 'w-a'
-
-    `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
-    # puts 'w-b'
-
-  else
-    # puts 'e'
-    # code to exec with Unix/Linux
-    File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
-      f.write(ru_file)
-    end
-    `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+  if run_server ==true
+    init_server(destination, project_name, port, prod, ru_file)
   end
-  # puts 'f'
+  # if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+  #   # code to exec with Windows
+  #   File.open("#{destination}\\#{project_name}\\server\\config.ru", "w") do |f|
+  #     f.write(ru_file)
+  #   end
+  #   `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
+  # elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+  #   # code to exec with MacOS
+  #   File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
+  #     f.write(ru_file)
+  #   end
+  #   `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+  # else
+  #   # code to exec with Unix/Linux
+  #   File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
+  #     f.write(ru_file)
+  #   end
+  #   `cd #{destination}/#{project_name}/server;puma --port #{port} #{prod}`
+  # end
+
 end
 
 # utils
@@ -826,7 +832,7 @@ else
   if ARGV.include?('server_refresh')
     puts 're building Server'
     build_opal_application(nil, destination, project_name)
-    timestamp=Time.now.strftime("%Y%m%d%H%M%S")
+    timestamp = Time.now.strftime("%Y%m%d%H%M%S")
 
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec with Windows
