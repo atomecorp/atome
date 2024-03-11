@@ -157,7 +157,8 @@ task :test_opal do
   # open the app
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
     # code to exec for Windows
-    `start #{destination}\\#{project_name}\\src\\index_opal.html`
+    # `start \\tmp\\#{project_name}\\src\\index_opal.html`
+    `start "" "#{destination}\\#{project_name}\\src\\index_opal.html"`
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # code to exec for MacOS
     `open #{destination}/#{project_name}/src/index_opal.html`
@@ -232,7 +233,6 @@ task :test_server do
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
        `start  http://localhost:9292?date=#{timestamp}`
-      # `start #{destination}\\#{project_name}\\src\\index_server.html`
 
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec for MacOS

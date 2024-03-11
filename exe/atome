@@ -400,7 +400,8 @@ def init_server(destination, project_name, port, prod, ru_file)
       f.write(ru_file)
     end
     # `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
-    system("start cmd /c cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}")
+    # system("start cmd /c cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}")
+    system("cd /d \"#{destination}\\#{project_name}\\server\" && puma --port #{port} #{prod}")
 
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # code to exec with MacOS
