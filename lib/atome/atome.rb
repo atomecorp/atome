@@ -44,8 +44,15 @@ class Atome
     @int8 = {}
     @css = {}
     @aid = identity_generator
-    Universe.add_to_atomes(@aid, self)
+
     @id = new_atome[:id] || @aid
+    Universe.atomes.each do |_aid,atome_f|
+        if atome_f.id == @id
+          puts  "===> no for #{@id}"
+          return false
+        end
+    end
+    Universe.add_to_atomes(@aid, self)
     Universe.id_to_aid(@id, @aid)
     @type = new_atome[:type] || :element
     @attached = []

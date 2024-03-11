@@ -35,7 +35,7 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
       id_found = @id.to_sym
       parent_found = grab(@attach)
       parent_found.attached.delete(id_found)
-      Universe.delete(@id)
+      Universe.delete(@aid)
     end
   elsif params.instance_of? Hash
 

@@ -2,42 +2,15 @@
 
 new({ atome: :color, type: :hash })
 
-# new({ post: :color }) do |params|
-#   puts "====> #{params}"
-#   params
-# end
-# new({ pre: :color}) do |params|
-#   alert "==> pre color params : #{params}"
-# end
-
-# new({ atome: :color, type: :hash })do |params|
-#   puts "1 #{params}______"
-#   params
-# end
-
-# new ({post: :color}) do |params|
-#   # # TODO : hack must call it properly thru renderer
-#   # params[:affect].each do |affected|
-#   #   grab(affected).html.reset_background
-#   # end
-# end
 new({ sanitizer: :color }) do |params|
-  # alert "sanitizer color: #{params}"
   params = create_color_hash(params) unless params.instance_of? Hash
-  # if params[:id]
-  #   alert "id is #{params[:id]}"
-  # end
-  # the condition below is to prevent the creation of multiple unwanted colors with same property and no ID specified
   unless params[:id]
     uniq_value = "#{params[:red].to_s.sub('.', '_')}_#{params[:green].to_s.sub('.', '_')}_#{params[:blue].to_s.sub('.', '_')}_#{params[:alpha].to_s.sub('.', '_')}_#{params[:left].to_s.sub('.', '_')}_#{params[:top].to_s.sub('.', '_')}_#{params[:diffusion].to_s.sub('.', '_')}"
-    params[:id] = "#{@id}_color_#{uniq_value}".to_sym
+    params[:id] = "color_#{uniq_value}".to_sym
   end
   params
 end
-# new({ post: :color }) do
-#
-#   # Atome.global_monitoring(self, [:red, :blue, :blue, :alpha, :left, :right, :diffusion], [:variable1, :variable2])
-# end
+
 new({ atome: :image })
 new({ sanitizer: :image }) do |params|
   unless params.instance_of? Hash
@@ -131,8 +104,6 @@ new({ atome: :vector })
 new({ atome: :matrix })
 new({ atome: :atomized, type: :hash })
 
-# new({ atome: :color, type: :model })
-# new({ atome: :color, type: :template })
 
 
 

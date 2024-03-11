@@ -4,7 +4,10 @@ b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2 })
 
 t=text({id: :the_text, data: 'type of touch : ?'})
 
-t.touch(:down) do
+t.touch(:down) do |event|
+
+  puts event[:pageX]
+  puts event[:pageY]
   b.touch({remove: :down})
    # b.touch(:remove) # or  b.touch(false) to remove all touches bindings
   t.data('touch down killed')
