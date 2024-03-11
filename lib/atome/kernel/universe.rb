@@ -106,10 +106,10 @@ class Universe
       @atomes_ids[id] = aid
     end
 
-    def update_atome_id(id, atome, prev_id)
-      @atomes[id] = atome
-      @atomes.delete(prev_id)
-    end
+    # def update_atome_id(id, atome, prev_id)
+    #   @atomes[id] = atome
+    #   @atomes.delete(prev_id)
+    # end
 
     def user_atomes
       collected_id = []
