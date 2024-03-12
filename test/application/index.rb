@@ -40,7 +40,7 @@
 # require './examples/test'
 #
 #### works
-# require "./examples/tools"
+require "./examples/tools"
 # require "./examples/opacity"
 # require "./examples/fill"
 # require "./examples/sub_atome_manipulation"
@@ -122,7 +122,7 @@
 # require "./examples/match"
 # require "./examples/scroll"
 # require "./examples/video"
-require "./examples/login"
+# require "./examples/login"
 
 # Native tests #
 # require "./examples/browse"

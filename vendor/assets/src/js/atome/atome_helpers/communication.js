@@ -1,5 +1,5 @@
 const communication = {
-    websocket: null,
+    websocket: null,// websocket init  for server
     initialize: function () {
         this.websocket = new WebSocket('ws://localhost:9292')
         // this.websocket = new WebSocket(address);
@@ -22,7 +22,7 @@ const communication = {
             event.preventDefault();
             console.log('connection lost!')
         };
-    },
+    },// Controller for native core
     controller_sender: function (msg) {
         let json_msg = JSON.parse(msg);
 
@@ -62,6 +62,7 @@ const communication = {
         }
     },
     connect: function (type, server, user, pass, atomes, particles) {
+        // websocket for server
         this.websocket = new WebSocket(type + '://' + server);
         this.websocket.onopen = function (event) {
 

@@ -84,7 +84,7 @@ end
 new({ particle: :remove_classes, category: :material, type: :boolean }) do |value|
   Universe.classes[value].delete(id)
 end
-new ({ particle: :opacity, category: :material, type: :int })
+# new ({ particle: :opacity, category: :material, type: :int })
 
 # vector shape
 new({ particle: :definition, category: :material, type: :string })
