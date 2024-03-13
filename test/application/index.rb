@@ -37,10 +37,10 @@
 # require './works/photos'
 # require './works/photos6'
 # require './test'
-# require './examples/test'
+require './examples/test'
 #
 #### works
-require "./examples/tools"
+# require "./examples/tools"
 # require "./examples/opacity"
 # require "./examples/fill"
 # require "./examples/sub_atome_manipulation"

@@ -294,4 +294,8 @@ function loadFeature() {
     }
 }
 
-
+function my_js_fct(val){
+    // rubyVM.eval("my_ruby_meth('"+val+"')");
+    Opal.eval("my_ruby_meth('"+val+"')");
+    Opal.Object.$my_ruby_meth(val);
+}
