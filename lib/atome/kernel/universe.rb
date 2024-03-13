@@ -105,6 +105,7 @@ class Universe
     def id_to_aid(id, aid)
       @atomes_ids[id] = aid
     end
+
     # def update_atome_id(aid, atome, prev_id)
     #   @atomes[id] = atome
     #   @atomes.delete(prev_id)
@@ -197,10 +198,8 @@ class Universe
     end
 
     def current_server
-      # Remplacez 'atome' par la valeur correcte pour votre environnement Atome
-      return unless RUBY_ENGINE.downcase == 'opal'
+      # return unless RUBY_ENGINE.downcase == 'opal'
       JS.global[:location][:href].to_s
-
     end
 
     def current_user
@@ -248,14 +247,16 @@ class Universe
     def historicize(id, operation, element, params)
 
       # if @allow_history && @database_ready
-        if @allow_history
-      #   A.sync({ action: :historicize, data: { table: :user } }) do |_db_state|
-      #   end
+      if @allow_history
+        #   A.sync({ action: :historicize, data: { table: :user } }) do |_db_state|
+        #   end
         operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
         @increment += 1
         @increment = @increment % 100
+
         JS.global[:localStorage].setItem(operation_timing, "{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
         @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
+
       end
     end
 

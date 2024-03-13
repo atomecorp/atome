@@ -223,6 +223,9 @@ class HTML
     # particles=params[:particles]
     # 'atomeJS.connect' is in the communication.js file ( connect: function (type, server, )
     JS.eval("atomeJS.connect('#{type}','#{server}')")
+
+    # @websocket =  JS.new(JS.global.WebSocket.new("#{type}://#{server}"))
+
     # JS.eval("atomeJS.connect('ws://#{server}')")
   end
 

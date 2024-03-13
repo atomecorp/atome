@@ -110,10 +110,6 @@ def atome_infos
   puts "users: #{Universe.users}"
   puts "current user: #{Universe.current_user}"
   puts "machine: #{Universe.current_machine}"
-  server = Universe.current_server
-  server ||= 'disconnected'
-  puts "server: #{server}"
-
 end
 
 # help and example below :
@@ -141,21 +137,23 @@ end
 # the method below init the user
 def atome_genesis
   atome_infos
-  A.server({ address: 'localhost:9292', type: 'ws' })
-  A.init_websocket do |msg|
-    puts "websocket initialised #{msg}"
+  server = Universe.current_server
+  server ||= 'disconnected'
+  puts "server: #{server}"
+
+  if server.start_with?('http')
+    A.server({ address: 'localhost:9292', type: 'ws' })
+    A.init_websocket do |msg|
+      puts "websocket initialised #{msg}"
+    end
   end
+
 end
 
 def init_database # this method is call from JS (atome/communication) at WS connection
   # we init the db file eDen
   A.sync({ action: :init_db, data: { database: :eDen } }) do |data|
-
-    if data[:data][:message] == 'database_ready'
-      Universe.database_ready = true
-    else
-      Universe.database_ready = false
-    end
+    Universe.database_ready = data[:data][:message] == 'database_ready'
   end
   # authentication : email, pass
   # atome : date, particles
@@ -163,7 +161,7 @@ def init_database # this method is call from JS (atome/communication) at WS conn
 
   particles = Universe.particle_list
   # now we populate the DB
-  A.sync({ action: :crate_db_table, data: { table: :user, type: :string  } }) do |_db_state|
+  A.sync({ action: :crate_db_table, data: { table: :user, type: :string } }) do |_db_state|
     # puts "===> #{_db_state}"
   end
 
@@ -193,10 +191,9 @@ def init_database # this method is call from JS (atome/communication) at WS conn
   end
 
   # now we send localstorage content to the server
-  puts "now we send localstorage  send_localstorage_content to the server"
-  send_localstorage_content
-  # A.message({ action: :localstorage, data: get_localstorage_content }) do |_db_state|
-  # end
+  puts "sending localstorage"
+  Atome.send_localstorage_content
+
 end
 
 def user_login
@@ -211,4 +208,4 @@ def user_login
 
 end
 
-Universe.allow_history=true
+Universe.allow_history = true

@@ -6,8 +6,36 @@ require 'json'
 class Atome
   class << self
     attr_accessor :initialized
+    def sanitize_data_for_json(data)
+      data = data.gsub('"', '\\"')
+      # case data
+      # when String
+      #   data.gsub('"', '\\"')
+      # when Hash
+      #   data.transform_values { |value| sanitize_data(value) }
+      # when Array
+      #   data.map { |value| sanitize_data(value) }
+      # else
+      #   data
+      # end
+      data
+    end
 
-    # end
+
+    def send_localstorage_content
+      storage = JS.global[:localStorage]
+      storage_array = storage.to_a
+      storage_array.each_with_index do |_i, index|
+        key = JS.global[:localStorage].key(index)
+         sanitize_data_for_json(storage.getItem(key))
+      end
+    end
+
+    def server_receiver(params)
+      callback_found = Universe.messages[params[:message_id]]
+      callback_found.call(params) if callback_found.is_a? Proc
+    end
+
     def file_handler(parent, content, bloc)
       grab(parent).instance_exec(content, &bloc)
     end
@@ -403,10 +431,6 @@ class Atome
     end
   end
 
-  def server_receiver(params)
-    callback_found = Universe.messages[params[:message_id]]
-    callback_found.call(params) if callback_found.is_a? Proc
-  end
 
   def init_websocket
     connection(@current_server)
@@ -434,39 +458,7 @@ class Atome
     storage_items
   end
 
-  def sanitize_data_for_json(data)
-    data = data.gsub('"', '\\"')
-    # case data
-    # when String
-    #   data.gsub('"', '\\"')
-    # when Hash
-    #   data.transform_values { |value| sanitize_data(value) }
-    # when Array
-    #   data.map { |value| sanitize_data(value) }
-    # else
-    #   data
-    # end
-    data
-  end
 
-  def send_localstorage_content
-    storage = JS.global[:localStorage]
-    storage_array = storage.to_a
-    # storage_items={}
-    storage_array.each_with_index do |_i, index|
-      key = JS.global[:localStorage].key(index)
-      value = sanitize_data_for_json(JS.global[:localStorage].getItem(key))
-      # storage_items[key] = value
-      # puts key
-      # puts value
-      # A.message({ action: :localstorage, data: {key => value} }) do |_db_state|
-      #   # puts  _db_state
-      # end
-    end
-    # A.message({ action: :end_localstorage, data: '' }) do |_db_state|
-    #   puts _db_state
-    # end
-  end
 
   # def to_sym
   #   puts "sanitizer temp patch when an atome is passed instead of an id"

@@ -294,8 +294,12 @@ function loadFeature() {
     }
 }
 
-function my_js_fct(val){
-    // rubyVM.eval("my_ruby_meth('"+val+"')");
-    Opal.eval("my_ruby_meth('"+val+"')");
-    Opal.Object.$my_ruby_meth(val);
+///test methode
+function my_opal_js_fct(val){
+    Opal.eval("my_ruby_meth('opal call ruby with eval: "+val+"')");
+    Opal.Object.$my_ruby_meth('opal call ruby with method name: '+val);
+}
+
+function my_ruby_wasm_js_fct(val){
+    rubyVM.eval("my_ruby_meth('ruby wasm eval: "+val+"')");
 }

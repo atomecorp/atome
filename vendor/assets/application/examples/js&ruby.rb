@@ -1,31 +1,18 @@
 # frozen_string_literal: true
 
-
 # JS to ruby example & ruby to js example
 
 def my_ruby_meth(val)
-  alert "kool from rb_meth: #{val}"
+  puts "=> rb_meth call from js: #{val}"
 end
 
-opal_js_code=<<STR
-function my_js_fct(val){
-    Opal.eval("my_ruby_meth('"+val+"')");
-    Opal.Object.$my_ruby_meth(val);
-}
-STR
+
+if Atome::host.to_s == 'web-opal'
+  JS.eval("my_opal_js_fct('js fct call with an eval')")
+  JS.global.my_opal_js_fct('js fct call directly')
+elsif Atome::host.to_sym  == :pure_wasm
+  JS.eval("my_ruby_wasm_js_fct('js fct call with an eval')")
+end
 
 
-ruby_wasm_js_code=<<STR
-function my_js_fct(val){
-    rubyVM.eval("my_ruby_meth('"+val+"')");
-}
-STR
-
-
-
-JS.eval("my_js_fct('hello')")
-JS.global.my_js_fct('super')
-
-
-
-
+"js code is in  js/atome/atome.js"

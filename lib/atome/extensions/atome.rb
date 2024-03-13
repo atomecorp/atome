@@ -1,5 +1,7 @@
 # frozen_string_literal: true
+
 module ObjectExtension
+
 
   def new(params, &bloc)
     # Genesis = Genesis.Genesis

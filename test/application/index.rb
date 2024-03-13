@@ -16,6 +16,61 @@
 # TODO :  finish  sync and history  apis
 # TODO :  Make audio format mp4 like with tacks and effect references
 # TODO :  Make video format mp4 like with tacks and effect references
+# TODO :  message to server should not be a particle because the should'nt be store and sync
+# TODO :  atome and methods that generate particle and atome should be store with the params but not the atomes gnarated
+# to avoid bloated the localstorage and Db
+# TODO :Websocket must be rewritten to avoid Opal.eval ans be coded in ruby not in js like the code below :
+# class WebSocketManager
+#   def initialize(type, server, user, pass, atomes, particles)
+#     @type = type
+#     @server = server
+#     @user = user
+#     @pass = pass
+#     @atomes = atomes
+#     @particles = particles
+#     @websocket = nil
+#   end
+#
+#   def connect
+#     # Create a new WebSocket object
+#     @websocket = JS.global.WebSocket.new("#{@type}://#{@server}")
+#
+#     # Define event handlers
+#     @websocket.onopen = method(:on_open)
+#     @websocket.onmessage = method(:on_message)
+#     @websocket.onclose = method(:on_close)
+#     @websocket.onerror = method(:on_error)
+#   end
+#
+#   def on_open(event)
+#     # Called when the connection is opened
+#     JS.global.loadApplicationJs() # Assuming this is a global JS function you need to call
+#     # You might need to call a Ruby method or perform some Ruby operations here
+#     puts "WebSocket opened"
+#   end
+#
+#   def on_message(event)
+#     # Called when a message is received from the server
+#     data = event.JS[:data]
+#     JS.eval("Opal.Atome.$server_receiver(#{data})") # Send the data to a Ruby method, assuming server_receiver is defined in Ruby
+#   end
+#
+#   def on_close(event)
+#     # Called when the connection is closed
+#     puts "WebSocket closed"
+#   end
+#
+#   def on_error(event)
+#     # Called when there is an error with the WebSocket
+#     event.JS.preventDefault() # Prevent the default error handling
+#     puts "WebSocket error"
+#   end
+#
+#   def ws_sender(message)
+#     # Send a message to the server
+#     @websocket.JS.send(message)
+#   end
+# end
 
 # require "./web2"
 # alert Universe.eVe
@@ -37,10 +92,11 @@
 # require './works/photos'
 # require './works/photos6'
 # require './test'
-require './examples/test'
+# require './examples/test'
 #
 #### works
-# require "./examples/tools"
+# require "./examples/server"
+require "./examples/tools"
 # require "./examples/opacity"
 # require "./examples/fill"
 # require "./examples/sub_atome_manipulation"

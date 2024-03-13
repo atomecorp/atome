@@ -42,18 +42,18 @@
 </script>
 <script defer src="js/atome/atome.js" type="text/javascript"></script>
 <script>
-    function loadApplicationJs() {
-        var script = document.createElement('script');
-        script.src = 'js/application.js';
-        script.onload = function() {
-            rubyVMCallback("A.init_database");
-        };
-        document.body.appendChild(script);
-    }
-
-    window.addEventListener('load', function () {
-        rubyVMCallback('atome_genesis');
-    })
+    // function loadApplicationJs() {
+    //     var script = document.createElement('script');
+    //     script.src = 'js/application.js';
+    //     script.onload = function() {
+    //         rubyVMCallback("A.init_database");
+    //     };
+    //     document.body.appendChild(script);
+    // }
+    //
+    // window.addEventListener('load', function () {
+    //     rubyVMCallback('atome_genesis');
+    // })
 </script>
 
 </html>
