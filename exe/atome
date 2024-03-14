@@ -574,7 +574,26 @@ if ARGV.include?('create')
 end
 
 if ARGV.include?('update')
-  `gem install atome`
+
+  gem_name = 'atome'
+  local_gem_spec = Gem::Specification.find_by_name(gem_name) rescue nil
+  if local_gem_spec.nil?
+    puts " #{gem_name} gem  is not install will install from distant server"
+    system("gem update #{gem_name}")
+  else
+    available_versions = Gem::Specification.find_all_by_name(gem_name).map(&:version)
+
+    latest_version = available_versions.max
+
+    if latest_version > local_gem_spec.version
+      puts "update availlable: #{local_gem_spec.version} -> #{latest_version}"
+      system("gem update #{gem_name}")
+    else
+      puts "No update necessary '#{gem_name}'. current version : #{local_gem_spec.version}"
+    end
+  end
+
+
   # TODO: also update index.html and all other files except the application folder
   # we check we are in atome app
   if Dir.exist?("#{destination}/application") && !Dir.exist?("#{destination}/vendor")
