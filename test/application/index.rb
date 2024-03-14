@@ -96,7 +96,10 @@
 #
 #### works
 # require "./examples/server"
-require "./examples/localstorage"
+# require "./examples/localstorage"
+# require "./examples/allow_system_right_click"
+require "./examples/alternate"
+# require "./examples/allow_copy"
 # require "./examples/tools"
 # require "./examples/opacity"
 # require "./examples/fill"

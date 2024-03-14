@@ -209,4 +209,4 @@ def user_login
 end
 
 Universe.allow_history = true
-# JS.eval('localStorage.clear()')
+touch_allow(false) # this lock the system right click in web view

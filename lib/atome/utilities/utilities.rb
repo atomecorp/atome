@@ -472,6 +472,24 @@ class Atome
     Universe.store_messages({ msg_nb: message_id, proc: bloc })
     html.send_message(params)
   end
+
+  def alternate(*states)
+    @alternate ||= { state: 0 }
+    @alternate[:data] = states
+    if @alternate[:state] < states.length - 1
+      @alternate[:state] += 1
+    else
+      @alternate[:state] = 0
+    end
+
+    current_state = @alternate[:data][@alternate[:state] - 1]
+    if current_state.instance_of?(Hash)
+      current_state.each do |state, value|
+        send(state, value)
+      end
+    end
+    current_state
+  end
 end
 
 

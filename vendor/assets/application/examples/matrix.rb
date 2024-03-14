@@ -113,18 +113,18 @@ module Molecule
   end
 
 
-  def alternate(states = nil)
-    if states
-
-    else
-      @alternate
-    end
-
+  def alternate(*states)
+    # if states
+    #
+    # else
+    #   @alternate
+    # end
+    alert states
   end
 end
 c= circle({left: 399})
 test_cell.touch(true) do
-  test_cell.alternate([{ width: 33, color: :red }, { width: 66, color: :orange }])
+  test_cell.alternate({ width: 33, color: :red }, { width: 66, color: :orange })
   # puts "=> #{Universe.atomes.length}"
   # puts test_cell.color
   # if test_cell.data==true

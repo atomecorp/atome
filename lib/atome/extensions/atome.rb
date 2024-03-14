@@ -582,6 +582,48 @@ class Object
     # convert any foreign object (think HTML) to a pseudo atome objet , that embed foreign objet
   end
 
+
+  JS.eval(<<~JS)
+  window.preventDefaultAction = function(e) {
+    e.preventDefault();
+  }
+JS
+
+  def touch_allow(allow)
+    if allow
+      # Retire l'écouteur d'événements en utilisant la fonction globale
+      JS.eval('document.removeEventListener("contextmenu", window.preventDefaultAction);')
+    else
+      # Ajoute l'écouteur d'événements en utilisant la fonction globale
+      JS.eval('document.addEventListener("contextmenu", window.preventDefaultAction);')
+    end
+  end
+
+
+  def allow_copy(allow)
+    if allow
+      # Rétablir la sélection et la copie de texte
+      JS.eval(<<~JS)
+      document.body.style.userSelect = 'auto';  // Permet la sélection de texte
+      document.removeEventListener('copy', preventDefaultAction);  // Permet la copie
+    JS
+    else
+      # Bloquer la sélection et la copie de texte
+      JS.eval(<<~JS)
+      document.body.style.userSelect = 'none';  // Bloque la sélection de texte
+      document.addEventListener('copy', preventDefaultAction);  // Bloque la copie
+    JS
+    end
+  end
+
+  # Définit la fonction preventDefaultAction dans un contexte global pour être utilisée par allow_copy
+  JS.eval(<<~JS)
+  window.preventDefaultAction = function(e) {
+    e.preventDefault();
+  }
+JS
+
+
 end
 
 class CssProxy
@@ -619,7 +661,6 @@ class CssProxy
     @current_atome.instance_variable_get('@css').to_s
   end
 
-
-
-
 end
+
+
