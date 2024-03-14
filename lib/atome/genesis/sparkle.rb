@@ -209,3 +209,4 @@ def user_login
 end
 
 Universe.allow_history = true
+# JS.eval('localStorage.clear()')

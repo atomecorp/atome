@@ -96,7 +96,8 @@
 #
 #### works
 # require "./examples/server"
-require "./examples/tools"
+require "./examples/localstorage"
+# require "./examples/tools"
 # require "./examples/opacity"
 # require "./examples/fill"
 # require "./examples/sub_atome_manipulation"

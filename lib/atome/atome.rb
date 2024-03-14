@@ -109,9 +109,9 @@ class Atome
     # post rendering processor
     params = particle_post(element, params, &user_proc)
     instance_variable_set("@#{element}", params) if store
+    Universe.historicize(@aid, :write, element, params)
     # after storage processor
     particle_after(element, params, &user_proc)
-
     # self
   end
 
