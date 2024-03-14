@@ -638,12 +638,8 @@ src/favicon.ico src/index_wasm.html src/index_opal.html src/index_server.html sr
 
   # now we get the version of the atome gem
   gem_name = 'atome'
-
-  # Obtenez les informations du gem depuis RubyGems.org
-  gem_info = Gems.info(gem_name)
-
-  # Extrait la version la plus récente du gem
-  latest_version = gem_info['version']
+  local_gem_spec = Gem::Specification.find_by_name(gem_name) rescue nil
+  latest_version=local_gem_spec.version
   puts "#{gem_name} #{latest_version} is now installed "
 
 end
