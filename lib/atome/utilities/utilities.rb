@@ -490,6 +490,9 @@ class Atome
     end
     current_state
   end
+
+
+
 end
 
 

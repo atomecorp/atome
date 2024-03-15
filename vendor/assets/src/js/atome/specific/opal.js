@@ -19,7 +19,6 @@ function loadApplicationJs() {
 
 window.addEventListener('load', function () {
     Opal.Object.$atome_genesis();
-
 })
 
 

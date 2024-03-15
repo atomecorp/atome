@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Universe.allow_history = false
+# Universe.allow_localstorage = false
 
 color({ id: :creation_layer_col, alpha: 1 })
 

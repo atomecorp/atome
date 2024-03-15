@@ -18,12 +18,14 @@ class Universe
   @users = {}
   @help = {}
   @example = {}
-  @allow_history = false
+  @allow_localstorage = false
+  @allow_sync = false
+  @connected= false
   @database_ready = false
   # @historicize=false
   class << self
     attr_reader :atomes, :atomes_ids, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
-    attr_accessor :allow_history, :database_ready
+    attr_accessor :connected,:allow_sync, :allow_localstorage, :database_ready
 
     def messages
       @messages
@@ -246,10 +248,13 @@ class Universe
 
     def historicize(id, operation, element, params)
 
-      # if @allow_history && @database_ready
-      if @allow_history
-        #   A.sync({ action: :historicize, data: { table: :user } }) do |_db_state|
-        #   end
+      if @allow_sync && Universe.connected
+          A.sync({ action: :historicize, data: { table: :user } })
+      end
+      
+      # if @allow_localstorage && @database_ready
+      if @allow_localstorage
+    
         operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
         @increment += 1
         @increment = @increment % 100

@@ -13,7 +13,7 @@ end
 
 b.touch(:long) do
   b.color(:red)
-  Universe.allow_history = false
+  Universe.allow_localstorage = false
 
 end
 

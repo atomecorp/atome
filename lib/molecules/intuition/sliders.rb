@@ -31,5 +31,6 @@ module Molecule
       value = (cursor.left+cursor.width)/slider_width*100
       bloc.call(value)
     end
+    slider
   end
 end

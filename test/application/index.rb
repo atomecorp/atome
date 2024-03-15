@@ -10,7 +10,8 @@
 # require "./examples/sync"
 # require "./examples/generator_and_build"
 # require "./examples/display"
-
+# TODO : split allow_history in two methods : allow localstorage and allow sync
+# TODO : in historicize only sync if online
 # TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
 # TODO : we may return an atome instead of a an arry in genesis/ew_atome group({ collect: collected_atomes })
 # TODO :  finish  sync and history  apis
@@ -96,9 +97,9 @@
 #
 #### works
 # require "./examples/server"
-# require "./examples/localstorage"
+require "./examples/localstorage"
 # require "./examples/allow_system_right_click"
-require "./examples/sliders"
+# require "./examples/sliders"
 # require "./examples/alternate"
 # require "./examples/allow_copy"
 # require "./examples/tools"

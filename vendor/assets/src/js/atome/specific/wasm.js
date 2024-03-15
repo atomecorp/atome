@@ -6,6 +6,10 @@ function controller_message(msg) {
     rubyVM.eval(rubycode);
 }
 
+// window.addEventListener('load', function () {
+//     // Opal.Object.$atome_genesis();
+//     rubyVMCallback('atome_genesis');
+// })
 
 const communication = {
     // websocket: null,// websocket init  for server

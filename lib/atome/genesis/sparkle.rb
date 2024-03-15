@@ -110,6 +110,7 @@ def atome_infos
   puts "users: #{Universe.users}"
   puts "current user: #{Universe.current_user}"
   puts "machine: #{Universe.current_machine}"
+  puts "connected: #{Universe.connected}"
 end
 
 # help and example below :
@@ -142,12 +143,13 @@ def atome_genesis
   puts "server: #{server}"
 
   if server.start_with?('http')
+    Universe.connected = true
     A.server({ address: 'localhost:9292', type: 'ws' })
     A.init_websocket do |msg|
       puts "websocket initialised #{msg}"
     end
+    Universe.allow_sync = true
   end
-
 end
 
 def init_database # this method is call from JS (atome/communication) at WS connection
@@ -208,5 +210,6 @@ def user_login
 
 end
 
-Universe.allow_history = true
+Universe.allow_localstorage = true # to stop data to be stored in localstorage
+# Universe.allow_sync= false # to stop data to be sync on server
 touch_allow(false) # this lock the system right click in web view
