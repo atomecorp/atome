@@ -1,25 +1,24 @@
 # frozen_string_literal: true
 
-
 module Molecule
-  def slider(params,&bloc)
-    slider_width=params[:width] || 333
-    cursor_width=33
-    cursor_height=33
-    left_pos=params[:left] || 0
-    top_pos=params[:top] || 0
-    attach_to= params[:attach] || :view
-    cursor_left=0
-    cursor_top=0
-    slider=grab(attach_to).box({ top: top_pos, left: left_pos,width: slider_width, height: 25,  smooth: 9,  color:{red: 0.3, green: 0.3, blue: 0.3}})
+  def slider(params, &bloc)
+    attach_to = params[:attach] || :view
+    color_found = params[:color] ||= :gray
+    default_slider_particles = { color: color_found, width: 333, height: 33, left: 0, top: 0, smooth: 9 }
+    default_cursor_particles = { color: color_found, width: 29, height: 29, left: 0, smooth: '100%' }
+    cursor_found = params.delete(:cursor)
+    cursor_particle = default_cursor_particles.merge(cursor_found)
+    slider_particle = default_slider_particles.merge(params)
+    slider = grab(attach_to).box(slider_particle)
     slider.shadow({
                     id: :s2,
                     left: 3, top: 3, blur: 9,
                     invert: true,
                     red: 0, green: 0, blue: 0, alpha: 0.7
                   })
-    cursor= slider.circle({width: cursor_width, height: cursor_height, left: 2, top: 1, color:{red: 0.3, green: 0.3, blue: 0.3}})
-    cursor.left(cursor_left)
+    cursor_top = (slider_particle[:height] - cursor_particle[:height]) / 2.0
+    cursor = slider.box(cursor_particle)
+    bloc.call(cursor_particle[:left])
     cursor.top(cursor_top)
     cursor.shadow({
                     id: :s4,
@@ -27,8 +26,8 @@ module Molecule
                     option: :natural,
                     red: 0, green: 0, blue: 0, alpha: 0.6
                   })
-    cursor.drag({ restrict: {max:{ left: slider_width-cursor_width, top: 0}} }) do |_event|
-      value = (cursor.left+cursor.width)/slider_width*100
+    cursor.drag({ restrict: { max: { left: slider_particle[:width] - cursor_particle[:width], top: cursor_top }, min: { top: cursor_top } } }) do |_event|
+      value = cursor.left.to_f / (slider_particle[:width] - cursor_particle[:width]) * 100
       bloc.call(value)
     end
     slider
