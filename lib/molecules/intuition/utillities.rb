@@ -35,16 +35,11 @@ module Molecule
   end
 
   def list(params)
+    styles_found = params.delete(:styles)
+    element = params.delete(:element)
+    listing = params.delete(:listing)
 
-    #   listing: listing
-    listing = params[:listing]
-    styles_found=params.delete(:styles)
-    element=params.delete(:element)
-    listing=params.delete(:listing)
-    # lets create the listing container
-    list = box({ attach: id , color: {alpha: 0}}.merge(params))
-
-    styles_found = styles_found ||= {
+    styles_found ||= {
       width: 99,
       height: 33,
       margin: 6,
@@ -52,19 +47,24 @@ module Molecule
       left: 0,
       color: :yellowgreen
     }
-    element = element ||= { width: 33,
-                            height: 33,
-                            left: :center,
-                            top: :center,
-                            color: :orange,
-                            type: :text }
-
+    element ||= { width: 33,
+                  height: 33,
+                  left: :center,
+                  top: :center,
+                  color: :orange,
+                  type: :text }
+    unless params[:width]
+      params[:width] = styles_found[:width]
+    end
     unless element[:width]
       element[:width] = styles_found[width]
     end
     margin = styles_found[:margin]
     height_found = styles_found[:height]
     renderer_found = renderers
+    # lets create the listing container
+    list = box({ attach: id, color: { alpha: 0 } }.merge(params))
+    # now the listing
     listing.each_with_index do |data, index|
       # let's create the container
       new_atome = { renderers: renderer_found, attach: list.id }.merge(styles_found).merge({ type: :shape })

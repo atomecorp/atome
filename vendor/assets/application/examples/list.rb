@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 styles = {
   width: 199,
   height: 33,
@@ -15,7 +16,6 @@ element = { width: 33,
             left: :center,
             top: :center,
             color: :black,
-            center: { x: 0, y: 0 },
             type: :text }
 
 listing = [
@@ -25,13 +25,13 @@ listing = [
   { data: :ho }
 ]
 
- A.list({
+list_1 = A.list({
                   styles: styles,
                   element: element,
                   listing: listing
                 })
 
-
+# test2
 
 styles = {
   width: 199,
@@ -45,7 +45,9 @@ styles = {
 element = { width: 25,
             height: 25,
             smooth: '100%',
-            center: { x: 0, y: 0 },
+            center: { x: 0, y: 0, dynamic: true },
+            # left: 10,
+            # top: :center,
             color: :orange,
             type: :shape }
 
@@ -65,5 +67,5 @@ list_2 = A.list({ left: 300,
                   listing: listing
                 })
 wait 1 do
-  list_2.left(120)
+  list_2.left(list_1.width)
 end
