@@ -134,3 +134,4 @@ new({particle: :inside, render: false})
 new({ initialized: :inside }) do |params, &user_proc|
   render(:inside, params, &user_proc)
 end
+new({ particle: :margin })

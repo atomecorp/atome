@@ -97,7 +97,8 @@
 #
 #### works
 # require "./examples/server"
-require "./examples/localstorage"
+require "./examples/list"
+# require "./examples/localstorage"
 # require "./examples/allow_system_right_click"
 # require "./examples/sliders"
 # require "./examples/alternate"
