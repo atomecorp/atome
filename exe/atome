@@ -599,7 +599,7 @@ if ARGV.include?('update')
   if Dir.exist?("#{destination}/application") && !Dir.exist?("#{destination}/vendor")
     # first we delete everything but application
 
-    files_to_treat = %w[server src-tauri src-wasm Guardfile Rakefile src/css src/js/atome src/js/molecules src/js/third_parties src/medias
+    files_to_treat = %w[server src-tauri src-wasm Guardfile Rakefile src/css src/js/atome src/js/molecules src/js/third_parties
 src/favicon.ico src/index_wasm.html src/index_opal.html src/index_server.html src/index_server_wasm.html]
     files_to_treat.each do |item|
       item_path = File.join(destination, item)
