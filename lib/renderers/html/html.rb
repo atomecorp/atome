@@ -25,6 +25,7 @@ class HTML
     @id = id_found
     @original_atome = current_atome
     @touch_removed = {}
+
   end
 
   def object

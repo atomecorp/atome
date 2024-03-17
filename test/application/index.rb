@@ -96,8 +96,9 @@
 # require './examples/test'
 #
 #### works
+require "./examples/input"
 # require "./examples/server"
-require "./examples/list"
+# require "./examples/list"
 # require "./examples/localstorage"
 # require "./examples/allow_system_right_click"
 # require "./examples/sliders"
