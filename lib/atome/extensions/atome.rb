@@ -51,6 +51,10 @@ module ObjectExtension
       #     alert option
       #     bloc.call(option)
       #   end
+    elsif params.key?(:molecule)
+      molecule=params[:molecule]
+      Genesis.build_molecule(molecule, &bloc)
+      Universe.add_to_molecule_list(molecule)
     end
     super if defined?(super)
   end

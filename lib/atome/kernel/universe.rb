@@ -6,6 +6,7 @@ class Universe
   @atomes = {}
   @atomes_ids = {}
   @atome_list = []
+  @molecule_list = []
   @particle_list = {}
   @renderer_list = %i[html browser headless server log]
   @sanitizers = {}
@@ -24,7 +25,7 @@ class Universe
   @database_ready = false
   # @historicize=false
   class << self
-    attr_reader :atomes, :atomes_ids, :renderer_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
+    attr_reader :atomes, :atomes_ids, :renderer_list,:molecule_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
     attr_accessor :connected,:allow_sync, :allow_localstorage, :database_ready
 
     def messages
@@ -68,7 +69,8 @@ class Universe
     end
 
     def add_to_particle_list(particle = nil, type, category)
-      instance_variable_get('@particle_list')[particle] = { type: type, category: category }
+      # instance_variable_get('@particle_list')[particle] = { type: type, category: category }
+      @particle_list[particle] = { type: type, category: category }
     end
 
     def add_atomes_specificities atome_type_to_add
@@ -87,16 +89,22 @@ class Universe
 
     def add_sanitizer_method(method_name, &method_proc)
       # this method is used to add sanitizer methods
-      instance_variable_get('@sanitizers').merge!({ method_name => method_proc })
+      # instance_variable_get('@sanitizers').merge!({ method_name => method_proc })
+      @sanitizers.merge!({ method_name => method_proc })
     end
 
     def get_sanitizer_method(method_name)
       # this method is used to add optional methods
-      instance_variable_get('@sanitizers')[method_name]
+      # instance_variable_get('@sanitizers')[method_name]
+      @sanitizers[method_name]
     end
 
     def add_to_atome_list(atome)
-      instance_variable_get('@atome_list').push(atome)
+      @atome_list.push(atome)
+    end
+
+    def add_to_molecule_list(molecule)
+      @molecule_list.push(molecule)
     end
 
     def add_to_atomes(aid, atome)

@@ -50,6 +50,15 @@ class Genesis
       new_atome(atome_name, &atome_proc)
 
     end
+    def build_molecule(molecule_name, &molecule_proc)
+
+
+      new_molecule(molecule_name, &molecule_proc)
+
+    end
+
+
+
 
     def auto_render_generator(element)
       Universe.renderer_list.each do |render_engine|
@@ -190,6 +199,75 @@ class Genesis
         end
         # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
       end
+
+    end
+
+
+    def new_molecule(molecule, &method_proc)
+
+      Molecule.define_method molecule do |params, &user_proc|
+        instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+
+      end
+
+
+
+      # # the method define below is the slowest but params are analysed and sanitized
+      # Atome.define_method element do |params = nil, &user_proc|
+      #   instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+      #   if params
+      #     params = atome_sanitizer(element, params, &user_proc)
+      #     atome_processor(element, params, &user_proc)
+      #   else
+      #     # when no params passed whe assume teh user want a getter,
+      #     # as getter should give us all atome of a given within the atome
+      #     # ex : puts a.shape => return all atome with the type 'shape' in this atome
+      #     collected_atomes = []
+      #     # attached.each do |attached_atome|
+      #     #   collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+      #     # end
+      #     # TODO : add category for atome( material/physical vs modifier : color, shadow, .. vs shape, image ..)
+      #     # then add condition same things fo code in presets/atome atome_common
+      #     if %i[color shadow paint border].include?(element)
+      #       # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being attached
+      #       @apply.each do |attached_atome|
+      #         collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+      #       end
+      #     else
+      #       # collected_atomes = attached
+      #       # if @attached
+      #       attached.each do |attached_atome|
+      #         collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+      #       end
+      #       # end
+      #
+      #     end
+      #     # TODO/ FIXME : potential problem with group  here"
+      #     # group({ collect: collected_atomes })
+      #     collected_atomes
+      #   end
+      # end
+      #
+      # # the method define below is the fastest params are passed directly
+      # Atome.define_method "set_#{element}" do |params, &user_proc|
+      #   # we generate the corresponding module here:
+      #   # Object.const_set(element, Module.new)
+      #   # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
+      #   # to the shape particles list : @!atome[:shape] << params[:id]
+      #   # Atome.new(params, &user_proc)
+      #
+      #   if Universe.atomes[params[:id]]
+      #     # if atome id already exist we grab the previous one
+      #     # this prevent the creation of new atome if the atome already exist
+      #     previous_atome= grab(params[:id])
+      #     # now we must re-affect affected atomes
+      #     previous_atome.affect(params[:affect])
+      #     previous_atome
+      #   else
+      #     Atome.new(params, &user_proc)
+      #   end
+      #   # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
+      # end
 
     end
 
