@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 styles = {
   width: 199,
   height: 33,
@@ -24,11 +23,13 @@ listing = [
   { data: :hi },
   { data: :ho }
 ]
-
-list_1 = A.list({
+b=box({drag: true})
+list_1 = grab(:intuition).list({
                   styles: styles,
                   element: element,
-                  listing: listing
+                  listing: listing,
+                               left: 33,
+                  attach: b.id
                 })
 
 # test2

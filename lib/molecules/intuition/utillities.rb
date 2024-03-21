@@ -11,14 +11,18 @@ new(molecule: :input) do |params, bloc|
   back_col ||= :grey
   text_col = params.delete(:text)
   text_col ||= :black
-  # select_col = params[:selection] ||= :blue
   default_text = params.delete(:default)
   default_text ||= :input
-  # shadow_found = params[:shadow] ||= false
-
+  default_parent = if self.instance_of?(Atome)
+                     id
+                   else
+                     :view
+                   end
+  attach_to = params[:attach] || default_parent
+  renderer_found = grab(attach_to).renderers
   input_back = Atome.new(
-    { renderers: [:html], type: :shape, attach: :view, color: back_col,
-      left: 0, top: 0, data: '',
+    { renderers: renderer_found, type: :shape, color: back_col,
+      left: 0, top: 0, data: '', attach: attach_to,
       smooth: 6, overflow: :hidden,
     })
 
@@ -66,7 +70,8 @@ new(molecule: :input) do |params, bloc|
   input_back.holder(text_input)
   input_back
 end
-new(molecule: :list) do |params, bloc|
+new(molecule: :list) do |params, _bloc|
+
   styles_found = params.delete(:styles)
   element = params.delete(:element)
   listing = params.delete(:listing)
@@ -93,9 +98,21 @@ new(molecule: :list) do |params, bloc|
   end
   margin = styles_found[:margin]
   height_found = styles_found[:height]
-  renderer_found = renderers
+
   # lets create the listing container
-  list = box({ attach: id, color: { alpha: 0 } }.merge(params))
+  default_parent = if self.instance_of?(Atome)
+                     id
+                   else
+                     :view
+                   end
+  attach_to = params[:attach] || default_parent
+  renderer_found = grab(attach_to).renderers
+  list = Atome.new({ renderers: renderer_found, type: :shape, attach: :view, color: { alpha: 0 }, attach: attach_to }.merge(params))
+  # Atome.new(
+  #     { renderers: [:html], type: :shape, attach: :view, color: back_col,
+  #       left: 0, top: 0, data: '', attach: attach_to,
+  #       smooth: 6, overflow: :hidden,
+  #     })
   # now the listing
   listing.each_with_index do |data, index|
     # let's create the container
@@ -108,14 +125,14 @@ new(molecule: :list) do |params, bloc|
   end
   list
 end
-# new(molecule: :checker) do |params, bloc|
-#   Atome.new(
-#     { renderers: [:html], id: :input_back2, type: :shape, attach: :view, color: :blue,
-#       left: 0, top: 0, data: '',
-#       smooth: 6, overflow: :hidden,
-#     })
-#   params
-# end
+new(molecule: :checker) do |params, bloc|
+  Atome.new(
+    { renderers: [:html], id: :input_back2, type: :shape, attach: :view, color: :blue,
+      left: 0, top: 0, data: '',
+      smooth: 6, overflow: :hidden,
+    })
+  params
+end
 new({ molecule: :slider }) do |params, bloc|
 
   default_value = params[:value] ||= 0

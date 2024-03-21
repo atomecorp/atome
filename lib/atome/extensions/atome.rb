@@ -160,6 +160,10 @@ class Object
     grab(:view).box(params, &proc)
   end
 
+  def intuition(params = {}, &proc)
+    grab(:view).intuition(params, &proc)
+  end
+
   def circle(params = {}, &proc)
     grab(:view).circle(params, &proc)
   end
