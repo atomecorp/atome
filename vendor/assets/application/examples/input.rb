@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 t = text({ left: 33, top: 33, data: 'data collected', id: :infos })
 
 inp=A.input({ width: 166,
@@ -21,6 +20,15 @@ inp=A.input({ width: 166,
   grab(:infos).data(val)
 end
 
-wait 2 do
-  inp.top(12)
+inp.top(12)
+
+  wait 1 do
+    inp.width(666)
+    wait 1 do
+      inp.holder.data('new data')
+    end
 end
+
+
+
+

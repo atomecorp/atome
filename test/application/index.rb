@@ -10,6 +10,11 @@
 # require "./examples/sync"
 # require "./examples/generator_and_build"
 # require "./examples/display"
+# TODO : date picker U.I.
+# TODO : progress bar U.I.
+# TODO : Radio button U.I.
+# TODO : Dropdowns U.I.
+# TODO : Circular slider U.I.
 # TODO : split allow_history in two methods : allow localstorage and allow sync
 # TODO : in historicize only sync if online
 # TODO : remove backtick in lib/platform_specific/opal/extensions/js.rb :  result = `eval(#{clean_str})`
@@ -96,15 +101,17 @@
 # require './examples/test'
 #
 #### works
+# require "./examples/holder"
 # require "./examples/input"
 # require "./examples/server"
-require "./examples/list"
+# require "./examples/list"
 # require "./examples/localstorage"
 # require "./examples/allow_system_right_click"
-# require "./examples/sliders"
+require "./examples/sliders"
 # require "./examples/slider"
 # require "./examples/alternate"
-# require "./examples/allow_copy"
+# require "./examples/executor"
+# # require "./examples/allow_copy"
 # require "./examples/tools"
 # require "./examples/opacity"
 # require "./examples/fill"

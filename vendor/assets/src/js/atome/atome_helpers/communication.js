@@ -29,7 +29,7 @@
 // }
 
 
-function controller_message(msg) {
-    // let json_msgs = JSON.parse(msg);
-    rubyVMCallback("A.receptor("+msg+")")
-}
+// function controller_message(msg) {
+//     // let json_msgs = JSON.parse(msg);
+//     rubyVMCallback("A.receptor("+msg+")")
+// }

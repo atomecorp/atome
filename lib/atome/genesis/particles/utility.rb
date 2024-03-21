@@ -235,3 +235,13 @@ new ({ particle: :css, category: :utility, type: :string })
 new({ read: :css }) do
   CssProxy.new(js, nil, self)
 end
+
+new({particle: :holder, category: :utility, type: :atome})
+
+# this particle is mainly used in conjunction with alternate particle as a 'lambda' to alternate  methods
+new({particle: :executor, category: :utility, type: :hash}) do |params|
+  params.each do |method, opt|
+    send(method, opt)
+  end
+  params
+end

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
-new(molecule: :slider)
+
 new(molecule: :input) do |params, bloc|
   params[:height] ||= 15
   params[:width] ||= 222
-  trigger=params.delete(:trigger)
+  trigger = params.delete(:trigger)
   trigger ||= :return
   limit = params.delete(:limit)
-  limit  ||= 15
+  limit ||= 15
   back_col = params.delete(:back)
-  back_col  ||= :grey
+  back_col ||= :grey
   text_col = params.delete(:text)
   text_col ||= :black
   # select_col = params[:selection] ||= :blue
@@ -17,14 +17,14 @@ new(molecule: :input) do |params, bloc|
   # shadow_found = params[:shadow] ||= false
 
   input_back = Atome.new(
-    { renderers: [:html], id: :input_back, type: :shape, attach: :view, color: back_col,
+    { renderers: [:html], type: :shape, attach: :view, color: back_col,
       left: 0, top: 0, data: '',
       smooth: 6, overflow: :hidden,
     })
 
   text_input = Atome.new(
-    { renderers: [:html], id: :input_text, type: :text, color: text_col, component: { size:    params[:height] },
-      data: default_text, left:    params[:height] * 20 / 100, top: 0, edit: true, attach: :input_back, height:    params[:height],
+    { renderers: [:html], id: :input_text, type: :text, color: text_col, component: { size: params[:height] },
+      data: default_text, left: params[:height] * 20 / 100, top: 0, edit: true, attach: input_back.id, height: params[:height],
       position: :absolute
     }
   )
@@ -32,7 +32,6 @@ new(molecule: :input) do |params, bloc|
   text_input.touch(:down) do
     text_input.edit(true)
   end
-
 
   text_input.keyboard(:down) do |native_event|
     # text_input.component({ selected: { color: :red, text: :red } })
@@ -64,6 +63,7 @@ new(molecule: :input) do |params, bloc|
   params.each do |part_f, val_f|
     input_back.send(part_f, val_f)
   end
+  input_back.holder(text_input)
   input_back
 end
 new(molecule: :list) do |params, bloc|
@@ -108,38 +108,116 @@ new(molecule: :list) do |params, bloc|
   end
   list
 end
+# new(molecule: :checker) do |params, bloc|
+#   Atome.new(
+#     { renderers: [:html], id: :input_back2, type: :shape, attach: :view, color: :blue,
+#       left: 0, top: 0, data: '',
+#       smooth: 6, overflow: :hidden,
+#     })
+#   params
+# end
+new({ molecule: :slider }) do |params, bloc|
 
-module Molecule
-  def slider(params, &bloc)
-    attach_to = params[:attach] || :view
-    color_found = params[:color] ||= :gray
-    default_slider_particles = { color: color_found, width: 333, height: 33, left: 0, top: 0, smooth: 9 }
-    default_cursor_particles = { color: color_found, width: 29, height: 29, left: 0, smooth: '100%' }
-    cursor_found = params.delete(:cursor)
-    cursor_particle = default_cursor_particles.merge(cursor_found)
-    slider_particle = default_slider_particles.merge(params)
-    slider = grab(attach_to).box(slider_particle)
-    slider.shadow({
-                    id: :s2,
-                    left: 3, top: 3, blur: 9,
-                    invert: true,
-                    red: 0, green: 0, blue: 0, alpha: 0.7
-                  })
-    cursor_top = (slider_particle[:height] - cursor_particle[:height]) / 2.0
-    cursor = slider.box(cursor_particle)
-    bloc.call(cursor_particle[:left])
-    cursor.top(cursor_top)
-    cursor.shadow({
-                    id: :s4,
-                    left: 1, top: 1, blur: 3,
-                    option: :natural,
-                    red: 0, green: 0, blue: 0, alpha: 0.6
-                  })
-    cursor.drag({ restrict: { max: { left: slider_particle[:width] - cursor_particle[:width], top: cursor_top }, min: { top: cursor_top } } }) do |_event|
-      value = cursor.left.to_f / (slider_particle[:width] - cursor_particle[:width]) * 100
-      bloc.call(value)
+  default_value = params[:value] ||= 0
+  orientation = params.delete(:orientation) || :horizontal
+  range_found = params.delete(:range)
+  min_value = params.delete(:min) || 0
+  max_value = params.delete(:max) || 100
+  color_found = params[:color] ||= :gray
+  default_smooth = 9
+  default_slider_particles = { color: color_found, width: 333, height: 33, left: 0, top: 0, smooth: default_smooth }
+  default_cursor_particles = { color: color_found, width: 29, height: 29, left: 0, smooth: '100%' }
+  cursor_found = params.delete(:cursor)
+  slider_particle = default_slider_particles.merge(params)
+  slider = box(slider_particle)
+  slider_shadow = slider.shadow({
+                                  id: :s2,
+                                  left: 3, top: 3, blur: 9,
+                                  invert: true,
+                                  red: 0, green: 0, blue: 0, alpha: 0.7
+                                })
+
+  range = slider.box({ id: "#{slider.id}_range", top: :auto, bottom: 0 })
+  slider.holder(range)
+  if range_found
+    range.apply(slider_shadow.id,)
+    range_found.each do |part, val|
+      range.send(part, val)
     end
-    slider
+  else
+    range.color({ alpha: 0 })
   end
+  cursor_particle = default_cursor_particles.merge(cursor_found).merge({ id: "#{slider.id}_cursor" })
+  cursor = slider.box(cursor_particle)
+
+  update_value = lambda do |cursor_position, cursor_size, slider_size, orientation|
+    effective_slider_size = slider_size - cursor_size
+    if orientation == :vertical
+      percentage = 1.0 - (cursor_position.to_f / effective_slider_size)
+    else
+      percentage = cursor_position.to_f / effective_slider_size
+    end
+    value_range = max_value - min_value
+    calculated_value = min_value + (value_range * percentage).round
+    calculated_value.clamp(min_value, max_value)
+  end
+
+  cursor_left = (slider_particle[:width] - cursor_particle[:width]) / 2.0
+  cursor_top = (slider_particle[:height] - cursor_particle[:height]) / 2.0
+
+  if orientation == :vertical
+    if cursor.width < slider.width
+      range.width(cursor.width)
+      range.left(cursor_left)
+    else
+      range.width(slider.width)
+      range.smooth(default_smooth)
+    end
+
+    cursor_top_initial = ((max_value - default_value).to_f / (max_value - min_value)) * (slider_particle[:height] - cursor_particle[:height])
+    bloc.call(default_value)
+    cursor.top(cursor_top_initial)
+    cursor.left(cursor_left)
+    range.height((slider.height - cursor.top) - cursor.height / 2)
+    # now the event
+    cursor.drag({ restrict: { max: { top: slider_particle[:height] - cursor_particle[:height], left: cursor_left }, min: { left: cursor_left } } }) do |event|
+      value = update_value.call(cursor.top, cursor_particle[:height], slider_particle[:height], orientation)
+      range.height((slider.height - cursor.top) - cursor.height / 2)
+      bloc.call(value)
+      slider.value(value)
+    end
+
+  else
+
+    if cursor.height < slider.height
+      range.height(cursor.height)
+      range.top(cursor_top)
+    else
+      range.height(slider.height)
+      range.smooth(default_smooth)
+    end
+
+    cursor_left_initial = ((default_value - min_value).to_f / (max_value - min_value)) * (slider_particle[:width] - cursor_particle[:width])
+    bloc.call(default_value)
+    cursor.left(cursor_left_initial)
+    cursor.top(cursor_top)
+    range.width(cursor.left + cursor.width / 2)
+
+    # now the event
+    cursor.drag({ restrict: { max: { left: slider_particle[:width] - cursor_particle[:width], top: cursor_top }, min: { top: cursor_top } } }) do |event|
+      value = update_value.call(cursor.left, cursor_particle[:width], slider_particle[:width], orientation)
+      range.width(cursor.left + cursor.width / 2)
+      bloc.call(value)
+      slider.value(value)
+    end
+  end
+
+  cursor.shadow({
+                  id: :s4,
+                  left: 1, top: 1, blur: 3,
+                  option: :natural,
+                  red: 0, green: 0, blue: 0, alpha: 0.6
+                })
+  slider
 
 end

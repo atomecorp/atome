@@ -5,6 +5,8 @@
 # Atome.instance_variable_set('@initialized',{})
 class Atome
   include Essentials
+  # controller_proc is used to stack multiple procs from native controller
+  attr_accessor :controller_proc
 
   def aid(_v = nil)
     @aid
@@ -44,7 +46,7 @@ class Atome
     @int8 = {}
     @css = {}
     @aid = identity_generator
-
+    @controller_proc=[]
     @id = new_atome[:id] || @aid
     Universe.atomes.each do |_aid,atome_f|
       # we affect the already existing atome to target

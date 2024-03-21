@@ -51,10 +51,7 @@ class Genesis
 
     end
     def build_molecule(molecule_name, &molecule_proc)
-
-
       new_molecule(molecule_name, &molecule_proc)
-
     end
 
 
@@ -202,12 +199,11 @@ class Genesis
 
     end
 
-
     def new_molecule(molecule, &method_proc)
 
       Molecule.define_method molecule do |params, &user_proc|
-        instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-
+        m= instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+        m
       end
 
 

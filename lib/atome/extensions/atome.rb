@@ -665,6 +665,11 @@ class CssProxy
     @current_atome.instance_variable_get('@css').to_s
   end
 
+  def receptor(msg, &bloc)
+    parsed = JSON.parse(msg)
+    bloc.call(parsed)
+  end
+
 end
 
 

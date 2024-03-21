@@ -135,3 +135,7 @@ new({ initialized: :inside }) do |params, &user_proc|
   render(:inside, params, &user_proc)
 end
 new({ particle: :margin })
+
+new({ particle: :value }) do |params, bloc|
+  params
+end

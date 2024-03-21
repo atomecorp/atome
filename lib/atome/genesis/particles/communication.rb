@@ -20,9 +20,7 @@ new({ particle: :message, category: :communication, type: :hash }) do |params, b
 
 end
 
-new({ particle: :controller, category: :communication, type: :hash }) do |msg|
-  Atome.controller_sender(msg)
-end
+
 
 new({ particle: :int8, category: :communication, type: :int })
 
@@ -30,4 +28,16 @@ new({ particle: :language, category: :communication, type: :string }) do |params
   @data = int8[params]
   params
 end
+# method below are used for communication with ntaive core
+def receptor(msg)
+  parsed = JSON.parse(msg)
+  A.controller_code[:controller].call(parsed)
+end
 
+new({ particle: :controller, category: :communication, type: :hash }) do |msg|
+  Atome.controller_sender(msg)
+end
+
+new({post: :controller}) do |_p, bloc|
+  @controller_proc << bloc
+end
