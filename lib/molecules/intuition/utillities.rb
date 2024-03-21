@@ -27,7 +27,7 @@ new(molecule: :input) do |params, bloc|
     })
 
   text_input = Atome.new(
-    { renderers: [:html], id: :input_text, type: :text, color: text_col, component: { size: params[:height] },
+    { renderers: [:html], type: :text, color: text_col, component: { size: params[:height] },
       data: default_text, left: params[:height] * 20 / 100, top: 0, edit: true, attach: input_back.id, height: params[:height],
       position: :absolute
     }
@@ -107,7 +107,7 @@ new(molecule: :list) do |params, _bloc|
                    end
   attach_to = params[:attach] || default_parent
   renderer_found = grab(attach_to).renderers
-  list = Atome.new({ renderers: renderer_found, type: :shape, attach: :view, color: { alpha: 0 }, attach: attach_to }.merge(params))
+  list = Atome.new({ renderers: renderer_found, type: :shape,  color: { alpha: 0 }, attach: attach_to }.merge(params))
   # Atome.new(
   #     { renderers: [:html], type: :shape, attach: :view, color: back_col,
   #       left: 0, top: 0, data: '', attach: attach_to,
@@ -125,14 +125,6 @@ new(molecule: :list) do |params, _bloc|
   end
   list
 end
-new(molecule: :checker) do |params, bloc|
-  Atome.new(
-    { renderers: [:html], id: :input_back2, type: :shape, attach: :view, color: :blue,
-      left: 0, top: 0, data: '',
-      smooth: 6, overflow: :hidden,
-    })
-  params
-end
 new({ molecule: :slider }) do |params, bloc|
 
   default_value = params[:value] ||= 0
@@ -147,6 +139,7 @@ new({ molecule: :slider }) do |params, bloc|
   cursor_found = params.delete(:cursor)
   slider_particle = default_slider_particles.merge(params)
   slider = box(slider_particle)
+
   slider_shadow = slider.shadow({
                                   id: :s2,
                                   left: 3, top: 3, blur: 9,
@@ -155,7 +148,7 @@ new({ molecule: :slider }) do |params, bloc|
                                 })
 
   range = slider.box({ id: "#{slider.id}_range", top: :auto, bottom: 0 })
-  slider.holder(range)
+
   if range_found
     range.apply(slider_shadow.id,)
     range_found.each do |part, val|
@@ -166,6 +159,41 @@ new({ molecule: :slider }) do |params, bloc|
   end
   cursor_particle = default_cursor_particles.merge(cursor_found).merge({ id: "#{slider.id}_cursor" })
   cursor = slider.box(cursor_particle)
+  cursor_left = (slider_particle[:width] - cursor_particle[:width]) / 2.0
+  cursor_top = (slider_particle[:height] - cursor_particle[:height]) / 2.0
+
+  my_behavior = lambda() do |new_value|
+    if orientation == :vertical
+      if cursor.width < slider.width
+        range.width(cursor.width)
+        range.left(cursor_left)
+      else
+        range.width(slider.width)
+        range.smooth(default_smooth)
+      end
+      cursor_top_initial = ((max_value - new_value).to_f / (max_value - min_value)) * (slider_particle[:height] - cursor_particle[:height])
+      bloc.call(new_value)
+      slider.instance_variable_set('@value',new_value)
+      cursor.top(cursor_top_initial)
+      cursor.left(cursor_left)
+      range.height((slider.height - cursor.top) - cursor.height / 2)
+    else
+      if cursor.height < slider.height
+        range.height(cursor.height)
+        range.top(cursor_top)
+      else
+        range.height(slider.height)
+        range.smooth(default_smooth)
+      end
+      cursor_left_initial = ((new_value - min_value).to_f / (max_value - min_value)) * (slider_particle[:width] - cursor_particle[:width])
+      bloc.call(new_value)
+      slider.instance_variable_set('@value',new_value)
+      cursor.left(cursor_left_initial)
+      cursor.top(cursor_top)
+      range.width(cursor.left + cursor.width / 2)
+    end
+  end
+  slider.behavior({ value: my_behavior })
 
   update_value = lambda do |cursor_position, cursor_size, slider_size, orientation|
     effective_slider_size = slider_size - cursor_size
@@ -178,9 +206,6 @@ new({ molecule: :slider }) do |params, bloc|
     calculated_value = min_value + (value_range * percentage).round
     calculated_value.clamp(min_value, max_value)
   end
-
-  cursor_left = (slider_particle[:width] - cursor_particle[:width]) / 2.0
-  cursor_top = (slider_particle[:height] - cursor_particle[:height]) / 2.0
 
   if orientation == :vertical
     if cursor.width < slider.width
@@ -201,7 +226,7 @@ new({ molecule: :slider }) do |params, bloc|
       value = update_value.call(cursor.top, cursor_particle[:height], slider_particle[:height], orientation)
       range.height((slider.height - cursor.top) - cursor.height / 2)
       bloc.call(value)
-      slider.value(value)
+      slider.instance_variable_set('@value',value)
     end
 
   else
@@ -225,8 +250,11 @@ new({ molecule: :slider }) do |params, bloc|
       value = update_value.call(cursor.left, cursor_particle[:width], slider_particle[:width], orientation)
       range.width(cursor.left + cursor.width / 2)
       bloc.call(value)
-      slider.value(value)
+      slider.instance_variable_set('@value',value)
     end
+  end
+  cursor.touch(:double) do
+    slider.value(default_value)
   end
 
   cursor.shadow({
@@ -238,3 +266,4 @@ new({ molecule: :slider }) do |params, bloc|
   slider
 
 end
+new({ particle: :behavior })

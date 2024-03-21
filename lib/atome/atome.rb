@@ -38,7 +38,7 @@ class Atome
     # @language = :english
     # @callback = {}
     @tag = {}
-    @role = {}
+    @behavior = {}
     @selected = false
     #@metrics = {}
     @unit = {}

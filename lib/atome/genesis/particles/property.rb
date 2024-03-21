@@ -136,6 +136,11 @@ new({ initialized: :inside }) do |params, &user_proc|
 end
 new({ particle: :margin })
 
-new({ particle: :value }) do |params, bloc|
-  params
+new({ particle: :value }) do |val|
+  pro_f = behavior[:value]
+  instance_exec(val, &pro_f) if pro_f.is_a?(Proc)
+  val
 end
+
+
+new({ particle: :behavior })

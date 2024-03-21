@@ -59,11 +59,11 @@ class Atome
     preset_common(params, &bloc)
   end
 
-  def intuition(params = {}, &bloc)
-    atome_preset = :intuition
-    params = atome_common(atome_preset, params)
-    preset_common(params, &bloc)
-  end
+  # def intuition(params = {}, &bloc)
+  #   atome_preset = :intuition
+  #   params = atome_common(atome_preset, params)
+  #   preset_common(params, &bloc)
+  # end
 
   def circle(params = {}, &bloc)
     atome_preset = :circle
