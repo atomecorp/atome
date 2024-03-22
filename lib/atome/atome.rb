@@ -38,6 +38,7 @@ class Atome
     # @language = :english
     # @callback = {}
     @tag = {}
+    @tick={}
     @behavior = {}
     @selected = false
     #@metrics = {}

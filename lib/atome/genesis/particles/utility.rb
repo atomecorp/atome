@@ -245,3 +245,10 @@ new({particle: :executor, category: :utility, type: :hash}) do |params|
   end
   params
 end
+
+
+new({ particle: :tick, store: false }) do |val|
+  @tick[val] ||= 0
+  @tick[val]= @tick[val] += 1
+  @tick[val]
+end
