@@ -32,13 +32,13 @@ class Universe
       @messages
     end
 
-    def eVe(val = nil)
-      if val
-        @eve = val
-      else
-        @eve
-      end
-    end
+    # def eVe(val = nil)
+    #   if val
+    #     @eve = val
+    #   else
+    #     @eve
+    #   end
+    # end
 
     def store_messages(new_msg)
       @messages[new_msg[:msg_nb]] = new_msg[:proc]

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 t = text({ left: 33, top: 33, data: 'data collected', id: :infos })
 
-inp=input({ width: 166,
+inp=A.input({ width: 166,
               trigger: :up,
               back: :orange,
               shadow: {
@@ -29,7 +29,6 @@ inp.top(12)
       inp.holder.data('new data')
     end
 end
-
 
 
 

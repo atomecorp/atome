@@ -102,15 +102,14 @@
 #
 #### works
 # require "./examples/holder"
-# require "./examples/input"
+require "./examples/input"
 # require "./examples/server"
 # require "./examples/list"
 # require "./examples/behavior"
-require "./examples/tick"
+# require "./examples/tick"
 # require "./examples/localstorage"
 # require "./examples/allow_system_right_click"
 # require "./examples/sliders"
-# require "./examples/slider"
 # require "./examples/alternate"
 # require "./examples/executor"
 # # require "./examples/allow_copy"
