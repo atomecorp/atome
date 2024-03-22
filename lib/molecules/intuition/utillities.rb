@@ -36,12 +36,12 @@ new(molecule: :input) do |params, bloc|
   )
 
   text_input.touch(:down) do
-    tick(:input)
+    input_back.tick(:input)
     text_input.edit(true)
   end
 
   input_back.touch(:up) do
-    if  tick[:input] == 1
+    if  input_back.tick[:input] == 1
       text_input.component({ selected: true })
     end
   end
@@ -305,8 +305,8 @@ new(molecule: :button) do |params, bloc|
 
 
   button.touch(:down) do
-    tick(:button)
-    bloc.call(tick[:button]%states)
+    button.tick(:button)
+    bloc.call(button.tick[:button]%states)
   end
 
 
