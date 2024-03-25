@@ -23,7 +23,7 @@ new(molecule: :input) do |params, bloc|
   attach_to = params[:attach] || default_parent
   renderer_found = grab(attach_to).renderers
   input_back = Atome.new(
-    { renderers: renderer_found,id: new_id, type: :shape, color: back_col,
+    { renderers: renderer_found, id: new_id, type: :shape, color: back_col,
       left: 0, top: 0, data: '', attach: attach_to,
       smooth: 6, overflow: :hidden,
     })
@@ -41,11 +41,10 @@ new(molecule: :input) do |params, bloc|
   end
 
   input_back.touch(:up) do
-    if  input_back.tick[:input] == 1
+    if input_back.tick[:input] == 1
       text_input.component({ selected: true })
     end
   end
-
 
   text_input.keyboard(:down) do |native_event|
     # text_input.component({ selected: { color: :red, text: :red } })
@@ -118,7 +117,7 @@ new(molecule: :list) do |params, _bloc|
                    end
   attach_to = params[:attach] || default_parent
   renderer_found = grab(attach_to).renderers
-  list = Atome.new({ renderers: renderer_found,id: new_id, type: :shape,  color: { alpha: 0 }, attach: attach_to }.merge(params))
+  list = Atome.new({ renderers: renderer_found, id: new_id, type: :shape, color: { alpha: 0 }, attach: attach_to }.merge(params))
   # Atome.new(
   #     { renderers: [:html], type: :shape, attach: :view, color: back_col,
   #       left: 0, top: 0, data: '', attach: attach_to,
@@ -147,7 +146,7 @@ new({ molecule: :slider }) do |params, bloc|
   new_id = params.delete(:id) || identity_generator
 
   default_smooth = 9
-  default_slider_particles = {id: new_id, color: color_found, width: 333, height: 33, left: 0, top: 0, smooth: default_smooth }
+  default_slider_particles = { id: new_id, color: color_found, width: 333, height: 33, left: 0, top: 0, smooth: default_smooth }
   default_cursor_particles = { color: color_found, width: 29, height: 29, left: 0, smooth: '100%' }
   cursor_found = params.delete(:cursor)
   slider_particle = default_slider_particles.merge(params)
@@ -186,7 +185,7 @@ new({ molecule: :slider }) do |params, bloc|
       end
       cursor_top_initial = ((max_value - new_value).to_f / (max_value - min_value)) * (slider_particle[:height] - cursor_particle[:height])
       bloc.call(new_value)
-      slider.instance_variable_set('@value',new_value)
+      slider.instance_variable_set('@value', new_value)
       cursor.top(cursor_top_initial)
       cursor.left(cursor_left)
       range.height((slider.height - cursor.top) - cursor.height / 2)
@@ -200,7 +199,7 @@ new({ molecule: :slider }) do |params, bloc|
       end
       cursor_left_initial = ((new_value - min_value).to_f / (max_value - min_value)) * (slider_particle[:width] - cursor_particle[:width])
       bloc.call(new_value)
-      slider.instance_variable_set('@value',new_value)
+      slider.instance_variable_set('@value', new_value)
       cursor.left(cursor_left_initial)
       cursor.top(cursor_top)
       range.width(cursor.left + cursor.width / 2)
@@ -239,7 +238,7 @@ new({ molecule: :slider }) do |params, bloc|
       value = update_value.call(cursor.top, cursor_particle[:height], slider_particle[:height], orientation)
       range.height((slider.height - cursor.top) - cursor.height / 2)
       bloc.call(value)
-      slider.instance_variable_set('@value',value)
+      slider.instance_variable_set('@value', value)
     end
 
   else
@@ -263,7 +262,7 @@ new({ molecule: :slider }) do |params, bloc|
       value = update_value.call(cursor.left, cursor_particle[:width], slider_particle[:width], orientation)
       range.width(cursor.left + cursor.width / 2)
       bloc.call(value)
-      slider.instance_variable_set('@value',value)
+      slider.instance_variable_set('@value', value)
     end
   end
   cursor.touch(:double) do
@@ -282,9 +281,8 @@ end
 new(molecule: :button) do |params, bloc|
   params[:height] ||= 25
   params[:width] ||= 25
-  states=params.delete(:states) || 1
+  states = params.delete(:states) || 1
   new_id = params.delete(:id) || identity_generator
-
 
   back_col = params.delete(:back)
   back_col ||= :grey
@@ -297,25 +295,20 @@ new(molecule: :button) do |params, bloc|
   attach_to = params[:attach] || default_parent
   renderer_found = grab(attach_to).renderers
   button = box(
-    { renderers: renderer_found,id: new_id, type: :shape, color: back_col,
+    { renderers: renderer_found, id: new_id, type: :shape, color: back_col,
       left: 0, top: 0, data: '', attach: attach_to,
       smooth: 3, overflow: :hidden,
     })
 
-
-
   button.touch(:down) do
     button.tick(:button)
-    bloc.call(button.tick[:button]%states)
+    bloc.call((button.tick[:button]-1) % states)
+
   end
-
-
 
   params.each do |part_f, val_f|
     button.send(part_f, val_f)
   end
-  button.left(55)
-
 
   button
 end
