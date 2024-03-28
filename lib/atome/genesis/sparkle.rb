@@ -70,7 +70,7 @@ Atome.new(
 
 # unreal port, hold system object and tools
 Atome.new(
-  { renderers: default_render, aid: :intuition, type: :shape, attach: :user_view, tag: { system: true },
+  { renderers: default_render, aid: :intuition, type: :shape, attach: :user_view,data: {default: {}}, tag: { system: true },
     left: 0, top: 0, bottom: 0, width: 0, height: :auto, overflow: :visible
   }
 )
