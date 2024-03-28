@@ -47,7 +47,7 @@ class Atome
     @collect = {}
     @int8 = {}
     @css = {}
-    @aid = identity_generator
+    @aid=  new_atome[:aid]  || identity_generator
     @controller_proc=[]
     @id = new_atome[:id] || @aid
     Universe.atomes.each do |_aid,atome_f|

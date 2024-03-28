@@ -5,10 +5,10 @@
 # Lets create the U.I.
 default_render = Essentials.default_params[:render_engines]
 Atome.new(
-  { renderers: [], id: :eDen, type: :element, tag: { system: true } }
+  { renderers: [], aid: :eDen, type: :element, tag: { system: true } }
 )
 Atome.new(
-  { renderers: [], id: :user_view, type: :element, tag: { system: true },
+  { renderers: [], aid: :user_view, type: :element, tag: { system: true },
     attach: :eDen }
 )
 
@@ -56,13 +56,13 @@ Atome.new(
 # system object creation
 # the black_matter is used to store un materialized atomes
 Atome.new(
-  { renderers: default_render, id: :black_matter, type: :shape, attach: :user_view,
+  { renderers: default_render, aid: :black_matter, type: :shape, attach: :user_view,
     left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }
   })
 
 # view port
 Atome.new(
-  { renderers: default_render, id: :view, type: :shape, attach: :user_view, apply: [:view_color],
+  { renderers: default_render, aid: :view,type: :shape, attach: :user_view, apply: [:view_color],
     tag: { system: true }, left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
   }
 
@@ -70,7 +70,7 @@ Atome.new(
 
 # unreal port, hold system object and tools
 Atome.new(
-  { renderers: default_render, id: :intuition, type: :shape, attach: :user_view, tag: { system: true },
+  { renderers: default_render, aid: :intuition, type: :shape, attach: :user_view, tag: { system: true },
     left: 0, top: 0, bottom: 0, width: 0, height: :auto, overflow: :visible
   }
 )
@@ -80,11 +80,13 @@ machine_id = :dummy_machine
 machine_password = { read: { atome: :star_wars }, write: { atome: :star_wars } }
 
 # copy basket
-Atome.new({ renderers: [:html], id: :copy, collect: [], type: :group, tag: { system: true } })
+Atome.new({ renderers: [:html], aid: :copy, collect: [], type: :group, tag: { system: true } })
 
 # machine
 Atome.new({ renderers: default_render, id: machine_id, type: :machine, password: machine_password,
             name: :macAir, data: { date: '10090717' }, tag: { system: true } })
+
+
 
 # user
 user_password = { global: :star_win, read: { atome: :star_wars }, write: { atome: :star_wars } }
@@ -98,7 +100,7 @@ A = Atome.new(
   { renderers: default_render, id: :atome, type: :element, tag: { system: true } }
 )
 # atome selector / collector
-Atome.new({ renderers: [:html], id: :selector, collect: [], type: :group, tag: { system: true } })
+Atome.new({ renderers: [:html], aid: :selector, collect: [], type: :group, tag: { system: true } })
 
 # atome infos
 def atome_infos
@@ -210,6 +212,6 @@ def user_login
 
 end
 
-Universe.allow_localstorage = true # to stop data to be stored in localstorage
+# Universe.allow_localstorage = true # to stop data to be stored in localstorage
 # Universe.allow_sync= false # to stop data to be sync on server
 touch_allow(false) # this lock the system right click in web view

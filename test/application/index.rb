@@ -84,6 +84,7 @@
 # in progress
 # require "./examples/find"
 # require "./examples/test"
+# require "./examples/tools"
 # require "./examples/smooth"
 # require "./examples/categories"
 # require "./examples/atome_particle_validation"
@@ -102,11 +103,11 @@
 #
 #### works
 # require "./examples/holder"
-require "./examples/input"
+# require "./examples/input"
 # require "./examples/server"
 # require "./examples/list"
 # require "./examples/behavior"
-# require "./examples/tick"
+require "./examples/tick"
 # require "./examples/localstorage"
 # require "./examples/allow_system_right_click"
 # require "./examples/sliders"
