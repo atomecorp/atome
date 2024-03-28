@@ -1,13 +1,13 @@
 #  frozen_string_literal: true
 a=box({width: 666, height: 777, color: :orange})
-b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2, depth: 1 })
+b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2, depth: 1 , top: 66})
 cc=circle({color: :red, left: 0, top: 0})
 clone = ""
 b.drag(:start) do
   b.color(:black)
   b.height(123)
   # beware you must use grab(:view) else it'll be attached to the context, that means to 'b' in this case
-  clone = grab(:view).circle({ id: "#{b.id}_cloned",color: :white, left: b.left, top: b.top, depth: 3 })
+  clone = grab(:view).circle({ color: :white, left: b.left, top: b.top, depth: 3 })
 end
 
 b.drag(:stop) do
@@ -42,6 +42,13 @@ end
 t=text({data: 'touch me to unbind drag stop for b (clone will not deleted anymore)', left: 250 })
 t.touch(true) do
   b.drag({remove: :stop})
+end
+
+tt= text({data: "remove drag on circles", top: 99})
+
+tt.touch(true) do
+  cc.drag(false)
+  c.drag(false)
 end
 
 

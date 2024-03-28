@@ -82,8 +82,20 @@
 # alert Universe.eVe
 
 # in progress
+# b=box
+# c=circle({left: 66})
+# b.drag(true) do
+#   puts "jhgjh"
+# end
+# c.touch(true) do
+#   puts 'kjh'
+#   b.drag(false)
+# end
+
+# require "./examples/resize"
+# require "./examples/drag"
 # require "./examples/find"
-# require "./examples/test"
+require "./examples/test"
 # require "./examples/tools"
 # require "./examples/smooth"
 # require "./examples/categories"
@@ -107,7 +119,7 @@
 # require "./examples/server"
 # require "./examples/list"
 # require "./examples/behavior"
-require "./examples/tick"
+# require "./examples/tick"
 # require "./examples/localstorage"
 # require "./examples/allow_system_right_click"
 # require "./examples/sliders"

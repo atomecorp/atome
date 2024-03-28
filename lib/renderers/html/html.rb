@@ -704,11 +704,16 @@ class HTML
   end
 
   def drag_remove(option)
+    interact = JS.eval("return interact('##{@id}')")
+
     case option
     when :start
       @drag_start = ''
     when :end, :stop
       @drag_end = ''
+    when :move
+      interact.draggable(false)
+      @drag_move = ''
     when :locked
       @drag_locked = ''
     when :restrict
@@ -719,6 +724,8 @@ class HTML
       @drag_end = ''
       @drag_locked = ''
       @drag_restrict = ''
+      @drag_move = ''
+      interact.draggable(false)
     end
 
   end
