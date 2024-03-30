@@ -28,7 +28,6 @@ wait 1 do
         end
       end
       v.left(222)
-
     end
   end
 end

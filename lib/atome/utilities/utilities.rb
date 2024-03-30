@@ -566,6 +566,30 @@ class Atome
     atome_content
   end
 
+  def b64Totag(params)
+
+    unless params[:target]
+      new_img = image({ left: 0, top: 0 })
+      params[:target] = new_img.id
+    end
+    new_tag = <<STRR
+  var serializer = new XMLSerializer();
+  var svg_string = serializer.serializeToString(document.getElementById('#{params[:id]}'));
+  var encoded_svg = btoa(unescape(encodeURIComponent(svg_string)));
+  var img = document.getElementById('#{params[:target]}');
+  img.src = "data:image/svg+xml;base64," + encoded_svg;
+  var parent = document.getElementById('#{id}');
+  parent.appendChild(img);
+STRR
+
+    JS.eval(new_tag)
+    new_atome = grab(params[:target])
+    html_obj = new_atome.html.object
+    obj_src = html_obj[:src]
+    new_atome.path(obj_src)
+    new_atome
+  end
+
 end
 
 

@@ -96,6 +96,7 @@
 # require "./examples/drag"
 # require "./examples/find"
 # require "./examples/test"
+require "./examples/b64_to_image"
 # require "./examples/tools"
 # require "./examples/smooth"
 # require "./examples/categories"
@@ -114,7 +115,7 @@
 # require './examples/test'
 #
 #### works
-require "./examples/svg_vectorizer"
+# require "./examples/svg_vectorizer"
 # require "./examples/holder"
 # require "./examples/input"
 # require "./examples/server"

@@ -5,8 +5,6 @@ b=box({id: :the_box})
 b.text({id: :the_text, left: 90, top: 30, data: :ok})
 b.text({id: :the_text2, left: 190, top: 30, data: :hello})
 
-
-
 wait 1 do
   b.text.each_with_index do |el, _index|
     grab(el).left(30)
