@@ -6,6 +6,7 @@ require 'json'
 class Atome
   class << self
     attr_accessor :initialized
+
     def sanitize_data_for_json(data)
       data = data.gsub('"', '\\"')
       # case data
@@ -21,13 +22,12 @@ class Atome
       data
     end
 
-
     def send_localstorage_content
       storage = JS.global[:localStorage]
       storage_array = storage.to_a
       storage_array.each_with_index do |_i, index|
         key = JS.global[:localStorage].key(index)
-         sanitize_data_for_json(storage.getItem(key))
+        sanitize_data_for_json(storage.getItem(key))
       end
     end
 
@@ -127,13 +127,13 @@ class Atome
     new_atome.each do |element, value|
       send(element, value)
       initialized_proc = initialized[element]
-      initialized_procs << {value => initialized_proc } if initialized_proc.is_a?(Proc)
+      initialized_procs << { value => initialized_proc } if initialized_proc.is_a?(Proc)
     end
 
     initialized_procs.each do |value|
-       value.each do |val, proc|
-         instance_exec(val, &proc)
-       end
+      value.each do |val, proc|
+        instance_exec(val, &proc)
+      end
     end
 
   end
@@ -431,7 +431,6 @@ class Atome
     end
   end
 
-
   def init_websocket
     connection(@current_server)
   end
@@ -457,8 +456,6 @@ class Atome
     end
     storage_items
   end
-
-
 
   # def to_sym
   #   puts "sanitizer temp patch when an atome is passed instead of an id"
@@ -566,8 +563,7 @@ class Atome
     atome_content
   end
 
-  def b64Totag(params)
-
+  def b64_to_tag(params)
     unless params[:target]
       new_img = image({ left: 0, top: 0 })
       params[:target] = new_img.id
@@ -581,13 +577,26 @@ class Atome
   var parent = document.getElementById('#{id}');
   parent.appendChild(img);
 STRR
-
     JS.eval(new_tag)
     new_atome = grab(params[:target])
     html_obj = new_atome.html.object
     obj_src = html_obj[:src]
     new_atome.path(obj_src)
     new_atome
+  end
+
+  def fetch_svg(params)
+    source = params[:source]
+    img_element = JS.global[:document].getElementById(source.to_s)
+    svg_path = img_element.getAttribute("src")
+    target = params[:target]
+    JS.eval("fetchSVGContent('#{svg_path}', '#{target}')")
+  end
+
+  def handleSVGContent(svg_content, target)
+    atome_content = A.vectorizer(svg_content)
+    target_vector = grab(target)
+    target_vector.data(atome_content)
   end
 
 end

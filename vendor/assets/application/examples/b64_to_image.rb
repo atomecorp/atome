@@ -5,5 +5,5 @@ def_2 = "M 536.75,-0.25 C 536.75,-0.25 536.75,-0.08 536.75,0.25 536.75,25.82 536
 vector({ id: :my_svg, top: 33, left: 99, data: { path: { d: def_2, id: :p2, stroke: :red, 'stroke-width' => 3, fill: :green } } })
 
 wait 1 do
-  grab(:view).b64Totag({ id: 'my_svg', target: :logo })
+  grab(:view).b64_to_tag({ id: 'my_svg', target: :logo })
 end

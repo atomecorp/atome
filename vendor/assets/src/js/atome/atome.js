@@ -303,3 +303,14 @@ function my_opal_js_fct(val){
 function my_ruby_wasm_js_fct(val){
     rubyVM.eval("my_ruby_meth('ruby wasm eval: "+val+"')");
 }
+function fetchSVGContent(svgPath, target) {
+    fetch(svgPath)
+        .then(response => response.text())
+        .then(data => {
+            rubyVM.eval("A.handleSVGContent('"+data+"', '"+target+"')") ;
+            // Module.call('handleSVGContent', 'void', ['string'], [data]);
+        })
+        .catch(error => console.error('Erreur de chargement du SVG :', error));
+
+}
+
