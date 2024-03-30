@@ -402,7 +402,7 @@ class HTML
 
   def svg_data(all_datas)
     # we remove previous datas
-    @element.innerHTML = ''
+    # @element.innerHTML = ''
     all_datas.each do |full_data|
       full_data.each do |type_passed, datas|
 

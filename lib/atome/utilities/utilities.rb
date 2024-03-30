@@ -491,7 +491,80 @@ class Atome
     current_state
   end
 
+  def vectorizer(svg_content)
+    atome_content = []
 
+    circle_regex = /<circle\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+)"\s+cy\s*=\s*"(\d+)"\s+r\s*=\s*"(\d+)".*?\/>/
+    path_regex = /<path\s+.*?d\s*=\s*"([^"]+)"\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)".*?\/>/
+
+    svg_content.scan(circle_regex) do |id, stroke, stroke_width, fill, cx, cy, r|
+      stroke = stroke || 'none'
+      stroke_width = stroke_width || '0'
+      fill = fill || 'none'
+      circle_def = { circle: { cx: cx, cy: cy, r: r, id: id, stroke: stroke, "stroke-width" => stroke_width, fill: fill } }
+      atome_content << circle_def
+    end
+
+    svg_content.scan(path_regex) do |d, id, stroke, stroke_width, fill|
+      id = id || 'path_id'
+      stroke = stroke || 'none'
+      stroke_width = stroke_width || '0'
+      fill = fill || 'none'
+      path_def = { path: { d: d, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
+      atome_content << path_def
+    end
+
+    rect_regex = /<rect\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+x\s*=\s*"(\d+)"\s+y\s*=\s*"(\d+)"\s+width\s*=\s*"(\d+)"\s+height\s*=\s*"(\d+)".*?\/>/
+    svg_content.scan(rect_regex) do |id, stroke, stroke_width, fill, x, y, width, height|
+      id = id || 'rect_id'
+      stroke = stroke || 'none'
+      stroke_width = stroke_width || '0'
+      fill = fill || 'none'
+      rect_def = { rect: { x: x, y: y, width: width, height: height, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
+      atome_content << rect_def
+    end
+
+    line_regex = /<line\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?x1\s*=\s*"(\d+)"\s+y1\s*=\s*"(\d+)"\s+x2\s*=\s*"(\d+)"\s+y2\s*=\s*"(\d+)".*?\/>/
+    svg_content.scan(line_regex) do |id, stroke, stroke_width, x1, y1, x2, y2|
+      id = id || 'line_id'
+      stroke = stroke || 'none'
+      stroke_width = stroke_width || '0'
+      line_def = { line: { x1: x1, y1: y1, x2: x2, y2: y2, id: id, stroke: stroke, 'stroke-width' => stroke_width } }
+      atome_content << line_def
+    end
+
+    ellipse_regex = /<ellipse\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+)"\s+cy\s*=\s*"(\d+)"\s+rx\s*=\s*"(\d+)"\s+ry\s*=\s*"(\d+)".*?\/>/
+    svg_content.scan(ellipse_regex) do |id, stroke, stroke_width, fill, cx, cy, rx, ry|
+      id = id || 'ellipse_id'
+      stroke = stroke || 'none'
+      stroke_width = stroke_width || '0'
+      fill = fill || 'none'
+      ellipse_def = { ellipse: { cx: cx, cy: cy, rx: rx, ry: ry, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
+      atome_content << ellipse_def
+    end
+
+    polygon_regex = /<polygon\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?(?:fill\s*=\s*"(.*?)"\s+)?points\s*=\s*"([^"]+)".*?\/>/
+    svg_content.scan(polygon_regex) do |id, stroke, stroke_width, fill, points|
+      id ||= 'polygon_id'
+      stroke ||= 'none'
+      stroke_width ||= '0'
+      fill ||= 'none'
+      polygon_def = { polygon: { points: points, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
+      atome_content << polygon_def
+    end
+
+    polyline_regex = /<polyline\s+.*?points\s*=\s*"([^"]+)"\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?(?:fill\s*=\s*"(.*?)")?.*?\/>/
+    svg_content.scan(polyline_regex) do |points, id, stroke, stroke_width, fill|
+      id ||= 'polyline_id'
+      stroke ||= 'none'
+      stroke_width ||= '0'
+      fill ||= 'none'
+      polyline_def = { polyline: { points: points, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
+      atome_content << polyline_def
+    end
+
+    atome_content
+  end
 
 end
 

@@ -402,13 +402,18 @@ edition = "M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.
 # v = vector({ data: [{ path: { d: edition, id: :p1, stroke: :black, 'stroke-width' => 37, fill: :red } } ]})
 v = vector({ data: { circle: { cx: 300, cy: 300, r: 340, id: :p2, stroke: :blue, 'stroke-width' => 35, fill: :yellow } } })
 
-wait 2 do
-  v.data({})
+# wait 2 do
+#   v.data({})
   # alert v.data
   # v.data(circle: { cx: 1000, cy: 1000, r: 340, id: :p2, stroke: :green, 'stroke-width' => 35, fill: :yellow })
-  wait 2 do
-    v.data([{ circle: { cx: 300, cy: 300, r: 340, id: :p2, stroke: :blue, 'stroke-width' => 35, fill: :yellow } },{circle: { cx: 1000, cy: 1000, r: 340, id: :p2, stroke: :green, 'stroke-width' => 35, fill: :yellow }}])
-  end
+  wait 1 do
+    # <circle id="colorCanvas-oval" stroke="none" fill="rgb(255, 0, 0)" cx="274" cy="306" r="198" />
+    # <circle id="colorCanvas-oval2" stroke="none" fill="rgb(0, 142, 255)" cx="767" cy="306" r="198" />
+    # <circle id="colorCanvas-oval3" stroke="none" fill="rgb(50, 255, 0)" cx="499" cy="702" r="198" />
+    v.data([{ circle: { cx: 274, cy: 306, r: 198, id: :p2, stroke: :none, 'stroke-width' => 0, fill: "rgb(255, 0, 0)" } },
+            { circle: { cx: 767, cy: 306, r: 198, id: :p2, stroke: :none, 'stroke-width' => 0, fill: "rgb(0, 142, 255)" } },
+            { circle: { cx: 499, cy: 702, r: 198, id: :p2, stroke: :none, 'stroke-width' => 0, fill: "rgb(50, 255, 0)" } }])
+  # end
 end
 
 

@@ -114,6 +114,7 @@
 # require './examples/test'
 #
 #### works
+require "./examples/svg_vectorizer"
 # require "./examples/holder"
 # require "./examples/input"
 # require "./examples/server"
@@ -172,7 +173,7 @@
 # require "./examples/shadow"
 # require "./examples/blur"
 # require "./examples/raw_html"
-require "./examples/vector"
+# require "./examples/vector"
 # require "./examples/basic_understanding"
 # require "./examples/preset"
 # require "./examples/hierarchy"
