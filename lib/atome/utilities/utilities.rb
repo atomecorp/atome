@@ -81,6 +81,12 @@ class Atome
       end
     end
 
+    def handleSVGContent(svg_content, target)
+      atome_content = A.vectorizer(svg_content)
+      target_vector = grab(target)
+      target_vector.data(atome_content)
+    end
+
   end
 
   @initialized = {}
@@ -591,12 +597,6 @@ STRR
     svg_path = img_element.getAttribute("src")
     target = params[:target]
     JS.eval("fetchSVGContent('#{svg_path}', '#{target}')")
-  end
-
-  def handleSVGContent(svg_content, target)
-    atome_content = A.vectorizer(svg_content)
-    target_vector = grab(target)
-    target_vector.data(atome_content)
   end
 
 end
