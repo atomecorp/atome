@@ -11,7 +11,7 @@ function controller_message(msg) {
 function loadApplicationJs() {
     var script = document.createElement('script');
     script.src = 'js/application.js';
-    script.onload = function() {
+    script.onload = function () {
         Opal.Object.$init_database();
     };
     document.body.appendChild(script);
@@ -95,15 +95,16 @@ const communication = {
 }
 
 
-function my_ruby_wasm_js_fct(val){
-    Opal.eval("my_ruby_meth('ruby wasm eval: "+val+"')");
+function my_ruby_wasm_js_fct(val) {
+    Opal.eval("my_ruby_meth('ruby wasm eval: " + val + "')");
 }
+
 function fetchSVGContent(svgPath, target) {
     fetch(svgPath)
         .then(response => response.text())
         .then(data => {
             // Opal.eval("A.handleSVGContent('"+data+"', '"+target+"')") ;
-            Opal.Atome.$handleSVGContent(data,target);
+            Opal.Atome.$handleSVGContent(data, target);
         })
         .catch(error => console.error('Erreur de chargement du SVG :', error));
 

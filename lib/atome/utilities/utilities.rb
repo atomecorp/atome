@@ -81,7 +81,13 @@ class Atome
       end
     end
 
+    def controller_listener
+      return if $host == :html
+      atome_js.JS.controller_listener() # js folder atome/helipers/atome/communication
+    end
+
     def handleSVGContent(svg_content, target)
+      puts svg_content
       atome_content = A.vectorizer(svg_content)
       target_vector = grab(target)
       target_vector.data(atome_content)
@@ -120,11 +126,7 @@ class Atome
     send(js_action, js_body)
   end
 
-  def self.controller_listener
-    return if $host == :html
 
-    atome_js.JS.controller_listener() # js folder atome/helipers/atome/communication
-  end
 
   def collapse(new_atome)
     initialized_procs = []
@@ -497,8 +499,8 @@ class Atome
   def vectorizer(svg_content)
     atome_content = []
 
-    circle_regex = /<circle\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+)"\s+cy\s*=\s*"(\d+)"\s+r\s*=\s*"(\d+)".*?\/>/
-    path_regex = /<path\s+.*?d\s*=\s*"([^"]+)"\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)".*?\/>/
+    # circle_regex = /<circle\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+)"\s+cy\s*=\s*"(\d+)"\s+r\s*=\s*"(\d+)".*?\/>/
+    circle_regex = /<circle\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+(?:\.\d+)?)"\s+cy\s*=\s*"(\d+(?:\.\d+)?)"\s+r\s*=\s*"(\d+(?:\.\d+)?)"\s*.*?\/>/
 
     svg_content.scan(circle_regex) do |id, stroke, stroke_width, fill, cx, cy, r|
       stroke = stroke || 'none'
@@ -507,6 +509,9 @@ class Atome
       circle_def = { circle: { cx: cx, cy: cy, r: r, id: id, stroke: stroke, "stroke-width" => stroke_width, fill: fill } }
       atome_content << circle_def
     end
+
+    # path_regex = /<path\s+.*?d\s*=\s*"([^"]+)"\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)".*?\/>/
+    path_regex = /<path\s+.*?d\s*=\s*"([^"]+)"\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)".*?\/>/
 
     svg_content.scan(path_regex) do |d, id, stroke, stroke_width, fill|
       id = id || 'path_id'
@@ -517,7 +522,9 @@ class Atome
       atome_content << path_def
     end
 
-    rect_regex = /<rect\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+x\s*=\s*"(\d+)"\s+y\s*=\s*"(\d+)"\s+width\s*=\s*"(\d+)"\s+height\s*=\s*"(\d+)".*?\/>/
+    # rect_regex = /<rect\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+x\s*=\s*"(\d+)"\s+y\s*=\s*"(\d+)"\s+width\s*=\s*"(\d+)"\s+height\s*=\s*"(\d+)".*?\/>/
+    rect_regex = /<rect\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+x\s*=\s*"(\d+(?:\.\d+)?)"\s+y\s*=\s*"(\d+(?:\.\d+)?)"\s+width\s*=\s*"(\d+(?:\.\d+)?)"\s+height\s*=\s*"(\d+(?:\.\d+)?)"\s*.*?\/>/
+
     svg_content.scan(rect_regex) do |id, stroke, stroke_width, fill, x, y, width, height|
       id = id || 'rect_id'
       stroke = stroke || 'none'
@@ -527,7 +534,9 @@ class Atome
       atome_content << rect_def
     end
 
-    line_regex = /<line\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?x1\s*=\s*"(\d+)"\s+y1\s*=\s*"(\d+)"\s+x2\s*=\s*"(\d+)"\s+y2\s*=\s*"(\d+)".*?\/>/
+    # line_regex = /<line\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?x1\s*=\s*"(\d+)"\s+y1\s*=\s*"(\d+)"\s+x2\s*=\s*"(\d+)"\s+y2\s*=\s*"(\d+)".*?\/>/
+    line_regex = /<line\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?x1\s*=\s*"(\d+(?:\.\d+)?)"\s+y1\s*=\s*"(\d+(?:\.\d+)?)"\s+x2\s*=\s*"(\d+(?:\.\d+)?)"\s+y2\s*=\s*"(\d+(?:\.\d+)?)"\s*.*?\/>/
+
     svg_content.scan(line_regex) do |id, stroke, stroke_width, x1, y1, x2, y2|
       id = id || 'line_id'
       stroke = stroke || 'none'
@@ -536,7 +545,9 @@ class Atome
       atome_content << line_def
     end
 
-    ellipse_regex = /<ellipse\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+)"\s+cy\s*=\s*"(\d+)"\s+rx\s*=\s*"(\d+)"\s+ry\s*=\s*"(\d+)".*?\/>/
+    # ellipse_regex = /<ellipse\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+)"\s+cy\s*=\s*"(\d+)"\s+rx\s*=\s*"(\d+)"\s+ry\s*=\s*"(\d+)".*?\/>/
+    ellipse_regex = /<ellipse\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+(?:\.\d+)?)"\s+cy\s*=\s*"(\d+(?:\.\d+)?)"\s+rx\s*=\s*"(\d+(?:\.\d+)?)"\s+ry\s*=\s*"(\d+(?:\.\d+)?)"\s*.*?\/>/
+
     svg_content.scan(ellipse_regex) do |id, stroke, stroke_width, fill, cx, cy, rx, ry|
       id = id || 'ellipse_id'
       stroke = stroke || 'none'
@@ -546,6 +557,7 @@ class Atome
       atome_content << ellipse_def
     end
 
+    # polygon_regex = /<polygon\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?(?:fill\s*=\s*"(.*?)"\s+)?points\s*=\s*"([^"]+)".*?\/>/
     polygon_regex = /<polygon\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?(?:fill\s*=\s*"(.*?)"\s+)?points\s*=\s*"([^"]+)".*?\/>/
     svg_content.scan(polygon_regex) do |id, stroke, stroke_width, fill, points|
       id ||= 'polygon_id'

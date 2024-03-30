@@ -8,10 +8,10 @@ svg_content = <<-SVG
 <circle id="colorCanvas-oval" stroke="none" fill="rgb(255, 0, 0)" cx="274" cy="306" r="198" />
 <circle id="colorCanvas-oval2" stroke="none" fill="rgb(0, 142, 255)" cx="767" cy="306" r="198" />
 <circle id="colorCanvas-oval3" stroke="none" fill="rgb(50, 255, 0)" cx="499" cy="702" r="198" />
-<ellipse id="colorCanvas-ellipse" stroke="black" stroke-width="5" fill="yellow" cx="512" cy="256" rx="150" ry="100" />
-<rect id="colorCanvas-rect" stroke="green" stroke-width="5" fill="blue" x="100" y="500" width="300" height="150" />
-<line id="colorCanvas-line" stroke="purple" stroke-width="110" x1="50" y1="800" x2="300" y2="950" />
-<polygon id="colorCanvas-polygon" stroke="orange" stroke-width="7" fill="none" points="800,400 700,600 900,600" />
+<ellipse id="colorCanvas-ellipse" stroke="black" stroke-width="5" fill="yellow" cx="512.5" cy="256" rx="150" ry="100" />
+<rect id="colorCanvas-rect" stroke="green" stroke-width="5" fill="blue" x="100" y="500.7" width="300" height="150" />
+<line id="colorCanvas-line" stroke="purple" stroke-width="110" x1="50" y1="800" x2="300.6" y2="950" />
+<polygon id="colorCanvas-polygon" stroke="orange" stroke-width="7.2" fill="none" points="800,400 700,600 900,600" />
 </svg>
 SVG
 

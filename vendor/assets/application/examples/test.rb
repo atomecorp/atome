@@ -2,6 +2,8 @@
 
 # frozen_string_literal: true
 # text(:hello)
+
+# toolbox_style contain all tools styles
 element({ aid: :toolbox_style, id: :toolbox_style, data: { color: :gray, size: 39 } })
 
 class Atome
@@ -17,6 +19,8 @@ class Atome
     color({ id: :inactive_tool_col, alpha: 0.6 })
     tool_content = Atome.instance_exec(&bloc)
     tool = grab(:toolbox).box({ aid: "#{tool_name}_tool", id: "#{tool_name}_tool", apply: [:inactive_tool_col], width: 33, height: 33, top: tool_size * grab(:toolbox).attached.length })
+    tool.vector({left: 9, top: :auto, bottom: 9,width: 18, height: 18, id: "tool_#{tool_name}_icon" })
+    tool.text({data: tool_name, component: {size: 9}, color: :grey,id: "tool_#{tool_name}_label"})
     tool.touch(true) do |ev|
       alert "intuition data is used to store user choices for colors, size, etc..  #{grab(:intuition).data}"
       tick(tool_name)
@@ -102,7 +106,7 @@ end
 #   end
 # end
 
-grab(:intuition).box({ id: :toolbox, top: :auto, bottom: 0, left: 0, width: 50, height: 255 })
+grab(:intuition).box({ id: :toolbox, top: :auto, bottom: 0, left: 0, width: 33, height: 255 })
 
 module Intuition
   def intuition_int8
@@ -415,8 +419,10 @@ puts A.impulse
 #   # end
 # end
 
-image({path: 'medias/images/icons/color.svg', width: 33})
-
+grab(:black_matter).image({path: 'medias/images/icons/color.svg', width: 33, id: :color_icon_vector})
+A.fetch_svg({ source: :color_icon_vector, target: :tool_color_icon})
+grab(:black_matter).image({path: 'medias/images/icons/shape.svg', width: 33, id: :shape_icon_vector})
+A.fetch_svg({ source: :shape_icon_vector, target: :tool_shape_icon})
 # p=[]
 #  Universe.particle_list.each do |k,v|
 #    p << k
