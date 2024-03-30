@@ -400,15 +400,20 @@ class HTML
     self
   end
 
-  def svg_data(data)
-    data.each do |type_passed, datas|
-      svg_ns = 'http://www.w3.org/2000/svg'
-      new_path = JS.global[:document].createElementNS(svg_ns.to_s, type_passed.to_s)
-      JS.global[:document][:body].appendChild(new_path)
-      datas.each do |property, value|
-        new_path.setAttribute(property.to_s, value.to_s)
+  def svg_data(all_datas)
+    # we remove previous datas
+    @element.innerHTML = ''
+    all_datas.each do |full_data|
+      full_data.each do |type_passed, datas|
+
+        svg_ns = 'http://www.w3.org/2000/svg'
+        new_path = JS.global[:document].createElementNS(svg_ns.to_s, type_passed.to_s)
+        JS.global[:document][:body].appendChild(new_path)
+        datas.each do |property, value|
+          new_path.setAttribute(property.to_s, value.to_s)
+        end
+        @element.appendChild(new_path)
       end
-      @element.appendChild(new_path)
     end
   end
 

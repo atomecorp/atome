@@ -51,6 +51,9 @@ new({ method: :data, type: :string, specific: :text, renderer: :html }) do |para
 end
 
 new({ method: :data, type: :string, specific: :vector, renderer: :html }) do |value|
+  unless value.instance_of? Array
+    value=[value]
+  end
   html.svg_data(value)
 end
 

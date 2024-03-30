@@ -2,22 +2,37 @@
 
 # frozen_string_literal: true
 # text(:hello)
+element({ aid: :toolbox_style, id: :toolbox_style, data: { color: :gray, size: 39 } })
 
 class Atome
   def build_tool(params, &bloc)
-    alert "intuition data is used to store user choices for colors, size, etc..  #{grab(:intuition).data}"
+
+    # default_params={author: alert Universe.current_user}
+    tool_box_style = grab(:toolbox_style).data
+    tool_size = tool_box_style[:size]
+    # puts "intuition data is used to store user choices for colors, size, etc..  #{grab(:intuition).data}"
     tool_name = params[:tool]
     color({ id: :creation_layer_col, alpha: 0 })
     color({ id: :active_tool_col, alpha: 1, red: 1, green: 1, blue: 1 })
     color({ id: :inactive_tool_col, alpha: 0.6 })
     tool_content = Atome.instance_exec(&bloc)
-    tool = grab(:toolbox).box({ apply: [:inactive_tool_col], width: 33, height: 33 })
+    tool = grab(:toolbox).box({ aid: "#{tool_name}_tool", id: "#{tool_name}_tool", apply: [:inactive_tool_col], width: 33, height: 33, top: tool_size * grab(:toolbox).attached.length })
     tool.touch(true) do |ev|
+      alert "intuition data is used to store user choices for colors, size, etc..  #{grab(:intuition).data}"
       tick(tool_name)
       if tick[tool_name] == 1 # first click
         tool.apply(:active_tool_col)
-        creation_layer = drag(:view).box({ id: :creation_layer, top: 0, left: 0, aid: :creation_layer, width: '100%', height: '100%', apply: :creation_layer_col })
-        creation_layer.touch(:down) do |event|
+        unless grab(:creation_layer)
+          alert grab(:creation_layer).class
+          creation_layer = grab(:view).box({ id: :creation_layer, top: 0, left: 0, aid: :creation_layer, width: '100%', height: '100%', apply: :creation_layer_col })
+          # creation_layer.touch(:down) do |event|
+          #   puts "<< Syncing >>"
+          #   tool_content[:active].each do |code_exec|
+          #     Atome.instance_exec(event, &code_exec)
+          #   end
+          # end
+        end
+        grab(:creation_layer).touch(:down) do |event|
           puts "<< Syncing >>"
           tool_content[:active].each do |code_exec|
             Atome.instance_exec(event, &code_exec)
@@ -29,8 +44,10 @@ class Atome
           Atome.instance_exec(params, &code_exec)
         end if tool_content[:inactive]
         creation_layer = grab(:creation_layer)
-        creation_layer.delete(true)
-        creation_layer.touch({ remove: :down })
+        if grab(:creation_layer)
+          creation_layer.delete(true)
+          creation_layer.touch({ remove: :down })
+        end
         tick[tool_name] = 0
       end
     end
@@ -86,7 +103,6 @@ end
 # end
 
 grab(:intuition).box({ id: :toolbox, top: :auto, bottom: 0, left: 0, width: 50, height: 255 })
-
 
 module Intuition
   def intuition_int8
@@ -287,6 +303,36 @@ end
 # notif "======"
 # notif list[:molecules][:shadow]
 
+# grab(:intuition).data[:color]= :orange
+new({ tool: :color }) do |params|
+  @new_created_items ||= []
+  active_code = lambda { |event|
+    grab(:intuition).data[:color] = :red
+    # left_found = event[:pageX].to_i
+    # top_found = event[:pageY].to_i
+    # new_box = box({ left: left_found, top: top_found, width: 66, height: 66, drag: true })
+    # @new_created_items << new_box
+    # new_box.resize(true) do |event|
+    #   puts "width is  is #{event[:rect][:width]}"
+    # end
+  }
+
+  inactive_code = lambda { |param|
+    # @new_created_items.each do |new_atome_found|
+    #   new_atome_found.drag(false)
+    #   new_atome_found.resize(:remove)
+    # end
+
+  }
+  {
+    icon: :shape, action: { open: [:sub_menu] }, active: [active_code],
+    inactive: [inactive_code],
+    position: { root: 1 }, # position can be multiple
+    option: { opt1: :method_2 },
+    int8: { french: :couleur, english: :color, german: :colorad } }
+
+end
+
 new({ tool: :shape }) do |params|
   @new_created_items ||= []
   shape_code = lambda { |event|
@@ -306,14 +352,12 @@ new({ tool: :shape }) do |params|
     end
 
   }
+  {
+    name: :shape, icon: :shape, action: { open: [:sub_menu] }, active: [shape_code],
+    inactive: [inactive_code],
+    position: { root: 1 }, # position can be multiple
+    option: { opt1: :method_2 }, int8: { french: :formes, english: :shape, german: :jesaispas } }
 
-  tool = { aid: :shape_tool, author: :jeezs,
-           name: :record, icon: :shape, action: { open: [:sub_menu] }, active: [shape_code],
-           inactive: [inactive_code],
-           position: { root: 1 }, # position can be multiple
-           option: { opt1: :method_2 }, int8: { french: :formes, english: :shape, german: :jesaispas } }
-
-  tool
 end
 
 puts A.impulse
@@ -341,6 +385,37 @@ puts A.impulse
 #
 # end
 
+# <?xml version="1.0" encoding="UTF-8"?>
+# <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+#                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024"  xml:space="preserve" id="colorCanvas">
+# <!-- Generated by PaintCode - http://www.paintcodeapp.com -->
+#                                                           <circle id="colorCanvas-oval" stroke="none" fill="rgb(255, 0, 0)" cx="274" cy="306" r="198" />
+# <circle id="colorCanvas-oval2" stroke="none" fill="rgb(0, 142, 255)" cx="767" cy="306" r="198" />
+# <circle id="colorCanvas-oval3" stroke="none" fill="rgb(50, 255, 0)" cx="499" cy="702" r="198" />
+# </svg>
 
 
 
+
+edition = "M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.9c3.9-3.9 3.9-10.2 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2c-1.9 11.1 1.5 21.9 9.4 29.8 6.6 6.4 14.9 9.9 23.8 9.9z m67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"
+
+# v = vector({ data: [{ path: { d: edition, id: :p1, stroke: :black, 'stroke-width' => 37, fill: :red } } ]})
+v = vector({ data: { circle: { cx: 300, cy: 300, r: 340, id: :p2, stroke: :blue, 'stroke-width' => 35, fill: :yellow } } })
+
+wait 2 do
+  v.data({})
+  # alert v.data
+  # v.data(circle: { cx: 1000, cy: 1000, r: 340, id: :p2, stroke: :green, 'stroke-width' => 35, fill: :yellow })
+  wait 2 do
+    v.data([{ circle: { cx: 300, cy: 300, r: 340, id: :p2, stroke: :blue, 'stroke-width' => 35, fill: :yellow } },{circle: { cx: 1000, cy: 1000, r: 340, id: :p2, stroke: :green, 'stroke-width' => 35, fill: :yellow }}])
+  end
+end
+
+
+
+# p=[]
+#  Universe.particle_list.each do |k,v|
+#    p << k
+#  end
+#
+# alert p

@@ -5,7 +5,7 @@ edition = "M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.
 v = vector({ data: { path: { d: edition, id: :p1, stroke: :black, 'stroke-width' => 37, fill: :red } } })
 
 wait 1 do
-  v.data(circle: { cx: 1000, cy: 1000, r: 340, id: :p2, stroke: :green, 'stroke-width' => 35, fill: :yellow })
+  v.data([{ circle: { cx: 300, cy: 300, r: 340, id: :p2, stroke: :blue, 'stroke-width' => 35, fill: :yellow } }, { circle: { cx: 1000, cy: 1000, r: 340, id: :p2, stroke: :green, 'stroke-width' => 35, fill: :yellow } }])
   wait 1 do
     v.color(:cyan) # colorise everything with the color method
     wait 1 do
@@ -15,7 +15,12 @@ wait 1 do
                  option: :natural,
                  red: 0, green: 1, blue: 0, alpha: 1
                })
-      v.component(p2: {fill: :blue,'stroke-width' => 166 })
+      wait 1 do
+        wait 1 do
+          v.component(p2: { fill: :blue, 'stroke-width' => 33 })
+        end
+        v.component(p2: { fill: :blue, 'stroke-width' => 122 })
+      end
       v.left(222)
     end
   end
