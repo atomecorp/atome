@@ -85,7 +85,6 @@ new({ particle: :on, category: :event, type: :boolean, store: false })
 new({ sanitizer: :on }) do |params, user_bloc|
   @on ||= {}
   @on_code ||= {}
-
   option = {}
   params = if params.instance_of? Hash
              @on_code[:view_resize] = user_bloc

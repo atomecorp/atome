@@ -987,7 +987,7 @@ class HTML
                            modifiers: [],
                            listeners: {
                              move: lambda do |native_event|
-                               if @resize.is_a?(Proc)
+                               # if @resize.is_a?(Proc)
                                  event = Native(native_event)
                                  # we use .call instead of instance_eval because instance_eval bring the current object as context
                                  # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
@@ -1003,9 +1003,9 @@ class HTML
                                  @original_atome.width width.to_i if width.to_i.between?(min_width, max_width)
                                  @original_atome.height height.to_i if height.to_i.between?(min_height, max_height)
                                  @original_atome.left(x)
-                                 @original_atome.top (y)
+                                 @original_atome.top(y)
                                end
-                             end
+                             # end
                            },
 
                          })

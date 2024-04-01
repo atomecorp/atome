@@ -39,6 +39,7 @@ class Atome
     # @callback = {}
     @tag = {}
     @tick={}
+    @storage={}
     @behavior = {}
     @selected = false
     #@metrics = {}

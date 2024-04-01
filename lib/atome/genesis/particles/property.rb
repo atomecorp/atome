@@ -142,5 +142,6 @@ new({ particle: :value }) do |val|
   val
 end
 
-
 new({ particle: :behavior })
+
+new({ particle: :orientation, type: :symbol, category: :property })

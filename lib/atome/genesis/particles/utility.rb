@@ -160,13 +160,13 @@ new({ particle: :duplicate, category: :utility, type: :string, store: false }) d
     end
   end
   params[:attached] = attached_atomes
-  infos_found =infos.dup
-  keys_to_delete = [ :history, :callback, :duplicate, :copy, :paste, :touch_code, :html, :attached, :aid]
+  infos_found = infos.dup
+  keys_to_delete = [:history, :callback, :duplicate, :copy, :paste, :touch_code, :html, :attached, :aid]
   keys_to_delete.each { |key| infos_found.delete(key) }
   new_atome_id = "#{@id}_copy_#{copy_number}".to_sym
-  infos_found[:id]=new_atome_id
-  infos_found=infos_found.merge(params)
-  new_atome =Atome.new( infos_found)
+  infos_found[:id] = new_atome_id
+  infos_found = infos_found.merge(params)
+  new_atome = Atome.new(infos_found)
   @duplicate ||= {}
   @duplicate[new_atome_id] = new_atome
   new_atome
@@ -230,25 +230,27 @@ new({ particle: :get, category: :utility, type: :string }) do |params|
   data[row_nb][data[row_nb].keys[column_nb]] # we get the content of the cell
 end
 
-new ({ particle: :css, category: :utility, type: :string })
+new({ particle: :css, category: :utility, type: :string })
 
 new({ read: :css }) do
   CssProxy.new(js, nil, self)
 end
 
-new({particle: :holder, category: :utility, type: :atome})
+new({ particle: :holder, category: :utility, type: :atome })
 
 # this particle is mainly used in conjunction with alternate particle as a 'lambda' to alternate  methods
-new({particle: :executor, category: :utility, type: :hash}) do |params|
+new({ particle: :executor, category: :utility, type: :hash }) do |params|
   params.each do |method, opt|
     send(method, opt)
   end
   params
 end
 
-
-new({ particle: :tick, store: false }) do |val|
+new({ particle: :tick, category: :utility, store: false, type: :hash }) do |val|
   @tick[val] ||= 0
-  @tick[val]= @tick[val] += 1
+  @tick[val] = @tick[val] += 1
   @tick[val]
 end
+
+new({ particle: :storage, category: :utility, type: :hash })
+new({ particle: :state, category: :utility, type: :symbol })
