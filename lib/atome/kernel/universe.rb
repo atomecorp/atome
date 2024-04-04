@@ -23,10 +23,12 @@ class Universe
   @allow_sync = false
   @connected= false
   @database_ready = false
+  @tools={}
+  @allow_tool_operations=false
   # @historicize=false
   class << self
     attr_reader :atomes, :atomes_ids, :renderer_list,:molecule_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
-    attr_accessor :connected,:allow_sync, :allow_localstorage, :database_ready
+    attr_accessor :connected,:allow_sync, :allow_localstorage, :database_ready, :edit_mode, :tools, :allow_tool_operations
 
     def messages
       @messages

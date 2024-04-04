@@ -56,7 +56,9 @@ module ObjectExtension
       Genesis.build_molecule(molecule, &bloc)
       Universe.add_to_molecule_list(molecule)
     elsif params.key?(:tool)
-      A.build_tool(params, &bloc)
+      # alert params
+      Universe.tools[params[:tool]]=bloc
+      # A.build_tool(params[:tool], &bloc)
     elsif params.key?(:template)
       A.build_template(&bloc)
     elsif params.key?(:code)

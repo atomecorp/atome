@@ -22,26 +22,133 @@ element({ aid: :toolbox_style, id: :toolbox_style, data: {
 } })
 
 class Atome
+  @tools_actions_to_exec = {}
 
   class << self
+
+    def init_intuition
+      Atome.start_click_analysis
+      Universe.tools.each_with_index do |(tool_name, bloc), index|
+        # puts "add position and orientation"
+        A.build_tool({ name: tool_name, index: index }, &bloc)
+      end
+    end
+
     def selection
       grab(Universe.current_user).selection.collect
     end
+
+    def add_tool_actions(tool_name, tool_content)
+      # alert "tool_content is : tool_content#{tool_content}"
+      # int8_f=tool_content[:int8]
+      # activation_f=tool_content[:active]
+      # inactivation_f=tool_content[:inactive]
+      # creator=tool_content[:creation]
+      # alterator=tool_content[:alteration]
+      @tools_actions_to_exec[tool_name] = tool_content
+    end
+
+    def tool_actions_to_exec
+      @tools_actions_to_exec
+    end
+
+    def activate_click_analysis
+
+      # the condition below avoid touchdown analysis accumulation
+      unless @click_analysis_active
+        # this method analyse all object under the touchdown to find the first user objet and return it's id
+
+        @click_analysis = lambda { |native_event|
+          # the instance variable below check if we can apply tool (cf:  if the atome we don't want to apply tool)
+          if Universe.allow_tool_operations
+            event = Native(native_event)
+            x = event[:clientX]
+            y = event[:clientY]
+            elements = JS.global[:document].elementsFromPoint(x, y)
+            elements.to_a.each do |element|
+              id_found = element[:id].to_s
+              if grab(id_found) && grab(id_found).tag[:system]
+              else
+                @creations_f = []
+                @lterations_f = []
+                current_tool = ''
+                @tools_actions_to_exec.each do |tool_name, actions|
+                  current_tool = grab(tool_name)
+                  @creations_f = @creations_f.concat(actions[:creation]) if actions[:creation] # Concaténation
+                  @lterations_f = @lterations_f.concat(actions[:alteration]) if actions[:alteration] # Concaténation
+                end
+                # Creation below
+                @creations_f.each do |create_content|
+                  atome_type = create_content[:type]
+                  particles = create_content[:particles]
+                  new_atome = grab(:view).send(atome_type)
+                  particles.each do |particle_found, value_found|
+                    new_atome.send(particle_found, value_found)
+                  end
+                  new_atome.resize(true)
+                  new_atome.drag(true)
+                  new_atome.left(event[:pageX].to_i)
+                  new_atome.top(event[:pageY].to_i)
+                  current_tool.data << new_atome
+                  # now applying alterations on new atome if needed:
+                  @lterations_f.each do |actions_f|
+                    action = actions_f[:particle]
+                    value = actions_f[:value]
+                    new_atome.send(action, value)
+                  end
+
+                  # post = create_content[:post]
+                  # now applying post
+                  # atome_touched.instance_exec(atome_touched, new_atome, event, &post) if post.is_a? Proc
+                end
+                atome_touched = grab(id_found)
+                if atome_touched
+                  @lterations_f.each do |actions_f|
+                    action = actions_f[:particle]
+                    value = actions_f[:value]
+                    atome_touched.send(action, value)
+                  end
+                  Atome.instance_exec(id_found, x, y, &@click_analysis_action) if @click_analysis_action.is_a?(Proc)
+                end
+                break
+              end
+            end
+          else
+            Universe.allow_tool_operations=true
+          end
+
+        }
+        @click_analysis_active = true
+      end
+
+    end
+
+    def de_activate_click_analysis
+      # alert 'we need to find how many  tools are still active'
+      @click_analysis = nil
+      @click_analysis_active = false
+    end
+
+    def start_click_analysis
+      @click_analysis_active = false
+      JS.global[:document].addEventListener('mouseup') do |native_event|
+        Atome.instance_exec(native_event, &@click_analysis) if @click_analysis.is_a?(Proc)
+      end
+    end
+
   end
 
   def build_tool(params, &bloc)
+    label = params[:name]
+    name = "#{params[:name]}_tool"
+    index = params[:index]
+    orientation = params[:orientation]
     orientation_wanted = :sn
-    index = 0
-    tool_box_style = grab(:toolbox_style).data
-    tool_size = tool_box_style[:size]
-    tool_name = params[:tool]
-    color({ id: :creation_layer_col, alpha: 0 })
     color({ id: :active_tool_col, alpha: 1, red: 1, green: 1, blue: 1 })
     color({ id: :inactive_tool_col, alpha: 0.6 })
     tool_content = Atome.instance_exec(&bloc) if bloc.is_a?(Proc)
-
     grab(:intuition).storage[:tool_open] ||= []
-    grab(:intuition).storage[:tool_open] << tool_name
+    grab(:intuition).storage[:tool_open] << name
     size = grab(:toolbox_style).data[:size]
     smooth = grab(:toolbox_style).data[:smooth]
     case orientation_wanted
@@ -58,7 +165,7 @@ class Atome
     end
 
     # tool creation
-    tool = grab(:intuition).box({ id: tool_name,
+    tool = grab(:intuition).box({ id: name,
                                   tag: { system: true },
                                   # orientation: orientation_wanted,
                                   top: top,
@@ -70,18 +177,31 @@ class Atome
                                   smooth: smooth,
                                   apply: [:tool_inactive_color, :tool_box_border, :tool_shade],
                                   state: :closed,
-                                  storage: { taxonomy: Intuition.impulse },
+                                  # storage: { taxonomy: Intuition.impulse },
                                 })
-    tool.vector({ tag: { system: true }, left: 9, top: :auto, bottom: 9, width: 18, height: 18, id: "tool_#{tool_name}_icon" })
-    tool.text({ tag: { system: true }, data: tool_name, component: { size: 9 }, color: :grey, id: "tool_#{tool_name}_label" })
+    tool.vector({ tag: { system: true }, left: 9, top: :auto, bottom: 9, width: 18, height: 18, id: "#{name}_icon" })
+    tool.text({ tag: { system: true }, data: label, component: { size: 9 }, color: :grey, id: "#{name}_label" })
     tool.touch(true) do |ev|
+      # we add all specific tool actions to @tools_actions_to_exec hash
+
+      Atome.add_tool_actions(name, tool_content)
+      # we set allow_tool_operations to false to ignore tool operation when clicking on a tool
+      Universe.allow_tool_operations=false
       # we create the creation_layer if not already exist
-      unless grab(:creation_layer)
-        grab(:view).box({ id: :creation_layer, tag: { system: true }, depth: 3000, top: 0, left: 0, aid: :creation_layer, width: '100%', height: '100%', apply: :creation_layer_col })
-      end
-      tick(tool_name)
+
+      tick(name)
       # active code exec
-      if tick[tool_name] == 1 # first click
+      if tick[name] == 1 # first click
+        # we set edit mode to true (this allow to prevent user atome to respond from click)
+        Universe.edit_mode = true
+        # activate tool analysis test
+        Atome.activate_click_analysis
+
+        # check_me_first = lambda { |atome_id_found, x, y|
+        #   puts "first user atome ==> #{grab(atome_id_found).id}, x: #{x}, y: #{y}"
+        # }
+        # Atome.instance_variable_set('@click_analysis_action', check_me_first)
+        # init the tool
         tool.data = []
         # generic behavior
         tool.apply(:active_tool_col)
@@ -89,36 +209,19 @@ class Atome
         tool_content[:active].each do |code_exec|
           tool.instance_exec(&code_exec)
         end if tool_content && tool_content[:active]
-        # creation layer creation
-        if tool_content && tool_content[:creation]
-          atome_scaffold = tool_content[:creation]
-
-          grab(:creation_layer).touch(:down) do |event|
-            atome_scaffold.each do |creation_params|
-              puts "sync now + #{creation_params}"
-              # pre code
-              pre_proc = creation_params[:pre]
-              tool.instance_exec(event, &pre_proc) if pre_proc.is_a? Proc
-              new_atome = send(creation_params[:type], creation_params[:particles])
-              new_atome.drag(true)
-              new_atome.resize(true)
-              new_atome.selected(true)
-              new_atome.left(event[:pageX].to_i)
-              new_atome.top(event[:pageY].to_i)
-              tool.data << new_atome
-              # post code
-              post_proc = creation_params[:post]
-              tool.instance_exec(new_atome, event, &post_proc) if post_proc.is_a? Proc
-            end
-          end
-        end
-        # alteration code
+        # # creation layer creation
+        # if tool_content && tool_content[:creation]
+        #   alert 'start creation!'
+        # end
+        # here we treat any selected items on tool activation
         if tool_content && tool_content[:alteration]
           tool_content[:alteration].each do |action|
             Atome.selection.each do |atome_to_treat|
               pre_proc = action[:pre]
               tool.instance_exec(atome_to_treat, &pre_proc) if pre_proc.is_a? Proc
-              grab(atome_to_treat).send(action[:particle], action[:value])
+              particle_f = action[:particle]
+              value_f = action[:value]
+              grab(atome_to_treat).send(particle_f, value_f)
               post_proc = action[:post]
               tool.instance_exec(atome_to_treat, &post_proc) if post_proc.is_a? Proc
             end
@@ -126,24 +229,28 @@ class Atome
         end
 
       else
+        # when closing delete tools action from tool_actions_to_exec
+        Atome.tool_actions_to_exec.delete(name)
+        # we check if all tools are inactive if so we set edit_mode to false
+        if Atome.tool_actions_to_exec.length == 0
+          # puts "Atome.tool_actions_to_exec.length = 0"
+          Atome.de_activate_click_analysis
+          Universe.edit_mode = false
+        end
+
         # inactivation code
         tool_content[:inactive].each do |code_exec|
           tool.instance_exec(tool.data, &code_exec)
         end if tool_content && tool_content[:inactive]
 
         # generic behavior
+        # we remove touch and resize binding on newly created atomes
         tool.apply(:inactive_tool_col)
-        # creation layer deletion
-        creation_layer = grab(:creation_layer)
-        if grab(:creation_layer)
-          creation_layer.delete(true)
-          creation_layer.touch({ remove: :down })
-          tool.data.each do |new_atome|
-            new_atome.drag(false)
-            new_atome.resize(:remove)
-          end
+        tool.data.each do |new_atome|
+          new_atome.drag(false)
+          new_atome.resize(:remove)
         end
-        tick[tool_name] = 0
+        tick[name] = 0
       end
     end
   end
@@ -151,6 +258,10 @@ end
 
 module Intuition
   class << self
+    @toolbox = { impulse: [:capture_tool, :communication_tool, :creation_tool, :view_tool, :time_tool, :find_tool, :home_tool],
+                 capture_tool: [:microphone_tool, :camera_tool,]
+    }
+
     def intuition_int8
       # tool taxonomy and list
       {
@@ -167,8 +278,12 @@ module Intuition
     end
 
     def impulse
+
+      # initialise touchdown analysis
+      # Atome.start_click_analysis
+
       # tool start point
-      [:capture_tool, :communication, :tool, :view, :time, :find, :home]
+      # [:capture_tool, :communication, :tool, :view, :time, :find, :home]
     end
   end
 
@@ -229,29 +344,14 @@ end
 # end
 
 # ##############################################################################################
-# new({ tool: :color }) do |params|
-#   active_code = lambda { |event|
-#     grab(:intuition).data[:color] = :red
-#
-#   }
-#
-#   inactive_code = lambda { |param|
-#
-#   }
-#   {
-#     icon: :shape, action: { open: [:sub_menu] }, active: [active_code],
-#     inactive: [inactive_code],
-#     option: { opt1: :method_2 },
-#     int8: { french: :couleur, english: :color, german: :colorad }
-#   }
-#
-# end
-#
+
 new({ tool: :shape }) do |params|
 
   active_code = lambda {
+    # puts "activation code here"
+  }
 
-    puts "activation code here"
+  inactive_code = lambda { |atomes_treated|
     # atomes_treated.each do |new_atome|
     #   if new_atome.selected
     #     new_atome.left(new_atome.left + 33)
@@ -259,57 +359,80 @@ new({ tool: :shape }) do |params|
     #   end
     # end
   }
-
-  inactive_code = lambda { |atomes_treated|
-    atomes_treated.each do |new_atome|
-      if new_atome.selected
-        new_atome.left(new_atome.left + 33)
-        new_atome.color({ red: rand, green: rand, blue: rand })
-      end
-    end
-  }
-  pre_crea_code = lambda { |event|
-    Atome.selection.each do |atome_to_treat|
-      grab(atome_to_treat).color(:red)
-      grab(atome_to_treat).rotate(21)
-      puts "pre"
-    end
-
+  pre_crea_code = lambda { |atome_touched, _event|
+    # Atome.selection.each do |atome_to_treat|
+    #   grab(atome_to_treat).color(:red)
+    #   grab(atome_to_treat).rotate(21)
+    #   puts "pre"
+    # end
   }
 
-  post_crea_code = lambda { |new_atome, _event|
-    new_atome.color(:blue)
-    puts "post"
-
+  post_crea_code = lambda { |atome_touched, new_atome, _event|
+    # new_atome.color(:blue)
+    # puts "post"
   }
 
   creation_code = [{ type: :box, particles: { width: 66, height: 66 }, pre: pre_crea_code },
                    { type: :circle, particles: { width: 66, height: 66 }, post: post_crea_code }
   ]
   pre_code = lambda { |new_atome|
-    # alert grab(new_atome).height
     grab(new_atome).height(99)
   }
 
   post_code = lambda { |new_atome|
-    # alert grab(new_atome).height
     grab(new_atome).width(99)
   }
 
   alterations = [{ particle: :blur, value: 3, pre: pre_code, post: post_code }]
 
-  { name: :shape, creation: creation_code, alteration: alterations,
-    # pre: [pre_code], post: [post_code],
+  { creation: creation_code, alteration: alterations,
     active: [active_code],
     inactive: [inactive_code],
     int8: { french: :formes, english: :shape, german: :jesaispas } }
 
 end
+
+### tool2 test
+
+new({ tool: :color }) do |params|
+
+  alterations = [{ particle: :width, value: 22 }, { particle: :color, value: :red }, { particle: :rotate, value: 33 }]
+  active_code = lambda {
+    grab(:intuition).data[:color] = :red
+
+  }
+
+  inactive_code = lambda { |param|
+
+  }
+
+  {
+    active: [active_code],
+    inactive: [inactive_code],
+    alteration: alterations,
+    int8: { french: :couleur, english: :color, german: :colorad } }
+
+end
+
+# new({ tool: :color }) do |params|
+#
+#   { alteration: [{ particle: :blur, value: 22 }] }
+#
+# end
+# verif below
+# wait 1 do
+
+  Atome.init_intuition
+# end
+
 # ##############################################################################################
 #
 
-box({ left: 123, top: 66, selected: true })
-circle({ left: 123, top: 120, selected: true })
+b = box({ left: 123, top: 66, selected: false, id: :the_box })
+b.touch(:down) do
+  puts '"im touched"'
+end
+circle({ left: 123, top: 120, selected: true, id: :the_circle, drag: true })
 
 # def id_found_under_touch(obj_found)
 #   alert obj_found
@@ -333,18 +456,18 @@ class Atome
 
   end
 
-  def set_atome_on_touch
-    document = JS.global[:document]
-    document.addEventListener("click") do |native_event|
-      event = Native(native_event)
-      x = event[:clientX]
-      y = event[:clientY]
-      element = document.elementFromPoint(x, y)
-      element_id = element[:id]
-      puts "test if element is a system element elese select it "
-      @touch_action.call(element_id) if @touch_action.is_a? Proc
-    end
-  end
+  # def set_atome_on_touch
+  #   document = JS.global[:document]
+  #   document.addEventListener("click") do |native_event|
+  #     event = Native(native_event)
+  #     x = event[:clientX]
+  #     y = event[:clientY]
+  #     element = document.elementFromPoint(x, y)
+  #     element_id = element[:id]
+  #     puts "test if element is a system element  else select it "
+  #     @touch_action.call(element_id) if @touch_action.is_a? Proc
+  #   end
+  # end
 
   # def set_atome_on_touch
   #   document = JS.global[:document]
@@ -395,59 +518,34 @@ end
 # end
 
 ###### good algo
-class Atome
-  class << self
+# class Atome
+#   class << self
+#
+#
+#   end
+#
+# end
 
-    def activate_click_analysis
-      @click_analysis = lambda { |native_event|
-        event = Native(native_event)
-
-        x = event[:clientX]
-        y = event[:clientY]
-        elements = JS.global[:document].elementsFromPoint(x, y)
-        # puts elements
-        elements.to_a.each do |element|
-          id_found = element[:id].to_s
-          if grab(id_found) && grab(id_found).tag[:system]
-          else
-            if grab(id_found)
-              Atome.instance_exec(id_found, &@click_analysis_action) if @click_analysis_action.is_a?(Proc)
-            end
-            break
-          end
-        end
-      }
-    end
-
-    def de_activate_click_analysis
-      @click_analysis = nil
-    end
-
-    def click_analysis
-      JS.global[:document].addEventListener('mousedown') do |native_event|
-        Atome.instance_exec(native_event, &@click_analysis) if @click_analysis.is_a?(Proc)
-      end
-    end
-  end
-
-end
-
-check_me_first = lambda { |atome_id_found|
-  alert "first user atome ==> #{grab(atome_id_found).id}"
-}
-Atome.instance_variable_set('@click_analysis_action', check_me_first)
+# check_me_first = lambda { |atome_id_found|
+#   puts "first user atome ==> #{grab(atome_id_found).id}"
+# }
+# Atome.instance_variable_set('@click_analysis_action', check_me_first)
 # alert grab(:intuition).instance_variable_get('@click_analysis_action')
-Atome.click_analysis
-Atome.activate_click_analysis
 
-wait 3 do
-  check_me = lambda { |atome_id_found|
-    alert "Cool cool cool, for :#{atome_id_found}"
-  }
-  Atome.instance_variable_set('@click_analysis_action', check_me)
-  wait 2 do
-    Atome.de_activate_click_analysis
-    alert :game_over
-  end
-end
+# wait 3 do
+#   check_me = lambda { |atome_id_found|
+#     puts "Cool cool cool, for :#{atome_id_found}"
+#   }
+#   Atome.instance_variable_set('@click_analysis_action', check_me)
+#   # wait 2 do
+#   #   Atome.de_activate_click_analysis
+#   #   alert :game_over
+#   # end
+# end
 
+# array1 = [1, 2, 3]
+# array2 = nil
+# array1.concat(array2) if array2
+#
+# alert array1
+bb = box()

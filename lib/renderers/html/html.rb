@@ -776,7 +776,7 @@ class HTML
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
       @drag_move.call(event) if @drag_move.is_a?(Proc)
-
+      Universe.allow_tool_operations=false
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f
@@ -988,23 +988,23 @@ class HTML
                            listeners: {
                              move: lambda do |native_event|
                                # if @resize.is_a?(Proc)
-                                 event = Native(native_event)
-                                 # we use .call instead of instance_eval because instance_eval bring the current object as context
-                                 # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-                                 # group etc..
-                                 @resize.call(event) if @resize.is_a?(Proc)
-                                 x = (@element[:offsetLeft].to_i || 0)
-                                 y = (@element[:offsetTop].to_i || 0)
-                                 width = event[:rect][:width]
-                                 height = event[:rect][:height]
-                                 # Translate when resizing from any corner
-                                 x += event[:deltaRect][:left].to_f
-                                 y += event[:deltaRect][:top].to_f
-                                 @original_atome.width width.to_i if width.to_i.between?(min_width, max_width)
-                                 @original_atome.height height.to_i if height.to_i.between?(min_height, max_height)
-                                 @original_atome.left(x)
-                                 @original_atome.top(y)
-                               end
+                               event = Native(native_event)
+                               # we use .call instead of instance_eval because instance_eval bring the current object as context
+                               # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+                               # group etc..
+                               @resize.call(event) if @resize.is_a?(Proc)
+                               x = (@element[:offsetLeft].to_i || 0)
+                               y = (@element[:offsetTop].to_i || 0)
+                               width = event[:rect][:width]
+                               height = event[:rect][:height]
+                               # Translate when resizing from any corner
+                               x += event[:deltaRect][:left].to_f
+                               y += event[:deltaRect][:top].to_f
+                               @original_atome.width width.to_i if width.to_i.between?(min_width, max_width)
+                               @original_atome.height height.to_i if height.to_i.between?(min_height, max_height)
+                               @original_atome.left(x)
+                               @original_atome.top(y)
+                             end
                              # end
                            },
 
@@ -1094,6 +1094,28 @@ class HTML
     end
   end
 
+  def event_validation(action_proc)
+    action_proc.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
+  end
+
+
+  def touch_down(_option)
+    @touch_down = @original_atome.instance_variable_get('@touch_code')[:down]
+    interact = JS.eval("return interact('##{@id}')")
+    unless @touch_removed[:down]
+      interact.on('down') do |native_event|
+        event = Native(native_event)
+        # we use .call instead of instance_eval because instance_eval bring the current object as context
+        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+        # group etc..
+        # unless Universe.edit_mode == true
+        # @touch_down.call(event) if @touch_down.is_a?(Proc)  && (!Universe.edit_mode || @original_atome.tag[:system])
+        @touch_down.call(event) if event_validation(@touch_down)
+        # end
+      end
+    end
+  end
+
   def touch_tap(_option)
     interact = JS.eval("return interact('##{@id}')")
     @touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
@@ -1101,12 +1123,29 @@ class HTML
       interact.on('tap') do |native_event|
         event = Native(native_event)
         # we use .call instead of instance_eval because instance_eval bring the current object as context
-        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+        # and it's lead to a problem of context and force the use of grab(:view) when using atome method such as shape ,
         # group etc..
-        @touch_tap.call(event) if @touch_tap.is_a?(Proc)
+        # @touch_tap.call(event) if @touch_tap.is_a?(Proc) && !Universe.edit_mode || !@original_atome.tag[:system]
+        @touch_tap.call(event) if event_validation(@touch_tap)
       end
     end
 
+  end
+
+  def touch_up(_option)
+    interact = JS.eval("return interact('##{@id}')")
+    @touch_up = @original_atome.instance_variable_get('@touch_code')[:up]
+    unless @touch_removed[:up]
+      interact.on('up') do |native_event|
+        event = Native(native_event)
+        # we use .call instead of instance_eval because instance_eval bring the current object as context
+        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+        # group etc..
+        # @touch_up.call(event) if @touch_up.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
+        @touch_up.call(event) if event_validation(@touch_up)
+      end
+
+    end
   end
 
   def touch_double(_option)
@@ -1118,7 +1157,9 @@ class HTML
         # we use .call instead of instance_eval because instance_eval bring the current object as context
         # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
         # group etc..
-        @touch_double.call(event) if @touch_double.is_a?(Proc)
+        # @touch_double.call(event) if @touch_double.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
+        @touch_double.call(event) if event_validation(@touch_double)
+
       end
     end
 
@@ -1133,39 +1174,10 @@ class HTML
         # we use .call instead of instance_eval because instance_eval bring the current object as context
         # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
         # group etc..
-        @touch_long.call(event) if @touch_long.is_a?(Proc)
+        # @touch_long.call(event) if @touch_long.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
+        @touch_double.call(event) if event_validation(@touch_long)
+
       end
-    end
-
-  end
-
-  def touch_down(_option)
-    @touch_down = @original_atome.instance_variable_get('@touch_code')[:down]
-    interact = JS.eval("return interact('##{@id}')")
-    unless @touch_removed[:down]
-      interact.on('down') do |native_event|
-        event = Native(native_event)
-        # we use .call instead of instance_eval because instance_eval bring the current object as context
-        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-        # group etc..
-        @touch_down.call(event) if @touch_down.is_a?(Proc)
-      end
-
-    end
-  end
-
-  def touch_up(_option)
-    interact = JS.eval("return interact('##{@id}')")
-    @touch_up = @original_atome.instance_variable_get('@touch_code')[:up]
-    unless @touch_removed[:up]
-      interact.on('up') do |native_event|
-        event = Native(native_event)
-        # we use .call instead of instance_eval because instance_eval bring the current object as context
-        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-        # group etc..
-        @touch_up.call(event) if @touch_up.is_a?(Proc)
-      end
-
     end
   end
 
