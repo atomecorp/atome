@@ -67,18 +67,22 @@ class Atome
             elements = JS.global[:document].elementsFromPoint(x, y)
             elements.to_a.each do |element|
               id_found = element[:id].to_s
+              atome_touched = grab(id_found)
               if grab(id_found) && grab(id_found).tag[:system]
               else
                 @creations_f = []
-                @lterations_f = []
+                @alterations_f = []
                 current_tool = ''
                 @tools_actions_to_exec.each do |tool_name, actions|
                   current_tool = grab(tool_name)
                   @creations_f = @creations_f.concat(actions[:creation]) if actions[:creation] # Concaténation
-                  @lterations_f = @lterations_f.concat(actions[:alteration]) if actions[:alteration] # Concaténation
+                  @alterations_f = @alterations_f.concat(actions[:alteration]) if actions[:alteration] # Concaténation
                 end
                 # Creation below
                 @creations_f.each do |create_content|
+                  code_before_applying = create_content[:pre]
+                  code_after_applying = create_content[:post]
+                  instance_exec(atome_touched,event,&code_before_applying) if code_before_applying.is_a? Proc
                   atome_type = create_content[:type]
                   particles = create_content[:particles]
                   new_atome = grab(:view).send(atome_type)
@@ -90,25 +94,32 @@ class Atome
                   new_atome.left(event[:pageX].to_i)
                   new_atome.top(event[:pageY].to_i)
                   current_tool.data << new_atome
+                  instance_exec(atome_touched,new_atome,event,&code_after_applying) if code_after_applying.is_a? Proc
+
                   # now applying alterations on new atome if needed:
-                  @lterations_f.each do |actions_f|
+                  @alterations_f.each do |actions_f|
+                    code_before_applying = actions_f[:pre]
+                    code_after_applying = actions_f[:post]
+                    instance_exec(new_atome,event,&code_before_applying) if code_before_applying.is_a? Proc
                     action = actions_f[:particle]
                     value = actions_f[:value]
                     new_atome.send(action, value)
+                    instance_exec(new_atome,event,&code_after_applying) if code_after_applying.is_a? Proc
                   end
 
-                  # post = create_content[:post]
-                  # now applying post
-                  # atome_touched.instance_exec(atome_touched, new_atome, event, &post) if post.is_a? Proc
+
                 end
-                atome_touched = grab(id_found)
                 if atome_touched
-                  @lterations_f.each do |actions_f|
+                  @alterations_f.each do |actions_f|
+                    code_before_applying = actions_f[:pre]
+                    code_after_applying = actions_f[:post]
+                    instance_exec(nil,event,&code_before_applying) if code_before_applying.is_a? Proc
                     action = actions_f[:particle]
                     value = actions_f[:value]
                     atome_touched.send(action, value)
+                    instance_exec(nil,event,&code_after_applying) if code_after_applying.is_a? Proc
                   end
-                  Atome.instance_exec(id_found, x, y, &@click_analysis_action) if @click_analysis_action.is_a?(Proc)
+                  # Atome.instance_exec(id_found, x, y, &@click_analysis_action) if @click_analysis_action.is_a?(Proc)
                 end
                 break
               end
@@ -209,21 +220,18 @@ class Atome
         tool_content[:active].each do |code_exec|
           tool.instance_exec(&code_exec)
         end if tool_content && tool_content[:active]
-        # # creation layer creation
-        # if tool_content && tool_content[:creation]
-        #   alert 'start creation!'
-        # end
-        # here we treat any selected items on tool activation
         if tool_content && tool_content[:alteration]
+          # here we treat any selected items on tool activation
           tool_content[:alteration].each do |action|
-            Atome.selection.each do |atome_to_treat|
+            Atome.selection.each do |atome_id_to_treat|
+              atome_to_treat=grab(atome_id_to_treat)
               pre_proc = action[:pre]
-              tool.instance_exec(atome_to_treat, &pre_proc) if pre_proc.is_a? Proc
+              tool.instance_exec(atome_to_treat,nil, &pre_proc) if pre_proc.is_a? Proc
               particle_f = action[:particle]
               value_f = action[:value]
-              grab(atome_to_treat).send(particle_f, value_f)
+              atome_to_treat.send(particle_f, value_f)
               post_proc = action[:post]
-              tool.instance_exec(atome_to_treat, &post_proc) if post_proc.is_a? Proc
+              tool.instance_exec(atome_to_treat,nil, &post_proc) if post_proc.is_a? Proc
             end
           end
         end
@@ -348,10 +356,12 @@ end
 new({ tool: :shape }) do |params|
 
   active_code = lambda {
+    puts :creation_tool_code_activated
     # puts "activation code here"
   }
 
   inactive_code = lambda { |atomes_treated|
+    puts :creation_tool_code_inactivated
     # atomes_treated.each do |new_atome|
     #   if new_atome.selected
     #     new_atome.left(new_atome.left + 33)
@@ -359,7 +369,8 @@ new({ tool: :shape }) do |params|
     #   end
     # end
   }
-  pre_crea_code = lambda { |atome_touched, _event|
+  pre_crea_code = lambda { |atome_touched, event|
+    puts "pre_creation_code : atome_touched : #{atome_touched} event : #{event} "
     # Atome.selection.each do |atome_to_treat|
     #   grab(atome_to_treat).color(:red)
     #   grab(atome_to_treat).rotate(21)
@@ -367,7 +378,9 @@ new({ tool: :shape }) do |params|
     # end
   }
 
-  post_crea_code = lambda { |atome_touched, new_atome, _event|
+  post_crea_code = lambda { |atome_touched, new_atome, event|
+    puts "post_creation_code,atome_touched: #{atome_touched}, new_atome :#{new_atome}, event : #{event}"
+
     # new_atome.color(:blue)
     # puts "post"
   }
@@ -375,12 +388,18 @@ new({ tool: :shape }) do |params|
   creation_code = [{ type: :box, particles: { width: 66, height: 66 }, pre: pre_crea_code },
                    { type: :circle, particles: { width: 66, height: 66 }, post: post_crea_code }
   ]
-  pre_code = lambda { |new_atome|
-    grab(new_atome).height(99)
+  pre_code = lambda { |atome_touched, event|
+    # grab(atome_touched).height(99)
+    puts 'alteration pre treatment'
   }
 
-  post_code = lambda { |new_atome|
-    grab(new_atome).width(99)
+  post_code = lambda { |atome_touched, event|
+
+    atome_touched.height(199)
+    # new_atome.height(199) if  new_atome
+    # grab(new_atome).width(99)
+    puts 'alteration post treatment'
+
   }
 
   alterations = [{ particle: :blur, value: 3, pre: pre_code, post: post_code }]
@@ -396,20 +415,34 @@ end
 
 new({ tool: :color }) do |params|
 
-  alterations = [{ particle: :width, value: 22 }, { particle: :color, value: :red }, { particle: :rotate, value: 33 }]
-  active_code = lambda {
-    grab(:intuition).data[:color] = :red
 
+  active_code = lambda {
+    # grab(:intuition).data[:color] = :red
+    puts :alteration_tool_code_activated
   }
 
   inactive_code = lambda { |param|
-
+    puts :alteration_tool_code_inactivated
   }
+  pre_code= lambda { |atome_touched, event|
+    puts "post_creation_code,atome_touched: #{atome_touched}, event : #{event}"
 
+    # new_atome.color(:blue)
+    # puts "post"
+  }
+  post_code= lambda { |atome_touched, event|
+    puts "post_creation_code,atome_touched: #{atome_touched}, event : #{event}"
+
+    # new_atome.color(:blue)
+    # puts "post"
+  }
+  alterations = [{ particle: :width, value: 22 }, { particle: :color, value: :red,  pre: pre_code,
+                                                    post: post_code, }, { particle: :rotate, value: 33 }]
   {
     active: [active_code],
     inactive: [inactive_code],
     alteration: alterations,
+
     int8: { french: :couleur, english: :color, german: :colorad } }
 
 end
