@@ -24,7 +24,6 @@ module ObjectExtension
                                                     store: params[:store], type: params[:type],
                                                     category: params[:category] }, &bloc)
       end
-
     elsif params.key?(:sanitizer)
       Genesis.build_sanitizer(params[:sanitizer], &bloc)
     elsif params.key?(:pre)
@@ -56,15 +55,22 @@ module ObjectExtension
       Genesis.build_molecule(molecule, &bloc)
       Universe.add_to_molecule_list(molecule)
     elsif params.key?(:tool)
-      # alert params
-      Universe.tools[params[:tool]]=bloc
-      # A.build_tool(params[:tool], &bloc)
+      # we only store tools definition in the universe so it can be instanced using "A.build_tool" method when needed
+
+      tool_content = Atome.instance_exec(&bloc) if bloc.is_a?(Proc)
+
+      Universe.tools[params[:tool]]=tool_content
+      # Universe.tools[params[:tool]]=bloc
+
     elsif params.key?(:template)
       A.build_template(&bloc)
     elsif params.key?(:code)
       A.build_code(&bloc)
     elsif params.key?(:test)
       A.build_test(&bloc)
+    elsif params.key?(:preset)
+      Atome.preset_builder(params[:preset], &bloc)
+      # A.build_test(&bloc)
     end
     super if defined?(super)
   end
@@ -166,17 +172,17 @@ class Object
     Universe.atomes[aid_to_get]
   end
 
-  def box(params = {}, &proc)
-    grab(:view).box(params, &proc)
-  end
-
-  # def intuition(params = {}, &proc)
-  #   grab(:view).intuition(params, &proc)
+  # def box(params = {}, &proc)
+  #   grab(:view).box(params, &proc)
   # end
-
-  def circle(params = {}, &proc)
-    grab(:view).circle(params, &proc)
-  end
+  #
+  # # def intuition(params = {}, &proc)
+  # #   grab(:view).intuition(params, &proc)
+  # # end
+  #
+  # def circle(params = {}, &proc)
+  #   grab(:view).circle(params, &proc)
+  # end
 
   # the method below generate Atome method creation at Object level
   def atome_method_for_object(element)

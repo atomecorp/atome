@@ -84,10 +84,6 @@ new({ renderer: :html, method: :import, type: :blob }) do |_params, bloc|
 end
 
 
-new({ renderer: :html, method: :selected, specific: :text }) do |value, &bloc|
-  html.select_text(value)
-end
-
 new({ method: :compute, type: :hash, renderer: :html }) do |params|
   element = JS.global[:document].getElementById(@id.to_s)
   bounding_box = element.getBoundingClientRect()

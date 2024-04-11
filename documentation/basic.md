@@ -127,7 +127,7 @@ Join us in making multimedia object modeling more efficient, flexible, and power
 
 -
 
-<img src="./documentation/images/3.png" width="666" />
+<img src="../documentation/images/3.png" width="666" />
 
 
 Atome is powerful engine dedicated to the creation of cross-platform applications, web application and digital medias. 
@@ -153,7 +153,6 @@ Cross platform ecosystem
 
 Open source technology included
 -
-
 - Ruby : is the language used to script all atome's apis (https://www.ruby-lang.org)
 
 [comment]: <> (<img src="https://github.com/atomecorp/atome/raw/master/documentation/images/logos/ruby.png" width="100" />)
@@ -182,14 +181,14 @@ Open source technology included
 
 [comment]: <> (<img src="https://avatars.githubusercontent.com/u/54536011?s=200&v=4" width="100" />)
 
-<img src="./documentation/images/logos/ruby.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="../documentation/images/logos/ruby.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 [//]: # (<img src="./documentation/images/logos/cordova.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
-<img src="./documentation/images/logos/opal.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./documentation/images/logos/roda.svg" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./documentation/images/logos/freebsd.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./documentation/images/logos/puma.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+<img src="../documentation/images/logos/opal.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="../documentation/images/logos/roda.svg" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="../documentation/images/logos/freebsd.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="../documentation/images/logos/puma.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [//]: # (<img src="./documentation/images/logos/tauri.png" width="100" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
 
 ## Installation

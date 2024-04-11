@@ -49,6 +49,18 @@ class Atome
       JS.eval(js_command)
     end
 
+    # atome builder
+    def preset_builder(preset_name, &bloc)
+      Universe.atome_preset << preset_name
+      Object.define_method preset_name do |params, &proc|
+        grab(:view).box(params, &proc)
+      end
+      define_method preset_name do |params, &proc|
+        instance_exec(params, &bloc)
+      end
+
+    end
+
     # monitoring system
     def monitoring(atomes_to_monitor, particles_to_monitor, &bloc)
       atomes_to_monitor.each do |atome_to_monitor|

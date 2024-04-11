@@ -182,3 +182,68 @@ Connect on port 443 with HTTPS to accept wss certificate.
     
     
 [comment]: <> (Wait 10 mn for server starting...)
+
+
+Freebsd mail server install : 
+
+Setting up a mail server on FreeBSD similar to what you might find in cPanel involves multiple components, as cPanel utilizes a software stack that includes mail servers, databases, web servers, and more. For setting up a mail server, you typically need the following components:
+
+- **MTA (Mail Transfer Agent)**: Software for routing and delivering email. Popular choices include Postfix and Exim (used by cPanel).
+- **MDA (Mail Delivery Agent)**: Software for storing and retrieving emails. Dovecot is a common choice.
+- **Webmail**: A web user interface to access emails. RoundCube and Horde are common examples.
+- **Antispam and Antivirus**: SpamAssassin for antispam, ClamAV for antivirus are commonly used options.
+
+Here's a high-level overview to set up a mail server on FreeBSD:
+
+### 1. Update the System
+First, ensure your FreeBSD system is up to date:
+
+```shell
+pkg update && pkg upgrade
+```
+
+### 2. Install Postfix (MTA)
+Install Postfix as the MTA:
+
+```shell
+pkg install postfix
+```
+
+Configure Postfix by editing its configuration file (`/usr/local/etc/postfix/main.cf`). You'll need to set the mail domain, hostname, and other network and security settings.
+
+### 3. Install Dovecot (MDA)
+Install Dovecot to handle email delivery and access:
+
+```shell
+pkg install dovecot
+```
+
+Configure Dovecot by adjusting the configuration files in `/usr/local/etc/dovecot/`. You'll need to set up authentication mechanisms, email storage locations, etc.
+
+### 4. Install Webmail Interface
+Install RoundCube or another webmail client:
+
+```shell
+pkg install roundcube
+```
+
+Configure RoundCube by editing its configuration file, typically located in `/usr/local/www/roundcube/config/`.
+
+### 5. Set Up Antispam and Antivirus
+Install SpamAssassin and ClamAV:
+
+```shell
+pkg install spamassassin clamav
+```
+
+Configure each service to integrate with your MTA and MDA. This may involve editing Postfix and Dovecot's configuration files to include filters and antivirus checks.
+
+### 6. Test Your Configuration
+- Test Postfix by sending emails from the command line.
+- Test Dovecot by logging in via an email client or RoundCube.
+- Ensure SpamAssassin and ClamAV are working by sending test emails that should be marked as spam or contain malicious attachments.
+
+### Important Note:
+Setting up a mail server is complex and involves many aspects, particularly regarding securing and optimizing your server. Make sure to refer to the official documentation of each software and consider security best practices, such as using SSL/TLS, properly setting up DNS records (SPF, DKIM, DMARC), and establishing appropriate access control lists.
+
+This guide provides a very basic overview, and you should refer to the specific FreeBSD, Postfix, Dovecot, RoundCube, SpamAssassin, and ClamAV documentation for detailed instructions and advanced configuration options.

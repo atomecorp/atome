@@ -97,3 +97,8 @@ end
 new({ method: :type, type: :hash, specific: :atomized, renderer: :html }) do |value, _user_proc|
   html.atomized(alien)
 end
+
+
+new({ renderer: :html, method: :selected, specific: :text }) do |value, &bloc|
+  html.select_text(value)
+end

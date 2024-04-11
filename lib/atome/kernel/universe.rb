@@ -21,14 +21,18 @@ class Universe
   @example = {}
   @allow_localstorage = false
   @allow_sync = false
-  @connected= false
+  @connected = false
   @database_ready = false
-  @tools={}
-  @allow_tool_operations=false
+  @tools = {}
+  @allow_tool_operations = false
+  @active_tools = []
+  @atome_preset = []
   # @historicize=false
   class << self
-    attr_reader :atomes, :atomes_ids, :renderer_list,:molecule_list, :atome_list, :particle_list, :classes, :counter, :atomes_specificities
-    attr_accessor :connected,:allow_sync, :allow_localstorage, :database_ready, :edit_mode, :tools, :allow_tool_operations
+    attr_reader :atomes, :atomes_ids, :renderer_list, :molecule_list, :atome_list, :particle_list, :classes, :counter,
+                :atomes_specificities
+    attr_accessor :connected, :allow_sync, :allow_localstorage, :database_ready, :edit_mode, :tools,
+                  :allow_tool_operations, :active_tools, :atome_preset
 
     def messages
       @messages
@@ -152,7 +156,7 @@ class Universe
     end
 
     def app_identity
-      # each app hav its own identity, this allow to generate new user identities from the
+      # each app has its own identity, this allow to generate new user identities from the
       # unique_id = generate_unique_id_with_timestamp
       @app_identity = generate_uuid
       # the identity is define as follow : parentsCreatorID_softwareInstanceID_objetID
@@ -259,12 +263,12 @@ class Universe
     def historicize(id, operation, element, params)
 
       if @allow_sync && Universe.connected
-          A.sync({ action: :historicize, data: { table: :user } })
+        A.sync({ action: :historicize, data: { table: :user } })
       end
-      
+
       # if @allow_localstorage && @database_ready
       if @allow_localstorage
-    
+
         operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
         @increment += 1
         @increment = @increment % 100

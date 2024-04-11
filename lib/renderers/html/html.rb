@@ -313,6 +313,7 @@ class HTML
     self
   end
 
+
   def select_text(range)
     # TODO : use atome color object  instead of basic css color
     back_color = grab(:back_selection)
@@ -987,6 +988,7 @@ class HTML
                            modifiers: [],
                            listeners: {
                              move: lambda do |native_event|
+                               Universe.allow_tool_operations=false
                                # if @resize.is_a?(Proc)
                                event = Native(native_event)
                                # we use .call instead of instance_eval because instance_eval bring the current object as context

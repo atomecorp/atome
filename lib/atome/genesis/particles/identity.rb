@@ -64,8 +64,11 @@ end
 
 new(particle: :selected, category: :identity, type: :boolean) do |params|
   if params == true
+    border({ thickness: 3, red: 1, green: 1, blue: 1, alpha: 1, pattern: :dotted })
+    border({ thickness: 10,  pattern: :solid, color: :red})
     grab(Universe.current_user).selection << @id
   elsif params == false
+    border({alpha: 0, thickness: 0})
     grab(Universe.current_user).selection.collect.delete(@id)
   else
     # TODO: for future use
