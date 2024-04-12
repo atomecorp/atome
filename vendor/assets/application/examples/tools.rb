@@ -346,7 +346,7 @@ new({ tool: :filter }) do |params|
   {
     activation: active_code,
     inactivation: inactive_code,
-    alteration: { width: 22, rotate: 33, blur: 9 },
+    alteration: { width: 22, rotate: 33, blur: 1 },
     pre: pre_code,
     post: post_code,
     zone: zone_spe,
@@ -459,15 +459,27 @@ end
 bb = box({ left: 333, width: 120, selected: true, id: :big_box })
 
 b = box({ id: :the_big_boxy })
-text({ data: :hello, selected: true, left: 120, id: :the_texting, blur: 77 })
-
-Universe.tools.each_with_index do |(tool_name, bloc), index|
-  tool_content = Atome.instance_exec(&bloc) if bloc.is_a?(Proc)
-  # alert "#{tool_name} : #{tool_content}"
-  # alert b.id
-end
+text({ data: :hello, selected: true, left: 120, id: :texting, blur: 12 })
+# text({data: :hello, left: 120, id: :texting})
+# Universe.tools.each_with_index do |(tool_name, bloc), index|
+#  Atome.instance_exec(&bloc) if bloc.is_a?(Proc)
+#   # alert "#{tool_name} : #{tool_content}"
+#   # alert b.id
+# end
 
 # wait 2 do
 #   # c.preset( {:box=>{:width=>39, :height=>39, :apply=>[:box_color], :left=>0, :top=>0}} )
 #   c.preset( :box )
 # end
+# b=box({left: 333, top: 333})
+# b.touch(true) do
+#   alert Atome.selection
+# end
+# grab(:the_texting).color(:white)
+# grab(:the_texting).left(33)
+# grab(:the_texting).top(133)
+# grab(:the_texting).width(133)
+# grab(:the_texting).top(133)
+# grab(:the_texting).data(:kool)
+# grab(:the_texting).type(:text)
+# grab(:the_texting).rotate(:text)
