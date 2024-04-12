@@ -125,7 +125,8 @@ class EDen
       table = data['table']
       column = data['column']
       type = data['type']
-      Database.create_column(table, column, type)
+      unique = data['unique']
+      Database.create_column(table, column, type, unique)
       { data: { message: "column #{column} with type : #{type} added" }, message_id: message_id }
     end
 
