@@ -272,9 +272,14 @@ class Universe
         operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
         @increment += 1
         @increment = @increment % 100
-        puts "===> { #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }"
-        JS.global[:localStorage].setItem(operation_timing, "{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
-        @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
+        # puts "===> { #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }"
+        # puts "<==== #{@allow_localstorage} : #{element} ====>"
+        if @allow_localstorage.include? element
+          JS.global[:localStorage].setItem(operation_timing, "{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
+          @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
+          puts "===> { #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }"
+        end
+
 
       end
     end

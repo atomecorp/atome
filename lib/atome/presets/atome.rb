@@ -49,6 +49,7 @@ class Atome
     #   alert "atome found : #{ grab(params[:id])}"
     #   grab(params[:id])
     # else
+
     Atome.new(params, &bloc)
     # end
   end

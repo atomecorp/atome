@@ -1,14 +1,10 @@
 
-new({preset: :box }) do |params = {},&bloc|
-    atome_preset = :box
-    params = atome_common(atome_preset, params)
-    preset_common(params, &bloc)
-end
+new({preset: :box })
 
+new({preset: :circle })do |params = {},&bloc|
 
-new({preset: :circle }) do |params = {},&bloc|
-  atome_preset = :circle
-  params = atome_common(atome_preset, params)
-  preset_common(params, &bloc)
+  { type: :shape, width: 39, height: 39, smooth: '100%',
+            apply: [:circle_color],
+            left: 0, top: 0}
 end
 

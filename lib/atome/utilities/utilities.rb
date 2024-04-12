@@ -51,12 +51,20 @@ class Atome
 
     # atome builder
     def preset_builder(preset_name, &bloc)
+      # Important : previously def box , def circle
       Universe.atome_preset << preset_name
-      Object.define_method preset_name do |params={}, &proc|
-        grab(:view).send(preset_name,params, &proc)
+      Object.define_method preset_name do |params = {}, &proc|
+        grab(:view).send(preset_name, params, &proc)
       end
       define_method preset_name do |params|
-        instance_exec(params, &bloc)
+        preset_to_add = instance_exec(params, &bloc) if bloc.is_a? Proc
+        if Essentials.default_params[preset_name]
+          Essentials.default_params[preset_name].merge(preset_to_add) if preset_to_add
+        else
+          Essentials.default_params[preset_name] = preset_to_add if preset_to_add
+        end
+        params = atome_common(preset_name, params)
+        preset_common(params, &bloc)
       end
 
     end
@@ -137,8 +145,6 @@ class Atome
     js_body = hashed_msg.JS[:body]
     send(js_action, js_body)
   end
-
-
 
   def collapse(new_atome)
     initialized_procs = []
