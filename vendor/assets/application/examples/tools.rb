@@ -23,7 +23,7 @@ class Atome
   class << self
     def init_intuition
       Atome.start_click_analysis
-      root = [:osc, :filter, :drag, :poi,:select]
+      root = [:osc, :filter, :drag, :rotate, :select]
       root.each_with_index do |root_tool, index|
         tools_scheme = Universe.tools[root_tool]
         A.build_tool({ name: root_tool, scheme: tools_scheme, index: index })
@@ -38,7 +38,7 @@ class Atome
       grab(Universe.current_user).selection.collect
     end
 
-    def activate_click_analysis(storage_allowed)
+    def activate_click_analysis
 
       # the condition below avoid touchdown analysis accumulation
       unless @click_analysis_active
@@ -57,9 +57,8 @@ class Atome
 
                 # if atome_found
                 Universe.active_tools.each do |tool|
-                  apply_tool(tool, atome_found, event,storage_allowed)
+                  apply_tool(tool, atome_found, event)
                 end
-
                 break
               end
             end
@@ -84,17 +83,17 @@ class Atome
       end
     end
 
-    def alteration(current_tool, tool_actions, atome_touched, a_event,storage_allowed)
+    def alteration(current_tool, tool_actions, atome_touched, a_event)
       if atome_touched
+        storage_allowed= Universe.allow_localstorage
         action_found = tool_actions[:action]
         pre = tool_actions[:pre]
         post = tool_actions[:post]
         params = { current_tool: current_tool, atome_touched: atome_touched, event: a_event }
         action_found.each do |part, val|
-          puts  "--------- additional tool particles are lost------------- #{storage_allowed} -------- only the firsts set are stored--------------"
-          Universe.allow_localstorage=false
+          Universe.allow_localstorage = false
           current_tool.instance_exec(params, &pre) if pre.is_a? Proc
-          Universe.allow_localstorage= storage_allowed
+          Universe.allow_localstorage = storage_allowed
           if current_tool.data[:allow_alteration]
             atome_touched.send(part, val)
             current_tool.data[:treated] << atome_touched
@@ -105,11 +104,13 @@ class Atome
       end
     end
 
-    def creation(current_tool, tool_actions, atome_touched, a_event,storage_allowed)
+    def creation(current_tool, tool_actions, atome_touched, a_event)
 
       # we store prev_local_storage prior to lock it to prevent unwanted logs
       # prev_local_storage=Universe.allow_localstorage()
-      Universe.allow_localstorage=false
+      storage_allowed= Universe.allow_localstorage
+      Universe.allow_localstorage = false
+
       action_found = tool_actions[:action]
       pre = tool_actions[:pre]
       post = tool_actions[:post]
@@ -117,7 +118,7 @@ class Atome
 
       action_found.each do |atome, particle|
         current_tool.instance_exec(params, &pre) if pre.is_a? Proc
-        temp_val=particle.merge({resize: true, drag: true, top: a_event[:pageY].to_i, left:a_event[:pageX].to_i  })
+        temp_val = particle.merge({ resize: true, drag: true, top: a_event[:pageY].to_i, left: a_event[:pageX].to_i })
         if current_tool.data[:allow_creation]
           # uncomment the line below if you want to attach to current atome
           if atome_touched
@@ -128,22 +129,23 @@ class Atome
           current_tool.data[:treated] << new_atome
           params.delete(:atome_touched)
           params[new_atome: new_atome]
-          Universe.allow_localstorage=[atome]
+          Universe.allow_localstorage = [atome]
           Universe.historicize(new_atome.aid, :write, atome, particle)
         end
-
 
       end
       current_tool.instance_exec(params, &post) if post.is_a? Proc
       # we restore prev_local_storage to allow logs of drag and resize ...
-      Universe.allow_localstorage=storage_allowed
+      Universe.allow_localstorage = storage_allowed
     end
 
-    def apply_tool(tool, atome_touched, a_event,storage_allowed)
+    def apply_tool(tool, atome_touched, a_event)
       current_tool = grab(tool)
       tool_actions = current_tool.data
       method_found = tool_actions[:method]
-      send(method_found, current_tool, tool_actions, atome_touched, a_event ,storage_allowed)
+
+
+      send(method_found, current_tool, tool_actions, atome_touched, a_event)
     end
 
   end
@@ -218,8 +220,8 @@ class Atome
     tool.text({ tag: { system: true }, data: label, component: { size: 9 }, color: :grey, id: "#{tool_name}_label" })
     code_for_zone = tool_scheme[:zone]
     tool.instance_exec(tool, &code_for_zone) if code_for_zone.is_a? Proc
-    events=[:top, :left, :right, :bottom, :width, :height]
     tool.touch(true) do
+
       # we add all specific tool actions to @tools_actions_to_exec hash
       # we set allow_tool_operations to false to ignore tool operation when clicking on a tool
       Universe.allow_tool_operations = false
@@ -227,10 +229,12 @@ class Atome
       tick(tool_name)
       # active code exec
       if tick[tool_name] == 1 # first click
+        events_allow = [:top, :left, :right, :bottom, :width, :height]
         alterations = tool_scheme[:alteration] ? tool_scheme[:alteration].keys : []
         creations = tool_scheme[:creation] ? tool_scheme[:creation].keys : []
-        prev_auth=  Universe.allow_localstorage ||= []
-        storage_allowed = events.concat(alterations).concat(creations).concat(prev_auth)
+        prev_auth = Universe.allow_localstorage ||= []
+        storage_allowed = events_allow.concat(alterations).concat(creations).concat(prev_auth).uniq
+        Universe.allow_localstorage = storage_allowed
         # we set edit mode to true (this allow to prevent user atome to respond from click)
         Universe.edit_mode = true
         Universe.active_tools << tool_name
@@ -261,11 +265,11 @@ class Atome
         Atome.selection.each do |atome_id_to_treat|
           atome_found = grab(atome_id_to_treat)
           event = { pageX: 0, pageY: 0, clientX: 0, clientY: 0 }
-          Atome.apply_tool(tool_name, atome_found, event, storage_allowed)
+          Atome.apply_tool(tool_name, atome_found, event)
         end unless tool_name.to_sym == :select_tool || !allow_creation || !allow_alteration
 
         # activate tool analysis test
-        Atome.activate_click_analysis(storage_allowed)
+        Atome.activate_click_analysis
       else
         Universe.allow_localstorage = false
         # when closing delete tools action from tool_actions_to_exec
@@ -285,7 +289,8 @@ class Atome
         # we remove touch and resize binding on newly created atomes
         tool.apply(:inactive_tool_col)
         tool.data[:treated].each do |new_atome|
-          new_atome.drag(false)
+          puts "find a strategy to re-activate the line below else drag accumulate"
+          # new_atome.drag(false)
           new_atome.resize(:remove)
         end
         tick[tool_name] = 0
@@ -349,7 +354,7 @@ new({ tool: :filter }) do |params|
   {
     activation: active_code,
     inactivation: inactive_code,
-    alteration: { width: 22, rotate: 33, blur: 1 },
+    alteration: { width: 22, blur: 9 },
     pre: pre_code,
     post: post_code,
     zone: zone_spe,
@@ -376,7 +381,7 @@ new({ tool: :osc }) do |params|
     puts "post_creation_code,atome_touched: #{:params}"
   }
 
-  { creation: { box: {color: :blue } },
+  { creation: { box: { color: :blue , width: 66, height: 66} },
     activation: active_code,
     inactivation: inactive_code,
     pre: pre_creation_code,
@@ -400,7 +405,7 @@ new({ tool: :drag }) do |params|
     # puts :alteration_tool_code_inactivated
   }
   pre_code = lambda { |params|
-    atome_target= params[:atome_touched]
+    atome_target = params[:atome_touched]
     atome_target.drag(false)
   }
   post_code = lambda { |params|
@@ -445,9 +450,8 @@ new({ tool: :select }) do |params|
   }
 end
 
-
-new({tool: :poi}) do
-  { alteration: { height: 150 } }
+new({ tool: :rotate }) do
+  { alteration: { height: 150, rotate: 45 } }
 end
 ### tool2 test
 
@@ -455,16 +459,16 @@ Atome.init_intuition
 
 # ###################
 
-b = box({ left: 123, top: 66, selected: false, id: :the_box })
+b = box({ left: 123, top: 66, selected: false, id: :the_box, color: :green })
 b.touch(:down) do
-  puts '"im touched"'
+  alert " on touch : #{Universe.allow_localstorage}"
 end
-the_circ = circle({ left: 123, top: 120, selected: true, id: :the_circle, drag: true })
+the_circ = circle({ left: 123, top: 120, selected: false, id: :the_circle, drag: true })
 
 the_circ.touch(:down) do
   puts the_circ.id
 end
-bb = box({ left: 333, width: 120, selected: true, id: :big_box })
+bb = box({ left: 333, width: 120, selected: false, id: :big_box })
 
 b = box({ id: :the_big_boxy })
 # text({ data: :hello, selected: true, left: 120, id: :texting, blur: 12 })
