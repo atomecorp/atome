@@ -169,7 +169,7 @@ def init_database # this method is call from JS (atome/communication) at WS conn
     # puts "===> #{_db_state}"
   end
 
-  A.sync({ action: :create_db_column, data: { table: :user, column: :email, type: :string } }) do |_db_state|
+  A.sync({ action: :create_db_column, data: { table: :user, column: :email, type: :string, unique: true } }) do |_db_state|
   end
 
   A.sync({ action: :create_db_column, data: { table: :user, column: :password, type: :string } }) do |_db_state|
