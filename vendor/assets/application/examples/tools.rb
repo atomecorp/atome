@@ -23,7 +23,7 @@ class Atome
   class << self
     def init_intuition
       Atome.start_click_analysis
-      root = [:osc, :filter, :drag]
+      root = [:osc, :filter, :drag, :select]
       root.each_with_index do |root_tool, index|
         tools_scheme = Universe.tools[root_tool]
         A.build_tool({ name: root_tool, scheme: tools_scheme, index: index })
@@ -83,6 +83,7 @@ class Atome
     end
 
     def alteration(current_tool, tool_actions, atome_touched, a_event)
+
       if atome_touched
         action_found = tool_actions[:action]
         pre = tool_actions[:pre]
@@ -90,11 +91,13 @@ class Atome
         params = { current_tool: current_tool, atome_touched: atome_touched, event: a_event }
         action_found.each do |part, val|
           current_tool.instance_exec(params, &pre) if pre.is_a? Proc
-          atome_touched.send(part, val)
-          current_tool.data[:treated] << atome_touched
+          if current_tool.data[:allow_alteration]
+            atome_touched.send(part, val)
+            current_tool.data[:treated] << atome_touched
+          end
           current_tool.instance_exec(params, &post) if post.is_a? Proc
-          puts "alteration sync now!"
         end
+
       end
     end
 
@@ -107,23 +110,24 @@ class Atome
 
       action_found.each do |part, val|
         current_tool.instance_exec(params, &pre) if pre.is_a? Proc
-        # uncomment the line below if you want to attach to current atome
-        if atome_touched
-          new_atome = atome_touched.send(part, val)
-        else
-          new_atome = grab(:view).send(part, val)
+        if current_tool.data[:allow_creation]
+          # uncomment the line below if you want to attach to current atome
+          if atome_touched
+            new_atome = atome_touched.send(part, val)
+          else
+            new_atome = grab(:view).send(part, val)
+          end
+          # TODO : resize and drag must handle save
+          new_atome.resize(true)
+          new_atome.drag(true)
+          new_atome.left(a_event[:pageX].to_i)
+          new_atome.top(a_event[:pageY].to_i)
+          current_tool.data[:treated] << new_atome
+          params.delete(:atome_touched)
+          params[new_atome: new_atome]
         end
-        # TODO : resize and drag must handle save
-        new_atome.resize(true)
-        new_atome.drag(true)
-        new_atome.left(a_event[:pageX].to_i)
-        new_atome.top(a_event[:pageY].to_i)
-        current_tool.data[:treated] << atome_touched
-        params.delete(:atome_touched)
-        params[new_atome: new_atome]
 
         current_tool.instance_exec(params, &post) if post.is_a? Proc
-        puts "creation sync now!"
       end
 
     end
@@ -195,7 +199,10 @@ class Atome
                                   smooth: smooth,
                                   apply: [:tool_inactive_color, :tool_box_border, :tool_shade],
                                   state: :closed,
-                                  data: { method: method, action: action,
+                                  data: { method: method,
+                                          action: action,
+                                          allow_alteration: true,
+                                          allow_creation: true,
                                           # activation: tool_scheme[:activation],
                                           #  inactivation: tool_scheme[:inactivation], zone: tool_scheme[:zone],
                                           post: tool_scheme[:post],
@@ -216,6 +223,7 @@ class Atome
       tick(tool_name)
       # active code exec
       if tick[tool_name] == 1 # first click
+        Universe.allow_localstorage = true
         # we set edit mode to true (this allow to prevent user atome to respond from click)
         Universe.edit_mode = true
 
@@ -245,18 +253,18 @@ class Atome
           end
         end
         # possibility 2  (immediate apply):
-        # alert "tool : #{name}"
+        allow_creation = tool.data[:allow_creation]
+        allow_alteration = tool.data[:allow_alteration]
         Atome.selection.each do |atome_id_to_treat|
-          atome_found=grab(atome_id_to_treat)
-          event={pageX: 0, pageY: 0, clientX: 0, clientY: 0 }
+          atome_found = grab(atome_id_to_treat)
+          event = { pageX: 0, pageY: 0, clientX: 0, clientY: 0 }
           Atome.apply_tool(tool_name, atome_found, event)
-        end
-
-
+        end unless tool_name.to_sym == :select_tool || !allow_creation || !allow_alteration
 
         # activate tool analysis test
         Atome.activate_click_analysis
       else
+        Universe.allow_localstorage = false
         # when closing delete tools action from tool_actions_to_exec
         Universe.active_tools.delete(tool_name)
         # we check if all tools are inactive if so we set edit_mode to false
@@ -320,16 +328,16 @@ new({ tool: :filter }) do |params|
     puts :alteration_tool_code_inactivated
   }
   pre_code = lambda { |params|
-    puts "pre_creation_code,atome_touched: #{params}"
+    puts "pre_creation_code,atome_touched: #{:params}"
 
   }
   post_code = lambda { |params|
-    puts "post_creation_code,atome_touched: #{params}"
+    puts "post_creation_code,atome_touched: #{:params}"
 
   }
 
   zone_spe = lambda { |current_tool|
-    puts "current tool is : #{current_tool} now creating specific zone"
+    puts "current tool is : #{:current_tool} now creating specific zone"
     # b = box({ width: 33, height: 12 })
     # b.text({ data: :all })
 
@@ -357,12 +365,12 @@ new({ tool: :osc }) do |params|
 
   }
   pre_creation_code = lambda { |params|
-    puts "pre_creation_code : atome_touched : #{params} "
+    puts "pre_creation_code : atome_touched : #{:params} "
 
   }
 
   post_creation_code = lambda { |params|
-    puts "post_creation_code,atome_touched: #{params}"
+    puts "post_creation_code,atome_touched: #{:params}"
   }
 
   { creation: { box: { width: 66, height: 66 } },
@@ -374,10 +382,14 @@ new({ tool: :osc }) do |params|
 
 end
 
-
 new({ tool: :drag }) do |params|
 
   active_code = lambda {
+    # Atome.selection.each do |atome_id_to_treat|
+    #   # reinit first to avoid multiple drag event
+    #   grab(atome_id_to_treat).drag(false)
+    # end
+    # drag_remove
     # puts :alteration_tool_code_activated
   }
 
@@ -385,8 +397,8 @@ new({ tool: :drag }) do |params|
     # puts :alteration_tool_code_inactivated
   }
   pre_code = lambda { |params|
-    # puts "pre_creation_code,atome_touched: #{params}"
-
+    atome_target= params[:atome_touched]
+    atome_target.drag(false)
   }
   post_code = lambda { |params|
     # puts "post_creation_code,atome_touched: #{params}"
@@ -407,8 +419,27 @@ new({ tool: :drag }) do |params|
     pre: pre_code,
     post: post_code,
     zone: zone_spe,
-    int8: { french: :couleur, english: :color, german: :colorad } }
+    int8: { french: :drag, english: :drag, german: :drag } }
 
+end
+
+new({ tool: :select }) do |params|
+  pre_code = lambda { |param|
+    atome_touched = param[:atome_touched]
+    current_tool = param[:current_tool]
+    if atome_touched.selected
+      atome_touched.selected(false)
+      current_tool.data[:allow_alteration] = false
+    else
+      # atome_touched.selected(true)
+      current_tool.data[:allow_alteration] = true
+    end
+  }
+  {
+    pre: pre_code,
+    alteration: { selected: true },
+    int8: { french: :select, english: :select, german: :select }
+  }
 end
 ### tool2 test
 
@@ -420,7 +451,11 @@ b = box({ left: 123, top: 66, selected: false, id: :the_box })
 b.touch(:down) do
   puts '"im touched"'
 end
-circle({ left: 123, top: 120, selected: true, id: :the_circle, drag: true })
+the_circ = circle({ left: 123, top: 120, selected: true, id: :the_circle, drag: true })
+
+the_circ.touch(:down) do
+  puts the_circ.id
+end
 bb = box({ left: 333, width: 120, selected: true, id: :big_box })
 
 b = box({ id: :the_big_boxy })
@@ -431,3 +466,8 @@ Universe.tools.each_with_index do |(tool_name, bloc), index|
   # alert "#{tool_name} : #{tool_content}"
   # alert b.id
 end
+
+# wait 2 do
+#   # c.preset( {:box=>{:width=>39, :height=>39, :apply=>[:box_color], :left=>0, :top=>0}} )
+#   c.preset( :box )
+# end

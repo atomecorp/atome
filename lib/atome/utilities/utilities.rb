@@ -52,10 +52,10 @@ class Atome
     # atome builder
     def preset_builder(preset_name, &bloc)
       Universe.atome_preset << preset_name
-      Object.define_method preset_name do |params, &proc|
-        grab(:view).box(params, &proc)
+      Object.define_method preset_name do |params={}, &proc|
+        grab(:view).send(preset_name,params, &proc)
       end
-      define_method preset_name do |params, &proc|
+      define_method preset_name do |params|
         instance_exec(params, &bloc)
       end
 

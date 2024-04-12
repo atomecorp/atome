@@ -710,6 +710,7 @@ class HTML
   end
 
   def drag_remove(option)
+
     interact = JS.eval("return interact('##{@id}')")
 
     case option
@@ -719,7 +720,8 @@ class HTML
       @drag_end = ''
     when :move
       interact.draggable(false)
-      @drag_move = ''
+      interact.unset
+      @drag_move = nil
     when :locked
       @drag_locked = ''
     when :restrict
@@ -730,8 +732,9 @@ class HTML
       @drag_end = ''
       @drag_locked = ''
       @drag_restrict = ''
-      @drag_move = ''
+      @drag_move = nil
       interact.draggable(false)
+      interact.unset
     end
 
   end
@@ -761,7 +764,10 @@ class HTML
   end
 
   def drag_move(_option)
+
     interact = JS.eval("return interact('##{@id}')")
+    # interact.draggable(false)
+
     interact.draggable({
                          drag: true,
                          inertia: { resistance: 12,
@@ -959,8 +965,8 @@ class HTML
       @drop_leave = ''
     else
       # to remove all interact event ( touch, drag, scale, ... uncomment below)
-      # interact = JS.eval("return interact('##{@id}')")
-      # interact.unset
+      interact = JS.eval("return interact('##{@id}')")
+      interact.unset
       @drop_activate = ''
       @drop_deactivate = ''
       @drop_dropped = ''
@@ -1176,8 +1182,9 @@ class HTML
         # we use .call instead of instance_eval because instance_eval bring the current object as context
         # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
         # group etc..
+        @touch_long.call(event) if event_validation(@touch_long)
         # @touch_long.call(event) if @touch_long.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
-        @touch_double.call(event) if event_validation(@touch_long)
+        # @touch_double.call(event) if event_validation(@touch_double)
 
       end
     end
@@ -1212,8 +1219,8 @@ class HTML
       @touch_tap = ''
       @touch_up = ''
       # to remove all interact event ( touch, drag, scale, ... uncomment below)
-      # interact = JS.eval("return interact('##{@id}')")
-      # interact.unset
+      interact = JS.eval("return interact('##{@id}')")
+      interact.unset
     end
 
   end

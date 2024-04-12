@@ -13,7 +13,7 @@ class Atome
     # TODO : remove Essentials.default_params[atome_preset] || {} as it is
     # applied twice because preset is now a particle
     preset_params = Essentials.default_params[atome_preset] || {}
-
+    # preset_params =  {preset: atome_preset}
     basic_params[:type] = preset_params[:type] || :element
     # basic_params[:aid] =  identity_generator(:a)
     basic_params[:id] = params[:id]|| identity_generator
@@ -37,12 +37,12 @@ class Atome
     else
       params[:attach] = params[:attach] || @id || :view
     end
-    # # we reorder the hash
-    reordered_params =reorder_particles(params)
-    reordered_params
+    # we reorder the hash
+   reorder_particles(params)
   end
 
   def preset_common(params, &bloc)
+
     ## if an atome with current id exist we update the ID in the params
     # params[:id] = "#{params[:id]}_#{Universe.atomes.length}" if grab(params[:id])
     # if Universe.atomes[params[:id]]

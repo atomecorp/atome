@@ -19,8 +19,8 @@ class Universe
   @users = {}
   @help = {}
   @example = {}
-  @allow_localstorage = false
-  @allow_sync = false
+  @allow_localstorage = false # temp storage boolean
+  @allow_sync = false # temp server storage sync
   @connected = false
   @database_ready = false
   @tools = {}
@@ -272,7 +272,7 @@ class Universe
         operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
         @increment += 1
         @increment = @increment % 100
-
+        puts "===> { #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }"
         JS.global[:localStorage].setItem(operation_timing, "{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
         @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
 
