@@ -23,7 +23,7 @@ class Atome
   class << self
     def init_intuition
       Atome.start_click_analysis
-      root = [:osc, :filter, :drag, :rotate, :select]
+      root = [:osc, :filter, :drag, :rotate, :select, :move]
       root.each_with_index do |root_tool, index|
         tools_scheme = Universe.tools[root_tool]
         A.build_tool({ name: root_tool, scheme: tools_scheme, index: index })
@@ -126,7 +126,8 @@ class Atome
           else
             new_atome = grab(:view).send(atome, temp_val)
           end
-          current_tool.data[:treated] << new_atome
+          # current_tool.data[:treated] << new_atome
+          current_tool.data[:created] << new_atome
           params.delete(:atome_touched)
           params[new_atome: new_atome]
           Universe.allow_localstorage = [atome]
@@ -240,6 +241,7 @@ class Atome
         Universe.active_tools << tool_name
         # init the tool
         tool.data[:treated] = []
+        tool.data[:created] = []
         # generic behavior
         tool.apply(:active_tool_col)
         # activation code
@@ -288,11 +290,12 @@ class Atome
         # generic behavior
         # we remove touch and resize binding on newly created atomes
         tool.apply(:inactive_tool_col)
-        tool.data[:treated].each do |new_atome|
+        tool.data[:created].each do |new_atome|
           puts "find a strategy to re-activate the line below else drag accumulate"
-          # new_atome.drag(false)
+          new_atome.drag(false)
           new_atome.resize(:remove)
         end
+
         tick[tool_name] = 0
       end
     end
@@ -354,7 +357,7 @@ new({ tool: :filter }) do |params|
   {
     activation: active_code,
     inactivation: inactive_code,
-    alteration: { width: 22, blur: 9 },
+    alteration: { width: 22, blur: 3 },
     pre: pre_code,
     post: post_code,
     zone: zone_spe,
@@ -452,6 +455,15 @@ end
 
 new({ tool: :rotate }) do
   { alteration: { height: 150, rotate: 45 } }
+end
+
+new({ tool: :move }) do
+  inactivate=lambda{|param|
+     param[:treated].each do |atome_f|
+       atome_f.drag(false)
+     end
+  }
+  { alteration: { drag: true, left: nil , top: nil}, inactivation: inactivate }
 end
 ### tool2 test
 
