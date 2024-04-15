@@ -85,13 +85,23 @@ class Atome
 
     def alteration(current_tool, tool_actions, atome_touched, a_event)
       if atome_touched
-        storage_allowed= Universe.allow_localstorage
+        storage_allowed = Universe.allow_localstorage
         action_found = tool_actions[:action]
         pre = tool_actions[:pre]
         post = tool_actions[:post]
         params = { current_tool: current_tool, atome_touched: atome_touched, event: a_event }
         action_found.each do |part, val|
           Universe.allow_localstorage = false
+          #################################
+          touch_found = atome_touched.touch
+          touch_procs=atome_touched.instance_variable_get("@touch_code")
+          resize_found = atome_touched.resize
+          resize_procs=atome_touched.instance_variable_get("@resize_code")
+          # alert "#{touch_found} : #{touch_procs}"
+          current_tool.data[:prev_states][atome_touched] = {events: { touch: touch_found, resize: resize_found },
+                                                            procs: {touch_code: touch_procs, resize_code: resize_procs } }
+
+          #################################
           current_tool.instance_exec(params, &pre) if pre.is_a? Proc
           Universe.allow_localstorage = storage_allowed
           if current_tool.data[:allow_alteration]
@@ -108,7 +118,7 @@ class Atome
 
       # we store prev_local_storage prior to lock it to prevent unwanted logs
       # prev_local_storage=Universe.allow_localstorage()
-      storage_allowed= Universe.allow_localstorage
+      storage_allowed = Universe.allow_localstorage
       Universe.allow_localstorage = false
 
       action_found = tool_actions[:action]
@@ -144,11 +154,19 @@ class Atome
       current_tool = grab(tool)
       tool_actions = current_tool.data
       method_found = tool_actions[:method]
-
+      unless method_found
+        method_found = :alteration
+        tool_actions[:action] = { noop: true }
+        current_tool.data = tool_actions
+      end
 
       send(method_found, current_tool, tool_actions, atome_touched, a_event)
     end
 
+  end
+
+  def noop(_p)
+    # this method is used by tools when no treatment is needed
   end
 
   def set_action_on_touch(&action)
@@ -242,6 +260,7 @@ class Atome
         # init the tool
         tool.data[:treated] = []
         tool.data[:created] = []
+        tool.data[:prev_states] = {}
         # generic behavior
         tool.apply(:active_tool_col)
         # activation code
@@ -282,7 +301,6 @@ class Atome
           Universe.edit_mode = false
         end
 
-        # inactivation code
         inactivation_code = tool_scheme[:inactivation]
         tool.instance_exec(tool.data, &inactivation_code) if inactivation_code.is_a? Proc
         # end if tool_content && tool_content[:inactive]
@@ -291,11 +309,40 @@ class Atome
         # we remove touch and resize binding on newly created atomes
         tool.apply(:inactive_tool_col)
         tool.data[:created].each do |new_atome|
-          puts "find a strategy to re-activate the line below else drag accumulate"
           new_atome.drag(false)
           new_atome.resize(:remove)
         end
+        ################################
+        # we restore prev touch and resize
+        tool.data[:prev_states].each do |atome_f, prev_par|
+          puts prev_par
 
+          # params[:events].each do |part_f, val_f|
+          #   # alert "@#{part_f}, #{part_f}"
+          #   atome_f.send(part_f, val_f)
+          # end
+          # alert "--> params :  #{params[:events]}"
+          # alert "--> procs :  #{params[:procs][params[:events]]}"
+           # atome_f.touch(false)
+          # atome_f.touch(true) do
+          #   alert :kool
+          # end
+          # alert params[:procs]
+          # params[:procs].each do |var_n, procs_f|
+          #   # procs_f.each do |action_f, proc|
+          #   #   # puts "#{var_n}==> #{action_f}, #{proc}"
+          #   # end
+          #   puts "==> #{var_n}, #{proc_f}"
+          #   # atome_f.instance_variable_set("@#{var_n}", proc_f)
+          # end
+          # atome_f.touch(false)
+          # alert "#{atome_f.touch} : #{atome_f.instance_variable_get("@touch_code")}"
+        end
+
+        # atome_f.touch(touch_found)
+        # atome_f.resize(resize_found)
+        # inactivation code
+        #################################
         tick[tool_name] = 0
       end
     end
@@ -384,7 +431,7 @@ new({ tool: :osc }) do |params|
     puts "post_creation_code,atome_touched: #{:params}"
   }
 
-  { creation: { box: { color: :blue , width: 66, height: 66} },
+  { creation: { box: { color: :blue, width: 66, height: 66 } },
     activation: active_code,
     inactivation: inactive_code,
     pre: pre_creation_code,
@@ -409,7 +456,13 @@ new({ tool: :drag }) do |params|
   }
   pre_code = lambda { |params|
     atome_target = params[:atome_touched]
-    atome_target.drag(false)
+    # puts  "==> #{atome_target.drag}"
+    if atome_target.drag
+      atome_target.drag(false)
+    else
+      atome_target.drag(true)
+    end
+
   }
   post_code = lambda { |params|
     # puts "post_creation_code,atome_touched: #{params}"
@@ -426,7 +479,7 @@ new({ tool: :drag }) do |params|
   {
     activation: active_code,
     inactivation: inactive_code,
-    alteration: { drag: true },
+    # alteration: { drag: true },
     pre: pre_code,
     post: post_code,
     zone: zone_spe,
@@ -456,15 +509,66 @@ end
 new({ tool: :rotate }) do
   { alteration: { height: 150, rotate: 45 } }
 end
+new({ tool: :move }) do |params|
 
-new({ tool: :move }) do
-  inactivate=lambda{|param|
-     param[:treated].each do |atome_f|
-       atome_f.drag(false)
-     end
+  active_code = lambda {
+    # Atome.selection.each do |atome_id_to_treat|
+    #   # reinit first to avoid multiple drag event
+    #   grab(atome_id_to_treat).drag(false)
+    # end
+    # drag_remove
+    # puts :alteration_tool_code_activated
   }
-  { alteration: { drag: true, left: nil , top: nil}, inactivation: inactivate }
+
+  inactive_code = lambda { |params|
+    # we remove drag
+    params[:treated].each do |atome_f|
+      atome_f.drag(false)
+    end
+    # puts :alteration_tool_code_inactivated
+
+  }
+  pre_code = lambda { |params|
+    atome_target = params[:atome_touched]
+    # puts  "==> #{atome_target.drag}"
+    if atome_target.drag
+      # atome_target.drag(false)
+    else
+      atome_target.drag(true)
+    end
+
+  }
+  post_code = lambda { |params|
+
+    # puts "post_creation_code,atome_touched: #{params}"
+
+  }
+
+  zone_spe = lambda { |current_tool|
+    # puts "current tool is : #{current_tool} now creating specific zone"
+    # b = box({ width: 33, height: 12 })
+    # b.text({ data: :all })
+
+  }
+
+  {
+    activation: active_code,
+    inactivation: inactive_code,
+    # alteration: { drag: true },
+    pre: pre_code,
+    post: post_code,
+    zone: zone_spe,
+    int8: { french: :drag, english: :drag, german: :drag } }
+
 end
+# new({ tool: :move }) do
+#   inactivate=lambda{|param|
+#      param[:treated].each do |atome_f|
+#        atome_f.drag(false)
+#      end
+#   }
+#   { alteration: { drag: true, left: nil , top: nil}, inactivation: inactivate }
+# end
 ### tool2 test
 
 Atome.init_intuition
@@ -473,12 +577,19 @@ Atome.init_intuition
 
 b = box({ left: 123, top: 66, selected: false, id: :the_box, color: :green })
 b.touch(:down) do
-  alert " on touch : #{Universe.allow_localstorage}"
+  puts " on touch : #{Universe.allow_localstorage}"
 end
-the_circ = circle({ left: 123, top: 120, selected: false, id: :the_circle, drag: true })
+b.resize(true) do
+  puts :good!
+end
+the_circ = circle({ left: 123, top: 120, selected: false, id: :the_circle })
 
-the_circ.touch(:down) do
-  puts the_circ.id
+the_circ.touch(:down) do |params|
+  puts "params: #{params}, id: #{the_circ.id}"
+end
+
+the_circ.touch(:up) do
+  puts :kool
 end
 bb = box({ left: 333, width: 120, selected: false, id: :big_box })
 
@@ -507,3 +618,27 @@ b = box({ id: :the_big_boxy })
 # grab(:the_texting).data(:kool)
 # grab(:the_texting).type(:text)
 # grab(:the_texting).rotate(:text)
+
+# b=box
+# b.touch(true) do
+#   puts :ok
+#   # alert b.instance_variable_get('@touch')
+#   # alert b.instance_variable_get('@touch_code')
+#   b.touch(false)
+#   wait 3 do
+#     puts :ready
+#     b.touch(true) do
+#       puts :kool
+#     end
+#     # alert b.touch
+#     # alert b.instance_variable_get('@touch')
+#     # alert b.instance_variable_get('@touch_code')
+#   end
+# end
+
+# A.html.record
+
+# A.html.record
+
+
+

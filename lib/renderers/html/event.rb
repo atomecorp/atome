@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
 new({ method: :drag, type: :symbol, renderer: :html }) do |params|
-  option = @drag[params]
-  html.event(:drag, params, option)
+  # if @drag
+  #   option = @drag[params]
+  # else
+  #   params = :remove
+  #   option = true
+  # end
+  # html.event(:drag, params, option)
+
+  if params
+    option = @drag[params]
+    html.event(:drag, params, option)
+  else
+    html.event(:drag, :remove, true)
+  end
 end
 
 new({ method: :drop, type: :symbol, renderer: :html }) do |params|
@@ -11,8 +23,12 @@ new({ method: :drop, type: :symbol, renderer: :html }) do |params|
 end
 
 new({ method: :touch, type: :integer, renderer: :html }) do |params|
-  option = @touch[params]
-  html.event(:touch, params, option)
+  if params
+    option = @touch[params]
+    html.event(:touch, params, option)
+  else
+    html.event(:touch, :remove, true)
+  end
 end
 
 new({ method: :over, type: :integer, renderer: :html }) do |params|

@@ -28,6 +28,10 @@ class HTML
 
   end
 
+
+
+
+
   def object
     @element
   end
@@ -302,17 +306,13 @@ class HTML
     # editable_pres_array = Array.new(editable_pres[:length].to_i) { |i| editable_pres.call(:item, i) }
     # editable_pres_array.each do |pre|
     #   pre.addEventListener('click') do
-    #     # Focus sur l'élément pour activer le curseur
     #     pre.focus()
-    #     alert :ok
-    #     # Optionnel : Ajoutez du style pour rendre le curseur plus visible
     #     pre[:style][:caretColor] = 'blue' # Changez la couleur du curseur en bleu
     #   end
     # end
     ###
     self
   end
-
 
   def select_text(range)
     # TODO : use atome color object  instead of basic css color
@@ -783,7 +783,7 @@ class HTML
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
       @drag_move.call(event) if @drag_move.is_a?(Proc)
-      Universe.allow_tool_operations=false
+      Universe.allow_tool_operations = false
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f
@@ -994,7 +994,7 @@ class HTML
                            modifiers: [],
                            listeners: {
                              move: lambda do |native_event|
-                               Universe.allow_tool_operations=false
+                               Universe.allow_tool_operations = false
                                # if @resize.is_a?(Proc)
                                event = Native(native_event)
                                # we use .call instead of instance_eval because instance_eval bring the current object as context
@@ -1106,8 +1106,9 @@ class HTML
     action_proc.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
   end
 
-
   def touch_down(_option)
+    @element[:style][:cursor] = 'pointer'
+
     @touch_down = @original_atome.instance_variable_get('@touch_code')[:down]
     interact = JS.eval("return interact('##{@id}')")
     unless @touch_removed[:down]
@@ -1125,22 +1126,26 @@ class HTML
   end
 
   def touch_tap(_option)
+    # alert :touch_tap
+    @element[:style][:cursor] = 'pointer'
     interact = JS.eval("return interact('##{@id}')")
-    @touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
-    unless @touch_removed[:tap]
-      interact.on('tap') do |native_event|
-        event = Native(native_event)
-        # we use .call instead of instance_eval because instance_eval bring the current object as context
-        # and it's lead to a problem of context and force the use of grab(:view) when using atome method such as shape ,
-        # group etc..
-        # @touch_tap.call(event) if @touch_tap.is_a?(Proc) && !Universe.edit_mode || !@original_atome.tag[:system]
-        @touch_tap.call(event) if event_validation(@touch_tap)
-      end
+    touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
+    # unless @touch_removed[:tap]
+    interact.on('tap') do |native_event|
+      # alert 'touchy'
+      event = Native(native_event)
+      # we use .call instead of instance_eval because instance_eval bring the current object as context
+      # and it's lead to a problem of context and force the use of grab(:view) when using atome method such as shape ,
+      # group etc..
+      # @touch_tap.call(event) if @touch_tap.is_a?(Proc) && !Universe.edit_mode || !@original_atome.tag[:system]
+      touch_tap.call(event) if event_validation(touch_tap)
     end
+    # end
 
   end
 
   def touch_up(_option)
+    @element[:style][:cursor] = 'pointer'
     interact = JS.eval("return interact('##{@id}')")
     @touch_up = @original_atome.instance_variable_get('@touch_code')[:up]
     unless @touch_removed[:up]
@@ -1157,6 +1162,7 @@ class HTML
   end
 
   def touch_double(_option)
+    @element[:style][:cursor] = 'pointer'
     interact = JS.eval("return interact('##{@id}')")
     @touch_double = @original_atome.instance_variable_get('@touch_code')[:double]
     unless @touch_removed[:double]
@@ -1174,6 +1180,7 @@ class HTML
   end
 
   def touch_long(_option)
+    @element[:style][:cursor] = 'pointer'
     @touch_long = @original_atome.instance_variable_get('@touch_code')[:long]
     interact = JS.eval("return interact('##{@id}')")
     unless @touch_removed[:long]
@@ -1191,6 +1198,7 @@ class HTML
   end
 
   def touch_remove(option)
+    @element[:style][:cursor] = 'default'
     case option
     when :double
       @touch_double = ''
@@ -1208,19 +1216,23 @@ class HTML
       @touch_removed[:up] = true
       @touch_up = ''
     else
-      @touch_removed[:double] = true
-      @touch_removed[:down] = true
-      @touch_removed[:long] = true
-      @touch_removed[:tap] = true
-      @touch_removed[:up] = true
-      @touch_double = ''
-      @touch_down = ''
-      @touch_long = ''
-      @touch_tap = ''
-      @touch_up = ''
-      # to remove all interact event ( touch, drag, scale, ... uncomment below)
       interact = JS.eval("return interact('##{@id}')")
       interact.unset
+      # @original_atome.instance_variable_set('@touch_code')
+      @original_atome.instance_variable_set('@touch_code', nil)
+      # @touch_removed[:double] = true
+      # @touch_removed[:down] = true
+      # @touch_removed[:long] = true
+      # @touch_removed[:tap] = true
+      # @touch_removed[:up] = true
+      # @touch_double = ''
+      # @touch_down = ''
+      # @touch_long = ''
+      # @touch_tap = ''
+      # @touch_up = ''
+      # to remove all interact event ( touch, drag, scale, ... uncomment below)
+      # interact = JS.eval("return interact('##{@id}')")
+      # interact.unset
     end
 
   end

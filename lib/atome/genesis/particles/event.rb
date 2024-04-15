@@ -2,47 +2,53 @@
 
 new({ particle: :touch, category: :event, type: :hash, store: false })
 new({ sanitizer: :touch }) do |params, user_bloc|
-  # TODO: factorise code below
-  # alert  "touch_code: #{@touch_code}"
-  @touch ||= {}
-  @touch_code ||= {}
-  option = true
-  params = if params.instance_of? Hash
-             @touch_code[params.keys[0]] = user_bloc
-             option = params[params.keys[0]]
-             params.keys[0]
-           else
-             case params
-             when true
-               @touch_code[:tap] = user_bloc
-               :tap
-             when :touch
-               @touch_code[:tap] = user_bloc
-               :tap
-             when :down
-               @touch_code[:down] = user_bloc
-               :down
-             when :up
-               @touch_code[:up] = user_bloc
-               :up
-             when :long
-               @touch_code[:long] = user_bloc
-               :long
-             when :double
-               @touch_code[:double] = user_bloc
-               :double
-             when :remove
-               params
-             when false
-               @touch_code[:remove] = user_bloc
-               :remove
+  if params
+    # TODO: factorise code below
+    # alert  "touch_code: #{@touch_code}"
+    @touch ||= {}
+    @touch_code ||= {}
+    option = true
+    params = if params.instance_of? Hash
+               @touch_code[params.keys[0]] = user_bloc
+               option = params[params.keys[0]]
+               params.keys[0]
              else
-               @touch_code[:tap] = user_bloc
-               :tap
+               case params
+               when true
+                 @touch_code[:tap] = user_bloc
+                 :tap
+               when :touch
+                 @touch_code[:tap] = user_bloc
+                 :tap
+               when :down
+                 @touch_code[:down] = user_bloc
+                 :down
+               when :up
+                 @touch_code[:up] = user_bloc
+                 :up
+               when :long
+                 @touch_code[:long] = user_bloc
+                 :long
+               when :double
+                 @touch_code[:double] = user_bloc
+                 :double
+                 # when :remove
+                 #   params
+               when false
+                 @touch_code[:remove] = user_bloc
+                 :remove
+               else
+                 @touch_code[:tap] = user_bloc
+                 :tap
+               end
              end
-           end
-  @touch[params] = option
-  params
+
+    @touch[params] = option
+    params
+  else
+    @touch = false
+    params
+  end
 
 end
 new({ particle: :play, category: :event, type: :boolean, store: false })
@@ -85,6 +91,7 @@ new({ particle: :on, category: :event, type: :boolean, store: false })
 new({ sanitizer: :on }) do |params, user_bloc|
   @on ||= {}
   @on_code ||= {}
+
   option = {}
   params = if params.instance_of? Hash
              @on_code[:view_resize] = user_bloc
@@ -154,6 +161,12 @@ new({ sanitizer: :drag }) do |params, user_bloc|
 
            end
   @drag[params] = option
+  if params == :remove
+    params = false
+  else
+    @drag[params] = option
+  end
+
   params
 end
 new({ particle: :drop, category: :event, type: :boolean, store: false })
@@ -225,14 +238,13 @@ new({ sanitizer: :over }) do |params, user_bloc|
 
            end
 
-    @over[params] = option
+  @over[params] = option
   params
 
 end
 # new({ particle: :sort }) do |_value, sort_proc|
 #   @sort_proc = sort_proc
 # end
-
 new({ particle: :targets, category: :event, type: :string })
 new({ particle: :start, category: :event, type: :boolean })
 new({ pre: :start }) do |_value, user_proc|
@@ -289,12 +301,12 @@ new({ sanitizer: :keyboard }) do |params, user_bloc|
 
   params
 end
-new({ particle: :resize, category: :event, type: :boolean, store: false  })
+new({ particle: :resize, category: :event, type: :boolean, store: false })
 new({ sanitizer: :resize }) do |params, user_bloc|
-  @resize ||= { }
+  @resize ||= {}
   @resize_code ||= {}
 
-  option = {min: { width: 10, height: 10 }, max: { width: 3000, height: 3000 }}
+  option = { min: { width: 10, height: 10 }, max: { width: 3000, height: 3000 } }
   params = if params.instance_of? Hash
              @resize_code[:resize] = user_bloc
              option = params[params.keys[0]]
@@ -322,14 +334,11 @@ new({ particle: :overflow, category: :event, type: :boolean }) do |params, bloc|
   params
 
 end
-
-
-
-new({particle: :animate , category: :event, type: :hash}) do |params|
+new({ particle: :animate, category: :event, type: :hash }) do |params|
   if params.instance_of? Hash
-    params={ from: 0, to: 300, duration: 1000 }.merge(params)
+    params = { from: 0, to: 300, duration: 1000 }.merge(params)
   else
-    params={ from: 0, to: 300, duration: 1000 }
+    params = { from: 0, to: 300, duration: 1000 }
   end
   html.play_animation(params)
 end
