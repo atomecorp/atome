@@ -302,62 +302,61 @@ function loadFeature() {
 
 
 // Fonction pour demander l'accès au microphone et démarrer l'enregistrement
-function startRecording() {
-    alert('rec')
-    // // Vérifier si le navigateur supporte les fonctionnalités requises
-    // if (!navigator.mediaDevices || !window.MediaRecorder) {
-    //     alert("Votre navigateur ne supporte pas l'enregistrement audio.");
-    //     return;
-    // }
-    //
-    // // Demander l'accès au microphone
-    // navigator.mediaDevices.getUserMedia({ audio: true })
-    //     .then(stream => {
-    //         const mediaRecorder = new MediaRecorder(stream);
-    //         let audioChunks = [];
-    //
-    //         // Collecter les données d'audio
-    //         mediaRecorder.addEventListener("dataavailable", event => {
-    //             audioChunks.push(event.data);
-    //         });
-    //
-    //         // Lorsque l'enregistrement est arrêté, traiter les données audio
-    //         mediaRecorder.addEventListener("stop", () => {
-    //             const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-    //             const audioUrl = URL.createObjectURL(audioBlob);
-    //             const downloadLink = document.createElement('a');
-    //             downloadLink.href = audioUrl;
-    //             downloadLink.download = 'recorded_audio.wav';
-    //             downloadLink.textContent = 'Télécharger l\'audio';
-    //             downloadLink.click();
-    //
-    //             // Nettoyer
-    //             audioChunks = [];
-    //             stream.getTracks().forEach(track => track.stop()); // Arrêter le flux
-    //         });
-    //
-    //         // Démarrer l'enregistrement
-    //         mediaRecorder.start();
-    //
-    //         // Arrêter l'enregistrement après 5 secondes
-    //         setTimeout(() => {
-    //             mediaRecorder.stop();
-    //         }, 5000); // Changez cette durée selon le besoin
-    //     })
-    //     .catch(error => {
-    //         console.error("Erreur lors de l'accès au microphone: ", error);
-    //         alert("Impossible d'accéder au microphone. Veuillez réessayer.");
-    //     });
-}
+// function startRecording() {
+//     alert('rec')
+//     // // Vérifier si le navigateur supporte les fonctionnalités requises
+//     // if (!navigator.mediaDevices || !window.MediaRecorder) {
+//     //     alert("Votre navigateur ne supporte pas l'enregistrement audio.");
+//     //     return;
+//     // }
+//     //
+//     // // Demander l'accès au microphone
+//     // navigator.mediaDevices.getUserMedia({ audio: true })
+//     //     .then(stream => {
+//     //         const mediaRecorder = new MediaRecorder(stream);
+//     //         let audioChunks = [];
+//     //
+//     //         // Collecter les données d'audio
+//     //         mediaRecorder.addEventListener("dataavailable", event => {
+//     //             audioChunks.push(event.data);
+//     //         });
+//     //
+//     //         // Lorsque l'enregistrement est arrêté, traiter les données audio
+//     //         mediaRecorder.addEventListener("stop", () => {
+//     //             const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+//     //             const audioUrl = URL.createObjectURL(audioBlob);
+//     //             const downloadLink = document.createElement('a');
+//     //             downloadLink.href = audioUrl;
+//     //             downloadLink.download = 'recorded_audio.wav';
+//     //             downloadLink.textContent = 'Télécharger l\'audio';
+//     //             downloadLink.click();
+//     //
+//     //             // Nettoyer
+//     //             audioChunks = [];
+//     //             stream.getTracks().forEach(track => track.stop()); // Arrêter le flux
+//     //         });
+//     //
+//     //         // Démarrer l'enregistrement
+//     //         mediaRecorder.start();
+//     //
+//     //         // Arrêter l'enregistrement après 5 secondes
+//     //         setTimeout(() => {
+//     //             mediaRecorder.stop();
+//     //         }, 5000); // Changez cette durée selon le besoin
+//     //     })
+//     //     .catch(error => {
+//     //         console.error("Erreur lors de l'accès au microphone: ", error);
+//     //         alert("Impossible d'accéder au microphone. Veuillez réessayer.");
+//     //     });
+// }
 
 // Appel de la fonction
 
 // Audio recorder
 
-function RecordAudio(duration) {
-    console.log("Début de l'enregistrement");
+function recordAudio(duration) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert("Votre navigateur ne supporte pas l'enregistrement audio !");
+        console.log("you browser doesn't support audio recording");
         return;
     }
 
@@ -383,14 +382,12 @@ function RecordAudio(duration) {
 
             setTimeout(() => {
                 mediaRecorder.stop();
-                console.log("Enregistrement arrêté");
             }, duration);
 
             mediaRecorder.onstop = function() {
                 const audioBlob = new Blob(audioChunks, { type: mimeType || 'audio/mp4' });
                 const audioUrl = URL.createObjectURL(audioBlob);
 
-                record_content(audioBlob);
                 record_content(audioUrl);
                 playRecording(audioBlob);
                 saveRecording(audioUrl);
@@ -399,46 +396,45 @@ function RecordAudio(duration) {
             };
         })
         .catch(function(err) {
-            console.error("Erreur lors de l'accès au microphone: " + err);
+            console.error("error when accessing microphone: " + err);
         });
 }
 
-let audioUrlGlobal = "";
+// let audioUrlGlobal = "";
+//
+// function saveRecording(url) {
+//     audioUrlGlobal = url;
+//     console.log("URL enregistrée: " + url);
+//     const downloadLink = document.createElement('a');
+//     downloadLink.href = url;
+//     downloadLink.download = "enregistrement_audio.mp4";
+//     document.body.appendChild(downloadLink);
+//     downloadLink.click();
+//     document.body.removeChild(downloadLink);
+// }
+//
+// function playRecording(blob) {
+//     console.log("Tentative de jouer l'enregistrement directement du blob");
+//     const audio = new Audio(URL.createObjectURL(blob));
+//     audio.play().then(() => {
+//         console.log("Lecture commencée");
+//     }).catch(err => {
+//         console.error("Erreur lors de la lecture: ", err);
+//     });
+// }
+//
+// function record_content(blob) {
+//     console.log("Contenu de l'enregistrement audio (Blob) :", blob);
+// }
 
-function saveRecording(url) {
-    audioUrlGlobal = url;
-    console.log("URL enregistrée: " + url);
-    const downloadLink = document.createElement('a');
-    downloadLink.href = url;
-    downloadLink.download = "enregistrement_audio.mp4";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-}
-
-function playRecording(blob) {
-    console.log("Tentative de jouer l'enregistrement directement du blob");
-    const audio = new Audio(URL.createObjectURL(blob));
-    audio.play().then(() => {
-        console.log("Lecture commencée");
-    }).catch(err => {
-        console.error("Erreur lors de la lecture: ", err);
-    });
-}
-
-function record_content(blob) {
-    console.log("Contenu de l'enregistrement audio (Blob) :", blob);
-}
-
-// RecordAudio(5000);
+recordAudio(5000);
 
 
 
 // # video recorder
-function startRecording(duration) {
-    console.log("Début de l'enregistrement");
+function recordVideo(duration) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        alert("Votre navigateur ne supporte pas l'enregistrement audio et vidéo !");
+        console.log("you browser doesn't support video recording");
         return;
     }
 
@@ -463,14 +459,12 @@ function startRecording(duration) {
 
             setTimeout(() => {
                 mediaRecorder.stop();
-                console.log("Enregistrement arrêté");
             }, duration);
 
             mediaRecorder.onstop = function() {
                 const mediaBlob = new Blob(mediaChunks, { type: mimeType || 'video/mp4' });
                 const mediaUrl = URL.createObjectURL(mediaBlob);
 
-                record_content(mediaBlob);
                 record_content(mediaUrl);
                 playRecording(mediaBlob);
                 saveRecording(mediaUrl);
@@ -479,7 +473,7 @@ function startRecording(duration) {
             };
         })
         .catch(function(err) {
-            console.error("Erreur lors de l'accès aux périphériques: " + err);
+            console.error("error when accessing peripherals: " + err);
         });
 }
 
@@ -487,37 +481,32 @@ let mediaUrlGlobal = "";
 
 function saveRecording(url) {
     mediaUrlGlobal = url;
-    console.log("URL enregistrée: " + url);
+    console.log("URL recorded: " + url);
     const downloadLink = document.createElement('a');
     downloadLink.href = url;
-    downloadLink.download = "enregistrement_media.mp4";
+    downloadLink.download = "filename.mp4";
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
 }
 
 function playRecording(blob) {
-    console.log("Tentative de jouer l'enregistrement directement du blob");
-    // Utiliser l'élément vidéo pour afficher la vidéo et l'audio.
     const mediaElement = document.createElement('video');
     mediaElement.src = URL.createObjectURL(blob);
-    mediaElement.controls = true; // Ajoute des contrôles de lecture pour permettre à l'utilisateur de contrôler la lecture
+    mediaElement.controls = true; // add control to media element
 
-    // Affichage du lecteur vidéo sur la page
 
     const viewDiv = document.getElementById('view');
-    // Ajout de l'élélement vidéo à cette div
     viewDiv.appendChild(mediaElement);
-    mediaElement.play().then(() => {
-        console.log("Lecture commencée");
-    }).catch(err => {
-        console.error("Erreur lors de la lecture: ", err);
-    });
+    // mediaElement.play().then(() => {
+    // }).catch(err => {
+    //     console.error("Error when reading: ", err);
+    // });
 }
 
 function record_content(blob) {
-    console.log("Contenu de l'enregistrement (Blob) :", blob);
+    console.log("recorded blob content  :", blob);
 }
 
-// startRecording(5000);
+// recordVideo(5000);
 

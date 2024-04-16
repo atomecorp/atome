@@ -24,6 +24,27 @@ class EDen
       email.gsub(invalid_chars_pattern, '')
     end
 
+    def record(data, message_id)
+      # Command to start recording
+      # -c 1 indicates recording in mono
+      # rate 44.1k sets the sample rate to 44100 Hz
+      # trim 0 <duration> records audio for 'duration' seconds
+      type=data['type']
+      name=data['name']
+      duration=data['duration']
+      path=data['path']
+      output_file= "#{name}.#{type}"
+      command = "rec -c 1 #{output_file} rate 44.1k trim 0 #{duration}"
+      #
+      # # Running the command
+      puts "Recording for #{duration} seconds..."
+      system(command)
+      puts "Recording complete. Audio saved to #{output_file}"
+      pwd = `pwd`.strip
+
+      return { return: "path : #{puts} record  received : duration #{duration} : name: #{name}",  message_id: message_id }
+    end
+
     def authentication(data, message_id)
       # database connexion :
       db = db_access
@@ -125,8 +146,7 @@ class EDen
       table = data['table']
       column = data['column']
       type = data['type']
-      unique = data['unique']
-      Database.create_column(table, column, type, unique)
+      Database.create_column(table, column, type)
       { data: { message: "column #{column} with type : #{type} added" }, message_id: message_id }
     end
 
