@@ -1,24 +1,69 @@
 # frozen_string_literal: true
 
-user_password = {global: :all_star, read: { atome: :all_star }, write: { atome: :all_star } }
+new({ particle: :record, category: :utility, type: :hash })
+new({ renderer: :html, method: :record }) do |params, user_proc|
+  duration = params[:duration] ||= 1
+  media = params[:media] ||= :video
+  mode = params[:mode] ||= :web # web or native
+  name = params[:name] ||= :record
+  path = params[:path] ||= './'
+  data = params[:data] ||= {}
+  stop = params[:stop]
+  if stop
+    # alert stop
+    A.message({ action: :stop_recording, data: params }) do |result|
+      # user_proc.call(result)
+    end
+  elsif media == :video
+    type = params[:type] ||= :mp4
+    if mode == :native
+      A.message({ action: :record, data: { type: type, duration: duration, name: name, path: path, media: media, data: data } }) do |result|
+        user_proc.call(result)
+      end
+    else
+      puts 'video code'
+    end
 
-human({ id: :jeezs, login: true, password: user_password, data: { birthday: '10/05/2016' },selection: [], tag: { system: true } , attach: :user_view })
+  elsif media == :audio
+    type = params[:type] ||= :wav
+    if mode == :native
+      A.message({ action: :record, data: { type: type, duration: duration, name: name, path: path, media: media, data: data } }) do |result|
+        user_proc.call(result)
+      end
+    else
+      alert 'audio code'
+    end
+  end
 
-c = circle({ color: :red, left: 333 })
+end
+
+c = circle({ color: :red, left: 30 })
+c.text(:na)
+record_callback = 'unset'
 c.touch(true) do
-  # c.message({data: 'cd ..;cd server;ls; pwd', action: :terminal }) do |result|
-  #   puts "shell command return: #{result}"
-  # end
-  # c.message({data: {source: 'capture.rb',operation: :read  }, action: :file}) do |result|
-  #
-  #   puts "file read encoded_content: #{result[:data].gsub('\x23', '#')}"
-  # end
-  # c.message({ action: :file,data: {source: 'user_created_file.rb', operation: :write, value: :hello }})do |result|
-  #   puts "file creation result : #{result}"
-  # end
+  A.record({ media: :audio, duration: 5, mode: :native, name: :titi, type: :wav, path: '../src', data: {note: :c, velocity: 12, robin: 3, author: :vie, tags: [:voice, :noise, :attack]} }) do |result|
+    puts result
+    record_callback = result
+  end
 
-  A.message({ action: :record , data: {type: :wav, duration: 5.02, name: :my_rec, path:  './'}}) do |result|
-    puts "result : #{result}"
+end
+
+cc = circle({ color: :red, left: 120 })
+cc.text(:nv)
+cc.touch(true) do
+  A.record({ media: :video, duration: 5, mode: :native, name: :tutu, type: :mp4, path: '../src/',data: {type: :thriller,} }) do |result|
+    puts result
+    record_callback = result
   end
 end
+
+ccc = circle({ color: :red, left: 256 })
+ccc.text(:stop)
+ccc.touch(true) do
+  pid = record_callback['pid']
+  A.record({ stop: true, pid: pid }) do |msg|
+    puts "msg received for stop : #{msg}"
+  end
+end
+
 

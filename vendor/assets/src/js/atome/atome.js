@@ -427,7 +427,7 @@ function recordAudio(duration) {
 //     console.log("Contenu de l'enregistrement audio (Blob) :", blob);
 // }
 
-recordAudio(5000);
+// recordAudio(5000);
 
 
 
@@ -450,6 +450,19 @@ function recordVideo(duration) {
             const mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType: mimeType } : {});
 
             let mediaChunks = [];
+            let videoElement = document.querySelector('video#livePreview');
+
+            if (!videoElement) {
+                videoElement = document.createElement('video');
+                videoElement.id = 'livePreview';
+                videoElement.controls = true;
+                videoElement.autoplay = true;
+
+                const viewDiv = document.getElementById('view');
+                viewDiv.appendChild(videoElement);
+            }
+
+            videoElement.srcObject = stream;
 
             mediaRecorder.start();
 
@@ -470,12 +483,14 @@ function recordVideo(duration) {
                 saveRecording(mediaUrl);
 
                 stream.getTracks().forEach(track => track.stop());
+                videoElement.srcObject = null;
             };
         })
         .catch(function(err) {
             console.error("error when accessing peripherals: " + err);
         });
 }
+
 
 let mediaUrlGlobal = "";
 

@@ -39,7 +39,7 @@ class App < Roda
           data = full_data['data']
           action_requested = full_data['action']
           message_id = full_data['message_id']
-          return_message = EDen.safe_send(action_requested, data, message_id)
+          return_message = EDen.safe_send(action_requested, data, message_id, ws)
           ws.send(return_message.to_json)
         end
         ws.on(:close) do |event|

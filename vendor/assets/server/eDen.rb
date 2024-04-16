@@ -6,6 +6,7 @@ class EDen
 
   @@mail = nil
   @@pass = nil
+
   class << self
 
     @@mail = nil
@@ -15,7 +16,7 @@ class EDen
       Database.db_access
     end
 
-    def terminal(data, message_id)
+    def terminal(data, message_id, ws)
       { data: { message: `#{data}` }, message_id: message_id }
     end
 
@@ -24,28 +25,127 @@ class EDen
       email.gsub(invalid_chars_pattern, '')
     end
 
-    def record(data, message_id)
-      # Command to start recording
-      # -c 1 indicates recording in mono
-      # rate 44.1k sets the sample rate to 44100 Hz
-      # trim 0 <duration> records audio for 'duration' seconds
-      type=data['type']
-      name=data['name']
-      duration=data['duration']
-      path=data['path']
-      output_file= "#{name}.#{type}"
-      command = "rec -c 1 #{output_file} rate 44.1k trim 0 #{duration}"
-      #
-      # # Running the command
-      puts "Recording for #{duration} seconds..."
-      system(command)
-      puts "Recording complete. Audio saved to #{output_file}"
-      pwd = `pwd`.strip
+    def metadata(msg, pid, message_id, ws)
 
-      return { return: "path : #{puts} record  received : duration #{duration} : name: #{name}",  message_id: message_id }
+      path = msg[:output_file]
+      data = msg[:data]
+      if msg[:read]
+        command = "ffprobe -v error -show_entries format_tags=comment -of default=noprint_wrappers=1:nokey=1 #{path.shellescape}"
+
+        Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+          if wait_thr.value.success?
+            output = stdout.read
+            puts "Metadata for #{path}:"
+            puts output
+          else
+            puts "Error reading metadata: #{stderr.read}"
+          end
+        end
+      else
+        custom_data = data.to_json
+        comment_metadata = "-metadata comment=#{custom_data.shellescape}"
+
+        # input_file = path
+        temp_output_file = "./temp_#{File.basename(path)}"
+        ffmpeg_cmd = "ffmpeg -i #{path.shellescape} #{comment_metadata} -codec copy #{temp_output_file.shellescape}"
+
+        Open3.popen3(ffmpeg_cmd) do |stdin, stdout, stderr, wait_thr|
+          if wait_thr.value.success?
+            FileUtils.mv(temp_output_file, path, force: true)
+            puts "Metadata successfully added to #{path}"
+          else
+            puts "Error: #{stderr.read}"
+          end
+        end
+      end
+
+
+      ws.send({ :pid => pid, :return => msg, :message_id => message_id }.to_json)
     end
 
-    def authentication(data, message_id)
+    def finished(msg, pid, message_id, ws)
+
+      path = msg[:output_file]
+      # metadata = msg[:metadata]
+
+      # custom_data = metadata.to_json
+      # comment_metadata = "-metadata comment=#{custom_data.shellescape}"
+
+      input_file = path
+      # temp_output_file = "./temp_#{File.basename(input_file)}"
+
+      ##### write tag
+      metadata(msg, pid, message_id, ws)
+
+      ##### read tag
+      msg[:read]=true
+      metadata(msg, pid, message_id, ws)
+
+
+
+      ws.send({ :pid => pid, :return => msg, :message_id => message_id }.to_json)
+    end
+
+    def stop_recording(params, message_id, ws)
+      pid = params['pid']
+      if pid
+        begin
+          Process.getpgid(pid) # Vérifier si le processus est toujours actif
+          Process.kill("SIGINT", pid)
+          # puts "Recording stopped.#{pid} : #{pid.class}"
+        rescue Errno::ESRCH # Le processus n'existe pas
+          puts "Recording already stopped or PID not found."
+        end
+      else
+        puts "No recording in progress.#{pid} : #{pid.class}"
+      end
+      { data: "process killed", message_id: message_id }
+
+    end
+
+    def record(data, message_id, ws)
+
+      # # Command to start recording
+      # # -c 1 indicates recording in mono
+      # # rate 44.1k sets the sample rate to 44100 Hz
+      # # trim 0 <duration> records audio for 'duration' seconds
+      type = data['type']
+      name = data['name']
+      duration = data['duration']
+      media = data['media']
+      path = data['path']
+      data = data['data']
+
+      output_file = "#{path}/#{name}.#{type}"
+      if media == 'audio'
+        command = "rec -c 1 #{output_file} rate 44.1k trim 0 #{duration}"
+
+        stdin, stdout, stderr, wait_thr = Open3.popen3(command)
+        pid = wait_thr.pid # Sauvegarder le PID du processus ffmpeg
+        msg = { output_file: output_file, media: :audio, record: :stop, data: data }
+        # puts "pid class : #{pid.class}"
+        Thread.new { wait_thr.join; finished(msg, pid, message_id, ws) }
+      elsif media == 'video'
+        resolution = "1280x720"
+        framerate = "30"
+        video_device_index = "0"
+        audio_device_index = "1"
+        command = "ffmpeg -f avfoundation -framerate #{framerate} -video_size #{resolution} " +
+          "-i \"#{video_device_index}:#{audio_device_index}\" -t #{duration} " +
+          "-pix_fmt yuv420p -vsync 1 -filter:a \"aresample=async=1\" #{output_file}"
+        stdin, stdout, stderr, wait_thr = Open3.popen3(command)
+        pid = wait_thr.pid # save the pid
+        msg = { output_file: output_file, media: :video, record: :stop, data: data }
+        Thread.new { wait_thr.join; finished(msg, pid, message_id, ws) }
+      else
+        # nothing here
+
+      end
+
+      { pid: pid, return: "path : #{path} record : #{media} received : duration #{duration} : name: #{name}, pid: #{pid}", message_id: message_id }
+    end
+
+    def authentication(data, message_id, ws)
       # database connexion :
       db = db_access
       # retrieving data from the 'identity' table
@@ -61,7 +161,7 @@ class EDen
       if !mail_exists
         @@pass = nil
         puts "authentication @@pass : #{@@pass}"
-        return { return: 'Email non trouvé, erreur', message_id: message_id }
+        { return: 'Email non trouvé, erreur', message_id: message_id }
       else
         @@mail = user_email
         puts "authentication @@mail du else : #{@@mail}"
@@ -79,7 +179,7 @@ class EDen
       end
     end
 
-    def authorization(data, message_id)
+    def authorization(data, message_id, ws)
       # database connexion :
       db = db_access
       # retrieving data from the 'security' table
@@ -113,28 +213,28 @@ class EDen
       end
     end
 
-    def localstorage(data, message_id)
+    def localstorage(data, message_id, ws)
       # return test
       # ws.send(return_message.to_json)
       return { return: 'localstorage content received', authorized: true, message_id: message_id }
 
     end
 
-    def historicize(data, message_id)
+    def historicize(data, message_id, ws)
       # return test
       # ws.send(return_message.to_json)
       return { return: 'item to historicize  received', authorized: true, message_id: message_id }
 
     end
 
-    def init_db(_data, message_id)
+    def init_db(_data, message_id, ws)
       unless File.exist?("eden.sqlite3")
         Sequel.connect("sqlite://eden.sqlite3")
       end
       { data: { message: 'database_ready' }, message_id: message_id }
     end
 
-    def crate_db_table(data, message_id)
+    def crate_db_table(data, message_id, ws)
       table = data['table']
       type = data['type']
       primary = data['primary']
@@ -142,7 +242,7 @@ class EDen
       { data: { message: "table #{table} added" }, message_id: message_id }
     end
 
-    def create_db_column(data, message_id)
+    def create_db_column(data, message_id, ws)
       table = data['table']
       column = data['column']
       type = data['type']
@@ -150,13 +250,13 @@ class EDen
       { data: { message: "column #{column} with type : #{type} added" }, message_id: message_id }
     end
 
-    def query(data, message_id)
+    def query(data, message_id, ws)
       identity_table = db_access[data['table'].to_sym]
       result = identity_table.send(:all).send(:select)
       { data: { table: data['table'], infos: result }, message_id: message_id }
     end
 
-    def insert(data, message_id)
+    def insert(data, message_id, ws)
       table = data['table'].to_sym
       particles = data['particles']
 
@@ -185,7 +285,7 @@ class EDen
       end
     end
 
-    def file(data, message_id)
+    def file(data, message_id, ws)
 
       file_content = File.send(data['operation'], data['source'], data['value']).to_s
       file_content = file_content.gsub("'", "\"")
@@ -194,9 +294,9 @@ class EDen
       { data: "=> operation: #{data['operation']}, source: #{data['source']}, content: #{file_content}", message_id: message_id }
     end
 
-    def safe_send(method_name, data, message_id)
+    def safe_send(method_name, data, message_id, ws)
       method_sym = method_name.to_sym
-      send(method_sym, data, message_id)
+      send(method_sym, data, message_id, ws)
     end
   end
 end
