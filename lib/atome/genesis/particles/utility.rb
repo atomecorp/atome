@@ -254,4 +254,8 @@ end
 
 new({ particle: :storage, category: :utility, type: :hash })
 new({ particle: :state, category: :utility, type: :symbol })
-# new({ particle: :record, category: :utility, type: :hash })
+
+
+new({ particle: :record, category: :utility, type: :hash })
+new({ particle: :preview, category: :utility, type: :hash })
+

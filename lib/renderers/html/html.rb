@@ -1590,98 +1590,20 @@ class HTML
       style("filter", 'none')
       @original_atome.apply(@original_atome.apply)
     end
-    # alert "remove : #{params} , type: #{@original_atome.type}"
-    # reset_background
-    # style(:background, '')
-    # style(:background, 'black')
-    # @original_atome.color(:red)
-    # @original_atome.apply(@original_atome.color[0])
+
   end
 
   def table_remove(params)
     if params[:row]
-      # row_index = params[:row]
-      # table_element = JS.global[:document].querySelector("##{@id} table")
-      #
-      # if table_element.nil?
-      #   puts 'Table not found'
-      #   return
-      # end
-      #
-      # rows = table_element.querySelectorAll('tbody tr').to_a
-      #
-      # if row_index >= rows.length
-      #   puts "row not found : #{row_index}"
-      #   return
-      # end
-      # row_to_remove = rows[row_index]
-      #
-      # row_to_remove[:parentNode].removeChild(row_to_remove)
-      #
-      # rows.each_with_index do |row, i|
-      #   next if i <= row_index
-      # end
     elsif params[:column]
-      # column_index = params[:column]
-      # table_element = JS.global[:document].querySelector("##{@id} table")
-      #
-      # if table_element.nil?
-      #   puts 'Table not found'
-      #   return
-      # end
-      #
-      # rows = table_element.querySelectorAll('tbody tr').to_a
-      # rows.each do |row|
-      #   cells = row.querySelectorAll('td').to_a
-      #   if column_index < cells.length
-      #     cell_to_remove = cells[column_index]
-      #     cell_to_remove[:parentNode].removeChild(cell_to_remove)
-      #   end
-      # end
-
     end
   end
-
-  # def reset_background
-  #   style(:background, 'black')
-  #   style('box-shadow', 'none')
-  #   style('text-shadow', 'none')
-  # end
 
   # atomisation!
   def atomized(html_object)
     html_object = html_object[0] if html_object.instance_of? Array
     @element = html_object
   end
-
-  # def center(options, attach)
-  #   parent = grab(attach)
-  #
-  #   # Centre sur l'axe X
-  #   if options[:x]
-  #     x_position = calculate_position(options[:x], parent.to_px(:width), @original_atome.to_px(:width))
-  #     @original_atome.left(x_position)
-  #   end
-  #
-  #   # Centre sur l'axe Y
-  #   if options[:y]
-  #     y_position = calculate_position(options[:y], parent.to_px(:height), @original_atome.to_px(:height))
-  #     @original_atome.top(y_position)
-  #   end
-  # end
-  #
-  # # Méthode auxiliaire pour calculer la position
-  # def calculate_position(option, parent_dimension, self_dimension)
-  #   if option.is_a?(String) && option.end_with?('%')
-  #     percent = option.chop.to_f / 100.0
-  #     (parent_dimension - self_dimension) * percent
-  #   elsif option == 0
-  #     # Cas spécial pour centrer l'objet
-  #     (parent_dimension - self_dimension) / 2.0
-  #   else
-  #     option
-  #   end
-  # end
 
   def center(options, attach)
     @center_options = options
@@ -1699,35 +1621,24 @@ class HTML
   end
 
   def record_audio(params)
-
-    #{"media"=>"audio",
-    # "duration"=>2,
-    # "mode"=>"web",
-    # "name"=>"titi",
-    # "type"=>"wav",
-    # "path"=>"../src",
-    # "data"=>{"note"=>"c", "velocity"=>12, "robin"=>3, "author"=>"vie", "tags"=>["voice", "noise", "attack"]}}
     duration = params[:duration] * 1000
-    # JS.eval("recordAudio(#{duration})")
-    JS.eval("recordAudio(#{duration},'#{@id}')")
+    name = params[:name]
+    JS.eval("recordAudio(#{duration},'#{@id}', '#{name}')")
   end
 
   def record_video(params)
     duration = params[:duration] * 1000
-    JS.eval("recordVideo(#{duration},'#{@id}')")
-    # JS.eval("recordVideo(#{duration},'#{@id}')")
-
+    name = params[:name]
+    JS.eval("recordVideo(#{duration},'#{@id}', '#{name}')")
   end
-
-  def video_preview(id, video , audio)
+  def stop_video_preview(id)
+    JS.eval("stopPreview('#{id}')")
+  end
+  def video_preview(id, video, audio)
     JS.eval("create_preview('#{id}','#{video}','#{audio}')")
   end
 
   def stop_media_recorder(id)
-    # alert 'stoping this right now'
-    # alert "stop_media_recorder :#{pid.class}"
-    # JS.eval("stop_recording('atome', 'record')")
-    # JS.eval("writeatomestore(#{id}, 'record', 'stop')")
     JS.eval("writeatomestore('#{id}', 'record', 'stop')")
   end
 

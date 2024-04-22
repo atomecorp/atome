@@ -26,8 +26,7 @@ new({ renderer: :html, method: :terminal, type: :string }) do |value, &bloc|
   html.terminal(id, value)
 end
 
-
-new({renderer: :html, method: :match}) do |params, bloc|
+new({ renderer: :html, method: :match }) do |params, bloc|
   case id
   when :atome || :view
     result = bloc.call
@@ -36,7 +35,6 @@ new({renderer: :html, method: :match}) do |params, bloc|
     html.match(params)
   end
 end
-
 
 new({ renderer: :html, method: :import, type: :blob }) do |_params, bloc|
 
@@ -75,6 +73,7 @@ new({ renderer: :html, method: :import, type: :blob }) do |_params, bloc|
       end
       div_element.appendChild(input_element)
     end
+
     create_file_browser(:options) do |file_content|
       # puts "wasm ===>#{file_content}"
       bloc.call(file_content)
@@ -82,7 +81,6 @@ new({ renderer: :html, method: :import, type: :blob }) do |_params, bloc|
   end
 
 end
-
 
 new({ method: :compute, type: :hash, renderer: :html }) do |params|
   element = JS.global[:document].getElementById(@id.to_s)
@@ -107,44 +105,66 @@ new({ method: :compute, type: :hash, renderer: :html }) do |params|
   @compute[:value] = value_found
 end
 
-# new({ renderer: :html, method: :record }) do |params, user_proc|
-#   duration = params[:duration] ||= 1
-#   media = params[:media] ||= :video
-#   mode = params[:mode] ||= :web # web or native
-#   name = params[:name] ||= :record
-#   path = params[:path] ||= './'
-#   data = params[:data] ||= {}
-#   stop = params[:stop]
-#   if stop
-#     A.message({ action: :stop_recording, data: params }) do |result|
-#       # user_proc.call(result)
-#     end
-#   elsif media == :video
-#     type = params[:type] ||= :mp4
-#     if mode == :native
-#       A.message({ action: :record, data: { type: type, duration: duration, name: name, path: path, media: media, data: data } }) do |result|
-#         user_proc.call(result)
-#       end
-#     else
-#       # html.video_preview('toto')
-#       html.left(777)
-#       alert :poilu
-#       # html.record_video(params)
-#     end
-#
-#   elsif media == :audio
-#     type = params[:type] ||= :wav
-#     if mode == :native
-#       A.message({ action: :record, data: { type: type, duration: duration, name: name, path: path, media: media, data: data } }) do |result|
-#         user_proc.call(result)
-#       end
-#     else
-#       html.record_audio(params)
-#     end
-#   end
-#
-# end
-# new({ renderer: :html, method: :record, type: :string }) do |params|
-#   # html.filter(:blur, "33px")
-#   html.record_video(params)
-# end
+new({ renderer: :html, method: :preview }) do |params, user_proc|
+  if params[:id]
+    id_f = params[:id]
+  else
+    id_f = identity_generator
+  end
+  if params[:stop]
+    html.stop_video_preview(id_f)
+  else
+
+    if params[:media] == :video
+      html.video_preview(id_f, true, false)
+    elsif params[:media] == :audio
+      html.video_preview(id_f, false, true)
+    elsif params[:media] == :all
+      html.video_preview(id_f, true, true)
+    else
+      html.video_preview(id_f, true, true)
+    end
+  end
+
+end
+new({ renderer: :html, method: :record }) do |params, user_proc|
+  duration = params[:duration] ||= 1000000
+  media = params[:media] ||= :video
+  mode = params[:mode] ||= :web # web or native
+  name = params[:name] ||= :record
+  path = params[:path] ||= './'
+  data = params[:data] ||= {}
+  stop = params[:stop]
+  if stop
+    if @video_recorder_type == :web || @audio_recorder_type == :web
+      html.stop_media_recorder(id)
+    elsif @video_recorder_type == :native || @audio_recorder_type == :native
+      A.message({ action: :stop_recording, data: params })
+    end
+
+  elsif media == :video
+    type = params[:type] ||= :mp4
+    if mode == :native
+      @video_recorder_type = :native
+      A.message({ action: :record, data: { type: type, duration: duration, name: name, path: path, media: media, data: data } }) do |result|
+        user_proc.call(result)
+      end
+    else
+      @video_recorder_type = :web
+      html.record_video(params)
+    end
+
+  elsif media == :audio
+    type = params[:type] ||= :wav
+    if mode == :native
+      @audio_recorder_type = :native
+      A.message({ action: :record, data: { type: type, duration: duration, name: name, path: path, media: media, data: data } }) do |result|
+        user_proc.call(result)
+      end
+    else
+      @audio_recorder_type = :web
+      html.record_audio(params)
+    end
+  end
+
+end

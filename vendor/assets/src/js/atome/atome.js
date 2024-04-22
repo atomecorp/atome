@@ -28,7 +28,6 @@ async function readFile(atome_id, filePath) {
     } catch (error) {
         fileContent = error;
     }
-    // alert(fileContent);
     atomeJsToRuby("grab(:" + atome_id + ").callback({ read: '" + fileContent + "' })");
     atomeJsToRuby("grab(:" + atome_id + ").call(:read)");
 }
@@ -59,7 +58,6 @@ async function changeCurrentDirectory(atome_id, newPath) {
     } catch (error) {
         result = error;
     }
-    // alert('result is : ' + result);
 }
 
 
@@ -265,23 +263,8 @@ function loadFeature() {
     }
 }
 
-///test methode
-// function my_opal_js_fct(val){
-//     Opal.eval("my_ruby_meth('opal call ruby with eval: "+val+"')");
-//     Opal.Object.$my_ruby_meth('opal call ruby with method name: '+val);
-// }
-// /////////////////////////////////////////
-// let atomeStore={};
-//
-// function writeatomestore(value) {
-//     atomeStore = value; // Stocke la valeur passée dans atomeStore.
-// }
-//
-// function readatomestore() {
-//     return atomeStore; // Retourne la valeur stockée dans atomeStore.
-// }
-// ////////////////////////////////////////
 
+// temp storage for active recording media
 let atomeStore = {}
 function writeatomestore(primaryKey, secondaryKey, value) {
     if (!atomeStore[primaryKey]) {
@@ -300,9 +283,77 @@ function readatomestore(primaryKey, secondaryKey) {
 }
 
 
+// preview
+function create_preview(preview_id, enableVideo, enableAudio) {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.log("Your browser doesn't support media recording");
+        return;
+    }
+
+    navigator.mediaDevices.getUserMedia({ audio: enableAudio, video: enableVideo })
+        .then(function (stream) {
+            window.mediaStream = stream;
+            console.log("Media stream ready. You can start recording.");
+
+            let previewContainer = document.getElementById(preview_id);
+            if (!previewContainer) {
+                previewContainer = document.createElement('div');
+                previewContainer.id = preview_id;
+
+                const viewDiv = document.getElementById('view');
+                if (viewDiv) {
+                    viewDiv.appendChild(previewContainer);
+                } else {
+                    document.body.appendChild(previewContainer); // Fallback
+                }
+            }
+
+            if (enableVideo == 'true') {
+                const videoElement = document.createElement('video');
+                videoElement.controls = true;
+                videoElement.autoplay = true;
+                videoElement.muted = true;
+                videoElement.srcObject = stream;
+                videoElement.muted = false;
+                videoElement.volume = 1.0;
+                previewContainer.appendChild(videoElement);
+            } else {
+                console.log("Video preview is disabled.");
+            }
+
+            if (enableAudio == 'true') {
+                const audioElement = document.createElement('audio');
+                audioElement.controls = true;
+                audioElement.autoplay = true;
+                audioElement.srcObject = stream;
+                previewContainer.appendChild(audioElement);
+
+            }
+
+        })
+        .catch(function (err) {
+            console.error("Error when accessing media devices: " + err);
+        });
+}
+function stopPreview(preview_id) {
+    const previewContainer = document.getElementById(preview_id);
+    if (previewContainer) {
+        // Arrêter toutes les pistes du flux
+        if (window.mediaStream) {
+            window.mediaStream.getTracks().forEach(track => {
+                track.stop();
+            });
+        }
+
+        // Supprimer la `div` de prévisualisation
+        previewContainer.remove();
+    } else {
+        console.log("Preview container not found.");
+    }
+}
 // Audio recorder
 
-function recordAudio(duration, atome_id) {
+function recordAudio(duration, atome_id,filename) {
     writeatomestore(atome_id, 'record', 'playing')
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -324,18 +375,16 @@ function recordAudio(duration, atome_id) {
 
             let audioChunks = [];
 
-            // Start recording with a timeslice to trigger data available events periodically
+            // Start recording with a time slice to trigger data available events periodically
             mediaRecorder.start(10); // Timeslice of 1000 ms
 
             mediaRecorder.ondataavailable = function (event) {
-                // console.log("Data available from recording: ", event);
                 if (readatomestore(atome_id, 'record') == 'stop'){
                     mediaRecorder.stop();
                 }
+                atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','record', '"+event.data+"', 'audio')");
                 audioChunks.push(event.data);
-                // if (audio_recorder_callback) {
-                //     audio_recorder_callback(event.data);
-                // }
+
             };
 
             setTimeout(() => {
@@ -347,9 +396,13 @@ function recordAudio(duration, atome_id) {
                 const audioUrl = URL.createObjectURL(audioBlob);
 
                 // Functions to handle the recording post processing
+                if (atome_id === 'atome'){
+                    atome_id ='view'
+                }
                 record_content(audioUrl);
-                playRecording(audioBlob);
-                saveRecording(audioUrl);
+                playRecording(audioBlob,filename,atome_id);
+                saveRecording(audioUrl,filename);
+                atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','record','"+audioBlob+"', 'audio')");
 
                 // Ensure all tracks are stopped once recording is finished
                 stream.getTracks().forEach(track => track.stop());
@@ -362,102 +415,8 @@ function recordAudio(duration, atome_id) {
 
 
 // # video recorder
-// function create_preview(preview_id) {
-//     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-//         console.log("Your browser doesn't support media recording");
-//         return;
-//     }
-//
-//     navigator.mediaDevices.getUserMedia({ audio: true, video: true })  // Activation de la vidéo
-//         .then(function (stream) {
-//             window.mediaStream = stream; // Sauvegarde du stream pour utilisation ultérieure
-//             console.log("Media stream ready. You can start recording.");
-//
-//             // Création ou récupération de la div pour le preview
-//             let previewContainer = document.getElementById(preview_id);
-//             if (!previewContainer) {
-//                 previewContainer = document.createElement('div');
-//                 previewContainer.id = preview_id;
-//
-//                 const viewDiv = document.getElementById('view');
-//                 viewDiv.appendChild(previewContainer);
-//                 // document.body.appendChild(previewContainer); // Ajout de la div au body du document
-//             }
-//
-//             // Création de l'élément vidéo pour le preview
-//             const videoElement = document.createElement('video');
-//             videoElement.controls = true;
-//             videoElement.autoplay = true;
-//             videoElement.muted = true; // Mute pour éviter l'écho pendant la prévisualisation
-//             videoElement.srcObject = stream;
-//
-//             // Ajout de l'élément vidéo à la div
-//             previewContainer.appendChild(videoElement);
-//             previewContainer.style.backgroundColor = '#c8e6c9'; // Couleur de fond pour indiquer l'activité
-//         })
-//         .catch(function (err) {
-//             console.error("Error when accessing media devices: " + err);
-//         });
-// }
-function create_preview(preview_id, enableVideo, enableAudio) {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        console.log("Your browser doesn't support media recording");
-        return;
-    }
 
-    navigator.mediaDevices.getUserMedia({ audio: enableAudio, video: enableVideo })
-        .then(function (stream) {
-            window.mediaStream = stream; // Sauvegarde du stream pour utilisation ultérieure
-            console.log("Media stream ready. You can start recording.");
-
-            // Création ou récupération de la div pour le preview
-            let previewContainer = document.getElementById(preview_id);
-            if (!previewContainer) {
-                previewContainer = document.createElement('div');
-                previewContainer.id = preview_id;
-
-                const viewDiv = document.getElementById('view');
-                if (viewDiv) {
-                    viewDiv.appendChild(previewContainer);
-                } else {
-                    document.body.appendChild(previewContainer); // Fallback si 'view' n'existe pas
-                }
-            }
-
-            if (enableVideo == 'true') {
-                // Création de l'élément vidéo pour le preview si vidéo demandée
-                const videoElement = document.createElement('video');
-                videoElement.controls = true;
-                videoElement.autoplay = true;
-                videoElement.muted = true; // Mute pour éviter l'écho pendant la prévisualisation
-                videoElement.srcObject = stream;
-                videoElement.muted = false; // Ajustement pour le contrôle du son
-                videoElement.volume = 1.0; // Réglage du volume au maximum
-                previewContainer.appendChild(videoElement); // Ajout de l'élément vidéo à la div
-            } else {
-                console.log("Video preview is disabled.");
-            }
-
-            if (enableAudio == 'true') {
-                // Création d'un élément audio pour le preview si audio demandé
-                const audioElement = document.createElement('audio');
-                audioElement.controls = true;
-                audioElement.autoplay = true;
-                audioElement.srcObject = stream;
-                previewContainer.appendChild(audioElement); // Ajout de l'élément audio à la div
-
-            }
-
-            previewContainer.style.backgroundColor = '#c8e6c9'; // Couleur de fond pour indiquer l'activité
-        })
-        .catch(function (err) {
-            console.error("Error when accessing media devices: " + err);
-        });
-}
-
-
-
-function recordVideo(duration, atome_id) {
+function recordVideo(duration, atome_id, filename) {
     writeatomestore(atome_id, 'record', 'playing')
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -477,46 +436,15 @@ function recordVideo(duration, atome_id) {
             const mediaRecorder = new MediaRecorder(stream, mimeType ? {mimeType: mimeType} : {});
 
             let mediaChunks = [];
-            // let videoElement = document.querySelector('video#livePreview');
 
-            // Create a video element if it does not exist
-            // if (!videoElement) {
-            //     videoElement = document.createElement('video');
-            //     videoElement.id = 'livePreview';
-            //     videoElement.controls = true;
-            //     videoElement.autoplay = true;
-            //
-            //     const viewDiv = document.getElementById('view');
-            //     viewDiv.appendChild(videoElement);
-            // }
-
-            // Set the source of the video element to the live media stream
-            // videoElement.srcObject = stream;
-
-            // Start recording with a timeslice to trigger data available events periodically
             mediaRecorder.start(10);  // Set timeslice to 1000 milliseconds
-            // atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','record','"+mediaRecorder+"', 'video')");
-          //   updateData(atome_id, 'record', mediaRecorder)
-          //
-          // callback_container('atome', 'record');
 
-            // updateData('atome', 'recorder', mediaRecorder);
-
-            // stop_recording(atome_id, 'recorder')
-
-             // recorder = getMediaRecorder(atome_id, 'recorder');
-            // alert (recorder)
 
             mediaRecorder.ondataavailable = function (event) {
               if (readatomestore(atome_id, 'record') == 'stop'){
                   mediaRecorder.stop();
               }
-                // console.log(atomeStore)
-              // writeatomestore(atome_id, 'record', 'stop')
-                // console.log("Chunk of video data available: ", event);
-                // atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','"+event+"','record', 'video')");
-                // atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','"+event+"','"+mediaChunks+"', 'video')");
-                // mediaChunks.push(event.data);
+                atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','record', '"+event.data+"', 'video')");
                 mediaChunks.push(event.data);
             };
 
@@ -528,12 +456,14 @@ function recordVideo(duration, atome_id) {
             mediaRecorder.onstop = function () {
                 const mediaBlob = new Blob(mediaChunks, {type: mimeType || 'video/mp4'});
                 const mediaUrl = URL.createObjectURL(mediaBlob);
-
+                if (atome_id === 'atome'){
+                    atome_id ='view'
+                }
                 // Functions to handle the recording post-processing
                 record_content(mediaUrl);
-                playRecording(mediaBlob);
-                saveRecording(mediaUrl);
-
+                playRecording(mediaBlob,filename,atome_id);
+                saveRecording(mediaUrl,filename);
+                atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','record', '"+mediaBlob+"', 'video')");
                 // Stop all media tracks and clear the video element source
                 stream.getTracks().forEach(track => track.stop());
                 // videoElement.srcObject = null;
@@ -544,84 +474,27 @@ function recordVideo(duration, atome_id) {
         });
 }
 
-// function recordVideo(duration, atome_id) {
-//     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-//         console.log("Your browser doesn't support video recording");
-//         return;
-//     }
-//
-//     navigator.mediaDevices.getUserMedia({audio: true, video: true})
-//         .then(function (stream) {
-//             let mimeType = [
-//                 'video/webm; codecs=vp9,opus',
-//                 'video/webm; codecs=vp8,opus',
-//                 'video/webm'
-//             ].find(option => MediaRecorder.isTypeSupported(option));
-//
-//             const mediaRecorder = new MediaRecorder(stream, mimeType ? {mimeType: mimeType} : {});
-//             let mediaChunks = [];
-//             let videoElement = document.querySelector('video#livePreview');
-//             if (!videoElement) {
-//                 videoElement = document.createElement('video');
-//                 videoElement.id = 'livePreview';
-//                 videoElement.controls = true;
-//                 videoElement.autoplay = true;
-//
-//                 const viewDiv = document.getElementById('view') || document.body;
-//                 viewDiv.appendChild(videoElement);
-//             }
-//
-//             videoElement.srcObject = stream;
-//             mediaRecorder.start(10);
-//
-//             mediaRecorder.ondataavailable = function (event) {
-//                 mediaChunks.push(event.data);
-//             };
-//
-//             setTimeout(() => {
-//                 mediaRecorder.stop();
-//             }, duration);
-//
-//             mediaRecorder.onstop = function () {
-//                 const mediaBlob = new Blob(mediaChunks, {type: mimeType || 'video/mp4'});
-//                 const mediaUrl = URL.createObjectURL(mediaBlob);
-//
-//                 record_content(mediaUrl);
-//                 playRecording(mediaBlob);
-//                 saveRecording(mediaUrl);
-//
-//                 stream.getTracks().forEach(track => track.stop());
-//                 // videoElement.srcObject = null;
-//             };
-//
-//
-//
-//         })
-//         .catch(function (err) {
-//             console.error("Error when accessing peripherals: " + err);
-//         });
-// }
-
-
 
 let mediaUrlGlobal = "";
 
-function saveRecording(url) {
+function saveRecording(url,filename) {
     mediaUrlGlobal = url;
     console.log("URL recorded: " + url);
     const downloadLink = document.createElement('a');
     downloadLink.href = url;
-    downloadLink.download = "filename.mp4";
+    downloadLink.download = filename+".mp4";
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
 }
 
-function playRecording(blob) {
+function playRecording(blob,filename, parent) {
+
     const mediaElement = document.createElement('video');
     mediaElement.src = URL.createObjectURL(blob);
     mediaElement.controls = true; // add control to media element
-    const viewDiv = document.getElementById('view');
+    mediaElement.id = filename;
+    const viewDiv = document.getElementById(parent);
     viewDiv.appendChild(mediaElement);
 
 }
@@ -630,5 +503,4 @@ function record_content(blob) {
     console.log("recorded blob content  :", blob);
 }
 
-// recordVideo(5000);
 

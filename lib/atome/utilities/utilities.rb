@@ -346,9 +346,17 @@ class Atome
 
   def js_callback(id, particle, value,sub=nil )
     current_atome= grab(id)
-    # content_found= current_atome.instance_variable_get("@#{particle}_code")
-   # instance_exec(value, &content_found) if content_found.is_a?(Proc)
-    puts "params to be exec #{id}, #{particle}, #{value}, #{sub}"
+   #  # alert current_atome.instance_variable_get('@record_code')
+    proc_found= current_atome.instance_variable_get("@#{particle}_code")[particle.to_sym]
+    # proc_found= current_atome.instance_variable_get("@record_code")[:record]
+   #  # alert particle.class
+   #  # alert proc_found.class
+    # proc_found.call
+   instance_exec(value, &proc_found) if proc_found.is_a?(Proc)
+   # #  # puts "params to be exec #{id}, #{particle}, #{value}, #{sub}"
+   #  alpha= grab(:the_big_box)
+   #  proc_found= alpha.instance_variable_get("@record_code")[:record]
+    # proc_found.call
 
   end
 
