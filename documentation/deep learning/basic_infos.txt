@@ -183,17 +183,17 @@ s.shell_code[:shell]
 
 Callback from javascript :
 In : vendor/assets/src/js/specific/ there’s two methods used to handle callback
-The easier method to send the callback to ruby is to use rubyVMCallback like this :
+The easier method to send the callback to ruby is to use atomeJsToRuby like this :
 
 With javascript you can  call the internal ‘automatically created ‘ method : termninal_callback and send them the data getter from javascript like this :
-rubyVMCallback(‘particle_callback', "('" + js_data + "')")
+atomeJsToRuby(‘particle_callback', "('" + js_data + "')")
 Exemple with terminal particle:
-rubyVMCallback('termninal_callback', "('" + cmd_result + "')")
+atomeJsToRuby('termninal_callback', "('" + cmd_result + "')")
 Or call the callback like this :
-rubyVMCallback( " instance_variable_set(‘@terminal_code’, "’" +data+  "’" )")
-rubyVMCallback("callback(:terminal) ")
+atomeJsToRuby( " instance_variable_set(‘@terminal_code’, "’" +data+  "’" )")
+atomeJsToRuby("callback(:terminal) ")
 
-One is called wasm.js directory and one called opal.js both have the same method  :  rubyVMCallback
+One is called wasm.js directory and one called opal.js both have the same method  :  atomeJsToRuby
 
 On the js side there’s a special method call  ‘callback’ in atome.js file , this method handle all the needed code to create a callback, this method is call like this:
 callback(particle, value)

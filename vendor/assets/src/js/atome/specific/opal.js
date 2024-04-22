@@ -1,4 +1,4 @@
-function rubyVMCallback(rubycode) {
+function atomeJsToRuby(rubycode) {
     Opal.eval(rubycode);
 }
 
@@ -68,7 +68,7 @@ const communication = {
 
             // now new can exec user code : loadApplicationJs in index.html
             loadApplicationJs();
-            // rubyVMCallback("A.user_login");
+            // atomeJsToRuby("A.user_login");
         };
         this.websocket.onmessage = function (event) {
             Opal.eval("Atome.server_receiver(" + event.data + ")");

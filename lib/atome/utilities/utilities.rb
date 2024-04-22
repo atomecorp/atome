@@ -344,6 +344,15 @@ class Atome
     send("#{element}_callback", return_params)
   end
 
+  def js_callback(id, particle, value,sub=nil )
+    current_atome= grab(id)
+    # content_found= current_atome.instance_variable_get("@#{particle}_code")
+   # instance_exec(value, &content_found) if content_found.is_a?(Proc)
+    puts "params to be exec #{id}, #{particle}, #{value}, #{sub}"
+
+  end
+
+
   # def callback(data)
   #   @callback[data.keys[0]] = data[data.keys[0]]
   # end

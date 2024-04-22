@@ -90,8 +90,6 @@ class Atome
     #     # instance_exec(p_found, &bloc) if bloc.is_a?(Proc)
     #   end
     # end
-
-
   end
 
   def js

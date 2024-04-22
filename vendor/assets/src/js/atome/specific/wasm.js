@@ -1,4 +1,4 @@
-function rubyVMCallback(rubycode) {
+function atomeJsToRuby(rubycode) {
     rubyVM.eval(rubycode);
 }
 
@@ -8,7 +8,7 @@ function controller_message(msg) {
 
 // window.addEventListener('load', function () {
 //     // Opal.Object.$atome_genesis();
-//     rubyVMCallback('atome_genesis');
+//     atomeJsToRuby('atome_genesis');
 // })
 
 const communication = {

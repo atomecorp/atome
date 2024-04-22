@@ -107,4 +107,44 @@ new({ method: :compute, type: :hash, renderer: :html }) do |params|
   @compute[:value] = value_found
 end
 
-
+# new({ renderer: :html, method: :record }) do |params, user_proc|
+#   duration = params[:duration] ||= 1
+#   media = params[:media] ||= :video
+#   mode = params[:mode] ||= :web # web or native
+#   name = params[:name] ||= :record
+#   path = params[:path] ||= './'
+#   data = params[:data] ||= {}
+#   stop = params[:stop]
+#   if stop
+#     A.message({ action: :stop_recording, data: params }) do |result|
+#       # user_proc.call(result)
+#     end
+#   elsif media == :video
+#     type = params[:type] ||= :mp4
+#     if mode == :native
+#       A.message({ action: :record, data: { type: type, duration: duration, name: name, path: path, media: media, data: data } }) do |result|
+#         user_proc.call(result)
+#       end
+#     else
+#       # html.video_preview('toto')
+#       html.left(777)
+#       alert :poilu
+#       # html.record_video(params)
+#     end
+#
+#   elsif media == :audio
+#     type = params[:type] ||= :wav
+#     if mode == :native
+#       A.message({ action: :record, data: { type: type, duration: duration, name: name, path: path, media: media, data: data } }) do |result|
+#         user_proc.call(result)
+#       end
+#     else
+#       html.record_audio(params)
+#     end
+#   end
+#
+# end
+# new({ renderer: :html, method: :record, type: :string }) do |params|
+#   # html.filter(:blur, "33px")
+#   html.record_video(params)
+# end

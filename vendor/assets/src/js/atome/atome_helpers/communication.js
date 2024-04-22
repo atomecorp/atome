@@ -8,16 +8,16 @@
 //     websocket = new WebSocket(address);
 //
 //     websocket.onopen = function (event) {
-//         rubyVMCallback("puts 'Connected to WebSocket'")
+//         atomeJsToRuby("puts 'Connected to WebSocket'")
 //
 //     };
 //
 //     websocket.onmessage = function (event) {
-//         // rubyVMCallback("puts 'object ruby callback : " + event.data + "'")
+//         // atomeJsToRuby("puts 'object ruby callback : " + event.data + "'")
 //     };
 //
 //     websocket.onclose = function (event) {
-//         rubyVMCallback("puts 'WebSocket closed'")
+//         atomeJsToRuby("puts 'WebSocket closed'")
 //     };
 //
 //     websocket.onerror = function (event) {
@@ -31,5 +31,5 @@
 
 // function controller_message(msg) {
 //     // let json_msgs = JSON.parse(msg);
-//     rubyVMCallback("A.receptor("+msg+")")
+//     atomeJsToRuby("A.receptor("+msg+")")
 // }

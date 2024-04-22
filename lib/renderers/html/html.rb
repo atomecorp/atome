@@ -28,10 +28,6 @@ class HTML
 
   end
 
-
-
-
-
   def object
     @element
   end
@@ -1289,12 +1285,12 @@ class HTML
             to: #{animation_properties[:to]},
             duration: #{animation_properties[:duration]},
             onUpdate: function(v) {
-      rubyVMCallback("puts x= "+v)
-      rubyVMCallback("grab('#{@id}').left("+v+")")
+      atomeJsToRuby("puts x= "+v)
+      atomeJsToRuby("grab('#{@id}').left("+v+")")
             },
             onComplete: function() {
               window.currentAnimation = null;
-      rubyVMCallback("puts :complete")
+      atomeJsToRuby("puts :complete")
             }
           });
     JS
@@ -1702,10 +1698,42 @@ class HTML
     end
   end
 
+  def record_audio(params)
+
+    #{"media"=>"audio",
+    # "duration"=>2,
+    # "mode"=>"web",
+    # "name"=>"titi",
+    # "type"=>"wav",
+    # "path"=>"../src",
+    # "data"=>{"note"=>"c", "velocity"=>12, "robin"=>3, "author"=>"vie", "tags"=>["voice", "noise", "attack"]}}
+    duration = params[:duration] * 1000
+    # JS.eval("recordAudio(#{duration})")
+    JS.eval("recordAudio(#{duration},'#{@id}')")
+  end
+
+  def record_video(params)
+    duration = params[:duration] * 1000
+    JS.eval("recordVideo(#{duration},'#{@id}')")
+    # JS.eval("recordVideo(#{duration},'#{@id}')")
+
+  end
+
+  def video_preview(id, video , audio)
+    JS.eval("create_preview('#{id}','#{video}','#{audio}')")
+  end
+
+  def stop_media_recorder(id)
+    # alert 'stoping this right now'
+    # alert "stop_media_recorder :#{pid.class}"
+    # JS.eval("stop_recording('atome', 'record')")
+    # JS.eval("writeatomestore(#{id}, 'record', 'stop')")
+    JS.eval("writeatomestore('#{id}', 'record', 'stop')")
+  end
+
   private
 
   def apply_centering(options, parent)
-    # Centre sur l'axe X
     if options[:x]
       x_position = calculate_position(options[:x], parent.to_px(:width), @original_atome.to_px(:width))
       @original_atome.left(x_position)

@@ -241,7 +241,7 @@ class Object
            }
 
            function myAction(counter) {
-               rubyVMCallback("repeat_callback(#{repeat_id}, "+counter+")")
+               atomeJsToRuby("repeat_callback(#{repeat_id}, "+counter+")")
            }
 
            const intervalId = repeat(myAction, #{delay} * 1000, #{repeat}); 

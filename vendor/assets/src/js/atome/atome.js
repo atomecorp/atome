@@ -14,8 +14,8 @@ async function callback(callback_method, cmd) {
     } catch (error) {
         cmd_result = error;
     }
-    rubyVMCallback("Atome.instance_variable_set('" + instance_variable_to_set + "','" + cmd_result + "')")
-    rubyVMCallback(ruby_callback_method)
+    atomeJsToRuby("Atome.instance_variable_set('" + instance_variable_to_set + "','" + cmd_result + "')")
+    atomeJsToRuby(ruby_callback_method)
 }
 
 //read file
@@ -29,8 +29,8 @@ async function readFile(atome_id, filePath) {
         fileContent = error;
     }
     // alert(fileContent);
-    rubyVMCallback("grab(:" + atome_id + ").callback({ read: '" + fileContent + "' })");
-    rubyVMCallback("grab(:" + atome_id + ").call(:read)");
+    atomeJsToRuby("grab(:" + atome_id + ").callback({ read: '" + fileContent + "' })");
+    atomeJsToRuby("grab(:" + atome_id + ").call(:read)");
 }
 
 
@@ -44,8 +44,8 @@ async function browseFile(atome_id, directoryPath) {
     } catch (error) {
         directoryContent = error;
     }
-    rubyVMCallback("grab(:" + atome_id + ").callback({ browse: '" + directoryContent + "' })");
-    rubyVMCallback("grab(:" + atome_id + ").call(:browse)");
+    atomeJsToRuby("grab(:" + atome_id + ").callback({ browse: '" + directoryContent + "' })");
+    atomeJsToRuby("grab(:" + atome_id + ").call(:browse)");
 }
 
 
@@ -59,7 +59,7 @@ async function changeCurrentDirectory(atome_id, newPath) {
     } catch (error) {
         result = error;
     }
-    alert('result is : ' + result);
+    // alert('result is : ' + result);
 }
 
 
@@ -77,8 +77,8 @@ async function terminal(atome_id, cmd) {
     }
     cmd_result = cmd_result.replace(/\r?\n/g, "");
 
-    rubyVMCallback("grab(:" + atome_id + ").callback({ terminal: '" + cmd_result + "' })");
-    rubyVMCallback("grab(:" + atome_id + ").call(:terminal)");
+    atomeJsToRuby("grab(:" + atome_id + ").callback({ terminal: '" + cmd_result + "' })");
+    atomeJsToRuby("grab(:" + atome_id + ").call(:terminal)");
 
 }
 
@@ -87,8 +87,8 @@ function distant_terminal(id, cmd) {
     let myd_data_test = 'Terminal particle will soon be implemented when using  a non native mode\nYou can switch to OSX to test';
     let call_back_to_send = `grab(:${id}).callback({terminal: "${myd_data_test}"})`
     let call = `grab(:${id}).call(:terminal)`
-    rubyVMCallback(call_back_to_send)
-    rubyVMCallback(call)
+    atomeJsToRuby(call_back_to_send)
+    atomeJsToRuby(call)
 }
 
 
@@ -165,7 +165,7 @@ function createSvgElement(tagName, attributes) {
 //         reader.onload = function(event) {
 //             var content = event.target.result;
 //             var sanitizedContent = sanitizeString(content);
-//             rubyVMCallback("input_callback('"+sanitizedContent+"')");
+//             atomeJsToRuby("input_callback('"+sanitizedContent+"')");
 //         };
 //
 //         reader.readAsText(file);
@@ -220,35 +220,6 @@ function fileForOpal(parent, bloc) {
 }
 
 
-// function loadFeature() {
-//     var script = document.createElement('script');
-//     script.src = 'js/molecules/web.js?' + new Date().getTime();
-//     // script.onload = function () {
-//     //     // Code to use loaded features
-//     // };
-//    // puts to solve native (osx) compatiblity use fetch
-//
-//     document.head.appendChild(script);
-// }
-
-// function loadFeature() {
-//     fetch('js/molecules/web.js')
-//         .then(response => {
-//             if (response.ok) {
-//                 return response.text();
-//             }
-//             throw new Error('Le chargement du fichier a échoué');
-//         })
-//         .then(data => {
-//             console.log(data); // Log le contenu du fichier web.js
-//             // Vous pouvez ici utiliser le contenu du fichier comme nécessaire
-//         })
-//         .catch(error => {
-//             console.error('Erreur lors du chargement du fichier:', error);
-//         });
-// }
-
-
 function loadFeature() {
     if (NativeMode) {
         // fetch('js/molecules/web.js')
@@ -299,69 +270,48 @@ function loadFeature() {
 //     Opal.eval("my_ruby_meth('opal call ruby with eval: "+val+"')");
 //     Opal.Object.$my_ruby_meth('opal call ruby with method name: '+val);
 // }
-
-
-// Fonction pour demander l'accès au microphone et démarrer l'enregistrement
-// function startRecording() {
-//     alert('rec')
-//     // // Vérifier si le navigateur supporte les fonctionnalités requises
-//     // if (!navigator.mediaDevices || !window.MediaRecorder) {
-//     //     alert("Votre navigateur ne supporte pas l'enregistrement audio.");
-//     //     return;
-//     // }
-//     //
-//     // // Demander l'accès au microphone
-//     // navigator.mediaDevices.getUserMedia({ audio: true })
-//     //     .then(stream => {
-//     //         const mediaRecorder = new MediaRecorder(stream);
-//     //         let audioChunks = [];
-//     //
-//     //         // Collecter les données d'audio
-//     //         mediaRecorder.addEventListener("dataavailable", event => {
-//     //             audioChunks.push(event.data);
-//     //         });
-//     //
-//     //         // Lorsque l'enregistrement est arrêté, traiter les données audio
-//     //         mediaRecorder.addEventListener("stop", () => {
-//     //             const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-//     //             const audioUrl = URL.createObjectURL(audioBlob);
-//     //             const downloadLink = document.createElement('a');
-//     //             downloadLink.href = audioUrl;
-//     //             downloadLink.download = 'recorded_audio.wav';
-//     //             downloadLink.textContent = 'Télécharger l\'audio';
-//     //             downloadLink.click();
-//     //
-//     //             // Nettoyer
-//     //             audioChunks = [];
-//     //             stream.getTracks().forEach(track => track.stop()); // Arrêter le flux
-//     //         });
-//     //
-//     //         // Démarrer l'enregistrement
-//     //         mediaRecorder.start();
-//     //
-//     //         // Arrêter l'enregistrement après 5 secondes
-//     //         setTimeout(() => {
-//     //             mediaRecorder.stop();
-//     //         }, 5000); // Changez cette durée selon le besoin
-//     //     })
-//     //     .catch(error => {
-//     //         console.error("Erreur lors de l'accès au microphone: ", error);
-//     //         alert("Impossible d'accéder au microphone. Veuillez réessayer.");
-//     //     });
+// /////////////////////////////////////////
+// let atomeStore={};
+//
+// function writeatomestore(value) {
+//     atomeStore = value; // Stocke la valeur passée dans atomeStore.
 // }
+//
+// function readatomestore() {
+//     return atomeStore; // Retourne la valeur stockée dans atomeStore.
+// }
+// ////////////////////////////////////////
 
-// Appel de la fonction
+let atomeStore = {}
+function writeatomestore(primaryKey, secondaryKey, value) {
+    if (!atomeStore[primaryKey]) {
+        atomeStore[primaryKey] = {};
+    }
+    atomeStore[primaryKey][secondaryKey] = value;
+}
+
+function readatomestore(primaryKey, secondaryKey) {
+    if (atomeStore.hasOwnProperty(primaryKey) && atomeStore[primaryKey].hasOwnProperty(secondaryKey)) {
+        return atomeStore[primaryKey][secondaryKey];
+    } else {
+        console.error("MediaRecorder not found");
+        return null;
+    }
+}
+
 
 // Audio recorder
 
-function recordAudio(duration) {
+function recordAudio(duration, atome_id) {
+    writeatomestore(atome_id, 'record', 'playing')
+
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        console.log("you browser doesn't support audio recording");
+        console.log("Your browser doesn't support audio recording");
         return;
     }
 
     navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(function(stream) {
+        .then(function (stream) {
             const audioOptions = [
                 'audio/webm',
                 'audio/webm;codecs=opus',
@@ -374,72 +324,149 @@ function recordAudio(duration) {
 
             let audioChunks = [];
 
-            mediaRecorder.start();
+            // Start recording with a timeslice to trigger data available events periodically
+            mediaRecorder.start(10); // Timeslice of 1000 ms
 
-            mediaRecorder.ondataavailable = function(event) {
+            mediaRecorder.ondataavailable = function (event) {
+                // console.log("Data available from recording: ", event);
+                if (readatomestore(atome_id, 'record') == 'stop'){
+                    mediaRecorder.stop();
+                }
                 audioChunks.push(event.data);
+                // if (audio_recorder_callback) {
+                //     audio_recorder_callback(event.data);
+                // }
             };
 
             setTimeout(() => {
                 mediaRecorder.stop();
             }, duration);
 
-            mediaRecorder.onstop = function() {
+            mediaRecorder.onstop = function () {
                 const audioBlob = new Blob(audioChunks, { type: mimeType || 'audio/mp4' });
                 const audioUrl = URL.createObjectURL(audioBlob);
 
+                // Functions to handle the recording post processing
                 record_content(audioUrl);
                 playRecording(audioBlob);
                 saveRecording(audioUrl);
 
+                // Ensure all tracks are stopped once recording is finished
                 stream.getTracks().forEach(track => track.stop());
             };
         })
-        .catch(function(err) {
-            console.error("error when accessing microphone: " + err);
+        .catch(function (err) {
+            console.error("Error when accessing microphone: " + err);
         });
 }
 
-// let audioUrlGlobal = "";
-//
-// function saveRecording(url) {
-//     audioUrlGlobal = url;
-//     console.log("URL enregistrée: " + url);
-//     const downloadLink = document.createElement('a');
-//     downloadLink.href = url;
-//     downloadLink.download = "enregistrement_audio.mp4";
-//     document.body.appendChild(downloadLink);
-//     downloadLink.click();
-//     document.body.removeChild(downloadLink);
-// }
-//
-// function playRecording(blob) {
-//     console.log("Tentative de jouer l'enregistrement directement du blob");
-//     const audio = new Audio(URL.createObjectURL(blob));
-//     audio.play().then(() => {
-//         console.log("Lecture commencée");
-//     }).catch(err => {
-//         console.error("Erreur lors de la lecture: ", err);
-//     });
-// }
-//
-// function record_content(blob) {
-//     console.log("Contenu de l'enregistrement audio (Blob) :", blob);
-// }
-
-// recordAudio(5000);
-
-
 
 // # video recorder
-function recordVideo(duration) {
+// function create_preview(preview_id) {
+//     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+//         console.log("Your browser doesn't support media recording");
+//         return;
+//     }
+//
+//     navigator.mediaDevices.getUserMedia({ audio: true, video: true })  // Activation de la vidéo
+//         .then(function (stream) {
+//             window.mediaStream = stream; // Sauvegarde du stream pour utilisation ultérieure
+//             console.log("Media stream ready. You can start recording.");
+//
+//             // Création ou récupération de la div pour le preview
+//             let previewContainer = document.getElementById(preview_id);
+//             if (!previewContainer) {
+//                 previewContainer = document.createElement('div');
+//                 previewContainer.id = preview_id;
+//
+//                 const viewDiv = document.getElementById('view');
+//                 viewDiv.appendChild(previewContainer);
+//                 // document.body.appendChild(previewContainer); // Ajout de la div au body du document
+//             }
+//
+//             // Création de l'élément vidéo pour le preview
+//             const videoElement = document.createElement('video');
+//             videoElement.controls = true;
+//             videoElement.autoplay = true;
+//             videoElement.muted = true; // Mute pour éviter l'écho pendant la prévisualisation
+//             videoElement.srcObject = stream;
+//
+//             // Ajout de l'élément vidéo à la div
+//             previewContainer.appendChild(videoElement);
+//             previewContainer.style.backgroundColor = '#c8e6c9'; // Couleur de fond pour indiquer l'activité
+//         })
+//         .catch(function (err) {
+//             console.error("Error when accessing media devices: " + err);
+//         });
+// }
+function create_preview(preview_id, enableVideo, enableAudio) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        console.log("you browser doesn't support video recording");
+        console.log("Your browser doesn't support media recording");
         return;
     }
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-        .then(function(stream) {
+    navigator.mediaDevices.getUserMedia({ audio: enableAudio, video: enableVideo })
+        .then(function (stream) {
+            window.mediaStream = stream; // Sauvegarde du stream pour utilisation ultérieure
+            console.log("Media stream ready. You can start recording.");
+
+            // Création ou récupération de la div pour le preview
+            let previewContainer = document.getElementById(preview_id);
+            if (!previewContainer) {
+                previewContainer = document.createElement('div');
+                previewContainer.id = preview_id;
+
+                const viewDiv = document.getElementById('view');
+                if (viewDiv) {
+                    viewDiv.appendChild(previewContainer);
+                } else {
+                    document.body.appendChild(previewContainer); // Fallback si 'view' n'existe pas
+                }
+            }
+
+            if (enableVideo == 'true') {
+                // Création de l'élément vidéo pour le preview si vidéo demandée
+                const videoElement = document.createElement('video');
+                videoElement.controls = true;
+                videoElement.autoplay = true;
+                videoElement.muted = true; // Mute pour éviter l'écho pendant la prévisualisation
+                videoElement.srcObject = stream;
+                videoElement.muted = false; // Ajustement pour le contrôle du son
+                videoElement.volume = 1.0; // Réglage du volume au maximum
+                previewContainer.appendChild(videoElement); // Ajout de l'élément vidéo à la div
+            } else {
+                console.log("Video preview is disabled.");
+            }
+
+            if (enableAudio == 'true') {
+                // Création d'un élément audio pour le preview si audio demandé
+                const audioElement = document.createElement('audio');
+                audioElement.controls = true;
+                audioElement.autoplay = true;
+                audioElement.srcObject = stream;
+                previewContainer.appendChild(audioElement); // Ajout de l'élément audio à la div
+
+            }
+
+            previewContainer.style.backgroundColor = '#c8e6c9'; // Couleur de fond pour indiquer l'activité
+        })
+        .catch(function (err) {
+            console.error("Error when accessing media devices: " + err);
+        });
+}
+
+
+
+function recordVideo(duration, atome_id) {
+    writeatomestore(atome_id, 'record', 'playing')
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.log("Your browser doesn't support video recording");
+        return;
+    }
+
+    navigator.mediaDevices.getUserMedia({audio: true, video: true})
+        .then(function (stream) {
             const mediaOptions = [
                 'video/webm; codecs=vp9,opus',
                 'video/webm; codecs=vp8,opus',
@@ -447,49 +474,134 @@ function recordVideo(duration) {
             ];
 
             let mimeType = mediaOptions.find(option => MediaRecorder.isTypeSupported(option));
-            const mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType: mimeType } : {});
+            const mediaRecorder = new MediaRecorder(stream, mimeType ? {mimeType: mimeType} : {});
 
             let mediaChunks = [];
-            let videoElement = document.querySelector('video#livePreview');
+            // let videoElement = document.querySelector('video#livePreview');
 
-            if (!videoElement) {
-                videoElement = document.createElement('video');
-                videoElement.id = 'livePreview';
-                videoElement.controls = true;
-                videoElement.autoplay = true;
+            // Create a video element if it does not exist
+            // if (!videoElement) {
+            //     videoElement = document.createElement('video');
+            //     videoElement.id = 'livePreview';
+            //     videoElement.controls = true;
+            //     videoElement.autoplay = true;
+            //
+            //     const viewDiv = document.getElementById('view');
+            //     viewDiv.appendChild(videoElement);
+            // }
 
-                const viewDiv = document.getElementById('view');
-                viewDiv.appendChild(videoElement);
-            }
+            // Set the source of the video element to the live media stream
+            // videoElement.srcObject = stream;
 
-            videoElement.srcObject = stream;
+            // Start recording with a timeslice to trigger data available events periodically
+            mediaRecorder.start(10);  // Set timeslice to 1000 milliseconds
+            // atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','record','"+mediaRecorder+"', 'video')");
+          //   updateData(atome_id, 'record', mediaRecorder)
+          //
+          // callback_container('atome', 'record');
 
-            mediaRecorder.start();
+            // updateData('atome', 'recorder', mediaRecorder);
 
-            mediaRecorder.ondataavailable = function(event) {
+            // stop_recording(atome_id, 'recorder')
+
+             // recorder = getMediaRecorder(atome_id, 'recorder');
+            // alert (recorder)
+
+            mediaRecorder.ondataavailable = function (event) {
+              if (readatomestore(atome_id, 'record') == 'stop'){
+                  mediaRecorder.stop();
+              }
+                // console.log(atomeStore)
+              // writeatomestore(atome_id, 'record', 'stop')
+                // console.log("Chunk of video data available: ", event);
+                // atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','"+event+"','record', 'video')");
+                // atomeJsToRuby("grab(:" + atome_id + ").js_callback('"+atome_id+"','"+event+"','"+mediaChunks+"', 'video')");
+                // mediaChunks.push(event.data);
                 mediaChunks.push(event.data);
             };
 
+            // Stop recording after the specified duration
             setTimeout(() => {
                 mediaRecorder.stop();
             }, duration);
 
-            mediaRecorder.onstop = function() {
-                const mediaBlob = new Blob(mediaChunks, { type: mimeType || 'video/mp4' });
+            mediaRecorder.onstop = function () {
+                const mediaBlob = new Blob(mediaChunks, {type: mimeType || 'video/mp4'});
                 const mediaUrl = URL.createObjectURL(mediaBlob);
 
+                // Functions to handle the recording post-processing
                 record_content(mediaUrl);
                 playRecording(mediaBlob);
                 saveRecording(mediaUrl);
 
+                // Stop all media tracks and clear the video element source
                 stream.getTracks().forEach(track => track.stop());
-                videoElement.srcObject = null;
+                // videoElement.srcObject = null;
             };
         })
-        .catch(function(err) {
-            console.error("error when accessing peripherals: " + err);
+        .catch(function (err) {
+            console.error("Error when accessing peripherals: " + err);
         });
 }
+
+// function recordVideo(duration, atome_id) {
+//     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+//         console.log("Your browser doesn't support video recording");
+//         return;
+//     }
+//
+//     navigator.mediaDevices.getUserMedia({audio: true, video: true})
+//         .then(function (stream) {
+//             let mimeType = [
+//                 'video/webm; codecs=vp9,opus',
+//                 'video/webm; codecs=vp8,opus',
+//                 'video/webm'
+//             ].find(option => MediaRecorder.isTypeSupported(option));
+//
+//             const mediaRecorder = new MediaRecorder(stream, mimeType ? {mimeType: mimeType} : {});
+//             let mediaChunks = [];
+//             let videoElement = document.querySelector('video#livePreview');
+//             if (!videoElement) {
+//                 videoElement = document.createElement('video');
+//                 videoElement.id = 'livePreview';
+//                 videoElement.controls = true;
+//                 videoElement.autoplay = true;
+//
+//                 const viewDiv = document.getElementById('view') || document.body;
+//                 viewDiv.appendChild(videoElement);
+//             }
+//
+//             videoElement.srcObject = stream;
+//             mediaRecorder.start(10);
+//
+//             mediaRecorder.ondataavailable = function (event) {
+//                 mediaChunks.push(event.data);
+//             };
+//
+//             setTimeout(() => {
+//                 mediaRecorder.stop();
+//             }, duration);
+//
+//             mediaRecorder.onstop = function () {
+//                 const mediaBlob = new Blob(mediaChunks, {type: mimeType || 'video/mp4'});
+//                 const mediaUrl = URL.createObjectURL(mediaBlob);
+//
+//                 record_content(mediaUrl);
+//                 playRecording(mediaBlob);
+//                 saveRecording(mediaUrl);
+//
+//                 stream.getTracks().forEach(track => track.stop());
+//                 // videoElement.srcObject = null;
+//             };
+//
+//
+//
+//         })
+//         .catch(function (err) {
+//             console.error("Error when accessing peripherals: " + err);
+//         });
+// }
+
 
 
 let mediaUrlGlobal = "";
@@ -509,14 +621,9 @@ function playRecording(blob) {
     const mediaElement = document.createElement('video');
     mediaElement.src = URL.createObjectURL(blob);
     mediaElement.controls = true; // add control to media element
-
-
     const viewDiv = document.getElementById('view');
     viewDiv.appendChild(mediaElement);
-    // mediaElement.play().then(() => {
-    // }).catch(err => {
-    //     console.error("Error when reading: ", err);
-    // });
+
 }
 
 function record_content(blob) {
