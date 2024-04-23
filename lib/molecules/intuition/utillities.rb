@@ -309,9 +309,7 @@ new(molecule: :button) do |params, bloc|
   button
 end
 
-# new(molecule: :matrix) do |id, rows, columns, spacing, size|
 new(molecule: :matrix) do |params, &bloc|
-  # alert self.id
   id = params[:id]
   rows = params[:rows]
   columns = params[:columns]
@@ -320,6 +318,7 @@ new(molecule: :matrix) do |params, &bloc|
 
   parent_found = self
   current_matrix = group({ id: id })
+
   current_matrix.data({ spacing: spacing, size: size })
   matrix_cells = []
   total_spacing_x = spacing * (rows + 1)
@@ -331,22 +330,29 @@ new(molecule: :matrix) do |params, &bloc|
                      end
   view_width = parent_found.to_px(:width)
   view_height = parent_found.to_px(:height)
+  matrix_back = box({ id: "#{id}_background", width: size, height: size, color: { alpha: 0 } })
+
   if view_width > view_height
-    available_width = (view_height * size_coefficient) - total_spacing_x
-    available_height = (view_height * size_coefficient) - total_spacing_y
+    full_size=view_height * size_coefficient
+    available_width = full_size - total_spacing_x
+    available_height = full_size - total_spacing_y
+    matrix_back.width(full_size)
+    matrix_back.height(full_size)
   else
-    available_width = (view_width * size_coefficient) - total_spacing_x
-    available_height = (view_width * size_coefficient) - total_spacing_y
+    full_size=view_width * size_coefficient
+    available_width = full_size - total_spacing_x
+    available_height = full_size - total_spacing_y
+    matrix_back.width(full_size)
+    matrix_back.height(full_size)
   end
   box_width = available_width / rows
   box_height = available_height / columns
-  background = box({ id: "#{id}_background", width: 666, height: 666, color: { alpha: 0 } })
 
   columns.times do |y|
     rows.times do |x|
       id_generated = "#{id}_#{x}_#{y}"
       matrix_cells << id_generated
-      new_box = background.box({ id: id_generated })
+      new_box = matrix_back.box({ id: id_generated })
       new_box.width(box_width)
       new_box.height(box_height)
       new_box.left((box_width + spacing) * x + spacing)
