@@ -200,8 +200,12 @@ class Genesis
     def new_molecule(molecule, &method_proc)
 
       Molecule.define_method molecule do |params, &user_proc|
-        instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-
+        object_to_return = instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+        # new_objet = Object.new
+        # # we store the molecule into an instance variable in a basic ruby object
+        # new_objet.instance_variable_set(:@molecule, object_to_return)
+        # new_objet
+        object_to_return
       end
 
       # # the method define below is the slowest but params are analysed and sanitized

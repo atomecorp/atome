@@ -54,6 +54,13 @@ module ObjectExtension
       molecule=params[:molecule]
       Genesis.build_molecule(molecule, &bloc)
       Universe.add_to_molecule_list(molecule)
+
+    # elsif params.key?(:applicaton)
+    #   alert params
+
+      # molecule=params[:molecule]
+      # Genesis.build_molecule(molecule, &bloc)
+      # Universe.add_to_molecule_list(molecule)
     elsif params.key?(:tool)
       # we only store tools definition in the universe so it can be instanced using "A.build_tool" method when needed
 

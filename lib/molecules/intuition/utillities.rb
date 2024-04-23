@@ -357,3 +357,50 @@ new(molecule: :matrix) do |params, &bloc|
     current_matrix
   # end
 end
+new(molecule: :page) do |params,&bloc|
+
+  b=box({color: :red, left: 99, drag: true})
+  b.text(params)
+end
+
+new(molecule: :application) do |params,&bloc|
+
+
+main_page=box({drag: true, width: :auto, height: :auto, top: 0, bottom: 0, left: 0, right: 0})
+
+
+main_page
+
+
+
+  # def new(params, &bloc)
+  #   if params[:page]
+  #     site_found = grab(params[:page][:application])
+  #     site_found.clear(true)
+  #     page_id = params[:page][:name]
+  #     site_found.box({ id: page_id })
+  #   elsif params[:application]
+  #
+  #     footer_header_size = 33
+  #     footer_header_color = color({ red: 0, green: 0, blue: 0, id: :footer_header_color })
+  #
+  #     if params[:header]
+  #       top = footer_header_size
+  #       header = box({ left: 0, right: 0, width: :auto, top: 0, height: top, id: :header })
+  #       # header.attach(:footer_header_color)
+  #     else
+  #       top = 0
+  #     end
+  #     if params[:footer]
+  #       bottom = footer_header_size
+  #       box({ left: 0, right: 0, width: :auto, top: :auto, bottom: 0, height: bottom, id: :footer })
+  #     else
+  #       bottom = 0
+  #     end
+  #     box({ left: 0, right: 0, width: :auto, top: top, bottom: bottom, height: :auto, id: params[:application] })
+  #   elsif params[:module]
+  #
+  #   end
+  #   super if defined?(super)
+  # end
+end
