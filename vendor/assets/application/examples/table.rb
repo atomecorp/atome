@@ -6,7 +6,7 @@ c.box({ left: 0, width: 22, height: 22, top: 65 })
 c.touch(true) do
   alert :okk
 end
-m = matrix({ renderers: [:html], attach: :view, id: :my_test_box, type: :matrix, apply: [:shape_color],
+m = table({ renderers: [:html], attach: :view, id: :my_test_box, type: :table, apply: [:shape_color],
              left: 333, top: 0, width: 900, smooth: 15, height: 900, overflow: :scroll, option: { header: true },
              component: {
                border: { thickness: 5, color: :blue, pattern: :dotted },

@@ -2,44 +2,13 @@
 
 # current_matrix = ""
 
-def matrix(id, horizontal_nb, vertical_nb, spacing, size)
-  view = grab(:view)
-  current_matrix = group({ id: id })
-  current_matrix.data({ spacing: spacing, size: size })
-  matrix_cells = []
-  total_spacing_x = spacing * (horizontal_nb + 1)
-  total_spacing_y = spacing * (vertical_nb + 1)
-  size_coefficient = size.end_with?('%') ? (size.to_f / 100) : size.to_f / view.to_px(:width)
+# id=params[:id]
+# rows=params[:rows]
+# columns=params[:columns]
+# spacing=params[:spacing]
+# size=params[:size]
 
-  view_width = view.to_px(:width)
-  view_height = view.to_px(:height)
-  if view_width > view_height
-    available_width = (view_height * size_coefficient) - total_spacing_x
-    available_height = (view_height * size_coefficient) - total_spacing_y
-  else
-    available_width = (view_width * size_coefficient) - total_spacing_x
-    available_height = (view_width * size_coefficient) - total_spacing_y
-  end
-  box_width = available_width / horizontal_nb
-  box_height = available_height / vertical_nb
-  background=box({id: "#{id}_background", width: 666, height: 666, color:{alpha: 0}})
-
-  vertical_nb.times do |y|
-    horizontal_nb.times do |x|
-      id_generated = "#{id}_#{x}_#{y}"
-      matrix_cells << id_generated
-      new_box = background.box({ id: id_generated })
-      new_box.width(box_width)
-      new_box.height(box_height)
-      new_box.left((box_width + spacing) * x + spacing)
-      new_box.top((box_height + spacing) * y + spacing)
-    end
-  end
-  current_matrix.collect(matrix_cells)
-  current_matrix
-end
-
-matrix_to_treat=matrix(:vie_0, 8, 8, 9, '69%')
+matrix_to_treat=matrix({id: :vie_0, rows: 8, columns: 8, spacing: 9, size: '69%' })
 
 def resize_matrix(current_matrix, new_width, new_height, spacing, size)
   # matrix_group = grab(matrix_id)
@@ -104,25 +73,6 @@ wait 1 do
 end
 
 
-module Molecule
-
-  def states(val = nil)
-    if val
-    else
-    end
-
-  end
-
-
-  def alternate(*states)
-    # if states
-    #
-    # else
-    #   @alternate
-    # end
-    alert states
-  end
-end
 c= circle({left: 399})
 test_cell.touch(true) do
   test_cell.alternate({ width: 33, color: :red }, { width: 66, color: :orange })

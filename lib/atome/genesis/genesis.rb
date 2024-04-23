@@ -50,12 +50,10 @@ class Genesis
       new_atome(atome_name, &atome_proc)
 
     end
+
     def build_molecule(molecule_name, &molecule_proc)
       new_molecule(molecule_name, &molecule_proc)
     end
-
-
-
 
     def auto_render_generator(element)
       Universe.renderer_list.each do |render_engine|
@@ -164,9 +162,9 @@ class Genesis
           else
             # collected_atomes = attached
             # if @attached
-              attached.each do |attached_atome|
-                collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
-              end
+            attached.each do |attached_atome|
+              collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+            end
             # end
 
           end
@@ -187,7 +185,7 @@ class Genesis
         if Universe.atomes[params[:id]]
           # if atome id already exist we grab the previous one
           # this prevent the creation of new atome if the atome already exist
-          previous_atome= grab(params[:id])
+          previous_atome = grab(params[:id])
           # now we must re-affect affected atomes
           previous_atome.affect(params[:affect])
           previous_atome
@@ -202,11 +200,9 @@ class Genesis
     def new_molecule(molecule, &method_proc)
 
       Molecule.define_method molecule do |params, &user_proc|
-        m= instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        m
+        instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
+
       end
-
-
 
       # # the method define below is the slowest but params are analysed and sanitized
       # Atome.define_method element do |params = nil, &user_proc|

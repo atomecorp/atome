@@ -312,3 +312,48 @@ new(molecule: :button) do |params, bloc|
 
   button
 end
+
+
+# new(molecule: :matrix) do |id, rows, columns, spacing, size|
+new(molecule: :matrix) do |params, &bloc|
+    id=params[:id]
+    rows=params[:rows]
+    columns=params[:columns]
+    spacing=params[:spacing]
+    size=params[:size]
+    view = grab(:view)
+    current_matrix = group({ id: id })
+    current_matrix.data({ spacing: spacing, size: size })
+    matrix_cells = []
+    total_spacing_x = spacing * (rows + 1)
+    total_spacing_y = spacing * (columns + 1)
+    size_coefficient = size.end_with?('%') ? (size.to_f / 100) : size.to_f / view.to_px(:width)
+
+    view_width = view.to_px(:width)
+    view_height = view.to_px(:height)
+    if view_width > view_height
+      available_width = (view_height * size_coefficient) - total_spacing_x
+      available_height = (view_height * size_coefficient) - total_spacing_y
+    else
+      available_width = (view_width * size_coefficient) - total_spacing_x
+      available_height = (view_width * size_coefficient) - total_spacing_y
+    end
+    box_width = available_width / rows
+    box_height = available_height / columns
+    background=box({id: "#{id}_background", width: 666, height: 666, color:{alpha: 0}})
+
+    columns.times do |y|
+      rows.times do |x|
+        id_generated = "#{id}_#{x}_#{y}"
+        matrix_cells << id_generated
+        new_box = background.box({ id: id_generated })
+        new_box.width(box_width)
+        new_box.height(box_height)
+        new_box.left((box_width + spacing) * x + spacing)
+        new_box.top((box_height + spacing) * y + spacing)
+      end
+    end
+    current_matrix.collect(matrix_cells)
+    current_matrix
+  # end
+end

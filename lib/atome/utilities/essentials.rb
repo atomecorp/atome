@@ -17,7 +17,7 @@ module Essentials
     # Warning :  type must be define first
     render_engines: [:html],
     image: { type: :image, left: 0, top: 0},
-    matrix: { type: :matrix, left: 0, top: 0, option: {}},
+    table: { type: :table, left: 0, top: 0, option: {}},
     # FIXME : look at build_atome FIXME to resolve default parent attachment problem
     video: { type: :video },
     animation: { type: :animation, attach: :black_matter },

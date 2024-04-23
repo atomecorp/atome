@@ -90,12 +90,12 @@ new({ renderer: :html, method: :category, type: :symbol }) do |category_names|
   end
 end
 
-new({ method: :data, type: :string, specific: :matrix, renderer: :html }) do |value, _user_proc|
+new({ method: :data, type: :string, specific: :table, renderer: :html }) do |value, _user_proc|
   html.table(value)
 end
 
 new({ method: :type, type: :hash, specific: :atomized, renderer: :html }) do |value, _user_proc|
-  html.atomized(alien)
+  html.atomized(value)
 end
 
 

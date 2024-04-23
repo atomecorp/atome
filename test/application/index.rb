@@ -82,15 +82,7 @@
 # alert Universe.eVe
 
 # in progress
-# b=box
-# c=circle({left: 66})
-# b.drag(true) do
-#   puts "jhgjh"
-# end
-# c.touch(true) do
-#   puts 'kjh'
-#   b.drag(false)
-# end
+# require "./examples/site"
 
 # require "./examples/resize"
 # require "./examples/drag"
