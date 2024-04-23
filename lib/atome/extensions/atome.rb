@@ -160,6 +160,9 @@ class Object
   end
 
   def grab(id_to_get)
+    if id_to_get.instance_of? Atome
+      alert id_to_get.id
+    end
     id_to_get=id_to_get.to_sym
     return if id_to_get == false
     aid_to_get= Universe.atomes_ids[id_to_get]

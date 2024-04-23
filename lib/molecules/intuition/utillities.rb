@@ -118,11 +118,7 @@ new(molecule: :list) do |params, _bloc|
   attach_to = params[:attach] || default_parent
   renderer_found = grab(attach_to).renderers
   list = Atome.new({ renderers: renderer_found, id: new_id, type: :shape, color: { alpha: 0 }, attach: attach_to }.merge(params))
-  # Atome.new(
-  #     { renderers: [:html], type: :shape, attach: :view, color: back_col,
-  #       left: 0, top: 0, data: '', attach: attach_to,
-  #       smooth: 6, overflow: :hidden,
-  #     })
+
   # now the listing
   listing.each_with_index do |data, index|
     # let's create the container
@@ -209,11 +205,11 @@ new({ molecule: :slider }) do |params, bloc|
 
   update_value = lambda do |cursor_position, cursor_size, slider_size, orientation|
     effective_slider_size = slider_size - cursor_size
-    if orientation == :vertical
-      percentage = 1.0 - (cursor_position.to_f / effective_slider_size)
-    else
-      percentage = cursor_position.to_f / effective_slider_size
-    end
+    percentage = if orientation == :vertical
+                   1.0 - (cursor_position.to_f / effective_slider_size)
+                 else
+                   cursor_position.to_f / effective_slider_size
+                 end
     value_range = max_value - min_value
     calculated_value = min_value + (value_range * percentage).round
     calculated_value.clamp(min_value, max_value)
@@ -302,7 +298,7 @@ new(molecule: :button) do |params, bloc|
 
   button.touch(:down) do
     button.tick(:button)
-    bloc.call((button.tick[:button]-1) % states)
+    bloc.call((button.tick[:button] - 1) % states)
 
   end
 
@@ -313,65 +309,65 @@ new(molecule: :button) do |params, bloc|
   button
 end
 
-
 # new(molecule: :matrix) do |id, rows, columns, spacing, size|
 new(molecule: :matrix) do |params, &bloc|
-    id=params[:id]
-    rows=params[:rows]
-    columns=params[:columns]
-    spacing=params[:spacing]
-    size=params[:size]
-    view = grab(:view)
-    current_matrix = group({ id: id })
-    current_matrix.data({ spacing: spacing, size: size })
-    matrix_cells = []
-    total_spacing_x = spacing * (rows + 1)
-    total_spacing_y = spacing * (columns + 1)
-    size_coefficient = size.end_with?('%') ? (size.to_f / 100) : size.to_f / view.to_px(:width)
+  # alert self.id
+  id = params[:id]
+  rows = params[:rows]
+  columns = params[:columns]
+  spacing = params[:spacing]
+  size = params[:size]
 
-    view_width = view.to_px(:width)
-    view_height = view.to_px(:height)
-    if view_width > view_height
-      available_width = (view_height * size_coefficient) - total_spacing_x
-      available_height = (view_height * size_coefficient) - total_spacing_y
-    else
-      available_width = (view_width * size_coefficient) - total_spacing_x
-      available_height = (view_width * size_coefficient) - total_spacing_y
-    end
-    box_width = available_width / rows
-    box_height = available_height / columns
-    background=box({id: "#{id}_background", width: 666, height: 666, color:{alpha: 0}})
+  parent_found = self
+  current_matrix = group({ id: id })
+  current_matrix.data({ spacing: spacing, size: size })
+  matrix_cells = []
+  total_spacing_x = spacing * (rows + 1)
+  total_spacing_y = spacing * (columns + 1)
+  size_coefficient = if size.instance_of? String
+                       size.end_with?('%') ? (size.to_f / 100) : size.to_f / parent_found.to_px(:width)
+                     else
+                       size.to_f / parent_found.to_px(:width)
+                     end
+  view_width = parent_found.to_px(:width)
+  view_height = parent_found.to_px(:height)
+  if view_width > view_height
+    available_width = (view_height * size_coefficient) - total_spacing_x
+    available_height = (view_height * size_coefficient) - total_spacing_y
+  else
+    available_width = (view_width * size_coefficient) - total_spacing_x
+    available_height = (view_width * size_coefficient) - total_spacing_y
+  end
+  box_width = available_width / rows
+  box_height = available_height / columns
+  background = box({ id: "#{id}_background", width: 666, height: 666, color: { alpha: 0 } })
 
-    columns.times do |y|
-      rows.times do |x|
-        id_generated = "#{id}_#{x}_#{y}"
-        matrix_cells << id_generated
-        new_box = background.box({ id: id_generated })
-        new_box.width(box_width)
-        new_box.height(box_height)
-        new_box.left((box_width + spacing) * x + spacing)
-        new_box.top((box_height + spacing) * y + spacing)
-      end
+  columns.times do |y|
+    rows.times do |x|
+      id_generated = "#{id}_#{x}_#{y}"
+      matrix_cells << id_generated
+      new_box = background.box({ id: id_generated })
+      new_box.width(box_width)
+      new_box.height(box_height)
+      new_box.left((box_width + spacing) * x + spacing)
+      new_box.top((box_height + spacing) * y + spacing)
     end
-    current_matrix.collect(matrix_cells)
-    current_matrix
+  end
+  current_matrix.collect(matrix_cells)
+  current_matrix
   # end
 end
-new(molecule: :page) do |params,&bloc|
+new(molecule: :page) do |params, &bloc|
 
-  b=box({color: :red, left: 99, drag: true})
+  b = box({ color: :red, left: 99, drag: true })
   b.text(params)
 end
 
-new(molecule: :application) do |params,&bloc|
+new(molecule: :application) do |params, &bloc|
 
+  main_page = box({ drag: true, width: :auto, height: :auto, top: 0, bottom: 0, left: 0, right: 0 })
 
-main_page=box({drag: true, width: :auto, height: :auto, top: 0, bottom: 0, left: 0, right: 0})
-
-
-main_page
-
-
+  main_page
 
   # def new(params, &bloc)
   #   if params[:page]

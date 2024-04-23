@@ -7,8 +7,8 @@
 # columns=params[:columns]
 # spacing=params[:spacing]
 # size=params[:size]
-
-matrix_to_treat=matrix({id: :vie_0, rows: 8, columns: 8, spacing: 9, size: '69%' })
+b=box({width: 333, height: 333, drag: true, id: :the_box})
+matrix_to_treat=b.matrix({id: :vie_0, rows: 8, columns: 8, spacing: 9, size: '70%', left: 123 })
 
 def resize_matrix(current_matrix, new_width, new_height, spacing, size)
   # matrix_group = grab(matrix_id)
@@ -76,31 +76,18 @@ end
 c= circle({left: 399})
 test_cell.touch(true) do
   test_cell.alternate({ width: 33, color: :red }, { width: 66, color: :orange })
-  # puts "=> #{Universe.atomes.length}"
-  # puts test_cell.color
-  # if test_cell.data==true
-  #   test_cell.data(false)
-  # col_1 = color(:black)
-
   matrix_to_treat.paint({ gradient: [col_1.id, col_1.id], direction: :top })
-  other_col=test_cell.color(:white)
-  c.paint({ gradient: [col_1, col_2], direction: :left })
-  test_cell.paint({ gradient: [col_1, other_col], direction: :left })
-  # test_cell
-  # grab(:red_col).delete(true)
-  # test_cell.color(:green)
-  # else
-  #   test_cell.data(true)
-  #   test_cell.color(:blue)
-  # end
-
+  other_col=test_cell.color(:green)
+  c.paint({ gradient: [col_1.id, col_2.id], direction: :left })
+  test_cell.paint({ gradient: [col_1.id, other_col.id], direction: :left })
 end
+
 wait 1 do
   matrix_to_treat.width(33)
 end
 matrix_to_treat.drag(true)
 # alert matrix_to_treat.id
 wait 2 do
-  grab(:vie_0_background).left(666)
+  grab(:vie_0_background).left(250)
   grab(:vie_0_background).drag(true)
 end
