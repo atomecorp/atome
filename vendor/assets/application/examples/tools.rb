@@ -23,7 +23,7 @@ class Atome
   class << self
     def init_intuition
       Atome.start_click_analysis
-      root = [:osc, :filter, :drag, :rotate, :select, :move]
+      root = [:box, :blur, :drag, :rotate, :select, :move,:project]
       root.each_with_index do |root_tool, index|
         tools_scheme = Universe.tools[root_tool]
         A.build_tool({ name: root_tool, scheme: tools_scheme, index: index })
@@ -97,7 +97,6 @@ class Atome
           touch_procs=atome_touched.instance_variable_get("@touch_code")
           resize_found = atome_touched.resize
           resize_procs=atome_touched.instance_variable_get("@resize_code")
-          # alert "#{touch_found} : #{touch_procs}"
           current_tool.data[:prev_states][atome_touched] = {events: { touch: touch_found, resize: resize_found },
                                                             procs: {touch_code: touch_procs, resize_code: resize_procs } }
 
@@ -115,7 +114,6 @@ class Atome
     end
 
     def creation(current_tool, tool_actions, atome_touched, a_event)
-
       # we store prev_local_storage prior to lock it to prevent unwanted logs
       # prev_local_storage=Universe.allow_localstorage()
       storage_allowed = Universe.allow_localstorage
@@ -212,6 +210,7 @@ class Atome
       action = tool_scheme[:alteration]
       method = :alteration
     end
+
     tool = grab(:intuition).box({ id: tool_name,
                                   tag: { system: true },
                                   # orientation: orientation_wanted,
@@ -240,7 +239,6 @@ class Atome
     code_for_zone = tool_scheme[:zone]
     tool.instance_exec(tool, &code_for_zone) if code_for_zone.is_a? Proc
     tool.touch(true) do
-
       # we add all specific tool actions to @tools_actions_to_exec hash
       # we set allow_tool_operations to false to ignore tool operation when clicking on a tool
       Universe.allow_tool_operations = false
@@ -376,7 +374,7 @@ end
 
 # ##############################################################################################
 
-new({ tool: :filter }) do |params|
+new({ tool: :blur }) do |params|
 
   active_code = lambda {
     puts :alteration_tool_code_activated
@@ -412,7 +410,7 @@ new({ tool: :filter }) do |params|
 
 end
 
-new({ tool: :osc }) do |params|
+new({ tool: :box }) do |params|
 
   active_code = lambda {
     puts :creation_tool_code_activated
@@ -495,7 +493,11 @@ new({ tool: :select }) do |params|
       atome_touched.selected(false)
       current_tool.data[:allow_alteration] = false
     else
-      # atome_touched.selected(true)
+      # alert atome_touched.selected
+      # alert Atome.selection
+      atome_touched.selected(true)
+      # alert atome_touched.selected
+
       current_tool.data[:allow_alteration] = true
     end
   }
@@ -510,12 +512,13 @@ new({ tool: :rotate }) do
   { alteration: { height: 150, rotate: 45 } }
 end
 new({ tool: :move }) do |params|
-
   active_code = lambda {
-    # Atome.selection.each do |atome_id_to_treat|
-    #   # reinit first to avoid multiple drag event
-    #   grab(atome_id_to_treat).drag(false)
+    # if  Atome.selection.instance_of? Array
     # end
+    Atome.selection.each do |atome_id_to_treat|
+    # #   # reinit first to avoid multiple drag event
+    # #   grab(atome_id_to_treat).drag(false)
+    end
     # drag_remove
     # puts :alteration_tool_code_activated
   }
@@ -561,6 +564,21 @@ new({ tool: :move }) do |params|
     int8: { french: :drag, english: :drag, german: :drag } }
 
 end
+new({ tool: :project }) do
+  active_code = lambda {
+
+    alert :get_projects_now
+    # if  Atome.selection.instance_of? Array
+    # end
+    # Atome.selection.each do |atome_id_to_treat|
+    #   # #   # reinit first to avoid multiple drag event
+    #   # #   grab(atome_id_to_treat).drag(false)
+    # end
+    # drag_remove
+    # puts :alteration_tool_code_activated
+  }
+  { activation: active_code }
+end
 # new({ tool: :move }) do
 #   inactivate=lambda{|param|
 #      param[:treated].each do |atome_f|
@@ -585,12 +603,16 @@ end
 the_circ = circle({ left: 123, top: 120, selected: false, id: :the_circle })
 
 the_circ.touch(:down) do |params|
-  puts "params: #{params}, id: #{the_circ.id}"
+  puts " down : params: #{params}, id: #{the_circ.id}"
 end
 
 the_circ.touch(:up) do
-  puts :kool
+  puts "up :kool"
 end
+the_circ.drag(true) do
+  puts "drag : now"
+end
+
 bb = box({ left: 333, width: 120, selected: false, id: :big_box })
 
 b = box({ id: :the_big_boxy })

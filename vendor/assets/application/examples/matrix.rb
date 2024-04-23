@@ -1,11 +1,11 @@
 #  frozen_string_literal: true
 
-@current_matrix = ""
+# current_matrix = ""
 
 def matrix(id, horizontal_nb, vertical_nb, spacing, size)
   view = grab(:view)
-  @current_matrix = group({ id: id })
-  @current_matrix.data({ spacing: spacing, size: size })
+  current_matrix = group({ id: id })
+  current_matrix.data({ spacing: spacing, size: size })
   matrix_cells = []
   total_spacing_x = spacing * (horizontal_nb + 1)
   total_spacing_y = spacing * (vertical_nb + 1)
@@ -35,10 +35,11 @@ def matrix(id, horizontal_nb, vertical_nb, spacing, size)
       new_box.top((box_height + spacing) * y + spacing)
     end
   end
-  @current_matrix.collect(matrix_cells)
+  current_matrix.collect(matrix_cells)
+  current_matrix
 end
 
-matrix(:vie_0, 8, 8, 9, '69%')
+matrix_to_treat=matrix(:vie_0, 8, 8, 9, '69%')
 
 def resize_matrix(current_matrix, new_width, new_height, spacing, size)
   # matrix_group = grab(matrix_id)
@@ -69,16 +70,16 @@ grab(:view).on(:resize) do |event|
   new_event = Native(event)
   new_width = new_event[:width].to_f
   new_height = new_event[:height].to_f
-  matrix_spacing = @current_matrix.data[:spacing]
-  matrix_size = @current_matrix.data[:size]
-  resize_matrix(@current_matrix, new_width, new_height, matrix_spacing, matrix_size)
+  matrix_spacing = matrix_to_treat.data[:spacing]
+  matrix_size = matrix_to_treat.data[:size]
+  resize_matrix(matrix_to_treat, new_width, new_height, matrix_spacing, matrix_size)
 end
 # alert grab(:vie_0).data
 # wait 2 do
 
-@current_matrix.color(:blue)
-@current_matrix.smooth(6)
-@current_matrix.shadow({
+matrix_to_treat.color(:blue)
+matrix_to_treat.smooth(6)
+matrix_to_treat.shadow({
                          id: :s1,
                          # affect: [:the_circle],
                          left: 3, top: 3, blur: 6,
@@ -90,8 +91,8 @@ col_1 = color(:yellow)
 col_2 = color({ red: 1, id: :red_col })
 
 
-# @current_matrix.paint({ gradient: [col_1.id, col_2.id], direction: :left })
-@current_matrix.paint({ gradient: [col_1.id, col_2.id], direction: :top })
+# matrix_to_treat.paint({ gradient: [col_1.id, col_2.id], direction: :left })
+matrix_to_treat.paint({ gradient: [col_1.id, col_2.id], direction: :top })
 
 
 ###################
@@ -131,7 +132,7 @@ test_cell.touch(true) do
   #   test_cell.data(false)
   # col_1 = color(:black)
 
-  @current_matrix.paint({ gradient: [col_1.id, col_1.id], direction: :top })
+  matrix_to_treat.paint({ gradient: [col_1.id, col_1.id], direction: :top })
   other_col=test_cell.color(:white)
   c.paint({ gradient: [col_1, col_2], direction: :left })
   test_cell.paint({ gradient: [col_1, other_col], direction: :left })
@@ -145,10 +146,10 @@ test_cell.touch(true) do
 
 end
 wait 1 do
-  @current_matrix.width(33)
+  matrix_to_treat.width(33)
 end
-@current_matrix.drag(true)
-# alert @current_matrix.id
+matrix_to_treat.drag(true)
+# alert matrix_to_treat.id
 wait 2 do
   grab(:vie_0_background).left(666)
   grab(:vie_0_background).drag(true)
