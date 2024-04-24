@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # add new font face
-A.add_text_visual({ path: 'Roboto', name: 'Roboto-Thin' })
+A.add_text_visual({ path: 'Roboto', name: 'Roboto-Black' })
 A.add_text_visual({ path: 'Roboto', name: 'Roboto-Thin' })
 A.add_text_visual({ path: 'Roboto', name: 'Roboto-LightItalic' })
 
