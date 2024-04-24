@@ -82,3 +82,7 @@ new({ method: :opacity, type: :integer, renderer: :html}) do |value|
   # html.opacity(value)
   html.style('opacity',value)
 end
+
+new({ method: :visual, type: :string, renderer: :html, specific: :text }) do |value, _user_proc|
+    html.style('fontFamily', value)
+end

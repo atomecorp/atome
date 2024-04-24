@@ -37,6 +37,20 @@ class HTML
     current_div[:innerHTML] = params
   end
 
+  def add_font_to_css(params)
+    font_path = params[:path]
+    font_name = params[:name]
+    str_to_eval = <<STRDELIM
+var styleSheet = document.styleSheets[0];
+styleSheet.insertRule(`
+@font-face {
+  font-family: '#{font_name}';
+  src: url('../medias/fonts/#{font_path}/#{font_name}.ttf') format('truetype');
+}`, styleSheet.cssRules.length);
+STRDELIM
+    JS.eval(str_to_eval)
+  end
+
   def add_css_to_atomic_style(css)
     style_element = JS.global[:document].getElementById('atomic_style')
     text_node = JS.global[:document].createTextNode(css)
@@ -1631,9 +1645,11 @@ class HTML
     name = params[:name]
     JS.eval("recordVideo(#{duration},'#{@id}', '#{name}')")
   end
+
   def stop_video_preview(id)
     JS.eval("stopPreview('#{id}')")
   end
+
   def video_preview(id, video, audio)
     JS.eval("create_preview('#{id}','#{video}','#{audio}')")
   end

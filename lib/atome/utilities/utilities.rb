@@ -113,6 +113,8 @@ class Atome
       target_vector.data(atome_content)
     end
 
+
+
   end
 
   @initialized = {}
@@ -163,7 +165,9 @@ class Atome
     end
 
   end
-
+  def add_text_visual(params)
+    html.add_font_to_css(params)
+  end
   def particle_main(element, params, &user_proc)
     # TODO : optimise below removing all conditions if possible
     if Atome.instance_variable_get("@main_#{element}").is_a?(Proc) # post is before rendering and broadcasting

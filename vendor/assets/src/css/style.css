@@ -16,6 +16,10 @@ html, body {
     z-index: 0;
     color: lightgray;
 }
+/*@font-face {*/
+/*    font-family: 'MaPolicePersonnelle';*/
+/*    src: url('../medias/fonts/Roboto/Roboto-Black.ttf') format('truetype');*/
+/*}*/
 pre {
     min-width: 100px;
     margin: 0;
