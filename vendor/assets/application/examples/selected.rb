@@ -5,18 +5,25 @@ t = text({ data: 'touch me to select all', id: :the_text })
 b = box({ left: 12, id: :the_box })
 c = circle({ left: 230, id: :the_circle })
 c.color(:green)
+# to change default selection style
+Universe.default_selection_style={border: { thickness: 3, red: 1, green: 0, blue: 1, alpha: 1, pattern: :dotted }}
+
 c.touch(true) do
   if c.selected
     c.selected(false)
   else
+    c.selected(true)
     # example of custom selection style
-    c.selected({ shadow: {
-      left: 9, top: 3, blur: 9,
-      invert: false,
-      red: 0, green: 0, blue: 0, alpha: 1
-    }, border: { thickness: 5, red: 1, green: 1, blue: 1, alpha: 1, pattern: :dotted, id: :the_door,inside: true } })
+    # c.selected({ shadow: {
+    #   left: 9, top: 3, blur: 9,
+    #   invert: false,
+    #   red: 0, green: 0, blue: 0, alpha: 1
+    # }, border: { thickness: 5, red: 1, green: 1, blue: 1, alpha: 1,
+    #              pattern: :dotted,inside: true }
+    #            })
   end
 end
+
 image({ path: 'medias/images/red_planet.png', id: :the__red_planet, top: 233 })
 
 t.touch(true) do

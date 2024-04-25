@@ -50,7 +50,7 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
       html.style("border", 'none')
       # html.style("filter", 'none')
       @apply.delete(object_id_to_remove)
-      apply(@apply)
+      # apply(@apply)
     when :paint
       atome_to_remove = grab(object_id_to_remove)
       atome_to_remove.gradient.each do |color_id|

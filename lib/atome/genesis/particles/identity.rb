@@ -15,7 +15,6 @@ new({ sanitizer: :id }) do |params|
   #     Universe.add_to_atomes(params, self)
   #   end
 
-
   # Universe.atomes.each do |_aid,atome_f|
   #
   #   if atome_f.id == params
@@ -64,24 +63,29 @@ end
 
 new(particle: :selected, category: :identity, type: :boolean) do |params|
   if params == true
-    @selection_style=[]
-    select_style= border({ thickness: 3, red: 1, green: 1, blue: 1, alpha: 1, pattern: :dotted })
+    @selection_style = []
+    # select_style= border({ thickness: 3, red: 1, green: 1, blue: 1, alpha: 1, pattern: :dotted })
+    default_style = Universe.default_selection_style
+    select_style = ''
+    default_style.each do |atome_f, part_f|
+      select_style = send(atome_f, part_f)
+    end
     @selection_style << select_style.id
     grab(Universe.current_user).selection << @id
   elsif params == false
+
+
     @selection_style.each do |style_f|
       remove(style_f)
     end
-    @selection_style=nil
+    @selection_style = nil
     grab(Universe.current_user).selection.collect.delete(@id)
   else
-    @selection_style=[]
-     params.each do |part_f, val_f|
-       select_style=  send(part_f,val_f)
-       @selection_style << select_style.id
-     end
-    # border({ thickness: 3, red: 1, green: 0, blue: 1, alpha: 1, pattern: :dotted })
-    # border({ thickness: 10,  pattern: :solid, color: :red})
+    @selection_style = []
+    params.each do |part_f, val_f|
+      select_style = send(part_f, val_f)
+      @selection_style << select_style.id
+    end
     grab(Universe.current_user).selection << @id
   end
   params
