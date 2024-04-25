@@ -9,6 +9,7 @@ b.instance_variable_set("@path", './medias/images/red_planet.png' )
 
 b.instance_variable_set("@smooth", 30)
 wait 1 do
+  # alert b.inspect
   b.refresh
   b.instance_variable_set("@left", 300)
   wait 1 do

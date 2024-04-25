@@ -3,12 +3,18 @@
 
 
 
-
-
-
 b=box({id: :my_b_box, left: 150, top: 150})
- b.border({ thickness: 15, red: 1, green: 1, blue: 0, alpha: 1, pattern: :solid ,id: :jjjj, inside: true})
-
+b.shadow({
+           id: :s1,
+           # affect: [:the_circle],
+           left: 9, top: 3, blur: 9,
+           invert: false,
+           red: 0, green: 0, blue: 0, alpha: 1
+         })
+border1= b.border({ thickness: 15, red: 1, green: 1, blue: 0, alpha: 1, pattern: :solid ,id: :border_1, inside: true})
+wait 2 do
+  b.remove(:border_1)
+end
 wait 1.5 do
  border({ thickness: 30, red: 1, green: 1, blue: 0, alpha: 1, pattern: :solid ,id: :poil, inside: true})
 end

@@ -51,14 +51,14 @@ class Atome
     @aid=  new_atome[:aid]  || identity_generator
     @controller_proc=[]
     @id = new_atome[:id] || @aid
-    Universe.atomes.each do |_aid,atome_f|
+    Universe.atomes.each_value do |atome_f|
       # we affect the already existing atome to target
-        if atome_f.id == @id
-          new_atome[:affect].each do |affected|
-            grab(affected).apply(@id)
-          end
-          return false
-        end
+      next unless atome_f.id == @id
+
+      new_atome[:affect].each do |affected|
+        grab(affected).apply(@id)
+      end
+      return false
     end
     Universe.add_to_atomes(@aid, self)
     Universe.id_to_aid(@id, @aid)

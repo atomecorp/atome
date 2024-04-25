@@ -113,8 +113,6 @@ class Atome
       target_vector.data(atome_content)
     end
 
-
-
   end
 
   @initialized = {}
@@ -165,9 +163,11 @@ class Atome
     end
 
   end
+
   def add_text_visual(params)
     html.add_font_to_css(params)
   end
+
   def particle_main(element, params, &user_proc)
     # TODO : optimise below removing all conditions if possible
     if Atome.instance_variable_get("@main_#{element}").is_a?(Proc) # post is before rendering and broadcasting
@@ -348,22 +348,21 @@ class Atome
     send("#{element}_callback", return_params)
   end
 
-  def js_callback(id, particle, value,sub=nil )
-    current_atome= grab(id)
-   #  # alert current_atome.instance_variable_get('@record_code')
-    proc_found= current_atome.instance_variable_get("@#{particle}_code")[particle.to_sym]
+  def js_callback(id, particle, value, sub = nil)
+    current_atome = grab(id)
+    #  # alert current_atome.instance_variable_get('@record_code')
+    proc_found = current_atome.instance_variable_get("@#{particle}_code")[particle.to_sym]
     # proc_found= current_atome.instance_variable_get("@record_code")[:record]
-   #  # alert particle.class
-   #  # alert proc_found.class
+    #  # alert particle.class
+    #  # alert proc_found.class
     # proc_found.call
-   instance_exec(value, &proc_found) if proc_found.is_a?(Proc)
-   # #  # puts "params to be exec #{id}, #{particle}, #{value}, #{sub}"
-   #  alpha= grab(:the_big_box)
-   #  proc_found= alpha.instance_variable_get("@record_code")[:record]
+    instance_exec(value, &proc_found) if proc_found.is_a?(Proc)
+    # #  # puts "params to be exec #{id}, #{particle}, #{value}, #{sub}"
+    #  alpha= grab(:the_big_box)
+    #  proc_found= alpha.instance_variable_get("@record_code")[:record]
     # proc_found.call
 
   end
-
 
   # def callback(data)
   #   @callback[data.keys[0]] = data[data.keys[0]]
@@ -389,8 +388,7 @@ class Atome
   def particles_to_hash
     hash = {}
     instance_variables.each do |var|
-      next if %i[@html_object @history, @initialized].include?(var)
-
+      next if %i[@html_object @history @initialized @tick @controller_proc].include?(var)
       hash[var.to_s.delete('@').to_sym] = instance_variable_get(var)
     end
     hash
@@ -400,10 +398,13 @@ class Atome
     # we get the current color because they will be removed
     particles_found = particles_to_hash
     particles_found.each do |particle_found, value_found|
+      puts "refresh : #{particle_found}, #{value_found}"
       send(particle_found, value_found)
     end
-    color.each do |col|
-      apply(col)
+    Universe.applicable_atomes.each do |atome_type|
+      send(atome_type).each do |col|
+        apply(col)
+      end
     end
   end
 

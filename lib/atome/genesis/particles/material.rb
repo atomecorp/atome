@@ -12,6 +12,8 @@ end
 new({ particle: :hide, category: :material, type: :boolean })
 
 new({ particle: :remove, category: :property, type: :hash }) do |params|
+
+
   if  params.instance_of? Hash
     if params[:row]
       data.delete_at(params[:row])

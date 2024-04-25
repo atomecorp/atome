@@ -31,11 +31,7 @@ new({ method: :insert, renderer: :html, type: :hash }) do |params|
   html.table_insert(params)
 end
 
-new({ method: :remove, renderer: :html, type: :hash }) do |params|
-  # alert "===> #{params}"
-  # html.table_remove(params)
-  html.remove(params)
-end
+
 
 new({ method: :sort, renderer: :html, type: :hash }) do |params|
   html.refresh_table(params)

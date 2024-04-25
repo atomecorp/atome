@@ -64,14 +64,25 @@ end
 
 new(particle: :selected, category: :identity, type: :boolean) do |params|
   if params == true
-    border({ thickness: 3, red: 1, green: 1, blue: 1, alpha: 1, pattern: :dotted })
-    border({ thickness: 10,  pattern: :solid, color: :red})
+    @selection_style=[]
+    select_style= border({ thickness: 3, red: 1, green: 1, blue: 1, alpha: 1, pattern: :dotted })
+    @selection_style << select_style.id
     grab(Universe.current_user).selection << @id
   elsif params == false
-    border({alpha: 0, thickness: 0})
+    @selection_style.each do |style_f|
+      remove(style_f)
+    end
+    @selection_style=nil
     grab(Universe.current_user).selection.collect.delete(@id)
   else
-    # TODO: for future use
+    @selection_style=[]
+     params.each do |part_f, val_f|
+       select_style=  send(part_f,val_f)
+       @selection_style << select_style.id
+     end
+    # border({ thickness: 3, red: 1, green: 0, blue: 1, alpha: 1, pattern: :dotted })
+    # border({ thickness: 10,  pattern: :solid, color: :red})
+    grab(Universe.current_user).selection << @id
   end
   params
 end

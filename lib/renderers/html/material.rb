@@ -6,6 +6,12 @@ end
 
 new({ method: :gradient, renderer: :html, type: :hash })
 
+# new({ method: :remove, renderer: :html, type: :hash }) do |params|
+#   # alert "===> #{params}"
+#   # html.table_remove(params)
+#   html.remove(params)
+# end
+
 new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove, bloc|
 
   if object_id_to_remove.instance_of? Hash
@@ -37,6 +43,12 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
     when :shadow
       html.style("boxShadow", 'none')
       html.style("filter", 'none')
+      @apply.delete(object_id_to_remove)
+      apply(@apply)
+    when :border
+      # alert :poipoipoipoipo
+      html.style("border", 'none')
+      # html.style("filter", 'none')
       @apply.delete(object_id_to_remove)
       apply(@apply)
     when :paint

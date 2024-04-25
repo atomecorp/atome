@@ -24,9 +24,7 @@ class Atome
     params = reordered_params.merge(params)
     params[:id]=params[:id].to_sym
     # condition to handle color/shadow/paint atomes that shouldn't be attach to view
-    # TODO : add category for atome( material/physical vs modifier : color, shadow, .. vs shape, image ..)
-    # then add condition same things fo code in genesis new_atome
-    if %i[color shadow paint border].include?(atome_preset)
+    if Universe.applicable_atomes.include?(atome_preset)
       unless params[:affect]
         params[:affect] = if @id == :view
                             [:black_matter]

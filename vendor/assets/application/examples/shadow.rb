@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 c = circle({ id: :the_circle, left: 122, color: :orange, drag: { move: true, inertia: true, lock: :start } })
- c.color({ id: :col1, red: 1, blue: 1 })
+c.color({ id: :col1, red: 1, blue: 1 })
 
  c.shadow({
               id: :s1,
