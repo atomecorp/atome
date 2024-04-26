@@ -27,7 +27,7 @@ class Universe
   @allow_tool_operations = false
   @active_tools = []
   @atome_preset = []
-  @default_selection_style={border: { thickness: 3, red: 1, green: 1, blue: 1, alpha: 1, pattern: :dotted }}
+  @default_selection_style={border: { thickness: 1, red: 1, green: 0, blue: 0, alpha: 1, pattern: :dotted }}
   @applicable_atomes= %i[color shadow border paint animation]
   # @historicize=false
   class << self

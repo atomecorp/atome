@@ -64,7 +64,6 @@ end
 new(particle: :selected, category: :identity, type: :boolean) do |params|
   if params == true
     @selection_style = []
-    # select_style= border({ thickness: 3, red: 1, green: 1, blue: 1, alpha: 1, pattern: :dotted })
     default_style = Universe.default_selection_style
     select_style = ''
     default_style.each do |atome_f, part_f|

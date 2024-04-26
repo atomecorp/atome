@@ -215,3 +215,7 @@ end
 # Universe.allow_localstorage = true # to stop data to be stored in localstorage
 # Universe.allow_sync= false # to stop data to be sync on server
 touch_allow(false) # this lock the system right click in web view
+# add a few default font
+# A.add_text_visual({ path: 'Roboto', name: 'Roboto-Bold' })
+# A.add_text_visual({ path: 'Roboto', name: 'Roboto-Thin' })
+# A.add_text_visual({ path: 'Roboto', name: 'Roboto-LightItalic' })
