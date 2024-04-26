@@ -388,7 +388,7 @@ class Atome
   def particles_to_hash
     hash = {}
     instance_variables.each do |var|
-      next if %i[@html_object @history @initialized @tick @controller_proc].include?(var)
+      next if %i[@selection_style @html_object @history @initialized @tick @controller_proc].include?(var)
       hash[var.to_s.delete('@').to_sym] = instance_variable_get(var)
     end
     hash

@@ -13,36 +13,32 @@ new({ particle: :hide, category: :material, type: :boolean })
 
 new({ particle: :remove, category: :property, type: :hash }) do |params|
 
-
-  if  params.instance_of? Hash
+  if params.instance_of? Hash
     if params[:row]
       data.delete_at(params[:row])
-
     elsif params[:column]
       column = params[:column]
       data.map do |hash|
         hash.delete(hash.keys[column]) if hash.keys[column]
-        hash
       end
-    # elsif params[:all]
-    #   apply.each do |applied_atome|
-    #     if  grab(applied_atome).type.to_sym ==  params[:all].to_sym
-    #       puts "!go"
-    #     end
-    #   end
+      # elsif params[:all]
+      #   apply.each do |applied_atome|
+      #     if  grab(applied_atome).type.to_sym ==  params[:all].to_sym
+      #       puts "!go"
+      #     end
+      #   end
       # puts "so_good #{params}"
       # puts "***> #{apply}"
     end
+
     params
   else
 
     params
   end
 
-
 end
 # new({ particle: :remove, category: :property, type: :hash })
-
 
 new({ post: :remove }) do |params|
   # TODO : we have to rethink the removal of atome and particles (with exception like category) and maybe 'use particle type' to handle removal
@@ -100,22 +96,22 @@ end
 new({ particle: :gradient, category: :material, type: :int })
 
 new({ particle: :thickness, category: :material, type: :int })
-new({ after: :thickness}) do |params|
-  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+new({ after: :thickness }) do |params|
+  a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
     grab(atome_to_refresh).apply(id)
   end
   params
 end
 new({ particle: :pattern, category: :material, type: :string })
-new({ after: :pattern })do |params|
-  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+new({ after: :pattern }) do |params|
+  a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
     grab(atome_to_refresh).apply(id)
   end
   params
 end
 # new({ particle: :border, category: :material, type: :int })
-new({particle: :fill, category: :material, type: :array })
+new({ particle: :fill, category: :material, type: :array })
 
-new({particle: :opacity, category: :material, type: :int })
+new({ particle: :opacity, category: :material, type: :int })

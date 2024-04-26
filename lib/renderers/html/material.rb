@@ -44,11 +44,11 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
       html.style("boxShadow", 'none')
       html.style("filter", 'none')
       @apply.delete(object_id_to_remove)
-      apply(@apply)
+      # apply(@apply)
     when :border
       # alert :poipoipoipoipo
       html.style("border", 'none')
-      # html.style("filter", 'none')
+      html.style("filter", 'none')
       @apply.delete(object_id_to_remove)
       # apply(@apply)
     when :paint

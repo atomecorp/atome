@@ -73,11 +73,9 @@ new(particle: :selected, category: :identity, type: :boolean) do |params|
     @selection_style << select_style.id
     grab(Universe.current_user).selection << @id
   elsif params == false
-
-
-    @selection_style.each do |style_f|
-      remove(style_f)
-    end
+    @selection_style&.each do |style_f|
+          remove(style_f)
+        end
     @selection_style = nil
     grab(Universe.current_user).selection.collect.delete(@id)
   else
