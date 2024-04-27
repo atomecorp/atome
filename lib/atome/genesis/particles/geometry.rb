@@ -13,7 +13,6 @@ new({ particle: :size, category: :geometry, type: :int }) do |params|
   # to its parent , raw apply the raw value to the attached atomes
   if params[:reference] == :x
     original_width = width
-
     width(params[:value])
     height(height * params[:value] / original_width) if value
   else
