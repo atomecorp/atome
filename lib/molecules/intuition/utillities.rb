@@ -309,6 +309,46 @@ new(molecule: :button) do |params, bloc|
   button
 end
 
+new({ particle: :cells })
+
+class Atome
+  def resize_matrix(params)
+
+    width(params[:width])
+    height(params[:height])
+    current_matrix=self
+    real_width = current_matrix.to_px(:width)
+    real_height = current_matrix.to_px(:height)
+    spacing = current_matrix.data[:spacing]
+    matrix_cells= current_matrix.data[:matrix]
+
+    total_spacing_x = spacing * (matrix_cells.collect.length ** (0.5) + 1)
+    total_spacing_y = spacing * (matrix_cells.collect.length ** (0.5) + 1)
+
+    if real_width > real_height
+      full_size = real_width
+      available_width = full_size - total_spacing_x
+      available_height = full_size - total_spacing_y
+    else
+      full_size = real_width
+      available_width = full_size - total_spacing_x
+      available_height = full_size - total_spacing_y
+    end
+
+    box_width = available_width / matrix_cells.collect.length ** (0.5)
+    box_height = available_height / matrix_cells.collect.length ** (0.5)
+
+    matrix_cells.collect.each_with_index do |box_id, index|
+      box = grab(box_id)
+      box.width(box_width)
+      box.height(box_height)
+      box.left((box_width + spacing) * (index % matrix_cells.collect.length ** (0.5)) + spacing)
+      box.top((box_height + spacing) * (index / matrix_cells.collect.length ** (0.5)).floor + spacing)
+    end
+
+  end
+end
+
 new(molecule: :matrix) do |params, &bloc|
   id = params[:id]
   rows = params[:rows]
@@ -333,13 +373,13 @@ new(molecule: :matrix) do |params, &bloc|
   matrix_back = box({ id: "#{id}_background", width: size, height: size, color: { alpha: 0 } })
 
   if view_width > view_height
-    full_size=view_height * size_coefficient
+    full_size = view_height * size_coefficient
     available_width = full_size - total_spacing_x
     available_height = full_size - total_spacing_y
     matrix_back.width(full_size)
     matrix_back.height(full_size)
   else
-    full_size=view_width * size_coefficient
+    full_size = view_width * size_coefficient
     available_width = full_size - total_spacing_x
     available_height = full_size - total_spacing_y
     matrix_back.width(full_size)
@@ -360,15 +400,15 @@ new(molecule: :matrix) do |params, &bloc|
     end
   end
   current_matrix.collect(matrix_cells)
-  current_matrix
-  # end
+  matrix_back.cells(current_matrix)
+  params= params.merge({matrix: current_matrix})
+  matrix_back.data(params)
+  matrix_back
 end
 new(molecule: :page) do |params, &bloc|
-
   b = box({ color: :red, left: 99, drag: true })
   b.text(params)
 end
-
 new(molecule: :application) do |params, &bloc|
 
   main_page = box({ drag: true, width: :auto, height: :auto, top: 0, bottom: 0, left: 0, right: 0 })

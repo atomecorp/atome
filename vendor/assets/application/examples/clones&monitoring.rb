@@ -11,7 +11,7 @@ t.touch(true) do
   puts "#{b.touch} , #{b.touch_code}"
   b.touch_code[:touch].call
 end
-col = color({ id: :col1, red: 1, blue: 1 })
+color({ id: :col1, red: 1, blue: 1 })
 # #######################
 atomes_monitored = [c, b]
 # particles_monitored=[:left, :width, :touch, :apply]

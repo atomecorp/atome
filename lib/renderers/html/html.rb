@@ -4,6 +4,12 @@
 
 class HTML
 
+
+
+  # def id
+  #   :poil
+  # end
+
   def self.locate(selector, base_element = JS.global[:document][:body])
     return base_element if selector.empty?
 
@@ -21,6 +27,7 @@ class HTML
   end
 
   def initialize(id_found, current_atome)
+
     @element ||= JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
     @original_atome = current_atome
