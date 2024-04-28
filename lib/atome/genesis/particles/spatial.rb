@@ -11,7 +11,17 @@ new({ particle: :position, category: :spatial, type: :int })
 new({ particle: :organise, category: :spatial, type: :string })
 new({ particle: :spacing, category: :spatial, type: :string })
 new({ particle: :display, category: :spatial, type: :boolean }) do |params|
-  params = { mode: params } unless params.instance_of? Hash
+  # params = { mode: params } unless params.instance_of? Hash
+  params = case params
+           when true
+             :block
+           when false
+             :none
+           else
+             params
+
+           end
+  params = :none if params == false
   params
 end
 new({ particle: :layout, category: :spatial, type: :int }) do |params|
@@ -92,7 +102,7 @@ new({ particle: :center, category: :spatial, type: :hash }) do |params|
 end
 new ({ particle: :increment, category: :spatial, type: :hash }) do |params|
   params.each do |particle, value|
-    prev_value=send(particle)
-    send(particle, value+prev_value)
+    prev_value = send(particle)
+    send(particle, value + prev_value)
   end
 end

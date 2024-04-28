@@ -26,8 +26,12 @@ end
 
 new({ particle: :delete, category: :utility, type: :boolean, render: false }) do |params|
   if params == true
+
     # We use the tag persistent to exclude color of system object and other default colors
     unless @tag && (@tag[:persistent] || @tag[:system])
+      # if we are on a matrix we delete cells found & group found
+      cells.delete(true)
+      group.delete(true)
       # now we detach the atome from it's parent
       # now we init rendering
       render(:delete, params)
@@ -41,17 +45,23 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
           affected_found = grab(affected_atome)
           affected_found.apply.delete(id_found)
           affected_found.refresh
-        end
+      end
 
-      # Universe.delete(@aid)
+      Universe.delete(@aid)
     end
   elsif params.instance_of? Hash
-
+    # if we are on a matrix we delete cells found & group found
+    cells.delete(true)
+    group.delete(true)
     if params[:recursive]
       unless grab(@id).tag && (grab(@id).tag[:persistent] || grab(@id).tag[:system])
         attached.each do |atttached_atomes|
           delete_recursive(atttached_atomes)
         end
+        # group.each do |el|
+        #   delete_recursive(el)
+        # end
+
         touch(:remove)
         render(:delete, params)
         Universe.delete(@id)
@@ -68,7 +78,6 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
     # we check if the params passed is an atome to treat it in a different way
     puts "write code here : #{apply} , #{attached}"
   else
-    # alert grab(params).delete(true)
     send(params, 0) unless params == :id
   end
 end
