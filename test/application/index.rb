@@ -113,7 +113,7 @@
 #### works
 # require "./examples/svg_vectorizer"
 # require "./examples/holder"
-# require "./examples/input"
+require "./examples/input"
 # require "./examples/server"
 # require "./examples/list"
 # require "./examples/behavior"
@@ -129,7 +129,8 @@
 # require "./examples/fill"
 # require "./examples/sub_atome_manipulation"
 # require "./examples/increment"
-require "./examples/matrix"
+# require "./examples/matrix"
+# require "./examples/vector"
 # require "./examples/fonts"
 # require "./examples/aid"
 # require "./examples/table"

@@ -11,9 +11,12 @@ new(molecule: :input) do |params, bloc|
   limit ||= 15
   back_col = params.delete(:back)
   back_col ||= :grey
-  text_col = params.delete(:text)
-  text_col ||= :black
+  text_params = params.delete(:text)
+  text_params ||= {}
   default_text = params.delete(:default)
+  component = params.delete(:component)
+  # component ||= {}
+
   default_text ||= :input
   default_parent = if self.instance_of?(Atome)
                      id
@@ -29,12 +32,12 @@ new(molecule: :input) do |params, bloc|
     })
 
   text_input = Atome.new(
-    { renderers: [:html], type: :text, color: text_col, component: { size: params[:height] },
+    { renderers: [:html], type: :text, component: component,
       data: default_text, left: params[:height] * 20 / 100, top: 0, edit: true, attach: input_back.id, height: params[:height],
       position: :absolute
-    }
+    }.merge(text_params)
   )
-
+  # text_input.set()
   text_input.touch(:down) do
     input_back.tick(:input)
     text_input.edit(true)

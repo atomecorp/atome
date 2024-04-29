@@ -505,6 +505,7 @@ STRDELIM
     end
   end
 
+
   def transform(property, value = nil)
     transform_needed = "#{property}(#{value}deg)"
     @element[:style][:transform] = transform_needed.to_s
@@ -576,6 +577,8 @@ STRDELIM
     filter_needed = "#{property}(#{value})"
     @element[:style][:"-webkit-backdrop-filter"] = filter_needed
   end
+
+
 
   def currentTime(time)
     @element[:currentTime] = time

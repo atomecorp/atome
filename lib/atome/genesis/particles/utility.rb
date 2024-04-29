@@ -42,11 +42,10 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
         parent_found.attached.delete(id_found)
       end
       @affect&.each do |affected_atome|
-          affected_found = grab(affected_atome)
-          affected_found.apply.delete(id_found)
-          affected_found.refresh
+        affected_found = grab(affected_atome)
+        affected_found.apply.delete(id_found)
+        affected_found.refresh
       end
-
       Universe.delete(@aid)
     end
   elsif params.instance_of? Hash

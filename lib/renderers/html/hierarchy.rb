@@ -32,15 +32,27 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     html.style("boxShadow", box_shadow)
     html.style("filter", drop_shadow)
   when :color
+
     red = parent_found.red * 255
     green = parent_found.green * 255
     blue = parent_found.blue * 255
     alpha = parent_found.alpha
-    html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
     if type.to_sym ==:border
       affect.each do |at_found|
         grab(at_found).html.style(:border, "solid 2px rgba(#{red},#{green},#{blue},#{alpha})")
       end
+    elsif type.to_sym == :image
+      # alert 'rr'
+      # div[:style][:mixBlendMode] = 'color'
+      # html.style(:mixBlendMode,'color')
+      # html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+
+      # html.image_colorizer("rgba(#{red}, #{green}, #{blue}, #{alpha})")
+      # html.image_colorizer("rgba(#{red}, #{green}, #{blue}, #{alpha})")
+    else
+          html.style(:backgroundColor, "rgba(#{red}, #{green}, #{blue}, #{alpha})")
+
+
     end
   when :paint
     # if when found colors when use it for the gradient , else whe use the colors within the current atome

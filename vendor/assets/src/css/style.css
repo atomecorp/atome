@@ -15,6 +15,8 @@ html, body {
     height: 100%;
     z-index: 0;
     color: lightgray;
+    touch-action: manipulation; /*allow pinch to scroll and pan but lock the zoom */
+
 }
 @font-face {
     font-family: 'Roboto-Thin';
