@@ -113,9 +113,9 @@
 #### works
 # require "./examples/svg_vectorizer"
 # require "./examples/holder"
-require "./examples/input"
+# require "./examples/input"
 # require "./examples/server"
-# require "./examples/list"
+require "./examples/list"
 # require "./examples/behavior"
 # require "./examples/tick"
 # require "./examples/localstorage"

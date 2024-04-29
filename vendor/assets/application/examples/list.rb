@@ -23,14 +23,15 @@ listing = [
   { data: :hi },
   { data: :ho }
 ]
-b=box({drag: true})
+b = box({ drag: true })
 list_1 = grab(:intuition).list({
-                  styles: styles,
-                  element: element,
-                  listing: listing,
-                               left: 33,
-                  attach: b.id
-                })
+                                 styles: styles,
+                                 element: element,
+                                 listing: listing,
+                                 left: 33,
+                                 attach: b.id,
+                                 action: {touch: :down, method: :my_method }
+                               })
 
 # test2
 
@@ -50,22 +51,27 @@ element = { width: 25,
             # left: 10,
             # top: :center,
             color: :orange,
-            type: :shape }
+            type: :shape
+}
 
 listing = [
   { smooth: '100%' },
-  { color: :red },
+  { color: :red, data: :poilu },
   {},
   {},
 
   { width: 33 },
   {},
 ]
+def my_method(val=nil)
+  alert "so_cool : #{val}"
+end
 
 list_2 = A.list({ left: 300,
                   styles: styles,
                   element: element,
-                  listing: listing
+                  listing: listing,
+                  action: {touch: :down, method: :my_method }
                 })
 wait 1 do
   list_2.left(list_1.width)

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="800"  xml:space="preserve" id="informationiconsvgrepocomCanvas">
+  <g id="informationiconsvgrepocomCanvas-group">
+        <g id="informationiconsvgrepocomCanvas-group2">
+            <g id="informationiconsvgrepocomCanvas-group3">
+                <path id="informationiconsvgrepocomCanvas-bezier" stroke="none" fill="rgb(255, 255, 255)" d="M 399.98,-0 C 179.42,-0 0.01,179.44 0.01,400 0.01,620.57 179.42,800 399.98,800 620.55,800 799.99,620.56 799.99,400 799.99,179.44 620.55,-0 399.98,-0 Z M 399.98,715.32 C 226.13,715.32 84.7,573.86 84.7,400 84.7,226.15 226.13,84.69 399.98,84.69 573.84,84.69 715.3,226.15 715.3,400 715.3,573.86 573.84,715.32 399.98,715.32 Z M 399.98,715.32" />
+              <rect id="informationiconsvgrepocomCanvas-rectangle" stroke="none" fill="rgb(255, 255, 255)" x="334.7" y="361.15" width="130.6" height="290.1" rx="24.6" />
+              <circle id="informationiconsvgrepocomCanvas-oval" stroke="none" fill="rgb(255, 255, 255)" cx="400" cy="221.12" r="72.35" />
+            </g>
+        </g>
+    </g>
+</svg>

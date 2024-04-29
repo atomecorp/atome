@@ -82,11 +82,13 @@ new(molecule: :input) do |params, bloc|
   input_back.holder(text_input)
   input_back
 end
+
 new(molecule: :list) do |params, _bloc|
 
   styles_found = params.delete(:styles)
   element = params.delete(:element)
   listing = params.delete(:listing)
+  action = params.delete(:action)
   new_id = params.delete(:id) || identity_generator
 
   styles_found ||= {
@@ -126,7 +128,14 @@ new(molecule: :list) do |params, _bloc|
   listing.each_with_index do |data, index|
     # let's create the container
     new_atome = { renderers: renderer_found, attach: list.id }.merge(styles_found).merge({ type: :shape })
+
+
     el = Atome.new(new_atome)
+    if action
+      el.touch(action[:touch]) do
+        send(action[:method], data)
+      end
+    end
     el.top((height_found + margin) * index)
     # now the content
     Atome.new({ renderers: renderer_found, attach: el.id }.merge(element).merge(data))
@@ -134,6 +143,7 @@ new(molecule: :list) do |params, _bloc|
   end
   list
 end
+
 new({ molecule: :slider }) do |params, bloc|
 
   default_value = params[:value] ||= 0
