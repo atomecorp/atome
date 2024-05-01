@@ -46,3 +46,8 @@ new({ method: :inside, renderer: :html }) do |params|
     html.style("boxSizing", ' content-box')
   end
 end
+
+
+new({ method: :align, renderer: :html, type: :hash }) do |params|
+  html.style('text-align',  params)
+end

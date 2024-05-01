@@ -133,6 +133,7 @@ new(molecule: :list) do |params, _bloc|
     el = Atome.new(new_atome)
     if action
       el.touch(action[:touch]) do
+        alert :poil
         send(action[:method], data)
       end
     end

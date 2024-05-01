@@ -23,11 +23,12 @@ class Atome
   class << self
     def init_intuition
       Atome.start_click_analysis
-      root = [:box, :blur, :drag, :rotate, :select, :move,:project]
+      root = Universe.tools_root
       root.each_with_index do |root_tool, index|
         tools_scheme = Universe.tools[root_tool]
         A.build_tool({ name: root_tool, scheme: tools_scheme, index: index })
       end
+
       # Universe.tools.each_with_index do |(tool_name, bloc), index|
       #
       #   A.build_tool({ name: tool_name, index: index }, &bloc)
@@ -511,6 +512,7 @@ end
 new({ tool: :rotate }) do
   { alteration: { height: 150, rotate: 45 } }
 end
+
 new({ tool: :move }) do |params|
   active_code = lambda {
     # if  Atome.selection.instance_of? Array
@@ -564,6 +566,7 @@ new({ tool: :move }) do |params|
     int8: { french: :drag, english: :drag, german: :drag } }
 
 end
+
 new({ tool: :project }) do
   active_code = lambda {
 
@@ -579,43 +582,55 @@ new({ tool: :project }) do
   }
   { activation: active_code }
 end
-# new({ tool: :move }) do
-#   inactivate=lambda{|param|
-#      param[:treated].each do |atome_f|
-#        atome_f.drag(false)
-#      end
-#   }
-#   { alteration: { drag: true, left: nil , top: nil}, inactivation: inactivate }
+
+new({tool: :test}) do
+  active_code = lambda {
+    # alert :ok
+    b=Object.box
+    # b=grab(:view).box
+    b.touch(true) do
+      Object.alert :kool
+    end
+  }
+  # active_code=:tito
+  { activation: active_code }
+end
+
+
+# Universe.tools_root=[:box, :blur, :drag, :rotate, :select, :move,:project]
+Universe.tools_root=[:test]
+  Atome.init_intuition
+
+
+
+
+# ################### check below
+
+# b = box({ left: 123, top: 66, selected: false, id: :the_box, color: :green })
+# b.touch(:down) do
+#   puts " on touch : #{Universe.allow_localstorage}"
 # end
-### tool2 test
+# b.resize(true) do
+#   puts :good!
+# end
+# the_circ = circle({ left: 123, top: 120, selected: false, id: :the_circle })
+#
+# the_circ.touch(:down) do |params|
+#   puts " down : params: #{params}, id: #{the_circ.id}"
+# end
+#
+# the_circ.touch(:up) do
+#   puts "up :kool"
+# end
+# the_circ.drag(true) do
+#   puts "drag : now"
+# end
+#
+# bb = box({ left: 333, width: 120, selected: false, id: :big_box })
+#
+# b = box({ id: :the_big_boxy })
 
-Atome.init_intuition
-
-# ###################
-
-b = box({ left: 123, top: 66, selected: false, id: :the_box, color: :green })
-b.touch(:down) do
-  puts " on touch : #{Universe.allow_localstorage}"
-end
-b.resize(true) do
-  puts :good!
-end
-the_circ = circle({ left: 123, top: 120, selected: false, id: :the_circle })
-
-the_circ.touch(:down) do |params|
-  puts " down : params: #{params}, id: #{the_circ.id}"
-end
-
-the_circ.touch(:up) do
-  puts "up :kool"
-end
-the_circ.drag(true) do
-  puts "drag : now"
-end
-
-bb = box({ left: 333, width: 120, selected: false, id: :big_box })
-
-b = box({ id: :the_big_boxy })
+#################@
 # text({ data: :hello, selected: true, left: 120, id: :texting, blur: 12 })
 # text({data: :hello, left: 120, id: :texting})
 # Universe.tools.each_with_index do |(tool_name, bloc), index|
