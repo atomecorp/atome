@@ -20,9 +20,11 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
       when :category
         html.remove_class(value)
       else
-        atome_ids_found = send(object_id_to_remove[:all])
-        atome_ids_found.each do |atome_id|
-          remove(atome_id)
+        if object_id_to_remove[:all]
+          atome_ids_found = send(object_id_to_remove[:all])
+          atome_ids_found.each do |atome_id|
+            remove(atome_id)
+          end
         end
       end
     end
@@ -44,9 +46,7 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
       html.style("boxShadow", 'none')
       html.style("filter", 'none')
       @apply.delete(object_id_to_remove)
-      # apply(@apply)
     when :border
-      # alert :poipoipoipoipo
       html.style("border", 'none')
       html.style("filter", 'none')
       @apply.delete(object_id_to_remove)
@@ -81,20 +81,20 @@ end
 #
 #   html.style(:border, "#{type} #{thickness}px rgba(#{red},#{green},#{blue},#{alpha})")
 # end
-new({ method: :thickness, type: :integer, renderer: :html})
+new({ method: :thickness, type: :integer, renderer: :html })
 
 # end
-new({ method: :pattern, type: :integer, renderer: :html})
+new({ method: :pattern, type: :integer, renderer: :html })
 
 new({ method: :fill, renderer: :html }) do |params|
   html.fill(params)
 end
 
-new({ method: :opacity, type: :integer, renderer: :html}) do |value|
+new({ method: :opacity, type: :integer, renderer: :html }) do |value|
   # html.opacity(value)
-  html.style('opacity',value)
+  html.style('opacity', value)
 end
 
 new({ method: :visual, type: :string, renderer: :html, specific: :text }) do |value, _user_proc|
-    html.style('fontFamily', value)
+  html.style('fontFamily', value)
 end

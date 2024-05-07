@@ -1339,6 +1339,7 @@ STRDELIM
   # Table manipulation
 
   def table(data)
+
     table_html = JS.global[:document].createElement('table')
     thead = JS.global[:document].createElement('thead')
 
@@ -1358,7 +1359,7 @@ STRDELIM
 
     table_html.appendChild(thead)
     tbody = JS.global[:document].createElement('tbody')
-
+    # alert data
     data.each_with_index do |row, row_index|
       tr = JS.global[:document].createElement('tr')
 
@@ -1387,6 +1388,20 @@ STRDELIM
     table_html.appendChild(tbody)
     JS.global[:document].querySelector("##{@id}").appendChild(table_html)
   end
+
+
+
+  # Helper function to handle Atome objects
+  def handle_atome(atome, td_element)
+    atome.fit(cell_height)
+    html_element = JS.global[:document].getElementById(atome.id.to_s)
+    td_element.appendChild(html_element)
+    html_element[:style][:transformOrigin] = 'top left'
+    html_element[:style][:position] = 'relative'
+    atome.top(0)
+    atome.left(0)
+  end
+
 
   def refresh_table(_params)
     # first we need to extact all atome from the table or they will be deleted by the table refres
@@ -1425,18 +1440,19 @@ STRDELIM
   end
 
   def set_td_style(td)
-    cell_height = 50
+    cell_height = @original_atome.component[:height]
+    cell_width = @original_atome.component[:width]
     td[:style][:border] = '1px solid black'
     td[:style][:backgroundColor] = 'white'
     td[:style][:boxShadow] = '10px 10px 5px #888888'
-    td[:style][:width] = "#{cell_height}px"
-    td[:style]['min-width'] = "#{cell_height}px"
+    td[:style][:width] = "#{cell_width}px"
+    td[:style]['min-width'] = "#{cell_width}px"
     td[:style]['max-width'] = "#{cell_height}px"
     td[:style]['min-height'] = "#{cell_height}px"
     td[:style]['max-height'] = "#{cell_height}px"
     td[:style][:height] = "#{cell_height}px"
     td[:style][:overflow] = 'hidden'
-    { cell_height: cell_height, cell_width: cell_height }
+    { cell_height: cell_height, cell_width: cell_width }
   end
 
   def insert_cell(params)
