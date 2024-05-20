@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<title>Piano Roll Demo</title>
+	<script src="https://unpkg.com/webaudio-pianoroll"></script>
+</head>
+<body>
+	<webaudio-pianoroll id="pianoroll"></webaudio-pianoroll>
+	<button onclick="playNotes()">Lancer la lecture</button>
+
+	<script>
+		const pianoRoll = document.getElementById('pianoroll');
+		
+		// Fonction pour simuler la lecture de notes
+		function playNotes() {
+			pianoRoll.setNotes([{time: 0, note: 60, duration: 1}, {time: 1, note: 62, duration: 1}]);
+			pianoRoll.startPlay(0); // Commence à jouer à partir du temps 0
+		}
+		
+		pianoRoll.addEventListener('noteon', e => {
+			console.log('Note on:', e.detail);
+		});
+		pianoRoll.addEventListener('noteoff', e => {
+			console.log('Note off:', e.detail);
+		});
+	</script>
+</body>
+</html>
