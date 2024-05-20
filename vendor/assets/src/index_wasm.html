@@ -21,12 +21,12 @@
     <script type="text/javascript" src="js/third_parties/papaparse.min.js" defer></script>
     <script defer src="js/atome/atome_helpers/communication.js" type="text/javascript"></script>
     <script defer src="js/atome/atome_helpers/file.js" type="text/javascript"></script>
-        <script>
-            // to prevent right click
-            document.addEventListener("contextmenu", function (e) {
-                e.preventDefault();
-            });
-        </script>
+<!--        <script>-->
+<!--            // to prevent right click-->
+<!--            document.addEventListener("contextmenu", function (e) {-->
+<!--                e.preventDefault();-->
+<!--            });-->
+<!--        </script>-->
     <title>atome</title>
 </head>
 <body id='user_view' class='atome'>
@@ -48,16 +48,22 @@
     const NativeMode = false; // used by atome.js to load code on the fly
 </script>
 <script defer src="js/atome/atome.js" type="text/javascript"></script>
+<script>
+    // to prevent right click
+    document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+    });
+</script>
 <script defer>
-    document.addEventListener('touchstart', function(event) {
+    document.addEventListener('touchstart', function (event) {
         if (event.touches.length > 1) {
             event.preventDefault();
         }
-    }, { passive: false });
-    document.addEventListener('wheel', function(event) {
+    }, {passive: false});
+    document.addEventListener('wheel', function (event) {
         if (event.ctrlKey === true) {
-            event.preventDefault(); // Empêche le zoom quand Ctrl est pressé et que l'utilisateur scroll avec le trackpad
+            event.preventDefault(); // prevent zoom
         }
-    }, { passive: false });
-</script >
+    }, {passive: false});
+</script>
 </html>

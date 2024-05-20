@@ -63,6 +63,17 @@ new({ atome: :raw })
 new({ atome: :shape })
 new({ atome: :code })
 new({ atome: :audio })
+new({ sanitizer: :audio }) do |params|
+  unless params.instance_of? Hash
+    # TODO : we have to convert all image to png or maintain a database with extension
+    # FIXME : temporary patch that add .mp4 to the string if no extension is found
+    params = "#{params}.mp4" if params.to_s.split('.').length == 1
+
+    params = { path: "./medias/audios/#{params}" }
+  end
+  # TODO : the line below should get the value from default params Essentials
+  params
+end
 new({ atome: :element })
 new({ sanitizer: :element }) do |params|
   default_params = { data: '' }

@@ -12,3 +12,4 @@ gem 'faye-websocket'
 gem "minitest", "~> 5.0"
 
 gem 'rubocop', group: 'development', require: false
+gem 'rubocop', group: 'development', require: false

@@ -614,11 +614,6 @@ class Object
   end
 
 
-  JS.eval(<<~JS)
-  window.preventDefaultAction = function(e) {
-    e.preventDefault();
-  }
-JS
 
   def touch_allow(allow)
     if allow
@@ -633,13 +628,13 @@ JS
 
   def allow_copy(allow)
     if allow
-      # Rétablir la sélection et la copie de texte
+      # allow selection and text copy
       JS.eval(<<~JS)
       document.body.style.userSelect = 'auto';  // Permet la sélection de texte
       document.removeEventListener('copy', preventDefaultAction);  // Permet la copie
     JS
     else
-      # Bloquer la sélection et la copie de texte
+      # lock selection and text copy
       JS.eval(<<~JS)
       document.body.style.userSelect = 'none';  // Bloque la sélection de texte
       document.addEventListener('copy', preventDefaultAction);  // Bloque la copie
@@ -647,12 +642,7 @@ JS
     end
   end
 
-  # Définit la fonction preventDefaultAction dans un contexte global pour être utilisée par allow_copy
-  JS.eval(<<~JS)
-  window.preventDefaultAction = function(e) {
-    e.preventDefault();
-  }
-JS
+
 
 
 end

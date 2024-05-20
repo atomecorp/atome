@@ -58,7 +58,7 @@ html_desc = <<STR
     </nav>
 </header>
 
-<section id='title' class="section my_class" style='left: 333px;color: yellow'>
+<section id='div_id' class="section my_class" style='left: 333px;color: yellow'>
     <h2>PRODUCTIONS AUDIOVISUELLES</h2>
     <!-- Contenu de la section -->
 </section>
@@ -105,8 +105,29 @@ b.hypertext(html_desc)
 # get tag content convert to data
 # get style and class convert to particle
 # end
-b.hyperedit(:title) do |tag_desc|
-  puts tag_desc
+b.hyperedit(:div_id) do |tag_desc|
+  puts  tag_desc.class
+end
+
+  wait 2 do
+    div_result = HTML.locate(id: 'div_id') # find by ID
+
+    atomized_el= atomizer({ target: div_result, id: :my_second_html_obj })
+    atomized_el.rotate(55)
+    atomized_el.color(:purple)
+    atomized_el.position(:absolute)
+    atomized_el.left(255)
+    atomized_el.top(255)
+  end
+
+
+wait 3 do
+  # or handle the objet in pure ruby js style
+  div_result = HTML.locate(id: 'div_id') # find by ID
+  div_result[:style][:left]= "66px"
+  puts "the div is : #{div_result[:style][:left]}"
+
+
 end
 
 # TODO : create an html to atome converter

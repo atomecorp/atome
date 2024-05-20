@@ -4,9 +4,10 @@ new({ renderer: :html, method: :attach, type: :string }) do |parent_found, _user
   html.append_to(parent_found)
 end
 
+
 new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_proc|
 
-  # TODO : factorise code below between text and shape, especially shadow as code is written twice and  identical
+  # TODO : factorise code below between text and shape, especially shadow as code is written twice and identical
   case parent_found.type
   when :shadow
     shadows_to_apply = { filter: [], boxShadow: [] }
@@ -32,7 +33,6 @@ new({ renderer: :html, method: :apply, type: :string }) do |parent_found, _user_
     html.style("boxShadow", box_shadow)
     html.style("filter", drop_shadow)
   when :color
-
     red = parent_found.red * 255
     green = parent_found.green * 255
     blue = parent_found.blue * 255

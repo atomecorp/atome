@@ -154,7 +154,8 @@ def atome_genesis
   end
 end
 
-def init_database # this method is call from JS (atome/communication) at WS connection
+# this method is call from JS (atome/communication) at WS connection
+def init_database
   # we init the db file eDen
   A.sync({ action: :init_db, data: { database: :eDen } }) do |data|
     Universe.database_ready = data[:data][:message] == 'database_ready'

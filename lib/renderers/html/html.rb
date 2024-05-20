@@ -4,8 +4,6 @@
 
 class HTML
 
-
-
   # def id
   #   :poil
   # end
@@ -221,7 +219,6 @@ STRDELIM
       particles_from_style[key.to_sym] = value if key && value
     end
 
-    # alert "hyperedit"
 
     particles_found = particles_found.merge(particles_from_style)
     current_atome = grab(@id)
@@ -378,6 +375,18 @@ STRDELIM
     self
   end
 
+  def audio(id)
+    # we remove any element if the id already exist
+    check_double(id)
+    markup_found = @original_atome.markup || :audio
+    @element_type = markup_found.to_s
+    @element = JS.global[:document].createElement(@element_type)
+    JS.global[:document][:body].appendChild(@element)
+    add_class('atome')
+    self.id(id)
+    self
+  end
+
   def www(id)
     # we remove any element if the id already exist
     check_double(id)
@@ -505,7 +514,6 @@ STRDELIM
     end
   end
 
-
   def transform(property, value = nil)
     transform_needed = "#{property}(#{value}deg)"
     @element[:style][:transform] = transform_needed.to_s
@@ -578,8 +586,6 @@ STRDELIM
     @element[:style][:"-webkit-backdrop-filter"] = filter_needed
   end
 
-
-
   def currentTime(time)
     @element[:currentTime] = time
   end
@@ -598,7 +604,6 @@ STRDELIM
 
   def action(_particle, action_found, option = nil)
 
-    # alert option
     if action_found == :stop
       currentTime(option)
       @element.pause
@@ -1146,13 +1151,11 @@ STRDELIM
   end
 
   def touch_tap(_option)
-    # alert :touch_tap
     @element[:style][:cursor] = 'pointer'
     interact = JS.eval("return interact('##{@id}')")
     touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
     # unless @touch_removed[:tap]
     interact.on('tap') do |native_event|
-      # alert 'touchy'
       event = Native(native_event)
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when using atome method such as shape ,
@@ -1359,7 +1362,6 @@ STRDELIM
 
     table_html.appendChild(thead)
     tbody = JS.global[:document].createElement('tbody')
-    # alert data
     data.each_with_index do |row, row_index|
       tr = JS.global[:document].createElement('tr')
 
@@ -1389,8 +1391,6 @@ STRDELIM
     JS.global[:document].querySelector("##{@id}").appendChild(table_html)
   end
 
-
-
   # Helper function to handle Atome objects
   def handle_atome(atome, td_element)
     atome.fit(cell_height)
@@ -1401,7 +1401,6 @@ STRDELIM
     atome.top(0)
     atome.left(0)
   end
-
 
   def refresh_table(_params)
     # first we need to extact all atome from the table or they will be deleted by the table refres
@@ -1442,9 +1441,21 @@ STRDELIM
   def set_td_style(td)
     cell_height = @original_atome.component[:height]
     cell_width = @original_atome.component[:width]
-    td[:style][:border] = '1px solid black'
+    # shadow_found = @original_atome.component[:shadow]
+    # if shadow_found
+    #   red = shadow_found[:red] * 255
+    #   green = shadow_found[:green] * 255
+    #   blue = shadow_found[:blue] * 255
+    #   alpha = shadow_found[:alpha]
+    #   left = shadow_found[:left]
+    #   top = shadow_found[:top]
+    #   blur = shadow_found[:blur] # new correct behavior all atome's value should now be get using :value,here to resolve conflict  with blur and back blur
+    #   inset = :inset if shadow_found[:invert]
+    #   shadow_created = "#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}) #{inset}"
+    # end
+    # td[:style][:border] = '1px solid black'
     td[:style][:backgroundColor] = 'white'
-    td[:style][:boxShadow] = '10px 10px 5px #888888'
+    # td[:style][:boxShadow] = shadow_created
     td[:style][:width] = "#{cell_width}px"
     td[:style]['min-width'] = "#{cell_width}px"
     td[:style]['max-width'] = "#{cell_height}px"
@@ -1641,7 +1652,7 @@ STRDELIM
 
   # atomisation!
   def atomized(html_object)
-    html_object = html_object[0] if html_object.instance_of? Array
+    # html_object = html_object[0] if html_object.instance_of? Array
     @element = html_object
   end
 

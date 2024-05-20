@@ -16,13 +16,15 @@ class Atome
     # preset_params =  {preset: atome_preset}
     basic_params[:type] = preset_params[:type] || :element
     # basic_params[:aid] =  identity_generator(:a)
-    basic_params[:id] = params[:id]|| identity_generator
+    # alert "common =>  #{params[:id]}"
+    # alert "basic_params  #{basic_params[:id].class}"
+    basic_params[:id] = params[:id] || identity_generator
     basic_params[:renderers] = @renderers || preset_params[:renderers]
     essential_params = basic_params.merge(preset_params)
     #
     reordered_params = essential_params.reject { |key, _| params.has_key?(key) }
     params = reordered_params.merge(params)
-    params[:id]=params[:id].to_sym
+    params[:id] = params[:id].to_sym
     # condition to handle color/shadow/paint atomes that shouldn't be attach to view
     if Universe.applicable_atomes.include?(atome_preset)
       unless params[:affect]
@@ -36,23 +38,12 @@ class Atome
       params[:attach] = params[:attach] || @id || :view
     end
     # we reorder the hash
-   reorder_particles(params)
+    reorder_particles(params)
   end
 
   def preset_common(params, &bloc)
-
-    ## if an atome with current id exist we update the ID in the params
-    # params[:id] = "#{params[:id]}_#{Universe.atomes.length}" if grab(params[:id])
-    # if Universe.atomes[params[:id]]
-    #   alert "atome found : #{ grab(params[:id])}"
-    #   grab(params[:id])
-    # else
-
     Atome.new(params, &bloc)
-    # end
   end
-
-
 
   # def box(params = {}, &bloc)
   #   atome_preset = :box

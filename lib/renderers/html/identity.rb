@@ -17,6 +17,9 @@ end
 new({ method: :type, type: :string, renderer: :html, specific: :video }) do |_value, _user_proc|
   html.video(@id)
 end
+new({ method: :type, type: :string, renderer: :html, specific: :audio }) do |_value, _user_proc|
+  html.audio(@id)
+end
 
 new({ method: :type, type: :string, renderer: :html, specific: :www }) do |_value, _user_proc|
   html.www(@id)
@@ -95,7 +98,7 @@ new({ method: :data, type: :string, specific: :table, renderer: :html }) do |val
 end
 
 new({ method: :type, type: :hash, specific: :atomized, renderer: :html }) do |value, _user_proc|
-  html.atomized(value)
+  html.atomized(alien)
 end
 
 
