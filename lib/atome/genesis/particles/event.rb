@@ -334,11 +334,33 @@ new({ particle: :overflow, category: :event, type: :boolean }) do |params, bloc|
   params
 
 end
-new({ particle: :animate, category: :event, type: :hash }) do |params|
+
+class Atome
+  def animation_callback(proc_sub_category, value=nil)
+    # puts  "#{p◊roc_sub_category}"
+    proc_found = @animate_code[proc_sub_category]
+    # puts proc_found
+    instance_exec(value,&proc_found) if proc_found.is_a?(Proc)
+  end
+end
+
+new({ particle: :animate, category: :event, type: :hash }) do |params, proc|
   if params.instance_of? Hash
     params = { from: 0, to: 300, duration: 1000 }.merge(params)
   else
     params = { from: 0, to: 300, duration: 1000 }
   end
-  html.play_animation(params)
+  # @animate_code["#{params[:particle]}"] = proc
+  if params[:end]
+    @animate_code["#{params[:end]}_end"] = proc
+  else
+    @animate_code||= {}
+    @animate_code["#{params[:particle]}"] = proc
+  end
+
+  params
+end
+
+new ({ after: :animate }) do |params|
+  html.animate(params) unless params[:end] || params[:start]
 end

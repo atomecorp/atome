@@ -45,14 +45,14 @@ class HTML
   def add_font_to_css(params)
     font_path = params[:path]
     font_name = params[:name]
-    str_to_eval = <<STRDELIM
-var styleSheet = document.styleSheets[0];
-styleSheet.insertRule(`
-@font-face {
-  font-family: '#{font_name}';
-  src: url('../medias/fonts/#{font_path}/#{font_name}.ttf') format('truetype');
-}`, styleSheet.cssRules.length);
-STRDELIM
+    str_to_eval = <<~STRDELIM
+      var styleSheet = document.styleSheets[0];
+      styleSheet.insertRule(`
+      @font-face {
+        font-family: '#{font_name}';
+        src: url('../medias/fonts/#{font_path}/#{font_name}.ttf') format('truetype');
+      }`, styleSheet.cssRules.length);
+    STRDELIM
     JS.eval(str_to_eval)
   end
 
@@ -1305,35 +1305,27 @@ STRDELIM
 
   # animation below
   def animate(animation_properties)
-    command = <<~JS
-          var target_div = document.getElementById('#{@id}');
-          window.currentAnimation = popmotion.animate({
-            from: #{animation_properties[:from]},
-            to: #{animation_properties[:to]},
-            duration: #{animation_properties[:duration]},
-            onUpdate: function(v) {
-      atomeJsToRuby("puts x= "+v)
-      atomeJsToRuby("grab('#{@id}').left("+v+")")
-            },
-            onComplete: function() {
-              window.currentAnimation = null;
-      atomeJsToRuby("puts :complete")
-            }
-          });
+    prop= animation_properties[:particle]
+    command = <<~JS 
+                var target_div = document.getElementById('#{@id}');
+                window.currentAnimation = popmotion.animate({
+                  from: #{animation_properties[:from]},
+                  to: #{animation_properties[:to]},
+                  duration: #{animation_properties[:duration]},
+                  onUpdate: function(v) {
+      atomeJsToRuby("grab('#{@id}').animation_callback('#{prop}', "+v+")")
+            atomeJsToRuby("grab('#{@id}').#{prop}("+v+")")
+                  },
+                  onComplete: function(v) {
+                    window.currentAnimation = null;
+      atomeJsToRuby("grab('#{@id}').animation_callback('#{prop}_end')")
+                  }
+                });
     JS
     JS.eval(command)
   end
 
-  def play_animation(properties)
-    puts 'change for standard method : action'
-    required_keys = [:from, :to, :duration]
-    unless properties.is_a?(Hash) && (required_keys - properties.keys).empty?
-      raise ArgumentError, 'Properties must be a hash with :from, :to, and :duration keys'
-    end
 
-    animate(properties)
-
-  end
 
   def stop_animation
     JS.eval('if (window.currentAnimation) window.currentAnimation.stop();')

@@ -87,5 +87,33 @@
 
 b=box({id: :the_box})
 
-  b.animate({ to: 90 })
+  b.animate({ to: 333, particle: :width, duration: 3000}) do |val|
+    puts "width +#{val}"
+  end
+
+b.animate({ to: 456, particle: :left, duration: 5000}) do |val|
+  puts "left +#{val}"
+end
+
+b.animate({  end: :left}) do |val|
+  puts "left ended"
+end
+
+b.animate({ to: 69, particle: :smooth, duration: 10000}) do |val|
+  puts "smooth +#{val}"
+end
+
+b.animate({ end: :smooth}) do |val|
+  puts " cool smooth end now!!!"
+end
+
+b.animate({ to: 90, particle: :rotate, duration: 10000}) do |val|
+  puts "rotate +#{val}"
+end
+
+b.animate({ to: 222, particle: :top, duration: 10000}) do |val|
+  puts "top +#{val}"
+end
+
+
 

@@ -1,7 +1,7 @@
 #  frozen_string_literal: true
-#
-# # audio tag
-a = audio({ path: 'medias/audios/clap.wav', id: :audioElement })
+
+# audio tag
+a = audio({ path: 'medias/audios/clap.wav', id: :basic_audio })
 b=box({id: :playButton})
 b.text(:audio_tag)
 a.left(333)
@@ -10,26 +10,21 @@ b.touch(:down) do
 end
 
 
-#
-#
+
 ### Web Audio
-# Initialisation des variables globales
+ audio({ path: 'medias/audios/clap.wav', id: :audioElement })
 @audio_context = JS.eval('return new AudioContext()')
 @audio_element = JS.global[:document].getElementById('audioElement')
 @track = @audio_context.createMediaElementSource(@audio_element)
 
-# Ajout d'un nœud de gain (volume)
 @gain_node = @audio_context.createGain()
-@gain_node[:gain][:value] = 0.5  # Réduit le volume à 50%
-#
-# # Connexion de la chaîne
-@track.connect(@gain_node)  # Connecte la source au nœud de gain
-@gain_node.connect(@audio_context[:destination])  # Connecte le nœud de gain à la sortie
+@gain_node[:gain][:value] = 0.5
+
+@track.connect(@gain_node)
+@gain_node.connect(@audio_context[:destination])
 
 def play_audio
-  # Réactive l'AudioContext s'il est suspendu
   @audio_context[:resume].to_s if @audio_context[:state].to_s == 'suspended'
-  # Joue l'audio
   @audio_element.play
 end
 b2=box({left: 166})
@@ -45,7 +40,6 @@ bb.text(:wadjs)
 init_code = "window.snare = new Wad({source : 'medias/audios/clap.wav'});"
 JS.eval(init_code)
 
-# Code JavaScript pour jouer le son et l'arrêter après 300 ms, dans un bloc indépendant
 play_code = <<~STRDEL
   window.snare.play();
   setTimeout(function() {
@@ -53,17 +47,7 @@ play_code = <<~STRDEL
   }, 300);
 STRDEL
 
-# Exécution du bloc indépendant pour jouer et arrêter le son
-# JS.eval(play_code)
-# snare=JS.eval("return new Wad({source : 'medias/audios/clap.wav'})")
-# js_code=<<STRDEL
-#      snare = #{snare};
-#   snare =new Wad({source : 'medias/audios/clap.wav'})
-#   snare.play();
-#   setTimeout(() => {
-#   snare.stop();
-#   }, "300");
-# STRDEL
+
 bb.touch(:down) do
   JS.eval(play_code)
 end
