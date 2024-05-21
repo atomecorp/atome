@@ -630,15 +630,15 @@ class Object
     if allow
       # allow selection and text copy
       JS.eval(<<~JS)
-      document.body.style.userSelect = 'auto';  // Permet la sélection de texte
-      document.removeEventListener('copy', preventDefaultAction);  // Permet la copie
-    JS
+        document.body.style.userSelect = 'auto';  // allow text slectiion 
+        document.removeEventListener('copy', preventDefaultAction);  // allow copy 
+      JS
     else
       # lock selection and text copy
       JS.eval(<<~JS)
-      document.body.style.userSelect = 'none';  // Bloque la sélection de texte
-      document.addEventListener('copy', preventDefaultAction);  // Bloque la copie
-    JS
+        document.body.style.userSelect = 'none';  // prevent text selection
+        document.addEventListener('copy', preventDefaultAction);  // prevent copy 
+      JS
     end
   end
 
