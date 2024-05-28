@@ -642,7 +642,53 @@ class Object
     end
   end
 
+  def above(item, margin)
+    pos = item.to_px(:bottom) + item.height + margin
+    if item.display == :none
+      33
+    else
+      pos
+    end
+  end
 
+  def below(item, margin)
+    pos = item.to_px(:top) + item.to_px(:height) + margin
+    if item.display == :none
+      0
+    else
+      pos
+    end
+
+  end
+
+  def after(item, margin)
+    left_f = if item.left.instance_of?(Integer)
+               item.left
+             else
+               item.to_px(:left)
+             end
+
+    width_f = if item.width.instance_of?(Integer)
+                item.width
+              else
+                item.to_px(:width)
+              end
+    pos = left_f + width_f + margin
+    if item.display == :none
+      0
+    else
+      pos
+    end
+  end
+
+  def before(item, margin)
+    pos = item.to_px(:right) + item.width + margin
+    if item.display == :none
+      0
+    else
+      pos
+    end
+  end
 
 
 end
@@ -686,6 +732,8 @@ class CssProxy
     parsed = JSON.parse(msg)
     bloc.call(parsed)
   end
+
+
 
 end
 
