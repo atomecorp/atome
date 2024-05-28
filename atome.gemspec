@@ -52,7 +52,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
 
-  spec.add_runtime_dependency 'artoo', '~> 1.8.2'
+  # spec.add_runtime_dependency 'artoo', '~> 1.8.2'
   # spec.add_runtime_dependency 'arduino_firmata', '~> 0.3'
   # spec.add_runtime_dependency 'eVe', '~>  0.1.0'
   spec.add_runtime_dependency 'eventmachine', '~> 1.2.7'
@@ -90,7 +90,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency  'wdm', '>= 0.1.0' if Gem.win_platform?
 
   # patch because guard have bad dependency
-  # spec.add_runtime_dependency  'pry', '>= 0.14.2'
+  spec.add_runtime_dependency  'pry', '>= 0.14.2'
 
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"

@@ -373,7 +373,7 @@ module Intuition
 
 end
 
-# ##############################################################################################
+########################### Test  check and verification below ############################
 
 new({ tool: :blur }) do |params|
 
@@ -585,11 +585,9 @@ end
 
 new({tool: :test}) do
   active_code = lambda {
-    # alert :ok
-    b=Object.box
-    # b=grab(:view).box
+    b=grab(:view).box({})
     b.touch(true) do
-      Object.alert :kool
+  alert :kool
     end
   }
   # active_code=:tito
@@ -597,8 +595,8 @@ new({tool: :test}) do
 end
 
 
-# Universe.tools_root=[:box, :blur, :drag, :rotate, :select, :move,:project]
-Universe.tools_root=[:test]
+Universe.tools_root=[:box, :blur, :drag, :rotate, :select, :move,:project]
+# Universe.tools_root=[:test]
   Atome.init_intuition
 
 

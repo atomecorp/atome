@@ -1303,13 +1303,14 @@ class HTML
     end
   end
 
+
   # animation below
   def animate(animation_properties)
     prop= animation_properties[:particle]
     command = <<~JS 
                 var target_div = document.getElementById('#{@id}');
                 window.currentAnimation = popmotion.animate({
-                  from: #{animation_properties[:from]},
+                  from: #{animation_properties[ :from]},
                   to: #{animation_properties[:to]},
                   duration: #{animation_properties[:duration]},
                   onUpdate: function(v) {
