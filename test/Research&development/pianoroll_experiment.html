@@ -80,6 +80,18 @@
 
 	<button onclick="AddNote()">Add Note</button>
 
+<button onclick="changeEditMode('dragmono')">Drag Mono</button>
+<button onclick="changeEditMode('dragpoly')">Drag Poly</button>
+<button onclick="changeEditMode('drawmono')">Draw Mono</button>
+<button onclick="changeEditMode('drawpoly')">Draw Poly</button>
+<button onclick="changeEditMode('off')">Off</button>
+
+<script>
+	function changeEditMode(mode) {
+		document.getElementById('pianoroll').editmode = mode;
+	}
+</script>
+
 <br/>
 <hr/>
 </body>
