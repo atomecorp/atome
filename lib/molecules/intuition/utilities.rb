@@ -129,7 +129,6 @@ new(molecule: :list) do |params, _bloc|
     # let's create the container
     new_atome = { renderers: renderer_found, attach: list.id }.merge(styles_found).merge({ type: :shape })
 
-
     el = Atome.new(new_atome)
     if action
       el.touch(action[:touch]) do
@@ -329,11 +328,11 @@ class Atome
 
     width(params[:width])
     height(params[:height])
-    current_matrix=self
+    current_matrix = self
     real_width = current_matrix.to_px(:width)
     real_height = current_matrix.to_px(:height)
     spacing = current_matrix.data[:spacing]
-    matrix_cells= current_matrix.data[:matrix]
+    matrix_cells = current_matrix.data[:matrix]
 
     total_spacing_x = spacing * (matrix_cells.collect.length ** (0.5) + 1)
     total_spacing_y = spacing * (matrix_cells.collect.length ** (0.5) + 1)
@@ -363,13 +362,21 @@ class Atome
 end
 
 new(molecule: :matrix) do |params, &bloc|
-  id = params[:id]
-  rows = params[:rows]
-  columns = params[:columns]
-  spacing = params[:spacing]
-  size = params[:size]
+  params  ||= {}
+  # We test if self is main if so we attach the matrix to the view
+  parent_found = if self == self
+                   grab(:view)
+                 else
+                   self
+                 end
 
-  parent_found = self
+  id = params[:id] || identity_generator
+  rows = params[:rows] || 8
+  columns = params[:columns] || 8
+  spacing = params[:spacing] || 6
+  size = params[:size] || '100%'
+
+  # parent_found = self
   current_matrix = group({ id: id })
 
   current_matrix.data({ spacing: spacing, size: size })
@@ -414,7 +421,7 @@ new(molecule: :matrix) do |params, &bloc|
   end
   current_matrix.collect(matrix_cells)
   matrix_back.cells(current_matrix)
-  params= params.merge({matrix: current_matrix})
+  params = params.merge({ matrix: current_matrix })
   matrix_back.data(params)
   matrix_back
 end
