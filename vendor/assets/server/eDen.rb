@@ -16,6 +16,25 @@ class EDen
       Database.db_access
     end
 
+    def email_exist(data, message_id, ws)
+
+      mail = data["email"]
+      puts "mail : #{mail}"
+      db = db_access
+      puts "db : #{db}"
+      user_table = db[:user]
+      puts "user_table : #{user_table}"
+      sanitized_email = sanitize_email(mail)
+      puts "sanitized_email : #{sanitized_email}"
+      user = user_table.where(email: sanitized_email).first
+      puts "user : #{user}"
+      # build the answer telling if email exist or not
+      email_exists_response = !user.nil?
+      puts "email_exists_response : #{email_exists_response}"
+      # response return
+      { data: {email_exist: email_exists_response}, message_id: message_id }
+    end
+
     def terminal(data, message_id, ws)
       { data: { message: `#{data}` }, message_id: message_id }
     end

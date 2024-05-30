@@ -20,6 +20,17 @@ element({ aid: :toolbox_style, id: :toolbox_style, data: {
 } })
 
 class Atome
+
+  def toolbox(tool_list)
+    # alert tool_list
+    # alert Universe.tools_root
+@toolbox=tool_list[:tools]
+    tool_list[:tools].each_with_index do |root_tool, index|
+      tools_scheme = Universe.tools[root_tool]
+      build_tool({ name: root_tool, scheme: tools_scheme, index: index ,toolbox: tool_list[:toolbox] })
+    end
+    # alert grab(:blur_tool).attached
+  end
   class << self
     def init_intuition
       Atome.start_click_analysis
@@ -29,6 +40,10 @@ class Atome
         A.build_tool({ name: root_tool, scheme: tools_scheme, index: index ,toolbox: toolbox_root[:toolbox] })
       end
     end
+
+
+
+
 
     def selection
       grab(Universe.current_user).selection.collect
@@ -50,7 +65,6 @@ class Atome
               id_found = atome_touched[:id].to_s
               atome_found = grab(id_found)
               unless atome_found && atome_found.tag[:system]
-
                 # if atome_found
                 Universe.active_tools.each do |tool|
                   apply_tool(tool, atome_found, event)
@@ -170,8 +184,8 @@ class Atome
   def remove_get_atome_on_touch
     @touch_action = nil
   end
-
   def build_tool(params)
+
     # here is the main entry for tool creation
     language ||= grab(:view).language
 
@@ -236,13 +250,14 @@ class Atome
 
                                 })
     edition = "M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.9c3.9-3.9 3.9-10.2 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2c-1.9 11.1 1.5 21.9 9.4 29.8 6.6 6.4 14.9 9.9 23.8 9.9z m67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"
-
     icon= tool.vector({ tag: { system: true }, left: 9, top: :auto, bottom: 9, width: 18, height: 18, id: "#{tool_name}_icon",
-                  data: { path: { d: edition, id: :p1, stroke: :black, 'stroke-width' => 37, fill: :white } }})
+                        data: { path: { d: edition, id: "p1_#{tool_name}_icon", stroke: :black, 'stroke-width' => 37, fill: :white } }})
+
+    icon.color(:yellowgreen)
     # wait 2 do
     # alert "#{tool_name}_icon"
     # alert "current vector : #{grab("#{tool_name}_icon").id}"
-    grab("#{tool_name}_icon").color(:blue)
+    # grab("#{tool_name}_icon").color(:blue)
     # icon.color(:red)
     # end
     # icon= tool_scheme[:icon] || params[:name]
@@ -251,6 +266,7 @@ class Atome
     code_for_zone = tool_scheme[:zone]
     tool.instance_exec(tool, &code_for_zone) if code_for_zone.is_a? Proc
     tool.touch(true) do
+      # alert "self is : #{tool.id}"
       # we add all specific tool actions to @tools_actions_to_exec hash
       # we set allow_tool_operations to false to ignore tool operation when clicking on a tool
       Universe.allow_tool_operations = false
@@ -302,6 +318,10 @@ class Atome
         # activate tool analysis test
         Atome.activate_click_analysis
       else
+        tool.instance_variable_get("@toolbox").each do |tools_in_toolbox|
+          # alert "#{tools_in_toolbox}_tool"
+          grab("#{tools_in_toolbox}_tool").delete({force: true})
+        end
         Universe.allow_localstorage = false
         # when closing delete tools action from tool_actions_to_exec
         Universe.active_tools.delete(tool_name)
@@ -356,4 +376,5 @@ class Atome
       end
     end
   end
+
 end

@@ -8,8 +8,8 @@ new({ particle: :run, category: :utility, type: :boolean }) do |params|
 end
 # new({ particle: :broadcast })
 
-def delete_recursive(atome_id)
-  return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system])
+def delete_recursive(atome_id, force=false)
+  return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system]) unless force
 
   parent_id_found = grab(atome_id).attach
   parent_found = grab(parent_id_found)
@@ -17,11 +17,11 @@ def delete_recursive(atome_id)
   new_array.delete(atome_id)
   parent_found.instance_variable_set('@attached', new_array)
   grab(atome_id).attached.each do |atome_id_found|
-    delete_recursive(atome_id_found)
+    delete_recursive(atome_id_found, force)
   end
   grab(atome_id).render(:delete, { :recursive => true })
   grab(atome_id).touch(:remove)
-  Universe.delete(atome_id)
+  Universe.delete(grab(atome_id).aid)
 end
 
 new({ particle: :delete, category: :utility, type: :boolean, render: false }) do |params|
@@ -48,6 +48,24 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
       end
       Universe.delete(@aid)
     end
+  # elsif params == :force
+  #   cells.delete(true)
+  #   group.delete(true)
+  #   # now we detach the atome from it's parent
+  #   # now we init rendering
+  #   render(:delete, params)
+  #   # the machine delete the current atome from the universe
+  #   id_found = @id.to_sym
+  #   if @attach
+  #     parent_found = grab(@attach)
+  #     parent_found.attached.delete(id_found)
+  #   end
+  #   @affect&.each do |affected_atome|
+  #     affected_found = grab(affected_atome)
+  #     affected_found.apply.delete(id_found)
+  #     affected_found.refresh
+  #   end
+  #   Universe.delete(@aid)
   elsif params.instance_of? Hash
     # if we are on a matrix we delete cells found & group found
     cells.delete(true)
@@ -57,14 +75,22 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
         attached.each do |atttached_atomes|
           delete_recursive(atttached_atomes)
         end
-        # group.each do |el|
-        #   delete_recursive(el)
-        # end
-
         touch(:remove)
         render(:delete, params)
-        Universe.delete(@id)
+        Universe.delete(@aid)
       end
+    elsif params[:force]
+      attached.each do |atttached_atomes|
+        # alert "attached : #{attached}"
+        delete_recursive(atttached_atomes, true)
+      end
+      touch(:remove)
+      render(:delete, params)
+      # alert "Universe : #{Universe.atomes[@aid]}"
+      # alert "length = #{Universe.atomes.length}"
+      Universe.delete(@aid)
+      # alert "Universe : #{Universe.atomes.length}"
+
     else
       # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
       # with id my_monitor

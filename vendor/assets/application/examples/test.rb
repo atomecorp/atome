@@ -96,21 +96,37 @@ new({tool: :test}) do
   { activation: active_code }
 end
 
-
-Universe.tools_root= {tools: [:blur, :box, :test],toolbox: { orientation: :ew, left:9 , bottom: 9, spacing: 9} }
-# Universe.tools_root=[:test]
-Atome.init_intuition
-
-wait 1 do
-  grab(:blur_tool_icon).color(:red)
-  wait 1 do
-    grab(:box_tool_icon).color(:red)
-    wait 1 do
-      grab(:test_tool_icon).color(:red)
-    end
-  end
+new({tool: :toolbox1}) do
+  active_code = lambda {
+    toolbox({tools: [:blur, :test],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} })
+  }
+  # active_code=:tito
+  { activation: active_code }
 end
 
+
+# Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
+Universe.tools_root= {tools: [ :toolbox1],toolbox: { orientation: :ew, left:9 , bottom: 9, spacing: 9} }
+
+Atome.init_intuition
+
+
+
+# b=box
+#
+# active_code = lambda {
+#   b=grab(:view).circle({color: :red, left: 88})
+#   b.touch(true) do
+#     alert :kool
+#   end
+# }
+# b.touch(true) do
+#   # c=circle({color: :red})
+#   active_code.call
+#   # c.touch(true) do
+#   #   # active_code.call
+#   # end
+# end
 
 # ################### check below
 
