@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-
-
 size = 33
 smooth = 3
 shadow({
@@ -25,10 +23,10 @@ class Atome
   class << self
     def init_intuition
       Atome.start_click_analysis
-      root = Universe.tools_root
-      root.each_with_index do |root_tool, index|
+      toolbox_root = Universe.tools_root
+      toolbox_root[:tools].each_with_index do |root_tool, index|
         tools_scheme = Universe.tools[root_tool]
-        A.build_tool({ name: root_tool, scheme: tools_scheme, index: index })
+        A.build_tool({ name: root_tool, scheme: tools_scheme, index: index ,toolbox: toolbox_root[:toolbox] })
       end
     end
 
@@ -92,11 +90,11 @@ class Atome
           Universe.allow_localstorage = false
           #################################
           touch_found = atome_touched.touch
-          touch_procs=atome_touched.instance_variable_get("@touch_code")
+          touch_procs = atome_touched.instance_variable_get("@touch_code")
           resize_found = atome_touched.resize
-          resize_procs=atome_touched.instance_variable_get("@resize_code")
-          current_tool.data[:prev_states][atome_touched] = {events: { touch: touch_found, resize: resize_found },
-                                                            procs: {touch_code: touch_procs, resize_code: resize_procs } }
+          resize_procs = atome_touched.instance_variable_get("@resize_code")
+          current_tool.data[:prev_states][atome_touched] = { events: { touch: touch_found, resize: resize_found },
+                                                             procs: { touch_code: touch_procs, resize_code: resize_procs } }
           #################################
           current_tool.instance_exec(params, &pre) if pre.is_a? Proc
           Universe.allow_localstorage = storage_allowed
@@ -174,11 +172,15 @@ class Atome
   end
 
   def build_tool(params)
-    label = params[:name]
+    # here is the main entry for tool creation
+    language ||= grab(:view).language
+
+    label = params.dig(:scheme, :int8, language) || params[:name]
     tool_name = "#{params[:name]}_tool"
     index = params[:index]
-    orientation_wanted = :sn
     tool_scheme = params[:scheme]
+    toolbox=params[:toolbox] || {}
+    orientation_wanted = tool_scheme[:orientation] || :sn
     color({ id: :active_tool_col, alpha: 1, red: 1, green: 1, blue: 1 })
     color({ id: :inactive_tool_col, alpha: 0.6 })
     grab(:intuition).storage[:tool_open] ||= []
@@ -188,8 +190,10 @@ class Atome
     case orientation_wanted
     when :sn
       top = :auto
-      bottom = index * (size + 3)
-      left = 0
+      bottom_offset=toolbox[:bottom] || 3
+      spacing = toolbox[:spacing] || 3
+      bottom = index * (size + spacing)+bottom_offset
+      left = toolbox[:left] || 3
       right = :auto
     when :ns
     when :ew
@@ -231,7 +235,18 @@ class Atome
                                   }
 
                                 })
-    tool.vector({ tag: { system: true }, left: 9, top: :auto, bottom: 9, width: 18, height: 18, id: "#{tool_name}_icon" })
+    edition = "M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.9c3.9-3.9 3.9-10.2 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2c-1.9 11.1 1.5 21.9 9.4 29.8 6.6 6.4 14.9 9.9 23.8 9.9z m67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"
+
+    icon= tool.vector({ tag: { system: true }, left: 9, top: :auto, bottom: 9, width: 18, height: 18, id: "#{tool_name}_icon",
+                  data: { path: { d: edition, id: :p1, stroke: :black, 'stroke-width' => 37, fill: :white } }})
+    # wait 2 do
+    # alert "#{tool_name}_icon"
+    # alert "current vector : #{grab("#{tool_name}_icon").id}"
+    grab("#{tool_name}_icon").color(:blue)
+    # icon.color(:red)
+    # end
+    # icon= tool_scheme[:icon] || params[:name]
+    # tool.image({path: "medias/images/icons/#{icon}.svg"})
     tool.text({ tag: { system: true }, data: label, component: { size: 9 }, color: :grey, id: "#{tool_name}_label" })
     code_for_zone = tool_scheme[:zone]
     tool.instance_exec(tool, &code_for_zone) if code_for_zone.is_a? Proc

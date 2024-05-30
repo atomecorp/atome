@@ -234,7 +234,7 @@ class EDen
       { data: { message: 'database_ready' }, message_id: message_id }
     end
 
-    def crate_db_table(data, message_id, ws)
+    def create_db_table(data, message_id, ws)
       table = data['table']
       type = data['type']
       primary = data['primary']

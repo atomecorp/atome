@@ -32,21 +32,9 @@ class Database
       end
     end
 
-    # def create_column(table, column_name, type)
-    #   eden = Sequel.connect("sqlite://eden.sqlite3")
-    #   if eden.table_exists?(table)
-    #     unless eden.schema(table).any? { |column| column.first == column_name }
-    #       Sequel.migration do
-    #         change do
-    #           add_column table, column_name, type
-    #         end
-    #       end.apply(eden, :up)
-    #     end
-    #   end
-    # end
     def create_column(table, column_name, type)
       eden = Sequel.connect("sqlite://eden.sqlite3")
-      if eden.table_exists?(table)
+      if eden.table_exists?(table) ||  !eden.schema(table).any? { |col| col[0] == column_name }
         begin
           Sequel.migration do
             change do
@@ -54,10 +42,14 @@ class Database
             end
           end.apply(eden, :up)
         rescue Sequel::DatabaseError => e
-          puts "error adding column  : #{e.message}"
+          puts "column  #{e.message} already exist"
         end
       end
+
     end
+
+
+
   end
 
 end

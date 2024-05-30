@@ -642,7 +642,7 @@ class Object
     end
   end
 
-  def above(item, margin)
+  def above(item, margin=6)
     pos = item.to_px(:bottom) + item.height + margin
     if item.display == :none
       33
@@ -651,7 +651,7 @@ class Object
     end
   end
 
-  def below(item, margin)
+  def below(item, margin=6)
     pos = item.to_px(:top) + item.to_px(:height) + margin
     if item.display == :none
       0
@@ -661,7 +661,7 @@ class Object
 
   end
 
-  def after(item, margin)
+  def after(item, margin=6)
     left_f = if item.left.instance_of?(Integer)
                item.left
              else
@@ -681,7 +681,7 @@ class Object
     end
   end
 
-  def before(item, margin)
+  def before(item, margin=6)
     pos = item.to_px(:right) + item.width + margin
     if item.display == :none
       0

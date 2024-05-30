@@ -64,6 +64,7 @@ Atome.new(
 Atome.new(
   { renderers: default_render, aid: :view,type: :shape, attach: :user_view, apply: [:view_color],
     tag: { system: true }, left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
+    language: :english
   }
 
 )
@@ -166,17 +167,18 @@ def init_database
 
   particles = Universe.particle_list
   # now we populate the DB
-  A.sync({ action: :crate_db_table, data: { table: :user, type: :string } }) do |_db_state|
+  A.sync({ action: :create_db_table, data: { table: :user, type: :string } }) do |_db_state|
     # puts "===> #{_db_state}"
+  end
+  A.sync({ action: :create_db_table, data: { table: :atome } }) do |_db_state|
+  end
+
+  A.sync({ action: :create_db_table, data: { table: :history } }) do |_db_state|
   end
 
   A.sync({ action: :create_db_column, data: { table: :user, column: :email, type: :string, unique: true } }) do |_db_state|
   end
-
   A.sync({ action: :create_db_column, data: { table: :user, column: :password, type: :string } }) do |_db_state|
-  end
-
-  A.sync({ action: :crate_db_table, data: { table: :history } }) do |_db_state|
   end
   A.sync({ action: :create_db_column, data: { table: :history, column: :aid, type: :string } }) do |_db_state|
   end
@@ -187,13 +189,6 @@ def init_database
   A.sync({ action: :create_db_column, data: { table: :history, column: :date, type: :datetime } }) do |_db_state|
   end
 
-  A.sync({ action: :crate_db_table, data: { table: :atome } }) do |_db_state|
-  end
-  particles.each do |particle, infos|
-    type = infos[:type]
-    A.sync({ action: :create_db_column, data: { table: :atome, column: particle, type: type } }) do |_db_state|
-    end
-  end
 
   # now we send localstorage content to the server
   puts "sending localstorage"
