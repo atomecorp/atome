@@ -10,8 +10,6 @@ shadow({
        })
 color({ id: :active_tool_col, alpha: 1, red: 1, green: 1, blue: 1 })
 color({ id: :inactive_tool_col, alpha: 0.1 })
-# color({ id: :tool_inactive_color, red: 1, green: 1, blue: 1, alpha: 0.12 })
-# color({ id: :tool_active_color, red: 1, green: 1, blue: 1, alpha: 0.3 })
 border({ id: :tool_box_border, thickness: 1, red: 1, green: 1, blue: 1, alpha: 0.06, pattern: :solid, inside: true })
 # Tool's style object container below
 element({ aid: :toolbox_style, id: :toolbox_style, data: {
@@ -21,7 +19,6 @@ element({ aid: :toolbox_style, id: :toolbox_style, data: {
 } })
 
 class Atome
-
   def toolbox(tool_list)
     @toolbox = tool_list[:tools]
     tool_list[:tools].each_with_index do |root_tool, index|
@@ -45,7 +42,6 @@ class Atome
     end
 
     def activate_click_analysis
-
       # the condition below avoid touchdown analysis accumulation
       unless @click_analysis_active
         # this method analyse all object under the touchdown to find the first user objet and return it's id
@@ -60,7 +56,6 @@ class Atome
               id_found = atome_touched[:id].to_s
               atome_found = grab(id_found)
               unless atome_found && atome_found.tag[:system]
-                # if atome_found
                 Universe.active_tools.each do |tool|
                   apply_tool(tool, atome_found, event)
                 end
@@ -92,29 +87,17 @@ class Atome
       if atome_touched
         storage_allowed = Universe.allow_localstorage
         action_found = tool_actions[:action]
-        # pre = tool_actions[:pre]
         post = tool_actions[:post]
         params = { current_tool: current_tool, atome_touched: atome_touched, event: a_event }
         action_found.each do |part, val|
           Universe.allow_localstorage = false
-          # #################################
-          # touch_found = atome_touched.touch
-          # touch_procs = atome_touched.instance_variable_get("@touch_code")
-          # resize_found = atome_touched.resize
-          # resize_procs = atome_touched.instance_variable_get("@resize_code")
-          # current_tool.data[:prev_states][atome_touched] = { events: { touch: touch_found, resize: resize_found },
-          #                                                    procs: { touch_code: touch_procs, resize_code: resize_procs } }
-          # #################################
-          # current_tool.instance_exec(params, &pre) if pre.is_a? Proc
           Universe.allow_localstorage = storage_allowed
           if current_tool.data[:allow_alteration]
             if val.instance_of?(Proc)
               atome_touched.instance_exec(&val)
-              # atome_touched.send(part, atome_touched.instance_exec(&val))
             else
               atome_touched.send(part, val)
             end
-
             current_tool.data[:treated] << atome_touched if current_tool.data[:treated]
           end
           current_tool.instance_exec(params, &post) if post.is_a? Proc
@@ -139,11 +122,11 @@ class Atome
         temp_val = particle.merge({ resize: true, drag: true, top: a_event[:pageY].to_i, left: a_event[:pageX].to_i })
         if current_tool.data[:allow_creation]
           # uncomment the line below if you want to attach to current atome
-          if atome_touched
-            new_atome = atome_touched.send(atome, temp_val)
-          else
-            new_atome = grab(:view).send(atome, temp_val)
-          end
+          new_atome = if atome_touched
+                        atome_touched.send(atome, temp_val)
+                      else
+                        grab(:view).send(atome, temp_val)
+                      end
           # current_tool.data[:treated] << new_atome
           current_tool.data[:created] << new_atome
           params.delete(:atome_touched)
@@ -167,7 +150,9 @@ class Atome
         tool_actions[:action] = { noop: true }
         current_tool.data = tool_actions
       end
-
+      # tool_actions.delete(:inactivation)
+      # alert "==> #{tool_actions[:inactivation]}"
+      # puts "==> #{method_found},\n==>  #{current_tool.id} ,\nactions ==>  #{tool_actions},\n==>  #{atome_touched},\n==> #{a_event}"
       send(method_found, current_tool, tool_actions, atome_touched, a_event)
     end
 
@@ -179,7 +164,6 @@ class Atome
 
   def set_action_on_touch(&action)
     @touch_action = action
-
   end
 
   def remove_get_atome_on_touch
@@ -187,9 +171,9 @@ class Atome
   end
 
   def activate_tool
-    tool_name=id
-    tool_scheme=@tool_scheme
-    tool=self
+    tool_name = id
+    tool_scheme = @tool_scheme
+    tool = self
 
     alterations = tool_scheme[:alteration] ? tool_scheme[:alteration].keys : []
     creations = tool_scheme[:creation] ? tool_scheme[:creation].keys : []
@@ -208,19 +192,15 @@ class Atome
     tool.data[:prev_states] = {}
     # generic behavior
     tool.apply(:active_tool_col)
-    puts "***> #{tool.id}  #{tool.color}"
     Universe.active_tools << tool_name
-
     # activation code
     activation_code = tool_scheme[:activation]
     tool.instance_exec(&activation_code) if activation_code.is_a? Proc
-    puts "===> #{tool.color}"
     # below we the particles of selected atomes to feed tools values
     # possibility 1 (pipette like):
     # now we get the values from selected atomes
-
     Atome.selection.each do |atome_id_to_treat|
-      tool.data[:action].each do |particle_req, value_f|
+      tool.data[:action]&.each_key do |particle_req|
         unless Universe.atome_preset
           value_found = grab(atome_id_to_treat).send(particle_req)
           if value_found
@@ -228,7 +208,7 @@ class Atome
           else
           end
         end
-      end if tool.data[:action]
+      end
     end
     # possibility 2  (immediate apply):
     allow_creation = tool.data[:allow_creation]
@@ -241,23 +221,22 @@ class Atome
       end
     end
 
-    # activate tool analysis test
+    # # activate tool analysis test
     Atome.activate_click_analysis
     tool.active(true)
-    puts "+++> #{tool.color}"
   end
 
   def deactivate_tool
-    tool_name=id
-    tool_scheme=@tool_scheme
-    tool=self
+    tool_name = id
+    tool_scheme = @tool_scheme
+    tool = self
     tool.active(false)
     tool.instance_variable_get("@toolbox")&.each do |sub_tool_id|
-       toolbox_tool= grab("#{sub_tool_id}_tool")
-       toolbox_tool.deactivate_tool
-    # we delete the attached toolbox if it exist
-       toolbox_tool.delete({ force: true })
-     end
+      toolbox_tool = grab("#{sub_tool_id}_tool")
+      toolbox_tool.deactivate_tool
+      # we delete the attached toolbox if it exist
+      toolbox_tool.delete({ force: true })
+    end
 
     # when closing delete tools action from tool_actions_to_exec
     Universe.active_tools.delete(tool_name)
@@ -270,39 +249,13 @@ class Atome
 
     inactivation_code = tool_scheme[:inactivation]
     tool.instance_exec(tool.data, &inactivation_code) if inactivation_code.is_a? Proc
-    # end if tool_content && tool_content[:inactive]
     # generic behavior
     # we remove touch and resize binding on newly created atomes
     tool.apply(:inactive_tool_col)
-    tool.data[:created].each do |new_atome|
+    tool.data[:created]&.each do |new_atome|
       new_atome.drag(false)
       new_atome.resize(:remove)
-    end if  tool.data[:created]
-    ################################
-    # we restore prev touch and resize
-    tool.data[:prev_states].each do |atome_f, prev_par|
-      alert prev_par
-      # params[:events].each do |part_f, val_f|
-      #   # alert "@#{part_f}, #{part_f}"
-      #   atome_f.send(part_f, val_f)
-      # end
-      # atome_f.touch(false)
-      # atome_f.touch(true) do
-      # end
-      # params[:procs].each do |var_n, procs_f|
-      #   # procs_f.each do |action_f, proc|
-      #   #   # puts "#{var_n}==> #{action_f}, #{proc}"
-      #   # end
-      #   puts "==> #{var_n}, #{proc_f}"
-      #   # atome_f.instance_variable_set("@#{var_n}", proc_f)
-      # end
-      # atome_f.touch(false)
-    end if tool.data[:prev_states]
-
-    # atome_f.touch(touch_found)
-    # atome_f.resize(resize_found)
-    # inactivation code
-    #################################
+    end
   end
 
   def build_tool(params)
@@ -386,13 +339,9 @@ class Atome
       # we set allow_tool_operations to false to ignore tool operation when clicking on a tool
       Universe.allow_tool_operations = false
       # we create the creation_layer if not already exist
-      # tick(tool_name)
-      # active code exec
-      # alert tool.id
       if tool.active == false # first click
         tool.activate_tool
       else
-
         tool.deactivate_tool
         tick[tool_name] = 0
       end

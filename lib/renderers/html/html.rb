@@ -219,7 +219,6 @@ class HTML
       particles_from_style[key.to_sym] = value if key && value
     end
 
-
     particles_found = particles_found.merge(particles_from_style)
     current_atome = grab(@id)
     usr_bloc.call(particles_found)
@@ -735,7 +734,7 @@ class HTML
   end
 
   def drag_remove(option)
-
+    @draggable = nil
     interact = JS.eval("return interact('##{@id}')")
 
     case option
@@ -745,8 +744,9 @@ class HTML
       @drag_end = ''
     when :move
       interact.draggable(false)
-      interact.unset
+      # interact.unset
       @drag_move = nil
+
     when :locked
       @drag_locked = ''
     when :restrict
@@ -759,7 +759,7 @@ class HTML
       @drag_restrict = ''
       @drag_move = nil
       interact.draggable(false)
-      interact.unset
+      # interact.unset
     end
 
   end
@@ -772,7 +772,7 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @drag_start.call(event) if @drag_start.is_a?(Proc)
+      @drag_start.call(event) if event_validation(@drag_start)
     end
   end
 
@@ -784,38 +784,43 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @drag_end.call(event) if @drag_end.is_a?(Proc)
+      @drag_end.call(event) if event_validation(@drag_end)
     end
   end
 
   def drag_move(_option)
-
+    # the condition below prevent drag accumulation
     interact = JS.eval("return interact('##{@id}')")
-    # interact.draggable(false)
 
-    interact.draggable({
-                         drag: true,
-                         inertia: { resistance: 12,
-                                    minSpeed: 200,
-                                    endSpeed: 100 },
-                       })
+    unless @draggable
+      interact.draggable({
+                           drag: true,
+                           inertia: { resistance: 12,
+                                      minSpeed: 200,
+                                      endSpeed: 100 },
+                         })
+      @drag_move = @original_atome.instance_variable_get('@drag_code')[:move]
+      unless @first_drag
+        interact.on('dragmove') do |native_event|
+          # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
+          event = Native(native_event)
+          # we use .call instead of instance_eval because instance_eval bring the current object as context
+          # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+          # group etc..
+          @drag_move.call(event) if event_validation(@drag_move)
+          Universe.allow_tool_operations = false
+          dx = event[:dx]
+          dy = event[:dy]
+          x = (@original_atome.left || 0) + dx.to_f
+          y = (@original_atome.top || 0) + dy.to_f
+          @original_atome.left(x)
+          @original_atome.top(y)
+        end
 
-    @drag_move = @original_atome.instance_variable_get('@drag_code')[:move]
-    interact.on('dragmove') do |native_event|
-      # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
-      event = Native(native_event)
-      # we use .call instead of instance_eval because instance_eval bring the current object as context
-      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-      # group etc..
-      @drag_move.call(event) if @drag_move.is_a?(Proc)
-      Universe.allow_tool_operations = false
-      dx = event[:dx]
-      dy = event[:dy]
-      x = (@original_atome.left || 0) + dx.to_f
-      y = (@original_atome.top || 0) + dy.to_f
-      @original_atome.left(x)
-      @original_atome.top(y)
+      end
     end
+    @first_drag = true
+    @draggable = true
   end
 
   def drag_restrict(option)
@@ -866,7 +871,7 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @drag_move.call(event) if @drag_move.is_a?(Proc)
+      @drag_move.call(event) if event_validation(@drag_move)
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f
@@ -893,7 +898,7 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @drag_lock.call(event) if @drag_lock.is_a?(Proc)
+      @drag_lock.call(event) if event_validation(@drag_lock)
     end
   end
 
@@ -904,7 +909,7 @@ class HTML
     # we use .call instead of instance_eval because instance_eval bring the current object as context
     # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
     # group etc..
-    bloc.call({ source: draggable_element, destination: dropzone_element }) if bloc.is_a?(Proc)
+    bloc.call({ source: draggable_element, destination: dropzone_element }) if event_validation(bloc)
   end
 
   def drop_activate(_option)
@@ -915,7 +920,7 @@ class HTML
                         accept: nil, # Accept any element
                         overlap: 0.75,
                         ondropactivate: lambda do |native_event|
-                          drop_action(native_event, @drop_activate)
+                          drop_action(native_event, @drop_activate) if event_validation(@drop_activate)
                         end
                       })
   end
@@ -928,7 +933,7 @@ class HTML
                         # overlap: 0.75,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
                         ondropdeactivate: lambda do |native_event|
-                          drop_action(native_event, @drop_deactivate)
+                          drop_action(native_event, @drop_deactivate) if event_validation(@drop_deactivate)
                         end
                       })
   end
@@ -941,7 +946,7 @@ class HTML
                         overlap: 0.75,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
                         ondrop: lambda do |native_event|
-                          drop_action(native_event, @drop_dropped)
+                          drop_action(native_event, @drop_dropped) if event_validation(@drop_dropped)
                         end
                       })
   end
@@ -956,7 +961,7 @@ class HTML
                         overlap: 0.001,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
                         ondragenter: lambda do |native_event|
-                          drop_action(native_event, @drop_enter)
+                          drop_action(native_event, @drop_enter) if event_validation(@drop_enter)
                         end
                       })
   end
@@ -970,7 +975,7 @@ class HTML
                         # overlap: 0.75,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
                         ondragleave: lambda do |native_event|
-                          drop_action(native_event, @drop_leave)
+                          drop_action(native_event, @drop_leave) if event_validation(@drop_enter)
                         end
                       })
 
@@ -990,8 +995,8 @@ class HTML
       @drop_leave = ''
     else
       # to remove all interact event ( touch, drag, scale, ... uncomment below)
-      interact = JS.eval("return interact('##{@id}')")
-      interact.unset
+      # interact = JS.eval("return interact('##{@id}')")
+      # interact.unset
       @drop_activate = ''
       @drop_deactivate = ''
       @drop_dropped = ''
@@ -1025,7 +1030,7 @@ class HTML
                                # we use .call instead of instance_eval because instance_eval bring the current object as context
                                # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
                                # group etc..
-                               @resize.call(event) if @resize.is_a?(Proc)
+                               @resize.call(event) if event_validation(@resize)
                                x = (@element[:offsetLeft].to_i || 0)
                                y = (@element[:offsetTop].to_i || 0)
                                width = event[:rect][:width]
@@ -1055,7 +1060,7 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @overflow.call({ left: scroll_left, top: scroll_top }) if @overflow.is_a?(Proc)
+      @overflow.call({ left: scroll_left, top: scroll_top }) if event_validation(@overflow)
     end)
   end
 
@@ -1069,7 +1074,7 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @over_over.call(event) if @over_over.is_a?(Proc)
+      @over_over.call(event) if event_validation(@over_over)
     end
   end
 
@@ -1081,7 +1086,7 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @over_enter.call(event) if @over_enter.is_a?(Proc)
+      @over_enter.call(event) if event_validation(@over_enter)
     end
     @element.addEventListener('mouseenter', @over_enter_callback)
 
@@ -1095,7 +1100,7 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @over_leave.call(event) if @over_leave.is_a?(Proc)
+      @over_leave.call(event) if event_validation(@over_leave)
     end
     @element.addEventListener('mouseleave', @over_leave_callback)
 
@@ -1142,7 +1147,6 @@ class HTML
         # we use .call instead of instance_eval because instance_eval bring the current object as context
         # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
         # group etc..
-        # unless Universe.edit_mode == true
         # @touch_down.call(event) if @touch_down.is_a?(Proc)  && (!Universe.edit_mode || @original_atome.tag[:system])
         @touch_down.call(event) if event_validation(@touch_down)
         # end
@@ -1239,23 +1243,9 @@ class HTML
       @touch_removed[:up] = true
       @touch_up = ''
     else
-      interact = JS.eval("return interact('##{@id}')")
-      interact.unset
-      # @original_atome.instance_variable_set('@touch_code')
-      @original_atome.instance_variable_set('@touch_code', nil)
-      # @touch_removed[:double] = true
-      # @touch_removed[:down] = true
-      # @touch_removed[:long] = true
-      # @touch_removed[:tap] = true
-      # @touch_removed[:up] = true
-      # @touch_double = ''
-      # @touch_down = ''
-      # @touch_long = ''
-      # @touch_tap = ''
-      # @touch_up = ''
-      # to remove all interact event ( touch, drag, scale, ... uncomment below)
       # interact = JS.eval("return interact('##{@id}')")
       # interact.unset
+      @original_atome.instance_variable_set('@touch_code', nil)
     end
 
   end
@@ -1303,14 +1293,13 @@ class HTML
     end
   end
 
-
   # animation below
   def animate(animation_properties)
-    prop= animation_properties[:particle]
-    command = <<~JS 
+    prop = animation_properties[:particle]
+    command = <<~JS
                 var target_div = document.getElementById('#{@id}');
                 window.currentAnimation = popmotion.animate({
-                  from: #{animation_properties[ :from]},
+                  from: #{animation_properties[:from]},
                   to: #{animation_properties[:to]},
                   duration: #{animation_properties[:duration]},
                   onUpdate: function(v) {
@@ -1325,8 +1314,6 @@ class HTML
     JS
     JS.eval(command)
   end
-
-
 
   def stop_animation
     JS.eval('if (window.currentAnimation) window.currentAnimation.stop();')

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
-wait 0.5 do
-  JS.eval("console.clear()")
-end
+# wait 0.5 do
+#   JS.eval("console.clear()")
+# end
 ########################### Test  check and verification below ############################
 
-new({ tool: :blur }) do |params|
+new({ tool: :combined }) do |params|
 
   active_code = lambda {
     puts :alteration_tool_code_activated
@@ -85,43 +85,66 @@ new({ tool: :project }) do
   { activation: active_code }
 end
 
-new({tool: :test}) do
+new({tool: :move}) do
   active_code = lambda {
-    # b=grab(:view).box({})
-    # b.touch(true) do
-    #   alert :kool
-    # end
+    puts 'move activated'
   }
-  touch_code = lambda {
+  move_code = lambda {
+    drag(true)
+  }
+  inactive_code = lambda {|data|
+     data[:treated].each  do |atome_f|
+       atome_f.drag(false)
+     end
+  }
+
+  { activation: active_code, alteration: { event: move_code }, inactivation: inactive_code }
+end
+
+new({tool: :drag}) do
+  active_code = lambda {
+    puts 'move activated'
+  }
+  move_code = lambda {
+    drag(true) do
+      puts left
+    end
+  }
+
+  { activation: active_code, alteration: { event: move_code} }
+end
+
+new({tool: :touch}) do
+  move_code = lambda {
     touch(:down) do
       color(:red)
     end
   }
-  top_code = lambda {
-    33
-  }
-  # active_code=:tito
-  # alteration: { width: 22, blur: 3 },
-
-  { activation: active_code, alteration: { touch: touch_code, top:  44  }}
+  { alteration: { event: move_code } }
 end
 
 new({tool: :toolbox1}) do
   active_code = lambda {
-    toolbox({tools: [ :blur],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} })
+    toolbox({tools: [:combined],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} })
   }
-  # active_code=:tito
   { activation: active_code }
 end
 
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
-Universe.tools_root= {tools: [ :test,:toolbox1],toolbox: { orientation: :ew, left:9 , bottom: 9, spacing: 9} }
+Universe.tools_root= {tools: [:box,:drag,:touch, :move,:toolbox1],toolbox: { orientation: :ew, left:9 , bottom: 9, spacing: 9} }
 
 Atome.init_intuition
 
-box({id: :the_box, selected: true})
+b=box({id: :the_box, selected: true})
 circle({left: 90, id: :the_circle, selected: true})
+b.touch(true) do
+  if b.width==170
+    b.width(55)
+  else
+    b.width(170)
+  end
 
+end
 
 # box({id: :the_box})
 # circle({left: 90, id: :the_circle})
