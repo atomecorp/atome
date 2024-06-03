@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-
-
+wait 0.5 do
+  JS.eval("console.clear()")
+end
 ########################### Test  check and verification below ############################
 
 new({ tool: :blur }) do |params|
@@ -22,7 +23,7 @@ new({ tool: :blur }) do |params|
   }
 
   zone_spe = lambda { |current_tool|
-    puts "current tool is : #{:current_tool} now creating specific zone"
+    # puts "current tool is : #{:current_tool} now creating specific zone"
     # b = box({ width: 33, height: 12 })
     # b.text({ data: :all })
 
@@ -86,13 +87,23 @@ end
 
 new({tool: :test}) do
   active_code = lambda {
-    b=grab(:view).box({})
-    b.touch(true) do
-      alert :kool
+    # b=grab(:view).box({})
+    # b.touch(true) do
+    #   alert :kool
+    # end
+  }
+  touch_code = lambda {
+    touch(:down) do
+      color(:red)
     end
   }
+  top_code = lambda {
+    33
+  }
   # active_code=:tito
-  { activation: active_code }
+  # alteration: { width: 22, blur: 3 },
+
+  { activation: active_code, alteration: { touch: touch_code, top:  44  }}
 end
 
 new({tool: :toolbox1}) do
@@ -108,8 +119,12 @@ Universe.tools_root= {tools: [ :test,:toolbox1],toolbox: { orientation: :ew, lef
 
 Atome.init_intuition
 
-box
-circle({left: 90})
+box({id: :the_box, selected: true})
+circle({left: 90, id: :the_circle, selected: true})
+
+
+# box({id: :the_box})
+# circle({left: 90, id: :the_circle})
 # alert b.aid
 
 # b=box

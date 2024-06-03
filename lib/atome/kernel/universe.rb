@@ -280,7 +280,7 @@ class Universe
         if @allow_localstorage.include? element
           JS.global[:localStorage].setItem(operation_timing, "{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
           @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
-          puts "===> { #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }"
+          # puts "===> { #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }"
         end
 
 
