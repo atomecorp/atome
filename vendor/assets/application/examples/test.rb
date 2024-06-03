@@ -68,7 +68,6 @@ new({ tool: :box }) do |params|
 
 end
 
-
 new({ tool: :project }) do
   active_code = lambda {
 
@@ -98,19 +97,20 @@ end
 
 new({tool: :toolbox1}) do
   active_code = lambda {
-    toolbox({tools: [:blur, :test],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} })
+    toolbox({tools: [ :blur],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} })
   }
   # active_code=:tito
   { activation: active_code }
 end
 
-
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
-Universe.tools_root= {tools: [ :toolbox1],toolbox: { orientation: :ew, left:9 , bottom: 9, spacing: 9} }
+Universe.tools_root= {tools: [ :test,:toolbox1],toolbox: { orientation: :ew, left:9 , bottom: 9, spacing: 9} }
 
 Atome.init_intuition
 
-
+box
+circle({left: 90})
+# alert b.aid
 
 # b=box
 #

@@ -24,26 +24,23 @@ class Atome
   def toolbox(tool_list)
     # alert tool_list
     # alert Universe.tools_root
-@toolbox=tool_list[:tools]
+    @toolbox = tool_list[:tools]
     tool_list[:tools].each_with_index do |root_tool, index|
       tools_scheme = Universe.tools[root_tool]
-      build_tool({ name: root_tool, scheme: tools_scheme, index: index ,toolbox: tool_list[:toolbox] })
+      build_tool({ name: root_tool, scheme: tools_scheme, index: index, toolbox: tool_list[:toolbox] })
     end
     # alert grab(:blur_tool).attached
   end
+
   class << self
     def init_intuition
       Atome.start_click_analysis
       toolbox_root = Universe.tools_root
       toolbox_root[:tools].each_with_index do |root_tool, index|
         tools_scheme = Universe.tools[root_tool]
-        A.build_tool({ name: root_tool, scheme: tools_scheme, index: index ,toolbox: toolbox_root[:toolbox] })
+        A.build_tool({ name: root_tool, scheme: tools_scheme, index: index, toolbox: toolbox_root[:toolbox] })
       end
     end
-
-
-
-
 
     def selection
       grab(Universe.current_user).selection.collect
@@ -184,8 +181,127 @@ class Atome
   def remove_get_atome_on_touch
     @touch_action = nil
   end
-  def build_tool(params)
 
+  def activate_tool
+    tool_name=id
+    tool_scheme=@tool_scheme
+    tool=self
+    tool.active(true)
+    events_allow = [:top, :left, :right, :bottom, :width, :height]
+    alterations = tool_scheme[:alteration] ? tool_scheme[:alteration].keys : []
+    creations = tool_scheme[:creation] ? tool_scheme[:creation].keys : []
+    prev_auth = Universe.allow_localstorage ||= []
+    storage_allowed = events_allow.concat(alterations).concat(creations).concat(prev_auth).uniq
+    Universe.allow_localstorage = storage_allowed
+    # we set edit mode to true (this allow to prevent user atome to respond from click)
+    Universe.edit_mode = true
+    Universe.active_tools << tool_name
+    # init the tool
+    tool.data[:treated] = []
+    tool.data[:created] = []
+    tool.data[:prev_states] = {}
+    # generic behavior
+    tool.apply(:active_tool_col)
+    # activation code
+    activation_code = tool_scheme[:activation]
+    tool.instance_exec(&activation_code) if activation_code.is_a? Proc
+    # below we the particles of selected atomes to feed tools values
+    # possibility 1 (pipette like):
+    # now we get the values from selected atomes
+    Atome.selection.each do |atome_id_to_treat|
+      tool.data[:action].each do |particle_req, value_f|
+        unless Universe.atome_preset
+          value_found = grab(atome_id_to_treat).send(particle_req)
+          if value_found
+            tool.data[:action][particle_req] = value_found
+          else
+          end
+        end
+      end
+    end
+    # possibility 2  (immediate apply):
+    allow_creation = tool.data[:allow_creation]
+    allow_alteration = tool.data[:allow_alteration]
+    unless tool_name.to_sym == :select_tool || !allow_creation || !allow_alteration
+      Atome.selection.each do |atome_id_to_treat|
+        atome_found = grab(atome_id_to_treat)
+        event = { pageX: 0, pageY: 0, clientX: 0, clientY: 0 }
+        Atome.apply_tool(tool_name, atome_found, event)
+      end
+    end
+
+    # activate tool analysis test
+    Atome.activate_click_analysis
+  end
+
+  def deactivate_tool
+    tool_name=id
+    tool_scheme=@tool_scheme
+    tool=self
+    tool.active(false)
+    tool.instance_variable_get("@toolbox")&.each do |sub_tool_id|
+       # alert "==> #{sub_tool_id}_tool"
+       toolbox_tool= grab("#{sub_tool_id}_tool")
+       toolbox_tool.deactivate_tool
+    # alert "#{inspect}"
+    # alert "@toolbox :  #{tool.instance_variable_get("@toolbox").class}"
+    # we delete the attached toolbox if it exist
+       toolbox_tool.delete({ force: true })
+     end
+
+    # when closing delete tools action from tool_actions_to_exec
+    Universe.active_tools.delete(tool_name)
+    # we check if all tools are inactive if so we set edit_mode to false
+    if Universe.active_tools.length == 0
+      Atome.de_activate_click_analysis
+      Universe.edit_mode = false
+      Universe.allow_localstorage = false
+    end
+
+    inactivation_code = tool_scheme[:inactivation]
+    tool.instance_exec(tool.data, &inactivation_code) if inactivation_code.is_a? Proc
+    # end if tool_content && tool_content[:inactive]
+    # generic behavior
+    # we remove touch and resize binding on newly created atomes
+    tool.apply(:inactive_tool_col)
+    tool.data[:created].each do |new_atome|
+      new_atome.drag(false)
+      new_atome.resize(:remove)
+    end
+    ################################
+    # we restore prev touch and resize
+    tool.data[:prev_states].each do |atome_f, prev_par|
+      puts prev_par
+      # params[:events].each do |part_f, val_f|
+      #   # alert "@#{part_f}, #{part_f}"
+      #   atome_f.send(part_f, val_f)
+      # end
+      # alert "--> params :  #{params[:events]}"
+      # alert "--> procs :  #{params[:procs][params[:events]]}"
+      # atome_f.touch(false)
+      # atome_f.touch(true) do
+      #   alert :kool
+      # end
+      # alert params[:procs]
+      # params[:procs].each do |var_n, procs_f|
+      #   # procs_f.each do |action_f, proc|
+      #   #   # puts "#{var_n}==> #{action_f}, #{proc}"
+      #   # end
+      #   puts "==> #{var_n}, #{proc_f}"
+      #   # atome_f.instance_variable_set("@#{var_n}", proc_f)
+      # end
+      # atome_f.touch(false)
+      # alert "#{atome_f.touch} : #{atome_f.instance_variable_get("@touch_code")}"
+    end
+
+    # atome_f.touch(touch_found)
+    # atome_f.resize(resize_found)
+    # inactivation code
+    #################################
+  end
+
+  def build_tool(params)
+    # alert 'we are here: we have unbind any tool action coming from the attached toolbox'
     # here is the main entry for tool creation
     language ||= grab(:view).language
 
@@ -193,7 +309,8 @@ class Atome
     tool_name = "#{params[:name]}_tool"
     index = params[:index]
     tool_scheme = params[:scheme]
-    toolbox=params[:toolbox] || {}
+    # @tool_scheme=params[:scheme]
+    toolbox = params[:toolbox] || {}
     orientation_wanted = tool_scheme[:orientation] || :sn
     color({ id: :active_tool_col, alpha: 1, red: 1, green: 1, blue: 1 })
     color({ id: :inactive_tool_col, alpha: 0.6 })
@@ -204,9 +321,9 @@ class Atome
     case orientation_wanted
     when :sn
       top = :auto
-      bottom_offset=toolbox[:bottom] || 3
+      bottom_offset = toolbox[:bottom] || 3
       spacing = toolbox[:spacing] || 3
-      bottom = index * (size + spacing)+bottom_offset
+      bottom = index * (size + spacing) + bottom_offset
       left = toolbox[:left] || 3
       right = :auto
     when :ns
@@ -249,129 +366,29 @@ class Atome
                                   }
 
                                 })
+
+    tool.instance_variable_set("@tool_scheme", tool_scheme)
     edition = "M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.9c3.9-3.9 3.9-10.2 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2c-1.9 11.1 1.5 21.9 9.4 29.8 6.6 6.4 14.9 9.9 23.8 9.9z m67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"
-    icon= tool.vector({ tag: { system: true }, left: 9, top: :auto, bottom: 9, width: 18, height: 18, id: "#{tool_name}_icon",
-                        data: { path: { d: edition, id: "p1_#{tool_name}_icon", stroke: :black, 'stroke-width' => 37, fill: :white } }})
+    icon = tool.vector({ tag: { system: true }, left: 9, top: :auto, bottom: 9, width: 18, height: 18, id: "#{tool_name}_icon",
+                         data: { path: { d: edition, id: "p1_#{tool_name}_icon", stroke: :black, 'stroke-width' => 37, fill: :white } } })
 
     icon.color(:yellowgreen)
-    # wait 2 do
-    # alert "#{tool_name}_icon"
-    # alert "current vector : #{grab("#{tool_name}_icon").id}"
-    # grab("#{tool_name}_icon").color(:blue)
-    # icon.color(:red)
-    # end
-    # icon= tool_scheme[:icon] || params[:name]
-    # tool.image({path: "medias/images/icons/#{icon}.svg"})
+
     tool.text({ tag: { system: true }, data: label, component: { size: 9 }, color: :grey, id: "#{tool_name}_label" })
     code_for_zone = tool_scheme[:zone]
     tool.instance_exec(tool, &code_for_zone) if code_for_zone.is_a? Proc
+    tool.active(false)
     tool.touch(true) do
-      # alert "self is : #{tool.id}"
       # we add all specific tool actions to @tools_actions_to_exec hash
       # we set allow_tool_operations to false to ignore tool operation when clicking on a tool
       Universe.allow_tool_operations = false
       # we create the creation_layer if not already exist
-      tick(tool_name)
+      # tick(tool_name)
       # active code exec
-      if tick[tool_name] == 1 # first click
-        events_allow = [:top, :left, :right, :bottom, :width, :height]
-        alterations = tool_scheme[:alteration] ? tool_scheme[:alteration].keys : []
-        creations = tool_scheme[:creation] ? tool_scheme[:creation].keys : []
-        prev_auth = Universe.allow_localstorage ||= []
-        storage_allowed = events_allow.concat(alterations).concat(creations).concat(prev_auth).uniq
-        Universe.allow_localstorage = storage_allowed
-        # we set edit mode to true (this allow to prevent user atome to respond from click)
-        Universe.edit_mode = true
-        Universe.active_tools << tool_name
-        # init the tool
-        tool.data[:treated] = []
-        tool.data[:created] = []
-        tool.data[:prev_states] = {}
-        # generic behavior
-        tool.apply(:active_tool_col)
-        # activation code
-        activation_code = tool_scheme[:activation]
-        tool.instance_exec(&activation_code) if activation_code.is_a? Proc
-        # below we the particles of selected atomes to feed tools values
-        # possibility 1 (pipette like):
-        # now we get the values from selected atomes
-        Atome.selection.each do |atome_id_to_treat|
-          tool.data[:action].each do |particle_req, value_f|
-            unless Universe.atome_preset
-              value_found = grab(atome_id_to_treat).send(particle_req)
-              if value_found
-                tool.data[:action][particle_req] = value_found
-              else
-              end
-            end
-          end
-        end
-        # possibility 2  (immediate apply):
-        allow_creation = tool.data[:allow_creation]
-        allow_alteration = tool.data[:allow_alteration]
-        Atome.selection.each do |atome_id_to_treat|
-          atome_found = grab(atome_id_to_treat)
-          event = { pageX: 0, pageY: 0, clientX: 0, clientY: 0 }
-          Atome.apply_tool(tool_name, atome_found, event)
-        end unless tool_name.to_sym == :select_tool || !allow_creation || !allow_alteration
-
-        # activate tool analysis test
-        Atome.activate_click_analysis
+      if tool.active == false # first click
+        tool.activate_tool
       else
-        tool.instance_variable_get("@toolbox").each do |tools_in_toolbox|
-          # alert "#{tools_in_toolbox}_tool"
-          grab("#{tools_in_toolbox}_tool").delete({force: true})
-        end
-        Universe.allow_localstorage = false
-        # when closing delete tools action from tool_actions_to_exec
-        Universe.active_tools.delete(tool_name)
-        # we check if all tools are inactive if so we set edit_mode to false
-        if Universe.active_tools.length == 0
-          Atome.de_activate_click_analysis
-          Universe.edit_mode = false
-        end
-
-        inactivation_code = tool_scheme[:inactivation]
-        tool.instance_exec(tool.data, &inactivation_code) if inactivation_code.is_a? Proc
-        # end if tool_content && tool_content[:inactive]
-
-        # generic behavior
-        # we remove touch and resize binding on newly created atomes
-        tool.apply(:inactive_tool_col)
-        tool.data[:created].each do |new_atome|
-          new_atome.drag(false)
-          new_atome.resize(:remove)
-        end
-        ################################
-        # we restore prev touch and resize
-        tool.data[:prev_states].each do |atome_f, prev_par|
-          puts prev_par
-          # params[:events].each do |part_f, val_f|
-          #   # alert "@#{part_f}, #{part_f}"
-          #   atome_f.send(part_f, val_f)
-          # end
-          # alert "--> params :  #{params[:events]}"
-          # alert "--> procs :  #{params[:procs][params[:events]]}"
-          # atome_f.touch(false)
-          # atome_f.touch(true) do
-          #   alert :kool
-          # end
-          # alert params[:procs]
-          # params[:procs].each do |var_n, procs_f|
-          #   # procs_f.each do |action_f, proc|
-          #   #   # puts "#{var_n}==> #{action_f}, #{proc}"
-          #   # end
-          #   puts "==> #{var_n}, #{proc_f}"
-          #   # atome_f.instance_variable_set("@#{var_n}", proc_f)
-          # end
-          # atome_f.touch(false)
-          # alert "#{atome_f.touch} : #{atome_f.instance_variable_get("@touch_code")}"
-        end
-
-        # atome_f.touch(touch_found)
-        # atome_f.resize(resize_found)
-        # inactivation code
-        #################################
+        tool.deactivate_tool
         tick[tool_name] = 0
       end
     end
