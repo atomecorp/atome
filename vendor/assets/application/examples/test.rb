@@ -85,25 +85,27 @@ new({ tool: :project }) do
   { activation: active_code }
 end
 
-new({tool: :move}) do
+new({ tool: :move }) do
   active_code = lambda {
-    puts 'move activated'
+    puts 'move activated1'
   }
   move_code = lambda {
     drag(true)
   }
-  inactive_code = lambda {|data|
-     data[:treated].each  do |atome_f|
-       atome_f.drag(false)
-     end
+  inactive_code = lambda { |data|
+    data[:treated].each do |atome_f|
+      atome_f.drag(false)
+    end
   }
 
-  { activation: active_code, alteration: { event: move_code }, inactivation: inactive_code }
+  { activation: active_code,
+    alteration: { event: move_code },
+    inactivation: inactive_code}
 end
 
-new({tool: :drag}) do
+new({ tool: :drag }) do
   active_code = lambda {
-    puts 'move activated'
+    puts 'move activated2'
   }
   move_code = lambda {
     drag(true) do
@@ -111,10 +113,10 @@ new({tool: :drag}) do
     end
   }
 
-  { activation: active_code, alteration: { event: move_code} }
+  { activation: active_code, alteration: { event: move_code } }
 end
 
-new({tool: :touch}) do
+new({ tool: :touch }) do
   move_code = lambda {
     touch(:down) do
       color(:red)
@@ -123,22 +125,42 @@ new({tool: :touch}) do
   { alteration: { event: move_code } }
 end
 
-new({tool: :toolbox1}) do
+new({ tool: :toolbox1 }) do
   active_code = lambda {
-    toolbox({tools: [:combined],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} })
+    toolbox({ tools: [:combined], toolbox: { orientation: :ew, left: 90, bottom: 9, spacing: 9 } })
   }
   { activation: active_code }
 end
 
+new({ tool: :color }) do
+  active_code = lambda {
+    puts 'color activated1'
+  }
+  color_code = lambda {
+   color(:green)
+  }
+  inactive_code = lambda { |data|
+    data[:treated].each do |atome_f|
+      # atome_f.drag(false)
+      # atome_f.color(:green)
+    end
+  }
+
+  { activation: active_code,
+    alteration: { event: color_code },
+    inactivation: inactive_code,
+    particles: [:red, :green, :blue,:alpha]}
+end
+
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
-Universe.tools_root= {tools: [:box,:drag,:touch, :move,:toolbox1],toolbox: { orientation: :ew, left:9 , bottom: 9, spacing: 9} }
+Universe.tools_root = { tools: [:color,:box, :drag, :touch, :move, :toolbox1], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
 
 Atome.init_intuition
 
-b=box({id: :the_test__box, selected: true})
-circle({left: 90, id: :the_test_circle, selected: true})
+b = box({ id: :the_test__box, selected: true })
+circle({ left: 90, id: :the_test_circle, selected: true })
 b.touch(true) do
-  if b.width==170
+  if b.width == 170
     b.width(55)
   else
     b.width(170)
@@ -239,12 +261,6 @@ end
 
 # A.html.record
 
-
-
-
-
-
-
 # edition = "M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.9c3.9-3.9 3.9-10.2 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2c-1.9 11.1 1.5 21.9 9.4 29.8 6.6 6.4 14.9 9.9 23.8 9.9z m67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"
 #
 # v = vector({left: 99, data: { path: { d: edition, id: :p1, stroke: :black, 'stroke-width' => 37, fill: :red } } })
@@ -256,3 +272,39 @@ end
 #   end
 # end
 
+s = box({ color: :red, left: 123, top: 123 })
+# tap event content :
+# 	1.	Common Properties:
+# 	•	target: The element that is being interacted with.
+# 	•	interaction: The Interaction object that the event belongs to.
+# 	•	x0, y0: The page coordinates where the interaction started.
+# 	•	clientX0, clientY0: The client coordinates where the interaction started.
+# 	•	dx, dy: The change in coordinates since the last event.
+# 	•	velocityX, velocityY: The velocity of the pointer.
+# 	•	speed: The speed of the pointer.
+# 	•	timeStamp: The time when the event was created.
+# 	2.	Tap Specific Properties:
+# 	•	pointerId: The identifier of the pointer used for the tap.
+# 	•	pageX, pageY: The X and Y coordinates of the event relative to the page.
+# 	•	clientX, clientY: The X and Y coordinates of the event relative to the viewport.
+
+s.touch(true) do |event|
+  x_pos = event[:clientX]
+  { left: '20', alert: 'hello! and big bisous!!, position : ' + x_pos.to_s }
+end
+####### empty local storage :
+JS.eval("localStorage.clear();")
+############## soluce below
+
+# def verif(val, &pro)
+#   datas=  pro.call(val)
+#   alert  datas.delete(:left)
+#   datas.each do |k,v|
+#     send(k,v)
+#   end
+# end
+#
+# verif(val=33) do |var|
+#   # puts left = '20' + var.to_s
+#   {left: '20' + var.to_s, alert: 'hello! and big bisous!!'}
+# end

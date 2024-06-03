@@ -2,6 +2,8 @@
 
 size = 33
 smooth = 3
+margin = 3
+text_color = :lightgrey
 shadow({
          id: :tool_shade,
          left: 3, top: 3, blur: 3,
@@ -15,7 +17,9 @@ border({ id: :tool_box_border, thickness: 1, red: 1, green: 1, blue: 1, alpha: 0
 element({ aid: :toolbox_style, id: :toolbox_style, data: {
   color: :gray,
   size: size,
-  smooth: smooth
+  margin: margin,
+  smooth: smooth,
+  text_color: text_color,
 } })
 
 class Atome
@@ -178,7 +182,7 @@ class Atome
     alterations = tool_scheme[:alteration] ? tool_scheme[:alteration].keys : []
     creations = tool_scheme[:creation] ? tool_scheme[:creation].keys : []
     prev_auth = Universe.allow_localstorage ||= []
-    events_allow = [:top, :left, :right, :bottom, :width, :height]
+    events_allow = %i[top left right bottom width height]
     storage_allowed = events_allow.concat(alterations).concat(creations).concat(prev_auth).uniq
     # alert "#{events_allow}, \n#{alterations} , \n#{creations}, \n #{prev_auth}, \n\n\n#{storage_allowed}"
 
@@ -273,7 +277,9 @@ class Atome
     grab(:intuition).storage[:tool_open] ||= []
     grab(:intuition).storage[:tool_open] << tool_name
     size = grab(:toolbox_style).data[:size]
+    margin = grab(:toolbox_style).data[:margin]
     smooth = grab(:toolbox_style).data[:smooth]
+    text_color = grab(:toolbox_style).data[:text_color]
     case orientation_wanted
     when :sn
       top = :auto
@@ -309,7 +315,7 @@ class Atome
                                   width: size,
                                   height: size,
                                   smooth: smooth,
-                                  apply: [:inactive_tool_col, :tool_box_border, :tool_shade],
+                                  apply: %i[inactive_tool_col tool_box_border tool_shade],
                                   state: :closed,
                                   data: { method: method,
                                           action: action,
@@ -330,22 +336,57 @@ class Atome
 
     icon.color(:yellowgreen)
 
-    tool.text({ tag: { system: true }, data: label, component: { size: 9 }, color: :grey, id: "#{tool_name}_label" })
+    tool.text({ tag: { system: true }, data: label, component: { size: 9 }, color: text_color, id: "#{tool_name}_label" })
     code_for_zone = tool_scheme[:zone]
     tool.instance_exec(tool, &code_for_zone) if code_for_zone.is_a? Proc
     tool.active(false)
-    tool.touch(true) do
-      # we add all specific tool actions to @tools_actions_to_exec hash
-      # we set allow_tool_operations to false to ignore tool operation when clicking on a tool
-      Universe.allow_tool_operations = false
-      # we create the creation_layer if not already exist
-      if tool.active == false # first click
-        tool.activate_tool
+    tool.touch(:long) do
+      tool.instance_variable_set('@prevent_action', true)
+      if tool.instance_variable_get('@tool_open') == true
+        tool.instance_variable_set('@tool_open', false)
+        tool_scheme[:particles].each do |particle|
+          grab("tool_particle_#{particle}").delete({ recursive: true })
+        end
+        tool.width(size)
       else
-        tool.deactivate_tool
-        tick[tool_name] = 0
+        tool.instance_variable_set('@tool_open', true)
+        tool_scheme[:particles].each_with_index do |particle, ind|
+          particle = tool.box({ id: "tool_particle_#{particle}",  tag: { system: true },smooth: smooth, apply: %i[inactive_tool_col tool_box_border tool_shade], width: size, height: size, left: ind * (size + margin) + size })
+          particle.touch(true) do
+            puts "action locked"
+            tool.instance_variable_set('@prevent_action', true)
+            if particle.instance_variable_get('@active')
+              particle.color(:yellowgreen)
+              particle.instance_variable_set('@active', false)
+            else
+              particle.color(:yellow)
+              particle.instance_variable_set('@active', true)
+            end
+
+          end
+        end
+        tool.width(((size + margin) * (tool_scheme[:particles].length + 1)))
       end
+
     end
+    tool.touch(true) do
+      puts "==> prevent : #{tool.instance_variable_get('@prevent_action')}"
+      unless tool.instance_variable_get('@prevent_action')
+        # we add all specific tool actions to @tools_actions_to_exec hash
+        # we set allow_tool_operations to false to ignore tool operation when clicking on a tool
+        Universe.allow_tool_operations = false
+        # we create the creation_layer if not already exist
+        if tool.active == false # first click
+          tool.activate_tool
+        else
+          tool.deactivate_tool
+          tick[tool_name] = 0
+        end
+      end
+      puts 'reactivation'
+      tool.instance_variable_set('@prevent_action', false)
+    end
+
   end
 
 end

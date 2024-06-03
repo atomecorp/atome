@@ -1,4 +1,5 @@
 #  frozen_string_literal: true
+
 a=box({width: 666, height: 777, color: :orange})
 b = box({ left: 666, color: :blue, smooth: 6, id: :the_box2, depth: 1 , top: 66})
 cc=circle({color: :red, left: 0, top: 0})
@@ -16,8 +17,6 @@ b.drag(:stop) do
   clone.delete(true)
 end
 
-
-
 b.drag(:locked) do |event|
   dx = event[:dx]
   dy = event[:dy]
@@ -29,7 +28,6 @@ b.drag(:locked) do |event|
   puts "y: #{y}"
 end
 cc.drag({ restrict: {max:{ left: 240, top: 190}} }) do |event|
-
 end
 
 

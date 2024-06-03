@@ -206,13 +206,12 @@
 # require "./examples/video"
 # require "./examples/login"
 
-# require "./examples/touch"
-require "./examples/over" #### problem
+# require "./examples/touch" # passed
+require "./examples/over" # passed
 # require "./examples/resize" # passed
-# require "./examples/drag" ## passed
-# require "./examples/drop" #passed
-# require "./examples/overflow" #passed
-
+# require "./examples/drag" # passed
+# require "./examples/drop" # passed
+# require "./examples/overflow" # passed
 
 require "./examples/test"
 # wait 2 do

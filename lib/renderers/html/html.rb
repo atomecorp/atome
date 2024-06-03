@@ -1139,7 +1139,6 @@ class HTML
 
   def touch_down(_option)
     @element[:style][:cursor] = 'pointer'
-
     @touch_down = @original_atome.instance_variable_get('@touch_code')[:down]
     interact = JS.eval("return interact('##{@id}')")
     unless @touch_removed[:down]
@@ -1159,17 +1158,18 @@ class HTML
     @element[:style][:cursor] = 'pointer'
     interact = JS.eval("return interact('##{@id}')")
     touch_tap = @original_atome.instance_variable_get('@touch_code')[:tap]
-    # unless @touch_removed[:tap]
     interact.on('tap') do |native_event|
       event = Native(native_event)
-      # we use .call instead of instance_eval because instance_eval bring the current object as context
-      # and it's lead to a problem of context and force the use of grab(:view) when using atome method such as shape ,
-      # group etc..
-      # @touch_tap.call(event) if @touch_tap.is_a?(Proc) && !Universe.edit_mode || !@original_atome.tag[:system]
-      touch_tap.call(event) if event_validation(touch_tap)
+      ########## old code :
+      # touch_tap.call(event) if event_validation(touch_tap)
+      ########## new code:
+      proc_content = touch_tap.call(event) if event_validation(touch_tap)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
-    # end
-
   end
 
   def touch_up(_option)
