@@ -135,8 +135,8 @@ Universe.tools_root= {tools: [:box,:drag,:touch, :move,:toolbox1],toolbox: { ori
 
 Atome.init_intuition
 
-b=box({id: :the_box, selected: true})
-circle({left: 90, id: :the_circle, selected: true})
+b=box({id: :the_test__box, selected: true})
+circle({left: 90, id: :the_test_circle, selected: true})
 b.touch(true) do
   if b.width==170
     b.width(55)

@@ -84,14 +84,12 @@
 # in progress
 # require "./examples/site"
 
-# require "./examples/resize"
-# require "./examples/drag"
+
 # require "./examples/find"
 # require "./examples/tools"
 # require "./examples/audio"
 # require "./examples/recorder"
 # require "./examples/above_below_before_after.rb"
-require "./examples/test"
 # require "./examples/hypertext"
 # require "./examples/rotate"
 # require "./examples/remove"
@@ -183,12 +181,8 @@ require "./examples/test"
 # require "./examples/hierarchy"
 # require "./examples/callback"
 # require "./examples/convert"
-# require "./examples/touch"
-# require "./examples/drag"
-# require "./examples/over"
 # require "./examples/play"
 # require "./examples/animation"
-# require "./examples/drop"
 # require "./examples/file"
 # require "./examples/select_text"
 # require "./examples/edit"
@@ -209,10 +203,21 @@ require "./examples/test"
 # require "./examples/attach"
 # require "./examples/grab"
 # require "./examples/match"
-# require "./examples/scroll"
 # require "./examples/video"
 # require "./examples/login"
 
+# require "./examples/touch"
+require "./examples/over" #### problem
+# require "./examples/resize" # passed
+# require "./examples/drag" ## passed
+# require "./examples/drop" #passed
+# require "./examples/overflow" #passed
+
+
+require "./examples/test"
+# wait 2 do
+
+# end
 # Native tests #
 # require "./examples/browse"
 # require "./examples/read"

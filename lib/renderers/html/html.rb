@@ -1069,7 +1069,6 @@ class HTML
     @over_over = @original_atome.over_code[:over]
     interact.on('mouseover') do |native_event|
       JS.global[:myRubyMouseOverCallback] = Proc.new { @original_atome.over_code[:over].call }
-      JS.eval("document.querySelector('##{@id}').addEventListener('mouseleave', myRubyMouseOverCallback);")
       event = Native(native_event)
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
@@ -1093,10 +1092,12 @@ class HTML
   end
 
   def over_leave(_option)
+
     @over_leave = @original_atome.instance_variable_get('@over_code')[:leave]
     return unless @over_leave
 
     @over_leave_callback = lambda do |event|
+
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
