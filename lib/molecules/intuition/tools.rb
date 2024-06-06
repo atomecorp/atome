@@ -28,7 +28,7 @@ element({ aid: :toolbox_style, id: :toolbox_style, data: {
 
 class Atome
   def tools_values
-    alert ('we must get tools values not the atome target ID!!:  '+ id)
+    alert ('we must get tools values not the atome target ID!!:  ' + id.to_s)
   end
 
   def toolbox(tool_list)
@@ -162,10 +162,21 @@ class Atome
         tool_actions[:action] = { noop: true }
         current_tool.data = tool_actions
       end
-      # tool_actions.delete(:inactivation)
-      # alert "==> #{tool_actions[:inactivation]}"
-      # puts "==> #{method_found},\n==>  #{current_tool.id} ,\nactions ==>  #{tool_actions},\n==>  #{atome_touched},\n==> #{a_event}"
-      send(method_found, current_tool, tool_actions, atome_touched, a_event)
+      tool_name = tool.to_s.sub('_tool', '')
+      tools_scheme = Universe.tools[tool_name.to_sym]
+      puts "1 - here slider treat either the target atome types or current atome"
+      puts "2 - need to created a list instead of choosing the last atome found of it's kind"
+
+      target = if tools_scheme[:target]
+                 grab(atome_touched.send(tools_scheme[:target]).last)
+               else
+                 atome_touched
+               end
+      tools_scheme[:particles]&.each do |particle_f, value_f|
+        target.send(particle_f, value_f)
+      end
+      # alert "#{method_found}, #{current_tool}, #{tool_actions}, #{atome_touched}, #{a_event}"
+      send(method_found, current_tool, tool_actions, target, a_event)
     end
 
   end
@@ -363,24 +374,24 @@ class Atome
         tool.width(size)
       else
         tool.instance_variable_set('@tool_open', true)
-        tool_scheme[:particles].each_with_index do |particle_name, ind|
+        tool_scheme[:particles].each_with_index do |(particle_name, _value_), ind|
 
           particle = tool.box({ id: "tool_particle_#{particle_name}", tag: { system: true }, depth: 1, smooth: smooth,
                                 apply: %i[inactive_tool_col tool_box_border tool_shade],
                                 width: size, height: size, left: ind * (size + margin) + size })
-          particle_label=particle.text({
-                          tag: { system: true },
-                          data: truncate_string(particle_name, 5),
-                          display: :block,
-                          center: {x: 0},
-                          position: :absolute,
-                          component: { size: 9 },
-                          color: text_color },
-                        top: :auto,
-
+          particle_label = particle.text({
+                                           tag: { system: true },
+                                           data: truncate_string(particle_name, 5),
+                                           display: :block,
+                                           center: { x: 0 },
+                                           position: :absolute,
+                                           component: { size: 9 },
+                                           color: text_color,
+                                           top: :auto,
+                                         }
 
           )
-          particle_label.center({x: 0})
+          particle_label.center({ x: 0 })
           particle_label.top(:auto)
           particle_label.bottom(0)
           particle.touch(true) do
@@ -416,16 +427,26 @@ class Atome
                 # Slider actions below:
                 if grab(slider_id).instance_variable_get('@initialised')
                   Atome.selection.each do |atome_id_to_treat|
+                    # puts "-------> #{tool_scheme[:particles][particle_name]} , #{value }"
+                    tool_scheme[:particles][particle_name]=value.to_f / 100
+                    # tools_scheme[:particles]
                     atome_found = grab(atome_id_to_treat)
                     target = grab(atome_found.color.last)
-                    target.send(particle_name, value / 100)
+                    target.send(particle_name, value.to_f / 100)
+                    puts "+++++++> #{tool_scheme[:particles]} }"
                   end
                 end
               end
 
               Atome.selection.each do |atome_id_to_treat|
                 atome_found = grab(atome_id_to_treat)
-                target = grab(atome_found.color.last)
+                puts "here slider treat either the target atome types or current atome"
+                puts "need to created a list instead of choosing the last atome found of it's kind"
+                target = if tool_scheme[:target]
+                           grab(atome_found.send(tool_scheme[:target]).last)
+                         else
+                           atome_found
+                         end
                 value_found = target.send(particle_name)
                 slider_f.value(value_found * 100)
               end

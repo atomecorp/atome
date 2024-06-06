@@ -138,7 +138,7 @@ new({ tool: :color }) do
   }
   color_code = lambda {
    # color(:green)
-   tools_values
+   # tools_values
   }
   inactive_code = lambda { |data|
     data[:treated].each do |atome_f|
@@ -150,7 +150,8 @@ new({ tool: :color }) do
   { activation: active_code,
     alteration: { event: color_code },
     inactivation: inactive_code,
-    particles: [:red, :green, :blue,:alpha]}
+    target: :color,
+    particles: { red: 0, green: 0.5, blue: 1, alpha: 1 }}
 end
 
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
