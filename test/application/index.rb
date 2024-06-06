@@ -207,13 +207,15 @@
 # require "./examples/login"
 
 # require "./examples/touch" # passed
-require "./examples/over" # passed
+# require "./examples/over" # passed
 # require "./examples/resize" # passed
 # require "./examples/drag" # passed
 # require "./examples/drop" # passed
 # require "./examples/overflow" # passed
 
-require "./examples/test"
+# require "./examples/test"
+require "./examples/remove"
+# require "./examples/sliders"
 # wait 2 do
 
 # end

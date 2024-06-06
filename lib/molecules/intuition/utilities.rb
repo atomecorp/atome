@@ -154,8 +154,9 @@ new({ molecule: :slider }) do |params, bloc|
   new_id = params.delete(:id) || identity_generator
 
   default_smooth = 9
-  default_slider_particles = { id: new_id, color: color_found, width: 333, height: 33, left: 0, top: 0, smooth: default_smooth }
-  default_cursor_particles = { color: color_found, width: 29, height: 29, left: 0, smooth: '100%' }
+  default_slider_particles = { id: new_id, color: color_found, width: 333, height: 33, left: 0, top: 0,
+                               smooth: default_smooth, tag: { system: true } }
+  default_cursor_particles = { color: color_found, width: 29, height: 29, left: 0, smooth: '100%', tag: { system: true } }
   cursor_found = params.delete(:cursor)
   slider_particle = default_slider_particles.merge(params)
   slider = box(slider_particle)
@@ -167,7 +168,7 @@ new({ molecule: :slider }) do |params, bloc|
                                   red: 0, green: 0, blue: 0, alpha: 0.7
                                 })
 
-  range = slider.box({ id: "#{slider.id}_range", top: :auto, bottom: 0 })
+  range = slider.box({ id: "#{slider.id}_range", top: :auto, bottom: 0,tag: { system: true } })
 
   if range_found
     range.apply(slider_shadow.id,)
@@ -305,7 +306,7 @@ new(molecule: :button) do |params, bloc|
   button = box(
     { renderers: renderer_found, id: new_id, type: :shape, color: back_col,
       left: 0, top: 0, data: '', attach: attach_to,
-      smooth: 3, overflow: :hidden,
+      smooth: 3, overflow: :hidden,tag: { system: true }
     })
 
   button.touch(:down) do
@@ -362,7 +363,7 @@ class Atome
 end
 
 new(molecule: :matrix) do |params, &bloc|
-  params  ||= {}
+  params ||= {}
   # We test if self is main if so we attach the matrix to the view
   parent_found = if self == self
                    grab(:view)

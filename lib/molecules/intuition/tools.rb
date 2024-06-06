@@ -310,6 +310,7 @@ class Atome
                                   # orientation: orientation_wanted,
                                   top: top,
                                   bottom: bottom,
+                                  depth: 0,
                                   left: left,
                                   right: right,
                                   width: size,
@@ -336,7 +337,8 @@ class Atome
 
     icon.color(:yellowgreen)
 
-    tool.text({ tag: { system: true }, data: label, component: { size: 9 }, color: text_color, id: "#{tool_name}_label" })
+    tool.text({ tag: { system: true }, data: label, component: { size: 9 },
+                color: text_color, id: "#{tool_name}_label", width: size })
     code_for_zone = tool_scheme[:zone]
     tool.instance_exec(tool, &code_for_zone) if code_for_zone.is_a? Proc
     tool.active(false)
@@ -350,16 +352,60 @@ class Atome
         tool.width(size)
       else
         tool.instance_variable_set('@tool_open', true)
-        tool_scheme[:particles].each_with_index do |particle, ind|
-          particle = tool.box({ id: "tool_particle_#{particle}",  tag: { system: true },smooth: smooth, apply: %i[inactive_tool_col tool_box_border tool_shade], width: size, height: size, left: ind * (size + margin) + size })
-          particle.touch(true) do
-            puts "action locked"
+        tool_scheme[:particles].each_with_index do |particle_name, ind|
+
+          particle = tool.box({ id: "tool_particle_#{particle_name}", tag: { system: true }, depth: 1, smooth: smooth,
+                                apply: %i[inactive_tool_col tool_box_border tool_shade],
+                                width: size, height: size, left: ind * (size + margin) + size })
+          particle.touch(:down) do
             tool.instance_variable_set('@prevent_action', true)
             if particle.instance_variable_get('@active')
               particle.color(:yellowgreen)
               particle.instance_variable_set('@active', false)
             else
               particle.color(:yellow)
+              slider_id = "particle_slider_#{particle_name}"
+              slider_f = particle.slider({ orientation: :vertical, id: "particle_slider_#{particle_name}",
+                                           range: { color: :white },
+                                           value: 55,
+                                           depth: 2,
+                                           center: {  x: 0 },
+                                           width: 18, height: 123,smooth: 1,
+                                           left: 0,
+                                           top: -123 + size, color: :lightgrey,
+                                           cursor: { color: { alpha: 1, red: 0.12, green: 0.12, blue: 0.12 },
+                                                     width: 33, height: 12, smooth: 3 } }) do |value|
+                # Slider actions below:
+
+                # grab('particle_slider_red_cursor').touch(true) do
+                #   JS.eval('console.clear()')
+                #
+                #   puts grab('particle_slider_red_cursor').color
+                #   grab('particle_slider_red_cursor').remove(:box_color)
+                #   puts grab('particle_slider_red_cursor').color
+                  puts grab('particle_slider_red_cursor').color(:red)
+                # end
+                if grab(slider_id).instance_variable_get('@initialised')
+                  JS.eval('console.clear()')
+                  Atome.selection.each do |atome_id_to_treat|
+
+                    # puts atome_id_to_treat
+                    atome_found = grab(atome_id_to_treat)
+                    target = grab(atome_found.color.last)
+                    puts target.id
+                    target.send(particle_name, value / 100)
+                  end
+                end
+
+              end
+
+              Atome.selection.each do |atome_id_to_treat|
+                atome_found = grab(atome_id_to_treat)
+                target = grab(atome_found.color.last)
+                value_found = target.send(particle_name)
+                slider_f.value(value_found * 100)
+              end
+              slider_f.instance_variable_set('@initialised', true)
               particle.instance_variable_set('@active', true)
             end
 
@@ -368,6 +414,10 @@ class Atome
         tool.width(((size + margin) * (tool_scheme[:particles].length + 1)))
       end
 
+    end
+    tool.touch(:down) do
+      tool.depth(999)
+      # alert 'place in front get all tools on screen'
     end
     tool.touch(true) do
       puts "==> prevent : #{tool.instance_variable_get('@prevent_action')}"

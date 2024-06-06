@@ -106,6 +106,13 @@ pre {
     word-wrap: break-word;
     white-space: pre-wrap;
     position: relative;
+
+/*    add on to test with multiple styles*/
+    display: inline-block;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .center {
