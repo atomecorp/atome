@@ -110,7 +110,7 @@ pre {
 /*    add on to test with multiple styles*/
     display: inline-block;
     box-sizing: border-box;
-    overflow: hidden;
+    /*overflow: hidden;*/
     text-overflow: ellipsis;
     min-width: 0;
 }

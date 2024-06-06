@@ -137,7 +137,8 @@ new({ tool: :color }) do
     puts 'color activated1'
   }
   color_code = lambda {
-   color(:green)
+   # color(:green)
+   tools_values
   }
   inactive_code = lambda { |data|
     data[:treated].each do |atome_f|
@@ -153,8 +154,8 @@ new({ tool: :color }) do
 end
 
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
-Universe.tools_root = { tools: [:color,:box, :drag, :touch, :move, :toolbox1], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
-
+Universe.tools_root = {id: :root_tools, tools: [:box, :drag, :touch,:color, :move, :toolbox1], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
+puts "above we added an id because each tool may be in many toolbox and have an uniq ID"
 Atome.init_intuition
 
 b = box({ id: :the_test__box, selected: true })

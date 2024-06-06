@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+def truncate_string(string, max_length)
+  string.length > max_length ? string.slice(0, max_length) + "." : string
+end
+
 size = 33
 smooth = 3
 margin = 3
-text_color = :lightgrey
+text_color = { alpha: 0.3, red: 1, green: 1, blue: 1 }
 shadow({
          id: :tool_shade,
          left: 3, top: 3, blur: 3,
@@ -23,6 +27,10 @@ element({ aid: :toolbox_style, id: :toolbox_style, data: {
 } })
 
 class Atome
+  def tools_values
+    alert ('we must get tools values not the atome target ID!!:  '+ id)
+  end
+
   def toolbox(tool_list)
     @toolbox = tool_list[:tools]
     tool_list[:tools].each_with_index do |root_tool, index|
@@ -195,7 +203,9 @@ class Atome
     tool.data[:created] = []
     tool.data[:prev_states] = {}
     # generic behavior
-    tool.apply(:active_tool_col)
+    # tool.apply(:active_tool_col)
+    grab("#{tool_name}_icon").color(:white)
+    grab("#{tool_name}_label").color(:white)
     Universe.active_tools << tool_name
     # activation code
     activation_code = tool_scheme[:activation]
@@ -241,7 +251,8 @@ class Atome
       # we delete the attached toolbox if it exist
       toolbox_tool.delete({ force: true })
     end
-
+    grab("#{tool_name}_icon").color(grab(:toolbox_style).data[:text_color])
+    grab("#{tool_name}_label").color(grab(:toolbox_style).data[:text_color])
     # when closing delete tools action from tool_actions_to_exec
     Universe.active_tools.delete(tool_name)
     # we check if all tools are inactive if so we set edit_mode to false
@@ -335,10 +346,10 @@ class Atome
     icon = tool.vector({ tag: { system: true }, left: 9, top: :auto, bottom: 9, width: 18, height: 18, id: "#{tool_name}_icon",
                          data: { path: { d: edition, id: "p1_#{tool_name}_icon", stroke: :black, 'stroke-width' => 37, fill: :white } } })
 
-    icon.color(:yellowgreen)
+    icon.color(text_color)
 
-    tool.text({ tag: { system: true }, data: label, component: { size: 9 },
-                color: text_color, id: "#{tool_name}_label", width: size })
+    tool.text({ tag: { system: true }, data: truncate_string(label, 5), component: { size: 9 }, center: { x: 0 }, top: :auto, bottom: 0,
+                color: text_color, id: "#{tool_name}_label", width: size, position: :absolute })
     code_for_zone = tool_scheme[:zone]
     tool.instance_exec(tool, &code_for_zone) if code_for_zone.is_a? Proc
     tool.active(false)
@@ -347,7 +358,7 @@ class Atome
       if tool.instance_variable_get('@tool_open') == true
         tool.instance_variable_set('@tool_open', false)
         tool_scheme[:particles].each do |particle|
-          grab("tool_particle_#{particle}").delete({ recursive: true })
+          grab("tool_particle_#{particle}").delete({ force: true })
         end
         tool.width(size)
       else
@@ -357,46 +368,59 @@ class Atome
           particle = tool.box({ id: "tool_particle_#{particle_name}", tag: { system: true }, depth: 1, smooth: smooth,
                                 apply: %i[inactive_tool_col tool_box_border tool_shade],
                                 width: size, height: size, left: ind * (size + margin) + size })
-          particle.touch(:down) do
+          particle_label=particle.text({
+                          tag: { system: true },
+                          data: truncate_string(particle_name, 5),
+                          display: :block,
+                          center: {x: 0},
+                          position: :absolute,
+                          component: { size: 9 },
+                          color: text_color },
+                        top: :auto,
+
+
+          )
+          particle_label.center({x: 0})
+          particle_label.top(:auto)
+          particle_label.bottom(0)
+          particle.touch(true) do
             tool.instance_variable_set('@prevent_action', true)
+            slider_id = "particle_slider_#{particle_name}"
             if particle.instance_variable_get('@active')
-              particle.color(:yellowgreen)
+              grab(slider_id).delete({ force: true })
               particle.instance_variable_set('@active', false)
+              # particle.top(:auto)
+              # particle.top(:bottom)
+              particle.height(size)
+              particle.top(0)
             else
-              particle.color(:yellow)
+              particle.height(139)
+              particle.top(-139 + size)
+              # particle.top(:auto)
+              # particle.top(:bottom)
+              # particle.color(:green)
               slider_id = "particle_slider_#{particle_name}"
-              slider_f = particle.slider({ orientation: :vertical, id: "particle_slider_#{particle_name}",
-                                           range: { color: :white },
+              slider_f = particle.slider({ orientation: :vertical,
+                                           id: slider_id,
+                                           range: { color: { alpha: 0 } },
                                            value: 55,
                                            depth: 2,
-                                           center: {  x: 0 },
-                                           width: 18, height: 123,smooth: 1,
+                                           center: { x: 0 },
+                                           width: 18, height: 123, smooth: 1,
                                            left: 0,
-                                           top: -123 + size, color: :lightgrey,
-                                           cursor: { color: { alpha: 1, red: 0.12, green: 0.12, blue: 0.12 },
-                                                     width: 33, height: 12, smooth: 3 } }) do |value|
+                                           # top: -123 + size,
+                                           color: { alpha: 0 },
+                                           cursor:
+                                             { color: { alpha: 1, red: 0.9, green: 0.9, blue: 0.0 },
+                                               width: 18, height: 12, smooth: 3 } }) do |value|
                 # Slider actions below:
-
-                # grab('particle_slider_red_cursor').touch(true) do
-                #   JS.eval('console.clear()')
-                #
-                #   puts grab('particle_slider_red_cursor').color
-                #   grab('particle_slider_red_cursor').remove(:box_color)
-                #   puts grab('particle_slider_red_cursor').color
-                  puts grab('particle_slider_red_cursor').color(:red)
-                # end
                 if grab(slider_id).instance_variable_get('@initialised')
-                  JS.eval('console.clear()')
                   Atome.selection.each do |atome_id_to_treat|
-
-                    # puts atome_id_to_treat
                     atome_found = grab(atome_id_to_treat)
                     target = grab(atome_found.color.last)
-                    puts target.id
                     target.send(particle_name, value / 100)
                   end
                 end
-
               end
 
               Atome.selection.each do |atome_id_to_treat|
@@ -411,7 +435,7 @@ class Atome
 
           end
         end
-        tool.width(((size + margin) * (tool_scheme[:particles].length + 1)))
+        # tool.width(((size + margin) * (tool_scheme[:particles].length + 1)))
       end
 
     end

@@ -160,7 +160,7 @@ new({ molecule: :slider }) do |params, bloc|
   cursor_found = params.delete(:cursor)
   slider_particle = default_slider_particles.merge(params)
   slider = box(slider_particle)
-
+  slider.remove(:box_color)
   slider_shadow = slider.shadow({
                                   id: :s2,
                                   left: 3, top: 3, blur: 9,
@@ -169,7 +169,7 @@ new({ molecule: :slider }) do |params, bloc|
                                 })
 
   range = slider.box({ id: "#{slider.id}_range", top: :auto, bottom: 0,tag: { system: true } })
-
+  range.remove(:box_color)
   if range_found
     range.apply(slider_shadow.id,)
     range_found.each do |part, val|
@@ -180,6 +180,7 @@ new({ molecule: :slider }) do |params, bloc|
   end
   cursor_particle = default_cursor_particles.merge(cursor_found).merge({ id: "#{slider.id}_cursor" })
   cursor = slider.box(cursor_particle)
+  cursor.remove(:box_color)
   cursor_left = (slider_particle[:width] - cursor_particle[:width]) / 2.0
   cursor_top = (slider_particle[:height] - cursor_particle[:height]) / 2.0
 
@@ -308,7 +309,7 @@ new(molecule: :button) do |params, bloc|
       left: 0, top: 0, data: '', attach: attach_to,
       smooth: 3, overflow: :hidden,tag: { system: true }
     })
-
+  button.remove(:box_color)
   button.touch(:down) do
     button.tick(:button)
     bloc.call((button.tick[:button] - 1) % states)
@@ -392,7 +393,7 @@ new(molecule: :matrix) do |params, &bloc|
   view_width = parent_found.to_px(:width)
   view_height = parent_found.to_px(:height)
   matrix_back = box({ id: "#{id}_background", width: size, height: size, color: { alpha: 0 } })
-
+  matrix_back.remove(:box_color)
   if view_width > view_height
     full_size = view_height * size_coefficient
     available_width = full_size - total_spacing_x
@@ -428,12 +429,13 @@ new(molecule: :matrix) do |params, &bloc|
 end
 new(molecule: :page) do |params, &bloc|
   b = box({ color: :red, left: 99, drag: true })
+  b.remove(:box_color)
   b.text(params)
 end
 new(molecule: :application) do |params, &bloc|
 
   main_page = box({ drag: true, width: :auto, height: :auto, top: 0, bottom: 0, left: 0, right: 0 })
-
+  main_page.remove(:box_color)
   main_page
 
   # def new(params, &bloc)

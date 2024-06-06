@@ -213,8 +213,7 @@
 # require "./examples/drop" # passed
 # require "./examples/overflow" # passed
 
-# require "./examples/test"
-require "./examples/remove"
+require "./examples/test"
 # require "./examples/sliders"
 # wait 2 do
 
