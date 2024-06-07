@@ -27,9 +27,6 @@ element({ aid: :toolbox_style, id: :toolbox_style, data: {
 } })
 
 class Atome
-  # def tools_values
-  #   alert ('we must get tools values not the atome target ID!!:  ' + id.to_s)
-  # end
 
   def toolbox(tool_list)
     @toolbox = tool_list[:tools]
@@ -65,15 +62,15 @@ class Atome
             y = event[:clientY]
             elements = JS.global[:document].elementsFromPoint(x, y)
             elements.to_a.each do |atome_touched|
-              unless atome_touched == :html
+              unless atome_touched.to_s == 'html'
                 id_found = atome_touched[:id].to_s
                 atome_found = grab(id_found)
-                unless atome_found && atome_found.tag[:system]
+                # unless (atome_found && atome_found.tag[:system])
+                if atome_found && !atome_found.tag[:system]
                   Universe.active_tools.each do |tool|
-                    # alert "problem here!!#{atome_touched}, #{id_found},#{atome_found}, #{tool}"
                     apply_tool(tool, atome_found, event)
                   end
-              end
+                end
 
                 break
               end
@@ -421,7 +418,7 @@ class Atome
               particle.height(size)
               particle.top(0)
             else
-              particle.height(139+size/2)
+              particle.height(139 + size / 2)
               particle.top(-139 + size)
               # particle.top(:auto)
               # particle.top(:bottom)
@@ -435,7 +432,7 @@ class Atome
                                            center: { x: 0 },
                                            width: 18, height: 123, smooth: 1,
                                            left: 0,
-                                           top: size/2,
+                                           top: size / 2,
                                            color: { alpha: 0 },
                                            cursor:
                                              { color: { alpha: 1, red: 0.9, green: 0.9, blue: 0.0 },
@@ -475,7 +472,7 @@ class Atome
             end
 
           end
-        end
+        end if tool_scheme[:particles]
         # tool.width(((size + margin) * (tool_scheme[:particles].length + 1)))
       end
 
@@ -484,7 +481,6 @@ class Atome
       tool.depth(999)
     end
     tool.touch(true) do
-
 
       # puts "==> prevent : #{tool.instance_variable_get('@prevent_action')}"
       unless tool.instance_variable_get('@prevent_action')
