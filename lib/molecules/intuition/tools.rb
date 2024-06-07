@@ -65,12 +65,16 @@ class Atome
             y = event[:clientY]
             elements = JS.global[:document].elementsFromPoint(x, y)
             elements.to_a.each do |atome_touched|
-              id_found = atome_touched[:id].to_s
-              atome_found = grab(id_found)
-              unless atome_found && atome_found.tag[:system]
-                Universe.active_tools.each do |tool|
-                  apply_tool(tool, atome_found, event)
-                end
+              unless atome_touched == :html
+                id_found = atome_touched[:id].to_s
+                atome_found = grab(id_found)
+                unless atome_found && atome_found.tag[:system]
+                  Universe.active_tools.each do |tool|
+                    # alert "problem here!!#{atome_touched}, #{id_found},#{atome_found}, #{tool}"
+                    apply_tool(tool, atome_found, event)
+                  end
+              end
+
                 break
               end
             end
@@ -373,6 +377,7 @@ class Atome
         tool.width(size)
       else
         tool.instance_variable_set('@tool_open', true)
+
         tool_scheme[:particles].each_with_index do |(particle_name, _value_), ind|
 
           particle = tool.box({ id: "tool_particle_#{particle_name}", tag: { system: true }, depth: 1, smooth: smooth,
@@ -416,7 +421,6 @@ class Atome
               particle.height(size)
               particle.top(0)
             else
-
               particle.height(139+size/2)
               particle.top(-139 + size)
               # particle.top(:auto)
@@ -480,7 +484,9 @@ class Atome
       tool.depth(999)
     end
     tool.touch(true) do
-      puts "==> prevent : #{tool.instance_variable_get('@prevent_action')}"
+
+
+      # puts "==> prevent : #{tool.instance_variable_get('@prevent_action')}"
       unless tool.instance_variable_get('@prevent_action')
         # we add all specific tool actions to @tools_actions_to_exec hash
         # we set allow_tool_operations to false to ignore tool operation when clicking on a tool
