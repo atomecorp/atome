@@ -293,7 +293,9 @@ s = box({ color: :red, left: 123, top: 123 })
 s.touch(true) do |event|
   x_pos = event[:clientX]
   { left: '20', alert: 'hello! and big bisous!!, position : ' + x_pos.to_s }
+
 end
+s.remove(:box_color)
 ####### empty local storage :
 JS.eval("localStorage.clear();")
 ############## soluce below

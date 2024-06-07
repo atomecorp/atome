@@ -4,6 +4,7 @@ b = box()
 b.text('click me')
 orange=''
 b.touch(true) do
+
   c = grab(:view).circle({id: :circling, left: 222, color: :orange, blur: 1.9 })
   orange=c.box({id: :boxing,color: {id: :orange_col, red: 1, blue: 0.2 }, width: 33, height: 33, left: 123})
   orange.shadow({
@@ -23,10 +24,14 @@ b.touch(true) do
     end
   end
 
-  c.touch(true) do
-    c.delete({ recursive: true })
+  c.touch(:down) do
+    puts '1?'
+    grab(:circling).delete({ recursive: true }) if grab(:circling)
   end
   # alert orange.apply
+  wait 4 do
+    grab(:circling).delete({ recursive: true })if grab(:circling)
+  end
 end
 
 

@@ -214,6 +214,8 @@
 # require "./examples/overflow" # passed
 
 require "./examples/test"
+# require "./examples/delete"
+# require "./examples/touch"
 # require "./examples/sliders"
 # wait 2 do
 

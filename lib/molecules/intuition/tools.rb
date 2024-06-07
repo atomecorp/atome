@@ -27,9 +27,9 @@ element({ aid: :toolbox_style, id: :toolbox_style, data: {
 } })
 
 class Atome
-  def tools_values
-    alert ('we must get tools values not the atome target ID!!:  ' + id.to_s)
-  end
+  # def tools_values
+  #   alert ('we must get tools values not the atome target ID!!:  ' + id.to_s)
+  # end
 
   def toolbox(tool_list)
     @toolbox = tool_list[:tools]
@@ -175,7 +175,6 @@ class Atome
       tools_scheme[:particles]&.each do |particle_f, value_f|
         target.send(particle_f, value_f)
       end
-      # alert "#{method_found}, #{current_tool}, #{tool_actions}, #{atome_touched}, #{a_event}"
       send(method_found, current_tool, tool_actions, target, a_event)
     end
 
@@ -203,7 +202,6 @@ class Atome
     prev_auth = Universe.allow_localstorage ||= []
     events_allow = %i[top left right bottom width height]
     storage_allowed = events_allow.concat(alterations).concat(creations).concat(prev_auth).uniq
-    # alert "#{events_allow}, \n#{alterations} , \n#{creations}, \n #{prev_auth}, \n\n\n#{storage_allowed}"
 
     Universe.allow_localstorage = storage_allowed
     # we set edit mode to true (this allow to prevent user atome to respond from click)
@@ -361,6 +359,7 @@ class Atome
 
     tool.text({ tag: { system: true }, data: truncate_string(label, 5), component: { size: 9 }, center: { x: 0 }, top: :auto, bottom: 0,
                 color: text_color, id: "#{tool_name}_label", width: size, position: :absolute })
+
     code_for_zone = tool_scheme[:zone]
     tool.instance_exec(tool, &code_for_zone) if code_for_zone.is_a? Proc
     tool.active(false)
@@ -368,7 +367,7 @@ class Atome
       tool.instance_variable_set('@prevent_action', true)
       if tool.instance_variable_get('@tool_open') == true
         tool.instance_variable_set('@tool_open', false)
-        tool_scheme[:particles].each do |particle|
+        tool_scheme[:particles].each do |particle, value|
           grab("tool_particle_#{particle}").delete({ force: true })
         end
         tool.width(size)
@@ -380,9 +379,9 @@ class Atome
                                 apply: %i[inactive_tool_col tool_box_border tool_shade],
                                 width: size, height: size, left: ind * (size + margin) + size })
           particle_label = particle.text({
+                                           id: "tool_particle_name_#{particle_name}",
                                            tag: { system: true },
                                            data: truncate_string(particle_name, 5),
-                                           display: :block,
                                            center: { x: 0 },
                                            position: :absolute,
                                            component: { size: 9 },
@@ -391,10 +390,22 @@ class Atome
                                          }
 
           )
+          label_value = particle.text({
+                                        id: "tool_particle_value_#{particle_name}",
+                                        data: 0.00,
+                                        tag: { system: true },
+                                        center: { x: 0 },
+                                        position: :absolute,
+                                        component: { size: 9 },
+                                        color: text_color,
+                                        top: margin,
+
+                                      })
           particle_label.center({ x: 0 })
           particle_label.top(:auto)
           particle_label.bottom(0)
           particle.touch(true) do
+            puts "1 ======> opening !!!#{particle_name}"
             tool.instance_variable_set('@prevent_action', true)
             slider_id = "particle_slider_#{particle_name}"
             if particle.instance_variable_get('@active')
@@ -405,7 +416,8 @@ class Atome
               particle.height(size)
               particle.top(0)
             else
-              particle.height(139)
+
+              particle.height(139+size/2)
               particle.top(-139 + size)
               # particle.top(:auto)
               # particle.top(:bottom)
@@ -419,7 +431,7 @@ class Atome
                                            center: { x: 0 },
                                            width: 18, height: 123, smooth: 1,
                                            left: 0,
-                                           # top: -123 + size,
+                                           top: size/2,
                                            color: { alpha: 0 },
                                            cursor:
                                              { color: { alpha: 1, red: 0.9, green: 0.9, blue: 0.0 },
@@ -427,16 +439,20 @@ class Atome
                 # Slider actions below:
                 if grab(slider_id).instance_variable_get('@initialised')
                   Atome.selection.each do |atome_id_to_treat|
+
                     # puts "-------> #{tool_scheme[:particles][particle_name]} , #{value }"
-                    tool_scheme[:particles][particle_name]=value.to_f / 100
+                    tool_scheme[:particles][particle_name] = value.to_f / 100
                     # tools_scheme[:particles]
                     atome_found = grab(atome_id_to_treat)
                     target = grab(atome_found.color.last)
+
                     target.send(particle_name, value.to_f / 100)
-                    puts "+++++++> #{tool_scheme[:particles]} }"
+                    label_value.data(value.to_f / 100)
+                    # puts "+++++++> #{tool_scheme[:particles]} }"
                   end
                 end
               end
+              puts "2  ======> opening !!!#{particle_name}"
 
               Atome.selection.each do |atome_id_to_treat|
                 atome_found = grab(atome_id_to_treat)
@@ -462,7 +478,6 @@ class Atome
     end
     tool.touch(:down) do
       tool.depth(999)
-      # alert 'place in front get all tools on screen'
     end
     tool.touch(true) do
       puts "==> prevent : #{tool.instance_variable_get('@prevent_action')}"

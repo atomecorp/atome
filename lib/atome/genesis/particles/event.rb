@@ -32,8 +32,6 @@ new({ sanitizer: :touch }) do |params, user_bloc|
                when :double
                  @touch_code[:double] = user_bloc
                  :double
-                 # when :remove
-                 #   params
                when false
                  @touch_code[:remove] = user_bloc
                  :remove
