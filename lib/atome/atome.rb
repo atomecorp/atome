@@ -48,6 +48,7 @@ class Atome
     @collect = {}
     @int8 = {}
     @css = {}
+    @code={}
     @aid=  new_atome[:aid]  || identity_generator
     @controller_proc=[]
     @id = new_atome[:id] || @aid

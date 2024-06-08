@@ -1168,14 +1168,14 @@ class HTML
       # @touch_up.call(event) if @touch_up.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
       # event = Native(native_event)
       # ########## old code :
-      @touch_tap.call(event) if event_validation(@touch_tap)
+      # @touch_tap.call(event) if event_validation(@touch_tap)
       # ########## new code:
-      # proc_content = @touch_tap.call(event) if event_validation(@touch_tap)
-      # if proc_content.instance_of? Hash
-      #   proc_content.each do |k, v|
-      #     @original_atome.send(k, v)
-      #   end
-      # end
+      proc_content = @touch_tap.call(event) if event_validation(@touch_tap)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
     # end
   end

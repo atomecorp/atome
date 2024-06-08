@@ -2,7 +2,7 @@
 
 b = box({ left: 333, color: :blue, smooth: 6, id: :the_box2 })
 
-t=text({id: :the_text, data: 'type of touch : ?'})
+t = text({ id: :the_text, data: 'type of touch : ?' })
 
 t.touch(:down) do |event|
   puts :down
@@ -19,7 +19,6 @@ t.touch(:down) do |event|
 end
 
 touch_code =lambda do
-  puts :true
   b.color(:red)
   puts 'box tapped'
   # b.instance_variable_set('@touch_code', nil)
@@ -27,9 +26,10 @@ end
 b.touch(tap: true, code: touch_code)
 
 b.touch(:long) do
-  puts :long
-  t.data('type of touch is : long ')
-  b.color(:black)
+  # puts :long
+  # t.data('type of touch is : long ')
+  # b.color(:black)
+  {color: :cyan}
 end
 
 b.touch(:up) do
@@ -50,3 +50,7 @@ b.touch(:double) do
   t.data('type of touch is : double ')
   b.color(:yellowgreen)
 end
+
+
+
+
