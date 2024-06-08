@@ -266,6 +266,11 @@ class Object
         JS.eval(<<~JS)
           clearInterval(#{repeater_to_stop});
         JS
+      elsif   params.key?(:wait)
+        waiter_to_stop = params[:wait]
+        JS.eval(<<~JS)
+        clearTimeout(window.timeoutIds['#{waiter_to_stop}'])
+        JS
       else
         puts "La clé :repeat n'existe pas dans params"
       end

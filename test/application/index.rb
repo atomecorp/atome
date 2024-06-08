@@ -213,7 +213,8 @@
 # require "./examples/drop" # passed
 # require "./examples/overflow" # passed
 
-require "./examples/test"
+# require "./examples/test"
+require "./examples/wait"
 # require "./examples/touch"
 # require "./examples/delete"
 # require "./examples/target"
