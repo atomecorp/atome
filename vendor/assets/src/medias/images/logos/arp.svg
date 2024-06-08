@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="98"  xml:space="preserve" id="canvas1">
+  <path id="canvas1-bezier2" stroke="rgb(205, 231, 182)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" fill="none" d="M 10,24 L 10,85 70,85" />
+  <path id="canvas1-bezier" stroke="rgb(205, 231, 182)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" fill="none" d="M -43,3.75 L -36,32.75 -4,42.75" transform="translate(44.37, 49.72) rotate(-169.32)"  />
+  <circle id="canvas1-oval" stroke="rgb(106, 140, 201)" stroke-width="16" stroke-miterlimit="10" fill="none" cx="47.5" cy="46.5" r="16.5" />
+</svg>

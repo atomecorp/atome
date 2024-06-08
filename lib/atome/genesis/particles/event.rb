@@ -4,14 +4,14 @@ new({ particle: :touch, category: :event, type: :hash, store: false })
 new({ sanitizer: :touch }) do |params, user_bloc|
   if params
     # TODO: factorise code below
-    # alert  "touch_code: #{@touch_code}"
     @touch ||= {}
     @touch_code ||= {}
     option = true
     params = if params.instance_of? Hash
-               @touch_code[params.keys[0]] = user_bloc
-               option = params[params.keys[0]]
-               params.keys[0]
+         user_bloc =params.delete(:code) if params[:code]
+         @touch_code[params.keys[0]] = user_bloc
+         option = params[params.keys[0]]
+         params.keys[0]
              else
                case params
                when true
@@ -120,9 +120,10 @@ new({ sanitizer: :drag }) do |params, user_bloc|
   @drag_code ||= {}
   option = true
   params = if params.instance_of? Hash
-             @drag_code[params.keys[0]] = user_bloc
-             option = params[params.keys[0]]
-             params.keys[0]
+       user_bloc =params.delete(:code) if params[:code]
+       @drag_code[params.keys[0]] = user_bloc
+       option = params[params.keys[0]]
+       params.keys[0]
            else
              case params
              when true
@@ -173,9 +174,10 @@ new({ sanitizer: :drop }) do |params, user_bloc|
   @drop_code ||= {}
   option = true
   params = if params.instance_of? Hash
-             @drop_code[params.keys[0]] = user_bloc
-             option = params[params.keys[0]]
-             params.keys[0]
+       user_bloc =params.delete(:code) if params[:code]
+       @drop_code[params.keys[0]] = user_bloc
+       option = params[params.keys[0]]
+       params.keys[0]
            else
              case params
              when true
@@ -210,10 +212,10 @@ new({ sanitizer: :over }) do |params, user_bloc|
   @over_code ||= {}
   option = true
   params = if params.instance_of? Hash
-
-             @over_code[params.keys[0]] = user_bloc
-             option = params[params.keys[0]]
-             params.keys[0]
+       user_bloc =params.delete(:code) if params[:code]
+       @over_code[params.keys[0]] = user_bloc
+       option = params[params.keys[0]]
+       params.keys[0]
            else
              case params
              when true
@@ -269,8 +271,12 @@ new({ sanitizer: :keyboard }) do |params, user_bloc|
   option = {}
   params = if params.instance_of? Hash
              # @keyboard_code[:keyboard] = user_bloc
+             # option = params[params.keys[0]]
+             # :remove
+             user_bloc =params.delete(:code) if params[:code]
+             @keyboard_code[params.keys[0]] = user_bloc
              option = params[params.keys[0]]
-             :remove
+             params.keys[0]
            else
              case params
              when true

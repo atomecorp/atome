@@ -427,11 +427,13 @@ new(molecule: :matrix) do |params, &bloc|
   matrix_back.data(params)
   matrix_back
 end
+
 new(molecule: :page) do |params, &bloc|
   b = box({ color: :red, left: 99, drag: true })
   b.remove(:box_color)
   b.text(params)
 end
+
 new(molecule: :application) do |params, &bloc|
 
   main_page = box({ drag: true, width: :auto, height: :auto, top: 0, bottom: 0, left: 0, right: 0 })

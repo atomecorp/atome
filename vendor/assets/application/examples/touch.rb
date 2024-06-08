@@ -17,12 +17,14 @@ t.touch(:down) do |event|
    # b.touch(:remove) # or  b.touch(false) to remove all touches bindings
   t.data('touch down killed')
 end
-b.touch(true) do
+
+touch_code =lambda do
   puts :true
   b.color(:red)
   puts 'box tapped'
   # b.instance_variable_set('@touch_code', nil)
 end
+b.touch(tap: true, code: touch_code)
 
 b.touch(:long) do
   puts :long
