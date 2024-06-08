@@ -650,7 +650,13 @@ class HTML
       mql = JS.global[:window].matchMedia(media_query)
 
       event_handler = ->(event) do
-        bloc.call({ matches: event[:matches] }) if bloc.is_a? Proc
+        # bloc.call({ matches: event[:matches] }) if bloc.is_a? Proc
+        proc_content = bloc.call({ matches: event[:matches] }) if event_validation(bloc)
+        if proc_content.instance_of? Hash
+          proc_content.each do |k, v|
+            @original_atome.send(k, v)
+          end
+        end
       end
 
       # add a listener to matchMedia object
@@ -660,12 +666,33 @@ class HTML
       event_handler = ->(event) do
         width = JS.global[:window][:innerWidth]
         height = JS.global[:window][:innerHeight]
-        bloc.call({ width: width, height: height }) if bloc.is_a? Proc
+        # bloc.call({ width: width, height: height }) if bloc.is_a? Proc
+        proc_content = bloc.call({ width: width, height: height }) if event_validation(bloc)
+        if proc_content.instance_of? Hash
+          proc_content.each do |k, v|
+            @original_atome.send(k, v)
+          end
+        end
       end
+
+      # proc_content = @drag_move.call(event) if event_validation(@drag_move)
+      # if proc_content.instance_of? Hash
+      #   proc_content.each do |k, v|
+      #     @original_atome.send(k, v)
+      #   end
+      # end
+      # puts event_handler.class
       JS.global[:window].addEventListener('resize', event_handler)
+      # JS.global[:window].addEventListener('resize', event_handler)
     else
       event_handler = ->(event) do
-        bloc.call(event) if bloc.is_a? Proc
+        # bloc.call(event) if bloc.is_a? Proc
+        proc_content = bloc.call(event) if event_validation(bloc)
+        if proc_content.instance_of? Hash
+          proc_content.each do |k, v|
+            @original_atome.send(k, v)
+          end
+        end
       end
       @element.addEventListener(property, event_handler)
     end
@@ -680,7 +707,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @keyboard_press.call(event) if @keyboard_press.is_a?(Proc)
+      # @keyboard_press.call(event) if @keyboard_press.is_a?(Proc)
+      proc_content = @keyboard_press.call(event) if event_validation(@keyboard_press)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
     @element.addEventListener('keypress', keypress_handler)
   end
@@ -692,7 +725,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @keyboard_down.call(event) if @keyboard_down.is_a?(Proc)
+      # @keyboard_down.call(event) if @keyboard_down.is_a?(Proc)
+      proc_content = @keyboard_down.call(event) if event_validation(@keyboard_down)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
     @element.addEventListener('keydown', keypress_handler)
   end
@@ -704,7 +743,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @keyboard_up.call(event) if @keyboard_up.is_a?(Proc)
+      # @keyboard_up.call(event) if @keyboard_up.is_a?(Proc)
+      proc_content = @keyboard_up.call(event) if event_validation(@keyboard_up)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
     @element.addEventListener('keyup', keypress_handler)
   end
@@ -772,7 +817,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @drag_start.call(event) if event_validation(@drag_start)
+      # @drag_start.call(event) if event_validation(@drag_start)
+      proc_content = @drag_start.call(event) if event_validation(@drag_start)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
   end
 
@@ -784,7 +835,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @drag_end.call(event) if event_validation(@drag_end)
+      # @drag_end.call(event) if event_validation(@drag_end)
+      proc_content = @drag_end.call(event) if event_validation(@drag_end)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
   end
 
@@ -807,7 +864,13 @@ class HTML
           # we use .call instead of instance_eval because instance_eval bring the current object as context
           # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
           # group etc..
-          @drag_move.call(event) if event_validation(@drag_move)
+          # @drag_move.call(event) if event_validation(@drag_move)
+          proc_content = @drag_move.call(event) if event_validation(@drag_move)
+          if proc_content.instance_of? Hash
+            proc_content.each do |k, v|
+              @original_atome.send(k, v)
+            end
+          end
           Universe.allow_tool_operations = false
           dx = event[:dx]
           dy = event[:dy]
@@ -871,7 +934,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @drag_move.call(event) if event_validation(@drag_move)
+      # @drag_move.call(event) if event_validation(@drag_move)
+      proc_content = @drag_move.call(event) if event_validation(@drag_move)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
       dx = event[:dx]
       dy = event[:dy]
       x = (@original_atome.left || 0) + dx.to_f
@@ -898,7 +967,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @drag_lock.call(event) if event_validation(@drag_lock)
+      # @drag_lock.call(event) if event_validation(@drag_lock)
+      proc_content = @drag_lock.call(event) if event_validation(@drag_lock)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
   end
 
@@ -909,7 +984,13 @@ class HTML
     # we use .call instead of instance_eval because instance_eval bring the current object as context
     # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
     # group etc..
-    bloc.call({ source: draggable_element, destination: dropzone_element }) if event_validation(bloc)
+    # bloc.call({ source: draggable_element, destination: dropzone_element }) if event_validation(bloc)
+    proc_content = bloc.call({ source: draggable_element, destination: dropzone_element }) if event_validation(bloc)
+    if proc_content.instance_of? Hash
+      proc_content.each do |k, v|
+        @original_atome.send(k, v)
+      end
+    end
   end
 
   def drop_activate(_option)
@@ -920,7 +1001,16 @@ class HTML
                         accept: nil, # Accept any element
                         overlap: 0.75,
                         ondropactivate: lambda do |native_event|
+                          event = Native(native_event)
+
                           drop_action(native_event, @drop_activate) if event_validation(@drop_activate)
+                          # @drag_lock.call(event) if event_validation(@drag_lock)
+                          # proc_content = @drop_activate.call(event) if event_validation(@drop_activate)
+                          # if proc_content.instance_of? Hash
+                          #   proc_content.each do |k, v|
+                          #     @original_atome.send(k, v)
+                          #   end
+                          # end
                         end
                       })
   end
@@ -1030,7 +1120,14 @@ class HTML
                                # we use .call instead of instance_eval because instance_eval bring the current object as context
                                # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
                                # group etc..
-                               @resize.call(event) if event_validation(@resize)
+                               # @resize.call(event) if event_validation(@resize)
+                               proc_content = @resize.call(event) if event_validation(@resize)
+                               if proc_content.instance_of? Hash
+                                 proc_content.each do |k, v|
+                                   @original_atome.send(k, v)
+                                 end
+                               end
+
                                x = (@element[:offsetLeft].to_i || 0)
                                y = (@element[:offsetTop].to_i || 0)
                                width = event[:rect][:width]
@@ -1054,13 +1151,21 @@ class HTML
   def overflow(params, bloc)
     style(:overflow, params)
     @overflow = @original_atome.instance_variable_get('@overflow_code')[:overflow]
-    @element.addEventListener('scroll', lambda do |event|
+    @element.addEventListener('scroll', lambda do |native_event|
+      # event = Native(native_event)
       scroll_top = @element[:scrollTop].to_i
       scroll_left = @element[:scrollLeft].to_i
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
       @overflow.call({ left: scroll_left, top: scroll_top }) if event_validation(@overflow)
+
+      proc_content = @overflow.call({ left: scroll_left, top: scroll_top }) if event_validation(@overflow)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end)
   end
 
@@ -1073,7 +1178,14 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @over_over.call(event) if event_validation(@over_over)
+      # @over_over.call(event) if event_validation(@over_over)
+
+      proc_content = @over_over.call(event) if event_validation(@over_over)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
   end
 
@@ -1085,7 +1197,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @over_enter.call(event) if event_validation(@over_enter)
+      # @over_enter.call(event) if event_validation(@over_enter)
+      proc_content = @over_enter.call(event) if event_validation(@over_enter)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
     @element.addEventListener('mouseenter', @over_enter_callback)
 
@@ -1101,7 +1219,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @over_leave.call(event) if event_validation(@over_leave)
+      # @over_leave.call(event) if event_validation(@over_leave)
+      proc_content = @over_leave.call(event) if event_validation(@over_leave)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
     @element.addEventListener('mouseleave', @over_leave_callback)
 
@@ -1148,7 +1272,13 @@ class HTML
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
       # @touch_down.call(event) if @touch_down.is_a?(Proc)  && (!Universe.edit_mode || @original_atome.tag[:system])
-      @touch_down.call(event) if event_validation(@touch_down)
+      # @touch_down.call(event) if event_validation(@touch_down)
+      proc_content = @touch_down.call(event) if event_validation(@touch_down)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
       # end
       # end
     end
@@ -1191,7 +1321,13 @@ class HTML
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
       # @touch_up.call(event) if @touch_up.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
-      @touch_up.call(event) if event_validation(@touch_up)
+      # @touch_up.call(event) if event_validation(@touch_up)
+      proc_content = @touch_up.call(event) if event_validation(@touch_up)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
     end
 
     # end
@@ -1208,8 +1344,13 @@ class HTML
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
       # @touch_double.call(event) if @touch_double.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
-      @touch_double.call(event) if event_validation(@touch_double)
-
+      # @touch_double.call(event) if event_validation(@touch_double)
+      proc_content = @touch_double.call(event) if event_validation(@touch_double)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
       # end
     end
 
@@ -1225,7 +1366,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      @touch_long.call(event) if event_validation(@touch_long)
+      # @touch_long.call(event) if event_validation(@touch_long)
+      proc_content = @touch_long.call(event) if event_validation(@touch_long)
+      if proc_content.instance_of? Hash
+        proc_content.each do |k, v|
+          @original_atome.send(k, v)
+        end
+      end
       # @touch_long.call(event) if @touch_long.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
       # @touch_double.call(event) if event_validation(@touch_double)
 

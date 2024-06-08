@@ -8,4 +8,5 @@ initial_height=cc.height
 b.overflow(:scroll) do |event|
   new_height = initial_height + event[:top]
   cc.height(new_height)
+  {left: event[:top]}
 end

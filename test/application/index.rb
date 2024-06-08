@@ -214,6 +214,7 @@
 # require "./examples/overflow" # passed
 
 require "./examples/test"
+# require "./examples/touch"
 # require "./examples/delete"
 # require "./examples/target"
 # require "./examples/run"
