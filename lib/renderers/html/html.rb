@@ -1303,6 +1303,7 @@ class HTML
       proc_content = @touch_tap.call(event) if event_validation(@touch_tap)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
+          # alert "(#{@original_atome.id}, #{k}, #{v}, #{_option})"
           @original_atome.send(k, v)
         end
       end
@@ -1329,8 +1330,6 @@ class HTML
         end
       end
     end
-
-    # end
   end
 
   def touch_double(_option)

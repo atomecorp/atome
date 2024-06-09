@@ -205,6 +205,7 @@
 # require "./examples/match"
 # require "./examples/video"
 # require "./examples/login"
+require "./examples/scheduler"
 
 # require "./examples/touch" # passed
 # require "./examples/over" # passed
@@ -214,7 +215,7 @@
 # require "./examples/overflow" # passed
 
 # require "./examples/test"
-require "./examples/repeat"
+# require "./examples/repeat"
 # require "./examples/touch"
 # require "./examples/delete"
 # require "./examples/target"

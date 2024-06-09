@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
-module ObjectExtension
+require 'time'
 
+module ObjectExtension
 
   def new(params, &bloc)
     # Genesis = Genesis.Genesis
     if params.key?(:atome)
-      # if Universe.atome_list.include?(params[:atome])
-      #   puts "atome #{params[:atome]} already exist you can't create it"
-      # else
-        Universe.add_atomes_specificities params[:atome]
-        Genesis.build_atome(params[:atome], &bloc)
+      Universe.add_atomes_specificities params[:atome]
+      Genesis.build_atome(params[:atome], &bloc)
       # end
     elsif params.key?(:particle)
       if Universe.particle_list[params[:particle]]
@@ -51,12 +49,12 @@ module ObjectExtension
       #     bloc.call(option)
       #   end
     elsif params.key?(:molecule)
-      molecule=params[:molecule]
+      molecule = params[:molecule]
       Genesis.build_molecule(molecule, &bloc)
       Universe.add_to_molecule_list(molecule)
 
-    # elsif params.key?(:applicaton)
-    #   alert params
+      # elsif params.key?(:applicaton)
+      #   alert params
 
       # molecule=params[:molecule]
       # Genesis.build_molecule(molecule, &bloc)
@@ -66,7 +64,7 @@ module ObjectExtension
 
       tool_content = Atome.instance_exec(&bloc) if bloc.is_a?(Proc)
 
-      Universe.tools[params[:tool]]=tool_content
+      Universe.tools[params[:tool]] = tool_content
       # Universe.tools[params[:tool]]=bloc
 
     elsif params.key?(:template)
@@ -86,54 +84,6 @@ end
 # atome extensions
 class Object
   include ObjectExtension
-  # def new(params, &bloc)
-  #   # Genesis = Genesis.Genesis
-  #   if params.key?(:atome)
-  #     if Universe.atome_list.include?(params[:atome])
-  #       puts "atome #{params[:atome]} already exist you can't create it"
-  #     else
-  #       Universe.add_atomes_specificities params[:atome]
-  #       Genesis.build_atome(params[:atome], &bloc)
-  #     end
-  #   elsif params.key?(:particle)
-  #     if Universe.particle_list[params[:particle]]
-  #       puts "particle #{params[:particle]} already exist you can't create it"
-  #     else
-  #       Atome.instance_variable_set("@main_#{params[:particle]}", bloc)
-  #       # render indicate if the particle needs to be rendered
-  #       # store tell the system if it need to store the particle value
-  #       # type help the system what type of type the particle will receive and store
-  #       Genesis.build_particle(params[:particle], { render: params[:render], return: params[:return],
-  #                                                   store: params[:store], type: params[:type],
-  #                                                   category: params[:category] }, &bloc)
-  #     end
-  #
-  #   elsif params.key?(:sanitizer)
-  #     Genesis.build_sanitizer(params[:sanitizer], &bloc)
-  #   elsif params.key?(:pre)
-  #     Atome.instance_variable_set("@pre_#{params[:pre]}", bloc)
-  #   elsif params.key?(:post)
-  #     Atome.instance_variable_set("@post_#{params[:post]}", bloc)
-  #   elsif params.key?(:after)
-  #     Atome.instance_variable_set("@after_#{params[:after]}", bloc)
-  #   elsif params.key?(:read)
-  #     Atome.instance_variable_set("@read_#{params[:read]}", bloc)
-  #   elsif params[:renderer]
-  #     renderer_found = params[:renderer]
-  #     if params[:specific]
-  #       Universe.set_atomes_specificities(params)
-  #       params[:specific] = "#{params[:specific]}_"
-  #     end
-  #     render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
-  #     Genesis.build_render(render_method, &bloc)
-  #   # elsif params.key?(:callback)
-  #   #   particle_targetted = params[:callback]
-  #   #   Atome.define_method("#{particle_targetted}_callback", option) do
-  #   #     alert option
-  #   #     bloc.call(option)
-  #   #   end
-  #   end
-  # end
 
   def reorder_particles(hash_to_reorder)
     # we reorder the hash
@@ -142,7 +92,7 @@ class Object
     ordered_part = ordered_keys.map { |k| [k, hash_to_reorder[k]] }.to_h
     other_part = hash_to_reorder.reject { |k, _| ordered_keys.include?(k) }
     # merge the parts  to obtain an re-ordered hash
-   ordered_part.merge(other_part)
+    ordered_part.merge(other_part)
     # reordered_hash
   end
 
@@ -155,16 +105,14 @@ class Object
   end
 
   def hook(a_id)
-    a_id=a_id.to_sym
+    a_id = a_id.to_sym
     Universe.atomes[a_id]
   end
 
   def grab(id_to_get)
-    id_to_get=id_to_get.to_sym
+    id_to_get = id_to_get.to_sym
     return if id_to_get == false
-    aid_to_get= Universe.atomes_ids[id_to_get]
-    # puts id_to_get.class
-    # alert Universe.atomes
+    aid_to_get = Universe.atomes_ids[id_to_get]
     aid_to_get = '' if aid_to_get.instance_of? Array
     # id_to_get = id_to_get.to_sym
 
@@ -255,7 +203,7 @@ class Object
 
       return intervalId;
     JS
-    repeat_id+1
+    repeat_id + 1
   end
 
   def stop(params)
@@ -266,16 +214,16 @@ class Object
         JS.eval(<<~JS)
           clearInterval(#{repeater_to_stop});
         JS
-      elsif   params.key?(:wait)
+      elsif params.key?(:wait)
         waiter_to_stop = params[:wait]
         JS.eval(<<~JS)
-        clearTimeout(window.timeoutIds['#{waiter_to_stop}'])
+          clearTimeout(window.timeoutIds['#{waiter_to_stop}'])
         JS
       else
-        puts "La clé :repeat n'existe pas dans params"
+        puts "msg from stop method: the :repeat key doesn't exist"
       end
     else
-      puts "params n'est pas un hash"
+      puts "msg from stop method, this params is not a Hash"
     end
   end
 
@@ -462,7 +410,6 @@ class Object
         event = Native(native_event)
         event.preventDefault
         event.stopPropagation
-        # puts 'File drop out of the special zonne'
       end
     end
   end
@@ -480,12 +427,12 @@ class Object
     particle_list.delete(:password)
     particle_list.delete(:selection)
     infos = {}
-    particle_list[:css]=:poil
+    particle_list[:css] = :poil
     particle_list.each do |particle_found|
       infos[particle_found[0]] = send(particle_found[0]) unless send(particle_found[0]).nil?
     end
     # we convert CssProxy object to hash below
-    infos[:css]=eval(infos[:css].to_s)
+    infos[:css] = eval(infos[:css].to_s)
     infos
   end
 
@@ -618,8 +565,6 @@ class Object
     # convert any foreign object (think HTML) to a pseudo atome objet , that embed foreign objet
   end
 
-
-
   def touch_allow(allow)
     if allow
       # Retire l'écouteur d'événements en utilisant la fonction globale
@@ -629,7 +574,6 @@ class Object
       JS.eval('document.addEventListener("contextmenu", window.preventDefaultAction);')
     end
   end
-
 
   def allow_copy(allow)
     if allow
@@ -647,7 +591,7 @@ class Object
     end
   end
 
-  def above(item, margin=6)
+  def above(item, margin = 6)
     pos = item.to_px(:bottom) + item.height + margin
     if item.display == :none
       33
@@ -656,7 +600,7 @@ class Object
     end
   end
 
-  def below(item, margin=6)
+  def below(item, margin = 6)
     pos = item.to_px(:top) + item.to_px(:height) + margin
     if item.display == :none
       0
@@ -666,7 +610,7 @@ class Object
 
   end
 
-  def after(item, margin=6)
+  def after(item, margin = 6)
     left_f = if item.left.instance_of?(Integer)
                item.left
              else
@@ -686,7 +630,7 @@ class Object
     end
   end
 
-  def before(item, margin=6)
+  def before(item, margin = 6)
     pos = item.to_px(:right) + item.width + margin
     if item.display == :none
       0
@@ -695,6 +639,130 @@ class Object
     end
   end
 
+  # Helper method to store task configuration in localStorage
+  def store_task(name, config)
+    JS.global[:localStorage].setItem(name, config.to_json)
+  end
+
+  # Helper method to retrieve task configuration from localStorage
+  def retrieve_task(name)
+    config = JS.global[:localStorage].getItem(name)
+    config.nil? ? nil : JSON.parse(config)
+  end
+
+  # Helper method to retrieve all tasks from localStorage
+  def retrieve_all_tasks
+    tasks = []
+    local_storage = JS.global[:localStorage]
+    if Atome::host == "web-opal"
+      local_storage.each do |key|
+        value = local_storage.getItem(key)
+        if value
+          value = JSON.parse(value)
+          tasks << { name: key, config: value }
+        end
+      end
+    else
+      length = local_storage[:length].to_i
+      length.times do |i|
+        key = local_storage.call(:key, i)
+        value = local_storage.call(:getItem, key)
+        tasks << { name: key, config: JSON.parse(value.to_s) } if value
+      end
+    end
+    tasks
+  end
+
+  # Helper method to schedule a task
+  def schedule_task(name, years, month, day, hours, minutes, seconds, recurrence: nil, &block)
+    target_time = Time.new(years, month, day, hours, minutes, seconds)
+    now = Time.now
+
+    if target_time < now
+      schedule_recurrence(name, target_time, recurrence, &block)
+    else
+      seconds_until_target = target_time - now
+      wait_task = wait(seconds_until_target) do
+        block.call
+        schedule_recurrence(name, target_time, recurrence, &block) if recurrence
+      end
+      store_task(name, { wait: wait_task, target_time: target_time, recurrence: recurrence })
+    end
+  end
+
+  def schedule_recurrence(name, target_time, recurrence, &block)
+    now = Time.now
+    next_time = target_time
+
+    case recurrence
+    when :yearly
+      next_time += 365 * 24 * 60 * 60 while next_time <= now
+    when :monthly
+      next_time = next_time >> 1 while next_time <= now
+    when :weekly
+      next_time += 7 * 24 * 60 * 60 while next_time <= now
+    when :daily
+      next_time += 24 * 60 * 60 while next_time <= now
+    when :hourly
+      next_time += 60 * 60 while next_time <= now
+    when :minutely
+      next_time += 60 while next_time <= now
+    when :secondly
+      next_time += 1 while next_time <= now
+    when Hash
+      if recurrence[:weekly]
+        wday = recurrence[:weekly]
+        next_time += 7 * 24 * 60 * 60 while next_time <= now
+        next_time += 24 * 60 * 60 until next_time.wday == wday
+      elsif recurrence[:monthly]
+        week_of_month = recurrence[:monthly][:week]
+        wday = recurrence[:monthly][:wday]
+        while next_time <= now
+          next_month = next_time >> 1
+          next_time = Time.new(next_month.year, next_month.month, 1, target_time.hour, target_time.min, target_time.sec)
+          next_time += 24 * 60 * 60 while next_time.wday != wday
+          next_time += (week_of_month - 1) * 7 * 24 * 60 * 60
+        end
+      end
+    else
+      puts "Invalid recurrence option"
+      return
+    end
+
+    seconds_until_next = next_time - Time.now
+    wait_task = wait(seconds_until_next) do
+      block.call
+      schedule_recurrence(name, next_time, recurrence, &block)
+    end
+    store_task(name, { wait: wait_task, target_time: next_time, recurrence: recurrence })
+  end
+
+  # Helper method to stop a scheduled task
+  def stop_task(name)
+    task_config = retrieve_task(name)
+    return unless task_config
+
+    stop({ wait: task_config['wait'] })
+    JS.global[:localStorage].removeItem(name)
+  end
+
+  # Method to relaunch all tasks from localStorage
+  def relaunch_all_tasks
+    tasks = retrieve_all_tasks
+
+    tasks.each do |task|
+      name = task[:name]
+      config = task[:config]
+      target_time_found = config['target_time']
+      target_time = Time.parse(target_time_found)
+      recurrence_found = config['recurrence']
+      next unless recurrence_found
+      recurrence = config['recurrence'].is_a?(Hash) ? config['recurrence'].transform_keys(&:to_sym) : config['recurrence'].to_sym
+      schedule_task(name, target_time.year, target_time.month, target_time.day, target_time.hour, target_time.min, target_time.sec, recurrence: recurrence) do
+        puts "Relaunched task  #{name}(add proc here)"
+      end
+    end
+  end
 
 end
 
@@ -720,7 +788,7 @@ class CssProxy
       @js[@parent_key][key] = value
       @current_atome.instance_variable_set('@css', { @parent_key => { key => value } })
       @css[@parent_key] = { key => value }
-      puts "==> Clé parente: #{@parent_key}, Clé: #{key}, Valeur: #{value}"
+      puts "==> parent key: #{@parent_key}, Clé: #{key}, value: #{value}"
     else
       @style[key] = value
       @js[key] = value
@@ -737,8 +805,6 @@ class CssProxy
     parsed = JSON.parse(msg)
     bloc.call(parsed)
   end
-
-
 
 end
 
