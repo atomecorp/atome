@@ -261,7 +261,7 @@ new({ particle: :mass, category: :event, type: :int })
 new({ particle: :damping, category: :event, type: :int })
 new({ particle: :stiffness, category: :event, type: :int })
 new({ particle: :velocity, category: :event, type: :int })
-new({ particle: :repeat, category: :event, type: :boolean })
+# new({ particle: :repeat, category: :event, type: :boolean })
 new({ particle: :ease, category: :event, type: :boolean })
 new(particle: :keyboard, category: :event, type: :hash, store: false)
 new({ sanitizer: :keyboard }) do |params, user_bloc|

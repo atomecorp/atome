@@ -216,9 +216,9 @@ class Object
     id
   end
 
-  def repeater(counter, proc)
-    instance_exec(counter, &proc) if proc.is_a?(Proc)
-  end
+  # def repeater(counter, proc)
+  #   instance_exec(counter, &proc) if proc.is_a?(Proc)
+  # end
 
   def repeat_callback(params, counter)
     @repeat[params].call(counter)
@@ -255,7 +255,7 @@ class Object
 
       return intervalId;
     JS
-
+    repeat_id+1
   end
 
   def stop(params)
