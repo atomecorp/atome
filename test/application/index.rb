@@ -205,7 +205,7 @@
 # require "./examples/match"
 # require "./examples/video"
 # require "./examples/login"
-require "./examples/scheduler"
+# require "./examples/scheduler"
 
 # require "./examples/touch" # passed
 # require "./examples/over" # passed
@@ -408,3 +408,42 @@ require "./examples/scheduler"
 #   the_group2.apply([:the_lemon])
 #
 # end
+
+
+
+
+#######################
+action=lambda do |_var|
+  grab(:testing).color(:red)
+  puts '=====+>'
+    grab(:testing).delete({recursive: true})
+end
+
+
+c=circle({id: :th_c})
+c.touch(true) do
+  b=box({id: :testing, left: 99})
+  b.circle({left: 33, id: :sec_circle})
+  b.touch({ tap: true , code: action})
+  # action=nil
+end
+# b=box
+# b.drag(true) do
+#   puts "kjhj"
+# end
+# b.touch(:long) do
+#   b.drag(false)
+# end
+
+# c=circle({id: :titi})
+# c.touch(true) do
+#   box({left: 33, id: :toto})
+# end
+# if  grab(:titi)
+#   alert :no
+# end
+
+
+
+
+

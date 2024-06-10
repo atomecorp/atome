@@ -117,6 +117,11 @@ class Atome
 
   @initialized = {}
 
+
+    def recursive(_val)
+      #dummy method
+    end
+
   def help(particle, &doc)
     if doc
       Universe.set_help(particle, &doc)
@@ -149,7 +154,6 @@ class Atome
   def collapse(new_atome)
     initialized_procs = []
     initialized = Atome.initialized
-
     new_atome.each do |element, value|
       send(element, value)
       initialized_proc = initialized[element]

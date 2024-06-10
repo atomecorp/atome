@@ -19,7 +19,6 @@ class Atome
   #
   # end
 
-
   def initialize(new_atome = {}, &atomes_proc)
     # TODO: atome format should always be as followed : {value: 0.44, unit: :px, opt1: 554}
     # when using optimised version of atome you must type eg : a.set({left: {value: 33, unit: '%', reference: :center}})
@@ -38,8 +37,8 @@ class Atome
     # @language = :english
     # @callback = {}
     @tag = {}
-    @tick={}
-    @storage={}
+    @tick = {}
+    @storage = {}
     @behavior = {}
     @selected = false
     #@metrics = {}
@@ -48,49 +47,44 @@ class Atome
     @collect = {}
     @int8 = {}
     @css = {}
-    @code={}
-    @aid=  new_atome[:aid]  || identity_generator
-    @controller_proc=[]
+    @code = {}
+    @aid = new_atome[:aid] || identity_generator
+    @controller_proc = []
     @id = new_atome[:id] || @aid
-    Universe.atomes.each_value do |atome_f|
-      # we affect the already existing atome to target
-      next unless atome_f.id == @id
+    if grab(@id)
+      collapse({})
+      puts "#{@id} already exists"
+    else
+      Universe.atomes.each_value do |atome_f|
+        # we affect the already existing atome to target
+        next unless atome_f.id == @id
 
-      new_atome[:affect].each do |affected|
-        grab(affected).apply(@id)
+        new_atome[:affect].each do |affected|
+          grab(affected).apply(@id)
+        end
+        return false
       end
-      return false
-    end
-    Universe.add_to_atomes(@aid, self)
-    Universe.id_to_aid(@id, @aid)
-    @type = new_atome[:type] || :element
-    @attached = []
-    @affect = []
-    @category = []
-    # @display = { mode: :default }
-    # @backup={} # mainly used to restore particle when using grid /table /list display mode
-    @html = HTML.new(@id, self)
-    @headless = Headless.new(@id, self)
-    @initialized={}
-    @creator= Universe.current_user
-    # now we store the proc in a an atome's property called :bloc
-    new_atome[:code] = atomes_proc if atomes_proc
-    # we reorder the hash
-    reordered_atome = reorder_particles(new_atome)
-    # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
-    collapse(reordered_atome)
-    # end
-    # puts "@initialized : #{Atome.instance_variable_get('@initialized')}"
-    # puts "****> #{Atome.instance_variable_get('@initialized')}"
+      Universe.add_to_atomes(@aid, self)
+      Universe.id_to_aid(@id, @aid)
+      @type = new_atome[:type] || :element
+      @attached = []
+      @affect = []
+      @category = []
+      # @display = { mode: :default }
+      # @backup={} # mainly used to restore particle when using grid /table /list display mode
+      @html = HTML.new(@id, self)
+      @headless = Headless.new(@id, self)
+      @initialized = {}
+      @creator = Universe.current_user
+      # now we store the proc in a an atome's property called :bloc
+      new_atome[:code] = atomes_proc if atomes_proc
+      # we reorder the hash
+      reordered_atome = reorder_particles(new_atome)
+      # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
 
-    # if Atome.instance_variable_get('@initialized')
-    # puts  "-----> #{Atome.instance_variable_get('@initialized')}"
-    #   Atome.instance_variable_get('@initialized').each do |p_found, bloc|
-    #     # puts "==> #{p_found}"
-    #     # instance_exec.call
-    #     # instance_exec(p_found, &bloc) if bloc.is_a?(Proc)
-    #   end
-    # end
+      collapse(reordered_atome)
+    end
+
   end
 
   def js

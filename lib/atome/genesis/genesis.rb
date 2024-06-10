@@ -81,12 +81,8 @@ class Genesis
       # end
 
       Atome.define_method element do |params = nil, &user_proc|
-        # if @id
-        #   alert  "======> #{self.class}"
         @history[element] ||= []
-        # else
-        #   alert  "======> #{self.inspect}"
-        # end
+
         if (params || params == false) && write_auth(element)
           params = particle_sanitizer(element, params, &user_proc)
           # the line below execute the main code when creating a new particle

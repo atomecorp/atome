@@ -1,4 +1,12 @@
 # frozen_string_literal: true
+class Atome
+  def animation_callback(proc_sub_category, value=nil)
+    # puts  "#{p◊roc_sub_category}"
+    proc_found = @animate_code[proc_sub_category]
+    # puts proc_found
+    instance_exec(value,&proc_found) if proc_found.is_a?(Proc)
+  end
+end
 
 new({ particle: :touch, category: :event, type: :hash, store: false })
 new({ sanitizer: :touch }) do |params, user_bloc|
@@ -242,9 +250,6 @@ new({ sanitizer: :over }) do |params, user_bloc|
   params
 
 end
-# new({ particle: :sort }) do |_value, sort_proc|
-#   @sort_proc = sort_proc
-# end
 new({ particle: :targets, category: :event, type: :string })
 new({ particle: :start, category: :event, type: :boolean })
 new({ pre: :start }) do |_value, user_proc|
@@ -261,9 +266,8 @@ new({ particle: :mass, category: :event, type: :int })
 new({ particle: :damping, category: :event, type: :int })
 new({ particle: :stiffness, category: :event, type: :int })
 new({ particle: :velocity, category: :event, type: :int })
-# new({ particle: :repeat, category: :event, type: :boolean })
 new({ particle: :ease, category: :event, type: :boolean })
-new(particle: :keyboard, category: :event, type: :hash, store: false)
+new({ particle: :keyboard, category: :event, type: :hash, store: false })
 new({ sanitizer: :keyboard }) do |params, user_bloc|
   @keyboard ||= {}
   @keyboard_code ||= {}
@@ -338,16 +342,6 @@ new({ particle: :overflow, category: :event, type: :boolean }) do |params, bloc|
   params
 
 end
-
-class Atome
-  def animation_callback(proc_sub_category, value=nil)
-    # puts  "#{p◊roc_sub_category}"
-    proc_found = @animate_code[proc_sub_category]
-    # puts proc_found
-    instance_exec(value,&proc_found) if proc_found.is_a?(Proc)
-  end
-end
-
 new({ particle: :animate, category: :event, type: :hash }) do |params, proc|
   if params.instance_of? Hash
     params = { from: 0, to: 300, duration: 1000 }.merge(params)
@@ -364,7 +358,12 @@ new({ particle: :animate, category: :event, type: :hash }) do |params, proc|
 
   params
 end
-
-new ({ after: :animate }) do |params|
+new({ after: :animate }) do |params|
   html.animate(params) unless params[:end] || params[:start]
 end
+
+
+# new({ particle: :repeat, category: :event, type: :boolean })
+# # new({ particle: :sort }) do |_value, sort_proc|
+# #   @sort_proc = sort_proc
+# # end
