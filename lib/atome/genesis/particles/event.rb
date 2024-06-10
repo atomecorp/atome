@@ -10,6 +10,7 @@ end
 
 new({ particle: :touch, category: :event, type: :hash, store: false })
 new({ sanitizer: :touch }) do |params, user_bloc|
+  # user_params=params.dup
   if params
     # TODO: factorise code below
     @touch ||= {}
@@ -19,6 +20,7 @@ new({ sanitizer: :touch }) do |params, user_bloc|
          user_bloc =params.delete(:code) if params[:code]
          @touch_code[params.keys[0]] = user_bloc
          option = params[params.keys[0]]
+         @touch={ code: user_bloc}
          params.keys[0]
              else
                case params
@@ -55,7 +57,6 @@ new({ sanitizer: :touch }) do |params, user_bloc|
     @touch = false
     params
   end
-
 end
 new({ particle: :play, category: :event, type: :boolean, store: false })
 new({ sanitizer: :play }) do |params, user_bloc|
@@ -102,6 +103,7 @@ new({ sanitizer: :on }) do |params, user_bloc|
   params = if params.instance_of? Hash
              @on_code[:view_resize] = user_bloc
              option = params[params.keys[0]]
+             @resize={ code: user_bloc}
              :resize
            else
              case params
@@ -131,6 +133,7 @@ new({ sanitizer: :drag }) do |params, user_bloc|
        user_bloc =params.delete(:code) if params[:code]
        @drag_code[params.keys[0]] = user_bloc
        option = params[params.keys[0]]
+       @drag={ code: user_bloc}
        params.keys[0]
            else
              case params
@@ -185,6 +188,7 @@ new({ sanitizer: :drop }) do |params, user_bloc|
        user_bloc =params.delete(:code) if params[:code]
        @drop_code[params.keys[0]] = user_bloc
        option = params[params.keys[0]]
+       @drop={ code: user_bloc}
        params.keys[0]
            else
              case params
@@ -223,6 +227,8 @@ new({ sanitizer: :over }) do |params, user_bloc|
        user_bloc =params.delete(:code) if params[:code]
        @over_code[params.keys[0]] = user_bloc
        option = params[params.keys[0]]
+       @over={ code: user_bloc}
+
        params.keys[0]
            else
              case params
@@ -281,6 +287,8 @@ new({ sanitizer: :keyboard }) do |params, user_bloc|
              @keyboard_code[params.keys[0]] = user_bloc
              option = params[params.keys[0]]
              params.keys[0]
+             @keyboard={ code: user_bloc}
+
            else
              case params
              when true
@@ -318,6 +326,8 @@ new({ sanitizer: :resize }) do |params, user_bloc|
   params = if params.instance_of? Hash
              @resize_code[:resize] = user_bloc
              option = params[params.keys[0]]
+             @resize={ code: user_bloc}
+
              :resize
            else
              case params

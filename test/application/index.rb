@@ -413,20 +413,40 @@
 
 
 #######################
-action=lambda do |_var|
-  grab(:testing).color(:red)
-  puts '=====+>'
-    grab(:testing).delete({recursive: true})
+
+
+page1_code = lambda do |back|
+  alert :kool
 end
-
-
-c=circle({id: :th_c})
+# b=box
+# b.touch(:true) do
+#   alert :lll
+# end
+c=circle
 c.touch(true) do
-  b=box({id: :testing, left: 99})
-  b.circle({left: 33, id: :sec_circle})
-  b.touch({ tap: true , code: action})
-  # action=nil
+  b=box({ id: :mod_1,left: 333, touch: {tap: true, code: page1_code} })
+  alert b.touch
+  wait 3 do
+    grab(:mod_1).delete({recursive: true})
+  end
 end
+
+
+# action=lambda do |_var|
+#   grab(:testing).color(:red)
+#   puts '=====+>'
+#     grab(:testing).delete({recursive: true})
+# end
+#
+#
+# c=circle({id: :th_c})
+# c.touch(true) do
+#   b=box({id: :testing, left: 99})
+#   b.circle({left: 33, id: :sec_circle})
+#   b.touch({ tap: true , code: action})
+#   # action=nil
+# end
+# ##################@
 # b=box
 # b.drag(true) do
 #   puts "kjhj"

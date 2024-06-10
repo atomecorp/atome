@@ -51,17 +51,17 @@ class Atome
     @aid = new_atome[:aid] || identity_generator
     @controller_proc = []
     @id = new_atome[:id] || @aid
-    if grab(@id)
-      collapse({})
-      puts "#{@id} already exists"
-    else
+    # if grab(@id)
+    #   collapse({})
+    #   puts "#{@id} already exists"
+    # else
       Universe.atomes.each_value do |atome_f|
         # we affect the already existing atome to target
         next unless atome_f.id == @id
 
         new_atome[:affect].each do |affected|
           grab(affected).apply(@id)
-        end
+        end if new_atome[:affect]
         return false
       end
       Universe.add_to_atomes(@aid, self)
@@ -83,7 +83,7 @@ class Atome
       # FIXME : try to remove the condition below (it crash in the method :  def generator ... in genesis.rb)
 
       collapse(reordered_atome)
-    end
+    # end
 
   end
 
