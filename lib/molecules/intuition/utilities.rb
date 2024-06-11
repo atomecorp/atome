@@ -554,7 +554,12 @@ new(molecule: :show) do |page_id, &bloc|
 end
 
 new(molecule: :buttons) do |params, &bloc|
-  parent = params.delete(:attach) || :view
+  params_saf= JSON.parse(JSON.dump(params), symbolize_names: true)
+  context = params.delete(:attach) || :view
+  id= params.delete(:id) || identity_generator
+  main=grab(context).box({id: id})
+
+  main.data(params_saf)
   default = params.delete(:inactive) || {}
   default_text=default.delete(:text)
   active = params.delete(:active) || {}
@@ -567,12 +572,12 @@ new(molecule: :buttons) do |params, &bloc|
   active.each_key do |part_f|
     inactive_text[part_f] = default_text[part_f]
   end
-  disposition = default.delete(:disposition)
-  attach_to = grab(parent)
+  disposition = default.delete(:disposition).to_sym
+
 
   params.each_with_index do |(item_id, part_f), index|
     code_f = part_f.delete(:code)
-    menu_item = attach_to.box({ id: item_id })
+    menu_item = main.box({ id: item_id })
     text_found= part_f.delete(:text)
     menu_item.text({ data: text_found, id: "#{item_id}_label" })
     menu_item.set(part_f)
@@ -602,4 +607,6 @@ new(molecule: :buttons) do |params, &bloc|
       code_f.call if code_f
     end
   end
+  main
+
 end
