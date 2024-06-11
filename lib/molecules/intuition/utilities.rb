@@ -552,3 +552,54 @@ new(molecule: :show) do |page_id, &bloc|
   end
   main_page
 end
+
+new(molecule: :buttons) do |params, &bloc|
+  parent = params.delete(:attach) || :view
+  default = params.delete(:inactive) || {}
+  default_text=default.delete(:text)
+  active = params.delete(:active) || {}
+  active_text=active.delete(:text)
+  inactive = {}
+  active.each_key do |part_f|
+    inactive[part_f] = default[part_f]
+  end
+  inactive_text = {}
+  active.each_key do |part_f|
+    inactive_text[part_f] = default_text[part_f]
+  end
+  disposition = default.delete(:disposition)
+  attach_to = grab(parent)
+
+  params.each_with_index do |(item_id, part_f), index|
+    code_f = part_f.delete(:code)
+    menu_item = attach_to.box({ id: item_id })
+    text_found= part_f.delete(:text)
+    menu_item.text({ data: text_found, id: "#{item_id}_label" })
+    menu_item.set(part_f)
+    if disposition == :horizontal
+      menu_item.left = (default[:margin][:left] + default[:spacing]) * index
+      menu_item.top = default[:margin][:top]
+    else
+      menu_item.top = (default[:margin][:top] + default[:spacing]) * index
+      menu_item.left = default[:margin][:left]
+    end
+    menu_item.set(default)
+    menu_item.text.each do |text_f|
+      grab(text_f).set(default_text)
+    end
+
+    menu_item.touch(:down) do
+      menu_item.set(active)
+      menu_item.text.each do |text_f|
+        grab(text_f).set(active_text)
+      end
+      params.each_key do |menu_id|
+        unless menu_id == item_id
+          grab(menu_id).replace(inactive)
+          grab("#{menu_id}_label").replace(inactive_text)
+        end
+      end
+      code_f.call if code_f
+    end
+  end
+end

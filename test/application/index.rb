@@ -206,6 +206,9 @@
 # require "./examples/video"
 # require "./examples/login"
 # require "./examples/scheduler"
+# require "./examples/applications"
+# require "./examples/replace"
+require "./examples/buttons"
 
 # require "./examples/touch" # passed
 # require "./examples/over" # passed
@@ -415,22 +418,22 @@
 #######################
 
 
-page1_code = lambda do |back|
-  alert :kool
-end
-# b=box
-# b.touch(:true) do
-#   alert :lll
+# page1_code = lambda do |back|
+#   alert :kool
 # end
-c=circle
-c.touch(true) do
-  b=box({ id: :mod_1,left: 333, touch: {tap: true, code: page1_code} })
-  alert b.touch
-  wait 3 do
-    grab(:mod_1).delete({recursive: true})
-  end
-end
-
+# # b=box
+# # b.touch(:true) do
+# #   alert :lll
+# # end
+# c=circle
+# c.touch(true) do
+#   b=box({ id: :mod_1,left: 333, touch: {tap: true, code: page1_code} })
+#   alert b.touch
+#   wait 3 do
+#     grab(:mod_1).delete({recursive: true})
+#   end
+# end
+################
 
 # action=lambda do |_var|
 #   grab(:testing).color(:red)
