@@ -84,7 +84,13 @@ end
 # atome extensions
 class Object
   include ObjectExtension
-
+  def flash(msg)
+    flash_box=box({width: 235, height: 112})
+    flash_box.text(msg)
+    flash_box.touch(true) do
+      flash_box.delete({ recursive: true })
+    end
+  end
   def reorder_particles(hash_to_reorder)
     # we reorder the hash
     ordered_keys = %i[renderers id alien type attach int8 unit]

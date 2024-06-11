@@ -428,46 +428,127 @@ new(molecule: :matrix) do |params, &bloc|
   matrix_back
 end
 
-new(molecule: :page) do |params, &bloc|
-  b = box({ color: :red, left: 99, drag: true })
-  b.remove(:box_color)
-  b.text(params)
+new(molecule: :application) do |params, &bloc|
+  params ||= {}
+
+  color({ id: :app_color, red: 0.1, green: 0.3, blue: 0.1 })
+  # TODO : remove the patch below when possible
+  id_f = if params[:id]
+           params.delete(:id)
+         else
+           identity_generator
+         end
+  main_app = box({ id: id_f, width: :auto, height: :auto, top: 0, bottom: 0, left: 0, right: 0, apply: :app_color,
+                   category: :application })
+  main_app.remove(:box_color)
+  main_app.instance_variable_set('@pages', {})
+  menu = params.delete(:menu)
+  main_app.box(menu.merge({ id: "#{id_f}_menu" })) if menu
+  params.each do |part_f, val_f|
+    main_app.send(part_f, val_f)
+  end
+  main_app
 end
 
-new(molecule: :application) do |params, &bloc|
+new(molecule: :page) do |params, &bloc|
+  if params[:id]
+    id_f = params.delete(:id)
+    page_name=params.delete(:name)
+    @pages[id_f.to_sym] = params
+  else
+    puts "must send an id"
+  end
+  page_name= page_name || id_f
+  menu_f= grab("#{@id}_menu")
+  page_title=menu_f.text({ data: page_name })
+  page_title.touch(:down) do
+    show(id_f)
+  end
 
-  main_page = box({ drag: true, width: :auto, height: :auto, top: 0, bottom: 0, left: 0, right: 0 })
+end
+
+new(molecule: :show) do |page_id, &bloc|
+  params = @pages[page_id.to_sym]
+  params ||= {}
+  footer = params.delete(:footer)
+  header = params.delete(:header)
+  left_side_bar = params.delete(:left_side_bar)
+  right_side_bar = params.delete(:right_side_bar)
+  # modules = params.delete(:modules)
+  basic_size = 30
+  attached.each do |page_id_found|
+    page_found = grab(page_id_found)
+    # puts "#{page_id_found} : #{page_found}"
+    page_found.delete({ recursive: true }) if page_found && page_found.category.include?(:page)
+  end
+  color({ id: :page_color, red: 0.1, green: 0.1, blue: 0.1 })
+  # TODO : remove the patch below when possible
+  id_f = if params[:id]
+           params.delete(:id)
+         else
+           "#{id_f}_#{identity_generator}"
+         end
+  main_page = box({ width: :auto, depth: -1, height: :auto, id: id_f, top: 0, bottom: 0, left: 0, right: 0, apply: :page_color, category: :page })
   main_page.remove(:box_color)
-  main_page
 
-  # def new(params, &bloc)
-  #   if params[:page]
-  #     site_found = grab(params[:page][:application])
-  #     site_found.clear(true)
-  #     page_id = params[:page][:name]
-  #     site_found.box({ id: page_id })
-  #   elsif params[:application]
-  #
-  #     footer_header_size = 33
-  #     footer_header_color = color({ red: 0, green: 0, blue: 0, id: :footer_header_color })
-  #
-  #     if params[:header]
-  #       top = footer_header_size
-  #       header = box({ left: 0, right: 0, width: :auto, top: 0, height: top, id: :header })
-  #       # header.attach(:footer_header_color)
-  #     else
-  #       top = 0
-  #     end
-  #     if params[:footer]
-  #       bottom = footer_header_size
-  #       box({ left: 0, right: 0, width: :auto, top: :auto, bottom: 0, height: bottom, id: :footer })
-  #     else
-  #       bottom = 0
-  #     end
-  #     box({ left: 0, right: 0, width: :auto, top: top, bottom: bottom, height: :auto, id: params[:application] })
-  #   elsif params[:module]
-  #
-  #   end
-  #   super if defined?(super)
-  # end
+  main_page.set(params)
+
+  if footer
+    new_footer = box({ left: 0, depth: -1, right: 0, width: :auto, top: :auto, bottom: 0, height: basic_size, category: :footer, id: "#{id_f}_footer" })
+    new_footer.remove(:box_color)
+    new_footer.set(footer)
+  end
+
+  if header
+    new_header = box({ left: 0, right: 0, depth: -1, width: :auto, top: 0, height: basic_size, category: :header, id: "#{id_f}_header" })
+    new_header.remove(:box_color)
+    new_header.set(header)
+  end
+
+  if right_side_bar
+    new_right_side_bar = box({ left: :auto, depth: -1, right: 0, width: basic_size, top: 0, bottom: 0, height: :auto, category: :right_side_bar, id: "#{id_f}_right_side_bar" })
+    new_right_side_bar.remove(:box_color)
+    new_right_side_bar.set(right_side_bar)
+  end
+
+  if left_side_bar
+    new_left_side_bar = box({ left: 0, right: :auto, depth: -1, width: basic_size, top: 0, bottom: 0, height: :auto, category: :left_side_bar, id: "#{id_f}_left_side_bar" })
+    new_left_side_bar.remove(:box_color)
+    new_left_side_bar.set(left_side_bar)
+  end
+
+  attached.each do |item_id_found|
+    item_found = grab(item_id_found)
+    if item_found&.category&.include?(:footer)
+      main_page.height(:auto)
+      main_page.bottom(item_found.height)
+    end
+    if item_found&.category&.include?(:header)
+      main_page.height(:auto)
+      main_page.top(item_found.height)
+    end
+
+    if item_found&.category&.include?(:right_side_bar)
+      main_page.width(:auto)
+      main_page.left(item_found.width)
+      if footer
+        grab("#{id_f}_footer").right(basic_size)
+      end
+      if header
+        grab("#{id_f}_header").right(basic_size)
+      end
+    end
+
+    if item_found&.category&.include?(:left_side_bar)
+      main_page.width(:auto)
+      main_page.right(item_found.width)
+      if footer
+        grab("#{id_f}_footer").left(basic_size)
+      end
+      if header
+        grab("#{id_f}_header").left(basic_size)
+      end
+    end
+  end
+  main_page
 end
