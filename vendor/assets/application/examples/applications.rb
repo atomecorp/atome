@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-
 a = application({
                   id: :arp,
                   margin: 3,
                   # circle: { id: :test, color: :red },
-                  menu: { width: 220, height: 33, depth: 333, color: :black },
+                  # menu: { width: 220, height: 33, depth: 333, color: :black },
                 })
 
 page1_code = lambda do |back|
@@ -118,3 +117,5 @@ a.page(page3)
 a.show(:page1)
 #   # alert :kool
 # end
+
+

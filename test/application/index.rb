@@ -206,9 +206,9 @@
 # require "./examples/video"
 # require "./examples/login"
 # require "./examples/scheduler"
-# require "./examples/applications"
+require "./examples/applications"
 # require "./examples/replace"
-require "./examples/buttons"
+# require "./examples/buttons"
 
 # require "./examples/touch" # passed
 # require "./examples/over" # passed

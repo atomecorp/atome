@@ -168,7 +168,7 @@ new({ molecule: :slider }) do |params, bloc|
                                   red: 0, green: 0, blue: 0, alpha: 0.7
                                 })
 
-  range = slider.box({ id: "#{slider.id}_range", top: :auto, bottom: 0,tag: { system: true } })
+  range = slider.box({ id: "#{slider.id}_range", top: :auto, bottom: 0, tag: { system: true } })
   range.remove(:box_color)
   if range_found
     range.apply(slider_shadow.id,)
@@ -307,7 +307,7 @@ new(molecule: :button) do |params, bloc|
   button = box(
     { renderers: renderer_found, id: new_id, type: :shape, color: back_col,
       left: 0, top: 0, data: '', attach: attach_to,
-      smooth: 3, overflow: :hidden,tag: { system: true }
+      smooth: 3, overflow: :hidden, tag: { system: true }
     })
   button.remove(:box_color)
   button.touch(:down) do
@@ -442,28 +442,60 @@ new(molecule: :application) do |params, &bloc|
                    category: :application })
   main_app.remove(:box_color)
   main_app.instance_variable_set('@pages', {})
-  menu = params.delete(:menu)
-  main_app.box(menu.merge({ id: "#{id_f}_menu" })) if menu
-  params.each do |part_f, val_f|
-    main_app.send(part_f, val_f)
-  end
+  # menu = params.delete(:menu)
+  # main_app.box(menu.merge({ id: "#{id_f}_menu" })) if menu
+  # params.each do |part_f, val_f|
+  #   main_app.send(part_f, val_f)
+  # end
+  ### menu items
+
+  buttons({
+            id: "#{id_f}_menu",
+            attach: id_f,
+            # item_1: {
+            #   text: :acceuil,
+            #   # code: menu1_code
+            # },
+            # item_2: {
+            #   text: :page_2,
+            #   # code: menu2_code
+            #
+            # },
+            # item_3: {
+            #   text: :page_3,
+            # },
+            inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 133, disposition: :horizontal,
+                        color: :orange, margin: { left: 33, top: 12 } },
+            active: { text: { color: :white, shadow: {} }, color: :blue, shadow: {} },
+          })
+
+  ###
   main_app
 end
 
 new(molecule: :page) do |params, &bloc|
   if params[:id]
     id_f = params.delete(:id)
-    page_name=params.delete(:name)
+    page_name = params.delete(:name)
     @pages[id_f.to_sym] = params
   else
     puts "must send an id"
   end
-  page_name= page_name || id_f
-  menu_f= grab("#{@id}_menu")
-  page_title=menu_f.text({ data: page_name })
-  page_title.touch(:down) do
+  page_name = page_name || id_f
+  item_code = lambda do
     show(id_f)
+    # puts "delete puts here: #{id_f}"
   end
+  menu_f = grab("#{@id}_menu")
+  # alert item_code.class
+  menu_f.update({ "#{@id}_menu_item_#{page_name}" => {
+    text: page_name,
+    code: item_code
+  } })
+  # page_title=menu_f.text({ data: page_name })
+  # page_title.touch(:down) do
+  #   show(id_f)
+  # end
 
 end
 
@@ -553,17 +585,33 @@ new(molecule: :show) do |page_id, &bloc|
   main_page
 end
 
+def deep_copy(obj)
+  # utility for buttons
+  case obj
+  when Hash
+    obj.each_with_object({}) do |(k, v), h|
+      unless k == :code # exception to avoid Proc accumulation
+        h[deep_copy(k)] = deep_copy(v)
+      end
+    end
+  when Array
+    obj.map { |e| deep_copy(e) }
+  else
+    obj.dup rescue obj
+  end
+end
+
 new(molecule: :buttons) do |params, &bloc|
-  params_saf= JSON.parse(JSON.dump(params), symbolize_names: true)
+  params_saf = deep_copy(params)
   context = params.delete(:attach) || :view
-  id= params.delete(:id) || identity_generator
-  main=grab(context).box({id: id})
-  main.color({ blue: 0.5, red: 1, green: 1, alpha: 0})
+  id = params.delete(:id) || identity_generator
+  main = grab(context).box({ id: id })
+  main.color({ blue: 0.5, red: 1, green: 1, alpha: 0 })
   main.data(params_saf)
   default = params.delete(:inactive) || {}
-  default_text=default.delete(:text)
+  default_text = default.delete(:text)
   active = params.delete(:active) || {}
-  active_text=active.delete(:text)
+  active_text = active.delete(:text)
   inactive = {}
   active.each_key do |part_f|
     inactive[part_f] = default[part_f]
@@ -574,11 +622,10 @@ new(molecule: :buttons) do |params, &bloc|
   end
   disposition = default.delete(:disposition).to_sym
 
-
   params.each_with_index do |(item_id, part_f), index|
     code_f = part_f.delete(:code)
     menu_item = main.box({ id: item_id })
-    text_found= part_f.delete(:text)
+    text_found = part_f.delete(:text)
     menu_item.text({ data: text_found, id: "#{item_id}_label" })
     menu_item.set(part_f)
     if disposition == :horizontal
