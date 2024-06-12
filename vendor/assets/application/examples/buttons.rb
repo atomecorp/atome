@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-box({ id: :the_box, drag: false })
+box({ id: :the_box, drag: false, color: {alpha: 0} })
 
 menu1_code = lambda do
   puts :menu1_code
@@ -27,8 +27,6 @@ b=buttons({
                         color: :orange, margin: { left: 33, top: 12 } },
             active: { text: { color: :white, shadow: {} }, color: :blue, shadow: {} },
           })
-
-
 
 
 wait 2 do

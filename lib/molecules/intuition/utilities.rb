@@ -558,7 +558,7 @@ new(molecule: :buttons) do |params, &bloc|
   context = params.delete(:attach) || :view
   id= params.delete(:id) || identity_generator
   main=grab(context).box({id: id})
-
+  main.color({ blue: 0.5, red: 1, green: 1, alpha: 0})
   main.data(params_saf)
   default = params.delete(:inactive) || {}
   default_text=default.delete(:text)
