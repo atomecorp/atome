@@ -40,6 +40,7 @@ class Atome
     def init_intuition
       Atome.start_click_analysis
       toolbox_root = Universe.tools_root
+      alert toolbox_root
       toolbox_root[:tools].each_with_index do |root_tool, index|
         tools_scheme = Universe.tools[root_tool]
         A.build_tool({ name: root_tool, scheme: tools_scheme, index: index, toolbox: toolbox_root[:toolbox] })

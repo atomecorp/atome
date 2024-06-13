@@ -503,12 +503,22 @@ class Atome
   #   puts "sanitizer temp patch when an atome is passed instead of an id"
   #   @id
   # end
+  # def transform_to_string_keys_and_values(hash)
+  #   hash.transform_keys(&:to_s).transform_values do |value|
+  #     if value.is_a?(Hash)
+  #       transform_to_string_keys_and_values(value)
+  #     else
+  #       value.to_s
+  #     end
+  #   end
+  # end
 
   def sync(params, &bloc)
     params = { data: params } unless params.instance_of? Hash
     message_id = "msg_#{Universe.messages.length}"
     params[:message_id] = message_id
     Universe.store_messages({ msg_nb: message_id, proc: bloc })
+    # params = transform_to_string_keys_and_values(params)
     html.send_message(params)
   end
 

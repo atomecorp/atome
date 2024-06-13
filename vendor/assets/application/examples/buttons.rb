@@ -11,6 +11,10 @@ end
 b=buttons({
             id: :menu1,
             attach: :the_box,
+
+            inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 133, disposition: :horizontal,
+                        color: :orange, margin: { left: 33, top: 12 } },
+            active: { text: { color: :white, shadow: {} }, color: :blue, shadow: {} },
             item_1: {
               text: :acceuil,
               code: menu1_code
@@ -23,9 +27,6 @@ b=buttons({
             item_3: {
               text: :page_3,
             },
-            inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 133, disposition: :horizontal,
-                        color: :orange, margin: { left: 33, top: 12 } },
-            active: { text: { color: :white, shadow: {} }, color: :blue, shadow: {} },
           })
 
 

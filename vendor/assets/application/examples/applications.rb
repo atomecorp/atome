@@ -43,19 +43,20 @@ page2 = { id: :page2,
 
 }
 
-page3 = { id: :page3,
-          color: :red,
-          # run: verif,
-          # box: { id: :mod_1,left: 333, touch: {tap: :down, code: page1_code} }
-}
+
 
 page0 = { id: :page0,
           color: :purple,
 
 }
+a.page(page0)
 a.page(page1)
 a.page(page2)
-a.page(page3)
+a.page({ id: :page3,
+         color: :red,
+         # run: verif,
+         # box: { id: :mod_1,left: 333, touch: {tap: :down, code: page1_code} }
+       })
 # wait 1 do
 #   a.page(page2)
 #   wait 1 do

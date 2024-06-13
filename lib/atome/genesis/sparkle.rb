@@ -191,7 +191,7 @@ def init_database
 
 
   # now we send localstorage content to the server
-  puts "sending localstorage"
+  # puts "sending localstorage"
   Atome.send_localstorage_content
 
 end

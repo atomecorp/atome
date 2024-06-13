@@ -247,7 +247,19 @@ class HTML
     # JS.eval("atomeJS.connect('ws://#{server}')")
   end
 
+  def transform_to_string_keys_and_values(hash)
+    hash.transform_keys(&:to_s).transform_values do |value|
+      if value.is_a?(Hash)
+        transform_to_string_keys_and_values(value)
+      else
+        value.to_s
+      end
+    end
+  end
+
   def send_message(message)
+    # FIXME  : find why we have to sanitize this message when using ruby wams
+    message = transform_to_string_keys_and_values(message)
     JS.eval("atomeJS.ws_sender('#{message}')")
   end
 

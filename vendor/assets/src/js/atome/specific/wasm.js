@@ -6,6 +6,22 @@ function controller_message(msg) {
     rubyVM.eval(rubycode);
 }
 
+// document.addEventListener("DOMContentLoaded", function() {
+//     // Votre code ici
+//     console.log("Le document est prêt !");
+//     rubyVM.eval("init_database");
+// });
+
+function loadApplicationJs() {
+    // setTimeout(function(){
+    //     console.log("remove this timeout")
+        rubyVM.eval("init_database");
+    // }, 2000)
+
+}
+
+
+
 // window.addEventListener('load', function () {
 //     // Opal.Object.$atome_genesis();
 //     atomeJsToRuby('atome_genesis');
@@ -85,7 +101,7 @@ const communication = {
         };
         this.websocket.onmessage = function (event) {
             // console.log(event.data)
-            rubyVM.eval("A.server_receiver(" + event.data + ")");
+            rubyVM.eval("Atome.server_receiver(" + event.data + ")");
         };
 
         this.websocket.onclose = function (event) {
@@ -103,19 +119,21 @@ const communication = {
     ws_sender: function (message) {
         // now we send the data to the server
         // puts "--> message : #{message}"
+
         this.websocket.send(message)
     },
 }
 
 
-function my_ruby_wasm_js_fct(val){
-    rubyVM.eval("my_ruby_meth('ruby wasm eval: "+val+"')");
+function my_ruby_wasm_js_fct(val) {
+    rubyVM.eval("my_ruby_meth('ruby wasm eval: " + val + "')");
 }
+
 function fetchSVGContent(svgPath, target) {
     fetch(svgPath)
         .then(response => response.text())
         .then(data => {
-            rubyVM.eval("Atome.handleSVGContent('"+data+"', '"+target+"')") ;
+            rubyVM.eval("Atome.handleSVGContent('" + data + "', '" + target + "')");
             // Module.call('handleSVGContent', 'void', ['string'], [data]);
         })
         .catch(error => console.error('Erreur de chargement du SVG :', error));

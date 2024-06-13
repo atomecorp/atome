@@ -4,13 +4,7 @@
 
 class EDen
 
-  @@mail = nil
-  @@pass = nil
-
   class << self
-
-    @@mail = nil
-    @@pass = nil
 
     def db_access
       Database.db_access
@@ -32,17 +26,17 @@ class EDen
       email_exists_response = !user.nil?
       puts "email_exists_response : #{email_exists_response}"
       # response return
-      { data: {email_exist: email_exists_response}, message_id: message_id }
+      { data: { email_exist: email_exists_response }, message_id: message_id }
     end
 
     def terminal(data, message_id, ws)
       { data: { message: `#{data}` }, message_id: message_id }
     end
 
-    def sanitize_email(email)
-      invalid_chars_pattern = /[^a-zA-Z0-9.-@]+/
-      email.gsub(invalid_chars_pattern, '')
-    end
+    # def sanitize_email(email)
+    #   invalid_chars_pattern = /[^a-zA-Z0-9.-@]+/
+    #   email.gsub(invalid_chars_pattern, '')
+    # end
 
     def metadata(msg, pid, message_id, ws)
 
@@ -78,7 +72,6 @@ class EDen
         end
       end
 
-
       ws.send({ :pid => pid, :return => msg, :message_id => message_id }.to_json)
     end
 
@@ -97,10 +90,8 @@ class EDen
       metadata(msg, pid, message_id, ws)
 
       ##### read tag
-      msg[:read]=true
+      msg[:read] = true
       metadata(msg, pid, message_id, ws)
-
-
 
       ws.send({ :pid => pid, :return => msg, :message_id => message_id }.to_json)
     end
@@ -171,66 +162,51 @@ class EDen
       identity_items = db[:user]
       # retrieving sent data
       user_email = data["particles"]["email"]
-      # data cleansing of superfluous characters
-      sanitized_email = sanitize_email(user_email)
+      user_pass = data["particles"]["password"]
       # database search
-      mail_exists = identity_items.where(email: sanitized_email).first
-      # mail_exists = identity_items.where(email: user_email).first
-      puts 'ok'
-      if !mail_exists
-        @@pass = nil
-        puts "authentication @@pass : #{@@pass}"
-        { return: 'Email non trouvé, erreur', message_id: message_id }
+      user_exist = identity_items.where(email: user_email, password: user_pass).first
+      if !user_exist
+        { return: 'identifiants incorrects ou compte inexistant', message_id: message_id }
       else
-        @@mail = user_email
-        puts "authentication @@mail du else : #{@@mail}"
-        puts "authentication @@pass du else : #{@@pass}"
-        if @@mail && @@pass
-          puts "authentication @@mail du else v2 : #{@@mail}"
-          puts "authentication @@pass du else v2 : #{@@pass}"
-          @@mail = nil
-          @@pass = nil
-          return { return: 'logged', mail_authorized: true, user_id: mail_exists[:user_id], message_id: message_id }
-          # Send the user account template
-        else
-          return { return: 'Email trouvé, cherche mdp', mail_authorized: false, message_id: message_id }
-        end
+        { return: "utilisateur loggé : #{user_exist.inspect}", mail_authorized: true, message_id: message_id }
       end
     end
 
-    def authorization(data, message_id, ws)
-      # database connexion :
-      db = db_access
-      # retrieving data from the 'security' table
-      security_items = db[:user]
-      # retrieving sent data
-      user_password = data["particles"]["password"]
-      # database search
-      user_exists = security_items.where(password: user_password).first
-      puts "user_exists : #{user_exists}"
-
-      if !user_exists
-        @@mail = nil
-        puts "authorization @@mail du else : #{@@mail}"
-        return { return: 'Password non trouvé, erreur', message_id: message_id }
-      else
-        @@pass = user_password
-        puts "authorization @@pass : #{@@pass}"
-        puts "authorization @@mail du else : #{@@mail}"
-        if @@mail && @@pass
-          puts "authorization @@pass v2 : #{@@pass}"
-          puts "authorization @@mail du else v2 : #{@@mail}"
-          # reset variables containing mail and password
-          @@mail = nil
-          @@pass = nil
-          # return { return: 'Password trouvé, cherche mdp', password_authorized: false, message_id: message_id }
-          return { return: 'logged', password_authorized: true, user_id: user_exists[:user_id], message_id: message_id }
-          # Send the user account template
-        else
-          return { return: 'Password trouvé, cherche mdp', password_authorized: false, message_id: message_id }
-        end
-      end
-    end
+    #
+    # def authorization(data, message_id, ws)
+    #   # database connexion :
+    #   db = db_access
+    #   # retrieving data from the 'security' table
+    #   security_items = db[:user]
+    #   # retrieving sent data
+    #   user_password = data["particles"]["password"]
+    #   # database search
+    #   user_exists = security_items.where(password: user_password).first
+    #
+    #   if !user_exists
+    #     puts "no user or  password lost"
+    #     @@mail = nil
+    #     puts "authorization @@mail du else : #{@@mail}"
+    #     return { return: 'Password recu', message_id: message_id }
+    #   else
+    #     puts "user_exists : #{user_exists}"
+    #     @@pass = user_password
+    #     puts "authorization @@pass : #{@@pass}"
+    #     puts "authorization @@mail du else : #{@@mail}"
+    #     if @@mail && @@pass
+    #       puts "authorization @@pass v2 : #{@@pass}"
+    #       puts "authorization @@mail du else v2 : #{@@mail}"
+    #       # reset variables containing mail and password
+    #       @@mail = nil
+    #       @@pass = nil
+    #       # return { return: 'Password trouvé, cherche mdp', password_authorized: false, message_id: message_id }
+    #       return { return: 'logged', password_authorized: true, user_id: user_exists[:user_id], message_id: message_id }
+    #       # Send the user account template
+    #     else
+    #       return { return: 'Password trouvé, cherche mdp', password_authorized: false, message_id: message_id }
+    #     end
+    #   end
+    # end
 
     def localstorage(data, message_id, ws)
       # return test
@@ -275,10 +251,31 @@ class EDen
       { data: { table: data['table'], infos: result }, message_id: message_id }
     end
 
+    def account_creation(data, message_id, ws)
+
+      # imap = Net::IMAP.new('imap.ionos.fr', 993, true)
+      # imap.login('jeezs@jeezs.net', 'Rhezurhect1on!')
+      # imap.select('INBOX')
+
+      # # Cherche les emails non lus
+      # imap.search(["UNSEEN"]).each do |message_id|
+      #   # Récupère l'email
+      #   envelope = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
+      #   puts "From: #{envelope.from[0].name}"
+      #   puts "Subject: #{envelope.subject}"
+      #
+      #   # Marque l'email comme lu
+      #   imap.store(message_id, "+FLAGS", [:Seen])
+      # end
+      #
+      # imap.logout
+      # imap.disconnect
+       { data: { message: "envoi de validation a #{data['email']}" }, message_id: message_id }
+    end
+
     def insert(data, message_id, ws)
       table = data['table'].to_sym
       particles = data['particles']
-
       if db_access.table_exists?(table)
         schema = db_access.schema(table)
         insert_data = {}
