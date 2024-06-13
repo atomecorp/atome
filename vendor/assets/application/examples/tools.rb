@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 
-new({ tool: :blur }) do |params|
+
+new({ tool: :combined }) do |params|
 
   active_code = lambda {
     puts :alteration_tool_code_activated
@@ -20,7 +21,7 @@ new({ tool: :blur }) do |params|
   }
 
   zone_spe = lambda { |current_tool|
-    puts "current tool is : #{:current_tool} now creating specific zone"
+    # puts "current tool is : #{:current_tool} now creating specific zone"
     # b = box({ width: 33, height: 12 })
     # b.text({ data: :all })
 
@@ -33,6 +34,7 @@ new({ tool: :blur }) do |params|
     pre: pre_code,
     post: post_code,
     zone: zone_spe,
+    icon: :color,
     int8: { french: :couleur, english: :color, german: :colorad } }
 
 end
@@ -65,134 +67,6 @@ new({ tool: :box }) do |params|
 
 end
 
-new({ tool: :drag }) do |params|
-
-  active_code = lambda {
-    # Atome.selection.each do |atome_id_to_treat|
-    #   # reinit first to avoid multiple drag event
-    #   grab(atome_id_to_treat).drag(false)
-    # end
-    # drag_remove
-    # puts :alteration_tool_code_activated
-  }
-
-  inactive_code = lambda { |param|
-    # puts :alteration_tool_code_inactivated
-  }
-  pre_code = lambda { |params|
-    atome_target = params[:atome_touched]
-    # puts  "==> #{atome_target.drag}"
-    if atome_target.drag
-      atome_target.drag(false)
-    else
-      atome_target.drag(true)
-    end
-
-  }
-  post_code = lambda { |params|
-    # puts "post_creation_code,atome_touched: #{params}"
-
-  }
-
-  zone_spe = lambda { |current_tool|
-    # puts "current tool is : #{current_tool} now creating specific zone"
-    # b = box({ width: 33, height: 12 })
-    # b.text({ data: :all })
-
-  }
-
-  {
-    activation: active_code,
-    inactivation: inactive_code,
-    # alteration: { drag: true },
-    pre: pre_code,
-    post: post_code,
-    zone: zone_spe,
-    int8: { french: :drag, english: :drag, german: :drag } }
-
-end
-
-new({ tool: :select }) do |params|
-  pre_code = lambda { |param|
-    atome_touched = param[:atome_touched]
-    current_tool = param[:current_tool]
-    if atome_touched.selected
-      atome_touched.selected(false)
-      current_tool.data[:allow_alteration] = false
-    else
-      # alert atome_touched.selected
-      # alert Atome.selection
-      atome_touched.selected(true)
-      # alert atome_touched.selected
-
-      current_tool.data[:allow_alteration] = true
-    end
-  }
-  {
-    pre: pre_code,
-    alteration: { selected: true },
-    int8: { french: :select, english: :select, german: :select }
-  }
-end
-
-new({ tool: :rotate }) do
-  { alteration: { height: 150, rotate: 45 } }
-end
-
-new({ tool: :move }) do |params|
-  active_code = lambda {
-    # if  Atome.selection.instance_of? Array
-    # end
-    Atome.selection.each do |atome_id_to_treat|
-      # #   # reinit first to avoid multiple drag event
-      # #   grab(atome_id_to_treat).drag(false)
-    end
-    # drag_remove
-    # puts :alteration_tool_code_activated
-  }
-
-  inactive_code = lambda { |params|
-    # we remove drag
-    params[:treated].each do |atome_f|
-      atome_f.drag(false)
-    end
-    # puts :alteration_tool_code_inactivated
-
-  }
-  pre_code = lambda { |params|
-    atome_target = params[:atome_touched]
-    # puts  "==> #{atome_target.drag}"
-    if atome_target.drag
-      # atome_target.drag(false)
-    else
-      atome_target.drag(true)
-    end
-
-  }
-  post_code = lambda { |params|
-
-    # puts "post_creation_code,atome_touched: #{params}"
-
-  }
-
-  zone_spe = lambda { |current_tool|
-    # puts "current tool is : #{current_tool} now creating specific zone"
-    # b = box({ width: 33, height: 12 })
-    # b.text({ data: :all })
-
-  }
-
-  {
-    activation: active_code,
-    inactivation: inactive_code,
-    # alteration: { drag: true },
-    pre: pre_code,
-    post: post_code,
-    zone: zone_spe,
-    int8: { french: :drag, english: :drag, german: :drag } }
-
-end
-
 new({ tool: :project }) do
   active_code = lambda {
 
@@ -209,96 +83,149 @@ new({ tool: :project }) do
   { activation: active_code }
 end
 
-new({tool: :test}) do
-  active_code = lambda {
-    b=grab(:view).box({})
-    b.touch(true) do
-      alert :kool
+new({ tool: :move }) do
+  move_active_code = lambda {
+    all=grab(:view).attached
+    @previous_selected_atomes=[]
+    @previous_draggable_atomes=[]
+    all.each do |at_f|
+      if grab(at_f).drag
+        @previous_draggable_atomes << at_f
+      end
+      if grab(at_f).selected
+        @previous_selected_atomes << at_f
+      else
+        grab(at_f).selected(true)
+      end
     end
   }
-  # active_code=:tito
+  move_code = lambda {
+    drag(true)
+  }
+  move_inactive_code = lambda { |data|
+    all=grab(:view).attached
+    all.each do |at_f|
+      unless @previous_selected_atomes.include?(at_f)
+        grab(at_f).selected(false)
+      end
+    end
+    data[:treated].each do |atome_f|
+      unless @previous_draggable_atomes.include?(atome_f.id)
+        atome_f.drag(false)
+      end
+
+    end
+  }
+
+  { activation: move_active_code,
+    alteration: { event: move_code },
+    inactivation: move_inactive_code}
+end
+
+new({ tool: :drag }) do
+
+
+  drag_active_code = lambda {
+    all=grab(:view).attached
+    @previous_selected_atomes=[]
+    all.each do |at_f|
+      if grab(at_f).selected
+        @previous_selected_atomes << at_f
+      else
+        grab(at_f).selected(true)
+      end
+    end
+  }
+
+  drag_inactive_code = lambda {
+    all=grab(:view).attached
+    all.each do |at_f|
+      unless @previous_selected_atomes.include?(at_f)
+        grab(at_f).selected(false)
+      end
+    end
+  }
+  move_code = lambda {
+    drag(true) do
+      puts left
+    end
+  }
+
+  { activation: drag_active_code, alteration: { event: move_code },   inactivation: drag_inactive_code, }
+end
+
+new({ tool: :touch }) do
+  move_code = lambda {
+    touch(:down) do
+      color(:red)
+    end
+  }
+  { alteration: { event: move_code } }
+end
+
+select_code=lambda{
+
+  if selected
+    selected(false)
+  else
+    selected(true)
+  end
+  # alternate({ selected: true}, {selected: false})
+
+}
+new({ tool: :select }) do
+
+  # { alteration: { selected: true }}
+  { alteration: { event: select_code }}
+
+
+end
+
+new({ tool: :toolbox1 }) do
+  active_code = lambda {
+    toolbox({ tools: [:combined], toolbox: { orientation: :ew, left: 90, bottom: 9, spacing: 9 } })
+  }
   { activation: active_code }
 end
 
+new({ tool: :color }) do
+  active_code = lambda {
+    puts 'color activated1'
+  }
+  color_code = lambda {
+    # color(:green)
+    # tools_values
+  }
+  inactive_code = lambda { |data|
+    data[:treated].each do |atome_f|
+      # atome_f.drag(false)
+      # atome_f.color(:green)
+    end
+  }
 
-Universe.tools_root=[:box, :blur, :drag, :rotate, :select, :move,:project]
-# Universe.tools_root=[:test]
+  { activation: active_code,
+    alteration: { event: color_code },
+    inactivation: inactive_code,
+    target: :color,
+    particles: { red: 0, green: 0.5, blue: 1, alpha: 1 }}
+end
+
+# Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
+Universe.tools_root = {id: :root_tools, tools: [:select, :box, :drag, :touch,:color, :move, :toolbox1], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
+puts "above we added an id because each tool may be in many toolbox and have an uniq ID"
 Atome.init_intuition
 
+b = box({ id: :the_test__box, selected: true })
+c=circle({ left: 90, id: :the_test_circle, selected: false })
+c.drag(true) do
+  puts "moving"
+end
+b.touch(true) do
+  if b.width == 170
+    b.width(55)
+  else
+    b.width(170)
+  end
 
-
-# ################### check below
-
-# b = box({ left: 123, top: 66, selected: false, id: :the_box, color: :green })
-# b.touch(:down) do
-#   puts " on touch : #{Universe.allow_localstorage}"
-# end
-# b.resize(true) do
-#   puts :good!
-# end
-# the_circ = circle({ left: 123, top: 120, selected: false, id: :the_circle })
-#
-# the_circ.touch(:down) do |params|
-#   puts " down : params: #{params}, id: #{the_circ.id}"
-# end
-#
-# the_circ.touch(:up) do
-#   puts "up :kool"
-# end
-# the_circ.drag(true) do
-#   puts "drag : now"
-# end
-#
-# bb = box({ left: 333, width: 120, selected: false, id: :big_box })
-#
-# b = box({ id: :the_big_boxy })
-
-#################@
-# text({ data: :hello, selected: true, left: 120, id: :texting, blur: 12 })
-# text({data: :hello, left: 120, id: :texting})
-# Universe.tools.each_with_index do |(tool_name, bloc), index|
-#  Atome.instance_exec(&bloc) if bloc.is_a?(Proc)
-#   # alert "#{tool_name} : #{tool_content}"
-#   # alert b.id
-# end
-
-# wait 2 do
-#   # c.preset( {:box=>{:width=>39, :height=>39, :apply=>[:box_color], :left=>0, :top=>0}} )
-#   c.preset( :box )
-# end
-# b=box({left: 333, top: 333})
-# b.touch(true) do
-#   alert Atome.selection
-# end
-# grab(:the_texting).color(:white)
-# grab(:the_texting).left(33)
-# grab(:the_texting).top(133)
-# grab(:the_texting).width(133)
-# grab(:the_texting).top(133)
-# grab(:the_texting).data(:kool)
-# grab(:the_texting).type(:text)
-# grab(:the_texting).rotate(:text)
-
-# b=box
-# b.touch(true) do
-#   puts :ok
-#   # alert b.instance_variable_get('@touch')
-#   # alert b.instance_variable_get('@touch_code')
-#   b.touch(false)
-#   wait 3 do
-#     puts :ready
-#     b.touch(true) do
-#       puts :kool
-#     end
-#     # alert b.touch
-#     # alert b.instance_variable_get('@touch')
-#     # alert b.instance_variable_get('@touch_code')
-#   end
-# end
-
-# A.html.record
-
-# A.html.record
-
-
+end
 

@@ -1,19 +1,24 @@
 # # frozen_string_literal: true
-# b=box
-# # TODO : resolve SHA256
-# # TODO : solve this:
-# # b.touch(:down) do
-# #   {message: { action: :authentication, data: { table: :user, particles: { email: 'tre@tre.tre' } } } }
-# #   {message: { action: :authorization, data: { table: :user, particles: { password: 'poipoi' } } }}
-# # end
-#
+b=box
+
+b.touch(:down) do
+   A.message({ action: :authentication, data: { table: :user, particles: { email: 'tre@tre.tre', password: 'poipoi' } } }) do |response|
+    alert "=> #{response}"
+  end
+end
+
 #
 #
 # # # 1 login attempt
-wait 4 do
-  alert :now
+
+wait 1 do
   A.message({ action: :authentication, data: { table: :user, particles: { email: 'tre@tre.tre', password:  'poipoi' } } }) do |response|
-    puts "=> #{response}"
+    alert "=> #{response}"
+  end
+  wait 1 do
+    A.message({ action: :authentication, data: { table: :user, particles: { email: 'tre@tre.tre', password:  'poipoi' } } }) do |response|
+      alert "=> #{response}"
+    end
   end
 end
 #

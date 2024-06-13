@@ -207,7 +207,12 @@
 # require "./examples/login"
 # require "./examples/scheduler"
 # require "./examples/applications"
-require "./examples/account"
+# require "./examples/account"
+require "./examples/tools"
+#
+# require "./examples/alternate"
+
+
 # require "./examples/replace"
 # require "./examples/buttons"
 
