@@ -123,8 +123,6 @@ new({ tool: :move }) do
 end
 
 new({ tool: :drag }) do
-
-
   drag_active_code = lambda {
     all=grab(:view).attached
     @previous_selected_atomes=[]
@@ -137,7 +135,7 @@ new({ tool: :drag }) do
     end
   }
 
-  drag_inactive_code = lambda {
+  drag_inactive_code = lambda { |_data|
     all=grab(:view).attached
     all.each do |at_f|
       unless @previous_selected_atomes.include?(at_f)
@@ -151,7 +149,7 @@ new({ tool: :drag }) do
     end
   }
 
-  { activation: drag_active_code, alteration: { event: move_code },   inactivation: drag_inactive_code, }
+  { activation: drag_active_code, alteration: { event: move_code },   inactivation: drag_inactive_code }
 end
 
 new({ tool: :touch }) do

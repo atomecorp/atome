@@ -285,6 +285,7 @@ class Atome
     # generic behavior
     # we remove touch and resize binding on newly created atomes
     tool.apply(:inactive_tool_col)
+    # alert tool.data[:created]
     tool.data[:created]&.each do |new_atome|
       new_atome.drag(false)
       new_atome.resize(:remove)
