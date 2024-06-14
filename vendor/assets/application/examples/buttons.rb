@@ -29,7 +29,6 @@ b=buttons({
             },
           })
 
-
 wait 2 do
   b.update({ item_4: {
     text: :page_4_added,

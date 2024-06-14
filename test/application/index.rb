@@ -208,13 +208,13 @@
 # require "./examples/scheduler"
 # require "./examples/applications"
 # require "./examples/account"
-require "./examples/tools"
-#
+# require "./examples/tools"
+require "./examples/buttons"
 # require "./examples/alternate"
 
 
 # require "./examples/replace"
-# require "./examples/buttons"
+
 
 # require "./examples/touch" # passed
 # require "./examples/over" # passed

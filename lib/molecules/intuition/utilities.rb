@@ -288,40 +288,40 @@ new({ molecule: :slider }) do |params, bloc|
   slider
 
 end
-new(molecule: :button) do |params, bloc|
-  params[:height] ||= 25
-  params[:width] ||= 25
-  states = params.delete(:states) || 1
-  new_id = params.delete(:id) || identity_generator
-
-  back_col = params.delete(:back)
-  back_col ||= :grey
-
-  default_parent = if self.instance_of?(Atome)
-                     id
-                   else
-                     :view
-                   end
-  attach_to = params[:attach] || default_parent
-  renderer_found = grab(attach_to).renderers
-  button = box(
-    { renderers: renderer_found, id: new_id, type: :shape, color: back_col,
-      left: 0, top: 0, data: '', attach: attach_to,
-      smooth: 3, overflow: :hidden, tag: { system: true }
-    })
-  button.remove(:box_color)
-  button.touch(:down) do
-    button.tick(:button)
-    bloc.call((button.tick[:button] - 1) % states)
-
-  end
-
-  params.each do |part_f, val_f|
-    button.send(part_f, val_f)
-  end
-
-  button
-end
+# new(molecule: :button) do |params, bloc|
+#   params[:height] ||= 25
+#   params[:width] ||= 25
+#   states = params.delete(:states) || 1
+#   new_id = params.delete(:id) || identity_generator
+#
+#   back_col = params.delete(:back)
+#   back_col ||= :grey
+#
+#   default_parent = if self.instance_of?(Atome)
+#                      id
+#                    else
+#                      :view
+#                    end
+#   attach_to = params[:attach] || default_parent
+#   renderer_found = grab(attach_to).renderers
+#   button = box(
+#     { renderers: renderer_found, id: new_id, type: :shape, color: back_col,
+#       left: 0, top: 0, data: '', attach: attach_to,
+#       smooth: 3, overflow: :hidden, tag: { system: true }
+#     })
+#   button.remove(:box_color)
+#   button.touch(:down) do
+#     button.tick(:button)
+#     bloc.call((button.tick[:button] - 1) % states)
+#
+#   end
+#
+#   params.each do |part_f, val_f|
+#     button.send(part_f, val_f)
+#   end
+#
+#   button
+# end
 
 new({ particle: :cells })
 
@@ -510,7 +510,6 @@ new(molecule: :show) do |page_id, &bloc|
   basic_size = 30
   attached.each do |page_id_found|
     page_found = grab(page_id_found)
-    # puts "#{page_id_found} : #{page_found}"
     page_found.delete({ recursive: true }) if page_found && page_found.category.include?(:page)
   end
   color({ id: :page_color, red: 0.1, green: 0.1, blue: 0.1 })

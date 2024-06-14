@@ -147,3 +147,29 @@ new({ particle: :behavior, type: :symbol, category: :property  })
 new({ particle: :orientation, type: :symbol, category: :property })
 
 new({ particle: :align , type: :symbol, category: :property })
+
+new({ particle: :actor, store: false }) do |params|
+  @actor ||= {}
+  if params[:remove]
+    params[:remove].each do |atome_id, role|
+      @actor[role].delete(atome_id)
+    end
+  else
+    params.each do |atome_id, role|
+      grab(atome_id).role(role)
+      @actor[role] ||= []
+      @actor[role] << atome_id
+    end
+  end
+end
+
+new({ particle: :role, store: false }) do |params|
+  if params.instance_of? Hash
+    if params.keys[0] == :remove
+      @role.delete(params.values[0])
+    end
+  else
+    @role ||= []
+    @role << params
+  end
+end
