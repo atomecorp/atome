@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def truncate_string(string, max_length)
-  string.length > max_length ? string.slice(0, max_length) + "." : string
+  string.length > max_length ? string.slice(0, max_length) + '.' : string
 end
 
 size = 33
@@ -65,12 +65,13 @@ class Atome
               unless atome_touched.to_s == 'html'
                 id_found = atome_touched[:id].to_s
                 atome_found = grab(id_found)
+                # alert id_found
                 # unless (atome_found && atome_found.tag[:system])
-                if atome_found && !atome_found.tag[:system]
-                  Universe.active_tools.each do |tool|
-                    apply_tool(tool, atome_found, event)
-                  end
-                end
+                puts 'we have to check if operation is a creation or an alteration to inlcude or exclude the view '
+
+                Universe.active_tools.each do |tool|
+                  apply_tool(tool, atome_found, event)
+                end # if atome_found && !atome_found.tag[:system]
 
                 break
               end
@@ -90,6 +91,7 @@ class Atome
     end
 
     def start_click_analysis
+      # here we capture any touch when usingh tool
       @click_analysis_active = false
       JS.global[:document].addEventListener('mouseup') do |native_event|
         Atome.instance_exec(native_event, &@click_analysis) if @click_analysis.is_a?(Proc)
@@ -122,9 +124,9 @@ class Atome
     def creation(current_tool, tool_actions, atome_touched, a_event)
       # we store prev_local_storage prior to lock it to prevent unwanted logs
       # prev_local_storage=Universe.allow_localstorage()
+      @creation_mode = true
       storage_allowed = Universe.allow_localstorage
       Universe.allow_localstorage = false
-
       action_found = tool_actions[:action]
       pre = tool_actions[:pre]
       post = tool_actions[:post]
@@ -155,6 +157,7 @@ class Atome
     end
 
     def apply_tool(tool, atome_touched, a_event)
+
       current_tool = grab(tool)
       tool_actions = current_tool.data
       method_found = tool_actions[:method]
@@ -165,8 +168,8 @@ class Atome
       end
       tool_name = tool.to_s.sub('_tool', '')
       tools_scheme = Universe.tools[tool_name.to_sym]
-      puts "1 - here slider treat either the target atome types or current atome"
-      puts "2 - need to created a list instead of choosing the last atome found of it's kind"
+      # puts '1 - here slider treat either the target atome types or current atome'
+      # puts "2 - need to created a list instead of choosing the last atome found of it's kind"
 
       target = if tools_scheme[:target]
                  grab(atome_touched.send(tools_scheme[:target]).last)
@@ -174,9 +177,14 @@ class Atome
                  atome_touched
                end
       tools_scheme[:particles]&.each do |particle_f, value_f|
-        target.send(particle_f, value_f)
+        # the condition protect system color from being altered
+        target.send(particle_f, value_f) unless method_found == :alteration && target.id == :view_color
       end
+      # unless method_found == :alteration && target.id == :view_color
+      # alert "#{method_found} : #{target.id}"
       send(method_found, current_tool, tool_actions, target, a_event)
+      # end
+
     end
 
   end
@@ -255,7 +263,7 @@ class Atome
     tool_scheme = @tool_scheme
     tool = self
     tool.active(false)
-    tool.instance_variable_get("@toolbox")&.each do |sub_tool_id|
+    tool.instance_variable_get('@toolbox')&.each do |sub_tool_id|
       toolbox_tool = grab("#{sub_tool_id}_tool")
       toolbox_tool.deactivate_tool
       # we delete the attached toolbox if it exist
@@ -351,8 +359,8 @@ class Atome
 
                                 })
 
-    tool.instance_variable_set("@tool_scheme", tool_scheme)
-    edition = "M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.9c3.9-3.9 3.9-10.2 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2c-1.9 11.1 1.5 21.9 9.4 29.8 6.6 6.4 14.9 9.9 23.8 9.9z m67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"
+    tool.instance_variable_set('@tool_scheme', tool_scheme)
+    edition = 'M257.7 752c2 0 4-0.2 6-0.5L431.9 722c2-0.4 3.9-1.3 5.3-2.8l423.9-423.9c3.9-3.9 3.9-10.2 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2c-1.9 11.1 1.5 21.9 9.4 29.8 6.6 6.4 14.9 9.9 23.8 9.9z m67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z'
     icon = tool.vector({ tag: { system: true }, left: 9, top: :auto, bottom: 9, width: 18, height: 18, id: "#{tool_name}_icon",
                          data: { path: { d: edition, id: "p1_#{tool_name}_icon", stroke: :black, 'stroke-width' => 37, fill: :white } } })
 
@@ -368,14 +376,14 @@ class Atome
       tool.instance_variable_set('@prevent_action', true)
       if tool.instance_variable_get('@tool_open') == true
         tool.instance_variable_set('@tool_open', false)
-        tool_scheme[:particles].each do |particle, value|
+        tool_scheme[:particles].each_key do |particle|
           grab("tool_particle_#{particle}").delete({ force: true })
         end
         tool.width(size)
       else
         tool.instance_variable_set('@tool_open', true)
 
-        tool_scheme[:particles].each_with_index do |(particle_name, _value_), ind|
+        tool_scheme[:particles]&.each_with_index do |(particle_name, _value_), ind|
 
           particle = tool.box({ id: "tool_particle_#{particle_name}", tag: { system: true }, depth: 1, smooth: smooth,
                                 apply: %i[inactive_tool_col tool_box_border tool_shade],
@@ -457,7 +465,7 @@ class Atome
 
               Atome.selection.each do |atome_id_to_treat|
                 atome_found = grab(atome_id_to_treat)
-                puts "here slider treat either the target atome types or current atome"
+                puts 'here slider treat either the target atome types or current atome'
                 puts "need to created a list instead of choosing the last atome found of it's kind"
                 target = if tool_scheme[:target]
                            grab(atome_found.send(tool_scheme[:target]).last)
@@ -472,7 +480,7 @@ class Atome
             end
 
           end
-        end if tool_scheme[:particles]
+        end
         # tool.width(((size + margin) * (tool_scheme[:particles].length + 1)))
       end
 
@@ -495,7 +503,7 @@ class Atome
           tick[tool_name] = 0
         end
       end
-      puts 'reactivation'
+      # puts 'reactivation'
       tool.instance_variable_set('@prevent_action', false)
     end
 
