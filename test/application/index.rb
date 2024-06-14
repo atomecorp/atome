@@ -209,7 +209,9 @@
 # require "./examples/applications"
 # require "./examples/account"
 # require "./examples/tools"
-require "./examples/buttons"
+# require "./examples/buttons"
+require "./examples/attached"
+# require "./examples/attach"
 # require "./examples/alternate"
 
 

@@ -88,18 +88,31 @@ new({ particle: :affect, category: :hierarchy, type: :string, render: false }) d
   children_ids
 end
 
-new({ particle: :detached, category: :hierarchy, type: :string, store: false }) # unfastened
-new({ sanitizer: :detached }) do |values|
-  # unfastened
-  if values.instance_of? Array
-    values.each do |value|
-      detach_atome(value)
-    end
-  else
-    detach_atome(values)
-    # we sanitize the values so it always return an array to the renderer
-    values = [values]
-  end
-  values
-end
+# new({ particle: :detached, category: :hierarchy, type: :string, store: false }) # unfastened
+# new({ sanitizer: :detached }) do |values|
+#   # unfastened
+#   if values.innew({ particle: :detached, category: :hierarchy, type: :string, store: false }) # unfastened
+# # new({ sanitizer: :detached }) do |values|
+# #   # unfastened
+# #   if values.instance_of? Array
+# #     values.each do |value|
+# #       detach_atome(value)
+# #     end
+# #   else
+# #     detach_atome(values)
+# #     # we sanitize the values so it always return an array to the renderer
+# #     values = [values]
+# #   end
+# #   values
+# # endstance_of? Array
+#     values.each do |value|
+#       detach_atome(value)
+#     end
+#   else
+#     detach_atome(values)
+#     # we sanitize the values so it always return an array to the renderer
+#     values = [values]
+#   end
+#   values
+# end
 new({ particle: :collect, category: :hierarchy, type: :string })

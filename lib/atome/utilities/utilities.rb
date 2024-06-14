@@ -430,11 +430,12 @@ class Atome
     end
   end
 
-  def detach_atome(atome_id_to_detach)
-    atome_to_detach = grab(atome_id_to_detach)
-    # TODO: remove the condition below and find why it try to detach an atome that doesn't exist
-    nil unless atome_to_detach
-  end
+  # def detach_atome(atome_id_to_detach)
+  #   alert :uuu
+  #   atome_to_detach = grab(atome_id_to_detach)
+  #   # TODO: remove the condition below and find why it try to detach an atome that doesn't exist
+  #   nil unless atome_to_detach
+  # end
 
   def debug(msg)
     puts msg
