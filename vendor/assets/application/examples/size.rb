@@ -7,7 +7,7 @@ b.circle({ color: :yellow, width: 55, height: 88, left: 500 })
 b.box
 
 wait 1 do
-  # recursive apply the new size to all attached atomes recursively
+  # recursive apply the new size to all fasten atomes recursively
   # reference : change the size according the to wanted axis
   c.size({value:  50, recursive: true, reference: :y })
 end

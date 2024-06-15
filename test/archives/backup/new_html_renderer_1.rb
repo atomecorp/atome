@@ -106,19 +106,19 @@ new({ html: :smooth, type: :string }) do |value, _user_proc|
   # @browser_object.style['border-radius'] = format_params
 end
 ###################### those methods won't be called anymore #####################
-# new({ html: :attached, type: :string }) do |value, _user_proc| # affixed
+# new({ html: :fasten, type: :string }) do |value, _user_proc| # affixed
 #   # html.style(:height, "#{value}px")
-#   # we have to use attach instead because we must know the type of the object attached (color/shape => div/style )
-#   alert "all attached : #{value}"
+#   # we have to use attach instead because we must know the type of the object fasten (color/shape => div/style )
+#   alert "all fasten : #{value}"
 #
 #   # grab(value)
 #   # html.appendChild(value)
 #   # maDiv.appendChild(monSVG);
 # end
 #
-# new({ html: :attached, type: :string, exclusive: :color }) do |value, _user_proc| # affixed
+# new({ html: :fasten, type: :string, exclusive: :color }) do |value, _user_proc| # affixed
 #   # html.style(:height, "#{value}px")
-#   alert "color attached is : #{value}"
+#   alert "color fasten is : #{value}"
 #   # html.appendChild(value)
 #   # maDiv.appendChild(monSVG);
 # end
@@ -210,62 +210,62 @@ Universe.current_user = :jeezs
 atome_infos
 
 Atome.new(
-  { element: { renderers: [], id: :eDen, type: :element , tag: { system: true }, attach: [], attached: [] } }
+  { element: { renderers: [], id: :eDen, type: :element , tag: { system: true }, attach: [], fasten: [] } }
 )
 
 Atome.new(
   { element: { renderers: [], id: :user_view, type: :element, tag: { system: true },
-               attach: [:eDen], attached: [] } }
+               attach: [:eDen], fasten: [] } }
 )
 
 # color creation
 Atome.new(
   { color: { renderers: default_render, id: [:view_color], type: :color,tag: ({ system: true,persistent: true }),
-             red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }, attach: [], attached: [] }
+             red: 0.15, green: 0.15, blue: 0.15, alpha: 1 }, attach: [], fasten: [] }
 )
 
 Atome.new(
   { color: { renderers: default_render, id: :shape_color, type: :color,tag: ({ system: true,persistent: true }),
-             red: 0.4, green: 0.4, blue: 0.4, alpha: 1 }, attach: [], attached: [] }
+             red: 0.4, green: 0.4, blue: 0.4, alpha: 1 }, attach: [], fasten: [] }
 )
 
 Atome.new(
   { color: { renderers: default_render, id: :box_color, type: :color,tag: ({ system: true,persistent: true }),
-             red: 0.5, green: 0.5, blue: 0.5, alpha: 1 }, attach: [], attached: [] }
+             red: 0.5, green: 0.5, blue: 0.5, alpha: 1 }, attach: [], fasten: [] }
 )
 
 Atome.new(
   { color: { renderers: default_render, id: :invisible_color, type: :color,tag: ({ system: true,persistent: true }),
-             red: 0, green: 0, blue: 0, alpha: 1 }, attach: [], attached: [] }
+             red: 0, green: 0, blue: 0, alpha: 1 }, attach: [], fasten: [] }
 )
 
 Atome.new(
   { color: { renderers: default_render, id: :text_color, type: :color,tag: ({ system: true,persistent: true }),
-             red: 0.3, green: 0.3, blue: 0.3, alpha: 1 }, attach: [], attached: [] }
+             red: 0.3, green: 0.3, blue: 0.3, alpha: 1 }, attach: [], fasten: [] }
 )
 
 Atome.new(
   { color: { renderers: default_render, id: :circle_color, type: :color,tag: ({ system: true,persistent: true }),
-             red: 0.6, green: 0.6, blue: 0.6, alpha: 1 }, attach: [], attached: [] }
+             red: 0.6, green: 0.6, blue: 0.6, alpha: 1 }, attach: [], fasten: [] }
 )
 
 Atome.new(
 
   { color: { renderers: default_render, id: :matrix_color, type: :color,tag: ({ system: true,persistent: true }),
-             left: 0, top: 0, red: 0.7, green: 0.7, blue: 0.7, alpha: 1, diffusion: :linear }, attach: [], attached: [] }
+             left: 0, top: 0, red: 0.7, green: 0.7, blue: 0.7, alpha: 1, diffusion: :linear }, attach: [], fasten: [] }
 )
 
 # system object creation
 # the black_matter is used to store un materialized atomes
 Atome.new(
   { shape: { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
-             left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true },  attached: []
+             left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true },  fasten: []
   } })
 
 # view port
 Atome.new(
   { shape: { renderers: default_render, id: :view, type: :shape, attach: [:user_view], tag: { system: true },
-             attached: [:view_color], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
+             fasten: [:view_color], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
   }
   }
 )
@@ -273,7 +273,7 @@ Atome.new(
 #unreal port
 Atome.new(
   { shape: { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: { system: true },
-             left: 0,  top: 0, width: 0, height: 0, overflow: :visible,  attached: []
+             left: 0,  top: 0, width: 0, height: 0, overflow: :visible,  fasten: []
   }
   }
 )
@@ -303,7 +303,7 @@ Atome.new(
 # c = circle({ id: :the_circle, left: 333, renderers: [:html] })
 # # alert :pass_2
 # wait 3 do
-#   c.attached(b.id)
+#   c.fasten(b.id)
 # end
 
 # alert c.respond_to?(:browser_shape_left)

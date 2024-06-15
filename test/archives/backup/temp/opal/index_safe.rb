@@ -9,9 +9,9 @@
 # # # Done : when sanitizing property must respect the order else no browser
 # # # object will be created, try to make it more flexible allowing any order
 # # # FIXME Urgent : delete method doesnt work properly
-# # # DONE : attached method doesnt work properly,
+# # # DONE : fasten method doesnt work properly,
 # # # TODO : add pluralize ro atome methods (the method will retrieve all atome eg: grab(:view).shapes will retrieve all
-# # # attached shapes to the view) then we can allow a=shape to create a shape ( for now it must be : a=shape({}))
+# # # fasten shapes to the view) then we can allow a=shape to create a shape ( for now it must be : a=shape({}))
 # # # TODO : IMPORTANT : when assigning a color using b.color(:red) then b.color(:blue)then b.color(:red),
 # # # the third "color(:red)" should be the same otome as the first red not generate a new atome
 # # # TODO : Machine builder : new({machine: tool}) => grab(:intuition).tool; def tool .....
@@ -57,8 +57,8 @@
 # # # FIXME : URGENT fix : 'element' tha crash but 'element({})' works beacuse the params is nil at 'def element(params = {}, &bloc)' in 'atome/preset.rb'
 # # # DONE : create a build and guard for tauri
 # # # TODO : 'add' particle crash : modules=center.matrix({id: :modules,top: 0, left: 0,smooth: 0, columns: {count: 8}, rows: {count: 8}, color: {alpha: 0}})
-# # # TODO : attach remove previously attached object : modules=center.matrix({id: :modules,top: 0, left: 0,smooth: 0, columns: {count: 8}, rows: {count: 8}, color: {alpha: 0}})
-# # # TODO : when adding a children the parent get the child color: it may be related to : attach remove previously attached object
+# # # TODO : attach remove previously fasten object : modules=center.matrix({id: :modules,top: 0, left: 0,smooth: 0, columns: {count: 8}, rows: {count: 8}, color: {alpha: 0}})
+# # # TODO : when adding a children the parent get the child color: it may be related to : attach remove previously fasten object
 # # # FIXME : if in matrix particles shadow or other particles are not define it crash : { margin: 9, color: :blue } in table
 # # # TODO : self is the not the atome but BrowserHelper so the code below doesn't work :b=box
 # # # TODO : visual size define in % doesn't work cell_1.text({data: :realisation, center: :horizontal, top: 3, color: :lightgray, visual: {size: '10%'}})
@@ -126,7 +126,7 @@ require 'application/medias/rubies/new_html_renderer'
 # # require 'src/medias/rubies/examples/repeat.rb'
 # # require 'src/medias/rubies/examples/edit.rb'
 # # require 'src/medias/rubies/examples/delete.rb'
-# # require 'src/medias/rubies/examples/attached.rb'
+# # require 'src/medias/rubies/examples/fasten.rb'
 # # require 'src/medias/rubies/examples/attach.rb'
 # # require 'src/medias/rubies/examples/detached.rb'
 # # require 'src/medias/rubies/examples/empty_atome.rb'
@@ -182,9 +182,9 @@ require 'application/medias/rubies/new_html_renderer'
 # # #
 # # # def query_analysis(condition, operator, type, scope, values, target)
 # # # # pretenders_atomes = []
-# # # # all_attached_atome = grab(scope).attached
+# # # # all_fasten_atome = grab(scope).fasten
 # # # # # we must exclude itself from the atomes found
-# # # # atome_found = all_attached_atome.reject { |element| element == id }
+# # # # atome_found = all_fasten_atome.reject { |element| element == id }
 # # # #
 # # # # atome_queries_in_parent = grab(scope).query
 # # # # # now we add atome found in the query particle in case of find filtering
@@ -210,7 +210,7 @@ require 'application/medias/rubies/new_html_renderer'
 # # #
 # # # end
 # # #
-# # # # TODO : scope should get all atomes attached to it and all atomes found in the query particle
+# # # # TODO : scope should get all atomes fasten to it and all atomes found in the query particle
 # # # if !@atome_requested.include?(@atome_forced)
 # # # @atome_requested = @atome_requested | @atome_forced
 # # # end
@@ -308,7 +308,7 @@ require 'application/medias/rubies/new_html_renderer'
 # # # type: :static,
 # # # } }], id: :second_find })
 # # #
-# # # # alert b.attached
+# # # # alert b.fasten
 # # #
 # # # puts "spot content for a is : #{a}"
 # # # puts "spot content for b is : #{b}"
@@ -356,13 +356,13 @@ require 'application/medias/rubies/new_html_renderer'
 # # #
 # # # col=color(:red)
 # # # b.touch(true) do
-# # # b.box({attached: col.id})
+# # # b.box({fasten: col.id})
 # # # c=b.circle
 # # # c.text(:hello)
 # # #
 # # # wait 2 do
-# # # b.physical.each do |attached_atome_id|
-# # # b.delete({id: attached_atome_id, recursive: true})
+# # # b.physical.each do |fasten_atome_id|
+# # # b.delete({id: fasten_atome_id, recursive: true})
 # # # end
 # # # end
 # # # puts Universe.atomes.length
@@ -374,11 +374,11 @@ require 'application/medias/rubies/new_html_renderer'
 # # # c=color(:red)
 # # # c2=color({ blue: 1, alpha: 1, left: 33, id: :tutut })
 # # # # `console.clear()`
-# # # # b.attached(c.id)
+# # # # b.fasten(c.id)
 # # # puts '----+++---'
 # # # c.attach(b.id)
 # # # puts '-------'
-# # # b.attached(c2.id)
+# # # b.fasten(c2.id)
 # # #
 # # # wait 2 do
 # # # c2.red(1)
@@ -425,33 +425,33 @@ require 'application/medias/rubies/new_html_renderer'
 # # # v.box({ top: 500, id: :the_box3 })
 # # # v.circle({ left: 330, top: 230, id: :the_circle })
 # # # b.circle({ id: :the_circle2 })
-# # # alert "#{v.attached} : #{v.materials}\n\n#{v}"
+# # # alert "#{v.fasten} : #{v.materials}\n\n#{v}"
 # # #
 # # # # # v=box({definition: edition})
-# # # # # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "attached"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
-# # # # # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "attached"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
+# # # # # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "fasten"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
+# # # # # v=shape({"type"=>"shape", "width"=>99, "height"=>99, "fasten"=>"box_color", "attach"=>["view"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>"box", "renderers"=>["browser"], "id"=>"user_view_box_16"})
 # # # # # v=shape({})
 # # # # # alert grab(:view).shape
 # # # # # v.definition(edition)
 # # # # v=vector({definition: edition,id: :v1})
 # # # wait 0.3 do
-# # # v.attached(:c1)
+# # # v.fasten(:c1)
 # # # # c1.attach(:v1)
 # # # wait 2 do
 # # # v.detached(:c1)
 # # # # c1.detach(:the_vector)
-# # # # v.attached(c2.id)
+# # # # v.fasten(c2.id)
 # # # # # v.detached(c.id)
 # # # # # wait 1 do
 # # # # # v.color(:yellow)
 # # # # # end
 # # # # # wait 1 do
-# # # # # v.attached(c3.id)
+# # # # # v.fasten(c3.id)
 # # # # # # v.color(:violet)
 # # # # # wait 1 do
-# # # # # v.attached(c2.id)
+# # # # # v.fasten(c2.id)
 # # # # # wait 1 do
-# # # # # v.attached(c4.id)
+# # # # # v.fasten(c4.id)
 # # # # # end
 # # # # # end
 # # # # # end
@@ -480,9 +480,9 @@ require 'application/medias/rubies/new_html_renderer'
 # # # # # c=color(:violet)
 # # # # # c.id(:violet)
 # # # # # wait 1 do
-# # # # # a.attached(:brown)
+# # # # # a.fasten(:brown)
 # # # # # wait 1 do
-# # # # # a.attached(:violet)
+# # # # # a.fasten(:violet)
 # # # # # end
 # # # # # end
 # # # #
@@ -495,11 +495,11 @@ require 'application/medias/rubies/new_html_renderer'
 # # # # # c=color(:pink)
 # # # # # # color(:white)
 # # # # # color({ id: :toto, red: 1 })
-# # # # # # v.attached(c.id)
+# # # # # # v.fasten(c.id)
 # # # # # wait 1 do
 # # # # # wait 1 do
 # # # # # # # alert :should_be_now
-# # # # # v.attached(c.id)
+# # # # # v.fasten(c.id)
 # # # # # end
 # # # # # end
 # # # # #
@@ -517,7 +517,7 @@ require 'application/medias/rubies/new_html_renderer'
 # #
 #
 # # ######### # ############ # ### ######### # ###
-# # # TODO : Find solution 1: color is attached to the wrong object
+# # # TODO : Find solution 1: color is fasten to the wrong object
 # # b=box({ id: :the_box, drag: true })
 # # b.color(:red)
 # # color(:green)
@@ -574,8 +574,8 @@ require 'application/medias/rubies/new_html_renderer'
 # # b.color({id: :the_blue, blue: 1})
 # # b.color({id: :the_green, green: 1 })
 # # b.color({id: :the_yellow, green: 1 , red: 1})
-# # b.attached(:the_test)
-# # b.attached(:the_green)
+# # b.fasten(:the_test)
+# # b.fasten(:the_green)
 # # alert b
 #
 # #
@@ -605,10 +605,10 @@ require 'application/medias/rubies/new_html_renderer'
 # # color({ green: 1, id: :the_green })
 # # color({ blue: 1, id: :the_blue })
 # #
-# # b.attached(:the_red)
-# # b.attached(:the_green)
-# # b.attached(:the_blue)
-# # alert b.attached
+# # b.fasten(:the_red)
+# # b.fasten(:the_green)
+# # b.fasten(:the_blue)
+# # alert b.fasten
 # # require 'src/medias/rubies/examples/batch.rb'
 # # win = Native(`window`)
 # # alert win

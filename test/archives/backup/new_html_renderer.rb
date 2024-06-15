@@ -10,12 +10,12 @@ def attachment_common(children_ids, parents_ids, &user_proc)
 
     # puts "parent_id : #{parent_id}"
     #   #FIXME : find a more optimised way to prevent atome to attach to itself
-    #  puts "infernal loop here below: now attached or attach may not be saved"
+    #  puts "infernal loop here below: now fasten or attach may not be saved"
     #   puts "=> #{@atome[:attach]}"
     #   @atome[:attach] << parent_id if parent_id != id
     #   puts "infernal loop here above"
     parent_found = grab(parent_id)
-    parent_found.atome[:attached].concat(children_ids).uniq!
+    parent_found.atome[:fasten].concat(children_ids).uniq!
     if parent_found.type == :color
 
       children_ids.each do |child_id|
@@ -41,7 +41,7 @@ new({ particle: :attach, render: false }) do |parents_ids, &user_proc|
   # parents_ids
 end
 
-new({ particle: :attached, render: false }) do |children_ids, &user_proc|
+new({ particle: :fasten, render: false }) do |children_ids, &user_proc|
   # fastened
   # alert "#{self.id} : children_ids : #{children_ids}"
   children_ids = [children_ids] unless children_ids.instance_of?(Array)
@@ -79,8 +79,8 @@ def extract_rgb_alpha(color_string)
 end
 
 new({ particle: :red, render: true }) do |params, &user_proc|
-  attached.each do |attached_atome_found|
-    targeted_atome = grab(attached_atome_found)
+  fasten.each do |fasten_atome_found|
+    targeted_atome = grab(fasten_atome_found)
     color_found = targeted_atome.html.style(:backgroundColor).to_s
     rgba_data = extract_rgb_alpha(color_found)
     html_params = params * 255
@@ -93,8 +93,8 @@ new({ particle: :red, render: true }) do |params, &user_proc|
 end
 
 new({ particle: :green, render: true }) do |params, &user_proc|
-  attached.each do |attached_atome_found|
-    targeted_atome = grab(attached_atome_found)
+  fasten.each do |fasten_atome_found|
+    targeted_atome = grab(fasten_atome_found)
     color_found = targeted_atome.html.style(:backgroundColor).to_s
     rgba_data = extract_rgb_alpha(color_found)
     html_params = params * 255
@@ -107,8 +107,8 @@ new({ particle: :green, render: true }) do |params, &user_proc|
 end
 
 new({ particle: :blue, render: true }) do |params, &user_proc|
-  attached.each do |attached_atome_found|
-    targeted_atome = grab(attached_atome_found)
+  fasten.each do |fasten_atome_found|
+    targeted_atome = grab(fasten_atome_found)
     color_found = targeted_atome.html.style(:backgroundColor).to_s
     rgba_data = extract_rgb_alpha(color_found)
     html_params = params * 255
@@ -121,8 +121,8 @@ new({ particle: :blue, render: true }) do |params, &user_proc|
 end
 
 new({ particle: :alpha, render: true }) do |params, &user_proc|
-  attached.each do |attached_atome_found|
-    targeted_atome = grab(attached_atome_found)
+  fasten.each do |fasten_atome_found|
+    targeted_atome = grab(fasten_atome_found)
     color_found = targeted_atome.html.style(:backgroundColor).to_s
     rgba_data = extract_rgb_alpha(color_found)
     targeted_atome.html.style(:backgroundColor, "rgba(#{rgba_data[:red]}, #{rgba_data[:green]}, #{rgba_data[:blue]}, #{params})")
@@ -492,62 +492,62 @@ end
 
 ############### Lets create the U.I.
 Atome.new(
-  { element: { renderers: [], id: :eDen, type: :element, tag: { system: true }, attach: [], attached: [] } }
+  { element: { renderers: [], id: :eDen, type: :element, tag: { system: true }, attach: [], fasten: [] } }
 )
 Atome.new(
   { element: { renderers: [], id: :user_view, type: :element, tag: { system: true },
-               attach: [:eDen], attached: [] } }
+               attach: [:eDen], fasten: [] } }
 )
 
 # # color creation
 Atome.new(
   { color: { renderers: default_render, id: :view_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.15, green: 0.15, blue: 0.15, alpha: 1, top: 12, left: 0, diffusion: :linear, attach: [], attached: [] } }
+             red: 0.15, green: 0.15, blue: 0.15, alpha: 1, top: 12, left: 0, diffusion: :linear, attach: [], fasten: [] } }
 )
 
 Atome.new(
   { color: { renderers: default_render, id: :shape_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.4, green: 0.4, blue: 0.4, alpha: 1, attach: [], attached: [] } }
+             red: 0.4, green: 0.4, blue: 0.4, alpha: 1, attach: [], fasten: [] } }
 )
 
 ########################################
 Atome.new(
   { color: { renderers: default_render, id: :box_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.5, green: 0.5, blue: 0.5, alpha: 1, attach: [], attached: [] } }
+             red: 0.5, green: 0.5, blue: 0.5, alpha: 1, attach: [], fasten: [] } }
 )
 
 Atome.new(
   { color: { renderers: default_render, id: :invisible_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0, green: 0, blue: 0, alpha: 1, attach: [], attached: [] } }
+             red: 0, green: 0, blue: 0, alpha: 1, attach: [], fasten: [] } }
 )
 
 Atome.new(
   { color: { renderers: default_render, id: :text_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.3, green: 0.3, blue: 0.3, alpha: 1, attach: [], attached: [] } }
+             red: 0.3, green: 0.3, blue: 0.3, alpha: 1, attach: [], fasten: [] } }
 )
 
 Atome.new(
   { color: { renderers: default_render, id: :circle_color, type: :color, tag: ({ system: true, persistent: true }),
-             red: 0.6, green: 0.6, blue: 0.6, alpha: 1, attach: [], attached: [] } }
+             red: 0.6, green: 0.6, blue: 0.6, alpha: 1, attach: [], fasten: [] } }
 )
 
 # Atome.new(
 #
 #   { color: { renderers: default_render, id: :matrix_color, type: :color, tag: ({ system: true, persistent: true }),
-#              left: 0, top: 0, red: 0.7, green: 0.7, blue: 0.7, alpha: 1, diffusion: :linear }, attach: [], attached: [] }
+#              left: 0, top: 0, red: 0.7, green: 0.7, blue: 0.7, alpha: 1, diffusion: :linear }, attach: [], fasten: [] }
 # )
 
 # # system object creation
 # # the black_matter is used to store un materialized atomes
 Atome.new(
   { shape: { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],
-             left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, attached: []
+             left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, fasten: []
   } })
 
 # view port
 Atome.new(
   { shape: { renderers: default_render, id: :view, type: :shape, attach: [:user_view, :view_color], tag: { system: true },
-             attached: [], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
+             fasten: [], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
   }
   }
 )
@@ -555,7 +555,7 @@ Atome.new(
 # #unreal port
 Atome.new(
   { shape: { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: { system: true },
-             left: 0, top: 0, width: 0, height: 0, overflow: :visible, attached: []
+             left: 0, top: 0, width: 0, height: 0, overflow: :visible, fasten: []
   }
   }
 )
@@ -564,7 +564,7 @@ Atome.new(
 
 # Atome.new(
 # { color: { renderers: default_render, id: [:base_color], type: :color,tag: ({ system: true,persistent: true }),
-# red: 1, green: 0.15, blue: 0.15, alpha: 1 , attach: [], attached: []} }
+# red: 1, green: 0.15, blue: 0.15, alpha: 1 , attach: [], fasten: []} }
 # )
 
 # a.color(:red)
@@ -572,7 +572,7 @@ s_c = grab(:shape_color)
 
 a = Atome.new(
   { shape: { renderers: default_render, id: :my_shape, type: :shape, attach: [:view, :shape_color],
-             left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+             left: 120, top: 0, width: 100, height: 100, overflow: :visible, fasten: []
   }
   }
 )
@@ -661,7 +661,7 @@ end
 
 ee=Atome.new(
   text: { renderers: [:html], id: :text2, type: :text,
-          # left: 333, top: 33, width: 199, height: 33, attached: [],
+          # left: 333, top: 33, width: 199, height: 33, fasten: [],
           my_article: :ok_with_it
 
   }
@@ -669,7 +669,7 @@ ee=Atome.new(
 
 # ee=Atome.new(
 #   text: { renderers: [:html], id: :text2, type: :shape, attach: [:view], visual: { size: 33 },
-#           data: 'My second text!', left: 333, top: 33, width: 199, height: 33, attached: [],
+#           data: 'My second text!', left: 333, top: 33, width: 199, height: 33, fasten: [],
 #
 #   }
 # )
@@ -681,7 +681,7 @@ ee=Atome.new(
 
 # a=Atome.new(
 #   { shape: { renderers: default_render, id: :my_shape, type: :shape, attach: [:view,:shape_color],
-#              left: 0, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+#              left: 0, top: 0, width: 100, height: 100, overflow: :visible, fasten: []
 #   }
 #   }
 # )
@@ -717,7 +717,7 @@ ee=Atome.new(
 #
 # b=Atome.new(
 #   { shape: { renderers: default_render, id: :my_colorised, type: :color, attach: [:view],
-#              left: 0, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+#              left: 0, top: 0, width: 100, height: 100, overflow: :visible, fasten: []
 #   }
 #   }
 # )
@@ -751,7 +751,7 @@ ee=Atome.new(
 # c = circle({ id: :the_circle, left: 333, renderers: [:html] })
 # # alert :pass_2
 # wait 3 do
-# c.attached(b.id)
+# c.fasten(b.id)
 # end
 #
 # alert c.respond_to?(:browser_shape_left)

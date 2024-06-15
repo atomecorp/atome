@@ -10,8 +10,8 @@
 #   new_atome_id = "#{@id}_copy_#{copy_number}"
 #   new_atome = Atome.new({ type: @type, renderers: @renderers, id: new_atome_id })
 #
-#   attached_atomes = []
-#   attached_found = attached.dup
+#   fasten_atomes = []
+#   fasten_found = fasten.dup
 #   particles_found = instance_variables.dup
 #
 #   particles_found.delete(:@history)
@@ -20,14 +20,14 @@
 #   particles_found.delete(:@touch_code)
 #   # touch_code=instance_variable_get('@touch_code')
 #   particles_found.delete(:@html)
-#   particles_found.delete(:@attached)
+#   particles_found.delete(:@fasten)
 #   particles_found.delete(:@id)
 #   params[:id] = new_atome_id
-#   attached_found.each do |child_id_found|
+#   fasten_found.each do |child_id_found|
 #     child_found = grab(child_id_found)
 #     if child_found
 #       new_child = child_found.duplicate({})
-#       attached_atomes << new_child.id
+#       fasten_atomes << new_child.id
 #     end
 #   end
 #   particles_found.each do |particle_found|
@@ -36,7 +36,7 @@
 #     new_atome.set(particle_name => particle_content)
 #     # new_atome.instance_variable_set('@touch_code',touch_code)
 #   end
-#   params[:attached] = attached_atomes
+#   params[:fasten] = fasten_atomes
 #
 #   if params.instance_of? Hash
 #     params.each do |k, v|

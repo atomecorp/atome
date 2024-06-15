@@ -73,12 +73,12 @@ v.shadow({ renderers: [:browser], id: :shadow8, type: :shadow, real: true,
 b=box({top: 300})
 
 wait 4 do
-  b.attached(:shadow7)
-  v.attached(:shadow7)
+  b.fasten(:shadow7)
+  v.fasten(:shadow7)
 end
 
 
 wait 6 do
-  b.attached(:shadow8)
-  v.attached(:shadow8)
+  b.fasten(:shadow8)
+  v.fasten(:shadow8)
 end

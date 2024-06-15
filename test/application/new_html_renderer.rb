@@ -6,18 +6,18 @@
 #
 # # Atome.new(
 # #   { renderers: default_render, id: :my_test_box, type: :shape, width: 100, height: 100, attach: [:view],
-# #     left: 120, top: 0, apply: [:shape_color],attached: []
+# #     left: 120, top: 0, apply: [:shape_color],fasten: []
 # #   }
 # # )
 # # a = Atome.new(
 # #   { renderers: default_render, id: :my_test_box, type: :shape, attach: [:view], apply: [:shape_color],
-# #     left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+# #     left: 120, top: 0, width: 100, height: 100, overflow: :visible, fasten: []
 # #   }
 # #
 # # )
 # a = Atome.new(
 #   { renderers: default_render, id: :my_shape, type: :shape, attach: [:view], apply: [:shape_color],
-#     left: 120, top: 0, width: 100, height: 100, overflow: :visible, attached: []
+#     left: 120, top: 0, width: 100, height: 100, overflow: :visible, fasten: []
 #   }
 #
 # )
@@ -57,7 +57,7 @@
 # # ###################### uncomment below
 # Atome.new(
 #   { renderers: default_render, id: :my_txt, type: :text, width: 100, height: 100, attach: [:my_shape],
-#     data: "too much cool for me", apply: [:text_color], attached: []
+#     data: "too much cool for me", apply: [:text_color], fasten: []
 #   }
 # )
 #
@@ -65,7 +65,7 @@
 ############## tests
 aa = Atome.new(
   { renderers: [:html], id: :my_shape2, type: :shape, attach: [:view], apply: [:box_color],
-    left: 120, top: 30, width: 100, height: 100, overflow: :visible, attached: [:my_shape]
+    left: 120, top: 30, width: 100, height: 100, overflow: :visible, fasten: [:my_shape]
 
   }
 )

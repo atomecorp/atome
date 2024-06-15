@@ -344,7 +344,7 @@ This is a detailed view of the file tree of the Atome framework:
 │   │   │   ├── animation.rb
 │   │   │   ├── atome_new.rb
 │   │   │   ├── attach.rb
-│   │   │   ├── attached.rb
+│   │   │   ├── fasten.rb
 │   │   │   ├── auto_height.rb
 │   │   │   ├── auto_width.rb
 │   │   │   ├── batch.rb
@@ -507,7 +507,7 @@ This is a detailed view of the file tree of the Atome framework:
 │       │   │   ├── animation.rb
 │       │   │   ├── atome.rb
 │       │   │   ├── attach.rb
-│       │   │   ├── attached.rb
+│       │   │   ├── fasten.rb
 │       │   │   ├── basic_understanding.rb
 │       │   │   ├── browse.rb
 │       │   │   ├── callback.rb
@@ -3453,7 +3453,7 @@ This is a detailed view of the file tree of the Atome framework:
 │           │   │   ├── animation.rb
 │           │   │   ├── atome.rb
 │           │   │   ├── attach.rb
-│           │   │   ├── attached.rb
+│           │   │   ├── fasten.rb
 │           │   │   ├── browse.rb
 │           │   │   ├── callback.rb
 │           │   │   ├── clear.rb
@@ -3532,7 +3532,7 @@ This is a detailed view of the file tree of the Atome framework:
 │   │   ├── animation.rb
 │   │   ├── atome.rb
 │   │   ├── attach.rb
-│   │   ├── attached.rb
+│   │   ├── fasten.rb
 │   │   ├── basic_understanding.rb
 │   │   ├── browse.rb
 │   │   ├── callback.rb

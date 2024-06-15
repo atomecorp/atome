@@ -73,7 +73,7 @@ new({ post: :remove }) do |params|
     end
   else
     # the systems send an id we have to remove it from parent too
-    grab(params).attached.delete(id)
+    grab(params).fasten.delete(id)
     grab(params).affect.delete(id)
   end
   params

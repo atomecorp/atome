@@ -9,15 +9,15 @@ b.text({left: 166, id: :the_text, data: :green})
 b.image('red_planet.png')
 
 wait 1 do
-  b.physical.each do |attached_atome_id|
-    puts attached_atome_id
-    grab(attached_atome_id).width(55)
+  b.physical.each do |fasten_atome_id|
+    puts fasten_atome_id
+    grab(fasten_atome_id).width(55)
   end
 end
 
 wait 2 do
-  b.physical.each do |attached_atome_id|
-    grab(attached_atome_id).delete(true)
+  b.physical.each do |fasten_atome_id|
+    grab(fasten_atome_id).delete(true)
   end
 end
 
@@ -32,7 +32,7 @@ end
 # cc2 = color(:yellow)
 # b.color(:red)
 # c = b.circle
-# c.attached(cc2.id)
+# c.fasten(cc2.id)
 # b.text(:hello)
 # b.add(text: { data: :ok, left: 133 })
 # wait 2 do

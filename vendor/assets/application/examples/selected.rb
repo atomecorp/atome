@@ -28,7 +28,7 @@
 # t.touch(true) do
 #   puts "1 current_user - #{grab(Universe.current_user).selection}"
 #   puts "1 - b selected : #{b.selected}"
-#   grab(:view).attached.each do |atome_found|
+#   grab(:view).fasten.each do |atome_found|
 #     grab(atome_found).selected(true)
 #   end
 #   puts "2 - current_user : #{grab(Universe.current_user).selection}"

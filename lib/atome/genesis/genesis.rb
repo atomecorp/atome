@@ -40,7 +40,7 @@ class Genesis
       # atome_method_for_batch(atome_name)
       unless Essentials.default_params[atome_name]
         # we create default params for the new created atome, adding the hash to : module essential, @default_params
-        # FIXME : the hash : attach: [:view] means that newly atome will systematically be attached to the wview instaed of the parent:
+        # FIXME : the hash : attach: [:view] means that newly atome will systematically be fasten to the wview instaed of the parent:
         # ex : b.www will attach to view not b!
         Essentials.new_default_params(atome_name => { type: atome_name })
       end
@@ -145,19 +145,19 @@ class Genesis
           # as getter should give us all atome of a given within the atome
           # ex : puts a.shape => return all atome with the type 'shape' in this atome
           collected_atomes = []
-          # attached.each do |attached_atome|
-          #   collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+          # fasten.each do |fasten_atome|
+          #   collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
           # end
           if Universe.applicable_atomes.include?(element)
-            # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being attached
-            @apply.each do |attached_atome|
-              collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+            # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being fasten
+            @apply.each do |fasten_atome|
+              collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
             end
           else
-            # collected_atomes = attached
-            # if @attached
-            attached.each do |attached_atome|
-              collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+            # collected_atomes = fasten
+            # if @fasten
+            fasten.each do |fasten_atome|
+              collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
             end
             # end
 
@@ -213,21 +213,21 @@ class Genesis
       #     # as getter should give us all atome of a given within the atome
       #     # ex : puts a.shape => return all atome with the type 'shape' in this atome
       #     collected_atomes = []
-      #     # attached.each do |attached_atome|
-      #     #   collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+      #     # fasten.each do |fasten_atome|
+      #     #   collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
       #     # end
       #     # TODO : add category for atome( material/physical vs modifier : color, shadow, .. vs shape, image ..)
       #     # then add condition same things fo code in presets/atome atome_common
       #     if %i[color shadow paint border].include?(element)
-      #       # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being attached
-      #       @apply.each do |attached_atome|
-      #         collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+      #       # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being fasten
+      #       @apply.each do |fasten_atome|
+      #         collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
       #       end
       #     else
-      #       # collected_atomes = attached
-      #       # if @attached
-      #       attached.each do |attached_atome|
-      #         collected_atomes << attached_atome if grab(attached_atome).type.to_sym == element.to_sym
+      #       # collected_atomes = fasten
+      #       # if @fasten
+      #       fasten.each do |fasten_atome|
+      #         collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
       #       end
       #       # end
       #

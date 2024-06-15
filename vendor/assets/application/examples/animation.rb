@@ -10,7 +10,7 @@
 #            red: 0, green: 0, blue: 0, alpha: 1
 #          })
 #
-# Atome.new(animation: { renderers: [:browser], id: :the_animation1, type: :animation, attach: [],attached: []})
+# Atome.new(animation: { renderers: [:browser], id: :the_animation1, type: :animation, attach: [],fasten: []})
 # aa = animation({
 #                  targets: %i[my_box the_circle],
 #                  begin: {

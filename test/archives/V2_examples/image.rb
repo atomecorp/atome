@@ -2,7 +2,7 @@
 
 Atome.new(
   image: { renderers: [:browser], id: :image1, type: :image, attach: [:view], path: "./medias/images/red_planet.png",
-           left: 99, top: 120, width: 199, height: 199,attached: []
+           left: 99, top: 120, width: 199, height: 199,fasten: []
   }
 )
 

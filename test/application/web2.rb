@@ -48,7 +48,7 @@ class Atome
         width: :auto,
         top: 0,
         height: default_values[:header_height],
-        # attached: :default_shadow,
+        # fasten: :default_shadow,
         id: :header,
       },
       footer: {
@@ -61,7 +61,7 @@ class Atome
         top: :auto,
         width: :auto,
         height: default_values[:footer_height],
-        # attached: :default_shadow,
+        # fasten: :default_shadow,
         id: :footer,
 
       },
@@ -481,7 +481,7 @@ var map = L.map(#{map_created_id}).setView(coordinate, view);
   end
 
   def delete_children_recursively(page)
-    grab(page)&.attached&.each do |child_found|
+    grab(page)&.fasten&.each do |child_found|
         delete_children_recursively(child_found)
         grab(child_found)&.delete(true)
       end

@@ -90,7 +90,7 @@ new({ post: :text }) do |params|
       if index == 0
         send(:data, data_found)
       else
-        # we create new text's atome attached to the main one (the first element above)
+        # we create new text's atome fasten to the main one (the first element above)
         text(data_found)
       end
 

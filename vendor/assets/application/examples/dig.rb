@@ -9,5 +9,5 @@ b.box
 
 
 atome_founds = c.dig
-puts "dig allow to retrieve all attached atomes recursively,
+puts "dig allow to retrieve all fasten atomes recursively,
 it return a table of ID including the ID of the parent (here : :the_circle) :\n#{atome_founds}"

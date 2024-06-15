@@ -49,6 +49,6 @@ a.apply([:box_color])
 wait 2 do
   # a bit less efficient and a bit more processor intensive solution is to use the box preset, that render a box too
   b=box
-  # we can add a color atome onto the new atome my_shape. as stated before for some atome types such as color, shadows ,the relation between the two atomes won't be attach and attached but  apply and affect instead the atome color with the particle red onto the
+  # we can add a color atome onto the new atome my_shape. as stated before for some atome types such as color, shadows ,the relation between the two atomes won't be attach and fasten but  apply and affect instead the atome color with the particle red onto the
   b.color(:red)
 end

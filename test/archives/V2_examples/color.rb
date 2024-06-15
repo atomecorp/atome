@@ -52,15 +52,15 @@ end
 
 
 wait 10  do
-  d=Atome.new({ color: { renderers: [:browser], id: :col1, type: :color,  attach: [],attached: [],
+  d=Atome.new({ color: { renderers: [:browser], id: :col1, type: :color,  attach: [],fasten: [],
                        left: 33, top: 66, red: 1, green: 0.15, blue: 0.7, alpha: 1 } })
 
-  col_2 = Atome.new({ color: { renderers: [:browser], id: :col2, type: :color, attach: [],attached: [],
+  col_2 = Atome.new({ color: { renderers: [:browser], id: :col2, type: :color, attach: [],fasten: [],
                                left: 33, top: 66, red: 0, green: 0.15, blue: 0.7, alpha: 1 } })
 
   puts d
   e=Atome.new(
-    shape: { type: :shape, renderers: [:browser], id: :shaped, attach: [:view],  attached: [:col1],
+    shape: { type: :shape, renderers: [:browser], id: :shaped, attach: [:view],  fasten: [:col1],
              left: 199, top: 99,
              width: 66, height: 66
     }

@@ -51,7 +51,7 @@ wait 1 do
 end
 
 # TODO : make multi parents works
-# TODO : make it works for event like touch , also attach and attached
+# TODO : make it works for event like touch , also attach and fasten
 # wait 2 do
 #   col = color({ id: :col1, red: 1, blue: 1 })
 #   Atome.monitoring([col], [:red, :blue], [:variable1, :variable2])

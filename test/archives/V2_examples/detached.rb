@@ -10,21 +10,21 @@ b.circle({id: :the_circle})
 # alert t
 # alert b
 wait 2 do
-  t.attached(:inactive_color)
+  t.fasten(:inactive_color)
 end
 
 b.touch(true) do
 
   t.detached(:inactive_color)
   wait 2 do
-    t.attached(:active_color)
+    t.fasten(:active_color)
   end
   puts "detached objects are : #{t}"
 end
 
 
 
-# b.attached(c.id)
+# b.fasten(c.id)
 
 # wait 2 do
 #   b=shape({id: :the_shape, drag: true, left: 200})

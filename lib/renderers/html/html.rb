@@ -791,6 +791,7 @@ class HTML
   end
 
   def drag_remove(option)
+
     @draggable = nil
     interact = JS.eval("return interact('##{@id}')")
 
@@ -1392,6 +1393,7 @@ class HTML
   end
 
   def touch_remove(option)
+
     @element[:style][:cursor] = 'default'
     case option
     when :double
@@ -1419,7 +1421,18 @@ class HTML
     else
       # interact = JS.eval("return interact('##{@id}')")
       # interact.unset
-      @original_atome.instance_variable_set('@touch_code', nil)
+      touch_remove(:double)
+      touch_remove(:down)
+      touch_remove(:long)
+      touch_remove(:tap)
+      touch_remove(:touch)
+      touch_remove(:up)
+
+      # @element.removeEventListener('touchstart', onTouchStart);
+      # @element.removeEventListener('touchmove', onTouchMove);
+      # @element.removeEventListener('touchend', onTouchEnd);
+      # console.log("Touch events removed");
+      # @original_atome.instance_variable_set('@touch_code', nil)
     end
 
   end

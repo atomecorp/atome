@@ -4,9 +4,9 @@ a = box({ width: 180, height: 333, id: :the_grid, overflow: :scroll })
 i = 0
 while i < 16
   b = Atome.new(
-    shape: { renderers: [:browser],id: "the_shape#{i}", type: :shape, attach: [:the_grid], attached: [],
+    shape: { renderers: [:browser],id: "the_shape#{i}", type: :shape, attach: [:the_grid], fasten: [],
              width: 50, height: 50,
-             color: { renderers: [:browser], id: :c31, type: :color, attach: ["the_shape#{i}"], attached: [],
+             color: { renderers: [:browser], id: :c31, type: :color, attach: ["the_shape#{i}"], fasten: [],
                       red: 1, green: 0.15, blue: 0.15, alpha: 0.6 } }
   )
   b.text({ data: "item#{i + 1}", visual: { size: 12 } })

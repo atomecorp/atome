@@ -67,7 +67,7 @@ class Atome
       Universe.add_to_atomes(@aid, self)
       Universe.id_to_aid(@id, @aid)
       @type = new_atome[:type] || :element
-      @attached = []
+      @fasten = []
       @affect = []
       @category = []
       # @display = { mode: :default }

@@ -34,10 +34,10 @@ def delete_recursive(atome_id, force = false)
 
   parent_id_found = grab(atome_id).attach
   parent_found = grab(parent_id_found)
-  new_array = parent_found.attached.dup
+  new_array = parent_found.fasten.dup
   new_array.delete(atome_id)
-  parent_found.instance_variable_set('@attached', new_array)
-  grab(atome_id).attached.each do |atome_id_found|
+  parent_found.instance_variable_set('@fasten', new_array)
+  grab(atome_id).fasten.each do |atome_id_found|
     delete_recursive(atome_id_found, force)
   end
   grab(atome_id).render(:delete, { :recursive => true })
@@ -54,8 +54,7 @@ text_selection nil
 ]
 
   unless basic_system_object.include?(id) || id.nil?
-
-    if params == true
+   if params == true
       # We use the tag persistent to exclude color of system object and other default colors
       unless @tag && (@tag[:persistent] || @tag[:system])
         # if we are on a matrix we delete cells found & group found
@@ -68,14 +67,13 @@ text_selection nil
         id_found = @id.to_sym
         if @attach
           parent_found = grab(@attach)
-          parent_found.attached.delete(id_found)
+          parent_found.fasten.delete(id_found)
         end
         @affect&.each do |affected_atome|
           affected_found = grab(affected_atome)
           affected_found.apply.delete(id_found)
           affected_found.refresh
         end
-
         # Universe.delete(@aid)
       end
     elsif params.instance_of? Hash
@@ -84,7 +82,7 @@ text_selection nil
       group.delete(true)
       if params[:recursive]
         unless grab(@id).tag && (grab(@id).tag[:persistent] || grab(@id).tag[:system])
-          attached.each do |atttached_atomes|
+          fasten.each do |atttached_atomes|
             delete_recursive(atttached_atomes)
           end
           # touch(:remove)
@@ -92,16 +90,19 @@ text_selection nil
           # Universe.delete(@aid)
         end
       elsif params[:force]
-        attached.each do |atttached_atomes|
-          # alert "attached : #{attached}"
+        fasten.each do |atttached_atomes|
+          # alert "fasten : #{fasten}"
           delete_recursive(atttached_atomes, true)
         end
         # touch(:remove)
         # render(:delete, params)
         # Universe.delete(@aid)
+
       else
+
         # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
         # with id my_monitor
+        #
         params.each do |param, value|
           atome[param][value] = nil
         end
@@ -109,7 +110,7 @@ text_selection nil
 
     elsif Universe.atome_list.include?(params)
       # we check if the params passed is an atome to treat it in a different way
-      puts "write code here : #{apply} , #{attached}"
+      puts "write code here : #{apply} , #{fasten}"
     else
       send(params, 0) unless params == :id
     end
@@ -140,11 +141,11 @@ end
 new({ particle: :clear, category: :utility, type: :boolean })
 
 new({ post: :clear }) do
-  attached_found = []
-  attached.each do |attached_id_found|
-    attached_found << attached_id_found
+  fasten_found = []
+  fasten.each do |fasten_id_found|
+    fasten_found << fasten_id_found
   end
-  attached_found.each do |child_id_found|
+  fasten_found.each do |child_id_found|
     child_found = grab(child_id_found)
     # we exclude system  objects
     child_found&.delete(true) unless child_found.tag && child_found.tag[:system]
@@ -223,18 +224,18 @@ new({ particle: :duplicate, category: :utility, type: :string, store: false }) d
                 else
                   0
                 end
-  attached_atomes = []
-  attached_found = attached.dup
-  attached_found.each do |child_id_found|
+  fasten_atomes = []
+  fasten_found = fasten.dup
+  fasten_found.each do |child_id_found|
     child_found = grab(child_id_found)
     if child_found
       new_child = child_found.duplicate({})
-      attached_atomes << new_child.id
+      fasten_atomes << new_child.id
     end
   end
-  params[:attached] = attached_atomes
+  params[:fasten] = fasten_atomes
   infos_found = infos.dup
-  keys_to_delete = %i[history callback duplicate copy paste touch_code html attached aid]
+  keys_to_delete = %i[history callback duplicate copy paste touch_code html fasten aid]
   keys_to_delete.each { |key| infos_found.delete(key) }
   new_atome_id = "#{@id}_copy_#{copy_number}".to_sym
   infos_found[:id] = new_atome_id
@@ -331,9 +332,9 @@ new({ particle: :state, category: :utility, type: :symbol })
 new({ particle: :record, category: :utility, type: :hash })
 new({ particle: :preview, category: :utility, type: :hash })
 
-# new(particle: :update) do |params| #specific to buttoms meolecule for now
-#   old_data= data
-#   delete({recursive: true})
-#   new_content=old_data.merge(params)
-#   buttons(new_content)
-# end
+new(particle: :update) do |params| #specific to buttoms meolecule for now
+  old_data= data
+  delete({recursive: true})
+  new_content=old_data.merge(params)
+  buttons(new_content)
+end

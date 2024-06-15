@@ -8,12 +8,12 @@ module BrowserHelper
   end
 
   def self.browser_attach_(_parents, _html_object, _atome)
-    # dummy methods to catch atomes that do not need to be attached to any particular visual atome
+    # dummy methods to catch atomes that do not need to be fasten to any particular visual atome
   end
 
   def self.append_div(parents_found, child_found, child_properties)
     child_found.append_to(browser_document[parents_found])
-    # # the lines below are used to keep the original position of the attached atome
+    # # the lines below are used to keep the original position of the fasten atome
     # parent_left = child_properties[:left].to_f - grab(parents_found).left.to_f
     # parent_top = child_properties[:top].to_f - grab(parents_found).top.to_f
     # parent_right = child_properties[:right].to_f - grab(parents_found).right.to_f
@@ -28,7 +28,7 @@ module BrowserHelper
     append_div(parents_found, child_found, child_properties)
   end
 
-  def self.browser_attached_div(child_id, _html_object, atome)
+  def self.browser_fasten_div(child_id, _html_object, atome)
     child = grab(child_id)
     child_found = child.browser_object
     parents_found = atome[:id]
@@ -72,7 +72,7 @@ module BrowserHelper
     end
   end
 
-  def self.browser_attached_style(children, _html_object, atome)
+  def self.browser_fasten_style(children, _html_object, atome)
     if atome[:definition]
       # alert "yes we arrived here :>\n\n=>#{children}, class:\n=>#{children.class} :\n\n=> #{atome} :\n\n=>  #{_html_object}<:"
       children.each do |child|

@@ -36,7 +36,7 @@ page1 = {
 color({ id: :titi, red: 1 })
 page2 = { id: :page2,
           color: :white,
-          # apply: :titi,
+          menu: false,
           run: verif,
           # drag: true,
           box: { id: :mod_1, left: 333, top: 123, touch: { down: true, code: page1_code } }

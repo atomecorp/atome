@@ -30,6 +30,7 @@ new({ tool: :combined }) do |params|
   {
     activation: active_code,
     inactivation: inactive_code,
+    # alteration: { width: 22, blur: 3 },
     alteration: { width: 22, blur: 3 },
     pre: pre_code,
     post: post_code,
@@ -85,7 +86,7 @@ end
 
 new({ tool: :move }) do
   move_active_code = lambda {
-    all=grab(:view).attached
+    all=grab(:view).fasten
     @previous_selected_atomes=[]
     @previous_draggable_atomes=[]
     all.each do |at_f|
@@ -103,7 +104,7 @@ new({ tool: :move }) do
     drag(true)
   }
   move_inactive_code = lambda { |data|
-    all=grab(:view).attached
+    all=grab(:view).fasten
     all.each do |at_f|
       unless @previous_selected_atomes.include?(at_f)
         grab(at_f).selected(false)
@@ -124,7 +125,7 @@ end
 
 new({ tool: :drag }) do
   drag_active_code = lambda {
-    all=grab(:view).attached
+    all=grab(:view).fasten
     @previous_selected_atomes=[]
     all.each do |at_f|
       if grab(at_f).selected
@@ -136,7 +137,7 @@ new({ tool: :drag }) do
   }
 
   drag_inactive_code = lambda { |_data|
-    all=grab(:view).attached
+    all=grab(:view).fasten
     all.each do |at_f|
       unless @previous_selected_atomes.include?(at_f)
         grab(at_f).selected(false)
@@ -208,8 +209,32 @@ new({ tool: :color }) do
     particles: { red: 0, green: 0.5, blue: 1, alpha: 1 }}
 end
 
+new({ tool: :crash_test }) do
+  active_code = lambda {
+    puts 'color activated1'
+  }
+  color_code = lambda {
+    # color(:green)
+    # tools_values
+  }
+  inactive_code = lambda { |data|
+    data[:treated].each do |atome_f|
+      # atome_f.drag(false)
+      # atome_f.color(:green)
+    end
+  }
+
+  {
+    # activation: active_code,
+    alteration: { width: 22},
+    # inactivation: inactive_code,
+    # target: :color,
+    # particles: { red: 0, green: 0.5, blue: 1, alpha: 1 }
+    }
+end
+
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
-Universe.tools_root = {id: :root_tools, tools: [:select, :box, :drag, :touch,:color, :move, :toolbox1], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
+Universe.tools_root = {id: :root_tools, tools: [:select,:crash_test, :box, :drag, :touch,:color, :move, :toolbox1], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
 puts "above we added an id because each tool may be in many toolbox and have an uniq ID"
 Atome.init_intuition
 

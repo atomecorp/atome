@@ -7,9 +7,9 @@ grab(:bundler_1).color(:blue)
 
 
 #   Atome.new(
-#   { renderers:  [:html], id: :atomix, type: :element, tag: { system: true }, attach: [], attached: [] }
+#   { renderers:  [:html], id: :atomix, type: :element, tag: { system: true }, attach: [], fasten: [] }
 # )
 #
 #
-# {:id=>:eDen, :type=>:element, :renderers=>[], :tag=>{:system=>true}, :attach=>[], :attached=>[]}
-# {:renderers=>[], :id=>:eDen, :type=>:element, :tag=>{:system=>true}, :attach=>[], :attached=>[]}
+# {:id=>:eDen, :type=>:element, :renderers=>[], :tag=>{:system=>true}, :attach=>[], :fasten=>[]}
+# {:renderers=>[], :id=>:eDen, :type=>:element, :tag=>{:system=>true}, :attach=>[], :fasten=>[]}

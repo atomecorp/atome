@@ -14,10 +14,10 @@ end
 #
 wait 3 do
 
-  b.shape.each do |attached_atome_id|
-    attached_atome_id.left(333)
+  b.shape.each do |fasten_atome_id|
+    fasten_atome_id.left(333)
     wait 2 do
-      attached_atome_id.delete(true)
+      fasten_atome_id.delete(true)
     end
   end
 
@@ -40,14 +40,14 @@ end
 #
 # # alert "before creation : #{bb}"
 # bb.touch(true) do
-#   bb.box({attached: col.id, id: :attached_box})
+#   bb.box({fasten: col.id, id: :fasten_box})
 #   c=bb.circle(({ id: :circle_1 }))
 #   c.text({id: :text_1, data: :hello})
 #   bb.text(:good)
 #   # alert "after creation : #{bb}"
 #   wait 1 do
-#   bb.physical.each do |attached_atome_id|
-#         bb.delete({id: attached_atome_id, recursive: true})
+#   bb.physical.each do |fasten_atome_id|
+#         bb.delete({id: fasten_atome_id, recursive: true})
 #     end
 #
 #     # wait 1 do
@@ -61,7 +61,7 @@ end
 # puts  Universe.user_atomes
 # puts  Universe.system_atomes
 
-# physical_found=["text_0","attached_box","circle_1","attached_box","circle_1"]
+# physical_found=["text_0","fasten_box","circle_1","fasten_box","circle_1"]
 # clean_physical=physical_found.uniq
 # alert clean_physical
 

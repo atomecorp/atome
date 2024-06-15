@@ -446,7 +446,7 @@ class Object
     ids = []
     dig_recursive = lambda do |atome|
       ids << atome.id
-      atome.attached.each { |attached_atome| dig_recursive.call(grab(attached_atome)) }
+      atome.fasten.each { |fasten_atome| dig_recursive.call(grab(fasten_atome)) }
     end
     dig_recursive.call(self)
     ids
@@ -516,7 +516,7 @@ class Object
     total_size = (axis == :x) ? objet_atome.to_px(:width) : objet_atome.to_px(:height)
     max_other_axis_size = (axis == :x) ? objet_atome.to_px(:height) : objet_atome.to_px(:width)
 
-    objet_atome.attached.each do |child_id|
+    objet_atome.fasten.each do |child_id|
       child = grab(child_id)
       child_size = (axis == :x) ? child.to_px(:width) : child.to_px(:height)
       other_axis_size = (axis == :x) ? child.to_px(:height) : child.to_px(:width)
@@ -532,7 +532,7 @@ class Object
     current_position = 0
     resize_object(objet_atome, scale_factor, axis, max_other_axis_size)
     current_position += (axis == :x) ? objet_atome.to_px(:width) : objet_atome.to_px(:height)
-    objet_atome.attached.each do |child_id|
+    objet_atome.fasten.each do |child_id|
       child = grab(child_id)
       resize_object(child, scale_factor, axis, max_other_axis_size)
       child.top(child.top * scale_factor)

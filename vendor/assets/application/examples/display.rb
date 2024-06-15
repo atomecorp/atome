@@ -230,8 +230,8 @@ def duplicate(ids)
 
     atome_passed=grab(id_passed)
     # atome_passed.particles.delete(:left)
-    # we remove attached
-    particle_to_remove=[:id, :broadcast, :history,:callback, :html_object, :store_allow,:attached]
+    # we remove fasten
+    particle_to_remove=[:id, :broadcast, :history,:callback, :html_object, :store_allow,:fasten]
     particles_found=atome_passed.particles.dup
     particles_found.delete_if { |key, value| particle_to_remove.include?(key) }
     particles_found[:id]=identity_generator(particles_found[:type])
@@ -252,8 +252,8 @@ def duplicate(ids)
     wait 2 do
       nw_atome.left(333)
     end
-    # Atome.new({"renderers"=>["html"], "id"=>nil, "type"=>"shape", "attach"=>["view"], "tag"=>{}, "attached"=>["text_15"], "unit"=>{}, "collected"=>{}, "width"=>99, "height"=>99, "apply"=>["box_color"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>{"box"=>{"width"=>99, "height"=>99, "apply"=>["box_color"], "left"=>100, "top"=>100, "clones"=>[]}}, "touch"=>{"tap"=>true}, "touch_code"=>{"touch"=>:jhjh}})
-    # Atome.new({"renderers"=>["html"], "id"=>:jgjhg, "type"=>"shape", "attach"=>["view"], "tag"=>{}, "attached"=>["text_15"], "unit"=>{}, "collected"=>{}, "width"=>99, "height"=>99, "apply"=>["box_color"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>{"box"=>{"width"=>99, "height"=>99, "apply"=>["box_color"], "left"=>100, "top"=>100, "clones"=>[]}}, "touch"=>{"tap"=>true}, "touch_code"=>{"touch"=>:jhjh}})
+    # Atome.new({"renderers"=>["html"], "id"=>nil, "type"=>"shape", "attach"=>["view"], "tag"=>{}, "fasten"=>["text_15"], "unit"=>{}, "collected"=>{}, "width"=>99, "height"=>99, "apply"=>["box_color"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>{"box"=>{"width"=>99, "height"=>99, "apply"=>["box_color"], "left"=>100, "top"=>100, "clones"=>[]}}, "touch"=>{"tap"=>true}, "touch_code"=>{"touch"=>:jhjh}})
+    # Atome.new({"renderers"=>["html"], "id"=>:jgjhg, "type"=>"shape", "attach"=>["view"], "tag"=>{}, "fasten"=>["text_15"], "unit"=>{}, "collected"=>{}, "width"=>99, "height"=>99, "apply"=>["box_color"], "left"=>100, "top"=>100, "clones"=>[], "preset"=>{"box"=>{"width"=>99, "height"=>99, "apply"=>["box_color"], "left"=>100, "top"=>100, "clones"=>[]}}, "touch"=>{"tap"=>true}, "touch_code"=>{"touch"=>:jhjh}})
   end
 end
 
@@ -263,14 +263,14 @@ c.text(:hello)
 b.touch(true) do
   puts @id
 end
-b.clones([{ left: 300, top: 300, color: :blue, entangled: [:width, :attached, :height] },
+b.clones([{ left: 300, top: 300, color: :blue, entangled: [:width, :fasten, :height] },
           { left: 600, top: 366, color: :green, entangled: [:left, :height] }])
 
 # duplicate([b.id])
 
 
 # Atome.new( { renderers: [:html], attach: [:view],id: :my_test_box, type: :shape, apply: [:shape_color],
-#              left: 120, top: 0, width: 100, smooth: 15, height: 100, overflow: :visible, attached: [], center: true
+#              left: 120, top: 0, width: 100, smooth: 15, height: 100, overflow: :visible, fasten: [], center: true
 #            })
 # model={shape}
 

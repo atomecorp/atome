@@ -5,7 +5,7 @@ generator.build_render(:browser_bloc)
 generator.build_render(:browser_render)
 generator.build_render(:browser_delete) do |params|
   if self.instance_variable_get('@browser_type') == :style
-    # alert "we have to remove the style and the attached class :\n #{attach.class},\n params : #{params}"
+    # alert "we have to remove the style and the fasten class :\n #{attach.class},\n params : #{params}"
     class_to_remove = self.id
     attach.each do |parent|
       grab(parent).browser_object.remove_class(class_to_remove)
@@ -57,7 +57,7 @@ end
 # do not use browser_clear
 # #
 # # generator.build_render(:browser_clear) do
-# #   @atome[:attached].each do |child_found|
+# #   @atome[:fasten].each do |child_found|
 # #     grab(child_found).browser_object&.remove
 # #   end
 # # end

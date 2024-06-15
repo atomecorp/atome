@@ -53,7 +53,7 @@ class Atome
     def activate_click_analysis
       # the condition below avoid touchdown analysis accumulation
       unless @click_analysis_active
-        # this method analyse all object under the touchdown to find the first user objet and return it's id
+        # this method analyse all object under the touchdown to find the first user object and return it's id
         @click_analysis = lambda { |native_event|
           # the instance variable below check if we can apply tool (cf:  if the atome we don't want to apply tool)
           if Universe.allow_tool_operations
@@ -65,13 +65,13 @@ class Atome
               unless atome_touched.to_s == 'html'
                 id_found = atome_touched[:id].to_s
                 atome_found = grab(id_found)
-                # alert id_found
                 # unless (atome_found && atome_found.tag[:system])
-                puts 'we have to check if operation is a creation or an alteration to inlcude or exclude the view '
-
+                puts 'we have to check if operation is a creation or an alteration to include or exclude the view '
+                # alert atome_touched
                 Universe.active_tools.each do |tool|
+                  # alert "#{tool}, #{atome_found.id}"
                   apply_tool(tool, atome_found, event)
-                end # if atome_found && !atome_found.tag[:system]
+                end # if atome_found #&& !atome_found.tag[:system]
 
                 break
               end
@@ -168,22 +168,21 @@ class Atome
       end
       tool_name = tool.to_s.sub('_tool', '')
       tools_scheme = Universe.tools[tool_name.to_sym]
-      # puts '1 - here slider treat either the target atome types or current atome'
-      # puts "2 - need to created a list instead of choosing the last atome found of it's kind"
 
       target = if tools_scheme[:target]
                  grab(atome_touched.send(tools_scheme[:target]).last)
                else
                  atome_touched
                end
-      tools_scheme[:particles]&.each do |particle_f, value_f|
-        # the condition protect system color from being altered
-        target.send(particle_f, value_f) unless method_found == :alteration && target.id == :view_color
+      # unless method_found == :alteration && (target.id == :view_color || target.id == :view)
+        unless method_found == :alteration && target.tag[:system]
+
+
+        tools_scheme[:particles]&.each do |particle_f, value_f|
+          target.send(particle_f, value_f)
+        end
+        send(method_found, current_tool, tool_actions, target, a_event)
       end
-      # unless method_found == :alteration && target.id == :view_color
-      # alert "#{method_found} : #{target.id}"
-      send(method_found, current_tool, tool_actions, target, a_event)
-      # end
 
     end
 
@@ -266,7 +265,7 @@ class Atome
     tool.instance_variable_get('@toolbox')&.each do |sub_tool_id|
       toolbox_tool = grab("#{sub_tool_id}_tool")
       toolbox_tool.deactivate_tool
-      # we delete the attached toolbox if it exist
+      # we delete the fasten toolbox if it exist
       toolbox_tool.delete({ force: true })
     end
     grab("#{tool_name}_icon").color(grab(:toolbox_style).data[:text_color])
@@ -429,9 +428,6 @@ class Atome
             else
               particle.height(139 + size / 2)
               particle.top(-139 + size)
-              # particle.top(:auto)
-              # particle.top(:bottom)
-              # particle.color(:green)
               slider_id = "particle_slider_#{particle_name}"
               slider_f = particle.slider({ orientation: :vertical,
                                            id: slider_id,
@@ -458,11 +454,9 @@ class Atome
 
                     target.send(particle_name, value.to_f / 100)
                     label_value.data(value.to_f / 100)
-                    # puts "+++++++> #{tool_scheme[:particles]} }"
                   end
                 end
               end
-              puts "2  ======> opening !!!#{particle_name}"
 
               Atome.selection.each do |atome_id_to_treat|
                 atome_found = grab(atome_id_to_treat)
@@ -482,7 +476,6 @@ class Atome
 
           end
         end
-        # tool.width(((size + margin) * (tool_scheme[:particles].length + 1)))
       end
 
     end
@@ -490,8 +483,6 @@ class Atome
       tool.depth(999)
     end
     tool.touch(true) do
-
-      # puts "==> prevent : #{tool.instance_variable_get('@prevent_action')}"
       unless tool.instance_variable_get('@prevent_action')
         # we add all specific tool actions to @tools_actions_to_exec hash
         # we set allow_tool_operations to false to ignore tool operation when clicking on a tool

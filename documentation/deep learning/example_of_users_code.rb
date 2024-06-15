@@ -6,17 +6,17 @@ b.animate(true)
 
 
 Atome.new( { renderers: [:html], attach: [:view],id: :my_test_box, type: :shape, apply: [:shape_color],
-             left: 120, top: 0, width: 100, smooth: 15, height: 100, overflow: :visible, attached: [], center: true
+             left: 120, top: 0, width: 100, smooth: 15, height: 100, overflow: :visible, fasten: [], center: true
            })
 
 
 # Here is the attach explanation and example
 # the attach method in atome is both a getter and a setter
-# attach and attached particles serve the same purpose but just in the opposite direction
+# attach and fasten particles serve the same purpose but just in the opposite direction
 # please note that atome.attach([:atome_id]) means that atome will be the parent of the atome with the id :atome_id
-# to sum up :  attach and attached are both setter and getter :
+# to sum up :  attach and fasten are both setter and getter :
 # attach will attach the current object to the IDs passed in the params. The current atome will be the child of the the atomes width IDS passed in the the params,
-# while attached is the opposite to attached it will attach IDs passed in the params to the current atome. The current atome will be the parent of of the the atomes width IDS passed in the the params
+# while fasten is the opposite to fasten it will attach IDs passed in the params to the current atome. The current atome will be the parent of of the the atomes width IDS passed in the the params
 
 # atome.attach([:atome_id]) means that atome will be the child of the atome with the id :atome_id
 # Here is how to use it as a setter :
@@ -36,20 +36,20 @@ box({ id: :my_test_box })
 wait 1 do
   b.attach([:c_12])
   # Here is how to use it as a getter :
-  # to retrieve witch atomes b315 is attached to  to the atome c_12 just type
+  # to retrieve witch atomes b315 is fasten to  to the atome c_12 just type
   puts  b.attach # => [:c_12]
-  # to retrieve atome attached to the atome c_12 just type tha other method
-  puts  c.attached #=> [:b_1]
+  # to retrieve atome fasten to the atome c_12 just type tha other method
+  puts  c.fasten #=> [:b_1]
 end
 
-# Here is the attached explanation and example :
+# Here is the fasten explanation and example :
 
-# the attached method in atome is both a getter and a setter
-# attach and attached particles serve the same purpose but just in the opposite direction
+# the fasten method in atome is both a getter and a setter
+# attach and fasten particles serve the same purpose but just in the opposite direction
 # please note that atome.attach([:atome_id]) means that atome will be the parent of the atome with the id :atome_id
-# to sum up :  attach and attached are both setter and getter :
+# to sum up :  attach and fasten are both setter and getter :
 # attach will attach the current object to the IDs passed in the params. The current atome will be the child of the the atomes width IDS passed in the the params,
-# while attached is the opposite to attached it will attach IDs passed in the params to the current atome. The current atome will be the parent of of the the atomes width IDS passed in the the params
+# while fasten is the opposite to fasten it will attach IDs passed in the params to the current atome. The current atome will be the parent of of the the atomes width IDS passed in the the params
 
 
 # Here is how to use it as a setter :
@@ -63,13 +63,13 @@ end
 c = circle({ left: 333, id: :the_circle })
 wait 2 do
   c.apply(:inactive_color)
-  b.attached([c.id])
+  b.fasten([c.id])
 
   # Here is how to use it as a getter :
-  # to retrieve witch atomes b315 is attached to  to the atome c_12 just type
+  # to retrieve witch atomes b315 is fasten to  to the atome c_12 just type
   puts  c.attach # => [:the_box]
-  # to retrieve atome attached to the atome c_12 just type tha other method
-  puts  b.attached #=> [:the_circle]
+  # to retrieve atome fasten to the atome c_12 just type tha other method
+  puts  b.fasten #=> [:the_circle]
 end
 
 
@@ -121,7 +121,7 @@ a.apply([:box_color])
 wait 2 do
   # a bit less efficient and a bit more processor intensive solution is to use the box preset, that render a box too
   b=box
-  # we can add a color atome onto the new atome my_shape. as stated before for some atome types such as color, shadows ,the relation between the two atomes won't be attach and attached but  apply and affect instead the atome color with the particle red onto the
+  # we can add a color atome onto the new atome my_shape. as stated before for some atome types such as color, shadows ,the relation between the two atomes won't be attach and fasten but  apply and affect instead the atome color with the particle red onto the
   b.color(:red)
 end
 
@@ -173,56 +173,56 @@ end
 
 
 #Atome.new(
-#   { renderers: [], id: :eDen, type: :element, tag: { system: true }, attach: [], attached: [] }
+#   { renderers: [], id: :eDen, type: :element, tag: { system: true }, attach: [], fasten: [] }
 # )
 # Atome.new(
 #   { renderers: [], id: :user_view, type: :element, tag: { system: true },
-# 	attach: [:eDen], attached: [] }
+# 	attach: [:eDen], fasten: [] }
 # )
 #
 # # color creation
 # Atome.new(
 #   { renderers: default_render, id: :view_color, type: :color, tag: ({ system: true, persistent: true }),
-# 	red: 0.15, green: 0.15, blue: 0.15, alpha: 1, top: 12, left: 12, diffusion: :linear, attach: [], attached: [] }
+# 	red: 0.15, green: 0.15, blue: 0.15, alpha: 1, top: 12, left: 12, diffusion: :linear, attach: [], fasten: [] }
 # )
 #
 # Atome.new(
 #   { renderers: default_render, id: :shape_color, type: :color, tag: ({ system: true, persistent: true }),
-# 	red: 0.4, green: 0.4, blue: 0.4, alpha: 1, attach: [], attached: [] }
+# 	red: 0.4, green: 0.4, blue: 0.4, alpha: 1, attach: [], fasten: [] }
 # )
 #
 # Atome.new(
 #   { renderers: default_render, id: :box_color, type: :color, tag: ({ system: true, persistent: true }),
-# 	red: 0.5, green: 0.5, blue: 0.5, alpha: 1, attach: [], attached: [] }
+# 	red: 0.5, green: 0.5, blue: 0.5, alpha: 1, attach: [], fasten: [] }
 # )
 #
 # Atome.new(
 #   { renderers: default_render, id: :invisible_color, type: :color, tag: ({ system: true, persistent: true }),
-# 	red: 0, green: 0, blue: 0, alpha: 1, attach: [], attached: [] }
+# 	red: 0, green: 0, blue: 0, alpha: 1, attach: [], fasten: [] }
 # )
 #
 # Atome.new(
 #   { renderers: default_render, id: :text_color, type: :color, tag: ({ system: true, persistent: true }),
-# 	red: 0.9, green: 0.9, blue: 0.9, alpha: 1, attach: [], attached: [] }
+# 	red: 0.9, green: 0.9, blue: 0.9, alpha: 1, attach: [], fasten: [] }
 # )
 #
 # Atome.new(
 #   { renderers: default_render, id: :circle_color, type: :color, tag: ({ system: true, persistent: true }),
-# 	red: 0.6, green: 0.6, blue: 0.6, alpha: 1, attach: [], attached: [] }
+# 	red: 0.6, green: 0.6, blue: 0.6, alpha: 1, attach: [], fasten: [] }
 # )
 #
 # # system object creation
 # # the black_matter is used to store un materialized atomes
 # Atome.new(
 #   { renderers: default_render, id: :black_matter, type: :shape, attach: [:user_view],apply: [],
-# 	left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, attached: []
+# 	left: 0, right: 0, top: 0, bottom: 0, width: 0, height: 0, overflow: :hidden, tag: { system: true }, fasten: []
 #   })
 #
 # # view port
 # Atome.new(
 #   { renderers: default_render, id: :view, type: :shape, attach: [:user_view], apply: [:view_color],
 # 	tag: { system: true },
-# 	attached: [], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
+# 	fasten: [], left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
 #   }
 #
 # )
@@ -230,7 +230,7 @@ end
 # # unreal port, hold system object and tools
 # Atome.new(
 #   { renderers: default_render, id: :intuition, type: :shape, attach: [:user_view], tag: { system: true },
-# 	left: 0, top: 0, width: 0, height: 0, overflow: :visible, attached: [],apply: []
+# 	left: 0, top: 0, width: 0, height: 0, overflow: :visible, fasten: [],apply: []
 #   }
 # )
 #
@@ -247,7 +247,7 @@ end
 # Universe.current_machine = machine_id
 # # the constant A is used to access alla atomes methods
 # A = Atome.new(
-#   { renderers: default_render, id: :atome, type: :element, tag: { system: true }, attach: [], attached: [] }
+#   { renderers: default_render, id: :atome, type: :element, tag: { system: true }, attach: [], fasten: [] }
 # )#
 #
 # # TODO : clones alteration must be bidirectional, to do so :
@@ -257,7 +257,7 @@ end
 #
 # b = box({ color: :red, smooth: 6, id: :the_box })
 #
-# b.clones([{ left: 300, top: 300, color: :blue, entangled: [:width, :attached, :height] },
+# b.clones([{ left: 300, top: 300, color: :blue, entangled: [:width, :fasten, :height] },
 #           { left: 600, top: 366, color: :green, entangled: [:left, :height] }])
 #
 # wait 1 do
@@ -570,8 +570,8 @@ def duplicate(ids)
 
     atome_passed=grab(id_passed)
     # atome_passed.particles.delete(:left)
-    # we remove attached
-    particle_to_remove=[:id, :broadcast, :history,:callback, :html_object, :store_allow,:attached]
+    # we remove fasten
+    particle_to_remove=[:id, :broadcast, :history,:callback, :html_object, :store_allow,:fasten]
     particles_found=atome_passed.particles.dup
     particles_found.delete_if { |key, value| particle_to_remove.include?(key) }
     particles_found[:id]=identity_generator(particles_found[:type])
@@ -601,7 +601,7 @@ c.text(:hello)
 b.touch(true) do
   puts @id
 end
-b.clones([{ left: 300, top: 300, color: :blue, entangled: [:width, :attached, :height] },
+b.clones([{ left: 300, top: 300, color: :blue, entangled: [:width, :fasten, :height] },
           { left: 600, top: 366, color: :green, entangled: [:left, :height] }])
 
 
@@ -769,7 +769,7 @@ clone = ""
 b.drag(:start) do
   b.color(:black)
   b.height(123)
-  # beware you must use grab(:view) else it'll be attached to the context, that means to 'b' in this case
+  # beware you must use grab(:view) else it'll be fasten to the context, that means to 'b' in this case
   clone = grab(:view).circle({ id: "#{b.id}_cloned",color: :white, left: b.left, top: b.top, depth: 3 })
 end
 
@@ -961,7 +961,7 @@ end
 # FIXME : on touch code above crash but works with wait
 
 
-#  here is how to setup a hierarchy within atome using a more simple way than attached and attach .simply adding atome inside another atome. here is a example to do to so : b = box({ id: :the_box })
+#  here is how to setup a hierarchy within atome using a more simple way than fasten and attach .simply adding atome inside another atome. here is a example to do to so : b = box({ id: :the_box })
 b=box
 # the line below will create a circle inside the box b
 c = b.circle({ id: :the_circle })
@@ -972,14 +972,14 @@ t.image({ path: 'medias/images/logos/atome.svg', width: 33 })
 
 # note that creating a hierarchy this way automatically
 
-# Note that when you create a hierarchy in this way, it automatically creates a relationship by populating the 'attach' and 'attached' properties. So, if you enter:
+# Note that when you create a hierarchy in this way, it automatically creates a relationship by populating the 'attach' and 'fasten' properties. So, if you enter:
 
 
-puts "b attach : #{b.attach}" # prints [:view] in the console as it is attached to the view atom
-puts "b attached :#{b.attached}" # prints [:the_circle, :the_cirle] in the console
+puts "b attach : #{b.attach}" # prints [:view] in the console as it is fasten to the view atom
+puts "b fasten :#{b.fasten}" # prints [:the_circle, :the_cirle] in the console
 
 puts "c attach: #{c.attach}" # prints [:the_box] in the console
-puts "c attached: #{c.attached}" # prints [:box_14] in the console as there's no child#
+puts "c fasten: #{c.fasten}" # prints [:box_14] in the console as there's no child#
 
 b = box({ id: :the_box })
 b.data(:canyouwritethis)
@@ -1344,7 +1344,7 @@ puts "restrict ro :view doesnt work"
 my_box=box
 # using the code line above a lot of particles will be implicitly created, if we inspect my_box
 puts my_box.inspect # this will print :
-#[Log] #<Atome: @broadcast={}, @callback={}, @tag={}, @attached=[], @unit={}, @collected={}, @id=:box_14, @type=:shape, @html=#<HTML:0x0662a164 @element=[object HTMLDivElement], @id="box_14", @original_atome=#<Atome: @broadcast={}, @callback={}, @tag={}, @attached=[], @unit={}, @collected={}, @id=:box_14, @type=:shape, @html=#<HTML:0x0662a164 ...>, @attach=[:view], @renderers=[:html], @width=99, @height=99, @apply=[:box_color], @left=100, @top=100, @clones=[], @preset={:box=>{:width=>99, :height=>99, :apply=>[:box_color], :left=>100, :top=>100, :clones=>[]}}>, @element_type="div">, @attach=[:view], @renderers=[:html], @width=99, @height=99, @apply=[:box_color], @left=100, @top=100, @clones=[], @preset={:box=>{:width=>99, :height=>99, :apply=>[:box_color], :left=>100, :top=>100, :clones=>[]}}> (browser.script.iife.min.js, line 13)
+#[Log] #<Atome: @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @id=:box_14, @type=:shape, @html=#<HTML:0x0662a164 @element=[object HTMLDivElement], @id="box_14", @original_atome=#<Atome: @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @id=:box_14, @type=:shape, @html=#<HTML:0x0662a164 ...>, @attach=[:view], @renderers=[:html], @width=99, @height=99, @apply=[:box_color], @left=100, @top=100, @clones=[], @preset={:box=>{:width=>99, :height=>99, :apply=>[:box_color], :left=>100, :top=>100, :clones=>[]}}>, @element_type="div">, @attach=[:view], @renderers=[:html], @width=99, @height=99, @apply=[:box_color], @left=100, @top=100, @clones=[], @preset={:box=>{:width=>99, :height=>99, :apply=>[:box_color], :left=>100, :top=>100, :clones=>[]}}> (browser.script.iife.min.js, line 13)
 
 # please note that an ID is automatically created using a simple strategy  id : atome_type_total_number_of_users_atomes  ex here :  @id="box_14"
 
@@ -1355,7 +1355,7 @@ puts " my_box preset is : #{my_box.preset}"
 
 c=circle
 puts  " c is : #{c.inspect }"
-# this print : [Log]  c is : #<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_16, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @attached=[], @unit={}, @collected={}, @html=#<HTML:0x06579be8 @element=[object HTMLDivElement], @id="circle_16", @original_atome=#<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_16, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @attached=[], @unit={}, @collected={}, @html=#<HTML:0x06579be8 ...>, @top=100, @attach=[:view], @left=100, @apply=[:circle_color], @clones=[], @preset={:circle=>{:width=>99, :height=>99, :smooth=>"100%", :apply=>[:circle_color], :left=>100, :top=>100, :clones=>[]}}>, @element_type="div">, @top=100, @attach=[:view], @left=100, @apply=[:circle_color], @clones=[], @preset={:circle=>{:width=>99, :height=>99, :smooth=>"100%", :apply=>[:circle_color], :left=>100, :top=>100, :clones=>[]}}> (browser.script.iife.min.js, line 13)
+# this print : [Log]  c is : #<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_16, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @html=#<HTML:0x06579be8 @element=[object HTMLDivElement], @id="circle_16", @original_atome=#<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_16, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @html=#<HTML:0x06579be8 ...>, @top=100, @attach=[:view], @left=100, @apply=[:circle_color], @clones=[], @preset={:circle=>{:width=>99, :height=>99, :smooth=>"100%", :apply=>[:circle_color], :left=>100, :top=>100, :clones=>[]}}>, @element_type="div">, @top=100, @attach=[:view], @left=100, @apply=[:circle_color], @clones=[], @preset={:circle=>{:width=>99, :height=>99, :smooth=>"100%", :apply=>[:circle_color], :left=>100, :top=>100, :clones=>[]}}> (browser.script.iife.min.js, line 13)
 # it's pôssible to alter basic preset using the particle .preset
 my_box.preset({ circle:  {type: :shape, :width=>99, :height=>99, :smooth=>"100%", color: :red, :left=>100, :top=>100, :clones=>[]}})
 puts " my_box preset is now : #{my_box.preset}"
@@ -1366,7 +1366,7 @@ my_box.touch(true) do
 
   new_circle=circle # as the preset circle has been modified tha circle is now red as specified in the updated preset
   puts  "new_circle is : #{new_circle.inspect}"
-  # this print : new_circle is : #<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_18, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @attached=[], @unit={}, @collected={}, @html=#<HTML:0x0664e99c @element=[object HTMLDivElement], @id="circle_18", @original_atome=#<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_18, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @attached=[], @unit={}, @collected={}, @html=#<HTML:0x0664e99c ...>, @top=100, @attach=[:box_14], @left=100, @apply=[:circle_18_color_1_0_0_0_0_0____], @clones=[]>, @element_type="div">, @top=100, @attach=[:box_14], @left=100, @apply=[:circle_18_color_1_0_0_0_0_0____], @clones=[]>
+  # this print : new_circle is : #<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_18, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @html=#<HTML:0x0664e99c @element=[object HTMLDivElement], @id="circle_18", @original_atome=#<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_18, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @html=#<HTML:0x0664e99c ...>, @top=100, @attach=[:box_14], @left=100, @apply=[:circle_18_color_1_0_0_0_0_0____], @clones=[]>, @element_type="div">, @top=100, @attach=[:box_14], @left=100, @apply=[:circle_18_color_1_0_0_0_0_0____], @clones=[]>
 end
 #
 
@@ -1616,7 +1616,7 @@ the_text.shadow({
 
 shape(
   { renderers: [:html], id: :my_test_box, type: :shape, apply: [:shape_color],
-    left: 120, top: 0, width: 100, smooth: 15, height: 100, overflow: :visible, attached: [], center: true
+    left: 120, top: 0, width: 100, smooth: 15, height: 100, overflow: :visible, fasten: [], center: true
   })
 
 

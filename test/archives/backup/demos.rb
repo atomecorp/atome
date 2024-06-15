@@ -31,17 +31,17 @@ demo_container.read('rubies/demos_list.rb') do |demos_found|
       atome_infos
       puts "current demo: #{demo}"
       context.clear(true)
-      # atomes_attached=context.attached
+      # atomes_fasten=context.fasten
       users_atomes = []
       Universe.atomes.each do |k, _v|
         users_atomes << k
       end
 
-      # puts "=> before > atomes attached : #{atomes_attached}"
+      # puts "=> before > atomes fasten : #{atomes_fasten}"
       # puts "==-> before > users_atomes : #{users_atomes}"
 
       # we delete/clear the prev scene
-      # atomes_attached.each do |atome_id_found|
+      # atomes_fasten.each do |atome_id_found|
       #   unless atome_id_found == :view_color
       #     atome_found=grab(atome_id_found)
       #     atome_found.delete(true) if atome_found
@@ -52,7 +52,7 @@ demo_container.read('rubies/demos_list.rb') do |demos_found|
         grab(:view).eval demo_requested
         grab(:code_container).data(demo_requested)
       end
-      # puts "=> after >atomes attached : #{atomes_attached}"
+      # puts "=> after >atomes fasten : #{atomes_fasten}"
       # puts "==-> after > users_atomes : #{users_atomes}"
 
     end

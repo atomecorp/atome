@@ -474,6 +474,7 @@ new(molecule: :application) do |params, &bloc|
 end
 
 new(molecule: :page) do |params, &bloc|
+  allow_menu = params.delete(:menu)
   if params[:id]
     id_f = params.delete(:id)
     page_name = params.delete(:name)
@@ -486,12 +487,15 @@ new(molecule: :page) do |params, &bloc|
     show(id_f)
     # puts "delete puts here: #{id_f}"
   end
-  menu_f = grab("#{@id}_menu")
-  # alert item_code.class
-  menu_f.update({ "#{@id}_menu_item_#{page_name}" => {
-    text: page_name,
-    code: item_code
-  } })
+  unless allow_menu == false
+    menu_f = grab("#{@id}_menu")
+    menu_f.update({ "#{@id}_menu_item_#{page_name}" => {
+      text: page_name,
+      code: item_code
+    } })
+    # menu_f.role([:menu])
+  end
+
   # page_title=menu_f.text({ data: page_name })
   # page_title.touch(:down) do
   #   show(id_f)
@@ -508,7 +512,7 @@ new(molecule: :show) do |page_id, &bloc|
   right_side_bar = params.delete(:right_side_bar)
   # modules = params.delete(:modules)
   basic_size = 30
-  attached.each do |page_id_found|
+  fasten.each do |page_id_found|
     page_found = grab(page_id_found)
     page_found.delete({ recursive: true }) if page_found && page_found.category.include?(:page)
   end
@@ -548,7 +552,7 @@ new(molecule: :show) do |page_id, &bloc|
     new_left_side_bar.set(left_side_bar)
   end
 
-  attached.each do |item_id_found|
+  fasten.each do |item_id_found|
     item_found = grab(item_id_found)
     if item_found&.category&.include?(:footer)
       main_page.height(:auto)
@@ -600,11 +604,16 @@ def deep_copy(obj)
   end
 end
 
+
 new(molecule: :buttons) do |params, &bloc|
+  role_f = params.delete(:role)
+  actor_f = params.delete(:actor)
   params_saf = deep_copy(params)
   context = params.delete(:attach) || :view
   id = params.delete(:id) || identity_generator
   main = grab(context).box({ id: id })
+  main.role(role_f) if role_f
+  main.actor(actor_f) if actor_f
   main.color({ blue: 0.5, red: 1, green: 1, alpha: 0 })
   main.data(params_saf)
   default = params.delete(:inactive) || {}
@@ -619,6 +628,7 @@ new(molecule: :buttons) do |params, &bloc|
   active.each_key do |part_f|
     inactive_text[part_f] = default_text[part_f]
   end
+
   disposition = default.delete(:disposition).to_sym
 
   params.each_with_index do |(item_id, part_f), index|
@@ -638,21 +648,86 @@ new(molecule: :buttons) do |params, &bloc|
     menu_item.text.each do |text_f|
       grab(text_f).set(default_text)
     end
-
     menu_item.touch(:down) do
-      menu_item.set(active)
-      menu_item.text.each do |text_f|
-        grab(text_f).set(active_text)
-      end
-      params.each_key do |menu_id|
-        unless menu_id == item_id
-          grab(menu_id).replace(inactive)
-          grab("#{menu_id}_label").replace(inactive_text)
+      unless @active_item == menu_item.id
+        menu_item.set(active)
+        menu_item.text.each do |text_f|
+          grab(text_f).set(active_text)
         end
+        params.each_key do |menu_id|
+          unless menu_id == item_id
+            grab(menu_id).replace(inactive) if grab(menu_id) # FIXME: this condition should be catch
+            # we must find why params contains some dead items
+            grab("#{menu_id}_label").replace(inactive_text) if grab("#{menu_id}_label") # FIXME: this condition
+            # should be catch, we must find why params contains some dead items
+          end
+        end
+        code_f.call if code_f
       end
-      code_f.call if code_f
+      @active_item = menu_item.id
     end
   end
   main
 
 end
+
+# new(molecule: :buttons) do |params, &bloc|
+#   params_saf = deep_copy(params)
+#   context = params.delete(:attach) || :view
+#   id = params.delete(:id) || identity_generator
+#   main = grab(context).box({ id: id })
+#   main.color({ blue: 0.5, red: 1, green: 1, alpha: 0 })
+#   main.data(params_saf)
+#   default = params.delete(:inactive) || {}
+#   default_text = default.delete(:text)
+#   active = params.delete(:active) || {}
+#   active_text = active.delete(:text)
+#   inactive = {}
+#   active.each_key do |part_f|
+#     inactive[part_f] = default[part_f]
+#   end
+#   inactive_text = {}
+#   active.each_key do |part_f|
+#     inactive_text[part_f] = default_text[part_f]
+#   end
+#   disposition = default.delete(:disposition).to_sym
+#
+#   params.each_with_index do |(item_id, part_f), index|
+#     code_f = part_f.delete(:code)
+#     menu_item = main.box({ id: item_id })
+#     text_found = part_f.delete(:text)
+#     menu_item.text({ data: text_found, id: "#{item_id}_label" })
+#     menu_item.set(part_f)
+#     if disposition == :horizontal
+#       menu_item.left = (default[:margin][:left] + default[:spacing]) * index
+#       menu_item.top = default[:margin][:top]
+#     else
+#       menu_item.top = (default[:margin][:top] + default[:spacing]) * index
+#       menu_item.left = default[:margin][:left]
+#     end
+#     menu_item.set(default)
+#     menu_item.text.each do |text_f|
+#       grab(text_f).set(default_text)
+#     end
+#     menu_item.touch(:down) do
+#       unless @active_item == menu_item.id
+#         menu_item.set(active)
+#         menu_item.text.each do |text_f|
+#           grab(text_f).set(active_text)
+#         end
+#         params.each_key do |menu_id|
+#           unless menu_id == item_id
+#             grab(menu_id).replace(inactive) if grab(menu_id) # FIXME: this condition should be catch
+#             # we must find why params contains some dead items
+#             grab("#{menu_id}_label").replace(inactive_text) if grab("#{menu_id}_label") # FIXME: this condition
+#             # should be catch, we must find why params contains some dead items
+#           end
+#         end
+#         code_f.call if code_f
+#       end
+#       @active_item = menu_item.id
+#     end
+#   end
+#   main
+#
+# end

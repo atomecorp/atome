@@ -173,3 +173,4 @@ new({ particle: :role, store: false }) do |params|
     @role << params
   end
 end
+

@@ -7,10 +7,10 @@ new({ particle: :size, category: :geometry, type: :int }) do |params|
   params = { value: params } unless params.instance_of? Hash
   params[:recursive] ||= false
   params[:reference] ||= :x
-  params[:target] ||= :self # :all resize atome + attached +distance between  to the value
+  params[:target] ||= :self # :all resize atome + fasten +distance between  to the value
   # self: resize the current atome to current value
   params[:propagate] ||= :raw # proportional atome children will be resize according
-  # to its parent , raw apply the raw value to the attached atomes
+  # to its parent , raw apply the raw value to the fasten atomes
   if params[:reference] == :x
     original_width = width
     width(params[:value])
@@ -22,7 +22,7 @@ new({ particle: :size, category: :geometry, type: :int }) do |params|
   end
 
   if params[:recursive]
-    attached.each do |atome_id|
+    fasten.each do |atome_id|
       grab(atome_id).size(params)
     end
 

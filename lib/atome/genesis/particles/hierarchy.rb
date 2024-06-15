@@ -3,7 +3,7 @@ def detach_child(child)
   return unless child.attach
 
   parent = grab(child.attach)
-  parent.attached.delete(@id)
+  parent.fasten.delete(@id)
 
 end
 
@@ -16,13 +16,13 @@ def attachment_common(child_id, parents_id, direction, &user_proc)
   parent_found = grab(parents_id)
   if direction == :attach
     if parent_found
-      parent_found.attached ||= []
-      parent_found.attached.push(@id) unless parent_found.attached.include?(@id)
+      parent_found.fasten ||= []
+      parent_found.fasten.push(@id) unless parent_found.fasten.include?(@id)
       detach_child(self)
       render(:attach, parents_id, &user_proc)
     else
       # we remove the current id  from parent
-      # grab(attach).attached.delete(@id)
+      # grab(attach).fasten.delete(@id)
     end
   else
     child_found = grab(child_id)
@@ -36,17 +36,39 @@ new({ particle: :attach, category: :hierarchy, type: :string, render: false }) d
   parents_id
 end
 
-new({ particle: :attached, category: :hierarchy, type: :string, render: false }) do |children_ids, &user_proc|
+new({ particle: :fasten, category: :hierarchy, type: :string, render: false }) do |children_ids, &user_proc|
   children_ids = [children_ids] unless children_ids.instance_of?(Array)
   parents_id = @id
   children_ids.each do |children_id|
-    attachment_common(children_id, parents_id, :attached, &user_proc)
+    attachment_common(children_id, parents_id, :fasten, &user_proc)
   end
   children_ids
 end
 
-new({ sanitizer: :attached }) do |children_ids|
+new({ sanitizer: :fasten }) do |children_ids|
   children_ids
+end
+
+new({ particle: :unfasten }) do |params|
+  params = fasten if params == :all
+  dup_params = params.dup
+  dup_params.each do |param|
+    if fasten.include?(param)
+      fasten.delete(param)
+      atome_to_unfasten = grab(param)
+      atome_to_unfasten_left = atome_to_unfasten.left
+      atome_to_unfasten_top = atome_to_unfasten.top
+      parent_top = top
+      parent_left = left
+      atome_to_unfasten.attach(:view)
+      atome_to_unfasten.left(atome_to_unfasten_left + parent_left)
+      atome_to_unfasten.top(atome_to_unfasten_top + parent_top)
+    end
+  end
+end
+
+new({ particle: :detach }) do |params|
+  grab(params).unfasten([id])
 end
 
 new({ particle: :apply, category: :hierarchy, type: :string, render: false, store: false }) do |parents_ids, &user_proc|

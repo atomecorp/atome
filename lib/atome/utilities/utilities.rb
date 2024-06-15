@@ -327,7 +327,7 @@ class Atome
     Atome.define_method("#{element}_callback") do |return_params|
       # we test if instance_variable_get("@#{element}_code") is a hash for the can se the particle value is a hash
       proc_found = if instance_variable_get("@#{element}_code").instance_of? Hash
-                     # Then we get the first item of the hash because the proc is attached to it
+                     # Then we get the first item of the hash because the proc is fasten to it
                      instance_variable_get("@#{element}_code").values.first
                      # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
                    else
@@ -460,8 +460,8 @@ class Atome
     remove({ category: attach })
     category(:atome)
     attach(grand_parent)
-    #  we delete the parent (the layout) if it no more children attached
-    if parent_found.attached.length == 0
+    #  we delete the parent (the layout) if it no more children fasten
+    if parent_found.fasten.length == 0
       parent_found.delete(true)
     end
   end

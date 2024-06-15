@@ -15,13 +15,13 @@ generator.build_render(:browser_attach) do |parents_found|
   end
 end
 
-generator.build_render(:browser_attached) do |children_found|
+generator.build_render(:browser_fasten) do |children_found|
   children_found.each do |child_id_found|
     child_found = grab(child_id_found)
     # the condition below protect in case of the child is not rendered
     if child_found.renderers.include?(:browser)
       children_browser_type = child_found.instance_variable_get('@browser_type')
-      BrowserHelper.send("browser_attached_#{children_browser_type}", child_id_found, @browser_object, @atome)
+      BrowserHelper.send("browser_fasten_#{children_browser_type}", child_id_found, @browser_object, @atome)
     end
 
   end

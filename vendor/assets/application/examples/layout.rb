@@ -6,7 +6,7 @@ b = box({ color: :red, id: :the_box, left: 3 })
   b.duplicate({ left: b.left + index * (width_found + 45), top: 0, category: :custom_category })
 end
 
-grab(:view).attached.each do |atome_found|
+grab(:view).fasten.each do |atome_found|
   grab(atome_found).selected(true)
 end
 grab(:the_box_copy_1).text(:hello)

@@ -7,7 +7,7 @@ clone = ""
 b.drag(:start) do
   b.color(:black)
   b.height(123)
-  # beware you must use grab(:view) else it'll be attached to the context, that means to 'b' in this case
+  # beware you must use grab(:view) else it'll be fasten to the context, that means to 'b' in this case
   clone = grab(:view).circle({ color: :white, left: b.left, top: b.top, depth: 3 })
 end
 
