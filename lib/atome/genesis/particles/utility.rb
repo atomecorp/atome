@@ -29,7 +29,8 @@ end
 
 # new({ particle: :broadcast })
 
-def delete_recursive(atome_id, force = false)
+
+def delete_recursive(atome_id, force=false)
   return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system]) unless force
 
   parent_id_found = grab(atome_id).attach
@@ -46,97 +47,197 @@ def delete_recursive(atome_id, force = false)
 end
 
 new({ particle: :delete, category: :utility, type: :boolean, render: false }) do |params|
+  if params == true
 
-  basic_system_object = %i[view eDen black_matter intuition copy atome
-  user_view view_color shape_color
-box_color invisible_color text_color circle_color back_selection
-text_selection nil
-]
-
-  unless basic_system_object.include?(id) || id.nil?
-   if params == true
-      # We use the tag persistent to exclude color of system object and other default colors
-      unless @tag && (@tag[:persistent] || @tag[:system])
-        # if we are on a matrix we delete cells found & group found
-        cells.delete(true)
-        group.delete(true)
-        # now we detach the atome from it's parent
-        # now we init rendering
-        render(:delete, params)
-        # the machine delete the current atome from the universe
-        id_found = @id.to_sym
-        if @attach
-          parent_found = grab(@attach)
-          parent_found.fasten.delete(id_found)
-        end
-        @affect&.each do |affected_atome|
-          affected_found = grab(affected_atome)
-          affected_found.apply.delete(id_found)
-          affected_found.refresh
-        end
-        # Universe.delete(@aid)
-      end
-    elsif params.instance_of? Hash
+    # We use the tag persistent to exclude color of system object and other default colors
+    unless @tag && (@tag[:persistent] || @tag[:system])
       # if we are on a matrix we delete cells found & group found
       cells.delete(true)
       group.delete(true)
-      if params[:recursive]
-        unless grab(@id).tag && (grab(@id).tag[:persistent] || grab(@id).tag[:system])
-          fasten.each do |atttached_atomes|
-            delete_recursive(atttached_atomes)
-          end
-          # touch(:remove)
-          # render(:delete, params)
-          # Universe.delete(@aid)
-        end
-      elsif params[:force]
+      # now we detach the atome from it's parent
+      # now we init rendering
+      render(:delete, params)
+      # the machine delete the current atome from the universe
+      id_found = @id.to_sym
+      if @attach
+        parent_found = grab(@attach)
+        parent_found.fasten.delete(id_found)
+      end
+      @affect&.each do |affected_atome|
+        affected_found = grab(affected_atome)
+        affected_found.apply.delete(id_found)
+        affected_found.refresh
+      end
+      Universe.delete(@aid)
+    end
+    # elsif params == :force
+    #   cells.delete(true)
+    #   group.delete(true)
+    #   # now we detach the atome from it's parent
+    #   # now we init rendering
+    #   render(:delete, params)
+    #   # the machine delete the current atome from the universe
+    #   id_found = @id.to_sym
+    #   if @attach
+    #     parent_found = grab(@attach)
+    #     parent_found.fasten.delete(id_found)
+    #   end
+    #   @affect&.each do |affected_atome|
+    #     affected_found = grab(affected_atome)
+    #     affected_found.apply.delete(id_found)
+    #     affected_found.refresh
+    #   end
+    #   Universe.delete(@aid)
+  elsif params.instance_of? Hash
+    # if we are on a matrix we delete cells found & group found
+    cells.delete(true)
+    group.delete(true)
+    if params[:recursive]
+      unless grab(@id).tag && (grab(@id).tag[:persistent] || grab(@id).tag[:system])
         fasten.each do |atttached_atomes|
-          # alert "fasten : #{fasten}"
-          delete_recursive(atttached_atomes, true)
+          delete_recursive(atttached_atomes)
         end
-        # touch(:remove)
-        # render(:delete, params)
-        # Universe.delete(@aid)
-
-      else
-
-        # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
-        # with id my_monitor
-        #
-        params.each do |param, value|
-          atome[param][value] = nil
-        end
+        touch(:remove)
+        render(:delete, params)
+        Universe.delete(@aid)
       end
+    elsif params[:force]
+      fasten.each do |atttached_atomes|
+        # alert "fasten : #{fasten}"
+        delete_recursive(atttached_atomes, true)
+      end
+      touch(:remove)
+      render(:delete, params)
+      # alert "Universe : #{Universe.atomes[@aid]}"
+      # alert "length = #{Universe.atomes.length}"
+      Universe.delete(@aid)
+      # alert "Universe : #{Universe.atomes.length}"
 
-    elsif Universe.atome_list.include?(params)
-      # we check if the params passed is an atome to treat it in a different way
-      puts "write code here : #{apply} , #{fasten}"
     else
-      send(params, 0) unless params == :id
-    end
-    touch(:remove)
-    drag(false)
-    drop(false)
-    on(false)
-    keyboard(false)
-    resize(:remove)
-    overflow(:remove)
-
-    render(:delete, params)
-    Universe.delete(@aid)
-
-    exclusions = %i[@history @renderers @type @tag @html]
-
-    instance_variables.each do |i_var|
-      unless exclusions.include?(i_var)
-        instance_variable_set(i_var, nil)
+      # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
+      # with id my_monitor
+      params.each do |param, value|
+        atome[param][value] = nil
       end
     end
 
-    instance_variable_set('@renderers', [])
+  elsif Universe.atome_list.include?(params)
+    # we check if the params passed is an atome to treat it in a different way
+    puts "write code here : #{apply} , #{fasten}"
+  else
+    send(params, 0) unless params == :id
   end
-
 end
+
+
+# def delete_recursive(atome_id, force = false)
+#   return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system]) unless force
+#
+#   parent_id_found = grab(atome_id).attach
+#   parent_found = grab(parent_id_found)
+#   new_array = parent_found.fasten.dup
+#   new_array.delete(atome_id)
+#   parent_found.instance_variable_set('@fasten', new_array)
+#   grab(atome_id).fasten.each do |atome_id_found|
+#     delete_recursive(atome_id_found, force)
+#   end
+#   grab(atome_id).render(:delete, { :recursive => true })
+#   grab(atome_id).touch(:remove)
+#   Universe.delete(grab(atome_id).aid)
+# end
+
+# new({ particle: :delete, category: :utility, type: :boolean, render: false }) do |params|
+#
+#   basic_system_object = %i[view eDen black_matter intuition copy atome
+#   user_view view_color shape_color
+# box_color invisible_color text_color circle_color back_selection
+# text_selection nil
+# ]
+#
+#   unless basic_system_object.include?(id) || id.nil?
+#    if params == true
+#       # We use the tag persistent to exclude color of system object and other default colors
+#       unless @tag && (@tag[:persistent] || @tag[:system])
+#         # if we are on a matrix we delete cells found & group found
+#         cells.delete(true)
+#         group.delete(true)
+#         # now we detach the atome from it's parent
+#         # now we init rendering
+#         render(:delete, params)
+#         # the machine delete the current atome from the universe
+#         id_found = @id.to_sym
+#         if @attach
+#           parent_found = grab(@attach)
+#           parent_found.fasten.delete(id_found)
+#         end
+#         @affect&.each do |affected_atome|
+#           affected_found = grab(affected_atome)
+#           affected_found.apply.delete(id_found)
+#           affected_found.refresh
+#         end
+#         # Universe.delete(@aid)
+#       end
+#     elsif params.instance_of? Hash
+#       # if we are on a matrix we delete cells found & group found
+#       cells.delete(true)
+#       group.delete(true)
+#       if params[:recursive]
+#         unless grab(@id).tag && (grab(@id).tag[:persistent] || grab(@id).tag[:system])
+#           fasten.each do |atttached_atomes|
+#             delete_recursive(atttached_atomes)
+#           end
+#           # touch(:remove)
+#           # render(:delete, params)
+#           # Universe.delete(@aid)
+#         end
+#       elsif params[:force]
+#         fasten.each do |atttached_atomes|
+#           # alert "fasten : #{fasten}"
+#           delete_recursive(atttached_atomes, true)
+#         end
+#         # touch(:remove)
+#         # render(:delete, params)
+#         # Universe.delete(@aid)
+#
+#       else
+#
+#         # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor
+#         # with id my_monitor
+#         #
+#         params.each do |param, value|
+#           atome[param][value] = nil
+#         end
+#       end
+#
+#     elsif Universe.atome_list.include?(params)
+#       # we check if the params passed is an atome to treat it in a different way
+#       puts "write code here : #{apply} , #{fasten}"
+#     else
+#       send(params, 0) unless params == :id
+#     end
+#     touch(:remove)
+#     drag(false)
+#     drop(false)
+#     on(false)
+#     keyboard(false)
+#     resize(:remove)
+#     overflow(:remove)
+#
+#     render(:delete, params)
+#     Universe.delete(@aid)
+#
+#     exclusions = %i[@history @renderers @type @tag @html]
+#
+#     instance_variables.each do |i_var|
+#       unless exclusions.include?(i_var)
+#         instance_variable_set(i_var, nil)
+#       end
+#     end
+#
+#     instance_variable_set('@renderers', [])
+#   end
+#
+# end
 
 new({ particle: :clear, category: :utility, type: :boolean })
 

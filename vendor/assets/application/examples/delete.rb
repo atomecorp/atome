@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
-b = box()
-b.text('click me')
+b = box({left: 99})
+b.text({ data: 'click me' })
+
+# wait 5 do
+#   b.delete(:left)
+#   puts 'o'
+# end
 orange=''
 b.touch(true) do
 
@@ -20,18 +25,18 @@ b.touch(true) do
     c.delete(:left)
     wait 0.5 do
       # orange.color(:pink)
+      b.delete(:left)
       c.delete(:blur)
     end
   end
 
   c.touch(:down) do
-    puts '1?'
     grab(:circling).delete({ recursive: true }) if grab(:circling)
   end
   # alert orange.apply
-  wait 4 do
-    grab(:circling).delete({ recursive: true })if grab(:circling)
-  end
+  # wait 4 do
+  #   grab(:circling).delete({ recursive: true })if grab(:circling)
+  # end
 end
 
 
