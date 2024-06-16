@@ -2,7 +2,7 @@
 
 b = box({ width: 200, height: 200, color: :white })
 
-a = b.box({ color: :red, left: 33, id: :box, shadow: {
+a = b.box({ color: :green, left: 33, id: :box, shadow: {
   id: :menu_active_shade,
   left: 9,
   top: -3,
@@ -12,5 +12,6 @@ a = b.box({ color: :red, left: 33, id: :box, shadow: {
   green: 0,
   blue: 0,
   alpha: 1 } })
-
-a.replace({ color: :red, top: 33, shadow: nil })
+wait 2 do
+  a.exchange({ color: :red, top: 33})
+end

@@ -206,10 +206,10 @@
 # require "./examples/video"
 # require "./examples/login"
 # require "./examples/scheduler"
-# require "./examples/applications"
+require "./examples/applications"
 # require "./examples/account"
 # require "./examples/tools"
-require "./examples/buttons"
+# require "./examples/buttons"
 # require "./examples/actor&role"
 # require "./examples/delete"
 # require "./examples/detach"
@@ -218,8 +218,7 @@ require "./examples/buttons"
 # require "./examples/alternate"
 
 # require "./examples/test"
-
-# require "./examples/replace"
+# require "./examples/exchange"
 
 
 # require "./examples/touch" # passed

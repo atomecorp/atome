@@ -479,34 +479,14 @@ new(molecule: :application) do |params, &bloc|
                    category: :application })
   main_app.remove(:box_color)
   main_app.instance_variable_set('@pages', {})
-  # menu = params.delete(:menu)
-  # main_app.box(menu.merge({ id: "#{id_f}_menu" })) if menu
-  # params.each do |part_f, val_f|
-  #   main_app.send(part_f, val_f)
-  # end
-  ### menu items
 
   buttons({
             id: "#{id_f}_menu",
             attach: id_f,
-            # item_1: {
-            #   text: :acceuil,
-            #   # code: menu1_code
-            # },
-            # item_2: {
-            #   text: :page_2,
-            #   # code: menu2_code
-            #
-            # },
-            # item_3: {
-            #   text: :page_3,
-            # },
-            inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 133, disposition: :horizontal,
+            inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 3, disposition: :horizontal,
                         color: :orange, margin: { left: 33, top: 12 } },
             active: { text: { color: :white, shadow: {} }, color: :blue, shadow: {} },
           })
-
-  ###
   main_app
 end
 
@@ -522,22 +502,16 @@ new(molecule: :page) do |params, &bloc|
   page_name = page_name || id_f
   item_code = lambda do
     show(id_f)
-    # puts "delete puts here: #{id_f}"
   end
   unless allow_menu == false
     menu_f = grab("#{@id}_menu")
-    menu_f.update({ "#{@id}_menu_item_#{page_name}" => {
+    menu_f.add_button({ "#{@id}_menu_item_#{page_name}" => {
       text: page_name,
       code: item_code
     } })
-    # menu_f.role([:menu])
+    actor({ "#{@id}_menu_item_#{page_name}" => :buttons })
+    menu_f.role([:button])
   end
-
-  # page_title=menu_f.text({ data: page_name })
-  # page_title.touch(:down) do
-  #   show(id_f)
-  # end
-
 end
 
 new(molecule: :show) do |page_id, &bloc|
@@ -624,8 +598,6 @@ new(molecule: :show) do |page_id, &bloc|
   end
   main_page
 end
-
-
 
 new(molecule: :buttons) do |params, &bloc|
   role_f = params.delete(:role)
