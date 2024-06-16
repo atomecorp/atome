@@ -211,13 +211,13 @@
 # require "./examples/tools"
 # require "./examples/buttons"
 # require "./examples/actor&role"
-require "./examples/delete"
-puts "bug in delete b.delete(:left) delete the atome!! "
+# require "./examples/delete"
 # require "./examples/detach"
 # require "./examples/unfasten"
 # require "./examples/attach"
 # require "./examples/alternate"
 
+require "./examples/test"
 
 # require "./examples/replace"
 

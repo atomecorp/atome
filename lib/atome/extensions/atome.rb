@@ -81,9 +81,28 @@ module ObjectExtension
   end
 
 end
+
 # atome extensions
 class Object
   include ObjectExtension
+
+
+  def deep_copy(obj)
+    # utility for buttons
+    case obj
+    when Hash
+      obj.each_with_object({}) do |(k, v), h|
+        unless k == :code # exception to avoid Proc accumulation
+          h[deep_copy(k)] = deep_copy(v)
+        end
+      end
+    when Array
+      obj.map { |e| deep_copy(e) }
+    else
+      obj.dup rescue obj
+    end
+  end
+
   def flash(msg)
     flash_box=box({width: 235, height: 112})
     flash_box.text(msg)
@@ -133,18 +152,6 @@ class Object
     Universe.atomes[aid_to_get]
   end
 
-  # def box(params = {}, &proc)
-  #   grab(:view).box(params, &proc)
-  # end
-  #
-  # # def intuition(params = {}, &proc)
-  # #   grab(:view).intuition(params, &proc)
-  # # end
-  #
-  # def circle(params = {}, &proc)
-  #   grab(:view).circle(params, &proc)
-  # end
-
   # the method below generate Atome method creation at Object level
   def atome_method_for_object(element)
     Object.define_method element do |params, &user_proc|
@@ -169,10 +176,6 @@ class Object
     end
     id
   end
-
-  # def repeater(counter, proc)
-  #   instance_exec(counter, &proc) if proc.is_a?(Proc)
-  # end
 
   def repeat_callback(params, counter)
     @repeat[params].call(counter)

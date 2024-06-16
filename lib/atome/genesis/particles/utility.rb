@@ -433,7 +433,7 @@ new({ particle: :state, category: :utility, type: :symbol })
 new({ particle: :record, category: :utility, type: :hash })
 new({ particle: :preview, category: :utility, type: :hash })
 
-new(particle: :update) do |params| #specific to buttoms meolecule for now
+new(particle: :update) do |params| # specific to buttons molecule for now
   old_data= data
   delete({recursive: true})
   new_content=old_data.merge(params)

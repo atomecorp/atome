@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-b = box({left: 99})
+b = box({left: 99, top: 99})
 b.text({ data: 'click me' })
 
 # wait 5 do
@@ -25,8 +25,7 @@ b.touch(true) do
     c.delete(:left)
     wait 0.5 do
       # orange.color(:pink)
-      b.delete(:left)
-      c.delete(:blur)
+       c.delete(:blur)
     end
   end
 
@@ -113,3 +112,4 @@ end
 # b.attach(c.id)
 # alert b
 # alert c
+

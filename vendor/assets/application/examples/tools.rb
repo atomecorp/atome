@@ -219,17 +219,11 @@ new({ tool: :crash_test }) do
   }
   inactive_code = lambda { |data|
     data[:treated].each do |atome_f|
-      # atome_f.drag(false)
-      # atome_f.color(:green)
     end
   }
 
   {
-    # activation: active_code,
     alteration: { width: 22},
-    # inactivation: inactive_code,
-    # target: :color,
-    # particles: { red: 0, green: 0.5, blue: 1, alpha: 1 }
     }
 end
 

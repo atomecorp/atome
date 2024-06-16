@@ -2,5 +2,5 @@
 
 # main add on
 def alert(val)
-  JS.eval("alert('#{val}')")
+  JS.eval("alert('#{val.to_s}')")
 end

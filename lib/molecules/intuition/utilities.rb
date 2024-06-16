@@ -1,5 +1,114 @@
 # frozen_string_literal: true
 
+class Atome
+
+  def create_new_button(button_id, position_in_menu, label, code)
+    essential_keys = [:inactive, :active]
+    buttons_style = data.select { |key, value| essential_keys.include?(key) }
+    menu_item = box({ id: button_id })
+    menu_item.text({ data: label, id: "#{button_id}_label" })
+    menu_item.code({ button_code: code })
+
+    inactive_style = buttons_style[:inactive]
+    active_style = buttons_style[:active]
+    if active_style
+      active_state_text = active_style[:text]
+      keys_to_exclude = [:margin, :spacing, :disposition, :text]
+      active_style = active_style.reject { |key, _| keys_to_exclude.include?(key) }
+    end
+
+    if inactive_style
+      inactive_state_text = inactive_style[:text]
+      margin = inactive_style[:margin]
+      spacing = inactive_style[:spacing]
+      disposition = inactive_style[:disposition]
+      keys_to_exclude = [:margin, :spacing, :disposition, :text]
+      inactive_style = inactive_style.reject { |key, _| keys_to_exclude.include?(key) }
+      menu_item.set(inactive_style)
+
+      if disposition == :horizontal
+        menu_item.left = margin[:left] + (inactive_style[:width] + spacing) * position_in_menu
+        menu_item.top = margin[:top]
+      else
+        menu_item.top = margin[:top] + (inactive_style[:height] + spacing) * position_in_menu
+        menu_item.left = margin[:left]
+      end
+
+      menu_item.text.each do |text_f|
+        grab(text_f).set(inactive_state_text)
+      end
+
+    end
+
+    menu_item.touch(:down) do
+      unless @active_item == menu_item.id
+        menu_item.set(active_style)
+        menu_item.text.each do |text_f|
+          grab(text_f).set(active_state_text)
+        end
+        fasten.each do |item_id|
+          unless button_id == item_id
+            grab(item_id).remove({ all: :shadow })
+            grab(item_id).set(inactive_style)
+            grab("#{item_id}_label").remove({ all: :shadow })
+            grab("#{item_id}_label").set(inactive_state_text)
+          end
+        end
+        code.call if code
+      end
+      @active_item = menu_item.id
+    end
+  end
+
+  def add_button(params)
+    params.each do |button_id, params|
+      label = params[:text]
+      code = params[:code]
+      # {"new_button"=>{"text"=>"button1", "code"=>#<Proc:0xafe>}}
+      index = fasten.length
+      create_new_button(button_id, index, label, code)
+    end
+    false
+  end
+
+  def resize_matrix(params)
+
+    width(params[:width])
+    height(params[:height])
+    current_matrix = self
+    real_width = current_matrix.to_px(:width)
+    real_height = current_matrix.to_px(:height)
+    spacing = current_matrix.data[:spacing]
+    matrix_cells = current_matrix.data[:matrix]
+
+    total_spacing_x = spacing * (matrix_cells.collect.length ** (0.5) + 1)
+    total_spacing_y = spacing * (matrix_cells.collect.length ** (0.5) + 1)
+
+    if real_width > real_height
+      full_size = real_width
+      available_width = full_size - total_spacing_x
+      available_height = full_size - total_spacing_y
+    else
+      full_size = real_width
+      available_width = full_size - total_spacing_x
+      available_height = full_size - total_spacing_y
+    end
+
+    box_width = available_width / matrix_cells.collect.length ** (0.5)
+    box_height = available_height / matrix_cells.collect.length ** (0.5)
+
+    matrix_cells.collect.each_with_index do |box_id, index|
+      box = grab(box_id)
+      box.width(box_width)
+      box.height(box_height)
+      box.left((box_width + spacing) * (index % matrix_cells.collect.length ** (0.5)) + spacing)
+      box.top((box_height + spacing) * (index / matrix_cells.collect.length ** (0.5)).floor + spacing)
+    end
+
+  end
+
+end
+
 new(molecule: :input) do |params, bloc|
   params[:height] ||= 15
   params[:width] ||= 222
@@ -288,80 +397,8 @@ new({ molecule: :slider }) do |params, bloc|
   slider
 
 end
-# new(molecule: :button) do |params, bloc|
-#   params[:height] ||= 25
-#   params[:width] ||= 25
-#   states = params.delete(:states) || 1
-#   new_id = params.delete(:id) || identity_generator
-#
-#   back_col = params.delete(:back)
-#   back_col ||= :grey
-#
-#   default_parent = if self.instance_of?(Atome)
-#                      id
-#                    else
-#                      :view
-#                    end
-#   attach_to = params[:attach] || default_parent
-#   renderer_found = grab(attach_to).renderers
-#   button = box(
-#     { renderers: renderer_found, id: new_id, type: :shape, color: back_col,
-#       left: 0, top: 0, data: '', attach: attach_to,
-#       smooth: 3, overflow: :hidden, tag: { system: true }
-#     })
-#   button.remove(:box_color)
-#   button.touch(:down) do
-#     button.tick(:button)
-#     bloc.call((button.tick[:button] - 1) % states)
-#
-#   end
-#
-#   params.each do |part_f, val_f|
-#     button.send(part_f, val_f)
-#   end
-#
-#   button
-# end
 
 new({ particle: :cells })
-
-class Atome
-  def resize_matrix(params)
-
-    width(params[:width])
-    height(params[:height])
-    current_matrix = self
-    real_width = current_matrix.to_px(:width)
-    real_height = current_matrix.to_px(:height)
-    spacing = current_matrix.data[:spacing]
-    matrix_cells = current_matrix.data[:matrix]
-
-    total_spacing_x = spacing * (matrix_cells.collect.length ** (0.5) + 1)
-    total_spacing_y = spacing * (matrix_cells.collect.length ** (0.5) + 1)
-
-    if real_width > real_height
-      full_size = real_width
-      available_width = full_size - total_spacing_x
-      available_height = full_size - total_spacing_y
-    else
-      full_size = real_width
-      available_width = full_size - total_spacing_x
-      available_height = full_size - total_spacing_y
-    end
-
-    box_width = available_width / matrix_cells.collect.length ** (0.5)
-    box_height = available_height / matrix_cells.collect.length ** (0.5)
-
-    matrix_cells.collect.each_with_index do |box_id, index|
-      box = grab(box_id)
-      box.width(box_width)
-      box.height(box_height)
-      box.left((box_width + spacing) * (index % matrix_cells.collect.length ** (0.5)) + spacing)
-      box.top((box_height + spacing) * (index / matrix_cells.collect.length ** (0.5)).floor + spacing)
-    end
-
-  end
-end
 
 new(molecule: :matrix) do |params, &bloc|
   params ||= {}
@@ -588,21 +625,6 @@ new(molecule: :show) do |page_id, &bloc|
   main_page
 end
 
-def deep_copy(obj)
-  # utility for buttons
-  case obj
-  when Hash
-    obj.each_with_object({}) do |(k, v), h|
-      unless k == :code # exception to avoid Proc accumulation
-        h[deep_copy(k)] = deep_copy(v)
-      end
-    end
-  when Array
-    obj.map { |e| deep_copy(e) }
-  else
-    obj.dup rescue obj
-  end
-end
 
 
 new(molecule: :buttons) do |params, &bloc|
@@ -612,12 +634,14 @@ new(molecule: :buttons) do |params, &bloc|
   context = params.delete(:attach) || :view
   id = params.delete(:id) || identity_generator
   main = grab(context).box({ id: id })
-  main.role(role_f) if role_f
+  main.role(role_f) || main.role(:buttons)
   main.actor(actor_f) if actor_f
   main.color({ blue: 0.5, red: 1, green: 1, alpha: 0 })
   main.data(params_saf)
   default = params.delete(:inactive) || {}
+  main.data[:default] = default
   default_text = default.delete(:text)
+  main.data[:default_text] = default_text
   active = params.delete(:active) || {}
   active_text = active.delete(:text)
   inactive = {}
@@ -629,105 +653,12 @@ new(molecule: :buttons) do |params, &bloc|
     inactive_text[part_f] = default_text[part_f]
   end
 
-  disposition = default.delete(:disposition).to_sym
-
   params.each_with_index do |(item_id, part_f), index|
-    code_f = part_f.delete(:code)
-    menu_item = main.box({ id: item_id })
-    text_found = part_f.delete(:text)
-    menu_item.text({ data: text_found, id: "#{item_id}_label" })
-    menu_item.set(part_f)
-    if disposition == :horizontal
-      menu_item.left = (default[:margin][:left] + default[:spacing]) * index
-      menu_item.top = default[:margin][:top]
-    else
-      menu_item.top = (default[:margin][:top] + default[:spacing]) * index
-      menu_item.left = default[:margin][:left]
-    end
-    menu_item.set(default)
-    menu_item.text.each do |text_f|
-      grab(text_f).set(default_text)
-    end
-    menu_item.touch(:down) do
-      unless @active_item == menu_item.id
-        menu_item.set(active)
-        menu_item.text.each do |text_f|
-          grab(text_f).set(active_text)
-        end
-        params.each_key do |menu_id|
-          unless menu_id == item_id
-            grab(menu_id).replace(inactive) if grab(menu_id) # FIXME: this condition should be catch
-            # we must find why params contains some dead items
-            grab("#{menu_id}_label").replace(inactive_text) if grab("#{menu_id}_label") # FIXME: this condition
-            # should be catch, we must find why params contains some dead items
-          end
-        end
-        code_f.call if code_f
-      end
-      @active_item = menu_item.id
-    end
+    label = part_f[:text]
+    code = part_f[:code]
+    main.create_new_button(item_id, index, label, code)
+
   end
   main
 
 end
-
-# new(molecule: :buttons) do |params, &bloc|
-#   params_saf = deep_copy(params)
-#   context = params.delete(:attach) || :view
-#   id = params.delete(:id) || identity_generator
-#   main = grab(context).box({ id: id })
-#   main.color({ blue: 0.5, red: 1, green: 1, alpha: 0 })
-#   main.data(params_saf)
-#   default = params.delete(:inactive) || {}
-#   default_text = default.delete(:text)
-#   active = params.delete(:active) || {}
-#   active_text = active.delete(:text)
-#   inactive = {}
-#   active.each_key do |part_f|
-#     inactive[part_f] = default[part_f]
-#   end
-#   inactive_text = {}
-#   active.each_key do |part_f|
-#     inactive_text[part_f] = default_text[part_f]
-#   end
-#   disposition = default.delete(:disposition).to_sym
-#
-#   params.each_with_index do |(item_id, part_f), index|
-#     code_f = part_f.delete(:code)
-#     menu_item = main.box({ id: item_id })
-#     text_found = part_f.delete(:text)
-#     menu_item.text({ data: text_found, id: "#{item_id}_label" })
-#     menu_item.set(part_f)
-#     if disposition == :horizontal
-#       menu_item.left = (default[:margin][:left] + default[:spacing]) * index
-#       menu_item.top = default[:margin][:top]
-#     else
-#       menu_item.top = (default[:margin][:top] + default[:spacing]) * index
-#       menu_item.left = default[:margin][:left]
-#     end
-#     menu_item.set(default)
-#     menu_item.text.each do |text_f|
-#       grab(text_f).set(default_text)
-#     end
-#     menu_item.touch(:down) do
-#       unless @active_item == menu_item.id
-#         menu_item.set(active)
-#         menu_item.text.each do |text_f|
-#           grab(text_f).set(active_text)
-#         end
-#         params.each_key do |menu_id|
-#           unless menu_id == item_id
-#             grab(menu_id).replace(inactive) if grab(menu_id) # FIXME: this condition should be catch
-#             # we must find why params contains some dead items
-#             grab("#{menu_id}_label").replace(inactive_text) if grab("#{menu_id}_label") # FIXME: this condition
-#             # should be catch, we must find why params contains some dead items
-#           end
-#         end
-#         code_f.call if code_f
-#       end
-#       @active_item = menu_item.id
-#     end
-#   end
-#   main
-#
-# end
