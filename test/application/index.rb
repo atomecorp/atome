@@ -209,7 +209,7 @@
 # require "./examples/applications"
 # require "./examples/account"
 # require "./examples/tools"
-# require "./examples/buttons"
+require "./examples/buttons"
 # require "./examples/actor&role"
 # require "./examples/delete"
 # require "./examples/detach"
@@ -217,7 +217,7 @@
 # require "./examples/attach"
 # require "./examples/alternate"
 
-require "./examples/test"
+# require "./examples/test"
 
 # require "./examples/replace"
 
