@@ -41,4 +41,8 @@ c.touch(:down) do
 end
 
 
+wait 2 do
+  grab(:menu1).remove_menu_item(:item_2)
+end
+
 # TODO: remove menu_item ,reset_menu, reorder, delete

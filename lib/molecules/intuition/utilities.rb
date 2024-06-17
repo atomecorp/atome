@@ -1,10 +1,31 @@
 # frozen_string_literal: true
 
 class Atome
-
+  def reorder_menu
+    disposition= data[:inactive][:disposition]
+    margin = data[:inactive][:margin]
+    spacing = data[:inactive][:spacing]
+    inactive_style = data[:inactive]
+    keys_to_exclude = [:margin, :spacing, :disposition, :text]
+    inactive_style = inactive_style.reject { |key, _| keys_to_exclude.include?(key) }
+    fasten.each_with_index do |atome_f, index|
+      menu_item=grab(atome_f)
+      if disposition == :horizontal
+        menu_item.left = margin[:left] + (inactive_style[:width] + spacing) * index
+        menu_item.top = margin[:top]
+      else
+        menu_item.top = margin[:top] + (inactive_style[:height] + spacing) * index
+        menu_item.left = margin[:left]
+      end
+    end
+  end
+  def remove_menu_item(item_to_remove)
+    grab(item_to_remove).delete(recursive: true)
+    reorder_menu
+  end
   def create_new_button(button_id, position_in_menu, label, code)
     essential_keys = [:inactive, :active]
-    buttons_style = data.select { |key, value| essential_keys.include?(key) }
+    buttons_style = data.select { |key, _value| essential_keys.include?(key) }
     menu_item = box({ id: button_id })
     actor({ button_id => :button })
     menu_item.role(:button)
@@ -28,6 +49,7 @@ class Atome
       inactive_style = inactive_style.reject { |key, _| keys_to_exclude.include?(key) }
       menu_item.set(inactive_style)
 
+      # reorder_menu
       if disposition == :horizontal
         menu_item.left = margin[:left] + (inactive_style[:width] + spacing) * position_in_menu
         menu_item.top = margin[:top]
@@ -61,7 +83,6 @@ class Atome
       @active_item = menu_item.id
     end
   end
-
   def add_button(params)
     params.each do |button_id, params|
       label = params[:text]
@@ -71,9 +92,7 @@ class Atome
     end
     false
   end
-
   def resize_matrix(params)
-
     width(params[:width])
     height(params[:height])
     current_matrix = self
@@ -107,14 +126,12 @@ class Atome
     end
 
   end
-
 end
 
 new(molecule: :input) do |params, bloc|
   params[:height] ||= 15
   params[:width] ||= 222
   new_id = params.delete(:id) || identity_generator
-
   trigger = params.delete(:trigger)
   trigger ||= :return
   limit = params.delete(:limit)
@@ -125,8 +142,6 @@ new(molecule: :input) do |params, bloc|
   text_params ||= {}
   default_text = params.delete(:default)
   component = params.delete(:component)
-  # component ||= {}
-
   default_text ||= :input
   default_parent = if self.instance_of?(Atome)
                      id
@@ -147,7 +162,6 @@ new(molecule: :input) do |params, bloc|
       position: :absolute
     }.merge(text_params)
   )
-  # text_input.set()
   text_input.touch(:down) do
     input_back.tick(:input)
     text_input.edit(true)
@@ -158,8 +172,6 @@ new(molecule: :input) do |params, bloc|
   end
 
   text_input.keyboard(:down) do |native_event|
-    # text_input.component({ selected: { color: :red, text: :red } })
-
     event = Native(native_event)
     if event[:keyCode].to_s == '8' || event[:keyCode].to_s == '46'
       # always allow
@@ -186,13 +198,11 @@ new(molecule: :input) do |params, bloc|
 end
 
 new(molecule: :list) do |params, _bloc|
-
   styles_found = params.delete(:styles)
   element = params.delete(:element)
   listing = params.delete(:listing)
   action = params.delete(:action)
   new_id = params.delete(:id) || identity_generator
-
   styles_found ||= {
     width: 99,
     height: 33,
@@ -584,8 +594,8 @@ new(molecule: :buttons) do |params, &bloc|
   actor_f = params.delete(:actor)
   params_saf = deep_copy(params)
   context = params.delete(:attach) || :view
-  id = params.delete(:id) || identity_generator
-  main = grab(context).box({ id: id })
+  id_f = params.delete(:id) || identity_generator
+  main = grab(context).box({ id: id_f })
   main.role(role_f) || main.role(:buttons)
   main.actor(actor_f) if actor_f
   main.color({ blue: 0.5, red: 1, green: 1, alpha: 0 })
