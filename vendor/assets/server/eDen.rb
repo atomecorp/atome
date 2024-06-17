@@ -33,11 +33,6 @@ class EDen
       { data: { message: `#{data}` }, message_id: message_id }
     end
 
-    # def sanitize_email(email)
-    #   invalid_chars_pattern = /[^a-zA-Z0-9.-@]+/
-    #   email.gsub(invalid_chars_pattern, '')
-    # end
-
     def metadata(msg, pid, message_id, ws)
 
       path = msg[:output_file]
@@ -58,7 +53,6 @@ class EDen
         custom_data = data.to_json
         comment_metadata = "-metadata comment=#{custom_data.shellescape}"
 
-        # input_file = path
         temp_output_file = "./temp_#{File.basename(path)}"
         ffmpeg_cmd = "ffmpeg -i #{path.shellescape} #{comment_metadata} -codec copy #{temp_output_file.shellescape}"
 
@@ -77,19 +71,11 @@ class EDen
 
     def finished(msg, pid, message_id, ws)
 
-      path = msg[:output_file]
-      # metadata = msg[:metadata]
 
-      # custom_data = metadata.to_json
-      # comment_metadata = "-metadata comment=#{custom_data.shellescape}"
-
-      input_file = path
-      # temp_output_file = "./temp_#{File.basename(input_file)}"
-
-      ##### write tag
+      # write tag
       metadata(msg, pid, message_id, ws)
 
-      ##### read tag
+      # read tag
       msg[:read] = true
       metadata(msg, pid, message_id, ws)
 
@@ -102,7 +88,6 @@ class EDen
         begin
           Process.getpgid(pid) # Vérifier si le processus est toujours actif
           Process.kill("SIGINT", pid)
-          # puts "Recording stopped.#{pid} : #{pid.class}"
         rescue Errno::ESRCH # Le processus n'existe pas
           puts "Recording already stopped or PID not found."
         end
@@ -133,7 +118,6 @@ class EDen
         stdin, stdout, stderr, wait_thr = Open3.popen3(command)
         pid = wait_thr.pid # Sauvegarder le PID du processus ffmpeg
         msg = { output_file: output_file, media: :audio, record: :stop, data: data }
-        # puts "pid class : #{pid.class}"
         Thread.new { wait_thr.join; finished(msg, pid, message_id, ws) }
       elsif media == 'video'
         resolution = "1280x720"
@@ -148,8 +132,7 @@ class EDen
         msg = { output_file: output_file, media: :video, record: :stop, data: data }
         Thread.new { wait_thr.join; finished(msg, pid, message_id, ws) }
       else
-        # nothing here
-
+        #
       end
 
       { pid: pid, return: "path : #{path} record : #{media} received : duration #{duration} : name: #{name}, pid: #{pid}", message_id: message_id }
@@ -172,53 +155,14 @@ class EDen
       end
     end
 
-    #
-    # def authorization(data, message_id, ws)
-    #   # database connexion :
-    #   db = db_access
-    #   # retrieving data from the 'security' table
-    #   security_items = db[:user]
-    #   # retrieving sent data
-    #   user_password = data["particles"]["password"]
-    #   # database search
-    #   user_exists = security_items.where(password: user_password).first
-    #
-    #   if !user_exists
-    #     puts "no user or  password lost"
-    #     @@mail = nil
-    #     puts "authorization @@mail du else : #{@@mail}"
-    #     return { return: 'Password recu', message_id: message_id }
-    #   else
-    #     puts "user_exists : #{user_exists}"
-    #     @@pass = user_password
-    #     puts "authorization @@pass : #{@@pass}"
-    #     puts "authorization @@mail du else : #{@@mail}"
-    #     if @@mail && @@pass
-    #       puts "authorization @@pass v2 : #{@@pass}"
-    #       puts "authorization @@mail du else v2 : #{@@mail}"
-    #       # reset variables containing mail and password
-    #       @@mail = nil
-    #       @@pass = nil
-    #       # return { return: 'Password trouvé, cherche mdp', password_authorized: false, message_id: message_id }
-    #       return { return: 'logged', password_authorized: true, user_id: user_exists[:user_id], message_id: message_id }
-    #       # Send the user account template
-    #     else
-    #       return { return: 'Password trouvé, cherche mdp', password_authorized: false, message_id: message_id }
-    #     end
-    #   end
-    # end
 
     def localstorage(data, message_id, ws)
-      # return test
-      # ws.send(return_message.to_json)
-      return { return: 'localstorage content received', authorized: true, message_id: message_id }
+       { return: 'localstorage content received', authorized: true, message_id: message_id }
 
     end
 
     def historicize(data, message_id, ws)
-      # return test
-      # ws.send(return_message.to_json)
-      return { return: 'item to historicize  received', authorized: true, message_id: message_id }
+       { return: 'item to historicize  received', authorized: true, message_id: message_id }
 
     end
 
@@ -232,7 +176,6 @@ class EDen
     def create_db_table(data, message_id, ws)
       table = data['table']
       type = data['type']
-      primary = data['primary']
       Database.create_table(table, type)
       { data: { message: "table #{table} added" }, message_id: message_id }
     end
@@ -252,24 +195,6 @@ class EDen
     end
 
     def account_creation(data, message_id, ws)
-
-      # imap = Net::IMAP.new('imap.ionos.fr', 993, true)
-      # imap.login('jeezs@jeezs.net', 'Rhezurhect1on!')
-      # imap.select('INBOX')
-
-      # # Cherche les emails non lus
-      # imap.search(["UNSEEN"]).each do |message_id|
-      #   # Récupère l'email
-      #   envelope = imap.fetch(message_id, "ENVELOPE")[0].attr["ENVELOPE"]
-      #   puts "From: #{envelope.from[0].name}"
-      #   puts "Subject: #{envelope.subject}"
-      #
-      #   # Marque l'email comme lu
-      #   imap.store(message_id, "+FLAGS", [:Seen])
-      # end
-      #
-      # imap.logout
-      # imap.disconnect
        { data: { message: "envoi de validation a #{data['email']}" }, message_id: message_id }
     end
 

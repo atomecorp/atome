@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 class Atome
   def animation_callback(proc_sub_category, value=nil)
-    # puts  "#{p◊roc_sub_category}"
     proc_found = @animate_code[proc_sub_category]
-    # puts proc_found
     instance_exec(value,&proc_found) if proc_found.is_a?(Proc)
   end
 end
@@ -371,9 +369,3 @@ end
 new({ after: :animate }) do |params|
   html.animate(params) unless params[:end] || params[:start]
 end
-
-
-# new({ particle: :repeat, category: :event, type: :boolean })
-# # new({ particle: :sort }) do |_value, sort_proc|
-# #   @sort_proc = sort_proc
-# # end

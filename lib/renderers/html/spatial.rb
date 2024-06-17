@@ -26,15 +26,6 @@ new({ method: :top, type: :integer, renderer: :html, specific: :shadow }) do
   affect(affect)
 end
 
-# new({ method: :top, type: :integer, renderer: :html, specific: :text }) do |params|
-#   unit = @unit[:left] || :px
-#   html.style(:top,  "#{params}#{unit}"
-# end
-#
-# new({ method: :bottom, type: :integer, renderer: :html, specific: :text }) do |params|
-#   html.style(:bottom,  "#{params}#{unit}")
-# end
-
 new({ method: :left, type: :integer, specific: :color, renderer: :html })
 
 new({ method: :left, type: :integer, renderer: :html, specific: :shadow }) do

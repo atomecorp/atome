@@ -7,10 +7,6 @@ def detach_child(child)
 
 end
 
-# def detach_from_parent(parent_found, child_found)
-#   child_found.attach(parent_found.id)
-# end
-
 def attachment_common(child_id, parents_id, direction, &user_proc)
 
   parent_found = grab(parents_id)
@@ -20,9 +16,6 @@ def attachment_common(child_id, parents_id, direction, &user_proc)
       parent_found.fasten.push(@id) unless parent_found.fasten.include?(@id)
       detach_child(self)
       render(:attach, parents_id, &user_proc)
-    else
-      # we remove the current id  from parent
-      # grab(attach).fasten.delete(@id)
     end
   else
     child_found = grab(child_id)
@@ -110,31 +103,4 @@ new({ particle: :affect, category: :hierarchy, type: :string, render: false }) d
   children_ids
 end
 
-# new({ particle: :detached, category: :hierarchy, type: :string, store: false }) # unfastened
-# new({ sanitizer: :detached }) do |values|
-#   # unfastened
-#   if values.innew({ particle: :detached, category: :hierarchy, type: :string, store: false }) # unfastened
-# # new({ sanitizer: :detached }) do |values|
-# #   # unfastened
-# #   if values.instance_of? Array
-# #     values.each do |value|
-# #       detach_atome(value)
-# #     end
-# #   else
-# #     detach_atome(values)
-# #     # we sanitize the values so it always return an array to the renderer
-# #     values = [values]
-# #   end
-# #   values
-# # endstance_of? Array
-#     values.each do |value|
-#       detach_atome(value)
-#     end
-#   else
-#     detach_atome(values)
-#     # we sanitize the values so it always return an array to the renderer
-#     values = [values]
-#   end
-#   values
-# end
 new({ particle: :collect, category: :hierarchy, type: :string })

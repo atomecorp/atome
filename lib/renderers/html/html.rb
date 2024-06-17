@@ -4,10 +4,6 @@
 
 class HTML
 
-  # def id
-  #   :poil
-  # end
-
   def self.locate(selector, base_element = JS.global[:document][:body])
     return base_element if selector.empty?
 
@@ -16,17 +12,19 @@ class HTML
     elsif selector.has_key?(:parent)
       parent = base_element.querySelector("##{selector[:parent]}")
       return nil if parent.nil?
+
       parent.querySelectorAll("*").to_a
     elsif selector.has_key?(:html)
       html_element = selector[:html]
       return nil if html_element.nil?
+
       html_element.querySelectorAll("*").to_a
     end
   end
 
   def initialize(id_found, current_atome)
 
-    @element ||= JS.global[:document].getElementById(id_found.to_s)
+    @element = JS.global[:document].getElementById(id_found.to_s)
     @id = id_found
     @original_atome = current_atome
     @touch_removed = {}
@@ -220,10 +218,7 @@ class HTML
     end
 
     particles_found = particles_found.merge(particles_from_style)
-    current_atome = grab(@id)
     usr_bloc.call(particles_found)
-    # current_atome.callback({ hyperedit: particles_found })
-    # current_atome.call(:hyperedit)
 
   end
 
@@ -235,16 +230,9 @@ class HTML
   def connect(params, &bloc)
     type = params[:type]
     server = params[:address]
-    # user=params[:user]
-    # pass=params[:pass]
-    # atomes=params[:atomes]
-    # particles=params[:particles]
-    # 'atomeJS.connect' is in the communication.js file ( connect: function (type, server, )
+
     JS.eval("atomeJS.connect('#{type}','#{server}')")
 
-    # @websocket =  JS.new(JS.global.WebSocket.new("#{type}://#{server}"))
-
-    # JS.eval("atomeJS.connect('ws://#{server}')")
   end
 
   def transform_to_string_keys_and_values(hash)
@@ -314,28 +302,6 @@ class HTML
     JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     id(id)
-    ####
-
-    # editable_pres = JS.global[:document].querySelectorAll('pre[contenteditable="true"]')
-    # editable_pres_array = Array.new(editable_pres[:length].to_i) { |i| editable_pres.call(:item, i) }
-    # editable_pres_array.each do |pre|
-    #   pre.addEventListener('input') do
-    #     if pre[:innerText].strip == ''
-    #       pre[:innerHTML] = '&#8203;' # Insère un caractère d'espace insécable
-    #     end
-    #   end
-    # end
-
-    # editable_pres = JS.global[:document].querySelectorAll('pre[contenteditable="true"]')
-    #
-    # editable_pres_array = Array.new(editable_pres[:length].to_i) { |i| editable_pres.call(:item, i) }
-    # editable_pres_array.each do |pre|
-    #   pre.addEventListener('click') do
-    #     pre.focus()
-    #     pre[:style][:caretColor] = 'blue' # Changez la couleur du curseur en bleu
-    #   end
-    # end
-    ###
     self
   end
 
@@ -407,8 +373,6 @@ class HTML
     JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     @element.setAttribute('src', 'https://www.youtube.com/embed/lLeQZ8Llkso?si=MMsGBEXELy9yBl9R')
-    # below we get image to feed width and height if needed
-    # image = JS.global[:Image].new
     self.id(id)
     self
   end
@@ -439,8 +403,6 @@ class HTML
   end
 
   def svg_data(all_datas)
-    # we remove previous datas
-    # @element.innerHTML = ''
     all_datas.each do |full_data|
       full_data.each do |type_passed, datas|
 
@@ -517,7 +479,6 @@ class HTML
   def path(objet_path)
     @element.setAttribute('src', objet_path)
     # below we get image to feed width and height if needed
-    # image = JS.global[:Image].new
     @element[:src] = objet_path
     @element[:onload] = lambda do |_event|
       @element[:width]
@@ -635,10 +596,6 @@ class HTML
     self
   end
 
-  # def visible(param)
-  #   @element[:style][:display] = param.to_s
-  # end
-
   def delete(id_to_delete)
     element_to_delete = JS.global[:document].getElementById(id_to_delete.to_s)
     element_to_delete.remove if element_to_delete
@@ -662,7 +619,6 @@ class HTML
       mql = JS.global[:window].matchMedia(media_query)
 
       event_handler = ->(event) do
-        # bloc.call({ matches: event[:matches] }) if bloc.is_a? Proc
         proc_content = bloc.call({ matches: event[:matches] }) if event_validation(bloc)
         if proc_content.instance_of? Hash
           proc_content.each do |k, v|
@@ -678,7 +634,6 @@ class HTML
       event_handler = ->(event) do
         width = JS.global[:window][:innerWidth]
         height = JS.global[:window][:innerHeight]
-        # bloc.call({ width: width, height: height }) if bloc.is_a? Proc
         proc_content = bloc.call({ width: width, height: height }) if event_validation(bloc)
         if proc_content.instance_of? Hash
           proc_content.each do |k, v|
@@ -687,18 +642,9 @@ class HTML
         end
       end
 
-      # proc_content = @drag_move.call(event) if event_validation(@drag_move)
-      # if proc_content.instance_of? Hash
-      #   proc_content.each do |k, v|
-      #     @original_atome.send(k, v)
-      #   end
-      # end
-      # puts event_handler.class
       JS.global[:window].addEventListener('resize', event_handler)
-      # JS.global[:window].addEventListener('resize', event_handler)
     else
       event_handler = ->(event) do
-        # bloc.call(event) if bloc.is_a? Proc
         proc_content = bloc.call(event) if event_validation(bloc)
         if proc_content.instance_of? Hash
           proc_content.each do |k, v|
@@ -719,7 +665,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @keyboard_press.call(event) if @keyboard_press.is_a?(Proc)
       proc_content = @keyboard_press.call(event) if event_validation(@keyboard_press)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -737,7 +682,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @keyboard_down.call(event) if @keyboard_down.is_a?(Proc)
       proc_content = @keyboard_down.call(event) if event_validation(@keyboard_down)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -755,7 +699,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @keyboard_up.call(event) if @keyboard_up.is_a?(Proc)
       proc_content = @keyboard_up.call(event) if event_validation(@keyboard_up)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -830,7 +773,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @drag_start.call(event) if event_validation(@drag_start)
       proc_content = @drag_start.call(event) if event_validation(@drag_start)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -848,7 +790,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @drag_end.call(event) if event_validation(@drag_end)
       proc_content = @drag_end.call(event) if event_validation(@drag_end)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -877,7 +818,6 @@ class HTML
           # we use .call instead of instance_eval because instance_eval bring the current object as context
           # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
           # group etc..
-          # @drag_move.call(event) if event_validation(@drag_move)
           proc_content = @drag_move.call(event) if event_validation(@drag_move)
           if proc_content.instance_of? Hash
             proc_content.each do |k, v|
@@ -947,7 +887,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @drag_move.call(event) if event_validation(@drag_move)
       proc_content = @drag_move.call(event) if event_validation(@drag_move)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -980,7 +919,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @drag_lock.call(event) if event_validation(@drag_lock)
       proc_content = @drag_lock.call(event) if event_validation(@drag_lock)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -997,7 +935,6 @@ class HTML
     # we use .call instead of instance_eval because instance_eval bring the current object as context
     # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
     # group etc..
-    # bloc.call({ source: draggable_element, destination: dropzone_element }) if event_validation(bloc)
     proc_content = bloc.call({ source: draggable_element, destination: dropzone_element }) if event_validation(bloc)
     if proc_content.instance_of? Hash
       proc_content.each do |k, v|
@@ -1014,16 +951,7 @@ class HTML
                         accept: nil, # Accept any element
                         overlap: 0.75,
                         ondropactivate: lambda do |native_event|
-                          event = Native(native_event)
-
                           drop_action(native_event, @drop_activate) if event_validation(@drop_activate)
-                          # @drag_lock.call(event) if event_validation(@drag_lock)
-                          # proc_content = @drop_activate.call(event) if event_validation(@drop_activate)
-                          # if proc_content.instance_of? Hash
-                          #   proc_content.each do |k, v|
-                          #     @original_atome.send(k, v)
-                          #   end
-                          # end
                         end
                       })
   end
@@ -1033,7 +961,6 @@ class HTML
     @drop_deactivate = @original_atome.instance_variable_get('@drop_code')[:deactivate]
     interact.dropzone({
                         # accept: nil, # Accept any element
-                        # overlap: 0.75,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
                         ondropdeactivate: lambda do |native_event|
                           drop_action(native_event, @drop_deactivate) if event_validation(@drop_deactivate)
@@ -1060,7 +987,6 @@ class HTML
     @drop_enter = @original_atome.instance_variable_get('@drop_code')[:enter]
 
     interact.dropzone({
-                        # accept: nil,
                         overlap: 0.001,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
                         ondragenter: lambda do |native_event|
@@ -1074,8 +1000,6 @@ class HTML
     @drop_leave = @original_atome.instance_variable_get('@drop_code')[:leave]
 
     interact.dropzone({
-                        # accept: nil,
-                        # overlap: 0.75,
                         # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
                         ondragleave: lambda do |native_event|
                           drop_action(native_event, @drop_leave) if event_validation(@drop_enter)
@@ -1098,7 +1022,6 @@ class HTML
       @drop_leave = ''
     else
       # to remove all interact event ( touch, drag, scale, ... uncomment below)
-      # interact = JS.eval("return interact('##{@id}')")
       # interact.unset
       @drop_activate = ''
       @drop_deactivate = ''
@@ -1165,7 +1088,6 @@ class HTML
     style(:overflow, params)
     @overflow = @original_atome.instance_variable_get('@overflow_code')[:overflow]
     @element.addEventListener('scroll', lambda do |native_event|
-      # event = Native(native_event)
       scroll_top = @element[:scrollTop].to_i
       scroll_left = @element[:scrollLeft].to_i
       # we use .call instead of instance_eval because instance_eval bring the current object as context
@@ -1191,7 +1113,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @over_over.call(event) if event_validation(@over_over)
 
       proc_content = @over_over.call(event) if event_validation(@over_over)
       if proc_content.instance_of? Hash
@@ -1210,7 +1131,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @over_enter.call(event) if event_validation(@over_enter)
       proc_content = @over_enter.call(event) if event_validation(@over_enter)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -1232,7 +1152,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @over_leave.call(event) if event_validation(@over_leave)
       proc_content = @over_leave.call(event) if event_validation(@over_leave)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -1284,8 +1203,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @touch_down.call(event) if @touch_down.is_a?(Proc)  && (!Universe.edit_mode || @original_atome.tag[:system])
-      # @touch_down.call(event) if event_validation(@touch_down)
       proc_content = @touch_down.call(event) if event_validation(@touch_down)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -1308,11 +1225,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @touch_up.call(event) if @touch_up.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
-      # event = Native(native_event)
-      # ########## old code :
-      # @touch_tap.call(event) if event_validation(@touch_tap)
-      # ########## new code:
       proc_content = @touch_tap.call(event) if event_validation(@touch_tap)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -1334,8 +1246,6 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @touch_up.call(event) if @touch_up.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
-      # @touch_up.call(event) if event_validation(@touch_up)
       proc_content = @touch_up.call(event) if event_validation(@touch_up)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
@@ -1355,15 +1265,12 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @touch_double.call(event) if @touch_double.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
-      # @touch_double.call(event) if event_validation(@touch_double)
       proc_content = @touch_double.call(event) if event_validation(@touch_double)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
           @original_atome.send(k, v)
         end
       end
-      # end
     end
 
   end
@@ -1378,18 +1285,13 @@ class HTML
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      # @touch_long.call(event) if event_validation(@touch_long)
       proc_content = @touch_long.call(event) if event_validation(@touch_long)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
           @original_atome.send(k, v)
         end
       end
-      # @touch_long.call(event) if @touch_long.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
-      # @touch_double.call(event) if event_validation(@touch_double)
-
     end
-    # end
   end
 
   def touch_remove(option)
@@ -1419,20 +1321,12 @@ class HTML
       @touch_removed[:up] = true
       @touch_up = ''
     else
-      # interact = JS.eval("return interact('##{@id}')")
-      # interact.unset
       touch_remove(:double)
       touch_remove(:down)
       touch_remove(:long)
       touch_remove(:tap)
       touch_remove(:touch)
       touch_remove(:up)
-
-      # @element.removeEventListener('touchstart', onTouchStart);
-      # @element.removeEventListener('touchmove', onTouchMove);
-      # @element.removeEventListener('touchend', onTouchEnd);
-      # console.log("Touch events removed");
-      # @original_atome.instance_variable_set('@touch_code', nil)
     end
 
   end
@@ -1529,7 +1423,7 @@ class HTML
 
     table_html.appendChild(thead)
     tbody = JS.global[:document].createElement('tbody')
-    data.each_with_index do |row, row_index|
+    data.each_with_index do |row, _row_index|
       tr = JS.global[:document].createElement('tr')
 
       max_length.times do |cell_index|
@@ -1608,21 +1502,7 @@ class HTML
   def set_td_style(td)
     cell_height = @original_atome.component[:height]
     cell_width = @original_atome.component[:width]
-    # shadow_found = @original_atome.component[:shadow]
-    # if shadow_found
-    #   red = shadow_found[:red] * 255
-    #   green = shadow_found[:green] * 255
-    #   blue = shadow_found[:blue] * 255
-    #   alpha = shadow_found[:alpha]
-    #   left = shadow_found[:left]
-    #   top = shadow_found[:top]
-    #   blur = shadow_found[:blur] # new correct behavior all atome's value should now be get using :value,here to resolve conflict  with blur and back blur
-    #   inset = :inset if shadow_found[:invert]
-    #   shadow_created = "#{left}px #{top}px #{blur}px rgba(#{red}, #{green}, #{blue}, #{alpha}) #{inset}"
-    # end
-    # td[:style][:border] = '1px solid black'
     td[:style][:backgroundColor] = 'white'
-    # td[:style][:boxShadow] = shadow_created
     td[:style][:width] = "#{cell_width}px"
     td[:style]['min-width'] = "#{cell_width}px"
     td[:style]['max-width'] = "#{cell_height}px"
@@ -1704,9 +1584,7 @@ class HTML
     end
     rows = table_element.querySelectorAll('tr').to_a
     rows.each_with_index do |row, index|
-      if index == 0
-        # case1
-      else
+      unless index == 0
         new_cell = JS.global[:document].createElement('td')
         new_cell[:innerText] = ''
         set_td_style(new_cell)
@@ -1740,7 +1618,6 @@ class HTML
   end
 
   def remove(params)
-    # puts "remove => #{params}"
     # TODO: FIXME:  "html : must create a case here  #{params} (#{@original_atome.id})"
     case params
     when Hash
@@ -1759,7 +1636,7 @@ class HTML
 
           if row_index >= rows.length
             puts "row not found : #{row_index}"
-            return
+            true
           end
           row_to_remove = rows[row_index]
 
@@ -1774,7 +1651,7 @@ class HTML
 
           if table_element.nil?
             puts 'Table not found'
-            return
+            true
           end
 
           rows = table_element.querySelectorAll('tbody tr').to_a
@@ -1789,13 +1666,14 @@ class HTML
           case v
           when :paint
             style(:background, 'none')
-            # style('box-shadow', 'none')
-            # style('text-shadow', 'none')
           when :color
+            #
           when :shadow
             style('box-shadow', 'none')
             style('text-shadow', 'none')
             style("filter", 'none')
+          else
+            #
           end
         end
       end
@@ -1813,13 +1691,14 @@ class HTML
 
   def table_remove(params)
     if params[:row]
+      #
     elsif params[:column]
+      #
     end
   end
 
   # atomisation!
   def atomized(html_object)
-    # html_object = html_object[0] if html_object.instance_of? Array
     @element = html_object
   end
 

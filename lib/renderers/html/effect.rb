@@ -28,7 +28,6 @@ new({ renderer: :html, method: :blur, type: :integer }) do |params, _user_proc|
     end
   end
 
-
 new({ renderer: :html, method: :blur, type: :integer, specific: :shadow }) do |params, _user_proc|
   if params[:affect] == :back
     html.backdropFilter(:blur, "#{params[:value]}px")
@@ -39,13 +38,3 @@ new({ renderer: :html, method: :blur, type: :integer, specific: :shadow }) do |p
    affect(affect)
 end
 
-# new({ particle: :blur, category: :effect, type: :int , specific: :shadow}) do |params|
-#   alert :cool
-#   if affect.nil?
-#     affect_to = affect
-#   else
-#     affect_to = [:self]
-#   end
-#   val= { value: params, affect: affect_to } unless params.instance_of?(Hash)
-#   val
-# end

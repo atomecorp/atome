@@ -6,6 +6,8 @@ class Atome
     essential_keys = [:inactive, :active]
     buttons_style = data.select { |key, value| essential_keys.include?(key) }
     menu_item = box({ id: button_id })
+    actor({ button_id => :button })
+    menu_item.role(:button)
     menu_item.text({ data: label, id: "#{button_id}_label" })
     menu_item.code({ button_code: code })
 
@@ -64,7 +66,6 @@ class Atome
     params.each do |button_id, params|
       label = params[:text]
       code = params[:code]
-      # {"new_button"=>{"text"=>"button1", "code"=>#<Proc:0xafe>}}
       index = fasten.length
       create_new_button(button_id, index, label, code)
     end
@@ -153,9 +154,7 @@ new(molecule: :input) do |params, bloc|
   end
 
   input_back.touch(:up) do
-    if input_back.tick[:input] == 1
-      text_input.component({ selected: true })
-    end
+    text_input.component({ selected: true }) if input_back.tick[:input] == 1
   end
 
   text_input.keyboard(:down) do |native_event|
@@ -166,24 +165,18 @@ new(molecule: :input) do |params, bloc|
       # always allow
     elsif event[:keyCode].to_s == '13'
       # we prevent the input
-      if trigger == :return
-        bloc.call(text_input.data)
-      end
+      bloc.call(text_input.data) if trigger == :return
       text_input.edit(false)
       event.preventDefault()
     elsif text_input.data.length > limit
       event.preventDefault()
     end
-    if trigger == :down
-      bloc.call(text_input.data)
-    end
+    bloc.call(text_input.data) if trigger == :down
   end
 
   text_input.keyboard(:up) do |native_event|
     input_back.data = text_input.data
-    if trigger == :up
-      bloc.call(text_input.data)
-    end
+    bloc.call(text_input.data) if trigger == :up
   end
   params.each do |part_f, val_f|
     input_back.send(part_f, val_f)
@@ -214,12 +207,8 @@ new(molecule: :list) do |params, _bloc|
                 top: :center,
                 color: :orange,
                 type: :text }
-  unless params[:width]
-    params[:width] = styles_found[:width]
-  end
-  unless element[:width]
-    element[:width] = styles_found[width]
-  end
+  params[:width] = styles_found[:width] unless params[:width]
+  element[:width] = styles_found[width] unless element[:width]
   margin = styles_found[:margin]
   height_found = styles_found[:height]
 
@@ -479,6 +468,7 @@ new(molecule: :application) do |params, &bloc|
                    category: :application })
   main_app.remove(:box_color)
   main_app.instance_variable_set('@pages', {})
+  main_app.role(:application)
 
   buttons({
             id: "#{id_f}_menu",
@@ -510,7 +500,6 @@ new(molecule: :page) do |params, &bloc|
       code: item_code
     } })
     actor({ "#{@id}_menu_item_#{page_name}" => :buttons })
-    menu_f.role([:button])
   end
 end
 
@@ -521,7 +510,6 @@ new(molecule: :show) do |page_id, &bloc|
   header = params.delete(:header)
   left_side_bar = params.delete(:left_side_bar)
   right_side_bar = params.delete(:right_side_bar)
-  # modules = params.delete(:modules)
   basic_size = 30
   fasten.each do |page_id_found|
     page_found = grab(page_id_found)
@@ -577,23 +565,15 @@ new(molecule: :show) do |page_id, &bloc|
     if item_found&.category&.include?(:right_side_bar)
       main_page.width(:auto)
       main_page.left(item_found.width)
-      if footer
-        grab("#{id_f}_footer").right(basic_size)
-      end
-      if header
-        grab("#{id_f}_header").right(basic_size)
-      end
+      grab("#{id_f}_footer").right(basic_size) if footer
+      grab("#{id_f}_header").right(basic_size) if header
     end
 
     if item_found&.category&.include?(:left_side_bar)
       main_page.width(:auto)
       main_page.right(item_found.width)
-      if footer
-        grab("#{id_f}_footer").left(basic_size)
-      end
-      if header
-        grab("#{id_f}_header").left(basic_size)
-      end
+      grab("#{id_f}_footer").left(basic_size) if footer
+      grab("#{id_f}_header").left(basic_size) if header
     end
   end
   main_page
@@ -615,7 +595,6 @@ new(molecule: :buttons) do |params, &bloc|
   default_text = default.delete(:text)
   main.data[:default_text] = default_text
   active = params.delete(:active) || {}
-  active_text = active.delete(:text)
   inactive = {}
   active.each_key do |part_f|
     inactive[part_f] = default[part_f]
@@ -624,12 +603,10 @@ new(molecule: :buttons) do |params, &bloc|
   active.each_key do |part_f|
     inactive_text[part_f] = default_text[part_f]
   end
-
   params.each_with_index do |(item_id, part_f), index|
     label = part_f[:text]
     code = part_f[:code]
     main.create_new_button(item_id, index, label, code)
-
   end
   main
 

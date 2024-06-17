@@ -23,31 +23,23 @@ class Universe
   @allow_sync = false # temp server storage sync
   @connected = false
   @database_ready = false
-  @tools_root=[]
+  @tools_root = []
   @tools = {}
   @allow_tool_operations = false
   @active_tools = []
   @atome_preset = []
-  @default_selection_style={border: { thickness: 1, red: 1, green: 0, blue: 0, alpha: 1, pattern: :dotted }}
-  @applicable_atomes= %i[color shadow border paint animation]
+  @default_selection_style = { border: { thickness: 1, red: 1, green: 0, blue: 0, alpha: 1, pattern: :dotted } }
+  @applicable_atomes = %i[color shadow border paint animation]
   # @historicize=false
   class << self
     attr_reader :atomes, :atomes_ids, :renderer_list, :molecule_list, :atome_list, :particle_list, :classes, :counter,
                 :atomes_specificities
-    attr_accessor :connected, :allow_sync, :allow_localstorage, :database_ready, :edit_mode, :tools,:tools_root,
+    attr_accessor :connected, :allow_sync, :allow_localstorage, :database_ready, :edit_mode, :tools, :tools_root,
                   :allow_tool_operations, :active_tools, :atome_preset, :applicable_atomes, :default_selection_style
 
     def messages
       @messages
     end
-
-    # def eVe(val = nil)
-    #   if val
-    #     @eve = val
-    #   else
-    #     @eve
-    #   end
-    # end
 
     def store_messages(new_msg)
       @messages[new_msg[:msg_nb]] = new_msg[:proc]
@@ -98,13 +90,11 @@ class Universe
 
     def add_sanitizer_method(method_name, &method_proc)
       # this method is used to add sanitizer methods
-      # instance_variable_get('@sanitizers').merge!({ method_name => method_proc })
       @sanitizers.merge!({ method_name => method_proc })
     end
 
     def get_sanitizer_method(method_name)
       # this method is used to add optional methods
-      # instance_variable_get('@sanitizers')[method_name]
       @sanitizers[method_name]
     end
 
@@ -125,21 +115,10 @@ class Universe
       @atomes_ids[id] = aid
     end
 
-    # def update_atome_id(aid, atome, prev_id)
-    #   @atomes[id] = atome
-    #   @atomes.delete(prev_id)
-    # end
-    # def update_atome_id(id, atome, prev_id)
-    #   @atomes[id] = atome
-    #   @atomes.delete(prev_id)
-    # end
-
     def user_atomes
       collected_id = []
-      @atomes.each do |id_found, atome_found|
-        # collected_id << id_found unless atome_found.tag && atome_found.tag[:system]
+      @atomes.each_value do |atome_found|
         collected_id << atome_found.id unless atome_found.tag && atome_found.tag[:system]
-
       end
       collected_id
     end
@@ -217,7 +196,6 @@ class Universe
     end
 
     def current_server
-      # return unless RUBY_ENGINE.downcase == 'opal'
       JS.global[:location][:href].to_s
     end
 
@@ -275,34 +253,16 @@ class Universe
         operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
         @increment += 1
         @increment = @increment % 100
-        # puts "===> { #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }"
-        # puts "<==== #{@allow_localstorage} : #{element} ====>"
         if @allow_localstorage.include? element
           JS.global[:localStorage].setItem(operation_timing, "{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
           @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
-          # puts "===> { #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }"
         end
-
 
       end
     end
 
     def story
       @history
-      # # temp algo awaiting db to be ready, just for POC and tests
-      # return unless filter
-      #
-      # operation = filter[:operation]
-      # atome_id = filter[:id]
-      # particle = filter[:particle]
-      # filtered_history = []
-      # @history.each do |operation_number, alteration|
-      #   if alteration[atome_id] && (alteration[atome_id][operation]) && (alteration[atome_id][operation][particle])
-      #     filtered_history << { operation: operation_number, filter[:particle] => alteration[atome_id][operation][particle], sync: alteration[:sync], time: alteration[:time] }
-      #   end
-      # end
-      # filtered_history
     end
-
   end
 end

@@ -67,11 +67,9 @@ class Atome
                 atome_found = grab(id_found)
                 # unless (atome_found && atome_found.tag[:system])
                 puts 'we have to check if operation is a creation or an alteration to include or exclude the view '
-                # alert atome_touched
                 Universe.active_tools.each do |tool|
-                  # alert "#{tool}, #{atome_found.id}"
                   apply_tool(tool, atome_found, event)
-                end # if atome_found #&& !atome_found.tag[:system]
+                end
 
                 break
               end
@@ -122,8 +120,6 @@ class Atome
     end
 
     def creation(current_tool, tool_actions, atome_touched, a_event)
-      # we store prev_local_storage prior to lock it to prevent unwanted logs
-      # prev_local_storage=Universe.allow_localstorage()
       @creation_mode = true
       storage_allowed = Universe.allow_localstorage
       Universe.allow_localstorage = false
@@ -142,7 +138,6 @@ class Atome
                       else
                         grab(:view).send(atome, temp_val)
                       end
-          # current_tool.data[:treated] << new_atome
           current_tool.data[:created] << new_atome
           params.delete(:atome_touched)
           params[new_atome: new_atome]
@@ -174,9 +169,7 @@ class Atome
                else
                  atome_touched
                end
-      # unless method_found == :alteration && (target.id == :view_color || target.id == :view)
-        unless method_found == :alteration && target.tag[:system]
-
+      unless method_found == :alteration && target.tag[:system]
 
         tools_scheme[:particles]&.each do |particle_f, value_f|
           target.send(particle_f, value_f)
@@ -220,7 +213,6 @@ class Atome
     tool.data[:created] = []
     tool.data[:prev_states] = {}
     # generic behavior
-    # tool.apply(:active_tool_col)
     grab("#{tool_name}_icon").color(:white)
     grab("#{tool_name}_label").color(:white)
     Universe.active_tools << tool_name
@@ -251,8 +243,7 @@ class Atome
         Atome.apply_tool(tool_name, atome_found, event)
       end
     end
-
-    # # activate tool analysis test
+    # activate tool analysis test
     Atome.activate_click_analysis
     tool.active(true)
   end
@@ -284,7 +275,6 @@ class Atome
     # generic behavior
     # we remove touch and resize binding on newly created atomes
     tool.apply(:inactive_tool_col)
-    # alert tool.data[:created]
     tool.data[:created]&.each do |new_atome|
       new_atome.drag(false)
       new_atome.resize(:remove)
@@ -299,7 +289,6 @@ class Atome
     tool_name = "#{params[:name]}_tool"
     index = params[:index]
     tool_scheme = params[:scheme]
-    # @tool_scheme=params[:scheme]
     toolbox = params[:toolbox] || {}
     orientation_wanted = tool_scheme[:orientation] || :sn
 
@@ -351,8 +340,6 @@ class Atome
                                           action: action,
                                           allow_alteration: true,
                                           allow_creation: true,
-                                          # activation: tool_scheme[:activation],
-                                          #  inactivation: tool_scheme[:inactivation], zone: tool_scheme[:zone],
                                           post: tool_scheme[:post],
                                           pre: tool_scheme[:pre],
                                   }
@@ -421,8 +408,6 @@ class Atome
             if particle.instance_variable_get('@active')
               grab(slider_id).delete({ force: true })
               particle.instance_variable_set('@active', false)
-              # particle.top(:auto)
-              # particle.top(:bottom)
               particle.height(size)
               particle.top(0)
             else
@@ -446,9 +431,7 @@ class Atome
                 if grab(slider_id).instance_variable_get('@initialised')
                   Atome.selection.each do |atome_id_to_treat|
 
-                    # puts "-------> #{tool_scheme[:particles][particle_name]} , #{value }"
                     tool_scheme[:particles][particle_name] = value.to_f / 100
-                    # tools_scheme[:particles]
                     atome_found = grab(atome_id_to_treat)
                     target = grab(atome_found.color.last)
 
@@ -495,10 +478,8 @@ class Atome
           tick[tool_name] = 0
         end
       end
-      # puts 'reactivation'
       tool.instance_variable_set('@prevent_action', false)
     end
-
   end
 
 end

@@ -8,7 +8,6 @@ new({ particle: :size, category: :geometry, type: :int }) do |params|
   params[:recursive] ||= false
   params[:reference] ||= :x
   params[:target] ||= :self # :all resize atome + fasten +distance between  to the value
-  # self: resize the current atome to current value
   params[:propagate] ||= :raw # proportional atome children will be resize according
   # to its parent , raw apply the raw value to the fasten atomes
   if params[:reference] == :x

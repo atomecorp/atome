@@ -11,20 +11,18 @@ def extract_rgb_alpha(color_string)
 end
 
 new({ particle: :red, category: :property, type: :string }) do
-  # alert :ok
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
 # FIXME  we have to apply both at post and after to make it work
 # used to refresh all affected atomes
-new({after: :red}) do |params|
-  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+new({ after: :red }) do |params|
+  a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
-      grab(atome_to_refresh).apply(id)
-    end
+    grab(atome_to_refresh).apply(id)
+  end
   params
 end
-
 
 new({ particle: :green, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
@@ -32,8 +30,8 @@ new({ particle: :green, category: :property, type: :string }) do
 end
 
 # used to refresh all affected atomes
-new({after: :green}) do |params|
-  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+new({ after: :green }) do |params|
+  a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
     grab(atome_to_refresh).apply(id)
   end
@@ -46,8 +44,8 @@ new({ particle: :blue, category: :property, type: :string }) do
 end
 
 # used to refresh all affected atomes
-new({after: :blue}) do |params|
-  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+new({ after: :blue }) do |params|
+  a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
     grab(atome_to_refresh).apply(id)
   end
@@ -58,8 +56,8 @@ new({ particle: :alpha, category: :property, type: :string }) do
   self
 end
 # used to refresh all affected atomes
-new({after: :alpha}) do |params|
-  a=affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
+new({ after: :alpha }) do |params|
+  a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
     grab(atome_to_refresh).apply(id)
   end
@@ -69,7 +67,6 @@ new({ particle: :diffusion, category: :property, type: :string }) do
   # we return self to allow syntax of the type : a.color(:black).red(1).green(0.3)
   self
 end
-
 
 new({ particle: :clean, category: :property, type: :boolean }) do |params|
   cell = params[:cell]
@@ -91,6 +88,7 @@ new({ particle: :insert, category: :property, type: :string }) do |params|
     position_to_insert = params[:row]
     data.insert(position_to_insert, {})
   elsif params[:column]
+    #
   end
 
   params
@@ -130,7 +128,7 @@ new({ particle: :sort, category: :property, type: :int }) do |params|
   params
 end
 
-new({particle: :inside, render: false})
+new({ particle: :inside, render: false })
 new({ initialized: :inside }) do |params, &user_proc|
   render(:inside, params, &user_proc)
 end
@@ -142,11 +140,11 @@ new({ particle: :value }) do |val|
   val
 end
 
-new({ particle: :behavior, type: :symbol, category: :property  })
+new({ particle: :behavior, type: :symbol, category: :property })
 
 new({ particle: :orientation, type: :symbol, category: :property })
 
-new({ particle: :align , type: :symbol, category: :property })
+new({ particle: :align, type: :symbol, category: :property })
 
 new({ particle: :actor, store: false }) do |params|
   @actor ||= {}

@@ -3,7 +3,6 @@
 # Rendering method here
 class Atome
   # private
-
   def render(element, params, &user_proc)
 
     render_engines = @renderers || []

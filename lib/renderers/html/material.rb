@@ -6,11 +6,6 @@ end
 
 new({ method: :gradient, renderer: :html, type: :hash })
 
-# new({ method: :remove, renderer: :html, type: :hash }) do |params|
-#   # alert "===> #{params}"
-#   # html.table_remove(params)
-#   html.remove(params)
-# end
 
 new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove, bloc|
 
@@ -64,23 +59,6 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
   end
 end
 
-# new({ method: :border, type: :hash, renderer: :html }) do |value, _user_proc|
-#   thickness = value[:thickness] || 5
-#   type = value[:pattern] || :solid
-#
-#   if value[:color].instance_of? Atome
-#     color_found = value[:color]
-#   else
-#     color_found = grab('black_matter').color(value[:color])
-#   end
-#
-#   red = color_found.red * 255
-#   green = color_found.green * 255
-#   blue = color_found.blue * 255
-#   alpha = color_found.alpha
-#
-#   html.style(:border, "#{type} #{thickness}px rgba(#{red},#{green},#{blue},#{alpha})")
-# end
 new({ method: :thickness, type: :integer, renderer: :html })
 
 # end

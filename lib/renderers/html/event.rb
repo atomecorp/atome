@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
 new({ method: :drag, type: :symbol, renderer: :html }) do |params|
-  # if @drag
-  #   option = @drag[params]
-  # else
-  #   params = :remove
-  #   option = true
-  # end
-  # html.event(:drag, params, option)
 
   if params
     option = @drag[params]

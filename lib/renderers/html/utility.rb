@@ -106,20 +106,17 @@ new({ method: :compute, type: :hash, renderer: :html }) do |params|
 end
 
 new({ renderer: :html, method: :preview }) do |params, user_proc|
-  if params[:id]
-    id_f = params[:id]
-  else
-    id_f = identity_generator
-  end
+  id_f = params[:id] || identity_generator
   if params[:stop]
     html.stop_video_preview(id_f)
   else
 
-    if params[:media] == :video
+    case params[:media]
+    when :video
       html.video_preview(id_f, true, false)
-    elsif params[:media] == :audio
+    when :audio
       html.video_preview(id_f, false, true)
-    elsif params[:media] == :all
+    when :all
       html.video_preview(id_f, true, true)
     else
       html.video_preview(id_f, true, true)

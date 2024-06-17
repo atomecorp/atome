@@ -22,8 +22,6 @@ class Genesis
       # we add the new method to the particle's collection of methods
       Universe.add_to_particle_list(particle_name, type, category)
       # the line below create an empty particle method for each renderer, eg: browser_left, headless_width, ...
-      # the line below create the corresponding particle method for Batch class
-      # particle_method_for_batch(particle_name)
       auto_render_generator(particle_name) if render
       new_particle(particle_name, store, render, &particle_proc)
       # the line below create all alternatives methods such as create 'method='
@@ -36,8 +34,6 @@ class Genesis
       # the method below generate Atome method creation at Object level,
       # so a syntax like : 'text(:hello)' is possible instead of the mandatory : grab(:view).text(:hello)
       atome_method_for_object(atome_name)
-      # the line below create the corresponding atome method for Batch class
-      # atome_method_for_batch(atome_name)
       unless Essentials.default_params[atome_name]
         # we create default params for the new created atome, adding the hash to : module essential, @default_params
         # FIXME : the hash : attach: [:view] means that newly atome will systematically be fasten to the wview instaed of the parent:
@@ -76,9 +72,6 @@ class Genesis
     end
 
     def new_particle(element, store, render, &_method_proc)
-      # unless @id
-      #   alert self.id
-      # end
 
       Atome.define_method element do |params = nil, &user_proc|
         @history[element] ||= []
@@ -87,7 +80,6 @@ class Genesis
           params = particle_sanitizer(element, params, &user_proc)
           # the line below execute the main code when creating a new particle
           # ex : new({ particle: :my_particle } do....
-          # instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
           Genesis.create_particle(element, store, render)
           # TODO: try to optimise and find a better way wo we can remove the condition below
           if @type == :group && !%i[type id collect layout].include?(element)
@@ -98,18 +90,12 @@ class Genesis
 
           computed_params = send("set_#{element}", params, &user_proc) # sent to : create_particle / Atome.define_method "set_#{element}"
 
-          # we historicize all write action below
-          # we add the changes to the stack that must be synchronised
-          # Universe.historicize(@aid, :write, element, params)
           computed_params
         elsif params || params == false
           "send a valid password to write #{element} value"
         elsif read_auth(element)
           # particle getter below
           value_found = instance_variable_get("@#{element}")
-          # uncomment below to  historicize all read action
-          # Universe.historicize(@id, :read, element, value_found)
-          # we add the optional read plugin
           value_found = particle_read(element, value_found, &user_proc)
           value_found
           # TODO : create a fast method to get particle: eg:
@@ -117,9 +103,6 @@ class Genesis
         else
           "send a valid password to read #{element} value"
         end
-        # else
-        #
-        #  end
       end
     end
 
@@ -145,25 +128,18 @@ class Genesis
           # as getter should give us all atome of a given within the atome
           # ex : puts a.shape => return all atome with the type 'shape' in this atome
           collected_atomes = []
-          # fasten.each do |fasten_atome|
-          #   collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
-          # end
           if Universe.applicable_atomes.include?(element)
             # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being fasten
             @apply.each do |fasten_atome|
               collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
             end
           else
-            # collected_atomes = fasten
-            # if @fasten
             fasten.each do |fasten_atome|
               collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
             end
-            # end
 
           end
           # TODO/ FIXME : potential problem with group  here"
-          # group({ collect: collected_atomes })
           collected_atomes
         end
       end
@@ -174,7 +150,6 @@ class Genesis
         # Object.const_set(element, Module.new)
         # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
         # to the shape particles list : @!atome[:shape] << params[:id]
-        # Atome.new(params, &user_proc)
 
         if Universe.atomes[params[:id]]
           # if atome id already exist we grab the previous one
@@ -192,75 +167,11 @@ class Genesis
     end
 
     def new_molecule(molecule, &method_proc)
-
       Molecule.define_method molecule do |params, &user_proc|
         object_to_return = instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-        # new_objet = Object.new
-        # # we store the molecule into an instance variable in a basic ruby object
-        # new_objet.instance_variable_set(:@molecule, object_to_return)
-        # new_objet
         object_to_return
       end
-
-      # # the method define below is the slowest but params are analysed and sanitized
-      # Atome.define_method element do |params = nil, &user_proc|
-      #   instance_exec(params, user_proc, &method_proc) if method_proc.is_a?(Proc)
-      #   if params
-      #     params = atome_sanitizer(element, params, &user_proc)
-      #     atome_processor(element, params, &user_proc)
-      #   else
-      #     # when no params passed whe assume teh user want a getter,
-      #     # as getter should give us all atome of a given within the atome
-      #     # ex : puts a.shape => return all atome with the type 'shape' in this atome
-      #     collected_atomes = []
-      #     # fasten.each do |fasten_atome|
-      #     #   collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
-      #     # end
-      #     # TODO : add category for atome( material/physical vs modifier : color, shadow, .. vs shape, image ..)
-      #     # then add condition same things fo code in presets/atome atome_common
-      #     if %i[color shadow paint border].include?(element)
-      #       # we do the same for apply to be able to retrieve 'color' and other atome that apply instead of being fasten
-      #       @apply.each do |fasten_atome|
-      #         collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
-      #       end
-      #     else
-      #       # collected_atomes = fasten
-      #       # if @fasten
-      #       fasten.each do |fasten_atome|
-      #         collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
-      #       end
-      #       # end
-      #
-      #     end
-      #     # TODO/ FIXME : potential problem with group  here"
-      #     # group({ collect: collected_atomes })
-      #     collected_atomes
-      #   end
-      # end
-      #
-      # # the method define below is the fastest params are passed directly
-      # Atome.define_method "set_#{element}" do |params, &user_proc|
-      #   # we generate the corresponding module here:
-      #   # Object.const_set(element, Module.new)
-      #   # we add the newly created atome to the list of "child in it's category, eg if it's a shape we add the new atome
-      #   # to the shape particles list : @!atome[:shape] << params[:id]
-      #   # Atome.new(params, &user_proc)
-      #
-      #   if Universe.atomes[params[:id]]
-      #     # if atome id already exist we grab the previous one
-      #     # this prevent the creation of new atome if the atome already exist
-      #     previous_atome= grab(params[:id])
-      #     # now we must re-affect affected atomes
-      #     previous_atome.affect(params[:affect])
-      #     previous_atome
-      #   else
-      #     Atome.new(params, &user_proc)
-      #   end
-      #   # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle
-      # end
-
     end
-
   end
 
 end

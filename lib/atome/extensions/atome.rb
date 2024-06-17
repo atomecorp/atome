@@ -42,31 +42,15 @@ module ObjectExtension
       end
       render_method = "#{renderer_found}_#{params[:specific]}#{params[:method]}"
       Genesis.build_render(render_method, &bloc)
-      # elsif params.key?(:callback)
-      #   particle_targetted = params[:callback]
-      #   Atome.define_method("#{particle_targetted}_callback", option) do
-      #     alert option
-      #     bloc.call(option)
-      #   end
     elsif params.key?(:molecule)
       molecule = params[:molecule]
       Genesis.build_molecule(molecule, &bloc)
       Universe.add_to_molecule_list(molecule)
-
-      # elsif params.key?(:applicaton)
-      #   alert params
-
-      # molecule=params[:molecule]
-      # Genesis.build_molecule(molecule, &bloc)
-      # Universe.add_to_molecule_list(molecule)
     elsif params.key?(:tool)
       # we only store tools definition in the universe so it can be instanced using "A.build_tool" method when needed
-
       tool_content = Atome.instance_exec(&bloc) if bloc.is_a?(Proc)
-
       Universe.tools[params[:tool]] = tool_content
       # Universe.tools[params[:tool]]=bloc
-
     elsif params.key?(:template)
       A.build_template(&bloc)
     elsif params.key?(:code)
@@ -75,7 +59,6 @@ module ObjectExtension
       A.build_test(&bloc)
     elsif params.key?(:preset)
       Atome.preset_builder(params[:preset], &bloc)
-      # A.build_test(&bloc)
     end
     super if defined?(super)
   end
@@ -85,7 +68,6 @@ end
 # atome extensions
 class Object
   include ObjectExtension
-
 
   def deep_copy(obj)
     # utility for buttons
@@ -104,12 +86,13 @@ class Object
   end
 
   def flash(msg)
-    flash_box=box({width: 235, height: 112})
+    flash_box = box({ width: 235, height: 112 })
     flash_box.text(msg)
     flash_box.touch(true) do
       flash_box.delete({ recursive: true })
     end
   end
+
   def reorder_particles(hash_to_reorder)
     # we reorder the hash
     ordered_keys = %i[renderers id alien type attach int8 unit]
@@ -118,7 +101,6 @@ class Object
     other_part = hash_to_reorder.reject { |k, _| ordered_keys.include?(k) }
     # merge the parts  to obtain an re-ordered hash
     ordered_part.merge(other_part)
-    # reordered_hash
   end
 
   def delete (atomes)
@@ -139,16 +121,6 @@ class Object
     return if id_to_get == false
     aid_to_get = Universe.atomes_ids[id_to_get]
     aid_to_get = '' if aid_to_get.instance_of? Array
-    # id_to_get = id_to_get.to_sym
-
-    # if id_to_get.nil? do
-    # if aid_to_get.nil?
-    #   alert   id_to_get
-    # else
-
-    # end
-    # end
-    # alert Universe.atomes[id_to_get]
     Universe.atomes[aid_to_get]
   end
 
@@ -306,7 +278,6 @@ class Object
       end
       console_top.shadow({
                            id: :s1,
-                           # affect: [:the_circle],
                            left: 0, top: 3, blur: 9,
                            invert: false,
                            red: 0, green: 0, blue: 0, alpha: 1
@@ -316,8 +287,6 @@ class Object
         y = console.to_px(:top) + dy.to_f
         console.top(y)
         console.height(:auto)
-        total_height = grab(:view).to_px(:height)
-        # console_back.height(total_height-console.top)
       end
       console_output = console_back.text({ data: '', id: :console_output, component: { size: 12 } })
       JS.eval <<~JS
@@ -331,7 +300,7 @@ class Object
             oldLog.apply(console, arguments);
           };
         }());
-      JS
+JS
 
       console_clear = console_top.circle({ id: :console_clear, color: :red, top: 3, left: 3, width: 19, height: 19 })
       console_clear.touch(true) do
@@ -339,8 +308,6 @@ class Object
       end
       JS.global[:document].addEventListener("contextmenu") do |event|
       end
-      # element[:style][:WebkitUserSelect] = 'none'
-      # element[:style][:MozUserSelect] = 'none'
     else
       grab(:console_back).delete(true)
       JS.global[:document].addEventListener("contextmenu") do |native_event|
@@ -488,19 +455,13 @@ class Object
         current_atome.height(current_atome.to_px(:height) * ratio)
       end
     end
-    # total_size, max_other_axis_size = calculate_total_size(objet_atome, axis)
-    # scale_factor = target_size.to_f / total_size
-    # resize_and_reposition(objet_atome, scale_factor, axis, max_other_axis_size)
   end
 
   def found_area_used(ids)
-
     min_x, min_y = Float::INFINITY, Float::INFINITY
     max_x, max_y = 0, 0
-
     ids.each do |id|
       atome = grab(id)
-
       x = atome.compute({ particle: :left })[:value]
       y = atome.compute({ particle: :top })[:value]
       width = atome.to_px(:width)
@@ -510,24 +471,19 @@ class Object
       max_x = [max_x, x + width].max
       max_y = [max_y, y + height].max
     end
-
     { min: { x: min_x, y: min_y }, max: { x: max_x, y: max_y } }
-
   end
 
   def calculate_total_size(objet_atome, axis)
     total_size = (axis == :x) ? objet_atome.to_px(:width) : objet_atome.to_px(:height)
     max_other_axis_size = (axis == :x) ? objet_atome.to_px(:height) : objet_atome.to_px(:width)
-
     objet_atome.fasten.each do |child_id|
       child = grab(child_id)
       child_size = (axis == :x) ? child.to_px(:width) : child.to_px(:height)
       other_axis_size = (axis == :x) ? child.to_px(:height) : child.to_px(:width)
-
       total_size += child_size
       max_other_axis_size = [max_other_axis_size, other_axis_size].max
     end
-
     [total_size, max_other_axis_size]
   end
 
@@ -563,11 +519,11 @@ class Object
       params = { target: params }
     end
     id = params[:id]
-    if id
-      id_wanted = { id: id }
-    else
-      id_wanted = {}
-    end
+    id_wanted = if id
+                  { id: id }
+                else
+                  {}
+                end
     basis = { alien: params[:target], renderers: [:html], type: :atomized }.merge(id_wanted)
     a = Atome.new(basis)
     return a
@@ -576,10 +532,8 @@ class Object
 
   def touch_allow(allow)
     if allow
-      # Retire l'écouteur d'événements en utilisant la fonction globale
       JS.eval('document.removeEventListener("contextmenu", window.preventDefaultAction);')
     else
-      # Ajoute l'écouteur d'événements en utilisant la fonction globale
       JS.eval('document.addEventListener("contextmenu", window.preventDefaultAction);')
     end
   end
@@ -589,13 +543,13 @@ class Object
       # allow selection and text copy
       JS.eval(<<~JS)
         document.body.style.userSelect = 'auto';  // allow text slectiion 
-        document.removeEventListener('copy', preventDefaultAction);  // allow copy 
+        document.removeEventListener('copy', preventDefaultAction);  // allow copy
       JS
     else
       # lock selection and text copy
       JS.eval(<<~JS)
         document.body.style.userSelect = 'none';  // prevent text selection
-        document.addEventListener('copy', preventDefaultAction);  // prevent copy 
+        document.addEventListener('copy', preventDefaultAction);  // prevent copy
       JS
     end
   end
@@ -814,7 +768,4 @@ class CssProxy
     parsed = JSON.parse(msg)
     bloc.call(parsed)
   end
-
 end
-
-

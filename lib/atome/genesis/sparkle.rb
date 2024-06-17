@@ -92,7 +92,6 @@ Atome.new({ renderers: default_render, id: machine_id, type: :machine, password:
 # user
 user_password = { global: :star_win, read: { atome: :star_wars }, write: { atome: :star_wars } }
 
-# human({ id: :anonymous, login: true, password: user_password, data: { birthday: '10/05/1996' }, selection: [], attach: :user_view })
 human({ id: identity_generator, login: true, password: user_password, data: { birthday: '10/05/1996' }, selection: [], attach: :user_view })
 
 Universe.current_machine = machine_id
@@ -161,14 +160,8 @@ def init_database
   A.sync({ action: :init_db, data: { database: :eDen } }) do |data|
     Universe.database_ready = data[:data][:message] == 'database_ready'
   end
-  # authentication : email, pass
-  # atome : date, particles
-  # history : aid, particle, value, date
-
-  particles = Universe.particle_list
   # now we populate the DB
   A.sync({ action: :create_db_table, data: { table: :user, type: :string } }) do |_db_state|
-    # puts "===> #{_db_state}"
   end
   A.sync({ action: :create_db_table, data: { table: :atome } }) do |_db_state|
   end
@@ -191,13 +184,11 @@ def init_database
 
 
   # now we send localstorage content to the server
-  # puts "sending localstorage"
   Atome.send_localstorage_content
 
 end
 
 def user_login
-  # user = Universe.current_user
   password = Black_matter.password
   sync({ action: :authentication, data: { email: 'jeezs@atome.one' } }) do |email|
     puts "email received : #{email}"
@@ -212,6 +203,6 @@ end
 # Universe.allow_sync= false # to stop data to be sync on server
 touch_allow(false) # this lock the system right click in web view
 # add a few default font
-# A.add_text_visual({ path: 'Roboto', name: 'Roboto-Bold' })
-# A.add_text_visual({ path: 'Roboto', name: 'Roboto-Thin' })
-# A.add_text_visual({ path: 'Roboto', name: 'Roboto-LightItalic' })
+A.add_text_visual({ path: 'Roboto', name: 'Roboto-Bold' })
+A.add_text_visual({ path: 'Roboto', name: 'Roboto-Thin' })
+A.add_text_visual({ path: 'Roboto', name: 'Roboto-LightItalic' })

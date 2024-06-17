@@ -13,15 +13,10 @@ class Atome
     # TODO : remove Essentials.default_params[atome_preset] || {} as it is
     # applied twice because preset is now a particle
     preset_params = Essentials.default_params[atome_preset] || {}
-    # preset_params =  {preset: atome_preset}
     basic_params[:type] = preset_params[:type] || :element
-    # basic_params[:aid] =  identity_generator(:a)
-    # alert "common =>  #{params[:id]}"
-    # alert "basic_params  #{basic_params[:id].class}"
     basic_params[:id] = params[:id] || identity_generator
     basic_params[:renderers] = @renderers || preset_params[:renderers]
     essential_params = basic_params.merge(preset_params)
-    #
     reordered_params = essential_params.reject { |key, _| params.has_key?(key) }
     params = reordered_params.merge(params)
     params[:id] = params[:id].to_sym
@@ -45,23 +40,6 @@ class Atome
     Atome.new(params, &bloc)
   end
 
-  # def box(params = {}, &bloc)
-  #   atome_preset = :box
-  #   params = atome_common(atome_preset, params)
-  #   preset_common(params, &bloc)
-  # end
-  #
-  # # def intuition(params = {}, &bloc)
-  # #   atome_preset = :intuition
-  # #   params = atome_common(atome_preset, params)
-  # #   preset_common(params, &bloc)
-  # # end
-  #
-  # def circle(params = {}, &bloc)
-  #   atome_preset = :circle
-  #   params = atome_common(atome_preset, params)
-  #   preset_common(params, &bloc)
-  # end
 end
 
 

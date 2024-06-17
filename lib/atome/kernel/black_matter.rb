@@ -6,7 +6,6 @@ class Black_matter
       JS.global.sha256(string.to_s)
     end
 
-
     def check_password(input_password, stored_hash)
       input_hash = encode(input_password)
       input_hash == stored_hash

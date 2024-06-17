@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 
-
-############
-
 box({ id: :the_box, drag: true, color: { alpha: 2 } })
 
 menu1_code = lambda do

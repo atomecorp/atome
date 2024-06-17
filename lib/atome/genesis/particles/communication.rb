@@ -28,7 +28,7 @@ new({ particle: :language, category: :communication, type: :string }) do |params
   @data = int8[params]
   params
 end
-# method below are used for communication with ntaive core
+# method below are used for communication with native core
 def receptor(msg)
   parsed = JSON.parse(msg)
   A.controller_code[:controller].call(parsed)

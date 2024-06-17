@@ -21,14 +21,6 @@ new({ particle: :remove, category: :property, type: :hash }) do |params|
       data.map do |hash|
         hash.delete(hash.keys[column]) if hash.keys[column]
       end
-      # elsif params[:all]
-      #   apply.each do |applied_atome|
-      #     if  grab(applied_atome).type.to_sym ==  params[:all].to_sym
-      #       puts "!go"
-      #     end
-      #   end
-      # puts "so_good #{params}"
-      # puts "***> #{apply}"
     end
 
     params
@@ -38,7 +30,6 @@ new({ particle: :remove, category: :property, type: :hash }) do |params|
   end
 
 end
-# new({ particle: :remove, category: :property, type: :hash })
 
 new({ post: :remove }) do |params|
   # TODO : we have to rethink the removal of atome and particles (with exception like category) and maybe 'use particle type' to handle removal
@@ -86,7 +77,6 @@ end
 new({ particle: :remove_classes, category: :material, type: :boolean }) do |value|
   Universe.classes[value].delete(id)
 end
-# new ({ particle: :opacity, category: :material, type: :int })
 
 # vector shape
 new({ particle: :definition, category: :material, type: :string })
@@ -115,7 +105,6 @@ new({ after: :pattern }) do |params|
   end
   params
 end
-# new({ particle: :border, category: :material, type: :int })
 new({ particle: :fill, category: :material, type: :array })
 
 new({ particle: :opacity, category: :material, type: :int })
