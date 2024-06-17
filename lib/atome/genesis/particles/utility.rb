@@ -4,10 +4,6 @@ new({ particle: :renderers, category: :utility, type: :string })
 new({ particle: :code, category: :utility, type: :string, store: false }) do |params, code|
   @code[params] = code
 end
-# new({ particle: :run, category: :utility, type: :boolean }) do |params|
-#   code_found = @code
-#   instance_exec(params, &code_found) if code_found.is_a?(Proc)
-# end
 
 new({ particle: :run }) do |params, code|
   instance_exec(&params) if params.is_a?(Proc)
@@ -26,9 +22,6 @@ new({ particle: :target }) do |params|
     end
   end
 end
-
-# new({ particle: :broadcast })
-
 
 def delete_recursive(atome_id, force=false)
   return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system]) unless force
@@ -68,31 +61,15 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
         affected_found.apply.delete(id_found)
         affected_found.refresh
       end
+      grab(attach).unfasten([id])
       Universe.delete(@aid)
     end
-    # elsif params == :force
-    #   cells.delete(true)
-    #   group.delete(true)
-    #   # now we detach the atome from it's parent
-    #   # now we init rendering
-    #   render(:delete, params)
-    #   # the machine delete the current atome from the universe
-    #   id_found = @id.to_sym
-    #   if @attach
-    #     parent_found = grab(@attach)
-    #     parent_found.fasten.delete(id_found)
-    #   end
-    #   @affect&.each do |affected_atome|
-    #     affected_found = grab(affected_atome)
-    #     affected_found.apply.delete(id_found)
-    #     affected_found.refresh
-    #   end
-    #   Universe.delete(@aid)
   elsif params.instance_of? Hash
     # if we are on a matrix we delete cells found & group found
     cells.delete(true)
     group.delete(true)
     if params[:recursive]
+      grab(attach).unfasten([id])
       unless grab(@id).tag && (grab(@id).tag[:persistent] || grab(@id).tag[:system])
         fasten.each do |atttached_atomes|
           delete_recursive(atttached_atomes)
