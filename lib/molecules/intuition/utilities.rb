@@ -2,14 +2,14 @@
 
 class Atome
   def reorder_menu
-    disposition= data[:inactive][:disposition]
+    disposition = data[:inactive][:disposition]
     margin = data[:inactive][:margin]
     spacing = data[:inactive][:spacing]
     inactive_style = data[:inactive]
     keys_to_exclude = [:margin, :spacing, :disposition, :text]
     inactive_style = inactive_style.reject { |key, _| keys_to_exclude.include?(key) }
     fasten.each_with_index do |atome_f, index|
-      menu_item=grab(atome_f)
+      menu_item = grab(atome_f)
       if disposition == :horizontal
         menu_item.left = margin[:left] + (inactive_style[:width] + spacing) * index
         menu_item.top = margin[:top]
@@ -19,10 +19,12 @@ class Atome
       end
     end
   end
+
   def remove_menu_item(item_to_remove)
     grab(item_to_remove).delete(recursive: true)
     reorder_menu
   end
+
   def create_new_button(button_id, position_in_menu, label, code)
     essential_keys = [:inactive, :active]
     buttons_style = data.select { |key, _value| essential_keys.include?(key) }
@@ -78,11 +80,12 @@ class Atome
             grab("#{item_id}_label").set(inactive_state_text)
           end
         end
-        code.call if code
+        code&.call
       end
       @active_item = menu_item.id
     end
   end
+
   def add_button(params)
     params.each do |button_id, params|
       label = params[:text]
@@ -92,6 +95,7 @@ class Atome
     end
     false
   end
+
   def resize_matrix(params)
     width(params[:width])
     height(params[:height])
@@ -186,7 +190,7 @@ new(molecule: :input) do |params, bloc|
     bloc.call(text_input.data) if trigger == :down
   end
 
-  text_input.keyboard(:up) do |native_event|
+  text_input.keyboard(:up) do |_native_event|
     input_back.data = text_input.data
     bloc.call(text_input.data) if trigger == :up
   end
@@ -474,23 +478,59 @@ new(molecule: :application) do |params, &bloc|
          else
            identity_generator
          end
+
   main_app = box({ id: id_f, width: :auto, height: :auto, top: 0, bottom: 0, left: 0, right: 0, apply: :app_color,
                    category: :application })
   main_app.remove(:box_color)
   main_app.instance_variable_set('@pages', {})
   main_app.role(:application)
 
-  buttons({
-            id: "#{id_f}_menu",
-            attach: id_f,
-            inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 3, disposition: :horizontal,
-                        color: :orange, margin: { left: 33, top: 12 } },
-            active: { text: { color: :white, shadow: {} }, color: :blue, shadow: {} },
-          })
+  menu = buttons({
+                   id: "#{id_f}_menu",
+                   attach: id_f,
+                   inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 3, disposition: :horizontal,
+                               color: :orange, margin: { left: 33, top: 12 } },
+                   active: { text: { color: :white, shadow: {} }, color: :blue, shadow: {} },
+                 })
+  main_app.define_singleton_method(:menu) do
+    menu
+  end
+  main_app.define_singleton_method(:pages) do
+    @pages
+  end
+
+  main_app.define_singleton_method(:insert) do |bloc_to_add|
+    bloc_to_add.each do |page_id, params_f|
+      params_f.each do |block_id, block_content|
+        @pages[page_id][:blocks] ||= {}
+        @pages[page_id][:blocks][block_id.to_sym] = block_content
+      end
+      @blocks ||= {}
+      @blocks[page_id] = @pages[page_id][:blocks]
+    end
+
+  end
+  main_app.define_singleton_method(:extract) do |bloc_to_extract|
+    bloc_to_extract.each do |page_id, block_id|
+      @blocks[page_id].delete(block_id)
+    end
+
+  end
+
+  main_app.define_singleton_method(:blocks) do
+    @blocks
+  end
+  main_app.define_singleton_method(:margin) do
+    @margin = params[:margin]
+  end
+  main_app.define_singleton_method(:spacing) do
+    @spacing = params[:spacing]
+  end
+
   main_app
 end
 
-new(molecule: :page) do |params, &bloc|
+new(molecule: :page) do |params = nil, &bloc|
   allow_menu = params.delete(:menu)
   if params[:id]
     id_f = params.delete(:id)
@@ -514,6 +554,7 @@ new(molecule: :page) do |params, &bloc|
 end
 
 new(molecule: :show) do |page_id, &bloc|
+
   params = @pages[page_id.to_sym]
   params ||= {}
   footer = params.delete(:footer)
@@ -523,20 +564,30 @@ new(molecule: :show) do |page_id, &bloc|
   basic_size = 30
   fasten.each do |page_id_found|
     page_found = grab(page_id_found)
-    page_found.delete({ recursive: true }) if page_found && page_found.category.include?(:page)
+    page_found.delete({ recursive: true }) if page_found&.category&.include?(:page)
   end
   color({ id: :page_color, red: 0.1, green: 0.1, blue: 0.1 })
-  # TODO : remove the patch below when possible
-  id_f = if params[:id]
-           params.delete(:id)
-         else
-           "#{id_f}_#{identity_generator}"
-         end
+
+  id_f = "#{id}_content"
   main_page = box({ width: :auto, depth: -1, height: :auto, id: id_f, top: 0, bottom: 0, left: 0, right: 0, apply: :page_color, category: :page })
   main_page.remove(:box_color)
 
-  main_page.set(params)
+  new_page = main_page.box({ width: '100%', height: '100%', top: 0, left: 0, id: page_id })
 
+  # now looking for associated blocks
+  blocks_found = params[:blocks]
+  @prev_bloc_height = 0
+  blocks_found&.each_with_index do |(bloc_id, bloc_content), index|
+
+    new_bloc = new_page.box({ id: bloc_id, width: '100%', height: 99, top: spacing + @prev_bloc_height, bottom: 0, left: 0, right: 0 })
+    new_bloc.set(bloc_content)
+    @prev_bloc_height = @prev_bloc_height + new_bloc.height + spacing
+  end
+
+  keys_to_exclude = [:blocks]
+  particles_to_apply = params.reject { |key, _| keys_to_exclude.include?(key) }
+
+  new_page.set(particles_to_apply)
   if footer
     new_footer = box({ left: 0, depth: -1, right: 0, width: :auto, top: :auto, bottom: 0, height: basic_size, category: :footer, id: "#{id_f}_footer" })
     new_footer.remove(:box_color)
