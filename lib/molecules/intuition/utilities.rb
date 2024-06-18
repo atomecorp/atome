@@ -39,6 +39,7 @@ class Atome
     if active_style
       active_state_text = active_style[:text]
       keys_to_exclude = [:margin, :spacing, :disposition, :text]
+
       active_style = active_style.reject { |key, _| keys_to_exclude.include?(key) }
     end
 
@@ -68,22 +69,27 @@ class Atome
 
     menu_item.touch(:down) do
       unless @active_item == menu_item.id
-        menu_item.set(active_style)
+
         menu_item.text.each do |text_f|
-          grab(text_f).set(active_state_text)
-        end
-        fasten.each do |item_id|
-          unless button_id == item_id
-            grab(item_id).remove({ all: :shadow })
-            grab(item_id).set(inactive_style)
-            grab("#{item_id}_label").remove({ all: :shadow })
-            grab("#{item_id}_label").set(inactive_state_text)
+          # below we unset any active style
+          fasten.each do |item_id|
+            unless button_id == item_id
+              grab(item_id).remove({ all: :shadow })
+              grab(item_id).set(inactive_style)
+              grab("#{item_id}_label").remove({ all: :shadow })
+              grab("#{item_id}_label").set(inactive_state_text)
+            end
+            grab(text_f).set(active_state_text)
           end
+
         end
+        menu_item.set(active_style)
         code&.call
+        @active_item = menu_item.id
       end
-      @active_item = menu_item.id
+
     end
+
   end
 
   def add_button(params)

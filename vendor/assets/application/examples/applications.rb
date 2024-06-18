@@ -46,24 +46,24 @@ a.page({ id: :page3,
          color: :red,
        })
 
-a.show(:page2)
 
-menu_f=a.menu
-menus_found= menu_f.fasten # replace fasten for entries
-puts a.pages
-puts   " pages => #{a.pages}"
-puts   " menus_found => #{menus_found}"
-
-bloc_to_add= {height: 156, color: :green}
-bloc_to_add2= {height: 99, color: :blue}
-bloc_to_add3= {height: 333, color: :orange}
- a.insert({page3: {block1: bloc_to_add , block2: bloc_to_add2, block3: bloc_to_add3}})
-puts   " blocks => #{a.blocks}"
-wait 3 do
-  # how to remove blocks
-   a.extract({page3: :block1})
-end
-
-
+#
+# menu_f=a.menu
+# menus_found= menu_f.fasten # replace fasten for entries
+# puts a.pages
+# puts   " pages => #{a.pages}"
+# puts   " menus_found => #{menus_found}"
+#
+# bloc_to_add= {height: 156, color: :green}
+# bloc_to_add2= {height: 99, color: :blue}
+# bloc_to_add3= {height: 333, color: :orange}
+#  a.insert({page3: {block1: bloc_to_add , block2: bloc_to_add2, block3: bloc_to_add3}})
+# puts   " blocks => #{a.blocks}"
+# wait 3 do
+#   # how to remove blocks
+#    a.extract({page3: :block1})
+# end
+#
+# a.show(:page3)
 
 
