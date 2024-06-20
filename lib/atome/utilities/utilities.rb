@@ -123,12 +123,13 @@ class Atome
   end
 
 
-  def sub_block(sub_params)
+  def sub_block(sub_params, spacing_found=3)
+
     @prev_sub_width = 0
     sub_params.each do |sub_id, sub_content|
       sub_created = box({ id: sub_id, height: '100%', left: @prev_sub_width })
       sub_created.set(sub_content)
-      @prev_sub_width = @prev_sub_width + sub_created.to_px(:width) + spacing
+      @prev_sub_width = @prev_sub_width + sub_created.to_px(:width) + spacing_found
       sub_created.width(sub_created.to_percent(:width))
       sub_created.left(sub_created.to_percent(:left))
     end
