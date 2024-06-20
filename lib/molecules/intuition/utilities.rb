@@ -605,7 +605,7 @@ new(molecule: :show) do |page_id, &bloc|
     new_bloc = new_page.box({ id: bloc_id, role: :block, width: '100%', height: 99, top: spacing + @prev_bloc_height, bottom: 0, left: 0, right: 0, spacing: spacing })
     new_bloc.define_singleton_method(:subs) do |sub_params|
 
-      new_bloc.sub_block(sub_params, 33)
+      new_bloc.sub_block(sub_params, 3)
     end
     new_bloc.set(bloc_content)
     @prev_bloc_height = @prev_bloc_height + new_bloc.height + spacing

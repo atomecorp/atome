@@ -110,24 +110,65 @@ class Atome
     # dummy method
   end
 
+  # def sub_block(sub_params, spacing_found = 3)
+  #   total_width = 0
+  #   sub_params.each_value do |sub_content|
+  #     sub_width = sub_content["width"].to_i
+  #     total_width += sub_width + spacing_found
+  #   end
+  #   left_offset = spacing_found
+  #   sub_params.each do |(sub_id, sub_content)|
+  #     sub_created = box({ id: sub_id, height: '100%'})
+  #     sub_created.set(sub_content)
+  #     sub_width = sub_created.to_px(:width)
+  #     left_offset += sub_width + spacing_found
+  #     sub_created.width(sub_width)
+  #     sub_created.left(left_offset - sub_width - spacing_found)
+  #     sub_created.width(sub_created.to_percent(:width))
+  #     sub_created.left(sub_created.to_percent(:left))
+  #   end
+  # end
+
+  # def sub_block(sub_params, spacing_found = 3)
+  #   num_blocks = sub_params.size
+  #   parent_width = to_px(:width) # Supposons que la largeur du parent est en pixels
+  #   total_spacing = (num_blocks + 1) * spacing_found
+  #   available_width = parent_width - total_spacing
+  #   block_width = available_width / num_blocks
+  #   left_offset = spacing_found
+  #   sub_params.each do |sub_id, sub_content|
+  #     alert sub_content[:width]
+  #     sub_created = box({ id: sub_id, height: '100%', left: left_offset })
+  #     sub_content["width"] = block_width
+  #     sub_created.set(sub_content)
+  #     sub_created.width(block_width)
+  #     left_offset += block_width + spacing_found
+  #     sub_created.width(sub_created.to_percent(:width))
+  #     sub_created.left(sub_created.to_percent(:left))
+  #   end
+  # end
+
   def sub_block(sub_params, spacing_found = 3)
-    total_width = 0
-    sub_params.each do |(sub_id, sub_content)|
-      sub_width = sub_content["width"].to_i
-      total_width += sub_width + spacing_found
-    end
+    num_blocks = sub_params.size
+    parent_width = to_px(:width) # Supposons que la largeur du parent est en pixels
+    total_ratios = sub_params.values.sum { |sub_content| sub_content[:width] }
+    total_spacing = (num_blocks + 1) * spacing_found
+    available_width = parent_width - total_spacing
     left_offset = spacing_found
-    sub_params.each_with_index do |(sub_id, sub_content), index|
+    sub_params.each do |sub_id, sub_content|
+      ratio = sub_content[:width]
+      block_width = (available_width * ratio) / total_ratios
       sub_created = box({ id: sub_id, height: '100%', left: left_offset })
+      sub_content["width"] = block_width
       sub_created.set(sub_content)
-      sub_width = sub_created.to_px(:width)
-      left_offset += sub_width + spacing_found
-      sub_created.width(sub_width)
-      sub_created.left(left_offset - sub_width - spacing_found)
-      sub_created.width(sub_created.to_percent(:width))
-      sub_created.left(sub_created.to_percent(:left))
+      sub_created.width(block_width)
+      left_offset += block_width + spacing_found
+          sub_created.width(sub_created.to_percent(:width))
+          sub_created.left(sub_created.to_percent(:left))
     end
   end
+
+
 
   def help(particle, &doc)
     if doc
