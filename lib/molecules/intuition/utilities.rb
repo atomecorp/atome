@@ -20,6 +20,18 @@ class Atome
     end
   end
 
+  def reorder_blocs
+    @prev_bloc_height = 0
+    fasten.each do |bloc_f|
+      potential_bloc = grab(bloc_f)
+      spacing = potential_bloc.spacing
+      if potential_bloc.role && potential_bloc.role.include?(:block)
+        potential_bloc.top(spacing + @prev_bloc_height)
+        @prev_bloc_height = @prev_bloc_height + potential_bloc.height + spacing
+      end
+    end
+  end
+
   def remove_menu_item(item_to_remove)
     grab(item_to_remove).delete(recursive: true)
     reorder_menu
@@ -493,6 +505,8 @@ new(molecule: :application) do |params, &bloc|
 
   menu = buttons({
                    id: "#{id_f}_menu",
+                   # left: 66,
+                   depth: 9999,
                    attach: id_f,
                    inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 3, disposition: :horizontal,
                                color: :orange, margin: { left: 33, top: 12 } },
@@ -507,6 +521,7 @@ new(molecule: :application) do |params, &bloc|
 
   main_app.define_singleton_method(:insert) do |bloc_to_add|
     bloc_to_add.each do |page_id, params_f|
+
       params_f.each do |block_id, block_content|
         @pages[page_id][:blocks] ||= {}
         @pages[page_id][:blocks][block_id.to_sym] = block_content
@@ -517,8 +532,11 @@ new(molecule: :application) do |params, &bloc|
 
   end
   main_app.define_singleton_method(:extract) do |bloc_to_extract|
-    bloc_to_extract.each do |page_id, block_id|
-      @blocks[page_id].delete(block_id)
+
+      bloc_to_extract.each do |page_id, block_id|
+        grab(block_id).delete({ recursive: true })
+        @blocks[page_id].delete(block_id)
+        grab(page_id).reorder_blocs
     end
 
   end
@@ -583,10 +601,23 @@ new(molecule: :show) do |page_id, &bloc|
   # now looking for associated blocks
   blocks_found = params[:blocks]
   @prev_bloc_height = 0
-  blocks_found&.each_with_index do |(bloc_id, bloc_content), index|
+  blocks_found&.each do |bloc_id, bloc_content|
 
-    new_bloc = new_page.box({ id: bloc_id, width: '100%', height: 99, top: spacing + @prev_bloc_height, bottom: 0, left: 0, right: 0 })
+    new_bloc = new_page.box({ id: bloc_id, role: :block, width: '100%', height: 99, top: spacing + @prev_bloc_height, bottom: 0, left: 0, right: 0, spacing: spacing })
+
+    new_bloc.define_singleton_method(:subs) do |sub_params|
+      @prev_sub_width = 0
+      sub_params.each do |sub_id, sub_content|
+        sub_created = new_bloc.box({ id: sub_id, height: '100%', left: @prev_sub_width })
+        sub_created.set(sub_content)
+        @prev_sub_width = @prev_sub_width + sub_created.to_px(:width) + spacing
+        sub_created.width(sub_created.to_percent(:width))
+        sub_created.left(sub_created.to_percent(:left))
+      end
+
+    end
     new_bloc.set(bloc_content)
+
     @prev_bloc_height = @prev_bloc_height + new_bloc.height + spacing
   end
 
@@ -595,25 +626,25 @@ new(molecule: :show) do |page_id, &bloc|
 
   new_page.set(particles_to_apply)
   if footer
-    new_footer = box({ left: 0, depth: -1, right: 0, width: :auto, top: :auto, bottom: 0, height: basic_size, category: :footer, id: "#{id_f}_footer" })
+    new_footer = box({ left: 0, depth: 999, right: 0, width: :auto, top: :auto, bottom: 0, height: basic_size, category: :footer, id: "#{id_f}_footer" })
     new_footer.remove(:box_color)
     new_footer.set(footer)
   end
 
   if header
-    new_header = box({ left: 0, right: 0, depth: -1, width: :auto, top: 0, height: basic_size, category: :header, id: "#{id_f}_header" })
+    new_header = box({ left: 0, right: 0, depth: 999, width: :auto, top: 0, height: basic_size, category: :header, id: "#{id_f}_header" })
     new_header.remove(:box_color)
     new_header.set(header)
   end
 
   if right_side_bar
-    new_right_side_bar = box({ left: :auto, depth: -1, right: 0, width: basic_size, top: 0, bottom: 0, height: :auto, category: :right_side_bar, id: "#{id_f}_right_side_bar" })
+    new_right_side_bar = box({ left: :auto, depth: 999, right: 0, width: basic_size, top: 0, bottom: 0, height: :auto, category: :right_side_bar, id: "#{id_f}_right_side_bar" })
     new_right_side_bar.remove(:box_color)
     new_right_side_bar.set(right_side_bar)
   end
 
   if left_side_bar
-    new_left_side_bar = box({ left: 0, right: :auto, depth: -1, width: basic_size, top: 0, bottom: 0, height: :auto, category: :left_side_bar, id: "#{id_f}_left_side_bar" })
+    new_left_side_bar = box({ left: 0, right: :auto, depth: 999, width: basic_size, top: 0, bottom: 0, height: :auto, category: :left_side_bar, id: "#{id_f}_left_side_bar" })
     new_left_side_bar.remove(:box_color)
     new_left_side_bar.set(left_side_bar)
   end
@@ -646,13 +677,22 @@ new(molecule: :show) do |page_id, &bloc|
   main_page
 end
 
+
+
 new(molecule: :buttons) do |params, &bloc|
+
+  keys_to_keep = [:inactive, :active]
+  remaining_params = remove_key_pair_but(params, keys_to_keep)
+  params = filter_keys_to_keep(params, keys_to_keep)
+
   role_f = params.delete(:role)
   actor_f = params.delete(:actor)
   params_saf = deep_copy(params)
-  context = params.delete(:attach) || :view
-  id_f = params.delete(:id) || identity_generator
+  context = remaining_params.delete(:attach) || :view
+  id_f = remaining_params.delete(:id) || identity_generator
   main = grab(context).box({ id: id_f })
+  main.set(remaining_params)
+
   main.role(role_f) || main.role(:buttons)
   main.actor(actor_f) if actor_f
   main.color({ blue: 0.5, red: 1, green: 1, alpha: 0 })

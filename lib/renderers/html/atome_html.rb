@@ -19,4 +19,20 @@ class Atome
     JS
     JS.eval(ruby_wasm_code).to_f
   end
+
+  def to_percent(property)
+    parent = grab(attach)
+    parent_width = parent.to_px(:width)
+    parent_height = parent.to_px(:height)
+    property_needed_px = to_px(property)
+    case property
+    when :width, :left
+      "#{(property_needed_px / parent_width.to_f) * 100}%"
+    when :height, :top
+      "#{(property_needed_px / parent_height.to_f) * 100}%"
+    else
+      raise ArgumentError # unsupported property use left , top, width an height
+    end
+  end
+
 end

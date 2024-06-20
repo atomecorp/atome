@@ -69,6 +69,17 @@ end
 class Object
   include ObjectExtension
 
+
+  def remove_key_pair_but(hash, keys_to_keep)
+    hash.dup.delete_if do |key, value|
+      key.is_a?(Integer) && key.even? && !keys_to_keep.include?(key)
+    end.reject { |key, value| keys_to_keep.include?(key) }
+  end
+
+  def filter_keys_to_keep(hash, keys_to_keep)
+    hash.select { |key, value| keys_to_keep.include?(key) }
+  end
+
   def deep_copy(obj)
     # utility for buttons
     case obj
@@ -768,4 +779,6 @@ class CssProxy
     parsed = JSON.parse(msg)
     bloc.call(parsed)
   end
+
+
 end

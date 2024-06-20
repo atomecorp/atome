@@ -56,14 +56,19 @@ puts   " menus_found => #{menus_found}"
 
 bloc_to_add= {height: 156, color: :green}
 bloc_to_add2= {height: 99, color: :blue}
-bloc_to_add3= {height: 333, color: :orange}
+bloc_to_add3= {height: 333, color: :orange, subs:{contact: {width: '33%'}, project: {width: '33%'}, calendar: {width: '33%'}}}
  a.insert({page3: {block1: bloc_to_add , block2: bloc_to_add2, block3: bloc_to_add3}})
-puts   " blocks => #{a.blocks}"
-wait 3 do
+
+
+wait 1 do
   # how to remove blocks
    a.extract({page3: :block1})
 end
 
 a.show(:page3)
+# how access blocks
+# wait 3 do
+#   grab(:block2).color(:black)
+# end
 
 
