@@ -118,9 +118,21 @@ class Atome
   @initialized = {}
 
 
-    def recursive(_val)
-      #dummy method
+  def recursive(_val)
+    #dummy method
+  end
+
+
+  def sub_block(sub_params)
+    @prev_sub_width = 0
+    sub_params.each do |sub_id, sub_content|
+      sub_created = box({ id: sub_id, height: '100%', left: @prev_sub_width })
+      sub_created.set(sub_content)
+      @prev_sub_width = @prev_sub_width + sub_created.to_px(:width) + spacing
+      sub_created.width(sub_created.to_percent(:width))
+      sub_created.left(sub_created.to_percent(:left))
     end
+  end
 
   def help(particle, &doc)
     if doc

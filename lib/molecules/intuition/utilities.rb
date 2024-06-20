@@ -602,22 +602,11 @@ new(molecule: :show) do |page_id, &bloc|
   blocks_found = params[:blocks]
   @prev_bloc_height = 0
   blocks_found&.each do |bloc_id, bloc_content|
-
     new_bloc = new_page.box({ id: bloc_id, role: :block, width: '100%', height: 99, top: spacing + @prev_bloc_height, bottom: 0, left: 0, right: 0, spacing: spacing })
-
     new_bloc.define_singleton_method(:subs) do |sub_params|
-      @prev_sub_width = 0
-      sub_params.each do |sub_id, sub_content|
-        sub_created = new_bloc.box({ id: sub_id, height: '100%', left: @prev_sub_width })
-        sub_created.set(sub_content)
-        @prev_sub_width = @prev_sub_width + sub_created.to_px(:width) + spacing
-        sub_created.width(sub_created.to_percent(:width))
-        sub_created.left(sub_created.to_percent(:left))
-      end
-
+      new_bloc.sub_block(sub_params)
     end
     new_bloc.set(bloc_content)
-
     @prev_bloc_height = @prev_bloc_height + new_bloc.height + spacing
   end
 

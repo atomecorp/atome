@@ -207,6 +207,7 @@
 # require "./examples/login"
 # require "./examples/scheduler"
 require "./examples/applications"
+# require "./examples/to_percent"
 # require "./examples/account"
 # require "./examples/tools"
 # require "./examples/buttons"
