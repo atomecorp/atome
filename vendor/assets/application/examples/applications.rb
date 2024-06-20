@@ -56,7 +56,7 @@ puts   " menus_found => #{menus_found}"
 
 bloc_to_add= {height: 156, color: :green}
 bloc_to_add2= {height: 99, color: :blue}
-bloc_to_add3= {height: 333, color: :orange, subs:{contact: {width: '33%'}, project: {width: '33%'}, calendar: {width: '33%'}}}
+bloc_to_add3= {height: 333, color: :orange, subs:{contact: {width: '29.7%', color: :black}, project: {width: '29.7%'}, calendar: {width: '29.7%', color: :green}}}
  a.insert({page3: {block1: bloc_to_add , block2: bloc_to_add2, block3: bloc_to_add3}})
 
 

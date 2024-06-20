@@ -8,18 +8,7 @@ class Atome
     attr_accessor :initialized
 
     def sanitize_data_for_json(data)
-      data = data.gsub('"', '\\"')
-      # case data
-      # when String
-      #   data.gsub('"', '\\"')
-      # when Hash
-      #   data.transform_values { |value| sanitize_data(value) }
-      # when Array
-      #   data.map { |value| sanitize_data(value) }
-      # else
-      #   data
-      # end
-      data
+      data.gsub('"', '\\"')
     end
 
     def send_localstorage_content
@@ -117,19 +106,24 @@ class Atome
 
   @initialized = {}
 
-
   def recursive(_val)
-    #dummy method
+    # dummy method
   end
 
-
-  def sub_block(sub_params, spacing_found=3)
-
-    @prev_sub_width = 0
-    sub_params.each do |sub_id, sub_content|
-      sub_created = box({ id: sub_id, height: '100%', left: @prev_sub_width })
+  def sub_block(sub_params, spacing_found = 3)
+    total_width = 0
+    sub_params.each do |(sub_id, sub_content)|
+      sub_width = sub_content["width"].to_i
+      total_width += sub_width + spacing_found
+    end
+    left_offset = spacing_found
+    sub_params.each_with_index do |(sub_id, sub_content), index|
+      sub_created = box({ id: sub_id, height: '100%', left: left_offset })
       sub_created.set(sub_content)
-      @prev_sub_width = @prev_sub_width + sub_created.to_px(:width) + spacing_found
+      sub_width = sub_created.to_px(:width)
+      left_offset += sub_width + spacing_found
+      sub_created.width(sub_width)
+      sub_created.left(left_offset - sub_width - spacing_found)
       sub_created.width(sub_created.to_percent(:width))
       sub_created.left(sub_created.to_percent(:left))
     end

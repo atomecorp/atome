@@ -505,7 +505,6 @@ new(molecule: :application) do |params, &bloc|
 
   menu = buttons({
                    id: "#{id_f}_menu",
-                   # left: 66,
                    depth: 9999,
                    attach: id_f,
                    inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 3, disposition: :horizontal,
@@ -605,7 +604,8 @@ new(molecule: :show) do |page_id, &bloc|
   blocks_found&.each do |bloc_id, bloc_content|
     new_bloc = new_page.box({ id: bloc_id, role: :block, width: '100%', height: 99, top: spacing + @prev_bloc_height, bottom: 0, left: 0, right: 0, spacing: spacing })
     new_bloc.define_singleton_method(:subs) do |sub_params|
-      new_bloc.sub_block(sub_params, spacing)
+
+      new_bloc.sub_block(sub_params, 33)
     end
     new_bloc.set(bloc_content)
     @prev_bloc_height = @prev_bloc_height + new_bloc.height + spacing
@@ -706,5 +706,4 @@ new(molecule: :buttons) do |params, &bloc|
     main.create_new_button(item_id, index, label, code)
   end
   main
-
 end
