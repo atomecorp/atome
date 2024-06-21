@@ -504,3 +504,21 @@ function record_content(blob) {
 }
 
 
+function isDescendant(parentId, childId) {
+    var parent = document.getElementById(parentId);
+    var child = document.getElementById(childId);
+
+    let node = child;
+    while (node !== null) {
+        if (node === parent) {
+            return true;
+        }
+        node = node.parentNode;
+    }
+    return    false;
+
+}
+
+// alert(isDescendant('intuition', 'the_test_box'));
+// alert(isDescendant('view', 'the_test_box'));
+

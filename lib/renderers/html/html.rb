@@ -4,6 +4,8 @@
 
 class HTML
 
+
+
   def self.locate(selector, base_element = JS.global[:document][:body])
     return base_element if selector.empty?
 
@@ -22,6 +24,10 @@ class HTML
     end
   end
 
+  def self.is_descendant(ancestor, descendant)
+    JS.eval("return isDescendant('#{ancestor}', '#{descendant}')")
+  end
+
   def initialize(id_found, current_atome)
 
     @element = JS.global[:document].getElementById(id_found.to_s)
@@ -34,6 +40,8 @@ class HTML
   def object
     @element
   end
+
+
 
   def hypertext(params)
     current_div = JS.global[:document].getElementById(@id.to_s)

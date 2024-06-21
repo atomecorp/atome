@@ -2,10 +2,16 @@
 
 # toolbox   method here
 require 'json'
-
+# def is_descendant(ancestor, descendant)
+#   JS.eval("return isDescendant('#{ancestor}', '#{descendant}')")
+# end
 class Atome
   class << self
     attr_accessor :initialized
+
+    # def descendant_of?(ancestor)
+    #   is_descendant(ancestor, id)
+    # end
 
     def sanitize_data_for_json(data)
       data.gsub('"', '\\"')

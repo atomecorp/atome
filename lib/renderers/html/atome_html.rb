@@ -9,6 +9,10 @@ class Atome
     end
   end
 
+    def descendant_of?(ancestor)
+      HTML.is_descendant(ancestor, id)
+    end
+
   def to_px(particle)
     ruby_wasm_code = <<-JS
   var div = document.getElementById("#{@id}");

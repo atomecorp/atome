@@ -69,6 +69,10 @@ end
 class Object
   include ObjectExtension
 
+  def truncate_string(string, max_length)
+    string.length > max_length ? string.slice(0, max_length) + '.' : string
+  end
+
 
   def remove_key_pair_but(hash, keys_to_keep)
     hash.dup.delete_if do |key, value|
@@ -137,7 +141,8 @@ class Object
 
   # the method below generate Atome method creation at Object level
   def atome_method_for_object(element)
-    Object.define_method element do |params, &user_proc|
+
+    Object.define_method element do |params=nil, &user_proc|
       default_parent = Essentials.default_params[element][:attach] || :view
       grab(default_parent).send(element, params, &user_proc)
     end

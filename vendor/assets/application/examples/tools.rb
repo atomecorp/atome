@@ -1,6 +1,36 @@
 # frozen_string_literal: true
 
 
+new({ tool: :color2 }) do
+  active_code = lambda {
+    puts 'color activated1'
+  }
+  color_code2=lambda {
+    puts  "object id is : #{id}"
+    # color(:green)
+  }
+  inactive_code = lambda { |data|
+    data[:treated].each do |atome_f|
+      # atome_f.drag(false)
+      # atome_f.color(:green)
+    end
+  }
+
+  { activation: active_code,
+    alteration: { event: color_code2 },
+    inactivation: inactive_code,
+    target: :color,
+    particles: { red: 0, green: 0.5, blue: 1, alpha: 1 }
+  }
+end
+
+new({ tool: :toolbox1 }) do
+  active_code = lambda {
+    toolbox({ tools: [:combined], toolbox: { orientation: :ew, left: 90, bottom: 9, spacing: 9 } })
+  }
+  { activation: active_code }
+end
+
 
 new({ tool: :combined }) do |params|
 
@@ -36,7 +66,45 @@ new({ tool: :combined }) do |params|
     post: post_code,
     zone: zone_spe,
     icon: :color,
-    int8: { french: :couleur, english: :color, german: :colorad } }
+    int8: { french: :couleur, english: :combined, german: :colorad } }
+
+end
+
+new({ tool: :rotate }) do |params|
+
+  active_code = lambda {
+    puts :alteration_tool_code_activated
+  }
+
+  inactive_code = lambda { |param|
+    puts :alteration_tool_code_inactivated
+  }
+  pre_code = lambda { |params|
+    puts "pre_creation_code,atome_touched: #{:params}"
+
+  }
+  post_code = lambda { |params|
+    puts "post_creation_code,atome_touched: #{:params}"
+
+  }
+
+  zone_spe = lambda { |current_tool|
+    # puts "current tool is : #{:current_tool} now creating specific zone"
+    # b = box({ width: 33, height: 12 })
+    # b.text({ data: :all })
+
+  }
+
+  {
+    activation: active_code,
+    inactivation: inactive_code,
+    # alteration: { width: 22, blur: 3 },
+    alteration: { rotate: 22 },
+    pre: pre_code,
+    post: post_code,
+    zone: zone_spe,
+    icon: :color,
+    int8: { french: :couleur, english: :rotate, german: :colorad } }
 
 end
 
@@ -180,13 +248,6 @@ new({ tool: :select }) do
 
 end
 
-new({ tool: :toolbox1 }) do
-  active_code = lambda {
-    toolbox({ tools: [:combined], toolbox: { orientation: :ew, left: 90, bottom: 9, spacing: 9 } })
-  }
-  { activation: active_code }
-end
-
 new({ tool: :color }) do
   active_code = lambda {
     puts 'color activated1'
@@ -228,16 +289,20 @@ new({ tool: :crash_test }) do
 end
 
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
-Universe.tools_root = {id: :root_tools, tools: [:select,:crash_test, :box, :drag, :touch,:color, :move, :toolbox1], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
+Universe.tools_root = {id: :root_tools, tools: [:select,:crash_test, :box, :drag, :touch,:color, :move, :toolbox1, :rotate, :color2], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
 puts "above we added an id because each tool may be in many toolbox and have an uniq ID"
 Atome.init_intuition
 
-b = box({ id: :the_test__box, selected: true })
+b = box({ id: :the_test_box, selected: true, color: :blue })
 c=circle({ left: 90, id: :the_test_circle, selected: false })
 c.drag(true) do
   puts "moving"
 end
+
+
 b.touch(true) do
+  # alert b.descendant_of?(:view)
+  # alert "#{b.descendant_of?(:intuition)}, then dont treat!"
   if b.width == 170
     b.width(55)
   else
@@ -246,3 +311,13 @@ b.touch(true) do
 
 end
 
+
+# wait 2 do
+#   b= grab('color_tool_icon')
+#   grab('color_tool_icon').color(:red)
+#
+#   puts b.descendant_of?(:view)
+#   puts "#{b.descendant_of?(:intuition)}, then dont treat!"
+#
+# end
+alert 'add tool preview , and maybe allow tool details to be moved'

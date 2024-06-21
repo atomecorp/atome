@@ -20,7 +20,7 @@ new({ after: :red }) do |params|
   a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
     grab(atome_to_refresh).apply(id)
-  end
+  end if a
   params
 end
 
@@ -34,7 +34,7 @@ new({ after: :green }) do |params|
   a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
     grab(atome_to_refresh).apply(id)
-  end
+  end if a
   params
 end
 
@@ -48,7 +48,7 @@ new({ after: :blue }) do |params|
   a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
     grab(atome_to_refresh).apply(id)
-  end
+  end if a
   params
 end
 new({ particle: :alpha, category: :property, type: :string }) do
@@ -60,7 +60,7 @@ new({ after: :alpha }) do |params|
   a = affect.dup #  FIXME  we have to dup else some items in the array array other duplicated
   a.each do |atome_to_refresh|
     grab(atome_to_refresh).apply(id)
-  end
+  end if a
   params
 end
 new({ particle: :diffusion, category: :property, type: :string }) do

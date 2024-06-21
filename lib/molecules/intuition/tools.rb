@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-def truncate_string(string, max_length)
-  string.length > max_length ? string.slice(0, max_length) + '.' : string
-end
-
 size = 33
 smooth = 3
 margin = 3
@@ -62,17 +58,21 @@ class Atome
             y = event[:clientY]
             elements = JS.global[:document].elementsFromPoint(x, y)
             elements.to_a.each do |atome_touched|
-              unless atome_touched.to_s == 'html'
-                id_found = atome_touched[:id].to_s
-                atome_found = grab(id_found)
-                # unless (atome_found && atome_found.tag[:system])
-                puts 'we have to check if operation is a creation or an alteration to include or exclude the view '
+              id_found = atome_touched[:id]
+              id_found = id_found.to_s.to_sym # keep .to_s to because ruby wasm try may to_sym on on symbol
+              atome_found = grab(id_found)
+
+              is_descendant_of_intuition = atome_found.descendant_of?(:intuition).to_s if atome_found
+              # # the condition below is use to exclude the treatment any object in the intuition layer
+              unless is_descendant_of_intuition == 'true'
+
                 Universe.active_tools.each do |tool|
                   apply_tool(tool, atome_found, event)
                 end
-
-                break
               end
+              #
+              break
+              # end
             end
           else
             Universe.allow_tool_operations = true
@@ -152,7 +152,6 @@ class Atome
     end
 
     def apply_tool(tool, atome_touched, a_event)
-
       current_tool = grab(tool)
       tool_actions = current_tool.data
       method_found = tool_actions[:method]
@@ -169,10 +168,34 @@ class Atome
                else
                  atome_touched
                end
-      unless method_found == :alteration && target.tag[:system]
-
+      if method_found == :alteration && target.tag[:system]
+        # in this case (on target touch )we are targeting a system object non alterable so we create an a new atome
+        # Ex: if we are on a system color we create a new color that can be altered
         tools_scheme[:particles]&.each do |particle_f, value_f|
-          target.send(particle_f, value_f)
+          if target.type
+            type_to_create = target.type
+            if type_to_create
+              target = atome_touched.send(type_to_create, { particle_f => value_f })
+              tools_scheme[:particles]&.each do |particle_f, value_f|
+                target.send(particle_f, value_f)
+              end
+            end
+          end
+
+        end
+      else
+
+        # below code trigger when activating the current tool :
+        tools_scheme[:particles]&.each do |particle_f, value_f|
+
+          is_descendant_of_intuition = target.descendant_of?(:intuition).to_s
+          atome_descendant_of_intuition = atome_touched.descendant_of?(:intuition).to_s
+          # the condition below is use to exclude the treatment any object in the intuition layer
+          # puts "1 target is : #{target.id}, atome_touched is : #{atome_touched}"
+          unless is_descendant_of_intuition == 'true' || atome_descendant_of_intuition == 'true'
+            # puts "2 target is : #{target.id}, atome_touched is : #{atome_touched}"
+            target.send(particle_f, value_f)
+          end
         end
         send(method_found, current_tool, tool_actions, target, a_event)
       end
@@ -402,7 +425,7 @@ class Atome
           particle_label.top(:auto)
           particle_label.bottom(0)
           particle.touch(true) do
-            puts "1 ======> opening !!!#{particle_name}"
+            # puts "1 ======> opening !!!#{particle_name}"
             tool.instance_variable_set('@prevent_action', true)
             slider_id = "particle_slider_#{particle_name}"
             if particle.instance_variable_get('@active')
@@ -430,21 +453,22 @@ class Atome
                 # Slider actions below:
                 if grab(slider_id).instance_variable_get('@initialised')
                   Atome.selection.each do |atome_id_to_treat|
-
                     tool_scheme[:particles][particle_name] = value.to_f / 100
                     atome_found = grab(atome_id_to_treat)
                     target = grab(atome_found.color.last)
-
-                    target.send(particle_name, value.to_f / 100)
+                    if tool.active
+                      target.send(particle_name, value.to_f / 100)
+                    end
                     label_value.data(value.to_f / 100)
                   end
+
                 end
               end
 
               Atome.selection.each do |atome_id_to_treat|
                 atome_found = grab(atome_id_to_treat)
-                puts 'here slider treat either the target atome types or current atome'
-                puts "need to created a list instead of choosing the last atome found of it's kind"
+                # puts 'here slider treat either the target atome types or current atome'
+                # puts "need to created a list instead of choosing the last atome found of it's kind"
                 target = if tool_scheme[:target]
                            grab(atome_found.send(tool_scheme[:target]).last)
                          else
