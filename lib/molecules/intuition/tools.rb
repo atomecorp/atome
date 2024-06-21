@@ -70,9 +70,7 @@ class Atome
                   apply_tool(tool, atome_found, event)
                 end
               end
-              #
               break
-              # end
             end
           else
             Universe.allow_tool_operations = true
@@ -89,11 +87,42 @@ class Atome
     end
 
     def start_click_analysis
-      # here we capture any touch when usingh tool
+      # here we capture any touch when using tool
       @click_analysis_active = false
-      JS.global[:document].addEventListener('mouseup') do |native_event|
-        Atome.instance_exec(native_event, &@click_analysis) if @click_analysis.is_a?(Proc)
+
+      click_timeout = nil
+      double_click_delay = 150
+
+      JS.global[:document].addEventListener('click') do |native_event|
+        if @click_analysis
+          if click_timeout
+            wait(:kill, click_timeout)
+            click_timeout = nil
+            selected_items = grab(Universe.current_user).selection.collect
+            if  selected_items.length >  0
+              dup_selected_items = selected_items.dup
+              dup_selected_items.each do |atome_id_selected|
+                atome_selected = grab(atome_id_selected)
+                atome_selected.selected(false)
+              end
+            else
+              atomes_in_view= grab(:view).fasten
+              atomes_in_view.each do |atome_id_found|
+                grab(atome_id_found).selected(true)
+              end
+              end
+
+
+          else
+            click_timeout = wait(double_click_delay / 1000.0) do
+              click_timeout = nil
+              Atome.instance_exec(native_event, &@click_analysis) if @click_analysis.is_a?(Proc)
+            end
+          end
+        end
+
       end
+
     end
 
     def alteration(current_tool, tool_actions, atome_touched, a_event)
@@ -168,19 +197,19 @@ class Atome
                else
                  atome_touched
                end
-      if method_found == :alteration && target.tag[:system]
+      if target && method_found == :alteration && target.tag[:system]
         # in this case (on target touch )we are targeting a system object non alterable so we create an a new atome
         # Ex: if we are on a system color we create a new color that can be altered
         tools_scheme[:particles]&.each do |particle_f, value_f|
-          if target.type
-            type_to_create = target.type
-            if type_to_create
-              target = atome_touched.send(type_to_create, { particle_f => value_f })
-              tools_scheme[:particles]&.each do |particle_f, value_f|
-                target.send(particle_f, value_f)
-              end
+          # if target.type
+          type_to_create = target.type
+          if type_to_create
+            target = atome_touched.send(type_to_create, { particle_f => value_f })
+            tools_scheme[:particles]&.each do |particle_f, value_f|
+              target.send(particle_f, value_f)
             end
           end
+          # end
 
         end
       else
@@ -388,7 +417,7 @@ class Atome
         tool.instance_variable_set('@tool_open', false)
         tool_scheme[:particles].each_key do |particle|
           grab("tool_particle_#{particle}").delete({ force: true })
-        end
+        end if tool_scheme[:particles]
         tool.width(size)
       else
         tool.instance_variable_set('@tool_open', true)
@@ -488,6 +517,27 @@ class Atome
     end
     tool.touch(:down) do
       tool.depth(999)
+    end
+    tool.touch(:double) do
+      tool_to_deactivate = Universe.active_tools.dup
+      tool_to_deactivate.each do |atome_id_found|
+
+        atome_found = grab(atome_id_found)
+        puts "deactivate #{atome_id_found}"
+        atome_found.deactivate_tool
+        #   if atome_found.activated
+        # #     atome_found.deactivate_tool
+        #   end
+        # puts "#{atome_found}, #{atome_found.class}"
+      end
+      # Universe.tools.each do |tool_id_found, _tool_content|
+      #   # tool_found=grab(tool_id_found)
+      #   puts   tool_id_found
+      #   # if tool_found.activated
+      #   #   tool.deactivate_tool
+      #   # end
+      # end
+      tool.activate_tool
     end
     tool.touch(true) do
       unless tool.instance_variable_get('@prevent_action')

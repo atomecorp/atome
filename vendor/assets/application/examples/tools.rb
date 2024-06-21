@@ -1,28 +1,28 @@
 # frozen_string_literal: true
 
 
-new({ tool: :color2 }) do
-  active_code = lambda {
-    puts 'color activated1'
-  }
-  color_code2=lambda {
-    puts  "object id is : #{id}"
-    # color(:green)
-  }
-  inactive_code = lambda { |data|
-    data[:treated].each do |atome_f|
-      # atome_f.drag(false)
-      # atome_f.color(:green)
-    end
-  }
-
-  { activation: active_code,
-    alteration: { event: color_code2 },
-    inactivation: inactive_code,
-    target: :color,
-    particles: { red: 0, green: 0.5, blue: 1, alpha: 1 }
-  }
-end
+# new({ tool: :color2 }) do
+#   active_code = lambda {
+#     puts 'color activated1'
+#   }
+#   color_code2=lambda {
+#     puts  "object id is : #{id}"
+#     # color(:green)
+#   }
+#   inactive_code = lambda { |data|
+#     data[:treated].each do |atome_f|
+#       # atome_f.drag(false)
+#       # atome_f.color(:green)
+#     end
+#   }
+#
+#   { activation: active_code,
+#     alteration: { event: color_code2 },
+#     inactivation: inactive_code,
+#     target: :color,
+#     particles: { red: 0, green: 0.5, blue: 1, alpha: 1 }
+#   }
+# end
 
 new({ tool: :toolbox1 }) do
   active_code = lambda {
@@ -39,7 +39,7 @@ new({ tool: :combined }) do |params|
   }
 
   inactive_code = lambda { |param|
-    puts :alteration_tool_code_inactivated
+    puts :alteration_tool_code_inactivated1
   }
   pre_code = lambda { |params|
     puts "pre_creation_code,atome_touched: #{:params}"
@@ -77,7 +77,7 @@ new({ tool: :rotate }) do |params|
   }
 
   inactive_code = lambda { |param|
-    puts :alteration_tool_code_inactivated
+    puts :alteration_tool_code_inactivated2
   }
   pre_code = lambda { |params|
     puts "pre_creation_code,atome_touched: #{:params}"
@@ -289,11 +289,11 @@ new({ tool: :crash_test }) do
 end
 
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
-Universe.tools_root = {id: :root_tools, tools: [:select,:crash_test, :box, :drag, :touch,:color, :move, :toolbox1, :rotate, :color2], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
+Universe.tools_root = {id: :root_tools, tools: [:select,:crash_test, :box, :drag, :touch,:color, :move, :toolbox1, :rotate], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
 puts "above we added an id because each tool may be in many toolbox and have an uniq ID"
 Atome.init_intuition
 
-b = box({ id: :the_test_box, selected: true, color: :blue })
+b = box({ id: :the_test_box, selected: false, color: :blue })
 c=circle({ left: 90, id: :the_test_circle, selected: false })
 c.drag(true) do
   puts "moving"
@@ -310,7 +310,8 @@ b.touch(true) do
   end
 
 end
-
+text({left: 333, data: :hello})
+circle({left: 333,top: 333})
 
 # wait 2 do
 #   b= grab('color_tool_icon')
@@ -320,4 +321,4 @@ end
 #   puts "#{b.descendant_of?(:intuition)}, then dont treat!"
 #
 # end
-alert 'add tool preview , and maybe allow tool details to be moved'
+puts 'add tool preview , and maybe allow tool details to be moved'
