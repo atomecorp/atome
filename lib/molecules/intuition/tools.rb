@@ -409,9 +409,9 @@ class Atome
       tool.instance_variable_set('@prevent_action', true)
       if tool.instance_variable_get('@tool_open') == true
         tool.instance_variable_set('@tool_open', false)
-        tool_scheme[:particles].each_key do |particle|
-          grab("tool_particle_#{particle}").delete({ force: true })
-        end if tool_scheme[:particles]
+        tool_scheme[:particles]&.each_key do |particle|
+            grab("tool_particle_#{particle}").delete({ force: true })
+          end
         tool.width(size)
       else
         tool.instance_variable_set('@tool_open', true)
@@ -474,6 +474,8 @@ class Atome
                 # Slider actions below:
                 if grab(slider_id).instance_variable_get('@initialised')
                   Atome.selection.each do |atome_id_to_treat|
+
+
                     tool_scheme[:particles][particle_name] = value.to_f / 100
                     atome_found = grab(atome_id_to_treat)
                     target = grab(atome_found.color.last)
