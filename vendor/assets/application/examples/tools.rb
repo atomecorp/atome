@@ -35,18 +35,18 @@ end
 new({ tool: :combined }) do |params|
 
   active_code = lambda {
-    puts :alteration_tool_code_activated
+    # puts :alteration_tool_code_activated
   }
 
   inactive_code = lambda { |param|
-    puts :alteration_tool_code_inactivated1
+    # puts :alteration_tool_code_inactivated1
   }
   pre_code = lambda { |params|
-    puts "pre_creation_code,atome_touched: #{:params}"
+    # puts "pre_creation_code,atome_touched: #{:params}"
 
   }
   post_code = lambda { |params|
-    puts "post_creation_code,atome_touched: #{:params}"
+    # puts "post_creation_code,atome_touched: #{:params}"
 
   }
 
@@ -73,18 +73,18 @@ end
 new({ tool: :rotate }) do |params|
 
   active_code = lambda {
-    puts :alteration_tool_code_activated
+    # puts :alteration_tool_code_activated
   }
 
   inactive_code = lambda { |param|
-    puts :alteration_tool_code_inactivated2
+    # puts :alteration_tool_code_inactivated2
   }
   pre_code = lambda { |params|
-    puts "pre_creation_code,atome_touched: #{:params}"
+    # puts "pre_creation_code,atome_touched: #{:params}"
 
   }
   post_code = lambda { |params|
-    puts "post_creation_code,atome_touched: #{:params}"
+    # puts "post_creation_code,atome_touched: #{:params}"
 
   }
 
@@ -111,20 +111,20 @@ end
 new({ tool: :box }) do |params|
 
   active_code = lambda {
-    puts :creation_tool_code_activated
+    # puts :creation_tool_code_activated
   }
 
   inactive_code = lambda { |atomes_treated|
-    puts :creation_tool_code_inactivated
+    # puts :creation_tool_code_inactivated
 
   }
   pre_creation_code = lambda { |params|
-    puts "pre_creation_code : atome_touched : #{:params} "
+    # puts "pre_creation_code : atome_touched : #{:params} "
 
   }
 
   post_creation_code = lambda { |params|
-    puts "post_creation_code,atome_touched: #{:params}"
+    # puts "post_creation_code,atome_touched: #{:params}"
   }
 
   { creation: { box: { color: :blue, width: 66, height: 66 } },
@@ -214,7 +214,7 @@ new({ tool: :drag }) do
   }
   move_code = lambda {
     drag(true) do
-      puts left
+      puts "left is : #{left}"
     end
   }
 
@@ -250,7 +250,7 @@ end
 
 new({ tool: :color }) do
   active_code = lambda {
-    puts 'color activated1'
+    # puts 'color activated1'
   }
   color_code = lambda {
     # color(:green)
@@ -272,7 +272,7 @@ end
 
 new({ tool: :crash_test }) do
   active_code = lambda {
-    puts 'color activated1'
+    alert  grab(Universe.current_user).selection.collect
   }
   color_code = lambda {
     # color(:green)
@@ -283,14 +283,14 @@ new({ tool: :crash_test }) do
     end
   }
 
-  {
-    alteration: { width: 22},
+  {activation: active_code,
+    # alteration: { alert: :good}
     }
 end
 
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
 Universe.tools_root = {id: :root_tools, tools: [:select,:crash_test, :box, :drag, :touch,:color, :move, :toolbox1, :rotate], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
-puts "above we added an id because each tool may be in many toolbox and have an uniq ID"
+# puts "above we added an id because each tool may be in many toolbox and have an uniq ID"
 Atome.init_intuition
 
 b = box({ id: :the_test_box, selected: false, color: :blue })
@@ -310,8 +310,8 @@ b.touch(true) do
   end
 
 end
-text({left: 333, data: :hello})
-circle({left: 333,top: 333})
+text({left: 333, data: :hello, id: :t1})
+circle({left: 333,top: 333, id: :c2})
 
 # wait 2 do
 #   b= grab('color_tool_icon')

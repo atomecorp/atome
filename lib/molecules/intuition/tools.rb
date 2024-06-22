@@ -201,7 +201,6 @@ class Atome
         # in this case (on target touch )we are targeting a system object non alterable so we create an a new atome
         # Ex: if we are on a system color we create a new color that can be altered
         tools_scheme[:particles]&.each do |particle_f, value_f|
-          # if target.type
           type_to_create = target.type
           if type_to_create
             target = atome_touched.send(type_to_create, { particle_f => value_f })
@@ -209,20 +208,15 @@ class Atome
               target.send(particle_f, value_f)
             end
           end
-          # end
-
         end
       else
 
         # below code trigger when activating the current tool :
         tools_scheme[:particles]&.each do |particle_f, value_f|
-
           is_descendant_of_intuition = target.descendant_of?(:intuition).to_s
           atome_descendant_of_intuition = atome_touched.descendant_of?(:intuition).to_s
           # the condition below is use to exclude the treatment any object in the intuition layer
-          # puts "1 target is : #{target.id}, atome_touched is : #{atome_touched}"
           unless is_descendant_of_intuition == 'true' || atome_descendant_of_intuition == 'true'
-            # puts "2 target is : #{target.id}, atome_touched is : #{atome_touched}"
             target.send(particle_f, value_f)
           end
         end
@@ -423,7 +417,6 @@ class Atome
         tool.instance_variable_set('@tool_open', true)
 
         tool_scheme[:particles]&.each_with_index do |(particle_name, _value_), ind|
-
           particle = tool.box({ id: "tool_particle_#{particle_name}", tag: { system: true }, depth: 1, smooth: smooth,
                                 apply: %i[inactive_tool_col tool_box_border tool_shade],
                                 width: size, height: size, left: ind * (size + margin) + size })
@@ -454,7 +447,6 @@ class Atome
           particle_label.top(:auto)
           particle_label.bottom(0)
           particle.touch(true) do
-            # puts "1 ======> opening !!!#{particle_name}"
             tool.instance_variable_set('@prevent_action', true)
             slider_id = "particle_slider_#{particle_name}"
             if particle.instance_variable_get('@active')
@@ -485,19 +477,17 @@ class Atome
                     tool_scheme[:particles][particle_name] = value.to_f / 100
                     atome_found = grab(atome_id_to_treat)
                     target = grab(atome_found.color.last)
-                    if tool.active
-                      target.send(particle_name, value.to_f / 100)
-                    end
-                    label_value.data(value.to_f / 100)
+                    target.send(particle_name, value.to_f / 100) if tool.active
+
                   end
 
+                  label_value.data(value.to_f / 100)
+                  tool_scheme[:particles][particle_name]=value.to_f / 100
                 end
               end
 
               Atome.selection.each do |atome_id_to_treat|
                 atome_found = grab(atome_id_to_treat)
-                # puts 'here slider treat either the target atome types or current atome'
-                # puts "need to created a list instead of choosing the last atome found of it's kind"
                 target = if tool_scheme[:target]
                            grab(atome_found.send(tool_scheme[:target]).last)
                          else
@@ -521,22 +511,9 @@ class Atome
     tool.touch(:double) do
       tool_to_deactivate = Universe.active_tools.dup
       tool_to_deactivate.each do |atome_id_found|
-
         atome_found = grab(atome_id_found)
-        puts "deactivate #{atome_id_found}"
         atome_found.deactivate_tool
-        #   if atome_found.activated
-        # #     atome_found.deactivate_tool
-        #   end
-        # puts "#{atome_found}, #{atome_found.class}"
       end
-      # Universe.tools.each do |tool_id_found, _tool_content|
-      #   # tool_found=grab(tool_id_found)
-      #   puts   tool_id_found
-      #   # if tool_found.activated
-      #   #   tool.deactivate_tool
-      #   # end
-      # end
       tool.activate_tool
     end
     tool.touch(true) do
