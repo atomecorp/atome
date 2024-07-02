@@ -9,9 +9,6 @@ class Atome
   class << self
     attr_accessor :initialized
 
-    # def descendant_of?(ancestor)
-    #   is_descendant(ancestor, id)
-    # end
 
     def sanitize_data_for_json(data)
       data.gsub('"', '\\"')
@@ -112,47 +109,83 @@ class Atome
 
   @initialized = {}
 
+  def grip(role_wanted)
+    gripped_atome = []
+
+    fasten.each do |child_id|
+      child_found = grab(child_id)
+      if child_found.role && child_found.role.include?(role_wanted)
+        gripped_atome << child_id
+      end
+    end
+    gripped_atome
+  end
+
   def recursive(_val)
     # dummy method
   end
 
-  # def sub_block(sub_params, spacing_found = 3)
-  #   total_width = 0
-  #   sub_params.each_value do |sub_content|
-  #     sub_width = sub_content["width"].to_i
-  #     total_width += sub_width + spacing_found
-  #   end
-  #   left_offset = spacing_found
-  #   sub_params.each do |(sub_id, sub_content)|
-  #     sub_created = box({ id: sub_id, height: '100%'})
-  #     sub_created.set(sub_content)
-  #     sub_width = sub_created.to_px(:width)
-  #     left_offset += sub_width + spacing_found
-  #     sub_created.width(sub_width)
-  #     sub_created.left(left_offset - sub_width - spacing_found)
-  #     sub_created.width(sub_created.to_percent(:width))
-  #     sub_created.left(sub_created.to_percent(:left))
-  #   end
-  # end
 
-  # def sub_block(sub_params, spacing_found = 3)
-  #   num_blocks = sub_params.size
-  #   parent_width = to_px(:width) # Supposons que la largeur du parent est en pixels
-  #   total_spacing = (num_blocks + 1) * spacing_found
-  #   available_width = parent_width - total_spacing
-  #   block_width = available_width / num_blocks
-  #   left_offset = spacing_found
-  #   sub_params.each do |sub_id, sub_content|
-  #     alert sub_content[:width]
-  #     sub_created = box({ id: sub_id, height: '100%', left: left_offset })
-  #     sub_content["width"] = block_width
-  #     sub_created.set(sub_content)
-  #     sub_created.width(block_width)
-  #     left_offset += block_width + spacing_found
-  #     sub_created.width(sub_created.to_percent(:width))
-  #     sub_created.left(sub_created.to_percent(:left))
-  #   end
-  # end
+
+  def spacing_found(parent_width, child_width, nb_of_children)
+    total_child_width = child_width * nb_of_children
+    remaining_width = parent_width - total_child_width
+    spacing = remaining_width.to_f / (nb_of_children + 1)
+    spacing_percentage = (spacing / parent_width) * 100
+    spacing_percentage.round(2)
+  end
+
+  def block(params)
+    direction = params.delete(:direction) || :vertical
+    spacing = params.delete(:spacing) || 3
+    width_found = params.delete(:width) || '100%'
+    height_found = params.delete(:height) || '100%'
+    bloc_params = params.delete(:data) || {}
+
+    last_id_found = grip(:block).last
+
+    if last_id_found
+      last_found = grab(last_id_found)
+      case direction
+      when :vertical
+        box({ top: below(last_found, spacing), role: :block, width: width_found }.merge(params).merge(bloc_params))
+      when :horizontal
+        width_found = to_px(:width)
+        block_left = after(last_found, spacing)
+        left_in_percent = (block_left / width_found) * 100
+        box({ left: "#{left_in_percent}%", role: :block, height: height_found }.merge(params).merge(bloc_params))
+      else
+        #
+      end
+    else
+      case direction
+      when :vertical
+        box({ top: spacing, role: :block, width: width_found }.merge(params).merge(bloc_params))
+      when :horizontal
+        box({ left: spacing, role: :block, height: height_found }.merge(params).merge(bloc_params))
+      else
+        #
+      end
+    end
+
+  end
+
+  def blocks(params)
+    blocks = params.delete(:blocks)
+    distribute = params.delete(:distribute)
+    if distribute && params[:direction] == :horizontal
+      width_found = to_px(:width)
+      params[:spacing] = "#{spacing_found(width_found, params[:width], blocks.length)}%"
+    elsif distribute
+      height_found = to_px(:height)
+      params[:spacing] = spacing_found(height_found, params[:height], blocks.length)
+    end
+    blocks.each do |bloc_id, block_to_create|
+      sanitized_bloc_data = params.merge(block_to_create)
+      block({ data: sanitized_bloc_data }.merge({ id: bloc_id }).merge(params))
+    end
+  end
+
 
   def sub_block(sub_params, spacing_found = 3)
     num_blocks = sub_params.size
