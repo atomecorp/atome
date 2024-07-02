@@ -51,12 +51,13 @@ a.page({ id: :page3,
 menu_f=a.menu
 menus_found= menu_f.fasten # replace fasten for entries
 puts a.pages
-puts   " pages => #{a.pages}"
-puts   " menus_found => #{menus_found}"
+puts   "pages => #{a.pages}"
+puts   "menus_found => #{menus_found}"
 
 bloc_to_add= {height: 156, color: :green}
 bloc_to_add2= {height: 99, color: :blue}
 bloc_to_add3= {height: 333, color: :orange, subs:{contact: {width: 1, color: :black}, project: {width: 1}, calendar: {width: 0.5, color: :green}}}
+
  a.insert({page3: {block1: bloc_to_add , block2: bloc_to_add2, block3: bloc_to_add3}})
 
 
@@ -72,3 +73,4 @@ a.show(:page3)
 # end
 
 
+alert(grab(:project).inspect)

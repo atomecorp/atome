@@ -532,11 +532,11 @@ new(molecule: :application) do |params, &bloc|
   end
   main_app.define_singleton_method(:extract) do |bloc_to_extract|
 
-      bloc_to_extract.each do |page_id, block_id|
-        grab(block_id).delete({ recursive: true })
-        @blocks[page_id].delete(block_id)
-        grab(page_id).reorder_blocs
-    end
+    bloc_to_extract.each do |page_id, block_id|
+    grab(block_id).delete({ recursive: true })
+      @blocks[page_id].delete(block_id)
+      grab(page_id).reorder_blocs
+  end
 
   end
 

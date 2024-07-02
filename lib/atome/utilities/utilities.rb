@@ -156,7 +156,7 @@ class Atome
 
   def sub_block(sub_params, spacing_found = 3)
     num_blocks = sub_params.size
-    parent_width = to_px(:width) # Supposons que la largeur du parent est en pixels
+    parent_width = to_px(:width)
     total_ratios = sub_params.values.sum { |sub_content| sub_content[:width] }
     total_spacing = (num_blocks + 1) * spacing_found
     available_width = parent_width - total_spacing
@@ -164,7 +164,7 @@ class Atome
     sub_params.each do |sub_id, sub_content|
       ratio = sub_content[:width]
       block_width = (available_width * ratio) / total_ratios
-      sub_created = box({ id: sub_id, height: '100%', left: left_offset })
+      sub_created = box({ id: sub_id, height: '100%', left: left_offset, role: :sub })
       sub_content["width"] = block_width
       sub_created.set(sub_content)
       sub_created.width(block_width)

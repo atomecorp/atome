@@ -570,8 +570,14 @@ JS
     end
   end
 
-  def above(item, margin = 6)
+  def above(item, margin = 6, ref=grab(:view))
+    # FIXME above is broken when using % in margin
+    unless margin.is_a?(Numeric)
+      item_height= ref.to_px(:height)
+      margin=   (margin.to_f*item_height)/100
+    end
     pos = item.to_px(:bottom) + item.height + margin
+    item.top(:auto)
     if item.display == :none
       33
     else
@@ -579,7 +585,11 @@ JS
     end
   end
 
-  def below(item, margin = 6)
+  def below(item, margin = 6, ref=grab(:view))
+    unless margin.is_a?(Numeric)
+      item_height= ref.to_px(:height)
+      margin=   (margin.to_f*item_height)/100
+    end
     pos = item.to_px(:top) + item.to_px(:height) + margin
     if item.display == :none
       0
@@ -589,7 +599,11 @@ JS
 
   end
 
-  def after(item, margin = 6)
+  def after(item, margin = 6, ref=grab(:view))
+    unless margin.is_a?(Numeric)
+      item_width= ref.to_px(:width)
+      margin=   (margin.to_f*item_width)/100
+    end
     left_f = if item.left.instance_of?(Integer)
                item.left
              else
@@ -609,7 +623,11 @@ JS
     end
   end
 
-  def before(item, margin = 6)
+  def before(item, margin = 6, ref=grab(:view))
+    unless margin.is_a?(Numeric)
+      item_width= ref.to_px(:width)
+      margin=   (margin.to_f*item_width)/100
+    end
     pos = item.to_px(:right) + item.width + margin
     if item.display == :none
       0
