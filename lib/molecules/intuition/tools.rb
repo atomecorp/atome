@@ -91,7 +91,7 @@ class Atome
       @click_analysis_active = false
 
       click_timeout = nil
-      double_click_delay = 150
+      double_click_delay = 222
 
       JS.global[:document].addEventListener('click') do |native_event|
         if @click_analysis
@@ -115,7 +115,7 @@ class Atome
 
           else
             click_timeout = wait(double_click_delay / 1000.0) do
-              click_timeout = nil
+              click_timeout = nil # important do not remove !
               Atome.instance_exec(native_event, &@click_analysis) if @click_analysis.is_a?(Proc)
             end
           end
