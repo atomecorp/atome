@@ -664,7 +664,7 @@ new(molecule: :show) do |page_id, &bloc|
       grab("#{id_f}_header").left(basic_size) if header
     end
   end
-  main_page
+  new_page
 end
 
 

@@ -41,7 +41,6 @@ page0 = { id: :page0,
 
 a.page(page0)
 a.page(page1)
-a.page(page2)
 a.page({ id: :page3,
          color: :red,
        })
@@ -66,11 +65,17 @@ wait 1 do
    a.extract({page3: :block1})
 end
 
-a.show(:page3)
+page_3=a.show(:page3)
+
+wait 1 do
+  page_3.color(:cyan)
+end
+
+
 # how access blocks
 # wait 3 do
 #   grab(:block2).color(:black)
 # end
 
 
-alert(grab(:project).inspect)
+puts(grab(:project).inspect)
