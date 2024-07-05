@@ -69,6 +69,14 @@ end
 class Object
   include ObjectExtension
 
+  def refresh
+    # TODO : write recursive
+    atomes_to_treat=grab(:view).fasten.dup
+    atomes_to_treat.each do |atome_found|
+      grab(atome_found).refresh
+    end
+  end
+
   def truncate_string(string, max_length)
     string.length > max_length ? string.slice(0, max_length) + '.' : string
   end
@@ -802,6 +810,9 @@ class CssProxy
     parsed = JSON.parse(msg)
     bloc.call(parsed)
   end
+
+
+
 
 
 end

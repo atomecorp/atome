@@ -477,32 +477,57 @@ class Atome
     hash
   end
 
+  # def refresh
+  #
+  #   # we get the current color because they will be removed
+  #   particles_found = particles_to_hash.dup
+  #   # id_found=id
+  #   data_found=particles_found.delete(:data)
+  #   attach_found=particles_found.delete(:attach)
+  #   apply_found=particles_found.delete(:apply)
+  #   particles_found.each do |particle_found, value_found|
+  #     send(particle_found, value_found)
+  #   end
+  #   # Universe.applicable_atomes.each do |atome_type|
+  #   #
+  #   #   send(atome_type).each do |col|
+  #   #     apply(col)
+  #   #   end
+  #   # end
+  #   # alert id_found
+  #   # grab(attach_found).fasten(id_found)
+  #   data(data_found)
+  #
+  #   apply_found.delete(:text_color) #TODO : patch here :  the array is not correctly ordered so default color are apply over the next
+  #   apply_found.delete(:box_color) ##TODO : patch here :  the array is not correctly ordered so default color are apply over the next
+  #   apply(apply_found)
+  #   # attach(attach_found)
+  # end
+
   def refresh
-    # we get the current color because they will be removed
-    particles_found = particles_to_hash
-    particles_found.each do |particle_found, value_found|
-      puts "refresh : #{particle_found}, #{value_found}"
-      send(particle_found, value_found)
-    end
-    Universe.applicable_atomes.each do |atome_type|
-      send(atome_type).each do |col|
-        apply(col)
+    id_found=id.dup
+    id(:temporary)
+    fasten_atomes = []
+    fasten_found = fasten.dup
+    fasten_found.each do |child_id_found|
+      child_found = grab(child_id_found)
+      if child_found
+        new_child = child_found.duplicate({})
+        fasten_atomes << new_child.id
       end
     end
-  end
 
-  def each(&proc)
-    collect.each do |val|
-      instance_exec(val, &proc) if proc.is_a?(Proc)
-    end
-  end
-
-  def each_with_index(&proc)
-    index = 0
-    collect.each do |val|
-      instance_exec(val, index, &proc) if proc.is_a?(Proc)
-      index += 1
-    end
+    infos_found = infos.dup
+    data_found=infos_found.delete(:data)
+    keys_to_delete = %i[history callback duplicate copy paste touch_code html fasten aid]
+    keys_to_delete.each { |key| infos_found.delete(key) }
+    new_atome_id = id_found
+    infos_found[:id] = new_atome_id
+    new_atome = Atome.new(infos_found)
+    @duplicate ||= {}
+    @duplicate[new_atome_id] = new_atome
+    new_atome.data(data_found)# needed because if atome type is a text we need add type at the end
+    new_atome
   end
 
   def <<(item)

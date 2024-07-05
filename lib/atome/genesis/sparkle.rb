@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+Universe.language=:english
+
 # now let's get the default render engine
 
 # Lets create the U.I.
@@ -64,7 +66,7 @@ Atome.new(
 Atome.new(
   { renderers: default_render, aid: :view,type: :shape, attach: :user_view, apply: [:view_color],
     tag: { system: true }, left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
-    language: :english
+    # language: :english
   }
 
 )
@@ -126,8 +128,12 @@ puts b.left
 b.left(155)
 puts b.left
 STR
-  example = text({ int8: { english: english, french: french }, language: :english, width: 666 })
-  code_text = text({ int8: { english: code }, language: :english, width: 666, top: 33 })
+  example = text({ int8: { english: english, french: french },
+                   # language: :english,
+                   width: 666 })
+  code_text = text({ int8: { english: code },
+                     # language: :english,
+                     width: 666, top: 33 })
   example.touch(true) do
     example.delete(true)
     help(:left)

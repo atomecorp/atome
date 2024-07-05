@@ -46,11 +46,18 @@ end
 
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |params|
 
-  js[:innerHTML] = if int8[language]
-                     int8[language].to_s
-                   else
-                     params.to_s
-                   end
+  # js[:innerHTML] = if int8[language]
+  #                    int8[language].to_s
+  #                  else
+  #                    params.to_s
+  #                  end
+
+  # alert "#{Universe.translation} /// #{params} /// #{Universe.language}"
+  if  Universe.translation[params]
+    params=  Universe.translation[params][Universe.language]
+  end
+  js[:innerHTML] = params.to_s
+
 end
 
 new({ method: :data, type: :string, specific: :vector, renderer: :html }) do |value|
