@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 t = text({ left: 33, top: 33, data: 'data collected', id: :infos })
-b=box({drag: true, id: :titi})
+b=box({drag: true, id: :the_b})
+# Important to trigger on 'return' add the parameter :  {trigger: :return}
 inp=b.input({ width: 166,
               trigger: :up,
               back: :orange,
@@ -11,7 +12,6 @@ inp=b.input({ width: 166,
                 red: 0, green: 0, blue: 0, alpha: 0.9
               },
               component: {size: 8},
-              # attach: :intuition,
               text: { color: :black , top: 5, left: 6},
               smooth: 3,
               left: 66,
@@ -32,5 +32,10 @@ inp.top(12)
     end
 end
 
+
+c=circle({top: 99})
+c.touch(true) do
+  alert b.fasten
+end
 
 

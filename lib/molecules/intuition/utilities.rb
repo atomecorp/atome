@@ -184,7 +184,7 @@ new(molecule: :input) do |params, bloc|
       position: :absolute
     }.merge(text_params)
   )
-  text_input.touch(:down) do
+  input_back.touch(:down) do
     input_back.tick(:input)
     text_input.edit(true)
   end

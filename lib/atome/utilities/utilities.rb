@@ -127,7 +127,7 @@ class Atome
 
 
 
-  def spacing_found(parent_width, child_width, nb_of_children)
+  def found_spacing_in_percent(parent_width, child_width, nb_of_children)
     total_child_width = child_width * nb_of_children
     remaining_width = parent_width - total_child_width
     spacing = remaining_width.to_f / (nb_of_children + 1)
@@ -171,14 +171,16 @@ class Atome
   end
 
   def blocks(params)
+    # alert 'blocks case'
+
     blocks = params.delete(:blocks)
     distribute = params.delete(:distribute)
     if distribute && params[:direction] == :horizontal
       width_found = to_px(:width)
-      params[:spacing] = "#{spacing_found(width_found, params[:width], blocks.length)}%"
+      params[:spacing] = "#{found_spacing_in_percent(width_found, params[:width], blocks.length)}%"
     elsif distribute
       height_found = to_px(:height)
-      params[:spacing] = spacing_found(height_found, params[:height], blocks.length)
+      params[:spacing] = found_spacing_in_percent(height_found, params[:height], blocks.length)
     end
     blocks.each do |bloc_id, block_to_create|
       sanitized_bloc_data = params.merge(block_to_create)
@@ -408,7 +410,7 @@ class Atome
   # This method is used to automatically create a callback method suffixed by '_callback'. For example: shell => shell_callback.
   # it can be override if you create a method like:
   # new({callback: :shell}) do |params, bloc|
-  # # …write what you want …
+  # # write what you want …
   # end
   def particle_callback(element)
     Atome.define_method("#{element}_callback") do |return_params|
