@@ -53,7 +53,7 @@ wait 2 do
   # grab(:boxy).refresh
   # grab(:view).refresh
   # refresh
-  alert "retrieve( true , true) , first true is order second is include self"
+  # alert "retrieve( { ascending: true} , self: true) , first true is order second is include self"
   grab(:boxy).refresh
 
   # grab(:boxy).retrieve( true , true) do |child|

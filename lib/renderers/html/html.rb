@@ -733,6 +733,8 @@ class HTML
   end
 
   def drag_code(params=nil)
+    #FIXME : this method is an ugly patch when refreshing an atome twice, else it crash
+    # and lose it's drag
     drag_move(params)
   end
 

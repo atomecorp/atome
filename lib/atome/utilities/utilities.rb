@@ -9,7 +9,6 @@ class Atome
   class << self
     attr_accessor :initialized
 
-
     def sanitize_data_for_json(data)
       data.gsub('"', '\\"')
     end
@@ -125,7 +124,15 @@ class Atome
     # dummy method
   end
 
-  def retrieve(closest_first=true,include_self=false,  &block)
+  def retrieve(params = {}, &block)
+    closest_first = true, include_self = false
+    if params[:ascending] == false
+      closest_first = :inverted
+    end
+    if params[:self] == true
+      include_self = true
+    end
+
     # this method allow to retrieve all children of an atome recursively, beginning from the closet child or inverted
 
     all_children = []
@@ -157,9 +164,6 @@ class Atome
       block.call(entry[:child])
     end
   end
-
-
-
 
   def found_spacing_in_percent(parent_width, child_width, nb_of_children)
     total_child_width = child_width * nb_of_children
@@ -222,7 +226,6 @@ class Atome
     end
   end
 
-
   def sub_block(sub_params, spacing_found = 3)
     num_blocks = sub_params.size
     parent_width = to_px(:width)
@@ -238,12 +241,10 @@ class Atome
       sub_created.set(sub_content)
       sub_created.width(block_width)
       left_offset += block_width + spacing_found
-          sub_created.width(sub_created.to_percent(:width))
-          sub_created.left(sub_created.to_percent(:left))
+      sub_created.width(sub_created.to_percent(:width))
+      sub_created.left(sub_created.to_percent(:left))
     end
   end
-
-
 
   def help(particle, &doc)
     if doc
@@ -539,7 +540,7 @@ class Atome
   # end
 
   def refresh_atome
-    id_found=id.dup
+    id_found = id.dup
     id(:temporary)
     fasten_atomes = []
     fasten_found = fasten.dup
@@ -552,7 +553,7 @@ class Atome
     end
 
     infos_found = infos.dup
-    data_found=infos_found.delete(:data)
+    data_found = infos_found.delete(:data)
     keys_to_delete = %i[history callback duplicate copy paste touch_code html fasten aid]
     keys_to_delete.each { |key| infos_found.delete(key) }
     new_atome_id = id_found
@@ -560,17 +561,14 @@ class Atome
     new_atome = Atome.new(infos_found)
     @duplicate ||= {}
     @duplicate[new_atome_id] = new_atome
-    new_atome.data(data_found)# needed because if atome type is a text we need add type at the end
+    new_atome.data(data_found) # needed because if atome type is a text we need add type at the end
     new_atome
   end
 
   def refresh(&bloc)
-
-  retrieve( true , true) do |child|
+    retrieve({ self: true }) do |child|
       child.refresh_atome
     end
-
-
   end
 
   def <<(item)

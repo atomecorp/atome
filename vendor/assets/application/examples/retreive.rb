@@ -11,10 +11,9 @@ wait 1 do
     child.color(:blue)
   end
 end
-
+#
 wait 2 do
-  parent = grab(:view)
-  grab(:view).retrieve(:inverted) do |child|
+  grab(:view).retrieve({ ascending: false, self: false }) do |child|
     child.delete(true)
   end
 end
