@@ -70,11 +70,13 @@ class Object
   include ObjectExtension
 
   def refresh
-    # TODO : write recursive
-    atomes_to_treat=grab(:view).fasten.dup
-    atomes_to_treat.each do |atome_found|
-      grab(atome_found).refresh
+    grab(:view).retrieve do |child|
+      child.refresh
     end
+    # atomes_to_treat=grab(:view).fasten.dup
+    # atomes_to_treat.each do |atome_found|
+    #   grab(atome_found).refresh
+    # end
   end
 
   def truncate_string(string, max_length)

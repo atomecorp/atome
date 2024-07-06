@@ -86,7 +86,9 @@ class Atome
               end
               args = args[0]
             end
-            instance_exec({ original: value_before, altered: args, particle: monitored_particle }, &bloc) if bloc.is_a?(Proc)
+            if bloc.is_a?(Proc)
+              instance_exec({ original: value_before, altered: args, particle: monitored_particle }, &bloc)
+            end
             original_method.call(*args)
           end
         end
@@ -114,9 +116,7 @@ class Atome
 
     fasten.each do |child_id|
       child_found = grab(child_id)
-      if child_found.role && child_found.role.include?(role_wanted)
-        gripped_atome << child_id
-      end
+      gripped_atome << child_id if child_found.role && child_found.role.include?(role_wanted)
     end
     gripped_atome
   end
@@ -125,7 +125,7 @@ class Atome
     # dummy method
   end
 
-  def retrieve(closest_first=true, &block)
+  def retrieve(closest_first=true,include_self=false,  &block)
     # this method allow to retrieve all children of an atome recursively, beginning from the closet child or inverted
 
     all_children = []
@@ -137,10 +137,12 @@ class Atome
           fetch_children_recursively.call(child, depth + 1)
         end
       end
-
-      unless parent == self
+      if include_self
         all_children << { depth: depth, child: parent }
+      else
+        all_children << { depth: depth, child: parent } unless parent == self
       end
+
     end
 
     fetch_children_recursively.call(self, 0)
@@ -536,11 +538,7 @@ class Atome
   #   # attach(attach_found)
   # end
 
-  # def refresh_atome
-  #
-  # end
-
-  def refresh
+  def refresh_atome
     id_found=id.dup
     id(:temporary)
     fasten_atomes = []
@@ -564,6 +562,15 @@ class Atome
     @duplicate[new_atome_id] = new_atome
     new_atome.data(data_found)# needed because if atome type is a text we need add type at the end
     new_atome
+  end
+
+  def refresh(&bloc)
+
+  retrieve( true , true) do |child|
+      child.refresh_atome
+    end
+
+
   end
 
   def <<(item)
@@ -611,9 +618,7 @@ class Atome
     category(:atome)
     attach(grand_parent)
     #  we delete the parent (the layout) if it no more children fasten
-    if parent_found.fasten.length == 0
-      parent_found.delete(true)
-    end
+    parent_found.delete(true) if parent_found.fasten.length == 0
   end
 
   def server(server_params = nil)

@@ -732,7 +732,12 @@ class HTML
     end
   end
 
+  def drag_code(params=nil)
+    drag_move(params)
+  end
+
   def event(action, variance, option = nil)
+  #   puts " remove 'if option', if unable ti unbind# : #{action} _ #{variance}"
     send("#{action}_#{variance}", option)
   end
 

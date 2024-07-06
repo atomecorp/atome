@@ -16,7 +16,12 @@
 
 Universe.translation[:hello] = { english: :hello, french: :salut, deutch: :halo }
 
-b = box({ left: 155, drag: true, id: :boxy })
+b = box({ left: 155,
+          drag: true,
+          id: :boxy })
+# b.drag(true) do
+#   puts 'hhh'
+# end
 
 t=b.text({ data: :hello, id: :t1, position: :absolute, color: :black })
 t2 = b.text({ data: :hello, id: :t2, left: 9, top: 33, position: :absolute })
@@ -33,7 +38,7 @@ t2 = b.text({ data: :hello, id: :t2, left: 9, top: 33, position: :absolute })
 
 
 Universe.language = :french
-wait 1 do
+wait 2 do
   # puts "1"
 
   # t.refresh
@@ -41,12 +46,19 @@ wait 1 do
   Universe.language = :deutch
   ########
 
-  wait 3 do
+  wait 2 do
   #
-  #   Universe.language = :deutch
-  #   # grab(:t2).refresh
-  #
+    Universe.language = :deutch
+    # grab(:t2).refresh
+  # grab(:boxy).refresh
   # grab(:view).refresh
+  # refresh
+  alert "retrieve( true , true) , first true is order second is include self"
+  grab(:boxy).refresh
+
+  # grab(:boxy).retrieve( true , true) do |child|
+  #   child.refresh
+  # end
   #
   #
   #   atome_ids_found=grab(:view).fasten.dup
@@ -102,19 +114,24 @@ end
 
 
 
+grab(:boxy).instance_variable_set('@left', 555)
+# grab(:boxy).refresh
+# alert grab(:view).attach
+# wait 3 do
+#
+#   grab(:view).retrieve do |child|
+#     grab(:boxy).refresh
+#       wait 0.1 do
+#         child.refresh
+#       end
+#
+#   end
+# end
 
-
-wait 3 do
-
-  grab(:view).retrieve do |child|
-      child.refresh
-  end
-end
-
-wait 5 do
-  parent = grab(:view)
-  grab(:view).retrieve(:inverted) do |child|
-    child.delete(true)
-  end
-end
+# wait 5 do
+#   parent = grab(:view)
+#   grab(:view).retrieve(:inverted) do |child|
+#     child.delete(true)
+#   end
+# end
 
