@@ -147,6 +147,7 @@
 # require "./examples/example"
 # require "./examples/unit"
 require "./examples/int8"
+# require "./examples/retreive"
 # require "./examples/center"
 # require "./examples/atomizer"
 # require "./examples/size"

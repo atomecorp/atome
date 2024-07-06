@@ -17,6 +17,7 @@
 Universe.translation[:hello] = { english: :hello, french: :salut, deutch: :halo }
 
 b = box({ left: 155, drag: true, id: :boxy })
+
 t=b.text({ data: :hello, id: :t1, position: :absolute, color: :black })
 t2 = b.text({ data: :hello, id: :t2, left: 9, top: 33, position: :absolute })
 
@@ -33,19 +34,19 @@ t2 = b.text({ data: :hello, id: :t2, left: 9, top: 33, position: :absolute })
 
 Universe.language = :french
 wait 1 do
-  puts "1"
+  # puts "1"
 
   # t.refresh
   t2.refresh
   Universe.language = :deutch
   ########
 
-  # wait 1 do
+  wait 3 do
   #
   #   Universe.language = :deutch
   #   # grab(:t2).refresh
   #
-  #   # refresh
+  # grab(:view).refresh
   #
   #
   #   atome_ids_found=grab(:view).fasten.dup
@@ -54,7 +55,7 @@ wait 1 do
   #     # alert atome_id_found
   #     grab(atome_id_found).refresh
   #   end
-  # end
+  end
 
   #######
 
@@ -100,79 +101,20 @@ end
     # end
 
 
-######################@
-# def fetch_all_children(view, &block)
-#   all_children = []
-#
-#   # Méthode interne pour la récursion
-#   fetch_children_recursively = lambda do |parent, depth|
-#     children_ids = parent.fasten  # Assumons que 'fasten' renvoie les IDs des enfants
-#
-#     # Si des enfants sont trouvés, traiter récursivement
-#     if children_ids.any?
-#       children_ids.each do |child_id|
-#         child = grab(child_id)  # Récupérer l'objet enfant par son ID
-#         fetch_children_recursively.call(child, depth + 1)
-#       end
-#     end
-#
-#     # Ajouter les enfants au tableau principal avec leur profondeur
-#     unless parent == view
-#       all_children << { depth: depth, child: parent }
-#     end
-#   end
-#
-#   # Démarrer la récursion avec la vue principale et la profondeur initiale 0
-#   fetch_children_recursively.call(view, 0)
-#
-#   # Trier les enfants par profondeur décroissante
-#   sorted_children = all_children.sort_by { |entry| -entry[:depth] }
-#
-#   # Appeler le bloc sur chaque enfant trié
-#   sorted_children.each do |entry|
-#     block.call(entry[:child])
-#   end
-# end
 
-# Last child after
-def fetch_all_children(view, &block)
-  all_children = []
 
-  # Méthode interne pour la récursion
-  fetch_children_recursively = lambda do |parent, depth|
-    children_ids = parent.fasten  # Assumons que 'fasten' renvoie les IDs des enfants
 
-    # Si des enfants sont trouvés, traiter récursivement
-    if children_ids.any?
-      children_ids.each do |child_id|
-        child = grab(child_id)  # Récupérer l'objet enfant par son ID
-        fetch_children_recursively.call(child, depth + 1)
-      end
-    end
-
-    # Ajouter les enfants au tableau principal avec leur profondeur
-    unless parent == view
-      all_children << { depth: depth, child: parent }
-    end
-  end
-
-  # Démarrer la récursion avec la vue principale et la profondeur initiale 0
-  fetch_children_recursively.call(view, 0)
-
-  # Trier les enfants par profondeur croissante
-  sorted_children = all_children.sort_by { |entry| entry[:depth] }
-
-  # Appeler le bloc sur chaque enfant trié
-  sorted_children.each do |entry|
-    block.call(entry[:child])
-  end
-end
 wait 3 do
-  parent = grab(:view)
-  fetch_all_children(parent) do |child|
+
+  grab(:view).retrieve do |child|
       child.refresh
   end
-
 end
 
+wait 5 do
+  parent = grab(:view)
+  grab(:view).retrieve(:inverted) do |child|
+    child.delete(true)
+  end
+end
 

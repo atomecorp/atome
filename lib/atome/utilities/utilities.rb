@@ -125,6 +125,38 @@ class Atome
     # dummy method
   end
 
+  def retrieve(closest_first=true, &block)
+    # this method allow to retrieve all children of an atome recursively, beginning from the closet child or inverted
+
+    all_children = []
+    fetch_children_recursively = lambda do |parent, depth|
+      children_ids = parent.fasten
+      if children_ids.any?
+        children_ids.each do |child_id|
+          child = grab(child_id)
+          fetch_children_recursively.call(child, depth + 1)
+        end
+      end
+
+      unless parent == self
+        all_children << { depth: depth, child: parent }
+      end
+    end
+
+    fetch_children_recursively.call(self, 0)
+
+    sorted_children = if closest_first != :inverted
+                        all_children.sort_by { |entry| entry[:depth] }
+                      else
+                        all_children.sort_by { |entry| -entry[:depth] }
+                      end
+
+    sorted_children.each do |entry|
+      block.call(entry[:child])
+    end
+  end
+
+
 
 
   def found_spacing_in_percent(parent_width, child_width, nb_of_children)
@@ -502,6 +534,10 @@ class Atome
   #   apply_found.delete(:box_color) ##TODO : patch here :  the array is not correctly ordered so default color are apply over the next
   #   apply(apply_found)
   #   # attach(attach_found)
+  # end
+
+  # def refresh_atome
+  #
   # end
 
   def refresh
