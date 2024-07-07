@@ -1214,11 +1214,11 @@ class HTML
     interact = JS.eval("return interact('##{@id}')")
     # unless @touch_removed[:down]
     interact.on('down') do |native_event|
-      event = Native(native_event)
+      @touch_down_event = Native(native_event)
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      proc_content = @touch_down.call(event) if event_validation(@touch_down)
+      proc_content = @touch_down.call(@touch_down_event) if event_validation(@touch_down)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
           @original_atome.send(k, v)
@@ -1236,11 +1236,11 @@ class HTML
     # unless @touch_removed[:tap]
     interact.on('tap') do |native_event|
 
-      event = Native(native_event)
+      @touch_tap_event = Native(native_event)
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      proc_content = @touch_tap.call(event) if event_validation(@touch_tap)
+      proc_content = @touch_tap.call(@touch_tap_event) if event_validation(@touch_tap)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
           # alert "(#{@original_atome.id}, #{k}, #{v}, #{_option})"
@@ -1257,11 +1257,11 @@ class HTML
     @touch_up = @original_atome.instance_variable_get('@touch_code')[:up]
     # unless @touch_removed[:up]
     interact.on('up') do |native_event|
-      event = Native(native_event)
+      @touch_up_event = Native(native_event)
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      proc_content = @touch_up.call(event) if event_validation(@touch_up)
+      proc_content = @touch_up.call(@touch_up_event) if event_validation(@touch_up)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
           @original_atome.send(k, v)
@@ -1276,11 +1276,11 @@ class HTML
     @touch_double = @original_atome.instance_variable_get('@touch_code')[:double]
     # unless @touch_removed[:double]
     interact.on('doubletap') do |native_event|
-      event = Native(native_event)
+      @touch_double_event = Native(native_event)
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      proc_content = @touch_double.call(event) if event_validation(@touch_double)
+      proc_content = @touch_double.call(@touch_double_event) if event_validation(@touch_double)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
           @original_atome.send(k, v)
@@ -1296,11 +1296,11 @@ class HTML
     interact = JS.eval("return interact('##{@id}')")
     # unless @touch_removed[:long]
     interact.on('hold') do |native_event|
-      event = Native(native_event)
+      @touch_long_event = Native(native_event)
       # we use .call instead of instance_eval because instance_eval bring the current object as context
       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
       # group etc..
-      proc_content = @touch_long.call(event) if event_validation(@touch_long)
+      proc_content = @touch_long.call(@touch_long_event) if event_validation(@touch_long)
       if proc_content.instance_of? Hash
         proc_content.each do |k, v|
           @original_atome.send(k, v)
@@ -1310,38 +1310,53 @@ class HTML
   end
 
   def touch_remove(option)
-
     @element[:style][:cursor] = 'default'
     case option
     when :double
       @touch_double = ''
       @touch_removed[:double] = true
+      @touch_double_event= nil
     when :down
       @touch_down = ''
       @touch_removed[:down] = true
+      @touch_down_event= nil
     when :long
       @touch_removed[:long] = true
       @touch_long = ''
+      @touch_long_event= nil
     when :tap
       @touch_removed[:tap] = true
       @touch_tap = ''
       @touch_removed[:touch] = true
       @touch_touch = ''
+      @touch_tap_event= nil
+
     when :touch
       @touch_removed[:tap] = true
       @touch_tap = ''
       @touch_removed[:touch] = true
       @touch_touch = ''
+      @touch_tap_event= nil
+
     when :up
       @touch_removed[:up] = true
       @touch_up = ''
+      @touch_up_event= nil
     else
       touch_remove(:double)
+      @touch_double_event= nil
+
       touch_remove(:down)
+      @touch_down_event= nil
+
       touch_remove(:long)
+      @touch_long_event= nil
+
       touch_remove(:tap)
       touch_remove(:touch)
+      @touch_tap_event= nil
       touch_remove(:up)
+      @touch_up_event= nil
     end
 
   end

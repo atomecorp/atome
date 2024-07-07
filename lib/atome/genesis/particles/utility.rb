@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 def delete_recursive(atome_id, force=false)
   return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system]) unless force
-
+  touch(false)
   parent_id_found = grab(atome_id).attach
   parent_found = grab(parent_id_found)
   new_array = parent_found.fasten.dup
@@ -11,7 +11,7 @@ def delete_recursive(atome_id, force=false)
     delete_recursive(atome_id_found, force)
   end
   grab(atome_id).render(:delete, { :recursive => true })
-  grab(atome_id).touch(:remove)
+  grab(atome_id).touch(false)
   Universe.delete(grab(atome_id).aid)
 end
 
@@ -37,7 +37,7 @@ new({ particle: :target }) do |params|
 end
 new({ particle: :delete, category: :utility, type: :boolean, render: false }) do |params|
   if params == true
-
+    touch(false)
     # We use the tag persistent to exclude color of system object and other default colors
     unless @tag && (@tag[:persistent] || @tag[:system])
       # if we are on a matrix we delete cells found & group found
@@ -64,13 +64,14 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
     # if we are on a matrix we delete cells found & group found
     cells.delete(true)
     group.delete(true)
+    touch(false)
     if params[:recursive]
       grab(attach).unfasten([id])
       unless grab(@id).tag && (grab(@id).tag[:persistent] || grab(@id).tag[:system])
         fasten.each do |atttached_atomes|
           delete_recursive(atttached_atomes)
         end
-        touch(:remove)
+        # touch(false)
         render(:delete, params)
         Universe.delete(@aid)
       end
@@ -79,7 +80,7 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
         # alert "fasten : #{fasten}"
         delete_recursive(atttached_atomes, true)
       end
-      touch(:remove)
+      touch(false)
       render(:delete, params)
       # alert "Universe : #{Universe.atomes[@aid]}"
       # alert "length = #{Universe.atomes.length}"
