@@ -101,7 +101,6 @@
 # require "./examples/categories"
 # require "./examples/atome_particle_validation"
 # require "./examples/database_handling"
-# require "./examples/server"
 # require "./examples/read"
 # require "./examples/unit"
 
@@ -224,7 +223,7 @@
 # require "./examples/attach"
 # require "./examples/alternate"
 
-require "./examples/test"
+# require "./examples/test"
 # require "./examples/exchange"
 
 
@@ -248,7 +247,15 @@ require "./examples/test"
 # Native tests #
 # require "./examples/browse"
 # require "./examples/read"
+#
+############# problem below
 # require "./examples/terminal"
+# require "./examples/server"
+require "./examples/buttons"
+############# problem above
+# require "./examples/applications"
+
+
 
 # #server tests
 

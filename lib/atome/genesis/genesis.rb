@@ -133,11 +133,11 @@ class Genesis
             @apply.each do |fasten_atome|
               collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
             end
-          else
+          elsif fasten
             fasten.each do |fasten_atome|
-              collected_atomes << fasten_atome if grab(fasten_atome).type.to_sym == element.to_sym
+              child_found=grab(fasten_atome)
+                collected_atomes << fasten_atome if child_found.type.to_sym == element.to_sym
             end
-
           end
           # TODO/ FIXME : potential problem with group  here"
           collected_atomes

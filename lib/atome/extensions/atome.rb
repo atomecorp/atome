@@ -138,7 +138,20 @@ class Object
 
   def hook(a_id)
     a_id = a_id.to_sym
-    Universe.atomes[a_id]
+    # Universe.atomes[a_id]
+    atome_get=''
+    Universe.atomes.each do |aid_f, atome|
+      # alert "1 #{atome}"
+
+      if atome.id== a_id
+        atome_get= atome
+        # alert "2 #{atome}"
+      end
+      # alert "3 #{atome_get}"
+
+    end
+    # alert atome_get
+    atome_get
   end
 
   def grab(id_to_get)

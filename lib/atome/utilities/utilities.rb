@@ -470,9 +470,13 @@ class Atome
     end
   end
 
+
+
   # this method generate the method accessible for end developers
   # it's the send the method define in "particle_callback"
   def callback(element, return_params = nil)
+    # alert "#{element}, #{return_params}"
+    # alert element.class
     send("#{element}_callback", return_params)
   end
 

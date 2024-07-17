@@ -20,5 +20,6 @@ c.touch(true) do
   A.message({ action: :terminal , data: 'cd ..;cd server;ls; pwd'}) do |result|
     puts "result : #{result}"
   end
+  {} #must add an empty hash else events events method will interpret keys of the hash and send a missing method errors
 end
 #

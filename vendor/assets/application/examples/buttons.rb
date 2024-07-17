@@ -3,46 +3,41 @@
 box({color: :gray, width: 666, height: 666})
 box({ id: :the_box, drag: true, color: { alpha: 2 } })
 
-menu1_code = lambda do
-  puts :menu1_code
-end
-menu2_code = lambda do
-  puts :menu2
-end
 
-but = buttons({
-                id: :menu1,
-                attach: :the_box,
-                inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 3, disposition: :horizontal,
-                            color: :orange, margin: { left: 33, top: 12 } },
-                active: { text: { color: :white, shadow: {} }, color: :blue, shadow: {} },
-                item_1: {
-                  text: :acceuil,
-                  code: menu1_code
-                },
-                item_2: {
-                  text: :page_2,
-                  code: menu2_code
+but =buttons({
+          id: "my_menu",
+          depth: 9999,
+          attach: :the_box,
+          inactive: { text: { color: :gray }, width: 66, height: 12, spacing: 3, disposition: :horizontal,
+                      color: :orange, margin: { left: 33, top: 12 } },
+          active: { text: { color: :white, shadow: {} }, color: :blue, shadow: {} },
+        })
 
-                },
-                item_3: {
-                  text: :page_3,
-                  code: lambda { puts :item_3_touched }
-                },
-              })
-
-c = text({ top: 99, left: 99, data: 'add a button' })
+c = text({ top: 99, left: 99, data: 'add buttons' })
 
 c.touch(:down) do
   but.add_button(new_button: {
     text: :button1,
     code: lambda { puts :button1_touched }
   })
-end
+    but.add_button(new_button2: {
+      text: :button2,
+      code: lambda { puts :button1_touched }
+    })
+  but.add_button(new_button3: {
+    text: :button3,
+    code: lambda { puts :button1_touched }
+  })
+
+  wait 0.2 do
+    grab(:my_menu).remove_menu_item(:new_button2)
+  end
+
+  end
 
 
-wait 2 do
-  grab(:menu1).remove_menu_item(:item_2)
-end
+
+
+
 
 # TODO: remove menu_item ,reset_menu, reorder, delete

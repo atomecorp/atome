@@ -2,6 +2,7 @@
 
 class Atome
   def reorder_menu
+    # disposition = data
     disposition = data[:inactive][:disposition]
     margin = data[:inactive][:margin]
     spacing = data[:inactive][:spacing]
@@ -72,9 +73,9 @@ class Atome
         menu_item.top = margin[:top] + (inactive_style[:height] + spacing) * position_in_menu
         menu_item.left = margin[:left]
       end
-
       menu_item.text.each do |text_f|
-        grab(text_f).set(inactive_state_text)
+        item_found = grab(text_f)
+        item_found.set(inactive_state_text)
       end
 
     end
@@ -592,10 +593,10 @@ new(molecule: :show) do |page_id, &bloc|
   color({ id: :page_color, red: 0.1, green: 0.1, blue: 0.1 })
 
   id_f = "#{id}_content"
-  main_page = box({ width: :auto, depth: -1, height: :auto, id: id_f, top: 0, bottom: 0, left: 0, right: 0, apply: :page_color, category: :page })
+  main_page = box({ width: :auto, depth: -1, height: :auto, id: id_f, top: 0, bottom: 0, left: 0, right: 0, apply: :page_color, category: :page})
   main_page.remove(:box_color)
 
-  new_page = main_page.box({ width: '100%', height: '100%', top: 0, left: 0, id: page_id })
+  new_page = main_page.box({ width: '100%', height: '100%', top: 0, left: 0, id: page_id, overflow: :auto })
 
   # now looking for associated blocks
   blocks_found = params[:blocks]

@@ -43,6 +43,7 @@ a.page(page0)
 a.page(page1)
 a.page({ id: :page3,
          color: :red,
+         footer: { color: :green, height: 22 }
        })
 
 
@@ -69,6 +70,7 @@ page_3=a.show(:page3)
 
 wait 1 do
   page_3.color(:cyan)
+  page_3.box({top: 900})
 end
 
 
@@ -79,3 +81,4 @@ end
 
 
 puts(grab(:project).inspect)
+

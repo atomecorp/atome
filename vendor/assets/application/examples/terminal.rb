@@ -2,3 +2,5 @@
 A.terminal('pwd') do |data|
   text "terminal response  :\n #{data}"
 end
+
+# alert A.inspect

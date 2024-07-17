@@ -1,20 +1,16 @@
 # frozen_string_literal: true
-c=circle({left: 129, color: :red})
-c.touch(true) do
-  JS.eval('console.clear()')
-  c.tick[:down]=0
-  # grab(:boxy).touch(false)
-  grab(:boxy).delete(true)
-  wait 0.3 do
-    box({id: :boxy})
-    grab(:boxy).touch(:up) do
-      c.tick(:down)
-      puts "Hitted too!! #{c.tick[:down]}"
-    end
-  end
-end
-box({id: :boxy})
 
-grab(:boxy).touch(:up) do
-  puts "Hitted!!"
+
+def contact_template
+{ id: :humans, role: nil, date: { companies: [], project: {}, events: {}, last_name: nil, first_name: nil ,
+                                  emails: { home: nil }, phones: {}, address: {}, groups: [] } }
+end
+
+
+element({id: :testing, data: contact_template})
+# grab(:testing).data(contact_template)
+
+
+wait 2 do
+  grab(:testing).data
 end
