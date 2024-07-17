@@ -248,10 +248,10 @@
 # require "./examples/browse"
 # require "./examples/read"
 #
-############# problem below
+############# problem solved below
 # require "./examples/browse"
-require "./examples/terminal"
-# require "./examples/read"
+# require "./examples/terminal"
+require "./examples/read"
 
 # require "./examples/server"
 ############# problem above
