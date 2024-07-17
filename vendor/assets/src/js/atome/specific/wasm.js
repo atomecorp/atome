@@ -3,7 +3,8 @@ function atomeJsToRuby(rubycode) {
 }
 
 function controller_message(msg) {
-    rubyVM.eval(rubycode);
+    /// use for communication with server
+    rubyVM.eval(msg);
 }
 
 // document.addEventListener("DOMContentLoaded", function() {
@@ -119,7 +120,6 @@ const communication = {
     ws_sender: function (message) {
         // now we send the data to the server
         // puts "--> message : #{message}"
-
         this.websocket.send(message)
     },
 }

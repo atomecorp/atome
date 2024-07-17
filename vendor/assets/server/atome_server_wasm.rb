@@ -21,7 +21,6 @@ require './database'
 require './extensions'
 
 Faye::WebSocket.load_adapter('puma')
-
 class App < Roda
   index_content = File.read("../src/index_server_wasm.html")
   opts[:root] = '../src'

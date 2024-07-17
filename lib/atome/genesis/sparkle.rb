@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Universe.language=:english
+Universe.language = :english
 
 # now let's get the default render engine
 
@@ -64,7 +64,7 @@ Atome.new(
 
 # view port
 Atome.new(
-  { renderers: default_render, aid: :view,type: :shape, attach: :user_view, apply: [:view_color],
+  { renderers: default_render, aid: :view, type: :shape, attach: :user_view, apply: [:view_color],
     tag: { system: true }, left: 0, right: 0, top: 0, bottom: 0, width: :auto, height: :auto, overflow: :auto,
     # language: :english
   }
@@ -73,7 +73,7 @@ Atome.new(
 
 # unreal port, hold system object and tools
 Atome.new(
-  { renderers: default_render, aid: :intuition, type: :shape, attach: :user_view,data: {}, tag: { system: true },
+  { renderers: default_render, aid: :intuition, type: :shape, attach: :user_view, data: {}, tag: { system: true },
     left: 0, top: 0, bottom: 0, width: 0, height: :auto, overflow: :visible
   }
 )
@@ -88,8 +88,6 @@ Atome.new({ renderers: [:html], aid: :copy, collect: [], type: :group, tag: { sy
 # machine
 Atome.new({ renderers: default_render, id: machine_id, type: :machine, password: machine_password,
             name: :macAir, data: { date: '10090717' }, tag: { system: true } })
-
-
 
 # user
 user_password = { global: :star_win, read: { atome: :star_wars }, write: { atome: :star_wars } }
@@ -149,15 +147,13 @@ def atome_genesis
   server = Universe.current_server
   server ||= 'disconnected'
   puts "server: #{server}"
-
-  if server.start_with?('http')
-    Universe.connected = true
-    A.server({ address: 'localhost:9292', type: 'ws' })
-    A.init_websocket do |msg|
-      puts "websocket initialised #{msg}"
-    end
-    Universe.allow_sync = true
+  return unless server.start_with?('http') && Atome::host.to_sym != :tauri
+  Universe.connected = true
+  A.server({ address: 'localhost:9292', type: 'ws' })
+  A.init_websocket do |msg|
+    puts "websocket initialised #{msg}"
   end
+  Universe.allow_sync = true
 end
 
 # this method is call from JS (atome/communication) at WS connection
@@ -187,7 +183,6 @@ def init_database
   end
   A.sync({ action: :create_db_column, data: { table: :history, column: :date, type: :datetime } }) do |_db_state|
   end
-
 
   # now we send localstorage content to the server
   Atome.send_localstorage_content

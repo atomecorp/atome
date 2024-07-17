@@ -470,13 +470,24 @@ class Atome
     end
   end
 
+  def store_ruby_callback(params)
 
+    params.each do |element, value_v|
+      send("#{element}_code")[element].call(value_v)
+    end
+  end
+
+  def read_ruby_callback(element)
+    puts "dunno what this method is about ?? method call :#{element}"
+    # alert id
+    # puts "2 ===> #{element} !!!"
+    # alert  send("terminal_callback").inspect
+    # alert  send("#{element}_callback")
+  end
 
   # this method generate the method accessible for end developers
   # it's the send the method define in "particle_callback"
   def callback(element, return_params = nil)
-    # alert "#{element}, #{return_params}"
-    # alert element.class
     send("#{element}_callback", return_params)
   end
 

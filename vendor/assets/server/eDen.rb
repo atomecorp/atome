@@ -30,6 +30,7 @@ class EDen
     end
 
     def terminal(data, message_id, ws)
+      puts "terminal message  test : #{data}"
       { data: { message: `#{data}` }, message_id: message_id }
     end
 

@@ -249,11 +249,13 @@
 # require "./examples/read"
 #
 ############# problem below
-# require "./examples/terminal"
+# require "./examples/browse"
+require "./examples/terminal"
+# require "./examples/read"
+
 # require "./examples/server"
-require "./examples/buttons"
 ############# problem above
-# require "./examples/applications"
+
 
 
 

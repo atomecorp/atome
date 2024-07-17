@@ -28,8 +28,8 @@ async function readFile(atome_id, filePath) {
     } catch (error) {
         fileContent = error;
     }
-    atomeJsToRuby("grab(:" + atome_id + ").callback({ read: '" + fileContent + "' })");
-    atomeJsToRuby("grab(:" + atome_id + ").call(:read)");
+    atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ read: '" + fileContent + "' })");
+    atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:read)");
 }
 
 
@@ -43,8 +43,8 @@ async function browseFile(atome_id, directoryPath) {
     } catch (error) {
         directoryContent = error;
     }
-    atomeJsToRuby("grab(:" + atome_id + ").callback({ browse: '" + directoryContent + "' })");
-    atomeJsToRuby("grab(:" + atome_id + ").call(:browse)");
+    atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ browse: '" + directoryContent + "' })");
+    atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:browse)");
 }
 
 
@@ -75,18 +75,22 @@ async function terminal(atome_id, cmd) {
     }
     cmd_result = cmd_result.replace(/\r?\n/g, "");
 
-    atomeJsToRuby("grab(:" + atome_id + ").callback({ terminal: '" + cmd_result + "' })");
-    atomeJsToRuby("grab(:" + atome_id + ").call(:terminal)");
+    atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ terminal: '" + cmd_result + "' })");
+    atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:terminal)");
 
 }
 
 
 function distant_terminal(id, cmd) {
+
     let myd_data_test = 'Terminal particle will soon be implemented when using  a non native mode\nYou can switch to OSX to test';
-    let call_back_to_send = `grab(:${id}).callback({terminal: "${myd_data_test}"})`
-    let call = `grab(:${id}).call(:terminal)`
+    let call_back_to_send = `grab(:${id}).store_ruby_callback({terminal: "${myd_data_test}"})`
+    let call = `grab(:${id}).read_ruby_callback(:terminal)`
     atomeJsToRuby(call_back_to_send)
     atomeJsToRuby(call)
+
+    // let call = `grab(:${id}).read_ruby_callback(:terminal)`
+    // atomeJsToRuby(call)
 }
 
 

@@ -254,6 +254,7 @@ class HTML
   end
 
   def send_message(message)
+    # puts "message : #{message}"
     # FIXME  : find why we have to sanitize this message when using ruby wams
     message = transform_to_string_keys_and_values(message)
     JS.eval("atomeJS.ws_sender('#{message}')")
@@ -1377,7 +1378,7 @@ class HTML
     if Atome.host == 'tauri'
       JS.eval("readFile('#{id}','#{file}')")
     else
-      puts ' work in progress'
+      puts 'read file in progress in server mode'
     end
   end
 
@@ -1385,7 +1386,7 @@ class HTML
     if Atome.host == 'tauri'
       JS.eval("browseFile('#{id}','#{file}')")
     else
-      puts 'work in progress'
+      puts 'browse file in progress in server mode'
     end
   end
 
