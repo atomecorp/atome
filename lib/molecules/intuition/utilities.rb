@@ -151,25 +151,26 @@ class Atome
   end
 
   def drop_down(params, &code)
+
+
     data_f = params.delete(:data)
     text_f = params.delete(:text) || {component: {size: 12}, color: :lightgray}
     margin = params.delete(:margin) || 6
     default_params = { width: 150,
                        height: 25,
+                       smooth:3,
+                       shadow: { blur: 12, alpha: 0.3,left: 0, top: 0 }
     }
     params=default_params.merge(params)
-    b=box(params)
+
+    b=grab(:view).box(params.merge({depth: 33333, left: to_px(:left), top: to_px(:top)}))
     item_height=(params[:height]+margin)
-    if text_f[:component][:size] > item_height
-      item_height = text_f[:component][:size]+margin*2
-    end
+    item_height = text_f[:component][:size]+margin*2 if text_f[:component][:size] > item_height
     b.height(data_f.length*item_height)
     temp_width=0
     data_f.each_with_index  do |label, index|
       item_f= b.text(text_f.merge({ left: margin, data: label, position: :absolute, top: item_height * index + margin }))
-      if item_f.to_px(:width) > temp_width
-        temp_width=item_f.to_px(:width)
-      end
+      temp_width=item_f.to_px(:width) if item_f.to_px(:width) > temp_width
       item_f.touch(:down) do
         code.call(label)
         b.delete(true)
