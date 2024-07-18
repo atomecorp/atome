@@ -71,7 +71,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency  "opal", "~> 1.8"
   spec.add_runtime_dependency 'parser', '~> 3.1'
   spec.add_runtime_dependency 'puma', '~> 6.0'
-  spec.add_runtime_dependency 'rack', '~> 2.2'
+  spec.add_runtime_dependency 'rack', '~> 3.1.7'
   spec.add_runtime_dependency 'rack-unreloader', '~> 1.8'
   spec.add_runtime_dependency 'rake', '~> 13.0'
   spec.add_runtime_dependency 'roda', '~> 3.5'
@@ -80,7 +80,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'rufus-scheduler', '~> 3.8'
   spec.add_runtime_dependency 'securerandom', '~> 0.2'
   spec.add_runtime_dependency 'sequel', '~> 5.5'
-  spec.add_runtime_dependency 'sqlite3', '~> 1.4'
+  spec.add_runtime_dependency 'sqlite3', '~> 2.0.2'
   spec.add_runtime_dependency 'uglifier', '~> 0.1'
   # spec.add_runtime_dependency 'atome_eVe', '>= 0.1.0.0.7'
   # spec.add_runtime_dependency 'webrick', '~> 1.7.0'
