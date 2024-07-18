@@ -149,6 +149,34 @@ class Atome
     end
 
   end
+
+  def drop_down(params, &code)
+    data_f = params.delete(:data)
+    text_f = params.delete(:text) || {component: {size: 12}, color: :lightgray}
+    margin = params.delete(:margin) || 6
+    default_params = { width: 150,
+                       height: 25,
+    }
+    params=default_params.merge(params)
+    b=box(params)
+    item_height=(params[:height]+margin)
+    if text_f[:component][:size] > item_height
+      item_height = text_f[:component][:size]+margin*2
+    end
+    b.height(data_f.length*item_height)
+    temp_width=0
+    data_f.each_with_index  do |label, index|
+      item_f= b.text(text_f.merge({ left: margin, data: label, position: :absolute, top: item_height * index + margin }))
+      if item_f.to_px(:width) > temp_width
+        temp_width=item_f.to_px(:width)
+      end
+      item_f.touch(:down) do
+        code.call(label)
+        b.delete(true)
+      end
+    end
+    b.width(temp_width+margin*2)
+  end
 end
 
 new(molecule: :input) do |params, bloc|
@@ -668,8 +696,6 @@ new(molecule: :show) do |page_id, &bloc|
   new_page
 end
 
-
-
 new(molecule: :buttons) do |params, &bloc|
 
   keys_to_keep = [:inactive, :active]
@@ -708,3 +734,4 @@ new(molecule: :buttons) do |params, &bloc|
   end
   main
 end
+
