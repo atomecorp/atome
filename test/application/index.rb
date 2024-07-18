@@ -214,7 +214,7 @@
 # require "./examples/schedule"
 # require "./examples/to_percent"
 # require "./examples/account"
-# require "./examples/tools"
+require "./examples/tools"
 # require "./examples/buttons"
 # require "./examples/actor&role"
 # require "./examples/delete"
@@ -251,7 +251,7 @@
 ############# problem solved below
 # require "./examples/browse"
 # require "./examples/terminal"
-require "./examples/read"
+# require "./examples/read"
 
 # require "./examples/server"
 ############# problem above

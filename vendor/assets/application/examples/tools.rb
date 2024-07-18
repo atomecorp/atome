@@ -85,7 +85,6 @@ new({ tool: :rotate }) do |params|
   }
   post_code = lambda { |params|
     # puts "post_creation_code,atome_touched: #{:params}"
-
   }
 
   zone_spe = lambda { |current_tool|
