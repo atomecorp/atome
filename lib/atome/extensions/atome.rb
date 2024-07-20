@@ -569,7 +569,7 @@ JS
     # convert any foreign object (think HTML) to a pseudo atome objet , that embed foreign objet
   end
 
-  def right_touch_allow(allow)
+  def alow_right_touch(allow)
     if allow
       JS.eval('document.removeEventListener("contextmenu", window.preventDefaultAction);')
     else

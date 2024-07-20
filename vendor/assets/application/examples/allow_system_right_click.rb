@@ -10,7 +10,7 @@ b.touch(true) do
   else
     b.color(:red)
   end
-  right_touch_allow(alt)
+  alow_right_touch(alt)
 
 end
 
