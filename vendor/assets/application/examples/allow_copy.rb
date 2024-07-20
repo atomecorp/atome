@@ -7,7 +7,7 @@ b=box({left: 99})
 
 b.touch(true) do
   allow_copy(true)
-  touch_allow(true)
+  right_touch_allow(true)
 end
 
 
