@@ -290,6 +290,7 @@ end
 # Universe.tools_root= {tools: [:blur, :box, :test, :toolbox1],toolbox: { orientation: :ew, left:90 , bottom: 9, spacing: 9} }
 Universe.tools_root = {id: :root_tools, tools: [:select,:crash_test, :box, :drag, :touch,:color, :move, :toolbox1, :rotate], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
 # puts "above we added an id because each tool may be in many toolbox and have an uniq ID"
+
 Atome.init_intuition
 
 b = box({ id: :the_test_box, selected: false, color: :blue })
@@ -321,3 +322,7 @@ circle({left: 333,top: 333, id: :c2})
 #
 # end
 puts 'add tool preview , and maybe allow tool details to be moved'
+wait 2 do
+  apply_tool(:rotate, grab(c2.id), )
+
+end

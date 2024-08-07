@@ -63,7 +63,7 @@ class Atome
               atome_found = grab(id_found)
 
               is_descendant_of_intuition = atome_found.descendant_of?(:intuition).to_s if atome_found
-              # # the condition below is use to exclude the treatment any object in the intuition layer
+              # the condition below is use to exclude the treatment any object in the intuition layer
               unless is_descendant_of_intuition == 'true'
 
                 Universe.active_tools.each do |tool|

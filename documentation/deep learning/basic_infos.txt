@@ -12,6 +12,7 @@ Install rust & tauri
 curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 brew install openssl
 cargo install tauri-cli --force
+cargo add midir # to add midi dependencies to atome
 
 Install Homebrew
 

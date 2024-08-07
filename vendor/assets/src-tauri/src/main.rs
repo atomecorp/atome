@@ -2,7 +2,8 @@ use std::process::Command;
 use std::str;
 use std::fs;
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+mod midi;
+
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
@@ -44,7 +45,6 @@ fn write_file(file_path: &str, content: &str) -> Result<(), String> {
     }
 }
 
-// Nouvelle commande pour lister le contenu du répertoire
 #[tauri::command]
 fn list_directory_content(directory_path: String) -> Result<Vec<String>, String> {
     let path = std::path::Path::new(&directory_path);
@@ -63,9 +63,23 @@ fn list_directory_content(directory_path: String) -> Result<Vec<String>, String>
     }
 }
 
+#[tauri::command]
+fn start_midi(app_handle: tauri::AppHandle) {
+    std::thread::spawn(move || {
+        midi::start_midi_listener(app_handle);
+    });
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, execute_command, read_file, write_file, list_directory_content])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            execute_command,
+            read_file,
+            write_file,
+            list_directory_content,
+            start_midi
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
