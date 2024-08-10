@@ -16,10 +16,10 @@ module Essentials
   @default_params = {
     # Warning :  type must be define first
     render_engines: [:html],
-    image: { type: :image, left: 0, top: 0},
+    # image: { type: :image, left: 0, top: 0},
     table: { type: :table, left: 0, top: 0, option: {}},
     # FIXME : look at build_atome FIXME to resolve default parent attachment problem
-    video: { type: :video },
+    # video: { type: :video },
     animation: { type: :animation, attach: :black_matter },
     element: { type: :element, renderers: [], attach: :black_matter },
     box: { type: :shape, width: 39, height: 39,

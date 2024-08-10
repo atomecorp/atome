@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+
+new({ atome: :editor, type: :hash }) do |params|
+  params
+end
+
+new({ sanitizer: :editor }) do |params|
+  params = { data: params } unless params.instance_of? Hash
+  params
+end
+
 new({ atome: :color, type: :hash })
 
 new({ sanitizer: :color }) do |params|
@@ -105,6 +115,8 @@ new({ sanitizer: :text }) do |params|
   params = { data: params } unless params.instance_of? Hash
   params
 end
+
+
 # for later use ( physical is a css like style)
 new({ atome: :human }) do |params|
   Universe.add_user = params[:id]

@@ -4,8 +4,6 @@
 
 class HTML
 
-
-
   def self.locate(selector, base_element = JS.global[:document][:body])
     return base_element if selector.empty?
 
@@ -40,8 +38,6 @@ class HTML
   def object
     @element
   end
-
-
 
   def hypertext(params)
     current_div = JS.global[:document].getElementById(@id.to_s)
@@ -200,6 +196,26 @@ class HTML
     hash_result
   end
 
+  def markup(new_tag, _usr_bloc)
+    element_id = @id.to_s
+    js_code = <<~JAVASCRIPT
+      let element = document.getElementById('#{element_id}');
+      if (!element) {
+          console.error(`Element with id "${'#{element_id}'}" not found.`);
+          return;
+      }
+      let newElement = document.createElement('#{new_tag}');
+
+      newElement.style.cssText = element.style.cssText;
+      Array.from(element.attributes).forEach(attr => {
+          newElement.setAttribute(attr.name, attr.value);
+      });
+      newElement.innerHTML = element.innerHTML;
+      element.parentNode.replaceChild(newElement, element);
+    JAVASCRIPT
+    JS.eval(js_code)
+  end
+
   def hyperedit(params, usr_bloc)
     html_object = JS.global[:document].getElementById(params.to_s)
     particles_from_style = {}
@@ -288,6 +304,36 @@ class HTML
     # we remove any element if the id already exist
     element_to_delete = JS.global[:document].getElementById(id.to_s)
     delete(id) unless element_to_delete.inspect == 'null'
+  end
+
+  def editor(id)
+    # we remove any element if the id already exist
+    check_double(id)
+    markup_found = @original_atome.markup || :textarea
+    @element_type = markup_found.to_s
+    @element = JS.global[:document].createElement(@element_type)
+    JS.global[:document][:body].appendChild(@element)
+    add_class('atome')
+    id(id)
+    self
+    # # we remove any element if the id already exist
+    # check_double(id)
+    # markup_found = @original_atome.markup || :textarea
+    # @element_type = markup_found.to_s
+    # @element = JS.global[:document].createElement(@element_type)
+    # JS.global[:document][:body].appendChild(@element)
+    # add_class('atome')
+    # id(id)
+    # js_code = <<~JAVASCRIPT
+    #   var editor = CodeMirror.fromTextArea(document.getElementById('#{id}'), {
+    #   	lineNumbers: true,
+    #   	mode: "ruby",
+    #   	theme: "monokai"
+    #   });
+    # JAVASCRIPT
+    # # JS.eval(js_code)
+
+    self
   end
 
   def shape(id)
@@ -733,14 +779,14 @@ class HTML
     end
   end
 
-  def drag_code(params=nil)
-    #FIXME : this method is an ugly patch when refreshing an atome twice, else it crash
+  def drag_code(params = nil)
+    # FIXME : this method is an ugly patch when refreshing an atome twice, else it crash
     # and lose it's drag
     drag_move(params)
   end
 
   def event(action, variance, option = nil)
-  #   puts " remove 'if option', if unable ti unbind# : #{action} _ #{variance}"
+    #   puts " remove 'if option', if unable ti unbind# : #{action} _ #{variance}"
     send("#{action}_#{variance}", option)
   end
 
@@ -1316,48 +1362,48 @@ class HTML
     when :double
       @touch_double = ''
       @touch_removed[:double] = true
-      @touch_double_event= nil
+      @touch_double_event = nil
     when :down
       @touch_down = ''
       @touch_removed[:down] = true
-      @touch_down_event= nil
+      @touch_down_event = nil
     when :long
       @touch_removed[:long] = true
       @touch_long = ''
-      @touch_long_event= nil
+      @touch_long_event = nil
     when :tap
       @touch_removed[:tap] = true
       @touch_tap = ''
       @touch_removed[:touch] = true
       @touch_touch = ''
-      @touch_tap_event= nil
+      @touch_tap_event = nil
 
     when :touch
       @touch_removed[:tap] = true
       @touch_tap = ''
       @touch_removed[:touch] = true
       @touch_touch = ''
-      @touch_tap_event= nil
+      @touch_tap_event = nil
 
     when :up
       @touch_removed[:up] = true
       @touch_up = ''
-      @touch_up_event= nil
+      @touch_up_event = nil
     else
       touch_remove(:double)
-      @touch_double_event= nil
+      @touch_double_event = nil
 
       touch_remove(:down)
-      @touch_down_event= nil
+      @touch_down_event = nil
 
       touch_remove(:long)
-      @touch_long_event= nil
+      @touch_long_event = nil
 
       touch_remove(:tap)
       touch_remove(:touch)
-      @touch_tap_event= nil
+      @touch_tap_event = nil
       touch_remove(:up)
-      @touch_up_event= nil
+      @touch_up_event = nil
     end
 
   end

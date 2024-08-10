@@ -14,6 +14,10 @@ new({ method: :type, type: :string, renderer: :html, specific: :image }) do |_va
   html.image(@id)
 end
 
+new({ method: :type, type: :string, renderer: :html, specific: :editor }) do |_value, _user_proc|
+  html.editor(@id)
+end
+
 new({ method: :type, type: :string, renderer: :html, specific: :video }) do |_value, _user_proc|
   html.video(@id)
 end
@@ -45,6 +49,21 @@ new({ method: :type, type: :string, specific: :color, renderer: :html }) do
 end
 
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |params|
+
+  # js[:innerHTML] = if int8[language]
+  #                    int8[language].to_s
+  #                  else
+  #                    params.to_s
+  #                  end
+
+  # alert "#{Universe.translation} /// #{params} /// #{Universe.language}"
+  if  Universe.translation[params]
+    params=  Universe.translation[params][Universe.language]
+  end
+  js[:innerHTML] = params.to_s
+
+end
+new({ method: :data, type: :string, specific: :editor, renderer: :html }) do |params|
 
   # js[:innerHTML] = if int8[language]
   #                    int8[language].to_s
@@ -111,4 +130,8 @@ end
 
 new({ renderer: :html, method: :selected, specific: :text }) do |value, &bloc|
   html.select_text(value)
+end
+
+new({ renderer: :html, method: :markup}) do |value, &bloc|
+  html.markup(value, bloc)
 end
