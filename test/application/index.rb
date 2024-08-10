@@ -224,6 +224,7 @@
 # require "./examples/attach"
 # require "./examples/alternate"
 require "./examples/trigger_abstraction"
+require "./examples/editor"
 # require "./examples/audio"
 
 # require "./examples/test"

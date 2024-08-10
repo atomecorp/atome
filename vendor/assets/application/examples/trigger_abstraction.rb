@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 new ({particle: :trigger})
 
@@ -34,7 +35,10 @@ startMidi();
 listenForMidiEvents();
 
 JAVASCRIPT
-JS.eval(js_midi_code)
+if Atome::host == 'tauri'
+  JS.eval(js_midi_code)
+end
+
 
 # Initialize window.snare
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def alert(val)
-  escaped_val = val.to_s.gsub("'", "\\'").gsub("\n", "\\n")
+  escaped_val = val.gsub("'", "\\\\'").gsub("\n", "\\n")
   JS.eval("alert('#{escaped_val}')")
 end
 

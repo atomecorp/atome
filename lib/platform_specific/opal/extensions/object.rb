@@ -2,5 +2,6 @@
 
 # main add on
 def alert(val)
-  JS.eval("alert('#{val.to_s}')")
+  escaped_val = val.gsub("'", "\\\\'")
+  JS.eval("alert('#{escaped_val}')")
 end
