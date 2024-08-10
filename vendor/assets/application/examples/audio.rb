@@ -18,7 +18,7 @@ end
 @track = @audio_context.createMediaElementSource(@audio_element)
 
 @gain_node = @audio_context.createGain()
-@gain_node[:gain][:value] = 0.5
+@gain_node[:gain][:value] = 0.6
 
 @track.connect(@gain_node)
 @gain_node.connect(@audio_context[:destination])
@@ -35,20 +35,36 @@ end
 
 
 # ######### wadjs
+
 bb=box({left: 333})
 bb.text(:wadjs)
+
+
+
+# Initialize window.snare
+
 init_code = "window.snare = new Wad({source : 'medias/audios/clap.wav'});"
 JS.eval(init_code)
 
-play_code = <<~STRDEL
-  window.snare.play();
-  setTimeout(function() {
-    window.snare.stop();
-  }, 300);
-STRDEL
+# Define the JavaScript playSnare function
+js_code = <<~JAVASCRIPT
+  window.playSnare = function() {
+    window.snare.play();
+    // setTimeout(function() {
+    //  window.snare.stop();
+    //}, 30);
+  }
+JAVASCRIPT
 
+# Evaluate the JavaScript code once
+JS.eval(js_code)
 
-bb.touch(:down) do
-  JS.eval(play_code)
+# Define the Ruby method to call the JavaScript function
+def play_snare
+  JS.eval('window.playSnare()')
 end
 
+# Attach the method to the touch event
+bb.touch(:down) do
+  play_snare
+end

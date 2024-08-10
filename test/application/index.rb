@@ -224,7 +224,7 @@
 # require "./examples/attach"
 # require "./examples/alternate"
 require "./examples/trigger_abstraction"
-require "./examples/read"
+# require "./examples/audio"
 
 # require "./examples/test"
 # require "./examples/exchange"

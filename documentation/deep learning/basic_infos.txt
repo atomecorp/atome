@@ -14,6 +14,10 @@ brew install openssl
 cargo install tauri-cli --force
 cargo add midir # to add midi dependencies to atome
 
+# install elementary
+ npm install @nick-thompson/elementary
+
+
 Install Homebrew
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

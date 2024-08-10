@@ -83,3 +83,18 @@ fn main() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+
+
+// elementary
+
+// #[command]
+// fn do_something() {
+//     // Code pour faire quelque chose avec Elementary
+// }
+//
+// fn main() {
+//     tauri::Builder::default()
+//         .invoke_handler(tauri::generate_handler![start_elementary, do_something])
+//         .run(tauri::generate_context!())
+//         .expect("error while running tauri application");
+// }
