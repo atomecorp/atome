@@ -19,10 +19,14 @@
 
 
 
-m=map({id: :locator, longitude: 55.9876876, latitude: 33.987687, width: 699, height: 333})
-wait 3 do
-  m.delete(true)
-  map({id: :locator, location: :auto})
+m=map({id: :hgfh, longitude: 55.9876876, latitude: 33.987687, width: 699, height: 300})
+# wait 3 do
+p=map({id: :poilo, location: :auto, width: 333, height: 333, top: 333 , left: 333, zoom: 3})
+# end
+b=box
+b.touch(true) do
+  m.zoom(33)
+  p.zoom(3)
 end
 
 # m=map({id: :locator, location: :auto})

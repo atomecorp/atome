@@ -283,56 +283,136 @@ class HTML
 
   # map
   def location(loc_found)
-
     if loc_found[:longitude] && loc_found[:latitude]
       long_f=loc_found[:longitude]
       lat_f=loc_found[:latitude]
+#       js_code = <<~JAVASCRIPT
+# const map = L.map('#{@id}').fitWorld();
+#
+# // Définissez votre niveau de zoom ici
+# const zoomLevel = 16;  // Vous pouvez ajuster cette valeur ou la calculer dynamiquement
+#
+# if ('#{long_f}' === 'auto' || '#{lat_f}' === 'auto') {
+#     const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+#         maxZoom: 19,
+#         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+#     }).addTo(map);
+#
+#     function onLocationFound(e) {
+#         const radius = e.accuracy / 2;
+#
+#         const locationMarker = L.marker(e.latlng).addTo(map)
+#             .bindPopup(`You are within ${radius} meters from this point`).openPopup();
+#
+#         const locationCircle = L.circle(e.latlng, radius).addTo(map);
+#     }
+#
+#     function onLocationError(e) {
+#         console.log(e.message);
+#     }
+#
+#     map.on('locationfound', onLocationFound);
+#     map.on('locationerror', onLocationError);
+#
+#     map.locate({setView: true, maxZoom: zoomLevel});
+# } else {
+#     const lat = parseFloat('#{lat_f}');
+#     const long = parseFloat('#{long_f}');
+#  const zoomLevel = 3;
+#     const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+#         maxZoom: 19,
+#         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+#     }).addTo(map);
+#
+#     map.setView([lat, long], zoomLevel);
+#
+#     const locationMarker = L.marker([lat, long]).addTo(map)
+#         .bindPopup('This is your point').openPopup();
+# }
+# JAVASCRIPT
+######## works
       js_code = <<~JAVASCRIPT
-const map = L.map('#{@id}').fitWorld();
+        const locatorElement = document.getElementById('#{@id}');
+              if (!locatorElement._leaflet_map) {
+                  const map = L.map('locator').setView([51.505, -0.09], 2);
+                  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  }).addTo(map);
+                  locatorElement._leaflet_map = map;
+              }
+      JAVASCRIPT
+      # JS.eval(js_code)
 
-// Définissez votre niveau de zoom ici
-const zoomLevel = 16;  // Vous pouvez ajuster cette valeur ou la calculer dynamiquement
-
-if ('#{long_f}' === 'auto' || '#{lat_f}' === 'auto') {
-    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+###### new tests
+      js_code = <<~JAVASCRIPT
+const locatorElement = document.getElementById('#{@id}');
+if (!locatorElement._leaflet_map) {
+    const map = L.map('#{@id}').setView([51.505, -0.09], 2); // Centrer initialement sur une position par défaut
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+    locatorElement._leaflet_map = map;
 
-    function onLocationFound(e) {
-        const radius = e.accuracy / 2;
+    if ('#{long_f}' === 'auto' || '#{lat_f}' === 'auto') {
+        function onLocationFound(e) {
+            const radius = e.accuracy / 2;
+            L.marker(e.latlng).addTo(map)
+                .bindPopup(`You are within ${radius} meters from this point`).openPopup();
+            L.circle(e.latlng, radius).addTo(map);
+            map.setView(e.latlng, map.getZoom()); // Centrer la carte sur la position trouvée en conservant le zoom actuel
+        }
 
-        const locationMarker = L.marker(e.latlng).addTo(map)
-            .bindPopup(`You are within ${radius} meters from this point`).openPopup();
+        function onLocationError(e) {
+            console.log(e.message);
+        }
 
-        const locationCircle = L.circle(e.latlng, radius).addTo(map);
+        map.on('locationfound', onLocationFound);
+        map.on('locationerror', onLocationError);
+
+        map.locate({ setView: true }); // Tenter de localiser l'utilisateur sans modifier le zoom
+    } else {
+        const lat = parseFloat('#{lat_f}');
+        const long = parseFloat('#{long_f}');
+        map.setView([lat, long], map.getZoom()); // Centrer la carte sur les coordonnées fournies en conservant le zoom actuel
+
+        L.marker([lat, long]).addTo(map)
+            .bindPopup('This is your point').openPopup();
     }
-
-    function onLocationError(e) {
-        console.log(e.message);
-    }
-
-    map.on('locationfound', onLocationFound);
-    map.on('locationerror', onLocationError);
-
-    map.locate({setView: true, maxZoom: zoomLevel});
 } else {
-    const lat = parseFloat('#{lat_f}');
-    const long = parseFloat('#{long_f}');
- const zoomLevel = 3; 
-    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    const map = locatorElement._leaflet_map;
+    if ('#{long_f}' !== 'auto' && '#{lat_f}' !== 'auto') {
+        const lat = parseFloat('#{lat_f}');
+        const long = parseFloat('#{long_f}');
+        map.setView([lat, long], map.getZoom()); // Centrer la carte sur les coordonnées fournies en conservant le zoom actuel
 
-    map.setView([lat, long], zoomLevel);
-
-    const locationMarker = L.marker([lat, long]).addTo(map)
-        .bindPopup('This is your point').openPopup();
+        L.marker([lat, long]).addTo(map)
+            .bindPopup('This is your point').openPopup();
+    }
 }
-JAVASCRIPT
+      JAVASCRIPT
       JS.eval(js_code)
+
+
+
+
     end
+  end
+
+
+
+  ########
+  def map_zoom(params)
+    js_code = <<~JAVASCRIPT
+      const locatorElement = document.getElementById('#{@id}');
+            const map = locatorElement._leaflet_map;
+            if (map) {
+                map.setZoom(#{params});
+            } else {
+                console.log('Map instance not found');
+            }
+    JAVASCRIPT
+    JS.eval(js_code)
+
   end
 
   def attr(attribute, value)

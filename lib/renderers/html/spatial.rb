@@ -77,8 +77,13 @@ new({ method: :map, renderer: :html, type: :int }) do |params, _user_proc|
   html.location(location_hash)
 end
 
-new({particle: :location}) do |params, _user_proc|
-  render(:map, params)
-  params
+new({ method: :map_zoom, renderer: :html, type: :int }) do |params, _user_proc|
+  html.map_zoom(params)
 end
+
+
+
+
+
+
 
