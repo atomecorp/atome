@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-
 new({ atome: :editor, type: :hash }) do |params|
   params
 end
 
 new({ sanitizer: :editor }) do |params|
-  params = { data: params } unless params.instance_of? Hash
+  params = {} unless params.instance_of? Hash
+  params[:data] = [] unless params[:data]
   params
 end
 
@@ -115,7 +115,6 @@ new({ sanitizer: :text }) do |params|
   params = { data: params } unless params.instance_of? Hash
   params
 end
-
 
 # for later use ( physical is a css like style)
 new({ atome: :human }) do |params|

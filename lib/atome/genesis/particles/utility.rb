@@ -17,6 +17,7 @@ end
 
 new({ particle: :renderers, category: :utility, type: :string })
 new({ particle: :code, category: :utility, type: :string, store: false }) do |params, code|
+
   @code[params] = code
 end
 new({ particle: :run }) do |params, code|
@@ -60,19 +61,29 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
       grab(attach).unfasten([id])
       Universe.delete(@aid)
     end
+  elsif params == false
+
+
+    cells.delete(true)
+
+    # touch(false)
+    # render(:delete, params)
+    render(:delete, params)
+    Universe.delete(@aid)
   elsif params.instance_of? Hash
     # if we are on a matrix we delete cells found & group found
     cells.delete(true)
     group.delete(true)
     touch(false)
-    if params[:recursive]
+    if params[:recursive] == true
       grab(attach).unfasten([id])
       unless grab(@id).tag && (grab(@id).tag[:persistent] || grab(@id).tag[:system])
         fasten.each do |atttached_atomes|
           delete_recursive(atttached_atomes)
         end
         # touch(false)
-        render(:delete, params)
+        # render(:delete, params)
+        # html.delete(@id)
         Universe.delete(@aid)
       end
     elsif params[:force]
@@ -82,10 +93,7 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
       end
       touch(false)
       render(:delete, params)
-      # alert "Universe : #{Universe.atomes[@aid]}"
-      # alert "length = #{Universe.atomes.length}"
       Universe.delete(@aid)
-      # alert "Universe : #{Universe.atomes.length}"
 
     else
       # the machine try to find the sub particle id and remove it eg a.delete(monitor: :my_monitor) remove the monitor

@@ -57,31 +57,22 @@ new({ method: :data, type: :string, specific: :text, renderer: :html }) do |para
   #                  end
 
   # alert "#{Universe.translation} /// #{params} /// #{Universe.language}"
-  if  Universe.translation[params]
-    params=  Universe.translation[params][Universe.language]
+  if Universe.translation[params]
+    params = Universe.translation[params][Universe.language]
   end
   js[:innerHTML] = params.to_s
 
 end
-new({ method: :data, type: :string, specific: :editor, renderer: :html }) do |params|
-
-  # js[:innerHTML] = if int8[language]
-  #                    int8[language].to_s
-  #                  else
-  #                    params.to_s
-  #                  end
-
-  # alert "#{Universe.translation} /// #{params} /// #{Universe.language}"
-  if  Universe.translation[params]
-    params=  Universe.translation[params][Universe.language]
+new({ method: :code, type: :string, specific: :editor, renderer: :html }) do |params|
+  if Universe.translation[params]
+    params = Universe.translation[params][Universe.language]
   end
   js[:innerHTML] = params.to_s
-
 end
 
 new({ method: :data, type: :string, specific: :vector, renderer: :html }) do |value|
   unless value.instance_of? Array
-    value=[value]
+    value = [value]
   end
   html.svg_data(value)
 end
@@ -127,11 +118,10 @@ new({ method: :type, type: :hash, specific: :atomized, renderer: :html }) do |va
   html.atomized(alien)
 end
 
-
 new({ renderer: :html, method: :selected, specific: :text }) do |value, &bloc|
   html.select_text(value)
 end
 
-new({ renderer: :html, method: :markup}) do |value, &bloc|
+new({ renderer: :html, method: :markup }) do |value, &bloc|
   html.markup(value, bloc)
 end

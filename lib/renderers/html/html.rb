@@ -653,7 +653,9 @@ class HTML
 
   def delete(id_to_delete)
     element_to_delete = JS.global[:document].getElementById(id_to_delete.to_s)
-    element_to_delete.remove if element_to_delete
+    return unless element_to_delete.to_s != 'null'
+      return unless element_to_delete
+        element_to_delete.remove
   end
 
   def append(child_id_found)
@@ -998,11 +1000,11 @@ class HTML
     # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
     # group etc..
     proc_content = bloc.call({ source: draggable_element, destination: dropzone_element }) if event_validation(bloc)
-    if proc_content.instance_of? Hash
-      proc_content.each do |k, v|
-        @original_atome.send(k, v)
-      end
+    return unless proc_content.instance_of? Hash
+    proc_content.each do |k, v|
+      @original_atome.send(k, v)
     end
+
   end
 
   def drop_activate(_option)
@@ -1786,12 +1788,12 @@ class HTML
 
     apply_centering(@center_options, @parent)
 
-    if @center_options[:dynamic]
-      event_handler = ->(event) do
-        apply_centering(@center_options, @parent)
-      end
-      JS.global[:window].addEventListener('resize', event_handler)
+    return unless @center_options[:dynamic]
+    event_handler = ->(event) do
+      apply_centering(@center_options, @parent)
     end
+    JS.global[:window].addEventListener('resize', event_handler)
+
   end
 
   def record_audio(params)
@@ -1826,10 +1828,10 @@ class HTML
       @original_atome.left(x_position)
     end
 
-    if options[:y]
-      y_position = calculate_position(options[:y], parent.to_px(:height), @original_atome.to_px(:height))
-      @original_atome.top(y_position)
-    end
+    return unless options[:y]
+    y_position = calculate_position(options[:y], parent.to_px(:height), @original_atome.to_px(:height))
+    @original_atome.top(y_position)
+
   end
 
   def calculate_position(option, parent_dimension, self_dimension)
