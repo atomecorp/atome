@@ -64,3 +64,21 @@ end
 new({ renderer: :html, method: :center }) do |params|
   html.center(params, attach)
 end
+
+
+new({ method: :map, renderer: :html, type: :int }) do |params, _user_proc|
+  #TODO : missing zoom params
+  if params== :auto
+    params={longitude: :auto, latitude: :auto}
+  end
+  latitude_found=@latitude
+  longitude_found=@longitude
+  location_hash={longitude: longitude_found, latitude: latitude_found}.merge(params)
+  html.location(location_hash)
+end
+
+new({particle: :location}) do |params, _user_proc|
+  render(:map, params)
+  params
+end
+

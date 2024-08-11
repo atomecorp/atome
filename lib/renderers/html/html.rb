@@ -280,6 +280,61 @@ class HTML
     @websocket.close
   end
 
+
+  # map
+  def location(loc_found)
+
+    if loc_found[:longitude] && loc_found[:latitude]
+      long_f=loc_found[:longitude]
+      lat_f=loc_found[:latitude]
+      js_code = <<~JAVASCRIPT
+const map = L.map('#{@id}').fitWorld();
+
+// Définissez votre niveau de zoom ici
+const zoomLevel = 16;  // Vous pouvez ajuster cette valeur ou la calculer dynamiquement
+
+if ('#{long_f}' === 'auto' || '#{lat_f}' === 'auto') {
+    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    function onLocationFound(e) {
+        const radius = e.accuracy / 2;
+
+        const locationMarker = L.marker(e.latlng).addTo(map)
+            .bindPopup(`You are within ${radius} meters from this point`).openPopup();
+
+        const locationCircle = L.circle(e.latlng, radius).addTo(map);
+    }
+
+    function onLocationError(e) {
+        console.log(e.message);
+    }
+
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    map.locate({setView: true, maxZoom: zoomLevel});
+} else {
+    const lat = parseFloat('#{lat_f}');
+    const long = parseFloat('#{long_f}');
+ const zoomLevel = 3; 
+    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    map.setView([lat, long], zoomLevel);
+
+    const locationMarker = L.marker([lat, long]).addTo(map)
+        .bindPopup('This is your point').openPopup();
+}
+JAVASCRIPT
+      JS.eval(js_code)
+    end
+  end
+
   def attr(attribute, value)
     @element.setAttribute(attribute.to_s, value.to_s)
     self

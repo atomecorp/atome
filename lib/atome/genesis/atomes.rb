@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-new({ atome: :editor, type: :hash }) do |params|
-  params
-end
+new({ atome: :editor, type: :hash })
 
 new({ sanitizer: :editor }) do |params|
   params = {} unless params.instance_of? Hash
@@ -125,6 +123,8 @@ new({ atome: :paint })
 new({ atome: :vector })
 new({ atome: :table })
 new({ atome: :atomized, type: :hash })
+new({ atome: :map, type: :hash })
+
 
 
 

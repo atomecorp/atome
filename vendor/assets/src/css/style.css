@@ -97,7 +97,7 @@ pre {
     -webkit-user-drag: none;
     caret-shape: bar;
     overflow: visible;
-    /*box-sizing: border-box;*/
+    box-sizing: border-box;
 }
 
 .text {

@@ -106,3 +106,13 @@ new ({ particle: :increment, category: :spatial, type: :hash }) do |params|
     send(particle, value + prev_value)
   end
 end
+
+new({particle: :longitude}) do |params, _user_proc|
+  render(:map, {longitude: params })
+  params
+end
+
+new({particle: :latitude}) do |params, _user_proc|
+  render(:map, {latitude: params })
+  params
+end

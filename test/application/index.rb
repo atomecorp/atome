@@ -223,9 +223,14 @@
 # require "./examples/unfasten"
 # require "./examples/attach"
 # require "./examples/alternate"
+# TODO:  TO FINISH
 # require "./examples/trigger_abstraction"
-require "./examples/editor"
+# require "./examples/editor"
+require "./examples/map"
+
+
 # require "./examples/audio"
+#
 
 # require "./examples/test"
 # require "./examples/exchange"
