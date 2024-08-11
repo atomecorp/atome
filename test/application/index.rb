@@ -226,7 +226,8 @@
 # TODO:  TO FINISH
 # require "./examples/trigger_abstraction"
 # require "./examples/editor"
-require "./examples/map"
+# require "./examples/map"
+require "./examples/meteo"
 
 
 # require "./examples/audio"

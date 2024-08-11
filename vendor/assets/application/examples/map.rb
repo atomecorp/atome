@@ -1,3 +1,6 @@
+#  frozen_string_literal: true
+
+
 # new({ atome: :map, type: :hash })
 
 # new({particle: :longitude}) do |params, _user_proc|
@@ -24,13 +27,13 @@ m=map({id: :hgfh, longitude: 55.9876876, latitude: 33.987687, width: 333, height
 p=map({id: :poilo, location: :auto, width: 333, height: 333, top: 333 , left: 333, zoom: 3})
 # end
 b=box
-# b.touch(true) do
-#   m.zoom(33)
-#   # p.zoom(3)
-#   # wait 2 do
-#     p.pan({ left: 370, top: 190 })
-#   # end
-# end
+b.touch(true) do
+  m.zoom(33)
+  # p.zoom(3)
+  # wait 2 do
+    p.pan({ left: 370, top: 190 })
+  # end
+end
 
 # m=map({id: :locator, location: :auto})
 

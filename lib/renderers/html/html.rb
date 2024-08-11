@@ -387,9 +387,6 @@ setTimeout(function() {
     end
   end
 
-
-
-  ########
   def map_zoom(params)
     js_code = <<~JAVASCRIPT
       const locatorElement = document.getElementById('#{@id}');
@@ -406,6 +403,35 @@ setTimeout(function() {
             const map = locatorElement._leaflet_map;
                  map.panBy([#{left_found}, #{top_found}], { animate: true });
     JAVASCRIPT
+    JS.eval(js_code)
+  end
+
+
+  # meteo
+  def meteo(location)
+    js_code = <<~JAVASCRIPT
+const url = 'https://api.openweathermap.org/data/2.5/weather?q=#{location},fr&appid=c21a75b667d6f7abb81f118dcf8d4611&units=metric';
+async function fetchWeather() {
+    try {
+        let response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('Erreur HTTP ! statut : ' + response.status);
+        }
+
+        let data = await response.json();
+
+
+let jsonString = JSON.stringify(data);
+
+ atomeJsToRuby("grab('#{@id}').instance_variable_get('@meteo_code')[:meteo].call('"+jsonString+"')")
+    } catch (error) {
+        console.log('Error getting meteo : ' + error.message);
+    }
+}
+
+fetchWeather();
+  JAVASCRIPT
     JS.eval(js_code)
   end
 
