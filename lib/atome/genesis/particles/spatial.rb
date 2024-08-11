@@ -126,3 +126,8 @@ new({particle: :zoom, specific: :map}) do |params, _user_proc|
   render(:map_zoom, params)
   params
 end
+
+new({particle: :pan, specific: :map}) do |params, _user_proc|
+  render(:map_pan, params)
+  params
+end

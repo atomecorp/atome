@@ -81,6 +81,10 @@ new({ method: :map_zoom, renderer: :html, type: :int }) do |params, _user_proc|
   html.map_zoom(params)
 end
 
+new({ method: :map_pan, renderer: :html, type: :int }) do |params, _user_proc|
+  html.map_pan(params)
+end
+
 
 
 

@@ -286,66 +286,8 @@ class HTML
     if loc_found[:longitude] && loc_found[:latitude]
       long_f=loc_found[:longitude]
       lat_f=loc_found[:latitude]
-#       js_code = <<~JAVASCRIPT
-# const map = L.map('#{@id}').fitWorld();
-#
-# // Définissez votre niveau de zoom ici
-# const zoomLevel = 16;  // Vous pouvez ajuster cette valeur ou la calculer dynamiquement
-#
-# if ('#{long_f}' === 'auto' || '#{lat_f}' === 'auto') {
-#     const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-#         maxZoom: 19,
-#         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-#     }).addTo(map);
-#
-#     function onLocationFound(e) {
-#         const radius = e.accuracy / 2;
-#
-#         const locationMarker = L.marker(e.latlng).addTo(map)
-#             .bindPopup(`You are within ${radius} meters from this point`).openPopup();
-#
-#         const locationCircle = L.circle(e.latlng, radius).addTo(map);
-#     }
-#
-#     function onLocationError(e) {
-#         console.log(e.message);
-#     }
-#
-#     map.on('locationfound', onLocationFound);
-#     map.on('locationerror', onLocationError);
-#
-#     map.locate({setView: true, maxZoom: zoomLevel});
-# } else {
-#     const lat = parseFloat('#{lat_f}');
-#     const long = parseFloat('#{long_f}');
-#  const zoomLevel = 3;
-#     const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-#         maxZoom: 19,
-#         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-#     }).addTo(map);
-#
-#     map.setView([lat, long], zoomLevel);
-#
-#     const locationMarker = L.marker([lat, long]).addTo(map)
-#         .bindPopup('This is your point').openPopup();
-# }
-# JAVASCRIPT
-######## works
       js_code = <<~JAVASCRIPT
-        const locatorElement = document.getElementById('#{@id}');
-              if (!locatorElement._leaflet_map) {
-                  const map = L.map('locator').setView([51.505, -0.09], 2);
-                  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  }).addTo(map);
-                  locatorElement._leaflet_map = map;
-              }
-      JAVASCRIPT
-      # JS.eval(js_code)
-
-###### new tests
-      js_code = <<~JAVASCRIPT
-const locatorElement = document.getElementById('#{@id}');
+         const locatorElement = document.getElementById('#{@id}');
 if (!locatorElement._leaflet_map) {
     const map = L.map('#{@id}').setView([51.505, -0.09], 2); // Centrer initialement sur une position par défaut
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -356,9 +298,17 @@ if (!locatorElement._leaflet_map) {
     if ('#{long_f}' === 'auto' || '#{lat_f}' === 'auto') {
         function onLocationFound(e) {
             const radius = e.accuracy / 2;
-            L.marker(e.latlng).addTo(map)
+            const locationMarker = L.marker(e.latlng).addTo(map)
                 .bindPopup(`You are within ${radius} meters from this point`).openPopup();
-            L.circle(e.latlng, radius).addTo(map);
+
+            // Ajouter un ID au marqueur
+            locationMarker._icon.id = '#{@id}_locator';
+            
+            locationMarker.on('click', function() {
+                alert(`You clicked the location marker at ${e.latlng.toString()}`);
+            });
+
+            const locationCircle = L.circle(e.latlng, radius).addTo(map);
             map.setView(e.latlng, map.getZoom()); // Centrer la carte sur la position trouvée en conservant le zoom actuel
         }
 
@@ -375,9 +325,25 @@ if (!locatorElement._leaflet_map) {
         const long = parseFloat('#{long_f}');
         map.setView([lat, long], map.getZoom()); // Centrer la carte sur les coordonnées fournies en conservant le zoom actuel
 
-        L.marker([lat, long]).addTo(map)
+        const locationMarker = L.marker([lat, long]).addTo(map)
             .bindPopup('This is your point').openPopup();
+
+        // Ajouter un ID au marqueur
+        locationMarker._icon.id = '#{@id}_locator';
+        
+        locationMarker.on('click', function() {
+            alert(`You clicked the location marker at [${lat}, ${long}]`);
+        });
     }
+
+    // Ecouter l'événement 'load' de la carte pour rafraîchir l'écran et afficher une alerte
+    map.whenReady(function() {
+        map.invalidateSize();
+// important setimout re-center the view else the view is incorrect (map.invalidateSize() refresh the view)
+setTimeout(function() {
+        map.invalidateSize();
+}, 0001);
+    });
 } else {
     const map = locatorElement._leaflet_map;
     if ('#{long_f}' !== 'auto' && '#{lat_f}' !== 'auto') {
@@ -385,15 +351,38 @@ if (!locatorElement._leaflet_map) {
         const long = parseFloat('#{long_f}');
         map.setView([lat, long], map.getZoom()); // Centrer la carte sur les coordonnées fournies en conservant le zoom actuel
 
-        L.marker([lat, long]).addTo(map)
+        const locationMarker = L.marker([lat, long]).addTo(map)
             .bindPopup('This is your point').openPopup();
+
+        // Ajouter un ID au marqueur
+        locationMarker._icon.id = '#{@id}_locator';
+        
+        locationMarker.on('click', function() {
+            alert(`You clicked the location marker at [${lat}, ${long}]`);
+        });
     }
+
+    // Ecouter l'événement 'load' de la carte pour rafraîchir l'écran et afficher une alerte
+    map.whenReady(function() {
+    
+setTimeout(function() {
+        map.invalidateSize();
+}, 0001);
+    });
 }
+
+// Ecouter l'événement de redimensionnement de la fenêtre pour réinitialiser la taille de la carte et la vue
+window.addEventListener('resize', () => {
+    const map = locatorElement._leaflet_map;
+setTimeout(function() {
+        map.invalidateSize();
+}, 0001);
+});
+
+
+
       JAVASCRIPT
       JS.eval(js_code)
-
-
-
 
     end
   end
@@ -405,14 +394,19 @@ if (!locatorElement._leaflet_map) {
     js_code = <<~JAVASCRIPT
       const locatorElement = document.getElementById('#{@id}');
             const map = locatorElement._leaflet_map;
-            if (map) {
                 map.setZoom(#{params});
-            } else {
-                console.log('Map instance not found');
-            }
     JAVASCRIPT
     JS.eval(js_code)
-
+  end
+  def map_pan(params)
+    left_found=params[:left]  || 0
+    top_found=params[:top]  || 0
+    js_code = <<~JAVASCRIPT
+      const locatorElement = document.getElementById('#{@id}');
+            const map = locatorElement._leaflet_map;
+                 map.panBy([#{left_found}, #{top_found}], { animate: true });
+    JAVASCRIPT
+    JS.eval(js_code)
   end
 
   def attr(attribute, value)
