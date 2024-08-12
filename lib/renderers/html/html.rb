@@ -615,9 +615,6 @@ class HTML
                 event-set__mouseenter="_event: mouseenter; color: green"
                 event-set__mouseleave="_event: mouseleave; color: red"></a-sphere>
       <!-- Camera with cursor to detect clicks -->
-      <a-entity camera look-controls>
-        <a-cursor id="cursor"></a-cursor>
-      </a-entity>
     </a-scene>
   HTML
     @element[:innerHTML] = tags
