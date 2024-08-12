@@ -62,3 +62,4 @@ new({ particle: :format, category: :identity, type: :string })
 new({ particle: :alien, category: :identity, type: :string }) # special particel that old alien object
 
 new({ particle: :email, category: :identity, type: :string })
+

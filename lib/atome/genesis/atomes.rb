@@ -124,6 +124,7 @@ new({ atome: :vector })
 new({ atome: :table })
 new({ atome: :atomized, type: :hash })
 new({ atome: :map, type: :hash })
+new({atome: :vr, type: :hash})
 
 
 

@@ -227,7 +227,8 @@
 # require "./examples/trigger_abstraction"
 # require "./examples/editor"
 # require "./examples/map"
-require "./examples/meteo"
+# require "./examples/meteo"
+require "./examples/vr"
 
 
 # require "./examples/audio"

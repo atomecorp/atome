@@ -42,6 +42,11 @@ new({ method: :type, type: :string, specific: :text, renderer: :html }) do |_val
   html.add_class(:text)
 end
 
+new({ method: :type, type: :string, specific: :vr, renderer: :html }) do |_value, _user_proc|
+  html.vr(@id)
+
+end
+
 new({ method: :type, type: :string, specific: :paint, renderer: :html }) do
 end
 
@@ -100,6 +105,12 @@ new({ method: :path, type: :string, renderer: :html, specific: :www }) do |value
   html.path(value)
 end
 
+new({ method: :path, type: :string, renderer: :html, specific: :vr }) do |value, _user_proc|
+  wait 0.1 do # we have to wait for ruby wasm else it won't work
+    html.vr_path(value)
+  end
+end
+
 new({ method: :data, type: :string, renderer: :html, specific: :raw }) do |value, _user_proc|
   html.raw_data(value)
 end
@@ -125,3 +136,6 @@ end
 new({ renderer: :html, method: :markup }) do |value, &bloc|
   html.markup(value, bloc)
 end
+
+
+
