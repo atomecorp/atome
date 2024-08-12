@@ -280,104 +280,103 @@ class HTML
     @websocket.close
   end
 
-
   # map
   def location(loc_found)
     if loc_found[:longitude] && loc_found[:latitude]
-      long_f=loc_found[:longitude]
-      lat_f=loc_found[:latitude]
+      long_f = loc_found[:longitude]
+      lat_f = loc_found[:latitude]
       js_code = <<~JAVASCRIPT
-         const locatorElement = document.getElementById('#{@id}');
-if (!locatorElement._leaflet_map) {
-    const map = L.map('#{@id}').setView([51.505, -0.09], 2); // Centrer initialement sur une position par défaut
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    locatorElement._leaflet_map = map;
+                 const locatorElement = document.getElementById('#{@id}');
+        if (!locatorElement._leaflet_map) {
+            const map = L.map('#{@id}').setView([51.505, -0.09], 2); // Centrer initialement sur une position par défaut
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            locatorElement._leaflet_map = map;
 
-    if ('#{long_f}' === 'auto' || '#{lat_f}' === 'auto') {
-        function onLocationFound(e) {
-            const radius = e.accuracy / 2;
-            const locationMarker = L.marker(e.latlng).addTo(map)
-                .bindPopup(`You are within ${radius} meters from this point`).openPopup();
+            if ('#{long_f}' === 'auto' || '#{lat_f}' === 'auto') {
+                function onLocationFound(e) {
+                    const radius = e.accuracy / 2;
+                    const locationMarker = L.marker(e.latlng).addTo(map)
+                        .bindPopup(`You are within ${radius} meters from this point`).openPopup();
 
-            // Ajouter un ID au marqueur
-            locationMarker._icon.id = '#{@id}_locator';
-            
-            locationMarker.on('click', function() {
-                alert(`You clicked the location marker at ${e.latlng.toString()}`);
+                    // Ajouter un ID au marqueur
+                    locationMarker._icon.id = '#{@id}_locator';
+                    
+                    locationMarker.on('click', function() {
+                        alert(`You clicked the location marker at ${e.latlng.toString()}`);
+                    });
+
+                    const locationCircle = L.circle(e.latlng, radius).addTo(map);
+                    map.setView(e.latlng, map.getZoom()); // Centrer la carte sur la position trouvée en conservant le zoom actuel
+                }
+
+                function onLocationError(e) {
+                    console.log(e.message);
+                }
+
+                map.on('locationfound', onLocationFound);
+                map.on('locationerror', onLocationError);
+
+                map.locate({ setView: true }); // Tenter de localiser l'utilisateur sans modifier le zoom
+            } else {
+                const lat = parseFloat('#{lat_f}');
+                const long = parseFloat('#{long_f}');
+                map.setView([lat, long], map.getZoom()); // Centrer la carte sur les coordonnées fournies en conservant le zoom actuel
+
+                const locationMarker = L.marker([lat, long]).addTo(map)
+                    .bindPopup('This is your point').openPopup();
+
+                // Ajouter un ID au marqueur
+                locationMarker._icon.id = '#{@id}_locator';
+                
+                locationMarker.on('click', function() {
+                    alert(`You clicked the location marker at [${lat}, ${long}]`);
+                });
+            }
+
+            // Ecouter l'événement 'load' de la carte pour rafraîchir l'écran et afficher une alerte
+            map.whenReady(function() {
+                map.invalidateSize();
+        // important setimout re-center the view else the view is incorrect (map.invalidateSize() refresh the view)
+        setTimeout(function() {
+                map.invalidateSize();
+        }, 0001);
             });
+        } else {
+            const map = locatorElement._leaflet_map;
+            if ('#{long_f}' !== 'auto' && '#{lat_f}' !== 'auto') {
+                const lat = parseFloat('#{lat_f}');
+                const long = parseFloat('#{long_f}');
+                map.setView([lat, long], map.getZoom()); // Centrer la carte sur les coordonnées fournies en conservant le zoom actuel
 
-            const locationCircle = L.circle(e.latlng, radius).addTo(map);
-            map.setView(e.latlng, map.getZoom()); // Centrer la carte sur la position trouvée en conservant le zoom actuel
+                const locationMarker = L.marker([lat, long]).addTo(map)
+                    .bindPopup('This is your point').openPopup();
+
+                // Ajouter un ID au marqueur
+                locationMarker._icon.id = '#{@id}_locator';
+                
+                locationMarker.on('click', function() {
+                    alert(`You clicked the location marker at [${lat}, ${long}]`);
+                });
+            }
+
+            // Ecouter l'événement 'load' de la carte pour rafraîchir l'écran et afficher une alerte
+            map.whenReady(function() {
+            
+        setTimeout(function() {
+                map.invalidateSize();
+        }, 0001);
+            });
         }
 
-        function onLocationError(e) {
-            console.log(e.message);
-        }
-
-        map.on('locationfound', onLocationFound);
-        map.on('locationerror', onLocationError);
-
-        map.locate({ setView: true }); // Tenter de localiser l'utilisateur sans modifier le zoom
-    } else {
-        const lat = parseFloat('#{lat_f}');
-        const long = parseFloat('#{long_f}');
-        map.setView([lat, long], map.getZoom()); // Centrer la carte sur les coordonnées fournies en conservant le zoom actuel
-
-        const locationMarker = L.marker([lat, long]).addTo(map)
-            .bindPopup('This is your point').openPopup();
-
-        // Ajouter un ID au marqueur
-        locationMarker._icon.id = '#{@id}_locator';
-        
-        locationMarker.on('click', function() {
-            alert(`You clicked the location marker at [${lat}, ${long}]`);
+        // Ecouter l'événement de redimensionnement de la fenêtre pour réinitialiser la taille de la carte et la vue
+        window.addEventListener('resize', () => {
+            const map = locatorElement._leaflet_map;
+        setTimeout(function() {
+                map.invalidateSize();
+        }, 0001);
         });
-    }
-
-    // Ecouter l'événement 'load' de la carte pour rafraîchir l'écran et afficher une alerte
-    map.whenReady(function() {
-        map.invalidateSize();
-// important setimout re-center the view else the view is incorrect (map.invalidateSize() refresh the view)
-setTimeout(function() {
-        map.invalidateSize();
-}, 0001);
-    });
-} else {
-    const map = locatorElement._leaflet_map;
-    if ('#{long_f}' !== 'auto' && '#{lat_f}' !== 'auto') {
-        const lat = parseFloat('#{lat_f}');
-        const long = parseFloat('#{long_f}');
-        map.setView([lat, long], map.getZoom()); // Centrer la carte sur les coordonnées fournies en conservant le zoom actuel
-
-        const locationMarker = L.marker([lat, long]).addTo(map)
-            .bindPopup('This is your point').openPopup();
-
-        // Ajouter un ID au marqueur
-        locationMarker._icon.id = '#{@id}_locator';
-        
-        locationMarker.on('click', function() {
-            alert(`You clicked the location marker at [${lat}, ${long}]`);
-        });
-    }
-
-    // Ecouter l'événement 'load' de la carte pour rafraîchir l'écran et afficher une alerte
-    map.whenReady(function() {
-    
-setTimeout(function() {
-        map.invalidateSize();
-}, 0001);
-    });
-}
-
-// Ecouter l'événement de redimensionnement de la fenêtre pour réinitialiser la taille de la carte et la vue
-window.addEventListener('resize', () => {
-    const map = locatorElement._leaflet_map;
-setTimeout(function() {
-        map.invalidateSize();
-}, 0001);
-});
 
 
 
@@ -395,9 +394,10 @@ setTimeout(function() {
     JAVASCRIPT
     JS.eval(js_code)
   end
+
   def map_pan(params)
-    left_found=params[:left]  || 0
-    top_found=params[:top]  || 0
+    left_found = params[:left] || 0
+    top_found = params[:top] || 0
     js_code = <<~JAVASCRIPT
       const locatorElement = document.getElementById('#{@id}');
             const map = locatorElement._leaflet_map;
@@ -406,32 +406,34 @@ setTimeout(function() {
     JS.eval(js_code)
   end
 
-
   # meteo
+  def meteo_helper(data)
+    grab(@id).instance_variable_get('@meteo_code')[:meteo].call(data)
+  end
+
   def meteo(location)
     js_code = <<~JAVASCRIPT
-const url = 'https://api.openweathermap.org/data/2.5/weather?q=#{location},fr&appid=c21a75b667d6f7abb81f118dcf8d4611&units=metric';
-async function fetchWeather() {
-    try {
-        let response = await fetch(url);
+      const url = 'https://api.openweathermap.org/data/2.5/weather?q=#{location},fr&appid=c21a75b667d6f7abb81f118dcf8d4611&units=metric';
+      async function fetchWeather() {
+          try {
+              let response = await fetch(url);
 
-        if (!response.ok) {
-            throw new Error('Erreur HTTP ! statut : ' + response.status);
-        }
+              if (!response.ok) {
+                  throw new Error('Erreur HTTP ! statut : ' + response.status);
+              }
 
-        let data = await response.json();
+              let data = await response.json();
 
 
-let jsonString = JSON.stringify(data);
+      let jsonString = JSON.stringify(data);
+      atomeJsToRuby("grab('#{@id}').html.meteo_helper("+jsonString+")");
+          } catch (error) {
+              console.log('Error getting meteo : ' + error.message);
+          }
+      }
 
- atomeJsToRuby("grab('#{@id}').instance_variable_get('@meteo_code')[:meteo].call('"+jsonString+"')")
-    } catch (error) {
-        console.log('Error getting meteo : ' + error.message);
-    }
-}
-
-fetchWeather();
-  JAVASCRIPT
+      fetchWeather();
+    JAVASCRIPT
     JS.eval(js_code)
   end
 
@@ -809,8 +811,8 @@ fetchWeather();
   def delete(id_to_delete)
     element_to_delete = JS.global[:document].getElementById(id_to_delete.to_s)
     return unless element_to_delete.to_s != 'null'
-      return unless element_to_delete
-        element_to_delete.remove
+    return unless element_to_delete
+    element_to_delete.remove
   end
 
   def append(child_id_found)

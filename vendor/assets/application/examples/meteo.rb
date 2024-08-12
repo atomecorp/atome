@@ -1,8 +1,8 @@
 #  frozen_string_literal: true
 
-b=box
-b.meteo('chamalieres') do |data|
-  text(data)
+b = box
+b.meteo('chamalieres') do |params|
+  text({ data: params[:main][:temp] })
+  puts params
 end
 
- # b.instance_variable_get('@meteo_code')[:meteo].call
