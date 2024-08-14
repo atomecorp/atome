@@ -607,16 +607,16 @@ class HTML
 
   def vr_path(objet_path)
     tags = <<~HTML
-    <a-scene embedded>
-      <a-sky src="#{objet_path}" rotation="0 -130 0"></a-sky>
-      <a-text font="kelsonsans" value="Puy de Sancy, France" width="6" position="-2.5 0.25 -1.5" rotation="0 15 0"></a-text>
-      <!-- Hotspot -->
-      <a-sphere id="clickable" color="#FF0000" radius="0.1" position="0 1 -2"
-                event-set__mouseenter="_event: mouseenter; color: green"
-                event-set__mouseleave="_event: mouseleave; color: red"></a-sphere>
-      <!-- Camera with cursor to detect clicks -->
-    </a-scene>
-  HTML
+      <a-scene embedded>
+        <a-sky src="#{objet_path}" rotation="0 -130 0"></a-sky>
+        <a-text font="kelsonsans" value="Puy de Sancy, France" width="6" position="-2.5 0.25 -1.5" rotation="0 15 0"></a-text>
+        <!-- Hotspot -->
+        <a-sphere id="clickable" color="#FF0000" radius="0.1" position="0 1 -2"
+                  event-set__mouseenter="_event: mouseenter; color: green"
+                  event-set__mouseleave="_event: mouseleave; color: red"></a-sphere>
+        <!-- Camera with cursor to detect clicks -->
+      </a-scene>
+    HTML
     @element[:innerHTML] = tags
 
     # Ajouter un écouteur d'événement pour le hotspot
