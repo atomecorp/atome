@@ -577,15 +577,8 @@ class HTML
   end
 
   def vr(id)
-    # # we remove any element if the id already exist
+    # we remove any element if the id already exist
     check_double(id)
-    # markup_found = @original_atome.markup || :div
-    # @element_type = markup_found.to_s
-    # @element = JS.global[:document].createElement(@element_type)
-    # JS.global[:document][:body].appendChild(@element)
-    # add_class('atome')
-    # self.id(id)
-    # self
     markup_found = @original_atome.markup || :div
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
@@ -593,47 +586,37 @@ class HTML
     add_class('atome')
     self.id(id)
 
-    #   # Ajouter les tags à la div
-    #   tags = <<~HTML
-    #   <a-scene embedded>
-    #     <a-sky src="puydesancy.jpg" rotation="0 -130 0"></a-sky>
-    #     <a-text font="kelsonsans" value="Puy de Sancy, France" width="6" position="-2.5 0.25 -1.5" rotation="0 15 0"></a-text>
-    #   </a-scene>
-    # HTML
-    #
-    #   @element.innerHTML = tags
     self
   end
 
   def vr_path(objet_path)
-    tags = <<~HTML
-      <a-scene embedded>
-        <a-sky src="#{objet_path}" rotation="0 -130 0"></a-sky>
-        <a-text font="kelsonsans" value="Puy de Sancy, France" width="6" position="-2.5 0.25 -1.5" rotation="0 15 0"></a-text>
-        <!-- Hotspot -->
-        <a-sphere id="clickable" color="#FF0000" radius="0.1" position="0 1 -2"
-                  event-set__mouseenter="_event: mouseenter; color: green"
-                  event-set__mouseleave="_event: mouseleave; color: red"></a-sphere>
-        <!-- Camera with cursor to detect clicks -->
-      </a-scene>
-    HTML
-    @element[:innerHTML] = tags
+    js_code = <<~JAVASCRIPT
+      initWithParam('#{objet_path}', '#{@id}', 'method', 'params');
+    JAVASCRIPT
 
-    # Ajouter un écouteur d'événement pour le hotspot
-    cursor = JS.global[:document].getElementById('cursor')
-    cursor.addEventListener('click', -> {
-      target = cursor.components.cursor.intersectedEl
-      if target && target.id == 'clickable'
-        alert :yes
-      end
-    })
-
+      JS.eval(js_code)
     # tags = <<~HTML
     #   <a-scene embedded>
-    #     <a-sky src=#{objet_path} rotation="0 -130 0"></a-sky>
+    #     <a-sky src="#{objet_path}" rotation="0 -130 0"></a-sky>
+    #     <a-text font="kelsonsans" value="Puy de Sancy, France" width="6" position="-2.5 0.25 -1.5" rotation="0 15 0"></a-text>
+    #     <!-- Hotspot -->
+    #     <a-sphere id="clickable" color="#FF0000" radius="0.1" position="0 1 -2"
+    #               event-set__mouseenter="_event: mouseenter; color: green"
+    #               event-set__mouseleave="_event: mouseleave; color: red"></a-sphere>
+    #     <!-- Camera with cursor to detect clicks -->
     #   </a-scene>
     # HTML
     # @element[:innerHTML] = tags
+    #
+    # # Ajouter un écouteur d'événement pour le hotspot
+    # cursor = JS.global[:document].getElementById('cursor')
+    # cursor.addEventListener('click', -> {
+    #   target = cursor.components.cursor.intersectedEl
+    #   if target && target.id == 'clickable'
+    #     alert :yes
+    #   end
+    # })
+
   end
 
   def www(id)

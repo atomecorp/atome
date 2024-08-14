@@ -106,9 +106,9 @@ new({ method: :path, type: :string, renderer: :html, specific: :www }) do |value
 end
 
 new({ method: :path, type: :string, renderer: :html, specific: :vr }) do |value, _user_proc|
-  wait 0.1 do # we have to wait for ruby wasm else it won't work
+  # wait 0.1 do # we have to wait for ruby wasm else it won't work
     html.vr_path(value)
-  end
+  # end
 end
 
 new({ method: :data, type: :string, renderer: :html, specific: :raw }) do |value, _user_proc|
