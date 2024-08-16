@@ -736,3 +736,6 @@ new(molecule: :buttons) do |params, &bloc|
   main
 end
 
+new(molecule: :editor) do |params, &bloc|
+
+end

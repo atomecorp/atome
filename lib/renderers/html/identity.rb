@@ -82,7 +82,7 @@ new({ method: :data, type: :string, specific: :vector, renderer: :html }) do |va
   html.svg_data(value)
 end
 
-new({ method: :component, type: :hash, specific: :text, renderer: :html }) do |params, _user_proc|
+new({ method: :component, type: :hash,  renderer: :html }) do |params, _user_proc|
   params.each do |prop, value|
     # we send component data directly to the text html renderer
     send("html_text_#{prop}", value)

@@ -225,10 +225,10 @@
 # require "./examples/alternate"
 # TODO:  TO FINISH
 # require "./examples/trigger_abstraction"
-# require "./examples/editor"
+require "./examples/editor"
 # require "./examples/map"
 # require "./examples/meteo"
-require "./examples/vr"
+# require "./examples/vr"
 
 
 # require "./examples/audio"

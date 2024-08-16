@@ -464,8 +464,9 @@ class HTML
   end
 
   def editor(id)
-    # we remove any element if the id already exist
     check_double(id)
+    editor_id = "#{id}_editor"
+    check_double(editor_id)
     markup_found = @original_atome.markup || :textarea
     @element_type = markup_found.to_s
     @element = JS.global[:document].createElement(@element_type)
@@ -473,25 +474,27 @@ class HTML
     add_class('atome')
     id(id)
     self
-    # # we remove any element if the id already exist
-    # check_double(id)
-    # markup_found = @original_atome.markup || :textarea
-    # @element_type = markup_found.to_s
-    # @element = JS.global[:document].createElement(@element_type)
-    # JS.global[:document][:body].appendChild(@element)
-    # add_class('atome')
-    # id(id)
-    # js_code = <<~JAVASCRIPT
-    #   var editor = CodeMirror.fromTextArea(document.getElementById('#{id}'), {
-    #   	lineNumbers: true,
-    #   	mode: "ruby",
-    #   	theme: "monokai"
-    #   });
-    # JAVASCRIPT
-    # # JS.eval(js_code)
-
-    self
   end
+
+  # def editor(id)
+  #   check_double(id)
+  #   editor_id = "#{id}_editor"
+  #   check_double(editor_id)
+  #   markup_found = @original_atome.markup || :div
+  #   @element_type = markup_found.to_s
+  #   @element = JS.global[:document].createElement(@element_type)
+  #  @element.setAttribute('style', 'font-size: 12px;')
+  #
+  #   JS.global[:document][:body].appendChild(@element)
+  #   add_class('atome')
+  #   id(id)
+  #   textarea = JS.global[:document].createElement('textarea')
+  #   textarea.setAttribute('id', editor_id)
+  #   wait 0.1 do
+  #     @element.appendChild(textarea)
+  #   end
+  #   self
+  # end
 
   def shape(id)
     # we remove any element if the id already exist
@@ -594,7 +597,7 @@ class HTML
       initWithParam('#{objet_path}', '#{@id}', 'method', 'params');
     JAVASCRIPT
 
-      JS.eval(js_code)
+    JS.eval(js_code)
     # tags = <<~HTML
     #   <a-scene embedded>
     #     <a-sky src="#{objet_path}" rotation="0 -130 0"></a-sky>
@@ -1299,6 +1302,10 @@ class HTML
 
   def resize(params, options)
     interact = JS.eval("return interact('##{@id}')")
+
+    # Désactiver explicitement le déplacement
+    # interact.draggable(false)
+
     if params == :remove
       @resize = ''
       interact.resizable(false)
@@ -1308,6 +1315,7 @@ class HTML
       max_width = options[:max][:width] || 3000
       max_height = options[:max][:height] || 3000
       @resize = @original_atome.instance_variable_get('@resize_code')[:resize]
+
       interact.resizable({
                            edges: { left: true, right: true, top: true, bottom: true },
                            inertia: true,
@@ -1315,12 +1323,8 @@ class HTML
                            listeners: {
                              move: lambda do |native_event|
                                Universe.allow_tool_operations = false
-                               # if @resize.is_a?(Proc)
+
                                event = Native(native_event)
-                               # we use .call instead of instance_eval because instance_eval bring the current object as context
-                               # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-                               # group etc..
-                               # @resize.call(event) if event_validation(@resize)
                                proc_content = @resize.call(event) if event_validation(@resize)
                                if proc_content.instance_of? Hash
                                  proc_content.each do |k, v|
@@ -1332,18 +1336,19 @@ class HTML
                                y = (@element[:offsetTop].to_i || 0)
                                width = event[:rect][:width]
                                height = event[:rect][:height]
+
                                # Translate when resizing from any corner
                                x += event[:deltaRect][:left].to_f
                                y += event[:deltaRect][:top].to_f
+
                                @original_atome.width width.to_i if width.to_i.between?(min_width, max_width)
                                @original_atome.height height.to_i if height.to_i.between?(min_height, max_height)
                                @original_atome.left(x)
                                @original_atome.top(y)
-                             end
-                             # end
+                             end,
                            },
-
                          })
+
     end
 
   end

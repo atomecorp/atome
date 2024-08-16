@@ -17,7 +17,6 @@ end
 
 new({ particle: :renderers, category: :utility, type: :string })
 new({ particle: :code, category: :utility, type: :string, store: false }) do |params, code|
-
   @code[params] = code
 end
 new({ particle: :run }) do |params, code|

@@ -1,17 +1,14 @@
 # frozen_string_literal: true
 
-#
-# new({ atome: :editor, type: :hash }) do |params|
-#   params
-# end
-#
-# new({ sanitizer: :editor }) do |params|
-#   params.merge({ markup: :textarea })
-# end
+dragger = box({ width: 333, height: 16, top: 0 })
+back = box({ width: 333, height: 222, top: dragger.height })
+body = back.box({ top: 0, width: '100%', height: '100%', component: { size: 12 }, id: :poil })
+code_runner = dragger.circle({ left: 3, top: 3, width: 12, height: 12, color: :red })
+code_closer = dragger.circle({ left: :auto ,right: 3, top: 3, width: 12, height: 12, color: :black })
 
-e = editor({ id: :the_ed, code: "def my_script\n
+body.editor({ id: :the_ed, code: "def my_script\n
   return 100\n
-end", width: 333, height: 333, color: :lightgray, top: 333 })
+end", width: 333, height: 192, color: :lightgray, top: 0 })
 
 def create_editor(code_id)
   js_code = <<~JAVASCRIPT
@@ -22,6 +19,7 @@ def create_editor(code_id)
     });
     editor.getWrapperElement().id = "atome_editor_#{code_id}";
     document.getElementById("atome_editor_#{code_id}").CodeMirrorInstance = editor;
+
   JAVASCRIPT
   JS.eval(js_code)
 end
@@ -39,38 +37,72 @@ end
 def get_code(code_id)
   js_code = <<~JAVASCRIPT
     var editorWrapper = document.getElementById("atome_editor_#{code_id}");
-       
+
                var editorInstance = editorWrapper.CodeMirrorInstance;
                return editorInstance.getValue();
   JAVASCRIPT
   JS.eval(js_code)
 end
 
-t = text({ id: :the_t, data: :hello })
 create_editor("the_ed")
 
-b = box({ left: 99 })
-
-wait 2 do
-  editor_id="the_ed"
+wait 1 do
+  editor_id = "the_ed"
   set_code(editor_id, "def new_script\\n  puts 'so cool'\\ncircle({top: rand(333), color: :red})\\nend\\nnew_script")
-
 end
-b.touch(true) do
-  editor_id="the_ed"
+
+code_closer.touch(true) do
+  back.delete(true)
+  dragger.delete(true)
+end
+
+code_runner.touch(true) do
+  editor_id = "the_ed"
   data_found = get_code("the_ed").to_s
   grab(:the_t).code(data_found.to_s)
   atome_before = Universe.user_atomes
   eval(data_found)
-  code_editor=grab(editor_id)
+  code_editor = grab(editor_id)
   atome_to_delete = code_editor.data
-  # now we delete atome created before executing
   atome_to_delete.each do |atome_id_found|
     grab(atome_id_found).delete(false)
   end
-
   atome_after = Universe.user_atomes
   new_atomes = atome_after - atome_before
   code_editor.data(new_atomes)
 end
+dragger.drag(restrict: :view ) do |event|
+   view= grab(:view)
+   view_width=view.to_px(:width)
+  dx = event[:dx]
+  dy = event[:dy]
+  x = (back.left || 0) + dx.to_f
+  y = (back.top || 0) + dy.to_f
+   if x > 0 && x < view_width
+     back.left(x)
+   end
+   if y > 0+dragger.height
+     back.top(y)
 
+   end
+
+end
+back.resize({ size: { min: { width: 120, height: 90 }, max: { width: 3000, height: 3000 } } }) do |event|
+  dx = event[:dx]
+  # dy = event[:dy]
+  x = (dragger.width || 0) + dx.to_f
+  # y = (back.top || 0) + dy.to_f
+  dragger.width(x)
+  # back.top(y)
+end
+
+back.shadow({ alpha: 0.6, blur: 16, left: 3, top: 16 })
+
+back.drag(false)
+dragger.touch(:double) do
+  if back.display == :none
+    back.display(:block)
+  else
+    back.display(:none)
+  end
+end
