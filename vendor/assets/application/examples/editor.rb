@@ -72,20 +72,34 @@ code_runner.touch(true) do
   code_editor.data(new_atomes)
 end
 dragger.drag(restrict: :view ) do |event|
-   view= grab(:view)
-   view_width=view.to_px(:width)
+  view = grab(:view)
+  view_width = view.to_px(:width)
+  view_height = view.to_px(:height)
+
   dx = event[:dx]
   dy = event[:dy]
+
+  # Calculer les nouvelles positions
   x = (back.left || 0) + dx.to_f
   y = (back.top || 0) + dy.to_f
-   if x > 0 && x < view_width
-     back.left(x)
-   end
-   if y > 0+dragger.height
-     back.top(y)
 
-   end
+  # Contrainte de `x` entre 0 et `view_width`
+  if x > 0 && x < view_width - back.width
+    back.left(x)
+  else
+    # Contrainte si `x` dépasse les limites
+    x = [0, [x, view_width - back.width].min].max
+    back.left(x)
+  end
 
+  # Contrainte de `y` pour qu'il soit supérieur à une certaine valeur
+  if y > 0 + dragger.height && y < view_height + dragger.height
+    back.top(y)
+  else
+    # Contrainte si `y` dépasse les limites
+    y = [0 + dragger.height, [y, view_height + dragger.height].min].max
+    back.top(y)
+  end
 end
 back.resize({ size: { min: { width: 120, height: 90 }, max: { width: 3000, height: 3000 } } }) do |event|
   dx = event[:dx]
