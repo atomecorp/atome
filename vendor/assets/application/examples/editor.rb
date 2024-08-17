@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+box
 dragger = box({ width: 333, height: 16, top: 0 })
 back = box({ width: 333, height: 222, top: dragger.height })
 body = back.box({ top: 0, width: '100%', height: '100%', component: { size: 12 }, id: :poil })
@@ -120,3 +120,20 @@ dragger.touch(:double) do
     back.display(:none)
   end
 end
+
+# a_list=[]
+# Universe.atome_list.each  do |k, v|
+#   a_list << k
+# end
+#
+# alert a_list
+#
+# p_list=[]
+#  Universe.particle_list.each  do |k, v|
+#    p_list << k
+#  end
+#
+# alert p_list
+#
+# box(id: :mon_carre, width: 300, height: 300)
+alert "pseudo element and trigger absctrator"

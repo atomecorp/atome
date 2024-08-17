@@ -1,61 +1,79 @@
 # frozen_string_literal: true
 class Atome
-  def animation_callback(proc_sub_category, value=nil)
+  def animation_callback(proc_sub_category, value = nil)
     proc_found = @animate_code[proc_sub_category]
-    instance_exec(value,&proc_found) if proc_found.is_a?(Proc)
+    instance_exec(value, &proc_found) if proc_found.is_a?(Proc)
   end
 end
 
 new({ particle: :touch, category: :event, type: :hash, store: false })
+
 new({ sanitizer: :touch }) do |params, user_bloc|
-  # user_params=params.dup
   if params
-    # TODO: factorise code below
     @touch ||= {}
     @touch_code ||= {}
-    option = true
-    params = if params.instance_of? Hash
-         user_bloc =params.delete(:code) if params[:code]
-         @touch_code[params.keys[0]] = user_bloc
-         option = params[params.keys[0]]
-         @touch={ code: user_bloc}
-         params.keys[0]
-             else
-               case params
-               when true
-                 @touch_code[:tap] = user_bloc
-                 :tap
-               when :touch
-                 @touch_code[:tap] = user_bloc
-                 :tap
-               when :down
-                 @touch_code[:down] = user_bloc
-                 :down
-               when :up
-                 @touch_code[:up] = user_bloc
-                 :up
-               when :long
-                 @touch_code[:long] = user_bloc
-                 :long
-               when :double
-                 @touch_code[:double] = user_bloc
-                 :double
-               when false
-                 @touch_code[:remove] = user_bloc
-                 :remove
-               else
-                 @touch_code[:tap] = user_bloc
-                 :tap
-               end
-             end
 
-    @touch[params] = option
-    params
+    option = true
+
+    key = if params.is_a?(Hash)
+
+            case
+            when params.keys.include?("tap")
+              touch_handle_non_hash_params(:tap, params[:code])
+            when params.keys.include?("down")
+              touch_handle_non_hash_params(:down, params[:code])
+            when params.keys.include?("uo")
+              touch_handle_non_hash_params(:uo, params[:code])
+            when params.keys.include?("long")
+              touch_handle_non_hash_params(:long, params[:code])
+            when params.keys.include?("doucble")
+              touch_handle_non_hash_params(:doucble, params[:code])
+            when params.keys.include?(false)
+              touch_handle_non_hash_params(false, params[:code])
+            when params.keys.include?(:remove)
+              touch_handle_non_hash_params(false, params[:remove])
+            else
+              touch_handle_non_hash_params(:touch, params[:code])
+            end
+
+          else
+            touch_handle_non_hash_params(params, user_bloc)
+          end
+
+    @touch[key] = option
+    key
   else
     @touch = false
     params
   end
 end
+
+def touch_handle_non_hash_params(params, user_bloc)
+  case params
+  when true, :touch, :tap
+    (@touch_code[:tap] ||= []) << user_bloc
+    :tap
+  when :down
+    (@touch_code[:down] ||= []) << user_bloc
+    :down
+  when :up
+    (@touch_code[:up] ||= []) << user_bloc
+    :up
+  when :long
+    (@touch_code[:hold] ||= []) << user_bloc
+    :long
+  when :double
+    (@touch_code[:doubletap] ||= []) << user_bloc
+    :double
+  when false
+    (@touch_code[:remove] ||= []) << user_bloc
+   :remove
+  else
+    (@touch_code[:tap] ||= []) << user_bloc
+    :tap
+  end
+end
+
 new({ particle: :play, category: :event, type: :boolean, store: false })
 new({ sanitizer: :play }) do |params, user_bloc|
   @play ||= {}
@@ -101,7 +119,7 @@ new({ sanitizer: :on }) do |params, user_bloc|
   params = if params.instance_of? Hash
              @on_code[:view_resize] = user_bloc
              option = params[params.keys[0]]
-             @resize={ code: user_bloc}
+             @resize = { code: user_bloc }
              :resize
            else
              case params
@@ -128,11 +146,11 @@ new({ sanitizer: :drag }) do |params, user_bloc|
   @drag_code ||= {}
   option = true
   params = if params.instance_of? Hash
-       user_bloc =params.delete(:code) if params[:code]
-       @drag_code[params.keys[0]] = user_bloc
-       option = params[params.keys[0]]
-       @drag={ code: user_bloc}
-       params.keys[0]
+             user_bloc = params.delete(:code) if params[:code]
+             @drag_code[params.keys[0]] = user_bloc
+             option = params[params.keys[0]]
+             @drag = { code: user_bloc }
+             params.keys[0]
            else
              case params
              when true
@@ -183,11 +201,11 @@ new({ sanitizer: :drop }) do |params, user_bloc|
   @drop_code ||= {}
   option = true
   params = if params.instance_of? Hash
-       user_bloc =params.delete(:code) if params[:code]
-       @drop_code[params.keys[0]] = user_bloc
-       option = params[params.keys[0]]
-       @drop={ code: user_bloc}
-       params.keys[0]
+             user_bloc = params.delete(:code) if params[:code]
+             @drop_code[params.keys[0]] = user_bloc
+             option = params[params.keys[0]]
+             @drop = { code: user_bloc }
+             params.keys[0]
            else
              case params
              when true
@@ -222,12 +240,12 @@ new({ sanitizer: :over }) do |params, user_bloc|
   @over_code ||= {}
   option = true
   params = if params.instance_of? Hash
-       user_bloc =params.delete(:code) if params[:code]
-       @over_code[params.keys[0]] = user_bloc
-       option = params[params.keys[0]]
-       @over={ code: user_bloc}
+             user_bloc = params.delete(:code) if params[:code]
+             @over_code[params.keys[0]] = user_bloc
+             option = params[params.keys[0]]
+             @over = { code: user_bloc }
 
-       params.keys[0]
+             params.keys[0]
            else
              case params
              when true
@@ -281,11 +299,11 @@ new({ sanitizer: :keyboard }) do |params, user_bloc|
              # @keyboard_code[:keyboard] = user_bloc
              # option = params[params.keys[0]]
              # :remove
-             user_bloc =params.delete(:code) if params[:code]
+             user_bloc = params.delete(:code) if params[:code]
              @keyboard_code[params.keys[0]] = user_bloc
              option = params[params.keys[0]]
              params.keys[0]
-             @keyboard={ code: user_bloc}
+             @keyboard = { code: user_bloc }
 
            else
              case params
@@ -324,7 +342,7 @@ new({ sanitizer: :resize }) do |params, user_bloc|
   params = if params.instance_of? Hash
              @resize_code[:resize] = user_bloc
              option = params[params.keys[0]]
-             @resize={ code: user_bloc}
+             @resize = { code: user_bloc }
 
              :resize
            else
@@ -351,16 +369,16 @@ new({ particle: :overflow, category: :event, type: :boolean }) do |params, bloc|
 
 end
 new({ particle: :animate, category: :event, type: :hash }) do |params, proc|
-  if params.instance_of? Hash
-    params = { from: 0, to: 300, duration: 1000 }.merge(params)
-  else
-    params = { from: 0, to: 300, duration: 1000 }
-  end
+  params = if params.instance_of? Hash
+             { from: 0, to: 300, duration: 1000 }.merge(params)
+           else
+             { from: 0, to: 300, duration: 1000 }
+           end
   # @animate_code["#{params[:particle]}"] = proc
   if params[:end]
     @animate_code["#{params[:end]}_end"] = proc
   else
-    @animate_code||= {}
+    @animate_code ||= {}
     @animate_code["#{params[:particle]}"] = proc
   end
 

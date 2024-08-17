@@ -9,43 +9,31 @@ t.touch(:down) do |event|
   puts event[:pageX]
   puts event[:pageY]
   b.touch({ remove: :down })
-  # b.touch({remove: :up})
-  # b.touch({remove: :long})
-  # b.touch({remove: :double})
-  # b.touch({remove: :tap})
-  # b.touch({remove: :touch})
-  # b.touch(false) to remove all touches bindings
-  t.data('touch down killed')
+  t.data('down removed !! ')
 end
 
 touch_code = lambda do
   b.color(:red)
   puts 'box tapped'
-  # b.instance_variable_set('@touch_code', nil)
 end
 b.touch(tap: true, code: touch_code)
 
 b.touch(:long) do
-  # puts :long
-  # t.data('type of touch is : long ')
-  # b.color(:black)
   { color: :cyan }
+  t.data('type of touch is : long ')
 end
 
 b.touch(:up) do
-  puts :up
   t.data('type of touch is : up ')
   b.color(:orange)
 end
 
 b.touch(:down) do
-  puts :down
   t.data('type of touch is : down ')
   b.color(:white)
 end
 
 b.touch(:double) do
-  puts :double
   t.color(:red)
   t.data('type of touch is : double ')
   b.color(:yellowgreen)

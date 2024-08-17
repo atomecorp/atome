@@ -321,8 +321,8 @@ circle({left: 333,top: 333, id: :c2})
 #   puts "#{b.descendant_of?(:intuition)}, then dont treat!"
 #
 # end
-puts 'add tool preview , and maybe allow tool details to be moved'
-wait 2 do
-  apply_tool(:rotate, grab(c2.id), )
-
-end
+# puts 'add tool preview , and maybe allow tool details to be moved'
+# wait 2 do
+#   apply_tool(:rotate, grab(c2.id), )
+#
+# end

@@ -16,7 +16,7 @@ puts " my_box preset is : #{my_box.preset}"
 # print in the console : [Log]  my_box preset is : {:box=>{:width=>99, :height=>99, :apply=>[:box_color], :left=>100, :top=>100, :clones=>[]}} (browser.script.iife.min.js, line 13)
 
 
-c=circle
+c=circle({id: :my_circle, width: 333, height: 333})
 puts  " c is : #{c.inspect }"
 # this print : [Log]  c is : #<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_16, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @html=#<HTML:0x06579be8 @element=[object HTMLDivElement], @id="circle_16", @original_atome=#<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_16, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @html=#<HTML:0x06579be8 ...>, @top=100, @attach=[:view], @left=100, @apply=[:circle_color], @clones=[], @preset={:circle=>{:width=>99, :height=>99, :smooth=>"100%", :apply=>[:circle_color], :left=>100, :top=>100, :clones=>[]}}>, @element_type="div">, @top=100, @attach=[:view], @left=100, @apply=[:circle_color], @clones=[], @preset={:circle=>{:width=>99, :height=>99, :smooth=>"100%", :apply=>[:circle_color], :left=>100, :top=>100, :clones=>[]}}> (browser.script.iife.min.js, line 13)
 # it's pôssible to alter basic preset using the particle .preset

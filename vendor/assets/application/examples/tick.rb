@@ -27,3 +27,13 @@ c.touch(true) do
   c.tick(:my_counter)
   puts  c.tick[:my_counter]
 end
+
+bb=box({left: 333})
+
+bb.touch(true) do
+  if   bb.tick(:my_counter)%2 == 0
+    bb.color(:red)
+  else
+    bb.color(:blue)
+  end
+end

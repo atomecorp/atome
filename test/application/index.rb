@@ -225,7 +225,13 @@
 # require "./examples/alternate"
 # TODO:  TO FINISH
 # require "./examples/trigger_abstraction"
-require "./examples/editor"
+# require "./examples/editor"
+# require "./examples/inspector"
+# require "./examples/calendar"
+
+require "./examples/tools"
+
+
 # require "./examples/map"
 # require "./examples/meteo"
 # require "./examples/vr"
