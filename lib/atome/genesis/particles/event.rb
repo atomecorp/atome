@@ -144,50 +144,66 @@ new({ particle: :drag, category: :event, type: :boolean, store: false })
 new({ sanitizer: :drag }) do |params, user_bloc|
   @drag ||= {}
   @drag_code ||= {}
+
   option = true
   params = if params.instance_of? Hash
              user_bloc = params.delete(:code) if params[:code]
-             @drag_code[params.keys[0]] = user_bloc
+            if user_bloc
+              @drag_code[params.keys[0]] = [user_bloc]
+            else
+              @drag_code[params.keys[0]]= []
+            end
              option = params[params.keys[0]]
-             @drag = { code: user_bloc }
+             @drag = { code: [user_bloc] }
              params.keys[0]
            else
              case params
              when true
-               @drag_code[:move] = user_bloc
+               @drag_code[:move] ||= []
+               @drag_code[:move] << user_bloc
                :move
              when :move
-               @drag_code[:move] = user_bloc
+               @drag_code[:move] ||= []
+               @drag_code[:move] << user_bloc
                :move
              when :drag
-               @drag_code[:move] = user_bloc
+               @drag_code[:move] ||= []
+               @drag_code[:move] << user_bloc
                :move
              when :clone
-               @drag_code[:clone] = user_bloc
+               @drag_code[:clone] ||= []
+               @drag_code[:clone] << user_bloc
                :clone
              when :start
-               @drag_code[:start] = user_bloc
+               @drag_code[:start] ||= []
+               @drag_code[:start] << user_bloc
                :start
              when :stop
-               @drag_code[:end] = user_bloc
+               @drag_code[:end] ||= []
+               @drag_code[:end] << user_bloc
                :end
              when :end
-               @drag_code[:end] = user_bloc
+               @drag_code[:end] ||= []
+               @drag_code[:end] << user_bloc
                :end
              when :locked
-               @drag_code[:locked] = user_bloc
+               @drag_code[:locked] ||= []
+               @drag_code[:locked] << user_bloc
                :locked
              when false
-               @drag_code[:remove] = user_bloc
+
+               @drag_code[:remove] ||= []
+               @drag_code[:remove] << option
                :remove
              else
-               @drag_code[:move] = user_bloc
-               :move
+               @drag_code[:move] ||= []
+               @drag_code[:move] << user_bloc
              end
 
            end
   @drag[params] = option
   if params == :remove
+    @drag_code[:remove] << option
     params = false
   else
     @drag[params] = option

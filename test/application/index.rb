@@ -227,7 +227,7 @@
 # require "./examples/trigger_abstraction"
 # require "./examples/editor"
 # require "./examples/inspector"
-require "./examples/on_resize"
+require "./examples/drag"
 # require "./examples/calendar"
 
 # require "./examples/tools"

@@ -993,11 +993,11 @@ class HTML
     end
   end
 
-  def drag_code(params = nil)
-    # FIXME : this method is an ugly patch when refreshing an atome twice, else it crash
-    # and lose it's drag
-    drag_move(params)
-  end
+  # def drag_code(params = nil)
+  #   # FIXME : this method is an ugly patch when refreshing an atome twice, else it crash
+  #   # and lose it's drag
+  #   drag_move(params)
+  # end
 
   def event(action, variance, option = nil)
     send("#{action}_#{variance}", option)
@@ -1008,199 +1008,248 @@ class HTML
     @original_atome.top(restricted_y)
   end
 
-  def drag_remove(option)
-
-    @draggable = nil
-    interact = JS.eval("return interact('##{@id}')")
-
-    case option
-    when :start
-      @drag_start = ''
-    when :end, :stop
-      @drag_end = ''
-    when :move
-      interact.draggable(false)
-      # interact.unset
-      @drag_move = nil
-
-    when :locked
-      @drag_locked = ''
-    when :restrict
-      @drag_restrict = ''
-    else
-      # to remove all interact event ( touch, drag, scale, ... uncomment below)
-      @drag_start = ''
-      @drag_end = ''
-      @drag_locked = ''
-      @drag_restrict = ''
-      @drag_move = nil
-      interact.draggable(false)
-      # interact.unset
-    end
-
-  end
-
-  def drag_start(_option)
-    interact = JS.eval("return interact('##{@id}')")
-    @drag_start = @original_atome.instance_variable_get('@drag_code')[:start]
-    interact.on('dragstart') do |native_event|
-      event = Native(native_event)
-      # we use .call instead of instance_eval because instance_eval bring the current object as context
-      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-      # group etc..
-      proc_content = @drag_start.call(event) if event_validation(@drag_start)
-      if proc_content.instance_of? Hash
-        proc_content.each do |k, v|
-          @original_atome.send(k, v)
-        end
-      end
-    end
-  end
-
-  def drag_end(_option)
-    interact = JS.eval("return interact('##{@id}')")
-    @drag_end = @original_atome.instance_variable_get('@drag_code')[:end]
-    interact.on('dragend') do |native_event|
-      event = Native(native_event)
-      # we use .call instead of instance_eval because instance_eval bring the current object as context
-      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-      # group etc..
-      proc_content = @drag_end.call(event) if event_validation(@drag_end)
-      if proc_content.instance_of? Hash
-        proc_content.each do |k, v|
-          @original_atome.send(k, v)
-        end
-      end
-    end
-  end
-
   def drag_move(_option)
-    # the condition below prevent drag accumulation
-    interact = JS.eval("return interact('##{@id}')")
 
-    unless @draggable
+    unless @drag_move_already_set
+      # the condition below prevent drag accumulation
+      interact = JS.eval("return interact('##{@id}')")
+
+      unless @draggable
+        interact.draggable({
+                             drag: true,
+                             inertia: { resistance: 12,
+                                        minSpeed: 200,
+                                        endSpeed: 100 },
+                           })
+        unless @first_drag
+          interact.on('dragmove') do |native_event|
+            drag_moves = @original_atome.instance_variable_get('@drag_code')[:move]
+
+            # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
+            event = Native(native_event)
+            # we use .call instead of instance_eval because instance_eval bring the current object as context
+            # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+            # group etc..
+            drag_moves.each do |drag_move|
+              proc_content = drag_move.call(event) if event_validation(drag_move)
+              if proc_content.instance_of? Hash
+                proc_content.each do |k, v|
+                  @original_atome.send(k, v)
+                end
+              end
+            end
+
+            Universe.allow_tool_operations = false
+            dx = event[:dx]
+            dy = event[:dy]
+            x = (@original_atome.left || 0) + dx.to_f
+            y = (@original_atome.top || 0) + dy.to_f
+            @original_atome.left(x)
+            @original_atome.top(y)
+          end
+
+        end
+      end
+      @first_drag = true
+      @draggable = true
+    end
+    @drag_move_already_set = true
+
+  end
+
+  def drag_restrict(option)
+
+    unless @drag_restrict_already_set
+      interact = JS.eval("return interact('##{@id}')")
       interact.draggable({
                            drag: true,
                            inertia: { resistance: 12,
                                       minSpeed: 200,
                                       endSpeed: 100 },
                          })
-      @drag_move = @original_atome.instance_variable_get('@drag_code')[:move]
-      unless @first_drag
-        interact.on('dragmove') do |native_event|
-          # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
-          event = Native(native_event)
-          # we use .call instead of instance_eval because instance_eval bring the current object as context
-          # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-          # group etc..
-          proc_content = @drag_move.call(event) if event_validation(@drag_move)
+
+      if option.instance_of? Hash
+        max_left = grab(:view).to_px(:width)
+        max_top = grab(:view).to_px(:height)
+        min_left = 0
+        min_top = 0
+
+        if option[:max]
+          max_left = option[:max][:left] || max_left
+          max_top = option[:max][:top] || max_top
+        else
+          max_left
+          max_top
+        end
+        if option[:min]
+          min_left = option[:min][:left] || min_left
+          min_top = option[:min][:top] || min_top
+        else
+          min_left
+          min_top
+        end
+      else
+        parent_found = grab(option)
+        min_left = parent_found.left
+        min_top = parent_found.top
+        parent_width = parent_found.compute({ particle: :width })[:value]
+        parent_height = parent_found.compute({ particle: :height })[:value]
+        original_width = @original_atome.width
+        original_height = @original_atome.height
+        max_left = min_left + parent_width - original_width
+        max_top = min_top + parent_height - original_height
+      end
+
+      interact.on('dragmove') do |native_event|
+        drag_moves = @original_atome.instance_variable_get('@drag_code')[:restrict]
+
+        # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
+        event = Native(native_event)
+        # we use .call instead of instance_eval because instance_eval bring the current object as context
+        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+        # group etc..
+        drag_moves.each do |drag_move|
+          proc_content = drag_move.call(event) if event_validation(drag_move)
           if proc_content.instance_of? Hash
             proc_content.each do |k, v|
               @original_atome.send(k, v)
             end
           end
-          Universe.allow_tool_operations = false
-          dx = event[:dx]
-          dy = event[:dy]
-          x = (@original_atome.left || 0) + dx.to_f
-          y = (@original_atome.top || 0) + dy.to_f
-          @original_atome.left(x)
-          @original_atome.top(y)
         end
 
+        dx = event[:dx]
+        dy = event[:dy]
+        x = (@original_atome.left || 0) + dx.to_f
+        y = (@original_atome.top || 0) + dy.to_f
+        restricted_x = [[x, min_left].max, max_left].min
+        restricted_y = [[y, min_top].max, max_top].min
+        restrict_movement(restricted_x, restricted_y)
       end
     end
-    @first_drag = true
-    @draggable = true
+    @drag_restrict_already_set = true
+
   end
 
-  def drag_restrict(option)
-    interact = JS.eval("return interact('##{@id}')")
-    interact.draggable({
-                         drag: true,
-                         inertia: { resistance: 12,
-                                    minSpeed: 200,
-                                    endSpeed: 100 },
-                       })
-
-    @drag_move = @original_atome.instance_variable_get('@drag_code')[:restrict]
-    if option.instance_of? Hash
-      max_left = grab(:view).to_px(:width)
-      max_top = grab(:view).to_px(:height)
-      min_left = 0
-      min_top = 0
-
-      if option[:max]
-        max_left = option[:max][:left] || max_left
-        max_top = option[:max][:top] || max_top
-      else
-        max_left
-        max_top
-      end
-      if option[:min]
-        min_left = option[:min][:left] || min_left
-        min_top = option[:min][:top] || min_top
-      else
-        min_left
-        min_top
-      end
-    else
-      parent_found = grab(option)
-      min_left = parent_found.left
-      min_top = parent_found.top
-      parent_width = parent_found.compute({ particle: :width })[:value]
-      parent_height = parent_found.compute({ particle: :height })[:value]
-      original_width = @original_atome.width
-      original_height = @original_atome.height
-      max_left = min_left + parent_width - original_width
-      max_top = min_top + parent_height - original_height
-    end
-
-    interact.on('dragmove') do |native_event|
-      # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
-      event = Native(native_event)
-      # we use .call instead of instance_eval because instance_eval bring the current object as context
-      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-      # group etc..
-      proc_content = @drag_move.call(event) if event_validation(@drag_move)
-      if proc_content.instance_of? Hash
-        proc_content.each do |k, v|
-          @original_atome.send(k, v)
+  def drag_start(_option)
+    unless @drag_start_already_set
+      interact = JS.eval("return interact('##{@id}')")
+      interact.on('dragstart') do |native_event|
+        drag_starts = @original_atome.instance_variable_get('@drag_code')[:start]
+        event = Native(native_event)
+        # we use .call instead of instance_eval because instance_eval bring the current object as context
+        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+        # group etc..
+        drag_starts.each do |drag_start|
+          proc_content = drag_start.call(event) if event_validation(drag_start)
+          if proc_content.instance_of? Hash
+            proc_content.each do |k, v|
+              @original_atome.send(k, v)
+            end
+          end
         end
       end
-      dx = event[:dx]
-      dy = event[:dy]
-      x = (@original_atome.left || 0) + dx.to_f
-      y = (@original_atome.top || 0) + dy.to_f
-      restricted_x = [[x, min_left].max, max_left].min
-      restricted_y = [[y, min_top].max, max_top].min
-      restrict_movement(restricted_x, restricted_y)
     end
+    @drag_start_already_set = true
+  end
+
+  def drag_end(_option)
+
+    unless @drag_end_already_set
+      interact = JS.eval("return interact('##{@id}')")
+      interact.on('dragend') do |native_event|
+        drag_ends = @original_atome.instance_variable_get('@drag_code')[:end]
+        event = Native(native_event)
+        # we use .call instead of instance_eval because instance_eval bring the current object as context
+        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+        # group etc..
+        drag_ends.each do |drag_end|
+          proc_content = drag_end.call(event) if event_validation(drag_end)
+          if proc_content.instance_of? Hash
+            proc_content.each do |k, v|
+              @original_atome.send(k, v)
+            end
+          end
+        end
+
+      end
+    end
+    @drag_end_already_set = true
+
   end
 
   def drag_locked(_option)
-    interact = JS.eval("return interact('##{@id}')")
-    interact.draggable({
-                         drag: true,
-                         inertia: { resistance: 12,
-                                    minSpeed: 200,
-                                    endSpeed: 100 }
-                       })
+    unless @drag_locked_already_set
+      interact = JS.eval("return interact('##{@id}')")
+      interact.draggable({
+                           drag: true,
+                           inertia: { resistance: 12,
+                                      minSpeed: 200,
+                                      endSpeed: 100 }
+                         })
 
-    @drag_lock = @original_atome.instance_variable_get('@drag_code')[:locked]
-    interact.on('dragmove') do |native_event|
-      # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
-      event = Native(native_event)
-      # we use .call instead of instance_eval because instance_eval bring the current object as context
-      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-      # group etc..
-      proc_content = @drag_lock.call(event) if event_validation(@drag_lock)
-      if proc_content.instance_of? Hash
-        proc_content.each do |k, v|
-          @original_atome.send(k, v)
+      interact.on('dragmove') do |native_event|
+        drag_locks = @original_atome.instance_variable_get('@drag_code')[:locked]
+        # the use of Native is only for Opal (look at lib/platform_specific/atome_wasm_extensions.rb for more infos)
+        event = Native(native_event)
+        # we use .call instead of instance_eval because instance_eval bring the current object as context
+        # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+        # group etc..
+        drag_locks.each do |drag_lock|
+          proc_content = drag_lock.call(event) if event_validation(drag_lock)
+          if proc_content.instance_of? Hash
+            proc_content.each do |k, v|
+              @original_atome.send(k, v)
+            end
+          end
         end
       end
     end
+    @drag_locked_already_set = true
+
+  end
+
+  def remove_this_drag(option)
+    @original_atome.instance_variable_get('@drag_code')[option] = [] if @original_atome.instance_variable_get('@drag_code')
+  end
+
+  def drag_remove(_opt)
+
+    interact = JS.eval("return interact('##{@id}')")
+    if @original_atome.instance_variable_get('@drag_code')
+      options = @original_atome.instance_variable_get('@drag_code')[:remove]
+    else
+      options = false
+    end
+    # alert "option is : #{options}"
+
+    options.each do |option|
+      if option.instance_of? Array
+        option.each do |opt|
+          remove_this_drag(opt)
+        end
+        return false
+      end
+      @element[:style][:cursor] = 'default'
+
+      @draggable = nil
+      case option
+      when :start
+        remove_this_drag(:start)
+      when :end, :stop
+        remove_this_drag(:end)
+        remove_this_drag(:stop)
+      when :move
+        remove_this_drag(:move)
+      when :locked
+        remove_this_drag(:locked)
+      when :restrict
+        remove_this_drag(:restrict)
+      else
+        interact.draggable(false)
+
+      end
+    end
+
   end
 
   def drop_action(native_event, bloc)
