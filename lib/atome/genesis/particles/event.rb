@@ -127,10 +127,10 @@ new({ sanitizer: :on }) do |params, user_bloc|
                @on_code[:view_resize] = user_bloc
                :resize
              when :remove
-
                :remove
              else
-               @on_code[:view_resize] = user_bloc
+               @on_code[:view_resize] ||= []
+               @on_code[:view_resize] << user_bloc
                option = params
                :resize
              end

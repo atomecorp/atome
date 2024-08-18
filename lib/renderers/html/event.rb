@@ -43,6 +43,7 @@ end
 
 new({ method: :on, renderer: :html }) do |params|
   option = @on[params]
+
   html.on(params, option)
 end
 

@@ -48,12 +48,12 @@ end
 bb.touch(:up) do
   if bb.tick(:my_counter) % 2 == 1
     cc.color(:red)
-    cc.touch(:down) do
-      puts(:hello)
+    cc.over(true) do
+      alert(:hello)
     end
   else
     cc.color(:blue)
-    cc.touch({ remove: :down })
+    cc.over({ remove: :all })
   end
 end
 

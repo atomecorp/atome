@@ -869,7 +869,6 @@ class HTML
 
   # events handlers
   def on(property, _option)
-    bloc = @original_atome.instance_variable_get('@on_code')[:view_resize]
     property = property.to_s
 
     if property.start_with?('media:')
@@ -879,6 +878,7 @@ class HTML
       mql = JS.global[:window].matchMedia(media_query)
 
       event_handler = ->(event) do
+        bloc = @original_atome.instance_variable_get('@on_code')[:view_resize]
         proc_content = bloc.call({ matches: event[:matches] }) if event_validation(bloc)
         if proc_content.instance_of? Hash
           proc_content.each do |k, v|
@@ -891,18 +891,27 @@ class HTML
       mql.addListener(event_handler)
 
     elsif property == 'resize'
-      event_handler = ->(event) do
-        width = JS.global[:window][:innerWidth]
-        height = JS.global[:window][:innerHeight]
-        proc_content = bloc.call({ width: width, height: height }) if event_validation(bloc)
-        if proc_content.instance_of? Hash
-          proc_content.each do |k, v|
-            @original_atome.send(k, v)
+      unless @on_resize_already_set
+        event_handler = ->(event) do
+          width = JS.global[:window][:innerWidth]
+          height = JS.global[:window][:innerHeight]
+          blocs = @original_atome.instance_variable_get('@on_code')[:view_resize]
+          blocs.each do |bloc|
+            proc_content = bloc.call({ width: width, height: height }) if event_validation(bloc)
+            if proc_content.instance_of? Hash
+              proc_content.each do |k, v|
+                @original_atome.send(k, v)
+              end
+            end
           end
         end
-      end
 
-      JS.global[:window].addEventListener('resize', event_handler)
+        JS.global[:window].addEventListener('resize', event_handler)
+      end
+      @on_resize_already_set = true
+    elsif property == 'remove'
+      alert 'ok'
+      @original_atome.instance_variable_get('@on_code')[:view_resize] = []
     else
       event_handler = ->(event) do
         proc_content = bloc.call(event) if event_validation(bloc)
@@ -1547,7 +1556,7 @@ class HTML
   #   end
   # end
   def remove_this_touch(option)
-    @original_atome.instance_variable_get('@touch_code')[option] = [] if  @original_atome.instance_variable_get('@touch_code')
+    @original_atome.instance_variable_get('@touch_code')[option] = [] if @original_atome.instance_variable_get('@touch_code')
   end
 
   def touch_remove(_opt)
