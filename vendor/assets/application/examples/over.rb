@@ -9,7 +9,6 @@ b.over(:enter) do
   puts "in"
   puts "enter"
   b.width= b.width+30
-  # alert :in
   b.color(:yellow)
 end
 b.over(:leave) do

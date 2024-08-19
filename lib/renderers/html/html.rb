@@ -1220,7 +1220,6 @@ class HTML
     else
       options = false
     end
-    # alert "option is : #{options}"
 
     options.each do |option|
       if option.instance_of? Array
@@ -1252,107 +1251,116 @@ class HTML
 
   end
 
-  def drop_action(native_event, bloc)
+  def drop_common(method, native_event)
     event = Native(native_event)
     draggable_element = event[:relatedTarget][:id].to_s
     dropzone_element = event[:target][:id].to_s
     # we use .call instead of instance_eval because instance_eval bring the current object as context
     # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
     # group etc..
-    proc_content = bloc.call({ source: draggable_element, destination: dropzone_element }) if event_validation(bloc)
-    return unless proc_content.instance_of? Hash
-    proc_content.each do |k, v|
-      @original_atome.send(k, v)
+    proc_contents = @original_atome.instance_variable_get('@drop_code')[method]
+    proc_contents.each do |proc_content|
+      proc_content = proc_content.call({ source: draggable_element, destination: dropzone_element }) if event_validation(proc_content)
+      return unless proc_content.instance_of? Hash
+      proc_content.each do |k, v|
+        @original_atome.send(k, v)
+      end
     end
-
   end
 
   def drop_activate(_option)
-    interact = JS.eval("return interact('##{@id}')")
-    @drop_activate = @original_atome.instance_variable_get('@drop_code')[:activate]
+    unless @drop_activate_already_set
+      interact = JS.eval("return interact('##{@id}')")
+      interact.dropzone({
+                          accept: nil, # Accept any element
+                          overlap: 0.75,
+                          ondropactivate: lambda do |native_event|
+                            drop_common(:activate, native_event)
+                          end
+                        })
+    end
 
-    interact.dropzone({
-                        accept: nil, # Accept any element
-                        overlap: 0.75,
-                        ondropactivate: lambda do |native_event|
-                          drop_action(native_event, @drop_activate) if event_validation(@drop_activate)
-                        end
-                      })
-  end
-
-  def drop_deactivate(_option)
-    interact = JS.eval("return interact('##{@id}')")
-    @drop_deactivate = @original_atome.instance_variable_get('@drop_code')[:deactivate]
-    interact.dropzone({
-                        # accept: nil, # Accept any element
-                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
-                        ondropdeactivate: lambda do |native_event|
-                          drop_action(native_event, @drop_deactivate) if event_validation(@drop_deactivate)
-                        end
-                      })
+    @drop_activate_already_set = true
   end
 
   def drop_dropped(_option)
-    @drop_dropped = @original_atome.instance_variable_get('@drop_code')[:dropped]
-    interact = JS.eval("return interact('##{@id}')")
-    interact.dropzone({
-                        # accept: nil, # Accept any element
-                        overlap: 0.75,
-                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
-                        ondrop: lambda do |native_event|
-                          drop_action(native_event, @drop_dropped) if event_validation(@drop_dropped)
-                        end
-                      })
+    unless @drop_dropped_already_set
+      interact = JS.eval("return interact('##{@id}')")
+      interact.dropzone({
+                          overlap: 0.75,
+                          # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
+                          ondrop: lambda do |native_event|
+                            drop_common(:dropped, native_event)
+                          end
+                        })
+
+    end
+    @drop_dropped_already_set = true
   end
 
   def drop_enter(_option)
-    interact = JS.eval("return interact('##{@id}')")
-
-    @drop_enter = @original_atome.instance_variable_get('@drop_code')[:enter]
-
-    interact.dropzone({
-                        overlap: 0.001,
-                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
-                        ondragenter: lambda do |native_event|
-                          drop_action(native_event, @drop_enter) if event_validation(@drop_enter)
-                        end
-                      })
+    unless @drop_enter_already_set
+      interact = JS.eval("return interact('##{@id}')")
+      interact.dropzone({
+                          overlap: 0.001,
+                          # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
+                          ondragenter: lambda do |native_event|
+                            drop_common(:enter, native_event)
+                          end
+                        })
+    end
+    @drop_enter_already_set = true
   end
 
   def drop_leave(_option)
-    interact = JS.eval("return interact('##{@id}')")
-    @drop_leave = @original_atome.instance_variable_get('@drop_code')[:leave]
+    unless @drop_leave_already_set
+      interact = JS.eval("return interact('##{@id}')")
+      interact.dropzone({
+                          # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
+                          ondragleave: lambda do |native_event|
+                            drop_common(:leave, native_event)
+                          end
+                        })
+    end
 
-    interact.dropzone({
-                        # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
-                        ondragleave: lambda do |native_event|
-                          drop_action(native_event, @drop_leave) if event_validation(@drop_enter)
-                        end
-                      })
+    @drop_leave_already_set = true
 
+  end
+
+  def drop_deactivate(_option)
+    unless @drop_remove_already_set
+
+      interact = JS.eval("return interact('##{@id}')")
+      interact.dropzone({
+                          # accept: nil, # Accept any element
+                          # FIXME : remove because os an opal bug since 1.8 reactivate when opal will be debbuged
+                          ondropdeactivate: lambda do |native_event|
+                            drop_common(:deactivate, native_event)
+                          end
+                        })
+
+    end
+    @drop_remove_already_set = true
   end
 
   def drop_remove(option)
     case option
     when :activate
-      @drop_activate = ''
+      @original_atome.instance_variable_get('@drop_code')[:activate] = []
     when :deactivate
-      @drop_deactivate = ''
+      @original_atome.instance_variable_get('@drop_code')[:deactivate] = []
     when :dropped
-      @drop_dropped = ''
+      @original_atome.instance_variable_get('@drop_code')[:dropped] = []
     when :enter
-      @drop_enter = ''
+      @original_atome.instance_variable_get('@drop_code')[:enter] = []
     when :leave
-      @drop_leave = ''
+      @original_atome.instance_variable_get('@drop_code')[:leave] = []
     else
-      # to remove all interact event ( touch, drag, scale, ... uncomment below)
-      # interact.unset
-      @drop_activate = ''
-      @drop_deactivate = ''
-      @drop_dropped = ''
-      @drop_enter = ''
-      @drop_leave = ''
-
+      drop_remove(:activate)
+      drop_remove(:deactivate)
+      drop_remove(:dropped)
+      drop_remove(:enter)
+      drop_remove(:leave)
     end
 
   end
@@ -1431,91 +1439,113 @@ class HTML
   end
 
   def over_over(_option)
-
-    interact = JS.eval("return interact('##{@id}')")
-    @over_over = @original_atome.over_code[:over]
-
-    interact.on('mouseover') do |native_event|
-      # JS.global[:myRubyMouseOverCallback] = Proc.new { @original_atome.over_code[:over].call }
-      @over_over_event = Native(native_event)
-      # we use .call instead of instance_eval because instance_eval bring the current object as context
-      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-      # group etc..
-
-      proc_content = @over_over.call(@over_over_event) if event_validation(@over_over)
-      if proc_content.instance_of? Hash
-        proc_content.each do |k, v|
-          @original_atome.send(k, v)
+    return if @over_over_already_set
+    @element.addEventListener('mouseover') do |native_event|
+      over_options = @original_atome.instance_variable_get('@over_code')[:flyover]
+      event = Native(native_event)
+      over_options.each do |over_option|
+        proc_content = over_option.call(event) if event_validation(over_option)
+        if proc_content.instance_of? Hash
+          proc_content.each do |k, v|
+            @original_atome.send(k, v)
+          end
         end
       end
     end
+    @over_over_already_set = true
+    # unless @over_over_already_set
+    #   interact = JS.eval("return interact('##{@id}')")
+    #   over_overs = @original_atome.instance_variable_get('@over_code')[:flyover]
+    #   # return unless over_overs
+    #   over_overs.each do |over_over|
+    #     interact.on('mouseover') do |native_event|
+    #       over_over_event = Native(native_event)
+    #       # we use .call instead of instance_eval because instance_eval bring the current object as context
+    #       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+    #       # group etc..
+    #
+    #       proc_content = over_over.call(over_over_event) if event_validation(over_over)
+    #       if proc_content.instance_of? Hash
+    #         proc_content.each do |k, v|
+    #           @original_atome.send(k, v)
+    #         end
+    #       end
+    #     end
+    #   end
+    # end
+    # @over_over_already_set = true
   end
 
   def over_enter(_option)
-    @over_enter = @original_atome.instance_variable_get('@over_code')[:enter]
-    return unless @over_enter
-
-    @over_enter_callback = lambda do |event|
-      # we use .call instead of instance_eval because instance_eval bring the current object as context
-      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-      # group etc..
-      proc_content = @over_enter.call(event) if event_validation(@over_enter)
-      if proc_content.instance_of? Hash
-        proc_content.each do |k, v|
-          @original_atome.send(k, v)
+    return if @over_enter_already_set
+    @element.addEventListener('mouseenter') do |native_event|
+      over_options = @original_atome.instance_variable_get('@over_code')[:enter]
+      event = Native(native_event)
+      over_options.each do |over_option|
+        proc_content = over_option.call(event) if event_validation(over_option)
+        if proc_content.instance_of? Hash
+          proc_content.each do |k, v|
+            @original_atome.send(k, v)
+          end
         end
       end
     end
-    @element.addEventListener('mouseenter', @over_enter_callback)
+    @over_enter_already_set = true
+    # unless @over_enter_already_set
+    #   over_enters = @original_atome.instance_variable_get('@over_code')[:enter]
+    #   # return unless over_enters
+    #
+    #   over_enters.each do |over_enter|
+    #     @over_enter_callback = lambda do |event|
+    #       # we use .call instead of instance_eval because instance_eval bring the current object as context
+    #       # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
+    #       # group etc..
+    #       proc_content = over_enter.call(event) if event_validation(over_enter)
+    #       if proc_content.instance_of? Hash
+    #         proc_content.each do |k, v|
+    #           @original_atome.send(k, v)
+    #         end
+    #       end
+    #     end
+    #     @element.addEventListener('mouseenter', @over_enter_callback)
+    #
+    #   end
+    #
+    # end
+    # @over_enter_already_set = true
 
   end
 
   def over_leave(_option)
-
-    @over_leave = @original_atome.instance_variable_get('@over_code')[:leave]
-    return unless @over_leave
-
-    @over_leave_callback = lambda do |event|
-
-      # we use .call instead of instance_eval because instance_eval bring the current object as context
-      # and it's lead to a problem of context and force the use of grab(:view) when suing atome method such as shape ,
-      # group etc..
-      proc_content = @over_leave.call(event) if event_validation(@over_leave)
-      if proc_content.instance_of? Hash
-        proc_content.each do |k, v|
-          @original_atome.send(k, v)
+    return if @over_leave_already_set
+    @element.addEventListener('mouseleave') do |native_event|
+      over_leaves = @original_atome.instance_variable_get('@over_code')[:leave]
+      event = Native(native_event)
+      over_leaves.each do |over_leave|
+        proc_content = over_leave.call(event) if event_validation(over_leave)
+        if proc_content.instance_of? Hash
+          proc_content.each do |k, v|
+            @original_atome.send(k, v)
+          end
         end
       end
     end
-    @element.addEventListener('mouseleave', @over_leave_callback)
-
+    @over_leave_already_set = true
   end
 
   def over_remove(option)
+
     case option
     when :enter
-      if @over_enter_callback
-        # Remove the event listener using the same lambda
-        @element.removeEventListener('mouseenter', @over_enter_callback)
-        @over_enter_callback = nil
-        @over_enter = nil
-      end
+      @original_atome.instance_variable_get('@over_code')[:enter] = []
     when :leave
-      @element.removeEventListener('mouseleave', @over_leave_callback)
-      @over_leave_callback = nil
-      @over_leave = nil
+      @original_atome.instance_variable_get('@over_code')[:leave] = []
     when :over
-      @over_over_event = nil
-      @over_over = ''
+      @original_atome.instance_variable_get('@over_code')[:flyover] = []
     else
-      @over_over_event = nil
-      @element.removeEventListener('mouseenter', @over_enter_callback)
-      @over_enter_callback = nil
-      @over_enter = nil
-      @element.removeEventListener('mouseleave', @over_leave_callback)
-      @over_leave_callback = nil
-      @over_leave = nil
-      @over_over = ''
+      over_remove(:enter)
+      over_remove(:leave)
+      over_remove(:over)
     end
   end
 

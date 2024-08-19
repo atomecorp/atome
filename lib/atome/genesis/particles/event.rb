@@ -22,12 +22,12 @@ new({ sanitizer: :touch }) do |params, user_bloc|
               touch_handle_non_hash_params(:tap, params[:code])
             when params.keys.include?("down")
               touch_handle_non_hash_params(:down, params[:code])
-            when params.keys.include?("uo")
-              touch_handle_non_hash_params(:uo, params[:code])
+            when params.keys.include?("up")
+              touch_handle_non_hash_params(:up, params[:code])
             when params.keys.include?("long")
               touch_handle_non_hash_params(:long, params[:code])
-            when params.keys.include?("doucble")
-              touch_handle_non_hash_params(:doucble, params[:code])
+            when params.keys.include?("double")
+              touch_handle_non_hash_params(:double, params[:code])
             when params.keys.include?(false)
               touch_handle_non_hash_params(false, params[:code])
             when params.keys.include?(:remove)
@@ -218,29 +218,43 @@ new({ sanitizer: :drop }) do |params, user_bloc|
   option = true
   params = if params.instance_of? Hash
              user_bloc = params.delete(:code) if params[:code]
-             @drop_code[params.keys[0]] = user_bloc
+             @drop_code[params.keys[0]] = [user_bloc]
              option = params[params.keys[0]]
-             @drop = { code: user_bloc }
+             @drop = { code: [user_bloc] }
              params.keys[0]
            else
              case params
              when true
-               @drop_code[:dropped] = user_bloc
+               @drop_code[:dropped] ||= []
+               @drop_code[:dropped] << user_bloc
                :dropped
              when :enter
-               @drop_code[:enter] = user_bloc
+               @drop_code[:enter] ||= []
+               @drop_code[:enter] << user_bloc
                :enter
              when :activate
-               @drop_code[:activate] = user_bloc
+               @drop_code[:activate] ||= []
+               @drop_code[:activate] << user_bloc
                :activate
              when :deactivate
-               @drop_code[:deactivate] = user_bloc
+               @drop_code[:deactivate] ||= []
+               @drop_code[:deactivate] << user_bloc
                :deactivate
+             when :remove
+               @drop_code[:remove] ||= []
+               @drop_code[:remove] << user_bloc
+               :remove
+             when false
+               @drop_code[:remove] ||= []
+               @drop_code[:remove] << user_bloc
+               :remove
              when :leave
-               @drop_code[:leave] = user_bloc
+               @drop_code[:leave] ||= []
+               @drop_code[:leave] << user_bloc
                :leave
              else
-               @drop_code[:dropped] = user_bloc
+               @drop_code[:dropped] ||= []
+               @drop_code[:dropped] << user_bloc
                :dropped
              end
 
@@ -257,34 +271,39 @@ new({ sanitizer: :over }) do |params, user_bloc|
   option = true
   params = if params.instance_of? Hash
              user_bloc = params.delete(:code) if params[:code]
-             @over_code[params.keys[0]] = user_bloc
+             @over_code[params.keys[0]] = [user_bloc]
              option = params[params.keys[0]]
-             @over = { code: user_bloc }
+             @over = { code: [user_bloc] }
 
              params.keys[0]
            else
              case params
              when true
-               @over_code[:over] = user_bloc
+               @over_code[:flyover] ||= []
+               @over_code[:flyover] << user_bloc
                :over
              when :over
-               @over_code[:over] = user_bloc
+               @over_code[:flyover] ||= []
+               @over_code[:flyover] << user_bloc
                :over
              when :enter
-               @over_code[:enter] = user_bloc
+               @over_code[:enter] ||= []
+               @over_code[:enter] << user_bloc
                :enter
              when :leave
-               @over_code[:leave] = user_bloc
+               @over_code[:leave] ||= []
+               @over_code[:leave] << user_bloc
                :leave
-               # when false
-               #   false
              else
+               @over_code[:flyover] ||= []
+               @over_code[:flyover] << user_bloc
                :over
              end
 
            end
 
   @over[params] = option
+
   params
 
 end

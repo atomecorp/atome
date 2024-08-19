@@ -11,8 +11,13 @@ new({ method: :drag, type: :symbol, renderer: :html }) do |params|
 end
 
 new({ method: :drop, type: :symbol, renderer: :html }) do |params|
-  option = @drop[params]
-  html.event(:drop, params, option)
+  if params
+    option = @drop[params]
+    html.event(:drop, params, option)
+  else
+    html.event(:drop, remove, true)
+  end
+
 end
 
 new({ method: :touch, type: :integer, renderer: :html }) do |params|
@@ -25,8 +30,15 @@ new({ method: :touch, type: :integer, renderer: :html }) do |params|
 end
 
 new({ method: :over, type: :integer, renderer: :html }) do |params|
-  option = @over[params]
-  html.event(:over, params, option)
+  if params
+    option = @over[params]
+    html.event(:over, params, option)
+  else
+    html.event(:over, :remove, true)
+  end
+
+  # option = @over[params]
+  # html.event(:over, params, option)
 end
 
 new({ method: :keyboard, renderer: :html }) do |params|
