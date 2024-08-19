@@ -51,7 +51,7 @@ class Atome
     JS.global[:console].log("Inspector disabled for element: #{div_id}")
   end
 
-  private
+  # private
 
   def check_collision(follow_div, item_to_be_monitored, last_collided_element,&proc)
     ids_to_check = item_to_be_monitored
@@ -61,7 +61,7 @@ class Atome
 
       if element && is_colliding(follow_div, element)
         if last_collided_element != element[:id]
-          proc.call(element[:id]) unless element[:id] == follow_div[:id]
+          proc.call(element[:id].to_s.to_sym) unless element[:id] == follow_div[:id]
           return element[:id] # Return the current collided element
         else
           return last_collided_element # Return the same element if it's still the same
