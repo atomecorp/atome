@@ -27,6 +27,7 @@ dragged.drop(:deactivate) do |event|
   grab(event[:destination]).color(:orange)
 end
 box({ left: 333, color: :blue,top: 222, smooth: 6, id: :the_box, drag: true })
+box({ left: 333, color: :red,top: 180, smooth: 9, id: :the_box2, drag: true })
 
 t=text({data: 'touch me to unbind drop enter'})
 t.touch(true) do
