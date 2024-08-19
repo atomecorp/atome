@@ -370,7 +370,6 @@ new({ sanitizer: :resize }) do |params, user_bloc|
              @resize_code[:resize] = user_bloc
              option = params[params.keys[0]]
              @resize = { code: user_bloc }
-
              :resize
            else
              case params

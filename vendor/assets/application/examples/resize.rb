@@ -15,3 +15,14 @@ t.touch(true) do
   t.data('resize unbinded')
   m.resize(:remove)
 end
+
+c=circle({left: 99, top: 99, right: 100, height: 99})
+
+c.touch(true) do
+  m.resize({ size: { min: { width: 90, height: 190 }, max: { width: 300, height: 600 } } }) do |event|
+    puts "ooooooo"
+  end
+  m.on(:resize) do |event|
+    puts 'yes'
+  end
+end
