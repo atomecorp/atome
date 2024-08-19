@@ -42,18 +42,28 @@ end
 # end
 
 c = circle({ top: 123, left: 0, width: 55, height: 55 })
-c2 = circle({ top: 123, left: 80, width: 55, height: 55 })
-c3 = circle({ top: 123, left: 150, width: 55, height: 55 })
+# c2 = circle({ top: 123, left: 80, width: 55, height: 55 })
+# c3 = circle({ top: 123, left: 150, width: 55, height: 55 })
 
 c.touch(true) do
   text({ data: 'stop up', top: 150 })
   t.keyboard({ remove: :up })
 end
-c2.touch(true) do
-  text({ data: 'remove all', top: 150 })
-  t.keyboard(:remove)
-end
-c3.touch(true) do
-  t.edit(false)
-  text({ data: 'stop editing', top: 150 })
-end
+# c2.touch(true) do
+#   text({ data: 'remove all', top: 150 })
+#   t.keyboard(:remove)
+# end
+# c3.touch(true) do
+#   t.edit(false)
+#   text({ data: 'stop editing', top: 150 })
+# end
+
+
+# b33=box({left: 99, top: 99})
+#
+# b33.touch(true) do
+#   t.keyboard({ remove: :up }) do
+#     event = Native(native_event)
+#     puts "heyeeee up!!"
+#   end
+# end

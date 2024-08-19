@@ -67,7 +67,7 @@ def touch_handle_non_hash_params(params, user_bloc)
     :double
   when false
     (@touch_code[:remove] ||= []) << user_bloc
-   :remove
+    :remove
   else
     (@touch_code[:tap] ||= []) << user_bloc
     :tap
@@ -148,11 +148,11 @@ new({ sanitizer: :drag }) do |params, user_bloc|
   option = true
   params = if params.instance_of? Hash
              user_bloc = params.delete(:code) if params[:code]
-            if user_bloc
-              @drag_code[params.keys[0]] = [user_bloc]
-            else
-              @drag_code[params.keys[0]]= []
-            end
+             if user_bloc
+               @drag_code[params.keys[0]] = [user_bloc]
+             else
+               @drag_code[params.keys[0]] = []
+             end
              option = params[params.keys[0]]
              @drag = { code: [user_bloc] }
              params.keys[0]
@@ -331,15 +331,8 @@ new({ sanitizer: :keyboard }) do |params, user_bloc|
 
   option = {}
   params = if params.instance_of? Hash
-             # @keyboard_code[:keyboard] = user_bloc
-             # option = params[params.keys[0]]
-             # :remove
-             user_bloc = params.delete(:code) if params[:code]
-             @keyboard_code[params.keys[0]] = user_bloc
              option = params[params.keys[0]]
              params.keys[0]
-             @keyboard = { code: user_bloc }
-
            else
              case params
              when true
@@ -365,7 +358,6 @@ new({ sanitizer: :keyboard }) do |params, user_bloc|
 
            end
   @keyboard[params] = option
-
   params
 end
 new({ particle: :resize, category: :event, type: :boolean, store: false })

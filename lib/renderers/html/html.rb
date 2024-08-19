@@ -1534,7 +1534,6 @@ class HTML
   end
 
   def over_remove(option)
-
     case option
     when :enter
       @original_atome.instance_variable_get('@over_code')[:enter] = []

@@ -36,14 +36,15 @@ new({ method: :over, type: :integer, renderer: :html }) do |params|
   else
     html.event(:over, :remove, true)
   end
-
-  # option = @over[params]
-  # html.event(:over, params, option)
 end
 
 new({ method: :keyboard, renderer: :html }) do |params|
-  option = @keyboard[params]
-  html.event(:keyboard, params, option)
+  if params
+    option = @keyboard[params]
+    html.event(:keyboard, params, option)
+  else
+    html.event(:keyboard, :remove, true)
+  end
 end
 
 new({ method: :play, renderer: :html }) do |params = true|
