@@ -101,11 +101,53 @@ new(molecule: :calendar) do |params, &bloc|
   end
 
   ####################
+
+  cal.define_singleton_method(:log_event_range) do
+    log_range = <<~JAVASCRIPT
+    var selectedRanges = [];
+
+    window.#{cal_name}.on('selectDateTime', function(info) {
+      var range = { start: new Date(info.start), end: new Date(info.end) };
+      selectedRanges.push(range);
+      console.log('Selected ranges:', selectedRanges);
+
+      // Exemple de traitement de chaque plage
+      selectedRanges.forEach(function(range) {
+        console.log('Processing range:', range.start, 'to', range.end);
+      });
+
+      // Réinitialisation après traitement
+      selectedRanges = [];
+    });
+  JAVASCRIPT
+    JS.eval(log_range)
+  end
+  ######################
+
+  cal.define_singleton_method(:handle_range_clear) do
+    clear_range = <<~JAVASCRIPT
+    window.#{cal_name}.on('selectDateTime', function(info) {
+      // Log the selected range (optional)
+      console.log('Selected range:', new Date(info.start), 'to', new Date(info.end));
+      
+      // Clear the selected range
+      window.#{cal_name}.clearGridSelections();
+      
+      console.log('Range selection cleared');
+    });
+  JAVASCRIPT
+    JS.eval(clear_range)
+  end
+
+  ######################
   # now we return main atome
   cal
 end
 cal = calendar({ id: :the_cal, width: 396, height: 396 })
-
+# below we get range when drag on the calendar
+cal.log_event_range
+# below we remove teh  range newly created to avoid graphical pollution
+cal.handle_range_clear
 wait 1 do
   cal.event(	{
                 id: '1',
