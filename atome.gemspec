@@ -76,7 +76,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'rake', '~> 13.0'
   spec.add_runtime_dependency 'roda', '~> 3.5'
   spec.add_runtime_dependency 'rqrcode', '~> 2.2.0'
-  spec.add_runtime_dependency 'ruby2js', '~> 5.0'
+  # spec.add_runtime_dependency 'ruby2js', '~> 5.0'
   spec.add_runtime_dependency 'rufus-scheduler', '~> 3.8'
   spec.add_runtime_dependency 'securerandom', '~> 0.2'
   spec.add_runtime_dependency 'sequel', '~> 5.5'
