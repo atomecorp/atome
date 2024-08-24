@@ -227,7 +227,8 @@
 # require "./examples/trigger_abstraction"
 # require "./examples/editor"
 # require "./examples/inspector"
-require "./examples/calendar"
+# require "./examples/calendar"
+require "./examples/timeline"
 
 # require "./examples/tools"
 
