@@ -1,8 +1,24 @@
 # frozen_string_literal: true
-p=box({id: :the_roller, width: 900, height: 333, color: :orange})
 
-  JS.eval("aRoll('proll','the_roller', #{p.width}, #{p.height})")
+new(molecule: :roller) do |params={}|
+  roller_id=params[:id] ||= identity_generator
+  p=box({id: roller_id, width: 900, height: 333, color: :orange})
+  JS.eval("aRoll('#{roller_id}_roller','#{roller_id}', #{p.width}, #{p.height})")
 
+end
+new({molecule: :button}) do  |params|
+  but=box({smooth: 6, shadow: {alpha: 0.3}})
+  but.shadow({alpha: 0.3, left: -3, top: -3, blur: 3, invert: true})
+  case
+  when params.key?(:touch)
+    but.touch(true) do
+      alert :to_finish
+      # send(params[:touch])
+    end
+  else
+  end
+  but.text({data: params[:label]})
+end
 # JS.eval <<~JS
 #           var actx, osc, gain;
 #
@@ -45,7 +61,6 @@ p=box({id: :the_roller, width: 900, height: 333, color: :orange})
 # JS
 
 
-
 #    <script>
 #         var actx, osc, gain;
 #
@@ -86,9 +101,16 @@ p=box({id: :the_roller, width: 900, height: 333, color: :orange})
 #             document.getElementById('proll').stop()
 #         }
 #     </script>
-wait 2 do
-  JS.eval("document.getElementById('proll').play(pianorollCallback);")
+
+
+
+
+def play(id)
+  JS.eval("document.getElementById('#{id}').play(pianorollCallback);")
 end
+roller({id: :roller})
+button({touch: "play", label: :play})
+
 
 # <button onclick="setTempo('proll')">set tempo</button>
 # <button onclick="play()">Play</button>
