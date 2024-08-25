@@ -106,4 +106,5 @@ end
 # <button onclick="selectAll('proll')">select all</button>
 # <button onclick="deSelectAll('proll')">de-select all</button>
 # <button onclick="deleteSelectedNotes('proll')">delete selection</button>
-# <button onclick="clear_now()">clear console</button>
+# <button onclick="marker('proll')">marker</button>
+# <button onclick="removeMarker('proll')">remove marker</button>
