@@ -523,7 +523,9 @@ function isDescendant(parentId, childId) {
 
 }
 function pianorollCallback(ev) {
+    console.log('note playing : ');
     console.log(ev);
+    console.log('------');
     // const currentTime = actx.currentTime;
     // const startTime = currentTime + (ev.t - performance.now() / 1000);
     // const endTime = currentTime + (ev.g - performance.now() / 1000);

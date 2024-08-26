@@ -808,7 +808,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
                 this.dragging = {o: "D", m: "B", i: ht.i, t: ev.t, g: ev.g, ev: this.selectedNotes()};
             } else if (ht.m == "s" && ht.t >= 0) {
                 this.clearSel();
-                if (this.editing === true || this.tool===!'select') {
+                if (this.editing === true || this.tool === !'select') {
                     var t = ((ht.t / this.snap) | 0) * this.snap;
                     const id = this.noteIdCounter++;
                     console.log('visual note creation  : ' + id);
@@ -1017,6 +1017,41 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             this.kbimg.style.backgroundSize = (this.steph * 12) + "px";
             this.layout();
             this.initialized = 1;
+            this.canvas.addEventListener('wheel', function(e) {
+                // Variable pour stocker la direction verrouillée
+                if (!this.lockedDirection) {
+                    const absDeltaY = Math.abs(e.deltaY);
+                    const absDeltaX = Math.abs(e.deltaX);
+
+                    if (absDeltaY > absDeltaX) {
+                        this.lockedDirection = 'vertical';
+                    } else {
+                        this.lockedDirection = 'horizontal';
+                    }
+                }
+
+                // Scroll vertical si la direction est verrouillée sur 'vertical'
+                if (this.lockedDirection === 'vertical' && e.deltaY !== 0) {
+                    const newYOffset = this.yoffset + e.deltaY;
+                    this.yoffset = Math.max(0, Math.min(newYOffset, 112));
+                    console.log(`Scroll vertical de ${this.yoffset} pixels`);
+                }
+
+                // Scroll horizontal si la direction est verrouillée sur 'horizontal'
+                if (this.lockedDirection === 'horizontal' && e.deltaX !== 0) {
+                    const newXOffset = this.xoffset + e.deltaX;
+                    this.xoffset = Math.max(0, Math.min(newXOffset, 500000));
+                    console.log(`Scroll horizontal de ${this.xoffset} pixels`);
+                }
+
+                // Remise à zéro de la direction verrouillée après un délai sans défilement
+                clearTimeout(this.resetScrollTimeout);
+                this.resetScrollTimeout = setTimeout(() => {
+                    this.lockedDirection = null;
+                }, 200);  // 200 ms après la fin du défilement, la direction est réinitialisée
+
+                e.preventDefault();  // Pour empêcher le comportement par défaut du scroll
+            }.bind(this), { passive: false });
             this.redraw();
         };
         this.setupImage = function () {
@@ -1650,7 +1685,7 @@ function group(id) {
 function notes(id) {
     let sequence = document.getElementById(id);
     let notes = sequence.sequence;
-    console.log(notes)
+    console.log('note found : '+notes)
 
 }
 
@@ -1685,6 +1720,7 @@ function clear_sequence(id) {
     const pianoRoll = document.getElementById(id);
     pianoRoll.clearSequence();
 }
+
 function fill_sequence(id, seq) {
 
     const pianoRoll = document.getElementById(id);

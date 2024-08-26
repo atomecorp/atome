@@ -30,6 +30,10 @@ new({ molecule: :button }) do |params, bloc|
   but
 end
 
+
+def roll_playback_verif(val)
+  puts val
+end
 class Atome
   def roller_play(idf)
     idf = "#{idf}_roller"
@@ -57,12 +61,31 @@ button({ label: :play, id: :player, top: :auto, bottom: 0 }) do
   end
 end
 
-aa = slider({ orientation: :vertical, range: { color: :white }, value: 55, width: 18, height: 199, attach: :intuition,
+
+ slider({ orientation: :vertical, range: { color: :white }, value: 55, width: 18, height: 199, attach: :intuition,
               left: 900, top: 3, color: :red, cursor: { color: { alpha: 1, red: 0.12, green: 0.12, blue: 0.12 },
                                                         width: 9, height: 6, smooth: 3 } }) do |value|
-  # label.data("(#{value})")
   A.roller_tempo('roller', value*3)
 end
+
+
+
+#  case "xrange":
+#         document.getElementById("proll").xrange=k.value*timebase;
+#         break;
+#     case "xoffset":
+#         document.getElementById("proll").xoffset=k.value*timebase;
+#         break;
+#     case "yrange":
+#         document.getElementById("proll").yrange=k.value;
+#         break;
+#     case "yoffset":
+#         document.getElementById("proll").yoffset=k.value;
+#         break;
+#     }
+
+
+
 # <button onclick="setTempo('proll')">set tempo</button>
 # <button onclick="play()">Play</button>
 # <button onclick="stop()">Stop</button>
