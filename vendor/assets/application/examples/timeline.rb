@@ -1,23 +1,35 @@
 # frozen_string_literal: true
 
-new(molecule: :roller) do |params={}|
-  roller_id=params[:id] ||= identity_generator
-  p=box({id: roller_id, width: 900, height: 333, color: :orange})
-  JS.eval("aRoll('#{roller_id}_roller','#{roller_id}', #{p.width}, #{p.height})")
+new(molecule: :roller) do |params = {}|
+  roller_id = params[:id] ||= identity_generator
+  p = box({ id: roller_id, width: 900, height: 333, color: :orange })
 
+  JS.eval("aRoll('#{roller_id}_roller','#{roller_id}', #{p.width}, #{p.height})")
 end
-new({molecule: :button}) do  |params|
-  but=box({smooth: 6, shadow: {alpha: 0.3}})
-  but.shadow({alpha: 0.3, left: -3, top: -3, blur: 3, invert: true})
-  case
-  when params.key?(:touch)
-    but.touch(true) do
-      alert :to_finish
-      # send(params[:touch])
+new({ molecule: :button }) do |params, bloc|
+  but = box({ smooth: 6, shadow: { alpha: 0.3 } })
+  but.instance_variable_set('@on', true)
+  label = params.delete(:label) || 'button'
+  but.shadow({ alpha: 0.3, left: -3, top: -3, blur: 3, invert: true })
+  but.set(params)
+  a_label = but.text({ data: label })
+
+  def code_logic(but, bloc)
+    but.instance_exec(&bloc) if bloc.is_a?(Proc)
+    if but.instance_variable_get('@on') == true
+      but.instance_variable_set('@on', false)
+
+    else
+      but.instance_variable_set('@on', true)
     end
-  else
   end
-  but.text({data: params[:label]})
+
+  but.touch(true) do
+    code_logic(but, bloc)
+  end
+  a_label.touch(true) do
+    code_logic(but, bloc)
+  end
 end
 # JS.eval <<~JS
 #           var actx, osc, gain;
@@ -60,7 +72,6 @@ end
 #         }
 # JS
 
-
 #    <script>
 #         var actx, osc, gain;
 #
@@ -102,15 +113,25 @@ end
 #         }
 #     </script>
 
-
-
-
-def play(id)
-  JS.eval("document.getElementById('#{id}').play(pianorollCallback);")
+def roller_play(idf)
+  idf = "#{idf}_roller"
+  JS.eval("document.getElementById('#{idf}').play(pianorollCallback);")
 end
-roller({id: :roller})
-button({touch: "play", label: :play})
 
+def roller_stop(idf)
+  idf = "#{idf}_roller"
+  JS.eval("document.getElementById('#{idf}').stop(pianorollCallback);")
+end
+
+roller({ id: :roller })
+
+button({ label: :play, id: :the_but }) do
+  if @on
+    roller_play('roller')
+  else
+    roller_stop('roller')
+  end
+end
 
 # <button onclick="setTempo('proll')">set tempo</button>
 # <button onclick="play()">Play</button>
