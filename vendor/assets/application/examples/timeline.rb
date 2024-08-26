@@ -30,19 +30,26 @@ new({ molecule: :button }) do |params, bloc|
   but
 end
 
-
 def roll_playback_verif(val)
   puts val
 end
+
 class Atome
-  def roller_play(idf)
+  def roller_play(idf, callback, &bloc)
     idf = "#{idf}_roller"
-    JS.eval("document.getElementById('#{idf}').play(pianorollCallback);")
+    puts "create a 'ruby_method' on the fly and make RBevalL('ruby_method(ev)')"
+    JS.eval <<~JS
+      globalThis.#{callback} = function(ev) {
+         console.log(ev);
+          console.log('------');
+      };
+    JS
+    JS.eval("document.getElementById('#{idf}').play(#{callback});")
   end
 
   def roller_stop(idf)
     idf = "#{idf}_roller"
-    JS.eval("document.getElementById('#{idf}').stop(pianorollCallback);")
+    JS.eval("document.getElementById('#{idf}').stop();")
   end
 
   def roller_tempo(idf, tempo)
@@ -51,24 +58,23 @@ class Atome
   end
 end
 
-roller({ id: :roller })
+roller({ id: :roller, callback: :roll_playback_verif })
 
 button({ label: :play, id: :player, top: :auto, bottom: 0 }) do
   if @on
-    roller_play('roller')
+    roller_play('roller', 'pianorollCallback') do |note|
+      puts 'super'
+    end
   else
     roller_stop('roller')
   end
 end
 
-
- slider({ orientation: :vertical, range: { color: :white }, value: 55, width: 18, height: 199, attach: :intuition,
-              left: 900, top: 3, color: :red, cursor: { color: { alpha: 1, red: 0.12, green: 0.12, blue: 0.12 },
-                                                        width: 9, height: 6, smooth: 3 } }) do |value|
-  A.roller_tempo('roller', value*3)
+slider({ orientation: :vertical, range: { color: :white }, value: 55, width: 18, height: 199, attach: :intuition,
+         left: 900, top: 3, color: :red, cursor: { color: { alpha: 1, red: 0.12, green: 0.12, blue: 0.12 },
+                                                   width: 9, height: 6, smooth: 3 } }) do |value|
+  A.roller_tempo('roller', value * 3)
 end
-
-
 
 #  case "xrange":
 #         document.getElementById("proll").xrange=k.value*timebase;
@@ -83,8 +89,6 @@ end
 #         document.getElementById("proll").yoffset=k.value;
 #         break;
 #     }
-
-
 
 # <button onclick="setTempo('proll')">set tempo</button>
 # <button onclick="play()">Play</button>
