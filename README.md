@@ -33,6 +33,8 @@ Cross platform ecosystem
 
 - Anything in atome can be scripted, even on the fly at runtime!
 
+- Even for developers who are not familiar with Ruby or WebAssembly concepts, the learning curve of Atome is exceptionally fast. The framework is designed to be intuitive, and its unified object model is particularly easy for new users to grasp. This allows anyone to quickly start developing applications without being hindered by complex technical concepts.
+
 Open source technology included
 -
 
