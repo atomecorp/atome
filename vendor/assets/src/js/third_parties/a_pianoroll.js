@@ -7,6 +7,7 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
     }
 
     clearSequence() {
+        this.removeAllMarkers()
         this.sequence = [];
         this.redraw();
         console.log("Sequence cleared and view refreshed.");
@@ -117,6 +118,18 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
         };
 
         this.sequence.push(ev);
+    }
+
+    removeAllMarkers() {
+        // Itérer sur this.sequence pour trouver tous les événements de type 'marker'
+        const markers = this.sequence.filter(ev => ev.type === 'marker');
+
+        // Appeler removeMarker(id) pour chaque marker trouvé
+        markers.forEach(marker => {
+            this.removeMarker(marker.id);
+        });
+
+        console.log(`${markers.length} markers removed from sequence.`);
     }
 
     removeMarker(id) {
@@ -1017,8 +1030,10 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
             this.kbimg.style.backgroundSize = (this.steph * 12) + "px";
             this.layout();
             this.initialized = 1;
+
             this.canvas.addEventListener('wheel', function(e) {
-                // Variable pour stocker la direction verrouillée
+                const scrollSpeedFactor = 10; // Ajoutez cette ligne pour définir le facteur de réduction
+
                 if (!this.lockedDirection) {
                     const absDeltaY = Math.abs(e.deltaY);
                     const absDeltaX = Math.abs(e.deltaX);
@@ -1030,28 +1045,26 @@ customElements.define("webaudio-pianoroll", class Pianoroll extends HTMLElement 
                     }
                 }
 
-                // Scroll vertical si la direction est verrouillée sur 'vertical'
                 if (this.lockedDirection === 'vertical' && e.deltaY !== 0) {
-                    const newYOffset = this.yoffset + e.deltaY;
+                    const newYOffset = this.yoffset + e.deltaY / scrollSpeedFactor; // Divisez e.deltaY par le facteur de réduction
                     this.yoffset = Math.max(0, Math.min(newYOffset, 112));
                     console.log(`Scroll vertical de ${this.yoffset} pixels`);
                 }
 
-                // Scroll horizontal si la direction est verrouillée sur 'horizontal'
                 if (this.lockedDirection === 'horizontal' && e.deltaX !== 0) {
-                    const newXOffset = this.xoffset + e.deltaX;
+                    const newXOffset = this.xoffset + e.deltaX / scrollSpeedFactor; // Divisez e.deltaX par le facteur de réduction
                     this.xoffset = Math.max(0, Math.min(newXOffset, 500000));
                     console.log(`Scroll horizontal de ${this.xoffset} pixels`);
                 }
 
-                // Remise à zéro de la direction verrouillée après un délai sans défilement
                 clearTimeout(this.resetScrollTimeout);
                 this.resetScrollTimeout = setTimeout(() => {
                     this.lockedDirection = null;
-                }, 200);  // 200 ms après la fin du défilement, la direction est réinitialisée
+                }, 200);
 
-                e.preventDefault();  // Pour empêcher le comportement par défaut du scroll
+                e.preventDefault();
             }.bind(this), { passive: false });
+
             this.redraw();
         };
         this.setupImage = function () {
@@ -1686,6 +1699,7 @@ function notes(id) {
     let sequence = document.getElementById(id);
     let notes = sequence.sequence;
     console.log('note found : '+notes)
+    console.log(notes)
 
 }
 
@@ -1715,6 +1729,12 @@ function removeMarker(id) {
     pianoRoll.removeMarker('playheadID1');
 }
 
+function removeAllMarkers(id) {
+    const pianoRoll = document.getElementById(id);
+    pianoRoll.removeAllMarkers('playheadID1');
+}
+
+
 
 function clear_sequence(id) {
     const pianoRoll = document.getElementById(id);
@@ -1722,7 +1742,6 @@ function clear_sequence(id) {
 }
 
 function fill_sequence(id, seq) {
-
     const pianoRoll = document.getElementById(id);
     pianoRoll.setSequence(seq);
 }

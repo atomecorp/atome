@@ -109,6 +109,7 @@ end
 # <button onclick="deleteSelectedNotes('proll')">delete selection</button>
 # <button onclick="marker('proll')">marker</button>
 # <button onclick="removeMarker('proll')">remove marker</button>
+# <button onclick="removeAllMarkers('proll')">remove all markers</button>
 
 # JS.eval <<~JS
 #           var actx, osc, gain;
