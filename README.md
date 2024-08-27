@@ -1,15 +1,15 @@
-Atome
+atome
 -
 
 <img src="./documentation/images/3.png" width="666" />
 
 
-Atome is powerful engine dedicated to the creation of cross-platform applications, web application and digital medias. 
+atome is powerful engine dedicated to the creation of cross-platform applications, web application and digital medias. 
 
 Cross platform ecosystem
 -
 
-- Atome is a cross-platform development framework designed to simplify the creation of mobile and desktop applications, websites, games, presentations, and much more.
+- atome is a cross-platform development framework designed to simplify the creation of mobile and desktop applications, websites, games, presentations, and much more.
 
 - Its primary goal is to make the development process as straightforward and intuitive as possible, allowing developers to focus on building rather than getting lost in technical complexities.
 - atome will make it easy to build mobile and desktop applications, websites, games, presentations, and creative applications, including music, graphics, and video apps, and much more
@@ -21,7 +21,7 @@ Cross platform ecosystem
 
 - the framework is totally hybrid, it can be executed as a full blown native application, a native application with a web view, in a web browser or a web view
 
-- Atome can be used in stand alone (offline mode), in cloud mode or both and sync data when required
+- atome can be used in stand alone (offline mode), in cloud mode or both and sync data when required
 
 - it's also possible to publish websites on a static server (without server side language) while using a database and sync data between users
 
