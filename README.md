@@ -5,6 +5,7 @@ atome
 
 
 atome is powerful engine dedicated to the creation of cross-platform applications, web application and digital medias.
+
 it stands out for the simplicity of its object engine, specifically designed to be accessible to new users.
 Unlike other current solutions that are often complex and rigid, Atome offers intuitive and flexible objects,
 free from the constraining specificities that can hinder development. Ideal for beginners, they can quickly create 
