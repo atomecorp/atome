@@ -10,7 +10,8 @@ new({ molecule: :button }) do |params, bloc|
   but = box({ smooth: 6, shadow: { alpha: 0.3 }, width: 25, height: 25, color: :red })
   but.shadow({ alpha: 0.6, left: -3, top: -3, blur: 3, invert: true })
   label = params.delete(:label) || 'button'
-  a_label = but.text({ data: label, component: { size: 9 }, center: true, position: :absolute })
+  idf_f = params.delete(:id) || identity_generator
+  but.text({id: idf_f, data: label, component: { size: 9 }, center: true, position: :absolute })
 
   but.instance_variable_set('@on', true)
   but.set(params)
