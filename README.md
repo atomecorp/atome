@@ -9,8 +9,10 @@ Atome is powerful engine dedicated to the creation of cross-platform application
 Cross platform ecosystem
 -
 
-- atome is a cross platform development framework, aim to build mobile or desktop applications, web site, games, presentations, and lots more...
+- Atome is a cross-platform development framework designed to simplify the creation of mobile and desktop applications, websites, games, presentations, and much more.
 
+- Its primary goal is to make the development process as straightforward and intuitive as possible, allowing developers to focus on building rather than getting lost in technical complexities.
+- atome will make it easy to build mobile and desktop applications, websites, games, presentations, and creative applications, including music, graphics, and video apps, and much more
 - atome's applications can be deploy as a simple application, a client, a server or both, as well as be booted at startup (Operating System. mode)
 
 - all apis work identically, to ensure you'll have the exact same rendering whatever the host platform (Android, Freebsd, linux, MacOs, Web, Windows).
