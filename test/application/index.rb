@@ -230,7 +230,8 @@
 # require "./examples/calendar"
 # require "./examples/timeline"
 # require "./examples/chronology"
-require "./examples/media_thumbnail"
+# require "./examples/media_audio_thumbnail"
+require "./examples/media_video_thumbnail"
 
 # require "./examples/tools"
 
