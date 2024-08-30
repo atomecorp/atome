@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 
-
 video({id: :video, path: 'medias/videos/avengers.mp4', width: 300, height: 222 })
 waveform_container=box({id: 'thumbnails-container', top: 190,width: 666, height: 39, color: :gray})
 waveform_container.draw({width: 666, height: 33,  id: :thumbnails})
