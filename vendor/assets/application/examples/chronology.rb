@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 new({molecule: :chronology}) do |params|
   chr=box({width: '100%', height: 333, color: :white, smooth: 9})
   chr_id=chr.id
@@ -17,7 +16,7 @@ new({molecule: :chronology}) do |params|
             {id: 3, content: 'item 3', start: '2014-01-21', end: '2014-01-24'},
             {id: 4, content: 'item 4', start: '2014-01-19', end: '2014-01-24'},
             {id: 5, content: 'item 5', start: '2014-01-28', type: 'point'},
-            {id: 6, content: 'item 6', start: '2014-01-26'}
+            {id: 'kjhdkfjghdkjfgh', content: 'item 6', start: '2014-01-26'}
         ]);
 
         // Log changes to the console
@@ -28,19 +27,22 @@ new({molecule: :chronology}) do |params|
     var container = document.getElementById('#{chr_id}');
 
 
-        var options = {
-            start: '2014-01-10',
-            end: '2014-02-10',
-            height: '300px',
+    var options = {
+    start: '2014-01-10',
+    end: '2014-02-10',
+    height: '300px',
 
-            // Allow selecting multiple items using ctrl+click, shift+click, or hold.
-            multiselect: true,
+    // Allow selecting multiple items using ctrl+click, shift+click, or hold.
+    multiselect: true,
 
-            // Allow manipulation of items
-            editable: true,
+    // Allow manipulation of items
+    editable: true,
 
-            showCurrentTime: true
-        };
+    showCurrentTime: true,
+
+    // Disable snapping to grid/markers
+    snap: null
+};
 
         var timeline = new vis.Timeline(container, items, options);
 

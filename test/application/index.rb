@@ -229,7 +229,8 @@
 # require "./examples/inspector"
 # require "./examples/calendar"
 # require "./examples/timeline"
-require "./examples/chronology"
+# require "./examples/chronology"
+require "./examples/media_thumbnail"
 
 # require "./examples/tools"
 

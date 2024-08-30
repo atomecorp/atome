@@ -508,6 +508,18 @@ class HTML
     self
   end
 
+  def draw(id)
+    # we remove any element if the id already exist
+    check_double(id)
+    markup_found = @original_atome.markup || :canvas
+    @element_type = markup_found.to_s
+    @element = JS.global[:document].createElement(@element_type)
+    JS.global[:document][:body].appendChild(@element)
+    add_class('atome')
+    id(id)
+    self
+  end
+
   def text(id)
     # we remove any element if the id already exist
     check_double(id)

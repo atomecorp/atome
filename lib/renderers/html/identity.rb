@@ -6,6 +6,15 @@ new({ method: :type, type: :string, renderer: :html }) do |_value, _user_proc|
   html.shape(@id)
 end
 
+# new({ method: :type, type: :string, renderer: :html, specific: :drawing }) do |_value, _user_proc|
+# #   alert :good
+# html.shape(@id)
+# #   html.drawing(@id)
+# end
+new({ method: :type, type: :string, renderer: :html, specific: :draw }) do |_value, _user_proc|
+  html.draw(@id)
+end
+
 new({ method: :type, type: :string, renderer: :html, specific: :vector }) do |_value, _user_proc|
   html.svg(@id)
 end
