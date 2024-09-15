@@ -1,11 +1,13 @@
 use std::process::Command;
 use std::str;
 use std::fs;
-use tauri::Manager;  // Ensure the Manager trait is in scope
+
+#[cfg(debug_assertions)]
+use tauri::Manager; // Import Manager only in dev mode
+
 mod midi;
 
 #[tauri::command]
-
 fn execute_command(command: &str) -> Result<String, String> {
     match Command::new("sh")
         .arg("-c")
@@ -68,11 +70,12 @@ fn start_midi(app_handle: tauri::AppHandle) {
 
 fn main() {
     tauri::Builder::default()
-        .setup(|app| {
-            #[cfg(debug_assertions)] // Activer les DevTools uniquement en mode développement
+        .setup(|_app| {
+            #[cfg(debug_assertions)] // Only run this block in dev mode
             {
-                let window = app.get_webview_window("main").unwrap();  // Use the correct method
-                window.open_devtools();
+                if let Some(window) = _app.get_webview_window("main") {
+                    window.open_devtools();
+                }
             }
             Ok(())
         })
