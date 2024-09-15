@@ -377,6 +377,21 @@ def build_for_wasm(source, destination, project_name, wasi_file)
   wasm_initialize(source, destination, project_name, wasi_file)
 end
 
+def build_for_ios(destination, mode = :dev)
+  # dev or build
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # code to exec with Windows
+    `cd /d #{destination} && cargo tauri ios init && cargo tauri ios #{mode}`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # code to exec with MacOS
+    `cd #{destination};cargo tauri ios init;cargo tauri ios #{mode}`
+  else
+    # code to exec with Unix/Linux
+    `cd #{destination};cargo tauri ios init;cargo tauri ios #{mode}`
+  end
+
+end
+
 def build_for_osx(destination, mode = :dev)
   # dev or build
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
@@ -439,7 +454,7 @@ run Unreloader
 require './atome_server.rb'
 STR
   end
-  if run_server ==true
+  if run_server == true
     init_server(destination, project_name, port, prod, ru_file)
   end
 
@@ -463,7 +478,7 @@ run Unreloader
 require './atome_server.rb'
 STR
   end
-  if run_server ==true
+  if run_server == true
     init_server(destination, project_name, port, prod, ru_file)
   end
   # if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
@@ -599,20 +614,20 @@ if ARGV.include?('update')
   # if local_gem_spec.nil?
   #   puts :case1
   #   puts " #{gem_name} gem  is not install will install from distant server"
-    system("gem update #{gem_name}")
+  system("gem update #{gem_name}")
   # else
   #   puts :case2
 
-    available_versions = Gem::Specification.find_all_by_name(gem_name).map(&:version)
+  available_versions = Gem::Specification.find_all_by_name(gem_name).map(&:version)
 
-    latest_version = available_versions.max
+  latest_version = available_versions.max
 
-    if latest_version > local_gem_spec.version
-      puts "update availlable: #{local_gem_spec.version} -> #{latest_version}"
-      system("gem update #{gem_name}")
-    else
-      puts "No update necessary '#{gem_name}'. current version : #{local_gem_spec.version}"
-    end
+  if latest_version > local_gem_spec.version
+    puts "update availlable: #{local_gem_spec.version} -> #{latest_version}"
+    system("gem update #{gem_name}")
+  else
+    puts "No update necessary '#{gem_name}'. current version : #{local_gem_spec.version}"
+  end
   # end
 
   ########
@@ -661,7 +676,7 @@ src/favicon.ico src/index_wasm.html src/index_opal.html src/index_server.html sr
   # now we get the version of the atome gem
   gem_name = 'atome'
   local_gem_spec = Gem::Specification.find_by_name(gem_name) rescue nil
-  latest_version=local_gem_spec.version
+  latest_version = local_gem_spec.version
   puts "#{gem_name} #{latest_version} is now installed "
 
 end
@@ -890,6 +905,13 @@ else
     wasi_file = 'wasi-vfs-osx_arm'
     wasm_common(source, destination, project_name, wasi_file, :tauri)
     build_for_osx(destination)
+  end
+
+  if ARGV.include?('ios')
+    puts 'building osx'
+    wasi_file = 'wasi-vfs-osx_arm'
+    wasm_common(source, destination, project_name, wasi_file, :tauri)
+    build_for_ios(destination)
   end
 
   puts 'building Android' if ARGV.include?('android')

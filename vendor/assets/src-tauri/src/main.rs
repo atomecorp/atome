@@ -1,15 +1,11 @@
 use std::process::Command;
 use std::str;
 use std::fs;
-
+use tauri::Manager;  // Ensure the Manager trait is in scope
 mod midi;
 
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
 
-#[tauri::command]
 fn execute_command(command: &str) -> Result<String, String> {
     match Command::new("sh")
         .arg("-c")
@@ -72,8 +68,15 @@ fn start_midi(app_handle: tauri::AppHandle) {
 
 fn main() {
     tauri::Builder::default()
+        .setup(|app| {
+            #[cfg(debug_assertions)] // Activer les DevTools uniquement en mode développement
+            {
+                let window = app.get_webview_window("main").unwrap();  // Use the correct method
+                window.open_devtools();
+            }
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
-            greet,
             execute_command,
             read_file,
             write_file,
@@ -83,18 +86,3 @@ fn main() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
-
-
-// elementary
-
-// #[command]
-// fn do_something() {
-//     // Code pour faire quelque chose avec Elementary
-// }
-//
-// fn main() {
-//     tauri::Builder::default()
-//         .invoke_handler(tauri::generate_handler![start_elementary, do_something])
-//         .run(tauri::generate_context!())
-//         .expect("error while running tauri application");
-// }
