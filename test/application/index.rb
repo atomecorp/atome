@@ -232,8 +232,9 @@
 # require "./examples/chronology"
 # require "./examples/media_audio_thumbnail"
 # require "./examples/media_video_thumbnail"
-require "./examples/midi"
-circle
+# require "./examples/midi"
+require "./examples/recorder"
+# circle
 
 # require "./examples/tools"
 

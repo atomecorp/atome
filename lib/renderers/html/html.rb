@@ -1575,8 +1575,10 @@ class HTML
 
         touch_needed.each do |proc_found|
           proc_content = proc_found.call(touch_event) if event_validation(proc_found)
+          alert proc_content.class
           if proc_content.instance_of? Hash
             proc_content.each do |k, v|
+
               @original_atome.send(k, v)
             end
           end
