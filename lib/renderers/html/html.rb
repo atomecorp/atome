@@ -270,9 +270,11 @@ class HTML
   end
 
   def send_message(message)
-    # puts "message : #{message}"
-    # FIXME  : find why we have to sanitize this message when using ruby wams
-    message = transform_to_string_keys_and_values(message)
+    # FIXME  : find why we have to sanitize this message when using ruby W
+
+    if Atome::host == 'pure_wasm'
+      message = transform_to_string_keys_and_values(message)
+    end
     JS.eval("atomeJS.ws_sender('#{message}')")
   end
 
@@ -1575,10 +1577,8 @@ class HTML
 
         touch_needed.each do |proc_found|
           proc_content = proc_found.call(touch_event) if event_validation(proc_found)
-          alert proc_content.class
           if proc_content.instance_of? Hash
             proc_content.each do |k, v|
-
               @original_atome.send(k, v)
             end
           end

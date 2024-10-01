@@ -87,6 +87,7 @@ class EDen
       pid = params['pid']
       if pid
         begin
+          pid=pid .to_i
           Process.getpgid(pid) # Vérifier si le processus est toujours actif
           Process.kill("SIGINT", pid)
         rescue Errno::ESRCH # Le processus n'existe pas

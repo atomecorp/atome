@@ -7,15 +7,16 @@ a.text('native Audio')
 record_callback = 'unset'
 a.touch(true) do
   A.record({ media: :audio, duration: 5, mode: :native, name: :my_audio_rec, type: :wav, path: '../src', data: { note: :c, velocity: 12, robin: 3, author: :vie, tags: [:voice, :noise, :attack] } }) do |result|
-    puts result
+    puts "result: #{result}"
     record_callback = result
   end
-  nil # we must return nil else the event methods take the bloc for a Hash and crash the code
+  nil# we must return nil else the event methods take the bloc for a Hash and crash the code
 
 end
 
 aa = circle({ color: :red, left: 120, top: 90 })
 aa.text('native video')
+
 aa.touch(true) do
   A.record({ media: :video, duration: 5, mode: :native, name: :my_video_rec, type: :mp4, path: '../src/', data: { type: :thriller, } }) do |result|
     puts result
@@ -28,7 +29,7 @@ end
 aaa = circle({ color: :red, left: 256, top: 90 })
 aaa.text('native stop')
 aaa.touch(true) do
-  pid = record_callback['pid']
+  pid = record_callback[:pid]
   A.record({ stop: true, pid: pid }) do |msg|
     puts "msg received for native stop : #{msg}"
   end
