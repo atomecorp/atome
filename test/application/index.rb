@@ -81,7 +81,17 @@
 # require "./web2"
 # alert Universe.eVe
 
+
+
+#to debug
+
+# regression to debug
+# require "./examples/table"
+
 # in progress
+require "./examples/interop_ruby_js"
+# require "./examples/aXion"
+
 # require "./examples/site"
 
 
@@ -135,7 +145,7 @@
 # require "./examples/vector"
 # require "./examples/fonts"
 # require "./examples/aid"
-# require "./examples/table"
+
 # require "./examples/remove"
 # require "./examples/delete"
 # require "./examples/border"
@@ -233,7 +243,8 @@
 # require "./examples/media_audio_thumbnail"
 # require "./examples/media_video_thumbnail"
 # require "./examples/midi"
-require "./examples/recorder"
+# require "./examples/recorder"
+# require "./examples/intuition"
 # circle
 
 # require "./examples/tools"

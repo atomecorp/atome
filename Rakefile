@@ -290,7 +290,8 @@ task :opal_server_rebuild do
   # build_for_opal_server(destination, project_name, 9292, :production)
 end
 
-task :test_osx do
+task :test_wasm_osx do
+  # TODO : change index.html to make it works!!!
   project_name = :test
   source = '.'
   destination = './tmp'
@@ -305,7 +306,56 @@ task :test_osx do
   puts 'atome osx is running'
 end
 
+task :test_osx do
+  project_name = :test
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
+  create_application(source, destination, project_name)
+  # the line below is to add addition script to the application folder (useful for test per example)
+  add_to_application_folder(script_source, destination, project_name)
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build host_mode
+  build_host_mode(destination, project_name, 'web-opal')
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
+  build_opal_application(source, destination, project_name)
+  build_for_osx(destination, :dev)
+  puts 'atome osx is running'
+end
 task :test_ios do
+  project_name = :test
+  source = '.'
+  destination = './tmp'
+  script_source = './test/application'
+  create_application(source, destination, project_name)
+  # the line below is to add addition script to the application folder (useful for test per example)
+  add_to_application_folder(script_source, destination, project_name)
+  # build opal
+  build_opal_library(source, destination, project_name)
+  # build parser
+  build_opal_parser(source, destination, project_name)
+  # build atome kernel
+  build_atome_kernel_for_opal(source, destination, project_name)
+  # build host_mode
+  build_host_mode(destination, project_name, 'web-opal')
+  # build Opal extensions
+  build_opal_extensions(source, destination, project_name)
+  # build application
+  build_opal_application(source, destination, project_name)
+  # build and open the app
+  build_for_ios(destination, :dev)
+  puts 'atome ios is running'
+end
+
+task :test_wasm_ios do
+  #TODO : change index.html to make it works!!!
   project_name = :test
   source = '.'
   destination = './tmp'

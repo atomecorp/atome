@@ -116,18 +116,18 @@ def build_opal_application(_source, destination, project_name)
   end
   process_directories("#{destination}/#{project_name}/application", "#{destination}/#{project_name}/tmp/application")
 
-  opal_compiler_content = <<STR
-# frozen_string_literal: true
+  opal_compiler_content = <<~STR
+    # frozen_string_literal: true
 
-require 'opal'
-application_js = "../../src/js/application.js"
-builder = Opal::Builder.new
-builder.append_paths("./")
-application_content = builder.build("./index.rb").to_s
-File.open(application_js, 'w') do |f|
-  f.puts application_content
-end
-STR
+    require 'opal'
+    application_js = "../../src/js/application.js"
+    builder = Opal::Builder.new
+    builder.append_paths("./")
+    application_content = builder.build("./index.rb").to_s
+    File.open(application_js, 'w') do |f|
+      f.puts application_content
+    end
+  STR
 
   # we create an hidden file
   opal_compiler = "#{destination}/#{project_name}/tmp/application/.opal_compiler.rb"
@@ -381,13 +381,13 @@ def build_for_ios(destination, mode = :dev)
   # dev or build
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
     # code to exec with Windows
-    `cd /d #{destination} && cargo tauri ios init && cargo tauri ios #{mode}`
+    `cd /d #{destination} && cargo tauri ios init  --verbose && cargo tauri ios #{mode} -- --log-level=debug`
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # code to exec with MacOS
-    `cd #{destination};cargo tauri ios init;cargo tauri ios #{mode}`
+    `cd #{destination};cargo tauri ios init  --verbose;cargo tauri ios #{mode} -- --log-level=debug`
   else
     # code to exec with Unix/Linux
-    `cd #{destination};cargo tauri ios init;cargo tauri ios #{mode}`
+    `cd #{destination};cargo tauri ios init  --verbose;cargo tauri ios #{mode} -- --log-level=debug`
   end
 
 end
@@ -439,20 +439,20 @@ end
 def build_for_opal_server(destination, project_name, port, production, run_server = true)
   if production
     prod = '--env production'
-    ru_file = <<STR
-require 'roda'
-require './atome_server.rb'
-run App.app.freeze
-STR
+    ru_file = <<~STR
+      require 'roda'
+      require './atome_server.rb'
+      run App.app.freeze
+    STR
   else
-    ru_file = <<STR
-require 'roda'
-require 'rack/unreloader'
-Unreloader = Rack::Unreloader.new(subclasses: %w[Roda]) { App }
-Unreloader.require './atome_server.rb'
-run Unreloader
-require './atome_server.rb'
-STR
+    ru_file = <<~STR
+      require 'roda'
+      require 'rack/unreloader'
+      Unreloader = Rack::Unreloader.new(subclasses: %w[Roda]) { App }
+      Unreloader.require './atome_server.rb'
+      run Unreloader
+      require './atome_server.rb'
+    STR
   end
   if run_server == true
     init_server(destination, project_name, port, prod, ru_file)
@@ -463,20 +463,20 @@ end
 def build_for_wasm_server(destination, project_name, port, production, run_server = true)
   if production
     prod = '--env production'
-    ru_file = <<STR
-require 'roda'
-require './atome_server_wasm.rb'
-run App.app.freeze
-STR
+    ru_file = <<~STR
+      require 'roda'
+      require './atome_server_wasm.rb'
+      run App.app.freeze
+    STR
   else
-    ru_file = <<STR
-require 'roda'
-require 'rack/unreloader'
-Unreloader = Rack::Unreloader.new(subclasses: %w[Roda]) { App }
-Unreloader.require './atome_server_wasm.rb'
-run Unreloader
-require './atome_server.rb'
-STR
+    ru_file = <<~STR
+      require 'roda'
+      require 'rack/unreloader'
+      Unreloader = Rack::Unreloader.new(subclasses: %w[Roda]) { App }
+      Unreloader.require './atome_server_wasm.rb'
+      run Unreloader
+      require './atome_server.rb'
+    STR
   end
   if run_server == true
     init_server(destination, project_name, port, prod, ru_file)
@@ -689,12 +689,12 @@ if ARGV.include?('run')
   case ARGV[1]
   when 'opal'
 
-    guard_content = <<STR
-guard 'rake', first_match: true, :task => 'build_opal' do
-  watch(%r{^server.+\.rb})
-  watch(%r{^application.+\.rb})
-end
-STR
+    guard_content = <<~STR
+      guard 'rake', first_match: true, :task => 'build_opal' do
+        watch(%r{^server.+\.rb})
+        watch(%r{^application.+\.rb})
+      end
+    STR
 
     File.open("./#{location}/Guardfile", "w") do |f|
       f.write(guard_content)
@@ -704,12 +704,12 @@ STR
       `guard`
     end
   when 'wasm' # osx wasi
-    guard_content = <<STR
-guard 'rake', first_match: true, :task => 'build_wasm' do
-  watch(%r{^server.+\.rb})
-  watch(%r{^application.+\.rb})
-end
-STR
+    guard_content = <<~STR
+      guard 'rake', first_match: true, :task => 'build_wasm' do
+        watch(%r{^server.+\.rb})
+        watch(%r{^application.+\.rb})
+      end
+    STR
 
     File.open("./#{location}/Guardfile", "w") do |f|
       f.write(guard_content)
@@ -719,13 +719,13 @@ STR
       `guard`
     end
   when 'server'
-    guard_content = <<STR
-guard 'rake', first_match: true, :task => 'build_server' do
-  watch(%r{^server.+\.rb})
-  watch(%r{^application.+\.rb})
-end
-
-STR
+    guard_content = <<~STR
+      guard 'rake', first_match: true, :task => 'build_server' do
+        watch(%r{^server.+\.rb})
+        watch(%r{^application.+\.rb})
+      end
+      
+    STR
 
     File.open("./#{location}/Guardfile", "w") do |f|
       f.write(guard_content)
@@ -908,7 +908,7 @@ else
   end
 
   if ARGV.include?('ios')
-    puts 'building osx'
+    puts 'building ios'
     wasi_file = 'wasi-vfs-osx_arm'
     wasm_common(source, destination, project_name, wasi_file, :tauri)
     build_for_ios(destination)

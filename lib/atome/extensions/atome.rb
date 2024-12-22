@@ -69,6 +69,14 @@ end
 class Object
   include ObjectExtension
 
+  def js_func(fucntion_name, params)
+    JS.eval("#{fucntion_name}('#{params}')")
+  end
+
+  def js_class(class_name)
+    JS.eval("return new #{class_name}()")
+  end
+
   def refresh
     grab(:view).retrieve do |child|
       child.refresh
@@ -82,7 +90,6 @@ class Object
   def truncate_string(string, max_length)
     string.length > max_length ? string.slice(0, max_length) + '.' : string
   end
-
 
   def remove_key_pair_but(hash, keys_to_keep)
     hash.dup.delete_if do |key, value|
@@ -139,12 +146,12 @@ class Object
   def hook(a_id)
     a_id = a_id.to_sym
     # Universe.atomes[a_id]
-    atome_get=''
+    atome_get = ''
     Universe.atomes.each do |aid_f, atome|
       # alert "1 #{atome}"
 
-      if atome.id== a_id
-        atome_get= atome
+      if atome.id == a_id
+        atome_get = atome
         # alert "2 #{atome}"
       end
       # alert "3 #{atome_get}"
@@ -165,7 +172,7 @@ class Object
   # the method below generate Atome method creation at Object level
   def atome_method_for_object(element)
 
-    Object.define_method element do |params=nil, &user_proc|
+    Object.define_method element do |params = nil, &user_proc|
       default_parent = Essentials.default_params[element][:attach] || :view
       grab(default_parent).send(element, params, &user_proc)
     end
@@ -339,7 +346,7 @@ class Object
             oldLog.apply(console, arguments);
           };
         }());
-JS
+      JS
 
       console_clear = console_top.circle({ id: :console_clear, color: :red, top: 3, left: 3, width: 19, height: 19 })
       console_clear.touch(true) do
@@ -593,11 +600,11 @@ JS
     end
   end
 
-  def above(item, margin = 6, ref=grab(:view))
+  def above(item, margin = 6, ref = grab(:view))
     # FIXME above is broken when using % in margin
     unless margin.is_a?(Numeric)
-      item_height= ref.to_px(:height)
-      margin=   (margin.to_f*item_height)/100
+      item_height = ref.to_px(:height)
+      margin = (margin.to_f * item_height) / 100
     end
     pos = item.to_px(:bottom) + item.height + margin
     item.top(:auto)
@@ -608,10 +615,10 @@ JS
     end
   end
 
-  def below(item, margin = 6, ref=grab(:view))
+  def below(item, margin = 6, ref = grab(:view))
     unless margin.is_a?(Numeric)
-      item_height= ref.to_px(:height)
-      margin=   (margin.to_f*item_height)/100
+      item_height = ref.to_px(:height)
+      margin = (margin.to_f * item_height) / 100
     end
     pos = item.to_px(:top) + item.to_px(:height) + margin
     if item.display == :none
@@ -622,10 +629,10 @@ JS
 
   end
 
-  def after(item, margin = 6, ref=grab(:view))
+  def after(item, margin = 6, ref = grab(:view))
     unless margin.is_a?(Numeric)
-      item_width= ref.to_px(:width)
-      margin=   (margin.to_f*item_width)/100
+      item_width = ref.to_px(:width)
+      margin = (margin.to_f * item_width) / 100
     end
     left_f = if item.left.instance_of?(Integer)
                item.left
@@ -646,10 +653,10 @@ JS
     end
   end
 
-  def before(item, margin = 6, ref=grab(:view))
+  def before(item, margin = 6, ref = grab(:view))
     unless margin.is_a?(Numeric)
-      item_width= ref.to_px(:width)
-      margin=   (margin.to_f*item_width)/100
+      item_width = ref.to_px(:width)
+      margin = (margin.to_f * item_width) / 100
     end
     pos = item.to_px(:right) + item.width + margin
     if item.display == :none
@@ -825,9 +832,5 @@ class CssProxy
     parsed = JSON.parse(msg)
     bloc.call(parsed)
   end
-
-
-
-
 
 end

@@ -537,3 +537,15 @@ function isDescendant(parentId, childId) {
 // alert(isDescendant('intuition', 'the_test_box'));
 // alert(isDescendant('view', 'the_test_box'));
 
+
+// ruby JS interoperability examples
+function js_test(val){
+    console.log(val)
+}
+
+class my_test_class {
+    myTestFunction(val) {
+        console.log("JavaScript fonctionne : " + val);
+    }
+}
+
