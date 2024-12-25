@@ -1,14 +1,26 @@
 # frozen_string_literal: true
-
+require('../server/IA')
 # server utils to handle eDen Db
-
 class EDen
 
   class << self
 
+    def axion(data,  message_id, ws)
+      query = data['prompt']
+      user_key= data['user_key']
+      send_AI_request(query, user_key)
+      { data: { message: "read 'temp_script.rb' in the method infos" }, message_id: message_id }
+    end
+
     def db_access
       Database.db_access
     end
+
+    # def axion(data, message_id, ws)
+    #
+    #
+    #   { data: { message: data }, message_id: message_id }
+    # end
 
     def email_exist(data, message_id, ws)
 

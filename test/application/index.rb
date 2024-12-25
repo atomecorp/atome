@@ -90,7 +90,8 @@
 
 # in progress
 # require "./examples/interop_ruby_js"
-require "./examples/aXion"
+# require "./examples/aXion"
+require "./examples/aXionJeezs"
 
 # require "./examples/site"
 

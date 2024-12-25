@@ -275,7 +275,9 @@ class HTML
     if Atome::host == 'pure_wasm'
       message = transform_to_string_keys_and_values(message)
     end
-    JS.eval("atomeJS.ws_sender('#{message}')")
+    message_string = JSON.generate(message)
+    js_safe_string = message_string.gsub('"', '\"')
+    JS.eval("atomeJS.ws_sender(\"#{js_safe_string}\")")
   end
 
   def close_websocket
