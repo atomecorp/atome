@@ -113,8 +113,6 @@ Voici la tâche : #{prompt}
 
   end
 
-
-
   def get_OpenAI_models(api_key) #if we need to obtain all OpenAI models
     uri = URI("https://api.openai.com/v1/models")
     http = Net::HTTP.new(uri.host, uri.port)
