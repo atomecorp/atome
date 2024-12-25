@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 #  this class is aimed at html rendering
 
 class HTML

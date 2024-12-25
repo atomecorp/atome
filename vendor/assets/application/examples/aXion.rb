@@ -1,8 +1,5 @@
 #  frozen_string_literal: true
 
-
-
-
 c=circle
 
 c.touch(true) do
