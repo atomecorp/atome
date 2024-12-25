@@ -25,11 +25,17 @@ Le code doit :
 - Contenir obligatoirement une méthode `results` qui retourne une string :  
   - Si la tâche attend une réponse, la réponse sera formatée et retournée dans cette méthode sous forme de chaîne.  
   - Si la tâche est une action (par exemple, création ou modification), la méthode `results` devra fournir des détails sur le bon déroulement des opérations effectuées.  
+  - Si la méthode `code` n'a pas été exécutée avant, la méthode `results` devra exécuter automatiquement les opérations nécessaires pour produire un résultat approprié, basé sur les informations du prompt ou une logique par défaut.
+- Chaque méthode (`code`, `results`, `infos`) doit pouvoir être exécutée de manière indépendante, dans n'importe quel ordre, et retourner des résultats pertinents basés sur l'état actuel du programme ou l'objectif du prompt.  
 - Effectuer une recherche récursive insensible à la casse dans le répertoire courant et ses sous-dossiers pour trouver des fichiers correspondant au nom recherché, si applicable.  
 - Si l'extension n'est pas spécifiée, tous les fichiers avec le nom recherché seront pris en compte, quelle que soit leur extension.  
 - Ajouter un avertissement dans la méthode `infos` précisant que si aucune extension n'est indiquée, tous les fichiers correspondants au nom seront traités, indépendamment de leur extension.  
-- Si un traitement est appliqué sur les résultats de la recherche, chaque élément trouvé doit être traité individuellement. Cela doit également être indiqué dans la méthode `infos`.  
-- Afficher un message clair dans `results` si aucun fichier ou dossier n'est trouvé, ou si aucune opération n'a été effectuée.  
+- Gérer les cas où plusieurs fichiers sont trouvés en vérifiant que leur chemin existe et qu'il est valide avant d'essayer de les ouvrir.  
+- Traiter correctement les extensions des fichiers. Si une comparaison insensible à la casse est effectuée, elle doit ignorer l'extension pour trouver les fichiers correspondant au nom spécifié.  
+- Assurer la compatibilité multiplateforme pour ouvrir les fichiers, en utilisant les commandes appropriées pour Windows, macOS et Linux. Une détection fiable du système d'exploitation doit être incluse.  
+- En cas de permissions restreintes ou d'erreurs pendant la recherche ou l'ouverture des fichiers, capturer les exceptions et fournir des messages d'erreur clairs et détaillés dans `results`.  
+- Utiliser des chemins absolus pour éviter les erreurs liées aux chemins relatifs lors de l'ouverture des fichiers.  
+- Si aucun fichier n'est trouvé ou si des erreurs surviennent, le message dans `results` doit être clair et précis, incluant les erreurs spécifiques rencontrées.  
 - Retourner les résultats ou les informations exclusivement via la méthode `results`.  
 - Être inventif, logique.  
 - Important : le code doit impérativement être strictement indenté et bien formaté avec des \\n pour correctement retourner à la ligne.  
