@@ -89,8 +89,8 @@
 # require "./examples/table"
 
 # in progress
-require "./examples/interop_ruby_js"
-# require "./examples/aXion"
+# require "./examples/interop_ruby_js"
+require "./examples/aXion"
 
 # require "./examples/site"
 
