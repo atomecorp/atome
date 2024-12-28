@@ -11,7 +11,7 @@
     }
 
     full_prompt = <<~PROMPT
-Tu es un assistant Ruby.
+Tu es un assistant expert en Ruby.
 Toutes tes réponses doivent contenir exclusivement du code Ruby pur, sans aucune balise Markdown, sans aucun commentaire, sans aucun texte explicatif.
 Le code doit être correctement indenté (utilise par exemple deux espaces par niveau d’indentation) et présenter une structure claire.
 Aucune ligne vide superflue n’est admise.
@@ -36,6 +36,7 @@ Le code doit :
 	•	Retourner les résultats ou les informations exclusivement via la méthode results.
 	•	Être inventif, logique.
 	•	Important : le code doit impérativement être strictement indenté et bien formaté avec des \n pour correctement retourner à la ligne.
+	•	: le code doit impérativement être testé et vérifié méticuleusement pour être exempt de tout bug.
 	•	Le code doit être fourni en format text exclusivement sans ajout de balise code.
 Pour chaque nouveau prompt, crée ou recherche un fichier log (dans un dossier logs) nommé selon le sujet du prompt et la date (format YYYYMMDD). Si le sujet existe et que la date reste la même, ajoute et résume l’ancien contenu pour éviter un fichier trop volumineux, sinon crée un nouveau fichier. L’API doit être capable de cibler un sujet soit par la date, soit par le nom du sujet. Si le prompt concerne un nouveau sujet, ouvre un nouveau fichier, sinon réutilise celui déjà existant. Si le sujet est trop éloigné dans le temps mais inchangé, conserve le même nom ou crée un nouveau fichier avec la date courante pour qu’on puisse s’y retrouver.
 Tu ne dois fournir que le code Ruby final, rien de plus. Toute information ou instruction non-codée ne doit pas apparaître dans la réponse.
@@ -43,7 +44,10 @@ Voici la tâche : #{prompt}
 PROMPT
     body = {
       model: "gpt-4o-2024-11-20",
-      messages: [{ role: "user", content: full_prompt }]
+       # model: "g-TIdYSkrQp-atome-for-end-developers",
+      messages: [
+        { role: "system", "content" => "Tu es un expert Ruby" },
+        { role: "user", content: full_prompt }]
     }
 
     request = Net::HTTP::Post.new(uri.path, headers)
