@@ -71,7 +71,16 @@ class Object
 
 
   def js_func(function_name, *params)
-    args = params.map { |param| "'#{param}'" }.join(", ")
+    args = params.map do |param|
+      case param
+      when String
+        "'#{param}'"
+      when TrueClass, FalseClass, Numeric
+        param.to_s
+      else
+        raise ArgumentError, "Unsupported parameter type: #{param.class}"
+      end
+    end.join(", ")
     JS.eval("#{function_name}(#{args})")
   end
 

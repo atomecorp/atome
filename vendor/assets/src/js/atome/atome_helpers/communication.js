@@ -6,9 +6,11 @@ function convertTextToSpeech({
                                  targetLanguage = 'en',
                                  convert = true,
                                  open_ai_key,
-                                 translationCallback,
-                                 audio2textCallback
+                                 rubyTranslationCallback,
+                                 rubyAudio2textCallback
                              }) {
+
+
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
         console.error("Web Speech API n'est pas pris en charge par ce navigateur.");
@@ -35,11 +37,11 @@ function convertTextToSpeech({
         console.log("Transcription :", finalTranscript);
 
         if (typeof audio2textCallback === 'function') {
-            audio2textCallback(finalTranscript);
+            audio2textCallback(finalTranscript, rubyAudio2textCallback);
         }
 
         if (enableTranslation && typeof translationCallback === 'function') {
-            translationCallback(finalTranscript, targetLanguage, open_ai_key);
+            translationCallback(finalTranscript, targetLanguage, open_ai_key, rubyTranslationCallback);
         }
     };
 
@@ -100,7 +102,7 @@ function convertTextToSpeech({
         silenceTimer = null;
     }
 
-    // Contrôle de l'écoute en fonction de `convert`
+    // Listening control based on convert. `convert`
     if (convert) {
         startListening();
     } else {
@@ -108,9 +110,9 @@ function convertTextToSpeech({
     }
 }
 
-// Fonction de traduction
-async function translationCallback(text, lang, open_ai_key) {
-    console.log(`Texte à traduire : "${text}" en ${lang}`);
+// Translation function
+async function translationCallback(text, lang, open_ai_key, method_to_trig) {
+
     try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -120,14 +122,14 @@ async function translationCallback(text, lang, open_ai_key) {
             },
             body: JSON.stringify({
                 model: 'gpt-4',
-                messages: [{ role: 'user', content: `Traduis ce texte en ${lang} : ${text}` }]
+                messages: [{ role: 'user', content: `Translate in ${lang} : ${text}` }]
             })
         });
 
         const data = await response.json();
         if (data.choices && data.choices[0].message.content) {
             console.log(`Traduction : "${data.choices[0].message.content.trim()}"`);
-            // atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:read)");
+            atomeJsToRuby(method_to_trig+"('"+data.choices[0].message.content.trim()+"')");
         } else {
             throw new Error("Aucune réponse valide.");
         }
@@ -136,34 +138,35 @@ async function translationCallback(text, lang, open_ai_key) {
     }
 }
 
-// Fonction pour transcription
-function audio2textCallback(text) {
-    // atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:read)");
+// Function for transcription
+function audio2textCallback(text, method_to_trig) {
     console.log(`Texte depuis le fichier audio: "${text}"`);
-    // Implémentation d'autres actions ici
+    atomeJsToRuby(method_to_trig+"('"+text+"')");
 }
 
-// Appel de la fonction
-// convertTextToSpeech({
-//     silenceDuration: 3000,
-//     silenceThreshold: 5,
-//     enableTranslation: true,
-//     targetLanguage: 'en',
-//     convert: true,
-//     open_ai_key: 'Bearer',
-//     translationCallback: translationCallback,
+
+
+function speechToText(silenceDuration,silenceThreshold, enableTranslation, targetLanguage, convert, open_ai_key, rubyTranslationCallback, rubyAudio2textCallback){
+
+
+    convertTextToSpeech({
+        silenceDuration: silenceDuration,
+        silenceThreshold: silenceThreshold,
+        enableTranslation: enableTranslation,
+        targetLanguage: targetLanguage,
+        convert: convert,
+        open_ai_key: open_ai_key,
+        rubyTranslationCallback: rubyTranslationCallback,
+        rubyAudio2textCallback: rubyAudio2textCallback
+});
+}
+// translationCallback: translationCallback,
 //     audio2textCallback: audio2textCallback
-// });
-
-function speechToText(silenceDuration,silenceThreshold, enableTranslation, targetLanguage, convert, cpen_ai_key, translationCallback, audio2textCallback){
-    // alert(p);
-}
-
 
 
 // setTimeout(() => {
-//     console.log("Delayed for 1 second.");
-//     atomeJsToRuby('box');
+//     // atomeJsToRuby('box');
+//     atomeJsToRuby('box',('{color: :red}'));
 // }, "1000");
 
 
