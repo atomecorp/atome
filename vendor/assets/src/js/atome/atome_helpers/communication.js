@@ -1,4 +1,6 @@
-
+function escapeApostrophes(input) {
+    return input.replace(/'/g, "\\'");
+}
 function convertTextToSpeech({
                                  silenceDuration = 3000,
                                  silenceThreshold = 5,
@@ -129,7 +131,8 @@ async function translationCallback(text, lang, open_ai_key, method_to_trig) {
         const data = await response.json();
         if (data.choices && data.choices[0].message.content) {
             console.log(`Traduction : "${data.choices[0].message.content.trim()}"`);
-            atomeJsToRuby(method_to_trig+"('"+data.choices[0].message.content.trim()+"')");
+            const sanitizedText = escapeApostrophes(data.choices[0].message.content.trim());
+            atomeJsToRuby(method_to_trig+"('"+sanitizedText+"')");
         } else {
             throw new Error("Aucune réponse valide.");
         }
@@ -141,7 +144,8 @@ async function translationCallback(text, lang, open_ai_key, method_to_trig) {
 // Function for transcription
 function audio2textCallback(text, method_to_trig) {
     console.log(`Texte depuis le fichier audio: "${text}"`);
-    atomeJsToRuby(method_to_trig+"('"+text+"')");
+    const sanitizedText = escapeApostrophes(text);
+    atomeJsToRuby(method_to_trig+"('"+sanitizedText+"')");
 }
 
 
@@ -166,7 +170,9 @@ function speechToText(silenceDuration,silenceThreshold, enableTranslation, targe
 
 // setTimeout(() => {
 //     // atomeJsToRuby('box');
-//     atomeJsToRuby('box',('{color: :red}'));
+//     text="Peux-tu écrire une lettre à Sarah lui dire bonjour tout va bien et tu m'ouvre le fichier une fois que t'as fini"
+//     const sanitizedText = escapeApostrophes(text);
+//     atomeJsToRuby('to_text_method'+"('"+sanitizedText+"')");
 // }, "1000");
 
 
