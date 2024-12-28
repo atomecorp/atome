@@ -69,8 +69,10 @@ end
 class Object
   include ObjectExtension
 
-  def js_func(fucntion_name, params)
-    JS.eval("#{fucntion_name}('#{params}')")
+
+  def js_func(function_name, *params)
+    args = params.map { |param| "'#{param}'" }.join(", ")
+    JS.eval("#{function_name}(#{args})")
   end
 
   def js_class(class_name)

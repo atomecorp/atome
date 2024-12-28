@@ -1,4 +1,173 @@
 
+function convertTextToSpeech({
+                                 silenceDuration = 3000,
+                                 silenceThreshold = 5,
+                                 enableTranslation = false,
+                                 targetLanguage = 'en',
+                                 convert = true,
+                                 open_ai_key,
+                                 translationCallback,
+                                 audio2textCallback
+                             }) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        console.error("Web Speech API n'est pas pris en charge par ce navigateur.");
+        return;
+    }
+
+    let recognition;
+    let isRecording = false;
+    let silenceTimer;
+    let audioContext;
+    let analyser;
+    let mediaStreamSource;
+
+    recognition = new SpeechRecognition();
+    recognition.lang = 'fr-FR';
+    recognition.interimResults = false;
+    recognition.continuous = true;
+
+    recognition.onresult = (event) => {
+        let finalTranscript = '';
+        for (let i = 0; i < event.results.length; i++) {
+            finalTranscript += event.results[i][0].transcript;
+        }
+        console.log("Transcription :", finalTranscript);
+
+        if (typeof audio2textCallback === 'function') {
+            audio2textCallback(finalTranscript);
+        }
+
+        if (enableTranslation && typeof translationCallback === 'function') {
+            translationCallback(finalTranscript, targetLanguage, open_ai_key);
+        }
+    };
+
+    recognition.onerror = (event) => {
+        console.error("Erreur de transcription :", event.error);
+    };
+
+    async function startListening() {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        mediaStreamSource = audioContext.createMediaStreamSource(stream);
+        analyser = audioContext.createAnalyser();
+        mediaStreamSource.connect(analyser);
+
+        recognition.start();
+        isRecording = true;
+        monitorSilence();
+    }
+
+    function stopListening() {
+        if (isRecording) {
+            isRecording = false;
+            recognition.stop();
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+        }
+    }
+
+    function monitorSilence() {
+        const dataArray = new Uint8Array(analyser.fftSize);
+
+        function checkVolume() {
+            analyser.getByteFrequencyData(dataArray);
+            const volume = dataArray.reduce((sum, value) => sum + value, 0);
+
+            if (volume < silenceThreshold) {
+                if (!silenceTimer) {
+                    silenceTimer = setTimeout(() => {
+                        stopListening();
+                    }, silenceDuration);
+                }
+            } else {
+                resetSilenceTimer();
+            }
+
+            if (isRecording) {
+                requestAnimationFrame(checkVolume);
+            }
+        }
+
+        checkVolume();
+    }
+
+    function resetSilenceTimer() {
+        clearTimeout(silenceTimer);
+        silenceTimer = null;
+    }
+
+    // Contrôle de l'écoute en fonction de `convert`
+    if (convert) {
+        startListening();
+    } else {
+        stopListening();
+    }
+}
+
+// Fonction de traduction
+async function translationCallback(text, lang, open_ai_key) {
+    console.log(`Texte à traduire : "${text}" en ${lang}`);
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': open_ai_key,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'gpt-4',
+                messages: [{ role: 'user', content: `Traduis ce texte en ${lang} : ${text}` }]
+            })
+        });
+
+        const data = await response.json();
+        if (data.choices && data.choices[0].message.content) {
+            console.log(`Traduction : "${data.choices[0].message.content.trim()}"`);
+            // atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:read)");
+        } else {
+            throw new Error("Aucune réponse valide.");
+        }
+    } catch (error) {
+        console.error("Erreur de traduction :", error);
+    }
+}
+
+// Fonction pour transcription
+function audio2textCallback(text) {
+    // atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:read)");
+    console.log(`Texte depuis le fichier audio: "${text}"`);
+    // Implémentation d'autres actions ici
+}
+
+// Appel de la fonction
+// convertTextToSpeech({
+//     silenceDuration: 3000,
+//     silenceThreshold: 5,
+//     enableTranslation: true,
+//     targetLanguage: 'en',
+//     convert: true,
+//     open_ai_key: 'Bearer',
+//     translationCallback: translationCallback,
+//     audio2textCallback: audio2textCallback
+// });
+
+function speechToText(silenceDuration,silenceThreshold, enableTranslation, targetLanguage, convert, cpen_ai_key, translationCallback, audio2textCallback){
+    // alert(p);
+}
+
+
+
+// setTimeout(() => {
+//     console.log("Delayed for 1 second.");
+//     atomeJsToRuby('box');
+// }, "1000");
+
+
+
 
 /////////////////////////// connection ws
 
