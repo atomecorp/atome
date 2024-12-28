@@ -13,7 +13,7 @@ function convertTextToSpeech({
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-        console.error("Web Speech API n'est pas pris en charge par ce navigateur.");
+        console.error("Web Speech API is not supported on your browser");
         return;
     }
 
@@ -147,8 +147,6 @@ function audio2textCallback(text, method_to_trig) {
 
 
 function speechToText(silenceDuration,silenceThreshold, enableTranslation, targetLanguage, convert, open_ai_key, rubyTranslationCallback, rubyAudio2textCallback){
-
-
     convertTextToSpeech({
         silenceDuration: silenceDuration,
         silenceThreshold: silenceThreshold,
@@ -160,6 +158,8 @@ function speechToText(silenceDuration,silenceThreshold, enableTranslation, targe
         rubyAudio2textCallback: rubyAudio2textCallback
 });
 }
+
+
 // translationCallback: translationCallback,
 //     audio2textCallback: audio2textCallback
 
