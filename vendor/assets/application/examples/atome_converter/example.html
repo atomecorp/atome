@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test HTML with Dependencies</title>
+
+    <!-- Feuille de style externe -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Nouveau fichier CSS -->
+
+    <!-- Styles locaux -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e8f5e9;
+            padding: 20px;
+        }
+
+        #main-box {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            border: 5px solid black;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: blue;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+<!-- Contenu HTML -->
+<div id="main-box">
+    <div class="circle" id="circle-1"></div>
+    <div class="circle" id="circle-2"></div>
+</div>
+
+<!-- Scripts externes -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+<script src="script.js"></script> <!-- Nouveau fichier JS -->
+
+<!-- Scripts locaux -->
+<script>
+    const mainBox = document.getElementById('main-box');
+    const circle1 = document.getElementById('circle-1');
+    const circle2 = document.getElementById('circle-2');
+
+    mainBox.addEventListener('click', () => {
+        mainBox.style.backgroundColor = mainBox.style.backgroundColor === 'red' ? 'green' : 'red';
+    });
+
+    circle1.addEventListener('mouseover', () => {
+        circle1.style.backgroundColor = 'purple';
+    });
+
+    circle2.addEventListener('click', () => {
+        alert('Circle 2 clicked!');
+    });
+</script>
+</body>
+</html>
