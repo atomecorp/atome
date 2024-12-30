@@ -8,6 +8,7 @@ def convert_html_to_atome(html_content)
     attributes = element.attributes
     styles = merge_styles(global_styles, attributes["style"]&.value)
     validate_styles(styles)
+    puts "DEBUG: Styles combinés pour l'élément #{element.name} : #{styles.inspect}"
     id = attributes["id"]&.value || "generated_#{rand(1000)}"
 
     case tag
@@ -25,6 +26,7 @@ def convert_html_to_atome(html_content)
 
   def merge_styles(global_styles, inline_styles)
     combined_styles = global_styles.merge(parse_inline_styles(inline_styles))
+    puts "DEBUG: Styles après fusion : #{combined_styles.inspect}"
     combined_styles # Retourne le style fusionné directement
   end
 
@@ -124,6 +126,7 @@ def convert_html_to_atome(html_content)
       end
     end
   end
+  puts "DEBUG: Styles globaux : #{global_styles.inspect}"
 
   document.css("body *").map do |element|
     applicable_styles = global_styles[element["class"]&.split&.map { |c| ".#{c}" }&.join(",") || ""] || {}

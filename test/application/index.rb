@@ -91,9 +91,9 @@
 # in progress
 # require "./examples/interop_ruby_js"
 # require "./examples/aXion"
-require "./examples/aXionJeezs"
+# require "./examples/aXionJeezs"
 # require "./examples/atome_converter/atome_converted"
-# require "./examples/atome_converter/file_converted"
+require "./examples/atome_converter/file_converted"
 
 # require "./examples/site"
 
