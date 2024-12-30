@@ -170,7 +170,6 @@ class EDen
       end
     end
 
-
     def localstorage(data, message_id, ws)
        { return: 'localstorage content received', authorized: true, message_id: message_id }
 
@@ -241,13 +240,42 @@ class EDen
       end
     end
 
+    # def file(data, message_id, ws)
+    #
+    #   file_content = File.send(data['operation'], data['source'], data['value']).to_s
+    #   file_content = file_content.gsub("'", "\"")
+    #
+    #   file_content = file_content.gsub('#', '\x23')
+    #   { data: "=> operation: #{data['operation']}, source: #{data['source']}, content: #{file_content}", message_id: message_id }
+    #
+    # end
     def file(data, message_id, ws)
+      operation = data['operation']
+      source = data['source']
+      value = data['value']
 
-      file_content = File.send(data['operation'], data['source'], data['value']).to_s
-      file_content = file_content.gsub("'", "\"")
+      # Vérifie si le fichier existe pour les opérations nécessitant sa présence (par exemple : read)
+      if %w[read delete].include?(operation) && !File.exist?(source)
+        return { data: "file not found: #{source}", message_id: message_id }
+      end
 
-      file_content = file_content.gsub('#', '\x23')
-      { data: "=> operation: #{data['operation']}, source: #{data['source']}, content: #{file_content}", message_id: message_id }
+      # Exécute l'opération demandée
+      begin
+        file_content = File.send(operation, source, value).to_s
+
+        # Traitement du contenu pour éviter des caractères problématiques
+        file_content = file_content.gsub("'", "\"")
+        file_content = file_content.gsub('#', '\x23')
+
+        # Retourne les détails de l'opération
+        # { data: "=> operation: #{operation}, source: #{source}, content: #{file_content}", message_id: message_id }
+        escaped_content = JSON.dump(file_content)
+        { data: escaped_content, message_id: message_id }
+
+      rescue StandardError => e
+        # Gestion des erreurs (par exemple : permissions, opération invalide)
+        { data: "error during operation: #{operation}, source: #{source}, error: #{e.message}", message_id: message_id }
+      end
     end
 
     def safe_send(method_name, data, message_id, ws)

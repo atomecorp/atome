@@ -93,7 +93,12 @@
 # require "./examples/aXion"
 # require "./examples/aXionJeezs"
 # require "./examples/atome_converter/atome_converted"
-require "./examples/atome_converter/file_converted"
+# require "./examples/atome_converter/file_converted"
+# require "./examples/above_below_before_after"
+# require "./examples/test"
+# require "./examples/file"
+# require "./examples/read"
+# require "./examples/test"
 
 # require "./examples/site"
 
@@ -126,6 +131,7 @@ require "./examples/atome_converter/file_converted"
 # require './examples/test'
 #
 #### works
+require "./examples/link"
 # require "./examples/svg_vectorizer"
 # require "./examples/holder"
 # require "./examples/input"

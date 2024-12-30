@@ -14,3 +14,4 @@ element({id: :testing, data: contact_template})
 wait 2 do
   grab(:testing).data
 end
+

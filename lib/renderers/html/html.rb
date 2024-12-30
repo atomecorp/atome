@@ -1700,7 +1700,12 @@ class HTML
     if Atome.host == 'tauri'
       JS.eval("readFile('#{id}','#{file}')")
     else
-      puts 'read file in progress in server mode'
+      A.message({data: {source: file,operation: :read  }, action: :file}) do |result|
+        proc_found= @original_atome.instance_variable_get('@read_code')[:read]
+        # puts result[:data]
+        proc_found.call(result[:data].gsub('\x23', '#')) if proc_found.is_a?(Proc)
+        # return "file read encoded_content: #{result[:data].gsub('\x23', '#')}"
+      end
     end
   end
 
