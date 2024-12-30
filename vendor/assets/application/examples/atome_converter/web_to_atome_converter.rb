@@ -67,8 +67,6 @@ def convert_html_to_atome(html_content)
         "border: { thickness: #{thickness}, color: #{color} }"
       when "border-radius"
         "smooth: #{value.strip.gsub('%', '').gsub('px', '')}"
-      when "margin"
-        nil # Margins are now handled in `ensure_minimum_styles`
       when "box-shadow"
         x, y, blur, *rgba = value.strip.split(" ")
         rgba = rgba.join(" ").gsub("rgba(", "").gsub(")", "").split(",").map(&:strip)
