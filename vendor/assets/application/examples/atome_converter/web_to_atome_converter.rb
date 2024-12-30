@@ -1,220 +1,236 @@
 require 'nokogiri'
-require 'open-uri'
 
-# Sanitize IDs to make them Atome-compliant
-def sanitize_id(id)
-  id = id.to_s.strip.gsub(/[^a-zA-Z0-9_]/, '_') # Nettoyer les caractères non conformes
-  ":#{id}" # Retourner en tant que chaîne avec préfixe `:`
-end
+def convert_html_to_atome(html_content)
+  document = Nokogiri::HTML(html_content)
 
-# Map CSS properties to Atome-compatible attributes
-def convert_css_property(prop, value)
-  case prop
-  when 'width', 'height', 'top', 'left', 'margin', 'padding'
-    [prop.to_sym, value.gsub('px', '').to_i] # Convert px to integer
-  when 'background-color'
-    color_value = value.start_with?('#') ? value : ":#{value.strip.downcase}" # Convertir les couleurs nommées en symboles préfixés
-    [:color, color_value]
-  when 'border'
-    convert_border(value) # Gérer les bordures comme objets Atome
-  when 'box-shadow'
-    [:shadow, value] # Convert box-shadow
-  when 'animation'
-    [:animation, value] # Convert animation as-is
-  else
-    nil # Ignore unsupported properties
-  end
-end
+  def element_to_atome(element, global_styles)
+    tag = element.name
+    attributes = element.attributes
+    styles = merge_styles(global_styles, attributes["style"]&.value)
+    validate_styles(styles)
+    id = attributes["id"]&.value || "generated_#{rand(1000)}"
 
-# Convert border CSS property to Atome-compatible attributes
-# Convert border CSS property to Atome-compatible attributes
-def convert_border(border_value)
-  parts = border_value.split
-  thickness = parts[0].gsub('px', '').to_i
-  pattern = parts[1].to_sym
-  color = parts[2].start_with?('#') ? parts[2] : ":#{parts[2].strip.downcase}"
-
-  # Crée un hash pour la bordure et retourne une paire clé-valeur
-  [
-    :border,
-    {
-      thickness: thickness,
-      pattern: pattern,
-      red: color.include?('#') ? color[1..2].hex / 255.0 : 0,
-      green: color.include?('#') ? color[3..4].hex / 255.0 : 0,
-      blue: color.include?('#') ? color[5..6].hex / 255.0 : 0,
-      alpha: color.include?('#') ? 1.0 : 0
-    }
-  ]
-end
-
-
-
-# Map CSS properties to Atome-compatible attributes
-# Convert box-shadow CSS property to Atome-compatible attributes
-def convert_box_shadow(box_shadow_value)
-  parts = box_shadow_value.split(' ')
-  left = parts[0].gsub('px', '').to_i
-  top = parts[1].gsub('px', '').to_i
-  blur = parts[2].gsub('px', '').to_i
-  rgba = parts[3].match(/rgba?\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/)
-
-  if rgba
-    red, green, blue, alpha = rgba[1..4].map(&:to_f)
-    alpha = alpha > 1 ? alpha / 255.0 : alpha
-  else
-    red = green = blue = 0
-    alpha = 1.0
+    case tag
+    when "div"
+      "box({ id: :#{id}#{format_styles(styles)} })"
+    when "p", "span", "h1", "h2", "h3", "h4", "h5", "h6"
+      "text({ id: :#{id}, data: #{element.text.inspect}#{format_styles(styles)} })"
+    when "img"
+      src = attributes["src"]&.value
+      "image({ id: :#{id}, path: #{src.inspect}#{format_styles(styles)} })"
+    else
+      "# Balise non supportée : #{tag}"
+    end
   end
 
-  # Retourner un objet ombre au format Atome
-  {
-    id: ":shadow_#{rand(1000..9999)}",
-    left: left,
-    top: top,
-    blur: blur,
-    red: red / 255.0,
-    green: green / 255.0,
-    blue: blue / 255.0,
-    alpha: alpha
-  }
-end
-
-# Map CSS properties to Atome-compatible attributes
-def convert_css_property(prop, value)
-  case prop
-  when 'width', 'height', 'top', 'left', 'margin', 'padding'
-    [prop.to_sym, value.gsub('px', '').to_i] # Convert px to integer
-  when 'background-color'
-    color_value = value.start_with?('#') ? value : ":#{value.strip.downcase}" # Convertir les couleurs nommées en symboles préfixés
-    [:color, color_value]
-  when 'border'
-    convert_border(value) # Gérer les bordures comme objets Atome
-  when 'box-shadow'
-    [:shadow, convert_box_shadow(value)] # Convertir box-shadow en objet Atome
-  when 'animation'
-    [:animation, value] # Convert animation as-is
-  else
-    nil # Ignore unsupported properties
-  end
-end
-
-
-
-# Determine the type or preset for the HTML element
-def determine_preset(element)
-  case element.name
-  when 'div'
-    element['style']&.include?('border-radius') ? 'circle' : 'box'
-  when 'img'
-    'image'
-  when 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
-    'text'
-  else
-    puts "Unsupported element: #{element.name}" # Log the unsupported element
-    nil # Ignore unsupported elements
-  end
-end
-
-# Generate Atome-compatible code for a single HTML element
-def generate_atome_code(element, styles = {})
-  id = sanitize_id(element['id'] || "generated_id_#{rand(1000..9999)}") # Toujours une chaîne avec préfixe
-  preset = determine_preset(element)
-  return nil if preset.nil? # Ignore elements without a valid preset
-
-  # Si l'élément semble être un "circle" via l'ID ou border-radius, appliquer des valeurs par défaut
-  if id.include?("circle") || styles[:smooth]
-    styles[:smooth] ||= 50
-    styles[:width] ||= 50
-    styles[:height] ||= 50
-    styles[:color] ||= ":gray"
+  def merge_styles(global_styles, inline_styles)
+    combined_styles = global_styles.merge(parse_inline_styles(inline_styles))
+    combined_styles # Retourne le style fusionné directement
   end
 
-  # Ajouter des valeurs par défaut pour les éléments sans position ou taille
-  styles[:width] ||= 50
-  styles[:height] ||= 50
-  styles[:left] ||= 0
-  styles[:top] ||= 0
+  def parse_inline_styles(styles)
+    return {} unless styles
 
-  attributes = { id: id }.merge(styles)
+    styles.split(";").filter_map do |s|
+      key, value = s.strip.split(":", 2)
+      [key.strip, value.strip] if key && value
+    end.to_h
+  end
 
-  # Convert the attributes into a hash-style representation
-  attributes_code = attributes.map do |key, value|
-    "#{key}: #{value.is_a?(Symbol) || value.is_a?(Integer) ? value : "#{value}"}"
-  end.join(', ')
+  def validate_styles(styles)
+    # Validation finale des styles essentiels
+    styles["left"] = styles.fetch("left", "0px").strip
+    styles["top"] = styles.fetch("top", "0px").strip
+    styles["width"] ||= "100px"
+    styles["height"] ||= "100px"
+  end
 
-  # Générer le code final basé sur le type ou le preset
-  "#{preset}({ #{attributes_code} })"
-end
+  def format_styles(styles)
+    formatted = styles_to_atome(styles)
+    formatted.empty? ? "" : ", #{formatted}"
+  end
 
-# Parse CSS and generate Atome-compatible styles
-def parse_css(css_content)
-  rules = css_content.scan(/(.*?)\s*\{(.*?)\}/m) # Extraire les règles CSS
-  styles = {}
-
-  rules.each do |selector, declarations|
-    sanitized_id = sanitize_id(selector.strip.gsub('#', ''))
-    declarations_hash = {}
-
-    declarations.split(';').each do |declaration|
-      next if declaration.strip.empty? # Ignorer les lignes vides
-      property, value = declaration.strip.split(':', 2) # Séparer en deux parties maximum
-      if property && value
-        declarations_hash[property.strip] = value.strip
+  def styles_to_atome(styles)
+    styles.map do |key, value|
+      next nil if value.strip.empty? # Ignorer les styles vides
+      case key.strip
+      when "width", "height", "top", "left"
+        "#{key.strip}: #{value.strip.gsub(/[a-z%]+/, '')}"
+      when "background-color", "color"
+        "color: #{convert_color(value.strip)}"
+      when "border"
+        parts = value.strip.split(" ")
+        thickness = parts[0].gsub('px', '')
+        color = convert_color(parts[-1])
+        "border: { thickness: #{thickness}, color: #{color} }"
+      when "border-radius"
+        "smooth: #{value.strip.gsub('%', '').gsub('px', '')}"
+      when "margin"
+        nil # Margins are now handled in `ensure_minimum_styles`
+      when "box-shadow"
+        x, y, blur, *rgba = value.strip.split(" ")
+        rgba = rgba.join(" ").gsub("rgba(", "").gsub(")", "").split(",").map(&:strip)
+        "shadow: { left: #{x.gsub('px', '')}, top: #{y.gsub('px', '')}, blur: #{blur.gsub('px', '')}, red: #{rgba[0].to_f / 255}, green: #{rgba[1].to_f / 255}, blue: #{rgba[2].to_f / 255}, alpha: #{rgba[3]} }"
       else
-        puts "Ignored invalid declaration: #{declaration.strip}" # Log des déclarations invalides
+        nil
+      end
+    end.compact.join(", ")
+  end
+
+  def convert_color(value)
+    if value.start_with?("#")
+      hex_to_rgb(value)
+    elsif value.start_with?("rgba")
+      rgba_to_atome(value)
+    elsif value.start_with?("rgb")
+      rgb_to_atome(value)
+    else
+      ":#{value}"
+    end
+  end
+
+  def hex_to_rgb(hex)
+    hex = hex.delete_prefix("#")
+    r, g, b = hex.scan(/../).map { |color| color.to_i(16) / 255.0 }
+    "{ red: #{r.round(2)}, green: #{g.round(2)}, blue: #{b.round(2)}, alpha: 1 }"
+  end
+
+  def rgba_to_atome(rgba)
+    rgba_values = rgba.gsub("rgba(", "").gsub(")", "").split(",").map(&:strip)
+    r = rgba_values[0].to_f / 255
+    g = rgba_values[1].to_f / 255
+    b = rgba_values[2].to_f / 255
+    a = rgba_values[3].to_f
+    "{ red: #{r.round(2)}, green: #{g.round(2)}, blue: #{b.round(2)}, alpha: #{a} }"
+  end
+
+  def rgb_to_atome(rgb)
+    rgb_values = rgb.gsub("rgb(", "").gsub(")", "").split(",").map(&:strip)
+    r = rgb_values[0].to_f / 255
+    g = rgb_values[1].to_f / 255
+    b = rgb_values[2].to_f / 255
+    "{ red: #{r.round(2)}, green: #{g.round(2)}, blue: #{b.round(2)}, alpha: 1 }"
+  end
+
+  global_styles = document.css("style").each_with_object({}) do |style, result|
+    style.content.split("}").each do |rule|
+      selector, declarations = rule.split("{")
+      next unless selector && declarations
+
+      selector.strip.split(",").each do |sel|
+        sel = sel.strip
+        result[sel] ||= {}
+        result[sel].merge!(parse_inline_styles(declarations))
       end
     end
-
-    styles[sanitized_id] = declarations_hash.map do |prop, value|
-      convert_css_property(prop, value)
-    end.compact.to_h
   end
 
-  styles
+  document.css("body *").map do |element|
+    applicable_styles = global_styles[element["class"]&.split&.map { |c| ".#{c}" }&.join(",") || ""] || {}
+    element_to_atome(element, applicable_styles)
+  end.join("\n")
 end
 
-# Fetch external CSS and combine styles
-def fetch_external_css(doc)
-  css_content = ''
-  doc.css('link[rel="stylesheet"]').each do |link|
-    begin
-      css_content += URI.open(link['href']).read
-    rescue StandardError => e
-      puts "Could not fetch external CSS: #{link['href']} - #{e.message}"
-    end
-  end
-  css_content
+# Exemple de contenu HTML
+html_content = <<-HTML
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemple HTML</title>
+    <style>
+        /* Styles globaux */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        /* Divs arrondies */
+        .rounded {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #007bff;
+            margin: 10px auto;
+        }
+
+        /* Avec ombre et bordure */
+        .rounded.shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 2px solid #0056b3;
+        }
+
+        /* Animation simple */
+        .animate {
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .animate:hover {
+            transform: scale(1.1);
+            background-color: #0056b3;
+        }
+
+        /* Interactions */
+        .interactive {
+            cursor: pointer;
+        }
+
+        .interactive:active {
+            background-color: #003f7f;
+        }
+
+        /* Typage et styles via balise CSS */
+        .text {
+            font-size: 18px;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .highlight {
+            color: #ff5722;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Exemple de page HTML</h1>
+        <p class="text">Voici un <span class="highlight">exemple</span> de texte avec un style appliqué via une balise CSS.</p>
+
+        <!-- Div arrondie simple -->
+        <div class="rounded"></div>
+
+        <!-- Div arrondie avec ombre et bordure -->
+        <div class="rounded shadow"></div>
+
+        <!-- Div avec animation et interactions -->
+        <div class="rounded shadow animate interactive"></div>
+    </div>
+</body>
+</html>
+HTML
+
+# Conversion du contenu HTML
+converted_code = convert_html_to_atome(html_content)
+
+# Sauvegarde du fichier généré
+if File.write("./file_converted.rb", converted_code)
+  puts "Le fichier file_converted.rb a été créé avec succès !"
+else
+  puts "Erreur lors de la création du fichier."
 end
 
-# Parse HTML and convert it into Atome-compatible code
-def parse_html(file_path)
-  doc = Nokogiri::HTML(File.read(file_path))
-  local_css = doc.css('style').map(&:content).join("\n")
-  external_css = fetch_external_css(doc)
-
-  # Combine local and external CSS
-  combined_css = "#{local_css}\n#{external_css}"
-  styles = parse_css(combined_css)
-
-  atome_code = []
-
-  doc.at('body').css('*').each do |element|
-    id = sanitize_id(element['id'] || "generated_id_#{rand(1000..9999)}") # Retourne une chaîne avec préfixe
-    styles_for_element = styles[id] || {}
-    code = generate_atome_code(element, styles_for_element)
-    atome_code << code unless code.nil?
-  end
-
-  atome_code.join("\n")
-end
-
-# Write the converted code to a file
-def convert_to_atome(input_file, output_file)
-  converted_code = parse_html(input_file)
-  File.write(output_file, converted_code)
-  puts "Conversion terminée. Fichier généré : #{output_file}"
-end
-
-# Convert example.html to atome_converted.rb
-convert_to_atome('example.html', 'atome_converted.rb')
+# Affichage du code généré
+puts converted_code

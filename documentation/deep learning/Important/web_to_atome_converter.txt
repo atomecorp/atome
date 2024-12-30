@@ -1,0 +1,143 @@
+Guideline Complet pour un Convertisseur HTML, CSS, JS vers Atome
+1. Objectif
+
+Créer un script capable de convertir un projet web (HTML, CSS, JS) en code Ruby compatible avec Atome, en intégrant :
+
+Tous les styles CSS (dimensions, couleurs, positions, bordures, ombres, animations).
+Tous les objets HTML structurés (div, p, h1, img, etc.).
+Toutes les interactions utilisateur (clics, survols, glissements).
+Animations CSS traduites en animations Atome.
+Textes et Contenus : Support complet pour les balises textuelles.
+Gestion des erreurs et logs : Rapporter les éléments non supportés.
+2. Traduction des Éléments HTML
+
+Éléments Supportés
+div → box
+Tous les éléments div avec un attribut id sont convertis en box.
+p, span, h1-h6 → text
+Les balises textuelles sont converties en objets text avec leur contenu.
+img → image
+Les balises img sont converties en objets image.
+Autres Balises :
+Les balises non reconnues sont loguées comme non supportées.
+3. Traduction des Styles CSS
+
+Propriétés Supportées
+Dimensions et Positionnement :
+width, height → width, height
+top, left → top, left
+Couleurs :
+background-color → color
+color → color pour les textes.
+Bordures :
+border → border (épaisseur, style, couleur).
+Exemple :
+
+border: { thickness: 3, pattern: :solid, red: 1, green: 0, blue: 0, alpha: 1 }
+Ombres :
+box-shadow → shadow.
+Exemple :
+
+shadow: { id: :shadow_1, left: 10, top: 10, blur: 20, red: 0, green: 0, blue: 0, alpha: 0.5 }
+Animations :
+@keyframes → animate.
+Exemple :
+
+animate({ particle: :rotate, to: 360, duration: 5000, loop: true })
+Coins Arrondis :
+border-radius → smooth.
+Exemple :
+
+smooth: 50
+4. Traduction des Interactions
+
+Événements Supportés
+Clic (onclick) :
+HTML : <div onclick="alert('clicked!')">
+Atome :
+box.touch(:tap) do
+  puts "clicked!"
+end
+Survol (onmouseover) :
+HTML : <div onmouseover="changeColor()">
+Atome :
+box.over(:enter) do
+  box.color(:blue)
+end
+Glisser (ondrag) :
+HTML : <div ondrag="dragEvent()">
+Atome :
+box.drag(true) do
+  puts "Dragging!"
+end
+5. Méthodologie pour Construire le Convertisseur
+
+Étape 1 : Analyse des Entrées
+HTML : Identifier chaque élément avec un id.
+CSS : Charger les styles associés.
+JS : Identifier les événements associés aux éléments.
+Étape 2 : Génération des Objets
+Génération d’un Objet :
+Traduire chaque élément HTML (id) en objet Atome.
+Appliquer les propriétés CSS associées (dimensions, couleurs, positions, etc.).
+Exemple :
+
+box({ id: :main_box, width: 200, height: 200, color: :red, top: 50, left: 50 })
+Ajout des Interactions :
+Identifier les événements associés dans le fichier JS.
+Les traduire en interactions Atome.
+Exemple :
+
+box.touch(:tap) do
+  puts "Main box clicked!"
+end
+Ajout des Animations :
+Traduire les animations CSS (@keyframes) en animations Atome.
+Exemple :
+
+box.animate({ particle: :rotate, to: 360, duration: 5000, loop: true })
+6. Exemples de Conversion
+
+Entrée :
+HTML :
+
+<div id="main_box" style="width: 200px; height: 200px; background-color: red;"></div>
+<div id="circle" style="width: 100px; height: 100px; background-color: blue; border-radius: 50%;"></div>
+<p id="text">Hello, Atome!</p>
+CSS :
+
+#main_box {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  border: 5px solid black;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+JS :
+
+document.getElementById("main_box").onclick = function() {
+  console.log("Main box clicked!");
+};
+Sortie :
+Ruby :
+
+box({ id: :main_box, width: 200, height: 200, color: :red,
+  shadow: { id: :shadow_1, left: 0, top: 4, blur: 10, red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0 },
+  border: { thickness: 5, pattern: :solid, red: 0, green: 0, blue: 0, alpha: 1 },
+  top: 50, left: 50
+}).touch(:tap) do
+  puts "Main box clicked!"
+end
+
+circle({ id: :circle, width: 100, height: 100, color: :blue, smooth: 50 })
+
+text({ id: :text, data: "Hello, Atome!", color: :black })
+7. Étape Finale : Validation
+
+Vérifiez le Résultat Généré :
+Assurez-vous que toutes les propriétés CSS et interactions JS sont présentes.
+Testez le fichier Ruby dans un environnement Atome.
+Logs des Erreurs :
+Les balises non supportées ou mal formatées doivent être loguées.

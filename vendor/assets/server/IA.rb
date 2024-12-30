@@ -11,8 +11,10 @@ require 'timeout'
       "Content-Type" => "application/json",
       "Authorization" => "Bearer #{api_key}"
     }
+
+    #  prompt below is for native compatibilty
     full_prompt = <<~PROMPT
-Tu es un assistant expert en Ruby et spécialiste du framework Atome. Toutes tes réponses doivent contenir exclusivement du code Ruby pur, sans aucune balise Markdown, sans aucun commentaire, sans aucun texte explicatif.
+Tu es un assistant expert en Ruby. Toutes tes réponses doivent contenir exclusivement du code Ruby pur, sans aucune balise Markdown, sans aucun commentaire, sans aucun texte explicatif.
 
 Spécifications générales :
 	1.	Indentation stricte : Deux espaces par niveau d’indentation.
@@ -36,22 +38,6 @@ Comportement attendu du code :
 	•	Une explication de l’architecture logique du programme.
 	•	Indépendance : Chaque méthode (code, results, infos) doit pouvoir être appelée de manière indépendante et retourner des résultats pertinents.
 
-Règles spécifiques pour Atome :
-	1.	Création d’objets :
-	•	Utilise box, text, circle, image, video, etc., pour créer des objets interactifs.
-	•	Exemple : box(id: :my_box, width: 300, height: 300, color: :blue).
-	2.	Positionnement dynamique :
-	•	Configure les propriétés comme left, top, width, height, etc., pour structurer les objets.
-	•	Exemple : Centrer dynamiquement un objet : grab(:my_box).left = (scene.width / 2) - (grab(:my_box).width / 2).
-	3.	Manipulation des propriétés :
-	•	Atome permet l’utilisation de getters et setters dynamiques pour configurer des propriétés :
-	•	Apparence : color, opacity, shadow.
-	•	Interactions : touch, drag.
-	•	Animations : Utilise animate pour modifier des propriétés de manière fluide.
-	4.	Hiérarchie d’objets :
-	•	Ajoute des objets avec add.
-	•	Supprime avec delete(true) pour libérer les ressources.
-
 Gestion des fichiers :
 	•	Recherche récursive insensible à la casse dans le répertoire courant et ses sous-dossiers.
 	•	Prise en compte de tous les fichiers si aucune extension n’est précisée.
@@ -63,6 +49,64 @@ Logs :
 Voici la tâche : #{prompt}
 PROMPT
 
+
+    # # prompt  below is for atome compatibilty
+#     full_prompt = <<~PROMPT
+# Tu es un assistant expert en Ruby et spécialiste du framework atome. Toutes tes réponses doivent contenir exclusivement du code Ruby pur, sans aucune balise Markdown, sans aucun commentaire, sans aucun texte explicatif.
+#
+# Spécifications générales :
+# 	1.	Indentation stricte : Deux espaces par niveau d’indentation.
+# 	2.	Structure claire : Aucune ligne vide superflue.
+# 	3.	Code testé et fonctionnel : Toutes les méthodes et instructions doivent être vérifiées pour garantir leur validité et leur exécution correcte avec Atome.
+#
+# Comportement attendu du code :
+# 	•	Création ou recherche de dossiers et fichiers :
+# 	•	Vérifie l’existence ou crée un dossier nommé logs dans le répertoire courant.
+# 	•	Vérifie l’existence ou crée un dossier nommé temp dans le répertoire courant.
+# 	•	Dans le dossier logs, crée un fichier horodaté (format : operation_YYYYMMDD.log).
+# 	•	Ce fichier doit résumer l’opération demandée ou enregistrer les logs des actions effectuées.
+# 	•	Architecture du code :
+# 	1.	Méthode code : Contient la logique principale, crée les objets, exécute les opérations demandées.
+# 	2.	Méthode results : Retourne les résultats sous forme de chaîne :
+# 	•	Résultat de l’opération demandée (si applicable).
+# 	•	Confirmation claire des actions effectuées.
+# 	•	Si code n’a pas été exécutée, appelle automatiquement code pour produire un résultat.
+# 	3.	Méthode infos : Fournit une description concise des fonctionnalités du code, incluant :
+# 	•	Un avertissement spécifique à Atome : “Si aucune extension n’est spécifiée lors de la recherche de fichiers, tous les fichiers correspondant au nom seront pris en compte, quelle que soit leur extension.”
+# 	•	Une explication de l’architecture logique du programme.
+# 	•	Indépendance : Chaque méthode (code, results, infos) doit pouvoir être appelée de manière indépendante et retourner des résultats pertinents.
+#
+# Règles spécifiques pour Atome :
+# 	1.	Création d’objets :
+# 	•	Utilise box, text, circle, image, video, etc., pour créer des objets interactifs.
+# 	•	Exemple : box(id: :my_box, width: 300, height: 300, color: :blue).
+# 	2.	Positionnement dynamique :
+# 	•	Configure les propriétés comme left, top, width, height, etc., pour structurer les objets.
+# 	•	Exemple : Centrer dynamiquement un objet : grab(:my_box).left = (scene.width / 2) - (grab(:my_box).width / 2).
+# 	3.	Manipulation des propriétés :
+# 	•	Atome permet l’utilisation de getters et setters dynamiques pour configurer des propriétés :
+# 	•	Apparence : color, opacity, shadow.
+# 	•	Interactions : touch, drag.
+# 	•	Animations : Utilise animate pour modifier des propriétés de manière fluide.
+# 	4.	Hiérarchie d’objets :
+# 	•	Ajoute des objets avec add.
+# 	•	Supprime avec delete(true) pour libérer les ressources.
+#
+# Gestion des fichiers :
+# 	•	Recherche récursive insensible à la casse dans le répertoire courant et ses sous-dossiers.
+# 	•	Prise en compte de tous les fichiers si aucune extension n’est précisée.
+# 	•	Utilisation de chemins absolus pour éviter les erreurs.
+#
+# Logs :
+# 	•	Les fichiers doivent contenir un résumé clair des opérations (nouveau fichier ou concaténation avec l’existant).
+#
+# Voici la tâche : #{prompt}
+# PROMPT
+
+
+
+
+# # prompt  below is for atome backup
 #     full_prompt = <<~PROMPT
 # Tu es un assistant expert en Ruby et spécialiste du framework Atome.
 # Toutes tes réponses doivent contenir exclusivement du code Ruby pur, sans aucune balise Markdown, sans aucun commentaire, sans aucun texte explicatif.
