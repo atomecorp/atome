@@ -27,7 +27,7 @@ class Universe
   @tools = {}
   @allow_tool_operations = false
   @active_tools = []
-  @atome_preset = []
+  @preset_list = []
   @translation={}
   @default_selection_style = { border: { thickness: 1, red: 1, green: 0, blue: 0, alpha: 1, pattern: :dotted } }
   @applicable_atomes = %i[color shadow border paint animation]
@@ -36,7 +36,7 @@ class Universe
     attr_reader :atomes, :atomes_ids, :renderer_list, :molecule_list, :atome_list, :particle_list, :classes, :counter,
                 :atomes_specificities
     attr_accessor :connected, :allow_sync, :allow_localstorage, :database_ready, :edit_mode, :tools, :tools_root,
-                  :allow_tool_operations, :active_tools, :atome_preset, :applicable_atomes, :default_selection_style,
+                  :allow_tool_operations, :active_tools, :preset_list, :applicable_atomes, :default_selection_style,
                   :translation, :language
 
     def messages

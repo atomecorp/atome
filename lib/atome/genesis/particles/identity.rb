@@ -63,3 +63,4 @@ new({ particle: :alien, category: :identity, type: :string }) # special particel
 
 new({ particle: :email, category: :identity, type: :string })
 
+new({ particle: :cells , category: :identity, type: :string })

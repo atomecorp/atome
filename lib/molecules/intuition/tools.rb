@@ -270,7 +270,7 @@ class Atome
     # now we get the values from selected atomes
     Atome.selection.each do |atome_id_to_treat|
       tool.data[:action]&.each_key do |particle_req|
-        unless Universe.atome_preset
+        unless Universe.preset_list
           value_found = grab(atome_id_to_treat).send(particle_req)
           if value_found
             tool.data[:action][particle_req] = value_found

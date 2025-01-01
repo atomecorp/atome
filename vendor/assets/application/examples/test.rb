@@ -23,8 +23,8 @@ def api_infos
 end
 
 ########## new tests
-
-# puts Universe.particle_list
+puts Universe.particle_list
+# puts Universe.particle_list.keys
 # puts Universe.atome_list
 # puts Universe.molecule_list
-
+# puts Universe.preset_list

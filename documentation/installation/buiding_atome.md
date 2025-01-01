@@ -294,7 +294,7 @@ while shape, image, vector, video audio are materials
 
 there is some specific treatment/code here :
 in presets/atome, atome_common:
-if %i[color shadow paint].include?(atome_preset)
+if %i[color shadow paint].include?(preset_list)
 
 and in genesis,  new_atome :
 :   if %i[color shadow paint].include?(element)

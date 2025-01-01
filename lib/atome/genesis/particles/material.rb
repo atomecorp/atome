@@ -109,7 +109,7 @@ new({ particle: :fill, category: :material, type: :array })
 
 new({ particle: :opacity, category: :material, type: :int })
 
-new({ particle: :exchange }) do |params, &bloc|
+new({ particle: :exchange, category: :material, type: :array }) do |params, &bloc|
   params.each_key do |part_f|
     part_to_remove = send(part_f)
     if part_to_remove.instance_of?(Array)

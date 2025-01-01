@@ -38,11 +38,11 @@ new({ particle: :fasten, category: :hierarchy, type: :string, render: false }) d
   children_ids
 end
 
-new({ sanitizer: :fasten }) do |children_ids|
+new({ sanitizer: :fasten,category: :hierarchy, type: :string }) do |children_ids|
   children_ids
 end
 
-new({ particle: :unfasten }) do |params|
+new({ particle: :unfasten,category: :hierarchy, type: :string  }) do |params|
   params = fasten if params == :all
   dup_params = params.dup
   dup_params.each do |param|
@@ -60,7 +60,7 @@ new({ particle: :unfasten }) do |params|
   end
 end
 
-new({ particle: :detach }) do |params|
+new({ particle: :detach,category: :hierarchy, type: :string  }) do |params|
   grab(params).unfasten([id])
 end
 

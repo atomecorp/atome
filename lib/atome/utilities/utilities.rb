@@ -43,7 +43,7 @@ class Atome
     # atome builder
     def preset_builder(preset_name, &bloc)
       # Important : previously def box , def circle
-      Universe.atome_preset << preset_name
+      Universe.preset_list << preset_name
       Object.define_method preset_name do |params = {}, &proc|
         grab(:view).send(preset_name, params, &proc)
       end

@@ -19,12 +19,12 @@ new({ particle: :renderers, category: :utility, type: :string })
 new({ particle: :code, category: :utility, type: :string, store: false }) do |params, code|
   @code[params] = code
 end
-new({ particle: :run }) do |params, code|
+new({ particle: :run, category: :utility, type: :boolean}) do |params, code|
   instance_exec(&params) if params.is_a?(Proc)
   code_found = @code[params]
   instance_exec(params, &code_found) if code_found.is_a?(Proc)
 end
-new({ particle: :target }) do |params|
+new({ particle: :target , category: :utility, type: :string}) do |params|
   params.each do |atome_f, value_f|
     if value_f.instance_of?(Hash)
       value_f.each do |part_f, part_val|
@@ -279,4 +279,4 @@ new({ particle: :storage, category: :utility, type: :hash })
 new({ particle: :state, category: :utility, type: :symbol })
 new({ particle: :record, category: :utility, type: :hash })
 new({ particle: :preview, category: :utility, type: :hash })
-new({particle: :meteo})
+new({particle: :meteo, category: :utility, type: :string})

@@ -449,7 +449,6 @@ new({ molecule: :slider }) do |params, bloc|
 
 end
 
-new({ particle: :cells })
 
 new(molecule: :matrix) do |params, &bloc|
   params ||= {}

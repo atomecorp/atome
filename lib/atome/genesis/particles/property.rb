@@ -128,13 +128,13 @@ new({ particle: :sort, category: :property, type: :int }) do |params|
   params
 end
 
-new({ particle: :inside, render: false })
+new({ particle: :inside, render: false,category: :property, type: :string  })
 new({ initialized: :inside }) do |params, &user_proc|
   render(:inside, params, &user_proc)
 end
-new({ particle: :margin })
+new({ particle: :margin,category: :property, type: :int  })
 
-new({ particle: :value }) do |val|
+new({ particle: :value ,category: :property, type: :string }) do |val|
   pro_f = behavior[:value]
   instance_exec(val, &pro_f) if pro_f.is_a?(Proc)
   val
@@ -146,7 +146,7 @@ new({ particle: :orientation, type: :symbol, category: :property })
 
 new({ particle: :align, type: :symbol, category: :property })
 
-new({ particle: :actor, store: false }) do |params|
+new({ particle: :actor, store: false, category: :property , type: :string }) do |params|
   @actor ||= {}
   if params[:remove]
     params[:remove].each do |atome_id, role|
@@ -161,7 +161,7 @@ new({ particle: :actor, store: false }) do |params|
   end
 end
 
-new({ particle: :role, store: false }) do |params|
+new({ particle: :role, store: false, category: :property , type: :string }) do |params|
   if params.instance_of? Hash
     if params.keys[0] == :remove
       @role.delete(params.values[0])

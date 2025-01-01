@@ -107,27 +107,27 @@ new ({ particle: :increment, category: :spatial, type: :hash }) do |params|
   end
 end
 
-new({particle: :longitude}) do |params, _user_proc|
+new({particle: :longitude, category: :spatial, type: :int}) do |params, _user_proc|
   render(:map, {longitude: params })
   params
 end
 
-new({particle: :latitude}) do |params, _user_proc|
+new({particle: :latitude, category: :spatial, type: :int}) do |params, _user_proc|
   render(:map, {latitude: params })
   params
 end
 
-new({particle: :location}) do |params, _user_proc|
+new({particle: :location, category: :spatial, type: :hash}) do |params, _user_proc|
   render(:map, params)
   params
 end
 
-new({particle: :zoom, specific: :map}) do |params, _user_proc|
+new({particle: :zoom, specific: :map, category: :spatial, type: :int}) do |params, _user_proc|
   render(:map_zoom, params)
   params
 end
 
-new({particle: :pan, specific: :map}) do |params, _user_proc|
+new({particle: :pan, specific: :map, category: :spatial, type: :int}) do |params, _user_proc|
   render(:map_pan, params)
   params
 end
