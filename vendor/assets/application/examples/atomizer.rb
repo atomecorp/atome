@@ -84,3 +84,71 @@ wait 3 do
 end
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "appendChild",
+    "color",
+    "display",
+    "global",
+    "join",
+    "left",
+    "locate",
+    "position",
+    "rotate",
+    "setAttribute",
+    "to_a",
+    "top"
+  ],
+  "appendChild": {
+    "aim": "The `appendChild` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `appendChild`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "display": {
+    "aim": "The `display` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `display`."
+  },
+  "global": {
+    "aim": "The `global` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `global`."
+  },
+  "join": {
+    "aim": "The `join` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `join`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "locate": {
+    "aim": "The `locate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `locate`."
+  },
+  "position": {
+    "aim": "The `position` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `position`."
+  },
+  "rotate": {
+    "aim": "The `rotate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `rotate`."
+  },
+  "setAttribute": {
+    "aim": "The `setAttribute` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `setAttribute`."
+  },
+  "to_a": {
+    "aim": "The `to_a` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_a`."
+  },
+  "top": {
+    "aim": "Defines the vertical position of the object in its container.",
+    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+  }
+}
+end

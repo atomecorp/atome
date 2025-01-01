@@ -39,3 +39,46 @@ s.page(:hello)
 #
 # end
 # form
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "box",
+    "class",
+    "color",
+    "delete",
+    "page",
+    "text",
+    "touch"
+  ],
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "class": {
+    "aim": "The `class` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `class`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "page": {
+    "aim": "The `page` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `page`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

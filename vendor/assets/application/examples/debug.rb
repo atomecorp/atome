@@ -76,3 +76,75 @@ color({ blue: 1, id: :big_col })
 wait 2 do
   b.apply(:big_col)
 end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "apply",
+    "call",
+    "define_singleton_method",
+    "each",
+    "empty",
+    "instance_variable_get",
+    "is_a",
+    "left",
+    "method",
+    "monitoring",
+    "resize",
+    "send",
+    "touch"
+  ],
+  "apply": {
+    "aim": "The `apply` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `apply`."
+  },
+  "call": {
+    "aim": "The `call` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `call`."
+  },
+  "define_singleton_method": {
+    "aim": "The `define_singleton_method` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `define_singleton_method`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "empty": {
+    "aim": "The `empty` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `empty`."
+  },
+  "instance_variable_get": {
+    "aim": "The `instance_variable_get` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_variable_get`."
+  },
+  "is_a": {
+    "aim": "The `is_a` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `is_a`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "method": {
+    "aim": "The `method` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `method`."
+  },
+  "monitoring": {
+    "aim": "The `monitoring` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `monitoring`."
+  },
+  "resize": {
+    "aim": "The `resize` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `resize`."
+  },
+  "send": {
+    "aim": "The `send` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `send`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

@@ -113,3 +113,61 @@ end
 
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "appendChild",
+    "each",
+    "global",
+    "is_a",
+    "join",
+    "match",
+    "scan",
+    "split",
+    "to_i",
+    "to_sym"
+  ],
+  "appendChild": {
+    "aim": "The `appendChild` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `appendChild`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "global": {
+    "aim": "The `global` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `global`."
+  },
+  "is_a": {
+    "aim": "The `is_a` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `is_a`."
+  },
+  "join": {
+    "aim": "The `join` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `join`."
+  },
+  "match": {
+    "aim": "The `match` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `match`."
+  },
+  "scan": {
+    "aim": "The `scan` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `scan`."
+  },
+  "split": {
+    "aim": "The `split` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `split`."
+  },
+  "to_i": {
+    "aim": "The `to_i` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_i`."
+  },
+  "to_sym": {
+    "aim": "The `to_sym` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_sym`."
+  }
+}
+end

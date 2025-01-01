@@ -25,3 +25,30 @@ end
 
 
   b.example(:left)
+
+def api_infos
+  {
+  "example": {
+    "aim": "The `example` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `example`."
+  },
+  "methods_found": [
+    "delete",
+    "example",
+    "left",
+    "touch"
+  ],
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

@@ -31,3 +31,41 @@ my_box.touch(true) do
   puts  "new_circle is : #{new_circle.inspect}"
   # this print : new_circle is : #<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_18, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @html=#<HTML:0x0664e99c @element=[object HTMLDivElement], @id="circle_18", @original_atome=#<Atome: @type=:shape, @smooth="100%", @width=99, @id=:circle_18, @renderers=[:html], @height=99, @broadcast={}, @callback={}, @tag={}, @fasten=[], @unit={}, @collected={}, @html=#<HTML:0x0664e99c ...>, @top=100, @attach=[:box_14], @left=100, @apply=[:circle_18_color_1_0_0_0_0_0____], @clones=[]>, @element_type="div">, @top=100, @attach=[:box_14], @left=100, @apply=[:circle_18_color_1_0_0_0_0_0____], @clones=[]>
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "inspect",
+    "min",
+    "preset",
+    "script",
+    "text",
+    "touch"
+  ],
+  "inspect": {
+    "aim": "The `inspect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `inspect`."
+  },
+  "min": {
+    "aim": "The `min` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `min`."
+  },
+  "preset": {
+    "aim": "The `preset` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `preset`."
+  },
+  "script": {
+    "aim": "The `script` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `script`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

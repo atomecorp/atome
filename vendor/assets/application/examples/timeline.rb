@@ -192,3 +192,200 @@ end
 #             document.getElementById('proll').stop()
 #         }
 #     </script>
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "005",
+    "1",
+    "12",
+    "3",
+    "5",
+    "6",
+    "connect",
+    "createGain",
+    "createOscillator",
+    "currentTime",
+    "delete",
+    "destination",
+    "detune",
+    "disconnect",
+    "eval",
+    "g",
+    "gain",
+    "getElementById",
+    "height",
+    "instance_exec",
+    "instance_variable_get",
+    "instance_variable_set",
+    "is_a",
+    "log",
+    "n",
+    "now",
+    "resume",
+    "roller_tempo",
+    "set",
+    "shadow",
+    "start",
+    "suspend",
+    "t",
+    "text",
+    "touch",
+    "type",
+    "value",
+    "width"
+  ],
+  "005": {
+    "aim": "The `005` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `005`."
+  },
+  "1": {
+    "aim": "The `1` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `1`."
+  },
+  "12": {
+    "aim": "The `12` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `12`."
+  },
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "6": {
+    "aim": "The `6` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `6`."
+  },
+  "connect": {
+    "aim": "The `connect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `connect`."
+  },
+  "createGain": {
+    "aim": "The `createGain` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `createGain`."
+  },
+  "createOscillator": {
+    "aim": "The `createOscillator` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `createOscillator`."
+  },
+  "currentTime": {
+    "aim": "The `currentTime` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `currentTime`."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "destination": {
+    "aim": "The `destination` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `destination`."
+  },
+  "detune": {
+    "aim": "The `detune` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `detune`."
+  },
+  "disconnect": {
+    "aim": "The `disconnect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `disconnect`."
+  },
+  "eval": {
+    "aim": "The `eval` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `eval`."
+  },
+  "g": {
+    "aim": "The `g` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `g`."
+  },
+  "gain": {
+    "aim": "The `gain` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `gain`."
+  },
+  "getElementById": {
+    "aim": "The `getElementById` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getElementById`."
+  },
+  "height": {
+    "aim": "The `height` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `height`."
+  },
+  "instance_exec": {
+    "aim": "The `instance_exec` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_exec`."
+  },
+  "instance_variable_get": {
+    "aim": "The `instance_variable_get` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_variable_get`."
+  },
+  "instance_variable_set": {
+    "aim": "The `instance_variable_set` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_variable_set`."
+  },
+  "is_a": {
+    "aim": "The `is_a` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `is_a`."
+  },
+  "log": {
+    "aim": "The `log` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `log`."
+  },
+  "n": {
+    "aim": "The `n` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `n`."
+  },
+  "now": {
+    "aim": "The `now` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `now`."
+  },
+  "resume": {
+    "aim": "The `resume` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `resume`."
+  },
+  "roller_tempo": {
+    "aim": "The `roller_tempo` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `roller_tempo`."
+  },
+  "set": {
+    "aim": "The `set` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `set`."
+  },
+  "shadow": {
+    "aim": "The `shadow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shadow`."
+  },
+  "start": {
+    "aim": "The `start` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `start`."
+  },
+  "suspend": {
+    "aim": "The `suspend` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `suspend`."
+  },
+  "t": {
+    "aim": "The `t` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `t`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "type": {
+    "aim": "The `type` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `type`."
+  },
+  "value": {
+    "aim": "The `value` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `value`."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

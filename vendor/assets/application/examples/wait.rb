@@ -15,3 +15,15 @@ end
 wait 3 do
   b.color(:green)
 end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "color"
+  ],
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  }
+}
+end

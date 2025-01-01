@@ -50,3 +50,56 @@ tt.touch(true) do
 end
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "color",
+    "delete",
+    "drag",
+    "height",
+    "id",
+    "left",
+    "to_f",
+    "top",
+    "touch"
+  ],
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "drag": {
+    "aim": "The `drag` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `drag`."
+  },
+  "height": {
+    "aim": "The `height` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `height`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "to_f": {
+    "aim": "The `to_f` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_f`."
+  },
+  "top": {
+    "aim": "Defines the vertical position of the object in its container.",
+    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

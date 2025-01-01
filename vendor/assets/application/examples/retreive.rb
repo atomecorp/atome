@@ -22,3 +22,31 @@ wait 1 do
   end
 end
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "color",
+    "delete",
+    "left",
+    "text"
+  ],
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  }
+}
+end

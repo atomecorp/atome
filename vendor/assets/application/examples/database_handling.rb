@@ -37,3 +37,15 @@ end
 A.message({ action: :insert, data: { table: :unknown, particle: :name, data: 'dummy2' } }) do |data_received_from_server|
   puts "test 3 :  #{data_received_from_server}"
 end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "message"
+  ],
+  "message": {
+    "aim": "The `message` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `message`."
+  }
+}
+end

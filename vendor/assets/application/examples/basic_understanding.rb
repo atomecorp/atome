@@ -52,3 +52,81 @@ wait 2 do
   # we can add a color atome onto the new atome my_shape. as stated before for some atome types such as color, shadows ,the relation between the two atomes won't be attach and fasten but  apply and affect instead the atome color with the particle red onto the
   b.color(:red)
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "apply",
+    "atomes",
+    "attach",
+    "color",
+    "height",
+    "id",
+    "left",
+    "new",
+    "particle_list",
+    "renderer_list",
+    "renderers",
+    "top",
+    "type",
+    "width"
+  ],
+  "apply": {
+    "aim": "The `apply` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `apply`."
+  },
+  "atomes": {
+    "aim": "The `atomes` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `atomes`."
+  },
+  "attach": {
+    "aim": "The `attach` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `attach`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "height": {
+    "aim": "The `height` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `height`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "new": {
+    "aim": "The `new` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `new`."
+  },
+  "particle_list": {
+    "aim": "The `particle_list` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `particle_list`."
+  },
+  "renderer_list": {
+    "aim": "The `renderer_list` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `renderer_list`."
+  },
+  "renderers": {
+    "aim": "The `renderers` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `renderers`."
+  },
+  "top": {
+    "aim": "Defines the vertical position of the object in its container.",
+    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+  },
+  "type": {
+    "aim": "The `type` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `type`."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

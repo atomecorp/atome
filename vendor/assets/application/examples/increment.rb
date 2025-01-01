@@ -21,3 +21,36 @@ end
 # wait 3 do
 #   color(:red)
 # end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "1",
+    "5",
+    "id",
+    "increment",
+    "sync"
+  ],
+  "1": {
+    "aim": "The `1` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `1`."
+  },
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "increment": {
+    "aim": "The `increment` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `increment`."
+  },
+  "sync": {
+    "aim": "The `sync` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `sync`."
+  }
+}
+end

@@ -33,3 +33,36 @@ end
 # string=hello
 #
 # puts JS.global.sha256(string.to_s)
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "global",
+    "message",
+    "to_s",
+    "touch",
+    "tre"
+  ],
+  "global": {
+    "aim": "The `global` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `global`."
+  },
+  "message": {
+    "aim": "The `message` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `message`."
+  },
+  "to_s": {
+    "aim": "The `to_s` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_s`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "tre": {
+    "aim": "The `tre` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `tre`."
+  }
+}
+end

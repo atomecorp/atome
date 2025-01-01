@@ -43,3 +43,51 @@ grab(:page1).blocks({ direction: :vertical, color: :blue, height: 55, spacing: 6
 
 grab(:block1).blocks({ direction: :horizontal, color: :orange, spacing: 66, width: 120, top: 0,
                        blocks: { block12: bloc_to_add4, block22: bloc_to_add2, block32: bloc_to_add3 }, distribute: true })
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "3",
+    "5",
+    "color",
+    "height",
+    "page",
+    "show",
+    "subs",
+    "touch"
+  ],
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "height": {
+    "aim": "The `height` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `height`."
+  },
+  "page": {
+    "aim": "The `page` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `page`."
+  },
+  "show": {
+    "aim": "The `show` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `show`."
+  },
+  "subs": {
+    "aim": "The `subs` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `subs`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

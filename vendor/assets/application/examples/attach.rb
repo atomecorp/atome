@@ -32,3 +32,31 @@ wait 1 do
   # to retrieve atome fasten to the atome c_12 just type tha other method
   puts  c.fasten #=> [:b_1]
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "attach",
+    "fasten",
+    "ib",
+    "id"
+  ],
+  "attach": {
+    "aim": "The `attach` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `attach`."
+  },
+  "fasten": {
+    "aim": "The `fasten` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fasten`."
+  },
+  "ib": {
+    "aim": "The `ib` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `ib`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  }
+}
+end

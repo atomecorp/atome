@@ -18,3 +18,20 @@ wait 1 do
     b.color(:black)
   end
 end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "color",
+    "text"
+  ],
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  }
+}
+end

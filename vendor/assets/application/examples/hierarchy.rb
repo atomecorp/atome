@@ -19,3 +19,40 @@ puts "b fasten :#{b.fasten}" # prints [:the_circle, :the_cirle] in the console
 
 puts "c attach: #{c.attach}" # prints [:the_box] in the console
 puts "c fasten: #{c.fasten}" # prints [:box_14] in the console as there's no child
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "attach",
+    "circle",
+    "fasten",
+    "image",
+    "svg",
+    "text"
+  ],
+  "attach": {
+    "aim": "The `attach` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `attach`."
+  },
+  "circle": {
+    "aim": "The `circle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `circle`."
+  },
+  "fasten": {
+    "aim": "The `fasten` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fasten`."
+  },
+  "image": {
+    "aim": "The `image` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `image`."
+  },
+  "svg": {
+    "aim": "The `svg` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `svg`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  }
+}
+end

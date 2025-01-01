@@ -68,3 +68,51 @@ end
 #   end
 # end
 #
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "3",
+    "5",
+    "apply",
+    "color",
+    "paint",
+    "remove",
+    "shadow",
+    "touch"
+  ],
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "apply": {
+    "aim": "The `apply` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `apply`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "paint": {
+    "aim": "The `paint` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `paint`."
+  },
+  "remove": {
+    "aim": "The `remove` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `remove`."
+  },
+  "shadow": {
+    "aim": "The `shadow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shadow`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

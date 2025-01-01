@@ -67,3 +67,41 @@ end
 #     puts "heyeeee up!!"
 #   end
 # end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "color",
+    "edit",
+    "keyboard",
+    "left",
+    "preventDefault",
+    "touch"
+  ],
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "edit": {
+    "aim": "The `edit` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `edit`."
+  },
+  "keyboard": {
+    "aim": "The `keyboard` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `keyboard`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "preventDefault": {
+    "aim": "The `preventDefault` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `preventDefault`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

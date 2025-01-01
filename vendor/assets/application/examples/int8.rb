@@ -34,3 +34,36 @@ wait 2 do
   grab(:boxy).refresh
   end
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "data",
+    "language",
+    "refresh",
+    "text",
+    "translation"
+  ],
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "language": {
+    "aim": "The `language` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `language`."
+  },
+  "refresh": {
+    "aim": "The `refresh` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `refresh`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "translation": {
+    "aim": "The `translation` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `translation`."
+  }
+}
+end

@@ -27,3 +27,41 @@ wait 0.5 do
     end
   end
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "5",
+    "6",
+    "color",
+    "delete",
+    "paint",
+    "remove"
+  ],
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "6": {
+    "aim": "The `6` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `6`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "paint": {
+    "aim": "The `paint` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `paint`."
+  },
+  "remove": {
+    "aim": "The `remove` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `remove`."
+  }
+}
+end

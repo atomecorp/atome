@@ -36,3 +36,46 @@ wait 1 do
     end
   end
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "current_user",
+    "duplicate",
+    "each",
+    "layout",
+    "left",
+    "times",
+    "width"
+  ],
+  "current_user": {
+    "aim": "The `current_user` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `current_user`."
+  },
+  "duplicate": {
+    "aim": "The `duplicate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `duplicate`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "layout": {
+    "aim": "The `layout` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `layout`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "times": {
+    "aim": "The `times` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `times`."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

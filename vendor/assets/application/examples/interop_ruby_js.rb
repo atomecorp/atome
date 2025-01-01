@@ -10,3 +10,16 @@ my_class_instance.myTestFunction("Bonjour depuis Ruby!")
 # to call a ruby methode from js use :
 #       atomeJsToRuby('box'); or  atomeJsToRuby("my_meth('my_params')")
 #
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "myTestFunction"
+  ],
+  "myTestFunction": {
+    "aim": "The `myTestFunction` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `myTestFunction`."
+  }
+}
+end

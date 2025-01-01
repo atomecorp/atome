@@ -41,3 +41,46 @@ end
 
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "3",
+    "6",
+    "apply",
+    "attach",
+    "color",
+    "fasten",
+    "id"
+  ],
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "6": {
+    "aim": "The `6` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `6`."
+  },
+  "apply": {
+    "aim": "The `apply` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `apply`."
+  },
+  "attach": {
+    "aim": "The `attach` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `attach`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "fasten": {
+    "aim": "The `fasten` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fasten`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  }
+}
+end

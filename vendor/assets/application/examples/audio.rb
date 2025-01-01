@@ -68,3 +68,75 @@ end
 bb.touch(:down) do
   play_snare
 end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "6",
+    "connect",
+    "createGain",
+    "createMediaElementSource",
+    "eval",
+    "global",
+    "left",
+    "play",
+    "playSnare",
+    "snare",
+    "text",
+    "touch",
+    "wav"
+  ],
+  "6": {
+    "aim": "The `6` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `6`."
+  },
+  "connect": {
+    "aim": "The `connect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `connect`."
+  },
+  "createGain": {
+    "aim": "The `createGain` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `createGain`."
+  },
+  "createMediaElementSource": {
+    "aim": "The `createMediaElementSource` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `createMediaElementSource`."
+  },
+  "eval": {
+    "aim": "The `eval` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `eval`."
+  },
+  "global": {
+    "aim": "The `global` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `global`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "play": {
+    "aim": "The `play` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `play`."
+  },
+  "playSnare": {
+    "aim": "The `playSnare` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `playSnare`."
+  },
+  "snare": {
+    "aim": "The `snare` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `snare`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "wav": {
+    "aim": "The `wav` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `wav`."
+  }
+}
+end

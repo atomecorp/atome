@@ -86,3 +86,111 @@ end
 # b.circle
 # b.delete(true)
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "4",
+    "6",
+    "alternate",
+    "cells",
+    "circle",
+    "color",
+    "delete",
+    "display",
+    "drag",
+    "id",
+    "inspect",
+    "matrix",
+    "paint",
+    "resize_matrix",
+    "selected",
+    "shadow",
+    "smooth",
+    "text",
+    "touch",
+    "width"
+  ],
+  "4": {
+    "aim": "The `4` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `4`."
+  },
+  "6": {
+    "aim": "The `6` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `6`."
+  },
+  "alternate": {
+    "aim": "The `alternate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `alternate`."
+  },
+  "cells": {
+    "aim": "The `cells` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `cells`."
+  },
+  "circle": {
+    "aim": "The `circle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `circle`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "display": {
+    "aim": "The `display` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `display`."
+  },
+  "drag": {
+    "aim": "The `drag` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `drag`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "inspect": {
+    "aim": "The `inspect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `inspect`."
+  },
+  "matrix": {
+    "aim": "The `matrix` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `matrix`."
+  },
+  "paint": {
+    "aim": "The `paint` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `paint`."
+  },
+  "resize_matrix": {
+    "aim": "The `resize_matrix` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `resize_matrix`."
+  },
+  "selected": {
+    "aim": "The `selected` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `selected`."
+  },
+  "shadow": {
+    "aim": "The `shadow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shadow`."
+  },
+  "smooth": {
+    "aim": "Applies smooth transitions or rounded edges to an object.",
+    "usage": "Use `smooth(20)` to apply a smooth transition or corner rounding of 20 pixels."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

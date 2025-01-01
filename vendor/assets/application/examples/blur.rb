@@ -24,3 +24,56 @@ b2.shadow({
             red: 0, green: 0, blue: 0, alpha: 0.6
           })
 b2.blur({affect: :back, value: 15})
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "1",
+    "2",
+    "3",
+    "6",
+    "blur",
+    "border",
+    "drag",
+    "shadow",
+    "smooth"
+  ],
+  "1": {
+    "aim": "The `1` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `1`."
+  },
+  "2": {
+    "aim": "The `2` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `2`."
+  },
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "6": {
+    "aim": "The `6` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `6`."
+  },
+  "blur": {
+    "aim": "The `blur` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `blur`."
+  },
+  "border": {
+    "aim": "The `border` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `border`."
+  },
+  "drag": {
+    "aim": "The `drag` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `drag`."
+  },
+  "shadow": {
+    "aim": "The `shadow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shadow`."
+  },
+  "smooth": {
+    "aim": "Applies smooth transitions or rounded edges to an object.",
+    "usage": "Use `smooth(20)` to apply a smooth transition or corner rounding of 20 pixels."
+  }
+}
+end

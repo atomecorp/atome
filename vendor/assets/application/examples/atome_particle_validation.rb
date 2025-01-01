@@ -5,3 +5,10 @@
 new ({ atome: :image })
 
 new ({ particle: :left })
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": []
+}
+end

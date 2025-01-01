@@ -37,3 +37,35 @@ bb.touch(true) do
     bb.color(:blue)
   end
 end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "color",
+    "dummy",
+    "dummy2",
+    "tick",
+    "touch"
+  ],
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "dummy": {
+    "aim": "The `dummy` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `dummy`."
+  },
+  "dummy2": {
+    "aim": "The `dummy2` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `dummy2`."
+  },
+  "tick": {
+    "aim": "The `tick` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `tick`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

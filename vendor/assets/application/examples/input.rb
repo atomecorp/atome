@@ -39,3 +39,46 @@ c.touch(true) do
 end
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "9",
+    "fasten",
+    "holder",
+    "input",
+    "top",
+    "touch",
+    "width"
+  ],
+  "9": {
+    "aim": "The `9` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9`."
+  },
+  "fasten": {
+    "aim": "The `fasten` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fasten`."
+  },
+  "holder": {
+    "aim": "The `holder` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `holder`."
+  },
+  "input": {
+    "aim": "The `input` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `input`."
+  },
+  "top": {
+    "aim": "Defines the vertical position of the object in its container.",
+    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

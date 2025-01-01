@@ -86,3 +86,31 @@ cc3.touch(true) do
 end
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "preview",
+    "record",
+    "text",
+    "touch"
+  ],
+  "preview": {
+    "aim": "The `preview` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `preview`."
+  },
+  "record": {
+    "aim": "The `record` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `record`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

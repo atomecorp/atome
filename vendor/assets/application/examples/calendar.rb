@@ -184,3 +184,106 @@ end
 
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "Calendar",
+    "define_singleton_method",
+    "delete_event",
+    "end",
+    "error",
+    "eval",
+    "event",
+    "forEach",
+    "handle_range_clear",
+    "id",
+    "includes",
+    "join",
+    "log",
+    "log_event_range",
+    "push",
+    "resize",
+    "start",
+    "update_event",
+    "view"
+  ],
+  "Calendar": {
+    "aim": "The `Calendar` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `Calendar`."
+  },
+  "define_singleton_method": {
+    "aim": "The `define_singleton_method` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `define_singleton_method`."
+  },
+  "delete_event": {
+    "aim": "The `delete_event` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete_event`."
+  },
+  "end": {
+    "aim": "The `end` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `end`."
+  },
+  "error": {
+    "aim": "The `error` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `error`."
+  },
+  "eval": {
+    "aim": "The `eval` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `eval`."
+  },
+  "event": {
+    "aim": "The `event` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `event`."
+  },
+  "forEach": {
+    "aim": "The `forEach` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `forEach`."
+  },
+  "handle_range_clear": {
+    "aim": "The `handle_range_clear` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `handle_range_clear`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "includes": {
+    "aim": "The `includes` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `includes`."
+  },
+  "join": {
+    "aim": "The `join` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `join`."
+  },
+  "log": {
+    "aim": "The `log` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `log`."
+  },
+  "log_event_range": {
+    "aim": "The `log_event_range` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `log_event_range`."
+  },
+  "push": {
+    "aim": "The `push` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `push`."
+  },
+  "resize": {
+    "aim": "The `resize` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `resize`."
+  },
+  "start": {
+    "aim": "The `start` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `start`."
+  },
+  "update_event": {
+    "aim": "The `update_event` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `update_event`."
+  },
+  "view": {
+    "aim": "The `view` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `view`."
+  }
+}
+end

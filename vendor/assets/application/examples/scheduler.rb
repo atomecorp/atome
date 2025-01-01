@@ -30,3 +30,10 @@ end
 #   puts 'stop'
 #   stop_task('every_minute_task')
 # end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": []
+}
+end

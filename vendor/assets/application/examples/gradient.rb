@@ -38,3 +38,51 @@ the_text.left(333)
 
 # #TODO : gradient on text!
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "3",
+    "5",
+    "7",
+    "color",
+    "id",
+    "left",
+    "paint",
+    "remove"
+  ],
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "7": {
+    "aim": "The `7` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `7`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "paint": {
+    "aim": "The `paint` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `paint`."
+  },
+  "remove": {
+    "aim": "The `remove` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `remove`."
+  }
+}
+end

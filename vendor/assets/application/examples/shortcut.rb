@@ -23,3 +23,10 @@ shortcut(key: :j, option: :ctrl, affect: :all, exclude: [:my_circle, :my_box]) d
 end
 text({data: "Key 'j' with Ctrl  on :all but [:my_circle, :my_box]", top: 50,left: 0, position: :absolute})
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": []
+}
+end

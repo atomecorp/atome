@@ -26,3 +26,35 @@ c.touch(true) do
     puts 'yes'
   end
 end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "data",
+    "drag",
+    "on",
+    "resize",
+    "touch"
+  ],
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "drag": {
+    "aim": "The `drag` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `drag`."
+  },
+  "on": {
+    "aim": "The `on` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `on`."
+  },
+  "resize": {
+    "aim": "The `resize` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `resize`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

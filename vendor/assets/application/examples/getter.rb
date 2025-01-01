@@ -14,3 +14,46 @@ puts "the_circle color is : #{the_circle.color}"
 puts "the_text data is : #{the_text.data}"
 puts "the_box left is : #{the_box.left}"
 puts "the_circle particles are : #{the_circle.particles}"
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "box",
+    "color",
+    "data",
+    "image",
+    "left",
+    "particles",
+    "shape"
+  ],
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "image": {
+    "aim": "The `image` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `image`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "particles": {
+    "aim": "The `particles` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `particles`."
+  },
+  "shape": {
+    "aim": "The `shape` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shape`."
+  }
+}
+end

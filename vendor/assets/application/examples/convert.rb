@@ -161,3 +161,35 @@ end
 # 9. **D'autres éléments** (comme les éléments dépréciés ou obsolètes de versions antérieures de HTML) peuvent également être trouvés dans le wild web, mais leur utilisation n'est pas recommandée dans les nouveaux projets.
 #
 # Cette liste n'est pas exhaustive et certaines balises pourraient être ajoutées ou modifiées avec de futures versions de HTML. Toujours se référer à la documentation officielle ou à des ressources fiables pour une liste complète à jour.
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "fr",
+    "hyperedit",
+    "hypertext",
+    "keys",
+    "new"
+  ],
+  "fr": {
+    "aim": "The `fr` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fr`."
+  },
+  "hyperedit": {
+    "aim": "The `hyperedit` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `hyperedit`."
+  },
+  "hypertext": {
+    "aim": "The `hypertext` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `hypertext`."
+  },
+  "keys": {
+    "aim": "The `keys` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `keys`."
+  },
+  "new": {
+    "aim": "The `new` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `new`."
+  }
+}
+end

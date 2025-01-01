@@ -30,3 +30,31 @@ end
 # puts "get data write operation :  #{box_data_history}"
 #
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "data",
+    "history",
+    "rotate",
+    "touch"
+  ],
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "history": {
+    "aim": "The `history` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `history`."
+  },
+  "rotate": {
+    "aim": "The `rotate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `rotate`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

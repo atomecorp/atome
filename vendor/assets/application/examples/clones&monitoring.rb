@@ -103,3 +103,101 @@ bb = box({ id: :toto, left: 333 })
 bb.add_class(:toto)
 b.add_class(:toto)
 # bb.force_top(:toto,3)
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "add_class",
+    "apply",
+    "color",
+    "each",
+    "force_top",
+    "global",
+    "id",
+    "instance_variable_get",
+    "left",
+    "monitoring",
+    "red",
+    "resize",
+    "send",
+    "setAttribute",
+    "to_s",
+    "touch",
+    "touch_code",
+    "width"
+  ],
+  "add_class": {
+    "aim": "The `add_class` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `add_class`."
+  },
+  "apply": {
+    "aim": "The `apply` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `apply`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "force_top": {
+    "aim": "The `force_top` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `force_top`."
+  },
+  "global": {
+    "aim": "The `global` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `global`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "instance_variable_get": {
+    "aim": "The `instance_variable_get` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_variable_get`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "monitoring": {
+    "aim": "The `monitoring` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `monitoring`."
+  },
+  "red": {
+    "aim": "The `red` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `red`."
+  },
+  "resize": {
+    "aim": "The `resize` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `resize`."
+  },
+  "send": {
+    "aim": "The `send` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `send`."
+  },
+  "setAttribute": {
+    "aim": "The `setAttribute` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `setAttribute`."
+  },
+  "to_s": {
+    "aim": "The `to_s` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_s`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "touch_code": {
+    "aim": "The `touch_code` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `touch_code`."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

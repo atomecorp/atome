@@ -74,3 +74,51 @@ end
 # puts "user hashed pass is : #{grab(Universe.current_user).password}"
 # b.authorise(:star_wars, false)
 # puts "b.smooth is : #{b.smooth}"
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "789",
+    "authorise",
+    "current_user",
+    "history",
+    "left",
+    "password",
+    "security",
+    "smooth"
+  ],
+  "789": {
+    "aim": "The `789` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `789`."
+  },
+  "authorise": {
+    "aim": "The `authorise` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `authorise`."
+  },
+  "current_user": {
+    "aim": "The `current_user` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `current_user`."
+  },
+  "history": {
+    "aim": "The `history` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `history`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "password": {
+    "aim": "The `password` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `password`."
+  },
+  "security": {
+    "aim": "The `security` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `security`."
+  },
+  "smooth": {
+    "aim": "Applies smooth transitions or rounded edges to an object.",
+    "usage": "Use `smooth(20)` to apply a smooth transition or corner rounding of 20 pixels."
+  }
+}
+end

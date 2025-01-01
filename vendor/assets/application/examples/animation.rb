@@ -121,3 +121,56 @@ end
 
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "2",
+    "animate",
+    "color",
+    "new",
+    "play",
+    "shadow",
+    "start",
+    "stop",
+    "touch"
+  ],
+  "2": {
+    "aim": "The `2` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `2`."
+  },
+  "animate": {
+    "aim": "The `animate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `animate`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "new": {
+    "aim": "The `new` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `new`."
+  },
+  "play": {
+    "aim": "The `play` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `play`."
+  },
+  "shadow": {
+    "aim": "The `shadow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shadow`."
+  },
+  "start": {
+    "aim": "The `start` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `start`."
+  },
+  "stop": {
+    "aim": "The `stop` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `stop`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

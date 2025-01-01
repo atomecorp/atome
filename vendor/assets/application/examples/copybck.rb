@@ -66,3 +66,61 @@ b.touch(true) do
 end
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "attach",
+    "copy",
+    "each",
+    "id",
+    "instance_of",
+    "last",
+    "new",
+    "paste",
+    "to_i",
+    "touch"
+  ],
+  "attach": {
+    "aim": "The `attach` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `attach`."
+  },
+  "copy": {
+    "aim": "The `copy` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `copy`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "instance_of": {
+    "aim": "The `instance_of` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_of`."
+  },
+  "last": {
+    "aim": "The `last` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `last`."
+  },
+  "new": {
+    "aim": "The `new` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `new`."
+  },
+  "paste": {
+    "aim": "The `paste` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `paste`."
+  },
+  "to_i": {
+    "aim": "The `to_i` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_i`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

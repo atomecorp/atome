@@ -82,3 +82,55 @@ end
   # end
 
 puts 'ok2'
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "current_user",
+    "data",
+    "delete",
+    "empty",
+    "encode",
+    "global",
+    "inspect",
+    "key",
+    "message"
+  ],
+  "current_user": {
+    "aim": "The `current_user` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `current_user`."
+  },
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "empty": {
+    "aim": "The `empty` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `empty`."
+  },
+  "encode": {
+    "aim": "The `encode` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `encode`."
+  },
+  "global": {
+    "aim": "The `global` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `global`."
+  },
+  "inspect": {
+    "aim": "The `inspect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `inspect`."
+  },
+  "key": {
+    "aim": "The `key` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `key`."
+  },
+  "message": {
+    "aim": "The `message` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `message`."
+  }
+}
+end

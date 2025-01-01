@@ -127,3 +127,66 @@ c.touch(true) do
 end
 
 ##############################
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "3",
+    "7",
+    "call",
+    "each",
+    "getBoundingClientRect",
+    "global",
+    "infos",
+    "particle_list",
+    "to_s",
+    "to_sym",
+    "touch"
+  ],
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "7": {
+    "aim": "The `7` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `7`."
+  },
+  "call": {
+    "aim": "The `call` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `call`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "getBoundingClientRect": {
+    "aim": "The `getBoundingClientRect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getBoundingClientRect`."
+  },
+  "global": {
+    "aim": "The `global` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `global`."
+  },
+  "infos": {
+    "aim": "The `infos` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `infos`."
+  },
+  "particle_list": {
+    "aim": "The `particle_list` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `particle_list`."
+  },
+  "to_s": {
+    "aim": "The `to_s` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_s`."
+  },
+  "to_sym": {
+    "aim": "The `to_sym` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_sym`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

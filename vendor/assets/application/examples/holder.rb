@@ -60,3 +60,41 @@ end
 
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "9",
+    "circle",
+    "holder",
+    "input",
+    "top",
+    "width"
+  ],
+  "9": {
+    "aim": "The `9` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9`."
+  },
+  "circle": {
+    "aim": "The `circle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `circle`."
+  },
+  "holder": {
+    "aim": "The `holder` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `holder`."
+  },
+  "input": {
+    "aim": "The `input` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `input`."
+  },
+  "top": {
+    "aim": "Defines the vertical position of the object in its container.",
+    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# v1.0
+
 b=box
 margin = 12
 b2=box({top: below(b, margin)})
@@ -8,20 +8,6 @@ b4=box({top: below(b3, margin)})
 box({top: below(b4, margin)})
 i=0
 
-# Global Purpose:
-# The code demonstrates Atome's capabilities to:
-# - Create complex dynamic structures: vertical stacking and horizontal alignment with repeated elements.
-# - Handle mixed units (fixed and relative) for positioning, showcasing flexibility in designing adaptive layouts.
-# - Simplify visual prototyping by using simple methods like 'below' and 'after' for consistent placement without external calculations.
-# If integrated into a demonstration or project, this code could explain these concepts to developers or test Atome's engine flexibility.
-
-def infos
-  "The code demonstrates Atome's capabilities to:\n" \
-    "- Create complex dynamic structures: vertical stacking and horizontal alignment with repeated elements.\n" \
-    "- Handle mixed units (fixed and relative) for positioning, showcasing flexibility in designing adaptive layouts.\n" \
-    "- Simplify visual prototyping by using simple methods like 'below' and 'after' for consistent placement without external calculations.\n" \
-    "If integrated into a demonstration or project, this code could explain these concepts to developers or test Atome's engine flexibility."
-end
 
 b = circle(left: 333, top: 333)
 margin = "2%"
@@ -36,4 +22,21 @@ while i < 10 do
   b = circle({top: b.top,left: after(b, margin, grab(:view))})
   # b = circle({left: :auto,right: before(b, margin, grab(:view))})
   i += 1
+end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "left",
+    "top"
+  ],
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "top": {
+    "aim": "Defines the vertical position of the object in its container.",
+    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+  }
+}
 end

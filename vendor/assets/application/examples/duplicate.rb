@@ -68,3 +68,86 @@ bb3.color(:green)
 bb2.color(:orange)
 end
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "color",
+    "delete",
+    "dup",
+    "duplicate",
+    "each",
+    "id",
+    "instance_of",
+    "instance_variable_set",
+    "keys",
+    "length",
+    "new",
+    "send",
+    "set",
+    "text",
+    "to_s"
+  ],
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "dup": {
+    "aim": "The `dup` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `dup`."
+  },
+  "duplicate": {
+    "aim": "The `duplicate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `duplicate`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "instance_of": {
+    "aim": "The `instance_of` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_of`."
+  },
+  "instance_variable_set": {
+    "aim": "The `instance_variable_set` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_variable_set`."
+  },
+  "keys": {
+    "aim": "The `keys` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `keys`."
+  },
+  "length": {
+    "aim": "The `length` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `length`."
+  },
+  "new": {
+    "aim": "The `new` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `new`."
+  },
+  "send": {
+    "aim": "The `send` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `send`."
+  },
+  "set": {
+    "aim": "The `set` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `set`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "to_s": {
+    "aim": "The `to_s` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_s`."
+  }
+}
+end

@@ -132,3 +132,71 @@ end
 
 # TODO : create an html to atome converter
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "0",
+    "class",
+    "color",
+    "com",
+    "fr",
+    "hyperedit",
+    "hypertext",
+    "left",
+    "locate",
+    "position",
+    "rotate",
+    "top"
+  ],
+  "0": {
+    "aim": "The `0` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `0`."
+  },
+  "class": {
+    "aim": "The `class` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `class`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "com": {
+    "aim": "The `com` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `com`."
+  },
+  "fr": {
+    "aim": "The `fr` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fr`."
+  },
+  "hyperedit": {
+    "aim": "The `hyperedit` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `hyperedit`."
+  },
+  "hypertext": {
+    "aim": "The `hypertext` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `hypertext`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "locate": {
+    "aim": "The `locate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `locate`."
+  },
+  "position": {
+    "aim": "The `position` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `position`."
+  },
+  "rotate": {
+    "aim": "The `rotate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `rotate`."
+  },
+  "top": {
+    "aim": "Defines the vertical position of the object in its container.",
+    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+  }
+}
+end

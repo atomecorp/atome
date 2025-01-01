@@ -21,3 +21,56 @@ c.touch(:down) do
 end
 
 text({id: :infos,left: 155, data: "number of  item fasten to the box : #{b.fasten}"})
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "box",
+    "circle",
+    "color",
+    "data",
+    "fasten",
+    "id",
+    "text",
+    "touch",
+    "unfasten"
+  ],
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "circle": {
+    "aim": "The `circle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `circle`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "fasten": {
+    "aim": "The `fasten` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fasten`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "unfasten": {
+    "aim": "The `unfasten` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `unfasten`."
+  }
+}
+end

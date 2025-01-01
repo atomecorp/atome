@@ -12,3 +12,16 @@ wait 2 do
 end
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "unit"
+  ],
+  "unit": {
+    "aim": "The `unit` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `unit`."
+  }
+}
+end

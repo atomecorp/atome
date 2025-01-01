@@ -24,3 +24,51 @@ end
 # i.fit({ value: 66, axis: :x })
 #  i.width(66)
 #  i.height(66)
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "box",
+    "circle",
+    "fit",
+    "height",
+    "image",
+    "png",
+    "text",
+    "width"
+  ],
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "circle": {
+    "aim": "The `circle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `circle`."
+  },
+  "fit": {
+    "aim": "The `fit` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fit`."
+  },
+  "height": {
+    "aim": "The `height` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `height`."
+  },
+  "image": {
+    "aim": "The `image` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `image`."
+  },
+  "png": {
+    "aim": "The `png` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `png`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

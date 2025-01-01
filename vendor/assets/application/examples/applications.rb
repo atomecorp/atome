@@ -82,3 +82,66 @@ end
 
 puts(grab(:project).inspect)
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "5",
+    "box",
+    "color",
+    "extract",
+    "fasten",
+    "insert",
+    "menu",
+    "page",
+    "pages",
+    "show",
+    "touch"
+  ],
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "extract": {
+    "aim": "The `extract` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `extract`."
+  },
+  "fasten": {
+    "aim": "The `fasten` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fasten`."
+  },
+  "insert": {
+    "aim": "The `insert` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `insert`."
+  },
+  "menu": {
+    "aim": "The `menu` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `menu`."
+  },
+  "page": {
+    "aim": "The `page` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `page`."
+  },
+  "pages": {
+    "aim": "The `pages` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `pages`."
+  },
+  "show": {
+    "aim": "The `show` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `show`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

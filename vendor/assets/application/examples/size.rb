@@ -15,3 +15,26 @@ end
 
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "box",
+    "circle",
+    "size"
+  ],
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "circle": {
+    "aim": "The `circle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `circle`."
+  },
+  "size": {
+    "aim": "The `size` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `size`."
+  }
+}
+end

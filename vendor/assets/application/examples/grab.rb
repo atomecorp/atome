@@ -12,3 +12,16 @@ a.left(33)
 wait 1 do
   grab(:my_box).top(5)
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "left"
+  ],
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  }
+}
+end

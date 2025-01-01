@@ -13,3 +13,21 @@ wait 1 do
     first_text.component({visual: 'Roboto-LightItalic'})
   end
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "add_text_visual",
+    "component"
+  ],
+  "add_text_visual": {
+    "aim": "The `add_text_visual` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `add_text_visual`."
+  },
+  "component": {
+    "aim": "The `component` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `component`."
+  }
+}
+end

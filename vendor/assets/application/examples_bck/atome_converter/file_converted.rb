@@ -1,0 +1,7 @@
+box({ id: :generated_598, color: :white, shadow: { left: 0, top: 4, blur: 8, red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1 }, smooth: 10, left: 0, top: 0, width: 100, height: 100 })
+text({ id: :generated_19, data: "Exemple de page HTML", left: 0, top: 0, width: 100, height: 100 })
+text({ id: :generated_883, data: "Voici un exemple de texte avec un style appliqué via une balise CSS.", left: 0, top: 0, width: 100, height: 100 })
+text({ id: :generated_575, data: "exemple", color: { red: 1.0, green: 0.34, blue: 0.13, alpha: 1 }, left: 0, top: 0, width: 100, height: 100 })
+box({ id: :generated_932, left: 0, top: 0, width: 100, height: 100 })
+box({ id: :generated_593, left: 0, top: 0, width: 100, height: 100 })
+box({ id: :generated_670, left: 0, top: 0, width: 100, height: 100 })

@@ -42,3 +42,81 @@ end
 # # # FIXME : on touch code above crash but works with wait
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "4",
+    "5",
+    "apply",
+    "blur",
+    "box",
+    "collect",
+    "color",
+    "id",
+    "image",
+    "left",
+    "png",
+    "rotate",
+    "shape",
+    "top"
+  ],
+  "4": {
+    "aim": "The `4` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `4`."
+  },
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "apply": {
+    "aim": "The `apply` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `apply`."
+  },
+  "blur": {
+    "aim": "The `blur` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `blur`."
+  },
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "collect": {
+    "aim": "The `collect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `collect`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "image": {
+    "aim": "The `image` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `image`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "png": {
+    "aim": "The `png` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `png`."
+  },
+  "rotate": {
+    "aim": "The `rotate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `rotate`."
+  },
+  "shape": {
+    "aim": "The `shape` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shape`."
+  },
+  "top": {
+    "aim": "Defines the vertical position of the object in its container.",
+    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+  }
+}
+end

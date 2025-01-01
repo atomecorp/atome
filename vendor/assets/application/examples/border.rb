@@ -79,3 +79,61 @@ bb.touch(true) do
     col.green(1)
   end
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "5",
+    "apply",
+    "atomes",
+    "border",
+    "color",
+    "green",
+    "remove",
+    "shadow",
+    "text",
+    "touch"
+  ],
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "apply": {
+    "aim": "The `apply` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `apply`."
+  },
+  "atomes": {
+    "aim": "The `atomes` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `atomes`."
+  },
+  "border": {
+    "aim": "The `border` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `border`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "green": {
+    "aim": "The `green` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `green`."
+  },
+  "remove": {
+    "aim": "The `remove` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `remove`."
+  },
+  "shadow": {
+    "aim": "The `shadow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shadow`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

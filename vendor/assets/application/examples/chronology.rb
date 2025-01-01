@@ -83,3 +83,96 @@ end
 
 
 chronology({})
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "DataSet",
+    "Timeline",
+    "add",
+    "end",
+    "eval",
+    "get",
+    "getDate",
+    "getElementById",
+    "id",
+    "item",
+    "items",
+    "log",
+    "on",
+    "setDate",
+    "start",
+    "toISOString",
+    "update"
+  ],
+  "DataSet": {
+    "aim": "The `DataSet` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `DataSet`."
+  },
+  "Timeline": {
+    "aim": "The `Timeline` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `Timeline`."
+  },
+  "add": {
+    "aim": "The `add` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `add`."
+  },
+  "end": {
+    "aim": "The `end` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `end`."
+  },
+  "eval": {
+    "aim": "The `eval` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `eval`."
+  },
+  "get": {
+    "aim": "The `get` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `get`."
+  },
+  "getDate": {
+    "aim": "The `getDate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getDate`."
+  },
+  "getElementById": {
+    "aim": "The `getElementById` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getElementById`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "item": {
+    "aim": "The `item` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `item`."
+  },
+  "items": {
+    "aim": "The `items` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `items`."
+  },
+  "log": {
+    "aim": "The `log` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `log`."
+  },
+  "on": {
+    "aim": "The `on` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `on`."
+  },
+  "setDate": {
+    "aim": "The `setDate` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `setDate`."
+  },
+  "start": {
+    "aim": "The `start` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `start`."
+  },
+  "toISOString": {
+    "aim": "The `toISOString` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `toISOString`."
+  },
+  "update": {
+    "aim": "The `update` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `update`."
+  }
+}
+end

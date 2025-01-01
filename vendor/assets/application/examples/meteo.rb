@@ -6,3 +6,16 @@ b.meteo('chamalieres') do |params|
   puts params
 end
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "meteo"
+  ],
+  "meteo": {
+    "aim": "The `meteo` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `meteo`."
+  }
+}
+end

@@ -207,3 +207,300 @@ const audio = document.getElementById('audio');
 			audio.currentTime = newTime;
 		}
 JS
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "0",
+    "3",
+    "AudioContext",
+    "abs",
+    "addEventListener",
+    "arrayBuffer",
+    "beginPath",
+    "box",
+    "classList",
+    "clearRect",
+    "click",
+    "clientWidth",
+    "clientX",
+    "connect",
+    "createAnalyser",
+    "createMediaElementSource",
+    "createObjectURL",
+    "currentTime",
+    "dataTransfer",
+    "decodeAudioData",
+    "destination",
+    "draw",
+    "duration",
+    "error",
+    "eval",
+    "fftSize",
+    "fillRect",
+    "fillStyle",
+    "floor",
+    "frequencyBinCount",
+    "getBoundingClientRect",
+    "getByteTimeDomainData",
+    "getChannelData",
+    "getContext",
+    "getElementById",
+    "height",
+    "left",
+    "length",
+    "lineTo",
+    "lineWidth",
+    "log",
+    "m4a",
+    "max",
+    "moveTo",
+    "pause",
+    "play",
+    "preventDefault",
+    "push",
+    "resume",
+    "src",
+    "state",
+    "stroke",
+    "strokeStyle",
+    "style",
+    "target",
+    "type",
+    "webkitAudioContext",
+    "width"
+  ],
+  "0": {
+    "aim": "The `0` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `0`."
+  },
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "AudioContext": {
+    "aim": "The `AudioContext` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `AudioContext`."
+  },
+  "abs": {
+    "aim": "The `abs` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `abs`."
+  },
+  "addEventListener": {
+    "aim": "The `addEventListener` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `addEventListener`."
+  },
+  "arrayBuffer": {
+    "aim": "The `arrayBuffer` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `arrayBuffer`."
+  },
+  "beginPath": {
+    "aim": "The `beginPath` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `beginPath`."
+  },
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "classList": {
+    "aim": "The `classList` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `classList`."
+  },
+  "clearRect": {
+    "aim": "The `clearRect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `clearRect`."
+  },
+  "click": {
+    "aim": "The `click` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `click`."
+  },
+  "clientWidth": {
+    "aim": "The `clientWidth` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `clientWidth`."
+  },
+  "clientX": {
+    "aim": "The `clientX` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `clientX`."
+  },
+  "connect": {
+    "aim": "The `connect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `connect`."
+  },
+  "createAnalyser": {
+    "aim": "The `createAnalyser` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `createAnalyser`."
+  },
+  "createMediaElementSource": {
+    "aim": "The `createMediaElementSource` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `createMediaElementSource`."
+  },
+  "createObjectURL": {
+    "aim": "The `createObjectURL` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `createObjectURL`."
+  },
+  "currentTime": {
+    "aim": "The `currentTime` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `currentTime`."
+  },
+  "dataTransfer": {
+    "aim": "The `dataTransfer` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `dataTransfer`."
+  },
+  "decodeAudioData": {
+    "aim": "The `decodeAudioData` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `decodeAudioData`."
+  },
+  "destination": {
+    "aim": "The `destination` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `destination`."
+  },
+  "draw": {
+    "aim": "The `draw` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `draw`."
+  },
+  "duration": {
+    "aim": "The `duration` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `duration`."
+  },
+  "error": {
+    "aim": "The `error` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `error`."
+  },
+  "eval": {
+    "aim": "The `eval` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `eval`."
+  },
+  "fftSize": {
+    "aim": "The `fftSize` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fftSize`."
+  },
+  "fillRect": {
+    "aim": "The `fillRect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fillRect`."
+  },
+  "fillStyle": {
+    "aim": "The `fillStyle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fillStyle`."
+  },
+  "floor": {
+    "aim": "The `floor` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `floor`."
+  },
+  "frequencyBinCount": {
+    "aim": "The `frequencyBinCount` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `frequencyBinCount`."
+  },
+  "getBoundingClientRect": {
+    "aim": "The `getBoundingClientRect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getBoundingClientRect`."
+  },
+  "getByteTimeDomainData": {
+    "aim": "The `getByteTimeDomainData` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getByteTimeDomainData`."
+  },
+  "getChannelData": {
+    "aim": "The `getChannelData` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getChannelData`."
+  },
+  "getContext": {
+    "aim": "The `getContext` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getContext`."
+  },
+  "getElementById": {
+    "aim": "The `getElementById` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getElementById`."
+  },
+  "height": {
+    "aim": "The `height` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `height`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "length": {
+    "aim": "The `length` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `length`."
+  },
+  "lineTo": {
+    "aim": "The `lineTo` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `lineTo`."
+  },
+  "lineWidth": {
+    "aim": "The `lineWidth` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `lineWidth`."
+  },
+  "log": {
+    "aim": "The `log` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `log`."
+  },
+  "m4a": {
+    "aim": "The `m4a` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `m4a`."
+  },
+  "max": {
+    "aim": "The `max` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `max`."
+  },
+  "moveTo": {
+    "aim": "The `moveTo` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `moveTo`."
+  },
+  "pause": {
+    "aim": "The `pause` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `pause`."
+  },
+  "play": {
+    "aim": "The `play` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `play`."
+  },
+  "preventDefault": {
+    "aim": "The `preventDefault` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `preventDefault`."
+  },
+  "push": {
+    "aim": "The `push` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `push`."
+  },
+  "resume": {
+    "aim": "The `resume` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `resume`."
+  },
+  "src": {
+    "aim": "The `src` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `src`."
+  },
+  "state": {
+    "aim": "The `state` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `state`."
+  },
+  "stroke": {
+    "aim": "The `stroke` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `stroke`."
+  },
+  "strokeStyle": {
+    "aim": "The `strokeStyle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `strokeStyle`."
+  },
+  "style": {
+    "aim": "The `style` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `style`."
+  },
+  "target": {
+    "aim": "The `target` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `target`."
+  },
+  "type": {
+    "aim": "The `type` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `type`."
+  },
+  "webkitAudioContext": {
+    "aim": "The `webkitAudioContext` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `webkitAudioContext`."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

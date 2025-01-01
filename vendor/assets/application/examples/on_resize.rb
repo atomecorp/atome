@@ -19,3 +19,20 @@ c.touch(true) do
     puts "Now size is : #{event}"
   end
 end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "on",
+    "touch"
+  ],
+  "on": {
+    "aim": "The `on` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `on`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

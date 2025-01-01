@@ -60,3 +60,50 @@ end
 #   b.smooth(9)
 #   b.refresh
 # end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "id",
+    "instance_variable_set",
+    "path",
+    "png",
+    "refresh",
+    "smooth",
+    "touch",
+    "type"
+  ],
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "instance_variable_set": {
+    "aim": "The `instance_variable_set` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_variable_set`."
+  },
+  "path": {
+    "aim": "The `path` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `path`."
+  },
+  "png": {
+    "aim": "The `png` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `png`."
+  },
+  "refresh": {
+    "aim": "The `refresh` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `refresh`."
+  },
+  "smooth": {
+    "aim": "Applies smooth transitions or rounded edges to an object.",
+    "usage": "Use `smooth(20)` to apply a smooth transition or corner rounding of 20 pixels."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "type": {
+    "aim": "The `type` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `type`."
+  }
+}
+end

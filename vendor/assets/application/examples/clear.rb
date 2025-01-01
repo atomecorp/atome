@@ -94,3 +94,60 @@ end
 # A = Atome.new(
 #   { renderers: default_render, id: :atome, type: :element, tag: { system: true }, attach: [], fasten: [] }
 # )
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "15",
+    "4",
+    "5",
+    "6",
+    "9",
+    "current_machine",
+    "delete",
+    "left",
+    "new",
+    "set_current_user"
+  ],
+  "15": {
+    "aim": "The `15` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `15`."
+  },
+  "4": {
+    "aim": "The `4` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `4`."
+  },
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "6": {
+    "aim": "The `6` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `6`."
+  },
+  "9": {
+    "aim": "The `9` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9`."
+  },
+  "current_machine": {
+    "aim": "The `current_machine` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `current_machine`."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "new": {
+    "aim": "The `new` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `new`."
+  },
+  "set_current_user": {
+    "aim": "The `set_current_user` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `set_current_user`."
+  }
+}
+end

@@ -23,3 +23,26 @@ c.touch(true) do
   {} #must add an empty hash else events events method will interpret keys of the hash and send a missing method errors
 end
 #
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "message",
+    "rb",
+    "touch"
+  ],
+  "message": {
+    "aim": "The `message` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `message`."
+  },
+  "rb": {
+    "aim": "The `rb` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `rb`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

@@ -23,3 +23,36 @@ t.touch(true) do
     end
   end
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "copy",
+    "each",
+    "id",
+    "paste",
+    "touch"
+  ],
+  "copy": {
+    "aim": "The `copy` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `copy`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "paste": {
+    "aim": "The `paste` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `paste`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

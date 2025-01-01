@@ -31,3 +31,30 @@ end
 importer('the_boxy') do |val|
   puts "yes !!! exception found : #{val}"
 end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "3",
+    "7",
+    "import",
+    "shadow"
+  ],
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "7": {
+    "aim": "The `7` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `7`."
+  },
+  "import": {
+    "aim": "The `import` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `import`."
+  },
+  "shadow": {
+    "aim": "The `shadow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shadow`."
+  }
+}
+end

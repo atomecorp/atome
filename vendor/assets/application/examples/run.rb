@@ -15,3 +15,21 @@ end
 b.run(exec_code)
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "color",
+    "run"
+  ],
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "run": {
+    "aim": "The `run` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `run`."
+  }
+}
+end

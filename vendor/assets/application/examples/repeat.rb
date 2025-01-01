@@ -31,3 +31,25 @@ cc.touch(true) do
 end
 
 # use Float::INFINITY to infinite repeat
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "data",
+    "text",
+    "touch"
+  ],
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

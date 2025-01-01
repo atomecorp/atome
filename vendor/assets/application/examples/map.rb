@@ -40,3 +40,46 @@ end
 # alert m.longitude
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "987687",
+    "9876876",
+    "location",
+    "longitude",
+    "pan",
+    "touch",
+    "zoom"
+  ],
+  "987687": {
+    "aim": "The `987687` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `987687`."
+  },
+  "9876876": {
+    "aim": "The `9876876` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9876876`."
+  },
+  "location": {
+    "aim": "The `location` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `location`."
+  },
+  "longitude": {
+    "aim": "The `longitude` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `longitude`."
+  },
+  "pan": {
+    "aim": "The `pan` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `pan`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "zoom": {
+    "aim": "The `zoom` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `zoom`."
+  }
+}
+end

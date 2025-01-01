@@ -11,3 +11,25 @@ b.box
 atome_founds = c.dig
 puts "dig allow to retrieve all fasten atomes recursively,
 it return a table of ID including the ID of the parent (here : :the_circle) :\n#{atome_founds}"
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "box",
+    "circle",
+    "dig"
+  ],
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "circle": {
+    "aim": "The `circle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `circle`."
+  },
+  "dig": {
+    "aim": "The `dig` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `dig`."
+  }
+}
+end

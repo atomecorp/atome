@@ -326,3 +326,85 @@ circle({left: 333,top: 333, id: :c2})
 #   apply_tool(:rotate, grab(c2.id), )
 #
 # end
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "5",
+    "collect",
+    "color",
+    "current_user",
+    "descendant_of",
+    "drag",
+    "each",
+    "id",
+    "include",
+    "init_intuition",
+    "selection",
+    "text",
+    "tools_root",
+    "touch",
+    "width"
+  ],
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "collect": {
+    "aim": "The `collect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `collect`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "current_user": {
+    "aim": "The `current_user` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `current_user`."
+  },
+  "descendant_of": {
+    "aim": "The `descendant_of` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `descendant_of`."
+  },
+  "drag": {
+    "aim": "The `drag` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `drag`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "include": {
+    "aim": "The `include` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `include`."
+  },
+  "init_intuition": {
+    "aim": "The `init_intuition` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `init_intuition`."
+  },
+  "selection": {
+    "aim": "The `selection` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `selection`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "tools_root": {
+    "aim": "The `tools_root` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `tools_root`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

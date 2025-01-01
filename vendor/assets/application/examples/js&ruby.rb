@@ -16,3 +16,35 @@ end
 
 
 "js code is in  js/atome/atome.js"
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "eval",
+    "global",
+    "js",
+    "to_s",
+    "to_sym"
+  ],
+  "eval": {
+    "aim": "The `eval` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `eval`."
+  },
+  "global": {
+    "aim": "The `global` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `global`."
+  },
+  "js": {
+    "aim": "The `js` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `js`."
+  },
+  "to_s": {
+    "aim": "The `to_s` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_s`."
+  },
+  "to_sym": {
+    "aim": "The `to_sym` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_sym`."
+  }
+}
+end

@@ -162,3 +162,141 @@ end
 
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "3",
+    "4",
+    "atomes",
+    "box",
+    "build",
+    "circle",
+    "class",
+    "color",
+    "data",
+    "delete",
+    "display",
+    "each",
+    "each_with_index",
+    "html",
+    "id",
+    "instance_of",
+    "keyboard",
+    "left",
+    "on",
+    "preventDefault",
+    "resize",
+    "sort",
+    "style",
+    "text",
+    "touch",
+    "visible"
+  ],
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "4": {
+    "aim": "The `4` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `4`."
+  },
+  "atomes": {
+    "aim": "The `atomes` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `atomes`."
+  },
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "build": {
+    "aim": "The `build` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `build`."
+  },
+  "circle": {
+    "aim": "The `circle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `circle`."
+  },
+  "class": {
+    "aim": "The `class` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `class`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "display": {
+    "aim": "The `display` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `display`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "each_with_index": {
+    "aim": "The `each_with_index` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each_with_index`."
+  },
+  "html": {
+    "aim": "The `html` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `html`."
+  },
+  "id": {
+    "aim": "The `id` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `id`."
+  },
+  "instance_of": {
+    "aim": "The `instance_of` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `instance_of`."
+  },
+  "keyboard": {
+    "aim": "The `keyboard` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `keyboard`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "on": {
+    "aim": "The `on` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `on`."
+  },
+  "preventDefault": {
+    "aim": "The `preventDefault` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `preventDefault`."
+  },
+  "resize": {
+    "aim": "The `resize` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `resize`."
+  },
+  "sort": {
+    "aim": "The `sort` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `sort`."
+  },
+  "style": {
+    "aim": "The `style` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `style`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "visible": {
+    "aim": "The `visible` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `visible`."
+  }
+}
+end

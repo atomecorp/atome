@@ -54,3 +54,66 @@ end
 
 # image({ path: "./medias/images/logos/vie.svg", left: :auto, right: 3, top: 0 , size: 30})
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "collect",
+    "color",
+    "current_user",
+    "default_selection_style",
+    "each",
+    "height",
+    "png",
+    "selected",
+    "svg",
+    "touch",
+    "width"
+  ],
+  "collect": {
+    "aim": "The `collect` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `collect`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "current_user": {
+    "aim": "The `current_user` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `current_user`."
+  },
+  "default_selection_style": {
+    "aim": "The `default_selection_style` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `default_selection_style`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "height": {
+    "aim": "The `height` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `height`."
+  },
+  "png": {
+    "aim": "The `png` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `png`."
+  },
+  "selected": {
+    "aim": "The `selected` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `selected`."
+  },
+  "svg": {
+    "aim": "The `svg` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `svg`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end

@@ -163,3 +163,141 @@ cbc.touch(true) do
   JS.eval(recogniction_code)
 
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "__TAURI__",
+    "error",
+    "eval",
+    "getElementById",
+    "interimResults",
+    "lang",
+    "listen",
+    "log",
+    "maxAlternatives",
+    "message",
+    "onend",
+    "onerror",
+    "onresult",
+    "onstart",
+    "payload",
+    "playSnare",
+    "results",
+    "snare",
+    "speak",
+    "speechSynthesis",
+    "start",
+    "stop",
+    "text",
+    "touch",
+    "trigger",
+    "wav"
+  ],
+  "__TAURI__": {
+    "aim": "The `__TAURI__` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `__TAURI__`."
+  },
+  "error": {
+    "aim": "The `error` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `error`."
+  },
+  "eval": {
+    "aim": "The `eval` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `eval`."
+  },
+  "getElementById": {
+    "aim": "The `getElementById` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getElementById`."
+  },
+  "interimResults": {
+    "aim": "The `interimResults` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `interimResults`."
+  },
+  "lang": {
+    "aim": "The `lang` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `lang`."
+  },
+  "listen": {
+    "aim": "The `listen` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `listen`."
+  },
+  "log": {
+    "aim": "The `log` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `log`."
+  },
+  "maxAlternatives": {
+    "aim": "The `maxAlternatives` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `maxAlternatives`."
+  },
+  "message": {
+    "aim": "The `message` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `message`."
+  },
+  "onend": {
+    "aim": "The `onend` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `onend`."
+  },
+  "onerror": {
+    "aim": "The `onerror` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `onerror`."
+  },
+  "onresult": {
+    "aim": "The `onresult` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `onresult`."
+  },
+  "onstart": {
+    "aim": "The `onstart` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `onstart`."
+  },
+  "payload": {
+    "aim": "The `payload` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `payload`."
+  },
+  "playSnare": {
+    "aim": "The `playSnare` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `playSnare`."
+  },
+  "results": {
+    "aim": "The `results` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `results`."
+  },
+  "snare": {
+    "aim": "The `snare` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `snare`."
+  },
+  "speak": {
+    "aim": "The `speak` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `speak`."
+  },
+  "speechSynthesis": {
+    "aim": "The `speechSynthesis` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `speechSynthesis`."
+  },
+  "start": {
+    "aim": "The `start` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `start`."
+  },
+  "stop": {
+    "aim": "The `stop` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `stop`."
+  },
+  "text": {
+    "aim": "The `text` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `text`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "trigger": {
+    "aim": "The `trigger` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `trigger`."
+  },
+  "wav": {
+    "aim": "The `wav` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `wav`."
+  }
+}
+end

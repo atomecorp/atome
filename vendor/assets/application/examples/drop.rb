@@ -34,3 +34,21 @@ t.touch(true) do
   dragged.drop({ remove: :enter })
 end
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "drop",
+    "touch"
+  ],
+  "drop": {
+    "aim": "The `drop` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `drop`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

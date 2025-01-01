@@ -74,3 +74,56 @@ end
 
 
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "border",
+    "box",
+    "color",
+    "fusion",
+    "get",
+    "insert",
+    "remove",
+    "sort",
+    "touch"
+  ],
+  "border": {
+    "aim": "The `border` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `border`."
+  },
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "fusion": {
+    "aim": "The `fusion` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fusion`."
+  },
+  "get": {
+    "aim": "The `get` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `get`."
+  },
+  "insert": {
+    "aim": "The `insert` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `insert`."
+  },
+  "remove": {
+    "aim": "The `remove` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `remove`."
+  },
+  "sort": {
+    "aim": "The `sort` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `sort`."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  }
+}
+end

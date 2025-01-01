@@ -32,3 +32,141 @@ wait 1 do
   end
 end
 
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "1",
+    "1L694",
+    "2",
+    "2c",
+    "3",
+    "3l",
+    "4",
+    "4L687",
+    "5",
+    "5L431",
+    "6",
+    "7",
+    "8",
+    "8c",
+    "8l423",
+    "9",
+    "9L256",
+    "9c",
+    "9c3",
+    "9s",
+    "9z",
+    "color",
+    "component",
+    "data",
+    "left",
+    "shadow"
+  ],
+  "1": {
+    "aim": "The `1` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `1`."
+  },
+  "1L694": {
+    "aim": "The `1L694` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `1L694`."
+  },
+  "2": {
+    "aim": "The `2` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `2`."
+  },
+  "2c": {
+    "aim": "The `2c` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `2c`."
+  },
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "3l": {
+    "aim": "The `3l` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3l`."
+  },
+  "4": {
+    "aim": "The `4` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `4`."
+  },
+  "4L687": {
+    "aim": "The `4L687` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `4L687`."
+  },
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "5L431": {
+    "aim": "The `5L431` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5L431`."
+  },
+  "6": {
+    "aim": "The `6` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `6`."
+  },
+  "7": {
+    "aim": "The `7` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `7`."
+  },
+  "8": {
+    "aim": "The `8` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `8`."
+  },
+  "8c": {
+    "aim": "The `8c` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `8c`."
+  },
+  "8l423": {
+    "aim": "The `8l423` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `8l423`."
+  },
+  "9": {
+    "aim": "The `9` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9`."
+  },
+  "9L256": {
+    "aim": "The `9L256` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9L256`."
+  },
+  "9c": {
+    "aim": "The `9c` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9c`."
+  },
+  "9c3": {
+    "aim": "The `9c3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9c3`."
+  },
+  "9s": {
+    "aim": "The `9s` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9s`."
+  },
+  "9z": {
+    "aim": "The `9z` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `9z`."
+  },
+  "color": {
+    "aim": "Sets or modifies the color of the object.",
+    "usage": "For example, `color(:red)` changes the object's color to red."
+  },
+  "component": {
+    "aim": "The `component` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `component`."
+  },
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "shadow": {
+    "aim": "The `shadow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shadow`."
+  }
+}
+end

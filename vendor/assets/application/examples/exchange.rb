@@ -15,3 +15,21 @@ a = b.box({ color: :green, left: 33, id: :box, shadow: {
 wait 2 do
   a.exchange({ color: :red, top: 33})
 end
+
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "box",
+    "exchange"
+  ],
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "exchange": {
+    "aim": "The `exchange` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `exchange`."
+  }
+}
+end

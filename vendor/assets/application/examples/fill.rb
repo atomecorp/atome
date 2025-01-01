@@ -21,3 +21,40 @@ wait 1 do
 end
 
 b.drag(true)
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "3",
+    "drag",
+    "fill",
+    "overflow",
+    "png",
+    "svg"
+  ],
+  "3": {
+    "aim": "The `3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `3`."
+  },
+  "drag": {
+    "aim": "The `drag` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `drag`."
+  },
+  "fill": {
+    "aim": "The `fill` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fill`."
+  },
+  "overflow": {
+    "aim": "The `overflow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `overflow`."
+  },
+  "png": {
+    "aim": "The `png` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `png`."
+  },
+  "svg": {
+    "aim": "The `svg` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `svg`."
+  }
+}
+end

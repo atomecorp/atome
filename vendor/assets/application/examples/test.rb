@@ -15,3 +15,13 @@ wait 2 do
   grab(:testing).data
 end
 
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": []
+}
+end
+
+########## new tests
+
+puts Universe.apis

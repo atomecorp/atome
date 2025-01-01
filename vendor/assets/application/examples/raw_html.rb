@@ -46,3 +46,25 @@ STR
 
 
 raw({ id: :the_raw_stuff, data: raw_data })
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "5",
+    "w3",
+    "youtube"
+  ],
+  "5": {
+    "aim": "The `5` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `5`."
+  },
+  "w3": {
+    "aim": "The `w3` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `w3`."
+  },
+  "youtube": {
+    "aim": "The `youtube` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `youtube`."
+  }
+}
+end

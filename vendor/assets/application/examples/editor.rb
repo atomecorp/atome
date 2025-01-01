@@ -137,3 +137,155 @@ end
 #
 # box(id: :mon_carre, width: 300, height: 300)
 alert "pseudo element and trigger absctrator"
+def api_infos
+  {
+  "example": "Purpose of the example",
+  "methods_found": [
+    "6",
+    "CodeMirrorInstance",
+    "atome_list",
+    "box",
+    "circle",
+    "data",
+    "delete",
+    "display",
+    "drag",
+    "each",
+    "editor",
+    "eval",
+    "fromTextArea",
+    "getElementById",
+    "getValue",
+    "getWrapperElement",
+    "height",
+    "left",
+    "particle_list",
+    "resize",
+    "setValue",
+    "shadow",
+    "to_f",
+    "to_px",
+    "to_s",
+    "top",
+    "touch",
+    "user_atomes",
+    "width"
+  ],
+  "6": {
+    "aim": "The `6` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `6`."
+  },
+  "CodeMirrorInstance": {
+    "aim": "The `CodeMirrorInstance` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `CodeMirrorInstance`."
+  },
+  "atome_list": {
+    "aim": "The `atome_list` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `atome_list`."
+  },
+  "box": {
+    "aim": "The `box` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `box`."
+  },
+  "circle": {
+    "aim": "The `circle` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `circle`."
+  },
+  "data": {
+    "aim": "The `data` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `data`."
+  },
+  "delete": {
+    "aim": "The `delete` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `delete`."
+  },
+  "display": {
+    "aim": "The `display` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `display`."
+  },
+  "drag": {
+    "aim": "The `drag` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `drag`."
+  },
+  "each": {
+    "aim": "The `each` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `each`."
+  },
+  "editor": {
+    "aim": "The `editor` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `editor`."
+  },
+  "eval": {
+    "aim": "The `eval` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `eval`."
+  },
+  "fromTextArea": {
+    "aim": "The `fromTextArea` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `fromTextArea`."
+  },
+  "getElementById": {
+    "aim": "The `getElementById` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getElementById`."
+  },
+  "getValue": {
+    "aim": "The `getValue` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getValue`."
+  },
+  "getWrapperElement": {
+    "aim": "The `getWrapperElement` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `getWrapperElement`."
+  },
+  "height": {
+    "aim": "The `height` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `height`."
+  },
+  "left": {
+    "aim": "Controls the horizontal position of the object within its container.",
+    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+  },
+  "particle_list": {
+    "aim": "The `particle_list` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `particle_list`."
+  },
+  "resize": {
+    "aim": "The `resize` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `resize`."
+  },
+  "setValue": {
+    "aim": "The `setValue` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `setValue`."
+  },
+  "shadow": {
+    "aim": "The `shadow` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `shadow`."
+  },
+  "to_f": {
+    "aim": "The `to_f` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_f`."
+  },
+  "to_px": {
+    "aim": "The `to_px` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_px`."
+  },
+  "to_s": {
+    "aim": "The `to_s` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `to_s`."
+  },
+  "top": {
+    "aim": "Defines the vertical position of the object in its container.",
+    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+  },
+  "touch": {
+    "aim": "Handles touch or click events to trigger specific actions.",
+    "usage": "Example: `touch(:tap) do ... end` triggers an action when tapped."
+  },
+  "user_atomes": {
+    "aim": "The `user_atomes` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `user_atomes`."
+  },
+  "width": {
+    "aim": "The `width` method's purpose is determined by its specific functionality.",
+    "usage": "Refer to Atome documentation for detailed usage of `width`."
+  }
+}
+end
