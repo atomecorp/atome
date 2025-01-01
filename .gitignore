@@ -12,3 +12,4 @@
 *.idea
 /lib/eVe/
 /vendor/assets/application/examples/aXionwithkey.rb
+/vendor/assets/application/examples_bck/aXionwithkey.rb
