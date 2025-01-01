@@ -24,4 +24,7 @@ end
 
 ########## new tests
 
-puts Universe.apis
+# puts Universe.particle_list
+# puts Universe.atome_list
+# puts Universe.molecule_list
+

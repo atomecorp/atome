@@ -128,10 +128,10 @@
 # require './works/photos'
 # require './works/photos6'
 # require './test'
-# require './examples/test'
+require './examples/test'
 #
 #### works
-require "./examples/link"
+# require "./examples/link"
 # require "./examples/svg_vectorizer"
 # require "./examples/holder"
 # require "./examples/input"

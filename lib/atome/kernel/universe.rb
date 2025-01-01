@@ -266,5 +266,11 @@ class Universe
     def story
       @history
     end
+
+    def apis
+      data=<<STR
+apis list here ...
+STR
+    end
   end
 end
