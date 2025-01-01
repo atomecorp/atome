@@ -28,7 +28,7 @@ class Universe
   @allow_tool_operations = false
   @active_tools = []
   @preset_list = []
-  @translation={}
+  @translation = {}
   @default_selection_style = { border: { thickness: 1, red: 1, green: 0, blue: 0, alpha: 1, pattern: :dotted } }
   @applicable_atomes = %i[color shadow border paint animation]
   # @historicize=false
@@ -268,9 +268,7 @@ class Universe
     end
 
     def apis
-      data=<<STR
-apis list here ...
-STR
+      "work in progress, take a look at vendor/assets/src/medias/utils/"
     end
   end
 end
