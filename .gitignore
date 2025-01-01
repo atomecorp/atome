@@ -11,3 +11,4 @@
 *.ds_store
 *.idea
 /lib/eVe/
+/vendor/assets/application/examples/aXionwithkey.rb
