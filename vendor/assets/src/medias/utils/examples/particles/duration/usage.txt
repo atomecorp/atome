@@ -1,0 +1,1 @@
+The purpose of the duration object could not be inferred.

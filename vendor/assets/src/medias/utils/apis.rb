@@ -943,10 +943,3 @@ example={
     },
   },
 }
-
-require 'json'
-
-json = example.to_json
-puts json.class
-hash = JSON.parse(json)
-puts hash.class

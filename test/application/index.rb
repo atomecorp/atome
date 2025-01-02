@@ -129,6 +129,8 @@
 # require './works/photos6'
 # require './test'
 require './examples/test'
+
+# require '/src/medias/utils/examples/particles/align/example.rb'
 #
 #### works
 # require "./examples/link"

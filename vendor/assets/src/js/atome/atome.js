@@ -81,17 +81,17 @@ async function terminal(atome_id, cmd) {
 }
 
 
-function distant_terminal(id, cmd) {
-
-    let myd_data_test = 'Terminal particle will soon be implemented when using  a non native mode\nYou can switch to OSX to test';
-    let call_back_to_send = `grab(:${id}).store_ruby_callback({terminal: "${myd_data_test}"})`
-    let call = `grab(:${id}).read_ruby_callback(:terminal)`
-    atomeJsToRuby(call_back_to_send)
-    atomeJsToRuby(call)
-
-    // let call = `grab(:${id}).read_ruby_callback(:terminal)`
-    // atomeJsToRuby(call)
-}
+// function distant_terminal(id, cmd) {
+//
+//     let myd_data_test = 'Terminal particle will soon be implemented when using  a non native mode\nYou can switch to OSX to test';
+//     let call_back_to_send = `grab(:${id}).store_ruby_callback({terminal: "${myd_data_test}"})`
+//     let call = `grab(:${id}).read_ruby_callback(:terminal)`
+//     atomeJsToRuby(call_back_to_send)
+//     atomeJsToRuby(call)
+//
+//     // let call = `grab(:${id}).read_ruby_callback(:terminal)`
+//     // atomeJsToRuby(call)
+// }
 
 
 // we check if we are in tauri context

@@ -43,8 +43,8 @@ class EDen
     end
 
     def terminal(data, message_id, ws)
-      puts "terminal message  test : #{data}"
-      { data: { message: `#{data}` }, message_id: message_id }
+      return_string = `#{data}`
+      { data: return_string, message_id: message_id }
     end
 
     def metadata(msg, pid, message_id, ws)
@@ -254,26 +254,23 @@ class EDen
       source = data['source']
       value = data['value']
 
-      # Vérifie si le fichier existe pour les opérations nécessitant sa présence (par exemple : read)
+      # Check if the file exists for operations requiring its presence (e.g., read)      if %w[read delete].include?(operation) && !File.exist?(source)
       if %w[read delete].include?(operation) && !File.exist?(source)
         return { data: "file not found: #{source}", message_id: message_id }
       end
 
-      # Exécute l'opération demandée
+      # run the task
       begin
         file_content = File.send(operation, source, value).to_s
-
-        # Traitement du contenu pour éviter des caractères problématiques
+        # Process the content to avoid problematic characters
         file_content = file_content.gsub("'", "\"")
         file_content = file_content.gsub('#', '\x23')
-
-        # Retourne les détails de l'opération
-        # { data: "=> operation: #{operation}, source: #{source}, content: #{file_content}", message_id: message_id }
+        # return operation details
         escaped_content = JSON.dump(file_content)
         { data: escaped_content, message_id: message_id }
 
       rescue StandardError => e
-        # Gestion des erreurs (par exemple : permissions, opération invalide)
+        # Error handling (example : permissions, operation not possible)
         { data: "error during operation: #{operation}, source: #{source}, error: #{e.message}", message_id: message_id }
       end
     end

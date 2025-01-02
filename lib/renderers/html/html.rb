@@ -1688,13 +1688,27 @@ class HTML
     JS.eval('return navigator.onLine')
   end
 
+
+
   def terminal(id, cmd)
     if Atome.host == 'tauri'
       JS.eval("terminal('#{id}','#{cmd}')")
     else
-      JS.eval("distant_terminal('#{id}','#{cmd}')")
+      # JS.eval("distant_terminal('#{id}','#{cmd}')")
+      A.message({data: cmd, action: :terminal}) do |result|
+        proc_found= @original_atome.terminal_code[:terminal]
+        string_found = result[:data]
+        string_found=string_found.gsub('\x23', '#')
+        converted_string = string_found.gsub(/<<(\w+)\n(.*?)\n\1/m) do
+          marker = $1
+          content = $2
+          "\"#{content.gsub(/\n/, '\\n')}\"" # Escapes newlines for JavaScript compatibility
+        end
+        proc_found.call(converted_string) if proc_found.is_a?(Proc)
+      end
     end
   end
+
 
   def read(id, file)
     if Atome.host == 'tauri'
@@ -1702,9 +1716,14 @@ class HTML
     else
       A.message({data: {source: file,operation: :read  }, action: :file}) do |result|
         proc_found= @original_atome.instance_variable_get('@read_code')[:read]
-        # puts result[:data]
-        proc_found.call(result[:data].gsub('\x23', '#')) if proc_found.is_a?(Proc)
-        # return "file read encoded_content: #{result[:data].gsub('\x23', '#')}"
+        string_found = JSON.parse(result[:data])
+        string_found=string_found.gsub('\x23', '#')
+        converted_string = string_found.gsub(/<<(\w+)\n(.*?)\n\1/m) do
+          marker = $1
+          content = $2
+          "\"#{content.gsub(/\n/, '\\n')}\"" # Escapes newlines for JavaScript compatibility
+        end
+        proc_found.call(converted_string) if proc_found.is_a?(Proc)
       end
     end
   end

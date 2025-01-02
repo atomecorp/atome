@@ -1,0 +1,1 @@
+The purpose of the latitude object could not be inferred.
