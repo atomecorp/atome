@@ -263,11 +263,20 @@ class EDen
       begin
         file_content = File.send(operation, source, value).to_s
         # Process the content to avoid problematic characters
-        file_content = file_content.gsub("'", "\"")
+        # file_content = file_content.gsub("'", "\"")
         file_content = file_content.gsub('#', '\x23')
-        # return operation details
-        escaped_content = JSON.dump(file_content)
-        { data: escaped_content, message_id: message_id }
+        # file_content = file_content
+        #                     .gsub('#', '\x23' )      # Remplace \x23 par #
+        #                     .gsub( '"','\u0022')    # Remplace \u0022 par "
+        #                     .gsub('&', '\u0026')    # Remplace \u0026 par &
+        #                     .gsub('<', '\u003C')    # Remplace \u003C par <
+        #                     .gsub( '>', '\u003E')    # Remplace \u003E par >
+
+        file_content = JSON.dump(file_content)
+        # file_content= unescape_unicode(file_content)
+        #file_content = JSON.generate(file_content)
+        # puts "msg from eDen ligne 278 *********** #{file_content}"
+        { data: file_content, message_id: message_id }
 
       rescue StandardError => e
         # Error handling (example : permissions, operation not possible)
