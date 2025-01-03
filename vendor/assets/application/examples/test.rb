@@ -31,12 +31,19 @@ atome_object_list = {
 
   ################ code to develop #######################
 
-# def repair_syntax(input)
-#   # input
-#   #   .gsub(/(\w+)"s/, '\1\'s')  # Corrige les "method"s en method's
-#   #   .gsub(/"([^"]*?)"([^"]*?):/, '"\1\2":')  # Répare les guillemets mal formés dans les clés
-#   input
-# end
+def determine_action(file_content)
+  default_action = { open: true, execute: false }
+  action = default_action.dup
+
+  if file_content.lines.first =~ /#\s*\{BROWSER:\s*\{(.*?)\}\}/
+    content = $1.split(',').map { |pair| pair.split(':').map(&:strip) }.to_h
+    content.each do |key, value|
+      action[key.to_sym] = value == 'true'
+    end
+  end
+
+  action
+end
 
   @path = ''
   @filer = grab(:intuition).box({ id: :filer,
@@ -104,16 +111,13 @@ atome_object_list = {
     v = grab(:view)
     v.terminal("cd #{base_path}  && ls -p | grep -v /") do |data|
       data.each_line do |file|
-        # puts "-----"
-        # puts file
-        # puts "--- ok ---"
         file = file.strip
         next if file.empty?
 
         parts = file.split("/")
 
         parts.each_with_index do |part, index|
-          next if part.empty? # Ignorer les parties vides
+          next if part.empty?
           file_path = "#{base_path}/#{file}"
           #FIXME check in the code whywe need to do that
           file_path=file_path.gsub("//", "/")
@@ -127,19 +131,50 @@ atome_object_list = {
                       }).touch(:tap) do
             # ############### cest la
             grab(:view).clear(true)
-            # alert file_path
             A.read(file_path) do |file_data|
-            #   puts "0000"
-            #   puts "1 : #{file_data}"
-            #   # file_data=  repair_syntax(file_data)
-            #   # puts @a == file_data
-            #   # puts @a
-            #   puts file_data
-            #   # file_data=file_data.gsub('#{','\#{')
 
+              actions=    determine_action(file_data)
+              if actions[:open] ==true
 
-            eval(file_data)
-            #   text data: "file content:\n#{file_data}", top: 9, left: 3
+                editor=box({left: 150,
+                            top: 9,
+                            width: 399,
+                            height: 699,
+                            color: {red: 0.07, green: 0.07, blue: 0.07, alpha: 1.0},
+                            overflow: :auto,
+                            drag: true,
+                            resize: true,
+                           })
+
+                # file title :
+                editor.text({data: file, top: 0, left: 6, color: :orange})
+                # file close
+                close=editor.circle({color: :yellowgreen, left: :auto,right: 6, top: 9, width: 15, height: 15})
+                close.text({data: :x, top: 0, left: 3, color: :black, position: :absolute})
+                close.touch(:tap) do
+                  editor.delete(true)
+                end
+                #file save
+                save=editor.circle({color: :orange, left: :auto,right: 33, top: 9, width: 15, height: 15})
+                save.touch(:tap) do
+                  alert :save_file
+                end
+                # file body :
+                body = editor.text({top: 39,left: 6, color: :lightgrey, data: file_data, edit: true})
+              end
+
+              # file exec if .rb :
+              if file.end_with?('.rb')
+                exec=editor.circle({color: :red, left: :auto,right: 66, top: 9, width: 15, height: 15})
+                exec.touch(:tap) do
+                  eval( body.data)
+                end
+              end
+
+              if actions[:execute] ==true
+                eval(file_data)
+              end
+            #
             end
           end
 
