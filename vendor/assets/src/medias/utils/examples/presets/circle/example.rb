@@ -1,1 +1,1 @@
-circle({left: 120, top: 120, color: :orange})
+circle({left: 120, top: 90, color: :orange})
