@@ -21,6 +21,9 @@ end
 new({ renderer: :html, method: :read, type: :string }) do |value, &bloc|
   html.read(id, value)
 end
+new({ renderer: :html, method: :write, type: :string }) do |value, &bloc|
+  html.write(id, value)
+end
 
 new({ renderer: :html, method: :browse, type: :string }) do |value, &bloc|
   html.browse(id, value)

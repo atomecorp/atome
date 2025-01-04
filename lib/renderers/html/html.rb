@@ -1728,6 +1728,25 @@ class HTML
     end
   end
 
+  def write(id, file)
+    if Atome.host == 'tauri'
+      alert 'code to write'
+      JS.eval("writeFile('#{id}','#{file}')")
+    else
+      A.message({data: {source: file,operation: :write  }, action: :file}) do |result|
+        proc_found= @original_atome.instance_variable_get('@write_code')[:write]
+        string_found = JSON.parse(result[:data])
+        string_found=string_found.gsub('\x23', '#')
+        converted_string = string_found.gsub(/<<(\w+)\n(.*?)\n\1/m) do
+          marker = $1
+          content = $2
+          "\"#{content.gsub(/\n/, '\\n')}\"" # Escapes newlines for JavaScript compatibility
+        end
+        proc_found.call(converted_string) if proc_found.is_a?(Proc)
+      end
+    end
+  end
+
   def browse(id, file)
     if Atome.host == 'tauri'
       JS.eval("browseFile('#{id}','#{file}')")

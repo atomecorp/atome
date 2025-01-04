@@ -23,6 +23,8 @@ class Atome
     end
 
     def server_receiver(params)
+
+      puts "on est ici : #{params}"
       callback_found = Universe.messages[params[:message_id]]
       callback_found.call(params) if callback_found.is_a? Proc
     end
@@ -209,7 +211,6 @@ class Atome
   end
 
   def blocks(params)
-    # alert 'blocks case'
 
     blocks = params.delete(:blocks)
     distribute = params.delete(:distribute)
@@ -479,10 +480,6 @@ class Atome
 
   def read_ruby_callback(element)
     puts "dunno what this method is about ?? method call :#{element}"
-    # alert id
-    # puts "2 ===> #{element} !!!"
-    # alert  send("terminal_callback").inspect
-    # alert  send("#{element}_callback")
   end
 
   # this method generate the method accessible for end developers
@@ -544,7 +541,6 @@ class Atome
   #   #     apply(col)
   #   #   end
   #   # end
-  #   # alert id_found
   #   # grab(attach_found).fasten(id_found)
   #   data(data_found)
   #
@@ -601,7 +597,6 @@ class Atome
   end
 
   # def detach_atome(atome_id_to_detach)
-  #   alert :uuu
   #   atome_to_detach = grab(atome_id_to_detach)
   #   # TODO: remove the condition below and find why it try to detach an atome that doesn't exist
   #   nil unless atome_to_detach

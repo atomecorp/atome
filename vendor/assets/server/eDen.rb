@@ -240,38 +240,73 @@ class EDen
       end
     end
 
-    # def file(data, message_id, ws)
-    #
-    #   file_content = File.send(data['operation'], data['source'], data['value']).to_s
-    #   file_content = file_content.gsub("'", "\"")
-    #
-    #   file_content = file_content.gsub('#', '\x23')
-    #   { data: "=> operation: #{data['operation']}, source: #{data['source']}, content: #{file_content}", message_id: message_id }
-    #
-    # end
     def file(data, message_id, ws)
       operation = data['operation']
       source = data['source']
       value = data['value']
 
-      # Check if the file exists for operations requiring its presence (e.g., read)      if %w[read delete].include?(operation) && !File.exist?(source)
+      # Vérification si le fichier existe pour certaines opérations
       if %w[read delete].include?(operation) && !File.exist?(source)
         return { data: "file not found: #{source}", message_id: message_id }
       end
 
-      # run the task
+      # Exécution de l'opération
       begin
-        file_content = File.send(operation, source, value).to_s
-        # Process the content to avoid problematic characters
-        # file_content = file_content.gsub('#', '\x23')
+        file_content = case operation
+                       when 'read'
+                         File.read(source)
+                       when 'write'
+                         # puts "source is :#{source}, #{source[:name]}, #{source[:content]}"
+                         File.write(source['name'], source['content'])
+                         # File.write('poillll.txt', 'kjhkjhkjdfgsdg hkjhkjh')
+                         'write successful'
+                       when 'delete'
+                         File.delete(source)
+                         'delete successful'
+                       else
+                         'unsupported operation'
+                       end
+
+        # Traitement du contenu pour éviter les caractères problématiques
+        file_content = file_content.gsub('#', '\x23')
         file_content = JSON.dump(file_content)
+
         { data: file_content, message_id: message_id }
 
       rescue StandardError => e
-        # Error handling (example : permissions, operation not possible)
+        # Gestion des erreurs (ex : permissions, opération non réalisable)
         { data: "error during operation: #{operation}, source: #{source}, error: #{e.message}", message_id: message_id }
       end
     end
+    # def file(data, message_id, ws)
+    #   operation = data['operation']
+    #   source = data['source']
+    #   value = data['value']
+    #
+    #   # Check if the file exists for operations requiring its presence (e.g., read)
+    #   #  if %w[read delete].include?(operation) && !File.exist?(source)
+    #   if %w[read delete].include?(operation) && !File.exist?(source)
+    #     return { data: "file not found: #{source}", message_id: message_id }
+    #   end
+    #
+    #   if %w[write].include?(operation) #&& File.exist?(source)
+    #     puts '##########\n'*21
+    #     return { data: :ok, message_id: message_id }
+    #   end
+    #
+    #   # run the task
+    #   begin
+    #     file_content = File.send(operation, source, value).to_s
+    #     # Process the content to avoid problematic characters
+    #     file_content = file_content.gsub('#', '\x23')
+    #     file_content = JSON.dump(file_content)
+    #     { data: file_content, message_id: message_id }
+    #
+    #   rescue StandardError => e
+    #     # Error handling (example : permissions, operation not possible)
+    #     { data: "error during operation: #{operation}, source: #{source}, error: #{e.message}", message_id: message_id }
+    #   end
+    # end
 
     def safe_send(method_name, data, message_id, ws)
       method_sym = method_name.to_sym

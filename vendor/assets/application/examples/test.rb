@@ -32,7 +32,36 @@ atome_object_list = {
 ################ code to develop #######################
 A.browser("../src/medias/utils/examples")
 ########################################################
-#
+b = box
+b.touch(true) do
+  A.read('capture.rb') do |data|
+    text "file content  :\n #{data}"
+  end
+
+  A.write({name: './my file.txt', content: "my texte is ...."}) do |data|
+    text "file content  :\n #{data}"
+  end
+  # A.read('/Users/jean-ericgodard/RubymineProjects/atome/tmp/test/server/atome_server.rb') do |file_content|
+  #   # alert file_content
+  #   # text "file content  :\n #{file_content}"
+  # end
+
+  # A.terminal('pwd') do |data|
+  #   text "terminal response  :\n #{data}"
+  #   path_f=data.chomp+'/atome_server.rb'
+  #   alert  path_f
+  #
+  #
+  # end
+  # # A.terminal('ls') do |data|
+  # #   text "terminal response  :\n #{data}"
+  # # end
+  # # A.read('./atome_server.rb') do |data|
+  # #   alert data
+  # #   text "file content  :\n #{data}"
+  # # end
+end
+
 # class EFile
 #   def self.open(*args)
 #     puts "=======> File Custom open called with arguments: #{args.inspect}"
@@ -44,23 +73,31 @@ A.browser("../src/medias/utils/examples")
 #   end
 # end
 #
-# class EPol
-#   def self.open(*args)
-#     puts "=======> EPol File Custom open called with arguments: #{args.inspect}"
-#     # new  # Retourne une instance de AFile
+# def send_dir_to_server(var)
+#   puts "===> Sending directory to server: #{var}"
+#   # Simule une réponse du serveur avec une liste de fichiers
+#   ['file1.txt', 'file2.rb', 'file3.md']
+# end
+#
+# class EDir
+#   def self.foreach(path)
+#     files = send_dir_to_server(path) # Appel au serveur pour récupérer la liste des fichiers
+#     files.each do |file|
+#       yield file if block_given?
+#     end
 #   end
 #
 #   def method_missing(name, *args, &block)
-#     puts "=======> EPol File Method '#{name}' called with arguments: #{args.inspect}"
+#     send_dir_to_server(name)
 #   end
 # end
 #
 # #
 # # # Écriture dans un fichier
 # #
-# # File.open(“exemple.txt”, “w”) do |f|
-# #   f.puts "hello world"
-# # end
+# EFile.open(“index.rb”, “w”) do |f|
+#   f.puts "hello world"
+# end
 # #
 # # # Lister les fichiers d’un dossier
 # #
@@ -70,9 +107,9 @@ A.browser("../src/medias/utils/examples")
 # # # Parcourir les fichiers d’un dossier
 #
 #
-# EPol.foreach('./') do |f|
-#   puts f unless EFile.directory?("./#{f}")
-# end
+# # EDir.foreach('./') do |f|
+# #   puts f unless EFile.directory?("./#{f}")
+# # end
 #
 #
 #
@@ -80,11 +117,13 @@ A.browser("../src/medias/utils/examples")
 # # contenu = fichier.read
 # # puts contenu
 # # fichier.close
-#
-#
-#
-#
-#
-#
-#
+
+
+
+
+
+
+
+
+
 

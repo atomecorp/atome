@@ -87,7 +87,6 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
       end
     elsif params[:force]
       fasten.each do |atttached_atomes|
-        # alert "fasten : #{fasten}"
         delete_recursive(atttached_atomes, true)
       end
       touch(false)
@@ -168,6 +167,8 @@ new({ particle: :hypertext, category: :utility, type: :string })
 new({ particle: :hyperedit, category: :utility, type: :string })
 new({ particle: :terminal, category: :utility, type: :string })
 new({ particle: :read, category: :utility, type: :string })
+new({ particle: :write, category: :utility, type: :hash })
+new({ particle: :content, category: :utility, type: :string })
 new({ particle: :browse, category: :utility, type: :string })
 new({ particle: :copies, category: :utility, type: :string })
 new({ particle: :temporary, category: :utility, type: :int })

@@ -77,8 +77,14 @@ const communication = {
             // rubyVM.eval("A.user_login");
         };
         this.websocket.onmessage = function (event) {
-            // console.log(event.data)
-            rubyVM.eval("Atome.server_receiver(" + event.data + ")");
+            console.log("maybe sanitize here : "+event.data)
+            try {
+                // const sanitizedData = JSON.stringify(event.data);
+                rubyVM.eval(`Atome.server_receiver(${event.data})`);
+            } catch (error) {
+                console.error("Error in rubyVM.eval:", error);
+            }
+            // rubyVM.eval("Atome.server_receiver(" + event.data + ")");
         };
 
         this.websocket.onclose = function (event) {
