@@ -967,7 +967,7 @@ STRR
                 exec = editor.circle({ color: :red, left: :auto, right: 66, top: 9, width: 15, height: 15 })
                 exec.touch(:tap) do
                   grab(:view).clear(true)
-                  grab(:view).eval(body.data)
+                  grab(:view).instance_eval(body.data)
                 end
               end
 

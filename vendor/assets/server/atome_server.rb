@@ -35,7 +35,8 @@ class App < Roda
           ws.send({ return: 'server ready' }.to_json)
         end
         ws.on(:message) do |event|
-          json_string = event.data.gsub(/(\w+):/) { "\"#{$1}\":" }.gsub('=>', ':')
+          json_string = event.data
+          # json_string = json_string.gsub(/(\w+):/) { "\"#{$1}\":" }.gsub('=>', ':')
           full_data = JSON.parse(json_string)
           data = full_data['data']
           action_requested = full_data['action']
