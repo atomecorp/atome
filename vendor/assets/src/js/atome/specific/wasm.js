@@ -29,30 +29,6 @@ function loadApplicationJs() {
 // })
 
 const communication = {
-    // websocket: null,// websocket init  for server
-    // initialize: function () {
-    //     this.websocket = new WebSocket('ws://localhost:9292')
-    //     // this.websocket = new WebSocket(address);
-    //
-    //     this.websocket.onopen = function (event) {
-    //         rubyVM.eval("puts 'Connected to WebSocket'")
-    //     };
-    //
-    //     this.websocket.onmessage = function (event) {
-    //         rubyVM.eval('message', "('" + event.data + "')")
-    //     };
-    //
-    //     this.websocket.onclose = function (event) {
-    //         rubyVM.eval("puts 'WebSocket closed'")
-    //
-    //     };
-    //
-    //     this.websocket.onerror = function (event) {
-    //         // to prevent error disturbing the console
-    //         event.preventDefault();
-    //         console.log('connection lost!')
-    //     };
-    // },// Controller for native core
     controller_sender: function (msg) {
         let json_msg = JSON.parse(msg);
 

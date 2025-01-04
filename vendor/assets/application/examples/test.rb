@@ -30,13 +30,61 @@ atome_object_list = {
 }
 
 ################ code to develop #######################
-
-
 A.browser("../src/medias/utils/examples")
-#######################################
-
-
-
-
-
+########################################################
+#
+# class EFile
+#   def self.open(*args)
+#     puts "=======> File Custom open called with arguments: #{args.inspect}"
+#     # new  # Retourne une instance de AFile
+#   end
+#
+#   def method_missing(name, *args, &block)
+#     puts "=======> File Method '#{name}' called with arguments: #{args.inspect}"
+#   end
+# end
+#
+# class EPol
+#   def self.open(*args)
+#     puts "=======> EPol File Custom open called with arguments: #{args.inspect}"
+#     # new  # Retourne une instance de AFile
+#   end
+#
+#   def method_missing(name, *args, &block)
+#     puts "=======> EPol File Method '#{name}' called with arguments: #{args.inspect}"
+#   end
+# end
+#
+# #
+# # # Écriture dans un fichier
+# #
+# # File.open(“exemple.txt”, “w”) do |f|
+# #   f.puts "hello world"
+# # end
+# #
+# # # Lister les fichiers d’un dossier
+# #
+# # dossier = “chemin_du_dossier”
+# # fichiers = Dir.entries(dossier).select { |f| File.file?(File.join(dossier, f)) }
+# #
+# # # Parcourir les fichiers d’un dossier
+#
+#
+# EPol.foreach('./') do |f|
+#   puts f unless EFile.directory?("./#{f}")
+# end
+#
+#
+#
+# fichier = EFile.open("index.rb","r")
+# # contenu = fichier.read
+# # puts contenu
+# # fichier.close
+#
+#
+#
+#
+#
+#
+#
 
