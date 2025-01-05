@@ -128,8 +128,8 @@
 # require './works/photos'
 # require './works/photos6'
 # require './test'
-# require './examples/test'
-require './examples/read_write_terminal'
+require './examples/test'
+# require './examples/read_write_terminal'
 # require './examples/terminal'
 
 # require '/src/medias/utils/examples/particles/align/example.rb'

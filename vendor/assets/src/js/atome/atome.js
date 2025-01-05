@@ -25,7 +25,7 @@ async function callback(callback_method, cmd) {
 //read file
 
 
-async function readFile(atome_id, filePath, filecontent) {
+async function readFile(atome_id, filePath, _file_content) {
     let fileContent;
     try {
         fileContent = await window.__TAURI__.core.invoke('read_file', { filePath: filePath });
@@ -54,12 +54,14 @@ async function writeFile(atome_id, filePath, content) {
 
 // almost works
 async function browseFile(atome_id, directoryPath) {
+
     let directoryContent;
     try {
         directoryContent = await window.__TAURI__.core.invoke('list_directory_content', { directoryPath: directoryPath });
     } catch (error) {
         directoryContent = error;
     }
+    console.log('browseFile say  : '+directoryContent)
 
 // Affiche le contenu ou l'erreur
     atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ browse: '" + directoryContent + "' })");
@@ -83,6 +85,31 @@ async function changeCurrentDirectory(atome_id, newPath) {
 
 // Terminal
 
+// async function terminal(atome_id, cmd) {
+//
+//     let cmd_result;
+//     try {
+//         const command = cmd;
+//         let response;
+//         response = await window.__TAURI__.core.invoke('execute_command', { command });
+//         cmd_result = response;
+//     } catch (error) {
+//         cmd_result = error;
+//     }
+//
+// // Vérification si cmd_result est une chaîne avant d'appeler replace
+//     if (typeof cmd_result === "string") {
+//         cmd_result = cmd_result.replace(/\r?\n/g, "");
+//     } else {
+//         console.error("Command execution failed or result is not a string:", cmd_result);
+//     }
+//     console.log('terminal say  : '+cmd_result)
+//
+//     atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ terminal: '" + cmd_result + "' })");
+//     atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:terminal)");
+//
+// }
+
 async function terminal(atome_id, cmd) {
     let cmd_result;
     try {
@@ -94,19 +121,9 @@ async function terminal(atome_id, cmd) {
         cmd_result = error;
     }
 
-// Vérification si cmd_result est une chaîne avant d'appeler replace
-    if (typeof cmd_result === "string") {
-        cmd_result = cmd_result.replace(/\r?\n/g, "");
-    } else {
-        console.error("Command execution failed or result is not a string:", cmd_result);
-    }
-
     atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ terminal: '" + cmd_result + "' })");
     atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:terminal)");
-
 }
-
-
 
 function createSvgElement(tagName, attributes) {
     var elem = document.createElementNS('http://www.w3.org/2000/svg', tagName);

@@ -32,11 +32,9 @@ fn execute_command(command: &str) -> Result<String, String> {
 fn read_file(file_path: &str) -> Result<String, String> {
     let content = match fs::read_to_string(file_path) {
         Ok(content) => {
-//             println!("File content: {}", content); // Envoi à la console du terminal
             content
         }
         Err(_) => {
-//             println!("Error: file not found"); // Envoi à la console du terminal
             return Err("Failed to read file.".to_string());
         }
     };
