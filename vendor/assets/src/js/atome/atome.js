@@ -32,7 +32,6 @@ async function readFile(atome_id, filePath, filecontent) {
     } catch (error) {
         fileContent = error;
     }
-    console.log("msg from async function readFile ===> " + fileContent + " filePath : " + filePath);
     atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ read: '" + fileContent + "' })");
     atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:read)");
 }

@@ -448,26 +448,48 @@ class Atome
   # new({callback: :shell}) do |params, bloc|
   # # write what you want …
   # end
-  def particle_callback(element)
-    Atome.define_method("#{element}_callback") do |return_params|
-      # we test if instance_variable_get("@#{element}_code") is a hash for the can se the particle value is a hash
-      proc_found = if instance_variable_get("@#{element}_code").instance_of? Hash
-                     # Then we get the first item of the hash because the proc is fasten to it
-                     instance_variable_get("@#{element}_code").values.first
-                     # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
-                   else
-                     instance_variable_get("@#{element}_code")[element]
-                     # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
-                   end
-      # array_of_proc_found.each do |proc_found|
-      proc_found.call(return_params) if proc_found.is_a? Proc
-      # end if array_of_proc_found
+  # def particle_callback(element=nil)
+  #   if element
+  #     Atome.define_method("#{element}_callback") do |return_params|
+  #       # we test if instance_variable_get("@#{element}_code") is a hash for the can se the particle value is a hash
+  #       proc_found = if instance_variable_get("@#{element}_code").instance_of? Hash
+  #                      # Then we get the first item of the hash because the proc is fasten to it
+  #                      instance_variable_get("@#{element}_code").values.first
+  #                      # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
+  #                    else
+  #                      instance_variable_get("@#{element}_code")[element]
+  #                      # instance_exec(@callback[element], proc_found)if proc_found.is_a? Proc
+  #                    end
+  #       # array_of_proc_found.each do |proc_found|
+  #       proc_found.call(return_params) if proc_found.is_a? Proc
+  #       # end if array_of_proc_found
+  #
+  #       # if array_of_proc_found
+  #       #   proc_found= array_of_proc_found.shift
+  #       #   proc_found.call(return_params) if proc_found.is_a? Proc
+  #       # end
+  #
+  #     end
+  #   end
+  #
+  # end
 
-      # if array_of_proc_found
-      #   proc_found= array_of_proc_found.shift
-      #   proc_found.call(return_params) if proc_found.is_a? Proc
-      # end
-
+  def particle_callback(element = nil)
+    if element
+      Atome.define_method("#{element}_callback") do |return_params = nil|
+        if return_params
+          proc_found = if instance_variable_get("@#{element}_code").instance_of? Hash
+                         instance_variable_get("@#{element}_code").values.first
+                       else
+                         instance_variable_get("@#{element}_code")[element]
+                       end
+          proc_found.call(return_params) if proc_found.is_a? Proc
+        else
+          puts "Warning: #{element}_callback called without return_params"
+        end
+      end
+    else
+      puts "Warning: particle_callback called without element"
     end
   end
 
