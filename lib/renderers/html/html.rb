@@ -1729,9 +1729,9 @@ class HTML
   end
 
   def write(id, file)
+
     if Atome.host == 'tauri'
-      alert 'code to write'
-      JS.eval("writeFile('#{id}','#{file}')")
+      JS.eval("writeFile('#{id}','#{file[:name]}','#{file[:content]}')")
     else
       A.message({data: {source: file,operation: :write  }, action: :file}) do |result|
         proc_found= @original_atome.instance_variable_get('@write_code')[:write]

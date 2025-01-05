@@ -1,9 +1,10 @@
 use std::process::Command;
 use std::str;
 use std::fs;
-
+use std::io::Write;
 #[cfg(debug_assertions)]
 use tauri::Manager; // Import Manager only in dev mode
+// use tauri::Emitter; // Import mandatory to use window.emit
 
 mod midi;
 
@@ -25,24 +26,38 @@ fn execute_command(command: &str) -> Result<String, String> {
     }
 }
 
+
+
 #[tauri::command]
 fn read_file(file_path: &str) -> Result<String, String> {
     let content = match fs::read_to_string(file_path) {
-        Ok(content) => content,
-        Err(_) => return Err("Failed to read file.".to_string()),
+        Ok(content) => {
+//             println!("File content: {}", content); // Envoi à la console du terminal
+            content
+        }
+        Err(_) => {
+//             println!("Error: file not found"); // Envoi à la console du terminal
+            return Err("Failed to read file.".to_string());
+        }
     };
     Ok(content)
 }
 
+
+
 #[tauri::command]
-fn write_file(file_path: &str, content: &str) -> Result<(), String> {
-    let path = std::path::Path::new(file_path);
-    match fs::write(path, content) {
-        Ok(_) => Ok(()),
-        Err(_) => Err("Failed to write to the file.".to_string()),
+fn write_file(file_path: String, content: String) -> Result<String, String> {
+    match fs::File::create(&file_path) {
+        Ok(mut file) => {
+            if file.write_all(content.as_bytes()).is_ok() {
+                Ok("file recorded".to_string())
+            } else {
+                Err("error: file not recorded".to_string())
+            }
+        }
+        Err(_) => Err("error: file not recorded".to_string()),
     }
 }
-
 #[tauri::command]
 fn list_directory_content(directory_path: String) -> Result<Vec<String>, String> {
     let path = std::path::Path::new(&directory_path);

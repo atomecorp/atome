@@ -321,7 +321,7 @@ task :test_osx do
   # build atome kernel
   build_atome_kernel_for_opal(source, destination, project_name)
   # build host_mode
-  build_host_mode(destination, project_name, 'web-opal')
+  build_host_mode(destination, project_name, 'tauri')
   # build Opal extensions
   build_opal_extensions(source, destination, project_name)
   # build application

@@ -1,5 +1,9 @@
 const atomeJS = Object.assign(communication, File);
 
+// allow tauri to write messages in the console
+window.__TAURI__.event.listen("log-to-console", (event) => {
+    console.log(event.payload); // Affiche le message reçu dans la console
+});
 // generic callback method
 
 
@@ -21,17 +25,31 @@ async function callback(callback_method, cmd) {
 //read file
 
 
-async function readFile(atome_id, filePath) {
+async function readFile(atome_id, filePath, filecontent) {
     let fileContent;
     try {
-        fileContent = await window.__TAURI__.invoke('read_file', {filePath: filePath});
+        fileContent = await window.__TAURI__.core.invoke('read_file', { filePath: filePath });
     } catch (error) {
         fileContent = error;
     }
+    console.log("msg from async function readFile ===> " + fileContent + " filePath : " + filePath);
     atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ read: '" + fileContent + "' })");
     atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:read)");
 }
 
+
+async function writeFile(atome_id, filePath, content) {
+
+    let fileContent;
+    try {
+        fileContent = await window.__TAURI__.core.invoke('write_file', { filePath: filePath, content: content });
+    } catch (error) {
+        fileContent = error;
+    }
+
+    atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ write: '" + fileContent + "' })");
+    atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:write)");
+}
 
 // list folder
 
@@ -39,10 +57,12 @@ async function readFile(atome_id, filePath) {
 async function browseFile(atome_id, directoryPath) {
     let directoryContent;
     try {
-        directoryContent = await window.__TAURI__.invoke('list_directory_content', {directoryPath: directoryPath});
+        directoryContent = await window.__TAURI__.core.invoke('list_directory_content', { directoryPath: directoryPath });
     } catch (error) {
         directoryContent = error;
     }
+
+// Affiche le contenu ou l'erreur
     atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ browse: '" + directoryContent + "' })");
     atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:browse)");
 }
@@ -53,11 +73,12 @@ async function browseFile(atome_id, directoryPath) {
 async function changeCurrentDirectory(atome_id, newPath) {
     let result;
     try {
-        // Utilisez Tauri pour changer le répertoire de travail courant
-        result = await window.__TAURI__.invoke('change_dir', {path: newPath});
+        // Utilise Tauri pour changer le répertoire de travail courant
+        result = await window.__TAURI__.core.invoke('change_dir', {path: newPath});
     } catch (error) {
         result = error;
     }
+   return result
 }
 
 
@@ -68,12 +89,18 @@ async function terminal(atome_id, cmd) {
     try {
         const command = cmd;
         let response;
-        response = await window.__TAURI__.invoke('execute_command', {command});
+        response = await window.__TAURI__.core.invoke('execute_command', { command });
         cmd_result = response;
     } catch (error) {
         cmd_result = error;
     }
-    cmd_result = cmd_result.replace(/\r?\n/g, "");
+
+// Vérification si cmd_result est une chaîne avant d'appeler replace
+    if (typeof cmd_result === "string") {
+        cmd_result = cmd_result.replace(/\r?\n/g, "");
+    } else {
+        console.error("Command execution failed or result is not a string:", cmd_result);
+    }
 
     atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ terminal: '" + cmd_result + "' })");
     atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:terminal)");
@@ -81,66 +108,6 @@ async function terminal(atome_id, cmd) {
 }
 
 
-// function distant_terminal(id, cmd) {
-//
-//     let myd_data_test = 'Terminal particle will soon be implemented when using  a non native mode\nYou can switch to OSX to test';
-//     let call_back_to_send = `grab(:${id}).store_ruby_callback({terminal: "${myd_data_test}"})`
-//     let call = `grab(:${id}).read_ruby_callback(:terminal)`
-//     atomeJsToRuby(call_back_to_send)
-//     atomeJsToRuby(call)
-//
-//     // let call = `grab(:${id}).read_ruby_callback(:terminal)`
-//     // atomeJsToRuby(call)
-// }
-
-
-// we check if we are in tauri context
-// if (typeof window.__TAURI__ !== 'undefined') {
-//     callExecuteCommand('pwd');
-//
-// } else {
-// }
-
-
-// 'ls -l'
-
-
-//read/write
-//
-// // Créer un fichier
-// async function createAndWriteFile(filePath, contentToWrite) {
-//     try {
-//         await window.__TAURI__.invoke('write_file', {
-//             file_path: filePath,
-//             content: contentToWrite
-//         });
-//         console.log('File written successfully.');
-//     } catch (error) {
-//         console.error('Error writing to file:', error);
-//     }
-// }
-//
-// // Lire un fichier
-// async function readAndDisplayFile(filePath) {
-//     try {
-//         const fileContent = await window.__TAURI__.invoke('read_file', {
-//             file_path: filePath
-//         });
-//         console.log('File content:', fileContent);
-//     } catch (error) {
-//         console.error('Error reading file:', error);
-//     }
-// }
-//
-// // Utiliser les fonctions pour créer et lire le fichier
-// const filePath = 'example.txt'; // Remplacez ceci par le chemin du fichier souhaité
-// const contentToWrite = 'This is some content to write to the file.';
-//
-// // Créer un fichier avec le contenu
-// createAndWriteFile(filePath, contentToWrite);
-//
-// // Lire le fichier
-// readAndDisplayFile(filePath);
 
 function createSvgElement(tagName, attributes) {
     var elem = document.createElementNS('http://www.w3.org/2000/svg', tagName);
@@ -151,33 +118,6 @@ function createSvgElement(tagName, attributes) {
     }
     return elem;
 }
-
-//
-// function sanitizeString(str) {
-//     return str.replace(/'/g, "\\'");
-// }
-// function fileread(){
-//     var inputElement = document.createElement("input");
-//     inputElement.type = "file";
-//
-//     inputElement.addEventListener("change", function(event) {
-//         var file = event.target.files[0];
-//         var reader = new FileReader();
-//
-//         reader.onload = function(event) {
-//             var content = event.target.result;
-//             var sanitizedContent = sanitizeString(content);
-//             atomeJsToRuby("input_callback('"+sanitizedContent+"')");
-//         };
-//
-//         reader.readAsText(file);
-//     });
-//
-// // Ajout de l'élément input à la div
-//     var viewDiv = document.querySelector("#support");
-//     viewDiv.appendChild(inputElement);
-// }
-
 
 function fileForOpal(parent, bloc) {
     let input = document.createElement('input');
@@ -224,21 +164,6 @@ function fileForOpal(parent, bloc) {
 
 function loadFeature() {
     if (NativeMode) {
-        // fetch('js/molecules/web.js')
-        //     .then(response => {
-        //         if (response.ok) {
-        //             return response.text();
-        //         }
-        //         throw new Error('Le chargement du fichier a échoué');
-        //     })
-        //     .then(data => {
-        //         // console.log(data);
-        //         eval(data);
-        //         // you can use file content as you want
-        //     })
-        //     .catch(error => {
-        //         console.error('Erreur lors du chargement du fichier:', error);
-        //     });
         fetch('js/molecules/web.js')
             .then(response => {
                 if (response.ok) {
@@ -259,9 +184,6 @@ function loadFeature() {
     } else {
         var script = document.createElement('script');
         script.src = 'js/molecules/web.js?' + new Date().getTime();
-        // script.onload = function () {
-        //     // Code to use loaded features
-        // };
 
         document.head.appendChild(script);
     }

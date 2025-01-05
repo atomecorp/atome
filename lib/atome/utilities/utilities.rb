@@ -479,7 +479,8 @@ class Atome
   end
 
   def read_ruby_callback(element)
-    puts "dunno what this method is about ?? method call :#{element}"
+    # methode used by tauri when there's acallback
+    send("#{element}_callback")
   end
 
   # this method generate the method accessible for end developers
