@@ -291,13 +291,14 @@ task :opal_server_rebuild do
 end
 
 task :test_wasm_osx do
-  # TODO : change index.html to make it works!!!
+  FileUtils.cp('./vendor/assets/src/index_bck_wasm_tauri.html', './vendor/assets/src/index.html')
   project_name = :test
   source = '.'
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
   host_mode = 'tauri'
+
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
@@ -307,10 +308,12 @@ task :test_wasm_osx do
 end
 
 task :test_osx do
+  FileUtils.cp('./vendor/assets/src/index_bck_opal_tauri.html', './vendor/assets/src/index.html')
   project_name = :test
   source = '.'
   destination = './tmp'
   script_source = './test/application'
+
   create_application(source, destination, project_name)
   # the line below is to add addition script to the application folder (useful for test per example)
   add_to_application_folder(script_source, destination, project_name)
@@ -330,6 +333,7 @@ task :test_osx do
   puts 'atome osx is running'
 end
 task :test_ios do
+  FileUtils.cp('./vendor/assets/src/index_bck_opal_tauri.html', './vendor/assets/src/index.html')
   project_name = :test
   source = '.'
   destination = './tmp'
@@ -355,7 +359,7 @@ task :test_ios do
 end
 
 task :test_wasm_ios do
-  #TODO : change index.html to make it works!!!
+  FileUtils.cp('./vendor/assets/src/index_bck_wasm_tauri.html', './vendor/assets/src/index.html')
   project_name = :test
   source = '.'
   destination = './tmp'
