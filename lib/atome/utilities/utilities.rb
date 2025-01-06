@@ -520,6 +520,26 @@ class Atome
   # def callback(data)
   #   @callback[data.keys[0]] = data[data.keys[0]]
   # end
+  def delete_with_callback(&callback)
+    check_interval = 0.05 # Intervalle de vérification en secondes
+
+    check_completion = proc do
+      # Vérifie si les opérations de rendu sont terminées (tu peux affiner la condition si nécessaire)
+      operations_completed = true # Supposition : opération immédiate pour l'instant
+
+      if operations_completed
+        # Supprimer l’atome de l’univers
+        Universe.delete(@aid)
+        # callback.call if callback # Appeler le callback s’il est défini
+      else
+        # Relancer la vérification après un délai
+        wait(check_interval) { check_completion.call }
+      end
+    end
+
+    # Démarrer la vérification
+    check_completion.call
+  end
 
   def particles(particles_found = nil)
     if particles_found

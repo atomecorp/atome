@@ -56,7 +56,6 @@ wait 2 do
   grab(:vie_0_background).drag(true)
 end
 matrix_to_treat.touch(:down) do |event|
-  # alert el.inspect
   current_cell= grab(event[:target][:id].to_s)
   current_cell.color(:blue)
   current_cell.selected(true)
@@ -75,10 +74,15 @@ main_matrix.display(false)
     wait 1 do
       main_matrix.delete(true)
       wait 1 do
-        main_matrix = matrix_zone.matrix({ id: :vie_0, rows: 8, columns: 8, spacing: 6, size: '100%' })
+        main_matrix = matrix_zone.matrix({left: 66, id: :vie_0, rows: 8, columns: 8, spacing: 6, size: '100%' })
+        wait 1 do
+          main_matrix.color(:yellowgreen)
+          grab(:vie_0_background).left(25).
+            grab(:vie_0_background).top(25)
+        end
       end
     end
-  #   main_matrix.color(:red)
+
   end
 end
 

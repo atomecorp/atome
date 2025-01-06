@@ -84,7 +84,7 @@ class Genesis
           # TODO: try to optimise and find a better way wo we can remove the condition below
           if @type == :group && !%i[type id collect layout].include?(element)
             collect.each do |collected_found|
-              grab(collected_found).send(element, params, &user_proc)
+              grab(collected_found)&.send(element, params, &user_proc)
             end
           end
 
