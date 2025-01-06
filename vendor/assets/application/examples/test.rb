@@ -34,7 +34,7 @@ A.browser("../src/medias/utils/examples")
 ########################################################
 b = box
 b.touch(true) do
-  A.write({name: './my file.txt', content: "my texte is ...."}) do |data|
+  A.write({ name: './my file.txt', content: "my texte is ...." }) do |data|
     text "file content  :\n #{data}"
   end
   wait 0.5 do
@@ -43,13 +43,11 @@ b.touch(true) do
     end
   end
 
-
   wait 2 do
     A.terminal('pwd') do |data|
       text "terminal response  :\n #{data}"
-      path_f=data.chomp+'/atome_server.rb'
-      text  "path is : #{path_f}"
-
+      path_f = data.chomp + '/atome_server.rb'
+      text "path is : #{path_f}"
 
     end
   end
@@ -117,11 +115,6 @@ end
 # # puts contenu
 # # fichier.close
 
-
-
-
-
-
 # ####################### works
 
 # # Appel principal avec bloc
@@ -134,10 +127,6 @@ end
 #   alert total_width
 #   alert total_height
 # end
-
-
-
-
 
 # b=box
 # b=image('red_planet')
