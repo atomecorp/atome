@@ -23,8 +23,6 @@ class Atome
     end
 
     def server_receiver(params)
-
-      puts "on est ici : #{params}"
       callback_found = Universe.messages[params[:message_id]]
       callback_found.call(params) if callback_found.is_a? Proc
     end
