@@ -479,57 +479,134 @@ class Object
     ids
   end
 
+  # def fit(params)
+  #   unless params.instance_of?(Hash)
+  #     params = { value: params }
+  #   end
+  #   target_size = params[:value]
+  #   axis = params[:axis]
+  #   objet_atome = self
+  #   atomes_found = objet_atome.dig
+  #   total_width = found_area_used(atomes_found)[:max][:x] - found_area_used(atomes_found)[:min][:x]
+  #   total_height = found_area_used(atomes_found)[:max][:y] - found_area_used(atomes_found)[:min][:y]
+  #   if axis == :x
+  #     ratio = target_size / total_width
+  #     # now we resize and re-position all atomes
+  #       atomes_found.each do |atome_id|
+  #         current_atome = grab(atome_id)
+  #         current_atome.left(current_atome.left * ratio)
+  #       current_atome.top(current_atome.top * ratio)
+  #       new_width = current_atome.to_px(:width) * ratio
+  #       new_height = current_atome.to_px(:height) * ratio
+  #       current_atome.width(new_width)
+  #       current_atome.height(new_height)
+  #     end
+  #   else
+  #     ratio = target_size / total_height
+  #     # now we resize and re-position all atomes
+  #
+  #     atomes_found.each do |atome_id|
+  #
+  #       current_atome = grab(atome_id)
+  #       # puts "#{current_atome}, #{atome_id}, left:  #{current_atome.left}, ratio: #{ratio}"
+  #       current_atome.left(current_atome.left * ratio)
+  #       current_atome.top(current_atome.top * ratio)
+  #       current_atome.width(current_atome.to_px(:width) * ratio)
+  #       current_atome.height(current_atome.to_px(:height) * ratio)
+  #     end
+  #   end
+  # end
+
   def fit(params)
     unless params.instance_of?(Hash)
       params = { value: params }
     end
+
     target_size = params[:value]
     axis = params[:axis]
     objet_atome = self
     atomes_found = objet_atome.dig
-    total_width = found_area_used(atomes_found)[:max][:x] - found_area_used(atomes_found)[:min][:x]
-    total_height = found_area_used(atomes_found)[:max][:y] - found_area_used(atomes_found)[:min][:y]
-    if axis == :x
-      ratio = target_size / total_width
-      # now we resize and re-position all atomes
+
+    found_area_used(atomes_found) do |result|
+      total_width = result[:max][:x] - result[:min][:x]
+      total_height = result[:max][:y] - result[:min][:y]
+
+      ratio = if axis == :x
+                target_size / total_width
+              else
+                target_size / total_height
+              end
+
       atomes_found.each do |atome_id|
         current_atome = grab(atome_id)
-        current_atome.left(current_atome.left * ratio)
-        current_atome.top(current_atome.top * ratio)
+
+        left = current_atome.left || 0
+        top = current_atome.top || 0
+
+        current_atome.left(left * ratio)
+        current_atome.top(top * ratio)
         new_width = current_atome.to_px(:width) * ratio
         new_height = current_atome.to_px(:height) * ratio
         current_atome.width(new_width)
         current_atome.height(new_height)
       end
-    else
-      ratio = target_size / total_height
-      # now we resize and re-position all atomes
-      atomes_found.each do |atome_id|
-        current_atome = grab(atome_id)
-        current_atome.left(current_atome.left * ratio)
-        current_atome.top(current_atome.top * ratio)
-        current_atome.width(current_atome.to_px(:width) * ratio)
-        current_atome.height(current_atome.to_px(:height) * ratio)
-      end
     end
   end
 
-  def found_area_used(ids)
-    min_x, min_y = Float::INFINITY, Float::INFINITY
-    max_x, max_y = 0, 0
-    ids.each do |id|
-      atome = grab(id)
-      x = atome.compute({ particle: :left })[:value]
-      y = atome.compute({ particle: :top })[:value]
-      width = atome.to_px(:width)
-      height = atome.to_px(:height)
-      min_x = [min_x, x].min
-      min_y = [min_y, y].min
-      max_x = [max_x, x + width].max
-      max_y = [max_y, y + height].max
+  # def found_area_used(ids)
+  #   min_x, min_y = Float::INFINITY, Float::INFINITY
+  #   max_x, max_y = 0, 0
+  #   ids.each do |id|
+  #     atome = grab(id)
+  #     x = atome.compute({ particle: :left })[:value]
+  #     y = atome.compute({ particle: :top })[:value]
+  #     width = atome.to_px(:width)
+  #     height = atome.to_px(:height)
+  #     min_x = [min_x, x].min
+  #     min_y = [min_y, y].min
+  #     max_x = [max_x, x + width].max
+  #     max_y = [max_y, y + height].max
+  #   end
+  #   { min: { x: min_x, y: min_y }, max: { x: max_x, y: max_y } }
+  # end
+  #############################
+  def found_area_used(ids, &block)
+
+    check_interval = 0.1
+
+    wait(check_interval) do
+      all_ready = ids.all? do |id|
+        atome = grab(id)
+        width = atome.to_px(:width).to_f rescue 0
+        height = atome.to_px(:height).to_f rescue 0
+        width > 0 && height > 0
+      end
+      if all_ready
+        min_x, min_y = Float::INFINITY, Float::INFINITY
+        max_x, max_y = 0, 0
+
+        ids.each do |id|
+
+          atome = grab(id)
+          x = atome.compute({ particle: :left })[:value].to_f rescue 0
+          y = atome.compute({ particle: :top })[:value].to_f rescue 0
+          width = atome.to_px(:width).to_f rescue 0
+          height = atome.to_px(:height).to_f rescue 0
+
+          min_x = [min_x, x].min
+          min_y = [min_y, y].min
+          max_x = [max_x, x + width].max
+          max_y = [max_y, y + height].max
+        end
+
+        result = { min: { x: min_x, y: min_y }, max: { x: max_x, y: max_y } }
+        block.call(result) if block_given?
+      else
+        found_area_used(ids, &block)
+      end
     end
-    { min: { x: min_x, y: min_y }, max: { x: max_x, y: max_y } }
   end
+  ############################
 
   def calculate_total_size(objet_atome, axis)
     total_size = (axis == :x) ? objet_atome.to_px(:width) : objet_atome.to_px(:height)

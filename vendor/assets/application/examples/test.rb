@@ -34,32 +34,31 @@ A.browser("../src/medias/utils/examples")
 ########################################################
 b = box
 b.touch(true) do
-  A.read('capture.rb') do |data|
-    text "file content  :\n #{data}"
-  end
-
   A.write({name: './my file.txt', content: "my texte is ...."}) do |data|
     text "file content  :\n #{data}"
   end
-  # A.read('/Users/jean-ericgodard/RubymineProjects/atome/tmp/test/server/atome_server.rb') do |file_content|
-  #   # alert file_content
-  #   # text "file content  :\n #{file_content}"
-  # end
+  wait 0.5 do
+    A.read('./my file.txt') do |data|
+      text "file content  :\n #{data}"
+    end
+  end
 
-  # A.terminal('pwd') do |data|
-  #   text "terminal response  :\n #{data}"
-  #   path_f=data.chomp+'/atome_server.rb'
-  #   alert  path_f
-  #
-  #
-  # end
-  # # A.terminal('ls') do |data|
-  # #   text "terminal response  :\n #{data}"
-  # # end
-  # # A.read('./atome_server.rb') do |data|
-  # #   alert data
-  # #   text "file content  :\n #{data}"
-  # # end
+
+  wait 2 do
+    A.terminal('pwd') do |data|
+      text "terminal response  :\n #{data}"
+      path_f=data.chomp+'/atome_server.rb'
+      text  "path is : #{path_f}"
+
+
+    end
+  end
+
+  wait 1 do
+    A.terminal('ls') do |data|
+      text "terminal response  :\n #{data}"
+    end
+  end
 end
 
 # class EFile
@@ -123,7 +122,30 @@ end
 
 
 
+# ####################### works
+
+# # Appel principal avec bloc
+# b = image('waveform')
+# atomes_found = b.dig
+#
+# found_area_used(atomes_found) do |result|
+#   total_width = result[:max][:x] - result[:min][:x]
+#   total_height = result[:max][:y] - result[:min][:y]
+#   alert total_width
+#   alert total_height
+# end
 
 
 
+
+
+# b=box
+# b=image('red_planet')
+#
+#   atomes_found = b.dig
+# # alert b.dig
+# # alert b.dig.class
+#   total_width = found_area_used(atomes_found)[:max][:x] - found_area_used(atomes_found)[:min][:x]
+#   # total_height = found_area_used(atomes_found)[:max][:y] - found_area_used(atomes_found)[:min][:y]
+#   alert total_width
 

@@ -20,15 +20,15 @@ m = table({ renderers: [:html], attach: :view, id: :my_test_box, type: :table, a
                },
                height: 50,
                width: 50,
-               component: { size: 12, color: :black }
+               # component: { size: 12, color: :black }
              },
              data: [
                { titi: :toto },
                { dfgdf: 1, name: 'Alice', age: 30, no: 'oko', t: 123, r: 654, f: 123, g: 654, w: 123, x: 654, c: 123, v: 654 },
                { id: 2, name: 'Bob', age: 22 },
                { dfg: 4, name: 'Vincent', age: 33, no: grab(:my_cirle) },
-               { dfgd: 3, name: 'Roger', age: 18, no: image(:red_planet), now: :nothing }
-
+             # { dfgd: 3, name: 'Roger', age: 18,  now: :nothing }
+             { dfgd: 3, name: 'Roger', age: 18, nog: image({path: 'medias/images/red_planet.png', id: :red_planet }), now: :nothing }
              ]
            })
 

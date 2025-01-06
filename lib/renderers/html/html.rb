@@ -1704,8 +1704,6 @@ class HTML
           content = $2
           "\"#{content.gsub(/\n/, '\\n')}\"" # Escapes newlines for JavaScript compatibility
         end
-        puts "the path is : #{converted_string}"
-
         proc_found.call(converted_string) if proc_found.is_a?(Proc)
       end
     end

@@ -1,9 +1,9 @@
 const atomeJS = Object.assign(communication, File);
 
 // allow tauri to write messages in the console
-window.__TAURI__.event.listen("log-to-console", (event) => {
-    console.log(event.payload); // Affiche le message reçu dans la console
-});
+// window.__TAURI__.event.listen("log-to-console", (event) => {
+//     console.log(event.payload); // Affiche le message reçu dans la console
+// });
 // generic callback method
 
 
