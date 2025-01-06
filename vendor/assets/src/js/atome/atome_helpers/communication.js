@@ -1,6 +1,13 @@
 function escapeApostrophes(input) {
     return input.replace(/'/g, "\\'");
 }
+
+
+//////////
+
+
+
+
 function convertTextToSpeech({
                                  silenceDuration = 3000,
                                  silenceThreshold = 5,
@@ -9,7 +16,8 @@ function convertTextToSpeech({
                                  convert = true,
                                  open_ai_key,
                                  rubyTranslationCallback,
-                                 rubyAudio2textCallback
+                                 rubyAudio2textCallback,
+                                active
                              }) {
 
 
@@ -105,7 +113,7 @@ function convertTextToSpeech({
     }
 
     // Listening control based on convert. `convert`
-    if (convert) {
+    if (active) {
         startListening();
     } else {
         stopListening();
@@ -150,7 +158,8 @@ function audio2textCallback(text, method_to_trig) {
 
 
 
-function speechToText(silenceDuration,silenceThreshold, enableTranslation, targetLanguage, convert, open_ai_key, rubyTranslationCallback, rubyAudio2textCallback){
+function speechToText(silenceDuration,silenceThreshold, enableTranslation, targetLanguage, convert, open_ai_key, rubyTranslationCallback, rubyAudio2textCallback, active){
+    // alert(silenceDuration+','+silenceThreshold+','+ enableTranslation+','+targetLanguage+','+ convert+','+ open_ai_key+','+ rubyTranslationCallback+','+ rubyAudio2textCallback+','+ active)
     convertTextToSpeech({
         silenceDuration: silenceDuration,
         silenceThreshold: silenceThreshold,
@@ -159,7 +168,8 @@ function speechToText(silenceDuration,silenceThreshold, enableTranslation, targe
         convert: convert,
         open_ai_key: open_ai_key,
         rubyTranslationCallback: rubyTranslationCallback,
-        rubyAudio2textCallback: rubyAudio2textCallback
+        rubyAudio2textCallback: rubyAudio2textCallback,
+        active: active
 });
 }
 
