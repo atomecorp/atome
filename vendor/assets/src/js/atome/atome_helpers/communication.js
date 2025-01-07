@@ -2,10 +2,7 @@ function escapeApostrophes(input) {
     return input.replace(/'/g, "\\'");
 }
 
-
-//////////
-
-
+let stop_recognition_listening = null;
 
 
 function convertTextToSpeech({
@@ -17,7 +14,7 @@ function convertTextToSpeech({
                                  open_ai_key,
                                  rubyTranslationCallback,
                                  rubyAudio2textCallback,
-                                active
+                                 active
                              }) {
 
 
@@ -33,7 +30,7 @@ function convertTextToSpeech({
     let audioContext;
     let analyser;
     let mediaStreamSource;
-
+    stop_recognition_listening = false;
     recognition = new SpeechRecognition();
     recognition.lang = 'fr-FR';
     recognition.interimResults = false;
@@ -60,7 +57,7 @@ function convertTextToSpeech({
     };
 
     async function startListening() {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({audio: true});
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         mediaStreamSource = audioContext.createMediaStreamSource(stream);
         analyser = audioContext.createAnalyser();
@@ -69,6 +66,14 @@ function convertTextToSpeech({
         recognition.start();
         isRecording = true;
         monitorSilence();
+
+        let intervalId = setInterval(() => {
+            if (stop_recognition_listening === true) {
+                stopListening();
+                clearInterval(intervalId);
+                console.log("Stopped listening via interval check");
+            }
+        }, 100);
     }
 
     function stopListening() {
@@ -84,10 +89,17 @@ function convertTextToSpeech({
 
     function monitorSilence() {
         const dataArray = new Uint8Array(analyser.fftSize);
+        let logInterval = 1000;
+        let lastLogTime = Date.now();
 
         function checkVolume() {
             analyser.getByteFrequencyData(dataArray);
             const volume = dataArray.reduce((sum, value) => sum + value, 0);
+
+            if (Date.now() - lastLogTime >= logInterval) {
+                console.log("Recording... Volume level:", volume);
+                lastLogTime = Date.now();
+            }
 
             if (volume < silenceThreshold) {
                 if (!silenceTimer) {
@@ -116,6 +128,7 @@ function convertTextToSpeech({
     if (active) {
         startListening();
     } else {
+        stop_recognition_listening = true;
         stopListening();
     }
 }
@@ -132,7 +145,7 @@ async function translationCallback(text, lang, open_ai_key, method_to_trig) {
             },
             body: JSON.stringify({
                 model: 'gpt-4',
-                messages: [{ role: 'user', content: `Translate in ${lang} : ${text}` }]
+                messages: [{role: 'user', content: `Translate in ${lang} : ${text}`}]
             })
         });
 
@@ -140,7 +153,7 @@ async function translationCallback(text, lang, open_ai_key, method_to_trig) {
         if (data.choices && data.choices[0].message.content) {
             console.log(`Traduction : "${data.choices[0].message.content.trim()}"`);
             const sanitizedText = escapeApostrophes(data.choices[0].message.content.trim());
-            atomeJsToRuby(method_to_trig+"('"+sanitizedText+"')");
+            atomeJsToRuby(method_to_trig + "('" + sanitizedText + "')");
         } else {
             throw new Error("Aucune réponse valide.");
         }
@@ -153,13 +166,11 @@ async function translationCallback(text, lang, open_ai_key, method_to_trig) {
 function audio2textCallback(text, method_to_trig) {
     console.log(`Texte depuis le fichier audio: "${text}"`);
     const sanitizedText = escapeApostrophes(text);
-    atomeJsToRuby(method_to_trig+"('"+sanitizedText+"')");
+    atomeJsToRuby(method_to_trig + "('" + sanitizedText + "')");
 }
 
 
-
-function speechToText(silenceDuration,silenceThreshold, enableTranslation, targetLanguage, convert, open_ai_key, rubyTranslationCallback, rubyAudio2textCallback, active){
-    // alert(silenceDuration+','+silenceThreshold+','+ enableTranslation+','+targetLanguage+','+ convert+','+ open_ai_key+','+ rubyTranslationCallback+','+ rubyAudio2textCallback+','+ active)
+function speechToText(silenceDuration, silenceThreshold, enableTranslation, targetLanguage, convert, open_ai_key, rubyTranslationCallback, rubyAudio2textCallback, active) {
     convertTextToSpeech({
         silenceDuration: silenceDuration,
         silenceThreshold: silenceThreshold,
@@ -170,54 +181,5 @@ function speechToText(silenceDuration,silenceThreshold, enableTranslation, targe
         rubyTranslationCallback: rubyTranslationCallback,
         rubyAudio2textCallback: rubyAudio2textCallback,
         active: active
-});
+    });
 }
-
-
-// translationCallback: translationCallback,
-//     audio2textCallback: audio2textCallback
-
-
-// setTimeout(() => {
-//     // atomeJsToRuby('box');
-//     text="Peux-tu écrire une lettre à Sarah lui dire bonjour tout va bien et tu m'ouvre le fichier une fois que t'as fini"
-//     const sanitizedText = escapeApostrophes(text);
-//     atomeJsToRuby('to_text_method'+"('"+sanitizedText+"')");
-// }, "1000");
-
-
-
-
-/////////////////////////// connection ws
-
-//
-// function connect(address) {
-//
-//     websocket = new WebSocket(address);
-//
-//     websocket.onopen = function (event) {
-//         atomeJsToRuby("puts 'Connected to WebSocket'")
-//
-//     };
-//
-//     websocket.onmessage = function (event) {
-//         // atomeJsToRuby("puts 'object ruby callback : " + event.data + "'")
-//     };
-//
-//     websocket.onclose = function (event) {
-//         atomeJsToRuby("puts 'WebSocket closed'")
-//     };
-//
-//     websocket.onerror = function (event) {
-//         // to prevent error disturbing the console
-//         event.preventDefault();
-//         console.log('connection lost!')
-//     };
-//
-// }
-
-
-// function controller_message(msg) {
-//     // let json_msgs = JSON.parse(msg);
-//     atomeJsToRuby("A.receptor("+msg+")")
-// }
