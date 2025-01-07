@@ -860,8 +860,8 @@ STRR
     JS.eval("fetchSVGContent('#{svg_path}', '#{target}')")
   end
 
-
   def determine_action(file_content)
+
     default_action = { open: true, execute: false }
     action = default_action.dup
 
@@ -871,11 +871,40 @@ STRR
         action[key.to_sym] = value == 'true'
       end
     end
-
     action
   end
+  def extract_and_sanitize_js(code)
+    sanitized_code = ""
+    inside_js_block = false
+    block_delimiter = ""
 
+    code.each_line do |line|
+      if line =~ /(\w+)\s*=\s*<<~(\w+)/
+        inside_js_block = true
+        block_delimiter = $2
+        sanitized_code += "#{$1} = %Q{"
+        next
+      end
 
+      if inside_js_block
+        if line.strip == block_delimiter
+          inside_js_block = false
+          sanitized_code += "}\n"
+        else
+          clean_line = line
+                         .gsub('\\', '\\\\')
+                         .gsub('{', '\\{')
+                         .gsub('}', '\\}')
+                         .gsub('"', '\\"')
+          sanitized_code += clean_line
+        end
+      else
+        sanitized_code += line
+      end
+    end
+
+    sanitized_code
+  end
   def browser(base_path)
     @path != ''
     unless grab(:file_browser)
@@ -911,6 +940,8 @@ STRR
       @path = @path[0, @path.rindex("/")] + "/"
       browser(@path)
     end
+
+
 
     # folder creation
     A.terminal("cd #{base_path}  && ls -d */ 2>/dev/null") do |data|
@@ -952,7 +983,7 @@ STRR
         parts.each_with_index do |part, index|
           next if part.empty?
           file_path = "#{base_path}/#{file}"
-          # FIXME check in the code whywe need to do that
+          # FIXME check in the code why we need to do that
           file_path = file_path.gsub("//", "/")
           @filer.text({
                         data: part,
@@ -982,7 +1013,7 @@ STRR
                                               })
 
                 # file title :
-                editor.text({ data: @path+'/'+file, top: 0, left: 6, color: :orange })
+                editor.text({ data: @path + '/' + file, top: 0, left: 6, color: :orange })
                 # file close
                 close = editor.circle({ color: :yellowgreen, left: :auto, right: 6, top: 9, width: 15, height: 15 })
                 close.text({ data: :x, top: 0, left: 3, color: :black, position: :absolute })
@@ -1003,7 +1034,9 @@ STRR
                 exec = editor.circle({ color: :red, left: :auto, right: 66, top: 9, width: 15, height: 15 })
                 exec.touch(:tap) do
                   grab(:view).clear(true)
-                  grab(:view).instance_eval(body.data)
+                  code = body.data
+                  sanitized_code = extract_and_sanitize_js(code)
+                  grab(:view).instance_eval(sanitized_code)
                 end
               end
 

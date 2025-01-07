@@ -76,8 +76,8 @@ end
 
 wait 3 do
   first_result =  HTML.locate(parent: :view)[1]
-  result_found =  HTML.locate(html: first_result) # Attention  HTML.locate always return an array you have to chose
-  new_atomized_el= atomizer({ target: result_found, id: :my_third_html_obj })
+  # result_found =  HTML.locate(html: first_result) # Attention  HTML.locate always return an array you have to chose
+  new_atomized_el= atomizer({ target: first_result, id: :my_third_html_obj })
   new_atomized_el.display(:block)
   new_atomized_el.position(:absolute)
   new_atomized_el.rotate(12)

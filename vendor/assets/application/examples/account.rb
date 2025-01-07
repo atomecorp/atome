@@ -1,5 +1,5 @@
 # # frozen_string_literal: true
-b=box
+b=box({})
 
 b.touch(:down) do
    A.message({ action: :authentication, data: { table: :user, particles: { email: 'tre@tre.tre', password: 'poipoi' } } }) do |response|

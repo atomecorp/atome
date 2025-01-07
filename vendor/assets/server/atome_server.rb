@@ -24,7 +24,7 @@ require './extensions'
 Faye::WebSocket.load_adapter('puma')
 
 class App < Roda
-  index_content = File.read("../src/index_server.html")
+  index_content = File.read("../src/index_server_opal.html")
   opts[:root] = '../src'
   plugin :static, %w[/css /js /medias /wasm], root: '../src'
   route do |r|

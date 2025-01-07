@@ -1709,7 +1709,11 @@ class HTML
     end
   end
 
-
+  # def sanitize_js_code(js_code)
+  #   js_code.gsub(/\r?\n/, ' ')        # Remplacer les sauts de ligne par des espaces
+  #          .gsub('"', '\"')           # Échapper les guillemets doubles
+  #          .gsub("'", "\\'")          # Échapper les guillemets simples
+  # end
   def read(id, file)
     if Atome.host == 'tauri'
       JS.eval("readFile('#{id}','#{file}')")
@@ -1723,6 +1727,8 @@ class HTML
           content = $2
           "\"#{content.gsub(/\n/, '\\n')}\"" # Escapes newlines for JavaScript compatibility
         end
+        # converted_string = sanitize_js_code(converted_string)
+        # puts "here line 1726 html.rb: #{converted_string}"
         proc_found.call(converted_string) if proc_found.is_a?(Proc)
       end
     end

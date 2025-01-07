@@ -291,7 +291,7 @@ task :opal_server_rebuild do
 end
 
 task :test_wasm_osx do
-  FileUtils.cp('./vendor/assets/src/index_bck_wasm_tauri.html', './vendor/assets/src/index.html')
+  FileUtils.cp('./vendor/assets/src/index_native_wasm_tauri.html', './vendor/assets/src/index.html')
   project_name = :test
   source = '.'
   destination = './tmp'
@@ -308,7 +308,7 @@ task :test_wasm_osx do
 end
 
 task :test_osx do
-  FileUtils.cp('./vendor/assets/src/index_bck_opal_tauri.html', './vendor/assets/src/index.html')
+  FileUtils.cp('./vendor/assets/src/index_native_opal_tauri.html', './vendor/assets/src/index.html')
   project_name = :test
   source = '.'
   destination = './tmp'
@@ -333,7 +333,7 @@ task :test_osx do
   puts 'atome osx is running'
 end
 task :test_ios do
-  FileUtils.cp('./vendor/assets/src/index_bck_opal_tauri.html', './vendor/assets/src/index.html')
+  FileUtils.cp('./vendor/assets/src/index_native_opal_tauri.html', './vendor/assets/src/index.html')
   project_name = :test
   source = '.'
   destination = './tmp'
@@ -359,7 +359,7 @@ task :test_ios do
 end
 
 task :test_wasm_ios do
-  FileUtils.cp('./vendor/assets/src/index_bck_wasm_tauri.html', './vendor/assets/src/index.html')
+  FileUtils.cp('./vendor/assets/src/index_native_wasm_tauri.html', './vendor/assets/src/index.html')
   project_name = :test
   source = '.'
   destination = './tmp'

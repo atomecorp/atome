@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-b=box
+b=box({})
 margin = 12
 b2=box({top: below(b, margin)})
 b3=box({top: below(b2, margin)})
@@ -25,18 +25,18 @@ while i < 10 do
 end
 def api_infos
   {
-  "example": "Purpose of the example",
-  "methods_found": [
-    "left",
-    "top"
-  ],
-  "left": {
-    "aim": "Controls the horizontal position of the object within its container.",
-    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
-  },
-  "top": {
-    "aim": "Defines the vertical position of the object in its container.",
-    "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+    "example": "Purpose of the example",
+    "methods_found": [
+      "left",
+      "top"
+    ],
+    "left": {
+      "aim": "Controls the horizontal position of the object within its container.",
+      "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
+    },
+    "top": {
+      "aim": "Defines the vertical position of the object in its container.",
+      "usage": "For instance, `top(50)` sets the object 50 pixels from the top edge."
+    }
   }
-}
 end

@@ -245,20 +245,16 @@ class EDen
       source = data['source']
       value = data['value']
 
-      # Vérification si le fichier existe pour certaines opérations
       if %w[read delete].include?(operation) && !File.exist?(source)
         return { data: "file not found: #{source}", message_id: message_id }
       end
 
-      # Exécution de l'opération
       begin
         file_content = case operation
                        when 'read'
                          File.read(source)
                        when 'write'
-                         # puts "source is :#{source}, #{source[:name]}, #{source[:content]}"
                          File.write(source['name'], source['content'])
-                         # File.write('poillll.txt', 'kjhkjhkjdfgsdg hkjhkjh')
                          'write successful'
                        when 'delete'
                          File.delete(source)
@@ -267,8 +263,8 @@ class EDen
                          'unsupported operation'
                        end
 
-        # Traitement du contenu pour éviter les caractères problématiques
         file_content = file_content.gsub('#', '\x23')
+        # file_content = file_content.gsub('~', '\x7E')
         file_content = JSON.dump(file_content)
 
         { data: file_content, message_id: message_id }

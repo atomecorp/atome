@@ -77,7 +77,7 @@ const communication = {
             // rubyVM.eval("A.user_login");
         };
         this.websocket.onmessage = function (event) {
-            console.log("maybe sanitize here : "+event.data)
+            // console.log("maybe sanitize here : "+event.data)
             try {
                 // const sanitizedData = JSON.stringify(event.data);
                 rubyVM.eval(`Atome.server_receiver(${event.data})`);
