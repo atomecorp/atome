@@ -7,8 +7,13 @@ b3=box({top: below(b2, margin)})
 b4=box({top: below(b3, margin)})
 box({top: below(b4, margin)})
 i=0
-
-
+wait 1 do
+  t= text({data: :hello})
+  wait 1 do
+    t.color(:red)
+  end
+end
+# b=boxx
 b = circle(left: 333, top: 333)
 margin = "2%"
 # margin = 120

@@ -57,6 +57,7 @@ Gem::Specification.new do |spec|
   # spec.add_runtime_dependency 'eVe', '~>  0.1.0'
   spec.add_runtime_dependency 'eventmachine', '~> 1.2.7'
   spec.add_runtime_dependency 'faye-websocket', '~> 0.1'
+  spec.add_runtime_dependency 'ferrum', '~> 0.16'
   spec.add_runtime_dependency 'geocoder', '~> 1.8'
   spec.add_runtime_dependency 'guard', '~> 2.1'
   # spec.add_runtime_dependency 'guard-shell', '~> 0.7.2'
