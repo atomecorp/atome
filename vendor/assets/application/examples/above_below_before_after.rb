@@ -11,6 +11,7 @@ wait 1 do
   t= text({data: :hello})
   wait 1 do
     t.color(:red)
+    dd.poil(:tutu)
   end
 end
 # b=boxx
