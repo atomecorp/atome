@@ -15,7 +15,7 @@ Capybara.register_driver :cuprite do |app|
   Capybara::Cuprite::Driver.new(app, headless: true, window_size: [1280, 1024])
 end
 
-demo_folder = '/vendor/assets/src/medias/utils/examples/tests/'
+demo_folder = '/vendor/assets/src/medias/utils/unit_tests/'
 
 # Lancer le serveur via Rake
 pid = spawn("rake test_server")
@@ -87,31 +87,22 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_
   end
 
   # Récupérer les messages de la console
-  console_logs = session.evaluate_script("get_logs()")
-
-  # Vérifier si console_logs est nil
-  if console_logs.nil?
-    puts "console_logs is nil for #{file_path}"
-    console_logs = []
-  end
-
-  # Afficher les messages de la console dans la sortie standard de Ruby
-  puts "Console logs for #{file_path}, logs : #{console_logs}"
-  console_logs.each do |log|
-    puts log
-  end
+  console_logs = session.evaluate_script("get_logs()") || []
 
   if errors.any?
-    puts "Writing error log to #{error_log_path}"
     File.open(error_log_path, 'a') do |file|
       file.puts("#{timestamp} - Errors detected in #{file_name_without_ext}:")
       file.puts(errors.join("\n"))
+      file.puts("Console logs:")
+      file.puts(console_logs.join("\n"))
       file.puts("--- End of errors for #{file_name_without_ext} ---\n")
     end
   else
-    puts "Writing pass log to #{pass_log_path}"
     File.open(pass_log_path, 'a') do |file|
       file.puts("#{timestamp} - No errors detected in #{file_path}.")
+      file.puts("Console logs:")
+      file.puts(console_logs.join("\n"))
+      file.puts("--- End of logs for #{file_name_without_ext} ---\n")
     end
   end
 
