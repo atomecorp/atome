@@ -47,20 +47,29 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_
 
   file_name_without_ext = File.basename(file_path, File.extname(file_path))
 
+  # Initialiser window.consoleMessages avant d'exécuter le code JS
+  session.execute_script('window.consoleMessages = [];')
+
+  # Stocker la fonction console.log d'origine
+  session.execute_script('window.originalConsoleLog = console.log;')
+
+  # Redéfinir console.log pour capturer les messages
+  session.execute_script('console.log = function(message) { window.consoleMessages.push(message); window.originalConsoleLog.apply(console, arguments); };')
+
   # Préparer le code JS à exécuter
   escaped_code = ruby_code.gsub('"', '\\"').gsub("\n", "\\n")
   js_command = <<~JS
     atomeJsToRuby("#{escaped_code}");
-(function() {
-  console.log('hello');
-  const orangeDiv = document.createElement('div');
-  orangeDiv.style.backgroundColor = 'orange';
-  orangeDiv.style.width = '200px';
-  orangeDiv.style.height = '200px';
-  orangeDiv.style.margin = '10px';
-  const viewContainer = document.getElementById('view');
-  viewContainer.appendChild(orangeDiv);
-})();
+    (function() {
+      console.log('salut');
+      const orangeDiv = document.createElement('div');
+      orangeDiv.style.backgroundColor = 'orange';
+      orangeDiv.style.width = '200px';
+      orangeDiv.style.height = '200px';
+      orangeDiv.style.margin = '10px';
+      const viewContainer = document.getElementById('view');
+      viewContainer.appendChild(orangeDiv);
+    })();
   JS
 
   errors = []
@@ -74,6 +83,18 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_
 
   # Récupérer les messages de la console
   console_logs = session.evaluate_script('window.consoleMessages')
+
+  # Vérifier si console_logs est nil
+  if console_logs.nil?
+    puts "console_logs is nil for #{file_path}"
+    console_logs = []
+  end
+
+  # Afficher les messages de la console dans la sortie standard de Ruby
+  puts "Console logs for #{file_path}:"
+  console_logs.each do |log|
+    puts log
+  end
 
   # Écrire les logs dans un fichier
   log_file_path = "#{log_path}/console_logs_#{timestamp}.json"
@@ -131,3 +152,5 @@ if task_thread.alive?
   end
   task_thread.join
 end
+
+# Version: v8
