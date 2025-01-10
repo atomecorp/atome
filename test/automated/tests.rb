@@ -5,40 +5,53 @@ require 'fileutils'
 require 'json'
 require 'date'
 
-# Configurer Capybara avec Cuprite
+
+# choose test folder below
+# tests_folder = '/vendor/assets/src/medias/utils/examples/presets/'
+tests_folder = '/vendor/assets/src/medias/utils/examples/'
+# tests_folder = '/vendor/assets/src/medias/utils/unit_tests/'
+# tests_folder = '/vendor/assets/application/examples/'
+
+# Start the server via Rake
+# choose type of server below
+pid = spawn("rake test_server")
+# pid = spawn("rake test_server_wasm")
+
+
+
+# Configure Capybara with Cuprite
 Capybara.default_driver = :cuprite
 Capybara.app_host = 'http://localhost:9292'
 Capybara.run_server = false
 
-# Configurer Cuprite
+# Configure Cuprite
 Capybara.register_driver :cuprite do |app|
   Capybara::Cuprite::Driver.new(app, headless: true, window_size: [1280, 1024])
 end
 
-demo_folder = '/vendor/assets/src/medias/utils/unit_tests/'
 
-# Lancer le serveur via Rake
-pid = spawn("rake test_server")
+
+
 task_thread = Thread.new { Process.wait(pid) }
-sleep 5
-puts 'running tests now ...'
+sleep 7
+puts 'Running tests now...'
 
 path = Dir.pwd
-log_path = path + "/test/automatise/logs/"
+log_path = path + "/test/automated/logs/"
 FileUtils.mkdir_p(log_path) unless Dir.exist?(log_path)
 
 timestamp = DateTime.now.strftime('%Y-%m-%d_%H-%M-%S')
 error_log_path = log_path + "/error_#{timestamp}.log"
 pass_log_path = log_path + "/pass_#{timestamp}.log"
 
-stack = Dir.glob(path + "#{demo_folder}*.rb").sort
+stack = Dir.glob(File.join(path, "#{tests_folder}/**/*.rb")).sort
 
-# Méthode pour exécuter les tests avec Capybara
-def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_path)
+# Method to execute tests with Capybara
+def process_file(file_path, error_log_path, pass_log_path, path, timestamp)
   if File.exist?(file_path)
     ruby_code = File.read(file_path)
   else
-    puts "Error: the file #{file_path} does not exist."
+    puts "Error: The file #{file_path} does not exist."
     return
   end
 
@@ -47,29 +60,14 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_
 
   file_name_without_ext = File.basename(file_path, File.extname(file_path))
 
-  # Initialiser window.consoleMessages avant d'exécuter le code JS
-  session.execute_script('window.consoleMessages = [];')
-
-  # Stocker la fonction console.log d'origine
-  session.execute_script('window.originalConsoleLog = console.log;')
-
-  # Redéfinir console.log pour capturer les messages
-  session.execute_script('console.log = function(message) { window.consoleMessages.push(message); window.originalConsoleLog.apply(console, arguments); };')
-
-  # Préparer le code JS à exécuter
+  # Prepare JS code to execute
   escaped_code = ruby_code.gsub('"', '\\"').gsub("\n", "\\n")
+
+  # below is the code to be evaluated
   js_command = <<~JS
-    atomeJsToRuby("#{escaped_code}");
-    (function() {
-      console.log('salut');
-      const orangeDiv = document.createElement('div');
-      orangeDiv.style.backgroundColor = 'orange';
-      orangeDiv.style.width = '200px';
-      orangeDiv.style.height = '200px';
-      orangeDiv.style.margin = '10px';
-      const viewContainer = document.getElementById('view');
-      viewContainer.appendChild(orangeDiv);
-    })();
+    // comment below for full log 
+    tempLogs.length = 0;
+       atomeJsToRuby("#{escaped_code}");
   JS
 
   errors = []
@@ -77,7 +75,7 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_
     session.execute_script(js_command)
     session.execute_script("console.log('Test completed')")
 
-    # Gérer les alertes de manière explicite
+    # Handle alerts explicitly
     if session.has_selector?('.alert')
       session.accept_alert
     end
@@ -86,7 +84,7 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_
     puts "Error encountered during JS evaluation in #{file_path}: #{e.message}"
   end
 
-  # Récupérer les messages de la console
+  # Retrieve console messages
   console_logs = session.evaluate_script("get_logs()") || []
 
   if errors.any?
@@ -106,28 +104,30 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_
     end
   end
 
-  # Prendre une capture d'écran
-  session.save_screenshot(path + "/test/automatise/logs/#{file_name_without_ext}.png")
+  # Take a screenshot
+  # Take a screenshot with prefixed path from hierarchy
+  relative_path = file_path.sub(path, '').split('/').last(3).join('_').sub('.rb', '')
+  session.save_screenshot(path + "/test/automated/logs/#{relative_path}.png")
   session.quit
 end
 
-# Méthode pour traiter la pile de fichiers
-def process_stack(stack, error_log_path, pass_log_path, path, timestamp, log_path)
+# Method to process the file stack
+def process_stack(stack, error_log_path, pass_log_path, path, timestamp)
   until stack.empty?
     file_path = stack.shift
     puts "Processing file: #{file_path}"
 
-    process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_path)
+    process_file(file_path, error_log_path, pass_log_path, path, timestamp)
 
-    puts "Finished waiting for 3 seconds"
+    puts "Finished, waiting for 3 seconds."
     sleep 3
   end
 end
 
-# Lancer le traitement
-process_stack(stack, error_log_path, pass_log_path, path, timestamp, log_path)
+# Start processing
+process_stack(stack, error_log_path, pass_log_path, path, timestamp)
 
-# Arrêter le serveur
+# Stop the server
 if task_thread.alive?
   puts "Stopping the Rake task after 10 seconds."
   puma_processes = `pgrep -f puma`.split("\n").map(&:to_i)
@@ -143,4 +143,4 @@ if task_thread.alive?
   task_thread.join
 end
 
-# Version: v9
+# Version 1.1

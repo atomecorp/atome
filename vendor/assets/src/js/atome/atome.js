@@ -543,16 +543,16 @@ class my_test_class {
 // }, 1000);
 
 const tempLogs = [];
+const originalConsoleAccess = console;
 const originalConsoleLog = console.log;
-
 
 console.log = function(...args) {
     tempLogs.push(args.join(' '));
     originalConsoleLog.apply(console, args);
 };
+
 function get_logs() {
-    // tempLogs
-    // return tempLogs.join('\n')
     return tempLogs
 }
+
 

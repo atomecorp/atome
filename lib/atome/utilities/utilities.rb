@@ -1049,7 +1049,7 @@ STRR
               if actions[:execute] == true
                 grab(:view).clear(true)
                 sanitized_code = extract_and_sanitize_js(file_data)
-                grab(:view).eval(sanitized_code)
+                grab(:view).instance_eval(sanitized_code)
               end
               #
             end

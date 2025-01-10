@@ -1,5 +1,6 @@
 #  frozen_string_literal: true
 
+puts "kool"
 
 t=text({left: 80,data:  "il faudrait ecrire un texte de remerciement pour un service en rendu addressé a mr albert et mettre ce texte dans un fchier, et ouvre le fichier", edit: true })
 c1=circle({color: :yellowgreen})
