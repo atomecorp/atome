@@ -34,7 +34,7 @@ pass_log_path = log_path + "/pass_#{timestamp}.log"
 stack = Dir.glob(path + "#{demo_folder}*.rb").sort
 
 # Méthode pour exécuter les tests avec Capybara
-def process_file(file_path, error_log_path, pass_log_path, path, timestamp)
+def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_path)
   if File.exist?(file_path)
     ruby_code = File.read(file_path)
   else
@@ -49,26 +49,20 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp)
 
   # Préparer le code JS à exécuter
   escaped_code = ruby_code.gsub('"', '\\"').gsub("\n", "\\n")
-  # js_command = "atomeJsToRuby(\"#{escaped_code}\");document.getElementById('the_box').style.backgroundColor = 'blue';"
   js_command = <<~JS
     atomeJsToRuby("#{escaped_code}");
 (function() {
-  // Créer une div avec un fond orange
+  console.log('hello');
   const orangeDiv = document.createElement('div');
   orangeDiv.style.backgroundColor = 'orange';
   orangeDiv.style.width = '200px';
   orangeDiv.style.height = '200px';
   orangeDiv.style.margin = '10px';
-
-  // Attacher la div à l'élément avec l'ID 'view'
   const viewContainer = document.getElementById('view');
-  if (viewContainer) {
-    viewContainer.appendChild(orangeDiv);
-  } else {
-    console.error("L'élément avec l'ID 'view' est introuvable.");
-  }
+  viewContainer.appendChild(orangeDiv);
 })();
-JS
+  JS
+
   errors = []
   begin
     session.execute_script(js_command)
@@ -76,6 +70,15 @@ JS
   rescue Capybara::Cuprite::MouseEventFailed, StandardError => e
     errors << "JavaScriptError in #{file_path}: #{e.message}"
     puts "Error encountered during JS evaluation in #{file_path}: #{e.message}"
+  end
+
+  # Récupérer les messages de la console
+  console_logs = session.evaluate_script('window.consoleMessages')
+
+  # Écrire les logs dans un fichier
+  log_file_path = "#{log_path}/console_logs_#{timestamp}.json"
+  File.open(log_file_path, 'w') do |file|
+    file.write(JSON.pretty_generate(console_logs))
   end
 
   if errors.any?
@@ -98,12 +101,12 @@ JS
 end
 
 # Méthode pour traiter la pile de fichiers
-def process_stack(stack, error_log_path, pass_log_path, path, timestamp)
+def process_stack(stack, error_log_path, pass_log_path, path, timestamp, log_path)
   until stack.empty?
     file_path = stack.shift
     puts "Processing file: #{file_path}"
 
-    process_file(file_path, error_log_path, pass_log_path, path, timestamp)
+    process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_path)
 
     puts "Finished waiting for 3 seconds"
     sleep 3
@@ -111,7 +114,7 @@ def process_stack(stack, error_log_path, pass_log_path, path, timestamp)
 end
 
 # Lancer le traitement
-process_stack(stack, error_log_path, pass_log_path, path, timestamp)
+process_stack(stack, error_log_path, pass_log_path, path, timestamp, log_path)
 
 # Arrêter le serveur
 if task_thread.alive?
