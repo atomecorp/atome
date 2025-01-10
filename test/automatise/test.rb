@@ -76,13 +76,18 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_
   begin
     session.execute_script(js_command)
     session.execute_script("console.log('Test completed')")
+
+    # Gérer les alertes de manière explicite
+    if session.has_selector?('.alert')
+      session.accept_alert
+    end
   rescue Capybara::Cuprite::MouseEventFailed, StandardError => e
     errors << "JavaScriptError in #{file_path}: #{e.message}"
     puts "Error encountered during JS evaluation in #{file_path}: #{e.message}"
   end
 
   # Récupérer les messages de la console
-  console_logs = session.evaluate_script('window.consoleMessages')
+  console_logs = session.evaluate_script("get_logs()")
 
   # Vérifier si console_logs est nil
   if console_logs.nil?
@@ -91,15 +96,9 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp, log_
   end
 
   # Afficher les messages de la console dans la sortie standard de Ruby
-  puts "Console logs for #{file_path}:"
+  puts "Console logs for #{file_path}, logs : #{console_logs}"
   console_logs.each do |log|
     puts log
-  end
-
-  # Écrire les logs dans un fichier
-  log_file_path = "#{log_path}/console_logs_#{timestamp}.json"
-  File.open(log_file_path, 'w') do |file|
-    file.write(JSON.pretty_generate(console_logs))
   end
 
   if errors.any?
@@ -153,4 +152,4 @@ if task_thread.alive?
   task_thread.join
 end
 
-# Version: v8
+# Version: v9

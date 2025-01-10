@@ -101,7 +101,24 @@ A = Atome.new(
 )
 # atome selector / collector
 Atome.new({ renderers: [:html], aid: :selector, collect: [], type: :group, tag: { system: true } })
-
+# A.view_logs = []
+#
+# def add_to_view_logs(params)
+#   A.view_logs.push params
+# end
+# # def get_logs
+# #   alert  A.view_logs
+# # end
+#
+#
+#
+# # JS.eval("
+# #   const originalConsoleLog = console.log;
+# #   console.log = function(...args) {
+# #     Opal.A.$add_to_view_logs(args.join(' '));
+# #     originalConsoleLog.apply(console, args);
+# #   };
+# # ")
 # atome infos
 def atome_infos
   puts "atome version: #{Atome::VERSION}"

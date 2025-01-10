@@ -487,3 +487,72 @@ class my_test_class {
     }
 }
 
+///////
+// const tempLogs = [];
+//
+// // Redéfinition temporaire de console.log
+// console.log = function(...args) {
+//     tempLogs.push(args.join(' '));
+// };
+//
+// console.log('hello1');
+//
+// function get_logs(_var) {
+//     window.addEventListener('load', function() {
+//         console.log('hello2');
+//         alert('Console logs:\n' + tempLogs.join('\n'));
+//     });
+// }
+//
+// // Appel de la fonction
+// function poilu(_va) {
+//     alert('1');
+//     get_logs();
+//     alert('2');
+//
+// }
+
+// poilu('super');
+
+// const originalConsoleLog = console.log;
+// console.log = function(...args) {
+//     Opal.A.$add_to_view_logs(args.join(' '));
+//     originalConsoleLog.apply(console, args);
+// };
+
+
+// // alert(atomeJsToRuby('get_logs'));
+// setTimeout(() => {
+// alert ('knkj');
+//     get_logs();
+// // a= atomeJsToRuby('get_logs', 'kjhjk')
+// //     alert(a);
+//     }, "2000");
+// const tempLogs = [];
+// const originalConsoleLog = console.log; // Sauvegarde de la méthode originale
+//
+// // Redéfinition de console.log
+// console.log = function(...args) {
+//     tempLogs.push(args.join(' ')); // Ajout au tableau
+//     originalConsoleLog.apply(console, args); // Appel de la méthode originale
+// };
+
+// setTimeout(() => {
+//     a=  get_logs();
+//     alert (a);
+// }, 1000);
+
+const tempLogs = [];
+const originalConsoleLog = console.log;
+
+
+console.log = function(...args) {
+    tempLogs.push(args.join(' '));
+    originalConsoleLog.apply(console, args);
+};
+function get_logs() {
+    // tempLogs
+    // return tempLogs.join('\n')
+    return tempLogs
+}
+

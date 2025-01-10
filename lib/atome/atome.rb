@@ -6,7 +6,7 @@
 class Atome
   include Essentials
   # controller_proc is used to stack multiple procs from native controller
-  attr_accessor :controller_proc
+  attr_accessor :controller_proc#, :view_logs
 
   def aid(_v = nil)
     @aid

@@ -81,9 +81,7 @@
 # require "./web2"
 # alert Universe.eVe
 
-
-
-#to debug
+# to debug
 
 # regression to debug
 # require "./examples/table"
@@ -106,13 +104,11 @@
 # require "./examples/read"
 # require "./examples/test"
 
-wait 2  do
-
-end
-
+# wait 2 do
+#
+# end
 
 # require "./examples/site"
-
 
 # require "./examples/find"
 # require "./examples/tools"
@@ -132,6 +128,38 @@ end
 # require "./examples/database_handling"
 # require "./examples/read"
 # require "./examples/unit"
+# Définir temp_logs comme une variable globale dans l'environnement JavaScript
+# Solution 1 : Mettre le push dans le wait
+
+# A.view_logs = []
+
+# A.view_logs = []
+#
+# def add_to_view_logs(params)
+#   A.view_logs.push params
+# end
+#
+# def get_logs
+#   alert A.view_logs
+# end
+
+# Redéfinition de console.log
+# JS.eval("
+#   const originalConsoleLog = console.log;
+#   console.log = function(...args) {
+#     Opal.A.$add_to_view_logs(args.join(' '));
+#     originalConsoleLog.apply(console, args);
+#   };
+# ")
+# alert(get_logs)
+
+# print "jhgjhgjh"
+# puts "hi the"
+
+# Vérification des logs
+
+# get_logs
+# js_func(:get_logs, :super)
 
 # Projects
 # require "./examples/encrypt"
@@ -273,18 +301,15 @@ end
 
 # require "./examples/tools"
 
-
 # require "./examples/map"
 # require "./examples/meteo"
 # require "./examples/vr"
-
 
 # require "./examples/audio"
 #
 
 # require "./examples/test"
 # require "./examples/exchange"
-
 
 # require "./examples/touch" # passed
 # require "./examples/over" # passed
@@ -314,9 +339,6 @@ end
 
 # require "./examples/server"
 ############# problem above
-
-
-
 
 # #server tests
 
@@ -451,14 +473,12 @@ end
 #   el_found.rotate(22).text(:hello).color(:red)
 # end
 
-
 # wait 1 do
 #   A.message({action: :insert, data: {table: :atome, particle: :width, data: 888}}) do |msg|
 #
 #     puts msg
 #   end
 # end
-
 
 ########################
 # text({ id: :the_text,data: 'Touch me to group and colorize', center: true, top: 120, width: 77, component: { size: 11 } })
@@ -498,11 +518,7 @@ end
 #
 # end
 
-
-
-
 #######################
-
 
 # page1_code = lambda do |back|
 #   alert :kool

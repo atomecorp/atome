@@ -40,6 +40,12 @@ class Atome
       JS.eval(js_command)
     end
 
+
+
+    # def get_logs
+    #   A.view_logs
+    # end
+
     # atome builder
     def preset_builder(preset_name, &bloc)
       # Important : previously def box , def circle

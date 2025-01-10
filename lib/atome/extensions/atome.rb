@@ -922,3 +922,7 @@ class CssProxy
   end
 
 end
+# def get_logs
+#   A.view_logs
+#   "ljhkjh"
+# end
