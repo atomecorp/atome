@@ -555,4 +555,18 @@ function get_logs() {
     return tempLogs
 }
 
+/////////// tests ///////////
+
+// setTimeout(() => {
+//     tempLogs.length = 0;
+//     var elements = document.querySelectorAll('[id]');
+//     elements.forEach(function(el) {
+//         var rect = el.getBoundingClientRect();
+//         if (rect.width > 0 && rect.height > 0) {
+//                 atomeJsToRuby("grab(:"+el.id+").simulate(:touch)");
+//                 console.log('Clicked element with ID:', el.id);
+//         }
+//     });
+// }, 3000);
+
 

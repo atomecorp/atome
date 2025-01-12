@@ -879,6 +879,11 @@ class Object
     end
   end
 
+  def reenact(id, action)
+    atome_wanted = grab(id)
+    atome_wanted.simulate(action) if atome_wanted
+  end
+
 end
 
 class CssProxy
@@ -920,6 +925,8 @@ class CssProxy
     parsed = JSON.parse(msg)
     bloc.call(parsed)
   end
+
+
 
 end
 # def get_logs

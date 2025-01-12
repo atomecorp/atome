@@ -40,8 +40,6 @@ class Atome
       JS.eval(js_command)
     end
 
-
-
     # def get_logs
     #   A.view_logs
     # end
@@ -879,6 +877,7 @@ STRR
     end
     action
   end
+
   def extract_and_sanitize_js(code)
     sanitized_code = ""
     inside_js_block = false
@@ -911,6 +910,7 @@ STRR
 
     sanitized_code
   end
+
   def browser(base_path)
     @path != ''
     unless grab(:file_browser)
@@ -946,8 +946,6 @@ STRR
       @path = @path[0, @path.rindex("/")] + "/"
       browser(@path)
     end
-
-
 
     # folder creation
     A.terminal("cd #{base_path}  && ls -d */ 2>/dev/null") do |data|
@@ -1061,6 +1059,18 @@ STRR
     end
   end
 
+  # allow to simulate or automate click , tap , etccc
+  def simulate(type)
+    current_obj = grab(self.id)
+    codes_found = current_obj.instance_variable_get("@#{type}_code")
+    codes_found.each do |event, content|
+      if content.instance_of?(Array)
+        content.each do |code|
+          instance_exec(current_obj, event, code, &code)
+        end
+      end
+    end if codes_found.instance_of?(Hash)
+  end
 end
 
 

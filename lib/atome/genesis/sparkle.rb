@@ -129,7 +129,6 @@ def atome_infos
   puts "users: #{Universe.users}"
   puts "current user: #{Universe.current_user}"
   puts "machine: #{Universe.current_machine}"
-  puts "connected: #{Universe.connected}"
 end
 
 # help and example below :
@@ -163,14 +162,16 @@ def atome_genesis
   atome_infos
   server = Universe.current_server
   server ||= 'disconnected'
-  puts "server: #{server}"
-  return unless server.start_with?('http') && Atome::host.to_sym != :tauri
-  Universe.connected = true
-  A.server({ address: 'localhost:9292', type: 'ws' })
-  A.init_websocket do |msg|
-    puts "websocket initialised #{msg}"
+  puts "current server: #{server}"
+  if server.start_with?('http') && Atome::host.to_sym != :tauri
+    Universe.connected = true
+    A.server({ address: 'localhost:9292', type: 'ws' })
+    A.init_websocket do |msg|
+      puts "websocket initialised #{msg}"
+    end
+    Universe.allow_sync = true
   end
-  Universe.allow_sync = true
+  puts "connected : #{Universe.connected}"
 end
 
 # this method is call from JS (atome/communication) at WS connection

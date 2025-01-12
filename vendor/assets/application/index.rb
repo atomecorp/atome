@@ -14,3 +14,29 @@
 #
 # require "./examples/blur"
 # require "./examples/browser"
+
+
+
+# #########
+# #{BROWSER: {open: true, execute: true}}
+# puts 'start'
+# c = circle({ left: 444 })
+# b = box({ left: 120, top: 120, color: :orange, id: :the_box })
+#
+# b.touch(:down) do
+#   puts 'touched'
+#   b.width(333)
+#   b.color(:yellow)
+#   c.width(333)
+# end
+# # wait 1 do
+# #   b.height(333)
+# #   b.color(:blue)
+# # end
+# puts 'end'
+#
+#
+#
+# wait 1 do
+#   reenact(:the_box, :touch)
+# end

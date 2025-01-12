@@ -5,19 +5,16 @@ require 'fileutils'
 require 'json'
 require 'date'
 
-
 # choose test folder below
-# tests_folder = '/vendor/assets/src/medias/utils/examples/presets/'
-tests_folder = '/vendor/assets/src/medias/utils/examples/'
-# tests_folder = '/vendor/assets/src/medias/utils/unit_tests/'
+tests_folder = '/vendor/assets/src/medias/codes/APIs/presets'
+# tests_folder = '/vendor/assets/src/medias/codes/APIs/'
+# tests_folder = '/vendor/assets/src/medias/codes/unit_tests/'
 # tests_folder = '/vendor/assets/application/examples/'
 
 # Start the server via Rake
 # choose type of server below
 pid = spawn("rake test_server")
 # pid = spawn("rake test_server_wasm")
-
-
 
 # Configure Capybara with Cuprite
 Capybara.default_driver = :cuprite
@@ -28,9 +25,6 @@ Capybara.run_server = false
 Capybara.register_driver :cuprite do |app|
   Capybara::Cuprite::Driver.new(app, headless: true, window_size: [1280, 1024])
 end
-
-
-
 
 task_thread = Thread.new { Process.wait(pid) }
 sleep 7
@@ -65,10 +59,45 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp)
 
   # below is the code to be evaluated
   js_command = <<~JS
-    // comment below for full log 
-    tempLogs.length = 0;
-       atomeJsToRuby("#{escaped_code}");
-  JS
+  // Clear temporary logs
+  tempLogs.length = 0;
+  atomeJsToRuby("#{escaped_code}");
+  
+  // Scroll and apply color change to visible elements
+  function processVisibleElements(selector) {
+    var elements = document.querySelectorAll(selector);
+    elements.forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+           id_f= ':'+el.id
+console.log('-------------------')
+console.log(id_f)
+console.log('-------------------')
+atomeJsToRuby("reenact(" + id_f + ",:touch)");
+        console.log('Processed element with ID:', el.id);
+      }
+    });
+  }
+
+  // Process elements inside objects and iframes
+  var objects = document.querySelectorAll('object, iframe');
+  objects.forEach(function(obj) {
+    var doc = obj.contentDocument || obj.contentWindow.document;
+    if (doc) {
+      processVisibleElements.call(doc, '[id]');
+    }
+  });
+
+  // Process elements inside the main document
+  processVisibleElements('body [id]');
+
+  // Disable pointer events on potential blockers
+  document.querySelectorAll('[style*="filter"], [style*="opacity"]').forEach(function(el) {
+    el.style.pointerEvents = 'none';
+  });
+  
+JS
 
   errors = []
   begin
