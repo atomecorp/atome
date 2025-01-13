@@ -149,7 +149,7 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
           delete_recursive(atttached_atomes)
         end
         delete_with_callback do
-          puts "Atome #{@id} supprimé de manière récursive"
+          # puts "Atome #{@id}  recursive delete"
         end
       end
     elsif params[:force]
@@ -159,7 +159,7 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
       touch(false)
       render(:delete, params)
       delete_with_callback do
-        puts "Atome #{@id} supprimé avec force"
+        #  puts "Atome #{@id} force deleted"
       end
     else
       params.each do |param, value|

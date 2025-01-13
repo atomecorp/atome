@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 b = box({ drag: true })
 
 A.example(:left) do

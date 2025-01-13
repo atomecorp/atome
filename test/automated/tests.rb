@@ -59,45 +59,47 @@ def process_file(file_path, error_log_path, pass_log_path, path, timestamp)
 
   # below is the code to be evaluated
   js_command = <<~JS
-  // Clear temporary logs
-  tempLogs.length = 0;
-  atomeJsToRuby("#{escaped_code}");
-  
-  // Scroll and apply color change to visible elements
-  function processVisibleElements(selector) {
-    var elements = document.querySelectorAll(selector);
-    elements.forEach(function(el) {
-      var rect = el.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-           id_f= ':'+el.id
-console.log('-------------------')
-console.log(id_f)
-console.log('-------------------')
-atomeJsToRuby("reenact(" + id_f + ",:touch)");
-        console.log('Processed element with ID:', el.id);
+      // Clear temporary logs
+      tempLogs.length = 0;
+    // remove any object inside intuition
+      atomeJsToRuby("grab(:toolbox_tool).delete({ force: true })");
+    //execute current test
+      atomeJsToRuby("#{escaped_code}");
+      // Scroll and apply color change to visible elements
+      function processVisibleElements(selector) {
+        var elements = document.querySelectorAll(selector);
+        elements.forEach(function(el) {
+          var rect = el.getBoundingClientRect();
+          if (rect.width > 0 && rect.height > 0) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+               id_f= ':'+el.id
+    console.log('-------------------')
+    console.log(id_f)
+    console.log('-------------------')
+    atomeJsToRuby("reenact(" + id_f + ",:touch)");
+            console.log('Processed element with ID:', el.id);
+          }
+        });
       }
-    });
-  }
 
-  // Process elements inside objects and iframes
-  var objects = document.querySelectorAll('object, iframe');
-  objects.forEach(function(obj) {
-    var doc = obj.contentDocument || obj.contentWindow.document;
-    if (doc) {
-      processVisibleElements.call(doc, '[id]');
-    }
-  });
+      // Process elements inside objects and iframes
+      var objects = document.querySelectorAll('object, iframe');
+      objects.forEach(function(obj) {
+        var doc = obj.contentDocument || obj.contentWindow.document;
+        if (doc) {
+          processVisibleElements.call(doc, '[id]');
+        }
+      });
 
-  // Process elements inside the main document
-  processVisibleElements('body [id]');
+      // Process elements inside the main document
+      processVisibleElements('body [id]');
 
-  // Disable pointer events on potential blockers
-  document.querySelectorAll('[style*="filter"], [style*="opacity"]').forEach(function(el) {
-    el.style.pointerEvents = 'none';
-  });
-  
-JS
+      // Disable pointer events on potential blockers
+      document.querySelectorAll('[style*="filter"], [style*="opacity"]').forEach(function(el) {
+        el.style.pointerEvents = 'none';
+      });
+      
+  JS
 
   errors = []
   begin

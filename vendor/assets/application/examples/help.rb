@@ -1,17 +1,22 @@
 # frozen_string_literal: true
 
+# Universe.language = :french
 
 b = box({ drag: true })
 A.help(:left) do
-  english = 'the left particle is,used to position the atome on the x axis, click me to get an example'
-  french = "'la particle left est utilisée  pour positionner l'atome sur l'axe x, click moi pour obtenir un exemple"
+  english = [{ data: 'left particle ', color: :red, width: 333, left: 99, component: {size: 33} },
+             { data: 'is used to position the atome on the x axis, click me to get an example',  width: 333 }
+  ]
+  french = "la particle left est utilisée  pour positionner l'atome sur l'axe x, click moi pour obtenir un exemple"
 
-  t = text({ int8: { english: english, french: french },  width: 666 })
+  t = text({ data:english, left: 199, top: 33})
+  # t = text({ int8: { english: english, french: french },  width: 666, left: 123 })
   t.touch(true) do
     t.delete(true)
     example(:left)
   end
 end
+# text({data: [{data: 'hi! ', color: :green},{data: 'hello '},{data: 'beautifull ', color: :red},{data: 'world'}], color: :yellow})
 
 
   b.help(:left)

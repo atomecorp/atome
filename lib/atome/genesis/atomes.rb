@@ -96,7 +96,8 @@ new({ post: :text }) do |params|
     data_found.each_with_index do |data_found, index|
       # we treat the first element
       if index == 0
-        send(:data, data_found)
+        send(:data, '')
+        text(data_found)
       else
         # we create new text's atome fasten to the main one (the first element above)
         text(data_found)
@@ -124,8 +125,8 @@ new({ atome: :vector })
 new({ atome: :table })
 new({ atome: :atomized, type: :hash })
 new({ atome: :map, type: :hash })
-new({atome: :vr, type: :hash})
-new({atome: :draw})
+new({ atome: :vr, type: :hash })
+new({ atome: :draw })
 
 
 
