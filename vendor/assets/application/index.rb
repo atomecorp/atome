@@ -14,8 +14,8 @@
 #
 # require "./examples/blur"
 # require "./examples/browser"
-require "./examples/help"
-# require "./examples/int8"
+# require "./examples/help"
+require "./examples/int8"
 
 # # alert "NB of atomes before: #{Universe.atomes.length}"
 # wait 1 do

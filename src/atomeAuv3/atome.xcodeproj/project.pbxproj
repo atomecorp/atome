@@ -1,0 +1,614 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		341BD9DB2CCBE0FA008C7627 /* atome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341BD9DA2CCBE0FA008C7627 /* atome.swift */; };
+		341BD9DD2CCBE1C9008C7627 /* AppInitialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341BD9DC2CCBE1C9008C7627 /* AppInitialization.swift */; };
+		341BD9DF2CCBE291008C7627 /* atome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341BD9DA2CCBE0FA008C7627 /* atome.swift */; };
+		341BD9E12CCBE29C008C7627 /* AppInitialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 341BD9DC2CCBE1C9008C7627 /* AppInitialization.swift */; };
+		349603F12818619200E13C15 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 349603F02818619200E13C15 /* Assets.xcassets */; };
+		34960404281861B500E13C15 /* webviewauv3AudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 34960403281861B500E13C15 /* webviewauv3AudioUnit.m */; };
+		34960408281861B500E13C15 /* DSPKernel.hpp in Resources */ = {isa = PBXBuildFile; fileRef = 34960407281861B500E13C15 /* DSPKernel.hpp */; };
+		3496040A281861B500E13C15 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 34960409281861B500E13C15 /* DSPKernel.mm */; };
+		3496040C281861B500E13C15 /* BufferedAudioBus.hpp in Resources */ = {isa = PBXBuildFile; fileRef = 3496040B281861B500E13C15 /* BufferedAudioBus.hpp */; };
+		3496040F281861B500E13C15 /* webviewauv3DSPKernel.hpp in Resources */ = {isa = PBXBuildFile; fileRef = 3496040E281861B500E13C15 /* webviewauv3DSPKernel.hpp */; };
+		34960411281861B500E13C15 /* webviewauv3DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 34960410281861B500E13C15 /* webviewauv3DSPKernel.mm */; };
+		34960414281861B500E13C15 /* AudioUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34960413281861B500E13C15 /* AudioUnitViewController.swift */; };
+		34960420281861B500E13C15 /* atome.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 349603FF281861B500E13C15 /* atome.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		34960427281861EE00E13C15 /* src in Resources */ = {isa = PBXBuildFile; fileRef = 34960426281861EE00E13C15 /* src */; };
+		34960428281861EE00E13C15 /* src in Resources */ = {isa = PBXBuildFile; fileRef = 34960426281861EE00E13C15 /* src */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3496041E281861B500E13C15 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 349603DC2818618F00E13C15 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 349603FE281861B500E13C15;
+			remoteInfo = webviewauv3;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		34960424281861B500E13C15 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				34960420281861B500E13C15 /* atome.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		341996332CCBC77F00FB9B40 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		341996362CCBC7F100FB9B40 /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
+		341996372CCBC7F100FB9B40 /* MetalFX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalFX.framework; path = System/Library/Frameworks/MetalFX.framework; sourceTree = SDKROOT; };
+		341996382CCBC7F100FB9B40 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		341996392CCBC7F100FB9B40 /* MetalPerformanceShadersGraph.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShadersGraph.framework; path = System/Library/Frameworks/MetalPerformanceShadersGraph.framework; sourceTree = SDKROOT; };
+		341BD9D92CCBE0FA008C7627 /* webview-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "webview-Bridging-Header.h"; sourceTree = "<group>"; };
+		341BD9DA2CCBE0FA008C7627 /* atome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = atome.swift; sourceTree = "<group>"; };
+		341BD9DC2CCBE1C9008C7627 /* AppInitialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInitialization.swift; sourceTree = "<group>"; };
+		341BD9E42CCBE5D9008C7627 /* atome.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = atome.entitlements; sourceTree = "<group>"; };
+		349603E42818619000E13C15 /* eve.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eve.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		349603F02818619200E13C15 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		349603F52818619200E13C15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		349603FF281861B500E13C15 /* atome.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = atome.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		34960402281861B500E13C15 /* webviewauv3AudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = webviewauv3AudioUnit.h; sourceTree = "<group>"; };
+		34960403281861B500E13C15 /* webviewauv3AudioUnit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = webviewauv3AudioUnit.m; sourceTree = "<group>"; };
+		34960407281861B500E13C15 /* DSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DSPKernel.hpp; sourceTree = "<group>"; };
+		34960409281861B500E13C15 /* DSPKernel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
+		3496040B281861B500E13C15 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
+		3496040D281861B500E13C15 /* webviewauv3DSPKernelAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = webviewauv3DSPKernelAdapter.h; sourceTree = "<group>"; };
+		3496040E281861B500E13C15 /* webviewauv3DSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = webviewauv3DSPKernel.hpp; sourceTree = "<group>"; };
+		34960410281861B500E13C15 /* webviewauv3DSPKernel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = webviewauv3DSPKernel.mm; sourceTree = "<group>"; };
+		34960413281861B500E13C15 /* AudioUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewController.swift; sourceTree = "<group>"; };
+		34960419281861B500E13C15 /* webviewauv3-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "webviewauv3-Bridging-Header.h"; sourceTree = "<group>"; };
+		3496041D281861B500E13C15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		34960425281861B900E13C15 /* atome.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = atome.entitlements; sourceTree = "<group>"; };
+		34960426281861EE00E13C15 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		349603E12818619000E13C15 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		349603FC281861B500E13C15 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		341996322CCBC77F00FB9B40 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				341996372CCBC7F100FB9B40 /* MetalFX.framework */,
+				341996382CCBC7F100FB9B40 /* MetalKit.framework */,
+				341996362CCBC7F100FB9B40 /* MetalPerformanceShaders.framework */,
+				341996392CCBC7F100FB9B40 /* MetalPerformanceShadersGraph.framework */,
+				341996332CCBC77F00FB9B40 /* Metal.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		349603DB2818618F00E13C15 = {
+			isa = PBXGroup;
+			children = (
+				34960426281861EE00E13C15 /* src */,
+				349603E62818619000E13C15 /* atome */,
+				34960400281861B500E13C15 /* auv3 */,
+				341996322CCBC77F00FB9B40 /* Frameworks */,
+				349603E52818619000E13C15 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		349603E52818619000E13C15 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				349603E42818619000E13C15 /* eve.app */,
+				349603FF281861B500E13C15 /* atome.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		349603E62818619000E13C15 /* atome */ = {
+			isa = PBXGroup;
+			children = (
+				341BD9E42CCBE5D9008C7627 /* atome.entitlements */,
+				341BD9DC2CCBE1C9008C7627 /* AppInitialization.swift */,
+				349603F02818619200E13C15 /* Assets.xcassets */,
+				349603F52818619200E13C15 /* Info.plist */,
+				341BD9DA2CCBE0FA008C7627 /* atome.swift */,
+				341BD9D92CCBE0FA008C7627 /* webview-Bridging-Header.h */,
+			);
+			path = atome;
+			sourceTree = "<group>";
+		};
+		34960400281861B500E13C15 /* auv3 */ = {
+			isa = PBXGroup;
+			children = (
+				34960425281861B900E13C15 /* atome.entitlements */,
+				34960419281861B500E13C15 /* webviewauv3-Bridging-Header.h */,
+				3496041D281861B500E13C15 /* Info.plist */,
+				34960401281861B500E13C15 /* Audio Unit */,
+				34960405281861B500E13C15 /* DSP */,
+				34960412281861B500E13C15 /* UI */,
+			);
+			path = auv3;
+			sourceTree = "<group>";
+		};
+		34960401281861B500E13C15 /* Audio Unit */ = {
+			isa = PBXGroup;
+			children = (
+				34960402281861B500E13C15 /* webviewauv3AudioUnit.h */,
+				34960403281861B500E13C15 /* webviewauv3AudioUnit.m */,
+			);
+			path = "Audio Unit";
+			sourceTree = "<group>";
+		};
+		34960405281861B500E13C15 /* DSP */ = {
+			isa = PBXGroup;
+			children = (
+				3496040E281861B500E13C15 /* webviewauv3DSPKernel.hpp */,
+				34960410281861B500E13C15 /* webviewauv3DSPKernel.mm */,
+				34960406281861B500E13C15 /* Helpers */,
+			);
+			path = DSP;
+			sourceTree = "<group>";
+		};
+		34960406281861B500E13C15 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				34960407281861B500E13C15 /* DSPKernel.hpp */,
+				34960409281861B500E13C15 /* DSPKernel.mm */,
+				3496040B281861B500E13C15 /* BufferedAudioBus.hpp */,
+				3496040D281861B500E13C15 /* webviewauv3DSPKernelAdapter.h */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		34960412281861B500E13C15 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				34960413281861B500E13C15 /* AudioUnitViewController.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		349603E32818619000E13C15 /* eve */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 349603F82818619200E13C15 /* Build configuration list for PBXNativeTarget "eve" */;
+			buildPhases = (
+				341BD9DE2CCBE26F008C7627 /* Sources */,
+				349603E12818619000E13C15 /* Frameworks */,
+				349603E22818619000E13C15 /* Resources */,
+				34960424281861B500E13C15 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3496041F281861B500E13C15 /* PBXTargetDependency */,
+			);
+			name = eve;
+			productName = webview;
+			productReference = 349603E42818619000E13C15 /* eve.app */;
+			productType = "com.apple.product-type.application";
+		};
+		349603FE281861B500E13C15 /* atome */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 34960421281861B500E13C15 /* Build configuration list for PBXNativeTarget "atome" */;
+			buildPhases = (
+				349603FB281861B500E13C15 /* Sources */,
+				349603FC281861B500E13C15 /* Frameworks */,
+				349603FD281861B500E13C15 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = atome;
+			productName = webviewauv3;
+			productReference = 349603FF281861B500E13C15 /* atome.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		349603DC2818618F00E13C15 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1330;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					349603E32818619000E13C15 = {
+						CreatedOnToolsVersion = 13.3.1;
+						LastSwiftMigration = 1600;
+					};
+					349603FE281861B500E13C15 = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 349603DF2818618F00E13C15 /* Build configuration list for PBXProject "atome" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 349603DB2818618F00E13C15;
+			productRefGroup = 349603E52818619000E13C15 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				349603E32818619000E13C15 /* eve */,
+				349603FE281861B500E13C15 /* atome */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		349603E22818619000E13C15 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				349603F12818619200E13C15 /* Assets.xcassets in Resources */,
+				34960427281861EE00E13C15 /* src in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		349603FD281861B500E13C15 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34960428281861EE00E13C15 /* src in Resources */,
+				3496040F281861B500E13C15 /* webviewauv3DSPKernel.hpp in Resources */,
+				34960408281861B500E13C15 /* DSPKernel.hpp in Resources */,
+				3496040C281861B500E13C15 /* BufferedAudioBus.hpp in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		341BD9DE2CCBE26F008C7627 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				341BD9DF2CCBE291008C7627 /* atome.swift in Sources */,
+				341BD9E12CCBE29C008C7627 /* AppInitialization.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		349603FB281861B500E13C15 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34960411281861B500E13C15 /* webviewauv3DSPKernel.mm in Sources */,
+				34960414281861B500E13C15 /* AudioUnitViewController.swift in Sources */,
+				3496040A281861B500E13C15 /* DSPKernel.mm in Sources */,
+				341BD9DD2CCBE1C9008C7627 /* AppInitialization.swift in Sources */,
+				341BD9DB2CCBE0FA008C7627 /* atome.swift in Sources */,
+				34960404281861B500E13C15 /* webviewauv3AudioUnit.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3496041F281861B500E13C15 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 349603FE281861B500E13C15 /* atome */;
+			targetProxy = 3496041E281861B500E13C15 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		349603F62818619200E13C15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		349603F72818619200E13C15 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		349603F92818619200E13C15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = atome/atome.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = atome/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = atome.eve;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "atome/webview-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		349603FA2818619200E13C15 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = atome/atome.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = atome/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = atome.eve;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "atome/webview-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		34960422281861B500E13C15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = auv3/atome.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = auv3/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = atome;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = atome.eve.atome;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = NO;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "auv3/webviewauv3-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		34960423281861B500E13C15 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = auv3/atome.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = auv3/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = atome;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = atome.eve.atome;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = NO;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "auv3/webviewauv3-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		349603DF2818618F00E13C15 /* Build configuration list for PBXProject "atome" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				349603F62818619200E13C15 /* Debug */,
+				349603F72818619200E13C15 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		349603F82818619200E13C15 /* Build configuration list for PBXNativeTarget "eve" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				349603F92818619200E13C15 /* Debug */,
+				349603FA2818619200E13C15 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		34960421281861B500E13C15 /* Build configuration list for PBXNativeTarget "atome" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34960422281861B500E13C15 /* Debug */,
+				34960423281861B500E13C15 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 349603DC2818618F00E13C15 /* Project object */;
+}

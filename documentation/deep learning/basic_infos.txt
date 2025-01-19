@@ -271,7 +271,7 @@ After :
 Particle  : only after rendering and storage (context is the current atome)
 
 read:
-To alter a particle before getting the  value
+To alter a particle before getting the value behave like a a getter
 
 
 

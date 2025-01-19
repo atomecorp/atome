@@ -225,3 +225,7 @@ allow_right_touch(false) # this lock the system right click in web view
 A.add_text_visual({ path: 'Roboto', name: 'Roboto-Bold' })
 A.add_text_visual({ path: 'Roboto', name: 'Roboto-Thin' })
 A.add_text_visual({ path: 'Roboto', name: 'Roboto-LightItalic' })
+
+default_lang=:english
+grab(:view).language(default_lang)
+grab(:intuition).language(default_lang)

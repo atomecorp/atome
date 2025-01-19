@@ -90,7 +90,8 @@ end
 new({ atome: :animation })
 new({ atome: :group })
 new({ atome: :text, type: :hash })
-new({ post: :text }) do |params|
+new({ pre: :text }) do |params|
+  #below
   data_found = params[:data]
   if data_found.instance_of? Array
     data_found.each_with_index do |data_found, index|

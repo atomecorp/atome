@@ -24,7 +24,7 @@ new ({ sanitizer: :password }) do |params|
   end
   params
 end
-
+# read is used to add special treatment when you get the value getter like method
 new({ read: :password }) do |params|
   # TODO : check if we have to reactive the lines below
 

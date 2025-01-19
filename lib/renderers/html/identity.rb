@@ -62,19 +62,77 @@ end
 new({ method: :type, type: :string, specific: :color, renderer: :html }) do
 end
 
+def check_parent_language(parent)
+  parent_found=grab(parent)
+  language_found=parent_found.language
+  unless language_found
+    language_found=   check_parent_language(parent_found.attach)
+  end
+  # puts "===> #{id}"
+  # puts "==>#{language_found}"
+  language_found
+end
+
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |params|
 
+  if int8
+    unless language
+      language=  check_parent_language(attach)
+    end
+    # puts "language: #{language},  #{language.class}"
+    # puts "attach: #{attach}"
+    # puts "language : #{grab(attach).language}"
+  end
+  # data_found = params[:data]
+  if int8[language]
+    if int8[language][params] # language found
+      alert "case1 : #{int8[language][params]}"
+    elsif int8[grab(:view).language][params] # language not found
+      alert "case2 : #{int8[grab(:view).language][params]}"
+    else #no langauage
+      alert "case3 : #{params}"
+      params
+    end
+    params
+  end
+  #
   # js[:innerHTML] = if int8[language]
   #                    int8[language].to_s
   #                  else
   #                    params.to_s
   #                  end
 
-  # alert "#{Universe.translation} /// #{params} /// #{Universe.language}"
   if Universe.translation[params]
     params = Universe.translation[params][Universe.language]
+    alert :icicicici
+    # data([{"data"=>"jooooooll", "left"=>-33},{"data"=>" you are", "top"=>12},{"data"=>" cool", "color"=>"red", "id"=>"new_one"}])
+    # { data: [{data: :jooooooll, left: -33}, {data: ' you are', top: 12},{ data: ' cool', color: :red, id: :new_one }], component: { size: 33 }, left: 120 }
+    # js[:innerHTML] = params.to_s
+  # else
+  #   puts  "=> #{params} : #{params.class}"
+
   end
-  js[:innerHTML] = params.to_s
+  unless params.instance_of? Array
+    # js[:innerHTML] = "jen suis la : params : #{params.to_s}"
+    js[:innerHTML]  = params.to_s
+  end
+  # if params.instance_of? Array
+  #   params.each_with_index do |data_found, index|
+  #
+  #     if index == 0
+  #       # send(:data, '')
+  #       # data(data_found)
+  #     else
+  #       # we create new text's atome fasten to the main one (the first element above)
+  #       # data(data_found)
+  #     end
+  #     # data('data_found')
+  #   end
+  # else
+  #   # send(:data, data_found)
+  #   js[:innerHTML] = params.to_s
+  # end
+
 
 end
 new({ method: :code, type: :string, specific: :editor, renderer: :html }) do |params|
@@ -116,7 +174,7 @@ end
 
 new({ method: :path, type: :string, renderer: :html, specific: :vr }) do |value, _user_proc|
   # wait 0.1 do # we have to wait for ruby wasm else it won't work
-    html.vr_path(value)
+  html.vr_path(value)
   # end
 end
 

@@ -29,6 +29,7 @@ class Atome
     @apply = []
     @collect = {}
     @int8 = {}
+    # @language = :english
     @css = {}
     @code = {}
     @aid = new_atome[:aid] || identity_generator
