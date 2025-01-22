@@ -348,3 +348,8 @@ new({ particle: :state, category: :utility, type: :symbol })
 new({ particle: :record, category: :utility, type: :hash })
 new({ particle: :preview, category: :utility, type: :hash })
 new({particle: :meteo, category: :utility, type: :string})
+new({ particle: :timer, category: :utility, type: :hash }) do |params, bloc|
+  @timer_callback = bloc
+  js_timer(params[:start], params[:end], id)
+  params
+end

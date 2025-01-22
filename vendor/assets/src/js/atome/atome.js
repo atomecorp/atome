@@ -545,24 +545,19 @@ class my_test_class {
 //////////
 
 
-window.console.log = (function (oldLog) {
-    return function (message) {
-        oldLog(message); // Appeler l'ancien console.log
-        try {
-            window.webkit.messageHandlers.console.postMessage(message); // Envoyer à Swift
-        } catch (err) {
-            oldLog('Error posting log to Swift: ' + err);
-        }
-    };
-})(window.console.log);
-
-// Intercepter les erreurs JavaScript globales
-window.onerror = function (message, source, lineno, colno, error) {
-    const errorMessage = `Error: ${message} at ${source}:${lineno}:${colno}`;
-    try {
-        // Envoyer à Swift
-        window.webkit.messageHandlers.console.postMessage(errorMessage);
-    } catch (err) {
-        console.warn('Error sending JS error to Swift: ', err);
+// Redefined console.log
+window.console.log=(function(oldLog){
+    return function(message){
+        oldLog(message)
+        try{window.webkit.messageHandlers.console.postMessage("LOG: "+message)}
+        catch(e){oldLog()}
     }
-};
+})(window.console.log)
+
+window.console.error=(function(oldErr){
+    return function(message){
+        oldErr(message)
+        try{window.webkit.messageHandlers.console.postMessage("ERROR: "+message)}
+        catch(e){oldErr()}
+    }
+})(window.console.error)

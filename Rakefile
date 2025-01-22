@@ -81,7 +81,7 @@ task :auv3_mac_opal => :test_opal do
   Dir.chdir('./tmp/atomeAuv3') do
     sh 'xcodebuild -project atome.xcodeproj -scheme atomeauv3 -destination "generic/platform=macOS,variant=Mac Catalyst" clean build install'
   end
-
+  system("open ~/Library/Developer/Xcode/DerivedData/")
   puts :success
 end
 

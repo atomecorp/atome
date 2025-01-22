@@ -929,7 +929,69 @@ class CssProxy
 
 
 end
-# def get_logs
-#   A.view_logs
-#   "ljhkjh"
+
+def timer_callback(val, id)
+  grab(id).instance_variable_get("@timer_callback").call(val)
+end
+
+def js_timer(start, stop, id)
+
+  js_timer = <<STR
+let start = #{start}
+let stop =#{stop}
+  if (start >= stop) {
+    throw new Error("Start must be less than Stop");
+  }
+  let position = start;
+  const advance = () => {
+    if (position <= stop) {
+atomeJsToRuby("timer_callback("+position+",'#{id}')")
+      position += 1;
+      setTimeout(advance, 1);
+    }
+  };
+  advance();
+
+STR
+  JS.eval(js_timer)
+  # alert @timer_callback.class
+end
+
+# def js_timer(start, stop, id)
+#   js_timer = <<STR
+# let start = #{start};
+# let stop = #{stop};
+#
+# if (start >= stop) {
+#   throw new Error("Start must be less than Stop");
+# }
+#
+# let position = start;
+# let lastTime = performance.now();
+#
+# const advance = () => {
+#   let now = performance.now();
+#   let elapsed = now - lastTime;
+#
+#   // Calculer combien d'incréments ajouter en fonction du temps écoulé
+#   let increments = Math.floor(elapsed);
+#   lastTime = now;
+#
+#   for (let i = 0; i < increments; i++) {
+#     if (position <= stop) {
+#       atomeJsToRuby("timer_callback(" + position + ",'#{id}')");
+#       position += 1;
+#     }
+#   }
+#
+#   // Continue seulement si on n'a pas atteint la fin
+#   if (position <= stop) {
+#     requestAnimationFrame(advance);
+#   }
+# };
+#
+# requestAnimationFrame(advance);
+# STR
+#
+#   JS.eval(js_timer)
 # end

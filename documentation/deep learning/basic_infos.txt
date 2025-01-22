@@ -195,8 +195,8 @@ atomeJsToRuby(‘particle_callback', "('" + js_data + "')")
 Exemple with terminal particle:
 atomeJsToRuby('termninal_callback', "('" + cmd_result + "')")
 Or call the callback like this :
-atomeJsToRuby( " instance_variable_set(‘@terminal_code’, "’" +data+  "’" )")
-atomeJsToRuby("callback(:terminal) ")
+atomeJsToRuby("instance_variable_set(‘@terminal_code’,"’"+data+ "’")")
+atomeJsToRuby("callback(:terminal)")
 
 One is called wasm.js directory and one called opal.js both have the same method  :  atomeJsToRuby
 
@@ -256,7 +256,7 @@ Sanitizer :
 Particle : allow to modify params send by user before parsing creation  (context is the current atome)
 Atome : allow to modify params send by user before parsing creation
 
-To remove :  in material.b add it to : « new({post: :remove}) do |params| »
+To remove :  in material.b add it to : «new({post: :remove}) do |params|»
 
 
 Pre :

@@ -94,33 +94,13 @@
 # end
 
 ############################
-box({top: 200, left: 200, color: :red})
-circle({top: 0, left: 0, color: :orange})
-puts 'okokok'
-wait 3 do
-  b=box({top: 100, left: 00, color: :blue})
 
-  b.smooth(66)
-  # c.smooth(66)
-  text({data:  "ok ok ok ok ok ok ok ok ok ok ok ok ok ok ok ",  left: 120, top: 60, height: 120, width: 120, position: :absolute })
-  # d.smooth(66)
-end
-circle({top: 60, left: 60})
 # require "./examples/blur"
 # require "./examples/browser"
 # require "./examples/help"
 # require "./examples/int8"
+require "./examples/lyrics"
 
-# # alert "NB of atomes before: #{Universe.atomes.length}"
-# wait 1 do
-#   grab(:intuition).delete({ force: true })
-#   # alert "NB of atomes after: #{Universe.atomes.length}"
-# end
-# wait 1 do
-#   grab(:toolbox_tool).delete({ force: true })
-#   # grab(:kjhkj).delete({ force: true })
-# end
-# b=box
 
 # # TODO: make delete force delete current object for consistency
 puts 'automatise tool creation from APIs'
