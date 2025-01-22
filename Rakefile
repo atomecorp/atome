@@ -27,6 +27,94 @@ load 'exe/atome'
 #     end
 # end
 
+task :clean_derived_data do
+  derived_data_path = File.expand_path("~/Library/Developer/Xcode/DerivedData")
+  if Dir.exist?(derived_data_path)
+    puts "Cleaning DerivedData..."
+    FileUtils.rm_rf(derived_data_path)
+    puts "DerivedData cleaned."
+  else
+    puts "DerivedData folder not found."
+  end
+end
+
+
+
+task :auv3_ipad_opal => :test_opal do
+
+  FileUtils.cp_r('./src/atomeAuv3/', './tmp/atomeAuv3/')
+  FileUtils.cp_r('./tmp/test/src/', './tmp/atomeAuv3/')
+  FileUtils.cp_r('./tmp/atomeAuv3/src/index_opal.html', './tmp/atomeAuv3/src/index.html')
+
+  Dir.chdir('./tmp/atomeAuv3') do
+    sh 'xcodebuild -project atome.xcodeproj ' \
+         '-scheme atomeauv3 ' \
+         '-destination "id=00008027-000520902E31802E" ' \
+         'clean build install'
+  end
+
+  puts :sucess
+end
+
+task :auv3_ipad_wasm => :test_wasm do
+
+  FileUtils.cp_r('./src/atomeAuv3', './tmp/atomeAuv3')
+  FileUtils.cp_r('./tmp/test/src/', './tmp/atomeAuv3/')
+  FileUtils.cp_r('./tmp/atomeAuv3/src/index_wasm.html', './tmp/atomeAuv3/src/index.html')
+
+  Dir.chdir('./tmp/atomeAuv3') do
+    sh 'xcodebuild -project atome.xcodeproj ' \
+         '-scheme atomeauv3 ' \
+         '-destination "id=00008027-000520902E31802E" ' \
+         'clean build install'
+  end
+
+  puts :sucess
+end
+
+
+task :auv3_mac_opal => :test_opal do
+  FileUtils.cp_r('./src/atomeAuv3/', './tmp/atomeAuv3/')
+  FileUtils.cp_r('./tmp/test/src/', './tmp/atomeAuv3/')
+  FileUtils.cp_r('./tmp/atomeAuv3/src/index_opal.html', './tmp/atomeAuv3/src/index.html')
+
+  Dir.chdir('./tmp/atomeAuv3') do
+    sh 'xcodebuild -project atome.xcodeproj -scheme atomeauv3 -destination "generic/platform=macOS,variant=Mac Catalyst" clean build install'
+  end
+
+  puts :success
+end
+
+# task :auv3_mac_opal => :test_opal do
+#   FileUtils.cp_r('./src/atomeAuv3/', './tmp/atomeAuv3/')
+#   FileUtils.cp_r('./tmp/test/src/', './tmp/atomeAuv3/')
+#   FileUtils.cp_r('./tmp/atomeAuv3/src/index_opal.html', './tmp/atomeAuv3/src/index.html')
+#
+#   Dir.chdir('./tmp/atomeAuv3') do
+#     sh 'xcodebuild -project atome.xcodeproj ' \
+#          '-scheme atomeauv3 ' \
+#          '-destination "generic/platform=macOS,variant=Mac Catalyst" ' \
+#          'clean build install'
+#   end
+#
+#   puts :sucess
+# end
+
+task :auv3_mac_wasm => :test_wasm do
+  # FileUtils.rm_rf('./tmp/atomeAuv3')
+  # FileUtils.cp_r('./src/', './tmp/')
+  # FileUtils.cp_r('./tmp/test/src/', './tmp/atomeAuv3/')
+  # FileUtils.rm_rf('./tmp/atomeAuv3/src/index.html')
+  # FileUtils.cp_r('./tmp/atomeAuv3/src/index_wasm.html', './tmp/atomeAuv3/src/index.html')
+  #
+  # Dir.chdir('./tmp/atomeAuv3') do
+  #   sh 'xcodebuild -project atome.xcodeproj ' \
+  #        '-scheme atomeauv3 ' \
+  #        '-destination "generic/platform=macOS,variant=Mac Catalyst" ' \
+  #        'clean build install'
+  # end
+  # puts :sucess
+end
 
 task :cleanup do
 
@@ -49,7 +137,6 @@ task :cleanup do
   Dir.chdir('pkg') do
     #  treatment here
   end
-
 
 end
 task :reset_cache do
@@ -92,6 +179,8 @@ def wasm_params(source, destination, project_name, wasi_file, host_mode, script_
 end
 
 task :test_wasm do
+  # FileUtils.rm_rf('./tmp/')
+  # FileUtils.mkdir_p('./tmp')
   project_name = :test
   source = '.'
 
@@ -135,6 +224,9 @@ task :test_wasm do
 end
 
 task :test_opal do
+  # we clean the tmp repertory
+  # FileUtils.rm_rf('./tmp/')
+  # FileUtils.mkdir_p('./tmp')
   project_name = :test
   source = '.'
   destination = './tmp'
@@ -171,6 +263,8 @@ task :test_opal do
 end
 
 task :test_server_wasm do
+  # FileUtils.rm_rf('./tmp/')
+  # FileUtils.mkdir_p('./tmp')
   project_name = :test
   source = '.'
   destination = './tmp'
@@ -184,7 +278,7 @@ task :test_server_wasm do
   threads << Thread.new do
 
     sleep 1
-    timestamp=Time.now.strftime("%Y%m%d%H%M%S")
+    timestamp = Time.now.strftime("%Y%m%d%H%M%S")
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
       `start  http://localhost:9292?date=#{timestamp}`
@@ -202,8 +296,9 @@ task :test_server_wasm do
 
 end
 
-
-task :test_server do
+task :test_server_opal do
+  # FileUtils.rm_rf('./tmp/')
+  # FileUtils.mkdir_p('./tmp')
   project_name = :test
   source = '.'
   destination = './tmp'
@@ -228,11 +323,11 @@ task :test_server do
   threads << Thread.new do
 
     sleep 1
-    timestamp=Time.now.strftime("%Y%m%d%H%M%S")
+    timestamp = Time.now.strftime("%Y%m%d%H%M%S")
 
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
-       `start  http://localhost:9292?date=#{timestamp}`
+      `start  http://localhost:9292?date=#{timestamp}`
 
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec for MacOS
@@ -271,7 +366,7 @@ task :opal_server_rebuild do
   threads << Thread.new do
 
     sleep 1
-    timestamp=Time.now.strftime("%Y%m%d%H%M%S")
+    timestamp = Time.now.strftime("%Y%m%d%H%M%S")
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       # code to exec for Windows
       `start  http://localhost:9292?date=#{timestamp}`

@@ -255,6 +255,7 @@ class Atome
 
     Universe.edit_mode = true
     # init the tool
+
     tool.data[:treated] = []
     tool.data[:created] = []
     tool.data[:prev_states] = {}

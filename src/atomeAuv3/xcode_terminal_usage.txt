@@ -1,0 +1,39 @@
+// get scheme :
+
+xcodebuild -project atome.xcodeproj -list
+
+
+
+
+
+// build for mac 
+xcodebuild -project atome.xcodeproj \
+   -scheme atomeauv3 \
+   -destination "generic/platform=macOS,variant=Mac Catalyst" \
+   clean build
+   
+
+
+
+// list devices :
+
+ atomeAuv3 % xcrun xctrace list devices
+
+//Ex : 
+//Jeezs’s iPad (18.3) (00008027-000520902E31802E)
+// Jeezs’s phone (18.3) (00008020-000A29E23428002E)
+   
+   // build for iPad
+   
+xcodebuild -project atome.xcodeproj \
+           -scheme atomeauv3 \
+           -destination "id=00008027-000520902E31802E" \
+           clean build install
+
+
+	 // build for iPhone 
+	 
+xcodebuild -project atome.xcodeproj \
+           -scheme atomeauv3 \
+           -destination "id=00008020-000A29E23428002E" \
+           clean build install

@@ -542,31 +542,27 @@ class my_test_class {
 //     alert (a);
 // }, 1000);
 
-const tempLogs = [];
-const originalConsoleAccess = console;
-const originalConsoleLog = console.log;
+//////////
 
-console.log = function(...args) {
-    tempLogs.push(args.join(' '));
-    originalConsoleLog.apply(console, args);
+
+window.console.log = (function (oldLog) {
+    return function (message) {
+        oldLog(message); // Appeler l'ancien console.log
+        try {
+            window.webkit.messageHandlers.console.postMessage(message); // Envoyer à Swift
+        } catch (err) {
+            oldLog('Error posting log to Swift: ' + err);
+        }
+    };
+})(window.console.log);
+
+// Intercepter les erreurs JavaScript globales
+window.onerror = function (message, source, lineno, colno, error) {
+    const errorMessage = `Error: ${message} at ${source}:${lineno}:${colno}`;
+    try {
+        // Envoyer à Swift
+        window.webkit.messageHandlers.console.postMessage(errorMessage);
+    } catch (err) {
+        console.warn('Error sending JS error to Swift: ', err);
+    }
 };
-
-function get_logs() {
-    return tempLogs
-}
-
-/////////// tests ///////////
-
-// setTimeout(() => {
-//     tempLogs.length = 0;
-//     var elements = document.querySelectorAll('[id]');
-//     elements.forEach(function(el) {
-//         var rect = el.getBoundingClientRect();
-//         if (rect.width > 0 && rect.height > 0) {
-//                 atomeJsToRuby("grab(:"+el.id+").simulate(:touch)");
-//                 console.log('Clicked element with ID:', el.id);
-//         }
-//     });
-// }, 3000);
-
-
