@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-def delete_recursive(atome_id, force=false)
+def delete_recursive(atome_id, force = false)
   return if grab(atome_id).tag && (grab(atome_id).tag[:persistent] || grab(atome_id).tag[:system]) unless force
   touch(false)
   parent_id_found = grab(atome_id).attach
@@ -19,12 +19,12 @@ new({ particle: :renderers, category: :utility, type: :string })
 new({ particle: :code, category: :utility, type: :string, store: false }) do |params, code|
   @code[params] = code
 end
-new({ particle: :run, category: :utility, type: :boolean}) do |params, code|
+new({ particle: :run, category: :utility, type: :boolean }) do |params, code|
   instance_exec(&params) if params.is_a?(Proc)
   code_found = @code[params]
   instance_exec(params, &code_found) if code_found.is_a?(Proc)
 end
-new({ particle: :target , category: :utility, type: :string}) do |params|
+new({ particle: :target, category: :utility, type: :string }) do |params|
   params.each do |atome_f, value_f|
     if value_f.instance_of?(Hash)
       value_f.each do |part_f, part_val|
@@ -171,8 +171,6 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
   else
     send(params, 0) unless params == :id
   end
-
-
 
 end
 new({ particle: :clear, category: :utility, type: :boolean })
@@ -347,9 +345,32 @@ new({ particle: :storage, category: :utility, type: :hash })
 new({ particle: :state, category: :utility, type: :symbol })
 new({ particle: :record, category: :utility, type: :hash })
 new({ particle: :preview, category: :utility, type: :hash })
-new({particle: :meteo, category: :utility, type: :string})
+new({ particle: :meteo, category: :utility, type: :string })
 new({ particle: :timer, category: :utility, type: :hash }) do |params, bloc|
   @timer_callback = bloc
-  js_timer(params[:start], params[:end], id)
-  params
+  # params[:start] = (timer[:position] || 0) unless params[:start]
+  unless params[:start]
+    if timer && timer[:position]
+      params[:start] = timer[:position]
+    else
+      params[:start] = 0
+    end
+  end
+  params[:end] = (params[:position] || 0) unless params[:end]
+  if params[:stop]
+    js_timer('kill', nil, id)
+    params[:position] = 0
+    params
+  elsif params[:pause]
+    end_val = timer[:position]
+    js_timer('kill', nil, id)
+    params[:position] = end_val
+    params[:start] = end_val
+    params
+  else
+    js_timer('kill', nil, id)
+    js_timer(params[:start], params[:end], id)
+    params
+  end
+
 end

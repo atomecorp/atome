@@ -931,32 +931,80 @@ class CssProxy
 end
 
 def timer_callback(val, id)
-  grab(id).instance_variable_get("@timer_callback").call(val)
+  # alert((val.to_s)+" : "+ id)
+  proc_found=grab(id).instance_variable_get("@timer_callback")
+  proc_found.call(val) if proc_found.is_a? Proc
 end
 
-def js_timer(start, stop, id)
+# def js_timer(start, stop, id)
+#
+#   js_timer = <<STR
+# let start = #{start}
+# let stop =#{stop}
+#   if (start >= stop) {
+#     throw new Error("Start must be less than Stop");
+#   }
+#   let position = start;
+#   const advance = () => {
+#     if (position <= stop) {
+# atomeJsToRuby("timer_callback("+position+",'#{id}')")
+#       position += 1;
+#       setTimeout(advance, 1);
+#     }
+#   };
+#   advance();
+#
+# STR
+#   JS.eval(js_timer)
+# end
 
-  js_timer = <<STR
-let start = #{start}
-let stop =#{stop}
-  if (start >= stop) {
-    throw new Error("Start must be less than Stop");
-  }
-  let position = start;
-  const advance = () => {
-    if (position <= stop) {
-atomeJsToRuby("timer_callback("+position+",'#{id}')")
-      position += 1;
-      setTimeout(advance, 1);
-    }
-  };
-  advance();
+def js_timer(start, stop = nil, id = nil)
+  id ||= "default_timer" # Assurez-vous d'avoir un identifiant par défaut si `id` est nil
 
-STR
+  if start == 'kill'
+    kill_timer_js = <<~STR
+      // Log the last position before killing
+//var last_position= window['#{id}_last_position']
+      //console.log("Last position before kill:"+ last_position);
+     // atomeJsToRuby("timer_callback(" + last_position + ",'#{id}')");
+      // Clear the timeout and stop the timer
+      if (window['#{id}_timeout_id']) {
+        clearTimeout(window['#{id}_timeout_id']);
+        window['#{id}_timeout_id'] = null;
+      }
+      window['#{id}_stop'] = true;
+    STR
+    JS.eval(kill_timer_js)
+    return
+  end
+
+  js_timer = <<~STR
+    let start = #{start};
+    let stop = #{stop};
+  
+    let position = start;
+    window['#{id}_stop'] = false;
+    // window['#{id}_last_position'] = position; // Initialize last_position with the starting value
+
+    const advance = () => {
+      if (position <= stop && !window['#{id}_stop']) {
+        // Log current position and callback
+        atomeJsToRuby("timer_callback(" + position + ",'#{id}')");
+        // console.log(position);
+        
+        // Update last_position with the current position
+        window['#{id}_last_position'] = position;
+        
+        position += 1;
+        window['#{id}_timeout_id'] = setTimeout(advance, 1);
+      }
+    };
+    advance();
+  STR
   JS.eval(js_timer)
-  # alert @timer_callback.class
 end
 
+#### Attention super precise timer, below  but  it lock the CPU
 # def js_timer(start, stop, id)
 #   js_timer = <<STR
 # let start = #{start};
