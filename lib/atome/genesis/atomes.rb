@@ -92,22 +92,22 @@ new({ atome: :group })
 new({ atome: :text, type: :hash })
 new({ pre: :text }) do |params|
   #below
-  data_found = params[:data]
-  if data_found.instance_of? Array
-    data_found.each_with_index do |data_found, index|
-      # we treat the first element
-      if index == 0
-        send(:data, '')
-        text(data_found)
-      else
-        # we create new text's atome fasten to the main one (the first element above)
-        text(data_found)
-      end
-
-    end
-  else
-    send(:data, data_found)
-  end
+  # data_found = params[:data]
+  # if data_found.instance_of? Array
+  #   data_found.each_with_index do |data_found, index|
+  #     # we treat the first element
+  #     if index == 0
+  #       send(:data, '')
+  #       text(data_found)
+  #     else
+  #       # we create new text's atome fasten to the main one (the first element above)
+  #       text(data_found)
+  #     end
+  #
+  #   end
+  # else
+  #   send(:data, data_found)
+  # end
   params
 end
 new({ sanitizer: :text }) do |params|

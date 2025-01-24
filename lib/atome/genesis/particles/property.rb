@@ -146,6 +146,8 @@ new({ particle: :orientation, type: :symbol, category: :property })
 
 new({ particle: :align, type: :symbol, category: :property })
 
+new({particle: :context, category: :property, type: :string }) # used to store the context of the object ex (edit mode,insert mode , read mode ..  )
+
 new({ particle: :actor, store: false, category: :property , type: :string }) do |params|
   @actor ||= {}
   if params[:remove]
@@ -171,4 +173,11 @@ new({ particle: :role, store: false, category: :property , type: :string }) do |
     @role << params
   end
 end
-
+new({ particle: :blink, category: :property, type: :symbol }) do |params|
+  @prev_color = color.last
+  @new_color = params
+  color(@new_color)
+  wait 0.1 do
+    apply(@prev_color)
+  end
+end

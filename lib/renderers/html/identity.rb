@@ -64,16 +64,47 @@ end
 
 def check_parent_language(parent)
   parent_found=grab(parent)
-  language_found=parent_found.language
-  unless language_found
-    language_found=   check_parent_language(parent_found.attach)
+  if parent_found
+    language_found=parent_found.language
+    unless language_found
+      language_found=   check_parent_language(parent_found.attach)
+    end
+    # puts "===> #{id}"
+    # puts "==>#{language_found}"
+    language_found
   end
-  # puts "===> #{id}"
-  # puts "==>#{language_found}"
-  language_found
+
 end
 
 new({ method: :data, type: :string, specific: :text, renderer: :html }) do |params|
+  if params.instance_of? Array
+    # we delete any child in case
+    # fixme we have using two iteration else some atome are not deleted
+    item_to_erase=[]
+    fasten.each do |child_f|
+      item_to_erase << grab(child_f)
+    end
+    item_to_erase.each do |item|
+      item.delete(true)
+    end
+
+
+    params.each_with_index do |data_f, index|
+      # we treat the first element
+      if index == 0
+        # send(:data, '')
+        text(data_f)
+      else
+        # we create new text's atome fasten to the main one (the first element above)
+        text(data_f)
+      end
+
+    end
+  else
+
+    # send(:data, data_found)
+    js[:innerHTML]  = params.to_s
+  end
 
   if int8
     unless language
@@ -112,10 +143,10 @@ new({ method: :data, type: :string, specific: :text, renderer: :html }) do |para
   #   puts  "=> #{params} : #{params.class}"
 
   end
-  unless params.instance_of? Array
-    # js[:innerHTML] = "jen suis la : params : #{params.to_s}"
-    js[:innerHTML]  = params.to_s
-  end
+  # unless params.instance_of? Array
+  #   # js[:innerHTML] = "jen suis la : params : #{params.to_s}"
+  #   js[:innerHTML]  = params.to_s
+  # end
   # if params.instance_of? Array
   #   params.each_with_index do |data_found, index|
   #

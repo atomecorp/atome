@@ -3,11 +3,7 @@
 b = box({left: 99, top: 99})
 b.text({ data: 'click me' })
 
-# wait 5 do
-#   b.delete(:left)
-#   puts 'o'
-# end
-orange=''
+
 b.touch(true) do
 
   c = grab(:view).circle({id: :circling, left: 222, color: :orange, blur: 1.9 })

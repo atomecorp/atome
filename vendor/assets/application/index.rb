@@ -102,6 +102,7 @@
 require "./examples/lyrics"
 
 
+
 # # TODO: make delete force delete current object for consistency
 puts 'automatise tool creation from APIs'
 puts 'add params when creating apis to add doc and infs'
