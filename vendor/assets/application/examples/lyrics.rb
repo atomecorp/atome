@@ -9,30 +9,20 @@ def closest_values(hash, target, count = 1)
   closest_index = sorted_keys.index(sorted_keys.min_by { |key| (key - target).abs })
   # ensure index is valid
   return ['no lyrics'] if closest_index.nil?
-  # puts sorted_keys[closest_index, count].map { |key| hash[key] }.compact
   # get the `count` value after the closest key
   sorted_keys[closest_index, count].map { |key| hash[key] }.compact
 end
 
 def format_lyrics(lyrics_array, target)
-  # t=text({ data: ['this is ', :super, { data: ' cool', color: :red, id: :new_one }]})
-  # wait 1 do
-  #   t.data(['this is ', :hyper, { data: 'geniously', color: :pink, id: :new_one }])
-  # end
-  # alert lyrics_array
-  # target.data(lyrics_array)
-  # target.data(lyrics_array.join("\n"))
   target.data(lyrics_array[0])
-  # target.text
   lyrics_array.each_with_index do |lyric, index|
     unless index == 0
-
       child = target.text(lyric)
       child.edit(false)
       child.color(:gray)
       child.left(0)
       child.position(:absolute)
-      child.top(19)
+      child.top(19*index)
     end
   end
 end
@@ -67,7 +57,7 @@ def update_lyrics(value, target, timer_found)
   timer_found.data(value)
   timer_found.timer[:position] = value
   timer_found.timer[:start] = value
-  current_lyrics = closest_values(target.content, value, 2)
+  current_lyrics = closest_values(target.content, value, 3)
   format_lyrics(current_lyrics, target)
 end
 
