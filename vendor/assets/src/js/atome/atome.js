@@ -561,3 +561,43 @@ window.console.error=(function(oldErr){
         catch(e){oldErr()}
     }
 })(window.console.error)
+
+// right click handling
+
+
+let isRightClickDisabled = true;
+
+document.addEventListener("contextmenu", function (e) {
+    if (isRightClickDisabled) {
+        e.preventDefault();
+    }
+});
+
+// Fonction pour activer le clic droit
+function enableRightClick() {
+    isRightClickDisabled = false;
+}
+
+// Fonction pour désactiver le clic droit
+function disableRightClick() {
+    isRightClickDisabled = true;
+}
+
+
+// let disableRightClick = true;
+//
+// document.addEventListener("contextmenu", function (e) {
+//     if (disableRightClick) {
+//         e.preventDefault();
+//     }
+// });
+//
+// // Fonction pour activer le clic droit
+// function enableRightClick() {
+//     disableRightClick = false;
+// }
+//
+// // Fonction pour désactiver le clic droit
+// function disableRightClick() {
+//     disableRightClick = true;
+// }

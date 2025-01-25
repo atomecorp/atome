@@ -164,14 +164,13 @@ support.shadow({
                  invert: true,
                  red: 0, green: 0, blue: 0, alpha: 0.7
                })
-open_filer = circle({ top: 6, left: 333, color: :yellowgreen })
+open_filer = text({data: :import, top: 6, left: 333, color: :yellowgreen })
 open_filer.import(true) do |val|
   parse_song_lyrics(val)
 end
 importer do |val|
   parse_song_lyrics(val[:content])
 end
-
 
 # tests
 lyrics.content({ 0 => "hello", 594 => "world", 838 => "of", 1295 => "hope" })

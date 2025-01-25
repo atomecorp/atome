@@ -69,7 +69,6 @@ end
 class Object
   include ObjectExtension
 
-
   def js_func(function_name, *params)
     args = params.map do |param|
       case param
@@ -117,9 +116,7 @@ class Object
     case obj
     when Hash
       obj.each_with_object({}) do |(k, v), h|
-        unless k == :code # exception to avoid Proc accumulation
-          h[deep_copy(k)] = deep_copy(v)
-        end
+        h[deep_copy(k)] = deep_copy(v) unless k == :code # exception to avoid Proc accumulation
       end
     when Array
       obj.map { |e| deep_copy(e) }
@@ -156,19 +153,10 @@ class Object
 
   def hook(a_id)
     a_id = a_id.to_sym
-    # Universe.atomes[a_id]
     atome_get = ''
-    Universe.atomes.each do |aid_f, atome|
-      # alert "1 #{atome}"
-
-      if atome.id == a_id
-        atome_get = atome
-        # alert "2 #{atome}"
-      end
-      # alert "3 #{atome_get}"
-
+    Universe.atomes.each_value do |atome|
+      atome_get = atome if atome.aid == a_id
     end
-    # alert atome_get
     atome_get
   end
 
@@ -518,9 +506,7 @@ class Object
   # end
 
   def fit(params)
-    unless params.instance_of?(Hash)
-      params = { value: params }
-    end
+    params = { value: params } unless params.instance_of?(Hash)
 
     target_size = params[:value]
     axis = params[:axis]
@@ -606,6 +592,7 @@ class Object
       end
     end
   end
+
   ############################
 
   def calculate_total_size(objet_atome, axis)
@@ -649,9 +636,7 @@ class Object
   end
 
   def atomizer(params)
-    unless params.instance_of? Hash
-      params = { target: params }
-    end
+    params = { target: params } unless params.instance_of? Hash
     id = params[:id]
     id_wanted = if id
                   { id: id }
@@ -665,10 +650,18 @@ class Object
   end
 
   def allow_right_touch(allow)
-    if allow
-      JS.eval('document.removeEventListener("contextmenu", window.preventDefaultAction);')
+    js_prevent = <<Str
+disableRightClick();
+Str
+
+    js_allow = <<Str
+  enableRightClick();
+
+Str
+    if allow == true
+      JS.eval(js_allow)
     else
-      JS.eval('document.addEventListener("contextmenu", window.preventDefaultAction);')
+      JS.eval(js_prevent)
     end
   end
 
@@ -926,13 +919,11 @@ class CssProxy
     bloc.call(parsed)
   end
 
-
-
 end
 
 def timer_callback(val, id)
   # alert((val.to_s)+" : "+ id)
-  proc_found=grab(id).instance_variable_get("@timer_callback")
+  proc_found = grab(id).instance_variable_get("@timer_callback")
   proc_found.call(val) if proc_found.is_a? Proc
 end
 
@@ -963,16 +954,16 @@ def js_timer(start, stop = nil, id = nil)
 
   if start == 'kill'
     kill_timer_js = <<~STR
-      // Log the last position before killing
-//var last_position= window['#{id}_last_position']
-      //console.log("Last position before kill:"+ last_position);
-     // atomeJsToRuby("timer_callback(" + last_position + ",'#{id}')");
-      // Clear the timeout and stop the timer
-      if (window['#{id}_timeout_id']) {
-        clearTimeout(window['#{id}_timeout_id']);
-        window['#{id}_timeout_id'] = null;
-      }
-      window['#{id}_stop'] = true;
+            // Log the last position before killing
+      //var last_position= window['#{id}_last_position']
+            //console.log("Last position before kill:"+ last_position);
+           // atomeJsToRuby("timer_callback(" + last_position + ",'#{id}')");
+            // Clear the timeout and stop the timer
+            if (window['#{id}_timeout_id']) {
+              clearTimeout(window['#{id}_timeout_id']);
+              window['#{id}_timeout_id'] = null;
+            }
+            window['#{id}_stop'] = true;
     STR
     JS.eval(kill_timer_js)
     return

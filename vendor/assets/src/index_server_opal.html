@@ -30,7 +30,6 @@
     <script defer src='js/aui.js'></script>
     <script defer src='js/host_mode.js'></script>
     <script defer src='js/opal/atome_opal_extensions.js'></script>
-    <script defer src='js/atome/kernel.js'></script>
     <script defer src="js/atome/atome_helpers/communication.js" type="text/javascript"></script>
     <script defer src="js/atome/atome_helpers/file.js" type="text/javascript"></script>
     <script  src="js/atome/utilities/importmap.js" type="text/javascript"></script>
@@ -48,12 +47,8 @@
     const NativeMode = false; // used by atome.js to load code on the fly
 </script>
 <script defer src="js/atome/atome.js" type="text/javascript"></script>
-<script>
-    // to prevent right click
-    document.addEventListener("contextmenu", function (e) {
-        e.preventDefault();
-    });
-</script>
+<script src='js/atome/kernel.js' defer></script>
+
 <script defer>
     document.addEventListener('touchstart', function (event) {
         if (event.touches.length > 1) {

@@ -1,5 +1,8 @@
 #  frozen_string_literal: true
 
+# allow storage below
+Universe.allow_localstorage = true
+
 b = box({ id: :the_box })
 b.data(:canyouwritethis)
 b.rotate(33)
@@ -9,7 +12,9 @@ b.rotate(12)
 b.rotate(6)
 b.data
 b.touch(true) do
-  puts  b.history
+  Universe.allow_localstorage = false
+  b.left(99)
+  puts  b.history # giv you the whole history not onlu hostory of
   # b.data(:super)
   # b.data
   # box_data_write_history=b.history({ operation: :write, id: :the_box, particle: :data })

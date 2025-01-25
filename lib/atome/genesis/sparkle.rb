@@ -218,9 +218,7 @@ def user_login
 
 end
 
-# Universe.allow_localstorage = true # to stop data to be stored in localstorage
-# Universe.allow_sync= false # to stop data to be sync on server
-allow_right_touch(false) # this lock the system right click in web view
+
 # add a few default font
 A.add_text_visual({ path: 'Roboto', name: 'Roboto-Bold' })
 A.add_text_visual({ path: 'Roboto', name: 'Roboto-Thin' })
@@ -229,3 +227,8 @@ A.add_text_visual({ path: 'Roboto', name: 'Roboto-LightItalic' })
 default_lang=:english
 grab(:view).language(default_lang)
 grab(:intuition).language(default_lang)
+
+
+# Universe.allow_localstorage = true # to stop data to be stored in localstorage
+# Universe.allow_sync= false # to stop data to be sync on server
+allow_right_touch(true) # this lock the system right click in web view

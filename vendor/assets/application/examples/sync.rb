@@ -1,4 +1,7 @@
 #  frozen_string_literal: true
+Universe.allow_localstorage = true
+Universe.allow_sync= true # to start data to be sync on server
+
 b = box({ id: :the_box })
 b.data(:canyouwritethis)
 b.rotate(33)
