@@ -101,6 +101,7 @@
 # require "./examples/int8"
 # require "./examples/lyrics"
 require "./examples/undo"
+# require "./examples/apply"
 
 
 

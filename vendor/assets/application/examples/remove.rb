@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
+#remove an apply particle
 b = box({ top: 166, id: :the_box, left: 333 })
+b.color({ id: :green, green: 1 })
 b.color({ id: :new_col, red: 1 })
-
+b.color({ id: :blue, blue: 1 })
 b.touch(true) do
-  # alert b.color
-  b.remove(:box_color)
-
-  # alert b.color
-  wait 1 do
+  b.remove(:new_col)
+  # wait 1 do
     grab('box_color').red(1)
-  end
+  # end
 end
 # b.color({id: :other_col,  green: 1})
 # # b.paint({gradient: [:other_col, :new_col]})

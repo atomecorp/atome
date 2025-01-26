@@ -13,7 +13,10 @@ def attachment_common(child_id, parents_id, direction, &user_proc)
   if direction == :attach
     if parent_found
       parent_found.fasten ||= []
-      parent_found.fasten.push(@id) unless parent_found.fasten.include?(@id)
+      unless parent_found.fasten.include?(@id)
+        parent_found.fasten.push(@id)
+        Universe.historicize(parent_found.aid, :write, :fasten, @id)
+      end
       detach_child(self)
       render(:attach, parents_id, &user_proc)
     end
@@ -32,6 +35,7 @@ end
 new({ particle: :fasten, category: :hierarchy, type: :string, render: false }) do |children_ids, &user_proc|
   children_ids = [children_ids] unless children_ids.instance_of?(Array)
   parents_id = @id
+
   children_ids.each do |children_id|
     attachment_common(children_id, parents_id, :fasten, &user_proc)
   end

@@ -35,7 +35,10 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
         html.style(:background, '')
         html.style(:backgroundColor, '')
         @apply.delete(object_id_to_remove)
-        apply(@apply)
+        temp_array=@apply.dup
+        temp_array.each do |atome_to_apply|
+          apply(atome_to_apply)
+        end
       end
     when :shadow
       html.style("boxShadow", 'none')
@@ -54,9 +57,13 @@ new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove
         @apply.delete(color_id)
       end
       @apply.delete(object_id_to_remove)
-      apply(@apply)
+      temp_array=@apply.dup
+      temp_array.each do |atome_to_apply|
+        apply(atome_to_apply)
+      end
     end
   end
+
 end
 
 new({ method: :thickness, type: :integer, renderer: :html })
