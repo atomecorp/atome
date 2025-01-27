@@ -12,9 +12,8 @@ def closest_values(hash, target, count = 1)
   # get the `count` value after the closest key
   sorted_keys[closest_index, count].map { |key| hash[key] }.compact
 end
-
 def format_lyrics(lyrics_array, target)
-  if target.data != lyrics_array[0] # we on ly update if there's a change
+  if target.data != lyrics_array[0]  &&  grab(:counter).content == :play # we only update if there's a change
     target.data(lyrics_array[0])
     lyrics_array.each_with_index do |lyric, index|
       unless index == 0
@@ -50,13 +49,12 @@ insert.text(data: :insert, component: { size: 9 }, top: -12, left: 3, color: :bl
 edit = box({ width: 33, height: 19, top: 39, color: :yellow, left: 39 })
 edit.text(data: 'edit', component: { size: 9 }, top: -12, left: 3, color: :black)
 
-# b4 = box({ left: 120, top: 70, color: :purple })
-
-counter = text({ data: :counter, left: 60, top: 90, position: :absolute, id: :counter })
-# check = b4.text(data: :check, component: { size: 9 }, top: -12, left: 3)
+counter = text({ data: :counter, content: :play,left: 60, top: 90, position: :absolute, id: :counter })
 base_text = 'my lyrics'
-lyrics = text({ data: [{ data: base_text }], id: :lyric_viewer, edit: true, component: { size: 33 }, top: 190, left: 35, position: :absolute, content: { 0 => base_text }, context: :insert })
+lyrics_support=box({id: :lyrics_support, width: 180, height: 180,top: 120, left: 35,color: {red: 0.2, green: 0.2, blue: 0.4, id: :base_support_color}})
+lyrics = lyrics_support.text({ top: 3, left: 3,width: 333,  data: [{ data: base_text }], id: :lyric_viewer, edit: true, component: { size: 33 }, position: :absolute, content: { 0 => base_text }, context: :insert })
 counter.timer({ position: 88 })
+
 
 def update_lyrics(value, target, timer_found)
   timer_found.data(value)
@@ -69,15 +67,9 @@ end
 slider({ id: :toto, range: { color: :yellow }, min: 0, max: total_length, width: 333, value: 12, height: 25, left: 99, top: 350, color: :orange, cursor: { color: :orange, width: 25, height: 25 } }) do |value|
   update_lyrics(value, lyrics, counter)
 end
-# def closest_key_before(hash, target)
-#   filtered_keys = hash.keys.select { |key| key <= target }
-#   closest_key = filtered_keys.max
-#   closest_key ? { closest_key => hash[closest_key] } : nil
-# end
+
 def closest_key_before(hash, target)
-  # Filtrer les clés qui sont inférieures ou égales à la cible
   filtered_keys = hash.keys.select { |key| key <= target }
-  # Trouver la clé maximale parmi les clés filtrées
   filtered_keys.max
 end
 
@@ -88,20 +80,23 @@ def alter_lyric_event(lyrics, counter)
     lyrics.blink(:red)
   elsif lyrics.context == :edit
     current_position = counter.timer[:position]
-    # alert "get the value before and update #{current_position}"
     lyrics_content =  lyrics.content
     lyrics_content_key= closest_key_before(lyrics_content, current_position)
-    # alert lyrics.data
      lyrics_content[lyrics_content_key]=lyrics.data
-    # lyrics_content[lyrics_content_key]=lyrics.data
-    # alert lyrics_content_key
     lyrics.blink(:yellowgreen)
   end
+end
+lyrics.touch(:down) do
+  grab(:lyrics_support).color({ red: 1, id: :red_col })
+   grab(:counter).content(:edit) # prevent the lyrics viewer to be updated when plying
+  puts :down
 end
 
 lyrics.keyboard(:down) do |native_event|
   event = Native(native_event)
   if event[:keyCode].to_s == '13'
+    grab(:lyrics_support).remove(:red_col)
+    grab(:counter).content(:play) # allow the lyrics viewer to be updated when plying
     event.preventDefault()
     alter_lyric_event(lyrics, counter)
 
@@ -112,11 +107,6 @@ edit.touch(true) do
   lyrics.context(:edit)
   edit.blink(:red)
 end
-
-# b4.touch(true) do
-#   check.data(counter.timer[:position])
-#   puts lyrics.content
-# end
 
 start.touch(true) do
   counter.timer({ end: total_length }) do |value|
@@ -136,7 +126,6 @@ end
 pause.touch(true) do
   counter.timer({ pause: true })
 end
-
 
 # song canvas
 def parse_song_lyrics(song)
