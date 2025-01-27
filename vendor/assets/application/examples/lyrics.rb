@@ -14,18 +14,22 @@ def closest_values(hash, target, count = 1)
 end
 
 def format_lyrics(lyrics_array, target)
-  target.data(lyrics_array[0])
-  lyrics_array.each_with_index do |lyric, index|
-    unless index == 0
-      child = target.text(lyric)
-      child.edit(false)
-      child.width(399)
-      child.color(:gray)
-      child.left(0)
-      child.position(:absolute)
-      child.top(19 * index)
+  if target.data != lyrics_array[0] # we on ly update if there's a change
+    target.data(lyrics_array[0])
+    lyrics_array.each_with_index do |lyric, index|
+      unless index == 0
+        child = target.text({data:  lyric , component: { size: 33 }})
+        child.edit(false)
+        child.width(399)
+        child.color(:gray)
+        child.left(0)
+        child.position(:absolute)
+        child.top(33 * index)
+      end
     end
   end
+
+
 end
 
 start = box({ width: 33, height: 19, color: :red })
@@ -46,12 +50,12 @@ insert.text(data: :insert, component: { size: 9 }, top: -12, left: 3, color: :bl
 edit = box({ width: 33, height: 19, top: 39, color: :yellow, left: 39 })
 edit.text(data: 'edit', component: { size: 9 }, top: -12, left: 3, color: :black)
 
-b4 = box({ left: 120, top: 70, color: :purple })
+# b4 = box({ left: 120, top: 70, color: :purple })
 
 counter = text({ data: :counter, left: 60, top: 90, position: :absolute, id: :counter })
-check = b4.text(data: :check, component: { size: 9 }, top: -12, left: 3)
+# check = b4.text(data: :check, component: { size: 9 }, top: -12, left: 3)
 base_text = 'my lyrics'
-lyrics = text({ data: [{ data: base_text }], id: :lyric_viewer, edit: true, component: { size: 16 }, top: 190, left: 35, position: :absolute, content: { 0 => base_text }, context: :insert })
+lyrics = text({ data: [{ data: base_text }], id: :lyric_viewer, edit: true, component: { size: 33 }, top: 190, left: 35, position: :absolute, content: { 0 => base_text }, context: :insert })
 counter.timer({ position: 88 })
 
 def update_lyrics(value, target, timer_found)
@@ -109,10 +113,10 @@ edit.touch(true) do
   edit.blink(:red)
 end
 
-b4.touch(true) do
-  check.data(counter.timer[:position])
-  puts lyrics.content
-end
+# b4.touch(true) do
+#   check.data(counter.timer[:position])
+#   puts lyrics.content
+# end
 
 start.touch(true) do
   counter.timer({ end: total_length }) do |value|
@@ -145,7 +149,7 @@ def parse_song_lyrics(song)
     collected_id << new_id
     formated_text << { data: line_found, id: new_id, top: 16 * index, left: 6, position: :absolute, width: 399 }
   end
-  grab(:support).text({ data: formated_text, left: 6, top: 3, edit: true })
+  grab(:support).text({ data: formated_text, left: 6, top: 3, edit: true,component: { size: 33 } })
   collected_id.each do |line_id|
     grab(line_id).touch(true) do
       lyrics=grab(:lyric_viewer)

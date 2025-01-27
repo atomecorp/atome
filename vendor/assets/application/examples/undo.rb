@@ -4,12 +4,14 @@ redo_button = text({ data: :redo, id: :redo, left: 39 })
 JS.eval('localStorage.clear()')
 
 b = box({ id: :tutu, top: 66 })
-c = circle({ id: :the_circle, left: 333 })
-color({id: :the_color, blue: 1})
-color({id: :the_col, red: 1})
+c = box({ id: :the_circle, left: 333 })
+color({ id: :the_color, blue: 1 })
+color({ id: :the_col, red: 1 })
+c.drag(true)
+
 Universe.allow_localstorage = true # starting undo logging
 c.top(133)
-c.color({id: :the_red_color_applied,  red: 1})
+c.color({ id: :the_red_color_applied, red: 1 })
 b.left(0)
 c.left(90)
 c.width(22)
@@ -17,12 +19,15 @@ b.left(188)
 c.left(33)
 c.left(467)
 c.height(133)
+c.rotate(20)
 c.apply(:the_color)
 c.height(133)
+c.shadow({ blur: 6 })
 c.apply(:the_col)
-c.color({id: :the_green_color_applied,  green: 1 })
+c.color({ id: :the_green_color_applied, green: 1 })
 c.left(69)
 c.left(0)
+c.rotate(-33)
 c.width(133)
 c.text({ data: 'geej', id: :the_text })
 c.left(777)
@@ -30,7 +35,12 @@ c.left(777)
 c.left(-12)
 b.left(33)
 
-text({ data: :hello, left: 444 })
+t=text({ data: :hello, left: 444 })
+t.touch(true) do
+  c.width(33)
+  c.height(600)
+  c.rotate(33)
+end
 
 ##########################
 Universe.allow_localstorage = false
@@ -38,7 +48,7 @@ Universe.allow_localstorage = false
 
 undo_button.touch(true) do
   new_back_nb = @back_nb - 1
-  executed = undo(new_back_nb, c.aid, :undo)
+  executed = undo(new_back_nb, :undo)
   if executed == false
   else
     @back_nb = new_back_nb
@@ -47,7 +57,7 @@ end
 
 redo_button.touch(true) do
   new_back_nb = @back_nb + 1
-  executed = undo(new_back_nb, c.aid, :redo)
+  executed = undo(new_back_nb, :redo)
   if executed == false
   else
     @back_nb = new_back_nb
@@ -74,82 +84,145 @@ def filter_hash_by_key(original_hash, target_key)
   end
 end
 
-def undo(nb_of_backs, atome_to_target = nil, mode)
+def undo(nb_of_backs, mode, atome_to_target = nil)
+  # Désactiver le logging local
   Universe.allow_localstorage = false
+  # JS.eval('console.clear()')
 
-  JS.eval('console.clear()')
-  puts "@back_nb : @back_nb: #{@back_nb}"
+  # Récupérer l'historique pertinent
+  view = grab(:view)
+  history = atome_to_target ? filter_hash_by_key(view.history, atome_to_target) : view.history
+  target_index = history.length + nb_of_backs
 
-  a = grab(:view)
-  puts a.history
-  # Déterminer quel historique utiliser
-  history_to_treat = atome_to_target ?
-                       filter_hash_by_key(a.history, atome_to_target) :
-                       a.history
+  # Valider l'index cible
+  return false unless target_index.between?(0, history.length - 1)
 
-  # Calculer l'index à récupérer
-  target_index = history_to_treat.length + nb_of_backs
+  key_found = history.keys[target_index]
+  previous_value = history[key_found]
+  prev_action = extract_key_and_write(previous_value)
 
-  # Valider que l'index est dans les limites
-  if target_index >= 0 && target_index < history_to_treat.length
-    key_found = history_to_treat.keys[target_index]
-    previous_value_found = history_to_treat[key_found]
+  # Gestion des cas spéciaux
+  first_prev_action = prev_action.values.first
+  first_key = first_prev_action.keys.first
+  first_val = first_prev_action.values.first
 
-    prev_action = extract_key_and_write(previous_value_found)
-    current_action = history_to_treat[key_found+1]
+  case
+  when mode == :undo && first_key == :fasten
+    grab(first_val).attach(:black_matter)
+  when mode == :undo && first_key == :apply
+    object = hook(prev_action.keys.first)
+    object.remove(object.apply.last)
+  when mode == :redo && first_key == :apply
+    object = hook(prev_action.keys.first)
+    object.apply(first_val.last)
+  else
+    restored = {}
+    hooks_cache = {}
 
-    # Gérer le cas spécial fasten
-    if mode == :undo && prev_action.values[0].keys[0] == :fasten
-      child_found = prev_action.values[0][:fasten]
-      grab(child_found).attach(:black_matter)
-    elsif  mode == :undo && prev_action.values[0].keys[0] == :apply
-      current_object= hook(prev_action.keys[0])
+    # Restaurer toutes les propriétés jusqu'à l'index cible
+    history.keys[0..target_index].reverse_each do |hist_key|
+      extract_key_and_write(history[hist_key]).each do |aid, actions|
+        hooks_cache[aid] ||= hook(aid)
+        actions.each do |prop, val|
+          next if restored[prop]
 
-      current_object.remove(current_object.apply.last)
-
-    elsif  mode == :redo && prev_action.values[0].keys[0] == :apply
-      current_object= hook(prev_action.keys[0])
-       current_object.apply(prev_action.values[0][:apply].last)
-
-    else
-      # Nouvelle logique pour restaurer les propriétés spécifiques
-      properties_to_restore = ['width', 'height']
-      restored_properties = {}
-
-      # Parcourir l'historique jusqu'à l'index cible
-      history_to_treat.keys[0..target_index].reverse_each do |hist_key|
-        hist_entry = history_to_treat[hist_key]
-        write_actions = extract_key_and_write(hist_entry)
-
-        write_actions.each do |aid_f, action|
-          action.each do |prop_f, val_f|
-            if properties_to_restore.include?(prop_f) && !restored_properties.key?(prop_f)
-              # Restaurer la propriété en utilisant le setter approprié
-              hook(aid_f).send("#{prop_f}=", val_f)
-              restored_properties[prop_f] = true
-              puts "#{hook(aid_f).id}, #{prop_f} : #{val_f} (restauré)"
-            end
-          end
-        end
-
-        # Si toutes les propriétés ont été restaurées, sortir de la boucle
-        break if restored_properties.keys.sort == properties_to_restore.sort
-      end
-
-      # Appliquer les autres modifications normalement
-      prev_action.each do |aid_f, action|
-        action.each do |prop_f, val_f|
-          unless properties_to_restore.include?(prop_f)
-            puts "#{hook(aid_f).id}, #{prop_f} : #{val_f}"
-            hook(aid_f).send("#{prop_f}=", val_f)
-          end
+          hooks_cache[aid].send("#{prop}=", val)
+          restored[prop] = true
+          # puts "#{hooks_cache[aid].id}, #{prop} : #{val} (restauré)"
         end
       end
     end
-    Universe.allow_localstorage = true
-    nb_of_backs
-  else
-    Universe.allow_localstorage = true
-    false
+
+    # Appliquer les autres modifications non restaurées
+    prev_action.each do |aid, actions|
+      hooks_cache[aid] ||= hook(aid)
+      actions.each do |prop, val|
+        next if restored[prop]
+
+        hooks_cache[aid].send("#{prop}=", val)
+        # puts "#{hooks_cache[aid].id}, #{prop} : #{val}"
+      end
+    end
   end
+
+  # Réactiver le logging local
+  Universe.allow_localstorage = true
+  nb_of_backs
 end
+Universe.allow_localstorage = false
+@prev_value = 1
+grab(:intuition).slider({ id: :toto, range: { color: :yellow }, min: -50, max: 0, width: 333, value: 0, height: 25, left: 99, top: 350, color: :orange, cursor: { color: :orange, width: 25, height: 25 } }) do |value|
+  @back_nb = value
+  if value < @prev_value
+    undo(@back_nb, :undo, c.aid)
+  elsif value > @prev_value
+    undo(@back_nb, :redo, c.aid)
+  end
+  @prev_value = value
+end
+Universe.allow_localstorage = true
+
+c.rotate(12) do
+  alert :poil
+end
+
+
+# def undo(nb_of_backs, atome_to_target = nil, mode)
+#   Universe.allow_localstorage = false
+#   JS.eval('console.clear()')
+#   puts "@back_nb : #{@back_nb}"
+#
+#   view = grab(:view)
+#   puts view.history
+#
+#   history = atome_to_target ? filter_hash_by_key(view.history, atome_to_target) : view.history
+#   target_index = history.length + nb_of_backs
+#
+#   return false unless target_index.between?(0, history.length - 1)
+#
+#   key_found = history.keys[target_index]
+#   previous_value = history[key_found]
+#
+#   prev_action = extract_key_and_write(previous_value)
+#
+#   case
+#   when mode == :undo && prev_action.values.first.keys.first == :fasten
+#     grab(prev_action.values.first[:fasten]).attach(:black_matter)
+#   when mode == :undo && prev_action.values.first.keys.first == :apply
+#     object = hook(prev_action.keys.first)
+#     object.remove(object.apply.last)
+#   when mode == :redo && prev_action.values.first.keys.first == :apply
+#     object = hook(prev_action.keys.first)
+#     object.apply(prev_action.values.first[:apply].last)
+#   else
+#     restored = {}
+#     hooks_cache = {}
+#
+#     history.keys[0..target_index].reverse_each do |hist_key|
+#       extract_key_and_write(history[hist_key]).each do |aid, actions|
+#         hooks_cache[aid] ||= hook(aid)
+#         actions.each do |prop, val|
+#           next if restored[prop]
+#
+#           hooks_cache[aid].send("#{prop}=", val)
+#           restored[prop] = true
+#           puts "#{hooks_cache[aid].id}, #{prop} : #{val} (restauré)"
+#         end
+#       end
+#     end
+#
+#     prev_action.each do |aid, actions|
+#       hooks_cache[aid] ||= hook(aid)
+#       actions.each do |prop, val|
+#         next if restored[prop]
+#
+#         hooks_cache[aid].send("#{prop}=", val)
+#         puts "#{hooks_cache[aid].id}, #{prop} : #{val}"
+#       end
+#     end
+#   end
+#
+#   Universe.allow_localstorage = true
+#   nb_of_backs
+# end
+

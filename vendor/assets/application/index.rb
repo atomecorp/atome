@@ -99,8 +99,8 @@
 # require "./examples/browser"
 # require "./examples/help"
 # require "./examples/int8"
-# require "./examples/lyrics"
-require "./examples/undo"
+require "./examples/lyrics"
+# require "./examples/undo"
 # require "./examples/apply"
 
 
