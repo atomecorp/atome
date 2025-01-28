@@ -151,7 +151,11 @@ def undo(nb_of_backs, mode, atome_to_target = nil)
 end
 Universe.allow_localstorage = false
 @prev_value = 1
-grab(:intuition).slider({ id: :toto, range: { color: :yellow }, min: -50, max: 0, width: 333, value: 0, height: 25, left: 99, top: 350, color: :orange, cursor: { color: :orange, width: 25, height: 25 } }) do |value|
+# Universe.history_position=456
+grab(:intuition).slider({ id: :toto, range: { color: :yellow }, min: -500, max: 0, width: 333, value: 0, height: 25, left: 99, top: 350, color: :orange, cursor: { color: :orange, width: 25, height: 25 } }) do |value|
+
+  puts value
+  # Universe.history_position=value
   @back_nb = value
   if value < @prev_value
     undo(@back_nb, :undo, c.aid)
@@ -166,63 +170,5 @@ c.rotate(12) do
   alert :poil
 end
 
-
-# def undo(nb_of_backs, atome_to_target = nil, mode)
-#   Universe.allow_localstorage = false
-#   JS.eval('console.clear()')
-#   puts "@back_nb : #{@back_nb}"
-#
-#   view = grab(:view)
-#   puts view.history
-#
-#   history = atome_to_target ? filter_hash_by_key(view.history, atome_to_target) : view.history
-#   target_index = history.length + nb_of_backs
-#
-#   return false unless target_index.between?(0, history.length - 1)
-#
-#   key_found = history.keys[target_index]
-#   previous_value = history[key_found]
-#
-#   prev_action = extract_key_and_write(previous_value)
-#
-#   case
-#   when mode == :undo && prev_action.values.first.keys.first == :fasten
-#     grab(prev_action.values.first[:fasten]).attach(:black_matter)
-#   when mode == :undo && prev_action.values.first.keys.first == :apply
-#     object = hook(prev_action.keys.first)
-#     object.remove(object.apply.last)
-#   when mode == :redo && prev_action.values.first.keys.first == :apply
-#     object = hook(prev_action.keys.first)
-#     object.apply(prev_action.values.first[:apply].last)
-#   else
-#     restored = {}
-#     hooks_cache = {}
-#
-#     history.keys[0..target_index].reverse_each do |hist_key|
-#       extract_key_and_write(history[hist_key]).each do |aid, actions|
-#         hooks_cache[aid] ||= hook(aid)
-#         actions.each do |prop, val|
-#           next if restored[prop]
-#
-#           hooks_cache[aid].send("#{prop}=", val)
-#           restored[prop] = true
-#           puts "#{hooks_cache[aid].id}, #{prop} : #{val} (restauré)"
-#         end
-#       end
-#     end
-#
-#     prev_action.each do |aid, actions|
-#       hooks_cache[aid] ||= hook(aid)
-#       actions.each do |prop, val|
-#         next if restored[prop]
-#
-#         hooks_cache[aid].send("#{prop}=", val)
-#         puts "#{hooks_cache[aid].id}, #{prop} : #{val}"
-#       end
-#     end
-#   end
-#
-#   Universe.allow_localstorage = true
-#   nb_of_backs
-# end
+alert Universe.history_position # user as a ref when undoing at certain to keep this value
 

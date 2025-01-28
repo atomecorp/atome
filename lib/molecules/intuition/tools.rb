@@ -171,6 +171,7 @@ class Atome
           params.delete(:atome_touched)
           params[new_atome: new_atome]
           Universe.allow_localstorage = [atome]
+          puts "history_position in creation: #{Universe.history_position}"
           Universe.historicize(new_atome.aid, :write, atome, particle)
         end
 

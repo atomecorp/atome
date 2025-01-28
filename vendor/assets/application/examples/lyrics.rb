@@ -52,7 +52,7 @@ edit.text(data: 'edit', component: { size: 9 }, top: -12, left: 3, color: :black
 counter = text({ data: :counter, content: :play,left: 60, top: 90, position: :absolute, id: :counter })
 base_text = 'my lyrics'
 lyrics_support=box({id: :lyrics_support, width: 180, height: 180,top: 120, left: 35,color: {red: 0.2, green: 0.2, blue: 0.4, id: :base_support_color}})
-lyrics = lyrics_support.text({ top: 3, left: 3,width: 333,  data: [{ data: base_text }], id: :lyric_viewer, edit: true, component: { size: 33 }, position: :absolute, content: { 0 => base_text }, context: :insert })
+lyrics = lyrics_support.text({ top: 3, left: 3,width: 600,  data: [{ data: base_text }], id: :lyric_viewer, edit: true, component: { size: 33 }, position: :absolute, content: { 0 => base_text }, context: :insert })
 counter.timer({ position: 88 })
 
 

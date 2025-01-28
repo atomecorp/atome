@@ -81,6 +81,7 @@ class Atome
     params = particle_post(element, params, &user_proc)
     instance_variable_set("@#{element}", params) if store
     Universe.historicize(@aid, :write, element, params)
+    puts "history_position in particle_creation: #{Universe.history_position}"
     particle_after(element, params, &user_proc)
   end
 

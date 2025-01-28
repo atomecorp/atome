@@ -4,7 +4,9 @@ new({ particle: :left, category: :spatial, type: :int })
 new({ particle: :right, category: :spatial, type: :int })
 new({ particle: :top, category: :spatial, type: :int })
 new({ particle: :bottom, category: :spatial, type: :int })
-new({ particle: :rotate, category: :spacial, type: :integer })
+new({ particle: :rotate, category: :spacial, type: :integer }) do |params, proc|
+  proc.call params if proc.is_a? Proc
+end
 new({ particle: :direction, category: :spatial, type: :string })
 new({ particle: :depth, category: :spatial, type: :integer })
 new({ particle: :position, category: :spatial, type: :int })
@@ -107,27 +109,27 @@ new ({ particle: :increment, category: :spatial, type: :hash }) do |params|
   end
 end
 
-new({particle: :longitude, category: :spatial, type: :int}) do |params, _user_proc|
-  render(:map, {longitude: params })
+new({ particle: :longitude, category: :spatial, type: :int }) do |params, _user_proc|
+  render(:map, { longitude: params })
   params
 end
 
-new({particle: :latitude, category: :spatial, type: :int}) do |params, _user_proc|
-  render(:map, {latitude: params })
+new({ particle: :latitude, category: :spatial, type: :int }) do |params, _user_proc|
+  render(:map, { latitude: params })
   params
 end
 
-new({particle: :location, category: :spatial, type: :hash}) do |params, _user_proc|
+new({ particle: :location, category: :spatial, type: :hash }) do |params, _user_proc|
   render(:map, params)
   params
 end
 
-new({particle: :zoom, specific: :map, category: :spatial, type: :int}) do |params, _user_proc|
+new({ particle: :zoom, specific: :map, category: :spatial, type: :int }) do |params, _user_proc|
   render(:map_zoom, params)
   params
 end
 
-new({particle: :pan, specific: :map, category: :spatial, type: :int}) do |params, _user_proc|
+new({ particle: :pan, specific: :map, category: :spatial, type: :int }) do |params, _user_proc|
   render(:map_pan, params)
   params
 end

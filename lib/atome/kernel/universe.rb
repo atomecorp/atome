@@ -31,13 +31,14 @@ class Universe
   @translation = {}
   @default_selection_style = { border: { thickness: 1, red: 1, green: 0, blue: 0, alpha: 1, pattern: :dotted } }
   @applicable_atomes = %i[color shadow border paint animation]
+  # @history_time_position
   # @historicize=false
   class << self
     attr_reader :atomes, :atomes_ids, :renderer_list, :molecule_list, :atome_list, :particle_list, :classes, :counter,
                 :atomes_specificities
     attr_accessor :connected, :allow_sync, :allow_localstorage, :database_ready, :edit_mode, :tools, :tools_root,
                   :allow_tool_operations, :active_tools, :preset_list, :applicable_atomes, :default_selection_style,
-                  :translation, :language
+                  :translation, :language, :history_position
 
     def messages
       @messages
@@ -255,6 +256,7 @@ class Universe
       if @allow_localstorage
 
         operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
+        @history_position = operation_timing
         @increment += 1
         @increment = @increment % 100
         # if @allow_localstorage.include? element

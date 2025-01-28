@@ -15,6 +15,7 @@ def attachment_common(child_id, parents_id, direction, &user_proc)
       parent_found.fasten ||= []
       unless parent_found.fasten.include?(@id)
         parent_found.fasten.push(@id)
+        puts "history_position in attachment_common: #{Universe.history_position}"
         Universe.historicize(parent_found.aid, :write, :fasten, @id)
       end
       detach_child(self)
