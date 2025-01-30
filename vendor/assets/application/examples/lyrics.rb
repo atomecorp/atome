@@ -149,7 +149,7 @@ def parse_song_lyrics(song)
   end
 end
 
-support = box({ overflow: :auto, top: 3, left: 390, width: 399, height: 600, smooth: 9, color: { red: 0.3, green: 0.3, blue: 0.3 }, id: :support })
+support = box({ overflow: :auto, top: 3, left: :auto, right: 9, width: 399, height: 600, smooth: 9, color: { red: 0.3, green: 0.3, blue: 0.3 }, id: :support })
 
 support.shadow({
                  id: :s3,
@@ -157,7 +157,7 @@ support.shadow({
                  invert: true,
                  red: 0, green: 0, blue: 0, alpha: 0.7
                })
-open_filer = text({data: :import, top: 6, left: 333, color: :yellowgreen })
+open_filer = text({data: :import, top: 63, left: 6, color: :yellowgreen })
 open_filer.import(true) do |val|
   parse_song_lyrics(val)
 end
@@ -167,3 +167,12 @@ end
 
 # tests
 lyrics.content({ 0 => "hello", 594 => "world", 838 => "of", 1295 => "hope" })
+
+
+b=box({id: 'timecode', smooth: 33, width: 255, color: :black, left: 123, top: 39})
+# #
+b.touch(true) do
+  sendMessageToNative('hello')
+end
+
+# JS.eval("window.updateTimecode('kkk')")

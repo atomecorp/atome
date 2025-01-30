@@ -601,3 +601,44 @@ function disableRightClick() {
 // function disableRightClick() {
 //     disableRightClick = true;
 // }
+
+
+// À placer dans votre fichier JavaScript
+// document.addEventListener("DOMContentLoaded", function() {
+//     window.updateTimecode = function(time) {
+//         let timecodeElement = document.getElementById('timecode');
+//         if (timecodeElement) {
+//             console.log("Mise à jour du timecode avec la valeur:", time); // Debug
+//             timecodeElement.textContent = time;
+//         } else {
+//             console.error("Element #timecode introuvable !");
+//         }
+//     };
+//
+//     // Pour envoyer des messages à Swift
+//     window.sendMessageToNative = function(message) {
+//         console.log("Envoi du message à Swift:", message); // Debug
+//         window.webkit.messageHandlers.hostHandler.postMessage(message);
+//     };
+// });
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("DOM fully loaded and parsed");
+
+    window.updateTimecode = function(time) {
+        console.log("updateTimecode called with:", time); // Debug
+        let timecodeElement = document.getElementById('timecode');
+        if (timecodeElement) {
+            console.log("Mise à jour du timecode avec la valeur:", time); // Debug
+            timecodeElement.textContent = time;
+        } else {
+            console.error("Element #timecode introuvable !");
+        }
+    };
+
+    // Pour envoyer des messages à Swift
+    window.sendMessageToNative = function(message) {
+        console.log("Envoi du message à Swift:", message); // Debug
+        window.webkit.messageHandlers.hostHandler.postMessage(message);
+    };
+});

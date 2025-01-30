@@ -165,6 +165,7 @@ def atome_genesis
   puts "current server: #{server}"
   if server.start_with?('http') && Atome::host.to_sym != :tauri
     Universe.connected = true
+    # for ssl A.server({ address: 'localhost:9292', type: 'wss' })
     A.server({ address: 'localhost:9292', type: 'ws' })
     A.init_websocket do |msg|
       puts "websocket initialised #{msg}"

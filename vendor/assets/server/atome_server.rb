@@ -16,7 +16,6 @@ require 'roda'
 require 'rufus-scheduler'
 require 'securerandom'
 require 'sequel'
-
 require './eDen'
 require './database'
 require './extensions'

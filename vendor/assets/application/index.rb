@@ -94,13 +94,20 @@
 # end
 
 ############################
-
+# todo : simpilfty drag event
+# todo : undo to finish
+# todo : int8 to finish
+# todo : I.A. to finish
+# todo : Automatise  tools creation from particle
+# todo : visual coding
+# todo :GPT documentation
+# # todo :Automatise html index creation
 # require "./examples/blur"
 # require "./examples/browser"
 # require "./examples/help"
 # require "./examples/int8"
-# require "./examples/lyrics"
-require "./examples/undo"
+require "./examples/lyrics"
+# require "./examples/undo"
 # require "./examples/apply"
 
 

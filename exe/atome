@@ -417,7 +417,7 @@ def init_server(destination, project_name, port, prod, ru_file)
     # `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
     # system("start cmd /c cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}")
     system("cd /d \"#{destination}\\#{project_name}\\server\" && puma --port #{port} #{prod}")
-
+    # for ssl  system("cd /d \"#{destination}\\#{project_name}\\server\" && puma --port #{port} --ssl-bind 0.0.0.0:#{port} --ssl-cert ./config/ssl/server.crt --ssl-key ./config/ssl/server.key #{prod}")
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # code to exec with MacOS
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|
