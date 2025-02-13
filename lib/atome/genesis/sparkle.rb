@@ -121,14 +121,14 @@ Atome.new({ renderers: [:html], aid: :selector, collect: [], type: :group, tag: 
 # # ")
 # atome infos
 def atome_infos
-  puts "atome version: #{Atome::VERSION}"
-  puts "device identity: #{Atome::aui}"
-  puts "application identity: #{Universe.app_identity}"
-  puts "host framework: #{Atome::host}"
-  puts "engine: #{Universe.engine}"
-  puts "users: #{Universe.users}"
-  puts "current user: #{Universe.current_user}"
-  puts "machine: #{Universe.current_machine}"
+  # puts "atome version: #{Atome::VERSION}"
+  # puts "device identity: #{Atome::aui}"
+  # puts "application identity: #{Universe.app_identity}"
+  # puts "host framework: #{Atome::host}"
+  # puts "engine: #{Universe.engine}"
+  # puts "users: #{Universe.users}"
+  # puts "current user: #{Universe.current_user}"
+  # puts "machine: #{Universe.current_machine}"
 end
 
 # help and example below :
@@ -162,7 +162,7 @@ def atome_genesis
   atome_infos
   server = Universe.current_server
   server ||= 'disconnected'
-  puts "current server: #{server}"
+  # puts "current server: #{server}"
   if server.start_with?('http') && Atome::host.to_sym != :tauri
     Universe.connected = true
     # for ssl A.server({ address: 'localhost:9292', type: 'wss' })
@@ -172,7 +172,7 @@ def atome_genesis
     end
     Universe.allow_sync = true
   end
-  puts "connected : #{Universe.connected}"
+  # puts "connected : #{Universe.connected}"
 end
 
 # this method is call from JS (atome/communication) at WS connection

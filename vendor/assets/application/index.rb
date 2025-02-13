@@ -97,7 +97,7 @@
 # todo : simpilfty drag event
 # todo : undo to finish
 # todo : int8 to finish
-# todo : I.A. to finish
+# todo : I.A. to finish (aXion)
 # todo : Automatise  tools creation from particle
 # todo : visual coding
 # todo :GPT documentation
@@ -106,13 +106,13 @@
 # require "./examples/browser"
 # require "./examples/help"
 # require "./examples/int8"
-require "./examples/lyrics"
+# require "./examples/lyrics"
 # require "./examples/undo"
 # require "./examples/apply"
-
+  require "./examples/aXion_with_key"
 
 
 
 # # TODO: make delete force delete current object for consistency
-puts 'automatise tool creation from APIs'
-puts 'add params when creating apis to add doc and infs'
+# puts 'automatise tool creation from APIs'
+# puts 'add params when creating apis to add doc and infos'

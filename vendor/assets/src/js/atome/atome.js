@@ -545,22 +545,6 @@ class my_test_class {
 //////////
 
 
-// Redefined console.log
-window.console.log=(function(oldLog){
-    return function(message){
-        oldLog(message)
-        try{window.webkit.messageHandlers.console.postMessage("LOG: "+message)}
-        catch(e){oldLog()}
-    }
-})(window.console.log)
-
-window.console.error=(function(oldErr){
-    return function(message){
-        oldErr(message)
-        try{window.webkit.messageHandlers.console.postMessage("ERROR: "+message)}
-        catch(e){oldErr()}
-    }
-})(window.console.error)
 
 // right click handling
 
@@ -622,6 +606,25 @@ function disableRightClick() {
 //     };
 // });
 
+
+// Redefined console.log
+window.console.log=(function(oldLog){
+    return function(message){
+        oldLog(message)
+        try{window.webkit.messageHandlers.console.postMessage("LOG: "+message)}
+        catch(e){oldLog()}
+    }
+})(window.console.log)
+
+window.console.error=(function(oldErr){
+    return function(message){
+        oldErr(message)
+        try{window.webkit.messageHandlers.console.postMessage("ERROR: "+message)}
+        catch(e){oldErr()}
+    }
+})(window.console.error)
+
+
 document.addEventListener("DOMContentLoaded", function() {
     console.log("DOM fully loaded and parsed");
 
@@ -642,3 +645,12 @@ document.addEventListener("DOMContentLoaded", function() {
         window.webkit.messageHandlers.hostHandler.postMessage(message);
     };
 });
+
+
+////
+
+
+
+
+
+
