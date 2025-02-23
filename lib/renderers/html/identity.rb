@@ -4,6 +4,7 @@ new({ renderer: :html, method: :id, type: :string })
 
 new({ method: :type, type: :string, renderer: :html }) do |_value, _user_proc|
   html.shape(@id)
+  # puts "====> #{_value}"
 end
 
 # new({ method: :type, type: :string, renderer: :html, specific: :drawing }) do |_value, _user_proc|
@@ -14,6 +15,15 @@ end
 new({ method: :type, type: :string, renderer: :html, specific: :draw }) do |_value, _user_proc|
   html.draw(@id)
 end
+
+# new({ method: :type, type: :string, renderer: :html, specific: :canvas }) do |_value, _user_proc|
+#   html.canvas(@id)
+# end
+
+
+# new({ method: :type, type: :string, renderer: :html, specific: :darw }) do |_value, _user_proc|
+#   # html.canvas(@id)
+# end
 
 new({ method: :type, type: :string, renderer: :html, specific: :vector }) do |_value, _user_proc|
   html.svg(@id)

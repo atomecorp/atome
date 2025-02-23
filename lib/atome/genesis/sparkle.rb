@@ -121,14 +121,14 @@ Atome.new({ renderers: [:html], aid: :selector, collect: [], type: :group, tag: 
 # # ")
 # atome infos
 def atome_infos
-  # puts "atome version: #{Atome::VERSION}"
-  # puts "device identity: #{Atome::aui}"
-  # puts "application identity: #{Universe.app_identity}"
-  # puts "host framework: #{Atome::host}"
-  # puts "engine: #{Universe.engine}"
-  # puts "users: #{Universe.users}"
-  # puts "current user: #{Universe.current_user}"
-  # puts "machine: #{Universe.current_machine}"
+  puts "atome version: #{Atome::VERSION}"
+  puts "device identity: #{Atome::aui}"
+  puts "application identity: #{Universe.app_identity}"
+  puts "host framework: #{Atome::host}"
+  puts "engine: #{Universe.engine}"
+  puts "users: #{Universe.users}"
+  puts "current user: #{Universe.current_user}"
+  puts "machine: #{Universe.current_machine}"
 end
 
 # help and example below :

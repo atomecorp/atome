@@ -456,6 +456,7 @@ class HTML
   end
 
   def id(id)
+    # puts "====> #{id}"
     attr('id', id)
     self
   end
@@ -523,6 +524,289 @@ class HTML
     self
   end
 
+
+  def line(params)
+    thickness = params[:thickness] || 5
+    color = params[:color] || :black
+    pattern = params[:pattern] || 'solid'
+    start_cap = params[:start_cap] || 'round'  # butt, round, square
+    arrow = params[:arrow] || false
+    arrow_size = params[:arrow_size] || 15     # taille de la flèche en pixels
+
+    if color.instance_of? Hash
+      color[:red] = 0 unless color[:red]
+      color[:green] = 0 unless color[:green]
+      color[:blue] = 0 unless color[:blue]
+      color[:alpha] = 1 unless color[:alpha]
+
+      color = "rgba(#{color[:red] * 255},#{color[:green] * 255},#{color[:blue] * 255}, #{color[:alpha]})"
+    end
+
+    # Conversion du pattern en tableau pour strokeDashArray
+    dash_array = case pattern.to_s
+                 when 'dashed' then '[10, 5]'
+                 when 'dotted' then '[3, 3]'
+                 else '[]'  # 'solid'
+                 end
+
+    js_code = <<~JAVASCRIPT
+    // Création du canvas avec la sélection désactivée par défaut
+    const canvas = new fabric.Canvas('#{@id}', {
+      selection: false
+    });
+
+    // Fonction pour redimensionner le canvas
+    function resizeCanvas() {
+      canvas.setWidth(window.innerWidth);
+      canvas.setHeight(window.innerHeight);
+      canvas.setZoom(1);
+      canvas.renderAll();
+    }
+
+    // Initialisation de la taille du canvas
+    resizeCanvas();
+
+    // Écouteur d'événement pour le redimensionnement de la fenêtre
+    window.addEventListener('resize', resizeCanvas);
+
+    // Variables pour le dessin
+    let isDrawing = false;
+    let currentLine = null;
+
+    // Fonction pour créer une flèche
+    function addArrow(line) {
+      const x1 = line.get('x1');
+      const y1 = line.get('y1');
+      const x2 = line.get('x2');
+      const y2 = line.get('y2');
+
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      
+      const arrowHead = new fabric.Triangle({
+        left: x2,
+        top: y2,
+        pointType: 'arrow_head',
+        angle: (angle * 180 / Math.PI) + 90,
+        width: #{arrow_size},
+        height: #{arrow_size},
+        fill: '#{color}',
+        selectable: false,
+        originX: 'center',
+        originY: 'bottom'
+      });
+
+      return arrowHead;
+    }
+
+    // Options de style pour la ligne
+    const lineOptions = {
+      stroke: '#{color}',
+      strokeWidth: #{thickness},
+      strokeDashArray: #{dash_array},
+      strokeLineCap: '#{start_cap}',
+      strokeLineJoin: 'round',
+      selectable: false,
+      evented: false,
+      hasBorders: false,
+      hasControls: false
+    };
+
+    // Démarrage du tracé
+    canvas.on('mouse:down', function(o) {
+      isDrawing = true;
+      const pointer = canvas.getPointer(o.e);
+      const points = [pointer.x, pointer.y, pointer.x, pointer.y];
+      currentLine = new fabric.Line(points, lineOptions);
+      canvas.add(currentLine);
+      canvas.renderAll();
+    });
+
+    // Mise à jour de la ligne
+    canvas.on('mouse:move', function(o) {
+      if (isDrawing === true) {
+        const pointer = canvas.getPointer(o.e);
+        currentLine.set({
+          x2: pointer.x,
+          y2: pointer.y
+        });
+
+        // Si une flèche est demandée, on la met à jour
+        if (#{arrow}) {
+          // Supprimer l'ancienne flèche si elle existe
+          const arrowHead = canvas.getObjects().find(obj => obj.pointType === 'arrow_head');
+          if (arrowHead) {
+            canvas.remove(arrowHead);
+          }
+          // Ajouter la nouvelle flèche
+          const newArrow = addArrow(currentLine);
+          canvas.add(newArrow);
+        }
+
+        canvas.renderAll();
+      }
+    });
+
+    // Fin du tracé
+    canvas.on('mouse:up', function() {
+      isDrawing = false;
+      if (currentLine) {
+        currentLine.setCoords();
+      }
+    });
+  JAVASCRIPT
+
+    JS.eval(js_code)
+  end
+
+
+
+  def brush(params)
+
+    thickness = params[:thickness] || 5
+    color = params[:color] || :black
+    shapeType = params[:shape] || 'circle'
+    if params[:type]
+      brushType = "#{params[:type].to_s.capitalize}Brush"
+    else
+      brushType = 'SprayBrush'
+    end
+
+    if color.instance_of? Hash
+      color[:red] = 0 unless color[:red]
+      color[:green] = 0 unless color[:green]
+      color[:blue] = 0 unless color[:blue]
+      color[:alpha] = 1 unless color[:alpha]
+
+      color = "rgba(#{color[:red] * 255},#{color[:green] * 255},#{color[:blue] * 255}, #{color[:alpha]})"
+    end
+
+    js_code = <<~JAVASCRIPT
+    var canvasEl = document.getElementById('#{@id}');
+    canvasEl.width = window.innerWidth;
+    canvasEl.height = window.innerHeight;
+
+    var canvas = new fabric.Canvas('#{@id}');
+    canvas.isDrawingMode = true;
+
+    var CustomSprayBrush = fabric.util.createClass(fabric.SprayBrush, {
+      initialize: function(canvas) {
+        this.callSuper('initialize', canvas);
+        this.sprayChunks = [];
+        this.width = #{thickness};
+        this.color = '#{color}';
+        this.density = 20;
+        this.dotWidth = #{thickness};
+        this.dotWidthVariance = 3;
+        this.randomOpacity = true;
+      },
+
+      onMouseDown: function(pointer) {
+        this.sprayChunks = [];
+        this.canvas.clearContext(this.canvas.contextTop);
+        this.addSprayChunk(pointer);
+      },
+
+      onMouseMove: function(pointer) {
+        if (this.canvas._isCurrentlyDrawing) {
+          this.addSprayChunk(pointer);
+        }
+      },
+
+      onMouseUp: function() {
+        this.canvas.clearContext(this.canvas.contextTop);
+        this.canvas.renderAll();
+      },
+
+      _render: function() {
+        var ctx = this.canvas.contextTop;
+        ctx.fillStyle = this.color;
+        ctx.save();
+        for (var i = 0; i < this.sprayChunks.length; i++) {
+          var chunk = this.sprayChunks[i];
+          ctx.globalAlpha = chunk.opacity;
+          ctx.fillRect(chunk.x, chunk.y, chunk.width, chunk.width);
+        }
+        ctx.restore();
+      },
+
+      addSprayChunk: function(pointer) {
+        var radius = this.width / 2;
+        var shape;
+
+        switch ('#{shapeType}') {
+          case 'square':
+            shape = new fabric.Rect({
+              left: pointer.x - radius,
+              top: pointer.y - radius,
+              width: this.dotWidth,
+              height: this.dotWidth,
+              fill: this.color,
+              opacity: this.randomOpacity ? Math.random() : 1
+            });
+            break;
+
+          case 'triangle':
+            shape = new fabric.Triangle({
+              left: pointer.x - radius,
+              top: pointer.y - radius,
+              width: this.dotWidth,
+              height: this.dotWidth,
+              fill: this.color,
+              opacity: this.randomOpacity ? Math.random() : 1
+            });
+            break;
+
+          default:
+            shape = new fabric.Circle({
+              left: pointer.x - radius,
+              top: pointer.y - radius,
+              radius: this.dotWidth / 2,
+              fill: this.color,
+              opacity: this.randomOpacity ? Math.random() : 1
+            });
+        }
+
+        this.canvas.add(shape);
+        this.canvas.renderAll();
+      }
+    });
+
+    var brush;
+    switch ('#{brushType}') {
+      case 'PencilBrush':
+        brush = new fabric.PencilBrush(canvas);
+        break;
+      case 'CircleBrush':
+        brush = new fabric.CircleBrush(canvas);
+        break;
+      case 'PatternBrush':
+        brush = new fabric.PatternBrush(canvas);
+        // Créer un pattern source
+        var patternCanvas = fabric.util.createCanvasElement();
+        patternCanvas.width = patternCanvas.height = 25;
+        var ctx = patternCanvas.getContext('2d');
+        
+        // Dessiner le pattern (un cercle)
+        ctx.fillStyle = '#{color}';
+        ctx.beginPath();
+        ctx.arc(10, 10, 5, 0, Math.PI * 2, false);
+        ctx.fill();
+        
+        // Appliquer le pattern à la brosse
+        brush.source = patternCanvas;
+        break;
+      default:
+        brush = new CustomSprayBrush(canvas);
+    }
+
+    brush.width = #{thickness};
+    brush.color = '#{color}';
+    canvas.freeDrawingBrush = brush;
+  JAVASCRIPT
+
+    JS.eval(js_code)
+  end
+
   def text(id)
     # we remove any element if the id already exist
     check_double(id)
@@ -534,6 +818,19 @@ class HTML
     id(id)
     self
   end
+
+  # def canvas(id)
+  #   # alert("params from html #{params}")
+  #   # we remove any element if the id already exist
+  #   check_double(id)
+  #   markup_found = @original_atome.markup || :canvas
+  #   @element_type = markup_found.to_s
+  #   @element = JS.global[:document].createElement(@element_type)
+  #   JS.global[:document][:body].appendChild(@element)
+  #   add_class('atome')
+  #   id(id)
+  #   self
+  # end
 
   def select_text(range)
     # TODO : use atome color object  instead of basic css color
@@ -925,7 +1222,7 @@ class HTML
       end
       @on_resize_already_set = true
     elsif property == 'remove'
-      alert 'ok'
+      alert 'remove test is ok'
       @original_atome.instance_variable_get('@on_code')[:view_resize] = []
     else
       event_handler = ->(event) do
@@ -1688,17 +1985,15 @@ class HTML
     JS.eval('return navigator.onLine')
   end
 
-
-
   def terminal(id, cmd)
     if Atome.host == 'tauri'
       JS.eval("terminal('#{id}','#{cmd}')")
     else
       # JS.eval("distant_terminal('#{id}','#{cmd}')")
-      A.message({data: cmd, action: :terminal}) do |result|
-        proc_found= @original_atome.terminal_code[:terminal]
+      A.message({ data: cmd, action: :terminal }) do |result|
+        proc_found = @original_atome.terminal_code[:terminal]
         string_found = result[:data]
-        string_found=string_found.gsub('\x23', '#')
+        string_found = string_found.gsub('\x23', '#')
         converted_string = string_found.gsub(/<<(\w+)\n(.*?)\n\1/m) do
           marker = $1
           content = $2
@@ -1718,10 +2013,10 @@ class HTML
     if Atome.host == 'tauri'
       JS.eval("readFile('#{id}','#{file}')")
     else
-      A.message({data: {source: file,operation: :read  }, action: :file}) do |result|
-        proc_found= @original_atome.instance_variable_get('@read_code')[:read]
+      A.message({ data: { source: file, operation: :read }, action: :file }) do |result|
+        proc_found = @original_atome.instance_variable_get('@read_code')[:read]
         string_found = JSON.parse(result[:data])
-        string_found=string_found.gsub('\x23', '#')
+        string_found = string_found.gsub('\x23', '#')
         converted_string = string_found.gsub(/<<(\w+)\n(.*?)\n\1/m) do
           marker = $1
           content = $2
@@ -1739,10 +2034,10 @@ class HTML
     if Atome.host == 'tauri'
       JS.eval("writeFile('#{id}','#{file[:name]}','#{file[:content]}')")
     else
-      A.message({data: {source: file,operation: :write  }, action: :file}) do |result|
-        proc_found= @original_atome.instance_variable_get('@write_code')[:write]
+      A.message({ data: { source: file, operation: :write }, action: :file }) do |result|
+        proc_found = @original_atome.instance_variable_get('@write_code')[:write]
         string_found = JSON.parse(result[:data])
-        string_found=string_found.gsub('\x23', '#')
+        string_found = string_found.gsub('\x23', '#')
         converted_string = string_found.gsub(/<<(\w+)\n(.*?)\n\1/m) do
           marker = $1
           content = $2

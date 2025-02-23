@@ -109,7 +109,8 @@
 # require "./examples/lyrics"
 # require "./examples/undo"
 # require "./examples/apply"
-  require "./examples/aXion_with_key"
+# require "./examples/aXion_with_key"
+require "./examples/draw"
 
 
 

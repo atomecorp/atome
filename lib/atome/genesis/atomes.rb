@@ -127,8 +127,8 @@ new({ atome: :table })
 new({ atome: :atomized, type: :hash })
 new({ atome: :map, type: :hash })
 new({ atome: :vr, type: :hash })
-new({ atome: :draw })
+new({ atome: :draw, type: :hash })
 
 
 
-
+# new({ atome: :canvas, type: :hash })
