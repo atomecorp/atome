@@ -16,7 +16,6 @@ new({ sanitizer: :touch }) do |params, user_bloc|
     option = true
 
     key = if params.is_a?(Hash)
-
             case
             when params.keys.include?("tap")
               touch_handle_non_hash_params(:tap, params[:code])
@@ -49,6 +48,7 @@ new({ sanitizer: :touch }) do |params, user_bloc|
 end
 
 def touch_handle_non_hash_params(params, user_bloc)
+
   case params
   when true, :touch, :tap
     (@touch_code[:tap] ||= []) << user_bloc

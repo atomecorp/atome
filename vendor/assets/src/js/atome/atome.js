@@ -626,7 +626,7 @@ window.console.error=(function(oldErr){
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOM fully loaded and parsed");
+    // console.log("DOM fully loaded and parsed");
 
     window.updateTimecode = function(time) {
         console.log("updateTimecode called with:", time); // Debug

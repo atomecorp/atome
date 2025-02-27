@@ -60,7 +60,7 @@ new({ method: :on, renderer: :html }) do |params|
   html.on(params, option)
 end
 
-new({ method: :resize, renderer: :html }) do |params, user_bloc|
+new({ method: :resize, renderer: :html }) do |params, _user_bloc|
   option = @resize[params]
   html.resize(params, option)
 end

@@ -233,11 +233,11 @@ new({ method: :data, type: :string, specific: :table, renderer: :html }) do |val
   html.table(value)
 end
 
-new({ method: :type, type: :hash, specific: :atomized, renderer: :html }) do |value, _user_proc|
+new({ method: :type, type: :hash, specific: :atomized, renderer: :html }) do |_value, _user_proc|
   html.atomized(alien)
 end
 
-new({ renderer: :html, method: :selected, specific: :text }) do |value, &bloc|
+new({ renderer: :html, method: :selected, specific: :text }) do |value, _bloc|
   html.select_text(value)
 end
 

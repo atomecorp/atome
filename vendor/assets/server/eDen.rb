@@ -6,6 +6,14 @@ class EDen
 
   class << self
 
+    def user_creation(value,  message_id, ws)
+      { data: { message: "user creation message: #{value}" }, message_id: message_id }
+    end
+
+    def user_login(value,  message_id, ws)
+      { data: { message: "user login message: #{value}" }, message_id: message_id }
+    end
+
     def axion(data,  message_id, ws)
       query = data['prompt']
       user_key= data['user_key']
@@ -308,5 +316,8 @@ class EDen
       method_sym = method_name.to_sym
       send(method_sym, data, message_id, ws)
     end
+
   end
+
+
 end

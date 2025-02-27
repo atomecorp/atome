@@ -7,7 +7,7 @@ end
 new({ method: :gradient, renderer: :html, type: :hash })
 
 
-new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove, bloc|
+new({ method: :remove, renderer: :html, type: :string }) do |object_id_to_remove, _bloc|
 
   if object_id_to_remove.instance_of? Hash
     object_id_to_remove.each do |particle, value|

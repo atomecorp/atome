@@ -159,6 +159,7 @@ class Genesis
           previous_atome.affect(params[:affect])
           previous_atome
         else
+
           Atome.new(params, &user_proc)
         end
         # Now we return the newly created atome instead of the current atome that is the parent cf: b=box; c=b.circle

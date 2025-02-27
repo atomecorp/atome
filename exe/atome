@@ -83,6 +83,13 @@ def build_aui(destination, project_name)
 end
 
 def build_host_mode(destination, project_name, mode)
+  ### adresse IP
+  interface_name = 'en0' # macOS : 'en0' pour Wi-Fi, 'en1' ou 'eth0' pour Ethernet
+
+  ip_address = Socket.getifaddrs.select do |iface|
+    iface.name == interface_name && iface.addr&.ipv4? && !iface.addr.ipv4_loopback?
+  end.map { |iface| iface.addr.ip_address }.first
+  ###
   path = "#{destination}/#{project_name}/src/utilities/"
   FileUtils.mkdir_p(path) unless Dir.exist?(path)
   host_type = <<~STR
@@ -90,7 +97,14 @@ def build_host_mode(destination, project_name, mode)
       def self.host
         "#{mode}"
       end
+
+   def self.ip_address
+        "#{ip_address}"
+      end
+
     end
+
+
   STR
   File.new("#{path}host_mode.rb", 'w')
   File.open("#{path}host_mode.rb", 'w') do |f|
@@ -417,7 +431,8 @@ def init_server(destination, project_name, port, prod, ru_file)
     # `cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}`
     # system("start cmd /c cd /d #{destination}\\#{project_name}\\server && puma --port #{port} #{prod}")
     system("cd /d \"#{destination}\\#{project_name}\\server\" && puma --port #{port} #{prod}")
-    # for ssl  system("cd /d \"#{destination}\\#{project_name}\\server\" && puma --port #{port} --ssl-bind 0.0.0.0:#{port} --ssl-cert ./config/ssl/server.crt --ssl-key ./config/ssl/server.key #{prod}")
+    # for ssl  system("cd /d \"#{destination}\\#{project_name}\\server\" && puma --port #{port}
+    # --ssl-bind 0.0.0.0:#{port} --ssl-cert ./config/ssl/server.crt --ssl-key ./config/ssl/server.key #{prod}")
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # code to exec with MacOS
     File.open("#{destination}/#{project_name}/server/config.ru", "w") do |f|

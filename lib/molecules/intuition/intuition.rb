@@ -51,4 +51,5 @@ end
 Universe.tools_root = {id: :root_tools, tools: [:toolbox], toolbox: { orientation: :ew, left: 9, bottom: 9, spacing: 9 } }
 # puts "above we added an id because each tool may be in many toolbox and have an uniq ID"
 
+#un-comment to activate tools
 Atome.init_intuition

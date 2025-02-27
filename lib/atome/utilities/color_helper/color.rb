@@ -1,6 +1,6 @@
 # Old code
-# :title: Color -- Colour Management with Ruby
-# :main: README.rdoc
+# title: Color -- Colour Management with Ruby
+# main: README.rdoc
 
 # = Colour Management with Ruby
 module Color

@@ -181,3 +181,4 @@ new({ particle: :blink, category: :property, type: :symbol }) do |params|
     apply(@prev_color)
   end
 end
+

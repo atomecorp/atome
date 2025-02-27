@@ -249,7 +249,7 @@ class Universe
       params=params.dup if params.instance_of?(Hash) || params.instance_of?(Array)
       # puts "params historized : #{params}, class : #{params.class}"
       if @allow_sync && Universe.connected
-        A.sync({ action: :historicize, data: { table: :user } })
+        A.sync({ action: :historicize, data: { table: :creator } })
       end
 
       # if @allow_localstorage && @database_ready

@@ -9,16 +9,21 @@ function controller_message(msg) {
 
 
 function loadApplicationJs() {
-    var script = document.createElement('script');
-    script.src = 'js/application.js';
+    var script = document.createElement("script");
+    script.src = "js/application.js";
+
     script.onload = function () {
-        Opal.Object.$init_database();
+        atomeJsToRuby("Universe.allow_sync = true"); //run on callback
+        atomeJsToRuby("init_database");
     };
+
     document.body.appendChild(script);
+    // atomeJsToRuby("Universe.allow_sync = true");
+
 }
 
 window.addEventListener('load', function () {
-    Opal.Object.$atome_genesis();
+    atomeJsToRuby('atome_genesis');
 })
 
 
@@ -63,9 +68,10 @@ const communication = {
     },
     connect: function (type, server, user, pass, atomes, particles) {
         // websocket for server
+
         this.websocket = new WebSocket(type + '://' + server);
         this.websocket.onopen = function (event) {
-
+            console.log('websocket initialised : '+server)
             // now new can exec user code : loadApplicationJs in index.html
             loadApplicationJs();
             // atomeJsToRuby("A.user_login");

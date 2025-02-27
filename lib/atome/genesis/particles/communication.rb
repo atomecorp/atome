@@ -1,10 +1,10 @@
 # frozen_string_literal: true
-
-new({ particle: :connection, category: :communication, type: :hash }) do |params, bloc|
-
-  # FIXME :  html method shouldn't be here
-  html.connect(params, &bloc)
-end
+new({ particle: :connection, category: :communication, type: :hash })
+# new({ particle: :connection, category: :communication, type: :hash }) do |params, _bloc|
+#   # alert bloc.class
+#   # FIXME :  html method shouldn't be here
+#   html.connect(params)
+# end
 
 new({ particle: :message, category: :communication, type: :hash }) do |params, bloc|
   if Universe.database_ready

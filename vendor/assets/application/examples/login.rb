@@ -9,7 +9,7 @@
 #   puts "current user: #{Universe.current_user}"
 # end
 
-puts 'ok1'
+# puts 'ok1'
 
   # Vérification que les champs email et password ne sont pas envoyés vides :
   # if (email_text.data.nil? || email_text.data.strip.empty?) && (password_text.data.nil? || password_text.data.strip.empty?)

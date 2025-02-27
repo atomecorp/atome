@@ -184,7 +184,7 @@ task :test_wasm do
   project_name = :test
   source = '.'
 
-  host_mode = 'pure_wasm'
+  host_mode = 'web-wasm'
 
   file_path = "./tmp/#{project_name}/src/index_wasm.html"
 
@@ -270,7 +270,7 @@ task :test_server_wasm do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
-  host_mode = 'pure_wasm'
+  host_mode = 'puma-roda-wasm'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   puts 'atome wasm is build and running!'
@@ -313,7 +313,7 @@ task :test_server_opal do
   # build atome kernel
   build_atome_kernel_for_opal(source, destination, project_name)
   # build host_mode
-  build_host_mode(destination, project_name, 'puma-roda')
+  build_host_mode(destination, project_name, 'puma-roda-opal')
   # build Opal extensions
   build_opal_extensions(source, destination, project_name)
   # build application
@@ -356,7 +356,7 @@ task :opal_server_rebuild do
   # build atome kernel
   build_atome_kernel_for_opal(source, destination, project_name)
   # build host_mode
-  build_host_mode(destination, project_name, 'puma-roda')
+  build_host_mode(destination, project_name, 'puma-roda-opal')
   # build Opal extensions
   build_opal_extensions(source, destination, project_name)
   # build application
@@ -392,7 +392,7 @@ task :test_wasm_osx do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
-  host_mode = 'tauri'
+  host_mode = 'tauri-wasm'
 
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
@@ -419,7 +419,7 @@ task :test_osx do
   # build atome kernel
   build_atome_kernel_for_opal(source, destination, project_name)
   # build host_mode
-  build_host_mode(destination, project_name, 'tauri')
+  build_host_mode(destination, project_name, 'tauri-opal')
   # build Opal extensions
   build_opal_extensions(source, destination, project_name)
   # build application
@@ -460,7 +460,7 @@ task :test_wasm_ios do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
-  host_mode = 'tauri'
+  host_mode = 'tauri-wasm'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
@@ -475,7 +475,7 @@ task :build_osx do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
-  host_mode = 'tauri'
+  host_mode = 'tauri-wasm'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
@@ -490,7 +490,7 @@ task :update_osx do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
-  host_mode = 'tauri'
+  host_mode = 'tauri-wasm'
   update_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
@@ -512,7 +512,7 @@ task :osx_server do
   # build atome kernel
   build_atome_kernel_for_opal(source, destination, project_name)
   # build host_mode
-  build_host_mode(destination, project_name, 'puma-roda')
+  build_host_mode(destination, project_name, 'puma-roda-opal')
   # build Opal extensions
   build_opal_extensions(source, destination, project_name)
   # build application
@@ -524,7 +524,7 @@ task :osx_server do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
-  host_mode = 'tauri'
+  host_mode = 'tauri-opal'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'
@@ -553,7 +553,7 @@ task :ios_server do
   # build atome kernel
   build_atome_kernel_for_opal(source, destination, project_name)
   # build host_mode
-  build_host_mode(destination, project_name, 'puma-roda')
+  build_host_mode(destination, project_name, 'puma-roda-opal')
   # build Opal extensions
   build_opal_extensions(source, destination, project_name)
   # build application
@@ -565,7 +565,7 @@ task :ios_server do
   destination = './tmp'
   script_source = './test/application'
   wasi_file = 'wasi-vfs-osx_arm'
-  host_mode = 'tauri'
+  host_mode = 'tauri-opal'
   create_application(source, destination, project_name)
   wasm_common(source, destination, project_name, wasi_file, host_mode, script_source)
   destination = './tmp'

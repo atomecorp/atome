@@ -16,17 +16,12 @@ function controller_message(msg) {
 function loadApplicationJs() {
     // setTimeout(function(){
     //     console.log("remove this timeout")
-        rubyVM.eval("init_database");
+    atomeJsToRuby("Universe.allow_sync = true"); //run on callback
+    rubyVM.eval("init_database");
     // }, 2000)
 
 }
 
-
-
-// window.addEventListener('load', function () {
-//     // Opal.Object.$atome_genesis();
-//     atomeJsToRuby('atome_genesis');
-// })
 
 const communication = {
     controller_sender: function (msg) {
@@ -50,7 +45,7 @@ const communication = {
     controller_listener: function () {
         if (window.webkit) {
             try {
-                ///
+                rubyVM.eval("response_listener(" + arg.data + ")");
             } catch (error) {
                 console.log('no server, unable to receive message')
             }
@@ -58,7 +53,8 @@ const communication = {
 
             try {
                 window.chrome.webview.addEventListener('message', arg => {
-                    Opal.Object.$response_listener(arg.data)
+                    // Opal.Object.$response_listener(arg.data)
+                    rubyVM.eval("response_listener(" + arg.data + ")");
                 });
             } catch (error) {
                 console.log('no server, unable to receive message')
@@ -71,7 +67,6 @@ const communication = {
         // websocket for server
         this.websocket = new WebSocket(type + '://' + server);
         this.websocket.onopen = function (event) {
-
             // now new can exec user code : loadApplicationJs in index.html
             loadApplicationJs();
             // rubyVM.eval("A.user_login");

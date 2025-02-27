@@ -110,7 +110,11 @@
 # require "./examples/undo"
 # require "./examples/apply"
 # require "./examples/aXion_with_key"
-require "./examples/draw"
+# require "./examples/draw"
+require "./examples/database_handling"
+# require "./examples/select_text"
+
+
 
 
 

@@ -47,9 +47,28 @@
     require '/utilities/aui'
     require '/utilities/host_mode'
     require '/lib/atome_relative'
-    require './index'
-    #atome_infos
-    atome_genesis
+
+ def wait_for_database(max_attempts = 20, attempts = 0, &on_ready)
+  if Universe.database_ready
+    on_ready.call if on_ready
+  elsif attempts >= max_attempts
+    puts "max attempt"
+  else
+    puts "waiting for database(attempt #{attempts + 1})"
+    wait 1 do
+      wait_for_database(max_attempts, attempts + 1, &on_ready)
+    end
+  end
+end
+
+wait_for_database do
+     require './index'
+end
+
+atome_genesis
+
+
+
 
 
 </script>
