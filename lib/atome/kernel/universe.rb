@@ -246,14 +246,17 @@ class Universe
 
     def historicize(id, operation, element, params)
       if @allow_sync
+        time = Time.now
+
+        formatted_time = time.strftime('%Y-%m-%d %H:%M:%S.%L')
         if Universe.connected
-          puts "historicize on server, #{id}, #{operation}, #{element}, #{params}"
+          puts "[#{id}, #{operation}, #{element}, #{params}, #{formatted_time}]"
           # params=params.dup if params.instance_of?(Hash) || params.instance_of?(Array)
           A.sync({ action: :historicize, data: { table: :creator } })
         end
 
         if @allow_localstorage
-          puts "historicize locally, #{id}, #{operation}, #{element}, #{params}"
+          # puts "historicize locally #{id}: #{operation}, #{element}, #{params}, #{formatted_time}"
           operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
           @history_position = operation_timing
           @increment = (@increment + 1) % 100

@@ -32,11 +32,19 @@ end
 #puma-roda
 
 b=box({id: :poil, aid: :poilu})
+t=text(:hello)
+t.left(333)
+t.touch(true) do
+  grab(:circle).width(300)
+end
 b.touch(true) do |event|
   if event == 356
     alert 'hash_filtered'
   else
-    c= circle
+    c= circle({id: :circle})
+    c.touch(true) do
+      c.color(:red)
+    end
     part= c.particles
     hash_filtered = part.reject { |key, _| ["history", "html", "headless"].include?(key) }
     alert  hash_filtered
