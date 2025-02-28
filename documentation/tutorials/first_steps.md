@@ -82,7 +82,7 @@ browser version
 - Warning : run the app doesn't refresh the user code, to refresh use the command 'build'
 
 
-    atome run browser
+    atome run opal
 
 
 server version 
@@ -95,7 +95,7 @@ server version
 - By default the address port is 9292 : http://localhost:9292/index
 
 
-gem version
+gem version (A regression broke this functionality, TODO: repair asap)
 
     require 'atome'
     a=Atome.new

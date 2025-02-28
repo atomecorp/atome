@@ -25,7 +25,6 @@ degree of flexibility and extensibility in how objects are used and manipulated.
 - **Type Identification**: Easily identify the type of object you're dealing with through the `type` method.
 - **Parent-Child Relationships**: Any object can have another object as its child, allowing for complex nested
   structures.
-- **Multiple Parenting**: Objects can have multiple parents, enabling versatile and dynamic object relationships.
 - **Multiple Rendering**: Objects can be rendered in multiple ways simultaneously, such as text description, audio
   description, and on-screen rendering.
 - **Code Rendering**: The framework supports code rendering through technologies like Opal or WebAssembly, offering even
@@ -92,10 +91,10 @@ The framework leverages the power of polymorphism, allowing objects to take on m
 ### Platform Compatibility and Extensibility
 
 - **Cross-Platform**: Generate applications compatible with iOS, Android, Windows, Linux, macOS, and FreeBSD.
-- **Offline and Online Modes**: Operate seamlessly in both offline and online environments.
+- **Offline and Online Modes**: Operate seamlessly in both offline and online environments.it can also sync data with conflict resolution
 - **Client-Server Architecture**: Capable of generating both client and server applications, or a combination of both.
-- **Arduino Integration**: Ideal for home automation and robotics creation.
-- **Full Operating System**: Can be embedded and booted as a full operating system using FreeBSD.
+- **Arduino Interactions**: Ideal for home automation and robotics creation or prototyping.
+- **Full Operating System**: Can be embedded and booted as a full operating system using FreeBSD if needed.
 
 ### Meta-Programming
 
@@ -125,7 +124,7 @@ Adding new features is made easy with an automated API system.
 
 Join us in making multimedia object modeling more efficient, flexible, and powerful than ever before. Star our GitHub repository, fork it, and send us your pull requests.
 
--
+
 
 <img src="../documentation/images/3.png" width="666" />
 
