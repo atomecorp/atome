@@ -192,7 +192,7 @@ Everyone interacting in the Atome project's codebase, issue trackers, chat rooms
 
 Example website:
 -
-**[a website showing some apis demo ](http://atome.one)**
+**[a website showing some apis demo ]([http://atome.one](http://atomeser.odns.fr/atome/))**
 
 
 Contact:
