@@ -95,7 +95,7 @@ const communication = {
     },
     ws_sender: function (message) {
         // now we send the data to the server
-        // puts "--> message : #{message}"
+        // console.log(message);
         this.websocket.send(message)
     },
 }

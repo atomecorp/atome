@@ -186,39 +186,39 @@ def init_database
   A.sync({ action: :init_db, data: { database: :eDen } }) do |data|
     Universe.database_ready = data[:data][:message] == 'database_ready'
   end
-  # # now we populate the DB
-  # A.sync({ action: :create_db_table, data: { table: :user, type: :string } }) do |_db_state|
-  # end
-  # A.sync({ action: :create_db_table, data: { table: :atome } }) do |_db_state|
-  # end
-  #
-  # A.sync({ action: :create_db_table, data: { table: :history } }) do |_db_state|
-  # end
-  #
-  # A.sync({ action: :create_db_column, data: { table: :user, column: :phone, type: :string, unique: true } }) do |_db_state|
-  # end
-  # A.sync({ action: :create_db_column, data: { table: :user, column: :name, type: :string } }) do |_db_state|
-  # end
-  # A.sync({ action: :create_db_column, data: { table: :user, column: :password, type: :string } }) do |_db_state|
-  # end
-  # A.sync({ action: :create_db_column, data: { table: :history, column: :aid, type: :string } }) do |_db_state|
-  # end
-  # A.sync({ action: :create_db_column, data: { table: :history, column: :particle, type: :string } }) do |_db_state|
-  # end
-  # A.sync({ action: :create_db_column, data: { table: :history, column: :value, type: :string } }) do |_db_state|
-  # end
-  # A.sync({ action: :create_db_column, data: { table: :history, column: :date, type: :datetime } }) do |_db_state|
-  # end
-  # # now whe create a column for each particle in the Universe.particle_list
-  # Universe.particle_list.each do |particle|
-  #   particle_name = particle[0]
-  #   particle_type = particle[1][:type]
-  #   A.sync({ action: :create_db_column, data: { table: :atome, column: particle_name, type: particle_type } }) do |_db_state|
-  #   end
-  # end
-  #
-  # # now we send localstorage content to the server to sync offline data
-  # Atome.send_localstorage_content
+  # now we populate the DB
+  A.sync({ action: :create_db_table, data: { table: :user, type: :string } }) do |_db_state|
+  end
+  A.sync({ action: :create_db_table, data: { table: :atome } }) do |_db_state|
+  end
+
+  A.sync({ action: :create_db_table, data: { table: :history } }) do |_db_state|
+  end
+
+  A.sync({ action: :create_db_column, data: { table: :user, column: :phone, type: :string, unique: true } }) do |_db_state|
+  end
+  A.sync({ action: :create_db_column, data: { table: :user, column: :name, type: :string } }) do |_db_state|
+  end
+  A.sync({ action: :create_db_column, data: { table: :user, column: :password, type: :string } }) do |_db_state|
+  end
+  A.sync({ action: :create_db_column, data: { table: :history, column: :aid, type: :string } }) do |_db_state|
+  end
+  A.sync({ action: :create_db_column, data: { table: :history, column: :particle, type: :string } }) do |_db_state|
+  end
+  A.sync({ action: :create_db_column, data: { table: :history, column: :value, type: :string } }) do |_db_state|
+  end
+  A.sync({ action: :create_db_column, data: { table: :history, column: :date, type: :datetime } }) do |_db_state|
+  end
+  # now whe create a column for each particle in the Universe.particle_list
+  Universe.particle_list.each do |particle|
+    particle_name = particle[0]
+    particle_type = particle[1][:type]
+    A.sync({ action: :create_db_column, data: { table: :atome, column: particle_name, type: particle_type } }) do |_db_state|
+    end
+  end
+
+  # now we send localstorage content to the server to sync offline data
+  Atome.send_localstorage_content
 
 end
 
@@ -242,6 +242,6 @@ default_lang = :english
 grab(:view).language(default_lang)
 grab(:intuition).language(default_lang)
 
-# Universe.allow_localstorage = true # to stop data to be stored in localstorage
+Universe.allow_localstorage = true # to allow data to be stored in localstorage
 # Universe.allow_sync= false # to stop data to be sync on server
 allow_right_touch(true) # this lock the system right click in web view

@@ -184,6 +184,7 @@ class EDen
     end
 
     def historicize(data, message_id, ws)
+      puts "data =>>> #{data}"
        { return: 'item to historicize  received', authorized: true, message_id: message_id }
 
     end
@@ -247,7 +248,99 @@ class EDen
         { data: { message: "table not found: #{table}" }, message_id: message_id }
       end
     end
+    ###################### to test
+    def update_by_aid(data, message_id, ws)
+      table = data['table'].to_sym
+      particles = data['particles']
 
+      if db_access.table_exists?(table)
+        schema = db_access.schema(table)
+        update_data = {}
+        aid_value = nil
+
+        # Extraire la valeur de 'aid' du hash des particles
+        aid_value = particles['aid'] if particles.key?('aid')
+
+        # Vérifier si 'aid' existe et a une valeur
+        if aid_value.nil?
+          return { data: { message: "No 'aid' value provided for update" }, message_id: message_id }
+        end
+
+        # Construire le hash de données à mettre à jour
+        particles.each do |particle, value|
+          particle_sym = particle.to_sym
+          if schema.any? { |col_def| col_def.first == particle_sym }
+            update_data[particle_sym] = value
+          else
+            return { data: { message: "column not found: #{particle}" }, message_id: message_id }
+          end
+        end
+
+        if update_data.any?
+          identity_table = db_access[table]
+          # Rechercher et mettre à jour l'enregistrement correspondant à l'aid
+          updated_count = identity_table.where(aid: aid_value).update(update_data)
+
+          if updated_count > 0
+            { data: { message: "Data updated in table: #{table} for aid: #{aid_value}" }, message_id: message_id }
+          else
+            # Si aucune ligne n'est mise à jour (aid non trouvé), effectuer une insertion
+            identity_table.insert(update_data)
+            { data: { message: "No record found with aid: #{aid_value}, data inserted instead" }, message_id: message_id }
+          end
+        else
+          { data: { message: "No valid columns provided" }, message_id: message_id }
+        end
+      else
+        { data: { message: "table not found: #{table}" }, message_id: message_id }
+      end
+    end
+    ###################### to test
+    def get_filled_values_by_aid(table_name, aid_value)
+      table = db_access[table_name.to_sym]
+
+      # Récupérer l'enregistrement complet
+      record = table.where(aid: aid_value).first
+
+      # Si l'enregistrement n'existe pas, retourner nil ou un hash vide
+      return nil if record.nil?
+
+      # Filtrer les colonnes qui ont des valeurs non-null
+      # (ou non vides selon vos critères)
+      filled_values = record.reject do |key, value|
+        value.nil? ||
+          (value.is_a?(String) && value.empty?) ||
+          (value.is_a?(Array) && value.empty?) ||
+          (value.is_a?(Hash) && value.empty?)
+      end
+
+      filled_values
+    end
+    ###################### end
+    def clear_column_by_aid(table_name, aid_value, column_name)
+      table = db_access[table_name.to_sym]
+
+      # Vérifier si la table existe
+      unless db_access.table_exists?(table_name.to_sym)
+        return { success: false, message: "Table not found: #{table_name}" }
+      end
+
+      # Vérifier si la colonne existe dans le schéma
+      schema = db_access.schema(table_name.to_sym)
+      unless schema.any? { |col_def| col_def.first == column_name.to_sym }
+        return { success: false, message: "Column not found: #{column_name}" }
+      end
+
+      # Mettre à jour la colonne avec NULL
+      update_count = table.where(aid: aid_value).update(column_name.to_sym => nil)
+
+      if update_count > 0
+        { success: true, message: "Column '#{column_name}' cleared for aid: #{aid_value}" }
+      else
+        { success: false, message: "No record found with aid: #{aid_value}" }
+      end
+    end
+    ###################### end
     def file(data, message_id, ws)
       operation = data['operation']
       source = data['source']

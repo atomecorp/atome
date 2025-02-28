@@ -245,25 +245,25 @@ class Universe
     end
 
     def historicize(id, operation, element, params)
-      # params=params_passed
-      params=params.dup if params.instance_of?(Hash) || params.instance_of?(Array)
-      # puts "params historized : #{params}, class : #{params.class}"
-      if @allow_sync && Universe.connected
-        A.sync({ action: :historicize, data: { table: :creator } })
-      end
+      if @allow_sync
+        if Universe.connected
+          puts "historicize on server, #{id}, #{operation}, #{element}, #{params}"
+          # params=params.dup if params.instance_of?(Hash) || params.instance_of?(Array)
+          A.sync({ action: :historicize, data: { table: :creator } })
+        end
 
-      # if @allow_localstorage && @database_ready
-      if @allow_localstorage
+        if @allow_localstorage
+          puts "historicize locally, #{id}, #{operation}, #{element}, #{params}"
+          operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
+          @history_position = operation_timing
+          @increment = (@increment + 1) % 100
 
-        operation_timing = Time.now.strftime("%Y%m%d%H%M%S%3N") + @increment.to_s
-        @history_position = operation_timing
-        @increment += 1
-        @increment = @increment % 100
-        # if @allow_localstorage.include? element
+          data_structure = { id => { operation => { element => params } } }
+          history_entry = { operation_timing => data_structure.merge(sync: false, time: Time.now) }
+
           JS.global[:localStorage].setItem(operation_timing, "{ #{id} => { #{operation} => { #{element} => #{params} } }, sync: false }")
-          @history[@history.length] = { operation_timing => { id => { operation => { element => params } }, sync: false, time: Time.now } }
-        # end
-
+          @history[@history.length] = history_entry
+        end
       end
     end
 

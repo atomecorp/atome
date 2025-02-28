@@ -268,7 +268,7 @@ class HTML
   end
 
   def send_message(message)
-    # FIXME  : find why we have to sanitize this message when using ruby W
+    # FIXME  : find why we have to sanitize this message when using ruby
 
     if Atome::host == 'pure_wasm'
       message = transform_to_string_keys_and_values(message)
