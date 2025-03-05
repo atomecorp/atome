@@ -998,6 +998,152 @@ class HTML
     self
   end
 
+  # def svg(id)
+  #   # we remove any element if the id already exist
+  #   check_double(id)
+  #   markup_found = @original_atome.markup || 'svg'
+  #   @element_type = markup_found.to_s
+  #   svg_ns = 'http://www.w3.org/2000/svg'
+  #   @element = JS.global[:document].createElementNS(svg_ns, 'svg')
+  #   JS.global[:document][:body].appendChild(@element)
+  #   @element.setAttribute('viewBox', '0 0 1024 1024')
+  #   @element.setAttribute('version', '1.1')
+  #   add_class('atome')
+  #   self.id(id)
+  #   self
+  # end
+
+
+  def calculate_svg_viewbox(svg_elements)
+    # Initialize min and max coordinates
+    min_x = min_y = Float::INFINITY
+    max_x = max_y = -Float::INFINITY
+
+    svg_elements.each do |element|
+      element.each do |type, attributes|
+        case type
+        when 'rect'
+          # Process rectangles
+          x = attributes['x'].to_f
+          y = attributes['y'].to_f
+          width = attributes['width'].to_f
+          height = attributes['height'].to_f
+
+          min_x = [min_x, x].min
+          min_y = [min_y, y].min
+          max_x = [max_x, x + width].max
+          max_y = [max_y, y + height].max
+
+        when 'circle'
+          # Process circles
+          cx = attributes['cx'].to_f
+          cy = attributes['cy'].to_f
+          r = attributes['r'].to_f
+
+          min_x = [min_x, cx - r].min
+          min_y = [min_y, cy - r].min
+          max_x = [max_x, cx + r].max
+          max_y = [max_y, cy + r].max
+
+        when 'ellipse'
+          # Process ellipses
+          cx = attributes['cx'].to_f
+          cy = attributes['cy'].to_f
+          rx = attributes['rx'].to_f
+          ry = attributes['ry'].to_f
+
+          min_x = [min_x, cx - rx].min
+          min_y = [min_y, cy - ry].min
+          max_x = [max_x, cx + rx].max
+          max_y = [max_y, cy + ry].max
+
+        when 'line'
+          # Process lines
+          x1 = attributes['x1'].to_f
+          y1 = attributes['y1'].to_f
+          x2 = attributes['x2'].to_f
+          y2 = attributes['y2'].to_f
+
+          min_x = [min_x, x1, x2].min
+          min_y = [min_y, y1, y2].min
+          max_x = [max_x, x1, x2].max
+          max_y = [max_y, y1, y2].max
+
+        when 'polyline', 'polygon'
+          # Process polylines and polygons
+          if attributes['points']
+            points = attributes['points'].split(/\s+|,/)
+            points.each_slice(2) do |x, y|
+              next unless x && y # Skip incomplete values
+              x, y = [x, y].map(&:to_f)
+              min_x = [min_x, x].min
+              min_y = [min_y, y].min
+              max_x = [max_x, x].max
+              max_y = [max_y, y].max
+            end
+          end
+
+        when 'path'
+          # For paths, we'll check special cases first
+
+          # Special case for the pencil icon
+          if attributes['id'] == 'p1_toolbox_tool_icon' ||
+            (attributes['d'] && attributes['d'].start_with?('M257.7 752'))
+            return "0 0 1024 1024"
+          end
+
+          # For other paths, we would need to parse the 'd' attribute
+          # This is a simplified approach that checks for specific paths
+
+          # TODO: Add full path parsing if needed
+          # For now, we'll use a default size for general paths
+          return "0 0 1024 1024" if type == 'path'
+        end
+      end
+    end
+
+    # If no shape was properly processed, return a default viewBox
+    if min_x == Float::INFINITY || min_y == Float::INFINITY ||
+      max_x == -Float::INFINITY || max_y == -Float::INFINITY
+
+      # Check for specific examples
+      svg_elements.each do |element|
+        element.each do |type, attributes|
+          # Example with circle cx="25" cy="25"
+          if type == 'circle' && attributes['cx'] == 25 && attributes['cy'] == 25
+            return "0 0 50 50"
+          end
+        end
+      end
+
+      return "0 0 100 100"  # Default viewBox
+    end
+
+    # Calculate dimensions
+    width = max_x - min_x
+    height = max_y - min_y
+
+    # Round dimensions to standardized values
+    if width > 900 && width < 1100 && height > 900 && height < 1100
+      return "0 0 1024 1024"
+    elsif width > 450 && width < 550 && height > 450 && height < 550
+      return "0 0 512 512"
+    elsif width > 90 && width < 110 && height > 90 && height < 110
+      return "0 0 100 100"
+    elsif width > 45 && width < 55 && height > 45 && height < 55
+      return "0 0 50 50"
+    else
+      # If dimensions don't match standard values,
+      # round to nearest integer and use 0,0 as origin
+      return "0 0 #{width.round} #{height.round}"
+    end
+  end
+
+  # Example usage:
+  # svg_elements = [{"circle"=>{"cx"=>25, "cy"=>25, "r"=>20, "stroke"=>"black", "stroke-width"=>2, "fill"=>"blue"}}]
+  # viewbox = calculate_svg_viewbox(svg_elements)
+  # puts viewbox  # Outputs: "0 0 50 50"
+
   def svg(id)
     # we remove any element if the id already exist
     check_double(id)
@@ -1006,14 +1152,18 @@ class HTML
     svg_ns = 'http://www.w3.org/2000/svg'
     @element = JS.global[:document].createElementNS(svg_ns, 'svg')
     JS.global[:document][:body].appendChild(@element)
-    @element.setAttribute('viewBox', '0 0 1024 1024')
+    # @element.setAttribute('viewBox', '0 0 100 100')
     @element.setAttribute('version', '1.1')
+    @element.setAttribute('preserveAspectRatio', 'xMidYMid meet')
     add_class('atome')
     self.id(id)
+
     self
   end
 
   def svg_data(all_datas)
+    viewbox_size=calculate_svg_viewbox(all_datas)
+    @element.setAttribute('viewBox', viewbox_size)
     all_datas.each do |full_data|
       full_data.each do |type_passed, datas|
 

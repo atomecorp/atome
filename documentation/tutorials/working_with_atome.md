@@ -24,7 +24,19 @@ you can send also the properties to the atome using parenthesis ou the equal sig
     a.x(300)
     a.y=500
 
-The basic objects
+Basic opaertions :
+
+    b = box({ width: 700, height: 120, drag: true, center: { dynamic: true } })
+    c = circle
+    t = text({ content: "ok", color: :black, center: :x })
+
+    b.touch(:down) do 
+        t.content("hello!")
+        c.left(333)
+        b.color(:blue)
+    end
+
+Basic objects:
 
 those objects are created by the system at startup : 
 -
@@ -43,18 +55,3 @@ those objects are created by the system at startup :
 
 - authorization : this atome is used to authorise or not creation , use, communication and modification of atome
 
-buffer : an atome used to store temporary object, it is used to store temporary element such as  the position and content of system element like the code editor or the list of element to remain centered when the main windows is resized,
-eg:
-
-
-    b = box({ width: 700, height: 120, drag: true, center: { dynamic: true } })
-    c = circle
-    t = text({ content: "ok", color: :black, center: :x })
-
-    grab(:buffer).content[:resize] = [t, b]
-    ATOME.resize_html do |evt|
-        t.content("#{evt[:width]}  #{evt[:height]}")
-            grab(:buffer).content[:resize].each do |element|
-            element.center=element.center
-        end
-    end

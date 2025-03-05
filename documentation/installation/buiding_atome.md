@@ -1,13 +1,11 @@
-<span align="right">
+
 
 [Main menu](../atome.md)
 -
-</span>
-<span align="left">
+
 
 [back](./kickstart.md)
 
-</span>
 
 
 Install atome prerequisites
@@ -151,20 +149,20 @@ end
 
 Paths:
 
-new render here : /Users/jean-ericgodard/Documents/Work/codes/atome/lib/atome/extensions/atome.rb
+new render here : atome/lib/atome/extensions/atome.rb
 class Object
 def new(params, &bloc)
 
-rendering call here: /Users/jean-ericgodard/Documents/Work/codes/atome/lib/renderers/renderer.rb
+rendering call here: atome/lib/renderers/renderer.rb
 
-Automatic renderer generation here: /Users/jean-ericgodard/Documents/Work/codes/atome/lib/atome/extensions/atome.rb :
+Automatic renderer generation here: atome/lib/atome/extensions/atome.rb :
 class Object
 def new(params, &bloc)
 
-renderers are build here : /Users/jean-ericgodard/Documents/Work/codes/atome/lib/atome/genesis/genesis.rb
+renderers are build here : atome/lib/atome/genesis/genesis.rb
 def build_render(renderer_name, &method_proc)
 
-remove condition  /Users/jean-ericgodard/Documents/Work/codes/atome/lib/renderers/renderer.rb in def rendering
+remove condition  atome/lib/renderers/renderer.rb in def rendering
 
 New particle example :
 

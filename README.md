@@ -1,6 +1,8 @@
 atome
 -
 
+- News: atome can now be used in AUV3 Apple audio plugin
+
 <img src="./documentation/images/3.png" width="666" />
 
 
@@ -199,7 +201,6 @@ Contact:
 **[queries@atome.one](mailto:contact@atome.one)**
 
 <img src="./documentation/images//atome.svg" width="100" />
-
 
 
 ---

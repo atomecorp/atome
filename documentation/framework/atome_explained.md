@@ -44,14 +44,15 @@ EG :
     a=image(content: :moto)
 
 
-<img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/moto.png" width="333" />
+[//]: # (<img src="https://github.com/atomecorp/atome/raw/development/www/public/medias/images/moto.png" width="333" />)
 
     a.color(:white) #important else the text xill be transparent
     a.type(:text)
 moto
 
     a.render({mode: :list, list: :property, sort: :alphabetically })
-<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/list.png" width="400px" />
+
+[//]: # (<img src="https://github.com/atomecorp/atome/raw/development/documentation/images/list.png" width="400px" />)
 
 
 

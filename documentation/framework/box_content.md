@@ -16,14 +16,12 @@ What's in the box
 **The atome framework is based on the Cordova framework, plus the additional following features :**
 
 
-
 - a ruby interpreter
 
 - a web server mode
 
 - a simple modular and consistent syntax to build your own environment and tools
 
-  
 - video recording playback and streaming
 
 - video conference

@@ -256,5 +256,7 @@ new({ renderer: :html, method: :apply, type: :string, specific: :vector }) do |p
     # full_gradient_to_apply=gradients_to_apply.join(',')
     full_gradient_to_apply = gradients_to_apply.last
     html.style(:background, full_gradient_to_apply)
+  else
+    # type code here
   end
 end

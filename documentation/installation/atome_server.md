@@ -1,13 +1,9 @@
-<span align="right">
+
 
 [Main menu](../atome.md)
 -
-</span>
-<span align="left">
 
 [back](./kickstart.md)
-
-</span>
 
 
 Install atome infrastructure
