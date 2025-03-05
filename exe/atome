@@ -652,7 +652,8 @@ if ARGV.include?('update')
     # first we delete everything but application
 
     files_to_treat = %w[server src-tauri src-wasm Guardfile Rakefile src/css src/js/atome src/js/molecules src/js/third_parties
-src/favicon.ico src/index_wasm.html src/index_opal.html src/index_server.html src/index_server_wasm.html]
+src/favicon.ico src/index_wasm.html src/index_opal.html src/index_server_opal.html src/index_server_wasm.html
+src/index_native_opal_tauri.html src/index_native_wasm_tauri.html]
     files_to_treat.each do |item|
       item_path = File.join(destination, item)
       if File.directory?(item_path)
