@@ -103,10 +103,11 @@ class Atome
       atome_js.JS.controller_listener() # js folder atome/helipers/atome/communication
     end
 
-    def handle_svg_content(svg_content, target)
+    def handle_svg_content(svg_content, target, id)
       atome_content = A.vectoriser(svg_content)
       target_vector = grab(target)
       target_vector.data(atome_content)
+      grab(id).instance_variable_get('@svg_to_vector').call
     end
 
   end
@@ -865,12 +866,14 @@ STRR
     new_atome
   end
 
-  def extract_svg(params)
+  def svg_to_vector(params, &proc)
+
+   @svg_to_vector=proc
     source = params[:source]
     img_element = JS.global[:document].getElementById(source.to_s)
     svg_path = img_element.getAttribute("src")
     target = params[:target]
-    JS.eval("replaceSVGContent('#{svg_path}', '#{target}')")
+    JS.eval("replaceSVGContent('#{svg_path}', '#{target}', '#{id}')")
   end
 
   def determine_action(file_content)
