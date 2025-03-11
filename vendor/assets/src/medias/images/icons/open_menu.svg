@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="800"  xml:space="preserve" id="open_menuCanvas">
+    <g id="open_menuCanvas-group" transform="translate(222.67, 626.33) rotate(-90)" >
+        <path id="open_menuCanvas-p1" stroke="rgb(238, 238, 238)" stroke-width="100" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" fill="rgb(0, 0, 0)" d="M 0,0 L 466.67,0" />
+        <path id="open_menuCanvas-p2" stroke="rgb(238, 238, 238)" stroke-width="100" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" fill="rgb(0, 0, 0)" d="M 0,166.67 L 466.67,166.67" />
+        <path id="open_menuCanvas-p3" stroke="rgb(238, 238, 238)" stroke-width="100" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" fill="none" d="M 0,333.33 L 466.67,333.33" />
+    </g>
+</svg>
