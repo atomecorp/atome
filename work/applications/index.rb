@@ -121,7 +121,7 @@
 # require "./examples/text_align"
 # require "./examples/b64_to_image"
 # require "./examples/svg_img_to_vector"
-# require "./examples/svg_vectorizer"
+# require "./examples/svg_vectoriser"
 # require "./examples/smooth"
 # require "./examples/categories"
 # require "./examples/atome_particle_validation"
@@ -175,7 +175,7 @@
 #
 #### works
 # require "./examples/link"
-# require "./examples/svg_vectorizer"
+# require "./examples/svg_vectoriser"
 # require "./examples/holder"
 # require "./examples/input"
 # require "./examples/server"

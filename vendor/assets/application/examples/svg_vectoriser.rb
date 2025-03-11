@@ -16,7 +16,7 @@ svg_content = <<-SVG
 SVG
 
 v = vector({width: 333, height: 333})
-atome_content = A.vectorizer(svg_content)
+atome_content = A.vectoriser(svg_content)
 puts atome_content
 v.data(atome_content)
 

@@ -105,12 +105,12 @@ function my_ruby_wasm_js_fct(val) {
     Opal.eval("my_ruby_meth('ruby wasm eval: " + val + "')");
 }
 
-function fetchSVGContent(svgPath, target) {
+function replaceSVGContent(svgPath, target) {
     fetch(svgPath)
         .then(response => response.text())
         .then(data => {
             // Opal.eval("A.handleSVGContent('"+data+"', '"+target+"')") ;
-            Opal.Atome.$handleSVGContent(data, target);
+            Opal.Atome.$handle_svg_content(data, target);
         })
         .catch(error => console.error('Erreur de chargement du SVG :', error));
 
