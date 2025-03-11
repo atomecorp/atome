@@ -247,10 +247,13 @@ class Atome
 
     alterations = tool_scheme[:alteration] ? tool_scheme[:alteration].keys : []
     creations = tool_scheme[:creation] ? tool_scheme[:creation].keys : []
-    prev_auth = Universe.allow_localstorage ||= []
+    if Universe.allow_localstorage
+      prev_auth = [Universe.allow_localstorage]
+    else
+      prev_auth=[]
+    end
     events_allow = %i[top left right bottom width height]
     storage_allowed = events_allow.concat(alterations).concat(creations).concat(prev_auth).uniq
-
     Universe.allow_localstorage = storage_allowed
     # we set edit mode to true (this allow to prevent user atome to respond from click)
 
