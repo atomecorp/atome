@@ -749,100 +749,204 @@ class Atome
     current_state
   end
 
+  def extract_attribute(attributes_string, attr_name)
+    # find attribute with single  or double quotes
+    if attributes_string =~ /\b#{attr_name}\s*=\s*["']([^"']*)["']/
+      $1
+    else
+      nil
+    end
+  end
+
   def convert_svg(svg_content)
-    @svg=svg_content
+    @svg = svg_content
     atome_content = []
-    circle_regex = /<circle\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+(?:\.\d+)?)"\s+cy\s*=\s*"(\d+(?:\.\d+)?)"\s+r\s*=\s*"(\d+(?:\.\d+)?)"\s*.*?\/>/
 
-    svg_content.scan(circle_regex) do |id, stroke, stroke_width, fill, cx, cy, r|
-      stroke = stroke || 'none'
-      stroke_width = stroke_width || '0'
-      fill = fill || 'none'
-      circle_def = { circle: { cx: cx, cy: cy, r: r, id: id, stroke: stroke, "stroke-width" => stroke_width, fill: fill } }
-      atome_content << circle_def
+
+    svg_content.scan(/<circle\b([^>]*)>/) do |attributes_array|
+      attributes = attributes_array[0]
+      id = extract_attribute(attributes, 'id')
+      stroke = extract_attribute(attributes, 'stroke') || 'none'
+      stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+      fill = extract_attribute(attributes, 'fill') || 'none'
+      cx = extract_attribute(attributes, 'cx')
+      cy = extract_attribute(attributes, 'cy')
+      r = extract_attribute(attributes, 'r')
+
+      if cx && cy && r
+        circle_def = {
+          circle: {
+            cx: cx,
+            cy: cy,
+            r: r,
+            id: id || 'circle_id',
+            stroke: stroke,
+            "stroke-width" => stroke_width,
+            fill: fill
+          }
+        }
+        atome_content << circle_def
+      end
     end
 
-    path_regex = /<path\s+.*?d\s*=\s*"([^"]+)"\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)".*?\/>/
+    svg_content.scan(/<path\b([^>]*)>/) do |attributes_array|
+      attributes = attributes_array[0]
+      id = extract_attribute(attributes, 'id')
+      stroke = extract_attribute(attributes, 'stroke') || 'none'
+      stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+      fill = extract_attribute(attributes, 'fill') || 'none'
+      d = extract_attribute(attributes, 'd')
 
-    svg_content.scan(path_regex) do |d, id, stroke, stroke_width, fill|
-      id = id || 'path_id'
-      stroke = stroke || 'none'
-      stroke_width = stroke_width || '0'
-      fill = fill || 'none'
-      path_def = { path: { d: d, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
-      atome_content << path_def
+      if d
+        path_def = {
+          path: {
+            d: d,
+            id: id || 'path_id',
+            stroke: stroke,
+            'stroke-width' => stroke_width,
+            fill: fill
+          }
+        }
+        atome_content << path_def
+      end
     end
 
-    rect_regex = /<rect\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+x\s*=\s*"(\d+(?:\.\d+)?)"\s+y\s*=\s*"(\d+(?:\.\d+)?)"\s+width\s*=\s*"(\d+(?:\.\d+)?)"\s+height\s*=\s*"(\d+(?:\.\d+)?)"\s*.*?\/>/
+    svg_content.scan(/<rect\b([^>]*)>/) do |attributes_array|
+      attributes = attributes_array[0]
+      id = extract_attribute(attributes, 'id')
+      stroke = extract_attribute(attributes, 'stroke') || 'none'
+      stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+      fill = extract_attribute(attributes, 'fill') || 'none'
+      x = extract_attribute(attributes, 'x')
+      y = extract_attribute(attributes, 'y')
+      width = extract_attribute(attributes, 'width')
+      height = extract_attribute(attributes, 'height')
 
-    svg_content.scan(rect_regex) do |id, stroke, stroke_width, fill, x, y, width, height|
-      id = id || 'rect_id'
-      stroke = stroke || 'none'
-      stroke_width = stroke_width || '0'
-      fill = fill || 'none'
-      rect_def = { rect: { x: x, y: y, width: width, height: height, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
-      atome_content << rect_def
+      if x && y && width && height
+        rect_def = {
+          rect: {
+            x: x,
+            y: y,
+            width: width,
+            height: height,
+            id: id || 'rect_id',
+            stroke: stroke,
+            'stroke-width' => stroke_width,
+            fill: fill
+          }
+        }
+        atome_content << rect_def
+      end
     end
 
-    line_regex = /<line\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?x1\s*=\s*"(\d+(?:\.\d+)?)"\s+y1\s*=\s*"(\d+(?:\.\d+)?)"\s+x2\s*=\s*"(\d+(?:\.\d+)?)"\s+y2\s*=\s*"(\d+(?:\.\d+)?)"\s*.*?\/>/
+    svg_content.scan(/<line\b([^>]*)>/) do |attributes_array|
+      attributes = attributes_array[0]
+      id = extract_attribute(attributes, 'id')
+      stroke = extract_attribute(attributes, 'stroke') || 'none'
+      stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+      x1 = extract_attribute(attributes, 'x1')
+      y1 = extract_attribute(attributes, 'y1')
+      x2 = extract_attribute(attributes, 'x2')
+      y2 = extract_attribute(attributes, 'y2')
 
-    svg_content.scan(line_regex) do |id, stroke, stroke_width, x1, y1, x2, y2|
-      id = id || 'line_id'
-      stroke = stroke || 'none'
-      stroke_width = stroke_width || '0'
-      line_def = { line: { x1: x1, y1: y1, x2: x2, y2: y2, id: id, stroke: stroke, 'stroke-width' => stroke_width } }
-      atome_content << line_def
+      if x1 && y1 && x2 && y2
+        line_def = {
+          line: {
+            x1: x1,
+            y1: y1,
+            x2: x2,
+            y2: y2,
+            id: id || 'line_id',
+            stroke: stroke,
+            'stroke-width' => stroke_width
+          }
+        }
+        atome_content << line_def
+      end
     end
 
-    ellipse_regex = /<ellipse\s+.*?id\s*=\s*"(.*?)"\s+(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?fill\s*=\s*"(.*?)"\s+cx\s*=\s*"(\d+(?:\.\d+)?)"\s+cy\s*=\s*"(\d+(?:\.\d+)?)"\s+rx\s*=\s*"(\d+(?:\.\d+)?)"\s+ry\s*=\s*"(\d+(?:\.\d+)?)"\s*.*?\/>/
+    svg_content.scan(/<ellipse\b([^>]*)>/) do |attributes_array|
+      attributes = attributes_array[0]
+      id = extract_attribute(attributes, 'id')
+      stroke = extract_attribute(attributes, 'stroke') || 'none'
+      stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+      fill = extract_attribute(attributes, 'fill') || 'none'
+      cx = extract_attribute(attributes, 'cx')
+      cy = extract_attribute(attributes, 'cy')
+      rx = extract_attribute(attributes, 'rx')
+      ry = extract_attribute(attributes, 'ry')
 
-    svg_content.scan(ellipse_regex) do |id, stroke, stroke_width, fill, cx, cy, rx, ry|
-      id = id || 'ellipse_id'
-      stroke = stroke || 'none'
-      stroke_width = stroke_width || '0'
-      fill = fill || 'none'
-      ellipse_def = { ellipse: { cx: cx, cy: cy, rx: rx, ry: ry, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
-      atome_content << ellipse_def
+      if cx && cy && rx && ry
+        ellipse_def = {
+          ellipse: {
+            cx: cx,
+            cy: cy,
+            rx: rx,
+            ry: ry,
+            id: id || 'ellipse_id',
+            stroke: stroke,
+            'stroke-width' => stroke_width,
+            fill: fill
+          }
+        }
+        atome_content << ellipse_def
+      end
     end
 
-    polygon_regex = /<polygon\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?(?:fill\s*=\s*"(.*?)"\s+)?points\s*=\s*"([^"]+)".*?\/>/
-    svg_content.scan(polygon_regex) do |id, stroke, stroke_width, fill, points|
-      id ||= 'polygon_id'
-      stroke ||= 'none'
-      stroke_width ||= '0'
-      fill ||= 'none'
-      polygon_def = { polygon: { points: points, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
-      atome_content << polygon_def
+    svg_content.scan(/<polygon\b([^>]*)>/) do |attributes_array|
+      attributes = attributes_array[0]
+      id = extract_attribute(attributes, 'id')
+      stroke = extract_attribute(attributes, 'stroke') || 'none'
+      stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+      fill = extract_attribute(attributes, 'fill') || 'none'
+      points = extract_attribute(attributes, 'points')
+
+      if points
+        polygon_def = {
+          polygon: {
+            points: points,
+            id: id || 'polygon_id',
+            stroke: stroke,
+            'stroke-width' => stroke_width,
+            fill: fill
+          }
+        }
+        atome_content << polygon_def
+      end
     end
 
-    polyline_regex = /<polyline\s+.*?points\s*=\s*"([^"]+)"\s+(?:id\s*=\s*"(.*?)"\s+)?(?:stroke\s*=\s*"(.*?)"\s+)?(?:stroke-width\s*=\s*"(.*?)"\s+)?(?:fill\s*=\s*"(.*?)")?.*?\/>/
-    svg_content.scan(polyline_regex) do |points, id, stroke, stroke_width, fill|
-      id ||= 'polyline_id'
-      stroke ||= 'none'
-      stroke_width ||= '0'
-      fill ||= 'none'
-      polyline_def = { polyline: { points: points, id: id, stroke: stroke, 'stroke-width' => stroke_width, fill: fill } }
-      atome_content << polyline_def
+    svg_content.scan(/<polyline\b([^>]*)>/) do |attributes_array|
+      attributes = attributes_array[0]
+      id = extract_attribute(attributes, 'id')
+      stroke = extract_attribute(attributes, 'stroke') || 'none'
+      stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+      fill = extract_attribute(attributes, 'fill') || 'none'
+      points = extract_attribute(attributes, 'points')
+
+      if points
+        polyline_def = {
+          polyline: {
+            points: points,
+            id: id || 'polyline_id',
+            stroke: stroke,
+            'stroke-width' => stroke_width,
+            fill: fill
+          }
+        }
+        atome_content << polyline_def
+      end
     end
 
     atome_content
   end
 
   def vectoriser(svg_content)
-    # if svg_content
-
     convert_svg(svg_content)
-
-    # else
-    #   @svg
-    # end
-
-end
+  end
 
   def svg
     @svg
   end
-
 
   def b64_to_tag(params)
     unless params[:target]
@@ -868,7 +972,7 @@ STRR
 
   def svg_to_vector(params, &proc)
 
-   @svg_to_vector=proc
+    @svg_to_vector = proc
     source = params[:source]
     img_element = JS.global[:document].getElementById(source.to_s)
     svg_path = img_element.getAttribute("src")
