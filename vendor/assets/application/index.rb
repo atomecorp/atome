@@ -112,8 +112,9 @@
 # require "./examples/aXion_with_key"
 # require "./examples/draw"
 # require "./examples/database_handling"
+require "./scratch"
 # require "./examples/svg_vectoriser"
-require "./examples/svg_img_to_vector"
+# require "./examples/svg_img_to_vector"
 # require "./examples/svg"
 
 

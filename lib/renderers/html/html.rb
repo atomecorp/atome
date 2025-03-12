@@ -2594,7 +2594,6 @@ class HTML
     @center_options = options
 
     @parent = grab(attach)
-
     apply_centering(@center_options, @parent)
 
     return unless @center_options[:dynamic]

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 class Atome
   def reorder_menu
     # disposition = data
@@ -466,7 +467,7 @@ new(molecule: :matrix) do |params, &bloc|
   size = params[:size] || '100%'
 
   # parent_found = self
-  current_matrix = group({ id: id })
+  current_matrix = group({ id: "#{id}_parent" })
 
   current_matrix.data({ spacing: spacing, size: size })
   matrix_cells = []
@@ -479,7 +480,7 @@ new(molecule: :matrix) do |params, &bloc|
                      end
   view_width = parent_found.to_px(:width)
   view_height = parent_found.to_px(:height)
-  matrix_back = box({ id: "#{id}_background", width: size, height: size, color: { alpha: 0 } })
+  matrix_back = box({ id: id, width: size, height: size, color: { alpha: 0 } })
   matrix_back.remove(:box_color)
   if view_width > view_height
     full_size = view_height * size_coefficient

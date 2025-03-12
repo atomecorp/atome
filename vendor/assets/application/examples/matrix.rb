@@ -33,7 +33,7 @@ test_cell = grab(:vie_0_2_3)
 wait 1 do
   test_cell.color(:red)
   test_cell.text('touch')
-  grab(:vie_0_background).color(:red)
+  grab(:vie_0).color(:red)
 end
 
 
@@ -52,8 +52,8 @@ end
 matrix_to_treat.drag(true)
 # alert matrix_to_treat.id
 wait 2 do
-  grab(:vie_0_background).left(250)
-  grab(:vie_0_background).drag(true)
+  grab(:vie_0).left(250)
+  grab(:vie_0).drag(true)
 end
 matrix_to_treat.touch(:down) do |event|
   current_cell= grab(event[:target][:id].to_s)
@@ -77,8 +77,8 @@ main_matrix.display(false)
         main_matrix = matrix_zone.matrix({left: 66, id: :vie_0, rows: 8, columns: 8, spacing: 6, size: '100%' })
         wait 1 do
           main_matrix.color(:yellowgreen)
-          grab(:vie_0_background).left(25).
-            grab(:vie_0_background).top(25)
+          grab(:vie_0).left(25).
+            grab(:vie_0).top(25)
         end
       end
     end

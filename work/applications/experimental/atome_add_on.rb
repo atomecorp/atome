@@ -47,22 +47,22 @@ new({ browser: :text, type: :string }) do |_value, _user_proc|
   @browser_type = :div
 end
 
-module JS
+# module JS
+#
+#   def self.eval(string)
+#     clean_str = string.gsub('return', '')
+#     `eval(#{clean_str})`
+#   end
+#
+#   def self.global
+#     Native(`window`)
+#   end
+#
+# end
 
-  def self.eval(string)
-    clean_str = string.gsub('return', '')
-    `eval(#{clean_str})`
-  end
-
-  def self.global
-    Native(`window`)
-  end
-
-end
-
-def resizer(val)
-  # puts "====> #{val}"
-end
+# def resizer(val)
+#   # puts "====> #{val}"
+# end
 
 class Atome
 
