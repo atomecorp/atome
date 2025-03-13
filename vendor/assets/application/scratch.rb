@@ -14,11 +14,9 @@ class Vie
     height_found = grab(:view).to_px(:height)
     width_found = grab(:view).to_px(:width)
 
-
     basic_objects
-    init_design(width_found, height_found)
     basic_tool
-
+    init_design(width_found, height_found)
 
     grab(:view).on(:resize) do |ev|
       width = ev[:width].to_i
@@ -31,12 +29,56 @@ class Vie
     @actions = [:select_tool, :copy_tool, :paste_tool, :undo_tool, :redo_tool]
     @tools = [:file_tool, :module_tool]
     vie_tool_builder({ attach: :action_bar, tools: @actions })
-    vie_tool_builder({ attach: :tool_bar, tools:  @tools })
+    vie_tool_builder({ attach: :tool_bar, tools: @tools })
   end
 
   def basic_creator(id)
     @basic_objects << id
     box({ id: id, display: false, color: vie_colors[id] })
+  end
+
+  def vie_tool_builder(params)
+
+    attach_f = params[:attach]
+    tools_list_f = params[:tools]
+    parent_f = grab(attach_f)
+    width_found = parent_f.to_px(:width)
+    height_found = parent_f.to_px(:height)
+    parent_orientation = width_found > height_found ? :horizontal : :vertical
+
+    tools_list_f.each_with_index do |tool_id, index|
+
+      new_tool = grab(attach_f).box({ width: vie_size[:tool_size], height: vie_size[:tool_size],
+                                      top: 0, bottom: 0, left: 0, right: 0, color: { alpha: 0 },
+                                      apply: :standard_shadow, id: tool_id })
+
+      svg_name = tool_id.to_s.sub('_tool', '')
+      temp_icon = "#{tool_id}_icon_tmp"
+      grab(:black_matter).image(id: temp_icon, path: "medias/images/icons/#{svg_name}.svg", width: 22, height: 22, center: true, opacity: 0.6)
+      new_tool.vector({ width: 33, height: 33, id: "#{tool_id}_icon" })
+      A.svg_to_vector({ source: "#{tool_id}_icon_tmp", target: "#{tool_id}_icon", normalize: true }) do |params|
+        new_svg = grab(params[:target])
+        new_svg.color(:orange)
+        new_svg.width(21)
+        new_svg.height(21)
+        new_svg.center(true)
+      end
+
+      new_tool.touch(true) do
+        new_tool.alternate({ color: :red, shadow: { alpha: 1 }, blur: 3 }, { color: :green, shadow: false })
+      end
+    end
+    # grab(:black_matter).clear(true)
+
+    # grab(:black_matter).image(id: id_f, path: "medias/images/icons/#{id_f}.svg", width: 22, height: 22, center: true, opacity: 0.6)
+    # new_svg=new_tool.vector({ width: 33, height: 33, id: :my_placeholder })
+    # A.svg_to_vector({ source: :redo, target: :my_placeholder }) do
+    #   new_svg.color(:orange)
+    #   grab(:atomic_logo).delete(true)
+    # end
+    # img.touch(true) do
+    #   img.alternate({color: :red, shadow: { alpha:  1 }, blur: 3 }, {color: :green,  shadow: false })
+    # end
   end
 
   def basic_objects
@@ -134,61 +176,6 @@ class Vie
     # #
     # # undo_tool = toolbox.box({id: :undo_support, width: 33, height: 33, top: 0, bottom: 0, left: after(paste_tool), center: { y: 0 }, color: { alpha: 0.18 } })
     # # undo_tool.image(path: 'medias/images/icons/undo.svg', width: 22, height: 22, center: true, opacity: 0.6)
-
-    def vie_tool_builder(params)
-
-      attach_f = params[:attach]
-      tools_list_f = params[:tools]
-      parent_f = grab(attach_f)
-      width_found = parent_f.to_px(:width)
-      height_found = parent_f.to_px(:height)
-      parent_orientation = width_found > height_found ? :horizontal : :vertical
-
-      tools_list_f.each_with_index do |tool_id, index|
-
-        if index == 0 && parent_orientation == :vertical
-          top_f = 0
-          centering = { x: 0 }
-        elsif index == 0 && parent_orientation == :horizontal
-          left_f = 0
-          centering = { y: 0 }
-        elsif parent_orientation == :vertical
-          top_f = below(tools_list_f[index - 1])
-          centering = { x: 0 }
-        elsif parent_orientation == :horizontal
-          centering = { y: 0 }
-        end
-        new_tool = grab(attach_f).box({ width: vie_size[:tool_size], height: vie_size[:tool_size],
-                                        top: top_f, bottom: 0, left: left_f, right: 0, center: centering, color: { alpha: 0 },
-                                        apply: :standard_shadow, id: tool_id })
-        svg_name = tool_id.to_s.sub('_tool', '')
-        temp_icon = "#{tool_id}_icon_tmp"
-        grab(:black_matter).image(id: temp_icon, path: "medias/images/icons/#{svg_name}.svg", width: 22, height: 22, center: true, opacity: 0.6)
-        new_tool.vector({ width: 33, height: 33, id: "#{tool_id}_icon" })
-        A.svg_to_vector({ source: "#{tool_id}_icon_tmp", target: "#{tool_id}_icon", normalize: true }) do |params|
-          new_svg = grab(params[:target])
-          new_svg.color(:orange)
-          new_svg.width(21)
-          new_svg.height(21)
-          new_svg.center(true)
-         end
-
-        new_tool.touch(true) do
-          new_tool.alternate({color: :red, shadow: { alpha:  1 }, blur: 3 }, {color: :green,  shadow: false })
-        end
-      end
-      # grab(:black_matter).clear(true)
-
-      # grab(:black_matter).image(id: id_f, path: "medias/images/icons/#{id_f}.svg", width: 22, height: 22, center: true, opacity: 0.6)
-      # new_svg=new_tool.vector({ width: 33, height: 33, id: :my_placeholder })
-      # A.svg_to_vector({ source: :redo, target: :my_placeholder }) do
-      #   new_svg.color(:orange)
-      #   grab(:atomic_logo).delete(true)
-      # end
-      # img.touch(true) do
-      #   img.alternate({color: :red, shadow: { alpha:  1 }, blur: 3 }, {color: :green,  shadow: false })
-      # end
-    end
 
     #
     # file_tool = title_bar.box({ id: :file_tool, width: :auto, height: 33, top: 0, bottom: 0, left: after(menu),
@@ -334,24 +321,54 @@ class Vie
   def vertical_design
     @basic_objects.each do |elem|
       grab(elem).set(vie_style_vertical[elem])
-
     end
-    # grab(:work_zone).set(vie_style_vertical[:work_zone])
-    # grab(:inspector).set(vie_style_vertical[:inspector])
-    # grab(:title_bar).set(vie_style_vertical[:title_bar])
-    # grab(:tool_bar).set(vie_style_vertical[:tool_bar])
-    # grab(:action_bar).set(vie_style_vertical[:action_bar])
+    @actions.each_with_index do |elem, index|
+      if index == 0
+        left_f = 0
+        centering = { y: 0 }
+      else
+        left_f = after(@actions[index - 1])
+        centering = { y: 0 }
+      end
+      grab(elem).set(left: left_f,  center: centering)
+    end
+    @tools.each_with_index do |elem, index|
+      if index == 0
+        left_f = 0
+        centering = { y: 0 }
+      else
+        left_f = after(@actions[index - 1])
+        centering = { y: 0 }
+      end
+      grab(elem).set(left: left_f,  center: centering)
+    end
+
   end
 
   def horizontal_design
     @basic_objects.each do |elem|
       grab(elem).set(vie_style_horizontal[elem])
     end
-    # grab(:work_zone).set(vie_style_horizontal[:work_zone])
-    # grab(:inspector).set(vie_style_horizontal[:inspector])
-    # grab(:title_bar).set(vie_style_horizontal[:title_bar])
-    # grab(:tool_bar).set(vie_style_horizontal[:tool_bar])
-    # grab(:action_bar).set(vie_style_horizontal[:action_bar])
+    @actions.each_with_index do |elem, index|
+      if index == 0
+        top_f = 0
+        centering = { x: 0 }
+      else
+        top_f = below(@actions[index - 1])
+        centering = { x: 0 }
+      end
+      grab(elem).set(top: top_f, center: centering)
+    end
+    @tools.each_with_index do |elem, index|
+      if index == 0
+        top_f = 0
+        centering = { x: 0 }
+      else
+        top_f = below(@actions[index - 1])
+        centering = { x: 0 }
+      end
+      grab(elem).set(top: top_f, center: centering)
+    end
   end
 
   # utils
@@ -386,6 +403,17 @@ class Vie
 
     current_matrix_background.center(true)
     grab(:project_title).center(true)
+
+    # if index == 0 && parent_orientation == :vertical
+    #   top_f = 0
+    #   centering = { x: 0 }
+    # elsif index == 0 && parent_orientation == :horizontal
+    #   left_f = 0
+    #   centering = { y: 0 }
+    # end
+    # new_tool = grab(attach_f).box({ width: vie_size[:tool_size], height: vie_size[:tool_size],
+    #                                 top: top_f, bottom: 0, left: left_f, right: 0, center: centering, color: { alpha: 0 },
+    #                                 apply: :standard_shadow, id: tool_id })
 
   end
 
