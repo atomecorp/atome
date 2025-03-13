@@ -103,12 +103,25 @@ class Atome
       atome_js.JS.controller_listener() # js folder atome/helipers/atome/communication
     end
 
-    def handle_svg_content(svg_content, target, id)
+    def handle_svg_content(svg_content, target, id_passed, normalise)
+      # alert target
+      if normalise== 'true'
+        # puts svg_content
+        svg_content= A.normalise_svg(svg_content)
+      else
+        # puts "2 - normalise: #{normalise}"
+      end
+      # puts svg_content
       atome_content = A.vectoriser(svg_content)
       target_vector = grab(target)
       target_vector.data(atome_content)
-      grab(id).instance_variable_get('@svg_to_vector').call
+      grab(id_passed).instance_variable_get('@svg_to_vector').call({id: id_passed, target: target, content: svg_content})
+      # puts svg_content
+      # puts '------'
+      # sss= A.normalise_svg(svg_content)
+      # puts sss
     end
+
 
   end
 
@@ -187,13 +200,13 @@ class Atome
     last_id_found = grip(:block).last
 
     if last_id_found
-      last_found = grab(last_id_found)
+      # last_found = grab(last_id_found)
       case direction
       when :vertical
-        box({ top: below(last_found, spacing), role: :block, width: width_found }.merge(params).merge(bloc_params))
+        box({ top: below(last_id_found, spacing), role: :block, width: width_found }.merge(params).merge(bloc_params))
       when :horizontal
         width_found = to_px(:width)
-        block_left = after(last_found, spacing)
+        block_left = after(last_id_found, spacing)
         left_in_percent = (block_left / width_found) * 100
         box({ left: "#{left_in_percent}%", role: :block, height: height_found }.merge(params).merge(bloc_params))
       else
@@ -758,14 +771,124 @@ class Atome
     end
   end
 
+
+
+
+  def normalise_svg(svg_content)
+    # Préserver le style original s'il existe
+    style_match = svg_content.match(/style=["']([^"']*)["']/)
+    original_style = style_match ? style_match[1] : ""
+
+    # Extraire les dimensions originales
+    viewbox_match = svg_content.match(/viewBox=["']([^"']*)["']/)
+    width_match = svg_content.match(/width=["']([^"']*)["']/)
+    height_match = svg_content.match(/height=["']([^"']*)["']/)
+
+    # Valeurs par défaut
+    min_x, min_y, width, height = 0, 0, 1024, 1024
+
+    # Extraire viewBox si elle existe
+    if viewbox_match
+      dimensions = viewbox_match[1].split(/\s+/).map { |dim| dim.to_f }
+      min_x, min_y, width, height = dimensions if dimensions.size == 4
+      # Sinon, utiliser width et height si disponibles
+    elsif width_match && height_match
+      width_str = width_match[1].strip
+      height_str = height_match[1].strip
+
+      # Supprimer les unités comme "px", "em", etc.
+      width = width_str.gsub(/[^0-9.]/, '').to_f
+      height = height_str.gsub(/[^0-9.]/, '').to_f
+
+      # Valeurs par défaut si invalides
+      width = 1024 if width <= 0
+      height = 1024 if height <= 0
+    end
+
+    # Calculer l'échelle pour maintenir les proportions
+    scale_x = 1024.0 / width
+    scale_y = 1024.0 / height
+    scale = [scale_x, scale_y].min
+
+    # Calculer le décalage pour centrer
+    offset_x = (1024 - (width * scale)) / 2
+    offset_y = (1024 - (height * scale)) / 2
+
+    # Trouver la balise svg ouvrante
+    svg_open_match = svg_content.match(/<svg[^>]*>/)
+    return svg_content unless svg_open_match
+
+    # Créer une nouvelle balise svg avec la viewBox normalisée
+    # Préserver les attributs originaux importants
+    original_svg_tag = svg_open_match[0]
+
+    # Extraire les attributs à préserver
+    xmlns = original_svg_tag.match(/xmlns=["'][^"']*["']/)
+    xmlns = xmlns ? xmlns[0] : 'xmlns="http://www.w3.org/2000/svg"'
+
+    version = original_svg_tag.match(/version=["'][^"']*["']/)
+    version = version ? version[0] : ''
+
+    # Reconstruire le style si nécessaire
+    style_attr = original_style.empty? ? '' : " style=\"#{original_style}\""
+
+    # Nouvelle balise SVG
+    new_svg_open = "<svg#{style_attr} viewBox=\"0 0 1024 1024\" width=\"100%\" height=\"100%\" #{xmlns} #{version}>"
+
+    # Extraire le contenu entre les balises svg
+    opening_tag_end = svg_content.index(svg_open_match[0]) + svg_open_match[0].length
+    closing_tag_start = svg_content.rindex('</svg>')
+
+    if closing_tag_start && opening_tag_end < closing_tag_start
+      svg_inner_content = svg_content[opening_tag_end...closing_tag_start]
+    else
+      return svg_content # Structure SVG invalide
+    end
+
+    # Nouvelle transformation à appliquer
+    new_transform = "translate(#{offset_x}, #{offset_y}) scale(#{scale})"
+
+    # Vérifier si un élément g existe déjà au premier niveau
+    g_match = svg_inner_content.match(/^\s*<g([^>]*)>/)
+
+    if g_match
+      # Élément g trouvé, gérer l'attribut transform existant
+      g_attributes = g_match[1]
+      transform_match = g_attributes.match(/transform=["']([^"']*)["']/)
+
+      if transform_match
+        # Combiner la transformation existante avec la nouvelle
+        existing_transform = transform_match[1]
+        combined_transform = "#{existing_transform} #{new_transform}"
+
+        # Remplacer l'attribut transform existant
+        modified_g_tag = g_match[0].gsub(/transform=["'][^"']*["']/, "transform=\"#{combined_transform}\"")
+        new_inner_content = svg_inner_content.sub(g_match[0], modified_g_tag)
+      else
+        # Ajouter l'attribut transform à la balise g existante
+        modified_g_tag = g_match[0].sub(/<g/, "<g transform=\"#{new_transform}\"")
+        new_inner_content = svg_inner_content.sub(g_match[0], modified_g_tag)
+      end
+    else
+      # Pas d'élément g au premier niveau, en créer un nouveau
+      new_inner_content = "<g transform=\"#{new_transform}\">#{svg_inner_content}</g>"
+    end
+
+    # Assembler le SVG final
+    "#{new_svg_open}#{new_inner_content}</svg>"
+  end
+
+
+
   def convert_svg(svg_content)
     @svg = svg_content
+    # Suppression des commentaires
+    svg_content = svg_content.gsub(/<!--.*?-->/m, '')
     atome_content = []
-
 
     svg_content.scan(/<circle\b([^>]*)>/) do |attributes_array|
       attributes = attributes_array[0]
-      id = extract_attribute(attributes, 'id')
+      # id = extract_attribute(attributes, 'id')
       stroke = extract_attribute(attributes, 'stroke') || 'none'
       stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
       fill = extract_attribute(attributes, 'fill') || 'none'
@@ -779,7 +902,7 @@ class Atome
             cx: cx,
             cy: cy,
             r: r,
-            id: id || 'circle_id',
+            id: identity_generator,
             stroke: stroke,
             "stroke-width" => stroke_width,
             fill: fill
@@ -791,7 +914,7 @@ class Atome
 
     svg_content.scan(/<path\b([^>]*)>/) do |attributes_array|
       attributes = attributes_array[0]
-      id = extract_attribute(attributes, 'id')
+      # id = extract_attribute(attributes, 'id')
       stroke = extract_attribute(attributes, 'stroke') || 'none'
       stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
       fill = extract_attribute(attributes, 'fill') || 'none'
@@ -801,7 +924,7 @@ class Atome
         path_def = {
           path: {
             d: d,
-            id: id || 'path_id',
+            id: identity_generator,
             stroke: stroke,
             'stroke-width' => stroke_width,
             fill: fill
@@ -813,7 +936,7 @@ class Atome
 
     svg_content.scan(/<rect\b([^>]*)>/) do |attributes_array|
       attributes = attributes_array[0]
-      id = extract_attribute(attributes, 'id')
+      # id = extract_attribute(attributes, 'id')
       stroke = extract_attribute(attributes, 'stroke') || 'none'
       stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
       fill = extract_attribute(attributes, 'fill') || 'none'
@@ -829,7 +952,7 @@ class Atome
             y: y,
             width: width,
             height: height,
-            id: id || 'rect_id',
+            id: identity_generator,
             stroke: stroke,
             'stroke-width' => stroke_width,
             fill: fill
@@ -841,7 +964,7 @@ class Atome
 
     svg_content.scan(/<line\b([^>]*)>/) do |attributes_array|
       attributes = attributes_array[0]
-      id = extract_attribute(attributes, 'id')
+      # id = extract_attribute(attributes, 'id')
       stroke = extract_attribute(attributes, 'stroke') || 'none'
       stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
       x1 = extract_attribute(attributes, 'x1')
@@ -856,7 +979,7 @@ class Atome
             y1: y1,
             x2: x2,
             y2: y2,
-            id: id || 'line_id',
+            id: identity_generator,
             stroke: stroke,
             'stroke-width' => stroke_width
           }
@@ -867,7 +990,7 @@ class Atome
 
     svg_content.scan(/<ellipse\b([^>]*)>/) do |attributes_array|
       attributes = attributes_array[0]
-      id = extract_attribute(attributes, 'id')
+      # id = extract_attribute(attributes, 'id')
       stroke = extract_attribute(attributes, 'stroke') || 'none'
       stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
       fill = extract_attribute(attributes, 'fill') || 'none'
@@ -883,7 +1006,7 @@ class Atome
             cy: cy,
             rx: rx,
             ry: ry,
-            id: id || 'ellipse_id',
+            id: identity_generator,
             stroke: stroke,
             'stroke-width' => stroke_width,
             fill: fill
@@ -895,7 +1018,7 @@ class Atome
 
     svg_content.scan(/<polygon\b([^>]*)>/) do |attributes_array|
       attributes = attributes_array[0]
-      id = extract_attribute(attributes, 'id')
+      # id = extract_attribute(attributes, 'id')
       stroke = extract_attribute(attributes, 'stroke') || 'none'
       stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
       fill = extract_attribute(attributes, 'fill') || 'none'
@@ -905,7 +1028,7 @@ class Atome
         polygon_def = {
           polygon: {
             points: points,
-            id: id || 'polygon_id',
+            id: identity_generator,
             stroke: stroke,
             'stroke-width' => stroke_width,
             fill: fill
@@ -917,7 +1040,7 @@ class Atome
 
     svg_content.scan(/<polyline\b([^>]*)>/) do |attributes_array|
       attributes = attributes_array[0]
-      id = extract_attribute(attributes, 'id')
+      # id = extract_attribute(attributes, 'id')
       stroke = extract_attribute(attributes, 'stroke') || 'none'
       stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
       fill = extract_attribute(attributes, 'fill') || 'none'
@@ -927,18 +1050,200 @@ class Atome
         polyline_def = {
           polyline: {
             points: points,
-            id: id || 'polyline_id',
+            id: identity_generator,
             stroke: stroke,
             'stroke-width' => stroke_width,
             fill: fill
           }
         }
-        atome_content << polyline_def
+        atome_content << polygon_def
       end
     end
 
     atome_content
   end
+
+  # def convert_svg(svg_content)
+  #   @svg = svg_content
+  #   atome_content = []
+  #
+  #
+  #   svg_content.scan(/<circle\b([^>]*)>/) do |attributes_array|
+  #     attributes = attributes_array[0]
+  #     id = extract_attribute(attributes, 'id')
+  #     stroke = extract_attribute(attributes, 'stroke') || 'none'
+  #     stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+  #     fill = extract_attribute(attributes, 'fill') || 'none'
+  #     cx = extract_attribute(attributes, 'cx')
+  #     cy = extract_attribute(attributes, 'cy')
+  #     r = extract_attribute(attributes, 'r')
+  #
+  #     if cx && cy && r
+  #       circle_def = {
+  #         circle: {
+  #           cx: cx,
+  #           cy: cy,
+  #           r: r,
+  #           id: id || 'circle_id',
+  #           stroke: stroke,
+  #           "stroke-width" => stroke_width,
+  #           fill: fill
+  #         }
+  #       }
+  #       atome_content << circle_def
+  #     end
+  #   end
+  #
+  #   svg_content.scan(/<path\b([^>]*)>/) do |attributes_array|
+  #     attributes = attributes_array[0]
+  #     id = extract_attribute(attributes, 'id')
+  #     stroke = extract_attribute(attributes, 'stroke') || 'none'
+  #     stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+  #     fill = extract_attribute(attributes, 'fill') || 'none'
+  #     d = extract_attribute(attributes, 'd')
+  #
+  #     if d
+  #       path_def = {
+  #         path: {
+  #           d: d,
+  #           id: id || 'path_id',
+  #           stroke: stroke,
+  #           'stroke-width' => stroke_width,
+  #           fill: fill
+  #         }
+  #       }
+  #       atome_content << path_def
+  #     end
+  #   end
+  #
+  #   svg_content.scan(/<rect\b([^>]*)>/) do |attributes_array|
+  #     attributes = attributes_array[0]
+  #     id = extract_attribute(attributes, 'id')
+  #     stroke = extract_attribute(attributes, 'stroke') || 'none'
+  #     stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+  #     fill = extract_attribute(attributes, 'fill') || 'none'
+  #     x = extract_attribute(attributes, 'x')
+  #     y = extract_attribute(attributes, 'y')
+  #     width = extract_attribute(attributes, 'width')
+  #     height = extract_attribute(attributes, 'height')
+  #
+  #     if x && y && width && height
+  #       rect_def = {
+  #         rect: {
+  #           x: x,
+  #           y: y,
+  #           width: width,
+  #           height: height,
+  #           id: id || 'rect_id',
+  #           stroke: stroke,
+  #           'stroke-width' => stroke_width,
+  #           fill: fill
+  #         }
+  #       }
+  #       atome_content << rect_def
+  #     end
+  #   end
+  #
+  #   svg_content.scan(/<line\b([^>]*)>/) do |attributes_array|
+  #     attributes = attributes_array[0]
+  #     id = extract_attribute(attributes, 'id')
+  #     stroke = extract_attribute(attributes, 'stroke') || 'none'
+  #     stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+  #     x1 = extract_attribute(attributes, 'x1')
+  #     y1 = extract_attribute(attributes, 'y1')
+  #     x2 = extract_attribute(attributes, 'x2')
+  #     y2 = extract_attribute(attributes, 'y2')
+  #
+  #     if x1 && y1 && x2 && y2
+  #       line_def = {
+  #         line: {
+  #           x1: x1,
+  #           y1: y1,
+  #           x2: x2,
+  #           y2: y2,
+  #           id: id || 'line_id',
+  #           stroke: stroke,
+  #           'stroke-width' => stroke_width
+  #         }
+  #       }
+  #       atome_content << line_def
+  #     end
+  #   end
+  #
+  #   svg_content.scan(/<ellipse\b([^>]*)>/) do |attributes_array|
+  #     attributes = attributes_array[0]
+  #     id = extract_attribute(attributes, 'id')
+  #     stroke = extract_attribute(attributes, 'stroke') || 'none'
+  #     stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+  #     fill = extract_attribute(attributes, 'fill') || 'none'
+  #     cx = extract_attribute(attributes, 'cx')
+  #     cy = extract_attribute(attributes, 'cy')
+  #     rx = extract_attribute(attributes, 'rx')
+  #     ry = extract_attribute(attributes, 'ry')
+  #
+  #     if cx && cy && rx && ry
+  #       ellipse_def = {
+  #         ellipse: {
+  #           cx: cx,
+  #           cy: cy,
+  #           rx: rx,
+  #           ry: ry,
+  #           id: id || 'ellipse_id',
+  #           stroke: stroke,
+  #           'stroke-width' => stroke_width,
+  #           fill: fill
+  #         }
+  #       }
+  #       atome_content << ellipse_def
+  #     end
+  #   end
+  #
+  #   svg_content.scan(/<polygon\b([^>]*)>/) do |attributes_array|
+  #     attributes = attributes_array[0]
+  #     id = extract_attribute(attributes, 'id')
+  #     stroke = extract_attribute(attributes, 'stroke') || 'none'
+  #     stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+  #     fill = extract_attribute(attributes, 'fill') || 'none'
+  #     points = extract_attribute(attributes, 'points')
+  #
+  #     if points
+  #       polygon_def = {
+  #         polygon: {
+  #           points: points,
+  #           id: id || 'polygon_id',
+  #           stroke: stroke,
+  #           'stroke-width' => stroke_width,
+  #           fill: fill
+  #         }
+  #       }
+  #       atome_content << polygon_def
+  #     end
+  #   end
+  #
+  #   svg_content.scan(/<polyline\b([^>]*)>/) do |attributes_array|
+  #     attributes = attributes_array[0]
+  #     id = extract_attribute(attributes, 'id')
+  #     stroke = extract_attribute(attributes, 'stroke') || 'none'
+  #     stroke_width = extract_attribute(attributes, 'stroke-width') || '0'
+  #     fill = extract_attribute(attributes, 'fill') || 'none'
+  #     points = extract_attribute(attributes, 'points')
+  #
+  #     if points
+  #       polyline_def = {
+  #         polyline: {
+  #           points: points,
+  #           id: id || 'polyline_id',
+  #           stroke: stroke,
+  #           'stroke-width' => stroke_width,
+  #           fill: fill
+  #         }
+  #       }
+  #       atome_content << polyline_def
+  #     end
+  #   end
+  #
+  #   atome_content
+  # end
 
   def vectoriser(svg_content)
     convert_svg(svg_content)
@@ -971,13 +1276,17 @@ STRR
   end
 
   def svg_to_vector(params, &proc)
-
     @svg_to_vector = proc
     source = params[:source]
     img_element = JS.global[:document].getElementById(source.to_s)
     svg_path = img_element.getAttribute("src")
     target = params[:target]
-    JS.eval("replaceSVGContent('#{svg_path}', '#{target}', '#{id}')")
+    unless params[:normalize]
+      params[:normalize]= false
+    end
+    normalise= params[:normalize]
+
+    JS.eval("replaceSVGContent('#{svg_path}', '#{target}', '#{id}', '#{normalise}')")
   end
 
   def determine_action(file_content)

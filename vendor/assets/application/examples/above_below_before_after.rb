@@ -2,16 +2,15 @@
 
 b=box({})
 margin = 12
-b2=box({top: below(b, margin)})
-b3=box({top: below(b2, margin)})
-b4=box({top: below(b3, margin)})
-box({top: below(b4, margin)})
+b2=box({top: below(b.id, margin)})
+b3=box({top: below(b2.id, margin)})
+b4=box({top: below(b3.id, margin)})
+box({top: below(b4.id, margin)})
 i=0
 wait 1 do
   t= text({data: :hello})
   wait 1 do
     t.color(:red)
-    dd.poil(:tutu)
   end
 end
 # b=boxx
@@ -25,7 +24,7 @@ while i < 10 do
   # here in percent and the third is the reference object used for the percent
   # b = circle({top: below(b, margin, grab(:view)), left: b.left})
   # b = circle({top: :auto,bottom: above(b, margin, grab(:view)), left: b.left})
-  b = circle({top: b.top,left: after(b, margin, grab(:view))})
+  b = circle({top: b.top,left: after(b.id, margin, grab(:view))})
   # b = circle({left: :auto,right: before(b, margin, grab(:view))})
   i += 1
 end

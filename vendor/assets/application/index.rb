@@ -113,6 +113,7 @@
 # require "./examples/draw"
 # require "./examples/database_handling"
 require "./scratch"
+# require "./examples/above_below_before_after"
 # require "./examples/svg_vectoriser"
 # require "./examples/svg_img_to_vector"
 # require "./examples/svg"

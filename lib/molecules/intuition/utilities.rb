@@ -221,7 +221,7 @@ new(molecule: :input) do |params, bloc|
   end
 
   input_back.touch(:up) do
-    text_input.component({ selected: true }) if input_back.tick[:input] == 1
+    text_input.component({ selected: false }) #if input_back.tick[:input] == 1
   end
 
   text_input.keyboard(:down) do |native_event|

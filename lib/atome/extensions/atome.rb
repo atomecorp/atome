@@ -681,7 +681,8 @@ Str
     end
   end
 
-  def above(item, margin = 6, ref = grab(:view))
+  def above(parent, margin = 6, ref = grab(:view))
+    item=grab(parent)
     # FIXME above is broken when using % in margin
     unless margin.is_a?(Numeric)
       item_height = ref.to_px(:height)
@@ -696,7 +697,8 @@ Str
     end
   end
 
-  def below(item, margin = 6, ref = grab(:view))
+  def below(parent, margin = 6, ref = grab(:view))
+    item=grab(parent)
     unless margin.is_a?(Numeric)
       item_height = ref.to_px(:height)
       margin = (margin.to_f * item_height) / 100
@@ -710,7 +712,8 @@ Str
 
   end
 
-  def after(item, margin = 6, ref = grab(:view))
+  def after(parent, margin = 6, ref = grab(:view))
+    item=grab(parent)
     unless margin.is_a?(Numeric)
       item_width = ref.to_px(:width)
       margin = (margin.to_f * item_width) / 100
@@ -734,7 +737,8 @@ Str
     end
   end
 
-  def before(item, margin = 6, ref = grab(:view))
+  def before(parent, margin = 6, ref = grab(:view))
+    item=grab(parent)
     unless margin.is_a?(Numeric)
       item_width = ref.to_px(:width)
       margin = (margin.to_f * item_width) / 100

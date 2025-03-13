@@ -106,11 +106,11 @@ function my_ruby_wasm_js_fct(val) {
     rubyVM.eval("my_ruby_meth('ruby wasm eval: " + val + "')");
 }
 
-function replaceSVGContent(svgPath, target, atomeId) {
+function replaceSVGContent(svgPath, target, atomeId, normalise) {
     fetch(svgPath)
         .then(response => response.text())
         .then(data => {
-            rubyVM.eval("Atome.handle_svg_content('" + data + "', '" + target + "', '" + atomeId + "')");
+            rubyVM.eval("Atome.handle_svg_content('" + data + "', '" + target + "', '" + atomeId + "', '" + normalise + "')");
             // Module.call('handleSVGContent', 'void', ['string'], [data]);
         })
         .catch(error => console.error('Erreur de chargement du SVG :', error));
