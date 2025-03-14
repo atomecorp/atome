@@ -112,16 +112,15 @@
 # require "./examples/aXion_with_key"
 # require "./examples/draw"
 # require "./examples/database_handling"
-# require "./scratch"
+require "./scratch"
 # require "./examples/above_below_before_after"
-require "./examples/svg_vectoriser"
+# require "./examples/svg_vectoriser"
 # require "./examples/svg_img_to_vector"
 # require "./examples/vector"
 # require "./examples/svg"
-
-
 # require "./examples/svg"
 # require "./examples/select_text"
+# require "./examples/on_resize"
 
 
 
