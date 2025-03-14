@@ -4,7 +4,6 @@
 module JS
 
   def self.eval(string)
-    # puts "the string is #{string}"
     clean_str = string.gsub('return', '')
     result = `eval(#{clean_str})`
     Native(result)

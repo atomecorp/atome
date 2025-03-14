@@ -942,7 +942,6 @@ class Atome
         atome_content << polygon_def
       end
     end
-
     atome_content
   end
 

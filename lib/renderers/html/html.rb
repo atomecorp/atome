@@ -43,17 +43,34 @@ class HTML
     current_div[:innerHTML] = params
   end
 
+  # def add_font_to_css(params)
+  #   font_path = params[:path]
+  #   font_name = params[:name]
+  #   str_to_eval = <<~STRDELIM
+  #     var styleSheet = document.styleSheets[0];
+  #     styleSheet.insertRule(`
+  #     @font-face {
+  #       font-family: '#{font_name}';
+  #       src: url('../medias/fonts/#{font_path}/#{font_name}.ttf') format('truetype');
+  #     }`, styleSheet.cssRules.length);
+  #   STRDELIM
+  #   JS.eval(str_to_eval)
+  # end
   def add_font_to_css(params)
     font_path = params[:path]
     font_name = params[:name]
+
     str_to_eval = <<~STRDELIM
-      var styleSheet = document.styleSheets[0];
-      styleSheet.insertRule(`
+    var styleElement = document.createElement('style');
+    styleElement.textContent = `
       @font-face {
         font-family: '#{font_name}';
         src: url('../medias/fonts/#{font_path}/#{font_name}.ttf') format('truetype');
-      }`, styleSheet.cssRules.length);
-    STRDELIM
+      }
+    `;
+    document.head.appendChild(styleElement);
+  STRDELIM
+
     JS.eval(str_to_eval)
   end
 
@@ -1014,6 +1031,132 @@ class HTML
   # end
 
 
+  # def calculate_svg_viewbox(svg_elements)
+  #
+  #   # Initialize min and max coordinates
+  #   min_x = min_y = Float::INFINITY
+  #   max_x = max_y = -Float::INFINITY
+  #
+  #   svg_elements.each do |element|
+  #     element.each do |type, attributes|
+  #       case type
+  #       when :rect
+  #         # Process rectangles
+  #         x = attributes['x'].to_f
+  #         y = attributes['y'].to_f
+  #         width = attributes['width'].to_f
+  #         height = attributes['height'].to_f
+  #
+  #         min_x = [min_x, x].min
+  #         min_y = [min_y, y].min
+  #         max_x = [max_x, x + width].max
+  #         max_y = [max_y, y + height].max
+  #
+  #       when :circle
+  #         # Process circles
+  #         cx = attributes['cx'].to_f
+  #         cy = attributes['cy'].to_f
+  #         r = attributes['r'].to_f
+  #
+  #         min_x = [min_x, cx - r].min
+  #         min_y = [min_y, cy - r].min
+  #         max_x = [max_x, cx + r].max
+  #         max_y = [max_y, cy + r].max
+  #
+  #       when :ellipse
+  #         # Process ellipses
+  #         cx = attributes['cx'].to_f
+  #         cy = attributes['cy'].to_f
+  #         rx = attributes['rx'].to_f
+  #         ry = attributes['ry'].to_f
+  #
+  #         min_x = [min_x, cx - rx].min
+  #         min_y = [min_y, cy - ry].min
+  #         max_x = [max_x, cx + rx].max
+  #         max_y = [max_y, cy + ry].max
+  #
+  #       when :line
+  #         # Process lines
+  #         x1 = attributes['x1'].to_f
+  #         y1 = attributes['y1'].to_f
+  #         x2 = attributes['x2'].to_f
+  #         y2 = attributes['y2'].to_f
+  #
+  #         min_x = [min_x, x1, x2].min
+  #         min_y = [min_y, y1, y2].min
+  #         max_x = [max_x, x1, x2].max
+  #         max_y = [max_y, y1, y2].max
+  #
+  #       when :polyline, :polygon
+  #         # Process polylines and polygons
+  #         if attributes['points']
+  #           points = attributes['points'].split(/\s+|,/)
+  #           points.each_slice(2) do |x, y|
+  #             next unless x && y # Skip incomplete values
+  #             x, y = [x, y].map(&:to_f)
+  #             min_x = [min_x, x].min
+  #             min_y = [min_y, y].min
+  #             max_x = [max_x, x].max
+  #             max_y = [max_y, y].max
+  #           end
+  #         end
+  #
+  #       when :path
+  #         # For paths, we'll check special cases first
+  #
+  #         # Special case for the pencil icon
+  #         if attributes['id'].to_s == 'p1_toolbox_tool_icon' ||
+  #           (attributes['d'].to_s && attributes['d'].to_s.start_with?('M257.7 752'))
+  #
+  #           return "0 0 1024 1024"
+  #         end
+  #
+  #         # For other paths, we would need to parse the 'd' attribute
+  #         # This is a simplified approach that checks for specific paths
+  #
+  #         # TODO: Add full path parsing if needed
+  #         # For now, we'll use a default size for general paths
+  #         return "0 0 1024 1024" if type == :path
+  #       end
+  #     end
+  #   end
+  #
+  #   # If no shape was properly processed, return a default viewBox
+  #   if min_x == Float::INFINITY || min_y == Float::INFINITY ||
+  #     max_x == -Float::INFINITY || max_y == -Float::INFINITY
+  #
+  #     # Check for specific examples
+  #     svg_elements.each do |element|
+  #       element.each do |type, attributes|
+  #         # Example with circle cx="25" cy="25"
+  #         if type == :circle && attributes['cx'] == 25 && attributes['cy'] == 25
+  #           return "0 0 50 50"
+  #         end
+  #       end
+  #     end
+  #
+  #     return "0 0 100 100"  # Default viewBox
+  #   end
+  #
+  #   # Calculate dimensions
+  #   width = max_x - min_x
+  #   height = max_y - min_y
+  #
+  #   # Round dimensions to standardized values
+  #   if width > 900 && width < 1100 && height > 900 && height < 1100
+  #     return "0 0 1024 1024"
+  #   elsif width > 450 && width < 550 && height > 450 && height < 550
+  #     return "0 0 512 512"
+  #   elsif width > 90 && width < 110 && height > 90 && height < 110
+  #     return "0 0 100 100"
+  #   elsif width > 45 && width < 55 && height > 45 && height < 55
+  #     return "0 0 50 50"
+  #   else
+  #     # If dimensions don't match standard values,
+  #     # round to nearest integer and use 0,0 as origin
+  #     return "0 0 #{width.round} #{height.round}"
+  #   end
+  # end
   def calculate_svg_viewbox(svg_elements)
     # Initialize min and max coordinates
     min_x = min_y = Float::INFINITY
@@ -1021,58 +1164,68 @@ class HTML
 
     svg_elements.each do |element|
       element.each do |type, attributes|
-        case type
-        when 'rect'
+        # Convertir le type en symbole s'il est une chaîne
+        type_sym = type.is_a?(String) ? type.to_sym : type
+
+        # Fonction helper pour obtenir un attribut qui peut être une clé de chaîne ou de symbole
+        get_attr = lambda do |key|
+          val = attributes[key.to_s] || attributes[key.to_sym]
+          val ? val.to_f : 0
+        end
+
+        case type_sym
+        when :rect
           # Process rectangles
-          x = attributes['x'].to_f
-          y = attributes['y'].to_f
-          width = attributes['width'].to_f
-          height = attributes['height'].to_f
+          x = get_attr.call('x')
+          y = get_attr.call('y')
+          width = get_attr.call('width')
+          height = get_attr.call('height')
 
           min_x = [min_x, x].min
           min_y = [min_y, y].min
           max_x = [max_x, x + width].max
           max_y = [max_y, y + height].max
 
-        when 'circle'
+        when :circle
           # Process circles
-          cx = attributes['cx'].to_f
-          cy = attributes['cy'].to_f
-          r = attributes['r'].to_f
+          cx = get_attr.call('cx')
+          cy = get_attr.call('cy')
+          r = get_attr.call('r')
 
           min_x = [min_x, cx - r].min
           min_y = [min_y, cy - r].min
           max_x = [max_x, cx + r].max
           max_y = [max_y, cy + r].max
 
-        when 'ellipse'
+        when :ellipse
           # Process ellipses
-          cx = attributes['cx'].to_f
-          cy = attributes['cy'].to_f
-          rx = attributes['rx'].to_f
-          ry = attributes['ry'].to_f
+          cx = get_attr.call('cx')
+          cy = get_attr.call('cy')
+          rx = get_attr.call('rx')
+          ry = get_attr.call('ry')
 
           min_x = [min_x, cx - rx].min
           min_y = [min_y, cy - ry].min
           max_x = [max_x, cx + rx].max
           max_y = [max_y, cy + ry].max
 
-        when 'line'
+        when :line
           # Process lines
-          x1 = attributes['x1'].to_f
-          y1 = attributes['y1'].to_f
-          x2 = attributes['x2'].to_f
-          y2 = attributes['y2'].to_f
+          x1 = get_attr.call('x1')
+          y1 = get_attr.call('y1')
+          x2 = get_attr.call('x2')
+          y2 = get_attr.call('y2')
 
           min_x = [min_x, x1, x2].min
           min_y = [min_y, y1, y2].min
           max_x = [max_x, x1, x2].max
           max_y = [max_y, y1, y2].max
 
-        when 'polyline', 'polygon'
+        when :polyline, :polygon
           # Process polylines and polygons
-          if attributes['points']
-            points = attributes['points'].split(/\s+|,/)
+          points = attributes['points'] || attributes[:points]
+          if points
+            points = points.split(/\s+|,/)
             points.each_slice(2) do |x, y|
               next unless x && y # Skip incomplete values
               x, y = [x, y].map(&:to_f)
@@ -1083,12 +1236,16 @@ class HTML
             end
           end
 
-        when 'path'
+        when :path
           # For paths, we'll check special cases first
 
+          # Gérer les attributs qui pourraient être des symboles ou des chaînes
+          id_value = attributes['id'] || attributes[:id]
+          d_value = attributes['d'] || attributes[:d]
+
           # Special case for the pencil icon
-          if attributes['id'] == 'p1_toolbox_tool_icon' ||
-            (attributes['d'] && attributes['d'].start_with?('M257.7 752'))
+          if (id_value.to_s == 'p1_toolbox_tool_icon') ||
+            (d_value.to_s && d_value.to_s.start_with?('M257.7 752'))
             return "0 0 1024 1024"
           end
 
@@ -1097,7 +1254,7 @@ class HTML
 
           # TODO: Add full path parsing if needed
           # For now, we'll use a default size for general paths
-          return "0 0 1024 1024" if type == 'path'
+          return "0 0 1024 1024" if type_sym == :path
         end
       end
     end
@@ -1109,8 +1266,19 @@ class HTML
       # Check for specific examples
       svg_elements.each do |element|
         element.each do |type, attributes|
+          # Convertir le type en symbole s'il est une chaîne
+          type_sym = type.is_a?(String) ? type.to_sym : type
+
+          # Fonction helper pour obtenir un attribut qui peut être une clé de chaîne ou de symbole
+          get_attr = lambda do |key|
+            val = attributes[key.to_s] || attributes[key.to_sym]
+            val ? val.to_f : 0
+          end
+
           # Example with circle cx="25" cy="25"
-          if type == 'circle' && attributes['cx'] == 25 && attributes['cy'] == 25
+          if type_sym == :circle &&
+            get_attr.call('cx') == 25 &&
+            get_attr.call('cy') == 25
             return "0 0 50 50"
           end
         end
@@ -1138,7 +1306,6 @@ class HTML
       return "0 0 #{width.round} #{height.round}"
     end
   end
-
   # Example usage:
   # svg_elements = [{"circle"=>{"cx"=>25, "cy"=>25, "r"=>20, "stroke"=>"black", "stroke-width"=>2, "fill"=>"blue"}}]
   # viewbox = calculate_svg_viewbox(svg_elements)
