@@ -372,7 +372,7 @@ require 'application/medias/rubies/new_html_renderer'
 # # #
 # # # b=box
 # # # c=color(:red)
-# # # c2=color({ blue: 1, alpha: 1, left: 33, id: :tutut })
+# # # c2=color({ blue: 1, alpha: 1, left: 33, id: :c2_id })
 # # # # `console.clear()`
 # # # # b.fasten(c.id)
 # # # puts '----+++---'
@@ -687,7 +687,7 @@ require 'application/medias/rubies/new_html_renderer'
 # # # # g.box
 # # #
 # # # # b=box({renderers: [:browser], id: :titi})
-# # # # t=text({data: :hello , id: :tutu})
+# # # # t=text({data: :hello , id: :the_t})
 # # # # g=group([:toto,:titi])
 #
 #

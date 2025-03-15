@@ -69,11 +69,10 @@ function init(path, target, method, params) {
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableZoom = false;
 
-    window.addEventListener('resize', onWindowResize);
+    window.addEventListener('resize', onWindowResize(container));
 }
 
-function onWindowResize() {
-    const container = document.getElementById('container');
+function onWindowResize(container) {
     const width = container.clientWidth;
     const height = container.clientHeight;
 

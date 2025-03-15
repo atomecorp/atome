@@ -381,7 +381,7 @@
 # # #
 # # # b=box
 # # # c=color(:red)
-# # # c2=color({ blue: 1, alpha: 1, left: 33, id: :tutut })
+# # # c2=color({ blue: 1, alpha: 1, left: 33, id: :cc_col })
 # # # # `console.clear()`
 # # # # b.fasten(c.id)
 # # # puts '----+++---'
@@ -696,7 +696,7 @@
 # # # # g.box
 # # #
 # # # # b=box({renderers: [:browser], id: :titi})
-# # # # t=text({data: :hello , id: :tutu})
+# # # # t=text({data: :hello , id: :hello_id})
 # # # # g=group([:toto,:titi])
 
 # def alert(val)

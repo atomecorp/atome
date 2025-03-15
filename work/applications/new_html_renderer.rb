@@ -247,7 +247,7 @@ end
 # TODO : remove @atome in atome/lib as it store instance variable twice
 # TODO : unify proc usage using, for drag: drag_proc_option_start
 
-b=box({id: :tutu})
+b=box({id: :the_nex_box})
 b.color(:yellow)
 # b.top do
 #   puts 'ok'

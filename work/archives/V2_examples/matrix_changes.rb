@@ -297,8 +297,8 @@ m.cell(9).box({left: 0, top: 0, id: :the_big_one, width: 66, height: 66, color: 
 #
 # # b = box({ id: :titi })
 # # c = color(:orange)
-# # c.id(:tutu)
-# # b.children([:tutu])
+# # c.id(:c_col)
+# # b.children([:child])
 #
 #
 # # alert b.children

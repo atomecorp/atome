@@ -3,7 +3,7 @@
 t = text({ content: "Make the yellowgreen circle red to check if it'll be added to the group and treated!!", atome_id: :the_text })
 image({ content: :boat, x: 666, atome_id: :pix_1, })
 image({ content: :moto, y: 333, atome_id: :pix_2 })
-b = box({ size: 66, y: 33, color: :red, atome_id: :tutu })
+b = box({ size: 66, y: 33, color: :red, atome_id: :b_box_id })
 b.tag({ content: "my_tag" })
 circle({ x: 96, y: 33, atome_id: :first_circle })
 c2 = circle({ x: 333, y: 96, color: :green, tag: :other_tag, atome_id: :the_circle })

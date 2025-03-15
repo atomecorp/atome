@@ -4,7 +4,7 @@ b = box({left: 333, id: :the_box_1})
 b.color({id: :the_orange_col, red: 1, blue: 0.5})
 b.circle({top: 66, id: :the_circle_1, color: :yellow})
 
-b.shape({id: :tutu})
+b.shape({id: :shaper})
 b.shape({id: :toto}) #######
 b.circle({id: :invisible}) ######
 

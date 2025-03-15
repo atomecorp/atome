@@ -61,15 +61,15 @@ class HTML
     font_name = params[:name]
 
     str_to_eval = <<~STRDELIM
-    var styleElement = document.createElement('style');
-    styleElement.textContent = `
-      @font-face {
-        font-family: '#{font_name}';
-        src: url('../medias/fonts/#{font_path}/#{font_name}.ttf') format('truetype');
-      }
-    `;
-    document.head.appendChild(styleElement);
-  STRDELIM
+      var styleElement = document.createElement('style');
+      styleElement.textContent = `
+        @font-face {
+          font-family: '#{font_name}';
+          src: url('../medias/fonts/#{font_path}/#{font_name}.ttf') format('truetype');
+        }
+      `;
+      document.head.appendChild(styleElement);
+    STRDELIM
 
     JS.eval(str_to_eval)
   end
@@ -543,21 +543,20 @@ class HTML
     self
   end
 
-
   def line(params)
     thickness = params[:thickness] || 5
     color = params[:color] || :black
     pattern = params[:pattern] || 'solid'
-    start_cap = params[:start_cap] || 'round'  # butt, round, square
+    start_cap = params[:start_cap] || 'round' # butt, round, square
     arrow = params[:arrow] || false
-    arrow_size = params[:arrow_size] || 15     # taille de la flèche en pixels
+    arrow_size = params[:arrow_size] || 15 # taille de la flèche en pixels
     # Si params contient la clé :edition, true signifie « arrêter le dessin »
     edition = params.key?(:edition) ? params[:edition] : false
 
     if color.instance_of? Hash
-      color[:red]   = 0 unless color[:red]
+      color[:red] = 0 unless color[:red]
       color[:green] = 0 unless color[:green]
-      color[:blue]  = 0 unless color[:blue]
+      color[:blue] = 0 unless color[:blue]
       color[:alpha] = 1 unless color[:alpha]
 
       color = "rgba(#{color[:red] * 255},#{color[:green] * 255},#{color[:blue] * 255}, #{color[:alpha]})"
@@ -570,110 +569,108 @@ class HTML
                  end
 
     js_code = <<~JAVASCRIPT
-    // On conserve le canvas dans une variable globale pour éviter de le recréer
-    if (!window._fabricCanvas) { window._fabricCanvas = {}; }
-    var canvas = window._fabricCanvas['#{@id}'];
-    if (!canvas) {
-      canvas = new fabric.Canvas('#{@id}', { selection: false });
-      window._fabricCanvas['#{@id}'] = canvas;
+      // On conserve le canvas dans une variable globale pour éviter de le recréer
+      if (!window._fabricCanvas) { window._fabricCanvas = {}; }
+      var canvas = window._fabricCanvas['#{@id}'];
+      if (!canvas) {
+        canvas = new fabric.Canvas('#{@id}', { selection: false });
+        window._fabricCanvas['#{@id}'] = canvas;
 
-      // Fonction pour redimensionner le canvas
-      function resizeCanvas() {
-        canvas.setWidth(window.innerWidth);
-        canvas.setHeight(window.innerHeight);
-        canvas.setZoom(1);
-        canvas.renderAll();
-      }
-      resizeCanvas();
-      window.addEventListener('resize', resizeCanvas);
-    }
-
-    // On retire les anciens écouteurs de dessin, s'ils existent
-    if (canvas._lineEventsAttached) {
-      canvas.off('mouse:down', canvas._lineEventsAttached.mouseDown);
-      canvas.off('mouse:move', canvas._lineEventsAttached.mouseMove);
-      canvas.off('mouse:up', canvas._lineEventsAttached.mouseUp);
-      canvas._lineEventsAttached = null;
-    }
-
-    // Fonction pour créer une flèche
-    function addArrow(line) {
-      const x1 = line.get('x1');
-      const y1 = line.get('y1');
-      const x2 = line.get('x2');
-      const y2 = line.get('y2');
-      const angle = Math.atan2(y2 - y1, x2 - x1);
-      const arrowHead = new fabric.Triangle({
-        left: x2,
-        top: y2,
-        pointType: 'arrow_head',
-        angle: (angle * 180 / Math.PI) + 90,
-        width: #{arrow_size},
-        height: #{arrow_size},
-        fill: '#{color}',
-        selectable: false,
-        originX: 'center',
-        originY: 'bottom'
-      });
-      return arrowHead;
-    }
-
-    // Options de style pour la ligne
-    const lineOptions = {
-      stroke: '#{color}',
-      strokeWidth: #{thickness},
-      strokeDashArray: #{dash_array},
-      strokeLineCap: '#{start_cap}',
-      strokeLineJoin: 'round',
-      selectable: false,
-      evented: false,
-      hasBorders: false,
-      hasControls: false
-    };
-
-    // Si edition est true, on NE PAS attacher les événements (donc on stoppe le dessin)
-    // Sinon, on active le dessin.
-    var drawingEnabled = #{edition ? 'false' : 'true'};
-
-    if (drawingEnabled) {
-      // Définition des fonctions d'événements pour le dessin
-      canvas._lineEventsAttached = {
-        mouseDown: function(o) {
-          this.isDrawing = true;
-          const pointer = this.getPointer(o.e);
-          const points = [pointer.x, pointer.y, pointer.x, pointer.y];
-          this.currentLine = new fabric.Line(points, lineOptions);
-          this.add(this.currentLine);
-          this.renderAll();
-        },
-        mouseMove: function(o) {
-          if (this.isDrawing) {
-            const pointer = this.getPointer(o.e);
-            this.currentLine.set({ x2: pointer.x, y2: pointer.y });
-            if (#{arrow}) {
-              const arrowHead = this.getObjects().find(obj => obj.pointType === 'arrow_head');
-              if (arrowHead) { this.remove(arrowHead); }
-              const newArrow = addArrow(this.currentLine);
-              this.add(newArrow);
-            }
-            this.renderAll();
-          }
-        },
-        mouseUp: function() {
-          this.isDrawing = false;
-          if (this.currentLine) { this.currentLine.setCoords(); }
+        // Fonction pour redimensionner le canvas
+        function resizeCanvas() {
+          canvas.setWidth(window.innerWidth);
+          canvas.setHeight(window.innerHeight);
+          canvas.setZoom(1);
+          canvas.renderAll();
         }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+      }
+
+      // On retire les anciens écouteurs de dessin, s'ils existent
+      if (canvas._lineEventsAttached) {
+        canvas.off('mouse:down', canvas._lineEventsAttached.mouseDown);
+        canvas.off('mouse:move', canvas._lineEventsAttached.mouseMove);
+        canvas.off('mouse:up', canvas._lineEventsAttached.mouseUp);
+        canvas._lineEventsAttached = null;
+      }
+
+      // Fonction pour créer une flèche
+      function addArrow(line) {
+        const x1 = line.get('x1');
+        const y1 = line.get('y1');
+        const x2 = line.get('x2');
+        const y2 = line.get('y2');
+        const angle = Math.atan2(y2 - y1, x2 - x1);
+        const arrowHead = new fabric.Triangle({
+          left: x2,
+          top: y2,
+          pointType: 'arrow_head',
+          angle: (angle * 180 / Math.PI) + 90,
+          width: #{arrow_size},
+          height: #{arrow_size},
+          fill: '#{color}',
+          selectable: false,
+          originX: 'center',
+          originY: 'bottom'
+        });
+        return arrowHead;
+      }
+
+      // Options de style pour la ligne
+      const lineOptions = {
+        stroke: '#{color}',
+        strokeWidth: #{thickness},
+        strokeDashArray: #{dash_array},
+        strokeLineCap: '#{start_cap}',
+        strokeLineJoin: 'round',
+        selectable: false,
+        evented: false,
+        hasBorders: false,
+        hasControls: false
       };
-      canvas.on('mouse:down', canvas._lineEventsAttached.mouseDown);
-      canvas.on('mouse:move', canvas._lineEventsAttached.mouseMove);
-      canvas.on('mouse:up', canvas._lineEventsAttached.mouseUp);
-    }
-  JAVASCRIPT
+
+      // Si edition est true, on NE PAS attacher les événements (donc on stoppe le dessin)
+      // Sinon, on active le dessin.
+      var drawingEnabled = #{edition ? 'false' : 'true'};
+
+      if (drawingEnabled) {
+        // Définition des fonctions d'événements pour le dessin
+        canvas._lineEventsAttached = {
+          mouseDown: function(o) {
+            this.isDrawing = true;
+            const pointer = this.getPointer(o.e);
+            const points = [pointer.x, pointer.y, pointer.x, pointer.y];
+            this.currentLine = new fabric.Line(points, lineOptions);
+            this.add(this.currentLine);
+            this.renderAll();
+          },
+          mouseMove: function(o) {
+            if (this.isDrawing) {
+              const pointer = this.getPointer(o.e);
+              this.currentLine.set({ x2: pointer.x, y2: pointer.y });
+              if (#{arrow}) {
+                const arrowHead = this.getObjects().find(obj => obj.pointType === 'arrow_head');
+                if (arrowHead) { this.remove(arrowHead); }
+                const newArrow = addArrow(this.currentLine);
+                this.add(newArrow);
+              }
+              this.renderAll();
+            }
+          },
+          mouseUp: function() {
+            this.isDrawing = false;
+            if (this.currentLine) { this.currentLine.setCoords(); }
+          }
+        };
+        canvas.on('mouse:down', canvas._lineEventsAttached.mouseDown);
+        canvas.on('mouse:move', canvas._lineEventsAttached.mouseMove);
+        canvas.on('mouse:up', canvas._lineEventsAttached.mouseUp);
+      }
+    JAVASCRIPT
 
     JS.eval(js_code)
   end
-
-
 
   def brush(params)
     thickness = params[:thickness] || 5
@@ -700,13 +697,13 @@ class HTML
     shadow_js_config = ""
     if params[:shadow]
       if params[:shadow].instance_of?(Hash)
-        shadow_color    = params[:shadow][:color]    || "rgba(0,0,0,0.3)"
-        shadow_blur     = params[:shadow][:blur]     || 10
+        shadow_color = params[:shadow][:color] || "rgba(0,0,0,0.3)"
+        shadow_blur = params[:shadow][:blur] || 10
         shadow_offset_x = params[:shadow][:offset_x] || 5
         shadow_offset_y = params[:shadow][:offset_y] || 5
       else
-        shadow_color    = "rgba(0,0,0,0.3)"
-        shadow_blur     = 10
+        shadow_color = "rgba(0,0,0,0.3)"
+        shadow_blur = 10
         shadow_offset_x = 5
         shadow_offset_y = 5
       end
@@ -717,153 +714,148 @@ class HTML
     end
 
     js_code = <<~JAVASCRIPT
-	// Réutiliser le canvas existant pour éviter de le recréer et ainsi éviter le flickering
-	if (!window._fabricCanvas) { window._fabricCanvas = {}; }
-	var canvas = window._fabricCanvas['#{@id}'];
-	var canvasEl = document.getElementById('#{@id}');
-	if (!canvas) {
-	  canvasEl.width = window.innerWidth;
-	  canvasEl.height = window.innerHeight;
-	  canvas = new fabric.Canvas('#{@id}');
-	  window._fabricCanvas['#{@id}'] = canvas;
-	  // Fonction de redimensionnement
-	  function resizeCanvas() {
-		canvas.setWidth(window.innerWidth);
-		canvas.setHeight(window.innerHeight);
-		canvas.setZoom(1);
-		canvas.renderAll();
-	  }
-	  resizeCanvas();
-	  window.addEventListener('resize', resizeCanvas);
-	}
+      // Réutiliser le canvas existant pour éviter de le recréer et ainsi éviter le flickering
+      if (!window._fabricCanvas) { window._fabricCanvas = {}; }
+      var canvas = window._fabricCanvas['#{@id}'];
+      var canvasEl = document.getElementById('#{@id}');
+      if (!canvas) {
+        canvasEl.width = window.innerWidth;
+        canvasEl.height = window.innerHeight;
+        canvas = new fabric.Canvas('#{@id}');
+        window._fabricCanvas['#{@id}'] = canvas;
+        // Fonction de redimensionnement
+        function resizeCanvas() {
+      	canvas.setWidth(window.innerWidth);
+      	canvas.setHeight(window.innerHeight);
+      	canvas.setZoom(1);
+      	canvas.renderAll();
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+      }
 
-	// Activer ou désactiver le mode dessin en fonction de edition
-	canvas.isDrawingMode = #{edition ? 'false' : 'true'};
+      // Activer ou désactiver le mode dessin en fonction de edition
+      canvas.isDrawingMode = #{edition ? 'false' : 'true'};
 
-	// Si l'édition est activée (mode "lecture seule"), on désactive la brosse
-	if (#{edition ? 'true' : 'false'}) {
-	  canvas.freeDrawingBrush = null;
-	} else {
-	  // Définition de la classe CustomSprayBrush
-	  var CustomSprayBrush = fabric.util.createClass(fabric.SprayBrush, {
-		initialize: function(canvas) {
-		  this.callSuper('initialize', canvas);
-		  this.sprayChunks = [];
-		  this.width = #{thickness};
-		  this.color = '#{color}';
-		  this.density = 20;
-		  this.dotWidth = #{thickness};
-		  this.dotWidthVariance = 3;
-		  this.randomOpacity = true;
-		},
+      // Si l'édition est activée (mode "lecture seule"), on désactive la brosse
+      if (#{edition ? 'true' : 'false'}) {
+        canvas.freeDrawingBrush = null;
+      } else {
+        // Définition de la classe CustomSprayBrush
+        var CustomSprayBrush = fabric.util.createClass(fabric.SprayBrush, {
+      	initialize: function(canvas) {
+      	  this.callSuper('initialize', canvas);
+      	  this.sprayChunks = [];
+      	  this.width = #{thickness};
+      	  this.color = '#{color}';
+      	  this.density = 20;
+      	  this.dotWidth = #{thickness};
+      	  this.dotWidthVariance = 3;
+      	  this.randomOpacity = true;
+      	},
 
-		onMouseDown: function(pointer) {
-		  this.sprayChunks = [];
-		  this.canvas.clearContext(this.canvas.contextTop);
-		  this.addSprayChunk(pointer);
-		},
+      	onMouseDown: function(pointer) {
+      	  this.sprayChunks = [];
+      	  this.canvas.clearContext(this.canvas.contextTop);
+      	  this.addSprayChunk(pointer);
+      	},
 
-		onMouseMove: function(pointer) {
-		  if (this.canvas._isCurrentlyDrawing) {
-			this.addSprayChunk(pointer);
-		  }
-		},
+      	onMouseMove: function(pointer) {
+      	  if (this.canvas._isCurrentlyDrawing) {
+      		this.addSprayChunk(pointer);
+      	  }
+      	},
 
-		onMouseUp: function() {
-		  this.canvas.clearContext(this.canvas.contextTop);
-		  this.canvas.renderAll();
-		},
+      	onMouseUp: function() {
+      	  this.canvas.clearContext(this.canvas.contextTop);
+      	  this.canvas.renderAll();
+      	},
 
-		_render: function() {
-		  var ctx = this.canvas.contextTop;
-		  ctx.fillStyle = this.color;
-		  ctx.save();
-		  for (var i = 0; i < this.sprayChunks.length; i++) {
-			var chunk = this.sprayChunks[i];
-			ctx.globalAlpha = chunk.opacity;
-			ctx.fillRect(chunk.x, chunk.y, chunk.width, chunk.width);
-		  }
-		  ctx.restore();
-		},
+      	_render: function() {
+      	  var ctx = this.canvas.contextTop;
+      	  ctx.fillStyle = this.color;
+      	  ctx.save();
+      	  for (var i = 0; i < this.sprayChunks.length; i++) {
+      		var chunk = this.sprayChunks[i];
+      		ctx.globalAlpha = chunk.opacity;
+      		ctx.fillRect(chunk.x, chunk.y, chunk.width, chunk.width);
+      	  }
+      	  ctx.restore();
+      	},
 
-		addSprayChunk: function(pointer) {
-		  var radius = this.width / 2;
-		  var shape;
-		  switch ('#{shapeType}') {
-			case 'square':
-			  shape = new fabric.Rect({
-				left: pointer.x - radius,
-				top: pointer.y - radius,
-				width: this.dotWidth,
-				height: this.dotWidth,
-				fill: this.color,
-				opacity: this.randomOpacity ? Math.random() : 1,
-				#{shadow_js}
-			  });
-			  break;
-			case 'triangle':
-			  shape = new fabric.Triangle({
-				left: pointer.x - radius,
-				top: pointer.y - radius,
-				width: this.dotWidth,
-				height: this.dotWidth,
-				fill: this.color,
-				opacity: this.randomOpacity ? Math.random() : 1,
-				#{shadow_js}
-			  });
-			  break;
-			default:
-			  shape = new fabric.Circle({
-				left: pointer.x - radius,
-				top: pointer.y - radius,
-				radius: this.dotWidth / 2,
-				fill: this.color,
-				opacity: this.randomOpacity ? Math.random() : 1,
-				#{shadow_js}
-			  });
-		  }
-		  this.canvas.add(shape);
-		  this.canvas.renderAll();
-		}
-	  });
+      	addSprayChunk: function(pointer) {
+      	  var radius = this.width / 2;
+      	  var shape;
+      	  switch ('#{shapeType}') {
+      		case 'square':
+      		  shape = new fabric.Rect({
+      			left: pointer.x - radius,
+      			top: pointer.y - radius,
+      			width: this.dotWidth,
+      			height: this.dotWidth,
+      			fill: this.color,
+      			opacity: this.randomOpacity ? Math.random() : 1,
+      			#{shadow_js}
+      		  });
+      		  break;
+      		case 'triangle':
+      		  shape = new fabric.Triangle({
+      			left: pointer.x - radius,
+      			top: pointer.y - radius,
+      			width: this.dotWidth,
+      			height: this.dotWidth,
+      			fill: this.color,
+      			opacity: this.randomOpacity ? Math.random() : 1,
+      			#{shadow_js}
+      		  });
+      		  break;
+      		default:
+      		  shape = new fabric.Circle({
+      			left: pointer.x - radius,
+      			top: pointer.y - radius,
+      			radius: this.dotWidth / 2,
+      			fill: this.color,
+      			opacity: this.randomOpacity ? Math.random() : 1,
+      			#{shadow_js}
+      		  });
+      	  }
+      	  this.canvas.add(shape);
+      	  this.canvas.renderAll();
+      	}
+        });
 
-	  var brush;
-	  switch ('#{brushType}') {
-		case 'PencilBrush':
-		  brush = new fabric.PencilBrush(canvas);
-		  break;
-		case 'CircleBrush':
-		  brush = new fabric.CircleBrush(canvas);
-		  break;
-		case 'PatternBrush':
-		  brush = new fabric.PatternBrush(canvas);
-		  // Créer un pattern source
-		  var patternCanvas = fabric.util.createCanvasElement();
-		  patternCanvas.width = patternCanvas.height = 25;
-		  var ctx = patternCanvas.getContext('2d');
-		  ctx.fillStyle = '#{color}';
-		  ctx.beginPath();
-		  ctx.arc(10, 10, 5, 0, Math.PI * 2, false);
-		  ctx.fill();
-		  brush.source = patternCanvas;
-		  break;
-		default:
-		  brush = new CustomSprayBrush(canvas);
-	  }
-	  brush.width = #{thickness};
-	  brush.color = '#{color}';
-	  #{ shadow_js_config.empty? ? "" : "brush.shadow = #{shadow_js_config};" }
-	  canvas.freeDrawingBrush = brush;
-	}
-  JAVASCRIPT
+        var brush;
+        switch ('#{brushType}') {
+      	case 'PencilBrush':
+      	  brush = new fabric.PencilBrush(canvas);
+      	  break;
+      	case 'CircleBrush':
+      	  brush = new fabric.CircleBrush(canvas);
+      	  break;
+      	case 'PatternBrush':
+      	  brush = new fabric.PatternBrush(canvas);
+      	  // Créer un pattern source
+      	  var patternCanvas = fabric.util.createCanvasElement();
+      	  patternCanvas.width = patternCanvas.height = 25;
+      	  var ctx = patternCanvas.getContext('2d');
+      	  ctx.fillStyle = '#{color}';
+      	  ctx.beginPath();
+      	  ctx.arc(10, 10, 5, 0, Math.PI * 2, false);
+      	  ctx.fill();
+      	  brush.source = patternCanvas;
+      	  break;
+      	default:
+      	  brush = new CustomSprayBrush(canvas);
+        }
+        brush.width = #{thickness};
+        brush.color = '#{color}';
+        #{ shadow_js_config.empty? ? "" : "brush.shadow = #{shadow_js_config};" }
+        canvas.freeDrawingBrush = brush;
+      }
+    JAVASCRIPT
 
     JS.eval(js_code)
   end
-
-
-
-
-
 
   def text(id)
     # we remove any element if the id already exist
@@ -958,7 +950,6 @@ class HTML
     JS.global[:document][:body].appendChild(@element)
     add_class('atome')
     self.id(id)
-
     self
   end
 
@@ -966,30 +957,7 @@ class HTML
     js_code = <<~JAVASCRIPT
       initWithParam('#{objet_path}', '#{@id}', 'method', 'params');
     JAVASCRIPT
-
     JS.eval(js_code)
-    # tags = <<~HTML
-    #   <a-scene embedded>
-    #     <a-sky src="#{objet_path}" rotation="0 -130 0"></a-sky>
-    #     <a-text font="kelsonsans" value="Puy de Sancy, France" width="6" position="-2.5 0.25 -1.5" rotation="0 15 0"></a-text>
-    #     <!-- Hotspot -->
-    #     <a-sphere id="clickable" color="#FF0000" radius="0.1" position="0 1 -2"
-    #               event-set__mouseenter="_event: mouseenter; color: green"
-    #               event-set__mouseleave="_event: mouseleave; color: red"></a-sphere>
-    #     <!-- Camera with cursor to detect clicks -->
-    #   </a-scene>
-    # HTML
-    # @element[:innerHTML] = tags
-    #
-    # # Ajouter un écouteur d'événement pour le hotspot
-    # cursor = JS.global[:document].getElementById('cursor')
-    # cursor.addEventListener('click', -> {
-    #   target = cursor.components.cursor.intersectedEl
-    #   if target && target.id == 'clickable'
-    #     alert :yes
-    #   end
-    # })
-
   end
 
   def www(id)
@@ -1029,7 +997,6 @@ class HTML
   #   self.id(id)
   #   self
   # end
-
 
   # def calculate_svg_viewbox(svg_elements)
   #
@@ -1284,7 +1251,7 @@ class HTML
         end
       end
 
-      return "0 0 100 100"  # Default viewBox
+      return "0 0 100 100" # Default viewBox
     end
 
     # Calculate dimensions
@@ -1306,6 +1273,7 @@ class HTML
       return "0 0 #{width.round} #{height.round}"
     end
   end
+
   # Example usage:
   # svg_elements = [{"circle"=>{"cx"=>25, "cy"=>25, "r"=>20, "stroke"=>"black", "stroke-width"=>2, "fill"=>"blue"}}]
   # viewbox = calculate_svg_viewbox(svg_elements)
@@ -1329,7 +1297,7 @@ class HTML
   end
 
   def svg_data(all_datas)
-    viewbox_size=calculate_svg_viewbox(all_datas)
+    viewbox_size = calculate_svg_viewbox(all_datas)
     @element.setAttribute('viewBox', viewbox_size)
     all_datas.each do |full_data|
       full_data.each do |type_passed, datas|
@@ -1886,9 +1854,9 @@ class HTML
 
     interact = JS.eval("return interact('##{@id}')")
     options = if @original_atome.instance_variable_get('@drag_code')
-      @original_atome.instance_variable_get('@drag_code')[:remove]
-    else
-      false
+                @original_atome.instance_variable_get('@drag_code')[:remove]
+              else
+                false
               end
 
     options.each do |option|
@@ -2309,9 +2277,9 @@ class HTML
 
   def touch_remove(_opt)
     option = if @original_atome.instance_variable_get('@touch_code')
-      @original_atome.instance_variable_get('@touch_code')[:remove]
-    else
-      false
+               @original_atome.instance_variable_get('@touch_code')[:remove]
+             else
+               false
              end
 
     @element[:style][:cursor] = 'default'

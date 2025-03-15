@@ -89,7 +89,7 @@ v2.brush({ shadow: {}, thickness: 33, type: :pencil, id: :the_brush, shape: :cir
 
 # alert b.type
 
-# list = Atome.new({ renderers: [:html], id: :tutu, type: :text, color: { alpha: 0 }, attach: :view })
+# list = Atome.new({ renderers: [:html], id: :text_test, type: :text, color: { alpha: 0 }, attach: :view })
 
 # Account creation
 #

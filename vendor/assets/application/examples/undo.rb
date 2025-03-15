@@ -3,7 +3,7 @@ undo_button = text({ data: :undo, id: :undo })
 redo_button = text({ data: :redo, id: :redo, left: 39 })
 JS.eval('localStorage.clear()')
 
-b = box({ id: :tutu, top: 66 })
+b = box({ id: :the_new_boxy, top: 66 })
 c = box({ id: :the_circle, left: 333 })
 color({ id: :the_color, blue: 1 })
 color({ id: :the_col, red: 1 })

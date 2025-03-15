@@ -899,7 +899,7 @@ end
 # TODO : remove @atome as it store instance variable twice
 # TODO : unify proc usage using , for drag: drag_proc_option_start
 
-# b=box({id: :tutu})
+# b=box({id: :the_b})
 # b.top do
 #   puts 'ok'
 # end

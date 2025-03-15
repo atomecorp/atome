@@ -353,7 +353,7 @@
 # def generator(params)
 #   default_styles={type: :shape,  renderers: [:html],width: 66, height: 66}
 #   style=default_styles.merge(params[:style])
-#   Atome.new(type: params[:type], id: :tutu,renderers: [:html])
+#   Atome.new(type: params[:type], id: :params_id,renderers: [:html])
 #
 # end
 

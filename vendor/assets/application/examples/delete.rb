@@ -42,7 +42,7 @@ end
 # b.color({id: :the_orange_col, red: 1, blue: 0.5})
 # b.circle({top: 66, id: :the_circle_1, color: :yellow})
 #
-# b.shape({id: :tutu})
+# b.shape({id: :the_shape})
 # b.shape({id: :toto}) #######
 # b.circle({id: :invisible}) ######
 #

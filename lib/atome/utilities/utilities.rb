@@ -10,6 +10,7 @@ class Atome
     attr_accessor :initialized
 
     def sanitize_data_for_json(data)
+      alert "====> #{data}\n#{data.class}"
       data.gsub('"', '\\"')
     end
 

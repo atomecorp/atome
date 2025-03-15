@@ -11,7 +11,7 @@ b.touch(:down) do
   creation_layer.touch(:down) do |event|
     left_found = event[:pageX].to_i
     top_found = event[:pageY].to_i
-    box({ left: left_found, top: top_found ,id: "tutu_#{Universe.atomes.length}", color: :red})
+    box({ left: left_found, top: top_found ,id: "box_#{Universe.atomes.length}", color: :red})
     creation_layer.delete(true)
     creation_layer.touch({ remove: :down })
     puts Universe.atomes.length
