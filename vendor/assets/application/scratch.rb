@@ -3,8 +3,9 @@
 # patch to hide native toolbox
 grab(:toolbox_tool).display(false)
 
+# main class for Vie app
 class Vie
-  attr_accessor :current_orientation, :basic_objects, :current_matrix, :actions, :tools
+  attr_accessor :current_orientation, :basic_objects, :current_matrix, :actions, :tools, :views
 
   def initialize
     super
@@ -14,7 +15,7 @@ class Vie
     height_found = grab(:view).to_px(:height)
     width_found = grab(:view).to_px(:width)
 
-    basic_objects
+    basic_objects_builder
     basic_tool
     init_design(width_found, height_found)
     # matrix_behaviors
@@ -35,6 +36,7 @@ class Vie
       basic: 18,
       title_width: 50,
       title_height: 30,
+      separator_size: 10,
       tool_size: 30,
       basic_size: 39,
       basic_width: 39,
@@ -106,22 +108,22 @@ class Vie
     @basic_objects.each do |elem|
       grab(elem).set(vie_style_vertical[elem])
     end
-    @actions.each_with_index do |elem, index|
+    @actions_bar_content.each_with_index do |elem, index|
       if index == 0
         left_f = 0
         centering = { y: 0 }
       else
-        left_f = after(@actions[index - 1])
+        left_f = after(@actions_bar_content[index - 1])
         centering = { y: 0 }
       end
       grab(elem).set(left: left_f, center: centering)
     end
-    @tools.each_with_index do |elem, index|
+    @tools_bar_content.each_with_index do |elem, index|
       if index == 0
         left_f = 0
         centering = { y: 0 }
       else
-        left_f = after(@actions[index - 1])
+        left_f = after(@tools_bar_content[index - 1])
         centering = { y: 0 }
       end
       grab(elem).set(left: left_f, center: centering)
@@ -133,22 +135,22 @@ class Vie
     @basic_objects.each do |elem|
       grab(elem).set(vie_style_horizontal[elem])
     end
-    @actions.each_with_index do |elem, index|
+    @actions_bar_content.each_with_index do |elem, index|
       if index == 0
         top_f = 0
         centering = { x: 0 }
       else
-        top_f = below(@actions[index - 1])
+        top_f = below(@actions_bar_content[index - 1])
         centering = { x: 0 }
       end
       grab(elem).set(top: top_f, center: centering)
     end
-    @tools.each_with_index do |elem, index|
+    @tools_bar_content.each_with_index do |elem, index|
       if index == 0
         top_f = 0
         centering = { x: 0 }
       else
-        top_f = below(@actions[index - 1])
+        top_f = below(@tools_bar_content[index - 1])
         centering = { x: 0 }
       end
       grab(elem).set(top: top_f, center: centering)
@@ -156,10 +158,13 @@ class Vie
   end
 
   def basic_tool
-    @actions = [:select_tool, :copy_tool, :paste_tool, :undo_tool, :redo_tool]
-    @tools = [:file_tool, :module_tool]
-    vie_tool_builder({ attach: :action_bar, tools: @actions })
-    vie_tool_builder({ attach: :tool_bar, tools: @tools })
+    @actions = %i[select_tool copy_tool  paste_tool undo_tool redo_tool]
+    @views = %i[edit_tool sequence_tool mixer_tool separator]
+    @tools = %i[file_tool module_tool]
+    @actions_bar_content=@views.concat(@actions)
+    @tools_bar_content=@tools
+    vie_tool_builder({ attach: :action_bar, tools: @actions_bar_content })
+    vie_tool_builder({ attach: :tool_bar, tools: @tools_bar_content })
   end
 
   def basic_creator(id)
@@ -172,10 +177,16 @@ class Vie
     attach_f = params[:attach]
     tools_list_f = params[:tools]
     tools_list_f.each do |tool_id|
-
-      new_tool = grab(attach_f).box({ width: vie_size[:tool_size], height: vie_size[:tool_size],
+      if tool_id == :separator
+        height_wanted= vie_size[:separator_size]
+        tool_shadow =nil
+      else
+        height_wanted= vie_size[:tool_size]
+        tool_shadow = :standard_shadow
+      end
+      new_tool = grab(attach_f).box({ width: vie_size[:tool_size], height: height_wanted,
                                       top: 0, bottom: 0, left: 0, right: 0, color: { alpha: 0 },
-                                      apply: :standard_shadow, id: tool_id })
+                                      apply: tool_shadow, id: tool_id })
 
       svg_name = tool_id.to_s.sub('_tool', '')
       temp_icon = "#{tool_id}_icon_tmp"
@@ -187,15 +198,22 @@ class Vie
         new_svg.width(21)
         new_svg.height(21)
         new_svg.center(true)
+        if params_pass[:target] == 'separator_icon'
+          new_svg.color(:red)
+        else
+          new_svg.color(vie_colors[:inactive_tool])
+        end
       end
+      next if tool_id == :separator
 
       new_tool.touch(true) do
         new_tool.alternate({ color: :red, shadow: { alpha: 1 }, blur: 3 }, { color: :green, shadow: false })
       end
+
     end
   end
 
-  def basic_objects
+  def basic_objects_builder
     element({ id: :vie, data: { current_matrix: :vie_0, context: :none, selected: [] } })
     shadow({
              id: :standard_shadow,
@@ -271,11 +289,11 @@ class Vie
     work_zone_width = grab(:work_zone).to_px(:width)
     work_zone_height = grab(:work_zone).to_px(:height)
 
-    if work_zone_width < work_zone_height
-      size = work_zone_width - 30
-    else
-      size = work_zone_height - 30
-    end
+    size = if work_zone_width < work_zone_height
+             work_zone_width - 30
+           else
+             work_zone_height - 30
+           end
     current_matrix.resize_matrix({ width: size, height: size })
 
     current_matrix.center({ x: 0 })
@@ -295,11 +313,11 @@ class Vie
     work_zone_width = grab(:work_zone).to_px(:width)
     work_zone_height = grab(:work_zone).to_px(:height)
 
-    if work_zone_width < work_zone_height
-      size = work_zone_width - vie_size[:basic_size]
-    else
-      size = work_zone_height - vie_size[:basic_size]
-    end
+    size = if work_zone_width < work_zone_height
+             work_zone_width - vie_size[:basic_size]
+           else
+             work_zone_height - vie_size[:basic_size]
+           end
     current_matrix.resize_matrix({ width: size, height: size })
 
     current_matrix.center({ x: 0 })
@@ -344,5 +362,3 @@ class Vie
 end
 
 Vie.new
-
-

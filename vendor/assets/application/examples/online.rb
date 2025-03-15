@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-text online?
+text(online?)
 def api_infos
   {
   "example": "Purpose of the example",
