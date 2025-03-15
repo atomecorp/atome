@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dessin en SVG avec transmission d'événements</title>
+  <script src="https://unpkg.com/paper"></script>
+  <style>
+	html, body, canvas {
+	  margin: 0;
+	  padding: 0;
+	  width: 100%;
+	  height: 100%;
+	  display: block;
+	}
+	svg {
+	  position: absolute; 
+	  top: 215.917181px; 
+	  left: 263.917901px;
+	}
+	svg path {
+	  pointer-events: visiblePainted; /* Permet les clics uniquement sur les parties visibles du path */
+	}
+	#colorBox {
+	  left: 333px;
+	  top: 330px;
+	  width: 200px;
+	  height: 200px;
+	  position: absolute;
+	  background-color: red;
+	  cursor: pointer;
+	}
+	#myCanvas {
+	  position: relative;
+	}
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas"></canvas>
+  <div id="colorBox"></div>
+  <svg width="265.3719812201616" height="483.23680800870886" viewBox="263.91790063438737 215.91718106139555 265.3719812201616 483.23680800870886">
+	<path d="M313,262c-3.16885,-4.43639 -6.53908,-9.07816 -9,-14c-0.80277,-1.60555 -2.17861,-3.21385 -2,-5c0.1934,-1.934 1.76921,-3.4957 3,-5c7.08948,-8.66492 12.13502,-10.05178 25,-13c17.65252,-4.04537 33.25901,-5.16354 51,-3c6.42457,0.78348 12.83576,2.02744 19,4c2.28934,0.73259 4.84898,1.8898 6,4c1.11732,2.04842 0.34613,4.69248 0,7c-2.15562,14.37081 -8.09928,23.9046 -21,31c-3.14571,1.73014 -6.62604,2.7731 -10,4c-0.31326,0.11391 -1,0.33333 -1,0c0,-2.4267 4.57524,-1.90301 7,-2c6.32827,-0.25313 12.71986,-0.81915 19,0c15.88745,2.07228 37.426,7.72995 51,17c10.89234,7.43867 20.93358,18.13652 22,32c1.03344,13.43469 -16.36919,25.02338 -24,30c-7.62589,4.9734 -16.45701,7.85258 -25,11c-5.7674,2.12483 -12.16905,2.05635 -18,4c-0.63246,0.21082 1.34813,-0.13969 2,0c4.03158,0.86391 7.98475,2.06311 12,3c5.98558,1.39664 12.18155,2.01925 18,4c16.67884,5.6779 33.93311,12.99113 48,24c1.89293,1.48142 3.6345,3.62425 4,6c1.19494,7.76713 -9.47171,13.86904 -14,16c-16.02043,7.53903 -34.5127,10 -52,10c-0.33333,0 0.66871,-0.03681 1,0c2.67098,0.29678 5.36477,0.47295 8,1c7.3743,1.47486 14.82873,2.73539 22,5c21.44105,6.77086 40.8012,13.76451 59,27c3.81405,2.77385 11.92019,10.27932 10,17c-3.12274,10.92958 -27.81044,19.083 -31,20c-40.55925,11.66079 -73.90244,11.49652 -116,13c-11.65923,0.4164 -23.38125,1.05625 -35,0c-0.74229,-0.06748 1.25684,-1.05717 2,-1c3.7158,0.28583 7.37354,1.1411 11,2c9.04726,2.14277 18.55495,3.11083 27,7c31.75433,14.6237 53.66357,28.49675 77,53c4.7836,5.02278 9.02397,10.73467 12,17c2.4869,5.23558 10.74848,26.89874 6,36c-6.10674,11.70459 -36.24305,21.27292 -42,23c-28.22239,8.46672 -63.32585,11.13109 -92,12c-31.60801,0.95782 -42.68703,1.77099 -69,-7c-7.52271,-2.50757 -5.3623,-13.29278 -2,-18c8.67453,-12.14434 21.02714,-16.41283 36,-17c37.4062,-1.46691 67.55181,25.55181 92,50c10.22767,10.22767 11.98451,13.93287 15,27c0.07495,0.3248 -0.66924,0.04134 -1,0c-2.33882,-0.29235 -4.94568,0.15556 -7,-1c-4.73613,-2.66407 -12.88943,-11.00292 -14,-17c-3.11611,-16.827 5.0697,-41.90921 10,-55c12.30193,-32.66375 45.06435,-85.44824 60,-110c12.87702,-21.1677 26.13393,-42.17858 41,-62" 
+		  stroke="black" 
+		  stroke-width="10" 
+		  fill="none" 
+		  stroke-linecap="round" 
+		  stroke-linejoin="round">
+	</path>
+  </svg>
+
+  <script>
+	const colorBox = document.getElementById('colorBox');
+	const path = document.querySelector("svg path");
+	let isGreen = false;
+	let isOrange = false;
+	
+	// Gestionnaire d'événements pour le carré rouge
+	colorBox.addEventListener('click', () => {
+	  if (!isGreen) {
+		colorBox.style.backgroundColor = 'green';
+	  } else {
+		colorBox.style.backgroundColor = 'blue';
+	  }
+	  isGreen = !isGreen;
+	  console.log("Clic sur le carré coloré");
+	});
+
+	// Solution avec délégation d'événements pour permettre les clics à travers le SVG
+	document.addEventListener('click', (event) => {
+	  // Vérifier si on a cliqué sur le path
+	  if (event.target === path) {
+		event.stopPropagation();
+		if (!isOrange) {
+		  path.setAttribute("stroke", "orange");
+		} else {
+		  path.setAttribute("stroke", "gray");
+		}
+		isOrange = !isOrange;
+		console.log("Clic sur le path SVG");
+	  } 
+	  // Vérifier si le clic est dans la zone du colorBox
+	  else {
+		const boxRect = colorBox.getBoundingClientRect();
+		if (
+		  event.clientX >= boxRect.left && 
+		  event.clientX <= boxRect.right && 
+		  event.clientY >= boxRect.top && 
+		  event.clientY <= boxRect.bottom
+		) {
+		  // C'est un clic dans la zone du colorBox
+		  if (!isGreen) {
+			colorBox.style.backgroundColor = 'green';
+		  } else {
+			colorBox.style.backgroundColor = 'blue';
+		  }
+		  isGreen = !isGreen;
+		  console.log("Clic détecté dans la zone du carré coloré");
+		}
+	  }
+	});
+	
+	console.log("Script initialisé");
+  </script>
+</body>
+</html>

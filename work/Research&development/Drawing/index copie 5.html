@@ -1,0 +1,611 @@
+ <!DOCTYPE html>
+ <html lang="fr">
+ <head>
+	 <meta charset="UTF-8">
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	 <title>Application de Dessin</title>
+	 <style>
+		 * {
+			 margin: 0;
+			 padding: 0;
+			 box-sizing: border-box;
+		 }
+ 
+		 body {
+			 overflow: hidden;
+			 background: #f0f0f0;
+		 }
+ 
+		 #view {
+			 position: absolute;
+			 top: 0;
+			 left: 0;
+			 width: 100%;
+			 height: 100%;
+			 z-index: 0;
+		 }
+ 
+		 #controls {
+			 position: fixed;
+			 top: 10px;
+			 left: 10px;
+			 background: white;
+			 padding: 15px;
+			 border-radius: 8px;
+			 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+			 z-index: 1000;
+		 }
+ 
+		 .tool-button {
+			 padding: 8px 15px;
+			 margin: 5px;
+			 border: none;
+			 border-radius: 4px;
+			 background: #4CAF50;
+			 color: white;
+			 cursor: pointer;
+			 transition: background 0.3s;
+		 }
+ 
+		 .tool-button:hover {
+			 background: #45a049;
+		 }
+ 
+		 .tool-button.active {
+			 background: #2E7D32;
+		 }
+ 
+		 .tool-button.inspector {
+			 background: #2196F3;
+		 }
+ 
+		 .tool-button.inspector:hover {
+			 background: #1976D2;
+		 }
+ 
+		 .tool-button.inspector.active {
+			 background: #0D47A1;
+		 }
+ 
+		 .control-group {
+			 margin: 10px 0;
+			 display: flex;
+			 align-items: center;
+			 gap: 10px;
+		 }
+ 
+		 label {
+			 font-family: Arial, sans-serif;
+			 font-size: 14px;
+		 }
+ 
+		 #brush-size {
+			 width: 100px;
+		 }
+ 
+		 .canvas-container {
+			 position: absolute;
+			 top: 0;
+			 left: 0;
+		 }
+ 
+		 .canvas-container.inspectable {
+			 cursor: help;
+		 }
+		 color-palette {
+			 display: flex;
+			 gap: 5px;
+			 flex-wrap: wrap;
+			 max-width: 200px;
+		 }
+		 
+		 .color-button {
+			 width: 30px;
+			 height: 30px;
+			 border: 2px solid #ccc;
+			 border-radius: 4px;
+			 cursor: pointer;
+			 padding: 0;
+		 }
+		 
+		 .color-button:hover {
+			 border-color: #999;
+		 }
+		 
+		 .color-button.selected {
+			 border-color: #333;
+			 box-shadow: 0 0 5px rgba(0,0,0,0.3);
+		 }
+		 .test{
+			 position: absolute;
+			 width: 333px;
+			 height: 333px;
+			 top: 333px;
+			 left: 333px;
+			 background-color: red;
+		 }
+		 .activated{
+			 border: 3px solid rgba(90, 90,90,1); /* Contour jaune */
+	 box-shadow: 0 0 3px rgba(0, 0, 0, 0.8); /* Ombre autour du contour */
+		 }
+.selected {
+			 position: relative; /* Nécessaire pour que ::before fonctionne */
+			 animation: pulse 0.6s infinite alternate;
+		 }
+		 
+		 .selected::before {
+			 content: "";
+			 position: absolute;
+			 top: -6px;
+			 left: -6px;
+			 right: -6px;
+			 bottom: -6px;
+			 border: 3px dotted rgba(255, 255, 0, 0.9); /* Contour jaune */
+			 filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.8)); /* Ombre réelle */
+			 pointer-events: none; /* Pour éviter les interactions */
+			 z-index: -1; /* Place l'ombre sous l'objet */
+		 }
+		 
+		 @keyframes pulse {
+			 0% { transform: scale(1); opacity: 1; }
+			 50% { transform: scale(1.05); opacity: 0.8; }
+			 100% { transform: scale(1); opacity: 1; }
+		 }
+	 </style>
+ </head>
+ <body>
+	 <div id="controls">
+		 <div class="control-group">
+			 <button id="brush" class="tool-button">Pinceau</button>
+			 <button id="eraser" class="tool-button">Gomme</button>
+			 <button id="inspector" class="tool-button inspector">select</button>
+			 <button id="clear" class="tool-button">Effacer</button>
+		 </div>
+	<div class="control-group">
+		<label>Couleur:</label>
+		<div class="color-palette">
+			<button class="color-button" data-color="#000000" style="background-color: #000000"></button>
+			<button class="color-button" data-color="#ff0000" style="background-color: #ff0000"></button>
+			<button class="color-button" data-color="#00ff00" style="background-color: #00ff00"></button>
+			<button class="color-button" data-color="#0000ff" style="background-color: #0000ff"></button>
+			<button class="color-button" data-color="#ffff00" style="background-color: #ffff00"></button>
+			<button class="color-button" data-color="#ff00ff" style="background-color: #ff00ff"></button>
+			<button class="color-button" data-color="#00ffff" style="background-color: #00ffff"></button>
+			<button class="color-button" data-color="#ffffff" style="background-color: #ffffff"></button>
+		</div>
+	</div>
+		 <div class="control-group">
+			 <label for="brush-size">Taille:</label>
+			 <input type="range" id="brush-size" min="1" max="50" value="5">
+			 <span id="size-value">5px</span>
+		 </div>
+	 </div>
+	 <div id="view">
+
+	 </div>
+ 
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+	 <script>
+		 class DrawingApp {
+			 constructor() {
+				 this.canvases = [];
+				 this.currentCanvas = null;
+				 this.currentTool = 'brush';
+				 this.brushColor = '#000000';
+				 this.brushSize = 5;
+				 this.canvasCount = 0;
+				 this.isInspectorMode = false;
+				 this.view = document.getElementById('view');
+				 // Ajout des nouvelles propriétés pour l'inspecteur
+				 this.selectedIndex = -1;
+				 this.overlappingElements = [];
+				 
+				 // Définition de la méthode cycleThroughElements
+				 this.cycleThroughElements = () => {
+					 // Retirer la sélection précédente
+					 if (this.selectedIndex >= 0) {
+						 const prevEl = document.getElementById(this.overlappingElements[this.selectedIndex]);
+						 if (prevEl) prevEl.classList.remove('selected');
+					 }
+					 
+					 // Passer à l'élément suivant
+					 this.selectedIndex = (this.selectedIndex + 1) % this.overlappingElements.length;
+					 
+					 // Appliquer la nouvelle sélection
+					 const currentEl = document.getElementById(this.overlappingElements[this.selectedIndex]);
+					 if (currentEl) currentEl.classList.add('selected');
+				 };
+				 this.initializeControls();
+				 this.createNewCanvas();
+			 }
+ 
+			 initializeControls() {
+				 document.getElementById('brush').addEventListener('click', () => this.setTool('brush'));
+				 document.getElementById('eraser').addEventListener('click', () => this.setTool('eraser'));
+				 
+				 
+				 ////
+
+document.getElementById('inspector').addEventListener('click', () => {
+					 // Nettoie d'abord tous les canvas vides
+					 this.canvases.forEach(canvas => {
+						 if(canvas.getObjects().length === 0) {
+							 canvas.wrapperEl.remove();
+						 }
+					 });
+					 this.canvases = this.canvases.filter(canvas => canvas.getObjects().length > 0);
+				 
+					 this.setTool('inspector');
+				 
+					 // Variable pour suivre l'index de sélection actuel
+					 if (!this.selectedIndex) {
+						 this.selectedIndex = -1;
+					 }
+					 
+					 // Variable pour stocker les éléments superposés
+					 if (!this.overlappingElements) {
+						 this.overlappingElements = [];
+					 }
+				 
+				
+				 
+					 if (this.isInspectorMode) {
+						 this.canvases.forEach(canvas => {
+							 canvas.off('mouse:down');
+							 canvas.off('mouse:up');
+							 
+							 canvas.on('mouse:down', (opt) => {
+								 const clickedCanvasId = canvas.wrapperEl.id;
+								 
+								 // Si on clique sur un élément déjà dans notre liste, on cycle
+								 if(this.overlappingElements.length > 0 && 
+									this.overlappingElements.includes(clickedCanvasId)) {
+									 this.cycleThroughElements();
+									 return;
+								 }
+								 
+								 // Sinon on crée une nouvelle liste
+								 // Nettoyer les sélections précédentes
+								 this.overlappingElements.forEach(id => {
+									 const el = document.getElementById(id);
+									 if (el) el.classList.remove('selected');
+								 });
+								 
+								 // Réinitialiser la liste et l'index
+								 this.overlappingElements = [clickedCanvasId];
+								 
+								 // Vérifier les autres canvas à cette position
+								 this.canvases.forEach(otherCanvas => {
+									 if (otherCanvas !== canvas) {
+										 const rect = otherCanvas.wrapperEl.getBoundingClientRect();
+										 const clientX = opt.e.clientX;
+										 const clientY = opt.e.clientY;
+										 
+										 if (clientX >= rect.left && clientX <= rect.right && 
+											 clientY >= rect.top && clientY <= rect.bottom) {
+											 this.overlappingElements.push(otherCanvas.wrapperEl.id);
+										 }
+									 }
+								 });
+								 
+				 
+								 // Démarrer le cycle de sélection
+								 this.selectedIndex = -1;
+								 this.cycleThroughElements();
+							 });
+						 });
+					 }
+				 });
+
+			
+
+				document.getElementById('clear').addEventListener('click', () => {
+					// Nettoie d'abord tous les canvas vides
+					 this.canvases.forEach(canvas => {
+						 if (canvas.getObjects().length === 0) {
+							 canvas.wrapperEl.remove();
+						 }
+					 });
+					 this.canvases = this.canvases.filter(canvas => canvas.getObjects().length > 0);
+			
+					 this.setTool('inspector');
+					
+					 if (this.isInspectorMode) {
+						 // Attacher aux canvas Fabric
+						 this.canvases.forEach(canvas => {
+							 // Désactiver les événements Fabric existants
+							 canvas.off('mouse:down');
+							 canvas.off('mouse:up');
+					
+							 // Ajouter notre propre gestionnaire
+							 canvas.on('mouse:down', (opt) => {
+								 canvas.clear();;
+							 });
+						 });
+					 }
+					
+					const selectedCanvas = this.canvases.find(canvas => canvas.wrapperEl.classList.contains('selected'));
+					if (selectedCanvas) {
+						selectedCanvas.clear();
+						selectedCanvas.wrapperEl.classList.remove('selected');
+					}
+				});
+				
+				
+				////
+				
+				
+				document.querySelectorAll('.color-button').forEach(button => {
+					button.addEventListener('click', (e) => {
+						const color = e.target.dataset.color;
+						this.brushColor = color;
+						if (this.currentCanvas && this.currentTool === 'brush') {
+							this.currentCanvas.freeDrawingBrush.color = color;
+						}
+						
+						// Mettre à jour la sélection visuelle
+						document.querySelectorAll('.color-button').forEach(btn => {
+							btn.classList.remove('activated');
+						});
+						e.target.classList.add('activated');
+					});
+				});
+ 
+
+				 document.getElementById('brush-size').addEventListener('input', (e) => {
+					 this.brushSize = parseInt(e.target.value);
+					 document.getElementById('size-value').textContent = `${this.brushSize}px`;
+					 if (this.currentCanvas) {
+						 this.currentCanvas.freeDrawingBrush.width = this.brushSize;
+					 }
+				 });
+ 
+				 window.addEventListener('resize', () => this.handleResize());
+			 }
+ 
+			 createNewCanvas() {
+				 if (this.isInspectorMode) return null;
+ 
+				 this.canvasCount++;
+				 const canvas = new fabric.Canvas(document.createElement('canvas'), {
+					 width: window.innerWidth,
+					 height: window.innerHeight,
+					 isDrawingMode: true,
+					 backgroundColor: 'transparent'
+				 });
+ 
+				 // Modifier directement le conteneur créé par fabric.js
+				 const container = canvas.wrapperEl;
+				 container.id = `canvas-${this.canvasCount}`;
+				 container.className = 'canvas-container';
+				 container.dataset.canvasId = this.canvasCount;
+				 container.style.position = 'absolute';
+				 container.style.userSelect = 'none';
+				 
+				 this.view.appendChild(container);
+ 
+				 canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+				 canvas.freeDrawingBrush.color = this.brushColor;
+				 canvas.freeDrawingBrush.width = this.brushSize;
+ 
+				 canvas.on('path:created', (e) => {
+					 if (this.currentTool === 'eraser') {
+						 e.path.globalCompositeOperation = 'destination-out';
+					 }
+				 });
+ 
+				 canvas.on('mouse:up', () => {
+					 if (this.currentTool === 'brush') {
+						 this.resizeCanvasToContent(canvas);
+					 }
+				 });
+ 
+				 this.canvases.push(canvas);
+				 this.currentCanvas = canvas;
+ 
+				 return canvas;
+			 }
+ 
+		setTool(tool) {
+			this.currentTool = tool;
+			this.isInspectorMode = tool === 'inspector';
+			
+			// Mise à jour des boutons
+			document.querySelectorAll('.tool-button').forEach(btn => {
+				btn.classList.remove('active');
+			});
+			document.getElementById(tool).classList.add('active');
+		
+			// Gestion des canvas vides
+			if (this.isInspectorMode) {
+				this.cleanEmptyCanvases(true);
+			} else {
+				this.cleanEmptyCanvases(false);
+			}
+		
+			// Mode inspecteur
+			if (this.isInspectorMode) {
+				this.canvases.forEach(canvas => {
+					canvas.isDrawingMode = false;
+					canvas.selection = false;
+					canvas.forEachObject(obj => {
+						obj.selectable = false;
+						obj.lockMovementX = true;
+						obj.lockMovementY = true;
+						obj.lockRotation = true;
+						obj.lockScalingX = true;
+						obj.lockScalingY = true;
+						obj.hasControls = false;
+						obj.hasBorders = false;
+					});
+				});
+				return;
+			}
+		
+			// Mode pinceau
+			if (tool === 'brush') {
+				this.canvases.forEach(canvas => {
+					canvas.isDrawingMode = true;
+					canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+					canvas.freeDrawingBrush.color = this.brushColor;
+					canvas.freeDrawingBrush.width = this.brushSize;
+				});
+				
+				if (!this.currentCanvas || !this.canvases.length) {
+					this.createNewCanvas();
+				}
+			}
+			
+			// Mode gomme
+			else if (tool === 'eraser') {
+				// Nettoie d'abord tous les canvas vides
+				this.canvases.forEach(canvas => {
+					if (canvas.getObjects().length === 0) {
+						canvas.wrapperEl.remove();
+					}
+				});
+				this.canvases = this.canvases.filter(canvas => canvas.getObjects().length > 0);
+		
+				// Configure la gomme
+				this.canvases.forEach(canvas => {
+					canvas.isDrawingMode = true;
+					canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+					canvas.freeDrawingBrush.width = this.brushSize;
+					canvas.freeDrawingBrush.color = '#000000';
+					canvas.freeDrawingBrush.globalCompositeOperation = 'destination-out';
+				});
+			}
+		}
+ 
+			 resizeCanvasToContent(canvas) {
+				 const objects = canvas.getObjects();
+				 if (objects.length === 0) return;
+ 
+				 const bounds = this.getContentBounds(objects);
+				 if (!bounds) return;
+ 
+				 const margin = 10;
+				 bounds.width += margin * 2;
+				 bounds.height += margin * 2;
+				 bounds.left -= margin;
+				 bounds.top -= margin;
+ 
+				 const newCanvas = new fabric.Canvas(document.createElement('canvas'), {
+					 width: bounds.width,
+					 height: bounds.height,
+					 backgroundColor: 'transparent'
+				 });
+ 
+				 objects.forEach(obj => {
+					 const clone = fabric.util.object.clone(obj);
+					 clone.left -= bounds.left;
+					 clone.top -= bounds.top;
+					 clone.selectable = false;
+					 clone.lockMovementX = true;
+					 clone.lockMovementY = true;
+					 clone.lockRotation = true;
+					 clone.lockScalingX = true;
+					 clone.lockScalingY = true;
+					 clone.hasControls = false;
+					 clone.hasBorders = false;
+					 if (this.currentTool === 'eraser') {
+						 clone.globalCompositeOperation = 'destination-out';
+					 }
+					 newCanvas.add(clone);
+				 });
+ 
+				 const container = newCanvas.wrapperEl;
+				 container.id = canvas.wrapperEl.id;
+				 container.className = 'canvas-container';
+				 container.dataset.canvasId = canvas.wrapperEl.dataset.canvasId;
+				 container.style.position = 'absolute';
+				 container.style.left = `${bounds.left}px`;
+				 container.style.top = `${bounds.top}px`;
+				 container.style.userSelect = 'none';
+				 
+				 canvas.wrapperEl.parentNode.replaceChild(container, canvas.wrapperEl);
+ 
+				 const index = this.canvases.indexOf(canvas);
+				 this.canvases[index] = newCanvas;
+				 this.setupCanvasEvents(newCanvas);
+				 
+				 if (!this.isInspectorMode && this.currentCanvas === canvas) {
+					 this.currentCanvas = this.createNewCanvas();
+				 }
+			 }
+ 
+			 cleanEmptyCanvases(forceCleanCurrent = false) {
+				 this.canvases = this.canvases.filter(canvas => {
+					 if (canvas.getObjects().length === 0 && (forceCleanCurrent || canvas !== this.currentCanvas)) {
+						 canvas.wrapperEl.remove();  // Supprime uniquement l'élément canvas
+						 return false;
+					 }
+					 return true;
+				 });
+ 
+				 if (forceCleanCurrent && this.currentCanvas && this.currentCanvas.getObjects().length === 0) {
+					 this.currentCanvas.wrapperEl.remove();  // Supprime uniquement l'élément canvas
+					 this.currentCanvas = null;
+				 }
+			 }
+ 
+			 getContentBounds(objects) {
+				 if (objects.length === 0) return null;
+ 
+				 let minX = Infinity;
+				 let minY = Infinity;
+				 let maxX = -Infinity;
+				 let maxY = -Infinity;
+ 
+				 objects.forEach(obj => {
+					 const bounds = obj.getBoundingRect();
+					 minX = Math.min(minX, bounds.left);
+					 minY = Math.min(minY, bounds.top);
+					 maxX = Math.max(maxX, bounds.left + bounds.width);
+					 maxY = Math.max(maxY, bounds.top + bounds.height);
+				 });
+ 
+				 return {
+					 left: minX,
+					 top: minY,
+					 width: maxX - minX,
+					 height: maxY - minY
+				 };
+			 }
+ 
+		setupCanvasEvents(canvas) {
+			canvas.on('path:created', (e) => {
+				if (this.currentTool === 'eraser') {
+					e.path.globalCompositeOperation = 'destination-out';
+				}
+			});
+		
+			canvas.on('mouse:up', () => {
+				if (this.currentTool === 'brush') {
+					this.resizeCanvasToContent(canvas);
+				}
+			});
+		}
+ 
+			 clearCanvas() {
+				 if (this.currentCanvas) {
+					 this.currentCanvas.clear();
+				 }
+			 }
+ 
+			 handleResize() {
+				 if (this.currentCanvas) {
+					 this.currentCanvas.setDimensions({
+						 width: window.innerWidth,
+						 height: window.innerHeight
+					 });
+				 }
+			 }
+		 }
+ 
+		 window.addEventListener('DOMContentLoaded', () => {
+			 window.drawingApp = new DrawingApp();
+		 });
+	 </script>
+ </body>
+ </html>

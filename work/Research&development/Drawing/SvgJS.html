@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dessin et gomme multi-objets</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.1/svg.min.js"></script>
+    <style>
+        html, body { margin: 0; padding: 0; height: 100%; }
+        #drawing {
+            position: absolute;
+            top: 60px;
+            width: 100%;
+            height: 100vh;
+
+            touch-action: none;
+        }
+        #toolbar {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background: #ddd;
+            gap: 10px;
+            font-family: sans-serif;
+        }
+        button { padding: 6px 12px; font-size: 1rem; cursor: pointer; }
+        /* Chaque conteneur SVG occupe toute la zone et est en position absolue */
+        .stroke-svg { position: absolute; top: 0; left: 0; }
+    </style>
+</head>
+<body>
+<div id="toolbar">
+    <button id="btnDraw">Dessiner</button>
+    <button id="btnErase">Gommer</button>
+</div>
+<div id="colorDiv" style="position: absolute;width:300px; height:300px; background-color:red; margin:10px auto;"></div>
+<div>
+    hello
+</div>
+<div id="drawing">
+
+</div>
+<!-- Nouvelle div de 300px x 300px -->
+
+<script>
+    // Mode global : "draw" ou "erase"
+    let mode = 'draw';
+    document.getElementById('btnDraw').addEventListener('click', () => { mode = 'draw'; });
+    document.getElementById('btnErase').addEventListener('click', () => { mode = 'erase'; });
+
+    // Tableau pour stocker tous les conteneurs SVG (chaque tracé individuel)
+    const strokes = [];
+
+    // Variables pour le tracé en cours
+    let drawing = false;
+    let currentSVG = null;        // Conteneur SVG du tracé en cours
+    let currentMask = null;       // Mask associé au conteneur courant
+    let currentEraserGroup = null;// Groupe dans le mask pour les marques d'effacement
+    let currentPath = null;       // L'élément <path> en cours
+    let points = [];
+    const smoothingTension = 0.15;
+    const eraserSize = 30;
+
+    // Fonction utilitaire pour obtenir la position dans #drawing
+    function getMousePosition(event) {
+        const rect = document.getElementById('drawing').getBoundingClientRect();
+        return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    }
+
+    // Fonctions de lissage (Catmull-Rom vers Bézier)
+    function catmullRom2bezier(points, tension) {
+        let beziers = [];
+        for (let i = 0; i < points.length - 1; i++) {
+            const p0 = i === 0 ? points[i] : points[i - 1];
+            const p1 = points[i];
+            const p2 = points[i + 1];
+            const p3 = (i + 2 < points.length) ? points[i + 2] : p2;
+            const cp1 = {
+                x: p1.x + (p2.x - p0.x) * tension,
+                y: p1.y + (p2.y - p0.y) * tension
+            };
+            const cp2 = {
+                x: p2.x - (p3.x - p1.x) * tension,
+                y: p2.y - (p3.y - p1.y) * tension
+            };
+            beziers.push({ cp1, cp2, end: p2 });
+        }
+        return beziers;
+    }
+    function smoothPath(points, tension) {
+        if (points.length < 2) return '';
+        const beziers = catmullRom2bezier(points, tension);
+        let pathStr = `M ${points[0].x} ${points[0].y} `;
+        beziers.forEach(b => {
+            pathStr += `C ${b.cp1.x} ${b.cp1.y}, ${b.cp2.x} ${b.cp2.y}, ${b.end.x} ${b.end.y} `;
+        });
+        return pathStr;
+    }
+
+    // --- MODE DESSIN ---
+    function startDrawing(event) {
+        if (mode !== 'draw') return;
+        drawing = true;
+        points = [];
+        const pos = getMousePosition(event);
+        points.push(pos);
+        // Créer un nouveau conteneur SVG pour ce tracé
+        currentSVG = SVG().addTo('#drawing').size('100%', '100%').addClass('stroke-svg');
+        // Enregistrer ce conteneur pour pouvoir y appliquer l'outil gomme ultérieurement
+        strokes.push(currentSVG);
+        // Créer dans ses définitions un mask propre
+        const defs = currentSVG.defs();
+        currentMask = defs.mask().id('mask_' + Date.now());
+        currentMask.rect('100%', '100%').fill('#fff');
+        // Créer un groupe pour les marques de gomme
+        currentEraserGroup = currentMask.group().attr({ fill: '#000' });
+        // Créer un groupe pour le tracé auquel appliquer le mask
+        const workingGroup = currentSVG.group().attr({ mask: 'url(#' + currentMask.node.id + ')' });
+        // Créer le chemin dans ce groupe
+        currentPath = workingGroup.path(`M ${pos.x} ${pos.y}`)
+            .fill('none')
+           .stroke({  color: '#000',
+             width: 9,
+             linecap: 'round',
+             linejoin: 'round',
+             dasharray: '1,9',
+             dashoffset: 2,
+             miterlimit: 4,
+             opacity: 0.8 });
+    }
+    function continueDrawing(event) {
+        if (!drawing || mode !== 'draw') return;
+        const pos = getMousePosition(event);
+        points.push(pos);
+        let d = currentPath.attr('d') + ` L ${pos.x} ${pos.y}`;
+        currentPath.plot(d);
+    }
+    function stopDrawing() {
+        if (!drawing || mode !== 'draw') return;
+        drawing = false;
+        if (points.length > 2) {
+            currentPath.plot(smoothPath(points, smoothingTension));
+        }
+        currentSVG = null;
+        currentMask = null;
+        currentEraserGroup = null;
+        currentPath = null;
+        points = [];
+    }
+
+    // --- MODE GOMME ---
+    // En mode gomme, on parcourt tous les conteneurs existants et on ajoute une marque dans leur mask
+    let erasing = false;
+    function startErasing(event) {
+        if (mode !== 'erase') return;
+        erasing = true;
+        eraseAt(event);
+    }
+    function continueErasing(event) {
+        if (!erasing || mode !== 'erase') return;
+        eraseAt(event);
+    }
+    function stopErasing() {
+        erasing = false;
+    }
+    function eraseAt(event) {
+        const pos = getMousePosition(event);
+        // Pour chaque conteneur de tracé, si son mask existe, on y ajoute un cercle d'effacement
+        strokes.forEach(svgContainer => {
+            // On recherche le mask défini dans ce conteneur
+            const maskElem = svgContainer.findOne('mask');
+            if (maskElem) {
+                // On suppose que le premier groupe <g> dans le mask est celui utilisé pour gommer
+                const eGroup = maskElem.findOne('g');
+                if (eGroup) {
+                    eGroup.circle(eraserSize).center(pos.x, pos.y).fill('#000');
+                }
+            }
+        });
+    }
+
+    // Gestion des événements souris/tactile sur le conteneur principal (#drawing)
+    const drawingDiv = document.getElementById('drawing');
+    drawingDiv.addEventListener('mousedown', function(e) {
+        if (mode === 'draw') startDrawing(e);
+        else if (mode === 'erase') startErasing(e);
+    });
+    drawingDiv.addEventListener('mousemove', function(e) {
+        if (mode === 'draw') continueDrawing(e);
+        else if (mode === 'erase') continueErasing(e);
+    });
+    document.addEventListener('mouseup', function(e) {
+        if (mode === 'draw') stopDrawing();
+        else if (mode === 'erase') stopErasing();
+    });
+    drawingDiv.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        if (mode === 'draw') startDrawing(e.touches[0]);
+        else if (mode === 'erase') startErasing(e.touches[0]);
+    });
+    drawingDiv.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        if (mode === 'draw') continueDrawing(e.touches[0]);
+        else if (mode === 'erase') continueErasing(e.touches[0]);
+    });
+    document.addEventListener('touchend', function(e) {
+        if (mode === 'draw') stopDrawing();
+        else if (mode === 'erase') stopErasing();
+    });
+</script>
+<!-- Script pour la nouvelle div -->
+<script>
+    document.getElementById('colorDiv').addEventListener('click', function() {
+        alert('de rouge a vert');
+    });
+</script>
+</body>
+</html>

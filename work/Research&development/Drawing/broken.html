@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Spray avec toggle Dessiner/Gommer (Fabric.js)</title>
+  <script src="./fabric.min.js"></script>
+  <style>
+	html, body {
+	  margin: 0;
+	  padding: 0;
+	  width: 100%;
+	  height: 100%;
+	  display: block;
+	  overflow: hidden;
+	}
+	/* Toolbar positionnée en haut à gauche */
+	#toolbar {
+	  position: absolute;
+	  top: 10px;
+	  left: 10px;
+	  z-index: 5000;
+	}
+	#toolbar button {
+	  padding: 8px 16px;
+	  font-size: 1rem;
+	  margin-right: 10px;
+	  border: none;
+	  outline: none;
+	  cursor: pointer;
+	}
+	/* Bouton actif = couleur différente */
+	#btnDraw.active {
+	  background-color: #4CAF50; /* vert */
+	  color: white;
+	}
+	#btnErase.active {
+	  background-color: #f44336; /* rouge */
+	  color: white;
+	}
+	/* Le canvas est positionné absolument */
+	#fabricCanvas {
+	  position: absolute;
+	  z-index: 3000;
+	}
+	/* Conteneur SVG */
+	#svgContainer {
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  z-index: 2000;
+	}
+  </style>
+</head>
+<body>
+  <!-- Toolbar avec 2 boutons -->
+  <div id="toolbar">
+	<button id="btnDraw">Dessiner</button>
+	<button id="btnErase">Gommer</button>
+  </div>
+
+  <!-- Le canvas sera créé/détruit dynamiquement -->
+  <div id="canvasContainer"></div>
+  
+  <!-- Conteneur pour les SVGs exportés -->
+  <div id="svgContainer"></div>
+
+  <script>
+	// Mode global : 'draw' ou 'erase'
+	let mode = 'draw';
+	const btnDraw = document.getElementById('btnDraw');
+	const btnErase = document.getElementById('btnErase');
+	const svgContainer = document.getElementById('svgContainer');
+	let canvas;
+	let sprayPoints = [];
+	
+	// Configuration du spray
+	const sprayDensity = 30;
+	const sprayRadius = 20;
+	const minSize = 0.5;
+	const maxSize = 3;
+	const opacityMin = 0.3;
+	const opacityMax = 0.8;
+	const eraserSize = 30;
+
+	// Mise à jour du style des boutons selon le mode
+	function updateButtonStyles() {
+	  if (mode === 'draw') {
+		btnDraw.classList.add('active');
+		btnErase.classList.remove('active');
+	  } else {
+		btnErase.classList.add('active');
+		btnDraw.classList.remove('active');
+	  }
+	}
+
+	// Crée le canvas et configure Fabric.js pour le dessin
+	function enableDrawing() {
+	  const canvasContainer = document.getElementById('canvasContainer');
+	  
+	  // Supprimer l'ancien canvas s'il existe
+	  while (canvasContainer.firstChild) {
+		canvasContainer.removeChild(canvasContainer.firstChild);
+	  }
+	  
+	  // Créer un nouveau canvas
+	  const canvasElement = document.createElement('canvas');
+	  canvasElement.id = 'fabricCanvas';
+	  canvasContainer.appendChild(canvasElement);
+	  
+	  // Initialiser Fabric.js
+	  canvas = new fabric.Canvas('fabricCanvas', {
+		width: window.innerWidth,
+		height: window.innerHeight,
+		isDrawingMode: false,
+		selection: false
+	  });
+	  
+	  // Réinitialiser le tableau des points
+	  sprayPoints = [];
+	  
+	  // Gestionnaire d'événements pour le dessin
+	  canvas.on('mouse:down', function(options) {
+		if (mode === 'draw') {
+		  canvas.isDrawing = true;
+		  // Récupérer le point correct
+		  const pointer = canvas.getPointer(options.e);
+		  createSpray(pointer);
+		}
+	  });
+	  
+	  canvas.on('mouse:move', function(options) {
+		if (mode === 'draw' && canvas.isDrawing) {
+		  // Récupérer le point correct
+		  const pointer = canvas.getPointer(options.e);
+		  createSpray(pointer);
+		}
+	  });
+	  
+	  canvas.on('mouse:up', function() {
+		if (mode === 'draw' && canvas.isDrawing) {
+		  canvas.isDrawing = false;
+		  if (sprayPoints.length > 0) {
+			exportSprayToSVG();
+		  }
+		}
+	  });
+	}
+
+	// Supprime le canvas pour accéder aux SVGs
+	function disableDrawing() {
+	  if (canvas) {
+		canvas.dispose();
+		canvas = null;
+		const canvasContainer = document.getElementById('canvasContainer');
+		while (canvasContainer.firstChild) {
+		  canvasContainer.removeChild(canvasContainer.firstChild);
+		}
+	  }
+	}
+
+	// Fonction de création du spray avec Fabric.js
+	function createSpray(point) {
+	  for (let i = 0; i < sprayDensity; i++) {
+		let angle = Math.random() * 2 * Math.PI;
+		let distance = Math.random() * sprayRadius;
+		let xOffset = distance * Math.cos(angle);
+		let yOffset = distance * Math.sin(angle);
+		
+		let radius = Math.random() * (maxSize - minSize) + minSize;
+		let opacity = Math.random() * (opacityMax - opacityMin) + opacityMin;
+		
+		// Correction du positionnement des cercles
+		let circle = new fabric.Circle({
+		  left: point.x + xOffset,
+		  top: point.y + yOffset,
+		  radius: radius,
+		  fill: 'black',
+		  opacity: opacity,
+		  originX: 'center',
+		  originY: 'center',
+		  selectable: false,
+		  evented: false
+		});
+		
+		canvas.add(circle);
+		sprayPoints.push(circle);
+	  }
+	  canvas.renderAll();
+	}
+
+	// Export du spray en SVG avec un masque pour la gomme
+	function exportSprayToSVG() {
+	  if (sprayPoints.length === 0) return;
+	  
+	  // Calculer les limites du groupe
+	  let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;
+	  
+	  sprayPoints.forEach(point => {
+		const pointLeft = point.left;
+		const pointTop = point.top;
+		const pointRight = pointLeft + point.width;
+		const pointBottom = pointTop + point.height;
+		
+		left = Math.min(left, pointLeft);
+		top = Math.min(top, pointTop);
+		right = Math.max(right, pointRight);
+		bottom = Math.max(bottom, pointBottom);
+	  });
+	  
+	  const padding = sprayRadius;
+	  left -= padding;
+	  top -= padding;
+	  const width = right - left + padding * 2;
+	  const height = bottom - top + padding * 2;
+	  
+	  // Créer l'élément SVG
+	  const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	  svgElement.setAttribute('width', width);
+	  svgElement.setAttribute('height', height);
+	  svgElement.setAttribute('viewBox', `0 0 ${width} ${height}`);
+	  svgElement.style.position = 'absolute';
+	  svgElement.style.top = `${top}px`;
+	  svgElement.style.left = `${left}px`;
+	  
+	  // Création du masque dans <defs>
+	  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+	  const mask = document.createElementNS('http://www.w3.org/2000/svg', 'mask');
+	  const maskId = 'mask_' + Date.now();
+	  mask.setAttribute('id', maskId);
+	  
+	  // Fond blanc pour tout afficher
+	  const maskRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+	  maskRect.setAttribute('x', 0);
+	  maskRect.setAttribute('y', 0);
+	  maskRect.setAttribute('width', width);
+	  maskRect.setAttribute('height', height);
+	  maskRect.setAttribute('fill', 'white');
+	  mask.appendChild(maskRect);
+	  
+	  // Groupe pour les marques de gomme (en noir)
+	  const eraserGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+	  mask.appendChild(eraserGroup);
+	  defs.appendChild(mask);
+	  svgElement.appendChild(defs);
+	  
+	  // Groupe pour les particules auquel on applique le masque
+	  const sprayGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+	  sprayGroup.setAttribute('mask', `url(#${maskId})`);
+	  svgElement.appendChild(sprayGroup);
+	  
+	  // Export de chaque particule en cercle SVG
+	  sprayPoints.forEach(point => {
+		const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+		const adjustedX = point.left - left + point.radius;
+		const adjustedY = point.top - top + point.radius;
+		
+		circle.setAttribute('cx', adjustedX);
+		circle.setAttribute('cy', adjustedY);
+		circle.setAttribute('r', point.radius);
+		circle.setAttribute('fill', 'black');
+		circle.setAttribute('opacity', point.opacity);
+		sprayGroup.appendChild(circle);
+	  });
+	  
+	  // Ajouter le SVG au document
+	  svgContainer.appendChild(svgElement);
+	  
+	  // Supprimer les points du canvas
+	  sprayPoints.forEach(point => canvas.remove(point));
+	  canvas.renderAll();
+	  sprayPoints = [];
+	  
+	  // Activer la gomme sur le SVG
+	  let isErasing = false;
+	  
+	  svgElement.addEventListener('mousedown', function(e) {
+		if (mode === 'erase') {
+		  isErasing = true;
+		  eraseAt(e);
+		}
+	  });
+	  
+	  svgElement.addEventListener('mousemove', function(e) {
+		if (mode === 'erase' && isErasing) {
+		  eraseAt(e);
+		}
+	  });
+	  
+	  document.addEventListener('mouseup', function() {
+		isErasing = false;
+	  });
+	  
+	  function eraseAt(e) {
+		const rect = svgElement.getBoundingClientRect();
+		const x = e.clientX - rect.left;
+		const y = e.clientY - rect.top;
+		
+		const eraseCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+		eraseCircle.setAttribute('cx', x);
+		eraseCircle.setAttribute('cy', y);
+		eraseCircle.setAttribute('r', eraserSize);
+		eraseCircle.setAttribute('fill', 'black');
+		eraserGroup.appendChild(eraseCircle);
+	  }
+	}
+	
+	// Gestion des boutons
+	btnDraw.addEventListener('click', function() {
+	  mode = 'draw';
+	  updateButtonStyles();
+	  enableDrawing();
+	});
+	
+	btnErase.addEventListener('click', function() {
+	  mode = 'erase';
+	  updateButtonStyles();
+	  disableDrawing();
+	});
+	
+	// Adapter la taille du canvas lors du redimensionnement de la fenêtre
+	window.addEventListener('resize', function() {
+	  if (mode === 'draw' && canvas) {
+		canvas.setWidth(window.innerWidth);
+		canvas.setHeight(window.innerHeight);
+		canvas.renderAll();
+	  }
+	});
+	
+	// Initialisation : on démarre en mode dessin
+	updateButtonStyles();
+	enableDrawing();
+  </script>
+</body>
+</html>

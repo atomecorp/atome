@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Application de Dessin</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			overflow: hidden;
+			background: #f0f0f0;
+		}
+
+		#controls {
+			position: fixed;
+			top: 10px;
+			left: 10px;
+			background: white;
+			padding: 15px;
+			border-radius: 8px;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+			z-index: 1000;
+		}
+
+		.tool-button {
+			padding: 8px 15px;
+			margin: 5px;
+			border: none;
+			border-radius: 4px;
+			background: #4CAF50;
+			color: white;
+			cursor: pointer;
+			transition: background 0.3s;
+		}
+
+		.tool-button:hover {
+			background: #45a049;
+		}
+
+		.tool-button.active {
+			background: #2E7D32;
+		}
+
+		.control-group {
+			margin: 10px 0;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		label {
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+		}
+
+		#brush-size {
+			width: 100px;
+		}
+
+		.canvas-container {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	</style>
+</head>
+<body>
+	<div id="controls">
+		<div class="control-group">
+			<button id="brush" class="tool-button">Pinceau</button>
+			<button id="eraser" class="tool-button">Gomme</button>
+			<button id="clear" class="tool-button">Effacer tout</button>
+		</div>
+		<div class="control-group">
+			<label for="color">Couleur:</label>
+			<input type="color" id="color" value="#000000">
+		</div>
+		<div class="control-group">
+			<label for="brush-size">Taille:</label>
+			<input type="range" id="brush-size" min="1" max="50" value="5">
+			<span id="size-value">5px</span>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+	<script>
+		class DrawingApp {
+
+			constructor() {
+				this.canvases = [];
+				this.currentCanvas = null;
+				this.currentTool = 'brush';
+				this.brushColor = '#000000';
+				this.brushSize = 5;
+				this.canvasCount = 0; 
+				this.initializeControls();
+				this.createNewCanvas();
+			}
+
+			initializeControls() {
+				document.getElementById('brush').addEventListener('click', () => this.setTool('brush'));
+				document.getElementById('eraser').addEventListener('click', () => this.setTool('eraser'));
+				document.getElementById('clear').addEventListener('click', () => this.clearCanvas());
+
+				document.getElementById('color').addEventListener('input', (e) => {
+					this.brushColor = e.target.value;
+					if (this.currentCanvas && this.currentTool === 'brush') {
+						this.currentCanvas.freeDrawingBrush.color = this.brushColor;
+					}
+				});
+
+				document.getElementById('brush-size').addEventListener('input', (e) => {
+					this.brushSize = parseInt(e.target.value);
+					document.getElementById('size-value').textContent = `${this.brushSize}px`;
+					if (this.currentCanvas) {
+						this.currentCanvas.freeDrawingBrush.width = this.brushSize;
+					}
+				});
+
+				window.addEventListener('resize', () => this.handleResize());
+			}
+
+			createNewCanvas() {
+				this.canvasCount++;
+
+				const container = document.createElement('div');
+
+				container.id = `canvas-${this.canvasCount}`;
+
+				container.className = 'canvas-container';
+				document.body.appendChild(container);
+
+				const canvas = new fabric.Canvas(document.createElement('canvas'), {
+					width: window.innerWidth,
+					height: window.innerHeight,
+					isDrawingMode: true,
+					backgroundColor: 'transparent'
+				});
+
+				container.appendChild(canvas.wrapperEl);
+
+				canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+				canvas.freeDrawingBrush.color = this.brushColor;
+				canvas.freeDrawingBrush.width = this.brushSize;
+
+				canvas.on('path:created', (e) => {
+					if (this.currentTool === 'eraser') {
+						e.path.globalCompositeOperation = 'destination-out';
+					}
+				});
+
+				canvas.on('mouse:up', () => {
+					if (this.currentTool === 'brush') {
+						this.resizeCanvasToContent(canvas);
+					}
+				});
+
+				this.canvases.push(canvas);
+				this.currentCanvas = canvas;
+
+				return canvas;
+			}
+
+			resizeCanvasToContent(canvas) {
+				const objects = canvas.getObjects();
+				if (objects.length === 0) return;
+
+				const bounds = this.getContentBounds(objects);
+				if (!bounds) return;
+
+				const margin = 10;
+				bounds.width += margin * 2;
+				bounds.height += margin * 2;
+				bounds.left -= margin;
+				bounds.top -= margin;
+
+				const newCanvas = new fabric.Canvas(document.createElement('canvas'), {
+					width: bounds.width,
+					height: bounds.height,
+					backgroundColor: 'transparent'
+				});
+
+				objects.forEach(obj => {
+					const clone = fabric.util.object.clone(obj);
+					clone.left -= bounds.left;
+					clone.top -= bounds.top;
+					if (this.currentTool === 'eraser') {
+						clone.globalCompositeOperation = 'destination-out';
+					}
+					newCanvas.add(clone);
+				});
+
+				const container = canvas.wrapperEl.parentNode;
+				container.style.left = `${bounds.left}px`;
+				container.style.top = `${bounds.top}px`;
+				canvas.wrapperEl.remove();
+				container.appendChild(newCanvas.wrapperEl);
+
+				const index = this.canvases.indexOf(canvas);
+				this.canvases[index] = newCanvas;
+				this.setupCanvasEvents(newCanvas);
+				
+				if (this.currentCanvas === canvas) {
+					this.currentCanvas = this.createNewCanvas();
+				}
+			}
+
+			setupCanvasEvents(canvas) {
+				canvas.on('path:created', (e) => {
+					if (this.currentTool === 'eraser') {
+						e.path.globalCompositeOperation = 'destination-out';
+					}
+				});
+			}
+
+			getContentBounds(objects) {
+				if (objects.length === 0) return null;
+
+				let minX = Infinity;
+				let minY = Infinity;
+				let maxX = -Infinity;
+				let maxY = -Infinity;
+
+				objects.forEach(obj => {
+					const bounds = obj.getBoundingRect();
+					minX = Math.min(minX, bounds.left);
+					minY = Math.min(minY, bounds.top);
+					maxX = Math.max(maxX, bounds.left + bounds.width);
+					maxY = Math.max(maxY, bounds.top + bounds.height);
+				});
+
+				return {
+					left: minX,
+					top: minY,
+					width: maxX - minX,
+					height: maxY - minY
+				};
+			}
+
+			setTool(tool) {
+				this.currentTool = tool;
+				
+				document.querySelectorAll('.tool-button').forEach(btn => {
+					btn.classList.remove('active');
+				});
+				document.getElementById(tool).classList.add('active');
+
+				this.cleanEmptyCanvases();
+
+				this.canvases.forEach(canvas => {
+					switch (tool) {
+						case 'brush':
+							canvas.isDrawingMode = true;
+							canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+							canvas.freeDrawingBrush.color = this.brushColor;
+							canvas.freeDrawingBrush.width = this.brushSize;
+							break;
+						case 'eraser':
+							canvas.isDrawingMode = true;
+							canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+							canvas.freeDrawingBrush.color = 'rgba(0,0,0,1)';
+							canvas.freeDrawingBrush.width = 20;
+							break;
+					}
+				});
+			}
+
+			clearCanvas() {
+				if (this.currentCanvas) {
+					this.currentCanvas.clear();
+				}
+			}
+
+			cleanEmptyCanvases() {
+				this.canvases = this.canvases.filter(canvas => {
+					if (canvas.getObjects().length === 0 && canvas !== this.currentCanvas) {
+						canvas.wrapperEl.parentNode.remove();
+						return false;
+					}
+					return true;
+				});
+			}
+
+			handleResize() {
+				if (this.currentCanvas) {
+					this.currentCanvas.setDimensions({
+						width: window.innerWidth,
+						height: window.innerHeight
+					});
+				}
+			}
+		}
+
+		window.addEventListener('DOMContentLoaded', () => {
+			window.drawingApp = new DrawingApp();
+		});
+	</script>
+</body>
+</html>

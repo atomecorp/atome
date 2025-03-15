@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<title>Dessin et gomme multi-objets</title>
+	<script src="./svg.min.js"></script>
+	<style>
+		html, body { margin: 0; padding: 0; height: 100%; }
+		#drawing {
+			position: absolute;
+			top: 60px;
+			width: 100%;
+			height: 100vh;
+			touch-action: none;
+		}
+		#toolbar {
+			display: flex;
+			justify-content: center;
+			padding: 10px;
+			background: #ddd;
+			gap: 10px;
+			font-family: sans-serif;
+		}
+		button { padding: 6px 12px; font-size: 1rem; cursor: pointer; }
+		/* Chaque conteneur SVG occupe toute la zone et est en position absolue */
+		.stroke-svg { position: absolute; top: 0; left: 0; }
+		/* Style pour les SVGs optimisés */
+		.optimized-svg { position: absolute; }
+	</style>
+</head>
+<body>
+<div id="toolbar">
+	<button id="btnDraw">Dessiner</button>
+	<button id="btnErase">Gommer</button>
+</div>
+<div id="colorDiv" style="position: absolute;width:300px; height:300px; background-color:red; margin:10px auto;"></div>
+<div>
+	hello
+</div>
+<div id="drawing">
+
+</div>
+
+<script>
+	// Mode global : "draw" ou "erase"
+	let mode = 'draw';
+	document.getElementById('btnDraw').addEventListener('click', () => { mode = 'draw'; });
+	document.getElementById('btnErase').addEventListener('click', () => { mode = 'erase'; });
+
+	// Tableau pour stocker tous les conteneurs SVG (chaque tracé individuel)
+	const strokes = [];
+	// Tableau pour stocker les SVGs optimisés
+	const optimizedSVGs = [];
+
+	// Variables pour le tracé en cours
+	let drawing = false;
+	let currentSVG = null;        // Conteneur SVG du tracé en cours
+	let currentMask = null;       // Mask associé au conteneur courant
+	let currentEraserGroup = null;// Groupe dans le mask pour les marques d'effacement
+	let currentPath = null;       // L'élément <path> en cours
+	let points = [];
+	const smoothingTension = 0.15;
+	const eraserSize = 30;
+
+	// Fonction utilitaire pour obtenir la position dans #drawing
+	function getMousePosition(event) {
+		const rect = document.getElementById('drawing').getBoundingClientRect();
+		return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+	}
+
+	// Fonctions de lissage (Catmull-Rom vers Bézier)
+	function catmullRom2bezier(points, tension) {
+		let beziers = [];
+		for (let i = 0; i < points.length - 1; i++) {
+			const p0 = i === 0 ? points[i] : points[i - 1];
+			const p1 = points[i];
+			const p2 = points[i + 1];
+			const p3 = (i + 2 < points.length) ? points[i + 2] : p2;
+			const cp1 = {
+				x: p1.x + (p2.x - p0.x) * tension,
+				y: p1.y + (p2.y - p0.y) * tension
+			};
+			const cp2 = {
+				x: p2.x - (p3.x - p1.x) * tension,
+				y: p2.y - (p3.y - p1.y) * tension
+			};
+			beziers.push({ cp1, cp2, end: p2 });
+		}
+		return beziers;
+	}
+	function smoothPath(points, tension) {
+		if (points.length < 2) return '';
+		const beziers = catmullRom2bezier(points, tension);
+		let pathStr = `M ${points[0].x} ${points[0].y} `;
+		beziers.forEach(b => {
+			pathStr += `C ${b.cp1.x} ${b.cp1.y}, ${b.cp2.x} ${b.cp2.y}, ${b.end.x} ${b.end.y} `;
+		});
+		return pathStr;
+	}
+
+	// Fonction de diagnostic pour vérifier l'état d'un SVG optimisé
+	function diagnosticSVG(svgInfo, index) {
+		console.log("=== Diagnostic SVG #" + index + " ===");
+		
+		if (!svgInfo) {
+			console.error("svgInfo est null ou undefined");
+			return;
+		}
+		
+		// Vérifier que l'objet SVG existe
+		if (!svgInfo.svg || !svgInfo.svg.node) {
+			console.error("L'objet SVG ou son nœud est manquant");
+			return;
+		}
+		
+		// Vérifier que le masque existe
+		if (!svgInfo.mask || !svgInfo.mask.node) {
+			console.error("Le masque ou son nœud est manquant");
+			return;
+		}
+		
+		// Vérifier que le groupe d'effacement existe
+		if (!svgInfo.eraserGroup || !svgInfo.eraserGroup.node) {
+			console.error("Le groupe d'effacement ou son nœud est manquant");
+			return;
+		}
+		
+		// Vérifier que le masque est correctement structuré
+		const maskChildren = svgInfo.mask.children();
+		console.log("Nombre d'enfants dans le masque:", maskChildren.length);
+		
+		// Vérifier que le SVG est correctement structuré
+		const svgChildren = svgInfo.svg.children();
+		console.log("Nombre d'enfants dans le SVG:", svgChildren.length);
+		
+		// Vérifier que le groupe d'effacement peut être modifié
+		try {
+			// Tester l'ajout d'un cercle au groupe d'effacement
+			const testCircle = svgInfo.eraserGroup.circle(10).center(10, 10).fill('#000');
+			console.log("Test d'ajout de cercle réussi:", !!testCircle);
+		} catch (e) {
+			console.error("Erreur lors de l'ajout d'un cercle au groupe d'effacement:", e);
+		}
+		
+		console.log("=== Fin du diagnostic ===");
+	}
+
+	// --- MODE DESSIN ---
+	function startDrawing(event) {
+		if (mode !== 'draw') return;
+		drawing = true;
+		points = [];
+		const pos = getMousePosition(event);
+		points.push(pos);
+		// Créer un nouveau conteneur SVG pour ce tracé
+		currentSVG = SVG().addTo('#drawing').size('100%', '100%').addClass('stroke-svg');
+		// Enregistrer ce conteneur pour pouvoir y appliquer l'outil gomme ultérieurement
+		strokes.push(currentSVG);
+		// Créer dans ses définitions un mask propre
+		const defs = currentSVG.defs();
+		currentMask = defs.mask().id('mask_' + Date.now());
+		currentMask.rect('100%', '100%').fill('#fff');
+		// Créer un groupe pour les marques de gomme
+		currentEraserGroup = currentMask.group().attr({ fill: '#000' });
+		// Créer un groupe pour le tracé auquel appliquer le mask
+		const workingGroup = currentSVG.group().attr({ mask: 'url(#' + currentMask.node.id + ')' });
+		// Créer le chemin dans ce groupe
+		currentPath = workingGroup.path(`M ${pos.x} ${pos.y}`)
+			.fill('none')
+		   .stroke({  color: '#000',
+			 width: 9,
+			 linecap: 'round',
+			 linejoin: 'round',
+			 dasharray: '1,9',
+			 dashoffset: 2,
+			 miterlimit: 4,
+			 opacity: 0.8 });
+	}
+	function continueDrawing(event) {
+		if (!drawing || mode !== 'draw') return;
+		const pos = getMousePosition(event);
+		points.push(pos);
+		let d = currentPath.attr('d') + ` L ${pos.x} ${pos.y}`;
+		currentPath.plot(d);
+	}
+	function stopDrawing() {
+		if (!drawing || mode !== 'draw') return;
+		drawing = false;
+		if (points.length > 2) {
+			// Appliquer le lissage
+			const smoothPathData = smoothPath(points, smoothingTension);
+			currentPath.plot(smoothPathData);
+			
+			// Extraire le SVG optimisé
+			extractOptimizedSVG(currentPath, points);
+		}
+		currentSVG = null;
+		currentMask = null;
+		currentEraserGroup = null;
+		currentPath = null;
+		points = [];
+	}
+
+	// --- EXTRACTION DE SVG OPTIMISÉ ---
+	function extractOptimizedSVG(pathElement, points) {
+		if (!pathElement || points.length < 2) return;
+		
+		// Calculer les limites du tracé
+		let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+		points.forEach(p => {
+			minX = Math.min(minX, p.x);
+			minY = Math.min(minY, p.y);
+			maxX = Math.max(maxX, p.x);
+			maxY = Math.max(maxY, p.y);
+		});
+		
+		// Ajouter une marge pour l'épaisseur du trait
+		const strokeWidth = 9;
+		const margin = strokeWidth + 2;
+		minX -= margin;
+		minY -= margin;
+		maxX += margin;
+		maxY += margin;
+		
+		// Calculer les dimensions
+		const width = maxX - minX;
+		const height = maxY - minY;
+		
+		console.log("Création SVG optimisé:", minX, minY, width, height);
+		
+		// Créer un nouveau SVG optimisé
+		const optimizedSVG = SVG().addTo('body').size(width, height).viewbox(0, 0, width, height)
+			.addClass('optimized-svg')
+			.css({
+				position: 'absolute',
+				left: minX + 'px',
+				top: (60 + minY) + 'px',
+				zIndex: '10',
+				border: '1px dashed rgba(0,255,0,0.5)' // Bordure verte pour le débogage
+			});
+		
+		// IMPORTANT: Créer le masque avec un ID unique
+		const maskId = 'mask_opt_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+		const mask = optimizedSVG.mask().id(maskId);
+		
+		// Ajouter un rectangle blanc au masque (tout visible par défaut)
+		mask.rect(width, height).fill('#fff');
+		
+		// Créer un groupe pour les marques de gomme DANS le masque
+		const eraserGroup = mask.group();
+		
+		// Recalculer les points pour le nouveau SVG
+		const adjustedPoints = points.map(point => ({
+			x: point.x - minX,
+			y: point.y - minY
+		}));
+		
+		// Appliquer le lissage
+		const adjustedPath = smoothPath(adjustedPoints, smoothingTension);
+		
+		// Créer le chemin dans un groupe avec le masque
+		const pathGroup = optimizedSVG.group().attr({ mask: 'url(#' + maskId + ')' });
+		const optimizedPath = pathGroup.path(adjustedPath)
+			.fill('none')
+			.stroke({
+				color: '#000',
+				width: strokeWidth,
+				linecap: 'round',
+				linejoin: 'round',
+				dasharray: '1,9',
+				dashoffset: 2,
+				miterlimit: 4,
+				opacity: 0.8
+			});
+		
+		// Stocker les informations du SVG optimisé
+		const svgInfo = {
+			svg: optimizedSVG,
+			mask: mask,
+			eraserGroup: eraserGroup,
+			left: minX,
+			top: minY + 60, // Important: inclure l'offset
+			width: width,
+			height: height
+		};
+		
+		// Exécuter le diagnostic pour vérifier que tout est bien configuré
+		diagnosticSVG(svgInfo, optimizedSVGs.length);
+		
+		// Ajouter au tableau
+		optimizedSVGs.push(svgInfo);
+		
+		console.log("SVG optimisé créé et ajouté:", optimizedSVGs.length, "SVGs au total");
+		
+		// Supprimer le SVG temporaire
+		strokes[strokes.length - 1].remove();
+		strokes.pop();
+	}
+
+	// --- MODE GOMME ---
+	let erasing = false;
+
+	function startErasing(event) {
+		if (mode !== 'erase') return;
+		erasing = true;
+		eraseAt(event);
+	}
+
+	function continueErasing(event) {
+		if (!erasing || mode !== 'erase') return;
+		eraseAt(event);
+	}
+
+	function stopErasing() {
+		erasing = false;
+	}
+
+	function eraseAt(event) {
+		const pos = getMousePosition(event);
+		console.log("Position de la gomme:", pos.x, pos.y);
+		
+		let erasedSomething = false;
+		
+		// Pour les SVGs optimisés
+		for (let i = 0; i < optimizedSVGs.length; i++) {
+			const svgInfo = optimizedSVGs[i];
+			
+			// Vérification préliminaire
+			if (!svgInfo || !svgInfo.svg || !svgInfo.mask || !svgInfo.eraserGroup) {
+				console.error("SVG #" + i + " mal configuré:", svgInfo);
+				continue;
+			}
+			
+			// Position du SVG
+			const svgLeft = svgInfo.left;
+			const svgTop = svgInfo.top - 60; // Ajuster pour l'offset
+			
+			// Vérifier si la gomme est dans les limites du SVG
+			const margin = eraserSize / 2;
+			if (pos.x + margin >= svgLeft && pos.x - margin <= svgLeft + svgInfo.width &&
+				pos.y + margin >= svgTop && pos.y - margin <= svgTop + svgInfo.height) {
+				
+				// Coordonnées locales
+				const relX = pos.x - svgLeft;
+				const relY = pos.y - svgTop;
+				
+				console.log("Gomme dans SVG #" + i + ", ajout d'un cercle aux coords:", relX, relY);
+				
+				try {
+					// Ajouter un cercle noir dans le groupe d'effacement du masque
+					svgInfo.eraserGroup.circle(eraserSize).center(relX, relY).fill('#000');
+					erasedSomething = true;
+				} catch (e) {
+					console.error("Erreur lors de l'ajout du cercle d'effacement:", e);
+				}
+			}
+		}
+		
+		// Pour les SVGs temporaires
+		strokes.forEach(svgContainer => {
+			const maskElem = svgContainer.findOne('mask');
+			if (maskElem) {
+				const eGroup = maskElem.findOne('g');
+				if (eGroup) {
+					eGroup.circle(eraserSize).center(pos.x, pos.y).fill('#000');
+					erasedSomething = true;
+				}
+			}
+		});
+		
+		if (!erasedSomething) {
+			console.log("Aucun SVG n'a été gommé à cette position");
+		}
+	}
+
+	// Gestion des événements souris/tactile sur le conteneur principal
+	const drawingDiv = document.getElementById('drawing');
+	drawingDiv.addEventListener('mousedown', function(e) {
+		if (mode === 'draw') startDrawing(e);
+		else if (mode === 'erase') startErasing(e);
+	});
+	drawingDiv.addEventListener('mousemove', function(e) {
+		if (mode === 'draw') continueDrawing(e);
+		else if (mode === 'erase') continueErasing(e);
+	});
+	document.addEventListener('mouseup', function() {
+		if (mode === 'draw') stopDrawing();
+		else if (mode === 'erase') stopErasing();
+	});
+	
+	// Ajouter des écouteurs d'événements pour les SVGs optimisés
+	document.body.addEventListener('mousedown', function(e) {
+		if (mode === 'erase') {
+			// Propager l'événement aux SVGs optimisés
+			const mouseEvent = new MouseEvent('mousedown', {
+				clientX: e.clientX,
+				clientY: e.clientY,
+				bubbles: true
+			});
+			drawingDiv.dispatchEvent(mouseEvent);
+		}
+	});
+	document.body.addEventListener('mousemove', function(e) {
+		if (mode === 'erase' && erasing) {
+			// Propager l'événement aux SVGs optimisés
+			const mouseEvent = new MouseEvent('mousemove', {
+				clientX: e.clientX,
+				clientY: e.clientY,
+				bubbles: true
+			});
+			drawingDiv.dispatchEvent(mouseEvent);
+		}
+	});
+	
+	// Gestion des événements tactiles
+	drawingDiv.addEventListener('touchstart', function(e) {
+		e.preventDefault();
+		if (mode === 'draw') startDrawing(e.touches[0]);
+		else if (mode === 'erase') startErasing(e.touches[0]);
+	});
+	drawingDiv.addEventListener('touchmove', function(e) {
+		e.preventDefault();
+		if (mode === 'draw') continueDrawing(e.touches[0]);
+		else if (mode === 'erase') continueErasing(e.touches[0]);
+	});
+	document.addEventListener('touchend', function() {
+		if (mode === 'draw') stopDrawing();
+		else if (mode === 'erase') stopErasing();
+	});
+</script>
+<!-- Script pour la nouvelle div -->
+<script>
+	document.getElementById('colorDiv').addEventListener('click', function() {
+		alert('de rouge a vert');
+	});
+</script>
+</body>
+</html>

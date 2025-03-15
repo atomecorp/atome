@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dessin avec Fabric.js</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+	<style>
+		body, html {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			position: relative;
+		}
+		#centeredDiv {
+			position: absolute;
+			width: 150px;
+			height: 150px;
+			left: 120px;
+			top: 120px;
+			background-color: red;
+			z-index: 1;
+		}
+		canvas {
+			position: absolute;
+			display: block;
+			z-index: 2;
+			pointer-events: auto;
+		}
+	</style>
+</head>
+<body>
+	<div id="centeredDiv"></div>
+	<button onclick="toggleDrawingMode()">Activer/Désactiver le dessin</button>
+	<button onclick="clearCanvas()">Effacer</button>
+	
+	<canvas id="canvas"></canvas>
+
+	<script>
+		// Initialisation du canvas Fabric.js
+		const canvas = new fabric.Canvas('canvas', {
+			isDrawingMode: true  // Active le mode dessin dès le début
+		});
+
+		function resizeCanvas() {
+			canvas.setWidth(window.innerWidth);
+			canvas.setHeight(window.innerHeight);
+			canvas.renderAll();
+		}
+
+		window.addEventListener('resize', resizeCanvas);
+		resizeCanvas(); // Ajuste la taille au chargement
+
+		// Configuration du pinceau pour un effet "feutre"
+		canvas.freeDrawingBrush.color = "#000000"; // Couleur noire
+		canvas.freeDrawingBrush.width = 10; // Largeur du trait
+		canvas.freeDrawingBrush.shadow = new fabric.Shadow({
+			color: 'rgba(0, 0, 0, 0.3)',
+			blur: 10
+		});
+
+		// Fonction pour activer/désactiver le mode dessin
+		function toggleDrawingMode() {
+			canvas.isDrawingMode = !canvas.isDrawingMode;
+			document.getElementById('canvas').style.pointerEvents = canvas.isDrawingMode ? 'auto' : 'none';
+			document.getElementById('centeredDiv').style.pointerEvents = canvas.isDrawingMode ? 'none' : 'auto';
+		}
+
+		// Fonction pour effacer le canvas
+		function clearCanvas() {
+			canvas.clear();
+		}
+	</script>
+	<script>
+		document.getElementById('centeredDiv').addEventListener('click', function() {
+			this.style.backgroundColor = this.style.backgroundColor === 'red' ? 'yellow' : 'red';
+		});
+	</script>
+</body>
+</html>

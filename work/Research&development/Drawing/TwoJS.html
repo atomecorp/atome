@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<title>Dessin et gomme avec Two.js</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.8.10/two.min.js"></script>
+	<style>
+		html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+		#drawing { position: absolute; top: 60px; width: 100%; height: calc(100vh - 60px); touch-action: none; }
+		#toolbar {
+			display: flex;
+			justify-content: center;
+			padding: 10px;
+			background: #ddd;
+			gap: 10px;
+			font-family: sans-serif;
+		}
+		button { padding: 6px 12px; font-size: 1rem; cursor: pointer; }
+	</style>
+</head>
+<body>
+	<div id="toolbar">
+		<button id="btnDraw">Dessiner</button>
+		<button id="btnErase">Gommer</button>
+	</div>
+	<div id="drawing"></div>
+
+	<script>
+		let mode = 'draw';
+		document.getElementById('btnDraw').addEventListener('click', () => { mode = 'draw'; });
+		document.getElementById('btnErase').addEventListener('click', () => { mode = 'erase'; });
+
+		const drawingElement = document.getElementById('drawing');
+		const two = new Two({ width: drawingElement.clientWidth, height: drawingElement.clientHeight }).appendTo(drawingElement);
+		
+		let drawing = false;
+		let currentPath;
+		let points = [];
+		const eraserSize = 30;
+		
+		function getMousePosition(event) {
+			const rect = drawingElement.getBoundingClientRect();
+			return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+		}
+
+		function startDrawing(event) {
+			if (mode !== 'draw') return;
+			drawing = true;
+			points = [];
+			const pos = getMousePosition(event);
+			points.push(new Two.Anchor(pos.x, pos.y));
+			currentPath = two.makePath(points);
+			currentPath.stroke = '#000';
+			currentPath.linewidth = 9;
+			currentPath.cap = 'round';
+			currentPath.join = 'round';
+			two.add(currentPath);
+			two.update();
+		}
+
+		function continueDrawing(event) {
+			if (!drawing || mode !== 'draw') return;
+			const pos = getMousePosition(event);
+			points.push(new Two.Anchor(pos.x, pos.y));
+			currentPath.vertices = points;
+			two.update();
+		}
+
+		function stopDrawing() {
+			if (!drawing || mode !== 'draw') return;
+			drawing = false;
+		}
+
+		function startErasing(event) {
+			if (mode !== 'erase') return;
+			eraseAt(event);
+		}
+
+		function continueErasing(event) {
+			if (mode !== 'erase') return;
+			eraseAt(event);
+		}
+
+		function eraseAt(event) {
+			const pos = getMousePosition(event);
+			two.scene.children.forEach(shape => {
+				shape.vertices = shape.vertices.filter(v => Math.hypot(v.x - pos.x, v.y - pos.y) > eraserSize);
+			});
+			two.update();
+		}
+
+		drawingElement.addEventListener('mousedown', function(e) {
+			if (mode === 'draw') startDrawing(e);
+			else if (mode === 'erase') startErasing(e);
+		});
+		drawingElement.addEventListener('mousemove', function(e) {
+			if (mode === 'draw') continueDrawing(e);
+			else if (mode === 'erase') continueErasing(e);
+		});
+		document.addEventListener('mouseup', stopDrawing);
+	</script>
+</body>
+</html>

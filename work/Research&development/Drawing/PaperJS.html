@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dessin en SVG avec position correcte</title>
+  <script src="https://unpkg.com/paper"></script>
+  <style>
+	html, body, canvas {
+	  margin: 0;
+	  padding: 0;
+	  width: 100%;
+	  height: 100%;
+	  display: block;
+	}
+	#myCanvas{
+		position: absolute;
+		z-index: 3000;
+	}
+	#exportedSvg {
+	  position: absolute;
+	  pointer-events: none;
+	}
+	#colorBox {
+		position: absolute;
+		left: 333px;
+		top: 330px;
+	  width: 200px;
+	  height: 200px;
+	  background-color: red;
+	  cursor: pointer;
+	}
+  </style>
+</head>
+<body>
+	<div id="colorBox"></div>
+  <canvas id="myCanvas"></canvas>
+
+  <script>
+	paper.setup(document.getElementById('myCanvas'));
+
+	let path;
+	let brushWidth = 10;
+	let smoothingFactor = 0.6;
+
+	paper.view.onMouseDown = function(event) {
+	  path = new paper.Path({
+		strokeColor: 'black',
+		strokeWidth: brushWidth,
+		strokeCap: 'round',
+		strokeJoin: 'round'
+	  });
+	  path.add(event.point);
+	};
+
+	paper.view.onMouseDrag = function(event) {
+	  if (path) {
+		path.add(event.point);
+		path.smooth({ type: 'continuous', factor: smoothingFactor });
+	  }
+	};
+
+	paper.view.onMouseUp = function() {
+	  if (path) {
+		path.smooth({ type: 'continuous', factor: smoothingFactor });
+
+		// Appliquer une simplification pour lisser davantage le tracé
+		path.simplify(0.5);
+
+		const bounds = path.bounds;
+		const padding = brushWidth / 2;
+		const offsetX = bounds.x - padding;
+		const offsetY = bounds.y - padding;
+
+		// Créer un conteneur SVG ajusté à la taille du tracé
+		const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		svgElement.setAttribute('width', bounds.width + padding * 2);
+		svgElement.setAttribute('height', bounds.height + padding * 2);
+		svgElement.setAttribute('viewBox', `${offsetX} ${offsetY} ${bounds.width + padding * 2} ${bounds.height + padding * 2}`);
+		svgElement.style.position = 'absolute';
+		svgElement.style.top = `${offsetY}px`;
+		svgElement.style.left = `${offsetX}px`;
+
+		// Exporter le tracé en SVG
+		const svgData = path.exportSVG({ asString: true });
+
+		// Créer un élément <path> SVG avec des extrémités arrondies
+		const newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+		newPath.setAttribute('d', svgData.match(/d="([^"]*)"/)[1]);
+		newPath.setAttribute('stroke', 'black');
+		newPath.setAttribute('stroke-width', brushWidth);
+		newPath.setAttribute('fill', 'none');
+		newPath.setAttribute('stroke-linecap', 'round');
+		newPath.setAttribute('stroke-linejoin', 'round');
+
+		svgElement.appendChild(newPath);
+
+		// Ajouter le SVG au document
+		document.body.appendChild(svgElement);
+
+		path = null;
+	  }
+	};
+  </script>
+</body>
+</html>
