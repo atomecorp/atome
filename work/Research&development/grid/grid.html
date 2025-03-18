@@ -1,0 +1,29 @@
+<div id="grid">
+  <div class="item">1</div>
+  <div class="item">2</div>
+  <div class="item">3</div>
+  <div class="item">4</div>
+  <div class="item">1</div>
+	<div class="item">2</div>
+	<div class="item">3</div>
+	<div class="item">4</div>
+	<div class="item">1</div>
+	  <div class="item">2</div>
+	  <div class="item">3</div>
+	  <div class="item">4</div>
+	  <div class="item">1</div>
+		<div class="item">2</div>
+		<div class="item">3</div>
+		<div class="item">4</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script>
+  new Sortable(document.getElementById('grid'), {
+	animation: 150
+  });
+</script>
+<style>
+  #grid { display: grid; grid-template-columns: repeat(5, 100px); gap: 12px; }
+  .item { background: lightblue; padding: 20px; text-align: center; cursor: grab; }
+</style>

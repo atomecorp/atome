@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mindmap avec Paper.js</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
+	<style>
+		canvas { width: 100%; height: 100vh; display: block; }
+	</style>
+</head>
+<body>
+	<canvas id="mindmapCanvas"></canvas>
+	<script>
+		paper.setup('mindmapCanvas');
+		let nodes = [];
+		let links = [];
+
+		function createNode(x, y) {
+			let circle = new paper.Path.Circle({ center: [x, y], radius: 20, fillColor: 'lightblue' });
+			let text = new paper.PointText({ point: [x, y + 5], content: nodes.length, justification: 'center', fillColor: 'black', fontSize: 14 });
+			let group = new paper.Group([circle, text]);
+			nodes.push(group);
+			return group;
+		}
+
+		function createLink(node1, node2) {
+			let line = new paper.Path.Line({ from: node1.position, to: node2.position, strokeColor: 'black', strokeWidth: 2 });
+			links.push({ line, node1, node2 });
+		}
+
+		let nodeA = createNode(200, 200);
+		let nodeB = createNode(300, 300);
+		createLink(nodeA, nodeB);
+
+		nodes.forEach(node => {
+			node.onMouseDrag = function(event) {
+				this.position = this.position.add(event.delta);
+				links.forEach(link => {
+					if (link.node1 === this || link.node2 === this) {
+						link.line.segments[0].point = link.node1.position;
+						link.line.segments[1].point = link.node2.position;
+					}
+				});
+			};
+		});
+	</script>
+</body>
+</html>
