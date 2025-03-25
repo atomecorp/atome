@@ -76,36 +76,3 @@ list_2 = A.list({ left: 300,
 wait 1 do
   list_2.left(list_1.width)
 end
-
-def api_infos
-  {
-  "example": "Purpose of the example",
-  "methods_found": [
-    "6",
-    "id",
-    "left",
-    "list",
-    "width"
-  ],
-  "6": {
-    "aim": "The `6` method's purpose is determined by its specific functionality.",
-    "usage": "Refer to Atome documentation for detailed usage of `6`."
-  },
-  "id": {
-    "aim": "The `id` method's purpose is determined by its specific functionality.",
-    "usage": "Refer to Atome documentation for detailed usage of `id`."
-  },
-  "left": {
-    "aim": "Controls the horizontal position of the object within its container.",
-    "usage": "For example, `left(100)` moves the object 100 pixels from the left edge."
-  },
-  "list": {
-    "aim": "The `list` method's purpose is determined by its specific functionality.",
-    "usage": "Refer to Atome documentation for detailed usage of `list`."
-  },
-  "width": {
-    "aim": "The `width` method's purpose is determined by its specific functionality.",
-    "usage": "Refer to Atome documentation for detailed usage of `width`."
-  }
-}
-end

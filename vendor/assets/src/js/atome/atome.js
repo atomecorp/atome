@@ -587,21 +587,20 @@ function disableRightClick() {
 // }
 
 
-// À placer dans votre fichier JavaScript
+
 // document.addEventListener("DOMContentLoaded", function() {
 //     window.updateTimecode = function(time) {
 //         let timecodeElement = document.getElementById('timecode');
 //         if (timecodeElement) {
-//             console.log("Mise à jour du timecode avec la valeur:", time); // Debug
+//             console.log("timecode:", time); // Debug
 //             timecodeElement.textContent = time;
 //         } else {
-//             console.error("Element #timecode introuvable !");
+//             console.error("Element #timecode not found !");
 //         }
 //     };
 //
 //     // Pour envoyer des messages à Swift
 //     window.sendMessageToNative = function(message) {
-//         console.log("Envoi du message à Swift:", message); // Debug
 //         window.webkit.messageHandlers.hostHandler.postMessage(message);
 //     };
 // });

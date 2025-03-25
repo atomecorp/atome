@@ -42,3 +42,12 @@ end
 new({post: :controller}) do |_p, bloc|
   @controller_proc << bloc
 end
+
+
+new({ particle: :webkittalk }) do |val|
+  val.to_json
+end
+
+new({ particle: :chrometalk }) do |val|
+  val.to_json
+end

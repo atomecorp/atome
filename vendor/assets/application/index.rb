@@ -30,9 +30,7 @@
 # # Call the method to display text
 # debug('Hello, Ruby WASM!')
 
-
 ###########################
-
 
 # def debug(text)
 #   JS.eval("
@@ -112,7 +110,8 @@
 # require "./examples/aXion_with_key"
 # require "./examples/draw"
 # require "./examples/database_handling"
-require "./examples/display_bck"
+# require "./examples/display_bck"
+require "./examples/chrome&Webkit_messenger"
 # require "./scratch"
 # require "./examples/above_below_before_after"
 # require "./examples/svg_vectoriser"
@@ -123,10 +122,8 @@ require "./examples/display_bck"
 # require "./examples/select_text"
 # require "./examples/vr"
 
-
-
-
-
 # # TODO: make delete force delete current object for consistency
 # puts 'automatise tool creation from APIs'
 # puts 'add params when creating apis to add doc and infos'
+
+

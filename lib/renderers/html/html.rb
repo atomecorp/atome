@@ -298,6 +298,20 @@ class HTML
 
   end
 
+  def webkittalk(message)
+    code = <<STR
+   window.webkit.messageHandlers.hostHandler.postMessage(#{message});
+STR
+    JS.eval(code)
+  end
+
+  def chrometalk(message)
+    code = <<STR
+   window.chrome.webview.postMessage(#{message});
+STR
+    JS.eval(code)
+  end
+
   def close_websocket
     @websocket.close
   end
