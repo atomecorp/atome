@@ -291,15 +291,25 @@ new(molecule: :list) do |params, _bloc|
     new_atome = { renderers: renderer_found, attach: list.id }.merge(styles_found).merge({ type: :shape })
 
     el = Atome.new(new_atome)
-    if action
-      el.touch(action[:touch]) do
-        send(action[:method], data)
-      end
-    end
-    el.top((height_found + margin) * index)
-    # now the content
-    Atome.new({ renderers: renderer_found, attach: el.id }.merge(element).merge(data))
 
+    el.top((height_found + margin) * index)
+    Atome.new({ renderers: renderer_found, attach: el.id }.merge(element).merge(data))
+    if action
+      bt_width=el.width
+        bt_height=el.height
+          bt_left=el.left
+            bt_top=el.top
+      # TODO: atome id such as transparent used for the color below may lead to crash if a user name its id transparent
+      # then list may crash we have to find a more robust ID scheme
+      invisible_button=  Atome.new({type: :shape ,renderers: renderer_found, width: bt_width,
+                                    height: bt_height,left: bt_left, top: bt_top,color: {alpha: 0, id: :transparent}, attach: list.id  })
+      invisible_button.touch(action[:touch]) do |event|
+        send(action[:method], data)
+        event.stop_propagation
+        puts event.class
+      end
+
+    end
   end
   list
 end

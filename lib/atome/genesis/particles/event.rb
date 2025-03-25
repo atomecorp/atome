@@ -413,3 +413,7 @@ end
 new({ after: :animate }) do |params|
   html.animate(params) unless params[:end] || params[:start]
 end
+
+new({ particle: :untouchable }) do
+  html.untouchable
+end

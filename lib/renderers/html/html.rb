@@ -2204,6 +2204,10 @@ STR
     action_proc.is_a?(Proc) && (!Universe.edit_mode || @original_atome.tag[:system])
   end
 
+  def untouchable
+    @element[:style][:pointerEvents] = 'none'
+  end
+
   def setup_touch_event(event_type, _option)
     instance_variable = "@touch_#{event_type}_already_set"
     unless instance_variable_get(instance_variable)

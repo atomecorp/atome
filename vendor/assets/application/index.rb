@@ -104,14 +104,15 @@
 # require "./examples/browser"
 # require "./examples/help"
 # require "./examples/int8"
-# require "./examples/lyrics"
+# require "./examples/list"
+# # require "./examples/lyrics"
 # require "./examples/undo"
 # require "./examples/apply"
 # require "./examples/aXion_with_key"
 # require "./examples/draw"
 # require "./examples/database_handling"
 # require "./examples/display_bck"
-require "./examples/chrome&Webkit_messenger"
+# require "./examples/chrome&Webkit_messenger"
 # require "./scratch"
 # require "./examples/above_below_before_after"
 # require "./examples/svg_vectoriser"
@@ -126,4 +127,63 @@ require "./examples/chrome&Webkit_messenger"
 # puts 'automatise tool creation from APIs'
 # puts 'add params when creating apis to add doc and infos'
 
+
+
+############
+
+
+
+
+styles = {
+  width: 192,
+  height: 22,
+  margin: 6,
+  shadow: { blur: 9, left: 3, top: 3, id: :cell_shadow, red: 0, green: 0, blue: 0, alpha: 0.6 },
+  left: 0,
+  color: :yellowgreen
+}
+
+element = { width: 192,
+            height:6,
+            component: { size: 11 },
+            left: 3,
+            top: -9,
+            color: :black,
+            type: :text }
+
+def send_to_webkit(val)
+  alert val
+end
+
+
+
+listing = [
+  { data: 'get modules', message: :get_modules },
+  { data: 'new project', message: :new_project },
+  { data: 'get projects', message: :get_projects },
+  { data: 'load project', message: :load_project },
+  { data: 'export project', message: :export_project },
+  { data: 'import project', message: :import_project },
+  { data: 'add module', message: :add_module },
+  { data: 'delete module', message: :delete_module },
+  { data: 'move module', message: :move_module },
+  { data: 'set module name', message: :set_module_name },
+  { data: 'set module parameter value', message: :set_module_parameter_value },
+  { data: 'link slots', message: :link_slots },
+  { data: 'unlink slots', message: :unlink_slots },
+  { data: 'enable slots link', message: :enable_slots_link },
+  { data: 'disable slots link', message: :disable_slots_link },
+  { data: 'undo', message: :undo },
+  { data: 'redo', message: :redo },
+  { data: 'duplicate', message: :duplicate },
+
+]
+grab(:inspector).list({
+                        left: 9,
+                        top: 9,
+                        styles: styles,
+                        element: element,
+                        listing: listing,
+                        action: { touch: :down, method: :send_to_webkit }
+                      })
 
