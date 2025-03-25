@@ -286,26 +286,27 @@ new(molecule: :list) do |params, _bloc|
   list = Atome.new({ renderers: renderer_found, id: new_id, type: :shape, color: { alpha: 0 }, attach: attach_to }.merge(params))
 
   # now the listing
-  transparent_col_id="#{list.id}_color_transparent"
-  color ({ alpha: 0, id: transparent_col_id})
+  # transparent_col_id="#{list.id}_color_transparent"
+  # color ({ alpha: 0, id: transparent_col_id})
   listing.each_with_index do |data, index|
     # let's create the container
     new_atome = { renderers: renderer_found, attach: list.id }.merge(styles_found).merge({ type: :shape })
 
     el = Atome.new(new_atome)
 
-    el.top((height_found + margin) * index)
-    Atome.new({ renderers: renderer_found, attach: el.id }.merge(element).merge(data))
+    el.top((height_found + margin) * index)# let's create the line content
+    bt_width=el.width
+    bt_height=el.height
+    bt_left=el.left
+    bt_top=el.top
+    line_content =Atome.new({ renderers: renderer_found, attach: el.id }.merge(element).merge(data))
     if action
-      bt_width=el.width
-        bt_height=el.height
-          bt_left=el.left
-            bt_top=el.top
+
       # TODO: atome id such as transparent used for the color below may lead to crash if a user name its id transparent
       # then list may crash we have to find a more robust ID scheme
-      invisible_button=  Atome.new({type: :shape ,renderers: renderer_found, width: bt_width,
-                                    height: bt_height,left: bt_left, top: bt_top,apply: transparent_col_id, attach: list.id  })
-      invisible_button.touch(action[:touch]) do |event|
+      # invisible_button=  Atome.new({type: :shape ,renderers: renderer_found, width: bt_width,
+      #                               height: bt_height,left: bt_left, top: bt_top,apply: transparent_col_id, attach: list.id  })
+      line_content.touch(action[:touch]) do |event|
         send(action[:method], data)
         event.stop_propagation
         puts event.class
