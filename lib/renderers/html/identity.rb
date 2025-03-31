@@ -76,11 +76,11 @@ def check_parent_language(parent)
   parent_found=grab(parent)
   if parent_found
     language_found=parent_found.language
-    unless language_found
-      language_found=   check_parent_language(parent_found.attach)
-    end
-    # puts "===> #{id}"
-    # puts "==>#{language_found}"
+    # unless language_found
+    #   language_found=   check_parent_language(parent_found.attach)
+    # end
+  #   # puts "===> #{id}"
+  #   # puts "==>#{language_found}"
     language_found
   end
 

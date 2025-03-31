@@ -295,10 +295,10 @@ new(molecule: :list) do |params, _bloc|
     el = Atome.new(new_atome)
 
     el.top((height_found + margin) * index)# let's create the line content
-    bt_width=el.width
-    bt_height=el.height
-    bt_left=el.left
-    bt_top=el.top
+    # bt_width=el.width
+    # bt_height=el.height
+    # bt_left=el.left
+    # bt_top=el.top
     line_content =Atome.new({ renderers: renderer_found, attach: el.id }.merge(element).merge(data))
     if action
 
@@ -308,8 +308,8 @@ new(molecule: :list) do |params, _bloc|
       #                               height: bt_height,left: bt_left, top: bt_top,apply: transparent_col_id, attach: list.id  })
       line_content.touch(action[:touch]) do |event|
         send(action[:method], data)
-        event.stop_propagation
-        puts event.class
+        # event.stop_propagation
+        # puts event.class
       end
 
     end

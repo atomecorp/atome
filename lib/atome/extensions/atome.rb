@@ -126,10 +126,20 @@ class Object
   end
 
   def flash(msg)
-    flash_box = box({ width: 235, height: 112 })
-    flash_box.text(msg)
+
+    view_found= grab(:view)
+    width_f=view_found.to_px(:width)
+    height_f=view_found.to_px(:height)
+    flash_box_width=235
+    flash_box_height=112
+    flash_box_left=width_f/2-flash_box_width/2
+    flash_box_left_top=height_f/2-flash_box_height/2
+    flash_box = box({left: flash_box_left, top:flash_box_left_top,  width: flash_box_width, height: flash_box_height, drag: true})
+
+    flash_box.text({ data: msg, left: 6, top: 6, overflow: :auto })
     flash_box.touch(true) do
-      flash_box.delete({ recursive: true })
+      # flash_box.delete({ recursive: true })
+      flash_box.delete(true)
     end
   end
 

@@ -92,7 +92,7 @@
 # end
 
 ############################
-# todo : simpilfty drag event
+# todo : simplify drag event
 # todo : undo to finish
 # todo : int8 to finish
 # todo : I.A. to finish (aXion)
@@ -103,9 +103,9 @@
 # require "./examples/blur"
 # require "./examples/browser"
 # require "./examples/help"
-require "./examples/int8"
-# require "./examples/list"
-# # require "./examples/lyrics"
+# require "./examples/int8"
+require "./examples/list"
+# require "./examples/lyrics"
 # require "./examples/undo"
 # require "./examples/apply"
 # require "./examples/aXion_with_key"

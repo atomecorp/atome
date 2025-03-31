@@ -56,7 +56,7 @@ element = { width: 25,
 
 listing = [
   { smooth: '100%' },
-  { color: :red, data: :poilu },
+  { color: :red, data: :data_put_inside },
   {},
   {},
 
@@ -64,7 +64,7 @@ listing = [
   {},
 ]
 def my_method(val=nil)
-  alert "so_cool : #{val}"
+  A.flash "so_cool : #{val}"
 end
 
 list_2 = A.list({ left: 300,
