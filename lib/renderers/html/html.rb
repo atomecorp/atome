@@ -2294,31 +2294,40 @@ STR
   end
 
   def touch_remove(_opt)
+
     option = if @original_atome.instance_variable_get('@touch_code')
                @original_atome.instance_variable_get('@touch_code')[:remove]
              else
                false
              end
-
     @element[:style][:cursor] = 'default'
     case option
     when :double
       remove_this_touch(:double)
+    when :doubletap
+      remove_this_touch(:doubletap)
     when :down
       remove_this_touch(:down)
     when :long
       remove_this_touch(:long)
     when :tap
       remove_this_touch(:tap)
+    when :hold
+      remove_this_touch(:hold)
     when :touch
       remove_this_touch(:touch)
+    when :tap
+      remove_this_touch(:tap)
     when :up
       remove_this_touch(:up)
     else
       remove_this_touch(:double)
+      remove_this_touch(:doubletap)
+      remove_this_touch(:tap)
       remove_this_touch(:down)
       remove_this_touch(:long)
       remove_this_touch(:touch)
+      remove_this_touch(:hold)
       remove_this_touch(:double)
       remove_this_touch(:up)
     end

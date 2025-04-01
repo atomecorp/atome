@@ -38,17 +38,22 @@ b=box({id: :poil, aid: :poilu})
 #   grab(:circle).width(300)
 # end
 b.touch(true) do |event|
-  if event == 356
-    alert 'hash_filtered'
-  else
+  # if event == 356
+  #   alert 'hash_filtered'
+  # else
     c= circle({id: :circler, left: 300})
     c.touch(true) do
       c.color(:red)
     end
     part= c.particles
     hash_filtered = part.reject { |key, _| ["history", "html", "headless"].include?(key) }
-    alert  hash_filtered
-  end
+    puts  hash_filtered
+  # end
+  # wait 3 do
+  #   alert grab(:console_tool)
+  # end
+  #
+  nil
 end
 
 
@@ -100,3 +105,4 @@ end
 # }
 # end
 
+alert 'add copy, add fold, add user select, drag only with bottom'

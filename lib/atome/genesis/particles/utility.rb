@@ -152,6 +152,8 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
           # puts "Atome #{@id}  recursive delete"
         end
       end
+      ############# here
+       render(:delete, params)
     elsif params[:force]
       fasten.each do |atttached_atomes|
         delete_recursive(atttached_atomes, true)

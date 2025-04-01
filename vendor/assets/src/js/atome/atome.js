@@ -610,7 +610,10 @@ function disableRightClick() {
 window.console.log=(function(oldLog){
     return function(message){
         oldLog(message)
-        try{window.webkit.messageHandlers.console.postMessage("LOG: "+message)}
+        try{
+            atomeJsToRuby("A.to_console('"+message+"')")
+            window.webkit.messageHandlers.console.postMessage("LOG: "+message)
+        }
         catch(e){oldLog()}
     }
 })(window.console.log)
@@ -618,7 +621,10 @@ window.console.log=(function(oldLog){
 window.console.error=(function(oldErr){
     return function(message){
         oldErr(message)
-        try{window.webkit.messageHandlers.console.postMessage("ERROR: "+message)}
+        try{
+            atomeJsToRuby("A.to_console('"+message+"')")
+            window.webkit.messageHandlers.console.postMessage("ERROR: "+message)
+        }
         catch(e){oldErr()}
     }
 })(window.console.error)

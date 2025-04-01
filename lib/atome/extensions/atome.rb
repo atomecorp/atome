@@ -127,14 +127,14 @@ class Object
 
   def flash(msg)
 
-    view_found= grab(:view)
-    width_f=view_found.to_px(:width)
-    height_f=view_found.to_px(:height)
-    flash_box_width=235
-    flash_box_height=112
-    flash_box_left=width_f/2-flash_box_width/2
-    flash_box_left_top=height_f/2-flash_box_height/2
-    flash_box = box({left: flash_box_left, top:flash_box_left_top,  width: flash_box_width, height: flash_box_height, drag: true})
+    view_found = grab(:view)
+    width_f = view_found.to_px(:width)
+    height_f = view_found.to_px(:height)
+    flash_box_width = 235
+    flash_box_height = 112
+    flash_box_left = width_f / 2 - flash_box_width / 2
+    flash_box_left_top = height_f / 2 - flash_box_height / 2
+    flash_box = box({ left: flash_box_left, top: flash_box_left_top, width: flash_box_width, height: flash_box_height, drag: true })
 
     flash_box.text({ data: msg, left: 6, top: 6, overflow: :auto })
     flash_box.touch(true) do
@@ -320,57 +320,7 @@ class Object
     end
   end
 
-  def console(debug)
-    if debug
-      console = box({ id: :console, width: :auto, height: 225, bottom: 0, top: :auto, left: 0, right: 0, depth: 30, color: { alpha: 0, red: 0, green: 0, blue: 0 } })
-      console_back = console.box({ id: :console_back, blur: { value: 5, affect: :back }, overflow: :auto, width: :auto, height: :auto, top: 25, bottom: 0, left: 0, right: 0, depth: 30, color: { alpha: 0.5, red: 0, green: 0, blue: 0 } })
-      console_top = console.box({ id: :console_top, overflow: :auto, width: :auto, height: 25, top: 0, bottom: 0, left: 0, right: 0, depth: 30, color: { alpha: 1, red: 0.3, green: 0.3, blue: 0.3 } })
 
-      console_top.touch(:double) do
-        console.height(25)
-        console.bottom(0)
-        console.top(:auto)
-      end
-      console_top.shadow({
-                           id: :s1,
-                           left: 0, top: 3, blur: 9,
-                           invert: false,
-                           red: 0, green: 0, blue: 0, alpha: 1
-                         })
-      console.drag(:locked) do |event|
-        dy = event[:dy]
-        y = console.to_px(:top) + dy.to_f
-        console.top(y)
-        console.height(:auto)
-      end
-      console_output = console_back.text({ data: '', id: :console_output, component: { size: 12 } })
-      JS.eval <<~JS
-        (function() {
-          var oldLog = console.log;
-          var consoleDiv = document.getElementById("console_output");
-          console.log = function(message) {
-            if (consoleDiv) {
-              consoleDiv.innerHTML += '<p>' + message + '</p>';
-            }
-            oldLog.apply(console, arguments);
-          };
-        }());
-      JS
-
-      console_clear = console_top.circle({ id: :console_clear, color: :red, top: 3, left: 3, width: 19, height: 19 })
-      console_clear.touch(true) do
-        console_output.data("")
-      end
-      JS.global[:document].addEventListener("contextmenu") do |event|
-      end
-    else
-      grab(:console_back).delete(true)
-      JS.global[:document].addEventListener("contextmenu") do |native_event|
-        event = Native(native_event)
-        event.preventDefault
-      end
-    end
-  end
 
   # import methode below
   def importer_all(&proc)
@@ -692,7 +642,7 @@ Str
   end
 
   def above(parent, margin = 6, ref = grab(:view))
-    item=grab(parent)
+    item = grab(parent)
     # FIXME above is broken when using % in margin
     unless margin.is_a?(Numeric)
       item_height = ref.to_px(:height)
@@ -708,7 +658,7 @@ Str
   end
 
   def below(parent, margin = 6, ref = grab(:view))
-    item=grab(parent)
+    item = grab(parent)
     unless margin.is_a?(Numeric)
       item_height = ref.to_px(:height)
       margin = (margin.to_f * item_height) / 100
@@ -723,7 +673,7 @@ Str
   end
 
   def after(parent, margin = 6, ref = grab(:view))
-    item=grab(parent)
+    item = grab(parent)
     unless margin.is_a?(Numeric)
       item_width = ref.to_px(:width)
       margin = (margin.to_f * item_width) / 100
@@ -748,7 +698,7 @@ Str
   end
 
   def before(parent, margin = 6, ref = grab(:view))
-    item=grab(parent)
+    item = grab(parent)
     unless margin.is_a?(Numeric)
       item_width = ref.to_px(:width)
       margin = (margin.to_f * item_width) / 100
@@ -889,6 +839,100 @@ Str
   def reenact(id, action)
     atome_wanted = grab(id)
     atome_wanted.simulate(action) if atome_wanted
+  end
+
+  def console(debug)
+    if debug
+      console = box({ id: :console, width: :auto, height: 225, bottom: 0, top: :auto, left: 0, right: 0, depth: 30, color: { alpha: 0, red: 0, green: 0, blue: 0 } })
+      console_back = console.box({ id: :console_back, blur: { value: 5, affect: :back }, overflow: :auto, width: :auto, height: :auto, top: 25, bottom: 0, left: 0, right: 0, depth: 30, color: { alpha: 0.5, red: 0, green: 0, blue: 0 } })
+      console_top = console.box({ id: :console_top, overflow: :auto, width: :auto, height: 25, top: 0, bottom: 0, left: 0, right: 0, depth: 30, color: { alpha: 1, red: 0.3, green: 0.3, blue: 0.3 } })
+
+      console_top.touch(:double) do
+        console.height(25)
+        console.bottom(0)
+        console.top(:auto)
+      end
+      console_top.shadow({
+                           id: :s1,
+                           left: 0, top: 3, blur: 9,
+                           invert: false,
+                           red: 0, green: 0, blue: 0, alpha: 1
+                         })
+      console.drag(:locked) do |event|
+        dy = event[:dy]
+        y = console.to_px(:top) + dy.to_f
+        console.top(y)
+        console.height(:auto)
+      end
+      console_output = console_back.text({ data: '', id: :console_output, component: { size: 12 } })
+      JS.eval <<~JS
+        (function() {
+          var oldLog = console.log;
+          var consoleDiv = document.getElementById("console_output");
+          console.log = function(message) {
+            if (consoleDiv) {
+              consoleDiv.innerHTML += '<p>' + message + '</p>';
+            }
+            oldLog.apply(console, arguments);
+          };
+        }());
+      JS
+
+      console_clear = console_top.circle({ id: :console_clear, color: :red, top: 3, left: 3, width: 19, height: 19 })
+      console_clear.touch(true) do
+        console_output.data("")
+      end
+      JS.global[:document].addEventListener("contextmenu") do |event|
+      end
+    else
+      grab(:console_back).delete(true)
+      JS.global[:document].addEventListener("contextmenu") do |native_event|
+        event = Native(native_event)
+        event.preventDefault
+      end
+    end
+  end
+
+  def a_console
+    terminal = grab(:view).box({ top: 69, left: 69, width: 700, height: 30, id: :atome_console,
+                                 color: { alpha: 1 }, overflow: :visible, drag: true})
+    top_bar= terminal.box({ top: 0, left: 0, width: 700, height: 30, id: :atome_console_top})
+
+    close_icon = top_bar.box({ id: :console_close, width: 12, height: 12, top: 3, left: 3, color: :red })
+    clear_icon = top_bar.box({ id: :console_clear, width: 12, height: 12, top: 3, left: 19, color: :green })
+    close_icon.touch(true) do
+      terminal.delete({recursive: true})
+    end
+
+    console=terminal.box({ top: 30, left: 0, width: 700, height: 396, id: :atome_console_content,
+                 overflow: :scroll, resize: true,  color: { alpha: 0.39 }, display: :block })
+
+    clear_icon.touch(true) do
+      console.clear(true)
+    end
+
+    top_bar.touch(:double) do
+      if console.display ==:block
+        console.display =:none
+      else
+        console.display =:block
+      end
+    end
+    wait 2 do
+      terminal.drag(false)
+      wait 2 do
+        terminal.drag(true)
+      end
+    end
+    # console.touch(:double) do
+    #   alert "===> #{terminal.drag}"
+    #   if terminal.drag[:move] == true
+    #     terminal.drag(false)
+    #   else
+    #     alert(:drag_again)
+    #     terminal.drag(true)
+    #   end
+    # end
   end
 
 end

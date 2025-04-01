@@ -1375,6 +1375,12 @@ STRR
       end
     end if codes_found.instance_of?(Hash)
   end
+
+  def to_console(msg)
+    if grab(:atome_console)
+      grab(:atome_console_content).text({ data: msg, left: 6, top: 20})
+    end
+  end
 end
 
 
