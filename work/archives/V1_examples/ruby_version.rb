@@ -1,1 +1,0 @@
-text(RUBY_VERSION)

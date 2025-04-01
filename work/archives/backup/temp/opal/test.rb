@@ -1,1 +1,0 @@
-puts 'require from the great temp require works!!!'
