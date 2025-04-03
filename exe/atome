@@ -93,16 +93,16 @@ def build_host_mode(destination, project_name, mode)
   path = "#{destination}/#{project_name}/src/utilities/"
   FileUtils.mkdir_p(path) unless Dir.exist?(path)
   host_type = <<~STR
-    class Atome
-      def self.host
-        "#{mode}"
-      end
+     class Atome
+       def self.host
+         "#{mode}"
+       end
 
-   def self.ip_address
-        "#{ip_address}"
-      end
+    def self.ip_address
+         "#{ip_address}"
+       end
 
-    end
+     end
 
 
   STR
@@ -305,28 +305,34 @@ def wasm_initialize (source, destination, project_name, wasi_source)
   application_location = "#{destination}/#{project_name}"
   wasm_location = "#{application_location}/src/wasm/"
   Dir.mkdir(wasm_location) unless Dir.exist?(wasm_location)
+  # link to update :
+  current_download_folder = 'download/2023-11-17-a/'
+  file_linked = '3_2-wasm32-unknown-wasi-full-js'
 
+  wasm_github = 'https://github.com/ruby/ruby.wasm/releases/'
+  wasm_link = wasm_github + current_download_folder
+  wasm_linked_file = "ruby-" + file_linked
+  wasm_linked_file_extension = '.tar.gz'
   wasm_temp_folder = "#{application_location}/tmp"
   Dir.mkdir(wasm_temp_folder) unless Dir.exist?(wasm_temp_folder)
   #### IMPORTANT TO REFRESH RUBY WASM TO THE LATEST VERSION, (when ruby_browser get far too large)
   # and UNCOMMENT the line  below : ('curl -LO ....')
-  unless File.exist?("#{wasm_temp_folder}/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz")
+  unless File.exist?("/#{wasm_linked_file + wasm_linked_file_extension}")
 
     if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
       application_location = "#{destination}\\#{project_name}"
       wasm_temp_folder = "#{application_location}\\tmp"
-      `cd /d #{wasm_temp_folder} && curl -LO https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz
-`
+      `cd /d #{wasm_temp_folder} && curl -LO #{wasm_link + wasm_linked_file + wasm_linked_file_extension}`
     elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
       # code to exec with MacOS
       # `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/latest/download/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
-      `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+      `cd #{wasm_temp_folder};curl -LO #{wasm_link + wasm_linked_file + wasm_linked_file_extension}`
       # debug :  https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-minimal-js-debug.tar.gz
       # standard :     `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
 
     else
       # code to exec with Unix/Linux
-      `cd #{wasm_temp_folder};curl -LO https://github.com/ruby/ruby.wasm/releases/download/2023-11-17-a/ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
+      `cd #{wasm_temp_folder};curl -LO #{wasm_link + wasm_linked_file + wasm_linked_file_extension}`
     end
 
   end
@@ -335,18 +341,18 @@ def wasm_initialize (source, destination, project_name, wasi_source)
     # code to exec with Windows
     application_location = "#{destination}\\#{project_name}"
 
-    `cd /d #{wasm_temp_folder} && tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
-    `move #{wasm_temp_folder}\\3_2-wasm32-unknown-wasi-full-js\\usr\\local\\bin\\ruby #{wasm_temp_folder}\\system_ruby_browser.wasm`
+    `cd /d #{wasm_temp_folder} && tar xfz #{wasm_linked_file + wasm_linked_file_extension}`
+    `move #{wasm_temp_folder}\\#{file_linked}\\usr\\local\\bin\\ruby #{wasm_temp_folder}\\system_ruby_browser.wasm`
     `del #{application_location}\\src\\wasm\\ruby_browser.wasm`
   elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
     # code to exec with MacOS
-    `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
-    `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
+    `cd #{wasm_temp_folder}; tar xfz #{wasm_linked_file + wasm_linked_file_extension}`
+    `mv #{wasm_temp_folder}/#{file_linked}/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
     `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
   else
     # code to exec with Unix/Linux
-    `cd #{wasm_temp_folder}; tar xfz ruby-3_2-wasm32-unknown-wasi-full-js.tar.gz`
-    `mv #{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
+    `cd #{wasm_temp_folder}; tar xfz #{wasm_linked_file + wasm_linked_file_extension}`
+    `mv #{wasm_temp_folder}/#{file_linked}/usr/local/bin/ruby #{wasm_temp_folder}/system_ruby_browser.wasm`
     `rm -f #{application_location}/src/wasm/ruby_browser.wasm`
   end
 
@@ -354,7 +360,7 @@ def wasm_initialize (source, destination, project_name, wasi_source)
     # code to exec with Windows
     cmd = <<~STRDELIM
       "#{application_location}\\src-wasm\\wasm\\#{wasi_source}" pack "#{wasm_temp_folder}\\system_ruby_browser.wasm"
-          -mapdir usr::"#{wasm_temp_folder}\\3_2-wasm32-unknown-wasi-full-js\\usr"
+          -mapdir usr::"#{wasm_temp_folder}\\#{file_linked}\\usr"
           -mapdir lib::"#{source}\\lib\\"
           -mapdir \::"#{application_location}\\application\\"
           -mapdir utilities::"#{application_location}\\src\\utilities\\"
@@ -364,7 +370,7 @@ def wasm_initialize (source, destination, project_name, wasi_source)
     # code to exec with MacOS
     cmd = <<~STRDELIM
       #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
-      --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
+      --mapdir usr::#{wasm_temp_folder}/#{file_linked}/usr
       --mapdir lib::#{source}/lib/
       --mapdir /::#{application_location}/application/
       --mapdir utilities::#{application_location}/src/utilities/
@@ -374,7 +380,7 @@ def wasm_initialize (source, destination, project_name, wasi_source)
     # code to exec with Unix/Linux
     cmd = <<~STRDELIM
       #{application_location}/src-wasm/wasm/#{wasi_source} pack #{wasm_temp_folder}/system_ruby_browser.wasm
-      --mapdir usr::#{wasm_temp_folder}/3_2-wasm32-unknown-wasi-full-js/usr
+      --mapdir usr::#{wasm_temp_folder}/#{file_linked}/usr
       --mapdir lib::#{source}/lib/
       --mapdir /::#{application_location}/application/
       --mapdir utilities::#{application_location}/src/utilities/
