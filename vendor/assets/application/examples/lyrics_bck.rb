@@ -1,5 +1,5 @@
 #  frozen_string_literal: true
-alert 'build a Lyric object to add instance var : record,  add:  auto length, add a replace mode, view lyrics_content hash to alter the scrolling text, erase and stop should show actual state'
+
 total_length = 333000
 def style
   {
@@ -38,11 +38,11 @@ def format_lyrics(lyrics_array, target)
 
 end
 
-start = box({ width: 33, height: 19, color: :green })
+start = box({ width: 33, height: 19, color: :red })
 start.text(data: :start, component: { size: 9 }, top: -12, left: 3)
 
-erase = box({id: :erase, width: 33, height: 19, color: :black, left: 39 })
-erase.text(data: 'erase', component: { size: 9 }, top: -6, left: 3)
+reset = box({ width: 33, height: 19, color: :green, left: 39 })
+reset.text(data: 'start reset', component: { size: 9 }, top: -6, left: 3)
 
 stop = box({ width: 33, height: 19, color: :blue, left: 125 })
 stop.text(data: :stop, component: { size: 9 }, top: -12, left: 3)
@@ -50,32 +50,16 @@ stop.text(data: :stop, component: { size: 9 }, top: -12, left: 3)
 pause = box({ width: 33, height: 19, color: :orange, left: 160 })
 pause.text(data: :pause, component: { size: 9 }, top: -12, left: 3, color: :black)
 
-# insert = box({ width: 33, height: 19, top: 39, color: :yellowgreen })
-# insert.text(data: :insert, component: { size: 9 }, top: -12, left: 3, color: :black)
+insert = box({ width: 33, height: 19, top: 39, color: :yellowgreen })
+insert.text(data: :insert, component: { size: 9 }, top: -12, left: 3, color: :black)
 
-# edit = box({ width: 33, height: 19, top: 39, color: :yellow, left: 39 })
-# edit.text(data: 'edit', component: { size: 9 }, top: -12, left: 3, color: :black)
-
-record = box({ width: 33, height: 19, top: 39,id: :rec_box, left: 39 })
-record.text(data: 'rec.', component: { size: 9 }, top: -12, left: 3, color: :black)
-rec_color = color({ id: :rec_color,red: 1, alpha: 0.6 })
-grab(:rec_box).apply(:rec_color)
-record.touch(true) do
-  if grab(:lyric_viewer).edit ==true
-    grab(:lyric_viewer).edit(false)
-    rec_color.alpha(0.6)
-  else
-    rec_color.alpha(1)
-    grab(:lyric_viewer).edit(true)
-  end
-  record.blink(:red)
-end
-
+edit = box({ width: 33, height: 19, top: 39, color: :yellow, left: 39 })
+edit.text(data: 'edit', component: { size: 9 }, top: -12, left: 3, color: :black)
 
 counter = text({ data: :counter, content: :play,left: 60, top: 90, position: :absolute, id: :counter })
 base_text = ''
 lyrics_support=box({id: :lyrics_support, width: 180, height: 180,top: 120, left: 35,color: {red: 0.2, green: 0.2, blue: 0.4, id: :base_support_color}})
-lyrics = lyrics_support.text({ top: 3, left: 3,width: style[:line_width],  data: [{ data: base_text }], id: :lyric_viewer, edit: false, component: { size: 33 }, position: :absolute, content: { 0 => base_text }, context: :insert })
+lyrics = lyrics_support.text({ top: 3, left: 3,width: style[:line_width],  data: [{ data: base_text }], id: :lyric_viewer, edit: true, component: { size: 33 }, position: :absolute, content: { 0 => base_text }, context: :insert })
 counter.timer({ position: 88 })
 
 
@@ -86,8 +70,8 @@ def update_lyrics(value, target, timer_found)
   current_lyrics = closest_values(target.content, value, 3)
   format_lyrics(current_lyrics, target)
 end
-# to change startup value change the value of the slider
-slider({ id: :toto, range: { color: :yellow }, min: 0, max: total_length, width: 333, value: 0, height: 25, left: 99, top: 350, color: :orange, cursor: { color: :orange, width: 25, height: 25 } }) do |value|
+
+slider({ id: :toto, range: { color: :yellow }, min: 0, max: total_length, width: 333, value: 12, height: 25, left: 99, top: 350, color: :orange, cursor: { color: :orange, width: 25, height: 25 } }) do |value|
   update_lyrics(value, lyrics, counter)
 end
 
@@ -97,21 +81,21 @@ def closest_key_before(hash, target)
 end
 
 def alter_lyric_event(lyrics, counter)
-  # if lyrics.context == :insert
+  if lyrics.context == :insert
     current_position = counter.timer[:position]
     lyrics.content[current_position] = lyrics.data
     lyrics.blink(:red)
-  # elsif lyrics.context == :edit
-  #   current_position = counter.timer[:position]
-  #   lyrics_content =  lyrics.content
-  #   lyrics_content_key= closest_key_before(lyrics_content, current_position)
-  #   lyrics_content[lyrics_content_key]=lyrics.data
-  #   lyrics.blink(:yellowgreen)
-  # end
+  elsif lyrics.context == :edit
+    current_position = counter.timer[:position]
+    lyrics_content =  lyrics.content
+    lyrics_content_key= closest_key_before(lyrics_content, current_position)
+     lyrics_content[lyrics_content_key]=lyrics.data
+    lyrics.blink(:yellowgreen)
+  end
 end
 lyrics.touch(:down) do
   grab(:lyrics_support).color({ red: 1, id: :red_col })
-  grab(:counter).content(:edit) # prevent the lyrics viewer to be updated when plying
+   grab(:counter).content(:edit) # prevent the lyrics viewer to be updated when plying
   puts :down
 end
 
@@ -126,10 +110,10 @@ lyrics.keyboard(:down) do |native_event|
   end
 end
 
-# edit.touch(true) do
-#   lyrics.context(:edit)
-#   edit.blink(:red)
-# end
+edit.touch(true) do
+  lyrics.context(:edit)
+  edit.blink(:red)
+end
 
 start.touch(true) do
 
@@ -138,8 +122,8 @@ start.touch(true) do
   end
 end
 
-erase.touch(true) do
-  grab(:lyric_viewer).clear(true)
+reset.touch(true) do
+  alert :remove
   lyrics.content={}
   # counter.timer({ end: total_length, start: 0 }) do |value|
   #   update_lyrics(value, lyrics, counter)
@@ -148,7 +132,7 @@ end
 
 stop.touch(true) do
   counter.timer({ stop: true })
-  update_lyrics(0, lyrics, counter)
+  grab(:support).display(true)
 end
 pause.touch(true) do
   counter.timer({ pause: true })
@@ -161,33 +145,19 @@ def parse_song_lyrics(song)
   collected_id=[]
   song_lines.each_with_index do |line_found, index|
 
-    new_id =  "a_lyrics_line_#{index}".to_sym
-    puts "new_id: #{new_id}, #{index} =>> #{line_found}"
-    line_support=grab(:support).box({id: new_id, width: 399, height: 30, top: index*33, left: 3, color: { red: 1, green: 0.3, blue: 0.3 }, smooth: 9 })
-    line_support.text({ data: line_found, id: "#{new_id}_text", top: 1, left: 1, position: :absolute, width: 399 })
-
-
-    line_support.touch(true) do
+    new_id =  "a#{index}".to_sym
+    collected_id << new_id
+    formated_text << { data: line_found, id: new_id, top: 16 * index, left: 6, position: :absolute, width: 399 }
+  end
+  grab(:support).text({ data: formated_text, left: 6, top: 3, edit: true,component: { size: 33 } })
+  collected_id.each do |line_id|
+    grab(line_id).touch(true) do
       lyrics=grab(:lyric_viewer)
       counter=grab(:counter)
-      lyrics.data(line_found)
+      lyrics.data(grab(line_id).data)
       alter_lyric_event(lyrics, counter)
     end
-    # collected_id << new_id
-    # formated_text << { data: line_found, id: new_id, top: 16 * index, left: 6, position: :absolute, width: 399 }
   end
-  # alert formated_text
-  # alert formated_text.class
-  # grab(:support).box({id: "#{index}"})
-  # grab(:support).text({ data: formated_text, left: 6, top: 3, edit: true,component: { size: 33 } })
-  # collected_id.each do |line_id|
-  #   grab(line_id).touch(true) do
-  #     lyrics=grab(:lyric_viewer)
-  #     counter=grab(:counter)
-  #     lyrics.data(grab(line_id).data)
-  #     alter_lyric_event(lyrics, counter)
-  #   end
-  # end
 end
 
 support = box({ overflow: :auto, top: 3, left: :auto, right: 9, width: 399, height: 600, smooth: 9, color: { red: 0.3, green: 0.3, blue: 0.3 }, id: :support })
@@ -208,19 +178,13 @@ end
 
 
 editor=box({id: :editor, width: 33, height: 33, top: :auto,bottom: 9, left: 63, color: :yellowgreen })
-editor.text(:hide)
+editor.text(:editor)
 editor.touch(true) do
   if  grab(:support).display == :none
     grab(:support).display(true)
   else
     grab(:support).display(false)
   end
-end
-
-clear=box({id: :clear, width: 33, height: 33, top: :auto,bottom: 9, left: 99, color: :orangered })
-clear.text(:clear)
-clear.touch(true) do
-  grab(:support).clear(true)
 end
 
 # lyrics.content({ 0 => "hello", 594 => "world", 838 => "of", 1295 => "hope" })

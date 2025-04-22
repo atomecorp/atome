@@ -25,7 +25,7 @@ Install Homebrew
 Install rbenv, wasi-vfs, wasmtime :
 brew install rbenv
 #brew install wasmtime
-# => please chack as it is certainly useless because we have in vendor/src-wasm/wasm/wasi_vfs_...,
+# => please check as it is certainly useless because we have in vendor/src-wasm/wasm/wasi_vfs_...,
   if need to install  use :  brew install  wasi-vfs
 
 brew install npm

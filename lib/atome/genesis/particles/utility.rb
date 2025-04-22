@@ -176,16 +176,31 @@ new({ particle: :delete, category: :utility, type: :boolean, render: false }) do
 
 end
 new({ particle: :clear, category: :utility, type: :boolean })
+
+def delete_children_recursively(parent_id)
+  parent = grab(parent_id)
+  return unless parent&.fasten
+
+  children_to_delete = []
+  parent.fasten.each do |child_id|
+    children_to_delete << child_id
+  end
+
+  children_to_delete.each do |child_id|
+    child = grab(child_id)
+    next unless child
+
+    next if child.tag && child.tag[:system]
+
+    delete_children_recursively(child_id)
+
+    child.delete(true)
+    puts "==> Supprimé : #{child_id}"
+  end
+end
+
 new({ post: :clear }) do
-  fasten_found = []
-  fasten.each do |fasten_id_found|
-    fasten_found << fasten_id_found
-  end
-  fasten_found.each do |child_id_found|
-    child_found = grab(child_id_found)
-    # we exclude system  objects
-    child_found&.delete(true) unless child_found.tag && child_found.tag[:system]
-  end
+  delete_children_recursively(id)
 end
 new({ particle: :path, category: :utility, type: :string })
 new({ particle: :schedule, category: :utility, type: :string }) do |date, proc|

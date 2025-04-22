@@ -236,8 +236,11 @@ def build_opal_parser(source, destination, project_name)
   end
 end
 
-def build_atome_kernel_for_opal(source, destination, project_name)
-  #  now lets build the atome kernel
+def build_atome_kernel_for_opal(source, destination, project_name, production: false)
+  # Activer ou non le debug (source location)
+  Opal::Config.enable_source_location = !production
+
+  # Build kernel
   atome_directory = "#{destination}/#{project_name}/src/js/atome"
   kernel_js = "#{atome_directory}/kernel.js"
   FileUtils.mkdir_p(atome_directory)
@@ -249,7 +252,6 @@ def build_atome_kernel_for_opal(source, destination, project_name)
     f.puts kernel_content
   end
 end
-
 # def build_eVe_kernel_for_opal(source, destination, project_name)
 #
 #   gem_name = 'atome_eVe'

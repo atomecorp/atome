@@ -179,8 +179,6 @@ def wasm_params(source, destination, project_name, wasi_file, host_mode, script_
 end
 
 task :test_wasm do
-  # FileUtils.rm_rf('./tmp/')
-  # FileUtils.mkdir_p('./tmp')
   project_name = :test
   source = '.'
 
