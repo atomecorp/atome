@@ -195,7 +195,6 @@ def delete_children_recursively(parent_id)
     delete_children_recursively(child_id)
 
     child.delete(true)
-    puts "==> Supprimé : #{child_id}"
   end
 end
 
