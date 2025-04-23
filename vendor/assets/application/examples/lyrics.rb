@@ -4,7 +4,7 @@
 class Lyricist < Atome
   attr_accessor :lyrics, :record, :replace_mode, :length, :counter
 
-  def initialize
+  def initialize(content=nil)
     @lyrics = {}
     @tempo = 120
     @record = false
@@ -15,12 +15,24 @@ class Lyricist < Atome
     @number_of_lines = @original_number_of_lines
     @actual_position= 0
     build_ui
+    if content
+      new_song(content)
+    end
   end
 
   def style
     {
       line_width: 1600
     }
+  end
+
+  def new_song(content)
+
+    grab(:lyric_viewer).content(content)
+    last_key, last_value = content.to_a.last
+    @default_length= last_key
+    @length=@default_length
+    refresh_viewer(0)
   end
 
   # Construction de l'interface utilisateur
@@ -31,6 +43,7 @@ class Lyricist < Atome
     build_song_support
     build_editor_controls
     build_timeline_slider
+    build_navigation_buttons
   end
 
   # Méthodes pour la gestion des paroles
@@ -69,7 +82,6 @@ class Lyricist < Atome
     timer_found.timer[:position] = value
     timer_found.timer[:start] = value
     @actual_position = value
-    # puts @actual_position
     current_lyrics = closest_values(target.content, value, @number_of_lines)
     format_lyrics(current_lyrics, target)
   end
@@ -182,10 +194,8 @@ class Lyricist < Atome
         lyrics = grab(:lyric_viewer)
         update_lyrics(0, lyrics, counter)
         # grab(:timeline_slider).delete({ force: true })
-
       end
       # refresh_viewer
-
       refresh_viewer(prev_postion)
     end
   end
@@ -283,6 +293,16 @@ class Lyricist < Atome
       grab(:support).clear(true)
     end
   end
+  def build_navigation_buttons
+    prev_word=grab(:view).box({left: 220, id: :prev, width: 39, height: 20})
+    prev_word.text({data: :prev, position: :absolute })
+    next_word=grab(:view).box({left: 270, id: :next, width: 39, height: 20})
+    next_word.text({data: :next, position: :absolute })
+    prev_word.touch(true) do
+      alert grab(:lyric_viewer).content
+      # cf : update_lyrics
+    end
+  end
 
   def build_timeline_slider
 
@@ -337,7 +357,6 @@ class Lyricist < Atome
         lyrics = grab(:lyric_viewer)
         counter = grab(:counter)
         lyrics.data(line_found)
-        alert ("quoiqoiqoqio")
         alter_lyric_event(lyrics, counter)
       end
     end
@@ -345,5 +364,7 @@ class Lyricist < Atome
 end
 
 # Création de l'instance et lancement de l'application
-Lyricist.new
+lyr=Lyricist.new
+
+lyr.new_song({ 0 => "hello", 594 => "world", 838 => "of", 1295 => "hope" })
 
