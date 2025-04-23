@@ -1,10 +1,10 @@
 # frozen_string_literal: true
-
+require './examples/lyrics_helper'
 # Classe principale pour gérer l'affichage et l'enregistrement des paroles
 class Lyricist < Atome
   attr_accessor :lyrics, :record, :replace_mode, :length, :counter
 
-  def initialize(content=nil)
+  def initialize(content = nil)
     @lyrics = {}
     @tempo = 120
     @record = false
@@ -13,7 +13,7 @@ class Lyricist < Atome
     @length = @default_length
     @original_number_of_lines = 4
     @number_of_lines = @original_number_of_lines
-    @actual_position= 0
+    @actual_position = 0
     build_ui
     if content
       new_song(content)
@@ -30,10 +30,13 @@ class Lyricist < Atome
 
     grab(:lyric_viewer).content(content)
     last_key, last_value = content.to_a.last
-    @default_length= last_key
-    @length=@default_length
+    @default_length = last_key
+    @length = @default_length
     refresh_viewer(0)
   end
+
+
+
 
   # Construction de l'interface utilisateur
   def build_ui
@@ -44,6 +47,7 @@ class Lyricist < Atome
     build_editor_controls
     build_timeline_slider
     build_navigation_buttons
+    build_lyrics_editor_button
   end
 
   # Méthodes pour la gestion des paroles
@@ -98,7 +102,25 @@ class Lyricist < Atome
 
   private
 
-  def refresh_viewer(at=0)
+  def full_refresh_viewer(at = 0)
+
+    grab(:timeline_slider).delete({ force: true })
+    build_timeline_slider
+    grab(:timeline_slider).value(0)
+
+    ####
+    grab(:timeline_slider).delete({ force: true })
+    build_timeline_slider
+    grab(:timeline_slider).value(@length)
+
+
+    grab(:timeline_slider).delete({ force: true })
+    build_timeline_slider
+    grab(:timeline_slider).value(at)
+  end
+
+  def refresh_viewer(at = 0)
+    ;
     grab(:timeline_slider).delete({ force: true })
     build_timeline_slider
     grab(:timeline_slider).value(at)
@@ -174,7 +196,7 @@ class Lyricist < Atome
     record.apply(:rec_color) # Utiliser directement record au lieu de grab(:rec_box)
 
     record.touch(true) do
-      prev_postion= @actual_position
+      prev_postion = @actual_position
       lyric_viewer = grab(:lyric_viewer)
       if @record == true
         @record = false
@@ -193,10 +215,13 @@ class Lyricist < Atome
         # counter.timer({ stop: true })
         lyrics = grab(:lyric_viewer)
         update_lyrics(0, lyrics, counter)
+        # update_lyrics(0, lyrics, counter)
         # grab(:timeline_slider).delete({ force: true })
       end
-      # refresh_viewer
-      refresh_viewer(prev_postion)
+      # refresh_viewer start end current position
+      # refresh_viewer(0)
+      # refresh_viewer(@length)
+      full_refresh_viewer(prev_postion)
     end
   end
 
@@ -236,12 +261,13 @@ class Lyricist < Atome
   def setup_lyrics_events
     lyrics = grab(:lyric_viewer)
 
-    lyrics.touch(:down) do
-      grab(:lyrics_support).color({ red: 1, id: :red_col })
-      grab(:counter).content(:edit) # Empêche la mise à jour du viewer de paroles pendant la lecture
-    end
+    # lyrics.touch(:down) do
+    #   grab(:lyrics_support).color({ red: 1, id: :red_col })
+    #   grab(:counter).content(:edit) # Empêche la mise à jour du viewer de paroles pendant la lecture
+    # end
 
     lyrics.keyboard(:down) do |native_event|
+      grab(:lyrics_support).color({ red: 1, id: :red_col })
       event = Native(native_event)
       if event[:keyCode].to_s == '13' # Touche Entrée
         grab(:lyrics_support).remove(:red_col)
@@ -285,10 +311,10 @@ class Lyricist < Atome
   end
 
   def build_editor_controls
-    prev_word = grab(:view).box({left: 220, id: :prev, width: 39, height: 20})
-    prev_word.text({data: :prev, position: :absolute })
-    next_word = grab(:view).box({left: 270, id: :next, width: 39, height: 20})
-    next_word.text({data: :next, position: :absolute })
+    prev_word = grab(:view).box({ left: 220, id: :prev, width: 39, height: 20 })
+    prev_word.text({ data: :prev, position: :absolute })
+    next_word = grab(:view).box({ left: 270, id: :next, width: 39, height: 20 })
+    next_word.text({ data: :next, position: :absolute })
 
     prev_word.touch(true) do
       lyrics = grab(:lyric_viewer)
@@ -342,10 +368,10 @@ class Lyricist < Atome
   #   end
   # end
   def build_navigation_buttons
-    prev_word=grab(:view).box({left: 220, id: :prev, width: 39, height: 20})
-    prev_word.text({data: :prev, position: :absolute })
-    next_word=grab(:view).box({left: 270, id: :next, width: 39, height: 20})
-    next_word.text({data: :next, position: :absolute })
+    prev_word = grab(:view).box({ left: 220, id: :prev, width: 39, height: 20 })
+    prev_word.text({ data: :prev, position: :absolute })
+    next_word = grab(:view).box({ left: 270, id: :next, width: 39, height: 20 })
+    next_word.text({ data: :next, position: :absolute })
     prev_word.touch(true) do
       alert (:lyric_viewer).content
       # cf : update_lyrics
@@ -412,7 +438,7 @@ class Lyricist < Atome
 end
 
 # Création de l'instance et lancement de l'application
-lyr=Lyricist.new
+lyr = Lyricist.new
 
 lyr.new_song({ 0 => "hello", 594 => "world", 838 => "of", 1295 => "hope" })
 
