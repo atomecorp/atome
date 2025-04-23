@@ -285,21 +285,69 @@ class Lyricist < Atome
   end
 
   def build_editor_controls
-    editor = grab(:view).box({ id: :editor, width: 33, height: 33, top: :auto, bottom: 9, left: 63, color: :yellowgreen })
-    editor.text(:hide)
-    clear = grab(:view).box({ id: :clear, width: 33, height: 33, top: :auto, bottom: 9, left: 99, color: :orangered })
-    clear.text(:clear)
-    clear.touch(true) do
-      grab(:support).clear(true)
+    prev_word = grab(:view).box({left: 220, id: :prev, width: 39, height: 20})
+    prev_word.text({data: :prev, position: :absolute })
+    next_word = grab(:view).box({left: 270, id: :next, width: 39, height: 20})
+    next_word.text({data: :next, position: :absolute })
+
+    prev_word.touch(true) do
+      lyrics = grab(:lyric_viewer)
+      counter = grab(:counter)
+      current_position = counter.timer[:position]
+
+      # Trouver la clé qui précède la position actuelle
+      sorted_keys = lyrics.content.keys.sort
+      prev_index = sorted_keys.rindex { |key| key < current_position }
+
+      if prev_index
+        prev_position = sorted_keys[prev_index]
+        update_lyrics(prev_position, lyrics, counter)
+        grab(:timeline_slider).value(prev_position)
+      else
+        # Si aucune position précédente n'est trouvée, aller au début (position 0)
+        update_lyrics(0, lyrics, counter)
+        grab(:timeline_slider).value(0)
+      end
+    end
+
+    next_word.touch(true) do
+      lyrics = grab(:lyric_viewer)
+      counter = grab(:counter)
+      current_position = counter.timer[:position]
+
+      # Trouver la clé qui suit la position actuelle
+      sorted_keys = lyrics.content.keys.sort
+      next_index = sorted_keys.find_index { |key| key > current_position }
+
+      if next_index
+        next_position = sorted_keys[next_index]
+        update_lyrics(next_position, lyrics, counter)
+        grab(:timeline_slider).value(next_position)
+      else
+        # Si aucune position suivante n'est trouvée, aller à la fin
+        last_position = sorted_keys.last
+        update_lyrics(last_position, lyrics, counter)
+        grab(:timeline_slider).value(last_position)
+      end
     end
   end
+
+  # def build_editor_controls
+  #   editor = grab(:view).box({ id: :editor, width: 33, height: 33, top: :auto, bottom: 9, left: 63, color: :yellowgreen })
+  #   editor.text(:hide)
+  #   clear = grab(:view).box({ id: :clear, width: 33, height: 33, top: :auto, bottom: 9, left: 99, color: :orangered })
+  #   clear.text(:clear)
+  #   clear.touch(true) do
+  #     grab(:support).clear(true)
+  #   end
+  # end
   def build_navigation_buttons
     prev_word=grab(:view).box({left: 220, id: :prev, width: 39, height: 20})
     prev_word.text({data: :prev, position: :absolute })
     next_word=grab(:view).box({left: 270, id: :next, width: 39, height: 20})
     next_word.text({data: :next, position: :absolute })
     prev_word.touch(true) do
-      alert grab(:lyric_viewer).content
+      alert (:lyric_viewer).content
       # cf : update_lyrics
     end
   end
