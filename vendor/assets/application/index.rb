@@ -111,7 +111,7 @@
 # require "./examples/aXion_with_key"
 # require "./examples/draw"
 # require "./examples/database_handling"
-require "./examples/lyrics"
+require "./examples/video"
 # require "./vie/index"
 # require "./examples/drag"
 # require "./examples/display_bck"

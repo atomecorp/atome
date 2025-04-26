@@ -1,14 +1,37 @@
 #  frozen_string_literal: true
 
 # audio tag
-a = audio({ path: 'medias/audios/clap.wav', id: :basic_audio })
+a = audio({ path: 'medias/audios/Ices_From_Hells.m4a', id: :basic_audio })
 b=box({id: :playButton})
 b.text(:audio_tag)
 a.left(333)
 b.touch(:down) do
-  a.play(true)
+  a.play(17) do |val|
+    puts val
+  end
+end
+c=box({top: 70})
+c.touch(:down) do
+  a.play(:stop) do |val|
+    puts val
+  end
 end
 
+class Atome
+  def method_missing(name, *args, &block)
+    alert " que faire avec #{name}, #{args}, #{block}"
+  end
+end
+
+cc=box({top: 130})
+cc.touch(:down) do
+  a.volume(0.5)
+end
+
+ccc=box({top: 170})
+ccc.touch(:down) do
+  alert  a.length
+end
 
 
 ### Web Audio

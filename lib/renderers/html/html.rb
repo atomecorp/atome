@@ -1391,9 +1391,17 @@ STR
     # below we get image to feed width and height if needed
     @element[:src] = objet_path
     @element[:onload] = lambda do |_event|
+
       @element[:width]
       @element[:height]
+
     end
+    @element.addEventListener('loadedmetadata', lambda do |_event|
+    @original_atome.duration = @element[:duration]
+    end)
+
+
+
   end
 
   def transform(property, value = nil)

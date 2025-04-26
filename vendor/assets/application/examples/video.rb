@@ -5,12 +5,20 @@ if Universe.internet
 else
   v = video(:video_missing)
 end
-
+v.width(333)
+v.height(222)
 v.touch(true) do
   v.play(true)
   wait 3 do
-    v.play(66)
+    v.play(78)
   end
+end
+b=box({top: 366})
+duration=b.text(:duration)
+
+b.touch(true) do
+  v.play(:pause)
+  duration.data(v.duration)
 end
 def api_infos
   {
