@@ -1007,21 +1007,61 @@ end
 #   JS.eval(js_timer)
 # end
 
+# def js_timer(start, stop = nil, id = nil)
+#   id ||= "default_timer" # Assurez-vous d'avoir un identifiant par défaut si `id` est nil
+#
+#   if start == 'kill'
+#     kill_timer_js = <<~STR
+#             // Log the last position before killing
+#       //var last_position= window['#{id}_last_position']
+#             //console.log("Last position before kill:"+ last_position);
+#            // atomeJsToRuby("timer_callback(" + last_position + ",'#{id}')");
+#             // Clear the timeout and stop the timer
+#             if (window['#{id}_timeout_id']) {
+#               clearTimeout(window['#{id}_timeout_id']);
+#               window['#{id}_timeout_id'] = null;
+#             }
+#             window['#{id}_stop'] = true;
+#     STR
+#     JS.eval(kill_timer_js)
+#     return
+#   end
+#
+#   js_timer = <<~STR
+#     let start = #{start};
+#     let stop = #{stop};
+#     let startTime = performance.now()
+#     let position = start;
+#     window['#{id}_stop'] = false;
+#     // window['#{id}_last_position'] = position; // Initialize last_position with the starting value
+#
+#     const advance = () => {
+#       if (position <= stop && !window['#{id}_stop']) {
+#         // Log current position and callback
+#         atomeJsToRuby("timer_callback(" + position + ",'#{id}')");
+#         // console.log(position);
+#
+#         // Update last_position with the current position
+#         window['#{id}_last_position'] = position;
+#
+#         position += 1;
+#         window['#{id}_timeout_id'] = setTimeout(advance, 1);
+#       }
+#     };
+#     advance();
+#   STR
+#   JS.eval(js_timer)
+# end
 def js_timer(start, stop = nil, id = nil)
-  id ||= "default_timer" # Assurez-vous d'avoir un identifiant par défaut si `id` est nil
+  id ||= "default_timer"
 
   if start == 'kill'
     kill_timer_js = <<~STR
-            // Log the last position before killing
-      //var last_position= window['#{id}_last_position']
-            //console.log("Last position before kill:"+ last_position);
-           // atomeJsToRuby("timer_callback(" + last_position + ",'#{id}')");
-            // Clear the timeout and stop the timer
-            if (window['#{id}_timeout_id']) {
-              clearTimeout(window['#{id}_timeout_id']);
-              window['#{id}_timeout_id'] = null;
-            }
-            window['#{id}_stop'] = true;
+      if (window['#{id}_raf_id']) {
+        cancelAnimationFrame(window['#{id}_raf_id']);
+        window['#{id}_raf_id'] = null;
+      }
+      window['#{id}_stop'] = true;
     STR
     JS.eval(kill_timer_js)
     return
@@ -1030,29 +1070,25 @@ def js_timer(start, stop = nil, id = nil)
   js_timer = <<~STR
     let start = #{start};
     let stop = #{stop};
-  
-    let position = start;
+    let startTime = performance.now();
     window['#{id}_stop'] = false;
-    // window['#{id}_last_position'] = position; // Initialize last_position with the starting value
 
     const advance = () => {
-      if (position <= stop && !window['#{id}_stop']) {
-        // Log current position and callback
+      if (window['#{id}_stop']) return;
+
+      let now = performance.now();
+      let elapsed = now - startTime;
+      let position = start + elapsed;
+
+      if (stop === null || position <= stop) {
         atomeJsToRuby("timer_callback(" + position + ",'#{id}')");
-        // console.log(position);
-        
-        // Update last_position with the current position
-        window['#{id}_last_position'] = position;
-        
-        position += 1;
-        window['#{id}_timeout_id'] = setTimeout(advance, 1);
+        window['#{id}_raf_id'] = requestAnimationFrame(advance);
       }
     };
     advance();
   STR
   JS.eval(js_timer)
 end
-
 #### Attention super precise timer, below  but  it lock the CPU
 # def js_timer(start, stop, id)
 #   js_timer = <<STR

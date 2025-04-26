@@ -5,18 +5,31 @@ a = audio({ path: 'medias/audios/Ices_From_Hells.m4a', id: :basic_audio })
 b=box({id: :playButton})
 b.text(:audio_tag)
 a.left(333)
+@test=''
+$test1='jhgjhgj'
 b.touch(:down) do
-  a.play(17) do |val|
-    puts val
+  a.play(0) do |val|
+     $test1 =val
+    # @test1= val
   end
+
+  b.timer({ end: 33788 }) do |value|
+    @test = value
+    # update_lyrics(value, lyrics, counter)
+  end
+
 end
 c=box({top: 70})
 c.touch(:down) do
-  a.play(:stop) do |val|
-    puts val
-  end
+
+  a.play(:stop)
+  alert  "#{$test1} : #{@test}"
+
+
 end
 
+
+##### test below
 class Atome
   def method_missing(name, *args, &block)
     alert " que faire avec #{name}, #{args}, #{block}"
@@ -30,7 +43,7 @@ end
 
 ccc=box({top: 170})
 ccc.touch(:down) do
-  alert  a.length
+  alert  a.duration
 end
 
 
