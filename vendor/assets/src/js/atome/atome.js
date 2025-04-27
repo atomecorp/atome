@@ -155,8 +155,9 @@ function fileForOpal(parent, bloc) {
         };
 
         reader.onload = function (e) {
-            var content = e.target.result;
-            Opal.Atome.$file_handler(parent, content, bloc)
+            let content = e.target.result;
+            let filename = file.name;
+            Opal.Atome.$file_handler(parent, filename, content,bloc)
         };
 
         reader.onloadend = function () {

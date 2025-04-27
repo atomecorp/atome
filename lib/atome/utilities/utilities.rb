@@ -28,8 +28,9 @@ class Atome
       callback_found.call(params) if callback_found.is_a? Proc
     end
 
-    def file_handler(parent, content, bloc)
-      grab(parent).instance_exec(content, &bloc)
+    def file_handler(parent, filename,content, bloc)
+      hash_content={filename: filename, content: content}
+      grab(parent).instance_exec(hash_content, &bloc)
     end
 
     def controller_sender(message)

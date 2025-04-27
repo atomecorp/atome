@@ -16,6 +16,8 @@ box({ id: :the_boxy })
 
 
 support.import(true) do |content|
+  text ("title: \n\n#{content[:filename]}")
+  text ("\n\ncontent: \n\n#{content[:content]}")
   puts "add code here, content:  #{content}"
 end
 

@@ -69,7 +69,9 @@ new({ renderer: :html, method: :import, type: :blob }) do |_params, bloc|
           file_reader = JS.global[:FileReader].new
           file_reader.addEventListener("load") do |load_event|
             file_content = load_event[:target][:result]
-            Atome.file_handler(@id, file_content, bloc)
+            flename=file[:name]
+            # hash_content={filename: file[:name], content: file_content}
+            Atome.file_handler(@id,flename, file_content, bloc)
           end
           file_reader.readAsText(file)
         end

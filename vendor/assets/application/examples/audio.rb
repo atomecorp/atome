@@ -23,28 +23,12 @@ c=box({top: 70})
 c.touch(:down) do
 
   a.play(:stop)
-  alert  "#{$test1} : #{@test}"
+  text({ data: "#{$test1} : #{@test}", left: 66, top: 66 })
 
 
 end
 
 
-##### test below
-class Atome
-  def method_missing(name, *args, &block)
-    alert " que faire avec #{name}, #{args}, #{block}"
-  end
-end
-
-cc=box({top: 130})
-cc.touch(:down) do
-  a.volume(0.5)
-end
-
-ccc=box({top: 170})
-ccc.touch(:down) do
-  alert  a.duration
-end
 
 
 ### Web Audio
