@@ -1,13 +1,14 @@
 #  frozen_string_literal: true
 
 # audio tag
-a = audio({ path: 'medias/audios/Ices_From_Hells.m4a', id: :basic_audio })
+a = audio({  id: :basic_audio })
 b=box({id: :playButton})
 b.text(:audio_tag)
 a.left(333)
 @test=''
 $test1='jhgjhgj'
 b.touch(:down) do
+  a.path('medias/audios/Ices_From_Hells.m4a')
   a.play(0) do |val|
      $test1 =val
     # @test1= val
@@ -21,11 +22,21 @@ b.touch(:down) do
 end
 c=box({top: 70})
 c.touch(:down) do
-
   a.play(:stop)
   text({ data: "#{$test1} : #{@test}", left: 66, top: 66 })
+end
+
+d=box({top: 70, left: 66})
+d.touch(:down) do
+  grab(:basic_audio).path( 'medias/audios/clap.wav')
+
+    a.play(0) do |val|
+      $test1 =val
+      # @test1= val
+    end
 
 
+  text({ data: "#{$test1} : #{@test}", left: 66, top: 66 })
 end
 
 

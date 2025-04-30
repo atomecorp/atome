@@ -414,6 +414,21 @@ def build_for_ios(destination, mode = :dev)
 
 end
 
+def build_for_native(destination, mode = :dev)
+  # dev or build
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
+    # code to exec with Windows
+    `cd /d #{destination} && cargo tauri #{mode}`
+  elsif RbConfig::CONFIG['host_os'] =~ /darwin|mac os/
+    # code to exec with MacOS
+    `cd #{destination};cargo tauri #{mode}`
+  else
+    # code to exec with Unix/Linux
+    `cd #{destination};cargo tauri #{mode}`
+  end
+
+end
+
 def build_for_osx(destination, mode = :dev)
   # dev or build
   if RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
@@ -929,6 +944,12 @@ else
     wasi_file = 'wasi-vfs-osx_arm'
     wasm_common(source, destination, project_name, wasi_file, :tauri)
     build_for_osx(destination)
+  end
+  if ARGV.include?('native')
+    puts 'building osx'
+    # wasi_file = 'wasi-vfs-osx_arm'
+    # wasm_common(source, destination, project_name, wasi_file, :tauri)
+    build_for_native(destination)
   end
 
   if ARGV.include?('ios')

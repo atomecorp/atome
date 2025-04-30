@@ -145,38 +145,101 @@ function fileForOpal(parent, bloc) {
     input.addEventListener('change', function (event) {
         let file = event.target.files[0];
         let reader = new FileReader();
+        let filename = file.name;
+        let extension = filename.split('.').pop().toLowerCase();
 
         reader.onloadstart = function () {
-            console.log("Load start");
+            // console.log("Load start");
         };
 
         reader.onprogress = function (e) {
-            console.log("Loading: " + (e.loaded / e.total * 100) + '%');
+            // console.log("Loading: " + (e.loaded / e.total * 100) + '%');
         };
 
+        // Déterminer la méthode de lecture en fonction du type de fichier
+        const textExtensions = ['txt', 'lrx', 'lrs', 'prx','json', 'xml', 'html', 'css', 'js', '.rb'];
+        const isTextFile = textExtensions.includes(extension);
+
         reader.onload = function (e) {
-            let content = e.target.result;
-            let filename = file.name;
-            Opal.Atome.$file_handler(parent, filename, content,bloc)
+            let content;
+
+            if (isTextFile) {
+                // Pour les fichiers texte, utiliser le contenu textuel
+                content = e.target.result;
+            } else {
+                // Pour les fichiers binaires, créer une URL d'objet
+                content = URL.createObjectURL(file);
+            }
+
+            // Passer les informations du fichier au handler Opal
+            Opal.Atome.$file_handler(parent, filename, content, bloc);
         };
 
         reader.onloadend = function () {
-            console.log("Load end");
+            // console.log("Load end");
         };
 
         reader.onerror = function () {
             console.error("Error reading file");
         };
 
-        reader.readAsText(file);
+        // Choisir la méthode de lecture selon le type de fichier
+        if (isTextFile) {
+            reader.readAsText(file);
+        } else {
+            // Pour les fichiers binaires (audio, images, etc.)
+            reader.readAsArrayBuffer(file);
+        }
     });
     let div_element = document.getElementById(parent);
     div_element.appendChild(input);
     div_element.addEventListener('mousedown', function (event) {
-        input.click()
-    })
-
+        input.click();
+    });
 }
+
+// function fileForOpal(parent, bloc) {
+//     let input = document.createElement('input');
+//     input.type = 'file';
+//     input.style.position = "absolute";
+//     input.style.display = "none";
+//     input.style.width = "0px";
+//     input.style.height = "0px";
+//     input.addEventListener('change', function (event) {
+//         let file = event.target.files[0];
+//         let reader = new FileReader();
+//
+//         reader.onloadstart = function () {
+//             console.log("Load start");
+//         };
+//
+//         reader.onprogress = function (e) {
+//             console.log("Loading: " + (e.loaded / e.total * 100) + '%');
+//         };
+//
+//         reader.onload = function (e) {
+//             let content = e.target.result;
+//             let filename = file.name;
+//             Opal.Atome.$file_handler(parent, filename, content,bloc)
+//         };
+//
+//         reader.onloadend = function () {
+//             console.log("Load end");
+//         };
+//
+//         reader.onerror = function () {
+//             console.error("Error reading file");
+//         };
+//
+//         reader.readAsText(file);
+//     });
+//     let div_element = document.getElementById(parent);
+//     div_element.appendChild(input);
+//     div_element.addEventListener('mousedown', function (event) {
+//         input.click()
+//     })
+//
+// }
 
 
 function loadFeature() {

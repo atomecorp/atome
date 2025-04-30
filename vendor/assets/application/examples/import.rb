@@ -13,17 +13,42 @@ support.shadow({
 
 box({ id: :the_boxy })
 
-
-
-support.import(true) do |content|
+def importer_test(content)
+  filename=content[:filename]
   text ("title: \n\n#{content[:filename]}")
   text ("\n\ncontent: \n\n#{content[:content]}")
   puts "add code here, content:  #{content}"
+  case File.extname(filename).downcase
+  when ".mp3", ".wav", ".ogg", ".aac", ".flac", ".m4a"
+    puts "===> audio case"
+  when ".txt"
+    puts "===> text case"
+  when ".lrx"
+    puts "===> lrx case"
+
+
+  when ".lrs"
+    puts "===> lrs case"
+  else
+    puts "===> else case"
+  end
+end
+
+#imort can have exeption look below how it works:
+#   def importer(target = :all, &proc)
+#     if target == :all
+#       importer_all(&proc)
+#     else
+#       exception_import(target, &proc)
+#     end
+#   end
+support.import(true) do |content|
+  importer_test(content)
 end
 
 
-importer do |val|
-  puts "case 21 #{val}"
+importer() do |val|
+  puts "case drop anyware #{val}"
 end
 
 # importer(:all) do |val|
