@@ -1,11 +1,5 @@
 const atomeJS = Object.assign(communication, File);
 
-// allow tauri to write messages in the console
-// window.__TAURI__.event.listen("log-to-console", (event) => {
-//     console.log(event.payload); // Affiche le message reçu dans la console
-// });
-// generic callback method
-
 
 async function callback(callback_method, cmd) {
     let ruby_callback_method = 'A.callback(:' + callback_method + ')'
@@ -83,32 +77,7 @@ async function changeCurrentDirectory(atome_id, newPath) {
 }
 
 
-// Terminal
 
-// async function terminal(atome_id, cmd) {
-//
-//     let cmd_result;
-//     try {
-//         const command = cmd;
-//         let response;
-//         response = await window.__TAURI__.core.invoke('execute_command', { command });
-//         cmd_result = response;
-//     } catch (error) {
-//         cmd_result = error;
-//     }
-//
-// // Vérification si cmd_result est une chaîne avant d'appeler replace
-//     if (typeof cmd_result === "string") {
-//         cmd_result = cmd_result.replace(/\r?\n/g, "");
-//     } else {
-//         console.error("Command execution failed or result is not a string:", cmd_result);
-//     }
-//     console.log('terminal say  : '+cmd_result)
-//
-//     atomeJsToRuby("grab(:" + atome_id + ").store_ruby_callback({ terminal: '" + cmd_result + "' })");
-//     atomeJsToRuby("grab(:" + atome_id + ").read_ruby_callback(:terminal)");
-//
-// }
 
 async function terminal(atome_id, cmd) {
     let cmd_result;
@@ -197,49 +166,6 @@ function fileForOpal(parent, bloc) {
         input.click();
     });
 }
-
-// function fileForOpal(parent, bloc) {
-//     let input = document.createElement('input');
-//     input.type = 'file';
-//     input.style.position = "absolute";
-//     input.style.display = "none";
-//     input.style.width = "0px";
-//     input.style.height = "0px";
-//     input.addEventListener('change', function (event) {
-//         let file = event.target.files[0];
-//         let reader = new FileReader();
-//
-//         reader.onloadstart = function () {
-//             console.log("Load start");
-//         };
-//
-//         reader.onprogress = function (e) {
-//             console.log("Loading: " + (e.loaded / e.total * 100) + '%');
-//         };
-//
-//         reader.onload = function (e) {
-//             let content = e.target.result;
-//             let filename = file.name;
-//             Opal.Atome.$file_handler(parent, filename, content,bloc)
-//         };
-//
-//         reader.onloadend = function () {
-//             console.log("Load end");
-//         };
-//
-//         reader.onerror = function () {
-//             console.error("Error reading file");
-//         };
-//
-//         reader.readAsText(file);
-//     });
-//     let div_element = document.getElementById(parent);
-//     div_element.appendChild(input);
-//     div_element.addEventListener('mousedown', function (event) {
-//         input.click()
-//     })
-//
-// }
 
 
 function loadFeature() {
@@ -524,22 +450,7 @@ function isDescendant(parentId, childId) {
     return    false;
 
 }
-// function pianorollCallback(ev) {
-//     // console.log(methodToCallBack+'note playing : ');
-//     console.log(ev);
-//     console.log('------');
-//     // consol
-//     // const currentTime = actx.currentTime;
-//     // const startTime = currentTime + (ev.t - performance.now() / 1000);
-//     // const endTime = currentTime + (ev.g - performance.now() / 1000);
-//     // osc.detune.setValueAtTime((ev.n - 69) * 100, startTime);
-//     // gain.gain.setTargetAtTime(0.5, startTime, 0.005);
-//     // gain.gain.setTargetAtTime(0, endTime, 0.1);
-// }
-// alert(isDescendant('intuition', 'the_test_box'));
-// alert(isDescendant('view', 'the_test_box'));
-
-
+//
 // ruby JS interoperability examples
 function js_test(val){
     console.log(val)
@@ -550,64 +461,6 @@ class my_test_class {
         console.log("JavaScript fonctionne : " + val);
     }
 }
-
-///////
-// const tempLogs = [];
-//
-// // Redéfinition temporaire de console.log
-// console.log = function(...args) {
-//     tempLogs.push(args.join(' '));
-// };
-//
-// console.log('hello1');
-//
-// function get_logs(_var) {
-//     window.addEventListener('load', function() {
-//         console.log('hello2');
-//         alert('Console logs:\n' + tempLogs.join('\n'));
-//     });
-// }
-//
-// // Appel de la fonction
-// function poilu(_va) {
-//     alert('1');
-//     get_logs();
-//     alert('2');
-//
-// }
-
-// poilu('super');
-
-// const originalConsoleLog = console.log;
-// console.log = function(...args) {
-//     Opal.A.$add_to_view_logs(args.join(' '));
-//     originalConsoleLog.apply(console, args);
-// };
-
-
-// // alert(atomeJsToRuby('get_logs'));
-// setTimeout(() => {
-// alert ('knkj');
-//     get_logs();
-// // a= atomeJsToRuby('get_logs', 'kjhjk')
-// //     alert(a);
-//     }, "2000");
-// const tempLogs = [];
-// const originalConsoleLog = console.log; // Sauvegarde de la méthode originale
-//
-// // Redéfinition de console.log
-// console.log = function(...args) {
-//     tempLogs.push(args.join(' ')); // Ajout au tableau
-//     originalConsoleLog.apply(console, args); // Appel de la méthode originale
-// };
-
-// setTimeout(() => {
-//     a=  get_logs();
-//     alert (a);
-// }, 1000);
-
-//////////
-
 
 
 // right click handling
@@ -630,44 +483,6 @@ function enableRightClick() {
 function disableRightClick() {
     isRightClickDisabled = true;
 }
-
-
-// let disableRightClick = true;
-//
-// document.addEventListener("contextmenu", function (e) {
-//     if (disableRightClick) {
-//         e.preventDefault();
-//     }
-// });
-//
-// // Fonction pour activer le clic droit
-// function enableRightClick() {
-//     disableRightClick = false;
-// }
-//
-// // Fonction pour désactiver le clic droit
-// function disableRightClick() {
-//     disableRightClick = true;
-// }
-
-
-
-// document.addEventListener("DOMContentLoaded", function() {
-//     window.updateTimecode = function(time) {
-//         let timecodeElement = document.getElementById('timecode');
-//         if (timecodeElement) {
-//             console.log("timecode:", time); // Debug
-//             timecodeElement.textContent = time;
-//         } else {
-//             console.error("Element #timecode not found !");
-//         }
-//     };
-//
-//     // Pour envoyer des messages à Swift
-//     window.sendMessageToNative = function(message) {
-//         window.webkit.messageHandlers.hostHandler.postMessage(message);
-//     };
-// });
 
 
 // Redefined console.log
@@ -715,11 +530,292 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 });
 
-
-////
-
+//////////
 
 
 
+// Configuration
+const DB_VERSION = 1;
+const STORE_NAME = 'files';
+let db = null;
+
+// Callback pour les résultats et erreurs
+function idb_listener(operation, result) {
+
+    let resultStr;
+    if (typeof result === 'object') {
+        try {
+            // Option 1: Format plus lisible avec indentation
+            resultStr = JSON.stringify(result, null, 2);
+            // Option 2: Format compact sans indentation
+            // resultStr = JSON.stringify(result);
+
+            atomeJsToRuby("A.idb_load_callback('"+operation+"','"+resultStr+"')");
+
+        } catch (e) {
+            resultStr = "[Erreur: Impossible de convertir l'objet en JSON]";
+        }
+    } else {
+        resultStr = result;
+    }
+
+    /////
+
+
+    ///test_below
+    // console.log(`Operation: ${operation}`, result);
+    // Afficher le résultat dans la page
+    const output = document.getElementById('view');
+    output.innerHTML += `<p>${operation}: ${result.success ? 'Success' : 'Error'} - ${JSON.stringify(result)}</p>`;
+}
+
+// Ouvrir la base de données (fonction interne)
+function _openDatabase(dbname) {
+    return new Promise((resolve, reject) => {
+        if (db !== null) {
+            resolve(db);
+            return;
+        }
+
+        const request = indexedDB.open(dbname, DB_VERSION);
+
+        request.onupgradeneeded = function(event) {
+            const database = event.target.result;
+            if (!database.objectStoreNames.contains(STORE_NAME)) {
+                database.createObjectStore(STORE_NAME);
+            }
+        };
+
+        request.onerror = function(event) {
+            const error = new Error(`DB open error: ${event.target.error?.message || "unknown"}`);
+            reject(error);
+        };
+
+        request.onsuccess = function(event) {
+            db = event.target.result;
+            resolve(db);
+        };
+    });
+}
+
+// Sauver des données
+function idb_save(dbname, filename, content) {
+    const dbToUse = db ? db.name : dbname;
+
+    _openDatabase(dbToUse)
+        .then(database => {
+            try {
+                const transaction = database.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+
+                // Convertir en string si objet
+                const contentString = typeof content === 'string' ? content : JSON.stringify(content);
+                const putRequest = store.put(contentString, filename);
+
+                putRequest.onerror = function(event) {
+                    const error = new Error(`Save error: ${event.target.error?.message || "unknown"}`);
+                    idb_listener('save', { success: false, error: error.message });
+                };
+
+                putRequest.onsuccess = function() {
+                    const result = { success: true, filename };
+                    idb_listener('save', result);
+                };
+            } catch (error) {
+                idb_listener('save', { success: false, error: error.message });
+            }
+        })
+        .catch(error => {
+            idb_listener('save', { success: false, error: error.message });
+        });
+}
+
+// Charger des données
+function idb_load(dbname, filename) {
+    const dbToUse = db ? db.name : dbname;
+
+    _openDatabase(dbToUse)
+        .then(database => {
+            try {
+                const transaction = database.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const getRequest = store.get(filename);
+
+                getRequest.onerror = function(event) {
+                    const error = new Error(`Load error: ${event.target.error?.message || "unknown"}`);
+                    idb_listener('load', { success: false, error: error.message });
+                };
+
+                getRequest.onsuccess = function() {
+                    if (getRequest.result) {
+                        // Tenter de parser le JSON
+                        let parsedData = getRequest.result;
+                        try {
+                            if (typeof parsedData === 'string' &&
+                                (parsedData.startsWith('{') || parsedData.startsWith('['))) {
+                                parsedData = JSON.parse(parsedData);
+                            }
+                        } catch (e) {
+                            // Garder en string si l'analyse échoue
+                        }
+
+                        const result = { success: true, filename, data: parsedData };
+                        idb_listener('load', result);
+                    } else {
+                        const error = new Error(`File '${filename}' not found`);
+                        idb_listener('load', { success: false, error: error.message });
+                    }
+                };
+            } catch (error) {
+                idb_listener('load', { success: false, error: error.message });
+            }
+        })
+        .catch(error => {
+            idb_listener('load', { success: false, error: error.message });
+        });
+}
+
+// Lister toutes les données
+function idb_list(dbname) {
+    const dbToUse = db ? db.name : dbname;
+
+    _openDatabase(dbToUse)
+        .then(database => {
+            try {
+                const transaction = database.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const allRequest = store.getAll();
+                const keysRequest = store.getAllKeys();
+
+                let items = [];
+                let values = [];
+                let keys = [];
+
+                // Attendre que les deux requêtes soient terminées avant de créer le résultat
+                transaction.oncomplete = function() {
+                    // À ce stade, les deux requêtes sont terminées
+                    keys = keysRequest.result;
+                    values = allRequest.result;
+
+                    items = values.map((item, index) => {
+                        // Tenter de parser le JSON
+                        let parsedItem = item;
+                        try {
+                            if (typeof item === 'string' &&
+                                (item.startsWith('{') || item.startsWith('['))) {
+                                parsedItem = JSON.parse(item);
+                            }
+                        } catch (e) {
+                            // Garder en string si l'analyse échoue
+                        }
+
+                        return {
+                            filename: keys[index],
+                            data: parsedItem
+                        };
+                    });
+
+                    const result = { success: true, items: items };
+                    idb_listener('list', result);
+                };
+
+                allRequest.onerror = function(event) {
+                    const error = new Error(`List error: ${event.target.error?.message || "unknown"}`);
+                    idb_listener('list', { success: false, error: error.message });
+                };
+
+                keysRequest.onerror = function(event) {
+                    const error = new Error(`List keys error: ${event.target.error?.message || "unknown"}`);
+                    idb_listener('list', { success: false, error: error.message });
+                };
+
+            } catch (error) {
+                idb_listener('list', { success: false, error: error.message });
+            }
+        })
+        .catch(error => {
+            idb_listener('list', { success: false, error: error.message });
+        });
+}
+
+// Supprimer des données
+function idb_remove(dbname, filename) {
+    const dbToUse = db ? db.name : dbname;
+
+    _openDatabase(dbToUse)
+        .then(database => {
+            try {
+                const transaction = database.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                const deleteRequest = store.delete(filename);
+
+                deleteRequest.onerror = function(event) {
+                    const error = new Error(`Delete error: ${event.target.error?.message || "unknown"}`);
+                    idb_listener('remove', { success: false, error: error.message });
+                };
+
+                deleteRequest.onsuccess = function() {
+                    const result = { success: true, filename };
+                    idb_listener('remove', result);
+                };
+            } catch (error) {
+                idb_listener('remove', { success: false, error: error.message });
+            }
+        })
+        .catch(error => {
+            idb_listener('remove', { success: false, error: error.message });
+        });
+}
+
+// Réinitialiser la base de données
+function idb_reset(dbname) {
+    if (db) {
+        db.close();
+        db = null;
+    }
+
+    console.log(`Tentative de suppression de la base de données '${dbname}'...`);
+
+    const deleteRequest = indexedDB.deleteDatabase(dbname);
+
+    deleteRequest.onerror = function(event) {
+        const error = new Error(`Reset error: ${event.target.error?.message || "unknown"}`);
+        console.error("Erreur lors de la suppression:", error);
+        idb_listener('reset', { success: false, error: error.message });
+    };
+
+    deleteRequest.onsuccess = function() {
+        console.log(`Base de données '${dbname}' supprimée avec succès`);
+        const result = { success: true, dbname };
+        idb_listener('reset', result);
+    };
+
+    deleteRequest.onblocked = function() {
+        console.warn(`La suppression de '${dbname}' est bloquée - d'autres connexions sont ouvertes`);
+        const warning = "DB reset blocked, closing connections...";
+        idb_listener('reset', { success: true, warning, dbname });
+
+        // Attendre un peu et réessayer
+        setTimeout(() => {
+            console.log("Nouvelle tentative de suppression...");
+            if (db) {
+                db.close();
+                db = null;
+            }
+            reset(dbname);
+        }, 1000);
+    };
+}
+
+// setTimeout(() => {
+//     idb_save('my_file', 'my test');
+//     // alert('kool');
+//     setTimeout(() => {
+//         idb_load('my_file');
+//         // alert('kool');
+//
+//     }, 500);
+//
+// }, 3000);
 
 
