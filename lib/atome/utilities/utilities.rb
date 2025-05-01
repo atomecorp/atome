@@ -1382,6 +1382,74 @@ STRR
       grab(:atome_console_content).text({ data: msg, left: 6, top: 20})
     end
   end
+
+
+  def idb_load_callback(operation, content = nil)
+    case operation
+    when 'save'
+      proc_f = A.content[:idb_save_proc]
+      proc_f.call(content) if proc_f.is_a?(Proc)
+    when 'load'
+      proc_f = A.content[:idb_load_proc]
+      proc_f.call(content) if proc_f.is_a?(Proc)
+    when 'remove'
+      proc_f = A.content[:idb_remove_proc]
+      proc_f.call(content) if proc_f.is_a?(Proc)
+    when 'reset'
+      proc_f = A.content[:idb_reset_proc]
+      proc_f.call(content) if proc_f.is_a?(Proc)
+    when 'list'
+      proc_f = A.content[:idb_list_proc]
+      proc_f.call(content) if proc_f.is_a?(Proc)
+    else
+      puts 'nothing happened'
+    end
+  end
+
+  def idb_save (idb, filename, content, &proc)
+    if A.data.instance_of?(Hash)
+      A.content[:idb_save_proc] = proc
+    else
+      A.content = { idb_save_proc: proc }
+    end
+    js_func('idb_save', idb, filename, content)
+  end
+
+  def idb_load(idb, filename, &proc)
+    if A.data.instance_of?(Hash)
+      A.content[:idb_load_proc] = proc
+    else
+      A.content = { idb_load_proc: proc }
+    end
+    js_func('idb_load', idb, filename)
+  end
+
+  def idb_list (idb, &proc)
+    if A.data.instance_of?(Hash)
+      A.content[:idb_list_proc] = proc
+    else
+      A.content = { idb_list_proc: proc }
+    end
+    js_func('idb_list', idb)
+  end
+
+  def idb_remove(idb, filename, &proc)
+    if A.data.instance_of?(Hash)
+      A.content[:idb_remove_proc] = proc
+    else
+      A.content = { idb_remove_proc: proc }
+    end
+    js_func('idb_remove', idb, filename)
+  end
+
+  def idb_reset(idb, &proc)
+    if A.data.instance_of?(Hash)
+      A.content[:idb_reset_proc] = proc
+    else
+      A.content = { idb_reset_proc: proc }
+    end
+    js_func('idb_reset', idb)
+  end
 end
 
 
