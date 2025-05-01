@@ -565,8 +565,8 @@ function idb_listener(operation, result) {
     ///test_below
     // console.log(`Operation: ${operation}`, result);
     // Afficher le résultat dans la page
-    const output = document.getElementById('view');
-    output.innerHTML += `<p>${operation}: ${result.success ? 'Success' : 'Error'} - ${JSON.stringify(result)}</p>`;
+    // const output = document.getElementById('view');
+    // output.innerHTML += `<p>${operation}: ${result.success ? 'Success' : 'Error'} - ${JSON.stringify(result)}</p>`;
 }
 
 // Ouvrir la base de données (fonction interne)
