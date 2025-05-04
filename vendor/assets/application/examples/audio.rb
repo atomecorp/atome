@@ -2,7 +2,7 @@
 
 # audio tag
 a = audio({  id: :basic_audio })
-b=box({id: :playButton})
+b=box({id: :playButton, color: :orange})
 b.text(:audio_tag)
 a.left(333)
 @test=''
@@ -11,9 +11,10 @@ b.touch(:down) do
   a.path('medias/audios/Ices_From_Hells.m4a')
   a.play(0) do |val|
      $test1 =val
+     puts val
     # @test1= val
   end
-
+  # Ices_From_Hells.m4a
   b.timer({ end: 33788 }) do |value|
     @test = value
     # update_lyrics(value, lyrics, counter)

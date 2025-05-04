@@ -1481,24 +1481,57 @@ STR
   end
 
   def animation_frame_callback(proc_pass, play_content)
-    JS.global[:window].requestAnimationFrame(-> (timestamp) {
-      current_time = @element[:currentTime]
-      fps = 30
-      current_frame = (current_time.to_f * fps).to_i
-      @original_atome.instance_exec({ frame: current_frame, time: current_time }, &proc_pass) if proc_pass.is_a? Proc
-      # we update play instance variable so if user ask for atome.play it will return current frame
-      play_content[:play] = current_frame
-      animation_frame_callback(proc_pass, play_content)
+    @animation_id = JS.global[:window].requestAnimationFrame(-> (timestamp) {
+      # Vérifier si l'élément est en pause avant de continuer
+      if !@element[:paused]
+        current_time = @element[:currentTime]
+        fps = 30
+        current_frame = (current_time.to_f * fps).to_i
+        @original_atome.instance_exec({ frame: current_frame, time: current_time }, &proc_pass) if proc_pass.is_a? Proc
+        # we update play instance variable so if user ask for atome.play it will return current frame
+        play_content[:play] = current_frame
+        animation_frame_callback(proc_pass, play_content)
+      end
     })
   end
 
-  def action(_particle, action_found, option = nil)
+  # def animation_frame_callback(proc_pass, play_content)
+  #   JS.global[:window].requestAnimationFrame(-> (timestamp) {
+  #     current_time = @element[:currentTime]
+  #     fps = 30
+  #     current_frame = (current_time.to_f * fps).to_i
+  #     @original_atome.instance_exec({ frame: current_frame, time: current_time }, &proc_pass) if proc_pass.is_a? Proc
+  #     # we update play instance variable so if user ask for atome.play it will return current frame
+  #     play_content[:play] = current_frame
+  #     animation_frame_callback(proc_pass, play_content)
+  #   })
+  # end
 
+  # def action(_particle, action_found, option = nil)
+  #   if action_found == :stop
+  #     currentTime(option)
+  #     @element.pause
+  #   elsif action_found == :pause
+  #     @element.pause
+  #   else
+  #
+  #     currentTime(option)
+  #     proc_found = @original_atome.instance_variable_get('@play_code')[action_found]
+  #     play_content = @original_atome.instance_variable_get('@play')
+  #     animation_frame_callback(proc_found, play_content)
+  #     @element.play
+  #   end
+  # end
+  def action(_particle, action_found, option = nil)
     if action_found == :stop
       currentTime(option)
       @element.pause
+      # Annuler le requestAnimationFrame en cours
+      JS.global[:window].cancelAnimationFrame(@animation_id) if @animation_id
     elsif action_found == :pause
       @element.pause
+      # Annuler le requestAnimationFrame en cours
+      JS.global[:window].cancelAnimationFrame(@animation_id) if @animation_id
     else
       currentTime(option)
       proc_found = @original_atome.instance_variable_get('@play_code')[action_found]
