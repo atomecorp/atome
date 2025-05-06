@@ -41,11 +41,17 @@
 <body id='user_view' class='atome'>
 
 <div id='copyright'>©atome 2024</div>
+<!--the script below allow PWA app-->
 <script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(() => console.log('Service Worker registered'))
-            .catch(err => console.error('SW registration failed:', err));
+        if (window.location.protocol === 'https:' || window.location.protocol === 'http:') {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log('Service Worker registered'))
+                .catch(err => console.error('SW registration failed:', err));
+        } else {
+            console.log('Mode local détecté: Service Worker désactivé');
+            // Ici vous pouvez ajouter du code spécifique au mode local si nécessaire
+        }
     }
 </script>
 </body>
